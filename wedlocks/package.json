@@ -4,13 +4,13 @@
   "description": "The email server for Unlock",
   "main": "src/server.js",
   "dependencies": {
-    "@babel/cli": "7.8.0",
-    "@babel/core": "7.8.0",
-    "@babel/node": "7.8.0",
-    "@babel/preset-env": "7.8.2",
-    "@typescript-eslint/eslint-plugin": "2.15.0",
-    "@typescript-eslint/parser": "2.15.0",
-    "aws-sdk": "2.601.0",
+    "@babel/cli": "7.8.3",
+    "@babel/core": "7.8.3",
+    "@babel/node": "7.8.3",
+    "@babel/preset-env": "7.8.3",
+    "@typescript-eslint/eslint-plugin": "2.16.0",
+    "@typescript-eslint/parser": "2.16.0",
+    "aws-sdk": "2.606.0",
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",
     "babel-loader": "8.0.6",
@@ -27,29 +27,26 @@
     "eslint-plugin-node": "11.0.0",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.17.0",
+    "eslint-plugin-react": "7.18.0",
     "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-standard": "4.0.1",
     "jest": "24.9.0",
-    "lint-staged": "8.2.1",
-    "netlify-cli": "2.29.0",
+    "lint-staged": "10.0.0",
+    "netlify-cli": "2.30.0",
     "node-forge": "0.9.1",
     "nodemailer": "6.4.2",
     "nodemon": "2.0.2",
     "prettier": "1.19.1",
     "ts-jest": "24.3.0",
-    "typescript": "3.7.4",
+    "typescript": "3.7.5",
     "webpack": "4.41.5",
     "webpack-cli": "3.3.10",
     "winston": "3.2.1"
   },
   "lint-staged": {
-    "linters": {
-      ".{js,ts,tsx}": [
-        "eslint --fix",
-        "git add"
-      ]
-    }
+    ".{js,ts,tsx}": [
+      "eslint --fix"
+    ]
   },
   "engines": {
     "node": "^10"

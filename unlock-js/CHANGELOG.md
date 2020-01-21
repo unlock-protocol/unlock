@@ -1,8 +1,13 @@
 # Changes
 
-# Next version
+# Next release
+- Adding script to initialize a template
+
+# 0.7.1
 - Code cleaned witth automated linting fixes
 - Adjusted lint config to ignore violations that could not be fixed auttomatically
+- Added setKeyMetadata and getKeyMetadata methods to WalletService
+- Update gas prices
 
 # 0.7.0
 

@@ -152,6 +152,16 @@ jobs:
           name: Wedlocks Tests
           command: scripts/tests.sh wedlocks
 
+  nudge-tests:
+    machine: true        
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Build nudge Image
+          command: scripts/build-image.sh nudge
+
   integration-tests:
     machine:
       docker_layer_caching: true
@@ -358,6 +368,7 @@ workflows:
       - wedlocks-tests
       - unlock-app-tests
       - unlock-js-tests
+      - nudge-tests
       - integration-tests:
           requires:
             - smart-contracts-tests

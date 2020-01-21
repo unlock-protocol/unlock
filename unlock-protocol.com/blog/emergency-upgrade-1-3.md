@@ -87,7 +87,7 @@ These two calls are public and have no modifier.  This means anyone can call the
 
 We have a number of other `initialize` functions but they were all safe using one of the three techniques explained above.
 
-The impact of this is anyone can change the token a lock is priced in.  And anyone can reset the refund penalty back to the default value of 10%.  
+The impact of this is anyone can change the token a lock is priced in.  And anyone can reset the refund penalty back to the default value of 10%.
 
 Doesn’t sound so bad at first.  But let’s consider how an attacker could use this to their benefit.  Here’s how you could leverage this bug to steal funds:
  - Find a test ERC-20 token. There are a few publicly available or you could create your own. We just need a way to mint a balance for free.
@@ -96,7 +96,7 @@ Doesn’t sound so bad at first.  But let’s consider how an attacker could use
  - Call `initialize(address _tokenAddress)` to change the lock to be priced in the test token you’re using.
  - Buy a key as normal -- but you are spending test tokens / fake money.
  - Call `initialize(address _tokenAddress)` to change the lock back to its original currency.
- - Call `cancelAndRefund()` to get a partial refund for your purchase. 
+ - Call `cancelAndRefund()` to get a partial refund for your purchase.
 
 You spend fake money and then are refunded with real money.  And if the lock owner tries to disable cancels by increasing the refund penalty, the attacker simply calls `initialize()` to reset it back to 10%.
 
@@ -117,8 +117,8 @@ If you had sold any keys on an impacted lock:
  - Call `withdraw` ASAP to secure your funds
  - Call `grantKeys` on the new lock to ensure your members did not lose anything in the process
 
-Over the coming weeks we will be discussing what we can do to help ensure we do make an error like this again in the future.
+Over the coming weeks we will be discussing what we can do to help ensure we don't make an error like this again in the future.
 
-The issues have been fixed.  You should not feel hesitant to use the system because of what was discussed above.  In the end, no lock owner has lost funds and end-users (those purchasing keys) were never in any risk at all.  
+The issues have been fixed.  You should not feel hesitant to use the system because of what was discussed above.  In the end, no lock owner has lost funds and end-users (those purchasing keys) were never at risk at all.
 
 Questions or concerns? Get in touch we’d be happy to explain further: hello@unlock-protocol.com
