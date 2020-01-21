@@ -33,7 +33,7 @@ const Label = styled.label<LabelProps>`
     text-transform: uppercase;
     font-size: 10px;
     color: var(--darkgrey);
-    margin-top: 10px;
+    margin-top: 16px;
     margin-bottom: 5px;
   }
 
