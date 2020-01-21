@@ -105,7 +105,7 @@ contract('test-artifacts / dai', accounts => {
           params: [dai.address, typedData],
           from: dai.address,
         },
-        function(err, result) {
+        function(err, _result) {
           if (err) {
             return reject(err)
           }
@@ -146,4 +146,5 @@ contract('test-artifacts / dai', accounts => {
     )
     assert.notEqual(await dai.allowance.call(holder, permittedSpender), 0)
   })
+})
 })
