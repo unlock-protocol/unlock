@@ -1,18 +1,34 @@
 import { ethers } from 'ethers'
 import * as UnlockV0 from 'unlock-abi-0'
+import v0 from '../../v0'
+
+import { getTestProvider } from '../helpers/provider'
+import { getTestUnlockContract } from '../helpers/contracts'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
-import NockHelper from '../helpers/nockHelper'
-import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
-import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
-
-const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */)
+import { UNLIMITED_KEYS_COUNT } from '../../../lib/constants'
+import WalletService from '../../walletService'
 
 let walletService
-let transaction
-let transactionResult
-let setupSuccess
+
+const provider = getTestProvider({})
+provider.waitForTransaction = jest.fn(() => Promise.resolve(receipt))
+
+const unlockContract = getTestUnlockContract({
+  abi: v0.Unlock.abi,
+  provider,
+})
+
+const lockCreationTransaction = {
+  hash: '0xlockCreation',
+}
+
+lockCreationTransaction.wait = jest.fn(() => lockCreationTransaction)
+
+jest
+  .spyOn(unlockContract, 'createLock')
+  .mockReturnValue(Promise.resolve(lockCreationTransaction))
+
 const lock = {
   address: '0x0987654321098765432109876543210987654321',
   expirationDuration: 86400, // 1 day
@@ -29,77 +45,62 @@ const receipt = {
 
 describe('v0', () => {
   describe('createLock', () => {
-    async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
-      nock.cleanAll()
-      walletService = await prepWalletService(
-        UnlockV0.Unlock,
-        endpoint,
-        nock,
-        true // this is the Unlock contract, not PublicLock
-      )
-
-      const callMethodData = prepContract({
-        contract: UnlockV0.Unlock,
-        functionName: 'createLock',
-        signature: 'uint256,uint256,uint256',
-        nock,
+    beforeEach(() => {
+      // Mock all the methods
+      walletService = new WalletService({
+        unlockAddress: '0xunlockAddress',
       })
+      walletService.provider = provider
+      walletService.unlockContractAbiVersion = jest.fn(() => {
+        return v0
+      })
+      walletService.getUnlockContract = jest.fn(() =>
+        Promise.resolve(unlockContract)
+      )
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(lockCreationTransaction.hash)
+      )
+    })
 
-      const {
-        testTransaction,
-        testTransactionResult,
-        success,
-      } = callMethodData(
+    it('should get the unlock contract', async () => {
+      expect.assertions(1)
+      await walletService.createLock(lock)
+      expect(walletService.getUnlockContract).toHaveBeenCalled()
+    })
+
+    it('should call createLock on the unlock contract with the right params', async () => {
+      expect.assertions(1)
+      await walletService.createLock(lock)
+      const spy = jest.spyOn(unlockContract, 'createLock')
+      expect(spy).toHaveBeenCalledWith(
         lock.expirationDuration,
         utils.toWei(lock.keyPrice, 'ether'),
-        maxNumberOfKeys
+        lock.maxNumberOfKeys
       )
-
-      walletService.provider.waitForTransaction = jest.fn(() =>
-        Promise.resolve(receipt)
-      )
-
-      transaction = testTransaction
-      transactionResult = testTransactionResult
-      setupSuccess = success
-    }
+    })
 
     it('should invoke _handleMethodCall with the right params', async () => {
-      expect.assertions(2)
-
-      await nockBeforeEach()
-      setupSuccess()
+      expect.assertions(1)
 
       walletService._handleMethodCall = jest.fn(() =>
-        Promise.resolve(transaction.hash)
+        Promise.resolve(lockCreationTransaction.hash)
       )
-      const mock = walletService._handleMethodCall
 
       await walletService.createLock(lock)
 
-      expect(mock).toHaveBeenCalledWith(
+      expect(walletService._handleMethodCall).toHaveBeenCalledWith(
         expect.any(Promise),
         TransactionTypes.LOCK_CREATION
       )
-
-      // verify that the promise passed to _handleMethodCall actually resolves
-      // to the result the chain returns from a sendTransaction call to createLock
-      const result = await mock.mock.calls[0][0]
-      await result.wait()
-      expect(result).toEqual(transactionResult)
-      await nock.resolveWhenAllNocksUsed()
     })
 
     it('should emit lock.updated with the transaction', async () => {
       expect.assertions(2)
 
-      await nockBeforeEach()
-      setupSuccess()
-
       walletService.on('lock.updated', (lockAddress, update) => {
         expect(lockAddress).toBe(lock.address)
         expect(update).toEqual({
-          transaction: transaction.hash,
+          transaction: lockCreationTransaction.hash,
           balance: '0',
           expirationDuration: lock.expirationDuration,
           keyPrice: lock.keyPrice,
@@ -109,21 +110,15 @@ describe('v0', () => {
       })
 
       await walletService.createLock(lock)
-      await nock.resolveWhenAllNocksUsed()
     })
 
     it('should convert unlimited keys from UNLIMITED_KEYS_COUNT to ETHERS_MAX_UINT for the function call', async () => {
       expect.assertions(2)
 
-      // this param tells the call to createLock to pass in this value instead of the lock's value
-      // for maxNumberOfKeys. The test will fail if the function call does not convert
-      await nockBeforeEach(ETHERS_MAX_UINT)
-      setupSuccess()
-
       walletService.on('lock.updated', (lockAddress, update) => {
         expect(lockAddress).toBe(lock.address)
         expect(update).toEqual({
-          transaction: transaction.hash,
+          transaction: lockCreationTransaction.hash,
           balance: '0',
           expirationDuration: lock.expirationDuration,
           keyPrice: lock.keyPrice,
@@ -136,15 +131,10 @@ describe('v0', () => {
         ...lock,
         maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       })
-
-      await nock.resolveWhenAllNocksUsed()
     })
 
     it('should yield a promise of lock address', async () => {
       expect.assertions(1)
-
-      await nockBeforeEach()
-      setupSuccess()
 
       // For now we do not use this
       const sender = '0x0000000000000000000000000000000000000000'
@@ -173,7 +163,6 @@ describe('v0', () => {
         })
       )
       const lockAddress = await walletService.createLock(lock)
-      await nock.resolveWhenAllNocksUsed()
       expect(lockAddress).toEqual(lock.address)
     })
   })

@@ -3,6 +3,8 @@ import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
+import { generateKeyMetadataPayload } from './typedData/keyMetadata'
+import 'cross-fetch/polyfill'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -88,7 +90,8 @@ export default class WalletService extends UnlockService {
 
     if (!accounts.length) {
       // We do not have an account, can't do anything until we have one.
-      return (this.ready = false)
+      this.ready = false
+      return null
     }
 
     const address = accounts[0]
@@ -98,7 +101,7 @@ export default class WalletService extends UnlockService {
       this.emit('account.updated', { emailAddress: this.provider.emailAddress })
     }
     this.emit('ready')
-    return Promise.resolve(address)
+    return address
   }
 
   /**
@@ -112,6 +115,7 @@ export default class WalletService extends UnlockService {
    * @param {string} the Unlock protocol transaction type
    * @param {Function} a standard node callback that accepts the transaction hash
    */
+  // eslint-disable-next-line no-underscore-dangle
   async _handleMethodCall(methodCall, transactionType) {
     this.emit('transaction.pending', transactionType)
     const transaction = await methodCall
@@ -177,7 +181,19 @@ export default class WalletService extends UnlockService {
       callback(null, contract.deployTransaction.hash)
     }
     await contract.deployed()
+
     return contract.address
+  }
+
+  /**
+   *  Then we need to call initialize on it. This is critical because otherwise anyone can claim it and then self-destruct it, killing all locks which use the same contract after this.
+   * @param {*} params
+   * @param {*} callback
+   */
+  async initializeTemplate(params = {}, callback) {
+    if (!params.templateAddress) throw new Error('Missing templateAddress')
+    const version = await this.lockContractAbiVersion(params.templateAddress)
+    return version.initializeTemplate.bind(this)(params, callback)
   }
 
   /**
@@ -245,7 +261,7 @@ export default class WalletService extends UnlockService {
       callback(null, transaction.hash)
     }
 
-    return await this.provider.waitForTransaction(transaction.hash)
+    return this.provider.waitForTransaction(transaction.hash)
   }
 
   /**
@@ -289,18 +305,21 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async signData(account, data, callback) {
-    const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
-    const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
-    // see https://github.com/MetaMask/metamask-extension/blob/c4caba131776ff7397d3a4071d7cc84907ac9a43/app/scripts/metamask-controller.js#L997
-    const sendData = isMetaMask ? JSON.stringify(data) : data
-
     try {
-      const result = await this.provider.send(method, [account, sendData])
-
-      callback(null, Buffer.from(result).toString('base64'))
+      const result = await this.unformattedSignTypedData(account, data)
+      return callback(null, Buffer.from(result).toString('base64'))
     } catch (err) {
       return callback(err, null)
     }
+  }
+
+  async unformattedSignTypedData(account, data) {
+    const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
+    const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
+    const sendData = isMetaMask ? JSON.stringify(data) : data
+
+    const result = await this.provider.send(method, [account, sendData])
+    return result
   }
 
   async signMessage(data, method) {
@@ -312,7 +331,7 @@ export default class WalletService extends UnlockService {
     if (method === 'eth_sign') {
       ;[firstParam, secondParam] = [secondParam, firstParam] // swap the parameter order
     }
-    return await this.provider.send(method, [firstParam, secondParam])
+    return this.provider.send(method, [firstParam, secondParam])
   }
 
   async signDataPersonal(account, data, callback) {
@@ -324,7 +343,71 @@ export default class WalletService extends UnlockService {
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
-      return callback(error, null)
+      callback(error, null)
+    }
+  }
+
+  /**
+   * Sign and send a request to update metadata specific to a given key.
+   *
+   * @param {string} lockAddress - The address of the lock
+   * @param {string} keyId - The id of the key to set metadata on
+   * @param {Object.<string, string>} metadata - The metadata fields and values to set
+   * @param {string} locksmithHost - A url with no trailing slash
+   * @param {*} callback
+   */
+  async setKeyMetadata(lockAddress, keyId, metadata, locksmithHost, callback) {
+    const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    try {
+      const currentAddress = await this.getAccount()
+      const payload = generateKeyMetadataPayload(currentAddress, metadata)
+      const signature = await this.unformattedSignTypedData(
+        currentAddress,
+        payload
+      )
+
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.status !== 202) {
+        callback(
+          new Error(
+            `Received ${response.status} from locksmith: ${response.statusText}`
+          )
+        )
+        return
+      }
+      callback(null, true)
+    } catch (error) {
+      callback(error, null)
+    }
+  }
+
+  /**
+   * Sign and send a request to read metadata specific to a given key.
+   *
+   * @param {string} lockAddress - The address of the lock
+   * @param {string} keyId - The id of the key to set metadata on
+   * @param {string} locksmithHost - A url with no trailing slash
+   * @param {*} callback
+   */
+  async getKeyMetadata(lockAddress, keyId, locksmithHost, callback) {
+    const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        accept: 'json',
+      })
+      const json = await response.json()
+      callback(null, json)
+    } catch (error) {
+      callback(error, null)
     }
   }
 }
