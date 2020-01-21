@@ -1,25 +1,26 @@
 const helpers = require('hardlydifficult-ethereum-contracts')
+// const { send } = require('@openzeppelin/test-helpers')
 
-function fixSignature(signature) {
-  // in geth its always 27/28, in ganache its 0/1. Change to 27/28 to prevent
-  // signature malleability if version is 0/1
-  // see https://github.com/ethereum/go-ethereum/blob/v1.8.23/internal/ethapi/api.go#L465
-  let v = parseInt(signature.slice(130, 132), 16)
-  if (v < 27) {
-    v += 27
-  }
-  const vHex = v.toString(16)
-  return signature.slice(0, 130) + vHex
-}
+// function fixSignature(signature) {
+//   // in geth its always 27/28, in ganache its 0/1. Change to 27/28 to prevent
+//   // signature malleability if version is 0/1
+//   // see https://github.com/ethereum/go-ethereum/blob/v1.8.23/internal/ethapi/api.go#L465
+//   let v = parseInt(signature.slice(130, 132), 16)
+//   if (v < 27) {
+//     v += 27
+//   }
+//   const vHex = v.toString(16)
+//   return signature.slice(0, 130) + vHex
+// }
 
 // signs message in node (ganache auto-applies "Ethereum Signed Message" prefix)
-async function signMessage(data, signer) {
-  const signature = fixSignature(await web3.eth.signTypedData(data, signer))
-  const v = `0x${signature.slice(130, 132)}`
-  const r = signature.slice(0, 66)
-  const s = `0x${signature.slice(66, 130)}`
-  return { v, r, s }
-}
+// async function signMessage(data, signer) {
+//   const signature = fixSignature(await web3.eth.signTypedData(data, signer))
+//   const v = `0x${signature.slice(130, 132)}`
+//   const r = signature.slice(0, 66)
+//   const s = `0x${signature.slice(66, 130)}`
+//   return { v, r, s }
+// }
 
 contract('test-artifacts / dai', accounts => {
   const protocolOwner = accounts[0]
@@ -27,7 +28,7 @@ contract('test-artifacts / dai', accounts => {
   const approvedSpender = accounts[5]
   const permittedSpender = accounts[7]
   const randomSender = accounts[6]
-  const PERMIT_TYPEHASH = 0xea2aa0a1be11a07ed86d755c93467f4f82362b452371d1ba94d1715123511acb
+  // const PERMIT_TYPEHASH = 0xea2aa0a1be11a07ed86d755c93467f4f82362b452371d1ba94d1715123511acb
   let dai
   let typedData
   let chainId
@@ -97,24 +98,35 @@ contract('test-artifacts / dai', accounts => {
   })
 
   it('the holder can permit a spender', async () => {
-    // make the eth_signTypedData_v4 signing call to web3
-    const signature = web3.currentProvider.send(
-      {
-        method: 'eth_signTypedData_v4',
-        params: [holder, typedData],
-        from: holder,
-      },
-      function(err, result) {
-        if (err) {
-          return console.error(err)
+    return await new Promise((resolve, reject) => {
+      web3.currentProvider.send(
+        {
+          method: 'eth_signTypedData',
+          params: [dai.address, typedData],
+          from: dai.address,
+        },
+        function(err, result) {
+          if (err) {
+            return reject(err)
+          }
+          const signature = result.result.substring(2)
+          const r = `0x${signature.substring(0, 64)}`
+          const s = `0x${signature.substring(64, 128)}`
+          const v = parseInt(signature.substring(128, 130), 16)
+          // The signature is now comprised of r, s, and v.
+          return resolve(
+            Object.assign(message, {
+              signature: {
+                v,
+                r,
+                s,
+              },
+            })
+          )
         }
-        const signature = result.result.substring(2)
-        const r = `0x${signature.substring(0, 64)}`
-        const s = `0x${signature.substring(64, 128)}`
-        const v = parseInt(signature.substring(128, 130), 16)
-        // The signature is now comprised of r, s, and v.
-      }
-    )
+      )
+    })
+
     // const signature = await signMessage(typedData, holder)
     assert.equal(await dai.balanceOf.call(holder), 1000)
     assert.equal(await dai.allowance.call(holder, permittedSpender), 0)
@@ -125,9 +137,9 @@ contract('test-artifacts / dai', accounts => {
       11, // nonce
       0, // expiry
       true, // allowed
-      signature.v,
-      signature.r,
-      signature.s,
+      v,
+      r,
+      s,
       {
         from: randomSender,
       }

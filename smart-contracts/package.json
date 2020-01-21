@@ -63,6 +63,7 @@
     "web3-utils": "1.2.4"
   },
   "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.4",
     "truffle-flattener": "1.4.2",
     "truffle-security": "1.6.2"
   },
