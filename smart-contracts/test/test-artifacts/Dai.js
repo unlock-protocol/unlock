@@ -13,8 +13,8 @@ function fixSignature(signature) {
 }
 
 // signs message in node (ganache auto-applies "Ethereum Signed Message" prefix)
-async function signMessage(messageHex, signer) {
-  const signature = fixSignature(await web3.eth.sign(messageHex, signer))
+async function signMessage(data, signer) {
+  const signature = fixSignature(await web3.eth.signTypedData(data, signer))
   const v = `0x${signature.slice(130, 132)}`
   const r = signature.slice(0, 66)
   const s = `0x${signature.slice(66, 130)}`
@@ -29,29 +29,57 @@ contract('test-artifacts / dai', accounts => {
   const randomSender = accounts[6]
   const PERMIT_TYPEHASH = 0xea2aa0a1be11a07ed86d755c93467f4f82362b452371d1ba94d1715123511acb
   let dai
-  let messageHex
+  let typedData
+  let chainId
 
   before(async () => {
     dai = await helpers.tokens.dai.deploy(web3, protocolOwner)
     await dai.mint(holder, '1000', {
       from: protocolOwner,
     })
+    chainId = 1
+    // })
+    // chainId = await web3.eth.getChainId()
     // 0xedee806a8ab23b82c8758911d01ead1fd69d02fdb5ce118fa7317047917131c5
-    const DOMAIN_SEPARATOR = await dai.DOMAIN_SEPARATOR.call()
+    // const DOMAIN_SEPARATOR = await dai.DOMAIN_SEPARATOR.call()
     //
-    messageHex = web3.utils.keccak256(
-      '\x19\x01',
-      `${DOMAIN_SEPARATOR}`,
-      web3.utils.keccak256(
-        `${PERMIT_TYPEHASH}`,
-        holder,
-        permittedSpender,
-        11,
-        0,
-        true
-      )
-    )
-    console.log(`messageHex: ${messageHex}`)
+    // messageHex = web3.utils.keccak256(
+    //   '\x19\x01',
+    //   `${DOMAIN_SEPARATOR}`,
+    //   web3.utils.keccak256(
+    //     `${PERMIT_TYPEHASH}`,
+    //     holder,
+    //     permittedSpender,
+    //     11,
+    //     0,
+    //     true
+    //   )
+    // )
+
+    typedData = {
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+          { name: 'verifyingContract', type: 'address' },
+        ],
+        Permit: [
+          { name: 'holder', type: 'address' },
+          { name: 'spender', type: 'address' },
+          { name: 'nonce', type: 'uint256' },
+          { name: 'expiry', type: 'uint256' },
+          { name: 'allowed', type: 'bool' },
+        ],
+      },
+      primaryType: 'Permit',
+      domain: {
+        name: 'Dai Stablecoin',
+        version: '1',
+        chainId,
+        verifyingContract: dai.address,
+      },
+    }
   })
 
   it('the owner can mint tokens', async () => {
@@ -69,13 +97,28 @@ contract('test-artifacts / dai', accounts => {
   })
 
   it('the holder can permit a spender', async () => {
-    const signature = await signMessage(messageHex, holder)
+    // make the eth_signTypedData_v4 signing call to web3
+    const signature = web3.currentProvider.send(
+      {
+        method: 'eth_signTypedData_v4',
+        params: [holder, typedData],
+        from: holder,
+      },
+      function(err, result) {
+        if (err) {
+          return console.error(err)
+        }
+        const signature = result.result.substring(2)
+        const r = `0x${signature.substring(0, 64)}`
+        const s = `0x${signature.substring(64, 128)}`
+        const v = parseInt(signature.substring(128, 130), 16)
+        // The signature is now comprised of r, s, and v.
+      }
+    )
+    // const signature = await signMessage(typedData, holder)
     assert.equal(await dai.balanceOf.call(holder), 1000)
     assert.equal(await dai.allowance.call(holder, permittedSpender), 0)
-    /**
-     * permit(address holder, address spender, uint256 nonce, uint256 expiry,
-                    bool allowed, uint8 v, bytes32 r, bytes32 s)
-     */
+
     await dai.permit(
       holder,
       permittedSpender,
