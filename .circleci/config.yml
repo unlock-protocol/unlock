@@ -159,7 +159,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build newsletter Image
+          name: Build nudge Image
           command: scripts/build-image.sh nudge
 
   integration-tests:
