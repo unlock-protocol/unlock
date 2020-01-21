@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/cron": "1.7.1",
     "@types/isomorphic-fetch": "0.0.35",
+    "@types/request-promise-native": "^1.0.17",
     "@types/jest": "24.9.0",
     "@types/mocha": "5.2.7",
     "@types/sequelize": "4.28.8",
@@ -35,6 +36,5 @@
     "typescript": "3.7.5"
   },
   "devDependencies": {
-    "@types/request-promise-native": "1.0.17"
   }
 }
