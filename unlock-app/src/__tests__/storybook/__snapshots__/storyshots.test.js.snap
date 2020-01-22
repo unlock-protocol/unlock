@@ -66811,3 +66811,829 @@ Object {
   "unmount": [Function],
 }
 `;
+
+exports[`Storyshots Verification with a valid key 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  width: 100%;
+}
+
+.c1 {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  background-color: var(--green);
+  height: 290px;
+  max-width: 290px;
+  border-radius: 4px;
+  color: var(--white);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+
+.c1 svg {
+  width: 128px;
+  fill: var(--green);
+  margin: 0 auto;
+}
+
+.c3 {
+  margin: 0px;
+}
+
+.c4 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.c2 {
+  height: 128px;
+  width: 128px;
+  border-radius: 100px;
+  margin-top: 30px;
+  background-color: var(--white);
+}
+
+.c5 {
+  max-width: 290px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+}
+
+.c6 {
+  font-family: IBM Plex Sans;
+  font-size: 10px;
+  line-height: 13px;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  color: var(--grey);
+}
+
+.c7 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--darkgrey);
+  margin-bottom: 15px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+          color="--green"
+        >
+          <div
+            class="c2"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Valid
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <h1
+            class="c3"
+          >
+            Valid Key
+          </h1>
+          <h2
+            class="c4"
+          >
+            Until 
+            Jun 24th, 2020
+          </h2>
+        </div>
+        <div
+          class="c5"
+        >
+          <div
+            class="c6"
+          >
+            Lock Name
+          </div>
+          <div
+            class="c7"
+          >
+            Week in Ethereum News
+          </div>
+          <div
+            class="c6"
+          >
+            Token Id
+          </div>
+          <div
+            class="c7"
+          >
+            53
+          </div>
+          <div
+            class="c6"
+          >
+            Owner Address
+          </div>
+          <div
+            class="c7"
+          >
+            0x33ab07dF7f09e793dDD1E9A25b079989a557119A
+          </div>
+          <div
+            class="c6"
+          >
+            Time Since signed
+          </div>
+          <div
+            class="c7"
+          >
+            20 minutes ago
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-LzLsA kTcJXk"
+    >
+      <div
+        class="sc-LzLsB hZytiy"
+        color="--green"
+      >
+        <div
+          class="sc-LzLsE fLbWLP"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Valid
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <h1
+          class="sc-LzLsC giQcQi"
+        >
+          Valid Key
+        </h1>
+        <h2
+          class="sc-LzLsD gJuXia"
+        >
+          Until 
+          Jun 24th, 2020
+        </h2>
+      </div>
+      <div
+        class="sc-LzLsF jgvRfW"
+      >
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Lock Name
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          Week in Ethereum News
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Token Id
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          53
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Owner Address
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          0x33ab07dF7f09e793dDD1E9A25b079989a557119A
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Time Since signed
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          20 minutes ago
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Verification with a valid key viewed by the lock owner (with metadata!) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  width: 100%;
+}
+
+.c1 {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  background-color: var(--green);
+  height: 290px;
+  max-width: 290px;
+  border-radius: 4px;
+  color: var(--white);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+
+.c1 svg {
+  width: 128px;
+  fill: var(--green);
+  margin: 0 auto;
+}
+
+.c3 {
+  margin: 0px;
+}
+
+.c4 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.c2 {
+  height: 128px;
+  width: 128px;
+  border-radius: 100px;
+  margin-top: 30px;
+  background-color: var(--white);
+}
+
+.c5 {
+  max-width: 290px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+}
+
+.c6 {
+  font-family: IBM Plex Sans;
+  font-size: 10px;
+  line-height: 13px;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+  color: var(--grey);
+}
+
+.c7 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--darkgrey);
+  margin-bottom: 15px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+          color="--green"
+        >
+          <div
+            class="c2"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Valid
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <h1
+            class="c3"
+          >
+            Valid Key
+          </h1>
+          <h2
+            class="c4"
+          >
+            Until 
+            Jun 24th, 2020
+          </h2>
+        </div>
+        <div
+          class="c5"
+        >
+          <div
+            class="c6"
+          >
+            Lock Name
+          </div>
+          <div
+            class="c7"
+          >
+            Week in Ethereum News
+          </div>
+          <div
+            class="c6"
+          >
+            Token Id
+          </div>
+          <div
+            class="c7"
+          >
+            53
+          </div>
+          <div
+            class="c6"
+          >
+            Owner Address
+          </div>
+          <div
+            class="c7"
+          >
+            0x33ab07dF7f09e793dDD1E9A25b079989a557119A
+          </div>
+          <div
+            class="c6"
+          >
+            Time Since signed
+          </div>
+          <div
+            class="c7"
+          >
+            20 minutes ago
+          </div>
+          <div
+            class="c6"
+          >
+            name
+          </div>
+          <div
+            class="c7"
+          >
+            Julien
+          </div>
+          <div
+            class="c6"
+          >
+            email
+          </div>
+          <div
+            class="c7"
+          >
+            julien@unlock-protocol.com
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-LzLsA kTcJXk"
+    >
+      <div
+        class="sc-LzLsB hZytiy"
+        color="--green"
+      >
+        <div
+          class="sc-LzLsE fLbWLP"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Valid
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <h1
+          class="sc-LzLsC giQcQi"
+        >
+          Valid Key
+        </h1>
+        <h2
+          class="sc-LzLsD gJuXia"
+        >
+          Until 
+          Jun 24th, 2020
+        </h2>
+      </div>
+      <div
+        class="sc-LzLsF jgvRfW"
+      >
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Lock Name
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          Week in Ethereum News
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Token Id
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          53
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Owner Address
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          0x33ab07dF7f09e793dDD1E9A25b079989a557119A
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          Time Since signed
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          20 minutes ago
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          name
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          Julien
+        </div>
+        <div
+          class="sc-LzLsG bnBNOR"
+        >
+          email
+        </div>
+        <div
+          class="sc-LzLte Gna-dJ"
+        >
+          julien@unlock-protocol.com
+        </div>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Verification with an invalid key 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  width: 100%;
+}
+
+.c1 {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  background-color: var(--red);
+  height: 290px;
+  max-width: 290px;
+  border-radius: 4px;
+  color: var(--white);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+
+.c1 svg {
+  width: 128px;
+  fill: var(--red);
+  margin: 0 auto;
+}
+
+.c3 {
+  margin: 0px;
+}
+
+.c2 {
+  height: 128px;
+  width: 128px;
+  border-radius: 100px;
+  margin-top: 30px;
+  background-color: var(--white);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+          color="--red"
+        >
+          <div
+            class="c2"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Invalid
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <h1
+            class="c3"
+          >
+            Key Invalid
+          </h1>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-LzLsA kTcJXk"
+    >
+      <div
+        class="sc-LzLsB jhZzzy"
+        color="--red"
+      >
+        <div
+          class="sc-LzLsE fLbWLP"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Invalid
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <h1
+          class="sc-LzLsC giQcQi"
+        >
+          Key Invalid
+        </h1>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
