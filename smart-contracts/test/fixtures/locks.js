@@ -26,4 +26,7 @@ module.exports = {
   SHORT: Object.assign({}, publicLock, {
     expirationDuration: new BigNumber(5), // 5 seconds
   }),
+  ERC20: Object.assign(publicLock, {
+    isErc20: true, // indicates the test should deploy a test token
+  }),
 }

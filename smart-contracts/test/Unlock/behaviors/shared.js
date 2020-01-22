@@ -1,9 +1,9 @@
 const initialization = require('./initialization')
 const createLock = require('./createLock')
 
-exports.shouldBehaveLikeV1 = function(accounts, unlockOwner) {
+exports.shouldBehaveLikeV1 = options => {
   describe('Unlock / behaviors / shared', () => {
-    initialization.shouldHaveInitialized(unlockOwner)
-    createLock.shouldCreateLock(accounts)
+    initialization.shouldHaveInitialized(options)
+    createLock.shouldCreateLock(options)
   })
 }
