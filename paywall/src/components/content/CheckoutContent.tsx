@@ -10,7 +10,7 @@ import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
-import { Key, Locks, NetworkNames } from '../../unlockTypes'
+import { Key, Locks, NetworkNames, KeyResult } from '../../unlockTypes'
 
 import { PostMessages } from '../../messageTypes'
 
@@ -19,6 +19,8 @@ import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
+import { getKeyStatus, getHighestStatus } from '../../utils/keys'
+import { getCallToAction } from '../../utils/callToAction'
 
 /**
  * This is the data handler for the Checkout component
@@ -26,14 +28,18 @@ import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
 export default function CheckoutContent() {
   const window = useWindow()
   // the network this checkout expects to be on
-  const { requiredNetworkId } = useConfig()
+  const { requiredNetworkId, requiredConfirmations } = useConfig()
   // the paywall configuration passed as window.unlockProtocolConfig in the main window
   const paywallConfig = usePaywallConfig()
   // the blockchain data returned from the data iframe
-  const { account, network, locks, checkWallet } = useBlockchainData(
-    window,
-    paywallConfig
-  )
+  const {
+    account,
+    network,
+    locks,
+    checkWallet,
+    keys,
+    transactions,
+  } = useBlockchainData(window, paywallConfig)
 
   const [showWalletCheckOverlay, setShowWalletCheckOverlay] = useState(false)
   const [walletOverlayDismissed, setWalletOverlayDismissed] = useState(false)
@@ -193,7 +199,6 @@ export default function CheckoutContent() {
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <CheckoutConfirmingModal
-          config={paywallConfig}
           account={account}
           hideCheckout={hideConfirmingModal}
           confirmingLock={locks[purchasingLocks[0]]}
@@ -217,9 +222,21 @@ export default function CheckoutContent() {
       </>
     )
   }
+
+  const statusGetter = (key: KeyResult) =>
+    getKeyStatus(key, transactions, requiredConfirmations)
+  const statuses = Object.values(keys).map((key: any) => statusGetter(key))
+  const highestStatus = getHighestStatus(statuses)
+  const icon = paywallConfig.icon
+  const callToAction = getCallToAction(
+    paywallConfig.callToAction,
+    highestStatus
+  )
   const Wrapper = () => (
     <CheckoutWrapper
+      icon={icon}
       hideCheckout={hideCheckout}
+      callToAction={callToAction}
       bgColor={bgColor}
       allowClose={allowClosingCheckout}
       onClick={e => {

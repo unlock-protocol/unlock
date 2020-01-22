@@ -1,22 +1,19 @@
 import styled from 'styled-components'
 import React from 'react'
-import { CheckoutFooter } from './CheckoutStyles'
 
-import { PaywallConfig, Lock, Account } from '../../unlockTypes'
+import { Lock, Account } from '../../unlockTypes'
 import Media from '../../theme/media'
 import CheckoutLock from './CheckoutLock'
 import ActionButton from '../interface/buttons/ActionButton'
 import { LockHeader, LockWrapper } from '../lock/LockStyles'
 
 interface Props {
-  config: PaywallConfig
   confirmingLock: Lock
   account: Account | null
   hideCheckout: (...args: any[]) => any
 }
 
 export const CheckoutConfirmingModal = ({
-  config,
   confirmingLock,
   account,
   hideCheckout,
@@ -27,10 +24,6 @@ export const CheckoutConfirmingModal = ({
   delete noTitleLock.name
   return (
     <>
-      <Header>
-        <Title>{config.icon && <Logo src={config.icon} />}</Title>
-        <h2>Thanks for your purchase!</h2>
-      </Header>
       <Content>
         <CheckoutLock
           lock={noTitleLock}
@@ -49,7 +42,6 @@ export const CheckoutConfirmingModal = ({
           <Continue onClick={hideCheckout}>Continue</Continue>
         </div>
       </Content>
-      <CheckoutFooter />
     </>
   )
 }
@@ -68,35 +60,6 @@ const Status = styled.p`
   ${Media.phone`
   display: none;
 `}
-`
-
-const Header = styled.header`
-  display: grid;
-
-  h2 {
-    font-size: 40px;
-    font-family: IBM Plex Sans;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0 0 16px;
-  }
-
-  ${Media.phone`
-  h2 {
-    display: none;
-  }
-  `}
-`
-
-const Title = styled.h1`
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-  margin-bottom: 24px;
-`
-
-const Logo = styled.img`
-  height: 30px;
 `
 
 const Content = styled.ul`

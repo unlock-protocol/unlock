@@ -1,14 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
-import { CheckoutFooter } from './CheckoutStyles'
 
-import {
-  Locks,
-  PaywallConfig,
-  Account,
-  Key,
-  KeyStatus,
-} from '../../unlockTypes' // eslint-disable-line no-unused-vars
+import { Locks, PaywallConfig, Account, Key } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
 import LoadingLock from '../lock/LoadingLock'
 
@@ -42,37 +35,6 @@ export const Checkout = ({
     }
   })
 
-  // Defaults to config.callToAction.default
-  let callToAction = config.callToAction.default
-
-  if (
-    lockKeys.find(
-      key =>
-        key.status === KeyStatus.VALID || key.status === KeyStatus.CONFIRMING
-    )
-  ) {
-    // If the user has at least one valid key, we should show `confirmed` (default to `default`)
-    callToAction = config.callToAction.confirmed || config.callToAction.default
-  } else if (
-    lockKeys.find(
-      key =>
-        key.status === KeyStatus.PENDING || key.status === KeyStatus.SUBMITTED
-    )
-  ) {
-    // Else if the user has any 'pending' key, we should should `pending` (default to `default`)
-    callToAction = config.callToAction.pending || config.callToAction.default
-  } else if (lockKeys.find(key => key.status === KeyStatus.EXPIRED)) {
-    // Else if the user has any 'expired' key, we should show `expired` (default to `default`)
-    callToAction = config.callToAction.expired || config.callToAction.default
-  }
-
-  const callToActionParagraphs = callToAction
-    .split('\n')
-    .map((paragraph, index) => {
-      // eslint-disable-next-line react/no-array-index-key
-      return <p key={index}>{paragraph}</p>
-    })
-
   // the key is lower-cased. The lock address is checksummed, and so case sensitive. This change ensures we map locks to their configuration names
   const checkoutLocks = lockAddresses.map((lockAddress: string) => {
     const lock = locks[lockAddress]
@@ -94,44 +56,17 @@ export const Checkout = ({
     }
   })
   return (
-    <>
-      <Header>
-        <Title>{config.icon && <Logo src={config.icon} />}</Title>
-        {callToActionParagraphs}
-      </Header>
-      <CheckoutLocks>
-        {lockAddresses.length < Object.keys(config.locks).length && (
-          <LoadingLock />
-        )}
-        {lockAddresses.length === Object.keys(config.locks).length &&
-          checkoutLocks}
-      </CheckoutLocks>
-      <CheckoutFooter />
-    </>
+    <CheckoutLocks>
+      {lockAddresses.length < Object.keys(config.locks).length && (
+        <LoadingLock />
+      )}
+      {lockAddresses.length === Object.keys(config.locks).length &&
+        checkoutLocks}
+    </CheckoutLocks>
   )
 }
 
 export default Checkout
-
-const Header = styled.header`
-  display: grid;
-  margin-bottom: 20px;
-  p {
-    font-size: 20px;
-    margin: 5px;
-  }
-`
-
-const Title = styled.h1`
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-`
-
-const Logo = styled.img`
-  max-height: 100px;
-  max-width: 200px;
-`
 
 const CheckoutLocks = styled.ul`
   display: grid;
