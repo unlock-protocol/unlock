@@ -98,9 +98,6 @@ export const MAX_UINT =
 
 // the number of ms between checking for account changes in walletService
 export const ACCOUNT_POLLING_INTERVAL = 2000
-
-export const CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL = 10000
-
 export const USER_ACCOUNT_ADDRESS_STORAGE_ID = 'managedUserAccountAddress'
 
 // This represents an account that will never hold any keys. It's a bit of an
