@@ -1,16 +1,13 @@
 import React from 'react'
-import sigUtil from 'eth-sig-util'
 import { useQuery } from '@apollo/react-hooks'
-import { ApolloError } from 'apollo-boost'
+import { isSignatureValidForAddress } from '../../utils/signatures'
 import { DefaultError } from '../creator/FatalError'
-import {
-  durationsAsTextFromSeconds,
-  expirationAsDate,
-} from '../../utils/durations'
 import { OwnedKey } from './keychain/KeychainTypes'
 import keyHolderQuery from '../../queries/keyHolder'
 import 'cross-fetch/polyfill'
-import useGetMetadataFor from '../../hooks/useGetMetadataFor'
+import Loading from './Loading'
+import { ValidKey, InvalidKey } from './verification/Key'
+import { Account as AccountType } from '../../unlockTypes'
 
 interface VerificationData {
   accountAddress: string
@@ -19,12 +16,17 @@ interface VerificationData {
 }
 
 interface Props {
+  account: AccountType
   data?: VerificationData
   sig?: string
   hexData?: string
 }
 
-export const VerificationStatus = ({ data, sig, hexData }: Props) => {
+/**
+ * React components which given data, signature will verify the validity of a key
+ * and display the right status
+ */
+export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
   if (!data || !sig || !hexData) {
     return (
       <DefaultError
@@ -40,126 +42,46 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   const { accountAddress, lockAddress, timestamp } = data
 
-  // We pass down the { loading, error } results from this hook
-  // to `OwnsKey`, which uses them to render loading and error states.
   // TODO: craft a better query to let us directly ask about the single
   // lock under consideration. This will remove the need to iterate over
   // all the user's keys to determine if they own a key to this lock.
-  const queryResults = useQuery(keyHolderQuery(), {
+  const { loading, error, data: keys } = useQuery(keyHolderQuery(), {
     variables: { address: accountAddress },
   })
 
-  let matchingKey: OwnedKey | undefined
+  if (loading) {
+    return <Loading />
+  }
 
-  if (queryResults.data) {
-    matchingKey = queryResults.data.keyHolders[0].keys.find((key: OwnedKey) => {
+  if (error) {
+    // We could not load the user keys...
+    return <p>Key could not be loaded... Please try again</p>
+  }
+
+  // If the signature is not valid
+  if (!isSignatureValidForAddress(sig, hexData, accountAddress)) {
+    return <InvalidKey />
+  }
+
+  let matchingKey: OwnedKey | undefined
+  if (keys && keys.keyHolders) {
+    matchingKey = keys.keyHolders[0].keys.find((key: OwnedKey) => {
       return key.lock.address === lockAddress
     })
   }
 
-  const secondsElapsedFromSignature = Math.floor(
-    (Date.now() - timestamp) / 1000
-  )
-
-  const identityIsValid =
-    sigUtil.recoverPersonalSignature({
-      data: hexData,
-      sig,
-    }) === accountAddress.toLowerCase()
-
-  return (
-    <div>
-      {matchingKey && (
-        <div>
-          <h1>{matchingKey.lock.name}</h1>
-          <p>Token ID: {matchingKey.keyId}</p>
-        </div>
-      )}
-      <Identity valid={identityIsValid} />
-
-      <OwnsKey
-        accountAddress={accountAddress}
-        loading={queryResults.loading}
-        error={queryResults.error}
-        matchingKey={matchingKey}
-      />
-
-      <p>
-        Signed {durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.
-      </p>
-    </div>
-  )
-}
-
-export const Identity = ({ valid }: { valid: boolean }) => (
-  <p>Identity is {valid ? 'valid' : 'INVALID'}.</p>
-)
-
-/**
- * Shows public of protected attributes
- * @param visibility
- * @param attributes
- */
-const metadataAttributes = (visibility: string, attributes: any) => {
-  if (!attributes) {
-    return
-  }
-  return (
-    <>
-      <h3>{visibility}</h3>
-      <ul>
-        {Object.keys(attributes).map(name => {
-          return (
-            <li key={name}>
-              {name}: {attributes[name]}
-            </li>
-          )
-        })}
-      </ul>
-    </>
-  )
-}
-
-interface OwnsKeyProps {
-  loading: boolean
-  error: ApolloError | undefined
-  matchingKey?: OwnedKey
-  accountAddress: string
-}
-export const OwnsKey = ({
-  loading,
-  error,
-  matchingKey,
-  accountAddress,
-}: OwnsKeyProps) => {
-  if (loading) {
-    return <p>Checking if user has a valid key...</p>
-  }
-  if (error) {
-    return <p>Error: {error.message}</p>
-  }
-
+  // The user does not have a key!
   if (!matchingKey) {
-    return <p>This user does not have a key to the lock.</p>
-  }
-
-  const metadata = useGetMetadataFor(matchingKey.lock.address, accountAddress)
-  const expiresIn = expirationAsDate(parseInt(matchingKey.expiration))
-
-  let validUntil = 'expired'
-  if (expiresIn !== 'Expired') {
-    validUntil = `valid until ${expiresIn}`
+    return <InvalidKey />
   }
 
   return (
-    <div>
-      <p>
-        The user {accountAddress} owns a key, which is {validUntil}.
-      </p>
-      {metadataAttributes('Public', metadata.public)}
-      {metadataAttributes('Protected', metadata.protected)}
-    </div>
+    <ValidKey
+      viewer={account.address}
+      owner={accountAddress}
+      signatureTimestamp={timestamp}
+      ownedKey={matchingKey}
+    />
   )
 }
-
 export default VerificationStatus
