@@ -6,7 +6,5 @@ const approvedLocks: string[] = []
 const runInterval = '*/5 * * * *'
 
 new CronJob(runInterval, () => {
-  console.log(config)
-
   new Processor(config.graphQLEndpoint, approvedLocks).processKeys()
 }).start()
