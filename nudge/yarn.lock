@@ -794,6 +794,13 @@ bip66@^1.1.5:
   dependencies:
     safe-buffer "^5.0.1"
 
+blake2@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/blake2/-/blake2-4.0.0.tgz#32ae4c3568ef5ee4d74c50b99d774abf8fff4f60"
+  integrity sha512-PIOc6RXAZYBYcdpyMzI6/SCU3BH8EbmA9vr0BAVyQv48CQTXDN6viHOTM+8KQue2IPsyHNpIR3UDisz8rZDPTA==
+  dependencies:
+    nan "^2.14.0"
+
 bluebird@^3.5.0, bluebird@^3.5.3:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
