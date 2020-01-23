@@ -1,12 +1,14 @@
 import { Email } from './email'
 import { EmailDispatch } from './models'
 
+const blake2 = require('blake2')
+
 export async function check(key: any): Promise<boolean> {
   let dispatchedEmail = await EmailDispatch.findOne({
     where: {
       lockAddress: key.lockAddress,
       keyId: key.keyId,
-      emailAddress: key.emailAddress,
+      emailAddress: hashedEmailAddress(key.emailAddress),
     },
   })
   return dispatchedEmail !== null
@@ -14,7 +16,12 @@ export async function check(key: any): Promise<boolean> {
 
 export async function record(key: Key): Promise<boolean> {
   try {
-    await EmailDispatch.create(key)
+    let keyWithHashedEmailAddress = key
+    keyWithHashedEmailAddress.emailAddress = hashedEmailAddress(
+      key.emailAddress as string
+    )
+
+    await EmailDispatch.create(keyWithHashedEmailAddress)
     return true
   } catch (e) {
     return false
@@ -22,5 +29,11 @@ export async function record(key: Key): Promise<boolean> {
 }
 
 export function dispatch(key: Key): Promise<boolean> {
-    return Email.dispatch(key)
+  return Email.dispatch(key)
+}
+
+function hashedEmailAddress(email: string): string {
+  var h = blake2.createHash('blake2b')
+  h.update(Buffer.from(email.toLowerCase()))
+  return h.digest('hex')
 }
