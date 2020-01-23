@@ -1696,27 +1696,6 @@ Object {
   fill: white;
 }
 
-.c14 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c14 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c15 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
-}
-
 .c8 {
   display: grid;
   font-weight: 300;
@@ -1814,27 +1793,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -1847,6 +1805,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c14 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c14 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c15 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -1868,6 +1852,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -1907,24 +1902,26 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Enjoy Forbes Online without any ads for as little as $2 a week. 
-          </p>
-          <p>
-            Pay with Ethereum in just two clicks.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Enjoy Forbes Online without any ads for as little as $2 a week. 
+        </p>
+        <p
+          class="c5"
+        >
+          Pay with Ethereum in just two clicks.
+        </p>
         <ul
           class="c6"
         >
@@ -1995,10 +1992,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -2014,26 +2011,28 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Enjoy Forbes Online without any ads for as little as $2 a week. 
-        </p>
-        <p>
-          Pay with Ethereum in just two clicks.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Enjoy Forbes Online without any ads for as little as $2 a week. 
+      </p>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Pay with Ethereum in just two clicks.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 fGmKX lock"
@@ -2072,7 +2071,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -2084,7 +2083,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -2179,27 +2178,6 @@ Object {
   fill: white;
 }
 
-.c14 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c14 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c15 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
-}
-
 .c8 {
   display: grid;
   font-weight: 300;
@@ -2297,27 +2275,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -2330,6 +2287,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c14 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c14 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c15 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -2351,6 +2334,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -2390,24 +2384,26 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Enjoy Forbes Online without any ads for as little as $2 a week. 
-          </p>
-          <p>
-            Pay with Ethereum in just two clicks.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Enjoy Forbes Online without any ads for as little as $2 a week. 
+        </p>
+        <p
+          class="c5"
+        >
+          Pay with Ethereum in just two clicks.
+        </p>
         <ul
           class="c6"
         >
@@ -2548,10 +2544,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -2567,26 +2563,28 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Enjoy Forbes Online without any ads for as little as $2 a week. 
-        </p>
-        <p>
-          Pay with Ethereum in just two clicks.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Enjoy Forbes Online without any ads for as little as $2 a week. 
+      </p>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Pay with Ethereum in just two clicks.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 fGmKX lock"
@@ -2695,7 +2693,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -2707,7 +2705,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -2800,27 +2798,6 @@ Object {
 
 .c1:hover > svg {
   fill: white;
-}
-
-.c20 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c20 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c21 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c7 {
@@ -3027,27 +3004,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -3060,6 +3016,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c20 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c20 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c21 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -3081,6 +3063,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -3120,21 +3113,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business! Please tell your friends about us.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business! Please tell your friends about us.
+        </p>
         <ul
           class="c6"
         >
@@ -3279,10 +3272,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -3298,23 +3291,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business! Please tell your friends about us.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business! Please tell your friends about us.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -3427,7 +3420,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -3439,7 +3432,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -3532,27 +3525,6 @@ Object {
 
 .c1:hover > svg {
   fill: white;
-}
-
-.c20 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c20 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c21 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c7 {
@@ -3759,27 +3731,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -3792,6 +3743,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c20 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c20 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c21 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -3813,6 +3790,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -3852,21 +3840,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
+        </p>
         <ul
           class="c6"
         >
@@ -4007,10 +3995,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -4026,23 +4014,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -4151,7 +4139,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -4163,7 +4151,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -4256,27 +4244,6 @@ Object {
 
 .c1:hover > svg {
   fill: white;
-}
-
-.c20 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c20 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c21 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c14 {
@@ -4483,27 +4450,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -4516,6 +4462,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c20 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c20 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c21 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -4537,6 +4509,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -4576,21 +4559,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
+        </p>
         <ul
           class="c6"
         >
@@ -4731,10 +4714,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -4750,23 +4733,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business. Your transaction is being processed. You should get your NFT as soon as it is confirmed, but you can access the content right now!
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 fGmKX lock"
@@ -4875,7 +4858,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -4887,7 +4870,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -5006,27 +4989,6 @@ Object {
 
 .c14:hover > svg {
   fill: white;
-}
-
-.c28 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c28 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c29 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c7 {
@@ -5284,27 +5246,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -5317,6 +5258,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c28 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c28 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c29 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -5338,6 +5305,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -5399,21 +5377,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business! Please tell your friends about us.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business! Please tell your friends about us.
+        </p>
         <ul
           class="c6"
         >
@@ -5621,10 +5599,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -5640,23 +5618,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business! Please tell your friends about us.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business! Please tell your friends about us.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -5832,7 +5810,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -5844,7 +5822,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -5963,27 +5941,6 @@ Object {
 
 .c14:hover > svg {
   fill: white;
-}
-
-.c28 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c28 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c29 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c7 {
@@ -6241,27 +6198,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -6274,6 +6210,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c28 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c28 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c29 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -6295,6 +6257,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -6356,21 +6329,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business! Please tell your friends about us.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business! Please tell your friends about us.
+        </p>
         <ul
           class="c6"
         >
@@ -6545,10 +6518,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -6564,23 +6537,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business! Please tell your friends about us.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business! Please tell your friends about us.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -6723,7 +6696,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -6735,7 +6708,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -6854,27 +6827,6 @@ Object {
 
 .c14:hover > svg {
   fill: white;
-}
-
-.c28 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c28 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c29 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c7 {
@@ -7132,27 +7084,6 @@ Object {
   font-weight: bold;
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -7165,6 +7096,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c28 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c28 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c29 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -7186,6 +7143,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -7247,21 +7215,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business! Please tell your friends about us.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business! Please tell your friends about us.
+        </p>
         <ul
           class="c6"
         >
@@ -7467,10 +7435,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -7486,23 +7454,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business! Please tell your friends about us.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business! Please tell your friends about us.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -7676,7 +7644,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -7688,7 +7656,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -7783,27 +7751,6 @@ Object {
   fill: white;
 }
 
-.c11 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c11 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c12 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
-}
-
 .c7 {
   display: grid;
   justify-items: stretch;
@@ -7884,27 +7831,6 @@ Object {
   background-color: var(--lightgrey);
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -7917,6 +7843,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c11 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c11 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c12 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -7938,6 +7890,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -7977,21 +7940,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Thanks a lot for your business! Please tell your friends about us.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Thanks a lot for your business! Please tell your friends about us.
+        </p>
         <ul
           class="c6"
         >
@@ -8044,10 +8007,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -8063,23 +8026,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Thanks a lot for your business! Please tell your friends about us.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Thanks a lot for your business! Please tell your friends about us.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -8100,7 +8063,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -8112,7 +8075,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -8207,27 +8170,6 @@ Object {
   fill: white;
 }
 
-.c11 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c11 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c12 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
-}
-
 .c7 {
   display: grid;
   justify-items: stretch;
@@ -8308,27 +8250,6 @@ Object {
   background-color: var(--lightgrey);
 }
 
-.c3 {
-  display: grid;
-  margin-bottom: 20px;
-}
-
-.c3 p {
-  font-size: 20px;
-  margin: 5px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
-.c5 {
-  max-height: 100px;
-  max-width: 200px;
-}
-
 .c6 {
   display: grid;
   list-style: none;
@@ -8341,6 +8262,32 @@ Object {
   justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
   grid-gap: 20px;
+}
+
+.c5 {
+  font-size: 20px;
+  margin: 5px;
+}
+
+.c11 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c11 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c12 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
 }
 
 .c2 {
@@ -8362,6 +8309,17 @@ Object {
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
 }
 
 @media only screen and (min-width:736px) {
@@ -8401,24 +8359,26 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            Enjoy Forbes Online without any ads for as little as $2 a week. 
-          </p>
-          <p>
-            Pay with Ethereum in just two clicks.
-          </p>
         </header>
+        <p
+          class="c5"
+        >
+          Enjoy Forbes Online without any ads for as little as $2 a week. 
+        </p>
+        <p
+          class="c5"
+        >
+          Pay with Ethereum in just two clicks.
+        </p>
         <ul
           class="c6"
         >
@@ -8471,10 +8431,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -8490,26 +8450,28 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-AykKI gTWBHk"
-      >
+      <header>
         <h1
-          class="sc-AykKJ pVzNy"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-AykKK jINdNc"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <p>
-          Enjoy Forbes Online without any ads for as little as $2 a week. 
-        </p>
-        <p>
-          Pay with Ethereum in just two clicks.
-        </p>
       </header>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Enjoy Forbes Online without any ads for as little as $2 a week. 
+      </p>
+      <p
+        class="sc-AykKH dXQUvj"
+      >
+        Pay with Ethereum in just two clicks.
+      </p>
       <ul
-        class="sc-fzXfLO cqjEdj"
+        class="sc-AykKG eSFzUB"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -8530,7 +8492,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -8542,7 +8504,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -8637,13 +8599,13 @@ Object {
   fill: white;
 }
 
-.c12 {
+.c11 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c12 div {
+.c11 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -8651,7 +8613,7 @@ Object {
   height: 20px;
 }
 
-.c13 {
+.c12 {
   fill: var(--brand);
   width: 48px;
   margin-bottom: -1px;
@@ -8679,7 +8641,18 @@ Object {
   position: relative;
 }
 
-.c11 {
+.c4 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c5 {
+  max-height: 47px;
+  max-width: 200px;
+}
+
+.c10 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -8693,7 +8666,7 @@ Object {
   color: var(--link);
 }
 
-.c10 {
+.c9 {
   max-width: 130px;
   padding: 5px;
   border: 1px solid transparent;
@@ -8701,16 +8674,16 @@ Object {
   border-radius: 4px;
 }
 
-.c10:hover {
+.c9:hover {
   border: 1px solid var(--link);
 }
 
-.c10 > svg {
+.c9 > svg {
   width: 80px;
   margin: 20px;
 }
 
-.c9 {
+.c8 {
   font-size: 1em;
   font-family: IBM Plex Sans;
   -webkit-letter-spacing: 1px;
@@ -8721,31 +8694,13 @@ Object {
   padding-bottom: 8px;
 }
 
-.c8 {
+.c7 {
   display: grid;
   text-align: center;
   justify-items: center;
 }
 
-.c4 {
-  display: grid;
-}
-
-.c4 p {
-  font-size: 20px;
-}
-
-.c5 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
 .c6 {
-  height: 30px;
-}
-
-.c7 {
   display: grid;
   list-style: none;
   padding: 0px;
@@ -8760,8 +8715,8 @@ Object {
   grid-gap: 10px;
 }
 
-.c7 a,
-.c7 a:visited {
+.c6 a,
+.c6 a:visited {
   color: var(--mediumgrey);
 }
 
@@ -8808,11 +8763,11 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     padding-top: 24px;
   }
 
-  .c8 div {
+  .c7 div {
     padding-bottom: 0;
   }
 }
@@ -8845,39 +8800,37 @@ Object {
             </svg>
             
           </a>
-          <header
-            class="c4"
-          >
+          <header>
             <h1
-              class="c5"
+              class="c4"
             >
               <img
-                class="c6"
+                class="c5"
                 src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
               />
             </h1>
-            <p>
-              To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
-            </p>
           </header>
+          <p>
+            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
+          </p>
           <ul
-            class="c7"
+            class="c6"
           >
             <a
-              class="c8"
+              class="c7"
               href="https://metamask.io/"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Desktop
                 <br />
                 Chrome & Firefox
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -8969,27 +8922,27 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Metamask
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://wallet.coinbase.com/"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -9024,27 +8977,27 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Coinbase Wallet
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://www.opera.com/crypto"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -10361,27 +10314,27 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Opera
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://trustwallet.com"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   viewBox="0 0 120 120"
@@ -10394,7 +10347,7 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Trust Wallet
                 </span>
@@ -10402,7 +10355,7 @@ Object {
             </a>
           </ul>
           <footer
-            class="c12"
+            class="c11"
           >
             <span>
               Powered by
@@ -10414,7 +10367,7 @@ Object {
             >
               <svg
                 alt="Unlock"
-                class="sth0f3-1 c13"
+                class="sth0f3-1 c12"
                 viewBox="0 0 1200 256"
               >
                 <path
@@ -10433,13 +10386,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-fzXfMD fxyJBF"
+      class="sc-fzXfMy eMQMoO"
     >
       <section
-        class="sc-fzXfLQ Geif"
+        class="sc-fzXfLO bbulcl"
       >
         <a
-          class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+          class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -10455,39 +10408,37 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="sc-fzXfMz imCkhv"
-        >
+        <header>
           <h1
-            class="sc-fzXfMA ffcVXc"
+            class="sc-fzXfLP fMvybG"
           >
             <img
-              class="sc-fzXfMB lmUfKd"
+              class="sc-fzXfLQ bpuxwq"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
-          </p>
         </header>
+        <p>
+          To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
+        </p>
         <ul
-          class="sc-fzXfMC jucYqk"
+          class="sc-fzXfMx hRbIdd"
         >
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Desktop
               <br />
               Chrome & Firefox
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -10579,27 +10530,27 @@ Object {
                 />
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -10634,27 +10585,27 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://www.opera.com/crypto"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -11971,27 +11922,27 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Opera
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://trustwallet.com"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 viewBox="0 0 120 120"
@@ -12004,7 +11955,7 @@ Object {
                 />
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Trust Wallet
               </span>
@@ -12012,7 +11963,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-AykKG dsLXft"
+          class="sc-AykKI PUPkr"
         >
           <span>
             Powered by
@@ -12024,7 +11975,7 @@ Object {
           >
             <svg
               alt="Unlock"
-              class="sth0f3-1 sc-AykKH bwmMMe"
+              class="sth0f3-1 sc-AykKJ cMJCgM"
               viewBox="0 0 1200 256"
             >
               <path
@@ -12120,13 +12071,13 @@ Object {
   fill: white;
 }
 
-.c12 {
+.c11 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c12 div {
+.c11 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -12134,7 +12085,7 @@ Object {
   height: 20px;
 }
 
-.c13 {
+.c12 {
   fill: var(--brand);
   width: 48px;
   margin-bottom: -1px;
@@ -12162,7 +12113,18 @@ Object {
   position: relative;
 }
 
-.c11 {
+.c4 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c5 {
+  max-height: 47px;
+  max-width: 200px;
+}
+
+.c10 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -12176,7 +12138,7 @@ Object {
   color: var(--link);
 }
 
-.c10 {
+.c9 {
   max-width: 130px;
   padding: 5px;
   border: 1px solid transparent;
@@ -12184,16 +12146,16 @@ Object {
   border-radius: 4px;
 }
 
-.c10:hover {
+.c9:hover {
   border: 1px solid var(--link);
 }
 
-.c10 > svg {
+.c9 > svg {
   width: 80px;
   margin: 20px;
 }
 
-.c9 {
+.c8 {
   font-size: 1em;
   font-family: IBM Plex Sans;
   -webkit-letter-spacing: 1px;
@@ -12204,31 +12166,13 @@ Object {
   padding-bottom: 8px;
 }
 
-.c8 {
+.c7 {
   display: grid;
   text-align: center;
   justify-items: center;
 }
 
-.c4 {
-  display: grid;
-}
-
-.c4 p {
-  font-size: 20px;
-}
-
-.c5 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
 .c6 {
-  height: 30px;
-}
-
-.c7 {
   display: grid;
   list-style: none;
   padding: 0px;
@@ -12243,8 +12187,8 @@ Object {
   grid-gap: 10px;
 }
 
-.c7 a,
-.c7 a:visited {
+.c6 a,
+.c6 a:visited {
   color: var(--mediumgrey);
 }
 
@@ -12291,11 +12235,11 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     padding-top: 24px;
   }
 
-  .c8 div {
+  .c7 div {
     padding-bottom: 0;
   }
 }
@@ -12328,39 +12272,37 @@ Object {
             </svg>
             
           </a>
-          <header
-            class="c4"
-          >
+          <header>
             <h1
-              class="c5"
+              class="c4"
             >
               <img
-                class="c6"
+                class="c5"
                 src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
               />
             </h1>
-            <p>
-              To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
-            </p>
           </header>
+          <p>
+            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
+          </p>
           <ul
-            class="c7"
+            class="c6"
           >
             <a
-              class="c8"
+              class="c7"
               href="https://metamask.io/"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Desktop
                 <br />
                 Chrome & Firefox
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -12452,27 +12394,27 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Metamask
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://wallet.coinbase.com/"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -12507,27 +12449,27 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Coinbase Wallet
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://www.opera.com/crypto"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -13844,27 +13786,27 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Opera
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://trustwallet.com"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   viewBox="0 0 120 120"
@@ -13877,7 +13819,7 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Trust Wallet
                 </span>
@@ -13885,7 +13827,7 @@ Object {
             </a>
           </ul>
           <footer
-            class="c12"
+            class="c11"
           >
             <span>
               Powered by
@@ -13897,7 +13839,7 @@ Object {
             >
               <svg
                 alt="Unlock"
-                class="sth0f3-1 c13"
+                class="sth0f3-1 c12"
                 viewBox="0 0 1200 256"
               >
                 <path
@@ -13916,13 +13858,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-fzXfMD fxyJBF"
+      class="sc-fzXfMy eMQMoO"
     >
       <section
-        class="sc-fzXfLQ Geif"
+        class="sc-fzXfLO bbulcl"
       >
         <a
-          class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+          class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -13938,39 +13880,37 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="sc-fzXfMz imCkhv"
-        >
+        <header>
           <h1
-            class="sc-fzXfMA ffcVXc"
+            class="sc-fzXfLP fMvybG"
           >
             <img
-              class="sc-fzXfMB lmUfKd"
+              class="sc-fzXfLQ bpuxwq"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
-          </p>
         </header>
+        <p>
+          To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
+        </p>
         <ul
-          class="sc-fzXfMC jucYqk"
+          class="sc-fzXfMx hRbIdd"
         >
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Desktop
               <br />
               Chrome & Firefox
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -14062,27 +14002,27 @@ Object {
                 />
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -14117,27 +14057,27 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://www.opera.com/crypto"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -15454,27 +15394,27 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Opera
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://trustwallet.com"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 viewBox="0 0 120 120"
@@ -15487,7 +15427,7 @@ Object {
                 />
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Trust Wallet
               </span>
@@ -15495,7 +15435,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-AykKG dsLXft"
+          class="sc-AykKI PUPkr"
         >
           <span>
             Powered by
@@ -15507,7 +15447,7 @@ Object {
           >
             <svg
               alt="Unlock"
-              class="sth0f3-1 sc-AykKH bwmMMe"
+              class="sth0f3-1 sc-AykKJ cMJCgM"
               viewBox="0 0 1200 256"
             >
               <path
@@ -15603,13 +15543,13 @@ Object {
   fill: white;
 }
 
-.c12 {
+.c11 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c12 div {
+.c11 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -15617,7 +15557,7 @@ Object {
   height: 20px;
 }
 
-.c13 {
+.c12 {
   fill: var(--brand);
   width: 48px;
   margin-bottom: -1px;
@@ -15645,7 +15585,18 @@ Object {
   position: relative;
 }
 
-.c11 {
+.c4 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c5 {
+  max-height: 47px;
+  max-width: 200px;
+}
+
+.c10 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -15659,7 +15610,7 @@ Object {
   color: var(--link);
 }
 
-.c10 {
+.c9 {
   max-width: 130px;
   padding: 5px;
   border: 1px solid transparent;
@@ -15667,16 +15618,16 @@ Object {
   border-radius: 4px;
 }
 
-.c10:hover {
+.c9:hover {
   border: 1px solid var(--link);
 }
 
-.c10 > svg {
+.c9 > svg {
   width: 80px;
   margin: 20px;
 }
 
-.c9 {
+.c8 {
   font-size: 1em;
   font-family: IBM Plex Sans;
   -webkit-letter-spacing: 1px;
@@ -15687,31 +15638,13 @@ Object {
   padding-bottom: 8px;
 }
 
-.c8 {
+.c7 {
   display: grid;
   text-align: center;
   justify-items: center;
 }
 
-.c4 {
-  display: grid;
-}
-
-.c4 p {
-  font-size: 20px;
-}
-
-.c5 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-}
-
 .c6 {
-  height: 30px;
-}
-
-.c7 {
   display: grid;
   list-style: none;
   padding: 0px;
@@ -15726,8 +15659,8 @@ Object {
   grid-gap: 10px;
 }
 
-.c7 a,
-.c7 a:visited {
+.c6 a,
+.c6 a:visited {
   color: var(--mediumgrey);
 }
 
@@ -15774,11 +15707,11 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     padding-top: 24px;
   }
 
-  .c8 div {
+  .c7 div {
     padding-bottom: 0;
   }
 }
@@ -15811,39 +15744,37 @@ Object {
             </svg>
             
           </a>
-          <header
-            class="c4"
-          >
+          <header>
             <h1
-              class="c5"
+              class="c4"
             >
               <img
-                class="c6"
+                class="c5"
                 src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
               />
             </h1>
-            <p>
-              To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
-            </p>
           </header>
+          <p>
+            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
+          </p>
           <ul
-            class="c7"
+            class="c6"
           >
             <a
-              class="c8"
+              class="c7"
               href="https://metamask.io/"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Desktop
                 <br />
                 Chrome & Firefox
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -15935,27 +15866,27 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Metamask
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://wallet.coinbase.com/"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -15990,27 +15921,27 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Coinbase Wallet
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://www.opera.com/crypto"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   fill="none"
@@ -17327,27 +17258,27 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Opera
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://trustwallet.com"
               rel="noopener"
               target="_blank"
             >
               <span
-                class="c9"
+                class="c8"
               >
                 Mobile
                 <br />
                 iOS & Android
               </span>
               <div
-                class="c10"
+                class="c9"
               >
                 <svg
                   viewBox="0 0 120 120"
@@ -17360,7 +17291,7 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c11"
+                  class="c10"
                 >
                   Trust Wallet
                 </span>
@@ -17368,7 +17299,7 @@ Object {
             </a>
           </ul>
           <footer
-            class="c12"
+            class="c11"
           >
             <span>
               Powered by
@@ -17380,7 +17311,7 @@ Object {
             >
               <svg
                 alt="Unlock"
-                class="sth0f3-1 c13"
+                class="sth0f3-1 c12"
                 viewBox="0 0 1200 256"
               >
                 <path
@@ -17399,13 +17330,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-fzXfMD fxyJBF"
+      class="sc-fzXfMy eMQMoO"
     >
       <section
-        class="sc-fzXfLQ Geif"
+        class="sc-fzXfLO bbulcl"
       >
         <a
-          class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+          class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -17421,39 +17352,37 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="sc-fzXfMz imCkhv"
-        >
+        <header>
           <h1
-            class="sc-fzXfMA ffcVXc"
+            class="sc-fzXfLP fMvybG"
           >
             <img
-              class="sc-fzXfMB lmUfKd"
+              class="sc-fzXfLQ bpuxwq"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <p>
-            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
-          </p>
         </header>
+        <p>
+          To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
+        </p>
         <ul
-          class="sc-fzXfMC jucYqk"
+          class="sc-fzXfMx hRbIdd"
         >
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Desktop
               <br />
               Chrome & Firefox
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -17545,27 +17474,27 @@ Object {
                 />
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -17600,27 +17529,27 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://www.opera.com/crypto"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 fill="none"
@@ -18937,27 +18866,27 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Opera
               </span>
             </div>
           </a>
           <a
-            class="sc-fzXfMy hLwdPw"
+            class="sc-fzXfMw mGHEW"
             href="https://trustwallet.com"
             rel="noopener"
             target="_blank"
           >
             <span
-              class="sc-fzXfMx kkRjsr"
+              class="sc-fzXfMv exWTNl"
             >
               Mobile
               <br />
               iOS & Android
             </span>
             <div
-              class="sc-fzXfMw fSuhJs"
+              class="sc-fzXfLX goWLSE"
             >
               <svg
                 viewBox="0 0 120 120"
@@ -18970,7 +18899,7 @@ Object {
                 />
               </svg>
               <span
-                class="sc-fzXfMv fRHYeP"
+                class="sc-fzXfLW inbZOj"
               >
                 Trust Wallet
               </span>
@@ -18978,7 +18907,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-AykKG dsLXft"
+          class="sc-AykKI PUPkr"
         >
           <span>
             Powered by
@@ -18990,7 +18919,7 @@ Object {
           >
             <svg
               alt="Unlock"
-              class="sth0f3-1 sc-AykKH bwmMMe"
+              class="sth0f3-1 sc-AykKJ cMJCgM"
               viewBox="0 0 1200 256"
             >
               <path
@@ -19084,27 +19013,6 @@ Object {
 
 .c1:hover > svg {
   fill: white;
-}
-
-.c18 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c18 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c19 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
 }
 
 .c8 {
@@ -19232,6 +19140,27 @@ Object {
   margin-top: 13px;
 }
 
+.c18 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c18 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c19 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
+}
+
 .c2 {
   position: absolute;
   top: 24px;
@@ -19253,6 +19182,23 @@ Object {
   position: relative;
 }
 
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
+}
+
+.c5 {
+  font-size: 40px;
+  font-family: IBM Plex Sans;
+  margin: 0 0 16px;
+}
+
 .c17 {
   background-color: var(--green);
   border: none;
@@ -19270,29 +19216,6 @@ Object {
 
 .c17 :hover {
   background-color: var(--activegreen);
-}
-
-.c3 {
-  display: grid;
-}
-
-.c3 h2 {
-  font-size: 40px;
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  margin: 0 0 16px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-  margin-bottom: 24px;
-}
-
-.c5 {
-  height: 30px;
 }
 
 .c6 {
@@ -19365,12 +19288,6 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 h2 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
   .c6 {
     -webkit-flex-flow: column;
     -ms-flex-flow: column;
@@ -19413,21 +19330,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <h2>
-            Thanks for your purchase!
-          </h2>
         </header>
+        <h2
+          class="c5"
+        >
+          Thanks for your purchase!
+        </h2>
         <ul
           class="c6"
         >
@@ -19515,10 +19432,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -19534,23 +19451,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-fzXfLU lmncSx"
-      >
+      <header>
         <h1
-          class="sc-fzXfLV cVWIMp"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-fzXfLW gURDZR"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <h2>
-          Thanks for your purchase!
-        </h2>
       </header>
+      <h2
+        class="sc-fzXfLS kcXuXD"
+      >
+        Thanks for your purchase!
+      </h2>
       <ul
-        class="sc-fzXfLX fkfMqO"
+        class="sc-fzXfLV kLPYew"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -19594,19 +19511,19 @@ Object {
             Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
           </p>
           <p
-            class="sc-fzXfLT iEtSvv"
+            class="sc-fzXfLU jjKjYc"
           >
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-fzXfLR sc-fzXfLS eWkeNH"
+            class="sc-fzXfLR sc-fzXfLT isykdY"
           >
             Continue
           </button>
         </div>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -19618,7 +19535,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -19713,27 +19630,6 @@ Object {
   fill: white;
 }
 
-.c18 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c18 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c19 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
-}
-
 .c8 {
   display: grid;
   justify-items: stretch;
@@ -19859,6 +19755,27 @@ Object {
   border: 1px solid var(--link);
 }
 
+.c18 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c18 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c19 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
+}
+
 .c2 {
   position: absolute;
   top: 24px;
@@ -19880,6 +19797,23 @@ Object {
   position: relative;
 }
 
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
+}
+
+.c5 {
+  font-size: 40px;
+  font-family: IBM Plex Sans;
+  margin: 0 0 16px;
+}
+
 .c17 {
   background-color: var(--green);
   border: none;
@@ -19897,29 +19831,6 @@ Object {
 
 .c17 :hover {
   background-color: var(--activegreen);
-}
-
-.c3 {
-  display: grid;
-}
-
-.c3 h2 {
-  font-size: 40px;
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  margin: 0 0 16px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-  margin-bottom: 24px;
-}
-
-.c5 {
-  height: 30px;
 }
 
 .c6 {
@@ -19992,12 +19903,6 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 h2 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
   .c6 {
     -webkit-flex-flow: column;
     -ms-flex-flow: column;
@@ -20040,21 +19945,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <h2>
-            Thanks for your purchase!
-          </h2>
         </header>
+        <h2
+          class="c5"
+        >
+          Thanks for your purchase!
+        </h2>
         <ul
           class="c6"
         >
@@ -20138,10 +20043,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -20157,23 +20062,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-fzXfLU lmncSx"
-      >
+      <header>
         <h1
-          class="sc-fzXfLV cVWIMp"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-fzXfLW gURDZR"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <h2>
-          Thanks for your purchase!
-        </h2>
       </header>
+      <h2
+        class="sc-fzXfLS kcXuXD"
+      >
+        Thanks for your purchase!
+      </h2>
       <ul
-        class="sc-fzXfLX fkfMqO"
+        class="sc-fzXfLV kLPYew"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -20213,19 +20118,19 @@ Object {
             Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
           </p>
           <p
-            class="sc-fzXfLT iEtSvv"
+            class="sc-fzXfLU jjKjYc"
           >
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-fzXfLR sc-fzXfLS eWkeNH"
+            class="sc-fzXfLR sc-fzXfLT isykdY"
           >
             Continue
           </button>
         </div>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -20237,7 +20142,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -20332,27 +20237,6 @@ Object {
   fill: white;
 }
 
-.c18 {
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.c18 div {
-  margin: 8px;
-  vertical-align: middle;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.c19 {
-  fill: var(--brand);
-  width: 48px;
-  margin-bottom: -1px;
-  margin-left: 4px;
-}
-
 .c8 {
   display: grid;
   justify-items: stretch;
@@ -20478,6 +20362,27 @@ Object {
   border: 1px solid var(--link);
 }
 
+.c18 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c18 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c19 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
+}
+
 .c2 {
   position: absolute;
   top: 24px;
@@ -20499,6 +20404,23 @@ Object {
   position: relative;
 }
 
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c4 {
+  max-height: 47px;
+  max-width: 200px;
+}
+
+.c5 {
+  font-size: 40px;
+  font-family: IBM Plex Sans;
+  margin: 0 0 16px;
+}
+
 .c17 {
   background-color: var(--green);
   border: none;
@@ -20516,29 +20438,6 @@ Object {
 
 .c17 :hover {
   background-color: var(--activegreen);
-}
-
-.c3 {
-  display: grid;
-}
-
-.c3 h2 {
-  font-size: 40px;
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  margin: 0 0 16px;
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-  margin-bottom: 24px;
-}
-
-.c5 {
-  height: 30px;
 }
 
 .c6 {
@@ -20611,12 +20510,6 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 h2 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
   .c6 {
     -webkit-flex-flow: column;
     -ms-flex-flow: column;
@@ -20659,21 +20552,21 @@ Object {
           </svg>
           
         </a>
-        <header
-          class="c3"
-        >
+        <header>
           <h1
-            class="c4"
+            class="c3"
           >
             <img
-              class="c5"
+              class="c4"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
-          <h2>
-            Thanks for your purchase!
-          </h2>
         </header>
+        <h2
+          class="c5"
+        >
+          Thanks for your purchase!
+        </h2>
         <ul
           class="c6"
         >
@@ -20757,10 +20650,10 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-fzXfLQ Geif"
+      class="sc-fzXfLO bbulcl"
     >
       <a
-        class="is925m-0 iBlYwN sc-fzXfLP jvSjyB closeButton"
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -20776,23 +20669,23 @@ Object {
         </svg>
         
       </a>
-      <header
-        class="sc-fzXfLU lmncSx"
-      >
+      <header>
         <h1
-          class="sc-fzXfLV cVWIMp"
+          class="sc-fzXfLP fMvybG"
         >
           <img
-            class="sc-fzXfLW gURDZR"
+            class="sc-fzXfLQ bpuxwq"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
         </h1>
-        <h2>
-          Thanks for your purchase!
-        </h2>
       </header>
+      <h2
+        class="sc-fzXfLS kcXuXD"
+      >
+        Thanks for your purchase!
+      </h2>
       <ul
-        class="sc-fzXfLX fkfMqO"
+        class="sc-fzXfLV kLPYew"
       >
         <li
           class="sc-1549ebs-0 kmXWUa lock"
@@ -20832,19 +20725,19 @@ Object {
             Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
           </p>
           <p
-            class="sc-fzXfLT iEtSvv"
+            class="sc-fzXfLU jjKjYc"
           >
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-fzXfLR sc-fzXfLS eWkeNH"
+            class="sc-fzXfLR sc-fzXfLT isykdY"
           >
             Continue
           </button>
         </div>
       </ul>
       <footer
-        class="sc-AykKG dsLXft"
+        class="sc-AykKI PUPkr"
       >
         <span>
           Powered by
@@ -20856,7 +20749,7 @@ Object {
         >
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-AykKH bwmMMe"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
             viewBox="0 0 1200 256"
           >
             <path
@@ -29028,14 +28921,14 @@ Object {
     />
     <div>
       <label
-        class="sc-fzXfNe ensQHl"
+        class="sc-fzXfMC ggAydG"
         required=""
       >
         <span>
           General Text
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="General Text"
           placeholder="General Text"
           required=""
@@ -29043,14 +28936,14 @@ Object {
         />
       </label>
       <label
-        class="sc-fzXfNe ensQHl"
+        class="sc-fzXfMC ggAydG"
         required=""
       >
         <span>
           Date
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="Date"
           placeholder="Date"
           required=""
@@ -29058,14 +28951,14 @@ Object {
         />
       </label>
       <label
-        class="sc-fzXfNe ensQHl"
+        class="sc-fzXfMC ggAydG"
         required=""
       >
         <span>
           Color
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="Color"
           placeholder="Color"
           required=""
@@ -29073,14 +28966,14 @@ Object {
         />
       </label>
       <label
-        class="sc-fzXfNe ensQHl"
+        class="sc-fzXfMC ggAydG"
         required=""
       >
         <span>
           Email Address
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="Email Address"
           placeholder="Email Address"
           required=""
@@ -29088,14 +28981,14 @@ Object {
         />
       </label>
       <label
-        class="sc-fzXfNe ensQHl"
+        class="sc-fzXfMC ggAydG"
         required=""
       >
         <span>
           URL
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="URL"
           placeholder="URL"
           required=""
@@ -29266,65 +29159,65 @@ Object {
     />
     <div>
       <label
-        class="sc-fzXfNe bJJoVL"
+        class="sc-fzXfMC gwxvNY"
       >
         <span>
           General Text
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="General Text"
           placeholder="General Text"
           type="text"
         />
       </label>
       <label
-        class="sc-fzXfNe bJJoVL"
+        class="sc-fzXfMC gwxvNY"
       >
         <span>
           Date
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="Date"
           placeholder="Date"
           type="date"
         />
       </label>
       <label
-        class="sc-fzXfNe bJJoVL"
+        class="sc-fzXfMC gwxvNY"
       >
         <span>
           Color
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="Color"
           placeholder="Color"
           type="color"
         />
       </label>
       <label
-        class="sc-fzXfNe bJJoVL"
+        class="sc-fzXfMC gwxvNY"
       >
         <span>
           Email Address
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="Email Address"
           placeholder="Email Address"
           type="email"
         />
       </label>
       <label
-        class="sc-fzXfNe bJJoVL"
+        class="sc-fzXfMC gwxvNY"
       >
         <span>
           URL
         </span>
         <input
-          class="sc-fzXfNd ihQjHq"
+          class="sc-fzXfMB hFkAvT"
           name="URL"
           placeholder="URL"
           type="url"

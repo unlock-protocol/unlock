@@ -39,7 +39,10 @@ const account = {
 
 storiesOf('Checkout/Checkout Confirming modal', module)
   .addDecorator(getStory => (
-    <CheckoutWrapper hideCheckout={() => action('hideCheckout')}>
+    <CheckoutWrapper
+      hideCheckout={() => action('hideCheckout')}
+      icon={paywallConfig.icon}
+    >
       {getStory()}
     </CheckoutWrapper>
   ))
