@@ -91,7 +91,7 @@ export class Key extends React.Component<Props, State> {
     }
     return (
       <ButtonAction type="button" onClick={this.handleSignature}>
-        Assert Ownership
+        Confirm Ownership
       </ButtonAction>
     )
   }
