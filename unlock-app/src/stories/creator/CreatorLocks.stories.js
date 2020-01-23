@@ -7,6 +7,10 @@ import { ConfigContext } from '../../utils/withConfig'
 import doNothing from '../../utils/doNothing'
 import configure from '../../config'
 
+const account = {
+  address: '0xdeadbeef',
+  balance: '0.12',
+}
 const lock = {
   name: 'First Lock',
   keyPrice: '0.01',
@@ -29,10 +33,7 @@ const anotherLock = {
 }
 
 const store = createUnlockStore({
-  account: {
-    address: '0xdeadbeef',
-    balance: '0.12',
-  },
+  account,
   locks: [lock],
 })
 
@@ -50,6 +51,7 @@ storiesOf('CreatorLocks', module)
   .add('no lock', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[]}
         hideForm={doNothing}
@@ -60,6 +62,7 @@ storiesOf('CreatorLocks', module)
   .add('no lock, showForm', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[]}
         hideForm={doNothing}
@@ -70,6 +73,7 @@ storiesOf('CreatorLocks', module)
   .add('single lock', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[lock]}
         hideForm={doNothing}
@@ -80,6 +84,7 @@ storiesOf('CreatorLocks', module)
   .add('multiple locks', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
         hideForm={doNothing}
@@ -90,6 +95,7 @@ storiesOf('CreatorLocks', module)
   .add('loading with locks', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
         formIsVisible={false}
@@ -101,6 +107,7 @@ storiesOf('CreatorLocks', module)
   .add('loading with no lock', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[]}
         loading
