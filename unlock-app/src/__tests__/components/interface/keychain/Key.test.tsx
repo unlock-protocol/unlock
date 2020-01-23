@@ -75,7 +75,7 @@ describe('keychain -- Key', () => {
     global.Date.now = dateNowStub
     const { getByText } = render({})
 
-    const button = getByText('Assert Ownership')
+    const button = getByText('Confirm Ownership')
     rtl.fireEvent.click(button)
 
     expect(signData).toHaveBeenCalledWith(
