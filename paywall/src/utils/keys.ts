@@ -7,7 +7,7 @@ import {
 } from '../unlockTypes'
 import { isValidKey } from '../data-iframe/blockchainHandler/keyStatus'
 
-export function transactionsFor(
+export function getTransactionsFor(
   transactions: Transactions,
   key: KeyResult
 ): Transaction[] {

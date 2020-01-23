@@ -1,6 +1,6 @@
 import { TransactionStatus, KeyStatus } from '../../unlockTypes'
 import {
-  transactionsFor,
+  getTransactionsFor,
   getLatestTransaction,
   transactionToKeyStatus,
   getHighestStatus,
@@ -8,7 +8,7 @@ import {
 } from '../../utils/keys'
 
 describe('keys utils', () => {
-  describe('transactionsFor', () => {
+  describe('getTransactionsFor', () => {
     it('filters an object of transactions for many keys into a list of transactions for 1 key', () => {
       expect.assertions(1)
 
@@ -23,7 +23,7 @@ describe('keys utils', () => {
         lock: 'lock1',
       }
 
-      expect(transactionsFor(transactions, key)).toEqual([
+      expect(getTransactionsFor(transactions, key)).toEqual([
         { lock: 'lock1' },
         { lock: 'lock1' },
       ])
