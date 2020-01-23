@@ -5,8 +5,12 @@
   "scripts": {
     "build": "tsc",
     "ci": "jest",
+    "db:migrate": "sequelize db:migrate",
     "test": "jest",
     "start": "node ./build/src/index.js"
+  },
+  "engines": {
+    "node": "^10"
   },
   "license": "MIT",
   "dependencies": {

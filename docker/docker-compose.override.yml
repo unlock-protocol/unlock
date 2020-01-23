@@ -59,3 +59,16 @@ services:
     depends_on:
       - ipfs
       - postgres
+  nudge-migration:
+    env_file: development.env
+    build:
+      context: ../nudge
+      dockerfile: Dockerfile
+    command: yarn db:migrate
+    depends_on: 
+      - postgres
+  nudge:
+    env_file: development.env
+    build:
+      context: ../nudge
+      dockerfile: Dockerfile
