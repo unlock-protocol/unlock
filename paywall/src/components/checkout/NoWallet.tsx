@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React from 'react'
-import { CheckoutFooter } from './CheckoutStyles'
 
 import { PaywallConfig } from '../../unlockTypes'
 import Media from '../../theme/media'
@@ -16,10 +15,7 @@ export const NoWallet = ({ config }: Props) => {
     'To buy a key you&apos;ll need to use a crypto-enabled browser that has a wallet. Here are a few options.'
   return (
     <>
-      <Header>
-        <Title>{config.icon && <Logo src={config.icon} />}</Title>
-        <p>{callToAction}</p>
-      </Header>
+      <p>{callToAction}</p>
       <WalletOptions>
         <WalletDescription
           href="https://metamask.io/"
@@ -85,7 +81,6 @@ export const NoWallet = ({ config }: Props) => {
           </WalletOption>
         </WalletDescription>
       </WalletOptions>
-      <CheckoutFooter />
     </>
   )
 }
@@ -138,24 +133,6 @@ const WalletDescription = styled.a`
       padding-bottom: 0;
     }
   `}
-`
-
-const Header = styled.header`
-  display: grid;
-
-  p {
-    font-size: 20px;
-  }
-`
-
-const Title = styled.h1`
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-`
-
-const Logo = styled.img`
-  height: 30px;
 `
 
 const WalletOptions = styled.ul`

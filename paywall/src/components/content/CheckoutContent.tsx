@@ -193,7 +193,6 @@ export default function CheckoutContent() {
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <CheckoutConfirmingModal
-          config={paywallConfig}
           account={account}
           hideCheckout={hideConfirmingModal}
           confirmingLock={locks[purchasingLocks[0]]}
@@ -225,6 +224,7 @@ export default function CheckoutContent() {
       onClick={e => {
         e.stopPropagation()
       }}
+      icon={paywallConfig.icon}
     >
       {child}
     </CheckoutWrapper>
