@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Close from '../interface/buttons/layout/Close'
 import Media from '../../theme/media'
+import { CheckoutFooter } from './CheckoutStyles'
 
 interface WrapperProps {
   children: any
@@ -9,6 +10,7 @@ interface WrapperProps {
   allowClose: boolean
   bgColor?: string
   onClick?: (event: any) => void
+  icon?: string
 }
 
 interface WrapperStyleProps {
@@ -21,6 +23,7 @@ const CheckoutWrapper = ({
   bgColor = 'var(--offwhite)',
   onClick = () => {},
   allowClose = true,
+  icon,
 }: WrapperProps) => {
   return (
     <Wrapper bgColor={bgColor} onClick={allowClose ? onClick : () => {}}>
@@ -33,7 +36,11 @@ const CheckoutWrapper = ({
       ) : (
         ''
       )}
+      <Header>
+        <Title>{icon && <Logo src={icon} />}</Title>
+      </Header>
       {children}
+      <CheckoutFooter />
     </Wrapper>
   )
 }
@@ -57,9 +64,29 @@ const Wrapper = styled.section`
   border-radius: 4px;
   position: relative;
   ${Media.nophone`
-    width: 600px;
-  `}
+width: 600px;
+`}
   ${Media.phone`
-    width: 100%;
-  `}
+width: 100%;
+`}
+`
+
+const Header = styled.header`
+  display: grid;
+  margin-bottom: 20px;
+  p {
+    font-size: 20px;
+    margin: 5px;
+  }
+`
+
+const Title = styled.h1`
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+`
+
+const Logo = styled.img`
+  max-height: 47px;
+  max-width: 200px;
 `
