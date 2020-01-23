@@ -50,8 +50,10 @@ export const Checkout = ({
   const callToActionParagraphs = callToAction
     .split('\n')
     .map((paragraph, index) => {
-      // eslint-disable-next-line react/no-array-index-key
-      return <p key={index}>{paragraph}</p>
+      return (
+        // eslint-disable-next-line react/no-array-index-key
+        <CallToActionParagraph key={index}>{paragraph}</CallToActionParagraph>
+      )
     })
 
   /* the key is lower-cased. The lock address is checksummed, and so
@@ -102,4 +104,9 @@ const CheckoutLocks = styled.ul`
   justify-items: center;
   grid-template-columns: repeat(auto-fit, minmax(186px, 200px));
   grid-gap: 20px;
+`
+
+const CallToActionParagraph = styled.p`
+  font-size: 20px;
+  margin: 5px;
 `

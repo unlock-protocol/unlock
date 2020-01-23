@@ -36,9 +36,9 @@ const CheckoutWrapper = ({
       ) : (
         ''
       )}
-      <Header>
+      <header>
         <Title>{icon && <Logo src={icon} />}</Title>
-      </Header>
+      </header>
       {children}
       <CheckoutFooter />
     </Wrapper>
@@ -69,15 +69,6 @@ width: 600px;
   ${Media.phone`
 width: 100%;
 `}
-`
-
-const Header = styled.header`
-  display: grid;
-  margin-bottom: 20px;
-  p {
-    font-size: 20px;
-    margin: 5px;
-  }
 `
 
 const Title = styled.h1`
