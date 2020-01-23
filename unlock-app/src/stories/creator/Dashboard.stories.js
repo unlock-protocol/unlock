@@ -1,10 +1,8 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import {
-  DashboardContent,
-  mapStateToProps,
-} from '../../components/content/DashboardContent'
+
+import { DashboardContent } from '../../components/content/DashboardContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import FullScreenModal from '../../components/interface/FullScreenModals'
@@ -90,22 +88,6 @@ const lockFormStatus = {
   visible: false,
 }
 
-const state = {
-  account,
-  network,
-  router,
-  locks,
-  transactions,
-  currency,
-  fullScreenModalStatus: {
-    active: false,
-    kindOfModal: KindOfModal.WalletCheckOverlay,
-  },
-  lockFormStatus,
-}
-
-const store = createUnlockStore(state)
-
 const waitingStore = createUnlockStore({
   account,
   network,
@@ -134,39 +116,20 @@ const config = configure({
   env: 'production',
   requiredConfirmations: 12,
 })
-
 storiesOf('DashboardContent', module)
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
-  .add('the dashboard', () => {
-    // The overlay should not render here, because walletStatus:waiting is set
-    // to false in the state
-    const props = mapStateToProps(state)
-    return (
-      <Provider store={store}>
-        <FullScreenModal />
-        <DashboardContent
-          network={network}
-          account={account}
-          hideForm={doNothing}
-          showForm={doNothing}
-          {...props}
-        />
-      </Provider>
-    )
-  })
   .add('the dashboard, waiting for wallet', () => {
-    const props = mapStateToProps(state)
     return (
       <Provider store={waitingStore}>
         <FullScreenModal />
         <DashboardContent
-          network={network}
-          account={account}
           hideForm={doNothing}
           showForm={doNothing}
-          {...props}
+          network={network}
+          account={null}
+          formIsVisible={false}
         />
       </Provider>
     )

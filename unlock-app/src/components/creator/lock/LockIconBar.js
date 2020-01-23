@@ -116,9 +116,11 @@ export const mapStateToProps = ({ transactions }, { lock }) => {
     })
 
   // Get lock creation transaction
-  const lockCreationTransaction = lockTransactions.find(transaction => {
-    return transaction.type === TransactionType.LOCK_CREATION
-  })
+  const lockCreationTransaction =
+    lock.creationTransaction ||
+    lockTransactions.find(transaction => {
+      return transaction.type === TransactionType.LOCK_CREATION
+    })
 
   // Get latest lock withdrawal transacion
   const withdrawalTransaction = lockTransactions.find(transaction => {
@@ -126,9 +128,11 @@ export const mapStateToProps = ({ transactions }, { lock }) => {
   })
 
   // Get latest lock price update transacion
-  const priceUpdateTransaction = lockTransactions.find(transaction => {
-    return transaction.type === TransactionType.UPDATE_KEY_PRICE
-  })
+  const priceUpdateTransaction =
+    lock.priceUpdateTransaction ||
+    lockTransactions.find(transaction => {
+      return transaction.type === TransactionType.UPDATE_KEY_PRICE
+    })
 
   return {
     lockCreationTransaction,
