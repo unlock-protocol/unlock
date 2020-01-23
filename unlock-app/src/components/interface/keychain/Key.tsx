@@ -91,7 +91,7 @@ export class Key extends React.Component<Props, State> {
     }
     return (
       <ButtonAction type="button" onClick={this.handleSignature}>
-        Assert Ownership
+        Confirm Ownership
       </ButtonAction>
     )
   }
@@ -152,21 +152,22 @@ export default Key
 
 const Box = styled.div`
   display: grid;
-  border: thin #dddddd solid;
   width: 212px;
   padding: 16px;
+  background: #ffffff;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   ${Media.phone`
-    width: 100%;
-    margin: 0 0 16px 0;
-  `}
+width: 100%;
+margin: 0 0 16px 0;
+`}
   ${Media.nophone`
-    width: 30%;
-    margin: 0 16px 16px 0;
-  `}
-  &:hover {
-    border: thin #aaaaaa solid;
-    box-shadow: 0px 0px 10px 3px rgba(221, 221, 221, 1);
+width: 30%;
+margin: 0 16px 16px 0;
+`}
+& :hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 100ms ease;
   }
 `
 
