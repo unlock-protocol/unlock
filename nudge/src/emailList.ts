@@ -1,21 +1,29 @@
 import { generateKeyMetadata } from './generateKeyMetadata'
 
 export async function extractEmails(results: any[]): Promise<Key[]> {
-  let keysData = results.map(async (result: any) => {
-    let keyMetadata: any
+  let keysData = results.map((result: any) =>
+    enrichKeyWithEmailAddress(result.lockAddress, result.keyId)
+  )
 
-    try {
-      keyMetadata = await generateKeyMetadata(result.lockAddress, result.keyId)
-    } catch (_) {
-      keyMetadata = {}
-    }
+  let filteredKeys = (await Promise.all(keysData)).filter(key => key.emailAddress != null)
+  return filteredKeys
+}
 
-    return {
-      lockAddress: result.lockAddress,
-      keyId: result.keyId,
-      emailAddress: keyMetadata.userMetadata?.protected?.emailAddress,
-    } as Key
-  })
+async function enrichKeyWithEmailAddress(
+  lockAddress: string,
+  keyId: string
+): Promise<any> {
+  let keyMetadata: any
 
-  return Promise.all(keysData)
+  try {
+    keyMetadata = await generateKeyMetadata(lockAddress, keyId)
+  } catch (_) {
+    keyMetadata = {}
+  }
+
+  return {
+    lockAddress: lockAddress,
+    keyId: keyId,
+    emailAddress: keyMetadata.userMetadata?.protected?.emailAddress,
+  }
 }
