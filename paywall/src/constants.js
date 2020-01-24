@@ -122,3 +122,10 @@ export const OPTIMISM_POLLING_INTERVAL = 15000
 // used to provide a default balance for stablecoins so that the paywall does
 // not show "insufficient funds" for managed user accounts
 export const DEFAULT_STABLECOIN_BALANCE = '35'
+
+// List of stable coins for which we allow credit card purchases
+export const STABLECOINS_ADDRESSES = [
+  '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359', // SAI
+  '0x6b175474e89094c44da98b954eedeac495271d0f', // DAI
+  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
+]

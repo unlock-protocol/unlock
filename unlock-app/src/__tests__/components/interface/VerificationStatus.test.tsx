@@ -1,24 +1,27 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import * as apolloHooks from '@apollo/react-hooks'
-import sigUtil from 'eth-sig-util'
 import { Provider } from 'react-redux'
-import {
-  VerificationStatus,
-  Identity,
-  OwnsKey,
-} from '../../../components/interface/VerificationStatus'
-import * as durations from '../../../utils/durations'
+import { VerificationStatus } from '../../../components/interface/VerificationStatus'
 import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
-
 import createUnlockStore from '../../../createUnlockStore'
+import signatureUtils from '../../../utils/signatures'
+
+jest.mock('../../../utils/signatures', () => {
+  return {
+    isSignatureValidForAddress: jest.fn(() => {
+      return false
+    }),
+  }
+})
 
 const accountAddress = '0xdeadbeef'
-
+const account = {
+  address: accountAddress,
+  balance: '0',
+}
 const store = createUnlockStore({
-  account: {
-    address: accountAddress,
-  },
+  account,
 })
 
 const ownedKey: OwnedKey = {
@@ -39,152 +42,132 @@ const ownedKey: OwnedKey = {
 describe('VerificationStatus', () => {
   beforeEach(() => {})
 
-  describe('Main component', () => {
-    it('should show an error if any required data is missing', () => {
-      expect.assertions(0)
+  it('should show an error if any required data is missing', () => {
+    expect.assertions(0)
 
-      const { getByText } = rtl.render(<VerificationStatus />)
+    const { getByText } = rtl.render(<VerificationStatus account={account} />)
 
-      getByText('No Signature Data Found')
-    })
-
-    it('should render full results if all data is present', () => {
-      expect.assertions(0)
-
-      const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
-      apolloSpy.mockReturnValue({
-        loading: undefined,
-        error: undefined,
-        data: {
-          keyHolders: [
-            {
-              keys: [ownedKey],
-            },
-          ],
-        },
-      } as any)
-
-      const sigUtilSpy = jest.spyOn(sigUtil, 'recoverPersonalSignature')
-      sigUtilSpy.mockReturnValue(accountAddress)
-
-      const { getByText } = rtl.render(
-        <Provider store={store}>
-          <VerificationStatus
-            data={{
-              accountAddress,
-              lockAddress: '0x123abc',
-              timestamp: 1234567,
-            }}
-            sig="this is a signature string, essentially"
-            hexData="this is some hex data"
-          />
-        </Provider>
-      )
-
-      getByText('Identity is valid.')
-      getByText('Lock Around the Clock')
-    })
+    getByText('No Signature Data Found')
   })
 
-  describe('Identity', () => {
-    it('should indicate when an identity assertion is invalid', () => {
-      expect.assertions(0)
+  it('should show a loader when the key is loading', () => {
+    expect.assertions(0)
 
-      const { getByText } = rtl.render(<Identity valid={false} />)
+    const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
+    apolloSpy.mockReturnValue({
+      loading: true,
+      error: undefined,
+      data: {},
+    } as any)
 
-      getByText('Identity is INVALID.')
-    })
+    const { getByText } = rtl.render(
+      <VerificationStatus
+        account={account}
+        data={{
+          accountAddress,
+          lockAddress: '0x123abc',
+          timestamp: 1234567,
+        }}
+        sig="this is a signature string, essentially"
+        hexData="this is some hex data"
+      />
+    )
 
-    it('should indicate when an identity assertion is valid', () => {
-      expect.assertions(0)
-
-      const { getByText } = rtl.render(<Identity valid />)
-
-      getByText('Identity is valid.')
-    })
+    getByText('loading')
   })
 
-  describe('OwnsKey', () => {
-    it('should indicate when it is loading', () => {
-      expect.assertions(0)
+  it('should shows a message to indicate that the key is not valid if the signature does not match', () => {
+    expect.assertions(0)
 
-      const { getByText } = rtl.render(
-        <OwnsKey accountAddress={accountAddress} loading error={undefined} />
-      )
+    const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
+    apolloSpy.mockReturnValue({
+      loading: false,
+      error: undefined,
+      data: {},
+    } as any)
 
-      getByText('Checking if user has a valid key...')
+    signatureUtils.isSignatureValidForAddress = jest.fn(() => false)
+
+    const { getByText } = rtl.render(
+      <VerificationStatus
+        account={account}
+        data={{
+          accountAddress,
+          lockAddress: '0x123abc',
+          timestamp: 1234567,
+        }}
+        sig="this is a signature string, essentially"
+        hexData="this is some hex data"
+      />
+    )
+
+    getByText('Key Invalid')
+  })
+
+  it('should shows a message to indicate that the key is not valid if there is no matching key', () => {
+    expect.assertions(0)
+
+    const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
+    apolloSpy.mockReturnValue({
+      loading: false,
+      error: undefined,
+      data: {},
+    } as any)
+
+    signatureUtils.isSignatureValidForAddress = jest.fn(() => true)
+
+    const { getByText } = rtl.render(
+      <VerificationStatus
+        account={account}
+        data={{
+          accountAddress,
+          lockAddress: '0x123abc',
+          timestamp: 1234567,
+        }}
+        sig="this is a signature string, essentially"
+        hexData="this is some hex data"
+      />
+    )
+
+    getByText('Key Invalid')
+  })
+
+  it('should render a message to indicate that the key is valid when applicable', () => {
+    expect.assertions(0)
+
+    const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
+    apolloSpy.mockReturnValue({
+      loading: undefined,
+      error: undefined,
+      data: {
+        keyHolders: [
+          {
+            keys: [ownedKey],
+          },
+        ],
+      },
+    } as any)
+
+    signatureUtils.isSignatureValidForAddress = jest.fn(() => {
+      return true
     })
 
-    it('should indicate when there is an error', () => {
-      expect.assertions(0)
-
-      const { getByText } = rtl.render(
-        <OwnsKey
-          accountAddress={accountAddress}
-          loading={false}
-          error={new Error('oh bother') as any}
+    const { getByText } = rtl.render(
+      <Provider store={store}>
+        <VerificationStatus
+          account={account}
+          data={{
+            accountAddress,
+            lockAddress: '0x123abc',
+            timestamp: 1234567,
+          }}
+          sig="this is a signature string, essentially"
+          hexData="this is some hex data"
         />
-      )
+      </Provider>
+    )
 
-      getByText('Error: oh bother')
-    })
-
-    it('should indicate when the user does not have a key', () => {
-      expect.assertions(0)
-
-      const { getByText } = rtl.render(
-        <OwnsKey
-          accountAddress={accountAddress}
-          loading={false}
-          error={undefined}
-        />
-      )
-
-      getByText('This user does not have a key to the lock.')
-    })
-
-    it('should indicate when the key is expired', () => {
-      expect.assertions(0)
-
-      const spy = jest.spyOn(durations, 'expirationAsDate')
-      spy.mockReturnValue('Expired')
-
-      const { getByText } = rtl.render(
-        <Provider store={store}>
-          <OwnsKey
-            accountAddress={accountAddress}
-            loading={false}
-            error={undefined}
-            matchingKey={ownedKey}
-          />
-        </Provider>
-      )
-
-      getByText('The user 0xdeadbeef owns a key, which is expired.')
-      spy.mockClear()
-    })
-
-    it('should indicate when the key is valid', () => {
-      expect.assertions(0)
-
-      const spy = jest.spyOn(durations, 'expirationAsDate')
-      spy.mockReturnValue('November 14, 3021')
-
-      const { getByText } = rtl.render(
-        <Provider store={store}>
-          <OwnsKey
-            accountAddress={accountAddress}
-            loading={false}
-            error={undefined}
-            matchingKey={ownedKey}
-          />
-        </Provider>
-      )
-
-      getByText(
-        'The user 0xdeadbeef owns a key, which is valid until November 14, 3021.'
-      )
-      spy.mockClear()
-    })
+    getByText('Valid Key')
+    getByText('Lock Around the Clock')
   })
 })

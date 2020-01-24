@@ -26,7 +26,7 @@ export const useMetadata = url => {
 
   useEffect(() => {
     getMetadata()
-  })
+  }, [url])
   return metadata
 }
 

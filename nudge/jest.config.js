@@ -1,3 +1,4 @@
 module.exports = {
-  preset: 'ts-jest/presets/js-with-ts',
+  testPathIgnorePatterns: ['<rootDir>/build/'],
+  preset: 'ts-jest/presets/default',
 }
