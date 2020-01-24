@@ -9,4 +9,6 @@ RUN yarn --production
 COPY --chown=node ./ /home/unlock/nudge/.
 RUN yarn build
 
+EXPOSE 8787
+
 CMD ["yarn", "start"]
