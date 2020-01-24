@@ -359,7 +359,7 @@ jobs:
           command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
       - run:
           name: Deploy Staging to Beanstalk
-          command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-rinkeby" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL"
+          command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-rinkeby" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL"
         
   promote-unlock-images:
     machine: true

@@ -6,7 +6,6 @@ db_name=$5
 db_hostname=$6
 is_forked_pr=$8
 build_id=$9
-message="${10}"
 web3_provider_host=${13}
 graphql_base_url=${15}
 
