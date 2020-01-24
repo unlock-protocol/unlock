@@ -34,7 +34,7 @@ function deploy()
     
     if eb status ${environment_name}; then
         eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} WEB3_PROVIDER_HOST=${web3_provider_host} GRAPHQL_BASE_URL=${graphql_base_url}
-        eb deploy ${environment_name} --label nudge-${build_id} --timeout 10
+        eb deploy ${environment_name} --label nudge-abc-${build_id} --timeout 10
     else
         eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},WEB3_PROVIDER_HOST=${web3_provider_host},GRAPHQL_BASE_URL=${graphql_base_url} --elb-type classic
     fi
