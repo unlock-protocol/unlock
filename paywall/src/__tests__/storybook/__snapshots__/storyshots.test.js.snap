@@ -29029,7 +29029,7 @@ Object {
           We need to collect some additional information for your purchase.
         </p>
         <div
-          class="sc-fzXfMD hPXABY"
+          class="sc-fzXfMB fCyFji"
         />
         <button
           class="sc-fzXfLR hJlOty"
@@ -29213,6 +29213,10 @@ Object {
   background-color: var(--activegreen);
 }
 
+.c4 {
+  margin-bottom: 32px;
+}
+
 .c6 {
   height: 60px;
   width: 100%;
@@ -29248,10 +29252,6 @@ Object {
 
 .c7 > span:after {
   color: var(--red);
-}
-
-.c4 {
-  margin-bottom: 32px;
 }
 
 @media only screen and (min-width:736px) {
@@ -29313,8 +29313,6 @@ Object {
               <input
                 class="c6"
                 name="First Name"
-                placeholder="First Name"
-                required=""
                 type="text"
               />
             </label>
@@ -29328,8 +29326,6 @@ Object {
               <input
                 class="c6"
                 name="Last Name"
-                placeholder="Last Name"
-                required=""
                 type="text"
               />
             </label>
@@ -29342,7 +29338,6 @@ Object {
               <input
                 class="c6"
                 name="Favorite Color"
-                placeholder="Favorite Color"
                 type="color"
               />
             </label>
@@ -29355,7 +29350,6 @@ Object {
               <input
                 class="c6"
                 name="Birthdate"
-                placeholder="Birthdate"
                 type="date"
               />
             </label>
@@ -29427,61 +29421,55 @@ Object {
           We need to collect some additional information for your purchase.
         </p>
         <div
-          class="sc-fzXfMD hPXABY"
+          class="sc-fzXfMB fCyFji"
         >
           <label
-            class="sc-fzXfMC kKsAqI"
+            class="sc-fzXfMD kAhkCt"
             required=""
           >
             <span>
               First Name
             </span>
             <input
-              class="sc-fzXfMB hFkAvT"
+              class="sc-fzXfMC jgBSVg"
               name="First Name"
-              placeholder="First Name"
-              required=""
               type="text"
             />
           </label>
           <label
-            class="sc-fzXfMC kKsAqI"
+            class="sc-fzXfMD kAhkCt"
             required=""
           >
             <span>
               Last Name
             </span>
             <input
-              class="sc-fzXfMB hFkAvT"
+              class="sc-fzXfMC jgBSVg"
               name="Last Name"
-              placeholder="Last Name"
-              required=""
               type="text"
             />
           </label>
           <label
-            class="sc-fzXfMC bJQSfW"
+            class="sc-fzXfMD dhcyLr"
           >
             <span>
               Favorite Color
             </span>
             <input
-              class="sc-fzXfMB hFkAvT"
+              class="sc-fzXfMC jgBSVg"
               name="Favorite Color"
-              placeholder="Favorite Color"
               type="color"
             />
           </label>
           <label
-            class="sc-fzXfMC bJQSfW"
+            class="sc-fzXfMD dhcyLr"
           >
             <span>
               Birthdate
             </span>
             <input
-              class="sc-fzXfMB hFkAvT"
+              class="sc-fzXfMC jgBSVg"
               name="Birthdate"
-              placeholder="Birthdate"
               type="date"
             />
           </label>
@@ -29516,483 +29504,6 @@ Object {
         </a>
       </footer>
     </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots MetadataInput Required 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  height: 60px;
-  width: 100%;
-  background-color: var(--lightgrey);
-  border: medium none;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.c0 > span {
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 16px;
-  margin-bottom: 5px;
-}
-
-.c0 > span:after {
-  color: var(--red);
-  content: " *";
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            General Text
-          </span>
-          <input
-            class="c1"
-            name="General Text"
-            placeholder="General Text"
-            required=""
-            type="text"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            Date
-          </span>
-          <input
-            class="c1"
-            name="Date"
-            placeholder="Date"
-            required=""
-            type="date"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            Color
-          </span>
-          <input
-            class="c1"
-            name="Color"
-            placeholder="Color"
-            required=""
-            type="color"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            Email Address
-          </span>
-          <input
-            class="c1"
-            name="Email Address"
-            placeholder="Email Address"
-            required=""
-            type="email"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            URL
-          </span>
-          <input
-            class="c1"
-            name="URL"
-            placeholder="URL"
-            required=""
-            type="url"
-          />
-        </label>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div>
-      <label
-        class="sc-fzXfMC kKsAqI"
-        required=""
-      >
-        <span>
-          General Text
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="General Text"
-          placeholder="General Text"
-          required=""
-          type="text"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC kKsAqI"
-        required=""
-      >
-        <span>
-          Date
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Date"
-          placeholder="Date"
-          required=""
-          type="date"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC kKsAqI"
-        required=""
-      >
-        <span>
-          Color
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Color"
-          placeholder="Color"
-          required=""
-          type="color"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC kKsAqI"
-        required=""
-      >
-        <span>
-          Email Address
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Email Address"
-          placeholder="Email Address"
-          required=""
-          type="email"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC kKsAqI"
-        required=""
-      >
-        <span>
-          URL
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="URL"
-          placeholder="URL"
-          required=""
-          type="url"
-        />
-      </label>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots MetadataInput Standard 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  height: 60px;
-  width: 100%;
-  background-color: var(--lightgrey);
-  border: medium none;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.c0 > span {
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 16px;
-  margin-bottom: 5px;
-}
-
-.c0 > span:after {
-  color: var(--red);
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div>
-        <label
-          class="c0"
-        >
-          <span>
-            General Text
-          </span>
-          <input
-            class="c1"
-            name="General Text"
-            placeholder="General Text"
-            type="text"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            Date
-          </span>
-          <input
-            class="c1"
-            name="Date"
-            placeholder="Date"
-            type="date"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            Color
-          </span>
-          <input
-            class="c1"
-            name="Color"
-            placeholder="Color"
-            type="color"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            Email Address
-          </span>
-          <input
-            class="c1"
-            name="Email Address"
-            placeholder="Email Address"
-            type="email"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            URL
-          </span>
-          <input
-            class="c1"
-            name="URL"
-            placeholder="URL"
-            type="url"
-          />
-        </label>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div>
-      <label
-        class="sc-fzXfMC bJQSfW"
-      >
-        <span>
-          General Text
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="General Text"
-          placeholder="General Text"
-          type="text"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC bJQSfW"
-      >
-        <span>
-          Date
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Date"
-          placeholder="Date"
-          type="date"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC bJQSfW"
-      >
-        <span>
-          Color
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Color"
-          placeholder="Color"
-          type="color"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC bJQSfW"
-      >
-        <span>
-          Email Address
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Email Address"
-          placeholder="Email Address"
-          type="email"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC bJQSfW"
-      >
-        <span>
-          URL
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="URL"
-          placeholder="URL"
-          type="url"
-        />
-      </label>
-    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
