@@ -11,4 +11,4 @@ Content Management Systems make it easy for people to create their own websites.
 
 A couple of weeks ago, external contributor [Mike Purvis](https://twitter.com/mikedotexe) asked if Unlock would work with Drupal. He quickly rose to the challenge and worked on a plugin; you can now [install it on your own Drupal website](https://www.drupal.org/project/unlock)! It is also [fully open source too](https://github.com/mikedotexe/unlock), so you can of course help improve it!
 
-To showcase it, Mike created a website where you can [unlock dad jokes](https://dev.untoldhq.com/unlock-dad-jokes) ;) Perfect way to end a busy week!
+To showcase it, Mike created a website where you can [unlock dad jokes](https://untoldhq.com/unlock-dad-jokes) ;) Perfect way to end a busy week!
