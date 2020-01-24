@@ -27,7 +27,7 @@ export const useEns = ({ address }) => {
 
   useEffect(() => {
     getNameForAddress()
-  })
+  }, [address])
   return name
 }
 
