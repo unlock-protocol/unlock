@@ -47,7 +47,7 @@ describe('extractEmails', () => {
   })
 
   describe('when a non-empty collection without available email data', () => {
-    it('return a collection of items without associated email addresses', async () => {
+    it('return a collection that does not include items without email Addresses', async () => {
       expect.assertions(1)
       expect(
         await extractEmails([
@@ -56,18 +56,12 @@ describe('extractEmails', () => {
             keyId: '2',
           },
         ])
-      ).toEqual([
-        {
-          lockAddress: 'valid lock address',
-          keyId: '2',
-          emailAddress: undefined,
-        },
-      ])
+      ).toEqual([])
     })
   })
 
   describe('when something fails attempting to generate metadata', () => {
-    it('return a collection of items without associated email addresses', async () => {
+    it('return a collection that does not include items without email Addresses', async () => {
       expect.assertions(1)
       expect(
         await extractEmails([
@@ -76,13 +70,7 @@ describe('extractEmails', () => {
             keyId: '3',
           },
         ])
-      ).toEqual([
-        {
-          lockAddress: 'valid lock address',
-          keyId: '3',
-          emailAddress: undefined,
-        },
-      ])
+      ).toEqual([])
     })
   })
 })
