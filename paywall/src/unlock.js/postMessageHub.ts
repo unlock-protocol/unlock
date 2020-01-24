@@ -34,7 +34,6 @@ export function checkoutHandlerInit({
   dataIframe,
   checkoutIframe,
   config,
-  constants,
 }: checkoutHandlerInitArgs) {
   // listen for updates to state from the data iframe, and forward them to the checkout UI
   dataIframe.on(PostMessages.UPDATE_ACCOUNT, account =>
@@ -43,8 +42,7 @@ export function checkoutHandlerInit({
   dataIframe.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
     let balanceUpdate = balance
     if (usingManagedAccount) {
-      const { erc20ContractAddress } = constants
-      balanceUpdate = injectDefaultBalance(balance, erc20ContractAddress)
+      balanceUpdate = injectDefaultBalance(balance)
     }
     checkoutIframe.postMessage(
       PostMessages.UPDATE_ACCOUNT_BALANCE,
@@ -484,7 +482,6 @@ interface setupDataListenersArgs {
 export function setupDataListeners({
   iframes,
   blockchainData,
-  erc20ContractAddress,
   usingManagedAccount,
   toggleLockState,
   paywallConfig,
@@ -516,7 +513,7 @@ export function setupDataListeners({
   data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
     let balanceUpdate = balance
     if (usingManagedAccount) {
-      balanceUpdate = injectDefaultBalance(balance, erc20ContractAddress)
+      balanceUpdate = injectDefaultBalance(balance)
     }
     checkout.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, balanceUpdate)
     blockchainData.balance = balanceUpdate
