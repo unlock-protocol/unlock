@@ -1,14 +1,11 @@
 import { Balance } from '../unlockTypes'
-import { DEFAULT_STABLECOIN_BALANCE } from '../constants'
+import { DEFAULT_STABLECOIN_BALANCE, STABLECOINS_ADDRESSES } from '../constants'
 
-export const injectDefaultBalance = (
-  oldBalance: Balance,
-  erc20ContractAddress: string
-): Balance => {
+export const injectDefaultBalance = (oldBalance: Balance): Balance => {
   const newBalance: Balance = {}
   const tokens = Object.keys(oldBalance)
   tokens.forEach(token => {
-    if (token === erc20ContractAddress) {
+    if (STABLECOINS_ADDRESSES.indexOf(token) > -1) {
       // If the token is the one we allow, we give the user a default
       // balance. TODO: only do this if the corresponding lock is approved.
       newBalance[token] = DEFAULT_STABLECOIN_BALANCE
