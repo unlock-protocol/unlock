@@ -7,14 +7,16 @@ Object {
     .c0 {
   background-color: var(--green);
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
+  font-size: 20px;
+  color: var(--white);
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
+  height: 60px;
+  width: 100%;
 }
 
 .c0 :hover {
@@ -39,7 +41,7 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-fzXfLR hkwmbI"
+      class="sc-fzXfLR hJlOty"
     >
       Button
     </button>
@@ -105,14 +107,16 @@ Object {
     .c0 {
   background-color: var(--grey);
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
+  font-size: 20px;
+  color: var(--white);
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: auto;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
+  height: 60px;
+  width: 100%;
 }
 
 .c0 :hover {
@@ -138,7 +142,7 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-fzXfLR iSsRvQ"
+      class="sc-fzXfLR bYOiji"
       disabled=""
     >
       Button
@@ -19202,14 +19206,16 @@ Object {
 .c17 {
   background-color: var(--green);
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
+  font-size: 20px;
+  color: var(--white);
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
+  height: 60px;
+  width: 100%;
   width: 100%;
   height: 60px;
 }
@@ -19516,7 +19522,7 @@ Object {
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-fzXfLR sc-fzXfLT isykdY"
+            class="sc-fzXfLR sc-fzXfLT dcjriC"
           >
             Continue
           </button>
@@ -19817,14 +19823,16 @@ Object {
 .c17 {
   background-color: var(--green);
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
+  font-size: 20px;
+  color: var(--white);
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
+  height: 60px;
+  width: 100%;
   width: 100%;
   height: 60px;
 }
@@ -20123,7 +20131,7 @@ Object {
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-fzXfLR sc-fzXfLT isykdY"
+            class="sc-fzXfLR sc-fzXfLT dcjriC"
           >
             Continue
           </button>
@@ -20424,14 +20432,16 @@ Object {
 .c17 {
   background-color: var(--green);
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
+  font-size: 20px;
+  color: var(--white);
   font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
   cursor: pointer;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
+  height: 60px;
+  width: 100%;
   width: 100%;
   height: 60px;
 }
@@ -20730,7 +20740,7 @@ Object {
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-fzXfLR sc-fzXfLT isykdY"
+            class="sc-fzXfLR sc-fzXfLT dcjriC"
           >
             Continue
           </button>
@@ -28802,32 +28812,117 @@ Object {
 }
 `;
 
-exports[`Storyshots MetadataInput Required 1`] = `
+exports[`Storyshots Metadata Collection Form Empty 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c1 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c6 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c6 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c7 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
+}
+
+.c2 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.c0 {
+  padding: 10px 40px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: var(--offwhite);
+  color: var(--darkgrey);
+  border-radius: 4px;
+  position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c5 {
+  background-color: var(--green);
+  border: none;
+  font-size: 20px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
   height: 60px;
   width: 100%;
-  background-color: var(--lightgrey);
-  border: medium none;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
 }
 
-.c0 > span {
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
+.c5 :hover {
+  background-color: var(--activegreen);
 }
 
-.c0 > span:after {
-  color: var(--red);
-  content: " *";
+.c4 {
+  margin-bottom: 32px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
+  }
 }
 
 <div>
@@ -28835,83 +28930,68 @@ Object {
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
       />
-      <div>
-        <label
-          class="c0"
-          required=""
+      <section
+        class="c0"
+      >
+        <a
+          class="c1 c2 closeButton"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <header>
+          <h1
+            class="c3"
+          />
+        </header>
+        <form>
+          <p>
+            We need to collect some additional information for your purchase.
+          </p>
+          <div
+            class="c4"
+          />
+          <button
+            class="c5"
+            type="submit"
+          >
+            Continue
+          </button>
+        </form>
+        <footer
+          class="c6"
         >
           <span>
-            General Text
+            Powered by
           </span>
-          <input
-            class="c1"
-            name="General Text"
-            placeholder="General Text"
-            required=""
-            type="text"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            Date
-          </span>
-          <input
-            class="c1"
-            name="Date"
-            placeholder="Date"
-            required=""
-            type="date"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            Color
-          </span>
-          <input
-            class="c1"
-            name="Color"
-            placeholder="Color"
-            required=""
-            type="color"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            Email Address
-          </span>
-          <input
-            class="c1"
-            name="Email Address"
-            placeholder="Email Address"
-            required=""
-            type="email"
-          />
-        </label>
-        <label
-          class="c0"
-          required=""
-        >
-          <span>
-            URL
-          </span>
-          <input
-            class="c1"
-            name="URL"
-            placeholder="URL"
-            required=""
-            type="url"
-          />
-        </label>
-      </div>
+          <a
+            href="https://unlock-protocol.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <svg
+              alt="Unlock"
+              class="sth0f3-1 c7"
+              viewBox="0 0 1200 256"
+            >
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+        </footer>
+      </section>
     </div>
   </body>,
   "container": <div>
@@ -28919,83 +28999,68 @@ Object {
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
       rel="stylesheet"
     />
-    <div>
-      <label
-        class="sc-fzXfMC ggAydG"
-        required=""
+    <section
+      class="sc-fzXfLO bbulcl"
+    >
+      <a
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <header>
+        <h1
+          class="sc-fzXfLP fMvybG"
+        />
+      </header>
+      <form>
+        <p>
+          We need to collect some additional information for your purchase.
+        </p>
+        <div
+          class="sc-fzXfMB fCyFji"
+        />
+        <button
+          class="sc-fzXfLR hJlOty"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+      <footer
+        class="sc-AykKI PUPkr"
       >
         <span>
-          General Text
+          Powered by
         </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="General Text"
-          placeholder="General Text"
-          required=""
-          type="text"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC ggAydG"
-        required=""
-      >
-        <span>
-          Date
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Date"
-          placeholder="Date"
-          required=""
-          type="date"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC ggAydG"
-        required=""
-      >
-        <span>
-          Color
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Color"
-          placeholder="Color"
-          required=""
-          type="color"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC ggAydG"
-        required=""
-      >
-        <span>
-          Email Address
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Email Address"
-          placeholder="Email Address"
-          required=""
-          type="email"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC ggAydG"
-        required=""
-      >
-        <span>
-          URL
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="URL"
-          placeholder="URL"
-          required=""
-          type="url"
-        />
-      </label>
-    </div>
+        <a
+          href="https://unlock-protocol.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            alt="Unlock"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
+            viewBox="0 0 1200 256"
+          >
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </a>
+      </footer>
+    </section>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -29051,11 +29116,108 @@ Object {
 }
 `;
 
-exports[`Storyshots MetadataInput Standard 1`] = `
+exports[`Storyshots Metadata Collection Form With Fields 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c1 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c1 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c9 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c9 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c10 {
+  fill: var(--brand);
+  width: 48px;
+  margin-bottom: -1px;
+  margin-left: 4px;
+}
+
+.c2 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.c0 {
+  padding: 10px 40px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: var(--offwhite);
+  color: var(--darkgrey);
+  border-radius: 4px;
+  position: relative;
+}
+
+.c3 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+}
+
+.c8 {
+  background-color: var(--green);
+  border: none;
+  font-size: 20px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  height: 60px;
+  width: 100%;
+}
+
+.c8 :hover {
+  background-color: var(--activegreen);
+}
+
+.c4 {
+  margin-bottom: 32px;
+}
+
+.c6 {
   height: 60px;
   width: 100%;
   background-color: var(--lightgrey);
@@ -29065,17 +29227,43 @@ Object {
   font-size: 16px;
 }
 
-.c0 > span {
+.c5 > span {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
   color: var(--darkgrey);
-  margin-top: 10px;
+  margin-top: 16px;
   margin-bottom: 5px;
 }
 
-.c0 > span:after {
+.c5 > span:after {
   color: var(--red);
+  content: " *";
+}
+
+.c7 > span {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 16px;
+  margin-bottom: 5px;
+}
+
+.c7 > span:after {
+  color: var(--red);
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
+  }
 }
 
 <div>
@@ -29083,73 +29271,119 @@ Object {
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
       />
-      <div>
-        <label
-          class="c0"
+      <section
+        class="c0"
+      >
+        <a
+          class="c1 c2 closeButton"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <header>
+          <h1
+            class="c3"
+          />
+        </header>
+        <form>
+          <p>
+            We need to collect some additional information for your purchase.
+          </p>
+          <div
+            class="c4"
+          >
+            <label
+              class="c5"
+              required=""
+            >
+              <span>
+                First Name
+              </span>
+              <input
+                class="c6"
+                name="First Name"
+                type="text"
+              />
+            </label>
+            <label
+              class="c5"
+              required=""
+            >
+              <span>
+                Last Name
+              </span>
+              <input
+                class="c6"
+                name="Last Name"
+                type="text"
+              />
+            </label>
+            <label
+              class="c7"
+            >
+              <span>
+                Favorite Color
+              </span>
+              <input
+                class="c6"
+                name="Favorite Color"
+                type="color"
+              />
+            </label>
+            <label
+              class="c7"
+            >
+              <span>
+                Birthdate
+              </span>
+              <input
+                class="c6"
+                name="Birthdate"
+                type="date"
+              />
+            </label>
+          </div>
+          <button
+            class="c8"
+            type="submit"
+          >
+            Continue
+          </button>
+        </form>
+        <footer
+          class="c9"
         >
           <span>
-            General Text
+            Powered by
           </span>
-          <input
-            class="c1"
-            name="General Text"
-            placeholder="General Text"
-            type="text"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            Date
-          </span>
-          <input
-            class="c1"
-            name="Date"
-            placeholder="Date"
-            type="date"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            Color
-          </span>
-          <input
-            class="c1"
-            name="Color"
-            placeholder="Color"
-            type="color"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            Email Address
-          </span>
-          <input
-            class="c1"
-            name="Email Address"
-            placeholder="Email Address"
-            type="email"
-          />
-        </label>
-        <label
-          class="c0"
-        >
-          <span>
-            URL
-          </span>
-          <input
-            class="c1"
-            name="URL"
-            placeholder="URL"
-            type="url"
-          />
-        </label>
-      </div>
+          <a
+            href="https://unlock-protocol.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <svg
+              alt="Unlock"
+              class="sth0f3-1 c10"
+              viewBox="0 0 1200 256"
+            >
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+        </footer>
+      </section>
     </div>
   </body>,
   "container": <div>
@@ -29157,73 +29391,119 @@ Object {
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
       rel="stylesheet"
     />
-    <div>
-      <label
-        class="sc-fzXfMC gwxvNY"
+    <section
+      class="sc-fzXfLO bbulcl"
+    >
+      <a
+        class="is925m-0 iBlYwN sc-AykKK fkIalq closeButton"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <header>
+        <h1
+          class="sc-fzXfLP fMvybG"
+        />
+      </header>
+      <form>
+        <p>
+          We need to collect some additional information for your purchase.
+        </p>
+        <div
+          class="sc-fzXfMB fCyFji"
+        >
+          <label
+            class="sc-fzXfMD kAhkCt"
+            required=""
+          >
+            <span>
+              First Name
+            </span>
+            <input
+              class="sc-fzXfMC jgBSVg"
+              name="First Name"
+              type="text"
+            />
+          </label>
+          <label
+            class="sc-fzXfMD kAhkCt"
+            required=""
+          >
+            <span>
+              Last Name
+            </span>
+            <input
+              class="sc-fzXfMC jgBSVg"
+              name="Last Name"
+              type="text"
+            />
+          </label>
+          <label
+            class="sc-fzXfMD dhcyLr"
+          >
+            <span>
+              Favorite Color
+            </span>
+            <input
+              class="sc-fzXfMC jgBSVg"
+              name="Favorite Color"
+              type="color"
+            />
+          </label>
+          <label
+            class="sc-fzXfMD dhcyLr"
+          >
+            <span>
+              Birthdate
+            </span>
+            <input
+              class="sc-fzXfMC jgBSVg"
+              name="Birthdate"
+              type="date"
+            />
+          </label>
+        </div>
+        <button
+          class="sc-fzXfLR hJlOty"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+      <footer
+        class="sc-AykKI PUPkr"
       >
         <span>
-          General Text
+          Powered by
         </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="General Text"
-          placeholder="General Text"
-          type="text"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC gwxvNY"
-      >
-        <span>
-          Date
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Date"
-          placeholder="Date"
-          type="date"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC gwxvNY"
-      >
-        <span>
-          Color
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Color"
-          placeholder="Color"
-          type="color"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC gwxvNY"
-      >
-        <span>
-          Email Address
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="Email Address"
-          placeholder="Email Address"
-          type="email"
-        />
-      </label>
-      <label
-        class="sc-fzXfMC gwxvNY"
-      >
-        <span>
-          URL
-        </span>
-        <input
-          class="sc-fzXfMB hFkAvT"
-          name="URL"
-          placeholder="URL"
-          type="url"
-        />
-      </label>
-    </div>
+        <a
+          href="https://unlock-protocol.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <svg
+            alt="Unlock"
+            class="sth0f3-1 sc-AykKJ cMJCgM"
+            viewBox="0 0 1200 256"
+          >
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </a>
+      </footer>
+    </section>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
