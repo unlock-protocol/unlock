@@ -377,7 +377,7 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@24.9.0":
+"@types/jest@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-24.9.0.tgz#78c6991cd1734cf0d390be24875e310bb0a9fb74"
   integrity sha512-dXvuABY9nM1xgsXlOtLQXJKdacxZJd7AtvLsKZ/0b57ruMXDKCOXAC/M75GbllQX6o1pcZ5hAG4JzYy7Z/wM2w==
@@ -793,6 +793,13 @@ bip66@^1.1.5:
   integrity sha1-AfqHSHhcpwlV1QESF9GzE5lpyiI=
   dependencies:
     safe-buffer "^5.0.1"
+
+blake2@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/blake2/-/blake2-4.0.0.tgz#32ae4c3568ef5ee4d74c50b99d774abf8fff4f60"
+  integrity sha512-PIOc6RXAZYBYcdpyMzI6/SCU3BH8EbmA9vr0BAVyQv48CQTXDN6viHOTM+8KQue2IPsyHNpIR3UDisz8rZDPTA==
+  dependencies:
+    nan "^2.14.0"
 
 bluebird@^3.5.0, bluebird@^3.5.3:
   version "3.7.2"

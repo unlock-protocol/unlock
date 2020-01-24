@@ -100,12 +100,12 @@ describe('postMessageHub', () => {
 
         const payload = {
           eth: '7',
-          '0xneato': '8',
+          '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': '8',
         }
 
         const expectedPayload = {
           eth: '0',
-          '0xneato': '35',
+          '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': '35',
         }
 
         iframes.data.emit(PostMessages.UPDATE_ACCOUNT_BALANCE, payload)

@@ -4,19 +4,26 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "ci": "jest",
+    "db:migrate": "sequelize db:migrate",
+    "test": "jest",
+    "start": "node ./build/src/index.js"
+  },
+  "engines": {
+    "node": "^10"
   },
   "license": "MIT",
   "dependencies": {
     "@types/cron": "1.7.1",
     "@types/isomorphic-fetch": "0.0.35",
-    "@types/request-promise-native": "^1.0.17",
-    "@types/jest": "24.9.0",
+    "@types/jest": "^24.9.0",
     "@types/mocha": "5.2.7",
+    "@types/request-promise-native": "^1.0.17",
     "@types/sequelize": "4.28.8",
     "apollo-cache-inmemory": "1.6.5",
     "apollo-client": "2.6.8",
     "apollo-link-http": "1.5.16",
+    "blake2": "^4.0.0",
     "cron": "1.8.1",
     "dotenv": "8.2.0",
     "ethereumjs-util": "6.2.0",
@@ -35,6 +42,5 @@
     "ts-jest": "24.3.0",
     "typescript": "3.7.5"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

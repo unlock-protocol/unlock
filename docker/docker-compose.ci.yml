@@ -61,6 +61,9 @@ services:
     env_file: ./integration.env
     depends_on:
       - ganache-integration
+  nudge:
+    image: nudge
+    env_file: ./integration.env
   wedlocks:
     image: wedlocks
     env_file: ./integration.env
