@@ -4,10 +4,10 @@ db_username=$3
 db_password=$4
 db_name=$5
 db_hostname=$6
-is_forked_pr=$8
-build_id=$9
-web3_provider_host=${13}
-graphql_base_url=${15}
+is_forked_pr=$7
+build_id=$8
+web3_provider_host=${9}
+graphql_base_url=${10}
 
 function check_is_forked_pr()
 {
@@ -34,7 +34,7 @@ function deploy()
     
     if eb status ${environment_name}; then
         eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} WEB3_PROVIDER_HOST=${web3_provider_host} GRAPHQL_BASE_URL=${graphql_base_url}
-        eb deploy ${environment_name} --label nudge-abc-${build_id} --timeout 10
+        eb deploy ${environment_name} --label nudge-${build_id} --timeout 10
     else
         eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},WEB3_PROVIDER_HOST=${web3_provider_host},GRAPHQL_BASE_URL=${graphql_base_url} --elb-type classic
     fi
