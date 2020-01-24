@@ -59,6 +59,7 @@
     "jest-mock-axios": "3.2.0",
     "jest-styled-components": "7.0.0",
     "lint-staged": "10.0.0",
+    "mutationobserver-shim": "0.3.3",
     "netlify-cli": "2.30.0",
     "next": "9.2.0",
     "path-match": "1.2.4",
