@@ -443,5 +443,8 @@ workflows:
           requires:
             - integration-tests
       - deploy-nudge-beanstalk:
+          filters:
+            branches:
+              only: master
           requires:
             - integration-tests    
