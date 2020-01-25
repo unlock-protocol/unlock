@@ -27,6 +27,7 @@ describe('injectDefaultBalance helper', () => {
       '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': '0', // SAI
       '0x6b175474e89094c44da98b954eedeac495271d0f': '0', // DAI
       '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': '0', // USDC
+      '0xaFF4481D10270F50f203E0763e2597776068CBc5': '0', // WEENUS
     }
     expect(injectDefaultBalance(balance)).toEqual({
       eth: '0',
@@ -34,6 +35,7 @@ describe('injectDefaultBalance helper', () => {
       '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359': DEFAULT_STABLECOIN_BALANCE,
       '0x6b175474e89094c44da98b954eedeac495271d0f': DEFAULT_STABLECOIN_BALANCE,
       '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': DEFAULT_STABLECOIN_BALANCE,
+      '0xaFF4481D10270F50f203E0763e2597776068CBc5': DEFAULT_STABLECOIN_BALANCE,
     })
   })
 })
