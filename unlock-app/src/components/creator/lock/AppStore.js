@@ -94,7 +94,7 @@ export class AppStore extends React.Component {
             </ExtraLink>
             <ExtraLink>
               <Button
-                href={`${config.paywallUrl}/newdemo?lock=${lock.address}&name=${lock.name}&type=paywall`}
+                href={`${config.paywallUrl}/newdemo?lock=${lock.address}`}
                 target="_blank"
                 backgroundColor="white"
                 borderRadius="3px"
