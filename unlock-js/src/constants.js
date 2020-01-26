@@ -4,8 +4,8 @@ import { ethers } from 'ethers'
 export const GAS_AMOUNTS = {
   createLock: 4500000, // TODO Make dynamic as later version of the protocol are much cheaper!
   updateKeyPrice: 100000,
-  purchaseFor: 250000, // purchaseKey in walletService
-  purchase: 250000, // purchaseKey in walletService
+  purchaseFor: 300000, // purchaseKey in walletService
+  purchase: 300000, // purchaseKey in walletService
   withdraw: 100000, // withdrawFromLock in walletService
   deployContract: 6400000,
   updateKeyPricing: 100000,
