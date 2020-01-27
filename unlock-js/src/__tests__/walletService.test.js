@@ -499,6 +499,10 @@ describe('WalletService (ethers)', () => {
       window.fetch = jest
         .fn()
         .mockResolvedValue({ json: async () => ({ metadata: 'value' }) })
+      walletService.getAccount = jest.fn().mockResolvedValue('0xuser')
+      walletService.unformattedSignTypedData = jest
+        .fn()
+        .mockResolvedValue('aSignature')
     })
     afterAll(() => {
       window.fetch = originalFetch
@@ -509,6 +513,8 @@ describe('WalletService (ethers)', () => {
       keyId: '1',
       locksmithHost: 'https://locksmith',
     }
+
+    const expectedUrl = `${options.locksmithHost}/api/key/${options.lockAddress}/${options.keyId}`
 
     it('should callback with the json in the response on success', done => {
       expect.assertions(2)
@@ -534,6 +540,41 @@ describe('WalletService (ethers)', () => {
       }
 
       walletService.getKeyMetadata(options, callback)
+    })
+
+    it('should not pass along a signature if getProtectedData is not specified', done => {
+      expect.assertions(1)
+
+      const callback = () => {
+        expect(window.fetch).toHaveBeenCalledWith(expectedUrl, {
+          method: 'GET',
+          accept: 'json',
+        })
+        done()
+      }
+
+      walletService.getKeyMetadata(options, callback)
+    })
+
+    it('should pass along the signature if getProtectedData is specified', done => {
+      expect.assertions(1)
+
+      const callback = () => {
+        expect(window.fetch).toHaveBeenCalledWith(expectedUrl, {
+          method: 'GET',
+          accept: 'json',
+          Authorization: expect.any(String),
+        })
+        done()
+      }
+
+      walletService.getKeyMetadata(
+        {
+          ...options,
+          getProtectedData: true,
+        },
+        callback
+      )
     })
   })
 

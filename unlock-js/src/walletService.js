@@ -403,13 +403,31 @@ export default class WalletService extends UnlockService {
    * @param {boolean} params.getProtectedData - when truthy, will generate signature to get protected metadata
    * @param {*} callback
    */
-  async getKeyMetadata({ lockAddress, keyId, locksmithHost }, callback) {
+  async getKeyMetadata(
+    { lockAddress, keyId, locksmithHost, getProtectedData },
+    callback
+  ) {
     const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
     try {
-      const response = await fetch(url, {
+      let options = {
         method: 'GET',
         accept: 'json',
-      })
+      }
+
+      if (getProtectedData) {
+        const currentAddress = await this.getAccount()
+        const payload = generateKeyMetadataPayload(currentAddress, {})
+        const signature = await this.unformattedSignTypedData(
+          currentAddress,
+          payload
+        )
+        options.Authorization = `Bearer ${Buffer.from(signature).toString(
+          'base64'
+        )}`
+      }
+
+      const response = await fetch(url, options)
+
       const json = await response.json()
       callback(null, json)
     } catch (error) {
