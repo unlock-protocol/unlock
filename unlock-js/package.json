@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "babel-jest": "24.9.0",
+    "babel-jest": "25.1.0",
     "cross-fetch": "3.0.4",
     "eslint": "6.8.0",
     "ethers": "4.0.43",
@@ -42,7 +42,7 @@
     "@babel/cli": "7.8.3",
     "@babel/core": "7.8.3",
     "@babel/preset-env": "7.8.3",
-    "babel-jest": "24.9.0",
+    "babel-jest": "25.1.0",
     "jest": "25.1.0",
     "nock": "11.7.2",
     "unlock-abi-0": "1.0.4",

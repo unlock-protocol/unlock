@@ -18,7 +18,7 @@
     "@typescript-eslint/eslint-plugin": "2.17.0",
     "@typescript-eslint/parser": "2.17.0",
     "babel-eslint": "10.0.3",
-    "babel-jest": "24.9.0",
+    "babel-jest": "25.1.0",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.0",
