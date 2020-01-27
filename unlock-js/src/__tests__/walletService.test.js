@@ -441,6 +441,16 @@ describe('WalletService (ethers)', () => {
       window.fetch = originalFetch
     })
 
+    const options = {
+      lockAddress: '0xlockAddress',
+      keyId: '1',
+      metadata: {
+        color: 'blue',
+        bestBandNamedAfterAPlace: 'Chicago',
+      },
+      locksmithHost: 'https://locksmith',
+    }
+
     it('sends the request to the correct URL', async done => {
       expect.assertions(3)
 
@@ -450,16 +460,7 @@ describe('WalletService (ethers)', () => {
         done()
       }
 
-      await walletService.setKeyMetadata(
-        '0xlockAddress',
-        '1',
-        {
-          color: 'blue',
-          bestBandNamedAfterAPlace: 'Chicago',
-        },
-        'https://locksmith',
-        callback
-      )
+      await walletService.setKeyMetadata(options, callback)
 
       expect(window.fetch).toHaveBeenCalledWith(
         'https://locksmith/api/key/0xlockAddress/1',
@@ -484,16 +485,7 @@ describe('WalletService (ethers)', () => {
         }
       }
 
-      await walletService.setKeyMetadata(
-        '0xwhatever',
-        '1',
-        {
-          color: 'blue',
-          bestBandNamedAfterAPlace: 'Chicago',
-        },
-        'https://locksmith',
-        callback
-      )
+      await walletService.setKeyMetadata(options, callback)
     })
   })
 
@@ -512,6 +504,12 @@ describe('WalletService (ethers)', () => {
       window.fetch = originalFetch
     })
 
+    const options = {
+      lockAddress: '0xsomething',
+      keyId: '1',
+      locksmithHost: 'https://locksmith',
+    }
+
     it('should callback with the json in the response on success', done => {
       expect.assertions(2)
 
@@ -521,12 +519,7 @@ describe('WalletService (ethers)', () => {
         done()
       }
 
-      walletService.getKeyMetadata(
-        '0xsomething',
-        '1',
-        'http://locksmith',
-        callback
-      )
+      walletService.getKeyMetadata(options, callback)
     })
 
     it('should callback with an error on error', done => {
@@ -540,12 +533,7 @@ describe('WalletService (ethers)', () => {
         done()
       }
 
-      walletService.getKeyMetadata(
-        '0xsomething',
-        '1',
-        'http://locksmith',
-        callback
-      )
+      walletService.getKeyMetadata(options, callback)
     })
   })
 
