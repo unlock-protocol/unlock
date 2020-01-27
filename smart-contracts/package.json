@@ -43,7 +43,7 @@
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.8.2",
     "hardlydifficult-ethereum-contracts": "0.7.13",
-    "jest": "24.9.0",
+    "jest": "25.1.0",
     "lint-staged": "10.0.2",
     "netlify-cli": "2.30.0",
     "prettier": "1.19.1",

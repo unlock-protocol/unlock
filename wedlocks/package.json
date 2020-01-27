@@ -30,7 +30,7 @@
     "eslint-plugin-react": "7.18.0",
     "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-standard": "4.0.1",
-    "jest": "24.9.0",
+    "jest": "25.1.0",
     "lint-staged": "10.0.3",
     "netlify-cli": "2.30.0",
     "node-forge": "0.9.1",
