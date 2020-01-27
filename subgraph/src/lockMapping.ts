@@ -93,6 +93,7 @@ function genKey(event: Transfer, lock: Lock, lockContract: PublicLock): void {
   key.owner = event.params._to.toHex();
   key.expiration = lockContract.keyExpirationTimestampFor(event.params._to);
   key.tokenURI = lockContract.tokenURI(key.keyId);
+  key.createdAt = event.block.timestamp;
   key.save();
 }
 
