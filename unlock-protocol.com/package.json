@@ -44,7 +44,7 @@
     "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-standard": "4.0.1",
     "fork-ts-checker-webpack-plugin": "4.0.3",
-    "jest": "24.9.0",
+    "jest": "25.1.0",
     "jest-styled-components": "7.0.0",
     "lint-staged": "10.0.3",
     "netlify-cli": "2.30.0",
