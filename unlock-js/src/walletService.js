@@ -350,13 +350,17 @@ export default class WalletService extends UnlockService {
   /**
    * Sign and send a request to update metadata specific to a given key.
    *
-   * @param {string} lockAddress - The address of the lock
-   * @param {string} keyId - The id of the key to set metadata on
-   * @param {Object.<string, string>} metadata - The metadata fields and values to set
-   * @param {string} locksmithHost - A url with no trailing slash
+   * @param {Object} params
+   * @param {string} params.lockAddress - The address of the lock
+   * @param {string} params.keyId - The id of the key to set metadata on
+   * @param {Object.<string, string>} params.metadata - The metadata fields and values to set
+   * @param {string} params.locksmithHost - A url with no trailing slash
    * @param {*} callback
    */
-  async setKeyMetadata(lockAddress, keyId, metadata, locksmithHost, callback) {
+  async setKeyMetadata(
+    { lockAddress, keyId, metadata, locksmithHost },
+    callback
+  ) {
     const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
     try {
       const currentAddress = await this.getAccount()
@@ -392,18 +396,38 @@ export default class WalletService extends UnlockService {
   /**
    * Sign and send a request to read metadata specific to a given key.
    *
-   * @param {string} lockAddress - The address of the lock
-   * @param {string} keyId - The id of the key to set metadata on
-   * @param {string} locksmithHost - A url with no trailing slash
+   * @param {Object} params
+   * @param {string} params.lockAddress - The address of the lock
+   * @param {string} params.keyId - The id of the key to set metadata on
+   * @param {string} params.locksmithHost - A url with no trailing slash
+   * @param {boolean} params.getProtectedData - when truthy, will generate signature to get protected metadata
    * @param {*} callback
    */
-  async getKeyMetadata(lockAddress, keyId, locksmithHost, callback) {
+  async getKeyMetadata(
+    { lockAddress, keyId, locksmithHost, getProtectedData },
+    callback
+  ) {
     const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
     try {
-      const response = await fetch(url, {
+      let options = {
         method: 'GET',
         accept: 'json',
-      })
+      }
+
+      if (getProtectedData) {
+        const currentAddress = await this.getAccount()
+        const payload = generateKeyMetadataPayload(currentAddress, {})
+        const signature = await this.unformattedSignTypedData(
+          currentAddress,
+          payload
+        )
+        options.Authorization = `Bearer ${Buffer.from(signature).toString(
+          'base64'
+        )}`
+      }
+
+      const response = await fetch(url, options)
+
       const json = await response.json()
       callback(null, json)
     } catch (error) {
