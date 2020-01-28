@@ -67,8 +67,16 @@ services:
     command: yarn db:migrate
     depends_on: 
       - postgres
+      - locksmith
+      - wedlocks
   nudge:
     env_file: development.env
     build:
       context: ../nudge
       dockerfile: Dockerfile
+    depends_on: 
+      - postgres
+      - locksmith
+      - wedlocks
+      - graph-node
+      - subgraph_deployment
