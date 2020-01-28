@@ -1,6 +1,7 @@
 # Changes
 
-# Next release
+# 0.7.2
+- bumped gas limits
 - Adding script to initialize a template
 
 # 0.7.1
