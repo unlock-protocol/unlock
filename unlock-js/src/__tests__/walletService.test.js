@@ -489,6 +489,71 @@ describe('WalletService (ethers)', () => {
     })
   })
 
+  describe('setUserMetadata', () => {
+    let originalFetch
+    beforeAll(() => {
+      originalFetch = window.fetch
+    })
+    beforeEach(async () => {
+      await resetTestsAndConnect()
+      window.fetch = jest.fn().mockResolvedValue({ status: 202 })
+      walletService.getAccount = jest.fn().mockResolvedValue('0xuser')
+      walletService.unformattedSignTypedData = jest
+        .fn()
+        .mockResolvedValue('aSignature')
+    })
+    afterAll(() => {
+      window.fetch = originalFetch
+    })
+
+    const options = {
+      lockAddress: '0xlockAddress',
+      userAddress: '0xuseraddress',
+      metadata: {
+        publicData: {},
+        protectedData: {},
+      },
+      locksmithHost: 'https://locksmith',
+    }
+
+    it('sends the request to the correct URL', async done => {
+      expect.assertions(3)
+
+      const callback = (error, value) => {
+        expect(error).toBeNull()
+        expect(value).toBe(true)
+        done()
+      }
+
+      await walletService.setUserMetadata(options, callback)
+
+      expect(window.fetch).toHaveBeenCalledWith(
+        'https://locksmith/api/key/0xlockAddress/user/0xuseraddress',
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: expect.any(String),
+            'Content-Type': 'application/json',
+          },
+          body: expect.any(String),
+        }
+      )
+    })
+
+    it('calls back with an error if something goes wrong', async done => {
+      expect.assertions(0)
+
+      window.fetch = jest.fn().mockResolvedValue({ status: 503 })
+      const callback = error => {
+        if (error) {
+          done()
+        }
+      }
+
+      await walletService.setUserMetadata(options, callback)
+    })
+  })
+
   describe('getKeyMetadata', () => {
     let originalFetch
     beforeAll(() => {
