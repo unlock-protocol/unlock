@@ -10,8 +10,6 @@ module.exports = {
   dialect: 'postgres',
   operatorsAliases: false,
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
-  unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
-  graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   wedlocksURI: process.env.WEDLOCKS_URI,
   graphQLEndpoint: process.env.GRAPHQL_BASE_URL,
 }
