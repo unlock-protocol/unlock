@@ -87,6 +87,7 @@ describe('processKey', () => {
             lockAddress: '0xabc',
             keyId: '2',
             emailAddress: 'test@example.com',
+            lockName: 'Lock Name'
           })
         ).toBe(false)
       })
