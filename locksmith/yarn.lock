@@ -1084,10 +1084,10 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
-"@unlock-protocol/unlock-js@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.0.tgz#061ec1d4cd181e7e382b3a71fd98cc2d160097cc"
-  integrity sha512-Kf2kOrmvDtD2QKJwKuuqZ9UiqSSVPPdKZI49huIv0uld+3sqyoiVpg76O3IHjeCA2xmvnTvysr0kHkdc3ZLQIA==
+"@unlock-protocol/unlock-js@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.1.tgz#a302f3eb7de5a531dfc97069e8b6a0456f56eecc"
+  integrity sha512-ct9XUYXfGIreX/6jsjZ8R2ht6maUN/pvKUT2nIlXhNMvxxFt0asIOiA3RBKnCIj6PKMObFfiJDT9Jh7t4qWvJA==
   dependencies:
     babel-jest "25.1.0"
     cross-fetch "3.0.4"
