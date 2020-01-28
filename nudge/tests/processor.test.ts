@@ -63,6 +63,7 @@ describe('processKey', () => {
           lockAddress: '0xdef',
           keyId: '1',
           emailAddress: 'test@example.com',
+          lockName: 'Lock Name'
         })
       ).toBe(false)
     })
@@ -76,6 +77,7 @@ describe('processKey', () => {
             lockAddress: '0xabc',
             keyId: '1',
             emailAddress: 'test@example.com',
+            lockName: 'Lock Name'
           })
         ).toBe(false)
       })
@@ -88,6 +90,7 @@ describe('processKey', () => {
               lockAddress: '0xabc',
               keyId: '2',
               emailAddress: 'test@example.com',
+              lockName: 'Lock Name'
             })
           ).toBe(true)
         })
@@ -100,6 +103,7 @@ describe('processKey', () => {
               lockAddress: '0xabc',
               keyId: '2',
               emailAddress: 'test@example.com',
+              lockName: 'Lock Name'
             })
           ).toBe(false)
         })

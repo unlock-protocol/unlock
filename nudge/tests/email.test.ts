@@ -16,6 +16,7 @@ describe('Email', () => {
           keyId: '1',
           emailAddress: 'email@example.com',
           lockAddress: 'lock address',
+          lockName: 'Test Lock Name'
         })
 
         expect(successfulDispatch).toBe(true)
@@ -29,6 +30,7 @@ describe('Email', () => {
           keyId: '2',
           emailAddress: 'email@example.com',
           lockAddress: 'lock address 2',
+          lockName: 'Test Lock Name'
         })
 
         expect(unsuccessfulDispatch).toBe(false)

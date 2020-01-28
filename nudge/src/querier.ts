@@ -27,6 +27,7 @@ export class Querier {
           keys {
             lock {
               address
+              name
             }
             keyId
           }
@@ -36,8 +37,9 @@ export class Querier {
 
     return queryResults.data.keys.map((currentResult: any) => {
       return {
-        lockAddress: currentResult.lock.address,
         keyId: currentResult.keyId,
+        lockAddress: currentResult.lock.address,
+        lockName: currentResult.lock.name  
       }
     })
   }
