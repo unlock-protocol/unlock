@@ -1,5 +1,9 @@
 # Changes
 
+# 0.8.1
+- Addition of setUserMetadata, which follows the same argument pattern
+  as the other metadata methods
+
 # 0.8.0
 - BREAKING: getKeyMetadata now takes an object for non-callback
   params, now including an optional signature to retrieve protected metadata
