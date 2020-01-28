@@ -67,6 +67,22 @@ interface SetKeyMetadataParams {
   locksmithHost: string
 }
 
+interface UserMetadata {
+  publicData?: {
+    [key: string]: string
+  }
+  privateData?: {
+    [key: string]: string
+  }
+}
+
+interface SetUserMetadataParams {
+  lockAddress: string
+  userAddress: string
+  metadata: UserMetadata
+  locksmithHost: string
+}
+
 interface GetKeyMetadataParams {
   lockAddress: string
   keyId: string
@@ -82,5 +98,6 @@ export class WalletService extends EventEmitter {
   getAccount: () => Promise<string | false>;
   purchaseKey: (params: PurchaseKeyParams) => Promise<string>;
   setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void;
+  setUserMetadata: (params: SetUserMetadataParams, callback: any) => void;
   getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void;
 }
