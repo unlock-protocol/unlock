@@ -8,6 +8,7 @@ is_forked_pr=$7
 build_id=$8
 web3_provider_host=${9}
 graphql_base_url=${10}
+wedlocks_uri=${11}
 
 function check_is_forked_pr()
 {
@@ -33,10 +34,10 @@ function deploy()
     environment_name=$1
     
     if eb status ${environment_name}; then
-        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} WEB3_PROVIDER_HOST=${web3_provider_host} GRAPHQL_BASE_URL=${graphql_base_url}
+        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} WEB3_PROVIDER_HOST=${web3_provider_host} GRAPHQL_BASE_URL=${graphql_base_url} WEDLOCKS_URI=${wedlocks_uri}
         eb deploy ${environment_name} --label nudge-${build_id} --timeout 10
     else
-        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},WEB3_PROVIDER_HOST=${web3_provider_host},GRAPHQL_BASE_URL=${graphql_base_url} --elb-type classic
+        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},WEB3_PROVIDER_HOST=${web3_provider_host},GRAPHQL_BASE_URL=${graphql_base_url},WEDLOCKS_URI=${wedlocks_uri} --elb-type classic
     fi
     
 }
