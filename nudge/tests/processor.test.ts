@@ -1,7 +1,6 @@
 import { Processor } from '../src/processor'
 
 let testGraphQLEndpoint = 'http://example.com/graphQL'
-let approvedLocks = ['0xabc']
 
 let queryResults = jest
   .fn()
@@ -56,11 +55,11 @@ jest.mock('../src/dispatcher', () => {
 })
 
 describe('processKey', () => {
-  describe('when the key is for a non-approved lock', () => {
-    it('returns false', async () => {
+  describe('when an email has been previously dispatched', () => {
+    it('does not dispatch an email', async () => {
       expect(
-        await new Processor(testGraphQLEndpoint, approvedLocks).processKey({
-          lockAddress: '0xdef',
+        await new Processor(testGraphQLEndpoint).processKey({
+          lockAddress: '0xabc',
           keyId: '1',
           emailAddress: 'test@example.com',
           lockName: 'Lock Name'
@@ -68,45 +67,29 @@ describe('processKey', () => {
       ).toBe(false)
     })
   })
-
-  describe('when the key is for an approved lock', () => {
-    describe('when an email has been previously dispatched', () => {
-      it('does not dispatch an email', async () => {
+  describe('when an email has not been dispatched', () => {
+    describe('when dispatch successful', () => {
+      it('returns true', async () => {
         expect(
-          await new Processor(testGraphQLEndpoint, approvedLocks).processKey({
+          await new Processor(testGraphQLEndpoint).processKey({
             lockAddress: '0xabc',
-            keyId: '1',
+            keyId: '2',
+            emailAddress: 'test@example.com',
+            lockName: 'Lock Name'
+          })
+        ).toBe(true)
+      })
+    })
+    describe('when dispatch unsuccessful', () => {
+      it('returns true', async () => {
+        expect(
+          await new Processor(testGraphQLEndpoint).processKey({
+            lockAddress: '0xabc',
+            keyId: '2',
             emailAddress: 'test@example.com',
             lockName: 'Lock Name'
           })
         ).toBe(false)
-      })
-    })
-    describe('when an email has not been dispatched', () => {
-      describe('when dispatch successful', () => {
-        it('returns true', async () => {
-          expect(
-            await new Processor(testGraphQLEndpoint, approvedLocks).processKey({
-              lockAddress: '0xabc',
-              keyId: '2',
-              emailAddress: 'test@example.com',
-              lockName: 'Lock Name'
-            })
-          ).toBe(true)
-        })
-      })
-
-      describe('when dispatch unsuccessful', () => {
-        it('returns true', async () => {
-          expect(
-            await new Processor(testGraphQLEndpoint, approvedLocks).processKey({
-              lockAddress: '0xabc',
-              keyId: '2',
-              emailAddress: 'test@example.com',
-              lockName: 'Lock Name'
-            })
-          ).toBe(false)
-        })
       })
     })
   })

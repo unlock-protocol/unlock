@@ -21,10 +21,13 @@ export class Querier {
   }
 
   async query() {
+    let secondsInDay = 86400
+    let startOfWindow = Math.floor(Date.now() / 1000 - secondsInDay)
+
     let queryResults = await this.client.query({
       query: gql`
         {
-          keys {
+          keys(where: { createdAt_gt: ${startOfWindow} }) {
             lock {
               address
               name
