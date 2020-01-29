@@ -23,7 +23,7 @@ function check_if_changed()
     LATEST_COMMIT=$(git rev-parse HEAD)
     LAST_PROJECT_COMMIT=$(git log -1 --format=format:%H --full-diff ./nudge)
     
-    if [ $LAST_LOCKSMITH_COMMIT != $LATEST_COMMIT ];then
+    if [ $LAST_PROJECT_COMMIT != $LATEST_COMMIT ];then
         echo "No changes to project, no need to deploy"
         exit 0
     fi
