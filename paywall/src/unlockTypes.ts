@@ -165,3 +165,12 @@ export interface KeyResult {
 }
 
 export type KeyResults = { [key: string]: KeyResult }
+
+export interface UserMetadata {
+  publicData?: {
+    [key: string]: string
+  }
+  privateData?: {
+    [key: string]: string
+  }
+}
