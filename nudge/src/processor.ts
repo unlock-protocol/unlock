@@ -10,7 +10,9 @@ export class Processor {
   }
 
   async processKey(key: Key) {
-    if (!(await Dispatcher.check(key))){
+    if (!(await Dispatcher.check(key))) {
+      console.log(`dispatching for: ${key.lockAddress} - ${key.keyId}`)
+
       if (await Dispatcher.dispatch(key)) {
         await Dispatcher.record(key)
         return true
