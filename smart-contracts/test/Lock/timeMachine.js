@@ -18,6 +18,7 @@ contract('Lock / timeMachine', accounts => {
   let timestampAfter
   let lockAddress
   let tokenId
+  let tx
 
   before(async () => {
     let salt = 42
@@ -72,13 +73,17 @@ contract('Lock / timeMachine', accounts => {
       assert(timestampAfter.eq(timestampBefore.plus(42)))
     })
     it('should prevent overflow & maximise the time remaining', async () => {
-      await lock.timeMachine(tokenId, tooMuchTime, true, {
+      tx = await lock.timeMachine(tokenId, tooMuchTime, true, {
         from: accounts[0],
       })
       timestampAfter = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
       assert(timestampAfter.lte(expirationDuration.plus(Date.now())))
+    })
+
+    it('should emit the ExpirationChanged event', async () => {
+      assert.equal(tx.logs[0].event, 'ExpirationChanged')
     })
   })
 })
