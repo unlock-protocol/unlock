@@ -93,6 +93,14 @@ describe('erc20', () => {
       const balance = await getErc20TokenSymbol(erc20ContractAddress, provider)
       expect(balance).toEqual('TICKER')
     })
+
+    it('should return the symbol for SAI', async () => {
+      expect.assertions(1)
+
+      const saiAddress = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
+      const balance = await getErc20TokenSymbol(saiAddress, provider)
+      expect(balance).toEqual('SAI')
+    })
   })
 
   describe('approveTransfer', () => {
