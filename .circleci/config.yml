@@ -159,6 +159,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
+      - run:
           name: Build Nudge Image
           command: scripts/build-image.sh nudge
       - run:
