@@ -1,5 +1,8 @@
 # Changes
 
+# 0.8.2
+- Hardcoding the symbol for SAI
+
 # 0.8.1
 - Addition of setUserMetadata, which follows the same argument pattern
   as the other metadata methods
