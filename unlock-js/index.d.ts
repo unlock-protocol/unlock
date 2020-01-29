@@ -60,13 +60,44 @@ export class Web3Service extends EventEmitter {
   ) => Promise<string>;
 }
 
+interface SetKeyMetadataParams {
+  lockAddress: string
+  keyId: string
+  metadata: { [key: string]: string }
+  locksmithHost: string
+}
+
+interface UserMetadata {
+  publicData?: {
+    [key: string]: string
+  }
+  privateData?: {
+    [key: string]: string
+  }
+}
+
+interface SetUserMetadataParams {
+  lockAddress: string
+  userAddress: string
+  metadata: UserMetadata
+  locksmithHost: string
+}
+
+interface GetKeyMetadataParams {
+  lockAddress: string
+  keyId: string
+  locksmithHost: string
+  getProtectedData?: boolean
+}
+
 export class WalletService extends EventEmitter {
-  constructor({ unlockAddress }: { unlockAddress: string })
-  ready: boolean
-  provider?: any
-  connect: (provider: Web3Provider) => Promise<void>
-  getAccount: () => Promise<string | false>
-  purchaseKey: (params: PurchaseKeyParams) => Promise<string>
-    setKeyMetadata: (lockAddress: string, keyId: string, metadata: { [key: string]: string }, locksmithHost: string, callback: any) => void
-  getKeyMetadata: (lockAddress: string, keyId: string, locksmithHost: string, callback: any) => void
+  constructor({ unlockAddress }: { unlockAddress: string });
+  ready: boolean;
+  provider?: any;
+  connect: (provider: Web3Provider) => Promise<void>;
+  getAccount: () => Promise<string | false>;
+  purchaseKey: (params: PurchaseKeyParams) => Promise<string>;
+  setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void;
+  setUserMetadata: (params: SetUserMetadataParams, callback: any) => void;
+  getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void;
 }

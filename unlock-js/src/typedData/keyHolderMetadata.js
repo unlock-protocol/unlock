@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} metadata
  * @property {Object.<string, string>} [publicData={}] - Publicly available metadata
- * @property {Object.<string, string>} [privateData={}] - Restricted access metadata
+ * @property {Object.<string, string>} [protectedData={}] - Restricted access metadata
  */
 
 /**
@@ -10,13 +10,13 @@
  * @param {metadata} metadata - The data to store for this user
  */
 export function generateMessage(owner, metadata) {
-  const { publicData = {}, privateData = {} } = metadata
+  const { publicData = {}, protectedData = {} } = metadata
   return {
     UserMetaData: {
       owner,
       data: {
         public: publicData,
-        private: privateData,
+        protected: protectedData,
       },
     },
   }

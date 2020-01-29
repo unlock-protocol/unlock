@@ -19,7 +19,7 @@ const baseData = {
   primaryType: 'UserMetaData',
 }
 
-const privateData = {
+const protectedData = {
   favoriteColor: 'blue',
   age: '7',
 }
@@ -40,24 +40,24 @@ describe('Key holder metadata payload generation', () => {
           owner,
           data: {
             public: {},
-            private: {},
+            protected: {},
           },
         },
       },
     })
   })
 
-  it('returns an appropriate value with only private metadata', () => {
+  it('returns an appropriate value with only protected metadata', () => {
     expect.assertions(1)
 
-    expect(generateKeyHolderMetadataPayload(owner, { privateData })).toEqual({
+    expect(generateKeyHolderMetadataPayload(owner, { protectedData })).toEqual({
       ...baseData,
       message: {
         UserMetaData: {
           owner,
           data: {
             public: {},
-            private: privateData,
+            protected: protectedData,
           },
         },
       },
@@ -74,18 +74,18 @@ describe('Key holder metadata payload generation', () => {
           owner,
           data: {
             public: publicData,
-            private: {},
+            protected: {},
           },
         },
       },
     })
   })
 
-  it('returns an appropriate value with both public and private metadata', () => {
+  it('returns an appropriate value with both public and protected metadata', () => {
     expect.assertions(1)
 
     expect(
-      generateKeyHolderMetadataPayload(owner, { publicData, privateData })
+      generateKeyHolderMetadataPayload(owner, { publicData, protectedData })
     ).toEqual({
       ...baseData,
       message: {
@@ -93,7 +93,7 @@ describe('Key holder metadata payload generation', () => {
           owner,
           data: {
             public: publicData,
-            private: privateData,
+            protected: protectedData,
           },
         },
       },

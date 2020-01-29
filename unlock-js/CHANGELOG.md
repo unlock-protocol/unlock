@@ -1,5 +1,18 @@
 # Changes
 
+# 0.8.2
+- Hardcoding the symbol for SAI
+
+# 0.8.1
+- Addition of setUserMetadata, which follows the same argument pattern
+  as the other metadata methods
+
+# 0.8.0
+- BREAKING: getKeyMetadata now takes an object for non-callback
+  params, now including an optional signature to retrieve protected metadata
+- BREAKING: setKeyMetadata takes an object for non-callback params to
+  keep calling conventions consistent for the setter and the getter
+
 # 0.7.2
 - bumped gas limits
 - Adding script to initialize a template

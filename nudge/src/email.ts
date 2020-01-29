@@ -9,7 +9,7 @@ export class Email {
       recipient: key.emailAddress,
       params: {
         keyId: key.keyId,
-        lockName: 'The Ethereal Party',
+        lockName: key.lockName,
         keychainUrl: 'https://app.unlock-protocol.com/keychain/',
       },
     }
