@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const { WalletService } = require('@unlock-protocol/unlock-js')
+const { WalletService, latest } = require('@unlock-protocol/unlock-js')
 const serverIsUp = require('./utils/serverIsUp')
 const Erc1820 = require('./deploy-erc1820')
 const Erc20 = require('./deploy-erc20')
@@ -18,7 +18,7 @@ const locksmithPort = process.env.LOCKSMITH_PORT
 
 let providerURL = `http://${host}:${port}`
 
-const versionName = 'v12'
+const versionName = latest
 
 const users = []
 if (process.env.LOCKSMITH_PURCHASER_ADDRESS) {
