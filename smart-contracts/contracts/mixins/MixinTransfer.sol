@@ -255,39 +255,6 @@ contract MixinTransfer is
   }
 
   /**
-  * @notice Modify the expirationTimestamp of a key
-  * by a given amount.
-  * @param _tokenId The ID of the key to modify.
-  * @param _deltaT The amount of time in seconds by which
-  * to modify the keys expirationTimestamp
-  * @param _addTime Choose whether to increase or decrease
-  * expirationTimestamp (false == decrease, true == increase)
-  * @dev Throws if owner does not have a valid key.
-  */
-  function _timeMachine(
-    uint _tokenId,
-    uint256 _deltaT,
-    bool _addTime
-  ) internal
-  {
-    address tokenOwner = _ownerOf[_tokenId];
-    require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
-    Key storage key = keyByOwner[tokenOwner];
-    uint formerTimestamp = key.expirationTimestamp;
-    bool validKey = getHasValidKey(tokenOwner);
-    if(_addTime) {
-      if(validKey) {
-        key.expirationTimestamp = formerTimestamp.add(_deltaT);
-      } else {
-        key.expirationTimestamp = block.timestamp.add(_deltaT);
-      }
-    } else {
-      key.expirationTimestamp = formerTimestamp.sub(_deltaT);
-    }
-    emit ExpirationChanged(_tokenId, _deltaT, _addTime);
-  }
-
-  /**
    * @dev Internal function to invoke `onERC721Received` on a target address
    * The call is not executed if the target address is not a contract
    * @param from address representing the previous owner of the given token ID
