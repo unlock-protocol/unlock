@@ -22,7 +22,6 @@ contract('Lock / shareKey', accounts => {
   let event
   let event1
   let event2
-  let event3
   let tx1
   let tx2
 
@@ -167,7 +166,6 @@ contract('Lock / shareKey', accounts => {
       event = tx2.logs[0].event
       event1 = tx2.logs[1].event
       event2 = tx2.logs[2].event
-      event3 = tx2.logs[3].event
     })
 
     it('should emit the ExpirationChanged event twice', async () => {
@@ -179,7 +177,6 @@ contract('Lock / shareKey', accounts => {
 
     it('should emit the Transfer event', async () => {
       assert.equal(event1, 'Transfer')
-      assert.equal(event3, 'Transfer')
     })
 
     it('should subtract the time shared + fee from the key owner', async () => {

@@ -92,12 +92,6 @@ contract MixinTransfer is
     }
     // add time to new key
     _timeMachine(iDTo, time, true);
-    // trigger event
-    emit Transfer(
-      keyOwner,
-      _to,
-      iDTo
-    );
 
     require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
