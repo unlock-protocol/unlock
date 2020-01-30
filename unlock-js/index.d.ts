@@ -7,6 +7,7 @@ interface Web3ServiceParams {
   unlockAddress: string
   blockTime: number
   requiredConfirmations: number
+  network: number
 }
 
 export interface PurchaseKeyParams {
