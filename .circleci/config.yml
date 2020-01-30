@@ -471,9 +471,6 @@ workflows:
           requires:
             - integration-tests
       - deploy-nudge-beanstalk-staging:
-          filters:
-            branches:
-              only: master
           requires:
             - integration-tests    
       - deploy-nudge-beanstalk-production:
