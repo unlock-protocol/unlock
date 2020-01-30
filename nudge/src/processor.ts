@@ -4,22 +4,15 @@ import * as Dispatcher from './dispatcher'
 
 export class Processor {
   graphQLEndpoint: string
-  approvedLocks: string[]
 
-  constructor(graphQLEndpoint: string, approvedLocks: string[]) {
+  constructor(graphQLEndpoint: string) {
     this.graphQLEndpoint = graphQLEndpoint
-    this.approvedLocks = approvedLocks
-  }
-
-  normalizeLockAddresses(addresses: string[] = this.approvedLocks): string[] {
-    return addresses.map(lock => lock.toLowerCase())
   }
 
   async processKey(key: Key) {
-    if (
-      this.normalizeLockAddresses().includes(key.lockAddress.toLowerCase()) &&
-      !(await Dispatcher.check(key))
-    ) {
+    if (!(await Dispatcher.check(key))) {
+      console.log(`dispatching for: ${key.lockAddress} - ${key.keyId}`)
+
       if (await Dispatcher.dispatch(key)) {
         await Dispatcher.record(key)
         return true

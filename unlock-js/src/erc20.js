@@ -3,6 +3,9 @@ import utils from './utils'
 import FastJsonRpcSigner from './FastJsonRpcSigner'
 import erc20abi from './erc20abi'
 
+// The SAI contract does not have the symbol method implemented correctly
+const SAI_ADDRESS = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'.toLowerCase()
+
 // This file provides ways to interact with an ERC20 contract
 export async function getErc20BalanceForAddress(
   erc20ContractAddress,
@@ -37,6 +40,10 @@ export async function getErc20Decimals(erc20ContractAddress, provider) {
  * @param {*} provider
  */
 export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
+  // The SAI contract has its symbol not implemented
+  if (erc20ContractAddress.toLowerCase() === SAI_ADDRESS) {
+    return 'SAI'
+  }
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   let symbol
   try {
