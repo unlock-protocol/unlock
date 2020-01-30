@@ -62,8 +62,8 @@ contract('Lock / uniqueTokenIds', accounts => {
           from: keyOwner2,
         }
       )
-      let ID1 = tx1.logs[0].args.tokenId
-      let ID2 = tx2.logs[0].args.tokenId
+      let ID1 = tx1.logs[0].args._tokenId
+      let ID2 = tx2.logs[0].args._tokenId
       let tokenId1After = await lock.getTokenIdFor(keyOwner1)
       let tokenId2After = await lock.getTokenIdFor(keyOwner2)
       let supply = await lock.totalSupply()

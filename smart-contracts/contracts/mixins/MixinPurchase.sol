@@ -48,6 +48,7 @@ contract MixinPurchase is
     // Assign the key
     Key storage toKey = keyByOwner[_recipient];
     bool isNewKeyPurchase;
+    uint amountOfTime;
 
     if (toKey.tokenId == 0) {
       isNewKeyPurchase = true;
@@ -58,12 +59,14 @@ contract MixinPurchase is
 
     if (toKey.expirationTimestamp >= block.timestamp) {
       // This is an existing owner trying to extend their key
-      toKey.expirationTimestamp = toKey.expirationTimestamp.add(expirationDuration);
+      amountOfTime = toKey.expirationTimestamp.add(expirationDuration);
+      toKey.expirationTimestamp = amountOfTime;
     } else {
       // This is an existing owner repurchasing an expired key
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
-      toKey.expirationTimestamp = block.timestamp + expirationDuration;
+      amountOfTime = block.timestamp + expirationDuration;
+      toKey.expirationTimestamp = amountOfTime;
     }
 
     // Let's get the actual price for the key from the Unlock smart contract
@@ -92,6 +95,8 @@ contract MixinPurchase is
         _recipient,
         toKey.tokenId
       );
+    } else {
+      emit ExpirationChanged(toKey.tokenId, amountOfTime, true);
     }
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
