@@ -1,5 +1,8 @@
 # Changes
 
+# Next Version
+- Updated Web3ServiceParams to include the network id, which is required
+
 # 0.8.2
 - Hardcoding the symbol for SAI
 
