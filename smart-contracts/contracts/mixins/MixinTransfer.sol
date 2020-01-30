@@ -30,7 +30,7 @@ contract MixinTransfer is
     uint transferFeeBasisPoints
   );
 
-  event TimestampChanged(
+  event ExpirationChanged(
     uint indexed _tokenId,
     uint _amount,
     bool _timeAdded
@@ -284,7 +284,7 @@ contract MixinTransfer is
     } else {
       key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
-    emit TimestampChanged(_tokenId, _deltaT, _addTime);
+    emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }
 
   /**
