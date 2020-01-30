@@ -344,8 +344,6 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
