@@ -12,7 +12,7 @@ wedlocks_uri=${11}
 
 function check_is_forked_pr()
 {
-    if [ is_forked_pr = "true" ]; then
+    if [ $is_forked_pr = "true" ]; then
         echo "Skipping deployment because this is a pull request from a forked repository."
         exit 0
     fi
