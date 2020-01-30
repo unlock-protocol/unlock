@@ -170,10 +170,10 @@ contract('Lock / shareKey', accounts => {
       event3 = tx2.logs[3].event
     })
 
-    it('should emit the TimestampChanged event twice', async () => {
-      assert.equal(event, 'TimestampChanged')
+    it('should emit the ExpirationChanged event twice', async () => {
+      assert.equal(event, 'ExpirationChanged')
       assert.equal(tx2.logs[0].args._timeAdded, false)
-      assert.equal(event2, 'TimestampChanged')
+      assert.equal(event2, 'ExpirationChanged')
       assert.equal(tx2.logs[2].args._timeAdded, true)
     })
 
