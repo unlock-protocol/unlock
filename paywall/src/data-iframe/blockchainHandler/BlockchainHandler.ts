@@ -5,6 +5,7 @@ import {
   Locks,
   TransactionType,
   TransactionStatus,
+  UserMetadata,
 } from '../../unlockTypes'
 import linkKeysToLocks from './linkKeysToLocks'
 import { POLLING_INTERVAL } from '../../constants'
@@ -632,6 +633,27 @@ export default class BlockchainHandler {
       // eslint-disable-next-line no-console
       console.error(e)
     }
+  }
+
+  async setUserMetadata(lockAddress: string, metadata: UserMetadata) {
+    const userAddress = this.store.account
+
+    return new Promise((resolve, reject) => {
+      this.walletService.setUserMetadata(
+        {
+          lockAddress,
+          userAddress,
+          locksmithHost: this.constants.locksmithUri,
+          metadata,
+        },
+        (error: Error, value: any) => {
+          if (error) {
+            reject(error)
+          }
+          resolve(value)
+        }
+      )
+    })
   }
 
   /**
