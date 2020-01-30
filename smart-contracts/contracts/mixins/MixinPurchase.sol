@@ -47,8 +47,10 @@ contract MixinPurchase is
 
     // Assign the key
     Key storage toKey = keyByOwner[_recipient];
+    bool isNewKeyPurchase;
 
     if (toKey.tokenId == 0) {
+      isNewKeyPurchase = true;
       // Assign a new tokenId (if a new owner or previously transferred)
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
@@ -58,6 +60,7 @@ contract MixinPurchase is
       // This is an existing owner trying to extend their key
       toKey.expirationTimestamp = toKey.expirationTimestamp.add(expirationDuration);
     } else {
+      // This is an existing owner repurchasing an expired key
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       toKey.expirationTimestamp = block.timestamp + expirationDuration;
@@ -82,12 +85,14 @@ contract MixinPurchase is
 
     unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
 
-    // trigger event
-    emit Transfer(
-      address(0), // This is a creation.
-      _recipient,
-      toKey.tokenId
-    );
+    if(isNewKeyPurchase) {
+      // trigger event
+      emit Transfer(
+        address(0), // This is a creation.
+        _recipient,
+        toKey.tokenId
+      );
+    }
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     if(tokenAddress != address(0)) {
