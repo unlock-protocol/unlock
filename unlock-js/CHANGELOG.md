@@ -1,6 +1,6 @@
 # Changes
 
-# Next Version
+# 0.8.3
 - Updated Web3ServiceParams to include the network id, which is required
 
 # 0.8.2
@@ -25,6 +25,7 @@
 - Adjusted lint config to ignore violations that could not be fixed auttomatically
 - Added setKeyMetadata and getKeyMetadata methods to WalletService
 - Update gas prices
+
 
 # 0.7.0
 
