@@ -2857,10 +2857,10 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@unlock-protocol/unlock-js@0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.2.tgz#da993ecaad04e91010847ec735133ce32012a520"
-  integrity sha512-4aptXpJAIAarIt4thhayES5TZotZPcak3bVtnr8JNdYJLLy4jo7MynvMsN65ujBkfS5DqQOzJyBfRjEn6uZjjg==
+"@unlock-protocol/unlock-js@0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.3.tgz#b15bbf18eca6c2cdd0cfbe7103d94e40643ed853"
+  integrity sha512-bjxggSMBo/WohC06o/PU8L7laQIqXhAsSdmNubZBKpbQ7UrSfRmGm9bSVqFiOccH/bIe+MEPdqQghoTG8pknxQ==
   dependencies:
     babel-jest "25.1.0"
     cross-fetch "3.0.4"
