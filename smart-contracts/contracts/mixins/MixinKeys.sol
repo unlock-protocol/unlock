@@ -33,13 +33,6 @@ contract MixinKeys is
     bool _timeAdded
   );
 
-  // Emitted when the expiration of a key is modified
-  event ExpirationChanged(
-    uint indexed _tokenId,
-    uint _amount,
-    bool _timeAdded
-  );
-
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
