@@ -5,11 +5,13 @@ import { ConnectedRouter } from 'connected-next-router'
 import 'cross-fetch/polyfill'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
+import { WalletService } from '@unlock-protocol/unlock-js'
 import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
+import { WalletServiceContext } from '../utils/withWalletService'
 
 import FullScreenModal from '../components/interface/FullScreenModals'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
@@ -27,12 +29,14 @@ const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
+const walletService = new WalletService(config)
+
 function getOrCreateStore(initialState, path) {
   const middlewares = [
     providerMiddleware(config),
     web3Middleware(config),
     currencyConversionMiddleware(config),
-    walletMiddleware(config),
+    walletMiddleware(config, walletService),
     wedlocksMiddleware(config),
   ]
 
@@ -69,6 +73,7 @@ function getOrCreateStore(initialState, path) {
 }
 
 const ConfigProvider = ConfigContext.Provider
+const WalletServiceProvider = WalletServiceContext.Provider
 
 class UnlockApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -123,7 +128,6 @@ The Unlock team
     const client = new ApolloClient({
       uri: config.subgraphURI,
     })
-
     return (
       <ApolloProvider client={client}>
         <Container>
@@ -131,11 +135,13 @@ The Unlock team
           <Provider store={store}>
             <FullScreenModal />
             <ConnectedRouter>
-              <ConfigProvider value={config}>
-                <GlobalErrorConsumer>
-                  <Component {...pageProps} />
-                </GlobalErrorConsumer>
-              </ConfigProvider>
+              <WalletServiceProvider value={walletService}>
+                <ConfigProvider value={config}>
+                  <GlobalErrorConsumer>
+                    <Component {...pageProps} />
+                  </GlobalErrorConsumer>
+                </ConfigProvider>
+              </WalletServiceProvider>
             </ConnectedRouter>
           </Provider>
         </Container>
