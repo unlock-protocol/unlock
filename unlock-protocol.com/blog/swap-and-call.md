@@ -25,6 +25,7 @@ E.g. if the key costs $5, I could have the option to:
  - Pay with ~5 DAI / SAI / USDC / USDT
  - Pay with ~0.03 ETH
  - Pay with ~25 BAT
+
 Only options using tokens the user actually owns will be presented. So if the user does not have USDT, it will not be mentioned.
 
 This helps to overcome one of the challenges users have today - [“there are just too many ERC-20 [token types]”](https://twitter.com/julien51/status/1222957379031117825).
@@ -48,13 +49,13 @@ For Unlock’s use case, the contract calls we make are:
 	<img src="/static/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
 </p>
 
-Here’s [an example](https://etherscan.io/tx/0xc809fe931f03805e4016af57b80577951f5247a3454c9e73a635fda49d5133f9) where I use SwapAndCall to pay with ETH and buy a key priced at $0.01 DAI.
+Here’s [an example transaction](https://etherscan.io/tx/0x8c0e34bb009a13b4c35ba3bd6b96c6ed2b5807ac0e5da47f65350017b38f5450) where I use SwapAndCall to pay with ETH and buy a key priced at $1, in DAI.
 
-I sent the transaction to SwapAndCall with 0.0001 ETH (~$0.02)
+I sent the transaction to SwapAndCall with 0.0056 ETH (~$1.02)
  - SwapAndCall forwards the ETH with a call to Uniswap to swap for the exact amount of DAI required
  - Uniswap sends DAI to the SwapAndCall contract and refunds the leftover ETH
  - SwapAndCall calls `purchase` and the key is sent directly to the end-user
- - SwapAndCall refunds the remaining 0.000044 ETH to the end-user
+ - SwapAndCall refunds the remaining 0.00009 ETH to the end-user
 
 This process would work with other exchanges such as [Kyber](https://kyber.network/) or [Oasis](https://oasis.app/).  You could also use a DEX aggregator such as [1inch](https://1inch.exchange/), [0x](https://0x.org/api/), [Dex.ag](https://dex.ag/), or [ParaSwap](https://paraswap.io/#/).
 
