@@ -55,7 +55,7 @@ const create = (dispatchImplementation = () => true) => {
   }
   const next = jest.fn()
 
-  const handler = walletMiddleware(mockConfig)(store)
+  const handler = walletMiddleware(mockConfig, mockWalletService)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -76,17 +76,6 @@ class MockWalletService extends EventEmitter {
 }
 
 let mockWalletService = new MockWalletService()
-
-jest.mock('@unlock-protocol/unlock-js', () => {
-  const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
-  return {
-    ...mockUnlock,
-    WalletService() {
-      return mockWalletService
-    },
-  }
-})
-
 jest.useFakeTimers()
 
 beforeEach(() => {
