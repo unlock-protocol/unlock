@@ -637,6 +637,12 @@ export default class BlockchainHandler {
 
   async setUserMetadata(lockAddress: string, metadata: UserMetadata) {
     const userAddress = this.store.account
+    if (!userAddress) {
+      // eslint-disable-next-line promise/param-names
+      return new Promise((_, reject) => {
+        reject('[BlockchainHandler] store.account is null, cannot set metadata')
+      })
+    }
 
     return new Promise((resolve, reject) => {
       this.walletService.setUserMetadata(
@@ -646,7 +652,7 @@ export default class BlockchainHandler {
           locksmithHost: this.constants.locksmithUri,
           metadata,
         },
-        (error: Error, value: any) => {
+        (error: any, value: any) => {
           if (error) {
             reject(error)
           }
