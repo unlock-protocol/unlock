@@ -46,6 +46,9 @@ export function getWalletService(listeners: { [key: string]: Function }) {
     },
     eventNames: jest.fn(),
     listenerCount: jest.fn(),
+    setKeyMetadata: jest.fn(),
+    setUserMetadata: jest.fn(),
+    getKeyMetadata: jest.fn(),
   }
   return walletService
 }
