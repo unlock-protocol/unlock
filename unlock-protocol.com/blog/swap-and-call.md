@@ -34,15 +34,15 @@ This helps to overcome one of the challenges users have today - [“there are ju
 [swap-and-call](https://github.com/unlock-protocol/swap-and-call) has an implementation that’s very similar to the [1inch.exchange](https://etherscan.io/address/0x11111254369792b2Ca5d084aB5eEA397cA8fa48B#code) contract. It’s basically a batch transaction processor with a little logic before and after for this use case. It is not built for Unlock specifically and does not assume any specific DEX, this approach should work for many other use cases as well.
 
 High level steps for a swapAndCall transaction:
- - Collect tokens from the user using transferFrom (if spending tokens instead of ETH)
+ - Collect tokens from the user using `transferFrom` (if spending tokens instead of ETH)
  - Call one or more contracts (any contract, any method, and params may be included)
  - Send any tokens remaining back to the user
 
 For Unlock’s use case, the contract calls we make are:
  - Approve Uniswap to transferFrom SwapAndCall (if spending tokens instead of ETH)
  - Call Uniswap to swap from the source token into the token type needed to buy a key
- - Approve the Lock to transferFrom SwapAndCall (if the key is priced in tokens instead of ETH)
- - Call purchase to acquire a key which is sent directly to the user
+ - Approve the Lock to `transferFrom` the SwapAndCall contract (if the key is priced in tokens instead of ETH)
+ - Call purchase on the lock contract to acquire a key which is sent directly to the user
 
 <p style="text-align:center">
 	<img src="/static/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
@@ -59,7 +59,7 @@ I sent the transaction to SwapAndCall with 0.0001 ETH (~$0.02)
 This process would work with other exchanges such as [Kyber](https://kyber.network/) or [Oasis](https://oasis.app/).  You could also use a DEX aggregator such as [1inch](https://1inch.exchange/), [0x](https://0x.org/api/), [Dex.ag](https://dex.ag/), or [ParaSwap](https://paraswap.io/#/).
 
 ## What’s next
-The front-end of course. But there is another big feature we want to add -- meta-transactions!
+The front-end of course. But there is another big feature we want to add -- meta-transactions! (see our [roadmap document](https://github.com/unlock-protocol/unlock/wiki/Roadmap) to learn more!)
 
 Meta-transactions allow users to sign messages approving smart contract actions, instead of broadcasting transactions. This means they are not paying gas fees directly and do not need to have any ETH.
 
