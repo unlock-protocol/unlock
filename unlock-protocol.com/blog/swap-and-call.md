@@ -11,7 +11,7 @@ Unlock Protocol enables content creators to sell keys which are NFTs used to gai
 
 We need to make this easy for users.
 
-If someone is holding ETH, don’t tell them to find an exchange to buy DAI first… not if we can do it for them.  Similarly if they are holding SAI or USDC but the content creator asked for DAI… it should just work.
+If someone is holding ETH, don’t tell them to find an exchange to buy DAI first - not if we can do it for them.  Similarly if they are holding SAI or USDC but the content creator asked for DAI - it should just work.
 
 Composability on Ethereum has been a recent topic of discussion in the industry. A great example popping up are DEX aggregators - these can connect to several exchanges to ensure traders always get the most for their money. It got us thinking...
 
@@ -40,7 +40,7 @@ High level steps for a swapAndCall transaction:
  - Send any tokens remaining back to the user
 
 For Unlock’s use case, the contract calls we make are:
- - Approve Uniswap to transferFrom SwapAndCall (if spending tokens instead of ETH)
+ - Approve Uniswap to `transferFrom` SwapAndCall (if spending tokens instead of ETH)
  - Call Uniswap to swap from the source token into the token type needed to buy a key
  - Approve the Lock to `transferFrom` the SwapAndCall contract (if the key is priced in tokens instead of ETH)
  - Call purchase on the lock contract to acquire a key which is sent directly to the user
@@ -57,7 +57,7 @@ I sent the transaction to SwapAndCall with 0.0056 ETH (~$1.02)
  - SwapAndCall calls `purchase` and the key is sent directly to the end-user
  - SwapAndCall refunds the remaining 0.00009 ETH to the end-user
 
-This process would work with other exchanges such as [Kyber](https://kyber.network/) or [Oasis](https://oasis.app/).  You could also use a DEX aggregator such as [1inch](https://1inch.exchange/), [0x](https://0x.org/api/), [Dex.ag](https://dex.ag/), or [ParaSwap](https://paraswap.io/#/).
+We are using [Uniswap](https://uniswap.exchange/swap) but this process would work with other exchanges such as [Kyber](https://kyber.network/) or [Oasis](https://oasis.app/).  You could also use a DEX aggregator such as [1inch](https://1inch.exchange/), [0x](https://0x.org/api/), [Dex.ag](https://dex.ag/), or [ParaSwap](https://paraswap.io/#/).
 
 ## What’s next
 The front-end of course. But there is another big feature we want to add -- meta-transactions! (see our [roadmap document](https://github.com/unlock-protocol/unlock/wiki/Roadmap) to learn more!)
