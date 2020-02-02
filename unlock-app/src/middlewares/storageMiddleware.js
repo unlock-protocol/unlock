@@ -7,7 +7,7 @@ import {
 
 import { startLoading, doneLoading } from '../actions/loading'
 
-import { StorageService, success, failure } from '../services/storageService'
+import { success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
@@ -34,11 +34,8 @@ import {
   gotBulkMetadata,
 } from '../actions/keyMetadata'
 
-const storageMiddleware = config => {
-  const { services } = config
+const storageMiddleware = storageService => {
   return ({ getState, dispatch }) => {
-    const storageService = new StorageService(services.storage.host)
-
     // NEW_TRANSACTION
     storageService.on(failure.storeTransaction, () => {
       // TODO: we are in control of what storageService emits --

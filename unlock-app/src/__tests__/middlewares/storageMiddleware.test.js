@@ -5,7 +5,6 @@ import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
 import { gotRecoveryPhrase } from '../../actions/recovery'
-import configure from '../../config'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
@@ -41,13 +40,12 @@ let lock
 let network
 
 const create = () => {
-  const config = configure()
   const store = {
     getState: jest.fn(() => state),
     dispatch: jest.fn(() => true),
   }
   const next = jest.fn()
-  const handler = storageMiddleware(config)(store)
+  const handler = storageMiddleware(mockStorageService)(store)
   const invoke = action => handler(next)(action)
   return { next, invoke, store }
 }
@@ -59,17 +57,6 @@ class MockStorageService extends EventEmitter {
 }
 
 let mockStorageService = new MockStorageService()
-
-jest.mock('../../services/storageService', () => {
-  const actual = require.requireActual('../../services/storageService')
-  return {
-    ...actual,
-    StorageService() {
-      return mockStorageService
-    },
-  }
-})
-
 jest.mock('../../structured_data/unlockLock.js')
 
 describe('Storage middleware', () => {

@@ -12,6 +12,8 @@ import { createUnlockStore } from '../createUnlockStore'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 import { WalletServiceContext } from '../utils/withWalletService'
+import { StorageServiceContext } from '../utils/withStorageService'
+import { StorageService } from '../services/storageService'
 
 import FullScreenModal from '../components/interface/FullScreenModals'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
@@ -30,6 +32,7 @@ const config = configure()
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 const walletService = new WalletService(config)
+const storageService = new StorageService(config.services.storage.host)
 
 function getOrCreateStore(initialState, path) {
   const middlewares = [
@@ -38,12 +41,8 @@ function getOrCreateStore(initialState, path) {
     currencyConversionMiddleware(config),
     walletMiddleware(config, walletService),
     wedlocksMiddleware(config),
+    storageMiddleware(storageService),
   ]
-
-  if (config.services.storage) {
-    middlewares.push(storageMiddleware(config))
-  }
-
   // Cannot load postOfficeMiddleware on the server
   if (!config.isServer) {
     const target = window.parent
@@ -74,6 +73,7 @@ function getOrCreateStore(initialState, path) {
 
 const ConfigProvider = ConfigContext.Provider
 const WalletServiceProvider = WalletServiceContext.Provider
+const StorageServiceProvider = StorageServiceContext.Provider
 
 class UnlockApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -135,13 +135,15 @@ The Unlock team
           <Provider store={store}>
             <FullScreenModal />
             <ConnectedRouter>
-              <WalletServiceProvider value={walletService}>
-                <ConfigProvider value={config}>
-                  <GlobalErrorConsumer>
-                    <Component {...pageProps} />
-                  </GlobalErrorConsumer>
-                </ConfigProvider>
-              </WalletServiceProvider>
+              <StorageServiceProvider value={storageService}>
+                <WalletServiceProvider value={walletService}>
+                  <ConfigProvider value={config}>
+                    <GlobalErrorConsumer>
+                      <Component {...pageProps} />
+                    </GlobalErrorConsumer>
+                  </ConfigProvider>
+                </WalletServiceProvider>
+              </StorageServiceProvider>
             </ConnectedRouter>
           </Provider>
         </Container>
