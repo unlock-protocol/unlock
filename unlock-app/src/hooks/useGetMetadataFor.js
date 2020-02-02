@@ -1,23 +1,56 @@
-import { useMemo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { signBulkMetadataRequest } from '../actions/keyMetadata'
+import { useDispatch } from 'react-redux'
+
+import { useEffect, useState } from 'react'
+import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 
 /**
  * This hook retrieves metadata for a token
- * @param {*} address
+ * @param {*} lockAddress
+ * @param {*} keyId
+ * @param {*} getProtectedData
  */
-export const useGetMetadataFor = (lockAddress, keyOwner) => {
-  const { account, metadata } = useSelector(state => state)
+export const useGetMetadataFor = (
+  walletService,
+  config,
+  lockAddress,
+  keyId,
+  getProtectedData
+) => {
+  const [metadata, setMetadata] = useState({
+    userMetadata: {},
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const dispatch = useDispatch()
 
-  useMemo(() => {
-    if (account) {
-      // TODO Use a request which does not need to get all of the metadata for all of the keys!
-      dispatch(signBulkMetadataRequest(lockAddress, account.address))
+  useEffect(() => {
+    const getMetadata = async () => {
+      setLoading(true)
+      if (getProtectedData) {
+        dispatch(waitForWallet())
+      }
+      walletService.getKeyMetadata(
+        {
+          lockAddress,
+          keyId,
+          locksmithHost: config.services.storage.host,
+          getProtectedData,
+        },
+        (error, json) => {
+          setLoading(false)
+          if (error) {
+            setError(error)
+          } else {
+            setMetadata(json)
+          }
+          dispatch(dismissWalletCheck())
+        }
+      )
     }
-  }, [lockAddress, account])
+    getMetadata()
+  }, [lockAddress, keyId])
 
-  return (metadata[lockAddress] && metadata[lockAddress][keyOwner]) || {}
+  return { loading, metadata, error }
 }
 
 export default useGetMetadataFor
