@@ -23,12 +23,12 @@ docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE down
 
 docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $REPO_ROOT
 
-docker build -t unlock-app -f $REPO_ROOT/docker/unlock-app.dockerfile $REPO_ROOT &
-docker build -t wedlocks -f $REPO_ROOT/docker/wedlocks.dockerfile $REPO_ROOT &
-docker build -t smart-contracts -f $REPO_ROOT/docker/smart-contracts.dockerfile $REPO_ROOT &
-docker build -t paywall -f $REPO_ROOT/docker/paywall.dockerfile $REPO_ROOT &
-docker build -t locksmith -f $REPO_ROOT/docker/locksmith.dockerfile $REPO_ROOT &
-docker build -t unlock-protocol-com -f $REPO_ROOT/docker/unlock-protocol-com.dockerfile $REPO_ROOT &
+docker build -t unlock-app -f $REPO_ROOT/unlock-app/Dockerfile $REPO_ROOT &
+docker build -t wedlocks -f $REPO_ROOT/wedlocks/Dockerfile $REPO_ROOT &
+docker build -t smart-contracts -f $REPO_ROOT/smart-contracts/Dockerfile $REPO_ROOT &
+docker build -t paywall -f $REPO_ROOT/paywall/Dockerfile $REPO_ROOT &
+docker build -t locksmith -f $REPO_ROOT/locksmith/Dockerfile $REPO_ROOT &
+docker build -t unlock-protocol-com -f $REPO_ROOT/unlock-protocol-com/Dockerfile $REPO_ROOT &
 docker build -t integration-tests -f $REPO_ROOT/docker/integration-tests.dockerfile $REPO_ROOT &
 wait
 
