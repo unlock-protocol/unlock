@@ -155,15 +155,10 @@ export default function CheckoutContent() {
     bgColor = 'var(--lightgrey)'
     // display the "wrong network" error for users who are on an unexpected network
     child = (
-      <>
-        <Head>
-          <title>{pageTitle('Checkout')}</title>
-        </Head>
-        <WrongNetwork
-          currentNetwork={currentNetwork}
-          requiredNetworkId={requiredNetworkId}
-        />
-      </>
+      <WrongNetwork
+        currentNetwork={currentNetwork}
+        requiredNetworkId={requiredNetworkId}
+      />
     )
   } else if (shouldShowWalletOverlay) {
     return (
@@ -175,45 +170,28 @@ export default function CheckoutContent() {
       </Greyout>
     )
   } else if (!account) {
-    child = (
-      <>
-        <Head>
-          <title>{pageTitle('Checkout')}</title>
-        </Head>
-        <NoWallet config={paywallConfig} />
-      </>
-    )
+    child = <NoWallet config={paywallConfig} />
   } else if (!userDismissedConfirmingModal && purchasingLocks.length) {
     // for users who just started a key purchase, display the confirming modal
     // unless they have dismissed it. Then we display the checkout component
     // we will use the first confirming lock in the list
     child = (
-      <>
-        <Head>
-          <title>{pageTitle('Checkout')}</title>
-        </Head>
-        <CheckoutConfirmingModal
-          account={account}
-          hideCheckout={hideConfirmingModal}
-          confirmingLock={locks[purchasingLocks[0]]}
-        />
-      </>
+      <CheckoutConfirmingModal
+        account={account}
+        hideCheckout={hideConfirmingModal}
+        confirmingLock={locks[purchasingLocks[0]]}
+      />
     )
   } else {
     // for everyone else, display the checkout component
     child = (
-      <>
-        <Head>
-          <title>{pageTitle('Checkout')}</title>
-        </Head>
-        <Checkout
-          account={account}
-          locks={locks}
-          config={paywallConfig}
-          purchase={purchaseKey}
-          hideCheckout={hideCheckout}
-        />
-      </>
+      <Checkout
+        account={account}
+        locks={locks}
+        config={paywallConfig}
+        purchase={purchaseKey}
+        hideCheckout={hideCheckout}
+      />
     )
   }
   const Wrapper = () => (
@@ -226,6 +204,9 @@ export default function CheckoutContent() {
       }}
       icon={paywallConfig.icon}
     >
+      <Head>
+        <title>{pageTitle('Checkout')}</title>
+      </Head>
       {child}
     </CheckoutWrapper>
   )
