@@ -20,21 +20,58 @@ import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
 
+interface WrapperProps {
+  allowClose: boolean
+}
+
+/* eslint-disable react/prop-types */
+export const Wrapper: React.FunctionComponent<WrapperProps> = ({
+  allowClose,
+  children,
+}) => {
+  const { postMessage } = usePostMessage('Checkout UI')
+
+  const hideCheckout = useCallback(() => {
+    postMessage({
+      type: PostMessages.DISMISS_CHECKOUT,
+      payload: undefined, // this must be set to trigger a response in unlock.min.js
+    })
+  }, [postMessage])
+
+  const paywallConfig = usePaywallConfig()
+
+  return (
+    <Greyout onClick={allowClose ? hideCheckout : () => {}}>
+      <CheckoutWrapper
+        hideCheckout={hideCheckout}
+        bgColor="var(--offwhite)"
+        allowClose={allowClose}
+        onClick={e => {
+          e.stopPropagation()
+        }}
+        icon={paywallConfig.icon}
+      >
+        <Head>
+          <title>{pageTitle('Checkout')}</title>
+        </Head>
+        {children}
+      </CheckoutWrapper>
+    </Greyout>
+  )
+}
+
 /**
  * This is the data handler for the Checkout component
  */
 export default function CheckoutContent() {
   const window = useWindow()
-  // the network this checkout expects to be on
-  const { requiredNetworkId } = useConfig()
-  // the paywall configuration passed as window.unlockProtocolConfig in the main window
   const paywallConfig = usePaywallConfig()
-  // the blockchain data returned from the data iframe
   const { account, network, locks, checkWallet } = useBlockchainData(
     window,
     paywallConfig
   )
 
+  const { requiredNetworkId } = useConfig()
   const [showWalletCheckOverlay, setShowWalletCheckOverlay] = useState(false)
   const [walletOverlayDismissed, setWalletOverlayDismissed] = useState(false)
   const dismissWalletOverlay = () => {
@@ -141,9 +178,6 @@ export default function CheckoutContent() {
     }
   }, [activeLocks.length, hideCheckout, userInitiatedPurchase])
 
-  let child: React.ReactNode
-  let bgColor = 'var(--offwhite)'
-
   // We want to show the overlay only:
   // if checkWallet is true AND walletOverlayDismissed is false.
   // OR if we have showWalletCheckOverlay
@@ -151,16 +185,25 @@ export default function CheckoutContent() {
     (showWalletCheckOverlay || (checkWallet && !walletOverlayDismissed)) &&
     !usingManagedAccount
 
-  if (requiredNetworkId !== network) {
-    bgColor = 'var(--lightgrey)'
-    // display the "wrong network" error for users who are on an unexpected network
-    child = (
-      <WrongNetwork
-        currentNetwork={currentNetwork}
-        requiredNetworkId={requiredNetworkId}
-      />
+  if (!account) {
+    return (
+      <Wrapper allowClose>
+        <NoWallet config={paywallConfig} />
+      </Wrapper>
     )
-  } else if (shouldShowWalletOverlay) {
+  }
+
+  if (requiredNetworkId !== network) {
+    return (
+      <Wrapper allowClose={allowClosingCheckout}>
+        <WrongNetwork
+          currentNetwork={currentNetwork}
+          requiredNetworkId={requiredNetworkId}
+        />
+      </Wrapper>
+    )
+  }
+  if (shouldShowWalletOverlay) {
     return (
       <Greyout>
         <MessageBox>
@@ -169,22 +212,24 @@ export default function CheckoutContent() {
         </MessageBox>
       </Greyout>
     )
-  } else if (!account) {
-    child = <NoWallet config={paywallConfig} />
-  } else if (!userDismissedConfirmingModal && purchasingLocks.length) {
+  }
+  if (!userDismissedConfirmingModal && purchasingLocks.length) {
     // for users who just started a key purchase, display the confirming modal
     // unless they have dismissed it. Then we display the checkout component
     // we will use the first confirming lock in the list
-    child = (
-      <CheckoutConfirmingModal
-        account={account}
-        hideCheckout={hideConfirmingModal}
-        confirmingLock={locks[purchasingLocks[0]]}
-      />
+    return (
+      <Wrapper allowClose={allowClosingCheckout}>
+        <CheckoutConfirmingModal
+          account={account}
+          hideCheckout={hideConfirmingModal}
+          confirmingLock={locks[purchasingLocks[0]]}
+        />
+      </Wrapper>
     )
-  } else {
-    // for everyone else, display the checkout component
-    child = (
+  }
+  // for everyone else, display the checkout component
+  return (
+    <Wrapper allowClose={allowClosingCheckout}>
       <Checkout
         account={account}
         locks={locks}
@@ -192,29 +237,7 @@ export default function CheckoutContent() {
         purchase={purchaseKey}
         hideCheckout={hideCheckout}
       />
-    )
-  }
-  const Wrapper = () => (
-    <CheckoutWrapper
-      hideCheckout={hideCheckout}
-      bgColor={bgColor}
-      allowClose={allowClosingCheckout}
-      onClick={e => {
-        e.stopPropagation()
-      }}
-      icon={paywallConfig.icon}
-    >
-      <Head>
-        <title>{pageTitle('Checkout')}</title>
-      </Head>
-      {child}
-    </CheckoutWrapper>
-  )
-
-  return (
-    <Greyout onClick={allowClosingCheckout ? hideCheckout : () => {}}>
-      <Wrapper />
-    </Greyout>
+    </Wrapper>
   )
 }
 
