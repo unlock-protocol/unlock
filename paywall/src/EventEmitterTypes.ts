@@ -43,6 +43,9 @@ export interface DataIframeEvents {
   ) => void
   // this has to be more specific because WEB3 is overloaded
   [PostMessages.WEB3]: (request: web3MethodCall) => void
+  [PostMessages.SET_USER_METADATA_SUCCESS]: (
+    update: ExtractPayload<PostMessages.SET_USER_METADATA_SUCCESS>
+  ) => void
 }
 
 /**
@@ -62,6 +65,9 @@ export interface CheckoutIframeEvents {
   ) => void
   [PostMessages.UPDATE_WALLET]: (
     request: ExtractPayload<PostMessages.UPDATE_WALLET>
+  ) => void
+  [PostMessages.SET_USER_METADATA]: (
+    request: ExtractPayload<PostMessages.SET_USER_METADATA>
   ) => void
 }
 
