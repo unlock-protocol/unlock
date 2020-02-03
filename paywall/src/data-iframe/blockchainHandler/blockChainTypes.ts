@@ -1,36 +1,16 @@
-import { EventEmitter } from 'events'
+import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import {
   Balance,
-  RawLock,
   PaywallConfig,
   Transactions,
   RawLocks,
   Locks,
 } from '../../unlockTypes'
 
-type Web3ProviderType = string | Object
+// Maintaining this alias to avoid having to touch every test file
+export type WalletServiceType = WalletService
 
-export interface WalletServiceType extends EventEmitter {
-  ready: boolean
-  provider?: any
-  connect: (provider: Web3ProviderType) => Promise<void>
-  getAccount: () => Promise<string | false>
-  purchaseKey: (params: PurchaseKeyParams) => Promise<string>
-}
-
-export interface Web3ServiceType extends EventEmitter {
-  refreshAccountBalance: ({ address }: { address: string }) => Promise<string>
-  getTransaction: (
-    transactionHash: string,
-    defaults?: TransactionDefaults
-  ) => Promise<void>
-  getLock: (address: string) => Promise<RawLock>
-  getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
-  getTokenBalance: (
-    tokenAddress: string,
-    accountAddress: string
-  ) => Promise<string>
-}
+export type Web3ServiceType = Web3Service
 
 export interface PurchaseKeyParams {
   lockAddress: string
