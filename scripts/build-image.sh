@@ -28,4 +28,4 @@ if [ "$SKIP_CORE" != "true" ]; then
 fi
 
 ARGS="--cache-from $IMAGE_CACHE"
-docker build -t $PROJECT_NAME -f $DOCKERFILE $ARGS $REPO_ROOT/$PROJECT_NAME
+docker build -t $PROJECT_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
