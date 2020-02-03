@@ -1,6 +1,4 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import { WalletService } from '@unlock-protocol/unlock-js'
-
 import { diff } from 'deep-object-diff'
 import {
   CREATE_LOCK,
@@ -38,10 +36,8 @@ import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-const walletMiddleware = config => {
+const walletMiddleware = (config, walletService) => {
   return ({ getState, dispatch }) => {
-    const walletService = new WalletService(config)
-
     /**
      * Helper function which ensures that the walletService is ready
      * before calling it or dispatches an error

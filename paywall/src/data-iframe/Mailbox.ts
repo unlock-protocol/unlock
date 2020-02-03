@@ -237,7 +237,7 @@ export default class Mailbox {
     await waitFor(() => this.configuration)
 
     // we do not need a connected walletService to work
-    walletService.connect(provider).catch((e: Error) => {
+    walletService.connect(provider as any).catch((e: Error) => {
       this.emitError(e)
     })
 
