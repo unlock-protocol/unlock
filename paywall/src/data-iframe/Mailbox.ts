@@ -14,7 +14,7 @@ import {
   isAccountOrNull,
   isValidBalance,
 } from '../utils/validators'
-import { PaywallConfig, PurchaseKeyRequest } from '../unlockTypes'
+import { PaywallConfig, PurchaseKeyRequest, UserMetadata } from '../unlockTypes'
 import {
   IframePostOfficeWindow,
   ConsoleWindow,
@@ -185,6 +185,10 @@ export default class Mailbox {
       PostMessages.INITIATED_TRANSACTION,
       this.refreshBlockchainTransactions
     )
+    this.addPostMessageListener(
+      PostMessages.SET_USER_METADATA,
+      this.setUserMetadata
+    )
     this.postMessage(PostMessages.READY, undefined)
   }
 
@@ -313,6 +317,33 @@ export default class Mailbox {
             }`
           )
         )
+    }
+  }
+
+  /**
+   * When we receive PostMessages.SET_USER_METADATA, simply forward it
+   * to the handler
+   */
+  setUserMetadata = async ({
+    lockAddress,
+    metadata,
+  }: {
+    lockAddress: string
+    metadata: UserMetadata
+  }) => {
+    if (!this.handler) {
+      this.emitError(
+        new Error('blockchain handler not instantiated, cannot set metadata')
+      )
+      return
+    }
+
+    try {
+      await this.handler.setUserMetadata(lockAddress, metadata)
+      // success, no error returned
+      this.postMessage(PostMessages.SET_USER_METADATA_SUCCESS, undefined)
+    } catch (error) {
+      this.emitError(error)
     }
   }
 

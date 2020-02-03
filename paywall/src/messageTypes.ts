@@ -4,6 +4,7 @@ import {
   PurchaseKeyRequest,
   Transactions,
   Balance,
+  UserMetadata,
 } from './unlockTypes'
 import { web3MethodCall, Web3WalletInfo, web3MethodResult } from './windowTypes'
 import {
@@ -46,6 +47,9 @@ export enum PostMessages {
 
   SHOW_ACCOUNTS_MODAL = 'show/accountsModal',
   HIDE_ACCOUNTS_MODAL = 'hide/accountsModal',
+
+  SET_USER_METADATA = 'setMetadata/user',
+  SET_USER_METADATA_SUCCESS = 'setMetadata/user/success',
 }
 // all the possible message types
 export type Message =
@@ -155,6 +159,17 @@ export type Message =
     }
   | {
       type: PostMessages.USING_MANAGED_ACCOUNT
+      payload: undefined
+    }
+  | {
+      type: PostMessages.SET_USER_METADATA
+      payload: {
+        metadata: UserMetadata
+        lockAddress: string
+      }
+    }
+  | {
+      type: PostMessages.SET_USER_METADATA_SUCCESS
       payload: undefined
     }
 
