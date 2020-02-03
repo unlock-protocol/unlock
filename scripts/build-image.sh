@@ -3,9 +3,9 @@
 # This script builds the corresponding images
 # The argument is the image name
 
-IMAGE_NAME=$1
+PROJECT_NAME=$1
 REPO_ROOT=`dirname "$0"`/..
-DOCKERFILE=$REPO_ROOT/docker/$IMAGE_NAME.dockerfile
+DOCKERFILE=$REPO_ROOT/$PROJECT_NAME/Dockerfile
 ARGS=""
 DOCKER_REPOSITORY="unlockprotocol"
 CACHED_IMAGE_TAG="master"
@@ -16,8 +16,8 @@ if [ "$SKIP_CORE" != "true" ]; then
   docker pull "$DOCKER_REPOSITORY/unlock-core:master" &
 fi
 
-IMAGE_CACHE="$DOCKER_REPOSITORY/$IMAGE_NAME:$CACHED_IMAGE_TAG"
-echo "Pulling $IMAGE_CACHE to use as cache for $IMAGE_NAME"
+IMAGE_CACHE="$DOCKER_REPOSITORY/$PROJECT_NAME:$CACHED_IMAGE_TAG"
+echo "Pulling $IMAGE_CACHE to use as cache for $PROJECT_NAME"
 docker pull $IMAGE_CACHE &
 wait
 
@@ -28,4 +28,4 @@ if [ "$SKIP_CORE" != "true" ]; then
 fi
 
 ARGS="--cache-from $IMAGE_CACHE"
-docker build -t $IMAGE_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
+docker build -t $PROJECT_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
