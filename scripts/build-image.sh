@@ -3,9 +3,9 @@
 # This script builds the corresponding images
 # The argument is the image name
 
-IMAGE_NAME=$1
+PROJECT_NAME=$1
 REPO_ROOT=`dirname "$0"`/..
-DOCKERFILE=$REPO_ROOT/docker/$IMAGE_NAME.dockerfile
+DOCKERFILE=$REPO_ROOT/$PROJECT_NAME/Dockerfile
 ARGS=""
 DOCKER_REPOSITORY="unlockprotocol"
 CACHED_IMAGE_TAG="master"
