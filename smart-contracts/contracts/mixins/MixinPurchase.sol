@@ -62,16 +62,19 @@ contract MixinPurchase is
         toKey.tokenId
       );
     }
+    uint newTimeStamp;
 
     if (toKey.expirationTimestamp >= block.timestamp) {
       // This is an existing owner trying to extend their key
-      toKey.expirationTimestamp = toKey.expirationTimestamp.add(expirationDuration);
-      emit RenewKeyPurchase(_recipient, toKey.expirationTimestamp.add(expirationDuration));
+      newTimeStamp = toKey.expirationTimestamp.add(expirationDuration);
+      toKey.expirationTimestamp = newTimeStamp;
+      emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
-      toKey.expirationTimestamp = block.timestamp + expirationDuration;
-      emit RenewKeyPurchase(_recipient, block.timestamp + expirationDuration);
+      newTimeStamp = block.timestamp + expirationDuration;
+      toKey.expirationTimestamp = newTimeStamp;
+      emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
     // Let's get the actual price for the key from the Unlock smart contract
