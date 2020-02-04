@@ -6,6 +6,14 @@ import useListenForPostMessage from './browser/useListenForPostMessage'
 import usePostMessage from './browser/usePostMessage'
 
 /**
+ * NOTE: Do not use this hook anywhere other than CheckoutContent. It
+ * is not safely written, so having more than one instance of it will
+ * introduce major breakage.
+ *
+ * We should consider it deprecated at this point.
+ */
+
+/**
  * Merge in the call to action sentences from defaults for any that the
  * paywall configuration did not define
  *
