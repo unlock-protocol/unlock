@@ -11,6 +11,7 @@ export default function locksByOwnerQuery() {
         totalSupply
         maxNumberOfKeys
         owner
+        creationBlock
       }
     }
   `
