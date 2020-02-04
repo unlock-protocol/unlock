@@ -3,11 +3,28 @@ import * as rtl from '@testing-library/react'
 import { ValidKey } from '../../../../components/interface/verification/Key'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 
-let metadata = {}
+let useGetMetadataForResult = {
+  metadata: {
+    userMetadata: {},
+  },
+  loading: false,
+  error: false,
+}
+const mockUseMarkAsCheckedIn = {
+  markAsCheckedIn: jest.fn(),
+  checkedIn: false,
+  error: false,
+}
 
 jest.mock('../../../../hooks/useGetMetadataFor.js', () => {
   return jest.fn().mockImplementation(() => {
-    return metadata
+    return useGetMetadataForResult
+  })
+})
+
+jest.mock('../../../../hooks/useMarkAsCheckedIn.js', () => {
+  return jest.fn().mockImplementation(() => {
+    return mockUseMarkAsCheckedIn
   })
 })
 
@@ -32,19 +49,24 @@ const viewer = '0xviewer'
 
 describe('ValidKey component', () => {
   beforeEach(() => {
-    metadata = {
-      protected: {
-        email: 'julien@unlock-protocol.com',
+    useGetMetadataForResult = {
+      metadata: {
+        userMetadata: {},
       },
-      public: {
-        name: 'Genestoux',
-      },
+      loading: false,
+      error: false,
     }
   })
 
   it('should render a valid key with no metadata', () => {
     expect.assertions(1)
-    metadata = {}
+    useGetMetadataForResult = {
+      metadata: {
+        userMetadata: {},
+      },
+      loading: false,
+      error: false,
+    }
     const wrapper = rtl.render(
       <ValidKey
         ownedKey={ownedKey}
@@ -58,6 +80,15 @@ describe('ValidKey component', () => {
 
   it('should useGetMetadataFor if the viewer is the lock owner', () => {
     expect.assertions(1)
+
+    useGetMetadataForResult.metadata.userMetadata = {
+      protected: {
+        email: 'julien@unlock-protocol.com',
+      },
+      public: {
+        name: 'Genestoux',
+      },
+    }
     const wrapper = rtl.render(
       <ValidKey
         ownedKey={ownedKey}
