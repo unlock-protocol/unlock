@@ -115,6 +115,7 @@ contract('Lock / purchaseFor', accounts => {
 
     describe('when the user already owns a non expired key', () => {
       let tx2
+      let firstExpiration
 
       it('should expand the validity by the default key duration', async () => {
         await locks.FIRST.purchase(
@@ -126,7 +127,7 @@ contract('Lock / purchaseFor', accounts => {
             value: Units.convert('0.01', 'eth', 'wei'),
           }
         )
-        const firstExpiration = new BigNumber(
+        firstExpiration = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
         )
         assert(firstExpiration.gt(0))
@@ -152,14 +153,11 @@ contract('Lock / purchaseFor', accounts => {
         let expirationDuration = new BigNumber(
           await locks.FIRST.expirationDuration.call()
         )
-        const formerExpiration = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
-        )
         assert.equal(tx2.logs[0].event, 'RenewKeyPurchase')
         assert.equal(tx2.logs[0].args.owner, accounts[1])
         assert(
           new BigNumber(tx2.logs[0].args.newExpiration).eq(
-            formerExpiration.plus(expirationDuration)
+            firstExpiration.plus(expirationDuration)
           )
         )
       })
