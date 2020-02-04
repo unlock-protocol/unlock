@@ -148,17 +148,20 @@ contract('Lock / purchaseFor', accounts => {
         )
       })
 
-      it('should emit the ExpirationChanged event', async () => {
-        let iD = new BigNumber(
-          await locks.FIRST.getTokenIdFor.call(accounts[1])
-        )
-        let duration = new BigNumber(
+      it('should emit the RenewKeyPurchase event', async () => {
+        let expirationDuration = new BigNumber(
           await locks.FIRST.expirationDuration.call()
         )
-        assert.equal(tx2.logs[0].event, 'ExpirationChanged')
-        assert(new BigNumber(tx2.logs[0].args._tokenId).eq(iD))
-        assert(new BigNumber(tx2.logs[0].args._amount).eq(duration))
-        assert.equal(tx2.logs[0].args._timeAdded, true)
+        const formerExpiration = new BigNumber(
+          await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
+        )
+        assert.equal(tx2.logs[0].event, 'RenewKeyPurchase')
+        assert.equal(tx2.logs[0].args.owner, accounts[1])
+        assert(
+          new BigNumber(tx2.logs[0].args.newExpiration).eq(
+            formerExpiration.plus(expirationDuration)
+          )
+        )
       })
     })
 
@@ -234,7 +237,6 @@ contract('Lock / purchaseFor', accounts => {
 
     describe('can re-purchase an expired key', () => {
       let tx
-      let iD
 
       before(async () => {
         await locks.SHORT.purchase(
@@ -263,7 +265,6 @@ contract('Lock / purchaseFor', accounts => {
             value: Units.convert('0.01', 'eth', 'wei'),
           }
         )
-        iD = new BigNumber(await locks.SHORT.getTokenIdFor.call(accounts[4]))
         // And check the expiration which shiuld be exactly now + keyDuration
         const expirationTimestamp = new BigNumber(
           await locks.SHORT.keyExpirationTimestampFor.call(accounts[4])
@@ -282,14 +283,23 @@ contract('Lock / purchaseFor', accounts => {
         )
       })
 
-      it('should emit the ExpirationChanged event', async () => {
+      it('should emit the RenewKeyPurchase event', async () => {
         let duration = new BigNumber(
           await locks.SHORT.expirationDuration.call()
         )
-        assert.equal(tx.logs[0].event, 'ExpirationChanged')
-        assert(new BigNumber(tx.logs[0].args._tokenId).eq(iD))
-        assert(new BigNumber(tx.logs[0].args._amount).eq(duration))
-        assert.equal(tx.logs[0].args._timeAdded, true)
+        const now = parseInt(new Date().getTime() / 1000)
+        assert.equal(tx.logs[0].event, 'RenewKeyPurchase')
+        assert.equal(tx.logs[0].args.owner, accounts[4])
+        assert(
+          new BigNumber(tx.logs[0].args.newExpiration).gt(
+            duration.plus(now - 10)
+          )
+        )
+        assert(
+          new BigNumber(tx.logs[0].args.newExpiration).lt(
+            duration.plus(now + 10)
+          )
+        )
       })
     })
   })
