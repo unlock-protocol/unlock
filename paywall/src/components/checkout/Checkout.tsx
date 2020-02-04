@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   Locks,
@@ -7,17 +7,20 @@ import {
   Account,
   Key,
   KeyStatus,
+  UserMetadata,
 } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
 import LoadingLock from '../lock/LoadingLock'
 import { getCallToAction } from '../../utils/callToAction'
 import { getHighestStatus } from '../../utils/keys'
+import { MetadataForm } from '../interface/MetadataForm'
 
 interface Props {
   locks: Locks
   config: PaywallConfig
   account: Account | null
   purchase: (...args: any[]) => any
+  submitMetadata: (lockAddress: string, metadata: UserMetadata) => void
   hideCheckout: (...args: any[]) => any
 }
 
@@ -27,12 +30,33 @@ export const Checkout = ({
   account,
   purchase,
   hideCheckout,
+  submitMetadata,
 }: Props) => {
   const hasValidKey = Object.keys(locks).reduce(
     (isValid, address) => isValid || locks[address].key.status === 'valid',
     false
   )
   const lockAddresses: string[] = Object.keys(locks)
+  const metadataRequired = !!config.metadataInputs
+  const [showingForm, setShowingForm] = useState(false)
+  const [keyBeingPurchased, setKeyBeingPurchased] = useState<Key | undefined>(
+    undefined
+  )
+
+  const onFormSubmit = (metadata: UserMetadata) => {
+    setShowingForm(false)
+    submitMetadata(keyBeingPurchased!.lock, metadata)
+    purchase(keyBeingPurchased)
+  }
+
+  const onPurchase = (key: Key) => {
+    setKeyBeingPurchased(key)
+    if (metadataRequired) {
+      setShowingForm(true)
+    } else {
+      purchase(key)
+    }
+  }
 
   // Here we need to pick the right checkout message based on the keys!
   const lockKeys: Key[] = []
@@ -72,12 +96,18 @@ export const Checkout = ({
           lock={lockWithName}
           account={account}
           disabled={hasValidKey}
-          purchase={purchase}
+          purchase={onPurchase}
           hideCheckout={hideCheckout}
         />
       )
     }
   })
+
+  if (showingForm) {
+    return (
+      <MetadataForm fields={config.metadataInputs!} onSubmit={onFormSubmit} />
+    )
+  }
 
   return (
     <>
