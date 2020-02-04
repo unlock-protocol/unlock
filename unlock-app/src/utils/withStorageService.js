@@ -22,13 +22,5 @@ export default function withStorageService(Component) {
     )
   }
 
-  componentWithStorageService.getInitialProps = async context => {
-    return {
-      ...(Component.getInitialProps
-        ? await Component.getInitialProps(context)
-        : {}),
-    }
-  }
-
   return componentWithStorageService
 }
