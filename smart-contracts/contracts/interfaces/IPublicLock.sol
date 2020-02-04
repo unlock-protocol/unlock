@@ -13,57 +13,6 @@ contract IPublicLock is IERC721Enumerable {
 // https://github.com/duaraghav8/Ethlint/issues/268
 // solium-disable indentation
 
-  /// Events
-  event Destroy(
-    uint balance,
-    address indexed owner
-  );
-
-  event Disable();
-
-  event Withdrawal(
-    address indexed sender,
-    address indexed tokenAddress,
-    address indexed beneficiary,
-    uint amount
-  );
-
-  event CancelKey(
-    uint indexed tokenId,
-    address indexed owner,
-    address indexed sendTo,
-    uint refund
-  );
-
-  event RefundPenaltyChanged(
-    uint freeTrialLength,
-    uint refundPenaltyBasisPoints
-  );
-
-  event PricingChanged(
-    uint oldKeyPrice,
-    uint keyPrice,
-    address oldTokenAddress,
-    address tokenAddress
-  );
-
-  event ExpireKey(uint indexed tokenId);
-
-  event NewLockSymbol(
-    string symbol
-  );
-
-  event TransferFeeChanged(
-    uint transferFeeBasisPoints
-  );
-
-  /// @notice emits anytime the nonce used for off-chain approvals changes.
-  event NonceChanged(
-    address indexed keyOwner,
-    uint nextAvailableNonce
-  );
-  ///===================================================================
-
   /// Functions
 
   function initialize(
