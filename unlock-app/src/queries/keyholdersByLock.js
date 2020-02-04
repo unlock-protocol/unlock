@@ -13,6 +13,7 @@ export default function keyholdersByLockQuery() {
         }
         name
         address
+        owner
       }
     }
   `
