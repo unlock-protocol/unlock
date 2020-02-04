@@ -84,6 +84,16 @@ export function checkoutHandlerInit({
     )
   })
 
+  checkoutIframe.on(PostMessages.SET_USER_METADATA, payload => {
+    dataIframe.postMessage(PostMessages.SET_USER_METADATA, payload)
+  })
+  dataIframe.on(PostMessages.SET_USER_METADATA_SUCCESS, () => {
+    checkoutIframe.postMessage(
+      PostMessages.SET_USER_METADATA_SUCCESS,
+      undefined
+    )
+  })
+
   // pass on any errors
   dataIframe.on(PostMessages.ERROR, error =>
     checkoutIframe.postMessage(PostMessages.ERROR, error)

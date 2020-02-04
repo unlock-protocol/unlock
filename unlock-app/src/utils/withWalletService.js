@@ -21,14 +21,5 @@ export default function withWalletService(Component) {
       </WalletServiceContext.Consumer>
     )
   }
-
-  componentWithWalletService.getInitialProps = async context => {
-    return {
-      ...(Component.getInitialProps
-        ? await Component.getInitialProps(context)
-        : {}),
-    }
-  }
-
   return componentWithWalletService
 }

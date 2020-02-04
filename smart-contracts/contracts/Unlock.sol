@@ -1,4 +1,4 @@
-pragma solidity 0.5.14;
+pragma solidity 0.5.16;
 
 /**
  * @title The Unlock contract
@@ -83,6 +83,23 @@ contract Unlock is
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
   mapping (address => IUniswap) public uniswapExchanges;
+
+  // Events
+  event NewLock(
+    address indexed lockOwner,
+    address indexed newLockAddress
+  );
+
+  event ConfigUnlock(
+    address publicLockAddress,
+    string globalTokenSymbol,
+    string globalTokenURI
+  );
+
+  event ResetTrackedValue(
+    uint grossNetworkProduct,
+    uint totalDiscountGranted
+  );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(

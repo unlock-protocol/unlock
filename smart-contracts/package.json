@@ -40,6 +40,7 @@
     "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-standard": "4.0.1",
     "eth-gas-reporter": "0.2.14",
+    "eth-sig-util": "2.5.2",
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.8.2",
     "hardlydifficult-ethereum-contracts": "0.7.13",

@@ -1,4 +1,4 @@
-pragma solidity 0.5.14;
+pragma solidity 0.5.16;
 
 
 /**
@@ -7,24 +7,6 @@ pragma solidity 0.5.14;
 **/
 
 interface IUnlock {
-
-
-  // Events
-  event NewLock(
-    address indexed lockOwner,
-    address indexed newLockAddress
-  );
-
-  event ConfigUnlock(
-    address publicLockAddress,
-    string globalTokenSymbol,
-    string globalTokenURI
-  );
-
-  event ResetTrackedValue(
-    uint grossNetworkProduct,
-    uint totalDiscountGranted
-  );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(address _owner) external;
