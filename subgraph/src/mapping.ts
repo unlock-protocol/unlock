@@ -44,6 +44,8 @@ export function handleNewLock(event: NewLock): void {
   lock.expirationDuration = chainPublicLock.expirationDuration();
   lock.maxNumberOfKeys = chainPublicLock.maxNumberOfKeys();
   lock.owner = chainPublicLock.owner();
+  lock.creationBlock = event.block.number;
+  
   let tokenAddress = chainPublicLock.try_tokenAddress();
 
   if (!tokenAddress.reverted) {

@@ -35,6 +35,7 @@ type Lock @entity {
   address: Bytes!
   name: String
   tokenAddress: Bytes
+  creationBlock: BigInt
   price: BigInt
   expirationDuration: BigInt
   totalSupply: BigInt
