@@ -154,14 +154,6 @@ export interface KeyMetadata {
 
 // TODO: come up with one master type for the Redux store that we can
 // import from every connected component
-export interface ReduxMetadata {
-  [lockAddress: string]: {
-    [userAddress: string]: {
-      protected?: { [key: string]: string }
-      public?: { [key: string]: string }
-    }
-  }
-}
 
 // Represents the keyholdersByLock GraphQL query result
 export interface KeyholdersByLock {

@@ -7,12 +7,7 @@ import {
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
 } from '../../actions/lock'
-import {
-  LAUNCH_MODAL,
-  DISMISS_MODAL,
-  waitForWallet,
-  dismissWalletCheck,
-} from '../../actions/fullScreenModals'
+import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
@@ -28,10 +23,6 @@ import {
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
 import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
 import { SIGN_DATA } from '../../actions/signature'
-import {
-  SIGN_BULK_METADATA_REQUEST,
-  SIGN_BULK_METADATA_RESPONSE,
-} from '../../actions/keyMetadata'
 
 let mockConfig
 
@@ -674,85 +665,6 @@ describe('Wallet middleware', () => {
         data: 'neat',
         signature: 'here is your signature',
         id: 'track this signature',
-      })
-    })
-  })
-
-  describe('SIGN_BULK_METADATA_REQUEST', () => {
-    const action = {
-      type: SIGN_BULK_METADATA_REQUEST,
-      lockAddress: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
-      owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-      timestamp: 1234567890,
-    }
-
-    const expectedTypedData = expect.objectContaining({
-      primaryType: 'KeyMetadata',
-    })
-
-    it("should handle SIGN_BULK_METADATA_REQUEST by calling walletService's signData", () => {
-      expect.assertions(2)
-      const { invoke, store } = create()
-
-      mockWalletService.signData = jest.fn()
-      mockWalletService.ready = true
-
-      invoke(action)
-
-      expect(store.dispatch).toHaveBeenCalledWith(waitForWallet())
-
-      expect(mockWalletService.signData).toHaveBeenCalledWith(
-        action.owner,
-        expectedTypedData,
-        expect.any(Function)
-      )
-    })
-
-    it('should dispatch some typed data on success', () => {
-      expect.assertions(3)
-      const { invoke, store } = create()
-
-      mockWalletService.signData = jest
-        .fn()
-        .mockImplementation((_address, _data, callback) => {
-          callback(undefined, 'a signature')
-        })
-      mockWalletService.ready = true
-
-      invoke(action)
-
-      expect(store.dispatch).toHaveBeenNthCalledWith(1, waitForWallet())
-      expect(store.dispatch).toHaveBeenNthCalledWith(2, dismissWalletCheck())
-
-      expect(store.dispatch).toHaveBeenNthCalledWith(3, {
-        type: SIGN_BULK_METADATA_RESPONSE,
-        data: expectedTypedData,
-        signature: 'a signature',
-        lockAddress: action.lockAddress,
-        keyIds: action.keyIds,
-      })
-    })
-
-    it('should dispatch an error on failure', () => {
-      expect.assertions(1)
-      const { invoke, store } = create()
-
-      mockWalletService.signData = jest
-        .fn()
-        .mockImplementation((_address, _data, callback) => {
-          callback(new Error('it broke'), undefined)
-        })
-      mockWalletService.ready = true
-
-      invoke(action)
-
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SET_ERROR,
-        error: {
-          kind: 'Wallet',
-          level: 'Warning',
-          message: 'Could not sign typed data for metadata request.',
-        },
       })
     })
   })

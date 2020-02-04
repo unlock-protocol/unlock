@@ -25,7 +25,6 @@ import { Storage } from '../../utils/Error'
 import { setError, SET_ERROR } from '../../actions/error'
 import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
 import UnlockUser from '../../structured_data/unlockUser'
-import { GOT_BULK_METADATA } from '../../actions/keyMetadata'
 
 jest.mock('../../utils/accounts')
 
@@ -684,44 +683,6 @@ describe('Storage middleware', () => {
           1,
           setError(Storage.Warning('Could not initiate account recovery.'))
         )
-      })
-    })
-  })
-
-  describe('Key metadata', () => {
-    const lockAddress = 'an address'
-    const data = 'some data'
-    it('should dispatch a message when a request succeeds', () => {
-      expect.assertions(1)
-
-      const { store } = create()
-
-      mockStorageService.emit(success.getBulkMetadataFor, lockAddress, data)
-
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: GOT_BULK_METADATA,
-        lockAddress,
-        data,
-      })
-    })
-
-    it('should dispatch an error when a request fails', () => {
-      expect.assertions(1)
-
-      const { store } = create()
-
-      mockStorageService.emit(
-        failure.getBulkMetadataFor,
-        new Error('something broke')
-      )
-
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SET_ERROR,
-        error: {
-          kind: 'Storage',
-          level: 'Diagnostic',
-          message: 'Could not get bulk metadata: something broke',
-        },
       })
     })
   })

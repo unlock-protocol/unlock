@@ -29,10 +29,6 @@ import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
-import {
-  SIGN_BULK_METADATA_RESPONSE,
-  gotBulkMetadata,
-} from '../actions/keyMetadata'
 
 const storageMiddleware = storageService => {
   return ({ getState, dispatch }) => {
@@ -166,9 +162,6 @@ const storageMiddleware = storageService => {
     })
 
     // Key metadata
-    storageService.on(success.getBulkMetadataFor, (lockAddress, dataArray) => {
-      dispatch(gotBulkMetadata(lockAddress, dataArray))
-    })
     storageService.on(failure.getBulkMetadataFor, error => {
       dispatch(
         setError(
@@ -290,12 +283,6 @@ const storageMiddleware = storageService => {
           const { lock } = action
           storageService.getKeyPrice(lock.address)
         }
-
-        if (action.type === SIGN_BULK_METADATA_RESPONSE) {
-          const { signature, lockAddress, data } = action
-          storageService.getBulkMetadataFor(lockAddress, signature, data)
-        }
-
         next(action)
       }
     }
