@@ -10,7 +10,7 @@ import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
-import { Key, Locks, NetworkNames } from '../../unlockTypes'
+import { Key, Locks, NetworkNames, PaywallConfig } from '../../unlockTypes'
 
 import { PostMessages } from '../../messageTypes'
 
@@ -22,11 +22,13 @@ import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
 
 interface WrapperProps {
   allowClose: boolean
+  config: PaywallConfig
 }
 
 /* eslint-disable react/prop-types */
 export const Wrapper: React.FunctionComponent<WrapperProps> = ({
   allowClose,
+  config,
   children,
 }) => {
   const { postMessage } = usePostMessage('Checkout UI')
@@ -38,8 +40,6 @@ export const Wrapper: React.FunctionComponent<WrapperProps> = ({
     })
   }, [postMessage])
 
-  const paywallConfig = usePaywallConfig()
-
   return (
     <Greyout onClick={allowClose ? hideCheckout : () => {}}>
       <CheckoutWrapper
@@ -49,7 +49,7 @@ export const Wrapper: React.FunctionComponent<WrapperProps> = ({
         onClick={e => {
           e.stopPropagation()
         }}
-        icon={paywallConfig.icon}
+        icon={config.icon}
       >
         <Head>
           <title>{pageTitle('Checkout')}</title>
@@ -187,7 +187,7 @@ export default function CheckoutContent() {
 
   if (!account) {
     return (
-      <Wrapper allowClose>
+      <Wrapper allowClose config={paywallConfig}>
         <NoWallet config={paywallConfig} />
       </Wrapper>
     )
@@ -195,7 +195,7 @@ export default function CheckoutContent() {
 
   if (requiredNetworkId !== network) {
     return (
-      <Wrapper allowClose={allowClosingCheckout}>
+      <Wrapper allowClose={allowClosingCheckout} config={paywallConfig}>
         <WrongNetwork
           currentNetwork={currentNetwork}
           requiredNetworkId={requiredNetworkId}
@@ -218,7 +218,7 @@ export default function CheckoutContent() {
     // unless they have dismissed it. Then we display the checkout component
     // we will use the first confirming lock in the list
     return (
-      <Wrapper allowClose={allowClosingCheckout}>
+      <Wrapper allowClose={allowClosingCheckout} config={paywallConfig}>
         <CheckoutConfirmingModal
           account={account}
           hideCheckout={hideConfirmingModal}
@@ -229,7 +229,7 @@ export default function CheckoutContent() {
   }
   // for everyone else, display the checkout component
   return (
-    <Wrapper allowClose={allowClosingCheckout}>
+    <Wrapper allowClose={allowClosingCheckout} config={paywallConfig}>
       <Checkout
         account={account}
         locks={locks}
