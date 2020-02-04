@@ -52,15 +52,24 @@ contract MixinPurchase is
       // Assign a new tokenId (if a new owner or previously transferred)
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
+
+      // trigger event
+      emit Transfer(
+        address(0), // This is a creation.
+        _recipient,
+        toKey.tokenId
+      );
     }
 
     if (toKey.expirationTimestamp >= block.timestamp) {
       // This is an existing owner trying to extend their key
       toKey.expirationTimestamp = toKey.expirationTimestamp.add(expirationDuration);
+      emit ExpirationChanged(toKey.tokenId, expirationDuration, true);
     } else {
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       toKey.expirationTimestamp = block.timestamp + expirationDuration;
+      emit ExpirationChanged(toKey.tokenId, expirationDuration, true);
     }
 
     // Let's get the actual price for the key from the Unlock smart contract
@@ -81,13 +90,6 @@ contract MixinPurchase is
     }
 
     unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
-
-    // trigger event
-    emit Transfer(
-      address(0), // This is a creation.
-      _recipient,
-      toKey.tokenId
-    );
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     if(tokenAddress != address(0)) {
