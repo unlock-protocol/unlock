@@ -65,6 +65,10 @@ export const Wrapper: React.FunctionComponent<WrapperProps> = ({
  */
 export default function CheckoutContent() {
   const window = useWindow()
+
+  // This is the ONLY place where usePaywallConfig should be
+  // called. Calling it anywhere else will introduce loops that break the
+  // app.
   const paywallConfig = usePaywallConfig()
   const { account, network, locks, checkWallet } = useBlockchainData(
     window,
