@@ -1,4 +1,4 @@
-pragma solidity 0.5.14;
+pragma solidity 0.5.16;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
