@@ -114,6 +114,8 @@ contract('Lock / purchaseFor', accounts => {
     })
 
     describe('when the user already owns a non expired key', () => {
+      let tx2
+
       it('should expand the validity by the default key duration', async () => {
         await locks.FIRST.purchase(
           0,
@@ -128,7 +130,7 @@ contract('Lock / purchaseFor', accounts => {
           await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
         )
         assert(firstExpiration.gt(0))
-        await locks.FIRST.purchase(
+        tx2 = await locks.FIRST.purchase(
           0,
           accounts[1],
           web3.utils.padLeft(0, 40),
@@ -144,6 +146,19 @@ contract('Lock / purchaseFor', accounts => {
           expirationTimestamp.toFixed(),
           firstExpiration.plus(locks.FIRST.params.expirationDuration).toFixed()
         )
+      })
+
+      it('should emit the ExpirationChanged event', async () => {
+        let iD = new BigNumber(
+          await locks.FIRST.getTokenIdFor.call(accounts[1])
+        )
+        let duration = new BigNumber(
+          await locks.FIRST.expirationDuration.call()
+        )
+        assert.equal(tx2.logs[0].event, 'ExpirationChanged')
+        assert(new BigNumber(tx2.logs[0].args._tokenId).eq(iD))
+        assert(new BigNumber(tx2.logs[0].args._amount).eq(duration))
+        assert.equal(tx2.logs[0].args._timeAdded, true)
       })
     })
 
@@ -218,6 +233,9 @@ contract('Lock / purchaseFor', accounts => {
     })
 
     describe('can re-purchase an expired key', () => {
+      let tx
+      let iD
+
       before(async () => {
         await locks.SHORT.purchase(
           0,
@@ -236,7 +254,7 @@ contract('Lock / purchaseFor', accounts => {
 
       it('should expand the validity by the default key duration', async () => {
         // Purchase a new one
-        await locks.SHORT.purchase(
+        tx = await locks.SHORT.purchase(
           0,
           accounts[4],
           web3.utils.padLeft(0, 40),
@@ -245,6 +263,7 @@ contract('Lock / purchaseFor', accounts => {
             value: Units.convert('0.01', 'eth', 'wei'),
           }
         )
+        iD = new BigNumber(await locks.SHORT.getTokenIdFor.call(accounts[4]))
         // And check the expiration which shiuld be exactly now + keyDuration
         const expirationTimestamp = new BigNumber(
           await locks.SHORT.keyExpirationTimestampFor.call(accounts[4])
@@ -261,6 +280,16 @@ contract('Lock / purchaseFor', accounts => {
             locks.SHORT.params.expirationDuration.plus(now + 10)
           )
         )
+      })
+
+      it('should emit the ExpirationChanged event', async () => {
+        let duration = new BigNumber(
+          await locks.SHORT.expirationDuration.call()
+        )
+        assert.equal(tx.logs[0].event, 'ExpirationChanged')
+        assert(new BigNumber(tx.logs[0].args._tokenId).eq(iD))
+        assert(new BigNumber(tx.logs[0].args._amount).eq(duration))
+        assert.equal(tx.logs[0].args._timeAdded, true)
       })
     })
   })
