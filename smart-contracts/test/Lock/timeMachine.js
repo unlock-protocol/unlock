@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const TimeMachineMock = artifacts.require('TimeMachineMock')
-const shouldFail = require('../helpers/shouldFail')
+const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -90,7 +90,7 @@ contract('Lock / timeMachine', accounts => {
 
   describe('failures', async () => {
     it('should not work for a non-existant key', async () => {
-      await shouldFail(
+      await reverts(
         lock.timeMachine(17, 42, true, { from: accounts[3] }),
         'NON_EXISTENT_KEY'
       )
