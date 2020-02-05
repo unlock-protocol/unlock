@@ -1,26 +1,22 @@
 import { MetadataInput } from '../../unlockTypes'
-import {
-  getProtectedInputs,
-  formResultToMetadata,
-} from '../../utils/userMetadata'
+import { getPublicInputs, formResultToMetadata } from '../../utils/userMetadata'
 
 const inputs: MetadataInput[] = [
   {
     name: 'First Name',
     type: 'text',
     required: false,
+    public: true,
   },
   {
     name: 'Last Name',
     type: 'text',
     required: false,
-    protected: true,
   },
   {
     name: 'Email Address',
     type: 'text',
     required: false,
-    protected: true,
   },
 ]
 
@@ -31,16 +27,16 @@ const formResult = {
 }
 
 describe('userMetadata utils', () => {
-  describe('getProtectedInputs', () => {
+  describe('getPublicInputs', () => {
     it('returns an object mapping protected inputs to true', () => {
       expect.assertions(1)
 
-      const result = getProtectedInputs(inputs)
+      const result = getPublicInputs(inputs)
 
       expect(result).toEqual({
-        'First Name': false,
-        'Last Name': true,
-        'Email Address': true,
+        'First Name': true,
+        'Last Name': false,
+        'Email Address': false,
       })
     })
   })
@@ -50,7 +46,7 @@ describe('userMetadata utils', () => {
       expect.assertions(1)
 
       expect(formResultToMetadata(formResult, inputs)).toEqual({
-        privateData: {
+        protectedData: {
           'Last Name': 'Hale',
           'Email Address': 'ceo@mann.co',
         },

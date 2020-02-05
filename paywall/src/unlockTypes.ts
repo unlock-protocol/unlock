@@ -78,7 +78,7 @@ export interface MetadataInput {
   name: string
   type: 'text' | 'date' | 'color' | 'email' | 'url'
   required: boolean
-  protected?: true // optional, all non-protected fields are treated as public
+  public?: true // optional, all non-public fields are treated as protected
 }
 
 // This interface describes an individual paywall's config
@@ -171,7 +171,7 @@ export interface UserMetadata {
   publicData?: {
     [key: string]: string
   }
-  privateData?: {
+  protectedData?: {
     [key: string]: string
   }
 }

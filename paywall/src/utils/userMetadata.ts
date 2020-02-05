@@ -1,10 +1,10 @@
 import { UserMetadata, MetadataInput } from '../unlockTypes'
 
-export function getProtectedInputs(
+export function getPublicInputs(
   inputs: MetadataInput[]
 ): { [name: string]: boolean } {
   let result: { [key: string]: boolean } = {}
-  inputs.forEach(input => (result[input.name] = input.protected || false))
+  inputs.forEach(input => (result[input.name] = input.public || false))
   return result
 }
 
@@ -14,15 +14,15 @@ export function formResultToMetadata(
 ): UserMetadata {
   let result: UserMetadata = {
     publicData: {},
-    privateData: {},
+    protectedData: {},
   }
 
-  const protectedInputs = getProtectedInputs(inputs)
+  const publicInputs = getPublicInputs(inputs)
   Object.keys(formResult).forEach(name => {
-    if (protectedInputs[name]) {
-      result.privateData![name] = formResult[name]
-    } else {
+    if (publicInputs[name]) {
       result.publicData![name] = formResult[name]
+    } else {
+      result.protectedData![name] = formResult[name]
     }
   })
 
