@@ -190,7 +190,7 @@ describe('The Unlock Dashboard', () => {
       let lockToEditSelector
       beforeEach(async () => {
         const existingLocks = await dashboard.listLocks()
-        lockToEditSelector = `[data-address="${existingLocks[0]}"]`
+        lockToEditSelector = `[data-address="${existingLocks[4]}"]`
       })
 
       it('a button exists to edit the Lock details', async () => {
