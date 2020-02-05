@@ -69,6 +69,9 @@ contract('Lock / purchaseFor', accounts => {
       assert.equal(tx.logs[0].event, 'Transfer')
       assert.equal(tx.logs[0].args.from, 0)
       assert.equal(tx.logs[0].args.to, accounts[2])
+      // Verify that RenewKeyPurchase does not emit on a first key purchase
+      const includes = tx.logs.filter(l => l.event === 'RenewKeyPurchase')
+      assert.equal(includes.length, 0)
     })
 
     describe('when the user already owns an expired key', () => {
@@ -114,6 +117,9 @@ contract('Lock / purchaseFor', accounts => {
     })
 
     describe('when the user already owns a non expired key', () => {
+      let tx2
+      let firstExpiration
+
       it('should expand the validity by the default key duration', async () => {
         await locks.FIRST.purchase(
           0,
@@ -124,11 +130,11 @@ contract('Lock / purchaseFor', accounts => {
             value: Units.convert('0.01', 'eth', 'wei'),
           }
         )
-        const firstExpiration = new BigNumber(
+        firstExpiration = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accounts[1])
         )
         assert(firstExpiration.gt(0))
-        await locks.FIRST.purchase(
+        tx2 = await locks.FIRST.purchase(
           0,
           accounts[1],
           web3.utils.padLeft(0, 40),
@@ -144,6 +150,22 @@ contract('Lock / purchaseFor', accounts => {
           expirationTimestamp.toFixed(),
           firstExpiration.plus(locks.FIRST.params.expirationDuration).toFixed()
         )
+      })
+
+      it('should emit the RenewKeyPurchase event', async () => {
+        let expirationDuration = new BigNumber(
+          await locks.FIRST.expirationDuration.call()
+        )
+        assert.equal(tx2.logs[0].event, 'RenewKeyPurchase')
+        assert.equal(tx2.logs[0].args.owner, accounts[1])
+        assert(
+          new BigNumber(tx2.logs[0].args.newExpiration).eq(
+            firstExpiration.plus(expirationDuration)
+          )
+        )
+        // Verify that Transfer does not emit on a key renewal
+        const included = tx2.logs.filter(l => l.event === 'Transfer')
+        assert.equal(included.length, 0)
       })
     })
 
@@ -218,6 +240,8 @@ contract('Lock / purchaseFor', accounts => {
     })
 
     describe('can re-purchase an expired key', () => {
+      let tx
+
       before(async () => {
         await locks.SHORT.purchase(
           0,
@@ -236,7 +260,7 @@ contract('Lock / purchaseFor', accounts => {
 
       it('should expand the validity by the default key duration', async () => {
         // Purchase a new one
-        await locks.SHORT.purchase(
+        tx = await locks.SHORT.purchase(
           0,
           accounts[4],
           web3.utils.padLeft(0, 40),
@@ -261,6 +285,28 @@ contract('Lock / purchaseFor', accounts => {
             locks.SHORT.params.expirationDuration.plus(now + 10)
           )
         )
+      })
+
+      it('should emit the RenewKeyPurchase event', async () => {
+        let duration = new BigNumber(
+          await locks.SHORT.expirationDuration.call()
+        )
+        const now = parseInt(new Date().getTime() / 1000)
+        assert.equal(tx.logs[0].event, 'RenewKeyPurchase')
+        assert.equal(tx.logs[0].args.owner, accounts[4])
+        assert(
+          new BigNumber(tx.logs[0].args.newExpiration).gt(
+            duration.plus(now - 10)
+          )
+        )
+        assert(
+          new BigNumber(tx.logs[0].args.newExpiration).lt(
+            duration.plus(now + 10)
+          )
+        )
+        // Verify that Transfer does not emit on an expired key re-purchase
+        const included = tx.logs.filter(l => l.event === 'Transfer')
+        assert.equal(included.length, 0)
       })
     })
   })
