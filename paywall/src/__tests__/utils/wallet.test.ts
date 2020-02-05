@@ -40,13 +40,13 @@ describe('wallet utilities', () => {
   })
 
   describe('walletIsMetamask', () => {
-    it('should be true when window.web3.currentProvider.isMetamask is true', () => {
+    it('should be true when window.web3.currentProvider.isMetaMask is true', () => {
       expect.assertions(1)
 
       const window: any = {
         web3: {
           currentProvider: {
-            isMetamask: true,
+            isMetaMask: true,
           },
         },
       }

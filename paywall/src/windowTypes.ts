@@ -68,7 +68,7 @@ export interface LocalStorageWindow {
 export interface Web3WalletInfo {
   noWallet: boolean
   notEnabled: boolean
-  isMetamask: boolean
+  isMetaMask: boolean
 }
 export interface web3MethodCall {
   method: string
@@ -106,7 +106,7 @@ export interface Web3Window extends PostOfficeWindow {
     currentProvider: {
       sendAsync?: web3Send
       send?: web3Send
-      isMetamask?: true // is only ever true or undefined
+      isMetaMask?: true // is only ever true or undefined
       enable?: () => Promise<void>
     }
   }
@@ -118,14 +118,14 @@ export type CryptoWalletWindow = Required<Web3Window>
 export interface SendAsyncProvider {
   sendAsync: web3Send
   send?: web3Send
-  isMetamask?: true // is only ever true or undefined
+  isMetaMask?: true // is only ever true or undefined
   enable?: () => Promise<void>
 }
 
 // some providers do not define sendAsync
 export interface SendProvider {
   send: web3Send
-  isMetamask?: true // is only ever true or undefined
+  isMetaMask?: true // is only ever true or undefined
   enable?: () => Promise<void>
 }
 // used in utils/postOffice.ts
