@@ -28,7 +28,7 @@ const formResult = {
 
 describe('userMetadata utils', () => {
   describe('getPublicInputs', () => {
-    it('returns an object mapping protected inputs to true', () => {
+    it('returns an object mapping public inputs to true', () => {
       expect.assertions(1)
 
       const result = getPublicInputs(inputs)
