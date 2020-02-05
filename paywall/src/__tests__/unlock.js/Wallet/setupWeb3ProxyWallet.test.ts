@@ -32,7 +32,7 @@ describe('setupWeb3ProxyWallet()', () => {
       hasWallet: typeof hasWallet === 'undefined' ? true : hasWallet,
       setHasWeb3: setHasWeb3 || jest.fn(),
       getHasWeb3: getHasWeb3 || jest.fn(() => true),
-      isMetamask: isMetamask || true,
+      isMetaMask: isMetamask || true,
       window: window || fakeWindow,
     })
 
@@ -80,7 +80,7 @@ describe('setupWeb3ProxyWallet()', () => {
         {
           noWallet: true,
           notEnabled: false,
-          isMetamask: false,
+          isMetaMask: false,
         }
       )
     })
@@ -100,7 +100,7 @@ describe('setupWeb3ProxyWallet()', () => {
           {
             noWallet: false,
             notEnabled: false,
-            isMetamask: true,
+            isMetaMask: true,
           }
         )
         done()
@@ -138,7 +138,7 @@ describe('setupWeb3ProxyWallet()', () => {
           {
             noWallet: false,
             notEnabled: true,
-            isMetamask: true,
+            isMetaMask: true,
           }
         )
         done()

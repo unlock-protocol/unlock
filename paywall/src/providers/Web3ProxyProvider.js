@@ -28,7 +28,7 @@ export default class Web3ProxyProvider {
       if (!walletInfo || typeof walletInfo !== 'object') {
         return
       }
-      this.isMetamask = !!walletInfo.isMetamask
+      this.isMetaMask = !!walletInfo.isMetaMask
       this.noWallet = !!walletInfo.noWallet
       this.notEnabled = !!walletInfo.notEnabled
       // now we are ready to do work

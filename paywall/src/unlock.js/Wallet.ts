@@ -71,7 +71,7 @@ export default class Wallet {
     return this.hasWeb3
   }
 
-  init({ shouldUseUserAccounts, hasWallet, isMetamask }: WalletStatus) {
+  init({ shouldUseUserAccounts, hasWallet, isMetaMask }: WalletStatus) {
     if (shouldUseUserAccounts) {
       // create the preconditions for using user accounts
       setupUserAccounts({
@@ -105,7 +105,7 @@ export default class Wallet {
         hasWallet,
         setHasWeb3: this.setHasWeb3,
         getHasWeb3: this.getHasWeb3,
-        isMetamask,
+        isMetaMask,
         window: this.window,
       })
     }

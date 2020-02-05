@@ -68,7 +68,7 @@ describe('Wallet.init()', () => {
       handler.init({
         shouldUseUserAccounts: false,
         hasWallet: true,
-        isMetamask: true,
+        isMetaMask: true,
       })
 
       expect(setupUserAccounts).not.toHaveBeenCalled()
@@ -83,7 +83,7 @@ describe('Wallet.init()', () => {
       handler.init({
         shouldUseUserAccounts: true,
         hasWallet: true,
-        isMetamask: true,
+        isMetaMask: true,
       })
 
       expect(setupWeb3ProxyWallet).toHaveBeenCalled()
@@ -97,7 +97,7 @@ describe('Wallet.init()', () => {
       handler.init({
         hasWallet: false,
         shouldUseUserAccounts: false,
-        isMetamask: false,
+        isMetaMask: false,
       })
 
       expect(setupWeb3ProxyWallet).toHaveBeenCalled()
@@ -119,7 +119,7 @@ describe('Wallet.init()', () => {
       handler.init({
         shouldUseUserAccounts: false,
         hasWallet: true,
-        isMetamask: true,
+        isMetaMask: true,
       })
 
       expect(setupUserAccounts).not.toHaveBeenCalled()
@@ -135,7 +135,7 @@ describe('Wallet.init()', () => {
       handler.init({
         shouldUseUserAccounts: true,
         hasWallet: false,
-        isMetamask: false,
+        isMetaMask: false,
       })
 
       expect(setupUserAccounts).toHaveBeenCalled()
@@ -150,7 +150,7 @@ describe('Wallet.init()', () => {
       handler.init({
         shouldUseUserAccounts: true,
         hasWallet: false,
-        isMetamask: false,
+        isMetaMask: false,
       })
 
       expect(setupUserAccountsProxyWallet).toHaveBeenCalled()

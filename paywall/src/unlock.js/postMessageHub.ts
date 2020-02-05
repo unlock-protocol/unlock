@@ -326,7 +326,7 @@ export function setupUserAccountsProxyWallet({
     iframes.data.postMessage(PostMessages.WALLET_INFO, {
       noWallet: false,
       notEnabled: false,
-      isMetamask: false,
+      isMetaMask: false,
     })
   })
 
@@ -364,7 +364,7 @@ interface setupWeb3ProxyWalletArgs {
   hasWallet: boolean
   setHasWeb3: (value: boolean) => void
   getHasWeb3: () => boolean
-  isMetamask: boolean
+  isMetaMask: boolean
   window: Web3Window
 }
 
@@ -373,7 +373,7 @@ export function setupWeb3ProxyWallet({
   hasWallet,
   setHasWeb3,
   getHasWeb3,
-  isMetamask,
+  isMetaMask,
   window,
 }: setupWeb3ProxyWalletArgs) {
   // when receiving a key purchase request, we either pass it to the
@@ -395,7 +395,7 @@ export function setupWeb3ProxyWallet({
       iframes.data.postMessage(PostMessages.WALLET_INFO, {
         noWallet: true,
         notEnabled: false,
-        isMetamask: false,
+        isMetaMask: false,
       })
       return
     }
@@ -410,7 +410,7 @@ export function setupWeb3ProxyWallet({
       iframes.data.postMessage(PostMessages.WALLET_INFO, {
         noWallet: false,
         notEnabled: true, // user declined to enable the wallet
-        isMetamask, // this is used for some decisions in signing
+        isMetaMask, // this is used for some decisions in signing
       })
       return
     }
@@ -418,7 +418,7 @@ export function setupWeb3ProxyWallet({
     iframes.data.postMessage(PostMessages.WALLET_INFO, {
       noWallet: false,
       notEnabled: false,
-      isMetamask, // this is used for some decisions in signing
+      isMetaMask, // this is used for some decisions in signing
     })
   })
 

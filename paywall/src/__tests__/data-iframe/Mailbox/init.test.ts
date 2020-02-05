@@ -152,7 +152,7 @@ describe('Mailbox - init', () => {
     fakeWindow.receivePostMessageFromMainWindow(PostMessages.WALLET_INFO, {
       noWallet: false,
       notEnabled: false,
-      isMetamask: false,
+      isMetaMask: false,
     })
 
     await waitFor(() => testingMailbox().handler)
@@ -167,7 +167,7 @@ describe('Mailbox - init', () => {
     fakeWindow.receivePostMessageFromMainWindow(PostMessages.WALLET_INFO, {
       noWallet: false,
       notEnabled: false,
-      isMetamask: false,
+      isMetaMask: false,
     })
 
     await waitFor(() => testingMailbox().handler)
