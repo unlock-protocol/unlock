@@ -122,6 +122,7 @@ export interface Lock {
   outstandingKeys?: number
   balance?: string
   owner?: string
+  creationBlock?: number
 }
 
 export interface Locks {
