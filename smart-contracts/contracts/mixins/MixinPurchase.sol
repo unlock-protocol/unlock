@@ -23,6 +23,8 @@ contract MixinPurchase is
 {
   using SafeMath for uint;
 
+  event RenewKeyPurchase(address indexed owner, uint newExpiration);
+
   /**
   * @dev Purchase function
   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
@@ -47,20 +49,33 @@ contract MixinPurchase is
 
     // Assign the key
     Key storage toKey = keyByOwner[_recipient];
+    uint newTimeStamp;
 
     if (toKey.tokenId == 0) {
       // Assign a new tokenId (if a new owner or previously transferred)
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
-    }
+      newTimeStamp = block.timestamp + expirationDuration;
+      toKey.expirationTimestamp = newTimeStamp;
 
-    if (toKey.expirationTimestamp >= block.timestamp) {
+      // trigger event
+      emit Transfer(
+        address(0), // This is a creation.
+        _recipient,
+        toKey.tokenId
+      );
+    } else if (toKey.expirationTimestamp >= block.timestamp) {
       // This is an existing owner trying to extend their key
-      toKey.expirationTimestamp = toKey.expirationTimestamp.add(expirationDuration);
+      newTimeStamp = toKey.expirationTimestamp.add(expirationDuration);
+      toKey.expirationTimestamp = newTimeStamp;
+      emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
+      // This is an existing owner trying to renew their expired key
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
-      toKey.expirationTimestamp = block.timestamp + expirationDuration;
+      newTimeStamp = block.timestamp + expirationDuration;
+      toKey.expirationTimestamp = newTimeStamp;
+      emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
     // Let's get the actual price for the key from the Unlock smart contract
@@ -81,13 +96,6 @@ contract MixinPurchase is
     }
 
     unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
-
-    // trigger event
-    emit Transfer(
-      address(0), // This is a creation.
-      _recipient,
-      toKey.tokenId
-    );
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     if(tokenAddress != address(0)) {
