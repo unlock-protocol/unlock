@@ -69,6 +69,9 @@ contract('Lock / purchaseFor', accounts => {
       assert.equal(tx.logs[0].event, 'Transfer')
       assert.equal(tx.logs[0].args.from, 0)
       assert.equal(tx.logs[0].args.to, accounts[2])
+      // Verify that RenewKeyPurchase does not emit on a first key purchase
+      const includes = tx.logs.includes(l => l.event === 'RenewKeyPurchase')
+      assert.equal(includes, false)
     })
 
     describe('when the user already owns an expired key', () => {
@@ -160,6 +163,9 @@ contract('Lock / purchaseFor', accounts => {
             firstExpiration.plus(expirationDuration)
           )
         )
+        // Verify that Transfer does not emit on a key renewal
+        const included = tx2.logs.filter(l => l.event === 'Transfer')
+        assert.equal(included.length, 0)
       })
     })
 
@@ -298,6 +304,9 @@ contract('Lock / purchaseFor', accounts => {
             duration.plus(now + 10)
           )
         )
+        // Verify that Transfer does not emit on an expired key re-purchase
+        const included = tx.logs.filter(l => l.event === 'Transfer')
+        assert.equal(included.length, 0)
       })
     })
   })
