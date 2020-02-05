@@ -49,11 +49,14 @@ contract MixinPurchase is
 
     // Assign the key
     Key storage toKey = keyByOwner[_recipient];
+    uint newTimeStamp;
 
     if (toKey.tokenId == 0) {
       // Assign a new tokenId (if a new owner or previously transferred)
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
+      newTimeStamp = block.timestamp + expirationDuration;
+      toKey.expirationTimestamp = newTimeStamp;
 
       // trigger event
       emit Transfer(
@@ -61,15 +64,13 @@ contract MixinPurchase is
         _recipient,
         toKey.tokenId
       );
-    }
-    uint newTimeStamp;
-
-    if (toKey.expirationTimestamp >= block.timestamp) {
+    } else if (toKey.expirationTimestamp >= block.timestamp) {
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp.add(expirationDuration);
       toKey.expirationTimestamp = newTimeStamp;
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
+      // This is an existing owner trying to renew their expired key
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       newTimeStamp = block.timestamp + expirationDuration;
