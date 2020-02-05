@@ -14,6 +14,8 @@ import LoadingLock from '../lock/LoadingLock'
 import { getCallToAction } from '../../utils/callToAction'
 import { getHighestStatus } from '../../utils/keys'
 import { MetadataForm } from '../interface/MetadataForm'
+import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
+import { PostMessages } from '../../messageTypes'
 
 interface Props {
   locks: Locks
@@ -42,6 +44,18 @@ export const Checkout = ({
   const [keyBeingPurchased, setKeyBeingPurchased] = useState<Key | undefined>(
     undefined
   )
+
+  // This listener is used only for the side effect of purchasing a
+  // key after metadata is submitted
+  useListenForPostMessage({
+    type: PostMessages.SET_USER_METADATA_SUCCESS,
+    defaultValue: undefined,
+    getValue: () => {
+      // We have submitted the metadata successfully, continue to
+      // purchase key
+      purchase(keyBeingPurchased)
+    },
+  })
 
   const onFormSubmit = (metadata: UserMetadata) => {
     setShowingForm(false)
