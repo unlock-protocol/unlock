@@ -11,7 +11,13 @@ import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
 
-import { Key, Locks, NetworkNames, PaywallConfig, UserMetadata } from '../../unlockTypes'
+import {
+  Key,
+  Locks,
+  NetworkNames,
+  PaywallConfig,
+  UserMetadata,
+} from '../../unlockTypes'
 
 import { PostMessages } from '../../messageTypes'
 
