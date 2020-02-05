@@ -70,8 +70,8 @@ contract('Lock / purchaseFor', accounts => {
       assert.equal(tx.logs[0].args.from, 0)
       assert.equal(tx.logs[0].args.to, accounts[2])
       // Verify that RenewKeyPurchase does not emit on a first key purchase
-      const includes = tx.logs.includes(l => l.event === 'RenewKeyPurchase')
-      assert.equal(includes, false)
+      const includes = tx.logs.filter(l => l.event === 'RenewKeyPurchase')
+      assert.equal(includes.length, 0)
     })
 
     describe('when the user already owns an expired key', () => {
