@@ -125,7 +125,7 @@ describe('setupUserAccountsProxyWallet()', () => {
       {
         noWallet: false,
         notEnabled: false,
-        isMetamask: false,
+        isMetaMask: false,
       },
       iframes.data.iframe,
       dataOrigin
