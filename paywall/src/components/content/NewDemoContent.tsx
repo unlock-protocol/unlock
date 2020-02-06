@@ -49,6 +49,8 @@ export default function NewDemoContent() {
   const names: string[] = url.searchParams.getAll('name')
   const unlockUserAccounts: boolean =
     url.searchParams.get('unlockUserAccounts') === 'true'
+  const useMetadataInputs: boolean =
+    url.searchParams.get('metadataInputs') === 'true'
 
   window.unlockProtocolConfig = {
     persistentCheckout: false,
@@ -62,19 +64,21 @@ export default function NewDemoContent() {
       }),
       {}
     ),
-    metadataInputs: [
-      {
-        name: 'First Name',
-        type: 'text',
-        required: true,
-        public: true,
-      },
-      {
-        name: 'Last Name',
-        type: 'text',
-        required: true,
-      },
-    ],
+    metadataInputs: useMetadataInputs
+      ? [
+          {
+            name: 'First Name',
+            type: 'text',
+            required: true,
+            public: true,
+          },
+          {
+            name: 'Last Name',
+            type: 'text',
+            required: true,
+          },
+        ]
+      : undefined,
     callToAction: {
       default:
         'You have reached your limit of free articles. Please purchase access to continue reading',
