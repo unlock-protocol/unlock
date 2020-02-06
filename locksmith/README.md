@@ -18,6 +18,7 @@ counterpart when the technology is available and time permits.
 
 ## Getting Started
 
+
 ### Running in Development
 
 Locksmith utilizes SQLite to make it easy to get up and running. Upon startup

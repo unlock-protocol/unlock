@@ -308,13 +308,14 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-locksmith-beanstalk:
-    machine: true
+    docker:
+      - image: circleci/python:3.6.4
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
+        command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH      
       - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -323,7 +324,7 @@ jobs:
           working_directory: /
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python-pip python3-dev build-essential
             sudo pip install --upgrade setuptools
             sudo pip install awsebcli --upgrade
       - run:
@@ -461,7 +462,7 @@ workflows:
       - deploy-locksmith-beanstalk:
           filters:
             branches:
-              only: master
+              only: master        
           requires:
             - integration-tests
       - deploy-wedlocks-netlify:
