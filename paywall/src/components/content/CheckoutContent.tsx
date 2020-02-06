@@ -10,7 +10,14 @@ import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
-import { Key, Locks, NetworkNames, PaywallConfig } from '../../unlockTypes'
+
+import {
+  Key,
+  Locks,
+  NetworkNames,
+  PaywallConfig,
+  UserMetadata,
+} from '../../unlockTypes'
 
 import { PostMessages } from '../../messageTypes'
 
@@ -104,6 +111,15 @@ export default function CheckoutContent() {
       payload: {
         lock: key.lock,
         extraTip: '0',
+      },
+    })
+  }
+  const submitMetadata = (lockAddress: string, metadata: UserMetadata) => {
+    postMessage({
+      type: PostMessages.SET_USER_METADATA,
+      payload: {
+        lockAddress,
+        metadata,
       },
     })
   }
@@ -240,6 +256,7 @@ export default function CheckoutContent() {
         config={paywallConfig}
         purchase={purchaseKey}
         hideCheckout={hideCheckout}
+        submitMetadata={submitMetadata}
       />
     </Wrapper>
   )

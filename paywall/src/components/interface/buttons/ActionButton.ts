@@ -18,4 +18,18 @@ export const ActionButton = styled.button`
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
   }
 `
+
+export const LoadingButton = styled.button`
+  background-color: var(--link);
+  border: none;
+  font-size: 20px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
+  outline: none;
+  height: 60px;
+  width: 100%;
+`
+
 export default ActionButton
