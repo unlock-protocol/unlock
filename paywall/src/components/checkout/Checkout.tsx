@@ -53,14 +53,13 @@ export const Checkout = ({
     getValue: () => {
       // We have submitted the metadata successfully, continue to
       // purchase key
+      setShowingForm(false)
       purchase(keyBeingPurchased)
     },
   })
 
   const onFormSubmit = (metadata: UserMetadata) => {
-    setShowingForm(false)
     submitMetadata(keyBeingPurchased!.lock, metadata)
-    // purchase(keyBeingPurchased)
   }
 
   const onPurchase = (key: Key) => {
