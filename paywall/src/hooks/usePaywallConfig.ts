@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import { PostMessages } from '../messageTypes'
+import { PaywallConfig } from '../unlockTypes'
 
 import useListenForPostMessage from './browser/useListenForPostMessage'
 import usePostMessage from './browser/usePostMessage'
@@ -20,7 +21,7 @@ import usePostMessage from './browser/usePostMessage'
  * @param {object} value paywall configuration passed in from main window
  * @param {object} defaults default value (defined below)
  */
-export function getValue(value, defaults) {
+export function getValue(value: any, defaults: any) {
   if (Object.keys(value.callToAction).length === 4) return value
   return {
     ...value,
@@ -41,9 +42,8 @@ export function getValue(value, defaults) {
   }
 }
 
-export const defaultValue = {
+export const defaultValue: PaywallConfig = {
   locks: {},
-  icon: false,
   callToAction: {
     default:
       'You have reached your limit of free articles. Please purchase access',
@@ -57,7 +57,7 @@ export const defaultValue = {
 
 export default function usePaywallConfig() {
   const { postMessage } = usePostMessage('Checkout UI (usePaywallConfig)')
-  const paywallConfig = useListenForPostMessage({
+  const paywallConfig: PaywallConfig = useListenForPostMessage({
     type: PostMessages.CONFIG,
     // Always treat paywall config as valid in this context, if it's
     // invalid it's been checked in many other contexts and handled.

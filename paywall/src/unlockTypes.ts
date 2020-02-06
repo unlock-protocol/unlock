@@ -88,6 +88,7 @@ export interface PaywallConfig {
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
+  persistentCheckout?: boolean
 }
 
 export enum KeyStatus {

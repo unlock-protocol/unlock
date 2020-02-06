@@ -59,6 +59,29 @@ const paywallConfigNoNames = {
   },
 }
 
+const metadataInputs = [
+  {
+    name: 'First Name',
+    type: 'text',
+    required: true,
+  },
+  {
+    name: 'Last Name',
+    type: 'text',
+    required: true,
+  },
+  {
+    name: 'Favorite Color',
+    type: 'color',
+    required: false,
+  },
+  {
+    name: 'Birthdate',
+    type: 'date',
+    required: false,
+  },
+]
+
 const account = {
   address: '0x123',
   balance: {
@@ -149,6 +172,40 @@ storiesOf('Checkout', module)
           name: 'One Week',
         },
       },
+    }
+
+    return (
+      <Checkout
+        locks={locks}
+        config={singleLockConfig}
+        account={account}
+        purchase={purchaseKey}
+        hideCheckout={hideCheckout}
+      />
+    )
+  })
+  .add('Checkout with 1 lock and no pending keys (metadata)', () => {
+    const locks = {
+      '0x123': {
+        name: 'Weekly',
+        address: '0x123',
+        keyPrice: '0.1',
+        expirationDuration: 60 * 60 * 24 * 7,
+        key: {
+          status: 'none',
+          transactions: [],
+          expiration: 0,
+        },
+      },
+    }
+    const singleLockConfig = {
+      ...paywallConfig,
+      locks: {
+        '0x123': {
+          name: 'One Week',
+        },
+      },
+      metadataInputs,
     }
 
     return (

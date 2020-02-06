@@ -8,6 +8,7 @@ const fieldsNoRequired: MetadataInput[] = [
     name: 'First Name',
     type: 'text',
     required: false,
+    public: true,
   },
   {
     name: 'Last Name',
@@ -21,6 +22,7 @@ const fieldsWithRequired: MetadataInput[] = [
     name: 'First Name',
     type: 'text',
     required: true,
+    public: true,
   },
   {
     name: 'Last Name',
@@ -51,13 +53,14 @@ describe('Metadata Form', () => {
         rtl.fireEvent.click(submitButton)
       })
 
-      expect(onSubmit).toHaveBeenCalledWith(
-        {
+      expect(onSubmit).toHaveBeenCalledWith({
+        publicData: {
           'First Name': '',
+        },
+        protectedData: {
           'Last Name': '',
         },
-        expect.any(Object)
-      )
+      })
     })
 
     it('returns an object with all keys and values on fields with input', async () => {
@@ -68,13 +71,14 @@ describe('Metadata Form', () => {
         rtl.fireEvent.click(submitButton)
       })
 
-      expect(onSubmit).toHaveBeenCalledWith(
-        {
+      expect(onSubmit).toHaveBeenCalledWith({
+        publicData: {
           'First Name': 'Jeff',
+        },
+        protectedData: {
           'Last Name': '',
         },
-        expect.any(Object)
-      )
+      })
     })
   })
 
@@ -124,13 +128,14 @@ describe('Metadata Form', () => {
         rtl.fireEvent.click(submitButton)
       })
 
-      expect(onSubmit).toHaveBeenCalledWith(
-        {
+      expect(onSubmit).toHaveBeenCalledWith({
+        publicData: {
           'First Name': 'Jeff',
+        },
+        protectedData: {
           'Last Name': 'Petersen',
         },
-        expect.any(Object)
-      )
+      })
     })
   })
 })
