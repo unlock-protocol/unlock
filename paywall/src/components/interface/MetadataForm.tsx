@@ -1,12 +1,13 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
-import { MetadataInput } from '../../unlockTypes'
+import { MetadataInput, UserMetadata } from '../../unlockTypes'
 import { ActionButton } from './buttons/ActionButton'
+import { formResultToMetadata } from '../../utils/userMetadata'
 
 interface Props {
   fields: MetadataInput[]
-  onSubmit: (values: { [key: string]: string }) => void
+  onSubmit: (metadata: UserMetadata) => void
 }
 
 export const MetadataForm = ({ fields, onSubmit }: Props) => {
@@ -15,8 +16,16 @@ export const MetadataForm = ({ fields, onSubmit }: Props) => {
   // kinds of errors so that we can show the right message
   const { handleSubmit, register } = useForm()
 
+  // The form returns a map of key-value pair strings. We need to
+  // process those into the expected metadata format so that the typed
+  // data will be correct.
+  const wrappedOnSubmit = (formResult: { [key: string]: string }) => {
+    const metadata = formResultToMetadata(formResult, fields)
+    onSubmit(metadata)
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(wrappedOnSubmit)}>
       <p>We need to collect some additional information for your purchase.</p>
       <FieldWrapper>
         {fields.map(({ name, type, required }) => (

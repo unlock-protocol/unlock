@@ -60,7 +60,7 @@ export const Checkout = ({
   const onFormSubmit = (metadata: UserMetadata) => {
     setShowingForm(false)
     submitMetadata(keyBeingPurchased!.lock, metadata)
-    purchase(keyBeingPurchased)
+    // purchase(keyBeingPurchased)
   }
 
   const onPurchase = (key: Key) => {
@@ -117,22 +117,23 @@ export const Checkout = ({
     }
   })
 
-  if (showingForm) {
-    return (
-      <MetadataForm fields={config.metadataInputs!} onSubmit={onFormSubmit} />
-    )
-  }
-
   return (
     <>
-      {callToActionParagraphs}
-      <CheckoutLocks>
-        {lockAddresses.length < Object.keys(config.locks).length && (
-          <LoadingLock />
-        )}
-        {lockAddresses.length === Object.keys(config.locks).length &&
-          checkoutLocks}
-      </CheckoutLocks>
+      {!showingForm && (
+        <>
+          {callToActionParagraphs}
+          <CheckoutLocks>
+            {lockAddresses.length < Object.keys(config.locks).length && (
+              <LoadingLock />
+            )}
+            {lockAddresses.length === Object.keys(config.locks).length &&
+              checkoutLocks}
+          </CheckoutLocks>
+        </>
+      )}
+      {showingForm && (
+        <MetadataForm fields={config.metadataInputs!} onSubmit={onFormSubmit} />
+      )}
     </>
   )
 }
