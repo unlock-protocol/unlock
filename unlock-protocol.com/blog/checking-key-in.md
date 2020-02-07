@@ -7,7 +7,7 @@ description: At Unlock, we're proud to power the tickets for several conferences
 image: /static/images/blog/introducing-tickets/introducing-tickets.jpg
 ---
 
-Memberships are everywhere: from your local gym, to your favorite news site, through conferences! At Unlock, we take great care in making sure we can _bridge_ the online memberships and the offline world.
+Memberships are everywhere: from your local gym, to your favorite news site, through conferences! At Unlock, we take great care in making sure we can _bridge_ the gap between online memberships and the offline world.
 
 Today, we're excited to show you the flow to **check users in** if you are using keys to a lock as tickets for a conference.
 
