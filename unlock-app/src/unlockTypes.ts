@@ -82,6 +82,7 @@ export interface PaywallCallToAction {
   expired: string
   pending: string
   confirmed: string
+  noWallet: string
 }
 
 export interface PaywallConfigLocks {
@@ -90,13 +91,6 @@ export interface PaywallConfigLocks {
 
 export interface PaywallConfigLock {
   name: string
-}
-
-// This interface describes an individual paywall's config
-export interface PaywallConfig {
-  icon: string
-  callToAction: PaywallCallToAction
-  locks: PaywallConfigLocks
 }
 
 export enum KeyStatus {
@@ -169,4 +163,20 @@ export interface KeyholdersByLock {
       }
     }[]
   }[]
+}
+
+export interface MetadataInput {
+  name: string
+  type: 'text' | 'date' | 'color' | 'email' | 'url'
+  required: boolean
+  public?: true // optional, all non-public fields are treated as protected
+}
+
+export interface PaywallConfig {
+  icon?: string
+  unlockUserAccounts?: true | 'true' | false
+  callToAction: PaywallCallToAction
+  locks: PaywallConfigLocks
+  metadataInputs?: MetadataInput[]
+  persistentCheckout?: boolean
 }
