@@ -50,6 +50,7 @@ describe('exportStatic', () => {
       '/recover': { page: '/recover' },
       '/verification': { page: '/verification' },
       '/members': { page: '/members' },
+      '/checkout': { page: '/checkout' },
     })
   })
 })
