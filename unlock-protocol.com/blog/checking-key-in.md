@@ -37,4 +37,4 @@ The verification page above works from any web browser... but, if viewed from in
 
 <p style="text-align:center" ><img width="300" src="/static/images/blog/checking-key-in/checked-in-key.png" alt="checked-in!"></p>
 
-With our support for credit cards, the ability to ask users to submit information for their tickets, and sell them on the organizers' website directly, we believe Unlock now provides a **tickecting experience** that's even better than most legacy solutions, while still leveraging Ethereum's core capabilities: decentralization, permissionless and programmable!
+With our support for credit cards, the ability to ask users to submit information for their tickets, and sell them on the organizers' website directly, we believe Unlock now provides a **ticketing experience** that's even better than most legacy solutions, while still leveraging Ethereum's core capabilities: decentralization, permissionless and programmable!
