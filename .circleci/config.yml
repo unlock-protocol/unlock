@@ -315,7 +315,7 @@ jobs:
     steps:
       - checkout
       - run:
-        command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH      
+          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH      
       - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
