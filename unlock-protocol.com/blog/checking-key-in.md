@@ -1,5 +1,5 @@
 ---
-title: Checking keys in
+title: Checking Keys In
 subTitle: Tickets to conferences are memberships!
 authorName: Julien Genestoux
 publishDate: February 6, 2020
