@@ -338,8 +338,9 @@ jobs:
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$LOCKSMITH_STAGING_ENVIRONMENT" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC" "$LOCKSMITH_STAGING_STRIPE_SECRET" "$LOCKSMITH_STAGING_PURCHASER_CREDENTIALS" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_UNLOCK_CONTRACT_ADDRESS" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$LOCKSMITH_STAGING_METADATA_HOST"
 
 
-  deploy-nudge-beanstalk-staging:
-    machine: true
+  deploy-nudge-beanstalk-staging:    
+    docker:
+      - image: circleci/python:3.6.4
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -354,7 +355,7 @@ jobs:
           working_directory: /
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python-pip python3-dev build-essential
             sudo pip install --upgrade setuptools
             sudo pip install awsebcli --upgrade
       - run:
@@ -364,8 +365,9 @@ jobs:
           name: Deploy Staging to Beanstalk
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-rinkeby" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
 
-  deploy-nudge-beanstalk-production:
-    machine: true
+  deploy-nudge-beanstalk-production:    
+    docker:
+      - image: circleci/python:3.6.4
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -380,7 +382,7 @@ jobs:
           working_directory: /
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python-pip python3-dev build-essential
             sudo pip install --upgrade setuptools
             sudo pip install awsebcli --upgrade
       - run:
