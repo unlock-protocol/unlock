@@ -81,6 +81,7 @@ export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
       owner={accountAddress}
       signatureTimestamp={timestamp}
       ownedKey={matchingKey}
+      signature={sig}
     />
   )
 }
