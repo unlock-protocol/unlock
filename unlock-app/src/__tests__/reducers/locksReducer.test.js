@@ -13,6 +13,7 @@ import { SET_NETWORK } from '../../actions/network'
 describe('locks reducer', () => {
   const lock = {
     address: '123',
+    creationBlock: Number.MAX_SAFE_INTEGER.toString(),
   }
 
   it('should return the initial state', () => {

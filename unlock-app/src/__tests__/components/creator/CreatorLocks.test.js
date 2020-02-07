@@ -51,6 +51,7 @@ const locks = {
     outstandingKeys: 32,
     transaction: '0x5678',
     owner: '0x12345678',
+    creationBlock: '2',
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -61,6 +62,7 @@ const locks = {
     outstandingKeys: 3,
     transaction: '0x1234',
     owner: '0x12345678',
+    creationBlock: '1',
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -71,6 +73,7 @@ const locks = {
     outstandingKeys: 10,
     transaction: '0x89ab',
     owner: '0x12345678',
+    creationBlock: '3',
   },
   '0x9abcdef0b': {
     address: '0x9abcdef0',
@@ -81,6 +84,7 @@ const locks = {
     outstandingKeys: 10,
     transaction: '0x89ab',
     owner: '0x987654',
+    creationBlock: '3',
   },
 }
 
@@ -93,6 +97,7 @@ const locksMinusATransaction = {
     maxNumberOfKeys: 800,
     outstandingKeys: 32,
     owner: '0x12345678',
+    creationBlock: Number.MAX_SAFE_INTEGER.toString(),
   },
   '0x12345678a': {
     address: '0x12345678a',
@@ -103,6 +108,7 @@ const locksMinusATransaction = {
     outstandingKeys: 3,
     transaction: '0x1234',
     owner: '0x12345678',
+    creationBlock: '17',
   },
   '0x9abcdef0a': {
     address: '0x9abcdef0',
@@ -113,6 +119,7 @@ const locksMinusATransaction = {
     outstandingKeys: 10,
     transaction: '0x89ab',
     owner: '0x12345678',
+    creationBlock: '18',
   },
 }
 
