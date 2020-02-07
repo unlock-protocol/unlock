@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components'
  * Shared CSS accross all components. Injected wtih styled-components' createGlobalStyle
  */
 
-const globalStyle = `
+export const globalStyle = `
   :root {
     --brand: #ff6771;
     --white: #ffffff;
@@ -36,7 +36,7 @@ const globalStyle = `
   }
 
   body {
-    font-family: 'IBM Plex Sans' ,'Helvetica Neue', Arial, sans-serif;
+    font-family: IBM Plex Sans, Helvetica Neue, Arial, sans-serif;
     color: var(--grey);
   }
 

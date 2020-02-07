@@ -4,6 +4,7 @@ import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import Fonts from '../theme/fonts'
+import { globalStyle } from '../theme/globalStyle'
 
 export default class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
@@ -44,6 +45,9 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Fonts />
+          {/* TODO remove line below when https://github.com/styled-components/styled-components/issues/2962 has been fixed */}
+          <style>{globalStyle}</style>
+
           <link rel="shortcut icon" href="/static/favicon.ico" />
           {this.props.styleTags}
           <script dangerouslySetInnerHTML={this.props.unlockTag} />
