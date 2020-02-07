@@ -41,6 +41,10 @@ contract('Lock / updateKeyPricing', accounts => {
     )
   })
 
+  it('should assign the owner to the LockManagerRole by default', async () => {
+    assert.equal(await lock.isLockManager(lockOwner), true)
+  })
+
   it('should change the actual keyPrice', async () => {
     const keyPriceAfter = new BigNumber(await lock.keyPrice.call())
     assert.equal(keyPriceAfter.toFixed(), 300000000000000000)
