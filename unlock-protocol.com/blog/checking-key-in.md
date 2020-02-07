@@ -3,7 +3,7 @@ title: Checking Keys In
 subTitle: Tickets to conferences are memberships!
 authorName: Julien Genestoux
 publishDate: February 6, 2020
-description: At Unlock, we're proud to power the tickets for several conferences... but no ticketing solution is complete without a checking mechanism!
+description: At Unlock, we're proud to power the tickets for several conferences... but no ticketing solution is complete without a check-in mechanism!
 image: /static/images/blog/introducing-tickets/introducing-tickets.jpg
 ---
 
