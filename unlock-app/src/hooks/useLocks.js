@@ -29,6 +29,7 @@ export const useLocks = owner => {
   } = config
   const graphService = new GraphService(subgraphURI)
 
+  // TODO: get from context
   const web3Service = new Web3Service({
     readOnlyProvider,
     unlockAddress,

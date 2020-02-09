@@ -5,13 +5,14 @@ import { ConnectedRouter } from 'connected-next-router'
 import 'cross-fetch/polyfill'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 import { WalletServiceContext } from '../utils/withWalletService'
+import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
 
@@ -32,12 +33,26 @@ const config = configure()
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 const walletService = new WalletService(config)
+const {
+  readOnlyProvider,
+  unlockAddress,
+  blockTime,
+  requiredConfirmations,
+  requiredNetworkId,
+} = config
+const web3Service = new Web3Service({
+  readOnlyProvider,
+  unlockAddress,
+  blockTime,
+  requiredConfirmations,
+  network: requiredNetworkId,
+})
 const storageService = new StorageService(config.services.storage.host)
 
 function getOrCreateStore(initialState, path) {
   const middlewares = [
     providerMiddleware(config),
-    web3Middleware(config),
+    web3Middleware(config, web3Service),
     currencyConversionMiddleware(config),
     walletMiddleware(config, walletService),
     wedlocksMiddleware(config),
@@ -73,6 +88,7 @@ function getOrCreateStore(initialState, path) {
 
 const ConfigProvider = ConfigContext.Provider
 const WalletServiceProvider = WalletServiceContext.Provider
+const Web3ServiceProvider = Web3ServiceContext.Provider
 const StorageServiceProvider = StorageServiceContext.Provider
 
 class UnlockApp extends App {
@@ -136,13 +152,15 @@ The Unlock team
             <FullScreenModal />
             <ConnectedRouter>
               <StorageServiceProvider value={storageService}>
-                <WalletServiceProvider value={walletService}>
-                  <ConfigProvider value={config}>
-                    <GlobalErrorConsumer>
-                      <Component {...pageProps} />
-                    </GlobalErrorConsumer>
-                  </ConfigProvider>
-                </WalletServiceProvider>
+                <Web3ServiceProvider value={web3Service}>
+                  <WalletServiceProvider value={walletService}>
+                    <ConfigProvider value={config}>
+                      <GlobalErrorConsumer>
+                        <Component {...pageProps} />
+                      </GlobalErrorConsumer>
+                    </ConfigProvider>
+                  </WalletServiceProvider>
+                </Web3ServiceProvider>
               </StorageServiceProvider>
             </ConnectedRouter>
           </Provider>

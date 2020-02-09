@@ -1,4 +1,3 @@
-import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { GET_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
@@ -46,7 +45,7 @@ const create = () => {
   }
   const next = jest.fn()
 
-  const handler = web3Middleware(config)(store)
+  const handler = web3Middleware(config, mockWeb3Service)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -65,22 +64,8 @@ class MockWebService extends EventEmitter {
 }
 
 let mockWeb3Service = new MockWebService()
-
-jest.mock('@unlock-protocol/unlock-js', () => {
-  const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
-  return {
-    ...mockUnlock,
-    Web3Service() {
-      return mockWeb3Service
-    },
-  }
-})
-
 jest.mock('../../services/graphService')
 let mockGraphService
-
-UnlockJs.mockImplementation = MockWebService
-
 beforeEach(() => {
   // Reset the mock
   mockWeb3Service = new MockWebService()

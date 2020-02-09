@@ -1,6 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { CREATE_LOCK, GET_LOCK, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -20,24 +19,9 @@ import GraphService from '../services/graphService'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
-const web3Middleware = config => {
-  const {
-    readOnlyProvider,
-    unlockAddress,
-    blockTime,
-    requiredConfirmations,
-    subgraphURI,
-    requiredNetworkId,
-  } = config
+const web3Middleware = (config, web3Service) => {
+  const { subgraphURI } = config
   return ({ getState, dispatch }) => {
-    const web3Service = new Web3Service({
-      readOnlyProvider,
-      unlockAddress,
-      blockTime,
-      requiredConfirmations,
-      network: requiredNetworkId,
-    })
-
     const graphService = new GraphService(subgraphURI)
 
     web3Service.on('account.updated', (account, update) => {
