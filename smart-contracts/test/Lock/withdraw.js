@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -26,7 +26,7 @@ contract('Lock / withdraw', accounts => {
 
   it('should only allow the owner to withdraw', async () => {
     assert.notEqual(owner, accounts[1]) // Making sure
-    await shouldFail(
+    await reverts(
       lock.withdraw(tokenAddress, 0, {
         from: accounts[1],
       }),
@@ -66,7 +66,7 @@ contract('Lock / withdraw', accounts => {
     })
 
     it('should fail if there is nothing left to withdraw', async () => {
-      await shouldFail(
+      await reverts(
         lock.withdraw(tokenAddress, 0, {
           from: owner,
         }),
@@ -120,7 +120,7 @@ contract('Lock / withdraw', accounts => {
       })
 
       it('withdraw should fail', async () => {
-        await shouldFail(
+        await reverts(
           lock.withdraw(tokenAddress, 42, {
             from: owner,
           }),
@@ -138,6 +138,12 @@ contract('Lock / withdraw', accounts => {
 
       await lock.updateBeneficiary(beneficiary, { from: owner })
     })
+    it('the owner can no longer update the beneficiary', async () => {
+      await reverts(
+        lock.updateBeneficiary(owner, { from: owner }),
+        'ONLY_BENEFICIARY'
+      )
+    })
 
     it('can withdraw from beneficiary account', async () => {
       await lock.withdraw(tokenAddress, 42, {
@@ -152,7 +158,7 @@ contract('Lock / withdraw', accounts => {
     })
 
     it('should fail to withdraw as non-owner or beneficiary', async () => {
-      await shouldFail(
+      await reverts(
         lock.withdraw(tokenAddress, 42, {
           from: accounts[4],
         }),

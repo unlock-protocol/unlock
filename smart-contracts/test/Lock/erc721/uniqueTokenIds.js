@@ -42,37 +42,23 @@ contract('Lock / uniqueTokenIds', accounts => {
       // expire keys
       await Promise.all(keyExpirations)
       // repurchase keys
-      let tx1 = await lock.purchase(
-        0,
-        keyOwner1,
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: keyPrice.toFixed(),
-          from: keyOwner1,
-        }
-      )
-      let tx2 = await lock.purchase(
-        0,
-        keyOwner2,
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: keyPrice.toFixed(),
-          from: keyOwner2,
-        }
-      )
-      let ID1 = tx1.logs[0].args.tokenId
-      let ID2 = tx2.logs[0].args.tokenId
+      await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner1,
+      })
+      await lock.purchase(0, keyOwner2, web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner2,
+      })
+
       let tokenId1After = await lock.getTokenIdFor(keyOwner1)
       let tokenId2After = await lock.getTokenIdFor(keyOwner2)
       let supply = await lock.totalSupply()
       assert(tokenId1Before.eq(tokenId1After))
       assert(tokenId2Before.eq(tokenId2After))
-      assert(tokenId1After.eq(ID1))
-      assert(tokenId2After.eq(ID2))
       assert(supply.gt(tokenId1After))
       assert(supply.gt(tokenId2After))
+      assert.notEqual(tokenId1After, tokenId2After)
     })
   })
 })

@@ -9,7 +9,7 @@ export function walletIsMetamask(window: Web3Window): boolean {
   if (hasWallet(window)) {
     // Since hasWallet returned true, we know web3.currentProvider is
     // on the window
-    return !!(window as CryptoWalletWindow).web3.currentProvider.isMetamask
+    return !!(window as CryptoWalletWindow).web3.currentProvider.isMetaMask
   }
 
   return false
@@ -31,7 +31,7 @@ export function shouldUseUserAccounts(
 
 export interface WalletStatus {
   hasWallet: boolean
-  isMetamask: boolean
+  isMetaMask: boolean
   shouldUseUserAccounts: boolean
 }
 
@@ -41,7 +41,7 @@ export function walletStatus(
 ): WalletStatus {
   return {
     hasWallet: hasWallet(window),
-    isMetamask: walletIsMetamask(window),
+    isMetaMask: walletIsMetamask(window),
     shouldUseUserAccounts: shouldUseUserAccounts(window, config),
   }
 }

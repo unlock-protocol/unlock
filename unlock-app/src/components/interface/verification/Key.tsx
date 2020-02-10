@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
 import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
+import { pingPoap } from '../../../utils/poap'
 import { OwnedKey } from '../keychain/KeychainTypes'
 import Svg from '../svg'
 import {
@@ -35,7 +36,7 @@ interface ValidKeyWithMetadataProps {
   expirationDate: string
   timeElapsedSinceSignature: string
   viewerIsLockOwner: boolean
-  markAsCheckedIn: () => any
+  checkIn: () => any
   checkedIn: boolean
 }
 
@@ -49,7 +50,7 @@ export const ValidKeyWithMetadata = ({
   expirationDate,
   timeElapsedSinceSignature,
   viewerIsLockOwner,
-  markAsCheckedIn,
+  checkIn,
   checkedIn,
 }: ValidKeyWithMetadataProps) => {
   let box = (
@@ -98,7 +99,7 @@ export const ValidKeyWithMetadata = ({
         {metadata.userMetadata && attributes(metadata.userMetadata.protected)}
         {metadata.userMetadata && attributes(metadata.userMetadata.public)}
         {viewerIsLockOwner && (
-          <CheckInButton onClick={markAsCheckedIn} disabled={alreadyCheckedIn}>
+          <CheckInButton onClick={checkIn} disabled={alreadyCheckedIn}>
             {!alreadyCheckedIn && 'Mark as Checked-In'}
             {alreadyCheckedIn && 'Already Checked-In'}
           </CheckInButton>
@@ -113,6 +114,7 @@ interface ValidKeyProps {
   viewer: string
   signatureTimestamp: number
   owner: string
+  signature: string
 }
 
 /**
@@ -124,6 +126,7 @@ export const ValidKey = ({
   signatureTimestamp,
   owner,
   viewer,
+  signature,
 }: ValidKeyProps) => {
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
@@ -144,6 +147,11 @@ export const ValidKey = ({
     checkedIn,
     error: markAsCheckedInError,
   } = useMarkAsCheckedIn(walletService, config, ownedKey)
+
+  const checkIn = () => {
+    markAsCheckedIn()
+    pingPoap(ownedKey, owner, signature, signatureTimestamp)
+  }
 
   const secondsElapsedFromSignature = Math.floor(
     (Date.now() - signatureTimestamp) / 1000
@@ -168,7 +176,7 @@ export const ValidKey = ({
       expirationDate={expirationAsDate(ownedKey.expiration)}
       owner={owner}
       metadata={metadata}
-      markAsCheckedIn={markAsCheckedIn}
+      checkIn={checkIn}
       checkedIn={checkedIn}
     />
   )

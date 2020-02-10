@@ -190,7 +190,7 @@ describe('The Unlock Dashboard', () => {
       let lockToEditSelector
       beforeEach(async () => {
         const existingLocks = await dashboard.listLocks()
-        lockToEditSelector = `[data-address="${existingLocks[0]}"]`
+        lockToEditSelector = `[data-address="${existingLocks[4]}"]`
       })
 
       it('a button exists to edit the Lock details', async () => {
@@ -203,15 +203,18 @@ describe('The Unlock Dashboard', () => {
       it('allows the lock owner to update the price of the lock', async () => {
         expect.assertions(5)
         await expect(page).toClick(`${lockToEditSelector} button[title="Edit"]`)
-        const keyPriceInputSelector = 'input[name="keyPrice"]'
+        const keyPriceInputSelector = `${lockToEditSelector} input[name="keyPrice"]`
+
         await expect(page).toMatchElement(keyPriceInputSelector)
         const currentPrice = await page.evaluate(selector => {
           return document.querySelectorAll(selector)[0].value
         }, keyPriceInputSelector)
+
         const newPrice = Number(
           (parseFloat(currentPrice) * 2).toFixed(2)
         ).toString()
-        await expect(page).toFill(keyPriceInputSelector, newPrice)
+
+        await expect(page).toFill(`${keyPriceInputSelector}`, newPrice)
         await expect(page).toClick(`${lockToEditSelector} button`, {
           text: 'Submit',
         })

@@ -78,6 +78,7 @@ export interface MetadataInput {
   name: string
   type: 'text' | 'date' | 'color' | 'email' | 'url'
   required: boolean
+  public?: true // optional, all non-public fields are treated as protected
 }
 
 // This interface describes an individual paywall's config
@@ -87,6 +88,7 @@ export interface PaywallConfig {
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
+  persistentCheckout?: boolean
 }
 
 export enum KeyStatus {
@@ -170,7 +172,7 @@ export interface UserMetadata {
   publicData?: {
     [key: string]: string
   }
-  privateData?: {
+  protectedData?: {
     [key: string]: string
   }
 }
