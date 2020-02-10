@@ -27,11 +27,6 @@ import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types'
 import { getStoredPaymentDetails } from '../actions/user'
 import { SIGN_DATA, signedData } from '../actions/signature'
-import {
-  SIGN_BULK_METADATA_REQUEST,
-  signBulkMetadataResponse,
-} from '../actions/keyMetadata'
-import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -229,39 +224,7 @@ const walletMiddleware = (config, walletService) => {
               }
             }
           )
-        } else if (action.type === SIGN_BULK_METADATA_REQUEST) {
-          const { lockAddress, owner, timestamp } = action
-
-          // Usage from locksmith tests for metadataController
-          const typedData = generateKeyTypedData({
-            LockMetaData: {
-              // used alias to indicate that the `address` field is a lock address.
-              address: lockAddress,
-              owner,
-              timestamp,
-            },
-          })
-
-          dispatch(waitForWallet())
-
-          walletService.signData(owner, typedData, (error, signature) => {
-            if (error) {
-              dispatch(
-                setError(
-                  Wallet.Warning(
-                    'Could not sign typed data for metadata request.'
-                  )
-                )
-              )
-            } else {
-              dispatch(dismissWalletCheck())
-              dispatch(
-                signBulkMetadataResponse(typedData, signature, lockAddress)
-              )
-            }
-          })
         }
-
         next(action)
       }
     }

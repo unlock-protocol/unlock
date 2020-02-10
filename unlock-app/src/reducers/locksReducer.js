@@ -20,7 +20,10 @@ const locksReducer = (state = initialState, action) => {
     if (action.lock.address) {
       return {
         ...state,
-        [action.lock.address]: action.lock,
+        [action.lock.address]: {
+          ...action.lock,
+          creationBlock: Number.MAX_SAFE_INTEGER.toString(),
+        },
       }
     }
   }

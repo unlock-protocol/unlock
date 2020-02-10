@@ -10,3 +10,6 @@ import config from './next.config'
 setConfig({
   publicRuntimeConfig: config.publicRuntimeConfig,
 })
+
+// Mocking fetch calls
+require('jest-fetch-mock').enableMocks()

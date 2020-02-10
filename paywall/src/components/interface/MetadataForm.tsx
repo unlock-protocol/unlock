@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
-import { MetadataInput } from '../../unlockTypes'
-import { ActionButton } from './buttons/ActionButton'
+import { MetadataInput, UserMetadata } from '../../unlockTypes'
+import { ActionButton, LoadingButton } from './buttons/ActionButton'
+import { formResultToMetadata } from '../../utils/userMetadata'
 
 interface Props {
   fields: MetadataInput[]
-  onSubmit: (values: { [key: string]: string }) => void
+  onSubmit: (metadata: UserMetadata) => void
 }
 
 export const MetadataForm = ({ fields, onSubmit }: Props) => {
@@ -14,9 +15,19 @@ export const MetadataForm = ({ fields, onSubmit }: Props) => {
   // validation -- we'll have to consider how to handle the different
   // kinds of errors so that we can show the right message
   const { handleSubmit, register } = useForm()
+  const [submittedForm, setSubmittedForm] = useState(false)
+
+  // The form returns a map of key-value pair strings. We need to
+  // process those into the expected metadata format so that the typed
+  // data will be correct.
+  const wrappedOnSubmit = (formResult: { [key: string]: string }) => {
+    const metadata = formResultToMetadata(formResult, fields)
+    setSubmittedForm(true)
+    onSubmit(metadata)
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(wrappedOnSubmit)}>
       <p>We need to collect some additional information for your purchase.</p>
       <FieldWrapper>
         {fields.map(({ name, type, required }) => (
@@ -26,7 +37,10 @@ export const MetadataForm = ({ fields, onSubmit }: Props) => {
           </Label>
         ))}
       </FieldWrapper>
-      <ActionButton type="submit">Continue</ActionButton>
+      {submittedForm && (
+        <LoadingButton type="button">Submitting Metadata...</LoadingButton>
+      )}
+      {!submittedForm && <ActionButton type="submit">Continue</ActionButton>}
     </form>
   )
 }
