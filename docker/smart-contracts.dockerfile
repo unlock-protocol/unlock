@@ -5,8 +5,17 @@ RUN mkdir /home/unlock/smart-contracts
 COPY --chown=node smart-contracts/yarn.lock /home/unlock/smart-contracts/.
 COPY --chown=node smart-contracts/package.json /home/unlock/smart-contracts/.
 WORKDIR /home/unlock/smart-contracts
-RUN yarn --production
 
+USER root
+
+RUN apk add --no-cache --virtual .build-deps-2 \
+    git \
+    python \
+    build-base \
+    && yarn --production \
+    && apk del .build-deps-2
+
+USER node
 # Build smart contract
 COPY --chown=node smart-contracts/ /home/unlock/smart-contracts/.
 RUN yarn build
