@@ -33,7 +33,8 @@ RUN apk add --no-cache --virtual .build-deps \
     build-base \
     && pip install --no-cache-dir virtualenv \
     && SKIP_SERVICES=true yarn --production \
-    && apk del .build-deps
+    && apk del .build-deps \
+    && apk add bash
 
 USER node
 WORKDIR /home/unlock/
