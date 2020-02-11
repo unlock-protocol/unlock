@@ -111,7 +111,7 @@ export const ValidKeyWithMetadata = ({
 
 interface ValidKeyProps {
   ownedKey: OwnedKey
-  viewer: string
+  viewer?: string
   signatureTimestamp: number
   owner: string
   signature: string
@@ -133,7 +133,7 @@ export const ValidKey = ({
 
   // Let's get metadata if the viewer is the lock owner
   const viewerIsLockOwner =
-    viewer.toLowerCase() === ownedKey.lock.owner.toLowerCase()
+    !!viewer && viewer.toLowerCase() === ownedKey.lock.owner.toLowerCase()
   const { loading, metadata, error: getMetadataForError } = useGetMetadataFor(
     walletService,
     config,
