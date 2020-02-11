@@ -192,4 +192,62 @@ describe('VerificationStatus', () => {
     getByText('Valid Key')
     getByText('Lock Around the Clock')
   })
+
+  it('should render a message to indicate that the key is valid when applicable and no account is set (non web3 browser)', () => {
+    expect.assertions(0)
+
+    const WalletServiceProvider = WalletServiceContext.Provider
+    const ConfigProvider = ConfigContext.Provider
+    const config = {
+      services: {
+        storage: {
+          host: 'host',
+        },
+      },
+    }
+    const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
+    apolloSpy.mockReturnValue({
+      loading: undefined,
+      error: undefined,
+      data: {
+        keyHolders: [
+          {
+            keys: [ownedKey],
+          },
+        ],
+      },
+    } as any)
+
+    signatureUtils.isSignatureValidForAddress = jest.fn(() => {
+      return true
+    })
+
+    const walletService = {
+      getKeyMetadata: jest.fn((_, callback) => {
+        callback(null, {
+          userMetadata: {},
+        })
+      }),
+    }
+    const { getByText } = rtl.render(
+      <WalletServiceProvider value={walletService}>
+        <ConfigProvider value={config}>
+          <Provider store={store}>
+            <VerificationStatus
+              account={undefined}
+              data={{
+                accountAddress,
+                lockAddress: '0x123abc',
+                timestamp: 1234567,
+              }}
+              sig="this is a signature string, essentially"
+              hexData="this is some hex data"
+            />
+          </Provider>
+        </ConfigProvider>
+      </WalletServiceProvider>
+    )
+
+    getByText('Valid Key')
+  })
 })

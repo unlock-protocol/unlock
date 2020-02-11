@@ -35,14 +35,12 @@ export const VerificationContent = ({
         <title>{pageTitle('Verification')}</title>
       </Head>
       {account && <Account network={network} account={account} />}
-      {account && (
-        <VerificationStatus
-          data={data}
-          sig={sig}
-          hexData={hexData}
-          account={account}
-        />
-      )}
+      <VerificationStatus
+        data={data}
+        sig={sig}
+        hexData={hexData}
+        account={account}
+      />
     </Layout>
   )
 }
