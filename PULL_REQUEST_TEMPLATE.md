@@ -7,6 +7,7 @@ Please include a summary of the change and which issue is fixed -include its num
 # Issues
 
 <!-- This PR should fix or reference at least one existing issue ID. Add or delete as appropriate. -->
+
 Fixes #
 Refs #
 
@@ -14,6 +15,7 @@ Refs #
 
 - [ ] 1 PR, 1 purpose: my Pull Request applies to a single purpose
 - [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have updated the docs to reflect my changes if applicable
 - [ ] I have added tests (and stories for frontend components) that prove my fix is effective or that my feature works
 - [ ] I have performed a self-review of my own code
 - [ ] If my code involves visual changes, I am adding applicable screenshots to this thread
