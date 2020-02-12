@@ -73,6 +73,21 @@ jobs:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
 
+  smart-contract-extensions-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh smart-contract-extensions $CIRCLE_BRANCH
+      - run:
+          name: Build smart-contract-extensions Image
+          command: scripts/build-image.sh smart-contract-extensions
+      - run:
+          name: Smart Contract Extension Tests
+          command: scripts/tests.sh smart-contract-extensions
+
   locksmith-tests:
     machine: true
     environment:
@@ -425,6 +440,7 @@ workflows:
       - tickets-tests
       - newsletter-tests
       - smart-contracts-tests
+      - smart-contract-extensions-tests
       - unlock-protocol-com-tests
       - wedlocks-tests
       - unlock-app-tests
@@ -433,6 +449,7 @@ workflows:
       - integration-tests:
           requires:
             - smart-contracts-tests
+            - smart-contract-extensions-tests
             - unlock-protocol-com-tests
             - unlock-app-tests
             - locksmith-tests
