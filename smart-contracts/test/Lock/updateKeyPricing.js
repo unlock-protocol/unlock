@@ -2,11 +2,11 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const Web3Utils = require('web3-utils')
 const truffleAssert = require('truffle-assertions')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
@@ -25,9 +25,11 @@ contract('Lock / updateKeyPricing', accounts => {
   lockOwner = accounts[0]
 
   before(async () => {
-    token = await TestErc20Token.new()
+    token = await tokens.dai.deploy(web3, accounts[0])
     // Mint some tokens so that the totalSupply is greater than 0
-    await token.mint(accounts[0], 1)
+    await token.mint(accounts[0], 1, {
+      from: accounts[0],
+    })
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
