@@ -1,7 +1,7 @@
-node_modules/
-package-lock\.json
-build/
-/coverage/
-/.coverage_artifacts/
-/.coverage_contracts/
-coverage.json
+# Solidity coverage
+/scTopics
+/coverageEnv/
+
+mnemonic.*
+.openzeppelin/.session
+.openzeppelin/dev-*

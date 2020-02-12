@@ -44,7 +44,7 @@ contract SwapAndCall is Pausable
   function() external payable
   {
     // solium-disable-next-line security/no-tx-origin
-    require(msg.sender != tx.origin);
+    require(msg.sender != tx.origin, 'ONLY_CALLABLE_BY_CONTRACTS');
   }
 
   /**

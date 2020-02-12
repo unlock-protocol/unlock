@@ -1,39 +1,41 @@
+const rulesToIgnore = [
+  'no-underscore-dangle',
+  'no-param-reassign',
+  'no-use-before-define',
+  'no-plusplus',
+  'no-await-in-loop',
+  'radix',
+  'prefer-destructuring',
+  'no-shadow',
+  'no-loop-func',
+  'eqeqeq',
+  'no-useless-concat',
+  'prefer-const',
+  'no-return-await',
+  'prefer-object-spread',
+]
+
 module.exports = {
-  root: true,
-  parserOptions: {
-    parser: "babel-eslint",
-    ecmaVersion: 2017
-  },
-  env: {
-    browser: true,
-    node: true,
-    mocha: true,
-    es6: true
-  },
+  extends: ['../.eslintrc.js'],
+  plugins: ['mocha'],
   globals: {
-    expect: true,
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly",
     it: true,
-    assert: true,
-    contract: true,
-    after: true,
-    before: true,
-    beforeAll: true,
-    web3: true,
-    describe: true,
     artifacts: true,
-    tronWeb: true
+    contract: true,
+    describe: true,
+    before: true,
+    beforeEach: true,
+    web3: true,
+    assert: true,
+    abi: true,
+    after: true,
+    afterEach: true,
   },
-  extends: ["plugin:prettier/recommended", "eslint:recommended"],
-  plugins: ["markdown", "prettier", "json"],
   rules: {
-    "prettier/prettier": "error",
-    "no-console": 0,
-    "no-unused-vars": "warn",
-    "no-case-declarations": 0,
-    "no-empty": 0,
-    "require-atomic-updates": "warn",
-    quotes: ["error", "double"]
-  }
-};
+    'mocha/no-exclusive-tests': 'error',
+    'jest/prefer-expect-assertions': 0, // Smart contract tests are using mocha...
+    ...rulesToIgnore.reduce((obj, rule) => {
+      return { ...obj, [rule]: 'off' }
+    }, {}),
+  },
+}

@@ -1,5 +1,5 @@
-const BigNumber = require("bignumber.js");
-const { constants } = require("hardlydifficult-ethereum-contracts");
+const BigNumber = require('bignumber.js')
+const { constants } = require('hardlydifficult-ethereum-contracts')
 
 /**
  * @param swapAndCallContract the truffle contract object
@@ -17,18 +17,18 @@ module.exports = async function makeCalls(
   tokenToRefund,
   options
 ) {
-  const contracts = [];
-  let callDataConcat = "";
-  const startPositions = [];
-  const values = [];
+  const contracts = []
+  let callDataConcat = ''
+  const startPositions = []
+  const values = []
   for (let i = 0; i < calls.length; i++) {
-    const call = calls[i];
-    contracts.push(call.contract);
+    const call = calls[i]
+    contracts.push(call.contract)
     if (i > 0) {
-      startPositions.push(callDataConcat.length / 2);
+      startPositions.push(callDataConcat.length / 2)
     }
-    callDataConcat += call.callData.replace("0x", "");
-    values.push(new BigNumber(call.value || 0).toFixed());
+    callDataConcat += call.callData.replace('0x', '')
+    values.push(new BigNumber(call.value || 0).toFixed())
   }
 
   await swapAndCallContract.swapAndCall(
@@ -40,5 +40,5 @@ module.exports = async function makeCalls(
     values,
     tokenToRefund || constants.ZERO_ADDRESS,
     options
-  );
-};
+  )
+}

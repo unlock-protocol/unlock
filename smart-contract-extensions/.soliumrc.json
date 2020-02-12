@@ -16,6 +16,6 @@
       "error",
       "unix"
     ],
-    "security/no-inline-assembly": "warning"
+    "security/no-block-members": "off"
   }
 }

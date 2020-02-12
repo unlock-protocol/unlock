@@ -6,28 +6,28 @@ module.exports = {
       gas: 6721974,
       host: testHost,
       port: 8545,
-      network_id: "*"
-    }
+      network_id: '*',
+    },
   },
   compilers: {
     solc: {
-      version: "0.5.16",
+      version: '0.5.16',
       settings: {
         optimizer: {
           enabled: true,
-          runs: 2000000
-        }
-      }
-    }
+          runs: 2000000,
+        },
+      },
+    },
   },
-  plugins: ["solidity-coverage"],
+  plugins: ['solidity-coverage'],
   mocha: {
-    reporter: "eth-gas-reporter",
+    reporter: 'eth-gas-reporter',
     useColors: true,
     reporterOptions: {
-      currency: "USD",
-      excludeContracts: ["Migrations"],
-      gasPrice: 5
-    }
-  }
-};
+      currency: 'USD',
+      excludeContracts: ['Migrations'],
+      gasPrice: 5,
+    },
+  },
+}
