@@ -4,7 +4,7 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 11 Feb 2020 19:35:43 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 12 Feb 2020 18:37:59 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
             <title><![CDATA[Checking Keys In]]></title>
@@ -13,14 +13,6 @@
             <guid isPermaLink="true">https://unlock-protocol.com/blog/checking-key-in</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
             <pubDate>Thu, 06 Feb 2020 05:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Collecting Metadata for a Purchase]]></title>
-            <description><![CDATA[Lock owners can require information from key purchasers before the transaction is inittiated.]]></description>
-            <link>https://unlock-protocol.com/blog/metadata-collection</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/metadata-collection</guid>
-            <dc:creator><![CDATA[Christopher Nascone]]></dc:creator>
-            <pubDate>Sat, 01 Feb 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Swap and Call]]></title>
