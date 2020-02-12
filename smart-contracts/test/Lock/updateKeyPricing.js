@@ -3,8 +3,8 @@ const BigNumber = require('bignumber.js')
 const Web3Utils = require('web3-utils')
 const truffleAssert = require('truffle-assertions')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const unlockContract = artifacts.require('../Unlock.sol')
@@ -72,7 +72,7 @@ contract('Lock / updateKeyPricing', accounts => {
 
     before(async () => {
       keyPrice = new BigNumber(await lock.keyPrice.call())
-      await shouldFail(
+      await reverts(
         lock.updateKeyPricing(
           Units.convert('0.3', 'eth', 'wei'),
           await lock.tokenAddress.call(),

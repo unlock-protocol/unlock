@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -17,10 +17,7 @@ contract('Lock / erc721 / getTokenIdFor', accounts => {
   })
 
   it('should abort when the key has no owner', async () => {
-    await shouldFail(
-      locks.FIRST.getTokenIdFor.call(accounts[3]),
-      'KEY_NOT_VALID'
-    )
+    await reverts(locks.FIRST.getTokenIdFor.call(accounts[3]), 'KEY_NOT_VALID')
   })
 
   it("should return the tokenId for the owner's key", async () => {

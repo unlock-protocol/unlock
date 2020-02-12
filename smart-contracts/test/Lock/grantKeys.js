@@ -1,8 +1,8 @@
 const Web3Utils = require('web3-utils')
 
 const truffleAssert = require('truffle-assertions')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -114,14 +114,14 @@ contract('Lock / grantKeys', accounts => {
 
   describe('should fail', () => {
     it('should fail to revoke a key', async () => {
-      await shouldFail(
+      await reverts(
         lock.grantKeys([keyOwner], [42], { from: lockOwner }),
         'ALREADY_OWNS_KEY'
       )
     })
 
     it('should fail to grant key to the 0 address', async () => {
-      await shouldFail(
+      await reverts(
         lock.grantKeys([Web3Utils.padLeft(0, 40)], [validExpirationTimestamp], {
           from: lockOwner,
         }),
@@ -130,7 +130,7 @@ contract('Lock / grantKeys', accounts => {
     })
 
     it('should fail to reduce the time remaining on a key', async () => {
-      await shouldFail(
+      await reverts(
         lock.grantKeys([keyOwner], [validExpirationTimestamp - 1], {
           from: lockOwner,
         }),
@@ -139,7 +139,7 @@ contract('Lock / grantKeys', accounts => {
     })
 
     it('should fail if called by someone other than the owner', async () => {
-      await shouldFail(
+      await reverts(
         lock.grantKeys([keyOwner], [validExpirationTimestamp], {
           from: accounts[0],
         })

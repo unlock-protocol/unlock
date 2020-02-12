@@ -1,6 +1,6 @@
 const Units = require('ethereumjs-units')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -35,7 +35,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
     describe('when the sender is self approving', () => {
       it('should fail', async () => {
-        await shouldFail(
+        await reverts(
           lock.setApprovalForAll(owner, true, {
             from: owner,
           }),

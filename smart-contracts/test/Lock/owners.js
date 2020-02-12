@@ -1,8 +1,8 @@
 const BigNumber = require('bignumber.js')
 
 const truffleAssert = require('truffle-assertions')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -88,7 +88,7 @@ contract('Lock / owners', accounts => {
     })
 
     it('should fail if I transfer from the same account again', async () => {
-      await shouldFail(
+      await reverts(
         lock.transferFrom(accounts[1], accounts[5], accounts[1], {
           from: accounts[1],
         }),

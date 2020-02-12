@@ -1,5 +1,5 @@
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -22,7 +22,7 @@ contract('Lock / erc721 / name', accounts => {
     })
 
     it('should fail if someone other than the owner tries to set the name', async () => {
-      await shouldFail(
+      await reverts(
         unnamedlock.updateLockName('Hardly', {
           from: accounts[1],
         })
@@ -42,7 +42,7 @@ contract('Lock / erc721 / name', accounts => {
     })
 
     it('should fail if someone other than the owner tries to change the name', async () => {
-      await shouldFail(
+      await reverts(
         namedLock.updateLockName('Difficult', {
           from: accounts[1],
         })

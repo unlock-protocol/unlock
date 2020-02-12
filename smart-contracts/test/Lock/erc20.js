@@ -3,8 +3,8 @@ const BigNumber = require('bignumber.js')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
+const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
-const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
 
 contract('Lock / erc20', accounts => {
@@ -169,7 +169,7 @@ contract('Lock / erc20', accounts => {
       const account = accounts[4]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice.minus(1))
-      await shouldFail(
+      await reverts(
         lock.purchase(
           keyPrice.toFixed(),
           account,
@@ -186,7 +186,7 @@ contract('Lock / erc20', accounts => {
       const account = accounts[4]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice)
-      await shouldFail(
+      await reverts(
         lock.purchase(
           keyPrice.toFixed(),
           account,
@@ -202,7 +202,7 @@ contract('Lock / erc20', accounts => {
 
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
-      await shouldFail(
+      await reverts(
         deployLocks(unlock, accounts[0], (await TestNoop.new()).address)
       )
     })
