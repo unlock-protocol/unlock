@@ -159,8 +159,8 @@ contract Unlock is
    * TODO: actually implement this.
    */
   function computeAvailableDiscountFor(
-    address _purchaser, // solhint-disable-line no-unused-vars
-    uint _keyPrice // solhint-disable-line no-unused-vars
+    address /* _purchaser */,
+    uint /* _keyPrice */
   )
     public
     view
@@ -180,7 +180,7 @@ contract Unlock is
    */
   function recordKeyPurchase(
     uint _value,
-    address _referrer // solhint-disable-line no-unused-vars
+    address /* _referrer */
   )
     public
     onlyFromDeployedLock()
@@ -216,7 +216,7 @@ contract Unlock is
    */
   function recordConsumedDiscount(
     uint _discount,
-    uint _tokens // solhint-disable-line no-unused-vars
+    uint /* _tokens */
   )
     public
     onlyFromDeployedLock()
