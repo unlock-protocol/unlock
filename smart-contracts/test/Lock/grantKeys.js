@@ -15,9 +15,10 @@ let tx
 contract('Lock / grantKeys', accounts => {
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
-  const validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
+  let validExpirationTimestamp
 
   before(async () => {
+    validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks.FIRST
@@ -47,9 +48,10 @@ contract('Lock / grantKeys', accounts => {
     })
 
     describe('can grant a key extension for an existing user', () => {
-      const extendedExpiration = validExpirationTimestamp + 100
+      let extendedExpiration
 
       before(async () => {
+        extendedExpiration = validExpirationTimestamp + 100
         tx = await lock.grantKeys([keyOwner], [extendedExpiration], {
           from: lockOwner,
         })
