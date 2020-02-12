@@ -29,9 +29,9 @@ pragma solidity 0.5.16;
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
+import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IUniswapExchange.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IUnlock.sol';
-import './interfaces/IUniswap.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 
 
@@ -82,7 +82,7 @@ contract Unlock is
 
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
-  mapping (address => IUniswap) public uniswapExchanges;
+  mapping (address => IUniswapExchange) public uniswapExchanges;
 
   // Events
   event NewLock(
@@ -190,7 +190,7 @@ contract Unlock is
       address tokenAddress = IPublicLock(msg.sender).tokenAddress();
       if(tokenAddress != address(0)) {
         // If priced in an ERC-20 token, find the supported uniswap exchange
-        IUniswap exchange = uniswapExchanges[tokenAddress];
+        IUniswapExchange exchange = uniswapExchanges[tokenAddress];
         if(address(exchange) != address(0)) {
           valueInETH = exchange.getTokenToEthInputPrice(_value);
         } else {
@@ -255,11 +255,11 @@ contract Unlock is
   // setting the _exchangeAddress to address(0) removes support for the token
   function setExchange(
     address _tokenAddress,
-    address _exchangeAddress
+    IUniswapExchange _exchangeAddress
   ) external
     onlyOwner
   {
-    uniswapExchanges[_tokenAddress] = IUniswap(_exchangeAddress);
+    uniswapExchanges[_tokenAddress] = _exchangeAddress;
   }
 
   // Allows the owner to change the value tracking variables as needed.
