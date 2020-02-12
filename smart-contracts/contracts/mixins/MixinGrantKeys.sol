@@ -1,7 +1,7 @@
 pragma solidity 0.5.16;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinKeys.sol';
+import './MixinKeyGranterRole.sol';
 
 
 /**
@@ -11,8 +11,8 @@ import './MixinKeys.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinGrantKeys is
-  Ownable,
-  MixinKeys
+  MixinKeys,
+  MixinKeyGranterRole
 {
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
@@ -22,7 +22,7 @@ contract MixinGrantKeys is
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps
   ) external
-    onlyOwner
+    onlyKeyGranter
   {
     for(uint i = 0; i < _recipients.length; i++) {
       address recipient = _recipients[i];
