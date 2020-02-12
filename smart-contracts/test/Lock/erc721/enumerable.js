@@ -1,5 +1,5 @@
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -32,7 +32,7 @@ contract('Lock / erc721 / approve', accounts => {
   })
 
   it('tokenByIndex greater than totalSupply shouldFail', async () => {
-    await shouldFail(lock.tokenByIndex(5))
+    await reverts(lock.tokenByIndex(5))
   })
 
   it('tokenOfOwnerByIndex forwards to getTokenIdFor when index == 0', async () => {
@@ -44,6 +44,6 @@ contract('Lock / erc721 / approve', accounts => {
   })
 
   it('tokenOfOwnerByIndex fails when index > 0', async () => {
-    await shouldFail(lock.tokenOfOwnerByIndex(accounts[0], 1))
+    await reverts(lock.tokenOfOwnerByIndex(accounts[0], 1))
   })
 })

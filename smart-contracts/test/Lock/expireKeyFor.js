@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -16,7 +16,7 @@ contract('Lock / expireKeyFor', accounts => {
   })
 
   it('should fail if not invoked by lock owner', async () => {
-    await shouldFail(
+    await reverts(
       locks.FIRST.expireKeyFor(accounts[1], {
         from: accounts[8],
       }),
@@ -25,7 +25,7 @@ contract('Lock / expireKeyFor', accounts => {
   })
 
   it('should fail if there is no such key', async () => {
-    await shouldFail(
+    await reverts(
       locks.FIRST.expireKeyFor(accounts[1], {
         from: accounts[0],
       }),
@@ -46,7 +46,7 @@ contract('Lock / expireKeyFor', accounts => {
     await locks.FIRST.expireKeyFor(accounts[2], {
       from: accounts[0],
     })
-    await shouldFail(
+    await reverts(
       locks.FIRST.expireKeyFor(accounts[2], {
         from: accounts[0],
       }),

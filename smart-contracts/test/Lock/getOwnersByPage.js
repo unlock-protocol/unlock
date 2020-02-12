@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -17,7 +17,7 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when there are 0 key owners', () => {
     it('should return an error', async () => {
-      await shouldFail(
+      await reverts(
         locks.FIRST.getOwnersByPage.call(0, 2, { from: accounts[5] }),
         'NO_OUTSTANDING_KEYS'
       )

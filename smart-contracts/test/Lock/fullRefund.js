@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -96,7 +96,7 @@ contract('Lock / fullRefund', accounts => {
 
   describe('should fail when', () => {
     it('should fail if invoked by the key owner', async () => {
-      await shouldFail(
+      await reverts(
         lock.fullRefund(keyOwners[3], refundAmount, {
           from: keyOwners[3],
         }),
@@ -105,7 +105,7 @@ contract('Lock / fullRefund', accounts => {
     })
 
     it('should fail if invoked by another user', async () => {
-      await shouldFail(
+      await reverts(
         lock.fullRefund(accounts[7], refundAmount, {
           from: keyOwners[3],
         }),
@@ -117,7 +117,7 @@ contract('Lock / fullRefund', accounts => {
       await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockOwner,
       })
-      await shouldFail(
+      await reverts(
         lock.fullRefund(keyOwners[3], refundAmount, {
           from: lockOwner,
         }),
@@ -129,7 +129,7 @@ contract('Lock / fullRefund', accounts => {
       await lock.expireKeyFor(keyOwners[3], {
         from: lockOwner,
       })
-      await shouldFail(
+      await reverts(
         lock.fullRefund(keyOwners[3], refundAmount, {
           from: lockOwner,
         }),
@@ -138,7 +138,7 @@ contract('Lock / fullRefund', accounts => {
     })
 
     it('the owner does not have a key', async () => {
-      await shouldFail(
+      await reverts(
         lock.fullRefund(accounts[7], refundAmount, {
           from: lockOwner,
         }),

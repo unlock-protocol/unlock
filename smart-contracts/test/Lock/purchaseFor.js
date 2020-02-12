@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -18,14 +18,14 @@ contract('Lock / purchaseFor', accounts => {
 
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
-      await shouldFail(
+      await reverts(
         locks.FIRST.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
           value: Units.convert('0.0001', 'eth', 'wei'),
         }),
         'NOT_ENOUGH_FUNDS'
       )
       // Making sure we do not have a key set!
-      await shouldFail(
+      await reverts(
         locks.FIRST.keyExpirationTimestampFor.call(accounts[0]),
         'HAS_NEVER_OWNED_KEY'
       )
@@ -41,7 +41,7 @@ contract('Lock / purchaseFor', accounts => {
           value: Units.convert('0.01', 'eth', 'wei'),
         }
       )
-      await shouldFail(
+      await reverts(
         locks['SINGLE KEY'].purchase(
           0,
           accounts[1],
