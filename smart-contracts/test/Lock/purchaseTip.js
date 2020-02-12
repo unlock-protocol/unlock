@@ -2,9 +2,8 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const truffleAssert = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
-
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -23,9 +22,11 @@ contract('Lock / purchaseTip', accounts => {
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await TestErc20Token.new()
+        testToken = await tokens.dai.deploy(web3, accounts[0])
         // Mint some tokens for testing
-        await testToken.mint(accounts[2], '100000000000000000000')
+        await testToken.mint(accounts[2], '100000000000000000000', {
+          from: accounts[0],
+        })
 
         tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
 

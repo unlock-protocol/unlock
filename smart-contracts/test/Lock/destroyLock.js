@@ -3,6 +3,7 @@ const BigNumber = require('bignumber.js')
 
 const Web3Utils = require('web3-utils')
 const { reverts } = require('truffle-assertions')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
 const getTokenBalance = require('../helpers/getTokenBalance')
@@ -10,7 +11,6 @@ const getTokenBalance = require('../helpers/getTokenBalance')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
 let unlock
 let locks
@@ -21,7 +21,7 @@ contract('Lock / destroyLock', accounts => {
   const scenarios = [false, true]
 
   beforeEach(async () => {
-    testToken = await TestErc20Token.new()
+    testToken = await tokens.dai.deploy(web3, accounts[0])
     // Mint some tokens for testing
     for (let i = 0; i < accounts.length; i++) {
       await testToken.mint(accounts[i], '1000000000000000000', {
