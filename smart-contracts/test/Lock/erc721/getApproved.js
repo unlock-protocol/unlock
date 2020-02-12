@@ -1,6 +1,6 @@
 const Units = require('ethereumjs-units')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -26,7 +26,7 @@ contract('Lock / erc721 / getApproved', accounts => {
 
   describe('getApproved', () => {
     it('should fail if no one was approved for a key', async () => {
-      await shouldFail(locks.FIRST.getApproved.call(ID), 'NONE_APPROVED')
+      await reverts(locks.FIRST.getApproved.call(ID), 'NONE_APPROVED')
     })
   })
 })

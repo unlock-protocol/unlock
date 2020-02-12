@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const unlockContract = artifacts.require('../Unlock.sol')
@@ -190,7 +190,7 @@ contract('Lock / cancelAndRefund', accounts => {
       await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockOwner,
       })
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefund({
           from: keyOwners[3],
         }),
@@ -202,7 +202,7 @@ contract('Lock / cancelAndRefund', accounts => {
       await lock.expireKeyFor(keyOwners[3], {
         from: lockOwner,
       })
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefund({
           from: keyOwners[3],
         }),
@@ -211,7 +211,7 @@ contract('Lock / cancelAndRefund', accounts => {
     })
 
     it('the owner does not have a key', async () => {
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefund({
           from: accounts[7],
         }),

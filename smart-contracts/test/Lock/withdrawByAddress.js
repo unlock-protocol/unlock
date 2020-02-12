@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
@@ -49,7 +49,7 @@ contract('Lock / withdrawByAddress', accounts => {
     })
 
     it('should fail if there is nothing left to withdraw', async () => {
-      await shouldFail(
+      await reverts(
         lock.withdraw(token.address, 0, {
           from: owner,
         }),

@@ -1,6 +1,6 @@
 const Units = require('ethereumjs-units')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -55,7 +55,7 @@ contract('Lock / erc721 / tokenURI', accounts => {
     })
 
     it('should fail if someone other than the owner tries to set the URI', async () => {
-      await shouldFail(
+      await reverts(
         unlock.configUnlock(
           await unlock.publicLockAddress(),
           await unlock.globalTokenSymbol(),
@@ -91,7 +91,7 @@ contract('Lock / erc721 / tokenURI', accounts => {
     it('should allow the owner to to unset the custom URI and default to the global one', async () => {})
 
     it('should fail if someone other than the owner tries to set the URI', async () => {
-      await shouldFail(
+      await reverts(
         lock.setBaseTokenURI('https://fakeURI.com', {
           from: accounts[1],
         })

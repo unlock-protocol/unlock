@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -68,7 +68,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     ID = await lock.getTokenIdFor.call(accounts[5])
     // A contract which does NOT implement onERC721Received:
     let nonCompliantContract = unlock.address
-    await shouldFail(
+    await reverts(
       lock.safeTransferFrom(accounts[5], nonCompliantContract, ID, {
         from: accounts[5],
       })

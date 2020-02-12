@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -39,7 +39,7 @@ contract('Lock / disableTransfers', accounts => {
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         tokenId = new BigNumber(await lock.getTokenIdFor.call(keyOwner))
         // try to transfer it
-        await shouldFail(
+        await reverts(
           lock.transferFrom(keyOwner, accountWithNoKey, tokenId, {
             from: keyOwner,
           }),
@@ -48,7 +48,7 @@ contract('Lock / disableTransfers', accounts => {
         // check owner still has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // check recipient never received a key
-        await shouldFail(
+        await reverts(
           lock.keyExpirationTimestampFor.call(accountWithNoKey, {
             from: accountWithNoKey,
           }),
@@ -62,7 +62,7 @@ contract('Lock / disableTransfers', accounts => {
         // check owner has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // try to share it
-        await shouldFail(
+        await reverts(
           lock.shareKey(accountWithNoKey, tokenId, oneDay, {
             from: keyOwner,
           }),
@@ -71,7 +71,7 @@ contract('Lock / disableTransfers', accounts => {
         // check owner still has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // check recipient never received a key
-        await shouldFail(
+        await reverts(
           lock.keyExpirationTimestampFor.call(accountWithNoKey, {
             from: accountWithNoKey,
           }),

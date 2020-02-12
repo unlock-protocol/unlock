@@ -2,8 +2,8 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -73,14 +73,14 @@ contract('Lock / erc721 / transferFrom', accounts => {
 
   describe('when the lock is public', () => {
     it('should abort when there is no key to transfer', async () => {
-      await shouldFail(
+      await reverts(
         locks.FIRST.transferFrom(accountWithNoKey, to, 999),
         'KEY_NOT_VALID'
       )
     })
 
     it('should abort if the recipient is 0x', async () => {
-      await shouldFail(
+      await reverts(
         locks.FIRST.transferFrom(
           from,
           Web3Utils.padLeft(0, 40),
@@ -185,7 +185,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         const previousExpirationTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
-        await shouldFail(
+        await reverts(
           locks.FIRST.transferFrom(from, accountNotApproved, ID, {
             from: accountNotApproved,
           }),
@@ -219,10 +219,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       })
 
       it('approval should be cleared after a transfer', async () => {
-        await shouldFail(
-          locks.FIRST.getApproved(accountApproved),
-          'NONE_APPROVED'
-        )
+        await reverts(locks.FIRST.getApproved(accountApproved), 'NONE_APPROVED')
       })
     })
 
@@ -278,7 +275,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
           }
         )
         // confirm that the lock is sold out
-        await shouldFail(
+        await reverts(
           locks['SINGLE KEY'].purchase(
             0,
             accounts[8],

@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -16,7 +16,7 @@ contract('Lock / erc721 / ownerOf', accounts => {
   })
 
   it('should revert when key is nonexistent', async () => {
-    await shouldFail(locks.FIRST.ownerOf.call(accounts[3]), 'NO_SUCH_KEY')
+    await reverts(locks.FIRST.ownerOf.call(accounts[3]), 'NO_SUCH_KEY')
   })
 
   it('should return the owner of the key', async () => {

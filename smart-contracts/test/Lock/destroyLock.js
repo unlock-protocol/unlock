@@ -2,8 +2,9 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const Web3Utils = require('web3-utils')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
+
 const getTokenBalance = require('../helpers/getTokenBalance')
 
 const unlockContract = artifacts.require('../Unlock.sol')
@@ -57,7 +58,7 @@ contract('Lock / destroyLock', accounts => {
       })
 
       it('should fail if called by the wrong account', async () => {
-        await shouldFail(lock.destroyLock({ from: accounts[1] }), '')
+        await reverts(lock.destroyLock({ from: accounts[1] }), '')
       })
 
       describe('when called by the owner', () => {

@@ -1,6 +1,6 @@
 const Web3Utils = require('web3-utils')
 const Units = require('ethereumjs-units')
-const shouldFail = require('../../helpers/shouldFail')
+const { reverts } = require('truffle-assertions')
 
 const PublicLock = artifacts.require('../../PublicLock.sol')
 
@@ -66,7 +66,7 @@ exports.shouldCreateLock = options => {
 
     describe('lock creation fails', () => {
       it('should fail if expirationDuration is too large', async () => {
-        await shouldFail(
+        await reverts(
           unlock.methods
             .createLock(
               60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years

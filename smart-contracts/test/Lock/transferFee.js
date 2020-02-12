@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -147,7 +147,7 @@ contract('Lock / transferFee', accounts => {
 
     describe('should fail if', () => {
       it('called by an account which does not own the lock', async () => {
-        await shouldFail(lock.updateTransferFee(1000, { from: accounts[1] }))
+        await reverts(lock.updateTransferFee(1000, { from: accounts[1] }))
       })
     })
   })

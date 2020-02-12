@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const shouldFail = require('../helpers/shouldFail')
+const { reverts } = require('truffle-assertions')
 
 const UnlockDiscountToken = artifacts.require('../UnlockDiscountToken.sol')
 const getProxy = require('../helpers/proxy')
@@ -13,7 +13,7 @@ contract('UnlockDiscountToken', accounts => {
   })
 
   it('shouldFail to call init again', async () => {
-    await shouldFail(unlockDiscountToken.initialize())
+    await reverts(unlockDiscountToken.initialize())
   })
 
   describe('Supply', () => {

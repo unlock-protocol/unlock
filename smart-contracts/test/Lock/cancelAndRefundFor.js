@@ -2,8 +2,8 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const truffleAssert = require('truffle-assertions')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -156,7 +156,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         keyOwners[1]
       )
       await lock.invalidateOffchainApproval('1', { from: keyOwners[1] })
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefundFor(
           keyOwners[1],
           signature.v,
@@ -188,7 +188,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         from: keyOwners[2],
         value: keyPrice.toFixed(),
       })
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefundFor(
           keyOwners[2],
           signature.v,
@@ -211,7 +211,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         signature.r.substr(0, 4) +
         (signature.r[4] === '0' ? '1' : '0') +
         signature.r.substr(5)
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefundFor(
           keyOwners[3],
           signature.v,
@@ -237,7 +237,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefundFor(
           keyOwners[3],
           signature.v,
@@ -264,7 +264,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )
-      await shouldFail(
+      await reverts(
         lock.cancelAndRefundFor(
           keyOwners[3],
           signature.v,

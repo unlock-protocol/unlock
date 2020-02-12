@@ -2,8 +2,8 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -18,7 +18,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
   })
 
   it('should fail if the user address is 0', async () => {
-    await shouldFail(
+    await reverts(
       locks.FIRST.balanceOf.call(Web3Utils.padLeft(0, 40)),
       'INVALID_ADDRESS'
     )

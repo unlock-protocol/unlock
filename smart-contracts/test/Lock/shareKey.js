@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const Web3Utils = require('web3-utils')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -50,7 +50,7 @@ contract('Lock / shareKey', accounts => {
   describe('failing to share a key', () => {
     describe('not meeting pre-requisites', () => {
       it('sender is not approved', async () => {
-        await shouldFail(
+        await reverts(
           lock.shareKey(accounts[7], 11, 1000, {
             from: accountWithNoKey1,
           }),
@@ -59,7 +59,7 @@ contract('Lock / shareKey', accounts => {
       })
 
       it('called by other than keyOwner or approved ', async () => {
-        await shouldFail(
+        await reverts(
           lock.shareKey(
             accounts[3],
             await lock.getTokenIdFor.call(keyOwners[0]),
@@ -73,7 +73,7 @@ contract('Lock / shareKey', accounts => {
       })
 
       it('should abort if the recipient is 0x', async () => {
-        await shouldFail(
+        await reverts(
           lock.shareKey(
             Web3Utils.padLeft(0, 40),
             await lock.getTokenIdFor.call(keyOwners[0]),
@@ -91,7 +91,7 @@ contract('Lock / shareKey', accounts => {
       let nonCompliantContract = unlock.address
       let ID = await lock.getTokenIdFor.call(keyOwner2)
       assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
-      await shouldFail(
+      await reverts(
         lock.shareKey(nonCompliantContract, ID, 1000, {
           from: keyOwner2,
         })

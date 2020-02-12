@@ -1,5 +1,5 @@
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -36,7 +36,7 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
-      await shouldFail(
+      await reverts(
         unlock.configUnlock(
           await unlock.publicLockAddress(),
           'BTC',
@@ -61,7 +61,7 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
-      await shouldFail(
+      await reverts(
         lock.updateLockSymbol('BTC', {
           from: accounts[1],
         })
