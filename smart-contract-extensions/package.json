@@ -1,0 +1,59 @@
+{
+  "name": "smart-contract-extensions",
+  "version": "0.0.1",
+  "description": "Contracts which interact with other contracts",
+  "scripts": {
+    "build": "yarn compile",
+    "compile": "truffle compile",
+    "test": "truffle test",
+    "lint": "solium -d contracts --fix && eslint . --fix",
+    "lintNoFix": "solium -d contracts && eslint .",
+    "coverage": "truffle run coverage && cat coverage/lcov.info | coveralls",
+    "ganache": "ganache-cli",
+    "ci": "yarn build && yarn test && yarn lintNoFix"
+  },
+  "files": [
+    "build",
+    "contracts",
+    "src",
+    "index.js"
+  ],
+  "engines": {
+    "node": "^10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unlock-protocol/unlock.git"
+  },
+  "keywords": [
+    "Solidity",
+    "Uniswap",
+    "Ethereum",
+    "ETH"
+  ],
+  "author": "HardlyDifficult",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "2.5.0",
+    "@typescript-eslint/eslint-plugin": "2.19.0",
+    "@typescript-eslint/parser": "2.19.0",
+    "@vue/cli": "4.2.2",
+    "babel-eslint": "10.0.3",
+    "bignumber.js": "9.0.0",
+    "chai": "4.2.0",
+    "coveralls": "3.0.9",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-plugin-json": "2.0.1",
+    "eslint-plugin-markdown": "1.0.1",
+    "eslint-plugin-prettier": "3.1.2",
+    "eth-gas-reporter": "0.2.14",
+    "ganache-cli": "6.9.0",
+    "hardlydifficult-ethereum-contracts": "0.7.13",
+    "prettier": "1.19.1",
+    "solidity-coverage": "0.7.1",
+    "solium": "1.2.5",
+    "truffle": "5.1.12",
+    "truffle-assertions": "0.9.2"
+  }
+}
