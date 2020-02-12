@@ -5,8 +5,19 @@ RUN mkdir /home/unlock/unlock-app
 COPY --chown=node unlock-app/yarn.lock /home/unlock/unlock-app/.
 COPY --chown=node unlock-app/package.json /home/unlock/unlock-app/.
 WORKDIR /home/unlock/unlock-app
-RUN yarn --production
 
+
+USER root
+
+RUN apk add --no-cache --virtual .build-deps-2 \
+    python \
+    build-base \
+    && yarn --production \
+    && apk del .build-deps-2
+
+# RUN yarn --production
+
+USER node
 # Build unlock-app
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
 RUN yarn build
