@@ -2,9 +2,9 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
@@ -14,8 +14,10 @@ let token
 
 contract('Lock / cancelAndRefund', accounts => {
   before(async () => {
-    token = await TestErc20Token.new()
-    await token.mint(accounts[0], 100)
+    token = await tokens.dai.deploy(web3, accounts[0])
+    await token.mint(accounts[0], 100, {
+      from: accounts[0],
+    })
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
@@ -231,7 +233,9 @@ contract('Lock / cancelAndRefund', accounts => {
       from: lockOwner,
     })
     // fund lock with new erc20 tokens to deal enable refunds
-    await token.mint(lock.address, 100)
+    await token.mint(lock.address, 100, {
+      from: accounts[0],
+    })
     assert.equal(await token.balanceOf(lock.address), 100)
     // cancel and refund
     await lock.cancelAndRefund({ from: accounts[5] })

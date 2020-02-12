@@ -1,10 +1,9 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 
 const { protocols } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
-
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -27,9 +26,11 @@ contract('Unlock / uniswapValue', accounts => {
 
   describe('A supported token', () => {
     beforeEach(async () => {
-      token = await TestErc20Token.new()
+      token = await tokens.dai.deploy(web3, accounts[0])
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(accounts[0], '1000000000000000000000000')
+      await token.mint(accounts[0], '1000000000000000000000000', {
+        from: accounts[0],
+      })
 
       locks = await deployLocks(unlock, accounts[0], token.address)
       lock = locks.FIRST
@@ -91,9 +92,11 @@ contract('Unlock / uniswapValue', accounts => {
 
   describe('A unsupported token', () => {
     beforeEach(async () => {
-      token = await TestErc20Token.new()
+      token = await tokens.dai.deploy(web3, accounts[0])
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(accounts[0], '1000000000000000000000000')
+      await token.mint(accounts[0], '1000000000000000000000000', {
+        from: accounts[0],
+      })
 
       locks = await deployLocks(unlock, accounts[0], token.address)
       lock = locks.FIRST
