@@ -9,48 +9,55 @@ pragma solidity 0.5.16;
  */
 contract TestErc20Noop
 {
+  uint suppressCompileWarning;
+
   function transfer(
-    address to,
-    uint value
+    address /* to */,
+    uint /* value */
   ) external
     returns (bool)
   {
+    suppressCompileWarning++;
     return true;
   }
 
   function approve(
-    address spender,
-    uint value
+    address /* spender */,
+    uint /* value */
   ) external
     returns (bool)
   {
+    suppressCompileWarning++;
     return true;
   }
 
   function mint(
-    address to,
-    uint value
+    address /* to */,
+    uint /* value */
   ) public
     returns (bool)
   {
+    suppressCompileWarning++;
     return true;
   }
 
   function transferFrom(
-    address from,
-    address to,
-    uint value
+    address /* from */,
+    address /* to */,
+    uint /* value */
   ) external
     returns (bool)
   {
+    suppressCompileWarning++;
     return true;
   }
 
   function balanceOf(
-    address who
+    address /* who */
   ) external view
     returns (uint)
   {
+    require(suppressCompileWarning >= 0, 'Suppressing the Solidity compile warning');
     return uint(-1);
   }
 }

@@ -1,4 +1,4 @@
-const shouldFail = require('../helpers/shouldFail')
+const { reverts } = require('truffle-assertions')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const PublicLock = artifacts.require('PublicLock')
@@ -23,7 +23,7 @@ contract('Lock / configUnlock', accounts => {
     })
 
     it('should revert if called by other than the owner', async () => {
-      await shouldFail(
+      await reverts(
         unlock.configUnlock(lockTemplate.address, '', '', {
           from: accounts[7],
         }),
@@ -32,7 +32,7 @@ contract('Lock / configUnlock', accounts => {
     })
 
     it('should revert if the lock template address is not a contract', async () => {
-      await shouldFail(
+      await reverts(
         unlock.configUnlock(accounts[7], '', '', {
           from: unlockOwner,
         }),

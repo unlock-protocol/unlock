@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -18,7 +18,7 @@ contract('Lock / erc721 / approve', accounts => {
 
   describe('when the token does not exist', () => {
     it('should fail', async () => {
-      await shouldFail(
+      await reverts(
         locks.FIRST.approve(accounts[2], 42, {
           from: accounts[1],
         }),
@@ -44,7 +44,7 @@ contract('Lock / erc721 / approve', accounts => {
 
     describe('when the sender is not the token owner', () => {
       it('should fail', async () => {
-        await shouldFail(
+        await reverts(
           locks.FIRST.approve(accounts[2], ID, {
             from: accounts[2],
           }),
@@ -55,7 +55,7 @@ contract('Lock / erc721 / approve', accounts => {
 
     describe('when the sender is self approving', () => {
       it('should fail', async () => {
-        await shouldFail(
+        await reverts(
           locks.FIRST.approve(accounts[1], ID, {
             from: accounts[1],
           }),
@@ -110,7 +110,7 @@ contract('Lock / erc721 / approve', accounts => {
         })
 
         it('The zero address indicates there is no approved address', async () => {
-          await shouldFail(locks.FIRST.getApproved.call(ID), 'NONE_APPROVED')
+          await reverts(locks.FIRST.getApproved.call(ID), 'NONE_APPROVED')
         })
       })
     })

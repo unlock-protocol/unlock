@@ -1,10 +1,10 @@
 const BigNumber = require('bignumber.js')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -20,8 +20,10 @@ contract('Lock / withdrawByAddress', accounts => {
     lock = locks.OWNED
 
     // Put some ERC-20 tokens into the contract
-    token = await TestErc20Token.new({ from: owner })
-    await token.mint(lock.address, 42000)
+    token = await tokens.dai.deploy(web3, owner)
+    await token.mint(lock.address, 42000, {
+      from: owner,
+    })
   })
 
   describe('when the owner withdraws funds for a specific token', () => {
@@ -49,7 +51,7 @@ contract('Lock / withdrawByAddress', accounts => {
     })
 
     it('should fail if there is nothing left to withdraw', async () => {
-      await shouldFail(
+      await reverts(
         lock.withdraw(token.address, 0, {
           from: owner,
         }),
