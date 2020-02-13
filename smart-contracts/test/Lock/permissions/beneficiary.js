@@ -36,18 +36,17 @@ contract('Permissions / Beneficiary', accounts => {
       assert.equal(currentBenficiary, newBeneficiary)
     })
 
-    it('should not allow the current beneficiary to update the beneficiary', async () => {
+    it('should allow Beneficiary to update the beneficiary', async () => {
       currentBenficiary = await lock.beneficiary.call()
-      await reverts(
-        lock.updateBeneficiary(accounts[5], { from: currentBenficiary }),
-        'MixinLockManager: caller does not have the LockManager role'
-      )
+      await lock.updateBeneficiary(accounts[8], { from: currentBenficiary })
+      currentBenficiary = await lock.beneficiary.call()
+      assert.equal(currentBenficiary, accounts[8])
     })
 
     it('should not allow anyone else to update the beneficiary', async () => {
       await reverts(
         lock.updateBeneficiary(accounts[5], { from: notAuthorised }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'ONLY_BENEFICIARY_OR_LOCKMANAGER'
       )
     })
   })
