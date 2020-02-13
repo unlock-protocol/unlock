@@ -165,7 +165,7 @@ contract MixinLockCore is
     address _beneficiary
   ) external
   {
-    require(msg.sender == beneficiary, 'ONLY_BENEFICIARY');
+    require(msg.sender == beneficiary || isLockManager(msg.sender), 'ONLY_BENEFICIARY_OR_LOCKMANAGER');
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
   }
