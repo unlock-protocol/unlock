@@ -96,6 +96,14 @@ contract MixinKeys is
     _;
   }
 
+  // Ensure that the caller is the keyManager for this key
+  modifier onlyKeyManager(
+    uint _tokenId
+  ) {
+    require(keyManagerOf[_tokenId] == msg.sender, 'NOT_MANAGER_OF_KEY');
+    _;
+  }
+
   /**
    * A function which lets the owner of the lock expire a users' key.
    */
