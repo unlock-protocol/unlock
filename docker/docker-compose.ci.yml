@@ -18,6 +18,10 @@ services:
       - 8545
   postgres:
     env_file: ./integration.env
+  smart-contract-extensions:
+    image: smart-contract-extensions
+    depends_on:
+      - ganache
   smart-contracts:
     image: smart-contracts
     depends_on:

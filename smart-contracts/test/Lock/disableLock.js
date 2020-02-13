@@ -2,8 +2,8 @@ const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -37,11 +37,11 @@ contract('Lock / disableLock', accounts => {
   })
 
   it('should fail if called by the wrong account', async () => {
-    await shouldFail(lock.disableLock({ from: keyOwner }), '')
+    await reverts(lock.disableLock({ from: keyOwner }), '')
   })
 
   it('should fail if called before the lock is disabled', async () => {
-    await shouldFail(lock.destroyLock(), 'DISABLE_FIRST')
+    await reverts(lock.destroyLock(), 'DISABLE_FIRST')
   })
 
   describe('when the lock has been disabled', () => {
@@ -57,11 +57,11 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail if called while lock is disabled', async () => {
-      await shouldFail(lock.disableLock(), 'LOCK_DEPRECATED')
+      await reverts(lock.disableLock(), 'LOCK_DEPRECATED')
     })
 
     it('should fail if a user tries to purchase a key', async () => {
-      await shouldFail(
+      await reverts(
         lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
           value: keyPrice,
         }),
@@ -70,7 +70,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
-      await shouldFail(
+      await reverts(
         lock.purchase(0, keyOwner, accounts[3], [], {
           value: keyPrice,
         }),
@@ -79,7 +79,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail if a user tries to transfer a key', async () => {
-      await shouldFail(
+      await reverts(
         lock.transferFrom(keyOwner, accounts[3], ID, {
           from: keyOwner,
         }),
@@ -88,7 +88,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail if a key owner tries to a approve an address', async () => {
-      await shouldFail(
+      await reverts(
         lock.approve(accounts[3], ID, {
           from: keyOwner,
         }),
@@ -131,7 +131,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail to setApprovalForAll', async () => {
-      await shouldFail(
+      await reverts(
         lock.setApprovalForAll(accounts[3], true, {
           from: keyOwner,
         }),
@@ -140,14 +140,14 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail to updateKeyPricing', async () => {
-      await shouldFail(
+      await reverts(
         lock.updateKeyPricing(1, Web3Utils.padLeft(0, 40)),
         'LOCK_DEPRECATED'
       )
     })
 
     it('should fail to safeTransferFrom w/o data', async () => {
-      await shouldFail(
+      await reverts(
         lock.safeTransferFrom(keyOwner, accounts[3], ID, {
           from: keyOwner,
         }),
@@ -156,7 +156,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail to safeTransferFrom w/ data', async () => {
-      await shouldFail(
+      await reverts(
         lock.methods['safeTransferFrom(address,address,uint256,bytes)'](
           keyOwner,
           accounts[3],

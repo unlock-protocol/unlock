@@ -1,0 +1,7 @@
+# Solidity coverage
+/scTopics
+/coverageEnv/
+
+mnemonic.*
+.openzeppelin/.session
+.openzeppelin/dev-*

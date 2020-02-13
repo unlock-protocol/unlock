@@ -16,7 +16,7 @@ interface VerificationData {
 }
 
 interface Props {
-  account: AccountType
+  account?: AccountType
   data?: VerificationData
   sig?: string
   hexData?: string
@@ -77,7 +77,7 @@ export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
 
   return (
     <ValidKey
-      viewer={account.address}
+      viewer={account && account.address}
       owner={accountAddress}
       signatureTimestamp={timestamp}
       ownedKey={matchingKey}

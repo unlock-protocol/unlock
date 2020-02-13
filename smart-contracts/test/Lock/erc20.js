@@ -1,10 +1,10 @@
 const BigNumber = require('bignumber.js')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
+const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
-const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
 
 contract('Lock / erc20', accounts => {
@@ -12,10 +12,12 @@ contract('Lock / erc20', accounts => {
   let token
   let lock
 
-  before(async () => {
-    token = await TestErc20Token.new()
+  beforeEach(async () => {
+    token = await tokens.dai.deploy(web3, accounts[0])
     // Mint some tokens so that the totalSupply is greater than 0
-    await token.mint(accounts[0], 1)
+    await token.mint(accounts[0], 1, {
+      from: accounts[0],
+    })
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks.FIRST
@@ -29,15 +31,21 @@ contract('Lock / erc20', accounts => {
     const keyOwner3 = accounts[3]
     const defaultBalance = new BigNumber(100000000000000000)
 
-    before(async () => {
+    beforeEach(async () => {
       // Pre-req
       assert.equal(await token.balanceOf(keyOwner), 0)
       assert.equal(await token.balanceOf(lock.address), 0)
 
       // Mint some tokens for testing
-      await token.mint(keyOwner, defaultBalance)
-      await token.mint(keyOwner2, defaultBalance)
-      await token.mint(keyOwner3, defaultBalance)
+      await token.mint(keyOwner, defaultBalance, {
+        from: accounts[0],
+      })
+      await token.mint(keyOwner2, defaultBalance, {
+        from: accounts[0],
+      })
+      await token.mint(keyOwner3, defaultBalance, {
+        from: accounts[0],
+      })
 
       // Approve the lock to make transfers
       await token.approve(lock.address, -1, { from: keyOwner })
@@ -49,7 +57,7 @@ contract('Lock / erc20', accounts => {
     })
 
     describe('users can purchase keys', () => {
-      it('can purchase', async () => {
+      beforeEach(async () => {
         await lock.purchase(
           keyPrice.toFixed(),
           keyOwner,
@@ -155,11 +163,11 @@ contract('Lock / erc20', accounts => {
 
       it('can transfer the key to another user', async () => {
         await lock.transferFrom(
-          accounts[2],
+          keyOwner,
           accounts[4],
-          await lock.getTokenIdFor.call(accounts[2]),
+          await lock.getTokenIdFor.call(keyOwner),
           {
-            from: accounts[2],
+            from: keyOwner,
           }
         )
       })
@@ -167,9 +175,11 @@ contract('Lock / erc20', accounts => {
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
       const account = accounts[4]
-      await token.approve(lock.address, -1)
-      await token.mint(account, keyPrice.minus(1))
-      await shouldFail(
+      await token.approve(lock.address, -1, { from: account })
+      await token.mint(account, keyPrice.minus(1), {
+        from: accounts[0],
+      })
+      await reverts(
         lock.purchase(
           keyPrice.toFixed(),
           account,
@@ -184,9 +194,10 @@ contract('Lock / erc20', accounts => {
 
     it('purchaseKey fails when the user did not give the contract an allowance', async () => {
       const account = accounts[4]
-      await token.approve(lock.address, -1)
-      await token.mint(account, keyPrice)
-      await shouldFail(
+      await token.mint(account, keyPrice, {
+        from: accounts[0],
+      })
+      await reverts(
         lock.purchase(
           keyPrice.toFixed(),
           account,
@@ -202,7 +213,7 @@ contract('Lock / erc20', accounts => {
 
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
-      await shouldFail(
+      await reverts(
         deployLocks(unlock, accounts[0], (await TestNoop.new()).address)
       )
     })

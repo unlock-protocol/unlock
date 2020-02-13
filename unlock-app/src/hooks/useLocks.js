@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Web3Service } from '@unlock-protocol/unlock-js'
+import { useState, useEffect, useContext } from 'react'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
+import { Web3ServiceContext } from '../utils/withWeb3Service'
 
 import GraphService from '../services/graphService'
 import configure from '../config'
@@ -18,25 +18,11 @@ export const useLocks = owner => {
   // Let's retrieve the locks!
   const [loading, setLoading] = useState(true)
   const [locks, setLocks] = useState([])
+  const web3Service = useContext(Web3ServiceContext)
 
-  const {
-    subgraphURI,
-    readOnlyProvider,
-    unlockAddress,
-    blockTime,
-    requiredConfirmations,
-    requiredNetworkId,
-  } = config
+  // TODO Load thru context
+  const { subgraphURI } = config
   const graphService = new GraphService(subgraphURI)
-
-  // TODO: get from context
-  const web3Service = new Web3Service({
-    readOnlyProvider,
-    unlockAddress,
-    blockTime,
-    requiredConfirmations,
-    network: requiredNetworkId,
-  })
 
   /**
    * Retrieves the locks for a user
