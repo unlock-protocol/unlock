@@ -110,6 +110,7 @@ contract MixinTransfer is
   )
     public
     onlyIfAlive
+    onlyKeyManager(_tokenId)
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
@@ -128,6 +129,7 @@ contract MixinTransfer is
     if (toKey.tokenId == 0) {
       toKey.tokenId = fromKey.tokenId;
       _recordOwner(_recipient, toKey.tokenId);
+      _setKeyManagerOf(toKey.tokenId, _recipient)
     }
 
     if (previousExpiration <= block.timestamp) {
