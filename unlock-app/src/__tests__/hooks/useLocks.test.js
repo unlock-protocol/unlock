@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
+import React from 'react'
 import useLocks from '../../hooks/useLocks'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 
@@ -8,14 +9,6 @@ const mockWeb3Service = {
 const mockGraphService = {
   locksByOwner: jest.fn(() => Promise.resolve(graphLocks)),
 }
-
-jest.mock('@unlock-protocol/unlock-js', () => {
-  return {
-    Web3Service() {
-      return mockWeb3Service
-    },
-  }
-})
 
 jest.mock('../../services/graphService', () => {
   return () => {
@@ -30,6 +23,7 @@ let graphLocks = []
 describe('useLocks', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.spyOn(React, 'useContext').mockImplementation(() => mockWeb3Service)
   })
 
   it('should default to loading and an empty list', async () => {
