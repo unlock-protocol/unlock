@@ -20,10 +20,17 @@ contract MixinGrantKeys is
    */
   function grantKeys(
     address[] calldata _recipients,
-    uint[] calldata _expirationTimestamps
+    uint[] calldata _expirationTimestamps,
+    address _keyManager
   ) external
     onlyKeyGranter
   {
+    address keyManager;
+    if (_keyManager != address(0)) {
+      keyManager = _keyManager;
+    } else {
+      keyManager = msg.sender;
+    }
     for(uint i = 0; i < _recipients.length; i++) {
       address recipient = _recipients[i];
       uint expirationTimestamp = _expirationTimestamps[i];
@@ -35,6 +42,8 @@ contract MixinGrantKeys is
 
       _assignNewTokenId(toKey);
       _recordOwner(recipient, toKey.tokenId);
+      // Assign the KeyManager
+      _setKeyManager(toKey.tokenId, keyManager);
       toKey.expirationTimestamp = expirationTimestamp;
 
       // trigger event

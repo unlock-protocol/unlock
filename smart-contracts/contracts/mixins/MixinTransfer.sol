@@ -48,9 +48,11 @@ contract MixinTransfer is
   function shareKey(
     address _to,
     uint _tokenId,
-    uint _timeShared
+    uint _timeShared,
+    address _keyManager
   ) public
     onlyIfAlive
+    onlyKeyManager(_tokenId)
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
@@ -85,6 +87,12 @@ contract MixinTransfer is
       _assignNewTokenId(toKey);
       iDTo = toKey.tokenId;
       _recordOwner(_to, iDTo);
+      // Assign the KeyManager
+      if (_keyManager != address(0)) {
+        _setKeyManagerOf(toKey.tokenId, _keyManager);
+      } else {
+        _setKeyManagerOf(toKey.tokenId, keyManagerOf[fromKey.tokenId]);
+      }
       emit Transfer(
         address(0), // This is a creation or time-sharing
         _to,
