@@ -33,6 +33,8 @@ contract MixinKeys is
     bool _timeAdded
   );
 
+  event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -48,6 +50,11 @@ contract MixinKeys is
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
   address[] public owners;
+
+  // A given key has both an owner and a manager.
+  // The owner and manager may be the same address
+  // Each key can have at most 1 keyManager, but may have no manager.
+  mapping (uint => address) internal keyManagerOf;
 
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
@@ -292,5 +299,16 @@ contract MixinKeys is
       key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
+  }
+
+  function _setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
+  ) internal
+    isKey(_tokenId)
+  {
+    require(keyManagerOf[_tokenId] == msg.sender || isLockManager[msg.sender], 'SETKEYMANAGEROF_ACCESS_DENIED' )
+    keyManagerOf[_tokenId] = _keyManager;
+    emit KeyManagerChanged(tokenId, _keyManager);
   }
 }
