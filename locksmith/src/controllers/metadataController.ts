@@ -92,9 +92,7 @@ namespace MetadataController {
       const successfulUpdate = metadataOperations.updateDefaultLockMetadata({
         address,
         data: {
-          name: metadata.name,
-          description: metadata.description,
-          image: metadata.image,
+          ...metadata,
         },
       })
 
