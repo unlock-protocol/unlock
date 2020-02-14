@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import Svg from '../svg'
 
 interface LockBodyProps {
-  loading?: true
+  loading?: 'true'
 }
 
 export const lockBodyBackground = ({ loading }: LockBodyProps) => {
@@ -18,20 +19,41 @@ export const lockBodyHover = ({ loading }: LockBodyProps) => {
     &:hover {
       border: 1px solid var(--blue);
     }
+    &:hover ${Arrow} {
+      fill: var(--blue);
+    }
   `
 }
+
+export const lockBodyBorder = ({ loading }: LockBodyProps) => {
+  const color = loading ? 'var(--lightgrey)' : 'var(--white)'
+  return `border: 1px ${color} solid;`
+}
+
+export const lockBodyCursor = ({ loading }: LockBodyProps) => {
+  const type = loading ? 'wait' : 'pointer'
+  return `cursor: ${type};`
+}
+
+export const Arrow = styled(Svg.Arrow)`
+  width: 32px;
+  fill: var(--darkgrey);
+  margin-left: auto;
+  margin-right: 8px;
+`
 
 export const LockBody = styled.div`
   height: 48px;
   width: 100%;
   border-radius: 4px;
-  border: 1px solid var(--white);
+  ${(props: LockBodyProps) => lockBodyBorder(props)};
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: row;
   align-items: center;
   ${(props: LockBodyProps) => lockBodyBackground(props)};
   ${(props: LockBodyProps) => lockBodyHover(props)};
+  ${(props: LockBodyProps) => lockBodyCursor(props)};
 `
 
 export const LockContainer = styled.div`
@@ -69,32 +91,82 @@ export const InfoWrapper = styled.div`
 
 export const LockPrice = styled.span`
   color: var(--darkgrey);
-  font-family: IBM Plex Sans;
+  font-family: IBM Plex Mono;
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
-  margin-left: 24px;
+  margin-left: 12px;
   text-align: right;
-  width: 120px;
+  width: 65px;
+`
+
+export const TickerSymbol = styled.span`
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 4px;
+  text-align: center;
+  width: 42px;
+`
+
+export const ValidityDuration = styled.div`
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: right;
+  height: 100%;
+  justify-content: center;
+  margin: 0 auto;
+  & > span {
+    width: 100%;
+  }
 `
 
 export const LoadingLock = () => {
   return (
     <LockContainer>
-      <LockBody loading />
+      <LockBody loading="true" />
     </LockContainer>
   )
 }
 
-export const Lock = () => {
+interface LockProps {
+  name: string
+  keysAvailable: string
+  price: string
+  symbol: string
+  validityDuration: string
+}
+
+export const Lock = ({
+  name,
+  keysAvailable,
+  price,
+  symbol,
+  validityDuration,
+}: LockProps) => {
   return (
     <LockContainer>
       <InfoWrapper>
-        <LockName>Corporate</LockName>
-        <KeysAvailable>1,500</KeysAvailable>
+        <LockName>{name}</LockName>
+        <KeysAvailable>{keysAvailable}</KeysAvailable>
       </InfoWrapper>
       <LockBody>
-        <LockPrice>20.001 ETH</LockPrice>
+        <LockPrice>{price}</LockPrice>
+        <TickerSymbol>{symbol}</TickerSymbol>
+        <ValidityDuration>
+          <span>Valid for</span>
+          <br />
+          <span>{validityDuration}</span>
+        </ValidityDuration>
+        <Arrow />
       </LockBody>
     </LockContainer>
   )

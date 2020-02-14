@@ -7,5 +7,13 @@ storiesOf('Checkout Lock', module)
     return <LoadingLock />
   })
   .add('Active', () => {
-    return <Lock />
+    return (
+      <Lock
+        name="Corporate"
+        keysAvailable="1,500"
+        price="12345"
+        symbol="ETH"
+        validityDuration="10 Months"
+      />
+    )
   })
