@@ -56,7 +56,9 @@ contract MixinPurchase is
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
       // Give the new key owner the right to manage their key
-      _setKeyManagerOf(toKey.tokenId, _recipient);
+      keyManagerOf[toKey.tokenId] = _recipient;
+      emit KeyManagerChanged(toKey.tokenId, _recipient);
+
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
