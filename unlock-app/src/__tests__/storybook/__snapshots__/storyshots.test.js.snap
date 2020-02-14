@@ -5325,38 +5325,38 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-LzLrW cMQDWh"
+      class="sc-LzLrW kHoOKh"
     >
       <div
-        class="sc-LzLrZ iBgDE"
+        class="sc-LzLrZ ffHaSY"
       >
         <span
-          class="sc-LzLrX gmjWoM"
+          class="sc-LzLrX dSdEkw"
         >
           Corporate
         </span>
         <span
-          class="sc-LzLrY fScWTW"
+          class="sc-LzLrY QlyAm"
         >
           1,500
            Available
         </span>
       </div>
       <div
-        class="sc-LzLrV lcOVyD"
+        class="sc-LzLrV bcKBUK"
       >
         <span
-          class="sc-LzLsx dHlhuN"
+          class="sc-LzLsx ffcCXZ"
         >
           12345
         </span>
         <span
-          class="sc-LzLsy hzVqZB"
+          class="sc-LzLsy pNdrt"
         >
           ETH
         </span>
         <div
-          class="sc-LzLsz bEnsoo"
+          class="sc-LzLsz kauPoE"
         >
           <span>
             Valid for
@@ -5456,6 +5456,8 @@ Object {
   align-items: center;
   background-color: var(--lightgrey);
   cursor: wait;
+  -webkit-animation: cqwGLM 2s linear infinite;
+  animation: cqwGLM 2s linear infinite;
 }
 
 .c0 {
@@ -5496,10 +5498,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-LzLrW cMQDWh"
+      class="sc-LzLrW kHoOKh"
     >
       <div
-        class="sc-LzLrV eYuTsc"
+        class="sc-LzLrV kRQcxd"
         loading="true"
       />
     </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import Svg from '../svg'
 
 interface LockBodyProps {
@@ -35,6 +35,22 @@ export const lockBodyCursor = ({ loading }: LockBodyProps) => {
   return `cursor: ${type};`
 }
 
+export const fadeInOut = keyframes`
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+`
+
+export const lockBodyOpacity = ({ loading }: LockBodyProps) => {
+  if (!loading) {
+    return ''
+  }
+
+  return css`
+    animation: ${fadeInOut} 2s linear infinite;
+  `
+}
+
 export const Arrow = styled(Svg.Arrow)`
   width: 32px;
   fill: var(--darkgrey);
@@ -54,6 +70,7 @@ export const LockBody = styled.div`
   ${(props: LockBodyProps) => lockBodyBackground(props)};
   ${(props: LockBodyProps) => lockBodyHover(props)};
   ${(props: LockBodyProps) => lockBodyCursor(props)};
+  ${(props: LockBodyProps) => lockBodyOpacity(props)};
 `
 
 export const LockContainer = styled.div`
