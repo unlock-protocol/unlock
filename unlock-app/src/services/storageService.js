@@ -96,8 +96,10 @@ export class StorageService extends EventEmitter {
         }))
       }
       this.emit(success.getTransactionHashesSentBy, { senderAddress, hashes })
+      return { senderAddress, hashes }
     } catch (error) {
       this.emit(failure.getTransactionHashesSentBy, error)
+      return {} // TODO: consider if thos should be an error
     }
   }
 
