@@ -311,11 +311,14 @@ contract MixinKeys is
 
   function _setKeyManagerOf(
     uint _tokenId,
-    address _keyManager
+    address _keyManager,
+    bool _bypassAccessControl
   ) internal
     isKey(_tokenId)
   {
-    require(keyManagerOf[_tokenId] == msg.sender || isLockManager(msg.sender), 'SETKEYMANAGEROF_ACCESS_DENIED');
+    if(!_bypassAccessControl) {
+      require(keyManagerOf[_tokenId] == msg.sender || isLockManager(msg.sender), 'SETKEYMANAGEROF_ACCESS_DENIED');
+    }
     keyManagerOf[_tokenId] = _keyManager;
     emit KeyManagerChanged(_tokenId, _keyManager);
   }
