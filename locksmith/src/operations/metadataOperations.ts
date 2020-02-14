@@ -54,7 +54,7 @@ export const generateKeyMetadata = async (
   )
 }
 
-const getBaseTokenData = async (address: string, host: string) => {
+export const getBaseTokenData = async (address: string, host: string) => {
   const defaultResponse = defaultMappings(address, host)
   const persistedBasedMetadata = await LockMetadata.findOne({
     where: { address },
