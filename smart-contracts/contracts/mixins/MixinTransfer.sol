@@ -88,7 +88,7 @@ contract MixinTransfer is
       iDTo = toKey.tokenId;
       _recordOwner(_to, iDTo);
       // Assign the KeyManager
-      _setKeyManagerOf(toKey.tokenId, _keyManager, false);
+      _setKeyManagerOf(toKey.tokenId, _keyManager);
       emit Transfer(
         address(0), // This is a creation or time-sharing
         _to,
@@ -133,7 +133,7 @@ contract MixinTransfer is
     if (toKey.tokenId == 0) {
       toKey.tokenId = fromKey.tokenId;
       _recordOwner(_recipient, toKey.tokenId);
-      _setKeyManagerOf(toKey.tokenId, _recipient, false);
+      _setKeyManagerOf(toKey.tokenId, _recipient);
     }
 
     if (previousExpiration <= block.timestamp) {
