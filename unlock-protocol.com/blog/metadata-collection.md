@@ -4,7 +4,7 @@ subTitle: Connecting lock owners and key holders
 authorName: Christopher Nascone
 publishDate: February 14, 2020
 description: Lock owners can require information from key purchasers before the transaction is initiated.
-image: /static/images/blog/unlocking-smart-contracts/code.jpeg
+image: /static/images/blog/metadata-collection/Forms.jpg
 ---
 
 # Meeting the Needs of Our Users

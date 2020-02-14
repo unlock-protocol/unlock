@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 12 Feb 2020 18:37:59 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 14 Feb 2020 14:57:32 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Collecting Metadata for a Purchase]]></title>
+            <description><![CDATA[Lock owners can require information from key purchasers before the transaction is initiated.]]></description>
+            <link>https://unlock-protocol.com/blog/metadata-collection</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/metadata-collection</guid>
+            <dc:creator><![CDATA[Christopher Nascone]]></dc:creator>
+            <pubDate>Fri, 14 Feb 2020 05:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Checking Keys In]]></title>
             <description><![CDATA[At Unlock, we're proud to power the tickets for several conferences... but no ticketing solution is complete without a check-in mechanism!]]></description>
