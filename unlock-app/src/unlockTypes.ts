@@ -180,3 +180,16 @@ export interface PaywallConfig {
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
 }
+
+export interface RawLock {
+  name: string
+  address: string
+  keyPrice: string
+  expirationDuration: number
+  currencyContractAddress: string | null
+  asOf?: number
+  maxNumberOfKeys?: number
+  outstandingKeys?: number
+  balance?: string
+  owner?: string
+}
