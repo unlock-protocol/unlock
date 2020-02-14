@@ -2,12 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgBlog = ({ title, ...props }) => (
-  <svg {...props}>
+  <svg viewBox="0 0 24 24" {...props}>
     {title ? <title>{title}</title> : null}
+    <path
+      clipRule="evenodd"
+      d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z"
+      fill="none"
+    />
     <path
       fillRule="evenodd"
       clipRule="evenodd"
-      d="M6.5 8a.5.5 0 010-1h11a.5.5 0 010 1h-11zM18 10.5a.5.5 0 01-.5.5h-11a.5.5 0 010-1h11a.5.5 0 01.5.5zm-12 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11a.5.5 0 00-.5.5zm8 3a.5.5 0 01-.5.5h-7a.5.5 0 010-1h7a.5.5 0 01.5.5z"
+      d="M19 7a1 1 0 00-1-1H6a1 1 0 00-1 1v10a1 1 0 001 1h5v2a.5.5 0 00.8.4L15 18h3a1 1 0 001-1V7zM8 10a1 1 0 001 1h6a1 1 0 100-2H9a1 1 0 00-1 1zm1 5a1 1 0 110-2h6a1 1 0 110 2H9z"
     />
   </svg>
 )

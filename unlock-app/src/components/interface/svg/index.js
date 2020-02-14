@@ -6,6 +6,7 @@ import Attention from './Attention'
 import Checkmark from './Checkmark'
 import Close from './Close'
 import Code from './Code'
+import Cog from './Cog'
 import Copy from './Copy'
 import Download from './Download'
 import Documentation from './Documentation'
@@ -45,12 +46,13 @@ function wrapViewBox(WrappedComponent, viewBox) {
 
 export default {
   AppStore: wrapViewBox(AppStore, '0 0 24 24'),
-  About: wrapViewBox(About, '0 0 24 24'),
+  About,
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Attention: wrapViewBox(Attention, '0 0 96 96'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
+  Cog,
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
   Download: wrapViewBox(Download, '0 0 24 24'),
@@ -61,7 +63,7 @@ export default {
   Export: wrapViewBox(Export, '0 0 24 24'),
   Github: wrapViewBox(Github, '0 0 24 24'),
   Heart: wrapViewBox(Heart, '-6 -6 36 36'),
-  Key: wrapViewBox(Key, '0 0 24 24'),
+  Key,
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   LiveDemo: wrapViewBox(LiveDemo, '0 0 64 64'),
   Loading: wrapViewBox(Loading, '0 0 32 32'),
@@ -79,7 +81,7 @@ export default {
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
   Bars: wrapViewBox(Bars, '0 0 56 42'),
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
-  Home: wrapViewBox(Home, '0 0 24 24'),
+  Home,
   Qr: wrapViewBox(Qr, '0 0 60 60'),
   Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
 }
