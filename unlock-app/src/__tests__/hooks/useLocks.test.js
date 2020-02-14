@@ -239,11 +239,10 @@ describe('useLocks', () => {
       })
     })
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
-    )
-    await waitForNextUpdate() // First render when lock is loaded through The Graph
-    await waitForNextUpdate() // Second render when the lock is loaded through past transactions
+    const { result, wait } = renderHook(() => useLocks(ownerAddress))
+    await wait(() => {
+      return result.current.loading === false
+    })
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(1)
