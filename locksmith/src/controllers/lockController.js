@@ -3,6 +3,7 @@ import LockOwnership from '../data/lockOwnership'
 const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../../src/utils/lockIcon').default
+const { getBaseTokenData } = require('../../src/operations/metadataOperations')
 
 const config = require('../../config/config')
 
@@ -27,9 +28,13 @@ const lockGet = async (req, res) => {
   if (!lock) {
     return res.sendStatus(404)
   }
-  res.json({
-    name: lock.name,
-  })
+  // Serve lock metadata!
+  const baseTokenData = await getBaseTokenData(
+    req.params.lockAddress,
+    `${req.protocol}://${req.headers.host}`
+  )
+
+  res.json(baseTokenData)
 }
 
 const lockOwnerGet = async (req, res) => {
