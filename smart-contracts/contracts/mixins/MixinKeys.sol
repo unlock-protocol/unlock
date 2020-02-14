@@ -309,7 +309,7 @@ contract MixinKeys is
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }
 
-  function _setKeyManagerOf(
+  function _updateKeyManagerOf(
     uint _tokenId,
     address _keyManager
   ) internal
