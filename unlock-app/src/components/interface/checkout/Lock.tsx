@@ -156,7 +156,7 @@ export const Lock = ({
     <LockContainer>
       <InfoWrapper>
         <LockName>{name}</LockName>
-        <KeysAvailable>{keysAvailable}</KeysAvailable>
+        <KeysAvailable>{keysAvailable} Available</KeysAvailable>
       </InfoWrapper>
       <LockBody>
         <LockPrice>{price}</LockPrice>
