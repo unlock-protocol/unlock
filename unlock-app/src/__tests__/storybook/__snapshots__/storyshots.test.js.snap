@@ -5116,6 +5116,450 @@ Object {
 }
 `;
 
+exports[`Storyshots Checkout Lock Active 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c9 {
+  width: 32px;
+  fill: var(--darkgrey);
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.c4 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.c4:hover {
+  border: 1px solid var(--blue);
+}
+
+.c4:hover .c8 {
+  fill: var(--blue);
+}
+
+.c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.c2 {
+  font-size: 13px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c3 {
+  font-size: 9px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c1 {
+  height: 24px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c5 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 12px;
+  text-align: right;
+  width: 65px;
+}
+
+.c6 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 4px;
+  text-align: center;
+  width: 42px;
+}
+
+.c7 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: right;
+  height: 100%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.c7 > span {
+  width: 100%;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <span
+            class="c2"
+          >
+            Corporate
+          </span>
+          <span
+            class="c3"
+          >
+            1,500
+             Available
+          </span>
+        </div>
+        <div
+          class="c4"
+        >
+          <span
+            class="c5"
+          >
+            12345
+          </span>
+          <span
+            class="c6"
+          >
+            ETH
+          </span>
+          <div
+            class="c7"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              10 Months
+            </span>
+          </div>
+          <svg
+            class="c8 c9"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-LzLrW cMQDWh"
+    >
+      <div
+        class="sc-LzLrZ iBgDE"
+      >
+        <span
+          class="sc-LzLrX gmjWoM"
+        >
+          Corporate
+        </span>
+        <span
+          class="sc-LzLrY fScWTW"
+        >
+          1,500
+           Available
+        </span>
+      </div>
+      <div
+        class="sc-LzLrV lgxrem"
+      >
+        <span
+          class="sc-LzLsx dHlhuN"
+        >
+          12345
+        </span>
+        <span
+          class="sc-LzLsy hzVqZB"
+        >
+          ETH
+        </span>
+        <div
+          class="sc-LzLsz bEnsoo"
+        >
+          <span>
+            Valid for
+          </span>
+          <br />
+          <span>
+            10 Months
+          </span>
+        </div>
+        <svg
+          class="sc-LzLrU MolWr"
+          viewBox="0 0 24 24"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Checkout Lock Loading 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px var(--lightgrey) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--lightgrey);
+  cursor: wait;
+  -webkit-animation: cqwGLM 2s linear infinite;
+  animation: cqwGLM 2s linear infinite;
+}
+
+.c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+          loading="true"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-LzLrW cMQDWh"
+    >
+      <div
+        class="sc-LzLrV hKFSlN"
+        loading="true"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
@@ -67034,14 +67478,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hZytiy"
+        class="sc-LzLth gILeKF"
         color="--green"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67057,57 +67501,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
@@ -67373,14 +67817,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hZytiy"
+        class="sc-LzLth gILeKF"
         color="--green"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67396,62 +67840,62 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
         <button
-          class="sc-fzXfQp sc-LzLte ilvHWo"
+          class="sc-fzXfQp sc-LzLtn iPLlLt"
         >
           Mark as Checked-In
         </button>
@@ -67688,14 +68132,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hZytiy"
+        class="sc-LzLth gILeKF"
         color="--green"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67711,57 +68155,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
@@ -68014,14 +68458,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hqtIvA"
+        class="sc-LzLth cdNAzr"
         color="--yellow"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -68037,18 +68481,18 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
         <h2
-          class="sc-LzLsE gbOLoE"
+          class="sc-LzLtk cqkNNr"
         >
           Checked-in 
           1 minute
@@ -68056,45 +68500,45 @@ Object {
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
@@ -68239,14 +68683,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB jhZzzy"
+        class="sc-LzLth coarAR"
         color="--red"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -68262,7 +68706,7 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Key Invalid
         </h1>
