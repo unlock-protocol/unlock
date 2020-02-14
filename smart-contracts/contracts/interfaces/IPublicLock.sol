@@ -202,7 +202,8 @@ contract IPublicLock is IERC721Enumerable {
    */
   function grantKeys(
     address[] calldata _recipients,
-    uint[] calldata _expirationTimestamps
+    uint[] calldata _expirationTimestamps,
+    address[] calldata _keyManagers
   ) external;
 
   /**
@@ -376,7 +377,8 @@ contract IPublicLock is IERC721Enumerable {
   function shareKey(
     address _to,
     uint _tokenId,
-    uint _timeShared
+    uint _timeShared,
+    address _keyManager
   ) external;
 
   /// @notice A descriptive name for a collection of NFTs in this contract

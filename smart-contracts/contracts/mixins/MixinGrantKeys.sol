@@ -21,7 +21,7 @@ contract MixinGrantKeys is
   function grantKeys(
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps,
-    address[] _keyManagers
+    address[] calldata _keyManagers
   ) external
     onlyKeyGranter
   {
@@ -38,7 +38,7 @@ contract MixinGrantKeys is
       _assignNewTokenId(toKey);
       _recordOwner(recipient, toKey.tokenId);
       // Assign the KeyManager
-      _setKeyManager(toKey.tokenId, keyManager);
+      _setKeyManagerOf(toKey.tokenId, keyManager);
       toKey.expirationTimestamp = expirationTimestamp;
 
       // trigger event

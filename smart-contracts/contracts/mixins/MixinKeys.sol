@@ -315,8 +315,8 @@ contract MixinKeys is
   ) internal
     isKey(_tokenId)
   {
-    require(keyManagerOf[_tokenId] == msg.sender || isLockManager[msg.sender], 'SETKEYMANAGEROF_ACCESS_DENIED' )
+    require(keyManagerOf[_tokenId] == msg.sender || isLockManager(msg.sender), 'SETKEYMANAGEROF_ACCESS_DENIED');
     keyManagerOf[_tokenId] = _keyManager;
-    emit KeyManagerChanged(tokenId, _keyManager);
+    emit KeyManagerChanged(_tokenId, _keyManager);
   }
 }
