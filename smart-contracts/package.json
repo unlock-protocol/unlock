@@ -43,7 +43,7 @@
     "eth-sig-util": "2.5.2",
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.9.1",
-    "hardlydifficult-ethereum-contracts": "0.7.13",
+    "hardlydifficult-ethereum-contracts": "0.8.0",
     "jest": "25.1.0",
     "lint-staged": "10.0.2",
     "netlify-cli": "2.30.0",
