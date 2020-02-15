@@ -196,9 +196,6 @@ contract MixinTransfer is
     bytes memory _data
   )
     public
-    onlyIfAlive
-    onlyKeyOwnerOrApproved(_tokenId)
-    hasValidKey(_ownerOf[_tokenId])
   {
     transferFrom(_from, _to, _tokenId);
     require(_checkOnERC721Received(_from, _to, _tokenId, _data), 'NON_COMPLIANT_ERC721_RECEIVER');
