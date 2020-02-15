@@ -35,6 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "2.5.0",
+    "@openzeppelin/test-helpers": "0.5.4",
     "@typescript-eslint/eslint-plugin": "2.19.0",
     "@typescript-eslint/parser": "2.19.0",
     "@vue/cli": "4.2.2",
