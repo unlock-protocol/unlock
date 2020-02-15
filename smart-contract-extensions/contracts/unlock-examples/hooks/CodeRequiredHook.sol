@@ -53,7 +53,8 @@ contract CodeRequiredHook is WhitelistAdminRole
   }
 
   /**
-   * @notice This call allows the owner to make any call, such as calling withdrawal on the lock.
+   * @notice This call allows the owner to make any call, such as calling updateBeneficiary on the lock
+   * which would remove the code requirement.
    */
   function proxyCall(
     address _contract,
