@@ -1,5 +1,9 @@
 const BigNumber = require('bignumber.js')
-const { protocols, tokens } = require('hardlydifficult-ethereum-contracts')
+const {
+  constants,
+  protocols,
+  tokens,
+} = require('hardlydifficult-ethereum-contracts')
 
 const SwapAndCall = artifacts.require('SwapAndCall.sol')
 const { reverts, fails } = require('truffle-assertions')
@@ -76,7 +80,7 @@ contract('swapAndCall', accounts => {
 
   it("Sanity check: Can't purchase keys with ether", async () => {
     await fails(
-      tokenLock.purchaseFor(testAccount, {
+      tokenLock.purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [], {
         from: testAccount,
         value: await targetExchange.getEthToTokenOutputPrice(keyPrice),
       })
@@ -88,7 +92,7 @@ contract('swapAndCall', accounts => {
       from: owner,
     })
     await targetToken.approve(tokenLock.address, -1, { from: testAccount })
-    await tokenLock.purchaseFor(testAccount, {
+    tokenLock.purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [], {
       from: testAccount,
     })
   })
@@ -120,7 +124,7 @@ contract('swapAndCall', accounts => {
       calls.push({
         contract: tokenLock.address,
         callData: tokenLock.contract.methods
-          .purchaseFor(testAccount)
+          .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
           .encodeABI(),
       })
       // Tokens to refund in case keyPrice went down
@@ -194,7 +198,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: tokenLock.address,
           callData: tokenLock.contract.methods
-            .purchaseFor(testAccount)
+            .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
             .encodeABI(),
         })
         // Tokens to refund in case keyPrice went down
@@ -258,7 +262,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: ethLock.address,
           callData: ethLock.contract.methods
-            .purchaseFor(testAccount)
+            .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
             .encodeABI(),
           value: keyPrice,
         })
@@ -320,7 +324,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: ethLock.address,
           callData: ethLock.contract.methods
-            .purchaseFor(testAccount)
+            .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
             .encodeABI(),
           value: keyPrice,
         })
