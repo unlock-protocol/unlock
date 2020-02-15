@@ -26,7 +26,7 @@
       }
     },
     {
-      "paths": ["smart-contracts/**"],
+      "paths": ["smart-contracts/**", "smart-contract-extensions/**"],
       "minor": {
         "groupName": "smart-contracts"
       },
@@ -68,6 +68,13 @@
       ],
       "major": {
         "groupName": null
+      }
+    },
+    {
+      "packageNames": ["hardlydifficult-ethereum-contracts"],
+      "schedule": ["at any time"],
+      "minor": {
+        "groupName": "hardlydifficult-ethereum-contracts"
       }
     },
     {
