@@ -29,6 +29,7 @@ contract CodeRequiredHook is WhitelistAdminRole
     address _answerAddress
   ) public
   {
+    require(_answerAddress != address(0), 'INVALID_ANSWER');
     answerAddress = _answerAddress;
     erc1820.setInterfaceImplementer(address(this), keySoldInterfaceId, address(this));
   }
