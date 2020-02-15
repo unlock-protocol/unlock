@@ -1698,14 +1698,14 @@ Object {
         title="About"
       >
         <svg
-          viewBox="0 0 24 24"
+          viewBox="0 0 20 20"
         >
           <title>
             About
           </title>
           <path
             clip-rule="evenodd"
-            d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+            d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
             fill-rule="evenodd"
           />
         </svg>
@@ -1729,14 +1729,14 @@ Object {
       title="About"
     >
       <svg
-        viewBox="0 0 24 24"
+        viewBox="0 0 20 20"
       >
         <title>
           About
         </title>
         <path
           clip-rule="evenodd"
-          d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+          d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
           fill-rule="evenodd"
         />
       </svg>
@@ -5116,6 +5116,450 @@ Object {
 }
 `;
 
+exports[`Storyshots Checkout Lock Active 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c9 {
+  width: 32px;
+  fill: var(--darkgrey);
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.c4 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.c4:hover {
+  border: 1px solid var(--blue);
+}
+
+.c4:hover .c8 {
+  fill: var(--blue);
+}
+
+.c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.c2 {
+  font-size: 13px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c3 {
+  font-size: 9px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c1 {
+  height: 24px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c5 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 12px;
+  text-align: right;
+  width: 65px;
+}
+
+.c6 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 4px;
+  text-align: center;
+  width: 42px;
+}
+
+.c7 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: right;
+  height: 100%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.c7 > span {
+  width: 100%;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <span
+            class="c2"
+          >
+            Corporate
+          </span>
+          <span
+            class="c3"
+          >
+            1,500
+             Available
+          </span>
+        </div>
+        <div
+          class="c4"
+        >
+          <span
+            class="c5"
+          >
+            12345
+          </span>
+          <span
+            class="c6"
+          >
+            ETH
+          </span>
+          <div
+            class="c7"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              10 Months
+            </span>
+          </div>
+          <svg
+            class="c8 c9"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-LzLrW cMQDWh"
+    >
+      <div
+        class="sc-LzLrZ iBgDE"
+      >
+        <span
+          class="sc-LzLrX gmjWoM"
+        >
+          Corporate
+        </span>
+        <span
+          class="sc-LzLrY fScWTW"
+        >
+          1,500
+           Available
+        </span>
+      </div>
+      <div
+        class="sc-LzLrV lgxrem"
+      >
+        <span
+          class="sc-LzLsx dHlhuN"
+        >
+          12345
+        </span>
+        <span
+          class="sc-LzLsy hzVqZB"
+        >
+          ETH
+        </span>
+        <div
+          class="sc-LzLsz bEnsoo"
+        >
+          <span>
+            Valid for
+          </span>
+          <br />
+          <span>
+            10 Months
+          </span>
+        </div>
+        <svg
+          class="sc-LzLrU MolWr"
+          viewBox="0 0 24 24"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Checkout Lock Loading 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px var(--lightgrey) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--lightgrey);
+  cursor: wait;
+  -webkit-animation: cqwGLM 2s linear infinite;
+  animation: cqwGLM 2s linear infinite;
+}
+
+.c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+          loading="true"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-LzLrW cMQDWh"
+    >
+      <div
+        class="sc-LzLrV hKFSlN"
+        loading="true"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
@@ -5567,14 +6011,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -5897,14 +6341,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -6035,14 +6479,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -6365,14 +6809,14 @@ Object {
             title="About"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 20 20"
             >
               <title>
                 About
               </title>
               <path
                 clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                 fill-rule="evenodd"
               />
             </svg>
@@ -26203,14 +26647,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -26445,14 +26889,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -27643,9 +28087,10 @@ Object {
                     Keychain
                   </title>
                   <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
+                    d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                  />
+                  <path
+                    d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                   />
                 </svg>
                 <small
@@ -27665,14 +28110,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -29062,9 +29507,10 @@ Object {
                   Keychain
                 </title>
                 <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
+                  d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                />
+                <path
+                  d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                 />
               </svg>
               <small
@@ -29084,14 +29530,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -31467,9 +31913,10 @@ Object {
                     Keychain
                   </title>
                   <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
+                    d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                  />
+                  <path
+                    d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                   />
                 </svg>
                 <small
@@ -31489,14 +31936,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -32902,9 +33349,10 @@ Object {
                   Keychain
                 </title>
                 <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
+                  d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                />
+                <path
+                  d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                 />
               </svg>
               <small
@@ -32924,14 +33372,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -35968,14 +36416,14 @@ Object {
           title="About"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
           >
             <title>
               About
             </title>
             <path
               clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+              d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
               fill-rule="evenodd"
             />
           </svg>
@@ -36072,14 +36520,14 @@ Object {
         title="About"
       >
         <svg
-          viewBox="0 0 24 24"
+          viewBox="0 0 20 20"
         >
           <title>
             About
           </title>
           <path
             clip-rule="evenodd"
-            d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+            d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
             fill-rule="evenodd"
           />
         </svg>
@@ -36865,14 +37313,14 @@ Object {
             title="About"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 20 20"
             >
               <title>
                 About
               </title>
               <path
                 clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                 fill-rule="evenodd"
               />
             </svg>
@@ -37026,14 +37474,14 @@ Object {
           title="About"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
           >
             <title>
               About
             </title>
             <path
               clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+              d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
               fill-rule="evenodd"
             />
           </svg>
@@ -37523,14 +37971,14 @@ Object {
             title="About"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 20 20"
             >
               <title>
                 About
               </title>
               <path
                 clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                 fill-rule="evenodd"
               />
             </svg>
@@ -37694,14 +38142,14 @@ Object {
           title="About"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
           >
             <title>
               About
             </title>
             <path
               clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+              d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
               fill-rule="evenodd"
             />
           </svg>
@@ -38191,14 +38639,14 @@ Object {
             title="About"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 20 20"
             >
               <title>
                 About
               </title>
               <path
                 clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                 fill-rule="evenodd"
               />
             </svg>
@@ -38362,14 +38810,14 @@ Object {
           title="About"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
           >
             <title>
               About
             </title>
             <path
               clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+              d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
               fill-rule="evenodd"
             />
           </svg>
@@ -40407,9 +40855,10 @@ Object {
                     Keychain
                   </title>
                   <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
+                    d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                  />
+                  <path
+                    d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                   />
                 </svg>
                 <small
@@ -40429,14 +40878,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -40952,9 +41401,10 @@ Object {
                   Keychain
                 </title>
                 <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
+                  d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                />
+                <path
+                  d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                 />
               </svg>
               <small
@@ -40974,14 +41424,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -41998,14 +42448,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -42299,14 +42749,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -43235,9 +43685,10 @@ Object {
                     Keychain
                   </title>
                   <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
+                    d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                  />
+                  <path
+                    d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                   />
                 </svg>
                 <small
@@ -43257,14 +43708,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -43780,9 +44231,10 @@ Object {
                   Keychain
                 </title>
                 <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
+                  d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                />
+                <path
+                  d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                 />
               </svg>
               <small
@@ -43802,14 +44254,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -44935,9 +45387,10 @@ Object {
                     Keychain
                   </title>
                   <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
+                    d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                  />
+                  <path
+                    d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                   />
                 </svg>
                 <small
@@ -44957,14 +45410,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -45480,9 +45933,10 @@ Object {
                   Keychain
                 </title>
                 <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
+                  d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                />
+                <path
+                  d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                 />
               </svg>
               <small
@@ -45502,14 +45956,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -46635,9 +47089,10 @@ Object {
                     Keychain
                   </title>
                   <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
+                    d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                  />
+                  <path
+                    d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                   />
                 </svg>
                 <small
@@ -46657,14 +47112,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -47180,9 +47635,10 @@ Object {
                   Keychain
                 </title>
                 <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
+                  d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                />
+                <path
+                  d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
                 />
               </svg>
               <small
@@ -47202,14 +47658,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -48124,14 +48580,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -48299,14 +48755,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -48437,14 +48893,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -48612,14 +49068,14 @@ Object {
             title="About"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 20 20"
             >
               <title>
                 About
               </title>
               <path
                 clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                 fill-rule="evenodd"
               />
             </svg>
@@ -49245,14 +49701,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -49487,14 +49943,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -56909,14 +57365,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -57163,14 +57619,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -57920,14 +58376,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -58343,14 +58799,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -59259,14 +59715,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -59527,14 +59983,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -60333,14 +60789,14 @@ Object {
                 title="About"
               >
                 <svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 20 20"
                 >
                   <title>
                     About
                   </title>
                   <path
                     clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                     fill-rule="evenodd"
                   />
                 </svg>
@@ -60638,14 +61094,14 @@ Object {
               title="About"
             >
               <svg
-                viewBox="0 0 24 24"
+                viewBox="0 0 20 20"
               >
                 <title>
                   About
                 </title>
                 <path
                   clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                   fill-rule="evenodd"
                 />
               </svg>
@@ -61069,7 +61525,7 @@ Object {
 }
 
 .c8:hover:before {
-  content: 'Copy';
+  content: 'Cog';
   position: absolute;
 }
 
@@ -61085,7 +61541,7 @@ Object {
 }
 
 .c9:hover:before {
-  content: 'Documentation';
+  content: 'Copy';
   position: absolute;
 }
 
@@ -61101,7 +61557,7 @@ Object {
 }
 
 .c10:hover:before {
-  content: 'Download';
+  content: 'Documentation';
   position: absolute;
 }
 
@@ -61117,7 +61573,7 @@ Object {
 }
 
 .c11:hover:before {
-  content: 'Edit';
+  content: 'Download';
   position: absolute;
 }
 
@@ -61133,7 +61589,7 @@ Object {
 }
 
 .c12:hover:before {
-  content: 'Eth';
+  content: 'Edit';
   position: absolute;
 }
 
@@ -61149,7 +61605,7 @@ Object {
 }
 
 .c13:hover:before {
-  content: 'Etherscan';
+  content: 'Eth';
   position: absolute;
 }
 
@@ -61165,7 +61621,7 @@ Object {
 }
 
 .c14:hover:before {
-  content: 'EthSub';
+  content: 'Etherscan';
   position: absolute;
 }
 
@@ -61181,7 +61637,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'Export';
+  content: 'EthSub';
   position: absolute;
 }
 
@@ -61197,7 +61653,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'Github';
+  content: 'Export';
   position: absolute;
 }
 
@@ -61213,7 +61669,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'Heart';
+  content: 'Github';
   position: absolute;
 }
 
@@ -61229,7 +61685,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Key';
+  content: 'Heart';
   position: absolute;
 }
 
@@ -61245,7 +61701,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Lemniscate';
+  content: 'Key';
   position: absolute;
 }
 
@@ -61261,7 +61717,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'LiveDemo';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -61277,7 +61733,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'Loading';
+  content: 'LiveDemo';
   position: absolute;
 }
 
@@ -61293,7 +61749,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'LockClosed';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -61309,7 +61765,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Preview';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -61325,7 +61781,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -61341,7 +61797,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -61357,7 +61813,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -61373,7 +61829,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -61389,7 +61845,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -61405,7 +61861,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -61421,7 +61877,7 @@ Object {
 }
 
 .c30:hover:before {
-  content: 'Members';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -61437,7 +61893,7 @@ Object {
 }
 
 .c31:hover:before {
-  content: 'Telegram';
+  content: 'Members';
   position: absolute;
 }
 
@@ -61453,7 +61909,7 @@ Object {
 }
 
 .c32:hover:before {
-  content: 'Ticket';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -61469,7 +61925,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'Twitter';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -61485,7 +61941,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -61501,7 +61957,7 @@ Object {
 }
 
 .c35:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -61517,7 +61973,7 @@ Object {
 }
 
 .c36:hover:before {
-  content: 'Home';
+  content: 'ChevronUp';
   position: absolute;
 }
 
@@ -61533,7 +61989,7 @@ Object {
 }
 
 .c37:hover:before {
-  content: 'Qr';
+  content: 'Home';
   position: absolute;
 }
 
@@ -61549,6 +62005,22 @@ Object {
 }
 
 .c38:hover:before {
+  content: 'Qr';
+  position: absolute;
+}
+
+.c39 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c39:hover {
+  background-color: var(--offwhite);
+}
+
+.c39:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -61584,11 +62056,11 @@ Object {
             name="About"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 20 20"
             >
               <path
                 clip-rule="evenodd"
-                d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
                 fill-rule="evenodd"
               />
             </svg>
@@ -61665,6 +62137,18 @@ Object {
           </div>
           <div
             class="c8"
+            name="Cog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M17.918 13.167c.598 0 1.082-.485 1.082-1.082v-.168c0-.598-.485-1.084-1.084-1.084-.505 0-.932-.354-1.124-.822l-.017-.042c-.192-.456-.142-.997.207-1.347a1.06 1.06 0 000-1.5l-.158-.158a1.042 1.042 0 00-1.48.006c-.343.35-.878.4-1.328.206a4.106 4.106 0 00-.048-.02c-.455-.191-.801-.607-.801-1.1 0-.583-.473-1.056-1.056-1.056h-.221c-.584 0-1.057.473-1.057 1.056 0 .493-.345.91-.803 1.092l-.075.03c-.46.192-1.005.142-1.358-.209a1.07 1.07 0 00-1.508.002l-.152.15a1.06 1.06 0 00-.002 1.5c.349.35.398.89.205 1.345a5.246 5.246 0 00-.033.08c-.182.448-.59.787-1.073.787-.571 0-1.034.463-1.034 1.034v.266c0 .57.463 1.034 1.034 1.034.483 0 .891.339 1.073.787l.03.073c.193.455.143.996-.207 1.345a1.06 1.06 0 000 1.498l.145.146a1.078 1.078 0 001.518.005c.356-.35.902-.4 1.364-.208l.068.028c.46.184.808.603.808 1.098 0 .586.475 1.061 1.06 1.061h.213c.586 0 1.06-.475 1.06-1.061 0-.495.35-.914.806-1.105l.04-.017c.452-.195.99-.145 1.336.204a1.05 1.05 0 001.49.002l.15-.151a1.06 1.06 0 00-.002-1.499c-.35-.35-.4-.891-.209-1.347l.015-.035c.193-.468.62-.824 1.126-.824zm-5.962.578a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c9"
             name="Copy"
           >
             <svg
@@ -61678,7 +62162,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c9"
+            class="c10"
             name="Documentation"
           >
             <svg
@@ -61692,7 +62176,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c11"
             name="Download"
           >
             <svg
@@ -61706,7 +62190,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c11"
+            class="c12"
             name="Edit"
           >
             <svg
@@ -61723,7 +62207,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c12"
+            class="c13"
             name="Eth"
           >
             <svg
@@ -61737,7 +62221,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c13"
+            class="c14"
             name="Etherscan"
           >
             <svg
@@ -61751,7 +62235,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c14"
+            class="c15"
             name="EthSub"
           >
             <svg
@@ -61764,7 +62248,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c15"
+            class="c16"
             name="Export"
           >
             <svg
@@ -61778,7 +62262,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c17"
             name="Github"
           >
             <svg
@@ -61790,7 +62274,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c18"
             name="Heart"
           >
             <svg
@@ -61802,25 +62286,22 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c19"
             name="Key"
           >
             <svg
-              fill="none"
               viewBox="0 0 24 24"
             >
               <path
-                d="M6.424 12.89a3.417 3.417 0 013.892-.66l6.614-6.614 1.616 1.616-.808.809 1.616 1.616-1.616 1.616-1.616-1.616-4.19 4.19a3.417 3.417 0 01-3.083 4.895 3.428 3.428 0 01-2.425-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
-                fill="#000"
+                d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
               />
               <path
-                d="M15.314 10.465l1.616 1.616-1.616 1.617-1.617-1.617 1.617-1.616z"
-                fill="#000"
+                d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
               />
             </svg>
           </div>
           <div
-            class="c19"
+            class="c20"
             name="Lemniscate"
           >
             <svg
@@ -61835,7 +62316,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c21"
             name="LiveDemo"
           >
             <svg
@@ -61863,7 +62344,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c22"
             name="Loading"
           >
             <svg
@@ -62015,7 +62496,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c23"
             name="LockClosed"
           >
             <svg
@@ -62029,7 +62510,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c24"
             name="Preview"
           >
             <svg
@@ -62049,7 +62530,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="Jobs"
           >
             <svg
@@ -62063,7 +62544,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Unlock"
           >
             <svg
@@ -62075,7 +62556,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="UnlockWordMark"
           >
             <svg
@@ -62087,7 +62568,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="Upload"
           >
             <svg
@@ -62101,7 +62582,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="Withdraw"
           >
             <svg
@@ -62115,7 +62596,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="Newsletter"
           >
             <svg
@@ -62129,7 +62610,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c31"
             name="Members"
           >
             <svg
@@ -62143,7 +62624,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c31"
+            class="c32"
             name="Telegram"
           >
             <svg
@@ -62157,7 +62638,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c32"
+            class="c33"
             name="Ticket"
           >
             <svg
@@ -62171,7 +62652,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c33"
+            class="c34"
             name="Twitter"
           >
             <svg
@@ -62185,7 +62666,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c35"
             name="Bars"
           >
             <svg
@@ -62197,7 +62678,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c36"
             name="ChevronUp"
           >
             <svg
@@ -62211,7 +62692,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c36"
+            class="c37"
             name="Home"
           >
             <svg
@@ -62223,7 +62704,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c37"
+            class="c38"
             name="Qr"
           >
             <svg
@@ -62259,7 +62740,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c38"
+            class="c39"
             name="Wordpress"
           >
             <svg
@@ -62310,11 +62791,11 @@ Object {
           name="About"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 20 20"
           >
             <path
               clip-rule="evenodd"
-              d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+              d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
               fill-rule="evenodd"
             />
           </svg>
@@ -62386,6 +62867,18 @@ Object {
               clip-rule="evenodd"
               d="M9.697 17.808a.5.5 0 01-.27-.654l4.616-11.077a.5.5 0 11.923.385l-4.615 11.076a.5.5 0 01-.654.27zm6.478-1.928a.5.5 0 01-.055-.705L18.841 12l-2.72-3.175a.5.5 0 11.759-.65l3 3.5a.5.5 0 010 .65l-3 3.5a.5.5 0 01-.705.055zM7.88 8.825a.5.5 0 00-.76-.65l-3 3.5a.5.5 0 000 .65l3 3.5a.5.5 0 10.76-.65L5.159 12l2.72-3.175z"
               fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 hEbOQL"
+          name="Cog"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17.918 13.167c.598 0 1.082-.485 1.082-1.082v-.168c0-.598-.485-1.084-1.084-1.084-.505 0-.932-.354-1.124-.822l-.017-.042c-.192-.456-.142-.997.207-1.347a1.06 1.06 0 000-1.5l-.158-.158a1.042 1.042 0 00-1.48.006c-.343.35-.878.4-1.328.206a4.106 4.106 0 00-.048-.02c-.455-.191-.801-.607-.801-1.1 0-.583-.473-1.056-1.056-1.056h-.221c-.584 0-1.057.473-1.057 1.056 0 .493-.345.91-.803 1.092l-.075.03c-.46.192-1.005.142-1.358-.209a1.07 1.07 0 00-1.508.002l-.152.15a1.06 1.06 0 00-.002 1.5c.349.35.398.89.205 1.345a5.246 5.246 0 00-.033.08c-.182.448-.59.787-1.073.787-.571 0-1.034.463-1.034 1.034v.266c0 .57.463 1.034 1.034 1.034.483 0 .891.339 1.073.787l.03.073c.193.455.143.996-.207 1.345a1.06 1.06 0 000 1.498l.145.146a1.078 1.078 0 001.518.005c.356-.35.902-.4 1.364-.208l.068.028c.46.184.808.603.808 1.098 0 .586.475 1.061 1.06 1.061h.213c.586 0 1.06-.475 1.06-1.061 0-.495.35-.914.806-1.105l.04-.017c.452-.195.99-.145 1.336.204a1.05 1.05 0 001.49.002l.15-.151a1.06 1.06 0 00-.002-1.499c-.35-.35-.4-.891-.209-1.347l.015-.035c.193-.468.62-.824 1.126-.824zm-5.962.578a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z"
             />
           </svg>
         </div>
@@ -62532,16 +63025,13 @@ Object {
           name="Key"
         >
           <svg
-            fill="none"
             viewBox="0 0 24 24"
           >
             <path
-              d="M6.424 12.89a3.417 3.417 0 013.892-.66l6.614-6.614 1.616 1.616-.808.809 1.616 1.616-1.616 1.616-1.616-1.616-4.19 4.19a3.417 3.417 0 01-3.083 4.895 3.428 3.428 0 01-2.425-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
-              fill="#000"
+              d="M6.424 12.89a3.417 3.417 0 012.525-.995c.849.028 1.77-.067 2.37-.668l4.803-4.803a1.143 1.143 0 011.616 1.617l-4.803 4.803c-.6.6-.695 1.52-.667 2.37a3.416 3.416 0 01-3.42 3.528 3.428 3.428 0 01-2.424-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
             />
             <path
-              d="M15.314 10.465l1.616 1.616-1.616 1.617-1.617-1.617 1.617-1.616z"
-              fill="#000"
+              d="M12.89 9.657a1.143 1.143 0 011.616 0l1.616 1.616a1.143 1.143 0 11-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616zM15.357 7.189a1.143 1.143 0 011.617 0l1.616 1.616a1.143 1.143 0 01-1.616 1.616l-1.617-1.616a1.143 1.143 0 010-1.616z"
             />
           </svg>
         </div>
@@ -66988,14 +67478,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hZytiy"
+        class="sc-LzLth gILeKF"
         color="--green"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67011,57 +67501,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
@@ -67327,14 +67817,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hZytiy"
+        class="sc-LzLth gILeKF"
         color="--green"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67350,62 +67840,62 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
         <button
-          class="sc-fzXfQp sc-LzLte ilvHWo"
+          class="sc-fzXfQp sc-LzLtn iPLlLt"
         >
           Mark as Checked-In
         </button>
@@ -67642,14 +68132,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hZytiy"
+        class="sc-LzLth gILeKF"
         color="--green"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67665,57 +68155,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
@@ -67968,14 +68458,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB hqtIvA"
+        class="sc-LzLth cdNAzr"
         color="--yellow"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -67991,18 +68481,18 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-LzLsD egNGRP"
+          class="sc-LzLtj vjJqC"
         >
           Until 
           Jun 24th, 2020
         </h2>
         <h2
-          class="sc-LzLsE gbOLoE"
+          class="sc-LzLtk cqkNNr"
         >
           Checked-in 
           1 minute
@@ -68010,45 +68500,45 @@ Object {
         </h2>
       </div>
       <div
-        class="sc-LzLsG chqZpP"
+        class="sc-LzLtm dwdjSS"
       >
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Lock Name
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Token Id
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           53
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Owner Address
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-LzLtf jFhcFp"
+          class="sc-LzLtL keVpoz"
         >
           Time Since signed
         </div>
         <div
-          class="sc-LzLtg jDZqBf"
+          class="sc-LzLtM gfEbxR"
         >
           20 minutes ago
         </div>
@@ -68193,14 +68683,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-LzLsA kTcJXk"
+      class="sc-LzLtg iHQYbb"
     >
       <div
-        class="sc-LzLsB jhZzzy"
+        class="sc-LzLth coarAR"
         color="--red"
       >
         <div
-          class="sc-LzLsF iITzgg"
+          class="sc-LzLtl eevoNP"
         >
           <svg
             viewBox="0 0 24 24"
@@ -68216,7 +68706,7 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-LzLsC giQcQi"
+          class="sc-LzLti dXEqTZ"
         >
           Key Invalid
         </h1>

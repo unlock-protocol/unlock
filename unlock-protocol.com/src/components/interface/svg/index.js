@@ -38,8 +38,8 @@ function wrapViewBox(WrappedComponent, viewBox) {
 }
 
 export default {
-  About: wrapViewBox(About, '0 0 24 24'),
-  Blog: wrapViewBox(Blog, '0 0 24 24'),
+  About,
+  Blog,
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
@@ -53,7 +53,7 @@ export default {
   EthSub: wrapViewBox(EthSub, '0 0 24 24'),
   Export: wrapViewBox(Export, '0 0 24 24'),
   Github: wrapViewBox(Github, '0 0 24 24'),
-  Key: wrapViewBox(Key, '-3 -3 24 24'),
+  Key,
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   Loading: wrapViewBox(Loading, '0 0 32 32'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
@@ -69,5 +69,5 @@ export default {
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
   Bars: wrapViewBox(Bars, '0 0 56 42'),
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
-  Home: wrapViewBox(Home, '0 0 24 24'),
+  Home,
 }

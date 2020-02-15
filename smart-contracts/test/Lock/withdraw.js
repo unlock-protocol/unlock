@@ -138,12 +138,6 @@ contract('Lock / withdraw', accounts => {
 
       await lock.updateBeneficiary(beneficiary, { from: owner })
     })
-    it('the owner can no longer update the beneficiary', async () => {
-      await reverts(
-        lock.updateBeneficiary(owner, { from: owner }),
-        'ONLY_BENEFICIARY'
-      )
-    })
 
     it('can withdraw from beneficiary account', async () => {
       await lock.withdraw(tokenAddress, 42, {
