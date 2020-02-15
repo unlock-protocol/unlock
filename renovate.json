@@ -71,6 +71,13 @@
       }
     },
     {
+      "packageNames": ["hardlydifficult-ethereum-contracts"],
+      "schedule": ["at any time"],
+      "minor": {
+        "groupName": "hardlydifficult-ethereum-contracts"
+      }
+    },
+    {
       "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
       "minor": {
