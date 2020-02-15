@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -69,103 +69,84 @@ LockKeysNumbers.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export class CreatorLock extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    this.state = {
-      showEmbedCode: false,
-      editing: false,
-    }
-    this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
-  }
+export const CreatorLock = ({ lock, updateLock }) => {
+  const [showEmbedCode, setShowEmbedCode] = useState(false)
+  const [editing, setEditing] = useState(false)
 
-  toggleEmbedCode() {
-    this.setState(previousState => ({
-      showEmbedCode: !previousState.showEmbedCode,
-    }))
-  }
-
-  render() {
-    // TODO add all-time balance to lock
-
-    const { lock, updateLock } = this.props
-    const { showEmbedCode, editing } = this.state
-
-    if (editing) {
-      return (
-        <CreatorLockForm
-          lock={lock}
-          hideAction={() => this.setState({ editing: false })}
-          saveLock={newLock => updateLock(newLock)}
-        />
-      )
-    }
-
-    // Some sanitization of strings to display
-    const name = lock.name || 'New Lock'
-
-    const lockVersion = lock.publicLockVersion || '1'
-
-    const edit = () =>
-      this.setState({
-        editing: true,
-        showEmbedCode: false,
-      })
-    // https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability
+  if (editing) {
     return (
-      <LockRow>
-        {lockVersion === 5 && (
-          <LockWarning>
-            Your lock is vulnerable, please{' '}
-            <a
-              href="https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              read this important message
-            </a>
-            .
-          </LockWarning>
-        )}
-        <LockDetails
-          className="lock" // Used by integration tests
-          data-address={`${lock.address}`}
-        >
-          <DoubleHeightCell>
-            <Icon lock={lock} />
-          </DoubleHeightCell>
-          <LockName>
-            {name}
-            <LockAddress address={!lock.pending && lock.address} />
-          </LockName>
-          <LockDuration>
-            <Duration seconds={lock.expirationDuration} />
-          </LockDuration>
-          <LockKeysNumbers lock={lock} />
-          <BalanceOnLock lock={lock} attribute="keyPrice" />
-          <BalanceContainer>
-            <NoPhone>
-              <BalanceOnLock lock={lock} attribute="balance" />
-            </NoPhone>
-            <Phone>
-              <BalanceOnLock lock={lock} attribute="balance" skipConversion />
-            </Phone>
-          </BalanceContainer>
-          <LockIconBar
-            lock={lock}
-            toggleCode={this.toggleEmbedCode}
-            edit={edit}
-          />
-          {showEmbedCode && (
-            <LockPanel>
-              <LockDivider />
-              <AppStore lock={lock} />
-            </LockPanel>
-          )}
-        </LockDetails>
-      </LockRow>
+      <CreatorLockForm
+        lock={lock}
+        hideAction={() => setEditing(false)}
+        saveLock={newLock => updateLock(newLock)}
+      />
     )
   }
+
+  // Some sanitization of strings to display
+  const name = lock.name || 'New Lock'
+
+  const lockVersion = lock.publicLockVersion || '1'
+
+  const edit = () => {
+    setShowEmbedCode(false)
+    setEditing(!editing)
+  }
+
+  // https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability
+  return (
+    <LockRow>
+      {lockVersion === 5 && (
+        <LockWarning>
+          Your lock is vulnerable, please{' '}
+          <a
+            href="https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            read this important message
+          </a>
+          .
+        </LockWarning>
+      )}
+      <LockDetails
+        className="lock" // Used by integration tests
+        data-address={`${lock.address}`}
+      >
+        <DoubleHeightCell>
+          <Icon lock={lock} />
+        </DoubleHeightCell>
+        <LockName>
+          {name}
+          <LockAddress address={!lock.pending && lock.address} />
+        </LockName>
+        <LockDuration>
+          <Duration seconds={lock.expirationDuration} />
+        </LockDuration>
+        <LockKeysNumbers lock={lock} />
+        <BalanceOnLock lock={lock} attribute="keyPrice" />
+        <BalanceContainer>
+          <NoPhone>
+            <BalanceOnLock lock={lock} attribute="balance" />
+          </NoPhone>
+          <Phone>
+            <BalanceOnLock lock={lock} attribute="balance" skipConversion />
+          </Phone>
+        </BalanceContainer>
+        <LockIconBar
+          lock={lock}
+          toggleCode={() => setShowEmbedCode(!showEmbedCode)}
+          edit={edit}
+        />
+        {showEmbedCode && (
+          <LockPanel>
+            <LockDivider />
+            <AppStore lock={lock} />
+          </LockPanel>
+        )}
+      </LockDetails>
+    </LockRow>
+  )
 }
 
 CreatorLock.propTypes = {

@@ -155,6 +155,49 @@ describe('StorageService', () => {
         done()
       })
     })
+
+    it('should return a promise of hashes', async () => {
+      expect.assertions(2)
+      const sender = '0xabc'
+      axios.get.mockReturnValue({
+        data: {
+          transactions: [
+            {
+              transactionHash: '0x123',
+              sender: '0xabc',
+              recipient: '0xcde',
+              chain: 1984,
+            },
+            {
+              transactionHash: '0x456',
+              sender: '0xabc',
+              recipient: '0xfgh',
+              chain: 1984,
+            },
+          ],
+        },
+      })
+
+      const {
+        hashes,
+        senderAddress,
+      } = await storageService.getRecentTransactionsHashesSentBy(sender)
+      expect(senderAddress).toEqual(sender)
+      expect(hashes).toEqual([
+        {
+          hash: '0x123',
+          from: '0xabc',
+          to: '0xcde',
+          network: 1984,
+        },
+        {
+          hash: '0x456',
+          from: '0xabc',
+          to: '0xfgh',
+          network: 1984,
+        },
+      ])
+    })
   })
 
   describe('storeTransaction', () => {

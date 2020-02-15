@@ -69,7 +69,7 @@ describe('lockController', () => {
         const response = await request(app).get(
           `/lock/${testLockDetails.address}`
         )
-        expect(response.body).toMatchObject({ name: 'Test Lock' })
+        expect(response.body).toMatchObject({ name: 'Unlock Key' })
       })
 
       test('should return an OK status code', async () => {
