@@ -42,6 +42,7 @@
     "bignumber.js": "9.0.0",
     "chai": "4.2.0",
     "coveralls": "3.0.9",
+    "erc1820": "0.0.2",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.0",
     "eslint-plugin-json": "2.0.1",
