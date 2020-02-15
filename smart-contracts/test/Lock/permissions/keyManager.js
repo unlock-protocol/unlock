@@ -13,9 +13,10 @@ let lockCreator
 
 contract('Permissions / KeyManager', accounts => {
   lockCreator = accounts[0]
-  const LockManager = lockCreator
-  const KeyGranter = lockCreator
+  const lockManager = lockCreator
+  const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
+  const [keyOwner1, keyOwner2, keyOwner3, keyOwner4] = keyOwners
   const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
 
   before(async () => {
@@ -35,12 +36,36 @@ contract('Permissions / KeyManager', accounts => {
   })
 
   describe('Key Purchases', () => {
+    let keyManager
+    let keyManagerBefore
+    let keyOwner
+    let iD
     // KM == KeyManager
     it('should set KM == keyOwner for new purchases', async () => {
-      // await
+      iD = await lock.getTokenIdFor(keyOwner1)
+      keyManager = await lock.getKeyManagerOf.call(iD)
+      keyOwner = await lock.ownerOf(iD)
+      assert.equal(keyManager, keyOwner)
     })
-    it('should not change KM when topping-up valid keys', async () => {})
-    it('should not change KM when re-newing expired keys', async () => {})
+    it('should not change KM when topping-up valid keys', async () => {
+      keyManagerBefore = await lock.getKeyManagerOf.call(iD)
+      await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner1,
+      })
+      keyManager = await lock.getKeyManagerOf.call(iD)
+      assert.equal(keyManagerBefore, keyManager)
+    })
+    it('should not change KM when re-newing expired keys', async () => {
+      keyManagerBefore = await lock.getKeyManagerOf.call(iD)
+      await lock.expireKeyFor(keyOwner1, { from: lockManager })
+      await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner1,
+      })
+      keyManager = await lock.getKeyManagerOf.call(iD)
+      assert.equal(keyManagerBefore, keyManager)
+    })
   })
   describe('Key Transfers', () => {
     it('should set KM == keyOwner for new recipients', async () => {})
