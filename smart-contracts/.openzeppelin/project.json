@@ -10,7 +10,6 @@
   "compiler": {
     "manager": "openzeppelin",
     "compilerSettings": {
-      "evmVersion": "istanbul",
       "optimizer": {
         "enabled": true,
         "runs": "200"
