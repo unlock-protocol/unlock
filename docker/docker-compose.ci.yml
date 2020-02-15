@@ -2,10 +2,10 @@ version: '3'
 services:
   ganache:
     restart: always
-    image: trufflesuite/ganache-cli:v6.8.2
+    image: trufflesuite/ganache-cli:v6.9.1
     expose:
       - 8545
-    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-k=istanbul']
+    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
   ganache-integration:
     env_file: ./integration.env
     restart: always
