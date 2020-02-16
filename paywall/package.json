@@ -31,7 +31,7 @@
     "@testing-library/jest-dom": "5.0.2",
     "@testing-library/react": "9.4.0",
     "@testing-library/react-hooks": "3.2.1",
-    "@types/jest": "24.9.1",
+    "@types/jest": "25.1.2",
     "@types/next": "8.0.7",
     "@types/node": "12.12.25",
     "@types/postmate": "1.5.0",
