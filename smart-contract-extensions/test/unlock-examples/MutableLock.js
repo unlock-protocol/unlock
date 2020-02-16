@@ -1,4 +1,4 @@
-const { protocols } = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols } = require('hardlydifficult-ethereum-contracts')
 const truffleAssert = require('truffle-assertions')
 
 const MutableLock = artifacts.require('MutableLock')
@@ -17,7 +17,8 @@ contract('MutableLock', accounts => {
     })
 
     // Buy a key from the `keyOwner` account
-    await lock.purchaseFor(keyOwner, {
+    const keyPrice = await lock.keyPrice()
+    await lock.purchase(keyPrice, keyOwner, constants.ZERO_ADDRESS, [], {
       from: keyOwner,
       value: await lock.keyPrice(),
     })

@@ -1,4 +1,4 @@
-const { protocols } = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols } = require('hardlydifficult-ethereum-contracts')
 const truffleAssert = require('truffle-assertions')
 
 const PaidOnlyFeature = artifacts.require('PaidOnlyFeature')
@@ -19,7 +19,8 @@ contract('PaidOnlyFeature', accounts => {
     featureContract = await PaidOnlyFeature.new(lock.address)
 
     // Buy a key for the `keyOwner` account
-    await lock.purchaseFor(keyOwner, {
+    const keyPrice = await lock.keyPrice()
+    await lock.purchase(keyPrice, keyOwner, constants.ZERO_ADDRESS, [], {
       from: keyOwner,
       value: await lock.keyPrice(),
     })
