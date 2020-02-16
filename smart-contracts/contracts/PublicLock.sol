@@ -5,7 +5,7 @@ import './interfaces/IPublicLock.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 import './mixins/MixinApproval.sol';
-import './mixins/MixinDisableAndDestroy.sol';
+import './mixins/MixinDisable.sol';
 import './mixins/MixinERC721Enumerable.sol';
 import './mixins/MixinEventHooks.sol';
 import './mixins/MixinFunds.sol';
@@ -34,7 +34,7 @@ contract PublicLock is
   Ownable,
   MixinSignatures,
   MixinFunds,
-  MixinDisableAndDestroy,
+  MixinDisable,
   MixinLockManagerRole,
   MixinLockCore,
   MixinKeys,
@@ -60,7 +60,7 @@ contract PublicLock is
   {
     Ownable.initialize(_owner);
     MixinFunds._initializeMixinFunds(_tokenAddress);
-    MixinDisableAndDestroy._initializeMixinDisableAndDestroy();
+    MixinDisable._initializeMixinDisable();
     MixinLockCore._initializeMixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();

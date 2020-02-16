@@ -1,6 +1,6 @@
 pragma solidity 0.5.16;
 
-import './MixinDisableAndDestroy.sol';
+import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
@@ -16,7 +16,7 @@ import './MixinEventHooks.sol';
  */
 contract MixinPurchase is
   MixinFunds,
-  MixinDisableAndDestroy,
+  MixinDisable,
   MixinLockCore,
   MixinKeys,
   MixinEventHooks

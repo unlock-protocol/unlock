@@ -1,6 +1,6 @@
 pragma solidity 0.5.16;
 
-import './MixinDisableAndDestroy.sol';
+import './MixinDisable.sol';
 import './MixinApproval.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';

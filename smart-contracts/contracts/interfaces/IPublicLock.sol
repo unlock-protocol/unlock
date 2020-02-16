@@ -50,14 +50,6 @@ contract IPublicLock is IERC721Enumerable {
   function disableLock() external;
 
   /**
-  * @notice Used to clean up old lock contracts from the blockchain.
-  * TODO: add a check to ensure all keys are INVALID!
-  * @dev Throws if called by other than owner.
-  * @dev Throws if lock has not yet been disabled.
-  */
-  function destroyLock() external;
-
-  /**
    * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
    * @dev Throws if called by other than the owner or beneficiary
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually

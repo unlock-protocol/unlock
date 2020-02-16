@@ -1,6 +1,6 @@
 pragma solidity 0.5.16;
 
-import './MixinDisableAndDestroy.sol';
+import './MixinDisable.sol';
 import './MixinKeys.sol';
 
 
@@ -12,7 +12,7 @@ import './MixinKeys.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinApproval is
-  MixinDisableAndDestroy,
+  MixinDisable,
   MixinKeys
 {
   // Keeping track of approved transfers

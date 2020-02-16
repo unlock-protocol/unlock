@@ -40,10 +40,6 @@ contract('Lock / disableLock', accounts => {
     await reverts(lock.disableLock({ from: keyOwner }), '')
   })
 
-  it('should fail if called before the lock is disabled', async () => {
-    await reverts(lock.destroyLock(), 'DISABLE_FIRST')
-  })
-
   describe('when the lock has been disabled', () => {
     let txObj
     let event
