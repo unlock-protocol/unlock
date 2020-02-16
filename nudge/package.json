@@ -17,7 +17,7 @@
     "@types/cron": "1.7.1",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "25.1.2",
-    "@types/mocha": "5.2.7",
+    "@types/mocha": "7.0.1",
     "@types/request-promise-native": "1.0.17",
     "@types/sequelize": "4.28.8",
     "apollo-cache-inmemory": "1.6.5",
