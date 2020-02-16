@@ -7773,10 +7773,10 @@ har-validator@~5.1.0:
     ajv "^6.5.5"
     har-schema "^2.0.0"
 
-hardlydifficult-ethereum-contracts@0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.8.0.tgz#e1abf284b63213fb7ca5f635ff8cd77e2374ac89"
-  integrity sha512-K4soJzHE7BvQJZCE1T6NYRTTOmek0zcfzN/yvng+/dQkwyGW1PiJpeYJc6+L91eYJdfnrqhrCnl9kYXfVeGLQg==
+hardlydifficult-ethereum-contracts@0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.9.0.tgz#c550f534f3551b83e40fda71aa86fc7714f5e2ef"
+  integrity sha512-o5/u8jTzolp19B7xcjCd/xkTwZH+Sv7xdKhdzQWveqxQ3cDG0DHrplNmUCIw+4rJAxiIQQMmf3P/Er1Gq07XxA==
   dependencies:
     "@openzeppelin/contracts" "^2.5.0"
     "@openzeppelin/contracts-ethereum-package" "2.4.0"
