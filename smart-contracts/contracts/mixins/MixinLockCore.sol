@@ -2,7 +2,7 @@ pragma solidity 0.5.16;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
-import './MixinDisableAndDestroy.sol';
+import './MixinDisable.sol';
 import './MixinLockManagerRole.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
@@ -18,7 +18,7 @@ contract MixinLockCore is
   IERC721Enumerable,
   Ownable,
   MixinFunds,
-  MixinDisableAndDestroy,
+  MixinDisable,
   MixinLockManagerRole
 {
 
