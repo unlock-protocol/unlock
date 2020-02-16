@@ -18,14 +18,10 @@ contract('CodeRequiredHook', accounts => {
     await erc1820.deploy(web3)
 
     // Create a free lock
-    lock = await protocols.unlock.createTestLock(
-      web3,
-      accounts[9], // Unlock Protocol owner
-      lockOwner,
-      {
-        keyPrice: '0',
-      }
-    )
+    lock = await protocols.unlock.createTestLock(web3, {
+      keyPrice: '0',
+      from: lockOwner,
+    })
 
     // Calculate the answer account
     const answer = 'super secret hard to guess answer goes here'
