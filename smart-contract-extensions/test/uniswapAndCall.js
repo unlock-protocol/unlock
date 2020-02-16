@@ -56,24 +56,16 @@ contract('swapAndCall', accounts => {
     targetExchange = await createAndFundExchange(uniswap, targetToken, owner)
     sourceExchange = await createAndFundExchange(uniswap, sourceToken, owner)
 
-    ethLock = await protocols.unlock.createTestLock(
-      web3,
-      accounts[9], // Unlock Protocol owner
-      accounts[1], // Lock owner
-      {
-        keyPrice,
-      }
-    )
+    ethLock = await protocols.unlock.createTestLock(web3, {
+      keyPrice,
+      from: accounts[1], // Lock owner
+    })
     // Lock priced in ERC-20 tokens
-    tokenLock = await protocols.unlock.createTestLock(
-      web3,
-      accounts[9], // Unlock Protocol owner
-      accounts[1], // Lock owner
-      {
-        tokenAddress: targetToken.address,
-        keyPrice,
-      }
-    )
+    tokenLock = await protocols.unlock.createTestLock(web3, {
+      tokenAddress: targetToken.address,
+      keyPrice,
+      from: accounts[1], // Lock owner
+    })
 
     swapAndCall = await SwapAndCall.new()
   })
