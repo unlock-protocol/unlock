@@ -1152,7 +1152,7 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-ethereum-package/-/contracts-ethereum-package-2.4.0.tgz#cd98612022cadb8710c26901bc564240a19a9b40"
   integrity sha512-GC1aOgTnuNnlhdYOCKFizLCQRgYlbImWi+aJ9Lw4Yw4BSLHzfPg+XV0tgn9l+KnFAzgoUEg2aD2wmaHZBjEnSw==
 
-"@openzeppelin/contracts@2.5.0", "@openzeppelin/contracts@^2.5.0":
+"@openzeppelin/contracts@2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.0.tgz#e327a98ba1d26b7756ff62885a0aa0967a375449"
   integrity sha512-t3jm8FrhL9tkkJTofkznTqo/XXdHi21w5yXwalEnaMOp22ZwZ0f/mmKdlgMMLPFa6bSVHbY88mKESwJT/7m5Lg==
@@ -1441,24 +1441,7 @@
     debug "^4.1.0"
     glob "^7.1.2"
 
-"@truffle/contract@4.1.8":
-  version "4.1.8"
-  resolved "https://registry.yarnpkg.com/@truffle/contract/-/contract-4.1.8.tgz#7b3a90c086ce232ca9ef2e6e1b110a28141990ac"
-  integrity sha512-BPDcmvzr8Y6kkcvubj8YJyVwCHr2gvhGkrRA/7YwrBGT9D86AaHd0RyJBqJPau1iyXe3d2OiTV91iywLkT3gQA==
-  dependencies:
-    "@truffle/blockchain-utils" "^0.0.17"
-    "@truffle/contract-schema" "^3.0.23"
-    "@truffle/error" "^0.0.8"
-    "@truffle/interface-adapter" "^0.4.4"
-    bignumber.js "^7.2.1"
-    ethereum-ens "^0.8.0"
-    ethers "^4.0.0-beta.1"
-    web3 "1.2.1"
-    web3-core-promievent "1.2.1"
-    web3-eth-abi "1.2.1"
-    web3-utils "1.2.1"
-
-"@truffle/contract@^4.0.35", "@truffle/contract@^4.0.38":
+"@truffle/contract@4.1.9", "@truffle/contract@^4.0.35", "@truffle/contract@^4.0.38":
   version "4.1.9"
   resolved "https://registry.yarnpkg.com/@truffle/contract/-/contract-4.1.9.tgz#7e9b2a0adf76cc29270feaa541f73feb17229b12"
   integrity sha512-jZEt/7v0KORibr/V3iUy2R8g2hY2mUSzQ5QoGlG9o1Kdz3dxFPEj3F1xcVGb0IMAYwlFrqtyHr9RuVnN2Agpkw==
@@ -1545,7 +1528,7 @@
     lodash "^4.17.13"
     web3 "1.2.1"
 
-"@truffle/interface-adapter@^0.4.4", "@truffle/interface-adapter@^0.4.5":
+"@truffle/interface-adapter@^0.4.5":
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/@truffle/interface-adapter/-/interface-adapter-0.4.5.tgz#f15ddbef95d61efa713527ca81c9ee75e94e5e3d"
   integrity sha512-NGR2UsUXaG6LVezDKqtyqbi7o2UIZJzPmXDybfu0bZ1B1FbdJWXdtLgiPZSlC8IK5Js1V3ruqougX3b4YV5Dfw==
@@ -7708,16 +7691,16 @@ har-validator@~5.1.0:
     ajv "^6.5.5"
     har-schema "^2.0.0"
 
-hardlydifficult-ethereum-contracts@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.9.0.tgz#c550f534f3551b83e40fda71aa86fc7714f5e2ef"
-  integrity sha512-o5/u8jTzolp19B7xcjCd/xkTwZH+Sv7xdKhdzQWveqxQ3cDG0DHrplNmUCIw+4rJAxiIQQMmf3P/Er1Gq07XxA==
+hardlydifficult-ethereum-contracts@0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.9.1.tgz#3268d69b1983ef1c17b042febccb8a7b0d9cb5ff"
+  integrity sha512-1gXAxzOthlBOLliDqzM89OrTTlQ93OWnGlC9LnhppR7V63QY4EZnfJM0G5E19Mq08uFTfiNoWw4vz2DV0cmf9A==
   dependencies:
-    "@openzeppelin/contracts" "^2.5.0"
+    "@openzeppelin/contracts" "2.5.0"
     "@openzeppelin/contracts-ethereum-package" "2.4.0"
     "@openzeppelin/test-environment" "0.1.2"
     "@openzeppelin/test-helpers" "0.5.4"
-    "@truffle/contract" "4.1.8"
+    "@truffle/contract" "4.1.9"
     bignumber.js "9.0.0"
     erc1820 "0.0.2"
     unlock-abi-1-3 "1.0.1"
