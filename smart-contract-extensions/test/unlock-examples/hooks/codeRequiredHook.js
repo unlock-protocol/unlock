@@ -89,7 +89,7 @@ contract('CodeRequiredHook', accounts => {
         .updateBeneficiary(lockCreator)
         .encodeABI()
       await hookContract.proxyCall(lock.address, callData, {
-        from: lockCreator
+        from: lockCreator,
       })
     })
 
