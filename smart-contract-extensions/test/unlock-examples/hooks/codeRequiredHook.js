@@ -5,7 +5,7 @@ const { reverts } = require('truffle-assertions')
 const CodeRequiredHook = artifacts.require('CodeRequiredHook.sol')
 
 contract('CodeRequiredHook', accounts => {
-  const lockOwner = accounts[1]
+  const lockCreator = accounts[1]
   const keyBuyer = accounts[5]
   let lock
   let hookContract
@@ -20,7 +20,7 @@ contract('CodeRequiredHook', accounts => {
     // Create a free lock
     lock = await protocols.unlock.createTestLock(web3, {
       keyPrice: '0',
-      from: lockOwner,
+      from: lockCreator,
     })
 
     // Calculate the answer account
@@ -35,11 +35,11 @@ contract('CodeRequiredHook', accounts => {
 
     // Create the hook contract with that answer
     hookContract = await CodeRequiredHook.new(answerAccount.address, {
-      from: lockOwner,
+      from: lockCreator,
     })
 
     // Change the beneficiary to the hook to enable it
-    await lock.updateBeneficiary(hookContract.address, { from: lockOwner })
+    await lock.updateBeneficiary(hookContract.address, { from: lockCreator })
   })
 
   it('can buy if you know the answer', async () => {
@@ -86,9 +86,9 @@ contract('CodeRequiredHook', accounts => {
   describe('uninstall hook', () => {
     beforeEach(async () => {
       const callData = lock.contract.methods
-        .updateBeneficiary(lockOwner)
+        .updateBeneficiary(lockCreator)
         .encodeABI()
-      await hookContract.proxyCall(lock.address, callData, { from: lockOwner })
+      await hookContract.proxyCall(lock.address, callData, { from: lockCreator })
     })
 
     it('can now buy without the answer', async () => {
@@ -100,7 +100,7 @@ contract('CodeRequiredHook', accounts => {
 
   it('non-admins cannot call proxyCall', async () => {
     const callData = lock.contract.methods
-      .updateBeneficiary(lockOwner)
+      .updateBeneficiary(lockCreator)
       .encodeABI()
     await reverts(
       hookContract.proxyCall(lock.address, callData, { from: accounts[0] }),
