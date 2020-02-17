@@ -88,7 +88,9 @@ contract('CodeRequiredHook', accounts => {
       const callData = lock.contract.methods
         .updateBeneficiary(lockCreator)
         .encodeABI()
-      await hookContract.proxyCall(lock.address, callData, { from: lockCreator })
+      await hookContract.proxyCall(lock.address, callData, {
+        from: lockCreator
+      })
     })
 
     it('can now buy without the answer', async () => {
