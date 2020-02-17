@@ -1,5 +1,4 @@
 const { constants, protocols } = require('hardlydifficult-ethereum-contracts')
-const erc1820 = require('erc1820')
 const { reverts } = require('truffle-assertions')
 
 const CodeRequiredHook = artifacts.require('CodeRequiredHook.sol')
@@ -14,9 +13,6 @@ contract('CodeRequiredHook', accounts => {
   let answerAccount
 
   beforeEach(async () => {
-    // Ganache only setup (a no-op if erc1820 already exists)
-    await erc1820.deploy(web3)
-
     // Create a free lock
     lock = await protocols.unlock.createTestLock(web3, {
       keyPrice: '0',
