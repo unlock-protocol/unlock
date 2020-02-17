@@ -7691,15 +7691,16 @@ har-validator@~5.1.0:
     ajv "^6.5.5"
     har-schema "^2.0.0"
 
-hardlydifficult-ethereum-contracts@0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.9.1.tgz#3268d69b1983ef1c17b042febccb8a7b0d9cb5ff"
-  integrity sha512-1gXAxzOthlBOLliDqzM89OrTTlQ93OWnGlC9LnhppR7V63QY4EZnfJM0G5E19Mq08uFTfiNoWw4vz2DV0cmf9A==
+hardlydifficult-ethereum-contracts@0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.9.2.tgz#45d8065f4ce4ca9cd75eb8170af0e94bd4177b7e"
+  integrity sha512-AtvnZczi3YlDOCAYTtLSPiYCS9XqtvoBbXhExP7NBwJvGrksGEsUy0gherP2lsZ3jyKecN9UKtdbCfYrO7Hy3g==
   dependencies:
     "@openzeppelin/contracts" "2.5.0"
     "@openzeppelin/contracts-ethereum-package" "2.4.0"
     "@openzeppelin/test-environment" "0.1.2"
     "@openzeppelin/test-helpers" "0.5.4"
+    "@openzeppelin/upgrades" "2.7.1"
     "@truffle/contract" "4.1.9"
     bignumber.js "9.0.0"
     erc1820 "0.0.2"
