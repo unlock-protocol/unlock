@@ -14,6 +14,7 @@ import Media from '../../theme/media'
 const Demo = ({ checkout, locked }) => {
   return (
     <Container>
+      <Fonts />
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
@@ -93,9 +94,14 @@ Demo.defaultProps = {
 
 export default Demo
 
-const GlobalStyle = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700');
+const Fonts = () => (
+  <link
+    href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|UnifrakturCook:700"
+    rel="stylesheet"
+  />
+)
 
+const GlobalStyle = createGlobalStyle`
     body {
       background-color: #fdfaf7;
       font-family: 'Source Serif Pro', serif;
