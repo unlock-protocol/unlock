@@ -5,11 +5,9 @@ import Media from '../../../theme/media'
 import { CheckoutFooter } from './CheckoutStyles'
 
 interface WrapperProps {
-  children: any
   hideCheckout: (...args: any[]) => any
   allowClose: boolean
   bgColor?: string
-  onClick?: (event: any) => void
   icon?: string
 }
 
@@ -17,16 +15,15 @@ interface WrapperStyleProps {
   bgColor: string
 }
 
-const CheckoutWrapper = ({
+const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   children,
   hideCheckout,
   bgColor = 'var(--offwhite)',
-  onClick = () => {},
   allowClose = true,
   icon,
-}: WrapperProps) => {
+}: React.PropsWithChildren<WrapperProps>) => {
   return (
-    <Wrapper bgColor={bgColor} onClick={allowClose ? onClick : () => {}}>
+    <Wrapper bgColor={bgColor} onClick={allowClose ? hideCheckout : () => {}}>
       {allowClose ? (
         <CloseButton
           backgroundColor="var(--lightgrey)"
