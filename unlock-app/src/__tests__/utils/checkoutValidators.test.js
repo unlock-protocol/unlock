@@ -1,7 +1,7 @@
 import * as validators from '../../utils/checkoutValidators'
 
 describe('Form field validators', () => {
-  it('isMissing', () => {
+  it('isMissing ', () => {
     expect.assertions(6)
     expect(validators.isNotEmpty('hi')).toBeTruthy()
     expect(validators.isNotEmpty('0')).toBeTruthy()
@@ -75,6 +75,78 @@ describe('Form field validators', () => {
       validators.isAccountOrNull('0X12345678901234567890abcdef0123ABCDEF0123')
     ).toBeFalsy()
     expect(validators.isAccountOrNull(null)).toBeTruthy()
+  })
+
+  describe('isValidKeys', () => {
+    it('should be true', () => {
+      expect.assertions(1)
+      const keys = {}
+      expect(validators.isValidKeys(keys)).toBe(true)
+    })
+  })
+
+  describe('isValidTransactions', () => {
+    it('should be true', () => {
+      expect.assertions(1)
+      const transactions = {}
+      expect(validators.isValidTransactions(transactions)).toBe(true)
+    })
+  })
+
+  describe('isValidBalance', () => {
+    it('should be true if the balance is empty', () => {
+      expect.assertions(1)
+      const balance = {}
+      expect(validators.isValidBalance(balance)).toBe(true)
+    })
+    it('should be true if the balance is valid', () => {
+      expect.assertions(1)
+      const balance = {
+        ether: '0.12',
+      }
+      expect(validators.isValidBalance(balance)).toBe(true)
+    })
+    it('should be true if the balance is valid with 2 currencies', () => {
+      expect.assertions(1)
+      const balance = {
+        ether: '0.12',
+        erc20: '100',
+      }
+      expect(validators.isValidBalance(balance)).toBe(true)
+    })
+    describe('failures', () => {
+      it('should be false if the balance is not an object', () => {
+        expect.assertions(1)
+        const balance = 3
+        expect(validators.isValidBalance(balance)).toBe(false)
+      })
+      it('should be false if the balance is falsy', () => {
+        expect.assertions(1)
+        const balance = false
+        expect(validators.isValidBalance(balance)).toBe(false)
+      })
+      it('should be false if the balance is an array', () => {
+        expect.assertions(1)
+        const balance = []
+        expect(validators.isValidBalance(balance)).toBe(false)
+      })
+      it('should be false if the balance includes at least one invalid amont', () => {
+        expect.assertions(1)
+        const balance = {
+          ether: '0.12',
+          erc20: 100,
+        }
+        expect(validators.isValidBalance(balance)).toBe(false)
+      })
+      it('should be false if the balance includes at least one negative amont', () => {
+        expect.assertions(1)
+        const balance = {
+          ether: '0.12',
+          erc20: '-100',
+        }
+        expect(validators.isValidBalance(balance)).toBe(false)
+      })
+    })
   })
 
   describe('isValidPaywallConfig', () => {
@@ -237,6 +309,8 @@ describe('Form field validators', () => {
                 did: 3,
                 it: 4,
                 again: 5,
+                another: 6,
+                time: 7,
               },
             })
           ).toBe(false)

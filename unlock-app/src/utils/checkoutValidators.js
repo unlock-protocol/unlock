@@ -1,10 +1,17 @@
 import isURL from 'validator/lib/isURL'
 import isDataURI from 'validator/lib/isDataURI'
 import isDecimal from 'validator/lib/isDecimal'
-
+import configure from '../config'
 import { ACCOUNT_REGEXP } from '../constants'
 
-/* eslint-disable no-console */
+const { env } = configure()
+
+export const log = message => {
+  if (env !== 'test') {
+    // eslint-disable-next-line no-console
+    console.log(message)
+  }
+}
 
 // tests whether a field's value was not entered by the user
 export const isNotEmpty = val => val || val === 0
@@ -31,7 +38,7 @@ export const isAccountOrNull = val => {
 
 export const isValidIcon = icon => {
   if (typeof icon !== 'string') {
-    console.error('The paywall config\'s "icon" property is not a string.')
+    log('The paywall config\'s "icon" property is not a string.')
     return false
   }
   if (
@@ -43,7 +50,7 @@ export const isValidIcon = icon => {
     }) &&
     !isDataURI(icon)
   ) {
-    console.error('The paywall config\'s "icon" property is not a valid URL.')
+    log('The paywall config\'s "icon" property is not a valid URL.')
     return false
   }
   return true
@@ -61,20 +68,20 @@ export const isValidCTA = callToAction => {
   const ctaKeys = Object.keys(callToAction)
 
   if (ctaKeys.length > callsToAction.length) {
-    console.error(
+    log(
       'The paywall config\'s "callToAction" properties contain an unexpected entry.'
     )
     return false
   }
   if (ctaKeys.filter(key => !callsToAction.includes(key)).length) {
     // TODO: log which key is bad, or remove this check
-    console.error(
+    log(
       'The paywall config\'s "callToAction" properties contain an unexpected entry.'
     )
     return false
   }
   if (ctaKeys.filter(key => typeof callToAction[key] !== 'string').length) {
-    console.error(
+    log(
       'The paywall config\'s "callToAction" properties contain an entry whose value is not a string.'
     )
     return false
@@ -94,7 +101,7 @@ export const isValidConfigLock = (lock, configLocks) => {
     typeof thisLock.name !== 'string'
   ) {
     // TODO: which of the above conditions did it fail on?
-    console.error(
+    log(
       `The paywall config's "locks" field contains a key "${lock}" which has an invalid value.`
     )
     return false
@@ -104,7 +111,7 @@ export const isValidConfigLock = (lock, configLocks) => {
 
 export const isValidConfigLocks = configLocks => {
   if (typeof configLocks !== 'object') {
-    console.error('The paywall configs\'s "locks" field is not an object.')
+    log('The paywall configs\'s "locks" field is not an object.')
     return false
   }
   const locks = Object.keys(configLocks)
@@ -152,11 +159,11 @@ export const isValidConfigLocks = configLocks => {
  */
 export const isValidPaywallConfig = config => {
   if (!config) {
-    console.error('No paywall config provided.')
+    log('No paywall config provided.')
     return false
   }
   if (!isValidObject(config, ['callToAction', 'locks'])) {
-    console.error(
+    log(
       'The paywall config does not contain at least one of the required fields: "callToAction", "locks".'
     )
     return false
@@ -170,9 +177,7 @@ export const isValidPaywallConfig = config => {
   }
 
   if (typeof config.callToAction !== 'object') {
-    console.error(
-      'The paywall config\'s "callToAction" property is not a valid object.'
-    )
+    log('The paywall config\'s "callToAction" property is not a valid object.')
     return false
   }
   if (!isValidCTA(config.callToAction)) {
@@ -181,7 +186,7 @@ export const isValidPaywallConfig = config => {
 
   // TODO: !locks should have been checked already in the isValidObject check above?
   if (!config.locks) {
-    console.error('The paywall config\'s "locks" fields is not set.')
+    log('The paywall config\'s "locks" fields is not set.')
     return false
   }
   if (!isValidConfigLocks(config.locks)) {
@@ -196,7 +201,7 @@ export const isValidPaywallConfig = config => {
       config.unlockUserAccounts === 'false'
     )
   ) {
-    console.error(
+    log(
       'The paywall config\'s "unlockUserAccounts" field has an invalid value.'
     )
     return false
@@ -208,7 +213,7 @@ export const isValidPaywallConfig = config => {
     typeof config.persistentCheckout !== 'boolean' &&
     ['true', 'false'].indexOf(config.persistentCheckout) === -1
   ) {
-    console.error(
+    log(
       'The paywall config\'s "persistentCheckout" field has an invalid value.'
     )
     return false
@@ -396,7 +401,7 @@ export const isValidMetadataField = field => {
 
   if (!hasRequiredProperties) {
     // TODO: more specificity in error messages
-    console.error(
+    log(
       'A field in the metadata fields in the paywall config is missing a required property.'
     )
     return false
@@ -405,19 +410,17 @@ export const isValidMetadataField = field => {
   const { name, type, required } = field
 
   if (typeof name !== 'string') {
-    console.error(`Paywall metadata field error: ${name} is not a string.`)
+    log(`Paywall metadata field error: ${name} is not a string.`)
     return false
   }
 
   if (!allowedInputTypes.includes(type)) {
-    console.error(
-      `Paywall metadata field error: ${type} is not an allowed input type.`
-    )
+    log(`Paywall metadata field error: ${type} is not an allowed input type.`)
     return false
   }
 
   if (typeof required !== 'boolean') {
-    console.error(`Paywall metadata field error: ${required} is not a boolean.`)
+    log(`Paywall metadata field error: ${required} is not a boolean.`)
     return false
   }
 
@@ -426,16 +429,14 @@ export const isValidMetadataField = field => {
 
 export const isValidMetadataArray = fields => {
   if (!Array.isArray(fields)) {
-    console.error('Paywall config metadata property is not an array.')
+    log('Paywall config metadata property is not an array.')
     return false
   }
 
   // TODO: disallow multiple fields with the same name?
   const validFields = fields.filter(isValidMetadataField)
   if (validFields.length !== fields.length) {
-    console.error(
-      'Paywall config metadata contains an invalid field description.'
-    )
+    log('Paywall config metadata contains an invalid field description.')
     return false
   }
 
