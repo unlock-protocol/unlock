@@ -6,8 +6,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import { Lock } from '../interface/checkout/Lock'
-import Loading from '../interface/Loading'
+import { Lock, LoadingLock } from '../interface/checkout/Lock'
 import {
   Account as AccountType,
   Network,
@@ -55,7 +54,13 @@ export const CheckoutContent = ({
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
-          {loading && <Loading />}
+          {loading && (
+            <div>
+              {lockAddresses.map(address => (
+                <LoadingLock key={address} />
+              ))}
+            </div>
+          )}
           {locks && (
             <div>
               {locks.map(lock => (
