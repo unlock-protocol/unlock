@@ -17,13 +17,13 @@ export const usePaywallLocks = (lockAddresses: string[]) => {
     })
 
     const locks = await Promise.all(lockPromises)
-    setLocks(locks)
     setLoading(false)
+    setLocks(locks)
   }
 
   useEffect(() => {
     getLocks()
-  }, [lockAddresses])
+  }, [])
 
   return { locks, loading }
 }
