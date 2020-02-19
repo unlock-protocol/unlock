@@ -1,5 +1,9 @@
 const BigNumber = require('bignumber.js')
-const { protocols, tokens } = require('hardlydifficult-ethereum-contracts')
+const {
+  constants,
+  protocols,
+  tokens,
+} = require('hardlydifficult-ethereum-contracts')
 
 const SwapAndCall = artifacts.require('SwapAndCall.sol')
 const { reverts, fails } = require('truffle-assertions')
@@ -52,31 +56,23 @@ contract('swapAndCall', accounts => {
     targetExchange = await createAndFundExchange(uniswap, targetToken, owner)
     sourceExchange = await createAndFundExchange(uniswap, sourceToken, owner)
 
-    ethLock = await protocols.unlock.createTestLock(
-      web3,
-      accounts[9], // Unlock Protocol owner
-      accounts[1], // Lock owner
-      {
-        keyPrice,
-      }
-    )
+    ethLock = await protocols.unlock.createTestLock(web3, {
+      keyPrice,
+      from: accounts[1], // Lock owner
+    })
     // Lock priced in ERC-20 tokens
-    tokenLock = await protocols.unlock.createTestLock(
-      web3,
-      accounts[9], // Unlock Protocol owner
-      accounts[1], // Lock owner
-      {
-        tokenAddress: targetToken.address,
-        keyPrice,
-      }
-    )
+    tokenLock = await protocols.unlock.createTestLock(web3, {
+      tokenAddress: targetToken.address,
+      keyPrice,
+      from: accounts[1], // Lock owner
+    })
 
     swapAndCall = await SwapAndCall.new()
   })
 
   it("Sanity check: Can't purchase keys with ether", async () => {
     await fails(
-      tokenLock.purchaseFor(testAccount, {
+      tokenLock.purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [], {
         from: testAccount,
         value: await targetExchange.getEthToTokenOutputPrice(keyPrice),
       })
@@ -88,7 +84,7 @@ contract('swapAndCall', accounts => {
       from: owner,
     })
     await targetToken.approve(tokenLock.address, -1, { from: testAccount })
-    await tokenLock.purchaseFor(testAccount, {
+    tokenLock.purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [], {
       from: testAccount,
     })
   })
@@ -120,7 +116,7 @@ contract('swapAndCall', accounts => {
       calls.push({
         contract: tokenLock.address,
         callData: tokenLock.contract.methods
-          .purchaseFor(testAccount)
+          .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
           .encodeABI(),
       })
       // Tokens to refund in case keyPrice went down
@@ -194,7 +190,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: tokenLock.address,
           callData: tokenLock.contract.methods
-            .purchaseFor(testAccount)
+            .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
             .encodeABI(),
         })
         // Tokens to refund in case keyPrice went down
@@ -258,7 +254,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: ethLock.address,
           callData: ethLock.contract.methods
-            .purchaseFor(testAccount)
+            .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
             .encodeABI(),
           value: keyPrice,
         })
@@ -320,7 +316,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: ethLock.address,
           callData: ethLock.contract.methods
-            .purchaseFor(testAccount)
+            .purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [])
             .encodeABI(),
           value: keyPrice,
         })
