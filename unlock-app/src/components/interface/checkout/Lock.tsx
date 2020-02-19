@@ -123,8 +123,7 @@ export const TickerSymbol = styled.span`
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
-  margin-left: 4px;
-  text-align: center;
+  text-align: right;
   width: 42px;
 `
 
