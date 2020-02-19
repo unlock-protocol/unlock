@@ -74,6 +74,7 @@
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test truffle test --network development",
+    "debug": "cross-env NODE_ENV=test truffle test --network tenderly",
     "lint": "solium -d ./contracts/ && eslint .",
     "lintFix": "solium -d ./contracts/ --fix && eslint . --fix",
     "dev": "yarn lint && yarn build && yarn test",
@@ -82,8 +83,7 @@
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\"",
     "zos": "openzeppelin",
     "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
-    "verify": "truffle run verify",
-    "debug": "truffle debug"
+    "verify": "truffle run verify"
   },
   "author": "",
   "license": "ISC"
