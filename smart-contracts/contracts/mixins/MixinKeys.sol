@@ -244,6 +244,35 @@ contract MixinKeys is
   }
 
   /**
+  * @notice Get the key manager for the given tokenId
+  * @return The address of the manager for the given key
+  */
+  function getKeyManagerOf(
+    uint _tokenId
+  ) public view
+    returns (address)
+  {
+    return keyManagerOf[_tokenId];
+  }
+
+  /**
+  * @notice Update transfer and cancel rights for a given key
+  * @param _tokenId The id of the key to assign rights for
+  * @param _keyManager The address to assign the rights to for the given key
+  * */
+  //
+  function setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
+  ) public
+    isKey(_tokenId)
+  {
+    require( (msg.sender == keyManagerOf[_tokenId]) || (isLockManager(msg.sender) == true), 'SETKEYMANAGEROF_ACCESS_DENIED');
+    keyManagerOf[_tokenId] = _keyManager;
+    emit KeyManagerChanged(_tokenId, _keyManager);
+  }
+
+  /**
    * Assigns the key a new tokenId (from totalSupply) if it does not already have
    * one assigned.
    */
@@ -307,22 +336,5 @@ contract MixinKeys is
       key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
-  }
-
-  /**
-  * @notice Update transfer and cancel rights for a given key
-  * @param _tokenId The id of the key to assign rights for
-  * @param _keyManager The address to assign the rights to for the given key
-  * */
-  //
-  function _updateKeyManagerOf(
-    uint _tokenId,
-    address _keyManager
-  ) internal
-    isKey(_tokenId)
-  {
-    require(keyManagerOf[_tokenId] == msg.sender || isLockManager(msg.sender), 'SETKEYMANAGEROF_ACCESS_DENIED');
-    keyManagerOf[_tokenId] = _keyManager;
-    emit KeyManagerChanged(_tokenId, _keyManager);
   }
 }
