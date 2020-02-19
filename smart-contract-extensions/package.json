@@ -6,6 +6,7 @@
     "build": "yarn compile",
     "compile": "truffle compile",
     "test": "truffle test",
+    "debug": "truffle test --network tenderly",
     "lint": "solium -d ./contracts/ && eslint .",
     "lintFix": "solium -d ./contracts/ --fix && eslint . --fix",
     "coverage": "truffle run coverage && cat coverage/lcov.info | coveralls",
