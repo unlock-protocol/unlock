@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
+import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
+import { TransactionType } from '../unlockTypes'
 
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
@@ -9,6 +11,7 @@ import { ConfigContext } from '../utils/withConfig'
 export const useLock = lockFromProps => {
   const [lock, setLock] = useState(lockFromProps)
   const web3Service = useContext(Web3ServiceContext)
+  const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
 
   /**
@@ -17,19 +20,45 @@ export const useLock = lockFromProps => {
    * @param {*} update
    */
   const onTransaction = (hash, update) => {
-    if (lock.creationTransaction && hash === lock.creationTransaction.hash) {
-      lock.creationTransaction = {
-        ...lock.creationTransaction,
-        ...update,
+    const lockTransactions = ['creationTransaction', 'priceUpdateTransaction']
+    lockTransactions.forEach(transaction => {
+      if (lock[transaction] && hash === lock[transaction].hash) {
+        lock[transaction] = {
+          ...lock[transaction],
+          ...update,
+        }
+        if (lock[transaction].confirmations >= config.requiredConfirmations) {
+          // No need to track the transaction anymore!
+          delete lock[transaction]
+        }
+        setLock(lock)
       }
-      if (
-        lock.creationTransaction.confirmations >= config.requiredConfirmations
-      ) {
-        // No need to track the transaction anymore!
-        delete lock.creationTransaction
+    })
+  }
+
+  /**
+   * Function called to updated the price of a lock
+   */
+  const updateKeyPrice = (newKeyPrice, callback) => {
+    walletService.updateKeyPrice(
+      {
+        lockAddress: lockFromProps.address,
+        keyPrice: newKeyPrice,
+      },
+      (error, transactionHash) => {
+        lock.priceUpdateTransaction = {
+          confirmations: 0,
+          createdAt: new Date().getTime(),
+          hash: transactionHash,
+          lock: lockFromProps.address,
+          type: TransactionType.UPDATE_KEY_PRICE,
+        }
+        setLock(lock)
+        web3Service.on('transaction.updated', onTransaction)
+
+        return callback()
       }
-      setLock(lock)
-    }
+    )
   }
 
   useEffect(() => {
@@ -45,13 +74,11 @@ export const useLock = lockFromProps => {
       )
     }
     return () => {
-      if (lockFromProps.creationTransaction) {
-        web3Service.off('transaction.updated', onTransaction)
-      }
+      web3Service.off('transaction.updated', onTransaction)
     }
   }, [lockFromProps.address])
 
-  return { lock }
+  return { lock, updateKeyPrice }
 }
 
 export default useLock

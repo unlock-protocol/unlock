@@ -1,11 +1,13 @@
 import React from 'react'
 import { EventEmitter } from 'events'
 
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 import useLock from '../../hooks/useLock'
 import configure from '../../config'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
+import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
+import { TransactionType } from '../../unlockTypes'
 
 const config = configure()
 
@@ -20,13 +22,16 @@ const lock = {
   address: '0xLock',
   name: 'My Lock',
 }
-
+const mockWalletService = {}
 describe('useLock', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(React, 'useContext').mockImplementation(context => {
       if (context === Web3ServiceContext) {
         return mockWeb3Service
+      }
+      if (context === WalletServiceContext) {
+        return mockWalletService
       }
       if (context === ConfigContext) {
         return config
@@ -79,6 +84,50 @@ describe('useLock', () => {
       lock.creationTransaction = creationTransaction
       const { result } = renderHook(() => useLock(lock))
       expect(result.current.lock.creationTransaction).toBe(undefined)
+    })
+  })
+
+  describe('updateKeyPrice', () => {
+    const priceUpdateTransactionHash = '0xTransactionHash'
+    let hookResult
+
+    beforeEach(() => {
+      mockWalletService.updateKeyPrice = jest.fn((newKeyPrice, callback) => {
+        return callback(null, priceUpdateTransactionHash)
+      })
+      hookResult = renderHook(() => useLock(lock)).result
+    })
+
+    it('should yield a function to update the key price', async () => {
+      expect.assertions(2)
+      const done = jest.fn()
+      const newKeyPrice = '123'
+      await act(async () => {
+        await hookResult.current.updateKeyPrice(newKeyPrice, done)
+      })
+      expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith(
+        {
+          keyPrice: newKeyPrice,
+          lockAddress: lock.address,
+        },
+        expect.any(Function)
+      )
+      expect(done).toHaveBeenCalledWith()
+    })
+
+    it('should set the priceUpdateTransaction on the lock object', async () => {
+      expect.assertions(1)
+      const done = jest.fn()
+      const newKeyPrice = '123'
+      await act(async () => {
+        await hookResult.current.updateKeyPrice(newKeyPrice, done)
+      })
+      expect(hookResult.current.lock.priceUpdateTransaction).toMatchObject({
+        confirmations: 0,
+        hash: priceUpdateTransactionHash,
+        lock: lock.address,
+        type: TransactionType.UPDATE_KEY_PRICE,
+      })
     })
   })
 })
