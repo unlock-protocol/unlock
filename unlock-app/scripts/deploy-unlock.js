@@ -3,7 +3,7 @@
 // NOTE: THIS SCRIPT IS CURRENTLY ONLY USED BY THE INTEGRATION TESTS
 // BECAUSE WE DO NOT USE OUR OWN ganache.dockerfile in that context
 
-const { deploy, WalletService } = require('@unlock-protocol/unlock-js')
+const { deploy, WalletService, latest } = require('@unlock-protocol/unlock-js')
 const net = require('net')
 
 /*
@@ -42,7 +42,7 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    const versionName = 'v12'
+    const versionName = latest
     return deploy(host, port, versionName, newContractInstance => {
       console.log(`UNLOCK DEPLOYED AT ${newContractInstance.address}`)
       // We need to configure it!
