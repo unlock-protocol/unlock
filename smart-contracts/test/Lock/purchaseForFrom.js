@@ -35,9 +35,9 @@ contract('Lock / purchaseForFrom', accounts => {
     it('can purchaseForFrom a free key', async () => {
       await locks.FREE.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [])
       const tx = await locks.FREE.purchase(0, accounts[2], accounts[0], [])
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+      assert.equal(tx.logs[1].event, 'Transfer')
+      assert.equal(tx.logs[1].args.from, 0)
+      assert.equal(tx.logs[1].args.to, accounts[2])
     })
   })
 })
