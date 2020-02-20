@@ -51,7 +51,7 @@ contract('Lock / owners', accounts => {
     assert.equal(numberOfOwners.toFixed(), 4)
   })
 
-  it('should allow for access to an individual key owner', async () => {
+  it('should allow for access to an indiviDual key owner', async () => {
     const owners = await Promise.all([
       lock.owners.call(0),
       lock.owners.call(1),
@@ -62,17 +62,18 @@ contract('Lock / owners', accounts => {
     assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
   })
 
-  it('should fail to access to an individual key owner when out of bounds', async () => {
+  it('should fail to access to an indiviDual key owner when out of bounds', async () => {
     await truffleAssert.fails(lock.owners.call(6), 'revert')
   })
 
   describe('after a transfer to a new address', () => {
     let numberOfOwners
+    let iD
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      let ID = await lock.getTokenIdFor.call(accounts[1])
-      await lock.transferFrom(accounts[1], accounts[5], ID, {
+      iD = await lock.getTokenIdFor.call(accounts[1])
+      await lock.transferFrom(accounts[1], accounts[5], iD, {
         from: accounts[1],
       })
     })
@@ -89,7 +90,7 @@ contract('Lock / owners', accounts => {
 
     it('should fail if I transfer from the same account again', async () => {
       await reverts(
-        lock.transferFrom(accounts[1], accounts[5], accounts[1], {
+        lock.transferFrom(accounts[1], accounts[5], iD, {
           from: accounts[1],
         }),
         'KEY_NOT_VALID'
@@ -102,8 +103,8 @@ contract('Lock / owners', accounts => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      let ID = await lock.getTokenIdFor.call(accounts[2])
-      await lock.transferFrom(accounts[2], accounts[3], ID, {
+      let iD = await lock.getTokenIdFor.call(accounts[2])
+      await lock.transferFrom(accounts[2], accounts[3], iD, {
         from: accounts[2],
       })
     })
