@@ -17,6 +17,8 @@ export const usePaywallLocks = (lockAddresses: string[]) => {
     })
 
     const locks = await Promise.all(lockPromises)
+    // getLock doesn't always return the lock address apparently
+    locks.forEach((lock, index) => (lock.address = lockAddresses[index]))
     setLoading(false)
     setLocks(locks)
   }

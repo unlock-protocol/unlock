@@ -1,6 +1,9 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import Svg from '../svg'
+import { RawLock } from '../../../unlockTypes'
+import { durationsAsTextFromSeconds } from '../../../utils/durations'
+import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 
 interface LockBodyProps {
   loading?: 'true'
@@ -154,33 +157,34 @@ export const LoadingLock = () => {
 }
 
 interface LockProps {
-  name: string
-  keysAvailable: string
-  price: string
-  symbol: string
-  validityDuration: string
+  lock: RawLock
 }
 
-export const Lock = ({
-  name,
-  keysAvailable,
-  price,
-  symbol,
-  validityDuration,
-}: LockProps) => {
+const lockKeysAvailable = (lock: RawLock) => {
+  if ((lock as any).unlimitedKeys) {
+    return 'Unlimited'
+  }
+
+  // maxNumberOfKeys and outstandingKeys are assumed to be defined
+  // if they are ever not, a runtime error can occur
+  return (lock.maxNumberOfKeys! - lock.outstandingKeys!).toString()
+}
+
+export const Lock = ({ lock }: LockProps) => {
+  const { purchaseKey } = usePurchaseKey(lock)
   return (
     <LockContainer>
       <InfoWrapper>
-        <LockName>{name}</LockName>
-        <KeysAvailable>{keysAvailable} Available</KeysAvailable>
+        <LockName>{lock.name}</LockName>
+        <KeysAvailable>{lockKeysAvailable(lock)} Available</KeysAvailable>
       </InfoWrapper>
-      <LockBody>
-        <LockPrice>{price}</LockPrice>
-        <TickerSymbol>{symbol}</TickerSymbol>
+      <LockBody onClick={purchaseKey}>
+        <LockPrice>{lock.keyPrice}</LockPrice>
+        <TickerSymbol>{(lock as any).currencySymbol || 'ETH'}</TickerSymbol>
         <ValidityDuration>
           <span>Valid for</span>
           <br />
-          <span>{validityDuration}</span>
+          <span>{durationsAsTextFromSeconds(lock.expirationDuration)}</span>
         </ValidityDuration>
         <Arrow />
       </LockBody>
