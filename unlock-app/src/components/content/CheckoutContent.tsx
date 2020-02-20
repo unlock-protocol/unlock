@@ -12,10 +12,8 @@ import {
   Network,
   Router,
   PaywallConfig,
-  RawLock,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
-import { durationsAsTextFromSeconds } from '../../utils/durations'
 import { usePaywallLocks } from '../../hooks/usePaywallLocks'
 
 interface CheckoutContentProps {
@@ -26,16 +24,6 @@ interface CheckoutContentProps {
 
 const defaultLockAddresses: string[] = []
 
-const lockKeysAvailable = (lock: RawLock) => {
-  if ((lock as any).unlimitedKeys) {
-    return 'Unlimited'
-  }
-
-  // maxNumberOfKeys and outstandingKeys are assumed to be defined
-  // if they are ever not, a runtime error can occur
-  return (lock.maxNumberOfKeys! - lock.outstandingKeys!).toString()
-}
-
 export const CheckoutContent = ({
   account,
   network,
@@ -45,7 +33,7 @@ export const CheckoutContent = ({
     ? Object.keys(config.locks)
     : defaultLockAddresses
   const { locks, loading } = usePaywallLocks(lockAddresses)
-
+  console.log({ locks })
   return (
     <Layout title="Checkout">
       <Head>
@@ -64,16 +52,7 @@ export const CheckoutContent = ({
           {locks && (
             <div>
               {locks.map(lock => (
-                <Lock
-                  name={lock.name}
-                  keysAvailable={lockKeysAvailable(lock)}
-                  key={lock.name}
-                  price={lock.keyPrice}
-                  symbol={(lock as any).currencySymbol || 'ETH'}
-                  validityDuration={durationsAsTextFromSeconds(
-                    lock.expirationDuration
-                  )}
-                />
+                <Lock lock={lock} key={lock.name} />
               ))}
             </div>
           )}
