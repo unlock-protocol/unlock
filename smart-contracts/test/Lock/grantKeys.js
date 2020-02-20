@@ -24,17 +24,33 @@ contract('Lock / grantKeys', accounts => {
 
   describe('can grant key(s)', () => {
     describe('can grant a key for a new user', () => {
+      let iD
+
       before(async () => {
         // the lock creator is assigned the KeyGranter role by default
-        tx = await lock.grantKeys([keyOwner], [validExpirationTimestamp], {
-          from: lockCreator,
-        })
+        let hasKey = await lock.getHasValidKey.call(keyOwner)
+        assert.equal(hasKey, false)
+        tx = await lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp],
+          [lockCreator],
+          {
+            from: lockCreator,
+          }
+        )
+        iD = new BigNumber(await lock.getTokenIdFor(keyOwner))
       })
 
-      it('should log Transfer event', async () => {
-        assert.equal(tx.logs[0].event, 'Transfer')
-        assert.equal(tx.logs[0].args.from, 0)
-        assert.equal(tx.logs[0].args.to, accounts[2])
+      it('should log the KeyManagerChanged event', async () => {
+        assert.equal(tx.logs[0].event, 'KeyManagerChanged')
+        assert(new BigNumber(tx.logs[0].args._tokenId).eq(iD))
+        assert.equal(tx.logs[0].args._newManager, lockCreator)
+      })
+
+      it('should log the Transfer event', async () => {
+        assert.equal(tx.logs[1].event, 'Transfer')
+        assert.equal(tx.logs[1].args.from, 0)
+        assert.equal(tx.logs[1].args.to, accounts[2])
       })
 
       it('should acknowledge that user owns key', async () => {
@@ -51,9 +67,14 @@ contract('Lock / grantKeys', accounts => {
 
       before(async () => {
         extendedExpiration = validExpirationTimestamp + 100
-        tx = await lock.grantKeys([keyOwner], [extendedExpiration], {
-          from: lockCreator,
-        })
+        tx = await lock.grantKeys(
+          [keyOwner],
+          [extendedExpiration],
+          [lockCreator],
+          {
+            from: lockCreator,
+          }
+        )
       })
 
       it('should log Transfer event', async () => {
@@ -76,9 +97,14 @@ contract('Lock / grantKeys', accounts => {
 
       it('should fail to grant keys when expiration dates are missing', async () => {
         await truffleAssert.fails(
-          lock.grantKeys(keyOwnerList, [validExpirationTimestamp], {
-            from: lockCreator,
-          }),
+          lock.grantKeys(
+            keyOwnerList,
+            [validExpirationTimestamp],
+            [lockCreator],
+            {
+              from: lockCreator,
+            }
+          ),
           'revert'
         )
       })
@@ -95,6 +121,7 @@ contract('Lock / grantKeys', accounts => {
         tx = await lock.methods['grantKeys(uint256[],uint256[])'](
           keyOwnerList,
           expirationDates,
+          [lockCreator],
           { from: lockCreator }
         )
       })
@@ -116,7 +143,7 @@ contract('Lock / grantKeys', accounts => {
   describe('should fail', () => {
     it('should fail to revoke a key', async () => {
       await reverts(
-        lock.grantKeys([keyOwner], [42], { from: lockCreator }),
+        lock.grantKeys([keyOwner], [42], [lockCreator], { from: lockCreator }),
         'ALREADY_OWNS_KEY'
       )
     })
@@ -136,16 +163,21 @@ contract('Lock / grantKeys', accounts => {
 
     it('should fail to reduce the time remaining on a key', async () => {
       await reverts(
-        lock.grantKeys([keyOwner], [validExpirationTimestamp - 1], {
-          from: lockCreator,
-        }),
+        lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp - 1],
+          [lockCreator],
+          {
+            from: lockCreator,
+          }
+        ),
         'ALREADY_OWNS_KEY'
       )
     })
 
     it('should fail if called by someone other than the owner', async () => {
       await reverts(
-        lock.grantKeys([keyOwner], [validExpirationTimestamp], {
+        lock.grantKeys([keyOwner], [validExpirationTimestamp], [lockCreator], {
           from: accounts[0],
         })
       )
