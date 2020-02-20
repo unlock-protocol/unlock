@@ -81,8 +81,9 @@ contract MixinTransfer is
       emit ExpireKey(_tokenId);
     }
 
-    if (toKey.tokenId == 0) {
+    if (iDTo == 0) {
       _assignNewTokenId(toKey);
+      iDTo = toKey.tokenId;
       _recordOwner(_to, iDTo);
       emit Transfer(
         address(0), // This is a creation or time-sharing

@@ -210,6 +210,16 @@ contract('Lock / shareKey', accounts => {
       )
     })
 
+    it('should correctly assign a new id to the new token', async () => {
+      let newId = await lock.getTokenIdFor.call(accountWithNoKey2)
+      // the tokenId of the new child key should be > the Parent key
+      assert(new BigNumber(newId).gt(new BigNumber(tokenId2)))
+    })
+
+    it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
+      await reverts(lock.ownerOf.call(0), 'NO_SUCH_KEY')
+    })
+
     it('total time remaining is <= original time + fee', async () => {
       timestampAfterSharing = new BigNumber(
         (await web3.eth.getBlock('latest')).timestamp
