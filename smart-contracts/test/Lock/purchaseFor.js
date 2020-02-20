@@ -66,9 +66,9 @@ contract('Lock / purchaseFor', accounts => {
           value: Units.convert('0.01', 'eth', 'wei'),
         }
       )
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+      assert.equal(tx.logs[1].event, 'Transfer')
+      assert.equal(tx.logs[1].args.from, 0)
+      assert.equal(tx.logs[1].args.to, accounts[2])
       // Verify that RenewKeyPurchase does not emit on a first key purchase
       const includes = tx.logs.filter(l => l.event === 'RenewKeyPurchase')
       assert.equal(includes.length, 0)
@@ -234,9 +234,9 @@ contract('Lock / purchaseFor', accounts => {
         web3.utils.padLeft(0, 40),
         []
       )
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+      assert.equal(tx.logs[1].event, 'Transfer')
+      assert.equal(tx.logs[1].args.from, 0)
+      assert.equal(tx.logs[1].args.to, accounts[2])
     })
 
     describe('can re-purchase an expired key', () => {
