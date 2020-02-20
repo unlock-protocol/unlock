@@ -204,6 +204,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         await locks.FIRST.approve(accountApproved, ID, {
           from: accountWithKeyApproved,
         })
+        await locks.FIRST.setKeyManagerOf(ID, accountApproved)
         await locks.FIRST.transferFrom(
           accountWithKeyApproved,
           accountApproved,
