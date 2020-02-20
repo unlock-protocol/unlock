@@ -36,6 +36,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "2.5.0",
     "@openzeppelin/test-helpers": "0.5.4",
+    "@openzeppelin/upgrades": "2.7.1",
     "@typescript-eslint/eslint-plugin": "2.19.2",
     "@typescript-eslint/parser": "2.19.2",
     "@vue/cli": "4.2.2",
