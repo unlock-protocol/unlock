@@ -62,7 +62,7 @@ contract('Lock / disableTransfers', accounts => {
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // try to share it
         await reverts(
-          lock.shareKey(accountWithNoKey, tokenId, oneDay, {
+          lock.shareKey(accountWithNoKey, tokenId, oneDay, keyOwner, {
             from: keyOwner,
           }),
           'KEY_TRANSFERS_DISABLED'
