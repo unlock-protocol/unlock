@@ -54,6 +54,14 @@ export const lockBodyOpacity = ({ loading }: LockBodyProps) => {
   `
 }
 
+export const lockBodyShadow = ({ loading }: LockBodyProps) => {
+  if (loading) {
+    return ''
+  }
+
+  return 'box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08)'
+}
+
 export const Arrow = styled(Svg.Arrow)`
   width: 32px;
   fill: var(--darkgrey);
@@ -66,7 +74,7 @@ export const LockBody = styled.div`
   width: 100%;
   border-radius: 4px;
   ${(props: LockBodyProps) => lockBodyBorder(props)};
-  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
+  ${(props: LockBodyProps) => lockBodyShadow(props)};
   display: flex;
   flex-direction: row;
   align-items: center;
