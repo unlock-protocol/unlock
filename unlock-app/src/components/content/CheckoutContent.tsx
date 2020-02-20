@@ -32,8 +32,9 @@ export const CheckoutContent = ({
   const lockAddresses = config
     ? Object.keys(config.locks)
     : defaultLockAddresses
+
   const { locks, loading } = usePaywallLocks(lockAddresses)
-  console.log({ locks })
+
   return (
     <Layout title="Checkout">
       <Head>
