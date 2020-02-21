@@ -5342,7 +5342,7 @@ Object {
         </span>
       </div>
       <div
-        class="sc-pbxSd kQAkpQ"
+        class="sc-pbxSd kdlDET"
       >
         <span
           class="sc-pBzUF kXDysY"
@@ -5441,7 +5441,6 @@ Object {
   width: 100%;
   border-radius: 4px;
   border: 1px var(--lightgrey) solid;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5500,7 +5499,7 @@ Object {
       class="sc-pjstK bwTJOd"
     >
       <div
-        class="sc-pbxSd hAlLJB"
+        class="sc-pbxSd gyQAqr"
         loading="true"
       />
     </div>
