@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useReducer } from 'react'
 import { useSelector } from 'react-redux'
-import { TransactionType } from '../unlockTypes'
+import { TransactionType, TransactionStatus } from '../unlockTypes'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
@@ -29,17 +29,29 @@ export const useLocks = owner => {
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
-    let l = locks.find(element => element.address === lock.address)
-    if (!l) {
+    /**
+     * Helper Method to sort locks
+     * @param {*} locks
+     */
+    const sortLocks = locks => {
+      return locks.sort((x, y) => {
+        return x.creationBlock < y.creationBlock
+      })
+    }
+
+    const index = locks.findIndex(
+      element => element.address.toLowerCase() === lock.address.toLowerCase()
+    )
+    if (index === -1) {
       // New lock, add it
-      return [lock, ...locks]
+      return sortLocks([lock, ...locks])
     }
     // The lock already exists. we merge
-    l = {
-      ...l,
+    locks[index] = {
+      ...locks[index],
       ...lock,
     }
-    return locks
+    return sortLocks(locks)
   }, [])
 
   // TODO Load thru context
@@ -56,9 +68,15 @@ export const useLocks = owner => {
    * Helper function: retrieves a lock object at the address
    */
   const getLockAtAddress = async address => {
-    const lock = await web3Service.getLock(address)
-    lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
-    lock.address = address
+    let lock
+    try {
+      lock = await web3Service.getLock(address)
+      lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+      lock.address = address
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`Could not get lock at ${address}: ${error.message}`)
+    }
     return lock
   }
 
@@ -69,18 +87,23 @@ export const useLocks = owner => {
     // The locks from the subgraph miss some important things, such as balance,
     // ERC20 info.. etc so we need to retrieve them from unlock-js too.
     // TODO: add these missing fields to the graph!
-    const lockAddresses = (await graphService.locksByOwner(owner)).map(
-      lock => lock.address
-    )
+    const locks = await graphService.locksByOwner(owner)
 
-    const lockPromises = lockAddresses.map(async (address, index) => {
+    const lockPromises = locks.map(async (lock, index) => {
+      addToLocks({
+        address: lock.address,
+        creationBlock: lock.creationBlock,
+      })
       // HACK: We delay each lock retrieval by 300ms to avoid rate limits...
       await new Promise(resolve => {
         setTimeout(() => {
           resolve()
         }, 300 * index)
       })
-      addToLocks(await getLockAtAddress(address))
+      const lockFromChain = await getLockAtAddress(lock.address)
+      if (lockFromChain) {
+        addToLocks(lockFromChain)
+      }
     })
     await Promise.all(lockPromises)
     setLoading(false)
@@ -90,22 +113,59 @@ export const useLocks = owner => {
    * Let's also retrieve past transactions for this user which locksmith keeps track of just in case one of them is a lock creation!
    */
   const retrieveLockCreationTransactions = async () => {
-    const { hashes } = await storageService.getRecentTransactionsHashesSentBy(
-      owner
-    )
+    const {
+      hashes: userTransactions,
+    } = await storageService.getRecentTransactionsHashesSentBy(owner)
 
     // For each transaction, we will get a 'transaction.updated' event
     // TODO: change API for unlockJS to yield promises rather than events
+    const transactions = {}
     web3Service.on('transaction.updated', async (transactionHash, update) => {
-      if (update.lock) {
-        const lock = await getLockAtAddress(update.lock)
-        addToLocks(lock)
+      if (!transactions[transactionHash]) {
+        transactions[transactionHash] = {
+          hash: transactionHash,
+        }
+      }
+      transactions[transactionHash] = {
+        ...transactions[transactionHash],
+        ...update,
+      }
+      // If the transaction is for a lock
+      if (
+        transactions[transactionHash].lock &&
+        transactions[transactionHash].type === TransactionType.LOCK_CREATION
+      ) {
+        // If the transaction has been mined
+        if (transactions[transactionHash].status === TransactionStatus.MINED) {
+          const lock = await getLockAtAddress(update.lock)
+          if (lock) {
+            addToLocks(lock)
+          }
+        } else {
+          // The lock has not yet been created...we need to show it, but as pending!
+          const lock = {
+            address: transactions[transactionHash].lock,
+            creationTransaction: transactions[transactionHash],
+          }
+          lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
+          addToLocks(lock)
+        }
       }
     })
 
     // For each of the hashes, let's retrieve the transaction
-    hashes.forEach(hash => {
-      web3Service.getTransaction(hash)
+    userTransactions.forEach(transaction => {
+      if (!transactions[transaction.hash]) {
+        transactions[transaction.hash] = transaction
+      }
+      try {
+        web3Service.getTransaction(transaction.hash, transaction)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `Could not get transaction at ${transaction.hash}: ${error.message}`
+        )
+      }
     })
   }
 
@@ -153,6 +213,8 @@ export const useLocks = owner => {
             lock: lock.address,
             type: TransactionType.LOCK_CREATION,
           }
+          lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
+
           // Store the hash!
           storageService.storeTransaction(
             transactionHash,

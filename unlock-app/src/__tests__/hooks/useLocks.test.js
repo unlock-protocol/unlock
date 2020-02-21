@@ -5,6 +5,7 @@ import { EventEmitter } from 'events'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
+import { TransactionType, TransactionStatus } from '../../unlockTypes'
 
 import useLocks from '../../hooks/useLocks'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
@@ -109,56 +110,97 @@ describe('useLocks', () => {
       },
     ]
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
-    )
-    await waitForNextUpdate() // Set the locks
-    await waitForNextUpdate() // Set the waiting
+    const { result, wait } = renderHook(() => useLocks(ownerAddress))
+    await wait(() => {
+      return result.current.loading === false
+    })
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(2)
     expect(mockGraphService.locksByOwner).toHaveBeenCalledWith(ownerAddress)
   })
 
-  it('retrieve the list of recent transactions as they may include lock creations', async () => {
-    expect.assertions(5)
-    graphLocks = []
-    pastTransactions = {
-      '0xt1': {
-        lock: '0x123',
-      },
-      '0xt2': {
-        lock: '0x456',
-      },
-    }
-    mockStorageService.getRecentTransactionsHashesSentBy = jest.fn(() =>
-      Promise.resolve({
-        hashes: Object.keys(pastTransactions),
-      })
-    )
+  describe('pending trasanctions', () => {
+    beforeEach(() => {
+      // Assume no graph locks for simplicit
+      graphLocks = []
 
-    mockWeb3Service.getTransaction = jest.fn(hash => {
-      mockWeb3Service.emit('transaction.updated', hash, {
-        lock: pastTransactions[hash].lock,
+      mockWeb3Service.getTransaction = jest.fn(hash => {
+        mockWeb3Service.emit('transaction.updated', hash, {
+          lock: pastTransactions[hash].lock,
+        })
       })
     })
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
-    )
-    await waitForNextUpdate()
-    const { loading, locks } = result.current
-    expect(loading).toBe(false)
-    expect(locks.length).toBe(2)
-    expect(
-      mockStorageService.getRecentTransactionsHashesSentBy
-    ).toHaveBeenCalledWith(ownerAddress)
-    expect(mockWeb3Service.getTransaction).toHaveBeenCalledTimes(
-      Object.keys(pastTransactions).length
-    )
-    expect(mockWeb3Service.getLock).toHaveBeenCalledTimes(
-      Object.keys(pastTransactions).length
-    )
+    it('retrieve the list of recent transactions as they may include lock creations', async () => {
+      expect.assertions(3)
+      pastTransactions = {
+        '0xt1': {
+          hash: '0xt1',
+          lock: '0x123',
+          type: TransactionType.LOCK_CREATION,
+          status: TransactionStatus.MINED,
+        },
+        '0xt2': {
+          hash: '0xt2',
+          type: TransactionType.LOCK_CREATION,
+          status: TransactionStatus.MINED,
+          lock: '0x456',
+        },
+      }
+      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn(() =>
+        Promise.resolve({
+          hashes: Object.values(pastTransactions),
+        })
+      )
+      const { result, wait } = renderHook(() => useLocks(ownerAddress))
+      await wait(() => {
+        return result.current.locks.length === 2
+      })
+      const { loading, locks } = result.current
+      expect(loading).toBe(false)
+      expect(locks.length).toBe(2)
+
+      expect(mockWeb3Service.getLock).toHaveBeenCalledTimes(
+        Object.keys(pastTransactions).length
+      )
+    })
+
+    it('should retrieve lock details only if the transaction is for a mined locked creation', async () => {
+      expect.assertions(4)
+      pastTransactions = {
+        '0xt1': {
+          hash: '0xt1',
+          lock: '0x123',
+          status: TransactionStatus.MINED,
+        },
+        '0xt2': {
+          hash: '0xt2',
+          type: TransactionType.LOCK_CREATION,
+          status: TransactionStatus.PENDING,
+          lock: '0x456',
+        },
+      }
+      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn(() =>
+        Promise.resolve({
+          hashes: Object.values(pastTransactions),
+        })
+      )
+      const { result, wait } = renderHook(() => useLocks(ownerAddress))
+      await wait(() => {
+        return result.current.locks.length === 1
+      })
+      const { loading, locks } = result.current
+      expect(loading).toBe(false)
+      expect(locks.length).toBe(1)
+      expect(locks[0]).toEqual({
+        address: pastTransactions['0xt2'].lock,
+        creationBlock: Number.MAX_SAFE_INTEGER.toString(),
+        creationTransaction: pastTransactions['0xt2'],
+      })
+
+      expect(mockWeb3Service.getLock).not.toHaveBeenCalled()
+    })
   })
 
   it('retrieve the locks details', async () => {
@@ -172,11 +214,10 @@ describe('useLocks', () => {
       },
     ]
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
-    )
-    await waitForNextUpdate() // set the locks
-    await waitForNextUpdate() // sets loading as false
+    const { result, wait } = renderHook(() => useLocks(ownerAddress))
+    await wait(() => {
+      return result.current.loading === false
+    })
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(2)
@@ -198,11 +239,10 @@ describe('useLocks', () => {
     mockWeb3Service.getLock = jest.fn(() => {
       return Promise.resolve(web3ServiceLock)
     })
-
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
-    )
-    await waitForNextUpdate()
+    const { result, wait } = renderHook(() => useLocks(ownerAddress))
+    await wait(() => {
+      return result.current.loading === false
+    })
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(1)

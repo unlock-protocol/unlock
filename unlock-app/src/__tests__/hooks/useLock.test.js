@@ -116,12 +116,13 @@ describe('useLock', () => {
     })
 
     it('should set the priceUpdateTransaction on the lock object', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
       const done = jest.fn()
       const newKeyPrice = '123'
       await act(async () => {
         await hookResult.current.updateKeyPrice(newKeyPrice, done)
       })
+      expect(hookResult.current.lock.keyPrice).toEqual(newKeyPrice)
       expect(hookResult.current.lock.priceUpdateTransaction).toMatchObject({
         confirmations: 0,
         hash: priceUpdateTransactionHash,
