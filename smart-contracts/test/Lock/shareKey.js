@@ -18,10 +18,10 @@ contract('Lock / shareKey', accounts => {
   let lock
   let tokenId1
   let tokenId2
-  let event
   let event1
   let event2
   let event3
+  let event4
   let tx1
   let tx2
 
@@ -180,16 +180,14 @@ contract('Lock / shareKey', accounts => {
           from: keyManager,
         }
       )
-      console.log(tx2.logs)
-      event = tx2.logs[0].event // ExpirationChanged
-      event1 = tx2.logs[1].event // KeyManagerChanged
+      event1 = tx2.logs[0].event // ExpirationChanged
       event2 = tx2.logs[2].event // Transfer
       event3 = tx2.logs[3].event // ExpirationChanged
       event4 = tx2.logs[4].event // Transfer
     })
 
     it('should emit the ExpirationChanged event twice', async () => {
-      assert.equal(event, 'ExpirationChanged')
+      assert.equal(event1, 'ExpirationChanged')
       assert.equal(tx2.logs[0].args._timeAdded, false)
       assert.equal(event3, 'ExpirationChanged')
       assert.equal(tx2.logs[3].args._timeAdded, true)
