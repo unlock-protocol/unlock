@@ -82,7 +82,7 @@ export default function configure(
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers.HTTP = `http://${httpProvider}:8545`
-    blockTime = 10 // in mseconds.
+    blockTime = 1000 // in mseconds.
     supportedProviders = ['HTTP']
     services.storage = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
@@ -96,7 +96,7 @@ export default function configure(
   // The `unlock-provider-integration` environment is only used in integration tests
   // when no provider has been injected so we can test unlock accounts.
   if (env === 'unlock-provider-integration') {
-    blockTime = 10 // in mseconds.
+    blockTime = 1000 // in mseconds.
     services.storage = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
