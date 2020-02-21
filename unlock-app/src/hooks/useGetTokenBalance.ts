@@ -1,11 +1,7 @@
 import { useReducer, useContext, useEffect } from 'react'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { Balances } from '../unlockTypes'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
-
-interface Balances {
-  eth: string
-  [contractAddress: string]: string
-}
 
 interface BalanceUpdate {
   // `eth` or the currency contract address

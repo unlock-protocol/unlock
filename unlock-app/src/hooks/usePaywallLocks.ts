@@ -3,7 +3,10 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { RawLock } from '../unlockTypes'
 
-export const usePaywallLocks = (lockAddresses: string[]) => {
+export const usePaywallLocks = (
+  lockAddresses: string[],
+  getTokenBalance: (contractAddress: string) => void
+) => {
   const web3Service: Web3Service = useContext(Web3ServiceContext)
 
   const [loading, setLoading] = useState(true)
@@ -17,8 +20,14 @@ export const usePaywallLocks = (lockAddresses: string[]) => {
     })
 
     const locks = await Promise.all(lockPromises)
-    // getLock doesn't always return the lock address apparently
-    locks.forEach((lock, index) => (lock.address = lockAddresses[index]))
+    locks.forEach((lock, index) => {
+      if (lock.currencyContractAddress) {
+        getTokenBalance(lock.currencyContractAddress)
+      }
+
+      // getLock doesn't always return the lock address apparently
+      lock.address = lockAddresses[index]
+    })
     setLoading(false)
     setLocks(locks)
   }

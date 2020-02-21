@@ -5127,35 +5127,6 @@ Object {
   margin-right: 8px;
 }
 
-.c4 {
-  height: 48px;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px var(--white) solid;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: var(--white);
-  cursor: pointer;
-}
-
-.c4:hover {
-  border: 1px solid var(--blue);
-}
-
-.c4:hover .c8 {
-  fill: var(--blue);
-}
-
 .c0 {
   width: 240px;
   height: 72px;
@@ -5257,6 +5228,35 @@ Object {
   width: 100%;
 }
 
+.c4 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.c4:hover {
+  border: 1px solid var(--blue);
+}
+
+.c4:hover .c8 {
+  fill: var(--blue);
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -5324,38 +5324,368 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-pjstK bwTJOd"
+      class="sc-pbxSd nDHyO"
     >
       <div
-        class="sc-qYIQh kMzNWR"
+        class="sc-qQMSE eJZUqy"
       >
         <span
-          class="sc-prorn lnozAw"
+          class="sc-pjstK vopgb"
         >
           ETH Lock
         </span>
         <span
-          class="sc-qQMSE jigpIh"
+          class="sc-prorn ghBwTr"
         >
           Unlimited
            Available
         </span>
       </div>
       <div
-        class="sc-pbxSd kdlDET"
+        class="sc-pRtAn kJBdYp"
       >
         <span
-          class="sc-pBzUF kXDysY"
+          class="sc-qYIQh hmXhDL"
         >
           0.01
         </span>
         <span
-          class="sc-pJUVA hTiwUC"
+          class="sc-pBzUF iykWKN"
         >
           ETH
         </span>
         <div
-          class="sc-pRtAn dLrkMV"
+          class="sc-pJUVA loGuSw"
+        >
+          <span>
+            Valid for
+          </span>
+          <br />
+          <span>
+            5 minutes
+          </span>
+        </div>
+        <svg
+          class="sc-oTBUA hFpCpo"
+          viewBox="0 0 24 24"
+        >
+          <path
+            clip-rule="evenodd"
+            d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Checkout Lock Insufficient Balance 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c11 {
+  width: 32px;
+  fill: var(--darkgrey);
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.c2 {
+  font-size: 13px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c3 {
+  font-size: 9px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c1 {
+  height: 24px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c6 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 12px;
+  text-align: right;
+  width: 65px;
+}
+
+.c8 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Mono;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: right;
+  width: 42px;
+}
+
+.c9 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: right;
+  height: 100%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.c9 > span {
+  width: 100%;
+}
+
+.c4 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.c4:hover {
+  border: 1px solid var(--blue);
+}
+
+.c4:hover .c10 {
+  fill: var(--blue);
+}
+
+.c4 .c10 {
+  visibility: hidden;
+}
+
+.c4 .c5,
+.c4 .c7 {
+  color: var(--red);
+}
+
+.c4:hover {
+  border: 1px var(--white) solid;
+  cursor: not-allowed;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <span
+            class="c2"
+          >
+            ETH Lock
+          </span>
+          <span
+            class="c3"
+          >
+            Unlimited
+             Available
+          </span>
+        </div>
+        <div
+          class="c4"
+        >
+          <span
+            class="c5 c6"
+          >
+            0.01
+          </span>
+          <span
+            class="c7 c8"
+          >
+            ETH
+          </span>
+          <div
+            class="c9"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              5 minutes
+            </span>
+          </div>
+          <svg
+            class="c10 c11"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-pbxSd nDHyO"
+    >
+      <div
+        class="sc-qQMSE eJZUqy"
+      >
+        <span
+          class="sc-pjstK vopgb"
+        >
+          ETH Lock
+        </span>
+        <span
+          class="sc-prorn ghBwTr"
+        >
+          Unlimited
+           Available
+        </span>
+      </div>
+      <div
+        class="sc-pRtAn faNRxl"
+      >
+        <span
+          class="sc-qYIQh hmXhDL"
+        >
+          0.01
+        </span>
+        <span
+          class="sc-pBzUF iykWKN"
+        >
+          ETH
+        </span>
+        <div
+          class="sc-pJUVA loGuSw"
         >
           <span>
             Valid for
@@ -5436,7 +5766,24 @@ exports[`Storyshots Checkout Lock Loading 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.c1 {
   height: 48px;
   width: 100%;
   border-radius: 4px;
@@ -5458,21 +5805,18 @@ Object {
   animation: gfABjo 2s linear infinite;
 }
 
-.c0 {
-  width: 240px;
-  height: 72px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  margin-top: 17px;
+.c1 .sc-oTBUA {
+  visibility: hidden;
+}
+
+.c1 .sc-qYIQh,
+.c1 .sc-pBzUF {
+  color: var(--red);
+}
+
+.c1:hover {
+  border: 1px var(--white) solid;
+  cursor: not-allowed;
 }
 
 <div>
@@ -5496,10 +5840,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-pjstK bwTJOd"
+      class="sc-pbxSd nDHyO"
     >
       <div
-        class="sc-pbxSd gyQAqr"
+        class="sc-pRtAn ijHGyJ"
         loading="true"
       />
     </div>

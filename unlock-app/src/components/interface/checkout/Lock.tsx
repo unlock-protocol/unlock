@@ -1,12 +1,13 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import Svg from '../svg'
-import { RawLock } from '../../../unlockTypes'
+import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 
 interface LockBodyProps {
   loading?: 'true'
+  canAfford?: boolean
 }
 
 export const lockBodyBackground = ({ loading }: LockBodyProps) => {
@@ -67,21 +68,6 @@ export const Arrow = styled(Svg.Arrow)`
   fill: var(--darkgrey);
   margin-left: auto;
   margin-right: 8px;
-`
-
-export const LockBody = styled.div`
-  height: 48px;
-  width: 100%;
-  border-radius: 4px;
-  ${(props: LockBodyProps) => lockBodyBorder(props)};
-  ${(props: LockBodyProps) => lockBodyShadow(props)};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  ${(props: LockBodyProps) => lockBodyBackground(props)};
-  ${(props: LockBodyProps) => lockBodyHover(props)};
-  ${(props: LockBodyProps) => lockBodyCursor(props)};
-  ${(props: LockBodyProps) => lockBodyOpacity(props)};
 `
 
 export const LockContainer = styled.div`
@@ -156,6 +142,39 @@ export const ValidityDuration = styled.div`
   }
 `
 
+export const lockBodyTooExpensive = ({ canAfford }: LockBodyProps) => {
+  if (!canAfford) {
+    return `
+  & ${Arrow} {
+  visibility: hidden;
+}
+& ${LockPrice}, ${TickerSymbol} {
+  color: var(--red);
+}
+&:hover {
+border: 1px var(--white) solid;
+cursor: not-allowed;
+}
+    `
+  }
+}
+
+export const LockBody = styled.div`
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  ${(props: LockBodyProps) => lockBodyBorder(props)};
+  ${(props: LockBodyProps) => lockBodyShadow(props)};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  ${(props: LockBodyProps) => lockBodyBackground(props)};
+  ${(props: LockBodyProps) => lockBodyHover(props)};
+  ${(props: LockBodyProps) => lockBodyCursor(props)};
+  ${(props: LockBodyProps) => lockBodyOpacity(props)};
+  ${(props: LockBodyProps) => lockBodyTooExpensive(props)};
+`
+
 export const LoadingLock = () => {
   return (
     <LockContainer>
@@ -166,6 +185,7 @@ export const LoadingLock = () => {
 
 interface LockProps {
   lock: RawLock
+  balances: Balances
 }
 
 const lockKeysAvailable = (lock: RawLock) => {
@@ -178,15 +198,32 @@ const lockKeysAvailable = (lock: RawLock) => {
   return (lock.maxNumberOfKeys! - lock.outstandingKeys!).toString()
 }
 
-export const Lock = ({ lock }: LockProps) => {
+export const userCanAffordKey = (
+  lock: RawLock,
+  balances: Balances
+): boolean => {
+  const currency = lock.currencyContractAddress || 'eth'
+  const keyPrice = parseFloat(lock.keyPrice)
+  const balance = parseFloat(balances[currency])
+
+  if (typeof keyPrice !== 'number' || typeof balance !== 'number') {
+    // we could not parse one of these numbers, ipso facto we cannot afford a key
+    return false
+  }
+
+  return keyPrice <= balance
+}
+
+export const Lock = ({ lock, balances }: LockProps) => {
   const { purchaseKey } = usePurchaseKey(lock)
+  const canAfford = userCanAffordKey(lock, balances)
   return (
     <LockContainer>
       <InfoWrapper>
         <LockName>{lock.name}</LockName>
         <KeysAvailable>{lockKeysAvailable(lock)} Available</KeysAvailable>
       </InfoWrapper>
-      <LockBody onClick={purchaseKey}>
+      <LockBody onClick={purchaseKey} canAfford={canAfford}>
         <LockPrice>{lock.keyPrice}</LockPrice>
         <TickerSymbol>{(lock as any).currencySymbol || 'ETH'}</TickerSymbol>
         <ValidityDuration>

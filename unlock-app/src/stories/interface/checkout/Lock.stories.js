@@ -21,6 +21,9 @@ storiesOf('Checkout Lock', module)
   .add('Loading', () => {
     return <LoadingLock />
   })
+  .add('Insufficient Balance', () => {
+    return <Lock lock={lock} balances={{}} />
+  })
   .add('Active', () => {
-    return <Lock lock={lock} />
+    return <Lock lock={lock} balances={{ eth: '1' }} />
   })
