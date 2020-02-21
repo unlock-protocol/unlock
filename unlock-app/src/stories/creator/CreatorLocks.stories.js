@@ -4,9 +4,15 @@ import { storiesOf } from '@storybook/react'
 import { CreatorLocks } from '../../components/creator/CreatorLocks'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
+import { Web3ServiceContext } from '../../utils/withWeb3Service'
+import { WalletServiceContext } from '../../utils/withWalletService'
 import doNothing from '../../utils/doNothing'
 import configure from '../../config'
 
+const account = {
+  address: '0xdeadbeef',
+  balance: '0.12',
+}
 const lock = {
   name: 'First Lock',
   keyPrice: '0.01',
@@ -29,27 +35,39 @@ const anotherLock = {
 }
 
 const store = createUnlockStore({
-  account: {
-    address: '0xdeadbeef',
-    balance: '0.12',
-  },
+  account,
   locks: [lock],
 })
 
 const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
-
+const WalletServiceProvider = WalletServiceContext.Provider
+const Web3ServiceProvider = Web3ServiceContext.Provider
 const createLock = doNothing
+
+const web3Service = {
+  off: () => {},
+}
+const walletService = {}
 
 storiesOf('CreatorLocks', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => (
+    <Web3ServiceProvider value={web3Service}>{getStory()}</Web3ServiceProvider>
+  ))
+  .addDecorator(getStory => (
+    <WalletServiceProvider value={walletService}>
+      {getStory()}
+    </WalletServiceProvider>
+  ))
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('no lock', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[]}
         hideForm={doNothing}
@@ -60,6 +78,7 @@ storiesOf('CreatorLocks', module)
   .add('no lock, showForm', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[]}
         hideForm={doNothing}
@@ -70,6 +89,7 @@ storiesOf('CreatorLocks', module)
   .add('single lock', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[lock]}
         hideForm={doNothing}
@@ -80,6 +100,7 @@ storiesOf('CreatorLocks', module)
   .add('multiple locks', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
         hideForm={doNothing}
@@ -90,6 +111,7 @@ storiesOf('CreatorLocks', module)
   .add('loading with locks', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[lock, anotherLock]}
         formIsVisible={false}
@@ -101,6 +123,7 @@ storiesOf('CreatorLocks', module)
   .add('loading with no lock', () => {
     return (
       <CreatorLocks
+        account={account}
         createLock={createLock}
         lockFeed={[]}
         loading

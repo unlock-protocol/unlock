@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { GET_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
-import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
+import { UPDATE_ACCOUNT } from '../../actions/accounts'
 import {
   ADD_TRANSACTION,
   UPDATE_TRANSACTION,
@@ -10,8 +10,6 @@ import {
 import { SET_ERROR } from '../../actions/error'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import { START_LOADING, DONE_LOADING } from '../../actions/loading'
-import configure from '../../config'
-import GraphService from '../../services/graphService'
 
 /**
  * Fake state
@@ -38,14 +36,13 @@ const network = {
  * Taken from https://redux.js.org/recipes/writing-tests#middleware
  */
 const create = () => {
-  const config = configure()
   const store = {
     getState: jest.fn(() => state),
     dispatch: jest.fn(() => true),
   }
   const next = jest.fn()
 
-  const handler = web3Middleware(config, mockWeb3Service)(store)
+  const handler = web3Middleware(mockWeb3Service)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -64,8 +61,7 @@ class MockWebService extends EventEmitter {
 }
 
 let mockWeb3Service = new MockWebService()
-jest.mock('../../services/graphService')
-let mockGraphService
+
 beforeEach(() => {
   // Reset the mock
   mockWeb3Service = new MockWebService()
@@ -256,29 +252,6 @@ describe('Lock middleware', () => {
       )
     })
   })
-
-  it('should handle SET_ACCOUNT by getting all locks for that user using the graphService', async () => {
-    expect.assertions(1)
-
-    const { invoke } = create()
-    mockGraphService = GraphService.mock.instances[0]
-    mockGraphService.locksByOwner = jest.fn(() =>
-      Promise.resolve([
-        { name: 'first lock', address: '0x123' },
-        { name: 'second lock', address: '0x456' },
-      ])
-    )
-
-    const newAccount = {
-      address: '0x345',
-    }
-    invoke(setAccount(newAccount))
-
-    expect(mockGraphService.locksByOwner).toHaveBeenCalledWith(
-      newAccount.address
-    )
-  })
-
   it('should handle ADD_TRANSACTION', async () => {
     expect.assertions(4)
     const { next, invoke, store } = create()

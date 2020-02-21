@@ -15,6 +15,11 @@ const network = {
   name: 1984,
 }
 
+jest.mock('../../../hooks/useLocks', () => {
+  return {
+    useLocks: jest.fn(() => [false, []]),
+  }
+})
 const config = configure()
 const ConfigProvider = ConfigContext.Provider
 

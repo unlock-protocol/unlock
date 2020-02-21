@@ -52,7 +52,7 @@ const storageService = new StorageService(config.services.storage.host)
 function getOrCreateStore(initialState, path) {
   const middlewares = [
     providerMiddleware(config),
-    web3Middleware(config, web3Service),
+    web3Middleware(web3Service),
     currencyConversionMiddleware(config),
     walletMiddleware(config, walletService),
     wedlocksMiddleware(config),

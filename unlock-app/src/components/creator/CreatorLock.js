@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
@@ -11,6 +10,7 @@ import Balance from '../helpers/Balance'
 import CreatorLockForm from './CreatorLockForm'
 import { NoPhone, Phone } from '../../theme/media'
 import withConfig from '../../utils/withConfig'
+import { useLock } from '../../hooks/useLock'
 
 import {
   LockPanel,
@@ -25,7 +25,6 @@ import {
   LockWarning,
   LockDetails,
 } from './LockStyles'
-import { updateKeyPrice, updateLock } from '../../actions/lock'
 import { currencySymbol } from '../../utils/lock'
 import { INFINITY } from '../../constants'
 
@@ -69,16 +68,27 @@ LockKeysNumbers.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export const CreatorLock = ({ lock, updateLock }) => {
+export const CreatorLock = ({ lock: lockFromProps }) => {
   const [showEmbedCode, setShowEmbedCode] = useState(false)
   const [editing, setEditing] = useState(false)
+  const { lock, updateKeyPrice } = useLock(lockFromProps)
+
+  const updateLock = newLock => {
+    // If the price has changed
+    if (lock.keyPrice !== newLock.keyPrice) {
+      updateKeyPrice(newLock.keyPrice, () => {
+        setEditing(false)
+      })
+    }
+    // TODO: support other changes?
+  }
 
   if (editing) {
     return (
       <CreatorLockForm
         lock={lock}
         hideAction={() => setEditing(false)}
-        saveLock={newLock => updateLock(newLock)}
+        saveLock={updateLock}
       />
     )
   }
@@ -150,22 +160,7 @@ export const CreatorLock = ({ lock, updateLock }) => {
 }
 
 CreatorLock.propTypes = {
-  updateLock: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export const mapDispatchToProps = (dispatch, { lock }) => {
-  return {
-    updateLock: newLock => {
-      // If the price has changed
-      if (lock.keyPrice !== newLock.keyPrice) {
-        dispatch(updateKeyPrice(lock.address, newLock.keyPrice))
-      }
-
-      // Reflect all changes
-      dispatch(updateLock(lock.address, newLock))
-    },
-  }
-}
-
-export default connect(undefined, mapDispatchToProps)(CreatorLock)
+export default CreatorLock

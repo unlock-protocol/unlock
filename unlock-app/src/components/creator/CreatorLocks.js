@@ -13,9 +13,53 @@ import { createLock } from '../../actions/lock'
 import { hideForm } from '../../actions/lockFormVisibility'
 import { DefaultError } from './FatalError'
 import Loading from '../interface/Loading'
+import { useLocks } from '../../hooks/useLocks'
+
+/**
+ * A wrapper to get the locks via a hook
+ * @param {*} param0
+ */
+export const CreatorLocksFromHook = ({
+  createLock,
+  formIsVisible,
+  hideForm,
+  account,
+}) => {
+  const { loading, locks: lockFeed, addLock, error } = useLocks(
+    account.address,
+    createLock
+  )
+
+  if (error) {
+    // Show the error
+    return (
+      <DefaultError title={error} critical={false}>
+        {error}
+      </DefaultError>
+    )
+  }
+
+  return (
+    <CreatorLocks
+      createLock={addLock}
+      formIsVisible={formIsVisible}
+      hideForm={hideForm}
+      account={account}
+      loading={loading}
+      lockFeed={lockFeed}
+    />
+  )
+}
+CreatorLocksFromHook.propTypes = {
+  account: UnlockPropTypes.account.isRequired,
+  createLock: PropTypes.func.isRequired,
+  formIsVisible: PropTypes.bool.isRequired,
+  hideForm: PropTypes.func.isRequired,
+}
 
 export const CreatorLocks = props => {
   const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
+
   return (
     <Locks>
       <LockHeaderRow>
@@ -31,7 +75,13 @@ export const CreatorLocks = props => {
       </LockHeaderRow>
       <Errors />
       {formIsVisible && (
-        <CreatorLockForm hideAction={hideForm} saveLock={createLock} pending />
+        <CreatorLockForm
+          hideAction={hideForm}
+          saveLock={async lock => {
+            await createLock(lock, hideForm)
+          }}
+          pending
+        />
       )}
       {lockFeed.length > 0 &&
         lockFeed.map(lock => {
@@ -70,34 +120,17 @@ const mapDispatchToProps = dispatch => ({
   hideForm: () => dispatch(hideForm()),
 })
 
-export const mapStateToProps = ({
-  account,
-  loading,
-  lockFormStatus: { visible },
-  locks,
-}) => {
-  // We want to display newer locks first, so sort the locks by blockNumber in descending order
-  const locksComparator = (a, b) => {
-    return parseInt(b.creationBlock) - parseInt(a.creationBlock)
-  }
-
-  // Only show the current account's locks
-  const locksFilter = lock => {
-    return lock.owner === account.address
-  }
-
-  const lockFeed = Object.values(locks)
-    .filter(locksFilter)
-    .sort(locksComparator)
-
+export const mapStateToProps = ({ account, lockFormStatus: { visible } }) => {
   return {
-    lockFeed,
-    loading: !!loading,
     formIsVisible: visible,
+    account,
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatorLocks)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatorLocksFromHook)
 
 const Locks = styled.section`
   display: grid;

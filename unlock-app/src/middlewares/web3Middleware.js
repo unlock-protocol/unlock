@@ -3,7 +3,7 @@
 import { CREATE_LOCK, GET_LOCK, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
-import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
+import { updateAccount } from '../actions/accounts'
 import { setError } from '../actions/error'
 import {
   addTransaction,
@@ -15,15 +15,11 @@ import { UNLIMITED_KEYS_COUNT } from '../constants'
 
 import { transactionTypeMapping } from '../utils/types'
 import { Web3 } from '../utils/Error'
-import GraphService from '../services/graphService'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
-const web3Middleware = (config, web3Service) => {
-  const { subgraphURI } = config
+const web3Middleware = web3Service => {
   return ({ getState, dispatch }) => {
-    const graphService = new GraphService(subgraphURI)
-
     web3Service.on('account.updated', (account, update) => {
       dispatch(updateAccount(update))
     })
@@ -102,24 +98,6 @@ const web3Middleware = (config, web3Service) => {
         if (action.type === GET_LOCK) {
           web3Service.getLock(action.address)
         }
-
-        if (action.type === SET_ACCOUNT) {
-          dispatch(startLoading())
-          graphService.locksByOwner(action.account.address).then(locks => {
-            // The locks from the subgraph miss some important things, such as balance,
-            // ERC20 info.. etc so we need to retrieve them from unlock-js too.
-            // TODO: add these missing fields to the graph!
-            locks.forEach((lock, index) => {
-              dispatch(updateLock(lock.address, lock))
-              // HACK: We delay each lock by 200ms to avoid rate limits...
-              setTimeout(() => {
-                web3Service.getLock(lock.address)
-              }, 200 * index)
-            })
-            dispatch(doneLoading())
-          })
-        }
-
         next(action)
       }
     }
