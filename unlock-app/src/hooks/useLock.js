@@ -46,6 +46,7 @@ export const useLock = lockFromProps => {
         keyPrice: newKeyPrice,
       },
       (error, transactionHash) => {
+        lock.keyPrice = newKeyPrice
         lock.priceUpdateTransaction = {
           confirmations: 0,
           createdAt: new Date().getTime(),
