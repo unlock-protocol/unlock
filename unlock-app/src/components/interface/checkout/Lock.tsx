@@ -45,9 +45,9 @@ export const fadeInOut = keyframes`
   100% { opacity: 1; }
 `
 
-export const lockBodyOpacity = ({ loading }: LockBodyProps) => {
+export const lockBodyOpacity = ({ loading, canAfford }: LockBodyProps) => {
   if (!loading) {
-    return ''
+    return canAfford ? '' : 'opacity: 0.5;'
   }
 
   return css`
@@ -93,6 +93,10 @@ export const KeysAvailable = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
+`
+
+export const CannotBuy = styled(KeysAvailable)`
+  color: var(--red);
 `
 
 export const InfoWrapper = styled.div`
@@ -221,7 +225,10 @@ export const Lock = ({ lock, balances }: LockProps) => {
     <LockContainer>
       <InfoWrapper>
         <LockName>{lock.name}</LockName>
-        <KeysAvailable>{lockKeysAvailable(lock)} Available</KeysAvailable>
+        {!canAfford && <CannotBuy>Insufficient Funds</CannotBuy>}
+        {canAfford && (
+          <KeysAvailable>{lockKeysAvailable(lock)} Available</KeysAvailable>
+        )}
       </InfoWrapper>
       <LockBody onClick={purchaseKey} canAfford={canAfford}>
         <LockPrice>{lock.keyPrice}</LockPrice>
