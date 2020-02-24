@@ -5804,6 +5804,16 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c17 {
+  display: grid;
+  justify-items: center;
+}
+
+.c17 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -5874,16 +5884,6 @@ Object {
 .c15 {
   margin: 0px;
   font-size: 16px;
-}
-
-.c17 {
-  display: grid;
-  justify-items: center;
-}
-
-.c17 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -34079,6 +34079,16 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c28 {
+  display: grid;
+  justify-items: center;
+}
+
+.c28 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -34149,16 +34159,6 @@ Object {
 .c20 {
   margin: 0px;
   font-size: 16px;
-}
-
-.c28 {
-  display: grid;
-  justify-items: center;
-}
-
-.c28 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 .c26 {
@@ -36909,6 +36909,16 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c28 {
+  display: grid;
+  justify-items: center;
+}
+
+.c28 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -36979,16 +36989,6 @@ Object {
 .c20 {
   margin: 0px;
   font-size: 16px;
-}
-
-.c28 {
-  display: grid;
-  justify-items: center;
-}
-
-.c28 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 .c26 {
@@ -38611,6 +38611,16 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c28 {
+  display: grid;
+  justify-items: center;
+}
+
+.c28 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -38681,16 +38691,6 @@ Object {
 .c20 {
   margin: 0px;
   font-size: 16px;
-}
-
-.c28 {
-  display: grid;
-  justify-items: center;
-}
-
-.c28 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 .c26 {
@@ -40313,6 +40313,16 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c28 {
+  display: grid;
+  justify-items: center;
+}
+
+.c28 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -40383,16 +40393,6 @@ Object {
 .c20 {
   margin: 0px;
   font-size: 16px;
-}
-
-.c28 {
-  display: grid;
-  justify-items: center;
-}
-
-.c28 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 .c26 {
@@ -51712,6 +51712,16 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c23 {
+  display: grid;
+  justify-items: center;
+}
+
+.c23 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -51782,16 +51792,6 @@ Object {
 .c18 {
   margin: 0px;
   font-size: 16px;
-}
-
-.c23 {
-  display: grid;
-  justify-items: center;
-}
-
-.c23 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {

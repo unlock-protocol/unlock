@@ -11,9 +11,13 @@ import { MessageBox } from './modal-templates/styles'
 import { ActionButton } from './buttons/ActionButton'
 import withConfig from '../../utils/withConfig'
 import useTermsOfService from '../../hooks/useTermsOfService'
+import Loading from './Loading'
 
 export default function Layout({ forContent, title, children }) {
-  const [tosAccepted, setTosAccepted] = useTermsOfService()
+  const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
+  if (termsLoading) {
+    return <Loading />
+  }
   return (
     <Container>
       <Left>
@@ -27,7 +31,7 @@ export default function Layout({ forContent, title, children }) {
       </Left>
       <Content>
         <Header forContent={forContent} title={title} />
-        {!tosAccepted && <Terms setTosAccepted={setTosAccepted} />}
+        {!termsAccepted && <Terms setTermsAccepted={saveTermsAccepted} />}
         {children}
         {forContent && <Footer />}
       </Content>
@@ -48,7 +52,7 @@ Layout.defaultProps = {
   forContent: false,
 }
 
-const Terms = withConfig(({ setTosAccepted, config }) => {
+const Terms = withConfig(({ setTermsAccepted, config }) => {
   return (
     <styles.Greyout>
       <TermsModal>
@@ -67,7 +71,9 @@ const Terms = withConfig(({ setTosAccepted, config }) => {
           </Link>
           .
         </Message>
-        <TosButton onClick={() => setTosAccepted(true)}>I agree</TosButton>
+        <TermsButton onClick={() => setTermsAccepted(true)}>
+          I agree
+        </TermsButton>
       </TermsModal>
     </styles.Greyout>
   )
@@ -95,7 +101,7 @@ const TermsModal = styled(MessageBox)`
   `}
 `
 
-const TosButton = styled(ActionButton)`
+const TermsButton = styled(ActionButton)`
   padding: 10px;
 `
 

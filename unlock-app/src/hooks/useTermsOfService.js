@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export const localStorageKey = 'terms-of-service'
 
@@ -7,24 +7,34 @@ export const localStorageKey = 'terms-of-service'
  * @param {*} address
  */
 export const useTermsOfService = () => {
-  const [tosAccepted, setTosAccepted] = useState(() => {
+  const [termsLoading, setTermsLoading] = useState(true)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+
+  const readFromLocalStorage = () => {
     try {
-      return window.localStorage.getItem(localStorageKey) === 'true'
+      setTermsAccepted(window.localStorage.getItem(localStorageKey) === 'true')
+      setTermsLoading(false)
     } catch (error) {
       // No localstorage, assume false!
-      return false
+      setTermsAccepted(false)
+      setTermsLoading(false)
     }
-  })
+  }
 
-  const saveTosAccepted = () => {
-    setTosAccepted(true)
+  useEffect(() => {
+    readFromLocalStorage()
+  }, [])
+
+  const saveTermsAccepted = () => {
+    setTermsAccepted(true)
     try {
-      window.localStorage.setItem(localStorageKey, true)
+      window.localStorage.setItem(localStorageKey, 'true')
     } catch (error) {
       // Could not store in localstorage.
     }
   }
-  return [tosAccepted, saveTosAccepted]
+
+  return { termsAccepted, saveTermsAccepted, termsLoading }
 }
 
 export default useTermsOfService
