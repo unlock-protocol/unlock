@@ -9,7 +9,7 @@ import { SignUp } from '../../components/interface/SignUp'
 import { FinishSignup } from '../../components/interface/FinishSignup'
 import { InvalidLink } from '../../components/interface/InvalidLink'
 import { SignupSuccess } from '../../components/interface/SignupSuccess'
-import LogInSignUp from '../../components/interface/LogInSignUp'
+import { LogInSignUp } from '../../components/interface/LogInSignUp'
 
 storiesOf('LogInSignUp/Components', module)
   .add('LogIn', () => {
@@ -53,20 +53,27 @@ const account = {
   balance: '0',
 }
 
+const mockConfig = {
+  googleApiKey: 'api_key',
+  googleClientId: 'client_id',
+  googleDiscoveryDocs: 'discovery_docs',
+  googleScopes: 'scopes',
+}
+
 storiesOf('LogInSignUp', module)
   .add('Login', () => (
     <Provider store={store}>
-      <LogInSignUp login />
+      <LogInSignUp login config={mockConfig} />
     </Provider>
   ))
   .add('Login (error)', () => (
     <Provider store={errorStore}>
-      <LogInSignUp login />
+      <LogInSignUp login config={mockConfig} />
     </Provider>
   ))
   .add('SignUp', () => (
     <Provider store={store}>
-      <LogInSignUp signup />
+      <LogInSignUp signup config={mockConfig} />
     </Provider>
   ))
 

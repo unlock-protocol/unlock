@@ -12,6 +12,7 @@ import * as GOath from '../../utils/gOauth'
 interface Props {
   login?: boolean
   signup?: boolean
+  config?: any
 }
 
 interface State {
@@ -58,7 +59,7 @@ export class LogInSignUp extends React.Component<Props, State> {
   getGapi = () => {
     const config = this.googleConfig()
 
-    if (gapi) {
+    if ((window as any).gapi) {
       GOath.getGapi({
         apiKey: config.googleApiKey,
         clientId: config.googleClientId,
