@@ -1,18 +1,38 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { useState } from 'react'
 import 'cross-fetch/polyfill'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
 import Link from 'next/link'
+
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import { Account as AccountType, Network, Router } from '../../unlockTypes'
+import {
+  Account as AccountType,
+  Network,
+  Router,
+  MemberFilters,
+} from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import Loading from '../interface/Loading'
 import useMembers from '../../hooks/useMembers'
+
+interface FilterProps {
+  value: string
+  current: string
+  setFilter: (string) => any
+}
+
+const Filter = ({ value, current, setFilter }: FilterProps) => {
+  return (
+    <StyledFilter active={current === value} onClick={() => setFilter(value)}>
+      {value}
+    </StyledFilter>
+  )
+}
 
 interface Props {
   account: AccountType
@@ -21,6 +41,8 @@ interface Props {
 }
 
 export const MembersContent = ({ account, network, lockAddresses }: Props) => {
+  const [filter, setFilter] = useState('active')
+
   return (
     <Layout title="Members">
       <Head>
@@ -29,9 +51,23 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
+          <Filters>
+            Show{' '}
+            <Filter
+              value={MemberFilters.ACTIVE}
+              current={filter}
+              setFilter={value => setFilter(value)}
+            />
+            <Filter
+              value={MemberFilters.ALL}
+              current={filter}
+              setFilter={value => setFilter(value)}
+            />
+          </Filters>
           <MetadataTableWrapper
             lockAddresses={lockAddresses}
             accountAddress={account.address}
+            filter={filter}
           />
         </BrowserOnly>
       )}
@@ -51,10 +87,12 @@ interface MetadataTableWrapperProps {
 const MetadataTableWrapper = ({
   lockAddresses,
   accountAddress,
+  filter,
 }: MetadataTableWrapperProps) => {
   const { loading, error, list, columns } = useMembers(
     lockAddresses,
-    accountAddress
+    accountAddress,
+    filter
   )
 
   if (loading) {
@@ -106,6 +144,23 @@ export const mapStateToProps = ({ account, network, router }: ReduxState) => {
 
 const Message = styled.p`
   color: var(--grey);
+`
+
+const Filters = styled.nav`
+  color: var(--grey);
+  font-size: 13px;
+`
+
+interface StyledFilterProps {
+  active?: boolean
+}
+const StyledFilter = styled.li`
+  cursor: ${(props: StyledFilterProps) =>
+    props.active ? 'not-allowed' : 'pointer'};
+  display: inline-block;
+  margin: 5px;
+  color: ${props => (props.active ? 'var(--darkgrey)' : 'var(--blue)')};
+  font-weight: ${props => (props.active ? '700' : '300')};
 `
 
 export default connect(mapStateToProps)(MembersContent)
