@@ -16,7 +16,7 @@
     "@types/next": "8.0.7",
     "@types/react": "16.9.19",
     "@types/storybook__react": "4.0.2",
-    "@types/styled-components": "4.4.3",
+    "@types/styled-components": "5.0.0",
     "@typescript-eslint/eslint-plugin": "2.19.2",
     "@typescript-eslint/parser": "2.19.2",
     "@zeit/next-source-maps": "0.0.3",
