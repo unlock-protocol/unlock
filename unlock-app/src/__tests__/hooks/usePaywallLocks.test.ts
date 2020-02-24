@@ -39,7 +39,9 @@ describe('usePaywallLocks', () => {
   it('should default to an empty object and loading, then populate with locks and stop loading', async () => {
     expect.assertions(4)
     const lockAddresses = ['0xlock1', '0xlock2']
-    const { result, wait } = renderHook(() => usePaywallLocks(lockAddresses))
+    const { result, wait } = renderHook(() =>
+      usePaywallLocks(lockAddresses, jest.fn())
+    )
 
     expect(result.current.locks).toEqual([])
     expect(result.current.loading).toBeTruthy()
@@ -49,5 +51,29 @@ describe('usePaywallLocks', () => {
     })
     expect(result.current.locks).toHaveLength(2)
     expect(result.current.loading).toBeFalsy()
+  })
+
+  it('should query for ERC20 token balance if necessary', async () => {
+    expect.assertions(1)
+
+    mockWeb3Service.getLock = jest.fn(address => {
+      return Promise.resolve({
+        address,
+        currencyContractAddress: '0xerc20',
+        ...web3ServiceLock,
+      })
+    })
+
+    const lockAddresses = ['0xlock1']
+    const getTokenBalance = jest.fn()
+    const { result, wait } = renderHook(() =>
+      usePaywallLocks(lockAddresses, getTokenBalance)
+    )
+
+    await wait(() => {
+      return !result.current.loading
+    })
+
+    expect(getTokenBalance).toHaveBeenCalledWith('0xerc20')
   })
 })

@@ -193,3 +193,8 @@ export interface RawLock {
   balance?: string
   owner?: string
 }
+
+export interface Balances {
+  eth: string
+  [contractAddress: string]: string
+}
