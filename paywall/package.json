@@ -37,7 +37,7 @@
     "@types/postmate": "1.5.0",
     "@types/react": "16.9.20",
     "@types/react-dom": "16.9.5",
-    "@types/styled-components": "4.4.3",
+    "@types/styled-components": "5.0.0",
     "@typescript-eslint/eslint-plugin": "2.20.0",
     "@typescript-eslint/parser": "2.20.0",
     "@unlock-protocol/unlock-js": "0.8.3",
