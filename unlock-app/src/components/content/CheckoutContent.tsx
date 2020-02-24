@@ -6,7 +6,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import { Lock, LoadingLock } from '../interface/checkout/Lock'
+import { Locks } from '../interface/checkout/Locks'
 import {
   Account as AccountType,
   Network,
@@ -14,7 +14,6 @@ import {
   PaywallConfig,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
-import { usePaywallLocks } from '../../hooks/usePaywallLocks'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -33,8 +32,6 @@ export const CheckoutContent = ({
     ? Object.keys(config.locks)
     : defaultLockAddresses
 
-  const { locks, loading } = usePaywallLocks(lockAddresses)
-
   return (
     <Layout title="Checkout">
       <Head>
@@ -43,20 +40,10 @@ export const CheckoutContent = ({
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
-          {loading && (
-            <div>
-              {lockAddresses.map(address => (
-                <LoadingLock key={address} />
-              ))}
-            </div>
-          )}
-          {locks && (
-            <div>
-              {locks.map(lock => (
-                <Lock lock={lock} key={lock.name} />
-              ))}
-            </div>
-          )}
+          <Locks
+            accountAddress={account.address}
+            lockAddresses={lockAddresses}
+          />
         </BrowserOnly>
       )}
     </Layout>
