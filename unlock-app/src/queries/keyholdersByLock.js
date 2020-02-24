@@ -2,9 +2,9 @@ import { gql } from 'apollo-boost'
 
 export default function keyholdersByLockQuery() {
   return gql`
-    query Lock($addresses: [String!]) {
+    query Lock($addresses: [String!], $expiresAfter: BigInt! = 0) {
       locks(where: { address_in: $addresses }) {
-        keys {
+        keys(where: { expiration_gt: $expiresAfter }) {
           owner {
             address
           }
