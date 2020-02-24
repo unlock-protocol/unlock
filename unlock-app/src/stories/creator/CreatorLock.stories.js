@@ -3,6 +3,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import CreatorLock from '../../components/creator/CreatorLock'
+import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionType } from '../../unlockTypes'
@@ -71,9 +72,16 @@ const store = createUnlockStore({
 const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
+const Web3ServiceProvider = Web3ServiceContext.Provider
 
+const web3Service = {
+  off: () => {},
+}
 storiesOf('CreatorLock', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => (
+    <Web3ServiceProvider value={web3Service}>{getStory()}</Web3ServiceProvider>
+  ))
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))

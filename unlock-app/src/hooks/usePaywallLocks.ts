@@ -17,13 +17,15 @@ export const usePaywallLocks = (lockAddresses: string[]) => {
     })
 
     const locks = await Promise.all(lockPromises)
-    setLocks(locks)
+    // getLock doesn't always return the lock address apparently
+    locks.forEach((lock, index) => (lock.address = lockAddresses[index]))
     setLoading(false)
+    setLocks(locks)
   }
 
   useEffect(() => {
     getLocks()
-  }, [lockAddresses])
+  }, [])
 
   return { locks, loading }
 }
