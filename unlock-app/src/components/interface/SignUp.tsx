@@ -101,6 +101,9 @@ export class SignUp extends React.Component<Props, State> {
               <Description>
                 Already have an account? {LogInLink('Log in here')}.
               </Description>
+
+              <br />
+              <div id="signin" />
             </Form>
           )}
           {submitted && (
