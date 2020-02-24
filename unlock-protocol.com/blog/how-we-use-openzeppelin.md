@@ -1,6 +1,12 @@
-# Unlock: The Protocol for Memberships
+---
+title: Unlock: How we use OpenZeppelin
+subTitle: Showcasing our usage of open-source tools.
+authorName: Nick Furfaro
+publishDate: February 24, 2020
+description: Openzeppelin provides the ethereum community an excellent assortment of reusable libraries and command-line tools. Here's how we use them at Unlock.
+image: /static/images/blog/unlocking-smart-contracts/code.jpeg
 
-### What it is
+---### What it is
 
 Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way, enabling programmable access to resources. This could include a blog, a subset of software features, or an event.
 
