@@ -6,7 +6,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import LogInSignUp from '../interface/LogInSignUp'
+import { Lock, LoadingLock } from '../interface/checkout/Lock'
 import {
   Account as AccountType,
   Network,
@@ -14,6 +14,7 @@ import {
   PaywallConfig,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
+import { usePaywallLocks } from '../../hooks/usePaywallLocks'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -21,7 +22,19 @@ interface CheckoutContentProps {
   config?: PaywallConfig
 }
 
-export const CheckoutContent = ({ account, network }: CheckoutContentProps) => {
+const defaultLockAddresses: string[] = []
+
+export const CheckoutContent = ({
+  account,
+  network,
+  config,
+}: CheckoutContentProps) => {
+  const lockAddresses = config
+    ? Object.keys(config.locks)
+    : defaultLockAddresses
+
+  const { locks, loading } = usePaywallLocks(lockAddresses)
+
   return (
     <Layout title="Checkout">
       <Head>
@@ -30,11 +43,21 @@ export const CheckoutContent = ({ account, network }: CheckoutContentProps) => {
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
+          {loading && (
+            <div>
+              {lockAddresses.map(address => (
+                <LoadingLock key={address} />
+              ))}
+            </div>
+          )}
+          {locks && (
+            <div>
+              {locks.map(lock => (
+                <Lock lock={lock} key={lock.name} />
+              ))}
+            </div>
+          )}
         </BrowserOnly>
-      )}
-      {!account && (
-        // Default to log in form. User can toggle to signup.
-        <LogInSignUp login />
       )}
     </Layout>
   )

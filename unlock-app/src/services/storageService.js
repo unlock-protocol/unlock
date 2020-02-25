@@ -81,12 +81,12 @@ export class StorageService extends EventEmitter {
    * @param {*} senderAddress
    */
   async getRecentTransactionsHashesSentBy(senderAddress) {
+    let hashes = [] // TODO This is badly named! this returns full transactions
     try {
       const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
       const response = await axios.get(
         `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`
       )
-      let hashes = []
       if (response.data && response.data.transactions) {
         hashes = response.data.transactions.map(t => ({
           hash: t.transactionHash,
@@ -99,7 +99,7 @@ export class StorageService extends EventEmitter {
       return { senderAddress, hashes }
     } catch (error) {
       this.emit(failure.getTransactionHashesSentBy, error)
-      return {} // TODO: consider if thos should be an error
+      return { senderAddress, hashes } // TODO: consider if thos should be an error
     }
   }
 

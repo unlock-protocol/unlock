@@ -1,6 +1,9 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import Svg from '../svg'
+import { RawLock } from '../../../unlockTypes'
+import { durationsAsTextFromSeconds } from '../../../utils/durations'
+import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 
 interface LockBodyProps {
   loading?: 'true'
@@ -51,6 +54,14 @@ export const lockBodyOpacity = ({ loading }: LockBodyProps) => {
   `
 }
 
+export const lockBodyShadow = ({ loading }: LockBodyProps) => {
+  if (loading) {
+    return ''
+  }
+
+  return 'box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08)'
+}
+
 export const Arrow = styled(Svg.Arrow)`
   width: 32px;
   fill: var(--darkgrey);
@@ -63,7 +74,7 @@ export const LockBody = styled.div`
   width: 100%;
   border-radius: 4px;
   ${(props: LockBodyProps) => lockBodyBorder(props)};
-  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
+  ${(props: LockBodyProps) => lockBodyShadow(props)};
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -123,8 +134,7 @@ export const TickerSymbol = styled.span`
   font-style: normal;
   font-weight: bold;
   font-size: 20px;
-  margin-left: 4px;
-  text-align: center;
+  text-align: right;
   width: 42px;
 `
 
@@ -155,33 +165,34 @@ export const LoadingLock = () => {
 }
 
 interface LockProps {
-  name: string
-  keysAvailable: string
-  price: string
-  symbol: string
-  validityDuration: string
+  lock: RawLock
 }
 
-export const Lock = ({
-  name,
-  keysAvailable,
-  price,
-  symbol,
-  validityDuration,
-}: LockProps) => {
+const lockKeysAvailable = (lock: RawLock) => {
+  if ((lock as any).unlimitedKeys) {
+    return 'Unlimited'
+  }
+
+  // maxNumberOfKeys and outstandingKeys are assumed to be defined
+  // if they are ever not, a runtime error can occur
+  return (lock.maxNumberOfKeys! - lock.outstandingKeys!).toString()
+}
+
+export const Lock = ({ lock }: LockProps) => {
+  const { purchaseKey } = usePurchaseKey(lock)
   return (
     <LockContainer>
       <InfoWrapper>
-        <LockName>{name}</LockName>
-        <KeysAvailable>{keysAvailable} Available</KeysAvailable>
+        <LockName>{lock.name}</LockName>
+        <KeysAvailable>{lockKeysAvailable(lock)} Available</KeysAvailable>
       </InfoWrapper>
-      <LockBody>
-        <LockPrice>{price}</LockPrice>
-        <TickerSymbol>{symbol}</TickerSymbol>
+      <LockBody onClick={purchaseKey}>
+        <LockPrice>{lock.keyPrice}</LockPrice>
+        <TickerSymbol>{(lock as any).currencySymbol || 'ETH'}</TickerSymbol>
         <ValidityDuration>
           <span>Valid for</span>
           <br />
-          <span>{validityDuration}</span>
+          <span>{durationsAsTextFromSeconds(lock.expirationDuration)}</span>
         </ValidityDuration>
         <Arrow />
       </LockBody>
