@@ -12,7 +12,12 @@ describe('metadata munging functions', () => {
       expect.assertions(2)
 
       let columns = generateColumns([])
-      expect(columns).toEqual(['lockName', 'keyholderAddress', 'expiration'])
+      expect(columns).toEqual([
+        'lockName',
+        'token',
+        'keyholderAddress',
+        'expiration',
+      ])
 
       columns = generateColumns([], ['favoriteColor'])
       expect(columns).toEqual(['favoriteColor'])
@@ -31,6 +36,7 @@ describe('metadata munging functions', () => {
       const columns = generateColumns([keyMetadata])
       expect(columns).toEqual([
         'lockName',
+        'token',
         'keyholderAddress',
         'expiration',
         // Alphabetizing starts here, after the starting columns
@@ -55,6 +61,7 @@ describe('metadata munging functions', () => {
       const columns = generateColumns([firstKey, secondKey])
       expect(columns).toEqual([
         'lockName',
+        'token',
         'keyholderAddress',
         'expiration',
         'email',

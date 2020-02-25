@@ -198,3 +198,8 @@ export interface Balances {
   eth: string
   [contractAddress: string]: string
 }
+
+export enum MemberFilters {
+  ALL = 'all',
+  ACTIVE = 'active',
+}

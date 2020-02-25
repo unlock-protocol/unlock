@@ -6,6 +6,8 @@ import { ActionButton } from './buttons/ActionButton'
 import Media from '../../theme/media'
 import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
+import Address from './Address'
+import { MemberFilters } from '../../unlockTypes'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -21,6 +23,7 @@ interface Props {
   // The keys to the metadata object, in the order they will be displayed.
   columns: string[]
   metadata: KeyMetadata[]
+  filter?: string
 }
 
 /**
@@ -36,17 +39,33 @@ function downloadAsCSV(columns: any, metadata: any) {
   FileSaver.saveAs(blob, 'members.csv')
 }
 
-export const MetadataTable = ({ columns, metadata }: Props) => {
+interface CellProps {
+  kind: string
+  value: string
+}
+
+export const Cell = ({ kind, value }: CellProps) => {
+  if (kind === 'keyholderAddress') {
+    return <Address address={value} />
+  }
+  return <>{value}</>
+}
+
+export const MetadataTable = ({ columns, metadata, filter }: Props) => {
   if (metadata.length === 0) {
-    return (
-      <Message>
-        No keys have been purchased yet. Return to your{' '}
-        <Link href="/dashboard">
-          <a>Dashboard</a>
-        </Link>
-        .
-      </Message>
-    )
+    if (filter === MemberFilters.ALL) {
+      return (
+        <Message>
+          No keys have been purchased yet. Return to your{' '}
+          <Link href="/dashboard">
+            <a>Dashboard</a>
+          </Link>
+          .
+        </Message>
+      )
+    }
+
+    return <Message>No keys found matching the current filter.</Message>
   }
 
   return (
@@ -66,7 +85,11 @@ export const MetadataTable = ({ columns, metadata }: Props) => {
                 key={datum.lockName + datum.expiration + datum.keyholderAddress}
               >
                 {columns.map(col => {
-                  return <Td key={col}>{datum[col]}</Td>
+                  return (
+                    <Td key={col}>
+                      <Cell kind={col} value={datum[col]} />
+                    </Td>
+                  )
                 })}
               </tr>
             )
@@ -112,7 +135,7 @@ const Tbody = styled.tbody`
 `
 
 const Td = styled.td`
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   text-align: left;
 `
 
@@ -126,7 +149,7 @@ const Th = styled.th`
   text-transform: uppercase;
   color: var(--darkgrey);
   font-weight: 200;
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   text-align: left;
 `
 

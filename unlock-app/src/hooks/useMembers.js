@@ -7,7 +7,7 @@ import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
-
+import { MemberFilters } from '../unlockTypes'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 
 /**
@@ -68,6 +68,7 @@ export const buildMembersWithMetadata = (lock, storedMetadata) => {
     let member = members[index]
     if (!member) {
       member = {
+        token: key.keyId,
         lockName: lock.name,
         expiration: expirationAsDate(parseInt(key.expiration)),
         keyholderAddress: keyOwner,
@@ -101,20 +102,26 @@ export const buildMembersWithMetadata = (lock, storedMetadata) => {
  * This hooks yields the members for a lock, along with the metadata when applicable
  * @param {*} address
  */
-export const useMembers = (lockAddresses, viewer) => {
+export const useMembers = (lockAddresses, viewer, filter) => {
   const walletService = useContext(WalletServiceContext)
   const storageService = useContext(StorageServiceContext)
   const dispatch = useDispatch()
   const [members, setMembers] = useState({})
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
-
+  let expiresAfter = parseInt(new Date().getTime() / 1000)
+  if (filter === MemberFilters.ALL) {
+    expiresAfter = 0
+  }
   const {
     loading: membersLoading,
     error: membersError,
     data: keyHolders,
   } = useQuery(keyHolderQuery(), {
-    variables: { addresses: lockAddresses },
+    variables: {
+      addresses: lockAddresses,
+      expiresAfter,
+    },
   })
 
   const loadMetadataAndForKeyHolders = async () => {
@@ -141,7 +148,9 @@ export const useMembers = (lockAddresses, viewer) => {
       }
     })
     const membersForLocks = await Promise.all(membersForLocksPromise)
-    setMembers(Object.assign(...membersForLocks))
+    if (membersForLocks.length > 0) {
+      setMembers(Object.assign(...membersForLocks))
+    }
     setLoading(false)
   }
 
