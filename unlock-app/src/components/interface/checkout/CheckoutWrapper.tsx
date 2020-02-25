@@ -18,12 +18,14 @@ interface WrapperStyleProps {
 const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   children,
   hideCheckout,
-  bgColor = 'var(--offwhite)',
   allowClose = true,
   icon,
 }: React.PropsWithChildren<WrapperProps>) => {
   return (
-    <Wrapper bgColor={bgColor} onClick={allowClose ? hideCheckout : () => {}}>
+    <Wrapper
+      bgColor="var(--offwhite)"
+      onClick={allowClose ? hideCheckout : () => {}}
+    >
       {allowClose ? (
         <CloseButton
           backgroundColor="var(--lightgrey)"

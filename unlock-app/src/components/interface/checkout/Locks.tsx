@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Lock, LoadingLock } from './Lock'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 
@@ -7,7 +7,12 @@ interface LocksProps {
   lockAddresses: string[]
 }
 
+type PurchasingLockAddress = string | null
+
 export const Locks = ({ lockAddresses }: LocksProps) => {
+  const [purchasingLockAddress, setPurchasingLockAddress] = useState(
+    null as PurchasingLockAddress
+  )
   const { locks, loading } = usePaywallLocks(lockAddresses)
 
   if (loading) {
@@ -23,7 +28,12 @@ export const Locks = ({ lockAddresses }: LocksProps) => {
   return (
     <div>
       {locks.map(lock => (
-        <Lock lock={lock} key={lock.name} />
+        <Lock
+          key={lock.name}
+          lock={lock}
+          purchasingLockAddress={purchasingLockAddress}
+          setPurchasingLockAddress={setPurchasingLockAddress}
+        />
       ))}
     </div>
   )
