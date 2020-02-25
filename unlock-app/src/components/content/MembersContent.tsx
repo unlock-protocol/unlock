@@ -41,7 +41,7 @@ interface Props {
 }
 
 export const MembersContent = ({ account, network, lockAddresses }: Props) => {
-  const [filter, setFilter] = useState('active')
+  const [filter, setFilter] = useState(MemberFilters.ACTIVE)
 
   return (
     <Layout title="Members">
