@@ -52,7 +52,7 @@ function newKeyPurchase(
   lockContract: PublicLock
 ): void {
   let keyID = genKeyID(event.address, event.params._tokenId.toString());
-  let keyPurchaseID = keyID + "-" + event.block.number.toString()
+  let keyPurchaseID = keyID + "-" + event.block.number.toString();
 
   genKey(event, lock, lockContract);
   genKeyPurchase(

@@ -11,7 +11,7 @@ type Key @entity {
   keyId: BigInt!
   owner: KeyHolder!
   expiration: BigInt!
-  tokenURI: String!
+  tokenURI: String
   createdAt: BigInt!
 }
 
@@ -42,4 +42,5 @@ type Lock @entity {
   maxNumberOfKeys: BigInt
   keys: [Key!] @derivedFrom(field: "lock")
   owner: Bytes!
+  version: BigInt!
 }
