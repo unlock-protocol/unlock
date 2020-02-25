@@ -14,6 +14,7 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
+  coveragePathIgnorePatterns: ['/node_modules/', 'src/stories/.*/*.stories.js'],
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
   collectCoverage: true,
   coverageThreshold: {
