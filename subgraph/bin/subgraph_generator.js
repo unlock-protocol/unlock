@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+
+const argv = require('yargs').argv
 const Handlebars = require("handlebars");
 const path = require("path");
 const fs = require("fs-extra");
@@ -27,7 +30,7 @@ let templateValues = network => {
   return { network: networkName , unlockContractAddress: address };
 };
 
-let generate = async () => {
+let generate = async (generationValues) => {
   const subgraphTemplateFilePath = path.join(
     __dirname,
     "..",
@@ -36,8 +39,16 @@ let generate = async () => {
 
   const source = await fs.readFile(subgraphTemplateFilePath, "utf-8");
   const template = Handlebars.compile(source);
-  const result = template(templateValues("local-dev"));
+  const result = template(generationValues);
   await fs.writeFile(path.join(__dirname, "..", "subgraph.yaml"), result);
 };
 
-generate();
+let generationValues 
+
+if (argv.network) {
+  generationValues = templateValues(argv.network)
+} else {
+  generationValues = templateValues("local-dev")  
+}
+
+generate(generationValues);
