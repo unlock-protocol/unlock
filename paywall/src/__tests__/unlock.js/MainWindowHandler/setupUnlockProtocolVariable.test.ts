@@ -5,6 +5,8 @@ import {
   UnlockWindow,
   UnlockAndIframeManagerWindow,
 } from '../../../windowTypes'
+import { PaywallConfig } from '../../../unlockTypes'
+import { PostMessages } from '../../../messageTypes'
 
 describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
   let fakeWindow: FakeWindow
@@ -68,6 +70,7 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
       unlockProtocol: {
         loadCheckoutModal: () => void
         getState: () => undefined
+        resetConfig: (config: PaywallConfig) => void
         hi: number
       }
     }
@@ -98,5 +101,49 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
 
     fullWindow().unlockProtocol.loadCheckoutModal()
     expect(handler.showCheckoutIframe).toHaveBeenCalled()
+  })
+
+  describe('resetConfig', () => {
+    it('should set a resetConfig function on the window.unlockProtocol object', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.setupUnlockProtocolVariable()
+
+      expect(fullWindow().unlockProtocol.resetConfig).toBeInstanceOf(Function)
+    })
+
+    it('should send the normalized config when invoked', () => {
+      expect.assertions(3)
+
+      const handler = getMainWindowHandler()
+      handler.setupUnlockProtocolVariable()
+      const accountsSpy = jest.spyOn(handler.iframes.accounts, 'postMessage')
+      const checkoutSpy = jest.spyOn(handler.iframes.checkout, 'postMessage')
+      const dataSpy = jest.spyOn(handler.iframes.data, 'postMessage')
+
+      const newConfig = {
+        callToAction: {
+          default: '',
+          expired: '',
+          pending: '',
+          confirmed: '',
+          noWallet: '',
+        },
+        locks: {},
+      }
+
+      fullWindow().unlockProtocol.resetConfig(newConfig)
+
+      expect(accountsSpy).toHaveBeenLastCalledWith(
+        PostMessages.CONFIG,
+        newConfig
+      )
+      expect(checkoutSpy).toHaveBeenLastCalledWith(
+        PostMessages.CONFIG,
+        newConfig
+      )
+      expect(dataSpy).toHaveBeenLastCalledWith(PostMessages.CONFIG, newConfig)
+    })
   })
 })
