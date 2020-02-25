@@ -49606,13 +49606,20 @@ exports[`Storyshots MetadataTable The table, with an additional property (with d
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c5 {
+  border-bottom: none !important;
+  cursor: inherit !important;
+  -webkit-text-decoration: none !important;
+  text-decoration: none !important;
+}
+
+.c0 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(12,1fr);
 }
 
-.c5 {
+.c6 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -49632,7 +49639,7 @@ Object {
   height: 40px;
 }
 
-.c5 :hover {
+.c6 :hover {
   background-color: var(--activegreen);
 }
 
@@ -49647,7 +49654,7 @@ Object {
 }
 
 .c4 {
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   text-align: left;
 }
 
@@ -49664,12 +49671,12 @@ Object {
   text-transform: uppercase;
   color: var(--darkgrey);
   font-weight: 200;
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   text-align: left;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
+  .c6 {
     display: none;
   }
 }
@@ -49721,7 +49728,12 @@ Object {
               <td
                 class="c4"
               >
-                0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+                <abbr
+                  class="c5"
+                  title="0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2"
+                >
+                  0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -49743,7 +49755,12 @@ Object {
               <td
                 class="c4"
               >
-                0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+                <abbr
+                  class="c5"
+                  title="0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4"
+                >
+                  0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -49765,7 +49782,12 @@ Object {
               <td
                 class="c4"
               >
-                0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+                <abbr
+                  class="c5"
+                  title="0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE"
+                >
+                  0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -49787,7 +49809,12 @@ Object {
               <td
                 class="c4"
               >
-                0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+                <abbr
+                  class="c5"
+                  title="0xaFAEfc6dd3C9feF66f92BA838b132644451F0715"
+                >
+                  0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -49803,7 +49830,7 @@ Object {
           </tbody>
         </table>
         <button
-          class="sc-fznBtT c5"
+          class="sc-fznBtT c6"
         >
           Export as CSV
         </button>
@@ -49824,22 +49851,22 @@ Object {
         <thead>
           <tr>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Lock Name
             </th>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Keyholder Address
             </th>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Expiration
             </th>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Email Address
             </th>
@@ -49850,88 +49877,108 @@ Object {
         >
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2"
+              >
+                0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               support@tether.to
             </td>
           </tr>
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4"
+              >
+                0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               rex.smythe@higgi.ns
             </td>
           </tr>
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE"
+              >
+                0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               ssgt_jones@area51.gov
             </td>
           </tr>
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0xaFAEfc6dd3C9feF66f92BA838b132644451F0715"
+              >
+                0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               we don't validate email inputs
             </td>
@@ -50015,14 +50062,7 @@ Object {
       <p
         class="c0"
       >
-        No keys have been purchased yet. Return to your
-         
-        <a
-          href="/dashboard"
-        >
-          Dashboard
-        </a>
-        .
+        No keys found matching the current filter.
       </p>
     </div>
   </body>,
@@ -50034,14 +50074,7 @@ Object {
     <p
       class="sc-pReKu gowdTS"
     >
-      No keys have been purchased yet. Return to your
-       
-      <a
-        href="/dashboard"
-      >
-        Dashboard
-      </a>
-      .
+      No keys found matching the current filter.
     </p>
   </div>,
   "debug": [Function],
@@ -50102,13 +50135,20 @@ exports[`Storyshots MetadataTable The table, with just the three guaranteed prop
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c5 {
+  border-bottom: none !important;
+  cursor: inherit !important;
+  -webkit-text-decoration: none !important;
+  text-decoration: none !important;
+}
+
+.c0 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(12,1fr);
 }
 
-.c5 {
+.c6 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -50128,7 +50168,7 @@ Object {
   height: 40px;
 }
 
-.c5 :hover {
+.c6 :hover {
   background-color: var(--activegreen);
 }
 
@@ -50143,7 +50183,7 @@ Object {
 }
 
 .c4 {
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   text-align: left;
 }
 
@@ -50160,12 +50200,12 @@ Object {
   text-transform: uppercase;
   color: var(--darkgrey);
   font-weight: 200;
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   text-align: left;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
+  .c6 {
     display: none;
   }
 }
@@ -50212,7 +50252,12 @@ Object {
               <td
                 class="c4"
               >
-                0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+                <abbr
+                  class="c5"
+                  title="0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2"
+                >
+                  0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -50229,7 +50274,12 @@ Object {
               <td
                 class="c4"
               >
-                0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+                <abbr
+                  class="c5"
+                  title="0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4"
+                >
+                  0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -50246,7 +50296,12 @@ Object {
               <td
                 class="c4"
               >
-                0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+                <abbr
+                  class="c5"
+                  title="0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE"
+                >
+                  0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -50263,7 +50318,12 @@ Object {
               <td
                 class="c4"
               >
-                0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+                <abbr
+                  class="c5"
+                  title="0xaFAEfc6dd3C9feF66f92BA838b132644451F0715"
+                >
+                  0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+                </abbr>
               </td>
               <td
                 class="c4"
@@ -50274,7 +50334,7 @@ Object {
           </tbody>
         </table>
         <button
-          class="sc-fznBtT c5"
+          class="sc-fznBtT c6"
         >
           Export as CSV
         </button>
@@ -50295,17 +50355,17 @@ Object {
         <thead>
           <tr>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Lock Name
             </th>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Keyholder Address
             </th>
             <th
-              class="sc-pJkiN lfaFEa"
+              class="sc-pJkiN gCesQA"
             >
               Expiration
             </th>
@@ -50316,68 +50376,88 @@ Object {
         >
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2"
+              >
+                0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
           </tr>
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4"
+              >
+                0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
           </tr>
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE"
+              >
+                0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
           </tr>
           <tr>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
-              0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+              <abbr
+                class="sc-fzqKVi JpvLW"
+                title="0xaFAEfc6dd3C9feF66f92BA838b132644451F0715"
+              >
+                0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
+              </abbr>
             </td>
             <td
-              class="sc-pBolk jPlLKE"
+              class="sc-pBolk fSWaIm"
             >
               123456789
             </td>
