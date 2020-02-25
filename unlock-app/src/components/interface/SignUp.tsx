@@ -99,7 +99,16 @@ export class SignUp extends React.Component<Props, State> {
               />
               <SubmitButton type="submit" value="Sign Up" />
               <Description>
-                Already have an account? {LogInLink('Log in here')}.
+                Already have an account? {LogInLink('Log in')}. Have an Ethereum
+                Wallet?{' '}
+                <LinkButton
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
+                >
+                  Connect it
+                </LinkButton>
+                .
               </Description>
 
               <br />

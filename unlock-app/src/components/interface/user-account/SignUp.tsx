@@ -81,7 +81,16 @@ export class SignUp extends React.Component<Props, State> {
                   onChange={this.handleInputChange}
                 />
                 <Description>
-                  Already have an account? {LogInLink('Log in here')}.
+                  Already have an account? {LogInLink('Log in')}. Have an
+                  Ethereum Wallet?{' '}
+                  <LinkButton
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
+                  >
+                    Connect it
+                  </LinkButton>
+                  .
                 </Description>
               </Indent>
               <SubmitButton type="submit" value="Sign Up" />
@@ -179,6 +188,7 @@ const Description = styled.p`
   font-weight: 300;
   font-size: 20px;
   color: var(--darkgrey);
+  line-height: 24px;
 `
 
 const Input = styled.input`
