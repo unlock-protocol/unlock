@@ -17,10 +17,18 @@ const lock = {
   address: '0xEE9FE39966DF737eECa5920ABa975c283784Faf8',
 }
 
+const setPurchasingLockAddress = () => {}
+
 storiesOf('Checkout Lock', module)
   .add('Loading', () => {
     return <LoadingLock />
   })
   .add('Active', () => {
-    return <Lock lock={lock} />
+    return (
+      <Lock
+        lock={lock}
+        purchasingLockAddress={null}
+        setPurchasingLockAddress={setPurchasingLockAddress}
+      />
+    )
   })
