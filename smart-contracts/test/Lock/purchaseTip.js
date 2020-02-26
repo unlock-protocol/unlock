@@ -1,5 +1,5 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
+
 const truffleAssert = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
@@ -28,7 +28,7 @@ contract('Lock / purchaseTip', accounts => {
           from: accounts[0],
         })
 
-        tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
 
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)

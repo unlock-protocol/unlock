@@ -1,5 +1,5 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
+
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
@@ -103,9 +103,13 @@ contract('Lock / erc721 / approve', accounts => {
 
       describe('when clearing the approved address', () => {
         before(async () => {
-          let result = await locks.FIRST.approve(Web3Utils.padLeft(0, 40), ID, {
-            from: accounts[1],
-          })
+          let result = await locks.FIRST.approve(
+            web3.utils.padLeft(0, 40),
+            ID,
+            {
+              from: accounts[1],
+            }
+          )
           event = result.logs[0]
         })
 

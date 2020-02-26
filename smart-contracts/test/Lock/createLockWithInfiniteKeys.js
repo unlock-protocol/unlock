@@ -1,5 +1,5 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
+
 const BigNumber = require('bignumber.js')
 
 const PublicLock = artifacts.require('../../PublicLock.sol')
@@ -19,7 +19,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     before(async () => {
       transaction = await unlock.createLock(
         60 * 60 * 24 * 30, // expirationDuration: 30 days
-        Web3Utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         -1, // maxNumberOfKeys
         'Infinite Keys Lock',
@@ -47,7 +47,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     before(async () => {
       transaction = await unlock.createLock(
         60 * 60 * 24 * 30, // expirationDuration: 30 days
-        Web3Utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',

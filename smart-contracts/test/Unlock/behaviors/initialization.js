@@ -1,4 +1,3 @@
-const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 exports.shouldHaveInitialized = options => {
@@ -12,7 +11,7 @@ exports.shouldHaveInitialized = options => {
 
     it('should have an owner', async () => {
       const owner = await unlock.methods.owner().call()
-      assert.equal(owner, Web3Utils.toChecksumAddress(unlockOwner))
+      assert.equal(owner, web3.utils.toChecksumAddress(unlockOwner))
     })
 
     it('should have initialized grossNetworkProduct', async () => {
