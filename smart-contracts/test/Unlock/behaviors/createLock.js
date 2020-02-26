@@ -2,7 +2,7 @@ const Web3Utils = require('web3-utils')
 const Units = require('ethereumjs-units')
 const { reverts } = require('truffle-assertions')
 
-const PublicLock = artifacts.require('../../PublicLock.sol')
+const PublicLock = artifacts.require('PublicLock.sol')
 
 exports.shouldCreateLock = options => {
   describe('Unlock / behaviors / createLock', () => {
