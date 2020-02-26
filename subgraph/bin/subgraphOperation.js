@@ -45,6 +45,10 @@ function selectConfig() {
 function process(operation) {
   let config = selectConfig();
 
+  if(!config){
+    throw new Error("This is an invalid configuration")
+  }
+
   if (operation === "deploy") {
     executeCommand(
       `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${config.subgraph}`
