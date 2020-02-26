@@ -22,17 +22,33 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
       assert.equal(await unlock.globalTokenSymbol.call(), '')
     })
 
-    it('should allow the owner to set the global token Symbol', async () => {
-      txObj = await unlock.configUnlock(
-        await unlock.publicLockAddress(),
-        'KEY',
-        await unlock.globalBaseTokenURI(),
-        {
-          from: accounts[0],
-        }
-      )
-      event = txObj.logs[0]
-      assert.equal(await unlock.globalTokenSymbol.call(), 'KEY')
+    describe('set the global symbol', () => {
+      beforeEach(async () => {
+        txObj = await unlock.configUnlock(
+          await unlock.publicLockAddress(),
+          'KEY',
+          await unlock.globalBaseTokenURI(),
+          {
+            from: accounts[0],
+          }
+        )
+        event = txObj.logs[0]
+      })
+
+      it('should allow the owner to set the global token Symbol', async () => {
+        assert.equal(await unlock.globalTokenSymbol.call(), 'KEY')
+      })
+
+      it('getGlobalTokenSymbol is the same', async () => {
+        assert.equal(
+          await unlock.globalTokenSymbol.call(),
+          await unlock.getGlobalTokenSymbol.call()
+        )
+      })
+
+      it('should emit the ConfigUnlock event', async () => {
+        assert.equal(event.event, 'ConfigUnlock')
+      })
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
@@ -46,10 +62,6 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
           }
         )
       )
-    })
-
-    it('should emit the ConfigUnlock event', async () => {
-      assert.equal(event.event, 'ConfigUnlock')
     })
   })
 
