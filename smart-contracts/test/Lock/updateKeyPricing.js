@@ -1,6 +1,6 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
-const Web3Utils = require('web3-utils')
+
 const truffleAssert = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 
@@ -126,7 +126,7 @@ contract('Lock / updateKeyPricing', accounts => {
     it('should allow a LockManager to switch from erc20 => eth', async () => {
       await lock.updateKeyPricing(
         await lock.keyPrice.call(),
-        Web3Utils.padLeft(0, 40)
+        web3.utils.padLeft(0, 40)
       )
       assert.equal(await lock.tokenAddress.call(), 0)
     })

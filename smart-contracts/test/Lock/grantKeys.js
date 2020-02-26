@@ -1,5 +1,3 @@
-const Web3Utils = require('web3-utils')
-
 const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
@@ -125,9 +123,13 @@ contract('Lock / grantKeys', accounts => {
 
     it('should fail to grant key to the 0 address', async () => {
       await reverts(
-        lock.grantKeys([Web3Utils.padLeft(0, 40)], [validExpirationTimestamp], {
-          from: lockCreator,
-        }),
+        lock.grantKeys(
+          [web3.utils.padLeft(0, 40)],
+          [validExpirationTimestamp],
+          {
+            from: lockCreator,
+          }
+        ),
         'INVALID_ADDRESS'
       )
     })

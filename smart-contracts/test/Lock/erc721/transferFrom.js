@@ -1,5 +1,5 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
+
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
@@ -83,7 +83,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       await reverts(
         locks.FIRST.transferFrom(
           from,
-          Web3Utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           await locks.FIRST.getTokenIdFor.call(from),
           {
             from,

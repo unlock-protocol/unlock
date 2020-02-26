@@ -1,5 +1,5 @@
 const PublicLock = artifacts.require('./PublicLock.sol')
-const Web3Utils = require('web3-utils')
+
 const Locks = require('../fixtures/locks')
 
 let saltCounter = 100
@@ -7,7 +7,7 @@ let saltCounter = 100
 module.exports = async function deployLocks(
   unlock,
   from,
-  tokenAddress = Web3Utils.padLeft(0, 40)
+  tokenAddress = web3.utils.padLeft(0, 40)
 ) {
   let locks = {}
   await Promise.all(
