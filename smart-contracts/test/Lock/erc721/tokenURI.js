@@ -38,19 +38,31 @@ contract('Lock / erc721 / tokenURI', accounts => {
       assert.equal(await unlock.globalBaseTokenURI.call(), '')
     })
 
-    it('should allow the owner to set the global base token URI', async () => {
-      txObj = await unlock.configUnlock(
-        await unlock.publicLockAddress(),
-        await unlock.globalTokenSymbol(),
-        'https://newTokenURI.com/api/key',
-        {
-          from: accounts[0],
-        }
-      )
-      event = txObj.logs[0]
+    describe('set global base URI', () => {
+      beforeEach(async () => {
+        txObj = await unlock.configUnlock(
+          await unlock.publicLockAddress(),
+          await unlock.globalTokenSymbol(),
+          'https://newTokenURI.com/api/key',
+          {
+            from: accounts[0],
+          }
+        )
+        event = txObj.logs[0]
+      })
+
+      it('should allow the owner to set the global base token URI', async () => {
+        assert.equal(
+          await unlock.globalBaseTokenURI.call(),
+          'https://newTokenURI.com/api/key'
+        )
+      })
+    })
+
+    it('getGlobalBaseTokenURI is the same', async () => {
       assert.equal(
         await unlock.globalBaseTokenURI.call(),
-        'https://newTokenURI.com/api/key'
+        await unlock.getGlobalBaseTokenURI.call()
       )
     })
 
