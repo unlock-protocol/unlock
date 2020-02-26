@@ -264,8 +264,13 @@ contract('Unlock / upgrades', accounts => {
 
               it('Key is still owned', async () => {
                 const id = await lock.methods.getTokenIdFor(keyOwner).call()
-                const bool = await lock.methods.isKeyOwner(id, keyOwner).call()
-                assert.equal(bool, true)
+                if (versionNumber >= 1) {
+                  // isKeyOwner was introduced in v1
+                  const bool = await lock.methods
+                    .isKeyOwner(id, keyOwner)
+                    .call()
+                  assert.equal(bool, true)
+                }
               })
 
               it('New keys may still be purchased', async () => {
