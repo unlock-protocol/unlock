@@ -11,6 +11,7 @@ const UnlockAbis = [
   Contracts.getFromNodeModules('unlock-abi-1-0', '../../Unlock'), // 3
   Contracts.getFromNodeModules('unlock-abi-1-1', '../../Unlock'), // 4
   Contracts.getFromNodeModules('unlock-abi-1-2', '../../Unlock'), // 5
+  Contracts.getFromNodeModules('unlock-abi-1-3', '../../Unlock'), // 6
 ]
 const PublicLockAbis = [
   // eslint-disable-next-line global-require
@@ -25,6 +26,8 @@ const PublicLockAbis = [
   require('unlock-abi-1-1/PublicLock'), // 4
   // eslint-disable-next-line global-require
   require('unlock-abi-1-2/PublicLock'), // 5
+  // eslint-disable-next-line global-require
+  require('unlock-abi-1-3/PublicLock'), // 6
 ]
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
