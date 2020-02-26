@@ -57,5 +57,23 @@ describe('FinishSignup', () => {
         })
       )
     })
+
+    it('dispatches a signupCredentials action', () => {
+      expect.assertions(1)
+      const dispatch = jest.fn()
+      const { signupCredentials } = mapDispatchToProps(dispatch)
+      const credentials = {
+        emailAddress: 'c@c.c',
+        password: 'guest',
+      }
+      signupCredentials(credentials)
+
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          emailAddress: credentials.emailAddress,
+          password: credentials.password,
+        })
+      )
+    })
   })
 })
