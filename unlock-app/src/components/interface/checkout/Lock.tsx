@@ -2,7 +2,7 @@ import React from 'react'
 import { RawLock } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
-import { PurchaseableLock } from './LockVariations'
+import * as LockVariations from './LockVariations'
 
 interface LockProps {
   lock: RawLock
@@ -30,8 +30,17 @@ export const lockKeysAvailable = ({
   return (maxNumberOfKeys! - outstandingKeys!).toLocaleString()
 }
 
-export const lockTickerSymbol = (lock: RawLock) => {
-  return (lock as any).currencySymbol || 'ETH'
+interface LockTickerSymbolLock {
+  currencyContractAddress: string | null
+  currencySymbol?: string
+}
+
+export const lockTickerSymbol = (lock: LockTickerSymbolLock) => {
+  if (lock.currencyContractAddress) {
+    // TODO: if there is no symbol, we probably need something better than "ERC20"
+    return (lock as any).currencySymbol || 'ERC20'
+  }
+  return 'ETH'
 }
 
 export const Lock = ({
@@ -51,13 +60,20 @@ export const Lock = ({
     purchaseKey()
   }
 
-  return (
-    <PurchaseableLock
-      name={lock.name}
-      formattedDuration={durationsAsTextFromSeconds(lock.expirationDuration)}
-      formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}
-      formattedKeysAvailable={lockKeysAvailable(lock)}
-      onClick={onClick}
-    />
-  )
+  const props: LockVariations.LockProps = {
+    onClick,
+    formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
+    formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(lock)}`,
+    formattedKeysAvailable: lockKeysAvailable(lock),
+    name: lock.name,
+  }
+
+  if (purchasingLockAddress) {
+    if (purchasingLockAddress === lock.address) {
+      return <LockVariations.ConfirmedLock {...props} />
+    }
+    return <LockVariations.DisabledLock {...props} />
+  }
+
+  return <LockVariations.PurchaseableLock {...props} />
 }

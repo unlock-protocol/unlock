@@ -43618,6 +43618,7 @@ Object {
       <div>
         <div
           class="c0"
+          data-testid="LoadingLock"
         >
           <div
             class="c1"
@@ -43625,6 +43626,7 @@ Object {
         </div>
         <div
           class="c2"
+          data-testid="DisabledLock"
         >
           <div
             class="c3"
@@ -43668,6 +43670,7 @@ Object {
         </div>
         <div
           class="c2"
+          data-testid="SoldOutLock"
         >
           <div
             class="c3"
@@ -43716,6 +43719,7 @@ Object {
         </div>
         <div
           class="c2"
+          data-testid="InsufficientBalanceLock"
         >
           <div
             class="c3"
@@ -43770,6 +43774,7 @@ Object {
         </div>
         <div
           class="c0"
+          data-testid="PurchaseableLock"
         >
           <div
             class="c3"
@@ -43819,6 +43824,7 @@ Object {
         </div>
         <div
           class="c0"
+          data-testid="ProcessingLock"
         >
           <div
             class="c3"
@@ -43898,6 +43904,7 @@ Object {
         </div>
         <div
           class="c0"
+          data-testid="ConfirmedLock"
         >
           <div
             class="c3"
@@ -43956,6 +43963,7 @@ Object {
     <div>
       <div
         class="sc-pRtAn frZgaC"
+        data-testid="LoadingLock"
       >
         <div
           class="sc-prorn sc-qYIQh jXTxcM"
@@ -43963,6 +43971,7 @@ Object {
       </div>
       <div
         class="sc-pRtAn sc-pZOBi ddXFBD"
+        data-testid="DisabledLock"
       >
         <div
           class="sc-qQYBZ kTPjys"
@@ -44006,6 +44015,7 @@ Object {
       </div>
       <div
         class="sc-pRtAn sc-pZOBi ddXFBD"
+        data-testid="SoldOutLock"
       >
         <div
           class="sc-qQYBZ kTPjys"
@@ -44054,6 +44064,7 @@ Object {
       </div>
       <div
         class="sc-pRtAn sc-pZOBi ddXFBD"
+        data-testid="InsufficientBalanceLock"
       >
         <div
           class="sc-qQYBZ kTPjys"
@@ -44108,6 +44119,7 @@ Object {
       </div>
       <div
         class="sc-pRtAn frZgaC"
+        data-testid="PurchaseableLock"
       >
         <div
           class="sc-qQYBZ kTPjys"
@@ -44157,6 +44169,7 @@ Object {
       </div>
       <div
         class="sc-pRtAn frZgaC"
+        data-testid="ProcessingLock"
       >
         <div
           class="sc-qQYBZ kTPjys"
@@ -44236,6 +44249,7 @@ Object {
       </div>
       <div
         class="sc-pRtAn frZgaC"
+        data-testid="ConfirmedLock"
       >
         <div
           class="sc-qQYBZ kTPjys"
