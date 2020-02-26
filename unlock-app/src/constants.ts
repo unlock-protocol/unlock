@@ -19,7 +19,7 @@ export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string[] } = {
  * @param title
  * @returns {string}
  */
-export const pageTitle = (title: string) => {
+export const pageTitle = (title?: string): string => {
   let pageTitle = ''
   if (title) pageTitle += `${title} | `
   return (pageTitle += "Unlock: The Web's new business model")
