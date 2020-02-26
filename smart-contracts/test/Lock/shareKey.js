@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
@@ -34,7 +33,7 @@ contract('Lock / shareKey', accounts => {
   const accountWithNoKey2 = accounts[5]
   const accountWithNoKey3 = accounts[6]
   const approvedAddress = accounts[7]
-  const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
   before(async () => {
     lock = locks.FIRST

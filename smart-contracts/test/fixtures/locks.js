@@ -1,11 +1,10 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 let publicLock = {
   expirationDuration: new BigNumber(60 * 60 * 24 * 30), // 30 days
   expirationTimestamp: new BigNumber(0), // Not used
   keyPriceCalculator: null, //
-  keyPrice: new BigNumber(Units.convert(0.01, 'eth', 'wei')), // in wei
+  keyPrice: new BigNumber(web3.utils.toWei('0.01', 'ether')), // in wei
   maxNumberOfKeys: new BigNumber(10),
   lockName: 'Unlock-Protocol Lock',
 }

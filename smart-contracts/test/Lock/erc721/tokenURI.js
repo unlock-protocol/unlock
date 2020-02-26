@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
@@ -92,7 +91,7 @@ contract('Lock / erc721 / tokenURI', accounts => {
       event = txObj.logs[0]
 
       await lock.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
-        value: Units.convert('0.01', 'eth', 'wei'),
+        value: web3.utils.toWei('0.01', 'ether'),
       })
       const uri = await lock.tokenURI.call(1)
       const lockAddressStr = lock.address.toString()

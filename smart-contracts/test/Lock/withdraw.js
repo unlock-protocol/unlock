@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
@@ -10,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let lock
 let tokenAddress
-const price = Units.convert('0.01', 'eth', 'wei')
+const price = web3.utils.toWei('0.01', 'ether')
 
 contract('Lock / withdraw', accounts => {
   let owner = accounts[0]

@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const truffleAssert = require('truffle-assertions')
@@ -37,7 +36,7 @@ contract('Lock / updateKeyPricing', accounts => {
     tokenAddressBefore = await lock.tokenAddress.call()
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
     transaction = await lock.updateKeyPricing(
-      Units.convert('0.3', 'eth', 'wei'),
+      web3.utils.toWei('0.3', 'ether'),
       token.address,
       { from: lockOwner }
     )
@@ -76,7 +75,7 @@ contract('Lock / updateKeyPricing', accounts => {
       keyPrice = new BigNumber(await lock.keyPrice.call())
       await reverts(
         lock.updateKeyPricing(
-          Units.convert('0.3', 'eth', 'wei'),
+          web3.utils.toWei('0.3', 'ether'),
           await lock.tokenAddress.call(),
           {
             from: accounts[3],
@@ -136,14 +135,14 @@ contract('Lock / updateKeyPricing', accounts => {
       assert.notEqual(accounts[8], lockOwner)
       assert.equal(await lock.isLockManager(accounts[8]), true)
       await lock.updateKeyPricing(
-        Units.convert('0.42', 'eth', 'wei'),
+        web3.utils.toWei('0.42', 'ether'),
         token.address,
         { from: accounts[8] }
       )
       assert.equal(await lock.tokenAddress.call(), token.address)
       assert.equal(
         await lock.keyPrice.call(),
-        Units.convert('0.42', 'eth', 'wei')
+        web3.utils.toWei('0.42', 'ether')
       )
     })
 

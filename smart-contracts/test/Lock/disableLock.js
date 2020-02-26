@@ -1,5 +1,3 @@
-const Units = require('ethereumjs-units')
-
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
@@ -12,7 +10,7 @@ let unlock
 let locks
 let ID
 
-const keyPrice = Units.convert('0.01', 'eth', 'wei')
+const keyPrice = web3.utils.toWei('0.01', 'ether')
 
 contract('Lock / disableLock', accounts => {
   let lock
@@ -104,7 +102,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Lock owners can still fully refund keys', async () => {
-      const refundAmount = Units.convert('0.01', 'eth', 'wei')
+      const refundAmount = web3.utils.toWei('0.01', 'ether')
       await lock.fullRefund(keyOwner3, refundAmount, {
         from: lockOwner,
       })
