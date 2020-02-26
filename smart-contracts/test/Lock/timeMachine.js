@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const TimeMachineMock = artifacts.require('TimeMachineMock')
 const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')

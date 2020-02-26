@@ -4,7 +4,7 @@ const truffleAssert = require('truffle-assertions')
 
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 const keyPrice = Units.convert('0.01', 'eth', 'wei')

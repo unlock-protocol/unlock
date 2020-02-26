@@ -6,7 +6,7 @@ const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 const { getBalanceBehavior } = require('./getBalance.behavior')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 
 contract('Lock / lockBehaviors', accounts => {
   beforeEach(async () => {
