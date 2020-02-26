@@ -1,4 +1,4 @@
-import { startup, normalizeConfig } from '../../unlock.js/startup'
+import { startup } from '../../unlock.js/startup'
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 import StartupConstants from '../../unlock.js/startupTypes'
 import { PaywallConfig } from '../../unlockTypes'
@@ -7,49 +7,6 @@ import { UnlockWindow } from '../../windowTypes'
 import { checkoutHandlerInit } from '../../unlock.js/postMessageHub'
 
 describe('unlock.js startup', () => {
-  describe('normalizeConfig', () => {
-    type badConfigs = [string, any][]
-    it.each(<badConfigs>[
-      ['false', false],
-      ['no locks', {}],
-      ['locks is not an object', { locks: 5 }],
-      ['locks is empty', { locks: {} }],
-    ])('should return invalid config (%s) as-is', (_, badConfig) => {
-      expect.assertions(1)
-
-      expect(normalizeConfig(badConfig)).toBe(badConfig)
-    })
-
-    it('should normalize the lock addresses to lower-case', () => {
-      expect.assertions(1)
-
-      const config: PaywallConfig = {
-        locks: {
-          ABC: { name: 'hi' },
-          def: { name: 'there' },
-          AbQ: { name: 'foo' },
-        },
-        callToAction: {
-          default: 'hi',
-          expired: 'there',
-          pending: 'pending',
-          confirmed: 'confirmed',
-          noWallet: 'no wallet',
-        },
-      }
-      const normalizedConfig = {
-        ...config,
-        locks: {
-          abc: { name: 'hi' },
-          def: { name: 'there' },
-          abq: { name: 'foo' },
-        },
-      }
-
-      expect(normalizeConfig(config)).toEqual(normalizedConfig)
-    })
-  })
-
   describe('startup', () => {
     let fakeWindow: FakeWindow
     const config: PaywallConfig = {
