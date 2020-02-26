@@ -2,6 +2,7 @@
   "name": "unlock_protocol",
   "license": "UNLICENSED",
   "scripts": {
+    "precodegen" : "yarn generate-subgraph-yaml",
     "codegen": "graph codegen",
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
     "prebuild": "yarn generate-subgraph-yaml",
