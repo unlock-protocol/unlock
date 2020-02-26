@@ -8,13 +8,10 @@
     "prebuild": "yarn generate-subgraph-yaml",
     "build": "graph build",
     "predeploy-local": "yarn generate-subgraph-yaml",
-    "create-local": "graph create --node http://localhost:8020/ unlock-protocol/unlock",
-    "remove-local": "graph remove --node http://localhost:8020/ unlock-protocol/unlock",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 unlock-protocol/unlock",
-    "create-kovan-local": "graph create --node http://localhost:8020/ unlock-protocol/unlock-kovan",
-    "remove-kovan-local": "graph remove --node http://localhost:8020/ unlock-protocol/unlock-kovan",
-    "deploy-kovan-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 unlock-protocol/unlock-kovan",
-    "deploy:kovan": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ unlock-protocol/unlock-kovan"
+
+    "create": "node ./bin/create",
+    "remove": "node ./bin/remove",
+    "deploy": "node ./bin/deploy"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.15.0",
