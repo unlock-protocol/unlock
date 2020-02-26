@@ -41,7 +41,6 @@ contract('Lock / erc721 / tokenURI', accounts => {
     describe('set global base URI', () => {
       beforeEach(async () => {
         txObj = await unlock.configUnlock(
-          await unlock.publicLockAddress(),
           await unlock.globalTokenSymbol(),
           'https://newTokenURI.com/api/key',
           {
@@ -73,7 +72,6 @@ contract('Lock / erc721 / tokenURI', accounts => {
     it('should fail if someone other than the owner tries to set the URI', async () => {
       await reverts(
         unlock.configUnlock(
-          await unlock.publicLockAddress(),
           await unlock.globalTokenSymbol(),
           'https://fakeURI.com',
           {

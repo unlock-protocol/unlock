@@ -17,26 +17,17 @@ contract('Lock / configUnlock', accounts => {
 
   describe('configuring the Unlock contract', () => {
     it('should let the owner configure the Unlock contract', async () => {
-      await unlock.configUnlock(lockTemplate.address, '', '', {
+      await unlock.configUnlock('', '', {
         from: unlockOwner,
       })
     })
 
     it('should revert if called by other than the owner', async () => {
       await reverts(
-        unlock.configUnlock(lockTemplate.address, '', '', {
+        unlock.configUnlock('', '', {
           from: accounts[7],
         }),
         'Ownable: caller is not the owner'
-      )
-    })
-
-    it('should revert if the lock template address is not a contract', async () => {
-      await reverts(
-        unlock.configUnlock(accounts[7], '', '', {
-          from: unlockOwner,
-        }),
-        'NOT_A_CONTRACT'
       )
     })
   })

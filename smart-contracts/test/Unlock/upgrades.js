@@ -101,16 +101,20 @@ contract('Unlock / upgrades', accounts => {
                 gas: constants.MAX_GAS,
               })
 
-            await unlock.methods
-              .configUnlock(
-                lockTemplate._address,
-                await unlock.methods.globalTokenSymbol().call(),
-                await unlock.methods.globalBaseTokenURI().call()
-              )
-              .send({
+            if (versionNumber >= 7) {
+              // Version 7 moved setLockTemplate to its own function
+              await unlock.methods.setLockTemplate(lockTemplate._address).send({
                 from: unlockOwner,
                 gas: constants.MAX_GAS,
               })
+            } else {
+              await unlock.methods
+                .configUnlock(lockTemplate._address, '', '')
+                .send({
+                  from: unlockOwner,
+                  gas: constants.MAX_GAS,
+                })
+            }
           }
         })
 
@@ -234,16 +238,12 @@ contract('Unlock / upgrades', accounts => {
                 await project.upgradeProxy(proxy.address, UnlockLatest)
                 unlock = await UnlockLatest.at(proxy.address)
 
-                const lock = await PublicLockLatest.new({
+                const lockTemplate = await PublicLockLatest.new({
                   from: unlockOwner,
                   gas: constants.MAX_GAS,
                 })
                 await unlock.methods
-                  .configUnlock(
-                    lock.address,
-                    await unlock.methods.globalTokenSymbol().call(),
-                    await unlock.methods.globalBaseTokenURI().call()
-                  )
+                  .setLockTemplate(lockTemplate.address)
                   .send({
                     from: unlockOwner,
                     gas: constants.MAX_GAS,
