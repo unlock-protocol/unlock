@@ -274,4 +274,26 @@ contract Unlock is
 
     emit ResetTrackedValue(_grossNetworkProduct, _totalDiscountGranted);
   }
+
+  /**
+   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v4.
+   */
+  function getGlobalBaseTokenURI()
+    external
+    view
+    returns (string memory)
+  {
+    return globalBaseTokenURI;
+  }
+
+  /**
+   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v4.
+   */
+  function getGlobalTokenSymbol()
+    external
+    view
+    returns (string memory)
+  {
+    return globalTokenSymbol;
+  }
 }
