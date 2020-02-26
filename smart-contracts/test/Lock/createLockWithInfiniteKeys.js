@@ -1,4 +1,3 @@
-
 const BigNumber = require('bignumber.js')
 
 const PublicLock = artifacts.require('PublicLock.sol')

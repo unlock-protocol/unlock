@@ -1,4 +1,3 @@
-
 const { reverts } = require('truffle-assertions')
 
 const PublicLock = artifacts.require('PublicLock.sol')

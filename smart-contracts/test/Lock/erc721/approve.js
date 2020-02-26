@@ -1,4 +1,3 @@
-
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 

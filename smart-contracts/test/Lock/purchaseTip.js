@@ -1,4 +1,3 @@
-
 const truffleAssert = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
