@@ -31,6 +31,11 @@ export default function configure(
 
   const env = runtimeConfig.unlockEnv
 
+  let googleClientId
+  let googleApiKey
+  let googleDiscoveryDocs
+  let googleScopes
+
   const providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
@@ -124,6 +129,14 @@ export default function configure(
     // we start ganache locally with a block time of 3
     blockTime = 3000
     isRequiredNetwork = networkId => networkId === 1984
+
+    googleClientId = null
+    googleApiKey = null
+    googleDiscoveryDocs = [
+      'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
+    ]
+    googleScopes =
+      'profile email https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.metadata.readonly'
   }
 
   if (env === 'staging') {
@@ -219,5 +232,9 @@ export default function configure(
     chainExplorerUrlBuilders,
     stripeApiKey,
     subgraphURI,
+    googleClientId,
+    googleApiKey,
+    googleDiscoveryDocs,
+    googleScopes,
   }
 }
