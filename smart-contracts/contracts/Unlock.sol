@@ -276,7 +276,7 @@ contract Unlock is
   }
 
   /**
-   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v4.
+   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
    */
   function getGlobalBaseTokenURI()
     external
@@ -287,7 +287,7 @@ contract Unlock is
   }
 
   /**
-   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v4.
+   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
   function getGlobalTokenSymbol()
     external
