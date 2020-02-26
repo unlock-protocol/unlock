@@ -16,11 +16,13 @@ let executeCommand = command => {
 let networkMap = {
   local: {
     subgraph: "unlock-protocol/unlock",
-    graphNode: "http://localhost:8020/"
+    graphNode: "http://localhost:8020/",
+    ipfs: "http://localhost:5001"
   },
   kovan: {
     subgraph: "unlock-protocol/unlock-kovan",
-    graphNode: "http://localhost:8020/"
+    graphNode: "http://localhost:8020/",
+    ipfs: "http://localhost:5001"
   }
 };
 
@@ -37,10 +39,15 @@ function selectConfig() {
 
 function process(operation) {
   let config = selectConfig();
-  executeCommand(
-    `graph ${operation} --node ${config.graphNode} ${config.subgraph}`
-  );
+  if (operation === "deploy") {
+    executeCommand(
+      `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${config.subgraph}`
+    );
+  } else {
+    executeCommand(
+      `graph ${operation} --node ${config.graphNode} ${config.subgraph}`
+    );
+  }
 }
 
-
-module.exports = {process}
+module.exports = { process };
