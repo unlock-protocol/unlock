@@ -64,6 +64,26 @@ interface BlockchainHandlerParams {
 // TODO: Why do we export these???
 export { Web3Service, WalletService }
 
+const defaultStore = () => ({
+  config: {
+    locks: {},
+    callToAction: {
+      default: '',
+      expired: '',
+      pending: '',
+      confirmed: '',
+      noWallet: '',
+    },
+  },
+  account: null,
+  balance: {
+    eth: '0',
+  },
+  keys: {},
+  locks: {},
+  transactions: {},
+  network: 1,
+})
 // assumptions:
 // 1. walletService has been "connected" to the Web3ProxyProvider
 // 2. config has been validated already
@@ -94,26 +114,7 @@ export default class BlockchainHandler {
     emitChanges,
     emitError,
     window,
-    store = {
-      config: {
-        locks: {},
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-          noWallet: '',
-        },
-      },
-      account: null,
-      balance: {
-        eth: '0',
-      },
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-    },
+    store = defaultStore(),
   }: BlockchainHandlerParams) {
     this.walletService = walletService
     this.web3Service = web3Service
