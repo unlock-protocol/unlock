@@ -46,13 +46,11 @@ describe('BlockchainHandler - setupListeners', () => {
       walletService,
       web3Service,
       constants,
-      configuration,
       emitChanges,
       emitError,
       window: fakeWindow,
-      store,
     })
-    handler.init()
+    handler.init(configuration, store)
 
     handler.dispatchChangesToPostOffice = jest.fn()
     fakeWindow.setTimeout = jest.fn()
