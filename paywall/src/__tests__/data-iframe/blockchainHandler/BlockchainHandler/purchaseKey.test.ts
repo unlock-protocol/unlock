@@ -48,11 +48,9 @@ describe('BlockchainHandler - purchaseKey', () => {
       walletService,
       web3Service,
       constants,
-      configuration,
       emitChanges,
       emitError,
       window: fakeWindow,
-      store,
     })
     const mock: any = web3Service.getLock
     mock.mockImplementation((address: string) => {
@@ -65,7 +63,7 @@ describe('BlockchainHandler - purchaseKey', () => {
       })
       return Promise.resolve()
     })
-    handler.init()
+    handler.init(configuration, store)
     walletService.purchaseKey = jest.fn()
   }
 

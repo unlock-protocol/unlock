@@ -54,11 +54,9 @@ interface BlockchainHandlerParams {
   walletService: WalletServiceType
   web3Service: Web3ServiceType
   constants: any
-  configuration: PaywallConfig
   emitChanges: (data: BlockchainData) => void
   emitError: (error: Error) => void
   window: FetchWindow & SetTimeoutWindow
-  store?: PaywallState
 }
 
 // TODO: Why do we export these???
@@ -110,11 +108,9 @@ export default class BlockchainHandler {
     walletService,
     web3Service,
     constants,
-    configuration,
     emitChanges,
     emitError,
     window,
-    store = defaultStore(),
   }: BlockchainHandlerParams) {
     this.walletService = walletService
     this.web3Service = web3Service
@@ -122,27 +118,31 @@ export default class BlockchainHandler {
     this.emitChanges = emitChanges
     this.emitError = emitError
     this.window = window
-
+    this.lockAddresses = []
     // set the actual defaults
-    store.config = configuration
-    store.network = constants.defaultNetwork
-    // take the paywall config, normalize all the locks (this is redundant for safety)
-    store.config.locks = normalizeAddressKeys(store.config.locks)
-    // this will be used to filter the keys and transactions we return
-    this.lockAddresses = Object.keys(store.config.locks)
-    // set the default keys now
-    store.keys = makeDefaultKeys(this.lockAddresses, store.account)
-    this.store = store
+    this.store = defaultStore()
+
+    // set up event listeners
+    this.setupListeners()
   }
 
   /**
    * Initialize non-constant work
    *
    * Polling for accounts, setting up listeners, fetching locks happen here
+   * NOTE: the optional store param is only used in testing...
    */
-  init() {
-    // set up event listeners
-    this.setupListeners()
+  init(configuration: PaywallConfig, store: PaywallState = defaultStore()) {
+    // reset the store
+    // set the actual defaults
+    store.config = configuration
+    store.network = this.constants.defaultNetwork
+    // take the paywall config, normalize all the locks (this is redundant for safety)
+    store.config.locks = normalizeAddressKeys(store.config.locks)
+    // this will be used to filter the keys and transactions we return
+    this.lockAddresses = Object.keys(store.config.locks)
+    store.keys = makeDefaultKeys(this.lockAddresses, store.account)
+    this.store = store
 
     // retrieve the locks
     this.lockAddresses.forEach(address =>

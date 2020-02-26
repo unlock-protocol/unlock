@@ -33,14 +33,12 @@ describe('BlockchainHandler - setUserMetadata', () => {
       walletService,
       web3Service,
       constants,
-      configuration,
       emitChanges,
       emitError,
       window: fakeWindow,
-      store,
     })
 
-    handler.init()
+    handler.init(configuration, store)
   }
 
   describe('no account yet', () => {
