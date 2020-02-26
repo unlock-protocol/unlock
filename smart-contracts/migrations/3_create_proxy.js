@@ -1,5 +1,6 @@
 // Load zos scripts and truffle wrapper function
 const { scripts, ConfigManager } = require('@openzeppelin/cli')
+const { constants } = require('hardlydifficult-ethereum-contracts')
 
 const { create } = scripts
 const PublicLock = artifacts.require('PublicLock')
@@ -23,8 +24,8 @@ async function deploy(options, accounts) {
   // Deploy lock template
   const lockTemplate = await PublicLock.new()
   await unlockContract.methods
-    .configUnlock(lockTemplate.address, '', '')
-    .send({ from: unlockOwner })
+    .setLockTemplate(lockTemplate.address)
+    .send({ from: unlockOwner, gas: constants.MAX_GAS })
 }
 
 module.exports = async (deployer, networkName, accounts) => {
@@ -34,7 +35,7 @@ module.exports = async (deployer, networkName, accounts) => {
     network: networkName,
     from: proxyAdmin,
   })
-  txParams.gas = 4000000
+  txParams.gas = constants.MAX_GAS
   const options = { network, txParams }
   await deploy(options, accounts)
 }

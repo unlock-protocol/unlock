@@ -23,7 +23,7 @@ contract('Lock / timeMachine', accounts => {
   before(async () => {
     let salt = 42
     unlock = await getProxy(unlockContract)
-    await unlock.configUnlock((await TimeMachineMock.new()).address, '', '')
+    await unlock.setLockTemplate((await TimeMachineMock.new()).address)
     let tx = await unlock.createLock(
       new BigNumber(60 * 60 * 24 * 30), // 30 days
       web3.utils.padLeft(0, 40),
