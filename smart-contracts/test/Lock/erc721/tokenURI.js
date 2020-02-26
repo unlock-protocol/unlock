@@ -38,20 +38,36 @@ contract('Lock / erc721 / tokenURI', accounts => {
       assert.equal(await unlock.globalBaseTokenURI.call(), '')
     })
 
-    it('should allow the owner to set the global base token URI', async () => {
-      txObj = await unlock.configUnlock(
-        await unlock.publicLockAddress(),
-        await unlock.globalTokenSymbol(),
-        'https://newTokenURI.com/api/key',
-        {
-          from: accounts[0],
-        }
-      )
-      event = txObj.logs[0]
-      assert.equal(
-        await unlock.globalBaseTokenURI.call(),
-        'https://newTokenURI.com/api/key'
-      )
+    describe('set global base URI', () => {
+      beforeEach(async () => {
+        txObj = await unlock.configUnlock(
+          await unlock.publicLockAddress(),
+          await unlock.globalTokenSymbol(),
+          'https://newTokenURI.com/api/key',
+          {
+            from: accounts[0],
+          }
+        )
+        event = txObj.logs[0]
+      })
+
+      it('should allow the owner to set the global base token URI', async () => {
+        assert.equal(
+          await unlock.globalBaseTokenURI.call(),
+          'https://newTokenURI.com/api/key'
+        )
+      })
+
+      it('getGlobalBaseTokenURI is the same', async () => {
+        assert.equal(
+          await unlock.globalBaseTokenURI.call(),
+          await unlock.getGlobalBaseTokenURI.call()
+        )
+      })
+
+      it('should emit the ConfigUnlock event', async () => {
+        assert.equal(event.event, 'ConfigUnlock')
+      })
     })
 
     it('should fail if someone other than the owner tries to set the URI', async () => {
@@ -65,10 +81,6 @@ contract('Lock / erc721 / tokenURI', accounts => {
           }
         )
       )
-    })
-
-    it('should emit the ConfigUnlock event', async () => {
-      assert.equal(event.event, 'ConfigUnlock')
     })
   })
 

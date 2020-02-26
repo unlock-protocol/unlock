@@ -315,6 +315,13 @@ contract('Unlock / upgrades', accounts => {
                 )
               })
 
+              it('tokenURI still works as expected', async () => {
+                if (versionNumber >= 3) {
+                  // tokenURI was introduced with v3
+                  await lock.methods.tokenURI(1).call()
+                }
+              })
+
               describe('Using latest version after an upgrade', () => {
                 let lockLatest
 
