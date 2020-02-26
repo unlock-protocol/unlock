@@ -36,18 +36,15 @@ let networkMap = {
 };
 
 function selectConfig() {
-  let network = argv.network;
-  if (networkMap[network]) {
-    config = networkMap[network];
-  } else {
-    config = networkMap["local"];
-  }
+  let network = argv.network || "local";
+  let environment = argv.environment || "development";
 
-  return config;
+  return networkMap[environment][network];
 }
 
 function process(operation) {
   let config = selectConfig();
+
   if (operation === "deploy") {
     executeCommand(
       `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${config.subgraph}`
