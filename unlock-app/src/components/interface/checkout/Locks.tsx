@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Lock, LoadingLock } from './Lock'
+import { Lock } from './Lock'
+import { LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 
 interface LocksProps {

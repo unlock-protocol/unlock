@@ -5116,448 +5116,6 @@ Object {
 }
 `;
 
-exports[`Storyshots Checkout Lock Active 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c9 {
-  width: 32px;
-  fill: var(--darkgrey);
-  margin-left: auto;
-  margin-right: 8px;
-}
-
-.c4 {
-  height: 48px;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px var(--white) solid;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: var(--white);
-  cursor: pointer;
-}
-
-.c4:hover {
-  border: 1px solid var(--blue);
-}
-
-.c4:hover .c8 {
-  fill: var(--blue);
-}
-
-.c0 {
-  width: 240px;
-  height: 72px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  margin-top: 17px;
-}
-
-.c2 {
-  font-size: 13px;
-  color: var(--grey);
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-}
-
-.c3 {
-  font-size: 9px;
-  color: var(--grey);
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-}
-
-.c1 {
-  height: 24px;
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c5 {
-  color: var(--darkgrey);
-  font-family: IBM Plex Mono;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  margin-left: 12px;
-  text-align: right;
-  width: 65px;
-}
-
-.c6 {
-  color: var(--darkgrey);
-  font-family: IBM Plex Mono;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  text-align: right;
-  width: 42px;
-}
-
-.c7 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 9px;
-  line-height: 10px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: right;
-  height: 100%;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-.c7 > span {
-  width: 100%;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          <span
-            class="c2"
-          >
-            ETH Lock
-          </span>
-          <span
-            class="c3"
-          >
-            Unlimited
-             Available
-          </span>
-        </div>
-        <div
-          class="c4"
-        >
-          <span
-            class="c5"
-          >
-            0.01
-          </span>
-          <span
-            class="c6"
-          >
-            ETH
-          </span>
-          <div
-            class="c7"
-          >
-            <span>
-              Valid for
-            </span>
-            <br />
-            <span>
-              5 minutes
-            </span>
-          </div>
-          <svg
-            class="c8 c9"
-            viewBox="0 0 24 24"
-          >
-            <path
-              clip-rule="evenodd"
-              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-pjstK bwTJOd"
-    >
-      <div
-        class="sc-qYIQh kMzNWR"
-      >
-        <span
-          class="sc-prorn lnozAw"
-        >
-          ETH Lock
-        </span>
-        <span
-          class="sc-qQMSE jigpIh"
-        >
-          Unlimited
-           Available
-        </span>
-      </div>
-      <div
-        class="sc-pbxSd kdlDET"
-      >
-        <span
-          class="sc-pBzUF kXDysY"
-        >
-          0.01
-        </span>
-        <span
-          class="sc-pJUVA hTiwUC"
-        >
-          ETH
-        </span>
-        <div
-          class="sc-pRtAn dLrkMV"
-        >
-          <span>
-            Valid for
-          </span>
-          <br />
-          <span>
-            5 minutes
-          </span>
-        </div>
-        <svg
-          class="sc-oTBUA hFpCpo"
-          viewBox="0 0 24 24"
-        >
-          <path
-            clip-rule="evenodd"
-            d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
-            fill-rule="evenodd"
-          />
-        </svg>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Checkout Lock Loading 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  height: 48px;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px var(--lightgrey) solid;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: var(--lightgrey);
-  cursor: wait;
-  -webkit-animation: gfABjo 2s linear infinite;
-  animation: gfABjo 2s linear infinite;
-}
-
-.c0 {
-  width: 240px;
-  height: 72px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  margin-top: 17px;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-          loading="true"
-        />
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-pjstK bwTJOd"
-    >
-      <div
-        class="sc-pbxSd gyQAqr"
-        loading="true"
-      />
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
 exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
@@ -43733,6 +43291,1054 @@ Object {
 }
 `;
 
+exports[`Storyshots Lock Variations All variations 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c9 {
+  width: 32px;
+  fill: var(--darkgrey);
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.c17 {
+  width: 32px;
+  fill: var(--white);
+  margin-left: auto;
+  margin-right: 8px;
+  border-radius: 16px;
+  background-color: var(--green);
+}
+
+.c15 {
+  width: 32px;
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.c13 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.c13:hover {
+  border: 1px solid var(--blue);
+}
+
+.c13:hover .c8 {
+  fill: var(--blue);
+}
+
+.c12 {
+  height: 48px;
+  width: 115px;
+  border-radius: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+  z-index: 1000;
+  color: var(--red);
+  font-size: 9px;
+  position: absolute;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-left: 12px;
+  margin-bottom: 2px;
+}
+
+.c1 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  background-color: var(--white);
+  cursor: pointer;
+  box-shadow: none;
+  cursor: wait;
+  border: 1px var(--lightgrey) solid;
+  -webkit-animation: gfABjo 2s linear infinite;
+  animation: gfABjo 2s linear infinite;
+  background-color: var(--lightgrey);
+}
+
+.c1:hover {
+  border: 1px solid var(--blue);
+}
+
+.c1:hover .c8 {
+  fill: var(--blue);
+}
+
+.c1:hover {
+  border: 1px solid var(--lightgrey);
+}
+
+.c5 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  background-color: var(--white);
+  cursor: pointer;
+  cursor: not-allowed;
+}
+
+.c5:hover {
+  border: 1px solid var(--blue);
+}
+
+.c5:hover .c8 {
+  fill: var(--blue);
+}
+
+.c5 .c8 {
+  visibility: hidden;
+}
+
+.c5:hover {
+  border: 1px solid var(--white);
+}
+
+.c16 {
+  height: 48px;
+  width: 100%;
+  border-radius: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 1px var(--white) solid;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.c16:hover {
+  border: 1px solid var(--blue);
+}
+
+.c16:hover .c8 {
+  fill: var(--blue);
+}
+
+.c16:hover {
+  border: 1px solid var(--green);
+}
+
+.c0 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.c2 {
+  width: 240px;
+  height: 72px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-top: 17px;
+  opacity: 0.5;
+}
+
+.c4 {
+  font-size: 13px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c11 {
+  font-size: 9px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.c10 {
+  font-size: 9px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  color: var(--red);
+}
+
+.c14 {
+  font-size: 9px;
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  color: var(--link);
+}
+
+.c3 {
+  height: 24px;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c6 {
+  color: var(--darkgrey);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 12px;
+  text-align: right;
+  width: 115px;
+}
+
+.c7 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 9px;
+  line-height: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: right;
+  height: 100%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.c7 > span {
+  width: 100%;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <div
+          class="c0"
+        >
+          <div
+            class="c1"
+          />
+        </div>
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Disabled
+            </span>
+          </div>
+          <div
+            class="c5"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <br />
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c8 c9"
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Sold Out
+            </span>
+            <span
+              class="c10"
+            >
+              Sold Out
+            </span>
+          </div>
+          <div
+            class="c5"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <br />
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c8 c9"
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Insufficient Balance
+            </span>
+            <span
+              class="c11"
+            >
+              1,300
+               Available
+            </span>
+          </div>
+          <div
+            class="c5"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <br />
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c8 c9"
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c12"
+          >
+            Insufficient Balance
+          </div>
+        </div>
+        <div
+          class="c0"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Purchaseable
+            </span>
+            <span
+              class="c11"
+            >
+              1,300
+               Available
+            </span>
+          </div>
+          <div
+            class="c13"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <br />
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c8 c9"
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="c0"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Processing
+            </span>
+            <span
+              class="c14"
+            >
+              Processing
+            </span>
+          </div>
+          <div
+            class="c13"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <br />
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c15"
+              id="loadingDots_svg__ep1opzeolwb1"
+              shape-rendering="geometricPrecision"
+              text-rendering="geometricPrecision"
+              viewBox="0 0 32 32"
+            >
+              <style>
+                @keyframes ep1opzeolwb3_f_o{0%,to{fill-opacity:0}29.411765%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}52.941176%,76.470588%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb4_f_o{0%,82.352941%,to{fill-opacity:0}11.764706%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}35.294118%,58.823529%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb5_f_o{0%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}23.529412%,47.058824%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}70.588235%,to{fill-opacity:0}}
+              </style>
+              <path
+                clip-rule="evenodd"
+                d="M16 32c8.837 0 16-7.163 16-16S24.837 0 16 0 0 7.163 0 16s7.163 16 16 16z"
+                fill="#4D8BE8"
+                fill-rule="evenodd"
+                id="loadingDots_svg__ep1opzeolwb2"
+                stroke="none"
+                stroke-width="1"
+              />
+              <circle
+                fill="#FFF"
+                fill-opacity="0"
+                r="2.333"
+                style="animation: ep1opzeolwb3_f_o 1700ms linear infinite normal forwards;"
+                transform="translate(23.068 16)"
+              />
+              <circle
+                fill="#FFF"
+                fill-opacity="0"
+                r="2.333"
+                style="animation: ep1opzeolwb4_f_o 1700ms linear infinite normal forwards;"
+                transform="translate(16 16)"
+              />
+              <circle
+                fill="#FFF"
+                fill-opacity="0"
+                r="2.333"
+                style="animation: ep1opzeolwb5_f_o 1700ms linear infinite normal forwards;"
+                transform="translate(9 16)"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="c0"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Confirmed
+            </span>
+            <span
+              class="c11"
+            >
+              1,300
+               Available
+            </span>
+          </div>
+          <div
+            class="c16"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <br />
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c17"
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <div
+        class="sc-pRtAn frZgaC"
+      >
+        <div
+          class="sc-prorn sc-qYIQh jXTxcM"
+        />
+      </div>
+      <div
+        class="sc-pRtAn sc-pZOBi ddXFBD"
+      >
+        <div
+          class="sc-qQYBZ kTPjys"
+        >
+          <span
+            class="sc-oTNDV iCvdsG"
+          >
+            Disabled
+          </span>
+        </div>
+        <div
+          class="sc-prorn sc-pBzUF kcFlmo"
+        >
+          <span
+            class="sc-qZtCU VPARw"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-pzMyG cYOPnt"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-oTBUA hFpCpo"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="sc-pRtAn sc-pZOBi ddXFBD"
+      >
+        <div
+          class="sc-qQYBZ kTPjys"
+        >
+          <span
+            class="sc-oTNDV iCvdsG"
+          >
+            Sold Out
+          </span>
+          <span
+            class="sc-pciEQ sc-pjHjD dWcCcA"
+          >
+            Sold Out
+          </span>
+        </div>
+        <div
+          class="sc-prorn sc-pBzUF kcFlmo"
+        >
+          <span
+            class="sc-qZtCU VPARw"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-pzMyG cYOPnt"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-oTBUA hFpCpo"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="sc-pRtAn sc-pZOBi ddXFBD"
+      >
+        <div
+          class="sc-qQYBZ kTPjys"
+        >
+          <span
+            class="sc-oTNDV iCvdsG"
+          >
+            Insufficient Balance
+          </span>
+          <span
+            class="sc-pciEQ gPUcVE"
+          >
+            1,300
+             Available
+          </span>
+        </div>
+        <div
+          class="sc-prorn sc-pBzUF kcFlmo"
+        >
+          <span
+            class="sc-qZtCU VPARw"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-pzMyG cYOPnt"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-oTBUA hFpCpo"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-qQMSE gvWEKq"
+        >
+          Insufficient Balance
+        </div>
+      </div>
+      <div
+        class="sc-pRtAn frZgaC"
+      >
+        <div
+          class="sc-qQYBZ kTPjys"
+        >
+          <span
+            class="sc-oTNDV iCvdsG"
+          >
+            Purchaseable
+          </span>
+          <span
+            class="sc-pciEQ gPUcVE"
+          >
+            1,300
+             Available
+          </span>
+        </div>
+        <div
+          class="sc-prorn jWTaHe"
+        >
+          <span
+            class="sc-qZtCU VPARw"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-pzMyG cYOPnt"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-oTBUA hFpCpo"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="sc-pRtAn frZgaC"
+      >
+        <div
+          class="sc-qQYBZ kTPjys"
+        >
+          <span
+            class="sc-oTNDV iCvdsG"
+          >
+            Processing
+          </span>
+          <span
+            class="sc-pciEQ sc-pscky dqcTyp"
+          >
+            Processing
+          </span>
+        </div>
+        <div
+          class="sc-prorn jWTaHe"
+        >
+          <span
+            class="sc-qZtCU VPARw"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-pzMyG cYOPnt"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-pjstK fsUgUC"
+            id="loadingDots_svg__ep1opzeolwb1"
+            shape-rendering="geometricPrecision"
+            text-rendering="geometricPrecision"
+            viewBox="0 0 32 32"
+          >
+            <style>
+              @keyframes ep1opzeolwb3_f_o{0%,to{fill-opacity:0}29.411765%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}52.941176%,76.470588%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb4_f_o{0%,82.352941%,to{fill-opacity:0}11.764706%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}35.294118%,58.823529%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb5_f_o{0%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}23.529412%,47.058824%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}70.588235%,to{fill-opacity:0}}
+            </style>
+            <path
+              clip-rule="evenodd"
+              d="M16 32c8.837 0 16-7.163 16-16S24.837 0 16 0 0 7.163 0 16s7.163 16 16 16z"
+              fill="#4D8BE8"
+              fill-rule="evenodd"
+              id="loadingDots_svg__ep1opzeolwb2"
+              stroke="none"
+              stroke-width="1"
+            />
+            <circle
+              fill="#FFF"
+              fill-opacity="0"
+              r="2.333"
+              style="animation: ep1opzeolwb3_f_o 1700ms linear infinite normal forwards;"
+              transform="translate(23.068 16)"
+            />
+            <circle
+              fill="#FFF"
+              fill-opacity="0"
+              r="2.333"
+              style="animation: ep1opzeolwb4_f_o 1700ms linear infinite normal forwards;"
+              transform="translate(16 16)"
+            />
+            <circle
+              fill="#FFF"
+              fill-opacity="0"
+              r="2.333"
+              style="animation: ep1opzeolwb5_f_o 1700ms linear infinite normal forwards;"
+              transform="translate(9 16)"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="sc-pRtAn frZgaC"
+      >
+        <div
+          class="sc-qQYBZ kTPjys"
+        >
+          <span
+            class="sc-oTNDV iCvdsG"
+          >
+            Confirmed
+          </span>
+          <span
+            class="sc-pciEQ gPUcVE"
+          >
+            1,300
+             Available
+          </span>
+        </div>
+        <div
+          class="sc-prorn sc-pJUVA ka-DKju"
+        >
+          <span
+            class="sc-qZtCU VPARw"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-pzMyG cYOPnt"
+          >
+            <span>
+              Valid for
+            </span>
+            <br />
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-pbxSd iAzeLl"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots LockIconBar LockIconBar, confirming price change transaction 1`] = `
 Object {
   "asFragment": [Function],
@@ -55466,7 +56072,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'LockClosed';
+  content: 'LoadingDots';
   position: absolute;
 }
 
@@ -55482,7 +56088,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Preview';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -55498,7 +56104,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -55514,7 +56120,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -55530,7 +56136,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -55546,7 +56152,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -55562,7 +56168,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -55578,7 +56184,7 @@ Object {
 }
 
 .c30:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -55594,7 +56200,7 @@ Object {
 }
 
 .c31:hover:before {
-  content: 'Members';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -55610,7 +56216,7 @@ Object {
 }
 
 .c32:hover:before {
-  content: 'Telegram';
+  content: 'Members';
   position: absolute;
 }
 
@@ -55626,7 +56232,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'Ticket';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -55642,7 +56248,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'Twitter';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -55658,7 +56264,7 @@ Object {
 }
 
 .c35:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -55674,7 +56280,7 @@ Object {
 }
 
 .c36:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -55690,7 +56296,7 @@ Object {
 }
 
 .c37:hover:before {
-  content: 'Home';
+  content: 'ChevronUp';
   position: absolute;
 }
 
@@ -55706,7 +56312,7 @@ Object {
 }
 
 .c38:hover:before {
-  content: 'Qr';
+  content: 'Home';
   position: absolute;
 }
 
@@ -55722,6 +56328,22 @@ Object {
 }
 
 .c39:hover:before {
+  content: 'Qr';
+  position: absolute;
+}
+
+.c40 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c40:hover {
+  background-color: var(--offwhite);
+}
+
+.c40:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -56198,6 +56820,51 @@ Object {
           </div>
           <div
             class="c23"
+            name="LoadingDots"
+          >
+            <svg
+              id="loadingDots_svg__ep1opzeolwb1"
+              shape-rendering="geometricPrecision"
+              text-rendering="geometricPrecision"
+              viewBox="0 0 32 32"
+            >
+              <style>
+                @keyframes ep1opzeolwb3_f_o{0%,to{fill-opacity:0}29.411765%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}52.941176%,76.470588%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb4_f_o{0%,82.352941%,to{fill-opacity:0}11.764706%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}35.294118%,58.823529%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb5_f_o{0%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}23.529412%,47.058824%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}70.588235%,to{fill-opacity:0}}
+              </style>
+              <path
+                clip-rule="evenodd"
+                d="M16 32c8.837 0 16-7.163 16-16S24.837 0 16 0 0 7.163 0 16s7.163 16 16 16z"
+                fill="#4D8BE8"
+                fill-rule="evenodd"
+                id="loadingDots_svg__ep1opzeolwb2"
+                stroke="none"
+                stroke-width="1"
+              />
+              <circle
+                fill="#FFF"
+                fill-opacity="0"
+                r="2.333"
+                style="animation: ep1opzeolwb3_f_o 1700ms linear infinite normal forwards;"
+                transform="translate(23.068 16)"
+              />
+              <circle
+                fill="#FFF"
+                fill-opacity="0"
+                r="2.333"
+                style="animation: ep1opzeolwb4_f_o 1700ms linear infinite normal forwards;"
+                transform="translate(16 16)"
+              />
+              <circle
+                fill="#FFF"
+                fill-opacity="0"
+                r="2.333"
+                style="animation: ep1opzeolwb5_f_o 1700ms linear infinite normal forwards;"
+                transform="translate(9 16)"
+              />
+            </svg>
+          </div>
+          <div
+            class="c24"
             name="LockClosed"
           >
             <svg
@@ -56211,7 +56878,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="Preview"
           >
             <svg
@@ -56231,7 +56898,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Jobs"
           >
             <svg
@@ -56245,7 +56912,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="Unlock"
           >
             <svg
@@ -56257,7 +56924,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="UnlockWordMark"
           >
             <svg
@@ -56269,7 +56936,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="Upload"
           >
             <svg
@@ -56283,7 +56950,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="Withdraw"
           >
             <svg
@@ -56297,7 +56964,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c31"
             name="Newsletter"
           >
             <svg
@@ -56311,7 +56978,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c31"
+            class="c32"
             name="Members"
           >
             <svg
@@ -56325,7 +56992,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c32"
+            class="c33"
             name="Telegram"
           >
             <svg
@@ -56339,7 +57006,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c33"
+            class="c34"
             name="Ticket"
           >
             <svg
@@ -56353,7 +57020,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c35"
             name="Twitter"
           >
             <svg
@@ -56367,7 +57034,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c36"
             name="Bars"
           >
             <svg
@@ -56379,7 +57046,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c36"
+            class="c37"
             name="ChevronUp"
           >
             <svg
@@ -56393,7 +57060,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c37"
+            class="c38"
             name="Home"
           >
             <svg
@@ -56405,7 +57072,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c38"
+            class="c39"
             name="Qr"
           >
             <svg
@@ -56441,7 +57108,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c39"
+            class="c40"
             name="Wordpress"
           >
             <svg
@@ -56929,6 +57596,51 @@ Object {
                 values="0;3;0;0"
               />
             </circle>
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 hQkTfl"
+          name="LoadingDots"
+        >
+          <svg
+            id="loadingDots_svg__ep1opzeolwb1"
+            shape-rendering="geometricPrecision"
+            text-rendering="geometricPrecision"
+            viewBox="0 0 32 32"
+          >
+            <style>
+              @keyframes ep1opzeolwb3_f_o{0%,to{fill-opacity:0}29.411765%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}52.941176%,76.470588%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb4_f_o{0%,82.352941%,to{fill-opacity:0}11.764706%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}35.294118%,58.823529%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb5_f_o{0%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}23.529412%,47.058824%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}70.588235%,to{fill-opacity:0}}
+            </style>
+            <path
+              clip-rule="evenodd"
+              d="M16 32c8.837 0 16-7.163 16-16S24.837 0 16 0 0 7.163 0 16s7.163 16 16 16z"
+              fill="#4D8BE8"
+              fill-rule="evenodd"
+              id="loadingDots_svg__ep1opzeolwb2"
+              stroke="none"
+              stroke-width="1"
+            />
+            <circle
+              fill="#FFF"
+              fill-opacity="0"
+              r="2.333"
+              style="animation: ep1opzeolwb3_f_o 1700ms linear infinite normal forwards;"
+              transform="translate(23.068 16)"
+            />
+            <circle
+              fill="#FFF"
+              fill-opacity="0"
+              r="2.333"
+              style="animation: ep1opzeolwb4_f_o 1700ms linear infinite normal forwards;"
+              transform="translate(16 16)"
+            />
+            <circle
+              fill="#FFF"
+              fill-opacity="0"
+              r="2.333"
+              style="animation: ep1opzeolwb5_f_o 1700ms linear infinite normal forwards;"
+              transform="translate(9 16)"
+            />
           </svg>
         </div>
         <div
@@ -61207,14 +61919,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pQEbo fHHJUQ"
+      class="sc-pzYib akFRx"
     >
       <div
-        class="sc-pYA-dN icvhJr"
+        class="sc-pItiW pqhqX"
         color="--green"
       >
         <div
-          class="sc-psQdR vNcgI"
+          class="sc-pcJja hqBiFa"
         >
           <svg
             viewBox="0 0 24 24"
@@ -61230,57 +61942,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-oUcyK gvYHzG"
+          class="sc-pQSRh hVGiIF"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pbYBj kPbXAq"
+          class="sc-pZnSc ibqQPR"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-qPlga cuusPX"
+        class="sc-pliRl lkaZfr"
       >
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Lock Name
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Token Id
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           53
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Owner Address
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           20 minutes ago
         </div>
@@ -61546,14 +62258,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pQEbo fHHJUQ"
+      class="sc-pzYib akFRx"
     >
       <div
-        class="sc-pYA-dN icvhJr"
+        class="sc-pItiW pqhqX"
         color="--green"
       >
         <div
-          class="sc-psQdR vNcgI"
+          class="sc-pcJja hqBiFa"
         >
           <svg
             viewBox="0 0 24 24"
@@ -61569,62 +62281,62 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-oUcyK gvYHzG"
+          class="sc-pQSRh hVGiIF"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pbYBj kPbXAq"
+          class="sc-pZnSc ibqQPR"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-qPlga cuusPX"
+        class="sc-pliRl lkaZfr"
       >
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Lock Name
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Token Id
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           53
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Owner Address
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           20 minutes ago
         </div>
         <button
-          class="sc-fznBtT sc-qXhiz yIftG"
+          class="sc-fznBtT sc-ptDSg jUQUTM"
         >
           Mark as Checked-In
         </button>
@@ -61861,14 +62573,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pQEbo fHHJUQ"
+      class="sc-pzYib akFRx"
     >
       <div
-        class="sc-pYA-dN icvhJr"
+        class="sc-pItiW pqhqX"
         color="--green"
       >
         <div
-          class="sc-psQdR vNcgI"
+          class="sc-pcJja hqBiFa"
         >
           <svg
             viewBox="0 0 24 24"
@@ -61884,57 +62596,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-oUcyK gvYHzG"
+          class="sc-pQSRh hVGiIF"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pbYBj kPbXAq"
+          class="sc-pZnSc ibqQPR"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-qPlga cuusPX"
+        class="sc-pliRl lkaZfr"
       >
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Lock Name
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Token Id
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           53
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Owner Address
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           20 minutes ago
         </div>
@@ -62187,14 +62899,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pQEbo fHHJUQ"
+      class="sc-pzYib akFRx"
     >
       <div
-        class="sc-pYA-dN hHhpOn"
+        class="sc-pItiW eePvRv"
         color="--yellow"
       >
         <div
-          class="sc-psQdR vNcgI"
+          class="sc-pcJja hqBiFa"
         >
           <svg
             viewBox="0 0 24 24"
@@ -62210,18 +62922,18 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-oUcyK gvYHzG"
+          class="sc-pQSRh hVGiIF"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pbYBj kPbXAq"
+          class="sc-pZnSc ibqQPR"
         >
           Until 
           Jun 24th, 2020
         </h2>
         <h2
-          class="sc-pkUbs ffihxy"
+          class="sc-oUoif leLlGH"
         >
           Checked-in 
           1 minute
@@ -62229,45 +62941,45 @@ Object {
         </h2>
       </div>
       <div
-        class="sc-qPlga cuusPX"
+        class="sc-pliRl lkaZfr"
       >
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Lock Name
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Token Id
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           53
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Owner Address
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pzYib cqnJTo"
+          class="sc-qPwPv pQxEI"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pItiW hQzYEK"
+          class="sc-qXRQq hSuTcC"
         >
           20 minutes ago
         </div>
@@ -62412,14 +63124,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pQEbo fHHJUQ"
+      class="sc-pzYib akFRx"
     >
       <div
-        class="sc-pYA-dN bmFggf"
+        class="sc-pItiW haqEwj"
         color="--red"
       >
         <div
-          class="sc-psQdR vNcgI"
+          class="sc-pcJja hqBiFa"
         >
           <svg
             viewBox="0 0 24 24"
@@ -62435,7 +63147,7 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-oUcyK gvYHzG"
+          class="sc-pQSRh hVGiIF"
         >
           Key Invalid
         </h1>
