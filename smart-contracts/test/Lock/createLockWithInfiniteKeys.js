@@ -2,10 +2,10 @@ const Units = require('ethereumjs-units')
 
 const BigNumber = require('bignumber.js')
 
-const PublicLock = artifacts.require('../../PublicLock.sol')
+const PublicLock = artifacts.require('PublicLock.sol')
 const getProxy = require('../helpers/proxy')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 
 let unlock
 
