@@ -140,7 +140,7 @@ contract('Unlock / upgrades', accounts => {
                   gas: constants.MAX_GAS,
                 })
             } else if (versionNumber >= 3) {
-              // Version 1 added a lock name
+              // Version 3 added a lock name
               lockTx = await unlock.methods
                 .createLock(
                   60 * 60 * 24, // expirationDuration 1 day
@@ -154,7 +154,7 @@ contract('Unlock / upgrades', accounts => {
                   gas: constants.MAX_GAS,
                 })
             } else if (versionNumber >= 1) {
-              // Version 3 added ERC-20 support, requiring a tokenAddress
+              // Version 1 added ERC-20 support, requiring a tokenAddress
               lockTx = await unlock.methods
                 .createLock(
                   60 * 60 * 24, // expirationDuration 1 day
