@@ -25,7 +25,6 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
     describe('set the global symbol', () => {
       beforeEach(async () => {
         txObj = await unlock.configUnlock(
-          await unlock.publicLockAddress(),
           'KEY',
           await unlock.globalBaseTokenURI(),
           {
@@ -53,14 +52,9 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
       await reverts(
-        unlock.configUnlock(
-          await unlock.publicLockAddress(),
-          'BTC',
-          await unlock.globalBaseTokenURI(),
-          {
-            from: accounts[1],
-          }
-        )
+        unlock.configUnlock('BTC', await unlock.globalBaseTokenURI(), {
+          from: accounts[1],
+        })
       )
     })
   })
