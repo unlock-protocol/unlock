@@ -1,4 +1,8 @@
-import BlockchainHandler from './blockchainHandler/BlockchainHandler'
+import BlockchainHandler, {
+  WalletService,
+  Web3Service,
+} from './blockchainHandler/BlockchainHandler'
+import Web3ProxyProvider from '../providers/Web3ProxyProvider'
 import {
   ConstantsType,
   BlockchainData,
@@ -210,21 +214,6 @@ export default class Mailbox {
   }
 
   async init() {
-    // lazy-loading the blockchain handler, this is essential to implement
-    // code splitting
-    const [
-      {
-        default: Web3ProxyProvider,
-      } /* import('../../providers/Web3ProxyProvider') */,
-      {
-        default: BlockchainHandler,
-        WalletService,
-        Web3Service,
-      } /* './blockchainHandler/BlockchainHandler' */,
-    ] = await Promise.all([
-      import('../providers/Web3ProxyProvider'),
-      import('./blockchainHandler/BlockchainHandler'),
-    ])
     const web3Service = new Web3Service({
       readOnlyProvider: this.constants.readOnlyProvider,
       unlockAddress: this.constants.unlockAddress,
