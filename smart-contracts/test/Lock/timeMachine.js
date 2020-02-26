@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -11,7 +10,7 @@ let unlock
 contract('Lock / timeMachine', accounts => {
   let lock
   const lockOwner = accounts[1]
-  const keyPrice = new BigNumber(Units.convert('0.01', 'eth', 'wei'))
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const keyOwner = accounts[2]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
   const tooMuchTime = new BigNumber(60 * 60 * 24 * 42) // 42 days
@@ -28,7 +27,7 @@ contract('Lock / timeMachine', accounts => {
     let tx = await unlock.createLock(
       new BigNumber(60 * 60 * 24 * 30), // 30 days
       web3.utils.padLeft(0, 40),
-      new BigNumber(Units.convert(0.01, 'eth', 'wei')),
+      new BigNumber(web3.utils.toWei('0.01', 'ether')),
       11,
       'TimeMachineMockLock',
       `0x${salt.toString(16)}`,

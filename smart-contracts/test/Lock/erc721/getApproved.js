@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
@@ -18,7 +17,7 @@ contract('Lock / erc721 / getApproved', accounts => {
 
   before(async () => {
     await locks.FIRST.purchase(0, keyPurchaser, web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from: keyPurchaser,
     })
     ID = await locks.FIRST.getTokenIdFor.call(keyPurchaser)

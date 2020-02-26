@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const truffleAssert = require('truffle-assertions')
 
@@ -36,7 +35,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const txSender = accounts[9]
-  const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   let lockOwner
 
   beforeEach(async () => {

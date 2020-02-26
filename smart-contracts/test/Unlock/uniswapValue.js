@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 
@@ -8,7 +7,7 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-const keyPrice = Units.convert('0.01', 'eth', 'wei')
+const keyPrice = web3.utils.toWei('0.01', 'ether')
 
 let unlock
 let locks

@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -40,7 +39,7 @@ contract('Lock / Lock', accounts => {
     numberOfOwners = new BigNumber(numberOfOwners)
     assert.strictEqual(owner, accounts[0])
     assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
-    assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
+    assert.strictEqual(web3.utils.fromWei(keyPrice.toFixed(), 'ether'), '0.01')
     assert.equal(maxNumberOfKeys.toFixed(), 10)
     assert.equal(totalSupply.toFixed(), 0)
     assert.equal(numberOfOwners.toFixed(), 0)
