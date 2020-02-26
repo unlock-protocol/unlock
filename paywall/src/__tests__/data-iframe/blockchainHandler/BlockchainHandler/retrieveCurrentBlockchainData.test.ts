@@ -60,11 +60,9 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       walletService,
       web3Service,
       constants,
-      configuration,
       emitChanges,
       emitError,
       window: fakeWindow,
-      store,
     })
     const mock: any = web3Service.getLock
     // emit a unique name for each lock
@@ -83,7 +81,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       })
       return Promise.resolve()
     })
-    handler.init()
+    handler.init(configuration, store)
   }
 
   describe('user is not logged in', () => {

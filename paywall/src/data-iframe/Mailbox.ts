@@ -238,12 +238,11 @@ export default class Mailbox {
       web3Service,
       walletService,
       constants: this.constants,
-      configuration: this.configuration as PaywallConfig,
       emitChanges: this.emitChanges,
       emitError: this.emitError,
       window: this.window,
     })
-    this.handler.init()
+    this.handler.init(this.configuration as PaywallConfig)
     this.handler.retrieveCurrentBlockchainData()
   }
 
