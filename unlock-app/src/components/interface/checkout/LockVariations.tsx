@@ -171,6 +171,7 @@ interface LockProps {
   formattedKeyPrice: string
   formattedDuration: string
   formattedKeysAvailable: string
+  onClick: () => void
 }
 
 export const LoadingLock = () => {
@@ -261,6 +262,7 @@ export const PurchaseableLock = ({
   formattedDuration,
   formattedKeyPrice,
   formattedKeysAvailable,
+  onClick,
 }: LockProps) => {
   return (
     <LockContainer>
@@ -268,7 +270,7 @@ export const PurchaseableLock = ({
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
       </InfoWrapper>
-      <BaseLockBody>
+      <BaseLockBody onClick={onClick}>
         <LockPrice>{formattedKeyPrice}</LockPrice>
         <ValidityDuration>
           <span>Valid for</span>
