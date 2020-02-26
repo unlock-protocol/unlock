@@ -1,5 +1,5 @@
 const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
+
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
@@ -50,7 +50,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
       accounts[7],
       accounts[6],
       ID,
-      Web3Utils.toHex('Julien'),
+      web3.utils.toHex('Julien'),
       {
         from: accounts[7],
       }

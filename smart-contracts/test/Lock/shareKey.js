@@ -1,6 +1,6 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
-const Web3Utils = require('web3-utils')
+
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -75,7 +75,7 @@ contract('Lock / shareKey', accounts => {
       it('should abort if the recipient is 0x', async () => {
         await reverts(
           lock.shareKey(
-            Web3Utils.padLeft(0, 40),
+            web3.utils.padLeft(0, 40),
             await lock.getTokenIdFor.call(keyOwners[0]),
             1000,
             {
