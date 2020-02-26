@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -23,7 +22,7 @@ contract('Lock / gas', accounts => {
       web3.utils.padLeft(0, 40),
       [],
       {
-        value: Units.convert('0.01', 'eth', 'wei'),
+        value: web3.utils.toWei('0.01', 'ether'),
       }
     )
     const gasUsed = new BigNumber(tx.receipt.gasUsed)

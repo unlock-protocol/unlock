@@ -1,4 +1,4 @@
-const Units = require('ethereumjs-units')
+
 const { reverts } = require('truffle-assertions')
 
 const PublicLock = artifacts.require('PublicLock.sol')
@@ -19,7 +19,7 @@ exports.shouldCreateLock = options => {
           .createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             web3.utils.padLeft(0, 40),
-            Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'New Lock',
             '0x000000000000000000000000'
@@ -70,7 +70,7 @@ exports.shouldCreateLock = options => {
             .createLock(
               60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
               web3.utils.padLeft(0, 40),
-              Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
               100, // maxNumberOfKeys
               'Too Big Expiration Lock',
               '0x000000000000000000000000'

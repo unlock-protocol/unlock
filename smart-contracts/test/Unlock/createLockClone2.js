@@ -1,5 +1,3 @@
-const Units = require('ethereumjs-units')
-
 const unlockContract = artifacts.require('Unlock.sol')
 const PublicLock = artifacts.require('./PublicLock.sol')
 const { utils } = require('hardlydifficult-ethereum-contracts')
@@ -35,7 +33,7 @@ contract('Unlock / createLockClone2', accounts => {
           let tx = await unlock.createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             web3.utils.padLeft(0, 40),
-            Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
             salt,
@@ -67,7 +65,7 @@ contract('Unlock / createLockClone2', accounts => {
             unlock.createLock(
               60 * 60 * 24 * 30, // expirationDuration: 30 days
               web3.utils.padLeft(0, 40),
-              Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
               100, // maxNumberOfKeys
               'Test Lock',
               salt,
@@ -83,7 +81,7 @@ contract('Unlock / createLockClone2', accounts => {
           await unlock.createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             web3.utils.padLeft(0, 40),
-            Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
             salt,
