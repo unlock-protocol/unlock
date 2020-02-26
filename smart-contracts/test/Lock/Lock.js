@@ -4,7 +4,6 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
-const { LatestLockVersion } = require('../Unlock/upgrades/latestVersion.js')
 
 let unlock
 let locks
@@ -24,7 +23,6 @@ contract('Lock / Lock', accounts => {
       maxNumberOfKeys,
       totalSupply,
       numberOfOwners,
-      publicLockVersion,
       isAlive,
     ] = await Promise.all([
       lock.owner.call(),
@@ -33,7 +31,6 @@ contract('Lock / Lock', accounts => {
       lock.maxNumberOfKeys.call(),
       lock.totalSupply.call(),
       lock.numberOfOwners.call(),
-      lock.publicLockVersion.call(),
       lock.isAlive.call(),
     ])
     expirationDuration = new BigNumber(expirationDuration)
@@ -41,14 +38,12 @@ contract('Lock / Lock', accounts => {
     maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
     totalSupply = new BigNumber(totalSupply)
     numberOfOwners = new BigNumber(numberOfOwners)
-    publicLockVersion = new BigNumber(publicLockVersion)
     assert.strictEqual(owner, accounts[0])
     assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
     assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
     assert.equal(maxNumberOfKeys.toFixed(), 10)
     assert.equal(totalSupply.toFixed(), 0)
     assert.equal(numberOfOwners.toFixed(), 0)
-    assert.equal(publicLockVersion.toFixed(), LatestLockVersion)
     assert.equal(isAlive, true)
   })
 })
