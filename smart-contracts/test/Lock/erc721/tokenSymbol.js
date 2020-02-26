@@ -45,6 +45,10 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
           await unlock.getGlobalTokenSymbol.call()
         )
       })
+
+      it('should emit the ConfigUnlock event', async () => {
+        assert.equal(event.event, 'ConfigUnlock')
+      })
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
@@ -58,10 +62,6 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
           }
         )
       )
-    })
-
-    it('should emit the ConfigUnlock event', async () => {
-      assert.equal(event.event, 'ConfigUnlock')
     })
   })
 

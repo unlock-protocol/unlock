@@ -57,13 +57,17 @@ contract('Lock / erc721 / tokenURI', accounts => {
           'https://newTokenURI.com/api/key'
         )
       })
-    })
 
-    it('getGlobalBaseTokenURI is the same', async () => {
-      assert.equal(
-        await unlock.globalBaseTokenURI.call(),
-        await unlock.getGlobalBaseTokenURI.call()
-      )
+      it('getGlobalBaseTokenURI is the same', async () => {
+        assert.equal(
+          await unlock.globalBaseTokenURI.call(),
+          await unlock.getGlobalBaseTokenURI.call()
+        )
+      })
+
+      it('should emit the ConfigUnlock event', async () => {
+        assert.equal(event.event, 'ConfigUnlock')
+      })
     })
 
     it('should fail if someone other than the owner tries to set the URI', async () => {
@@ -77,10 +81,6 @@ contract('Lock / erc721 / tokenURI', accounts => {
           }
         )
       )
-    })
-
-    it('should emit the ConfigUnlock event', async () => {
-      assert.equal(event.event, 'ConfigUnlock')
     })
   })
 
