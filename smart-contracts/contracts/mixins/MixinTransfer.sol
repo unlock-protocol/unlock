@@ -52,8 +52,7 @@ contract MixinTransfer is
     address _keyManager
   ) public
     onlyIfAlive
-    onlyKeyOwnerOrApproved(_tokenId)
-    onlyKeyManager(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_to != address(0), 'INVALID_ADDRESS');
@@ -116,8 +115,7 @@ contract MixinTransfer is
     public
     onlyIfAlive
     hasValidKey(_from)
-    onlyKeyOwnerOrApproved(_tokenId)
-    onlyKeyManager(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
