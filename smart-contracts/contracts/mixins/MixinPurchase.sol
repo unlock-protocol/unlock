@@ -79,6 +79,12 @@ contract MixinPurchase is
       // (relative to the size of a uint)
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
+
+      // If the purchaser is not already the key Manager, make it so
+      if(keyManagerOf[toKey.tokenId] != _recipient) {
+        keyManagerOf[toKey.tokenId] = _recipient;
+        emit KeyManagerChanged(toKey.tokenId, _recipient);
+      }
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 

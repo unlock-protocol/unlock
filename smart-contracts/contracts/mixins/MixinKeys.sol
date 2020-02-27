@@ -229,6 +229,7 @@ contract MixinKeys is
   * @notice Update transfer and cancel rights for a given key
   * @param _tokenId The id of the key to assign rights for
   * @param _keyManager The address to assign the rights to for the given key
+  * setting to address(0) disables transfers for this key until it expires
   * */
   //
   function setKeyManagerOf(
