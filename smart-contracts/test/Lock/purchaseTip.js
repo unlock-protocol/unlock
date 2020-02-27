@@ -1,5 +1,3 @@
-const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const truffleAssert = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
@@ -12,8 +10,8 @@ const scenarios = [false, true]
 let unlock
 let locks
 let testToken
-const keyPrice = Units.convert('0.01', 'eth', 'wei')
-const tip = new BigNumber(keyPrice).plus(Units.convert('1', 'eth', 'wei'))
+const keyPrice = web3.utils.toWei('0.01', 'ether')
+const tip = new BigNumber(keyPrice).plus(web3.utils.toWei('1', 'ether'))
 
 contract('Lock / purchaseTip', accounts => {
   scenarios.forEach(isErc20 => {
@@ -28,7 +26,7 @@ contract('Lock / purchaseTip', accounts => {
           from: accounts[0],
         })
 
-        tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
 
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)

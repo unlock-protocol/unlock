@@ -1,10 +1,9 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -20,7 +19,7 @@ contract('Lock / purchaseFor', accounts => {
     it('should fail if the price is not enough', async () => {
       await reverts(
         locks.FIRST.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
-          value: Units.convert('0.0001', 'eth', 'wei'),
+          value: web3.utils.toWei('0.0001', 'ether'),
         }),
         'NOT_ENOUGH_FUNDS'
       )
@@ -38,7 +37,7 @@ contract('Lock / purchaseFor', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
       await reverts(
@@ -48,7 +47,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
             from: accounts[1],
           }
         ),
@@ -63,7 +62,7 @@ contract('Lock / purchaseFor', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -82,7 +81,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
         // let's now expire the key
@@ -94,7 +93,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
         // And check the expiration which shiuld be exactly now + keyDuration
@@ -127,7 +126,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
         firstExpiration = new BigNumber(
@@ -140,7 +139,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
         const expirationTimestamp = new BigNumber(
@@ -186,7 +185,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
       })
@@ -206,8 +205,8 @@ contract('Lock / purchaseFor', accounts => {
           await web3.eth.getBalance(locks.FIRST.address)
         )
         assert.equal(
-          parseFloat(Units.convert(newBalance, 'wei', 'eth')),
-          parseFloat(Units.convert(balance, 'wei', 'eth')) + 0.01
+          parseFloat(web3.utils.fromWei(newBalance.toFixed(), 'ether')),
+          parseFloat(web3.utils.fromWei(balance.toFixed(), 'ether')) + 0.01
         )
       })
 
@@ -249,7 +248,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
         // let's now expire the key
@@ -266,7 +265,7 @@ contract('Lock / purchaseFor', accounts => {
           web3.utils.padLeft(0, 40),
           [],
           {
-            value: Units.convert('0.01', 'eth', 'wei'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         )
         // And check the expiration which shiuld be exactly now + keyDuration

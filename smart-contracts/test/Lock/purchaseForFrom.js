@@ -1,8 +1,6 @@
-const Units = require('ethereumjs-units')
-
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -18,7 +16,7 @@ contract('Lock / purchaseForFrom', accounts => {
     it('should succeed', async () => {
       const lock = locks.FIRST
       await lock.purchase(0, accounts[0], accounts[1], [], {
-        value: Units.convert('0.01', 'eth', 'wei'),
+        value: web3.utils.toWei('0.01', 'ether'),
       })
     })
   })
@@ -27,10 +25,10 @@ contract('Lock / purchaseForFrom', accounts => {
     it('should succeed', async () => {
       const lock = locks.FIRST
       await lock.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
-        value: Units.convert('0.01', 'eth', 'wei'),
+        value: web3.utils.toWei('0.01', 'ether'),
       })
       await lock.purchase(0, accounts[1], accounts[0], [], {
-        value: Units.convert('0.01', 'eth', 'wei'),
+        value: web3.utils.toWei('0.01', 'ether'),
       })
     })
 

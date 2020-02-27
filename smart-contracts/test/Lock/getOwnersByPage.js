@@ -1,9 +1,7 @@
-const Units = require('ethereumjs-units')
-
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -32,7 +30,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
       let result = await locks.FIRST.getOwnersByPage.call(0, 2, {
@@ -51,7 +49,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
 
@@ -61,7 +59,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
 
@@ -71,7 +69,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
 
@@ -92,7 +90,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
 
@@ -102,7 +100,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
 
@@ -112,7 +110,7 @@ contract('Lock / getOwnersByPage', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
 

@@ -1,9 +1,7 @@
-const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
 let unlock
@@ -35,7 +33,7 @@ contract('Lock / erc721 / approve', accounts => {
         web3.utils.padLeft(0, 40),
         [],
         {
-          value: Units.convert('0.01', 'eth', 'wei'),
+          value: web3.utils.toWei('0.01', 'ether'),
           from: accounts[1],
         }
       )
@@ -103,9 +101,13 @@ contract('Lock / erc721 / approve', accounts => {
 
       describe('when clearing the approved address', () => {
         before(async () => {
-          let result = await locks.FIRST.approve(Web3Utils.padLeft(0, 40), ID, {
-            from: accounts[1],
-          })
+          let result = await locks.FIRST.approve(
+            web3.utils.padLeft(0, 40),
+            ID,
+            {
+              from: accounts[1],
+            }
+          )
           event = result.logs[0]
         })
 

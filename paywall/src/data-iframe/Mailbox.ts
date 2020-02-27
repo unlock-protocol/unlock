@@ -1,4 +1,8 @@
-import BlockchainHandler from './blockchainHandler/BlockchainHandler'
+import BlockchainHandler, {
+  WalletService,
+  Web3Service,
+} from './blockchainHandler/BlockchainHandler'
+import Web3ProxyProvider from '../providers/Web3ProxyProvider'
 import {
   ConstantsType,
   BlockchainData,
@@ -21,7 +25,6 @@ import {
   LocalStorageWindow,
   EventTypes,
 } from '../windowTypes'
-import { waitFor } from '../utils/promises'
 import { iframePostOffice, PostMessageListener } from '../utils/postOffice'
 import { MessageTypes, PostMessages, ExtractPayload } from '../messageTypes'
 import {
@@ -109,7 +112,7 @@ export default class Mailbox {
 
   private readonly cachePrefix = '__unlockProtocol.cache'
 
-  private handler?: BlockchainHandler
+  public handler?: BlockchainHandler
 
   private constants: ConstantsType
 
@@ -209,22 +212,10 @@ export default class Mailbox {
     })
   }
 
+  /**
+   * TODO: consider moving all this to the constructor... this will avoid race conditions
+   */
   async init() {
-    // lazy-loading the blockchain handler, this is essential to implement
-    // code splitting
-    const [
-      {
-        default: Web3ProxyProvider,
-      } /* import('../../providers/Web3ProxyProvider') */,
-      {
-        default: BlockchainHandler,
-        WalletService,
-        Web3Service,
-      } /* './blockchainHandler/BlockchainHandler' */,
-    ] = await Promise.all([
-      import('../providers/Web3ProxyProvider'),
-      import('./blockchainHandler/BlockchainHandler'),
-    ])
     const web3Service = new Web3Service({
       readOnlyProvider: this.constants.readOnlyProvider,
       unlockAddress: this.constants.unlockAddress,
@@ -236,10 +227,6 @@ export default class Mailbox {
     const walletService = new WalletService(this.constants)
     const provider = new Web3ProxyProvider(this.window)
 
-    // configuration is set by "setConfig" in response to "READY"
-    // it is the paywall configuration
-    await waitFor(() => this.configuration)
-
     // we do not need a connected walletService to work
     walletService.connect(provider as any).catch((e: Error) => {
       this.emitError(e)
@@ -249,13 +236,11 @@ export default class Mailbox {
       web3Service,
       walletService,
       constants: this.constants,
-      configuration: this.configuration as PaywallConfig,
       emitChanges: this.emitChanges,
       emitError: this.emitError,
       window: this.window,
     })
-    this.handler.init()
-    this.handler.retrieveCurrentBlockchainData()
+    this.setupStorageListener()
   }
 
   /**
@@ -369,7 +354,12 @@ export default class Mailbox {
     // the cache is retrieved once per process, and thereafter
     // only changed when new blockchain data comes in.
     this.blockchainData = this.getBlockchainDataFromLocalStorageCache()
-    this.setupStorageListener()
+    if (this.handler) {
+      // TODO: What if the this.handler is not defined??
+      this.handler.init(this.configuration)
+      this.handler._reset()
+      this.handler.retrieveCurrentBlockchainData()
+    }
   }
 
   /**

@@ -4,39 +4,54 @@ import useTermsOfService, {
 } from '../../hooks/useTermsOfService'
 
 describe('useTermsOfService', () => {
-  beforeAll(() => {})
+  beforeAll(() => {
+    jest.resetAllMocks()
+  })
 
   it('should default to false if no value is set in localtorage', async () => {
     expect.assertions(1)
     const { result } = renderHook(() => useTermsOfService())
-    const termsAccepted = result.current[0]
+    const termsAccepted = result.current.termsAccepted
     expect(termsAccepted).toBe(false)
   })
 
   it('should return true if the correct value is set in localstorage', async () => {
     expect.assertions(1)
-    window.localStorage.setItem(localStorageKey, 'true')
+    localStorage.setItem(localStorageKey, 'true')
     const { result } = renderHook(() => useTermsOfService())
-    const termsAccepted = result.current[0]
+    const termsAccepted = result.current.termsAccepted
     expect(termsAccepted).toBe(true)
   })
 
   it('should return false if the value in localstorage is not correct', async () => {
     expect.assertions(1)
-    window.localStorage.setItem(localStorageKey, 'hello')
+    localStorage.setItem(localStorageKey, 'hello')
     const { result } = renderHook(() => useTermsOfService())
-    const termsAccepted = result.current[0]
+    const termsAccepted = result.current.termsAccepted
+    expect(termsAccepted).toBe(false)
+  })
+
+  it('should return false if localstorage could not be read', async () => {
+    expect.assertions(1)
+
+    // eslint-disable-next-line no-proto
+    jest.spyOn(localStorage.__proto__, 'getItem').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const { result } = renderHook(() => useTermsOfService())
+    const termsAccepted = result.current.termsAccepted
     expect(termsAccepted).toBe(false)
   })
 
   it('should set the value in localstorage', async () => {
     expect.assertions(1)
     const { result } = renderHook(() => useTermsOfService())
-    const acceptTerms = result.current[1]
+    const saveTermsAccepted = result.current.saveTermsAccepted
     act(() => {
-      acceptTerms()
+      saveTermsAccepted()
     })
-    const savedValue = window.localStorage.getItem(localStorageKey)
+    const savedValue = localStorage.getItem(localStorageKey)
     expect(savedValue).toBe('true')
   })
 })

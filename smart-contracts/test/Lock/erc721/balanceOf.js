@@ -1,11 +1,9 @@
-const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
 let unlock
@@ -19,7 +17,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
 
   it('should fail if the user address is 0', async () => {
     await reverts(
-      locks.FIRST.balanceOf.call(Web3Utils.padLeft(0, 40)),
+      locks.FIRST.balanceOf.call(web3.utils.padLeft(0, 40)),
       'INVALID_ADDRESS'
     )
   })
@@ -31,7 +29,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
 
   it('should return 1 if the user has a non expired key', async () => {
     await locks.FIRST.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[1],
     })
     const balance = new BigNumber(await locks.FIRST.balanceOf.call(accounts[1]))
@@ -40,7 +38,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
 
   it('should return 0 if the user has an expired key', async () => {
     await locks.FIRST.purchase(0, accounts[5], web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[5],
     })
     await locks.FIRST.expireKeyFor(accounts[5], {
@@ -52,7 +50,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
 
   it('should return 0 after a user transfers their key', async () => {
     await locks.FIRST.purchase(0, accounts[6], web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[6],
     })
     let ID = await locks.FIRST.getTokenIdFor.call(accounts[6])

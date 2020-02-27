@@ -5,7 +5,7 @@ import useEns from '../../hooks/useEns'
 interface Props {
   address: string
   className: string
-  id: string
+  id?: string
 }
 
 const Address = ({ id, className, address }: Props) => {

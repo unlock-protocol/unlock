@@ -192,6 +192,7 @@ export interface IframeManagingWindow {
 // used in unlock.js/startup.ts and setupPostOffices.ts
 
 export interface UnlockProtocolObject {
+  resetConfig: (config: PaywallConfig) => void
   loadCheckoutModal: () => void
   getState: () => LockStatus
 }

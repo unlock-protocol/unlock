@@ -1,18 +1,16 @@
-const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
 let locks
 let ID
 
-const keyPrice = Units.convert('0.01', 'eth', 'wei')
+const keyPrice = web3.utils.toWei('0.01', 'ether')
 
 contract('Lock / disableLock', accounts => {
   let lock
@@ -104,7 +102,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Lock owners can still fully refund keys', async () => {
-      const refundAmount = Units.convert('0.01', 'eth', 'wei')
+      const refundAmount = web3.utils.toWei('0.01', 'ether')
       await lock.fullRefund(keyOwner3, refundAmount, {
         from: lockOwner,
       })
@@ -137,7 +135,7 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail to updateKeyPricing', async () => {
       await reverts(
-        lock.updateKeyPricing(1, Web3Utils.padLeft(0, 40)),
+        lock.updateKeyPricing(1, web3.utils.padLeft(0, 40)),
         'LOCK_DEPRECATED'
       )
     })
@@ -157,7 +155,7 @@ contract('Lock / disableLock', accounts => {
           keyOwner,
           accounts[3],
           ID,
-          Web3Utils.toHex('Julien'),
+          web3.utils.toHex('Julien'),
           {
             from: keyOwner,
           }

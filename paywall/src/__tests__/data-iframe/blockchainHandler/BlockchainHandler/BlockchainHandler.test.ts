@@ -55,13 +55,11 @@ describe('BlockchainHandler class setup', () => {
       walletService,
       web3Service,
       constants,
-      configuration,
       emitChanges,
       emitError,
       window: fakeWindow,
-      store,
     })
-    handler.init()
+    handler.init(configuration, store)
     return handler
   }
 

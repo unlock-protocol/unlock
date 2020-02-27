@@ -36,7 +36,7 @@ export interface KeyResult {
 
 export type KeyResults = { [key: string]: KeyResult }
 
-export type unlockNetworks = 1 | 4 | 1984
+export type unlockNetworks = number
 
 export interface ConstantsType {
   unlockAddress: string

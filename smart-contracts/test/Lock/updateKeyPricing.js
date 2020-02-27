@@ -1,13 +1,12 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
-const Web3Utils = require('web3-utils')
+
 const truffleAssert = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -37,7 +36,7 @@ contract('Lock / updateKeyPricing', accounts => {
     tokenAddressBefore = await lock.tokenAddress.call()
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
     transaction = await lock.updateKeyPricing(
-      Units.convert('0.3', 'eth', 'wei'),
+      web3.utils.toWei('0.3', 'ether'),
       token.address,
       { from: lockOwner }
     )
@@ -76,7 +75,7 @@ contract('Lock / updateKeyPricing', accounts => {
       keyPrice = new BigNumber(await lock.keyPrice.call())
       await reverts(
         lock.updateKeyPricing(
-          Units.convert('0.3', 'eth', 'wei'),
+          web3.utils.toWei('0.3', 'ether'),
           await lock.tokenAddress.call(),
           {
             from: accounts[3],
@@ -126,7 +125,7 @@ contract('Lock / updateKeyPricing', accounts => {
     it('should allow a LockManager to switch from erc20 => eth', async () => {
       await lock.updateKeyPricing(
         await lock.keyPrice.call(),
-        Web3Utils.padLeft(0, 40)
+        web3.utils.padLeft(0, 40)
       )
       assert.equal(await lock.tokenAddress.call(), 0)
     })
@@ -136,14 +135,14 @@ contract('Lock / updateKeyPricing', accounts => {
       assert.notEqual(accounts[8], lockOwner)
       assert.equal(await lock.isLockManager(accounts[8]), true)
       await lock.updateKeyPricing(
-        Units.convert('0.42', 'eth', 'wei'),
+        web3.utils.toWei('0.42', 'ether'),
         token.address,
         { from: accounts[8] }
       )
       assert.equal(await lock.tokenAddress.call(), token.address)
       assert.equal(
         await lock.keyPrice.call(),
-        Units.convert('0.42', 'eth', 'wei')
+        web3.utils.toWei('0.42', 'ether')
       )
     })
 

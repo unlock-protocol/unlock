@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks'
 import keyHolderQuery from '../../queries/keyholdersByLock'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { StorageServiceContext } from '../../utils/withStorageService'
+import { MemberFilters } from '../../unlockTypes'
 
 import useMembers, {
   getAllKeysMetadataForLock,
@@ -167,11 +168,13 @@ describe('useMembers', () => {
           expiration: 'Expired',
           keyholderAddress: '0x126',
           lockName: 'my lock',
+          token: '1',
         },
         '0xlockAddress-0x252': {
           expiration: 'Expired',
           keyholderAddress: '0x252',
           lockName: 'my lock',
+          token: '2',
         },
       })
     })
@@ -186,19 +189,21 @@ describe('useMembers', () => {
           expiration: 'Expired',
           keyholderAddress: '0x126',
           lockName: 'my lock',
+          token: '1',
         },
         '0xlockAddress-0x252': {
           email: 'chris@unlock-protocol.com',
           expiration: 'Expired',
           keyholderAddress: '0x252',
           lockName: 'my lock',
+          token: '2',
         },
       })
     })
   })
 
   describe('useMembers', () => {
-    it('should use the keyHolderQuery to get list of key holders', () => {
+    it('should use the keyHolderQuery to get list of non expired key holders', () => {
       expect.assertions(1)
       useQuery.mockImplementation(() => ({
         loading: false,
@@ -207,7 +212,26 @@ describe('useMembers', () => {
       }))
       renderHook(() => useMembers([lock.address]))
       expect(useQuery).toHaveBeenCalledWith(keyHolderQuery(), {
-        variables: { addresses: [lock.address] },
+        variables: {
+          addresses: [lock.address],
+          expiresAfter: expect.any(Number),
+        },
+      })
+    })
+
+    it('should use the keyHolderQuery to get list of all key holders', () => {
+      expect.assertions(1)
+      useQuery.mockImplementation(() => ({
+        loading: false,
+        error: false,
+        data: [],
+      }))
+      renderHook(() => useMembers([lock.address], null, MemberFilters.ALL))
+      expect(useQuery).toHaveBeenCalledWith(keyHolderQuery(), {
+        variables: {
+          addresses: [lock.address],
+          expiresAfter: 0,
+        },
       })
     })
 
@@ -250,7 +274,7 @@ describe('useMembers', () => {
         expect(initialResult).toEqual({
           loading: true,
           error: false,
-          columns: ['lockName', 'keyholderAddress', 'expiration'],
+          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
           list: [],
         })
         await waitForNextUpdate()
@@ -259,17 +283,19 @@ describe('useMembers', () => {
         expect(loadedResult).toEqual({
           loading: false,
           error: false,
-          columns: ['lockName', 'keyholderAddress', 'expiration'],
+          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
           list: [
             {
               expiration: 'Expired',
               keyholderAddress: '0x126',
               lockName: 'my lock',
+              token: '1',
             },
             {
               expiration: 'Expired',
               keyholderAddress: '0x252',
               lockName: 'my lock',
+              token: '2',
             },
           ],
         })
@@ -305,7 +331,7 @@ describe('useMembers', () => {
         expect(initialResult).toEqual({
           loading: true,
           error: false,
-          columns: ['lockName', 'keyholderAddress', 'expiration'],
+          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
           list: [],
         })
         await waitForNextUpdate()
@@ -313,19 +339,27 @@ describe('useMembers', () => {
         expect(loadedResult).toEqual({
           loading: false,
           error: false,
-          columns: ['lockName', 'keyholderAddress', 'expiration', 'email'],
+          columns: [
+            'lockName',
+            'token',
+            'keyholderAddress',
+            'expiration',
+            'email',
+          ],
           list: [
             {
               expiration: 'Expired',
               email: 'julien@unlock-protocol.com',
               keyholderAddress: '0x126',
               lockName: 'my lock',
+              token: '1',
             },
             {
               expiration: 'Expired',
               email: 'chris@unlock-protocol.com',
               keyholderAddress: '0x252',
               lockName: 'my lock',
+              token: '2',
             },
           ],
         })

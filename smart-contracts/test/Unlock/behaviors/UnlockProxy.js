@@ -1,5 +1,6 @@
 const Zos = require('@openzeppelin/cli')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
+const { constants } = require('hardlydifficult-ethereum-contracts')
 
 const TestHelper = Zos.TestHelper
 const shared = require('./shared')
@@ -23,15 +24,10 @@ contract('Unlock / UnlockProxy', accounts => {
     })
     this.unlock = await Unlock.at(this.proxy.address)
     const lock = await PublicLock.new()
-    await this.unlock.methods
-      .configUnlock(
-        lock.address,
-        await this.unlock.methods.globalTokenSymbol().call(),
-        await this.unlock.methods.globalBaseTokenURI().call()
-      )
-      .send({
-        from: this.unlockOwner,
-      })
+    await this.unlock.methods.setLockTemplate(lock.address).send({
+      from: this.unlockOwner,
+      gas: constants.MAX_GAS,
+    })
   })
 
   describe('should function as a proxy', () => {

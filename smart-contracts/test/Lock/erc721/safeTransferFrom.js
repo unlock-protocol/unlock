@@ -1,9 +1,7 @@
-const Units = require('ethereumjs-units')
-const Web3Utils = require('web3-utils')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
 let unlock
@@ -25,7 +23,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
     await lock.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from,
     })
     ID = await lock.getTokenIdFor.call(from)
@@ -41,7 +39,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
 
   it('should work if some data is passed in', async () => {
     await lock.purchase(0, accounts[7], web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[7],
     })
     ID = await lock.getTokenIdFor.call(accounts[7])
@@ -50,7 +48,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
       accounts[7],
       accounts[6],
       ID,
-      Web3Utils.toHex('Julien'),
+      web3.utils.toHex('Julien'),
       {
         from: accounts[7],
       }
@@ -62,7 +60,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
     await lock.purchase(0, accounts[5], web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+      value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[5],
     })
     ID = await lock.getTokenIdFor.call(accounts[5])

@@ -56,14 +56,11 @@ describe('BlockchainHandler - setupListeners', () => {
       walletService,
       web3Service,
       constants,
-      configuration,
       emitChanges,
       emitError,
       window: fakeWindow,
-      store,
     })
-    handler.init()
-    handler.setupListeners()
+    handler.init(configuration, store)
 
     handler.retrieveCurrentBlockchainData = jest.fn()
     handler.dispatchChangesToPostOffice = jest.fn()

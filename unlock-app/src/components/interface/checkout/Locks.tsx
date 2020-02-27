@@ -1,14 +1,22 @@
-import React from 'react'
-import { Lock, LoadingLock } from './Lock'
+import React, { useState } from 'react'
+import { Lock } from './Lock'
+import { LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
+import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 
 interface LocksProps {
   accountAddress: string
   lockAddresses: string[]
 }
 
-export const Locks = ({ lockAddresses }: LocksProps) => {
-  const { locks, loading } = usePaywallLocks(lockAddresses)
+type PurchasingLockAddress = string | null
+
+export const Locks = ({ lockAddresses, accountAddress }: LocksProps) => {
+  const [purchasingLockAddress, setPurchasingLockAddress] = useState(
+    null as PurchasingLockAddress
+  )
+  const { getTokenBalance } = useGetTokenBalance(accountAddress)
+  const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
 
   if (loading) {
     return (
@@ -23,7 +31,12 @@ export const Locks = ({ lockAddresses }: LocksProps) => {
   return (
     <div>
       {locks.map(lock => (
-        <Lock lock={lock} key={lock.name} />
+        <Lock
+          key={lock.name}
+          lock={lock}
+          purchasingLockAddress={purchasingLockAddress}
+          setPurchasingLockAddress={setPurchasingLockAddress}
+        />
       ))}
     </div>
   )
