@@ -15,6 +15,7 @@ let executeCommand = command => {
 
 let networkMap = {
   development: {
+      /*this should be named to mainnet but can be a last move*/
     local: {
       subgraph: "unlock-protocol/unlock",
       graphNode: "http://localhost:8020/",
@@ -24,11 +25,26 @@ let networkMap = {
       subgraph: "unlock-protocol/unlock-kovan",
       graphNode: "http://localhost:8020/",
       ipfs: "http://localhost:5001"
+    },
+    rinkeby: {
+      subgraph: "unlock-protocol/unlock-rinkeby",
+      graphNode: "http://localhost:8020/",
+      ipfs: "http://localhost:5001"
     }
   },
   production: {
     kovan: {
       subgraph: "unlock-protocol/unlock-kovan",
+      graphNode: "https://api.thegraph.com/deploy/",
+      ipfs: "https://api.thegraph.com/ipfs/"
+    },
+    mainnet: {
+      subgraph: "unlock-protocol/unlock",
+      graphNode: "https://api.thegraph.com/deploy/",
+      ipfs: "https://api.thegraph.com/ipfs/"
+    },
+    rinkeby: {
+      subgraph: "unlock-protocol/unlock-rinkeby",
       graphNode: "https://api.thegraph.com/deploy/",
       ipfs: "https://api.thegraph.com/ipfs/"
     }
@@ -45,8 +61,8 @@ function selectConfig() {
 function process(operation) {
   let config = selectConfig();
 
-  if(!config){
-    throw new Error("This is an invalid configuration")
+  if (!config) {
+    throw new Error("This is an invalid configuration");
   }
 
   if (operation === "deploy") {
