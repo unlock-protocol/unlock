@@ -15,6 +15,7 @@ export const currencySymbol = (lock, defaultERC20) => {
   }
   return currency
 }
+
 export default {
   currencySymbol,
 }
