@@ -5,7 +5,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Contract
-    network: mainnet
+    network: {{network}}
     source:
       address: "{{unlockContractAddress}}"
       abi: Contract
