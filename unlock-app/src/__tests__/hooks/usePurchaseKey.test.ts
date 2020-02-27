@@ -31,7 +31,7 @@ const lock = {
   address: '0xEE9FE39966DF737eECa5920ABa975c283784Faf8',
 }
 
-describe('usePaywallLocks', () => {
+describe('usePurchaseKey', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
@@ -53,25 +53,52 @@ describe('usePaywallLocks', () => {
       result.current.purchaseKey()
     })
 
-    expect(mockWalletService.purchaseKey).toHaveBeenCalledWith({
-      erc20Address: lock.currencyContractAddress,
-      keyPrice: lock.keyPrice,
-      lockAddress: lock.address,
-      owner: lock.owner,
-    })
+    expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
+      {
+        erc20Address: lock.currencyContractAddress,
+        keyPrice: lock.keyPrice,
+        lockAddress: lock.address,
+        owner: lock.owner,
+      },
+      expect.any(Function)
+    )
   })
 
-  it('should indicate whether the transaction has initiated or not', async () => {
+  it('should provide an error value if an error occurs', async () => {
     expect.assertions(2)
 
     const { result } = renderHook(() => usePurchaseKey(lock))
 
-    expect(result.current.initiatedPurchase).toBeFalsy()
+    mockWalletService.purchaseKey = jest.fn((_, callback: any) => {
+      const error = new Error('failure')
+      callback(error, null)
+    })
+
+    expect(result.current.error).toBeNull()
 
     await act(async () => {
       result.current.purchaseKey()
     })
 
-    expect(result.current.initiatedPurchase).toBeTruthy()
+    expect(result.current.error?.message).toEqual('failure')
+  })
+
+  it('should provide a transaction hash when purchaseKey completes', async () => {
+    expect.assertions(2)
+
+    const { result } = renderHook(() => usePurchaseKey(lock))
+
+    mockWalletService.purchaseKey = jest.fn((_, callback: any) => {
+      const hash = '0xhash'
+      callback(null, hash)
+    })
+
+    expect(result.current.transactionHash).toBeNull()
+
+    await act(async () => {
+      result.current.purchaseKey()
+    })
+
+    expect(result.current.transactionHash).toEqual('0xhash')
   })
 })

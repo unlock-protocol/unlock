@@ -48,7 +48,7 @@ export const Lock = ({
   purchasingLockAddress,
   setPurchasingLockAddress,
 }: LockProps) => {
-  const { purchaseKey } = usePurchaseKey(lock)
+  const { purchaseKey, transactionHash } = usePurchaseKey(lock)
 
   const onClick = () => {
     if (purchasingLockAddress) {
@@ -68,12 +68,19 @@ export const Lock = ({
     name: lock.name,
   }
 
-  if (purchasingLockAddress) {
-    if (purchasingLockAddress === lock.address) {
+  // This lock is being/has been purchased
+  if (purchasingLockAddress === lock.address) {
+    if (transactionHash) {
       return <LockVariations.ConfirmedLock {...props} />
     }
+    return <LockVariations.ProcessingLock {...props} />
+  }
+
+  // Some other lock is being/has been purchased
+  if (purchasingLockAddress) {
     return <LockVariations.DisabledLock {...props} />
   }
 
+  // No lock is being/has been purchased
   return <LockVariations.PurchaseableLock {...props} />
 }
