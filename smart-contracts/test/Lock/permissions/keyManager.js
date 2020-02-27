@@ -152,6 +152,20 @@ contract('Permissions / KeyManager', accounts => {
       keyManager = await lock.getKeyManagerOf(iD)
       assert.equal(keyManager, ZERO_ADDRESS)
     })
+
+    it('should not let the keyGranter overwrite the keyManager for valid keys', async () => {
+      assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
+      const iD = await lock.getTokenIdFor(accounts[7])
+      const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
+      const originalKeyManager = await lock.getKeyManagerOf(iD)
+      assert.notEqual(originalKeyManager, lockCreator)
+      // lockCreator attenpts to set herself as the keyManager
+      await lock.grantKeys([accounts[7]], [newTimestamp], [lockCreator], {
+        from: lockCreator,
+      })
+      const newKeyManager = await lock.getKeyManagerOf(iD)
+      assert.equal(originalKeyManager, newKeyManager)
+    })
   })
 
   describe('updating the key manager', () => {
