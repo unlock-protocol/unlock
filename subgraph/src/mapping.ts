@@ -45,43 +45,45 @@ export function handleNewLock(event: NewLock): void {
   lock.maxNumberOfKeys = chainPublicLock.maxNumberOfKeys();
   lock.owner = chainPublicLock.owner();
   lock.creationBlock = event.block.number;
+
   let tokenAddress = chainPublicLock.try_tokenAddress();
 
-  // if (event.block.number > BigInt.fromI32(4519015)) {
-    // let tokenAddress = chainPublicLock.try_tokenAddress();
+  if (!tokenAddress.reverted) {
+    lock.tokenAddress = tokenAddress.value;
+  } else {
+    lock.tokenAddress = Address.fromString(
+      "0000000000000000000000000000000000000000"
+    );
+  }
 
-    if (!tokenAddress.reverted) {
-      lock.tokenAddress = tokenAddress.value;
-    } else {
-      lock.tokenAddress = Address.fromString(
-        "0000000000000000000000000000000000000000"
-      );
-    }
+  let tokenName = chainPublicLock.try_name();
+  if (!tokenName.reverted) {
+    lock.name = tokenName.value;
+  } else {
+    lock.name = "";
+  }
 
-    let tokenName = chainPublicLock.try_name();
-    if (!tokenName.reverted) {
-      lock.name = tokenName.value;
-    } else {
-      lock.name = "";
-    }
+  let totalSupply = chainPublicLock.try_totalSupply();
+  if (!totalSupply.reverted) {
+    lock.totalSupply = totalSupply.value;
+  }
 
-    let totalSupply = chainPublicLock.try_totalSupply();
-    if (!totalSupply.reverted) {
-      lock.totalSupply = totalSupply.value;
-    }
-  // } else {
-    // lock.version = BigInt.fromI32(0);
-  // }
+  let lAddress = Address.fromString(lock.address.toHex());
+  let lockContract = PublicLock.bind(lAddress);
+
+  let version = lockContract.try_publicLockVersion();
+  if (!version.reverted) {
+    lock.version = BigInt.fromI32(version.value);
+  } else {
+    lock.version = BigInt.fromI32(0);
+  }
 
   lock.save();
 }
 
 export function handleNewTokenURI(event: NewTokenURI): void {}
-
 export function handleNewGlobalTokenSymbol(event: NewGlobalTokenSymbol): void {}
-
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
-
 export function handleCreateLock(call: CreateLockCall): void {
   let entityId = call.transaction.hash.toHex();
   let entity = UnlockEntity.load(entityId);
