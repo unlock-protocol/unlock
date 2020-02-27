@@ -42,5 +42,5 @@ type Lock @entity {
   maxNumberOfKeys: BigInt
   keys: [Key!] @derivedFrom(field: "lock")
   owner: Bytes!
-  version: BigInt!
+  version: BigInt
 }
