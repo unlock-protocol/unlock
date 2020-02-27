@@ -97,7 +97,9 @@ export class WalletService extends EventEmitter {
   provider?: any;
   connect: (provider: Web3Provider) => Promise<void>;
   getAccount: () => Promise<string | false>;
-  purchaseKey: (params: PurchaseKeyParams) => Promise<string>;
+  // callback is never called with an error and is always called with
+  // a hash -- this may change in the future.
+  purchaseKey: (params: PurchaseKeyParams, callback: (error: Error | null, hash: string | null) => void) => Promise<string>;
   setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void;
   setUserMetadata: (params: SetUserMetadataParams, callback: any) => void;
   getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void;
