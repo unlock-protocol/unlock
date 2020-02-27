@@ -114,7 +114,7 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
     })
 
     it('should send the normalized config when invoked', () => {
-      expect.assertions(3)
+      expect.assertions(4)
 
       const handler = getMainWindowHandler()
       handler.setupUnlockProtocolVariable()
@@ -133,8 +133,11 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
         locks: {},
       }
 
+      handler.lockStatus = PostMessages.LOCKED
+
       fullWindow().unlockProtocol.resetConfig(newConfig)
 
+      expect(handler.lockStatus).toBe(undefined)
       expect(accountsSpy).toHaveBeenLastCalledWith(
         PostMessages.CONFIG,
         newConfig
