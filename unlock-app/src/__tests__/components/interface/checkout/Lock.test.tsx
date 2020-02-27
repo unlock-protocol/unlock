@@ -67,9 +67,12 @@ describe('Checkout Lock', () => {
     beforeEach(() => {
       purchaseKey = jest.fn()
       setPurchasingLockAddress = jest.fn()
-      jest
-        .spyOn(usePurchaseKey, 'usePurchaseKey')
-        .mockImplementation(_ => ({ purchaseKey, initiatedPurchase: false }))
+      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
+        purchaseKey,
+        initiatedPurchase: false,
+        error: null,
+        transactionHash: null,
+      }))
     })
 
     it('purchases a key and sets the purchasing address on click', () => {
@@ -148,8 +151,39 @@ describe('Checkout Lock', () => {
       getByTestId('DisabledLock')
     })
 
-    it('renders a confirmed lock when there is a purchase for this lock', () => {
+    it('renders a processing lock when there is a purchase without transaction hash for this lock', () => {
       expect.assertions(0)
+
+      const lock = {
+        name: 'lock',
+        address: '0xlockaddress',
+        keyPrice: '4000000',
+        expirationDuration: 50,
+        currencyContractAddress: null,
+      }
+
+      const { getByTestId } = rtl.render(
+        <Lock
+          lock={lock}
+          purchasingLockAddress="0xlockaddress"
+          setPurchasingLockAddress={setPurchasingLockAddress}
+        />
+      )
+
+      getByTestId('ProcessingLock')
+    })
+
+    it('renders a confirmed lock when there is a purchase with transaction hash for this lock', () => {
+      expect.assertions(0)
+
+      purchaseKey = jest.fn()
+      setPurchasingLockAddress = jest.fn()
+      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
+        purchaseKey,
+        initiatedPurchase: false,
+        error: null,
+        transactionHash: '0xhash',
+      }))
 
       const lock = {
         name: 'lock',
