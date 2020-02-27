@@ -54,7 +54,7 @@ contract MixinKeys is
   // A given key has both an owner and a manager.
   // The owner and manager may be the same address
   // Each key can have at most 1 keyManager, but may have no manager.
-  mapping (uint => address) internal keyManagerOf;
+  mapping (uint => address) public keyManagerOf;
 
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
@@ -223,18 +223,6 @@ contract MixinKeys is
     returns(address)
   {
     return _ownerOf[_tokenId];
-  }
-
-  /**
-  * @notice Get the key manager for the given tokenId
-  * @return The address of the manager for the given key
-  */
-  function getKeyManagerOf(
-    uint _tokenId
-  ) public view
-    returns (address)
-  {
-    return keyManagerOf[_tokenId];
   }
 
   /**
