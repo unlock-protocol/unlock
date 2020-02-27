@@ -396,16 +396,6 @@ contract IPublicLock is IERC721Enumerable {
   ) external;
 
   /**
-  * @notice Get the key manager for the given tokenId
-  * @param _tokenId The id of the key to assign rights for
-  * @return The address of the manager for the given key
-  */
-  function getKeyManagerOf(
-    uint _tokenId
-  ) external view
-    returns (address);
-
-  /**
   * @notice Update transfer and cancel rights for a given key
   * @param _tokenId The id of the key to assign rights for
   * @param _keyManager The address to assign the rights to for the given key
