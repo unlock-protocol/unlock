@@ -44,7 +44,6 @@ let generate = async (generationValues) => {
 };
 
 let generationValues 
-
 if (argv.network) {
   generationValues = templateValues(argv.network)
 } else {
