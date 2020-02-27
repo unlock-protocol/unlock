@@ -3,12 +3,9 @@
   "license": "UNLICENSED",
   "scripts": {
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
-    "precodegen" : "yarn generate-subgraph-yaml", 
-    "prebuild": "yarn generate-subgraph-yaml",
-    "predeploy-local": "yarn generate-subgraph-yaml",
-
+    
     "codegen": "graph codegen",  
-    "build": "graph build",
+    "build": "node ./bin/build",
 
     "create": "node ./bin/create",
     "remove": "node ./bin/remove",
