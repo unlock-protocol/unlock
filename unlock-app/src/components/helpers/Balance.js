@@ -62,7 +62,8 @@ export const Currency = styled.span.attrs({
 `
 
 export const CurrencySymbol = styled.span`
-  min-width: 15px;
+  min-width: 40px; /* supports 4 characters */
+  max-width: 40px; /* supports 4 characters */
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
