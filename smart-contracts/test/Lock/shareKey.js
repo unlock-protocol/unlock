@@ -53,7 +53,7 @@ contract('Lock / shareKey', accounts => {
           lock.shareKey(accounts[7], 11, 1000, accountWithNoKey1, {
             from: accountWithNoKey1,
           }),
-          'ONLY_KEY_OWNER_OR_APPROVED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
@@ -68,7 +68,7 @@ contract('Lock / shareKey', accounts => {
               from: accounts[6],
             }
           ),
-          'ONLY_KEY_OWNER_OR_APPROVED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
@@ -170,7 +170,7 @@ contract('Lock / shareKey', accounts => {
       )
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner2, oneDay))
       tokenId2 = await lock.getTokenIdFor.call(keyOwner2)
-      let keyManager = await lock.getKeyManagerOf.call(tokenId2)
+      let keyManager = await lock.keyManagerOf.call(tokenId2)
       tx2 = await lock.shareKey(
         accountWithNoKey2,
         tokenId2,
@@ -254,7 +254,7 @@ contract('Lock / shareKey', accounts => {
       let oldExistingKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner3)
       )
-      let keyManager = await lock.getKeyManagerOf.call(tokenId2)
+      let keyManager = await lock.keyManagerOf.call(tokenId2)
       await lock.shareKey(keyOwner3, tokenId2, oneDay, keyOwner2, {
         from: keyManager,
       })
