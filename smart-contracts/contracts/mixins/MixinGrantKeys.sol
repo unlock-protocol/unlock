@@ -37,12 +37,12 @@ contract MixinGrantKeys is
 
       _assignNewTokenId(toKey);
       _recordOwner(recipient, toKey.tokenId);
-      // Only assign the KeyManager for new keys
-      if(keyManagerOf[toKey.tokenId] == address(0)) {
+
+      // Only assign the KeyManager for new or expired keys
+      if(toKey.expirationTimestamp <= block.timestamp) {
         keyManagerOf[toKey.tokenId] = keyManager;
         emit KeyManagerChanged(toKey.tokenId, keyManager);
       }
-
       toKey.expirationTimestamp = expirationTimestamp;
 
       // trigger event
