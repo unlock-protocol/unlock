@@ -51,8 +51,8 @@ export function makeDefaultKeys(
 }
 
 interface BlockchainHandlerParams {
-  walletService: WalletServiceType
-  web3Service: Web3ServiceType
+  walletService: WalletService
+  web3Service: Web3Service
   constants: any
   emitChanges: (data: BlockchainData) => void
   emitError: (error: Error) => void
@@ -168,19 +168,28 @@ export default class BlockchainHandler {
     lockAddress,
     amountToSend,
     erc20Address,
+    callback,
   }: {
     lockAddress: string
     amountToSend: string
     erc20Address: string | null
+    callback?: (error: Error | null, hash: string | null) => void
   }) {
     if (!this.store.account) return
     const account = this.store.account as string
-    return this.walletService.purchaseKey({
-      lockAddress,
-      owner: account,
-      keyPrice: amountToSend,
-      erc20Address,
-    })
+    return this.walletService.purchaseKey(
+      {
+        lockAddress,
+        owner: account,
+        keyPrice: amountToSend,
+        erc20Address,
+      },
+      (error, hash) => {
+        if (callback) {
+          callback(error, hash)
+        }
+      }
+    )
   }
 
   /**
