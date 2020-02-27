@@ -166,7 +166,7 @@ export const ValidityDuration = styled.div`
   }
 `
 
-interface LockProps {
+export interface LockProps {
   name: string
   formattedKeyPrice: string
   formattedDuration: string
@@ -176,7 +176,7 @@ interface LockProps {
 
 export const LoadingLock = () => {
   return (
-    <LockContainer>
+    <LockContainer data-testid="LoadingLock">
       <LoadingLockBody />
     </LockContainer>
   )
@@ -188,7 +188,7 @@ export const SoldOutLock = ({
   formattedKeyPrice,
 }: LockProps) => {
   return (
-    <DisabledLockContainer>
+    <DisabledLockContainer data-testid="SoldOutLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <SoldOut>Sold Out</SoldOut>
@@ -213,7 +213,7 @@ export const InsufficientBalanceLock = ({
   formattedKeysAvailable,
 }: LockProps) => {
   return (
-    <DisabledLockContainer>
+    <DisabledLockContainer data-testid="InsufficientBalanceLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
@@ -240,7 +240,7 @@ export const DisabledLock = ({
   formattedKeyPrice,
 }: LockProps) => {
   return (
-    <DisabledLockContainer>
+    <DisabledLockContainer data-testid="DisabledLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
       </InfoWrapper>
@@ -265,7 +265,7 @@ export const PurchaseableLock = ({
   onClick,
 }: LockProps) => {
   return (
-    <LockContainer>
+    <LockContainer data-testid="PurchaseableLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
@@ -289,7 +289,7 @@ export const ProcessingLock = ({
   formattedKeyPrice,
 }: LockProps) => {
   return (
-    <LockContainer>
+    <LockContainer data-testid="ProcessingLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <Processing>Processing</Processing>
@@ -314,7 +314,7 @@ export const ConfirmedLock = ({
   formattedKeysAvailable,
 }: LockProps) => {
   return (
-    <LockContainer>
+    <LockContainer data-testid="ConfirmedLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
