@@ -1077,20 +1077,20 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
-"@unlock-protocol/unlock-js@0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.3.tgz#b15bbf18eca6c2cdd0cfbe7103d94e40643ed853"
-  integrity sha512-bjxggSMBo/WohC06o/PU8L7laQIqXhAsSdmNubZBKpbQ7UrSfRmGm9bSVqFiOccH/bIe+MEPdqQghoTG8pknxQ==
+"@unlock-protocol/unlock-js@0.8.4":
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.4.tgz#a8aaaa340c70ead46e8eb55d3de4a05fe6b25d76"
+  integrity sha512-cJWqQSkcG52tpe2aPcWiave6U/SFKikf70qs0Mved5pdOkNhlNyxoWO4/rfxdapzbw/LaiX4spOqkM1pi6qppw==
   dependencies:
     babel-jest "25.1.0"
     cross-fetch "3.0.4"
     eslint "6.8.0"
-    ethers "4.0.43"
+    ethers "4.0.45"
     jest "25.1.0"
-    lint-staged "10.0.0"
+    lint-staged "10.0.7"
     prettier "1.19.1"
-    ts-jest "25.0.0"
-    typescript "3.7.5"
+    ts-jest "25.2.1"
+    typescript "3.8.2"
 
 "@wry/context@^0.4.0":
   version "0.4.4"
@@ -4254,10 +4254,10 @@ ethers@4.0.0-beta.3:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@4.0.43:
-  version "4.0.43"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.43.tgz#d669b5d5a9a16dbcd3ae12935ad70297048f52b4"
-  integrity sha512-VjQRVgPrlU12jSMvypdE1yEqYQccdVbH8bbiz67dLF7raHlRV4+zW70GlxHcZYqgsnz0XYWrn6C06gqTQRb5tw==
+ethers@4.0.44:
+  version "4.0.44"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.44.tgz#f2608cbc0b4d099b7e10a01c0efc3a1037013b4e"
+  integrity sha512-kCkMPkpYjBkxzqjcuYUfDY7VHDbf5EXnfRPUOazdqdf59SvXaT+w5lgauxLlk1UjxnAiNfeNS87rkIXnsTaM7Q==
   dependencies:
     aes-js "3.0.0"
     bn.js "^4.4.0"
@@ -4269,10 +4269,10 @@ ethers@4.0.43:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@4.0.44:
-  version "4.0.44"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.44.tgz#f2608cbc0b4d099b7e10a01c0efc3a1037013b4e"
-  integrity sha512-kCkMPkpYjBkxzqjcuYUfDY7VHDbf5EXnfRPUOazdqdf59SvXaT+w5lgauxLlk1UjxnAiNfeNS87rkIXnsTaM7Q==
+ethers@4.0.45:
+  version "4.0.45"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.45.tgz#8d4cd764d7c7690836b583d4849203c225eb56e2"
+  integrity sha512-N/Wmc6Mw4pQO+Sss1HnKDCSS6KSCx0luoBMiPNq+1GbOaO3YaZOyplBEhj+NEoYsizZYODtkITg2oecPeNnidQ==
   dependencies:
     aes-js "3.0.0"
     bn.js "^4.4.0"
@@ -6573,10 +6573,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.0.0.tgz#2560394062b6e0be77247761bba5fde26025fb89"
-  integrity sha512-/MrZOLMnljjMHakxlRd1Z5Kr8wWWlrWFasye7HaTv5tx56icwzT/STRty8flMKsyzBGTfTa9QszNVPsDS/yOug==
+lint-staged@10.0.7:
+  version "10.0.7"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.0.7.tgz#d205f92d9359419a23bc6aa3b6f8546b1998da64"
+  integrity sha512-Byj0F4l7GYUpYYHEqyFH69NiI6ICTg0CeCKbhRorL+ickbzILKUlZLiyCkljZV02wnoh7yH7PmFyYm9PRNwk9g==
   dependencies:
     chalk "^3.0.0"
     commander "^4.0.1"
@@ -6589,6 +6589,7 @@ lint-staged@10.0.0:
     micromatch "^4.0.2"
     normalize-path "^3.0.0"
     please-upgrade-node "^3.2.0"
+    string-argv "0.3.1"
     stringify-object "^3.3.0"
 
 listr-silent-renderer@^1.1.1:
@@ -9102,6 +9103,11 @@ strict-uri-encode@^1.0.0:
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
   integrity sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM=
 
+string-argv@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/string-argv/-/string-argv-0.3.1.tgz#95e2fbec0427ae19184935f816d74aaa4c5c19da"
+  integrity sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg==
+
 string-argv@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/string-argv/-/string-argv-0.1.2.tgz#c5b7bc03fb2b11983ba3a72333dd0559e77e4738"
@@ -9632,22 +9638,6 @@ ts-invariant@^0.4.0:
   dependencies:
     tslib "^1.9.3"
 
-ts-jest@25.0.0:
-  version "25.0.0"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-25.0.0.tgz#d83b266e6ffda0c458a129951b3fe3567f8ce8df"
-  integrity sha512-F+hZg3j7XYOFpXJteXb4lnqy7vQzTmpTmX7AJT6pvSGeZejyXj1Lk0ArpnrEPOpv6Zu/NugHc5W7FINngC9WZQ==
-  dependencies:
-    bs-logger "0.x"
-    buffer-from "1.x"
-    fast-json-stable-stringify "2.x"
-    json5 "2.x"
-    lodash.memoize "4.x"
-    make-error "1.x"
-    mkdirp "0.x"
-    resolve "1.x"
-    semver "^5.5"
-    yargs-parser "10.x"
-
 ts-jest@25.1.0:
   version "25.1.0"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-25.1.0.tgz#06e776c4cce8a4da8eec4945f36a5823d0c0f9ba"
@@ -9663,6 +9653,22 @@ ts-jest@25.1.0:
     resolve "1.x"
     semver "^5.5"
     yargs-parser "10.x"
+
+ts-jest@25.2.1:
+  version "25.2.1"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-25.2.1.tgz#49bf05da26a8b7fbfbc36b4ae2fcdc2fef35c85d"
+  integrity sha512-TnntkEEjuXq/Gxpw7xToarmHbAafgCaAzOpnajnFC6jI7oo1trMzAHA04eWpc3MhV6+yvhE8uUBAmN+teRJh0A==
+  dependencies:
+    bs-logger "0.x"
+    buffer-from "1.x"
+    fast-json-stable-stringify "2.x"
+    json5 "2.x"
+    lodash.memoize "4.x"
+    make-error "1.x"
+    mkdirp "0.x"
+    resolve "1.x"
+    semver "^5.5"
+    yargs-parser "^16.1.0"
 
 tsc-watch@4.1.0:
   version "4.1.0"
@@ -9753,6 +9759,11 @@ typescript@3.7.5:
   version "3.7.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
   integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+
+typescript@3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
+  integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
 
 ultron@~1.1.0:
   version "1.1.1"
