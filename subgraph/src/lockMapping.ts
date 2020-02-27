@@ -55,14 +55,17 @@ function newKeyPurchase(
   let keyPurchaseID = keyID + "-" + event.block.number.toString();
 
   genKey(event, lockContract);
-  genKeyPurchase(
-    keyPurchaseID,
-    event.params._to,
-    event.address,
-    event.block.timestamp,
-    lockContract.tokenAddress(),
-    lockContract.keyPrice()
-  );
+
+  if (event.block.number > BigInt.fromI32(4519015)) {
+    genKeyPurchase(
+      keyPurchaseID,
+      event.params._to,
+      event.address,
+      event.block.timestamp,
+      lockContract.tokenAddress(),
+      lockContract.keyPrice()
+    );
+  }
 }
 
 export function handleCancelKey(event: CancelKey): void {
