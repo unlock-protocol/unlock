@@ -7,6 +7,8 @@ import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
 import { BlockchainData } from '../data-iframe/blockchainHandler/blockChainTypes'
 import { mainWindowHandlerInit } from './postMessageHub'
+import { PaywallConfig } from '../unlockTypes'
+import { normalizeConfig } from '../utils/config'
 
 interface hasPrototype {
   prototype?: any
@@ -24,7 +26,7 @@ export const IGNORE_CACHE = 'ignore'
 export default class MainWindowHandler {
   private window: UnlockWindowNoProtocolYet
 
-  private iframes: IframeHandler
+  public iframes: IframeHandler
 
   private showCheckoutWhenAccountsHides: boolean = false
 
@@ -146,6 +148,12 @@ export default class MainWindowHandler {
     }
     const getState = () => this.lockStatus
     const blockchainData = () => this.blockchainData
+    const resetConfig = (config: PaywallConfig) => {
+      const nornalizedConfig = normalizeConfig(config)
+      this.iframes.accounts.postMessage(PostMessages.CONFIG, nornalizedConfig)
+      this.iframes.checkout.postMessage(PostMessages.CONFIG, nornalizedConfig)
+      this.iframes.data.postMessage(PostMessages.CONFIG, nornalizedConfig)
+    }
 
     const unlockProtocol: hasPrototype = {}
 
@@ -166,6 +174,10 @@ export default class MainWindowHandler {
       },
       blockchainData: {
         value: blockchainData,
+        ...immutable,
+      },
+      resetConfig: {
+        value: resetConfig,
         ...immutable,
       },
     })
