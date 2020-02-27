@@ -196,13 +196,12 @@ contract MixinKeys is
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _keyOwner address of the user for whom we search the key
+  * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _keyOwner
-  )
-    public view
-    ownsOrHasOwnedKey(_keyOwner)
-    returns (uint timestamp)
+    address _owner
+  ) public view
+    returns (uint)
   {
     return keyByOwner[_keyOwner].expirationTimestamp;
   }
