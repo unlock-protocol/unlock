@@ -40,7 +40,7 @@
     "@types/styled-components": "5.0.0",
     "@typescript-eslint/eslint-plugin": "2.20.0",
     "@typescript-eslint/parser": "2.20.0",
-    "@unlock-protocol/unlock-js": "0.8.3",
+    "@unlock-protocol/unlock-js": "0.8.5",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "0.19.2",
