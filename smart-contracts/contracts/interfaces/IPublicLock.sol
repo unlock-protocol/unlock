@@ -335,10 +335,6 @@ contract IPublicLock is IERC721Enumerable {
 
   function isAlive() external view returns (bool );
 
-  function keyCancelInterfaceId() external view returns (bytes32 );
-
-  function keySoldInterfaceId() external view returns (bytes32 );
-
   function keyPrice() external view returns (uint256 );
 
   function maxNumberOfKeys() external view returns (uint256 );
