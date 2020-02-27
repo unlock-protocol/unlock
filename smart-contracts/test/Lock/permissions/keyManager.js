@@ -46,27 +46,27 @@ contract('Permissions / KeyManager', accounts => {
     // KM == KeyManager
     it('should set KM == keyOwner for new purchases', async () => {
       iD = await lock.getTokenIdFor(keyOwner1)
-      keyManager = await lock.getKeyManagerOf.call(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       keyOwner = await lock.ownerOf(iD)
       assert.equal(keyManager, keyOwner)
     })
     it('should not change KM when topping-up valid keys', async () => {
-      keyManagerBefore = await lock.getKeyManagerOf.call(iD)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: keyOwner1,
       })
-      keyManager = await lock.getKeyManagerOf.call(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
     it('should not change KM when renewing expired keys', async () => {
-      keyManagerBefore = await lock.getKeyManagerOf.call(iD)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.expireKeyFor(keyOwner1, { from: lockManager })
       await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: keyOwner1,
       })
-      keyManager = await lock.getKeyManagerOf.call(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
   })
@@ -75,17 +75,17 @@ contract('Permissions / KeyManager', accounts => {
       await lock.transferFrom(keyOwner1, accounts[9], iD, {
         from: keyOwner1,
       })
-      keyManager = await lock.getKeyManagerOf.call(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, accounts[9])
     })
     it('should not change KM for existing key owners', async () => {
       let iD9 = await lock.getTokenIdFor(accounts[9])
       iD = await lock.getTokenIdFor(keyOwner2)
-      keyManagerBefore = await lock.getKeyManagerOf.call(iD)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.transferFrom(accounts[9], keyOwner2, iD9, {
         from: accounts[9],
       })
-      keyManager = await lock.getKeyManagerOf.call(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
   })
@@ -96,7 +96,7 @@ contract('Permissions / KeyManager', accounts => {
         from: keyOwner3,
       })
       iD = await lock.getTokenIdFor(accounts[8])
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, accounts[7])
     })
     it('should let key sharer set no KM for Child key', async () => {
@@ -105,7 +105,7 @@ contract('Permissions / KeyManager', accounts => {
         from: keyOwner3,
       })
       iD = await lock.getTokenIdFor(accounts[6])
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, ZERO_ADDRESS)
     })
 
@@ -118,7 +118,7 @@ contract('Permissions / KeyManager', accounts => {
         from: evilKeyOwner,
       })
       iD = await lock.getTokenIdFor(accounts[6])
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.notEqual(keyManager, evilKeyOwner)
     })
   })
@@ -135,7 +135,7 @@ contract('Permissions / KeyManager', accounts => {
         }
       )
       iD = await lock.getTokenIdFor(accounts[7])
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, accounts[8])
     })
 
@@ -149,7 +149,7 @@ contract('Permissions / KeyManager', accounts => {
         }
       )
       iD = await lock.getTokenIdFor(accounts[1])
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, ZERO_ADDRESS)
     })
 
@@ -157,13 +157,13 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
       const iD = await lock.getTokenIdFor(accounts[7])
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
-      const originalKeyManager = await lock.getKeyManagerOf(iD)
+      const originalKeyManager = await lock.keyManagerOf.call(iD)
       assert.notEqual(originalKeyManager, lockCreator)
       // lockCreator attenpts to set herself as the keyManager
       await lock.grantKeys([accounts[7]], [newTimestamp], [lockCreator], {
         from: lockCreator,
       })
-      const newKeyManager = await lock.getKeyManagerOf(iD)
+      const newKeyManager = await lock.keyManagerOf.call(iD)
       assert.equal(originalKeyManager, newKeyManager)
     })
   })
@@ -171,18 +171,18 @@ contract('Permissions / KeyManager', accounts => {
   describe('updating the key manager', () => {
     it('should allow the current keyManager to set a new KM', async () => {
       iD = await lock.getTokenIdFor(accounts[7])
-      keyManagerBefore = await lock.getKeyManagerOf(iD)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.setKeyManagerOf(iD, accounts[1], { from: keyManagerBefore })
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.notEqual(keyManagerBefore, keyManager)
       assert.equal(keyManager, accounts[1])
     })
 
     it('should allow a LockManager to set a new KM', async () => {
       iD = await lock.getTokenIdFor(accounts[7])
-      keyManagerBefore = await lock.getKeyManagerOf(iD)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.setKeyManagerOf(iD, accounts[2], { from: lockManager })
-      keyManager = await lock.getKeyManagerOf(iD)
+      keyManager = await lock.keyManagerOf.call(iD)
       assert.notEqual(keyManagerBefore, keyManager)
       assert.equal(keyManager, accounts[2])
     })
