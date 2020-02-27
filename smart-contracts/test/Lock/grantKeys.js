@@ -184,5 +184,24 @@ contract('Lock / grantKeys', accounts => {
         })
       )
     })
+
+    it('should not let the keyGranter overwrite the keyManager for valid keys', async () => {
+      const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+      await lock.purchase(0, accounts[7], web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: accounts[7],
+      })
+      assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
+      const iD = await lock.getTokenIdFor(accounts[7])
+      const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
+      const originalKeyManager = await lock.getKeyManagerOf(iD)
+      assert.notEqual(originalKeyManager, lockCreator)
+      // lockCreator attenpts to set herself as the keyManager
+      await lock.grantKeys([keyOwner], [newTimestamp], [lockCreator], {
+        from: lockCreator,
+      })
+      const newKeyManager = await lock.getKeyManagerOf(iD)
+      assert.equal(originalKeyManager, newKeyManager)
+    })
   })
 })
