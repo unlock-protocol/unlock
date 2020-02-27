@@ -355,9 +355,6 @@ contract IPublicLock is IERC721Enumerable {
 
   function BASIS_POINTS_DEN() external view returns (uint256 );
 
-  /// @notice The typehash per the EIP-712 standard
-  /// @dev This can be computed in JS instead of read from the contract
-  function CANCEL_TYPEHASH() external view returns(bytes32);
   ///===================================================================
 
   /**
