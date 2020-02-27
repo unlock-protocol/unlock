@@ -107,7 +107,7 @@ contract MixinLockCore is
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    *
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullexpireAndRefundForRefund`
    * use cases.
    */
   function withdraw(
