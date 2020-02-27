@@ -54,7 +54,7 @@ function newKeyPurchase(
   let keyID = genKeyID(event.address, event.params._tokenId.toString());
   let keyPurchaseID = keyID + "-" + event.block.number.toString();
 
-  genKey(event, lock, lockContract);
+  genKey(event, lockContract);
   genKeyPurchase(
     keyPurchaseID,
     event.params._to,
@@ -83,7 +83,7 @@ export function handleExpireKey(event: ExpireKey): void {
   key.save();
 }
 
-function genKey(event: Transfer, lock: Lock, lockContract: PublicLock): void {
+function genKey(event: Transfer, lockContract: PublicLock): void {
   let keyID = genKeyID(event.address, event.params._tokenId.toString());
 
   newlyMintedKey(event);
@@ -94,6 +94,17 @@ function genKey(event: Transfer, lock: Lock, lockContract: PublicLock): void {
   key.expiration = lockContract.keyExpirationTimestampFor(event.params._to);
   key.tokenURI = lockContract.tokenURI(key.keyId);
   key.createdAt = event.block.timestamp;
+
+  let lock = Lock.load(key.lock);
+
+  if (lock.version > BigInt.fromI32(0)) {
+    let tokenURI = lockContract.try_tokenURI(key.keyId);
+
+    if (!tokenURI.reverted) {
+      key.tokenURI = lockContract.tokenURI(key.keyId);
+    }
+  }
+
   key.save();
 }
 

@@ -45,27 +45,31 @@ export function handleNewLock(event: NewLock): void {
   lock.maxNumberOfKeys = chainPublicLock.maxNumberOfKeys();
   lock.owner = chainPublicLock.owner();
   lock.creationBlock = event.block.number;
-  
-  let tokenAddress = chainPublicLock.try_tokenAddress();
 
-  if (!tokenAddress.reverted) {
-    lock.tokenAddress = tokenAddress.value;
+  if (event.block.number > BigInt.fromI32(4519015)) {
+    let tokenAddress = chainPublicLock.try_tokenAddress();
+
+    if (!tokenAddress.reverted) {
+      lock.tokenAddress = tokenAddress.value;
+    } else {
+      lock.tokenAddress = Address.fromString(
+        "0000000000000000000000000000000000000000"
+      );
+    }
+
+    let tokenName = chainPublicLock.try_name();
+    if (!tokenName.reverted) {
+      lock.name = tokenName.value;
+    } else {
+      lock.name = "";
+    }
+
+    let totalSupply = chainPublicLock.try_totalSupply();
+    if (!totalSupply.reverted) {
+      lock.totalSupply = totalSupply.value;
+    }
   } else {
-    lock.tokenAddress = Address.fromString(
-      "0000000000000000000000000000000000000000"
-    );
-  }
-
-  let tokenName = chainPublicLock.try_name();
-  if (!tokenName.reverted) {
-    lock.name = tokenName.value;
-  } else {
-    lock.name = "";
-  }
-
-  let totalSupply = chainPublicLock.try_totalSupply();
-  if (!totalSupply.reverted) {
-    lock.totalSupply = totalSupply.value;
+    lock.version = BigInt.fromI32(0);
   }
 
   lock.save();
