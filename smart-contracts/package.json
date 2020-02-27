@@ -80,7 +80,7 @@
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\"",
     "zos": "openzeppelin",
     "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
-    "verify": "truffle run verify",
+    "verify": "truffle run verify contracts/Unlock.sol contracts/PublicLock.sol contracts/UnlockDiscountToken.sol",
     "debug": "truffle debug"
   },
   "author": "",
