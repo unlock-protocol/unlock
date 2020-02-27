@@ -327,8 +327,6 @@ contract IPublicLock is IERC721Enumerable {
 
   function beneficiary() external view returns (address );
 
-  function erc1820() external view returns (address );
-
   function expirationDuration() external view returns (uint256 );
 
   function freeTrialLength() external view returns (uint256 );
