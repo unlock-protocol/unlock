@@ -25,7 +25,6 @@ import {
   LocalStorageWindow,
   EventTypes,
 } from '../windowTypes'
-import { waitFor } from '../utils/promises'
 import { iframePostOffice, PostMessageListener } from '../utils/postOffice'
 import { MessageTypes, PostMessages, ExtractPayload } from '../messageTypes'
 import {
@@ -113,7 +112,7 @@ export default class Mailbox {
 
   private readonly cachePrefix = '__unlockProtocol.cache'
 
-  private handler?: BlockchainHandler
+  public handler?: BlockchainHandler
 
   private constants: ConstantsType
 
@@ -213,6 +212,9 @@ export default class Mailbox {
     })
   }
 
+  /**
+   * TODO: consider moving all this to the constructor... this will avoid race conditions
+   */
   async init() {
     const web3Service = new Web3Service({
       readOnlyProvider: this.constants.readOnlyProvider,
@@ -224,10 +226,6 @@ export default class Mailbox {
     // TODO : do not mass assign below
     const walletService = new WalletService(this.constants)
     const provider = new Web3ProxyProvider(this.window)
-
-    // configuration is set by "setConfig" in response to "READY"
-    // it is the paywall configuration
-    await waitFor(() => this.configuration)
 
     // we do not need a connected walletService to work
     walletService.connect(provider as any).catch((e: Error) => {
@@ -242,8 +240,7 @@ export default class Mailbox {
       emitError: this.emitError,
       window: this.window,
     })
-    this.handler.init(this.configuration as PaywallConfig)
-    this.handler.retrieveCurrentBlockchainData()
+    this.setupStorageListener()
   }
 
   /**
@@ -357,7 +354,12 @@ export default class Mailbox {
     // the cache is retrieved once per process, and thereafter
     // only changed when new blockchain data comes in.
     this.blockchainData = this.getBlockchainDataFromLocalStorageCache()
-    this.setupStorageListener()
+    if (this.handler) {
+      // TODO: What if the this.handler is not defined??
+      this.handler.init(this.configuration)
+      this.handler._reset()
+      this.handler.retrieveCurrentBlockchainData()
+    }
   }
 
   /**

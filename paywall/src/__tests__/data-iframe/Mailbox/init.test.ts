@@ -13,16 +13,13 @@ import {
   setupTestDefaults,
   MailboxTestDefaults,
 } from '../../test-helpers/setupMailboxHelpers'
-import BlockchainHandler, {
-  makeDefaultKeys,
-} from '../../../data-iframe/blockchainHandler/BlockchainHandler'
+import BlockchainHandler from '../../../data-iframe/blockchainHandler/BlockchainHandler'
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PostMessages } from '../../../messageTypes'
 import { waitFor } from '../../../utils/promises'
 import {
   getWalletService,
   getWeb3Service,
-  lockAddresses,
 } from '../../test-helpers/setupBlockchainHelpers'
 
 let mockWalletService: WalletServiceType
@@ -77,8 +74,8 @@ describe('Mailbox - init', () => {
     setupDefaults()
   })
 
-  it('should wait for configuration before initializing walletService', async () => {
-    expect.assertions(2)
+  it('should connect to walletService', async () => {
+    expect.assertions(1)
 
     setupDefaults(false)
     ;(unlock.WalletService as any).mockImplementationOnce(function() {
@@ -94,18 +91,6 @@ describe('Mailbox - init', () => {
     mailbox.init()
 
     await waitFor(() => !!mockWalletService)
-    expect(mockWalletService.connect).not.toHaveBeenCalled()
-
-    fakeWindow.receivePostMessageFromMainWindow(
-      PostMessages.CONFIG,
-      configuration
-    )
-
-    const mock: any = mockWalletService.connect
-
-    await fakeWindow.waitForPostMessage()
-    await waitFor(() => mock.mock.calls.length)
-
     expect(mockWalletService.connect).toHaveBeenCalled()
 
     // demonstrate that the handler is created even though connection has not finished
@@ -142,7 +127,7 @@ describe('Mailbox - init', () => {
     })
   })
 
-  it('should initialize a BlockchainHandler', async () => {
+  it('should instantiate a BlockchainHandler', async () => {
     expect.assertions(1)
 
     mailbox.init().then(() => {
@@ -158,35 +143,12 @@ describe('Mailbox - init', () => {
     await waitFor(() => testingMailbox().handler)
   })
 
-  it('should retrieve current blockchain data', async () => {
+  it('should begin listening for storage events', () => {
     expect.assertions(1)
 
-    mailbox.emitChanges = jest.fn()
+    mailbox.setupStorageListener = jest.fn(() => {})
     mailbox.init()
 
-    fakeWindow.receivePostMessageFromMainWindow(PostMessages.WALLET_INFO, {
-      noWallet: false,
-      notEnabled: false,
-      isMetaMask: false,
-    })
-
-    await waitFor(() => testingMailbox().handler)
-
-    const mock: any = mailbox.emitChanges
-    await waitFor(() => mock.mock.calls.length)
-
-    expect(mailbox.emitChanges).toHaveBeenCalledWith({
-      account: null,
-      balance: {
-        eth: '0',
-      },
-      locks: {},
-      network: 1984,
-      // Even though we are in a null state (just initialized), there
-      // are keys here because of makeDefaultKeys. Somewhat confusing,
-      // but at least there's a comment now.
-      keys: makeDefaultKeys(lockAddresses, null),
-      transactions: {},
-    })
+    expect(mailbox.setupStorageListener).toHaveBeenCalled()
   })
 })
