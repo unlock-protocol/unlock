@@ -2,7 +2,12 @@ import { KeyMetadata } from '../unlockTypes'
 
 export const generateColumns = (
   metadata: KeyMetadata[],
-  startingColumns: string[] = ['lockName', 'keyholderAddress', 'expiration']
+  startingColumns: string[] = [
+    'lockName',
+    'token',
+    'keyholderAddress',
+    'expiration',
+  ]
 ): string[] => {
   // clone the passed array to avoid mutation
   const columns = startingColumns.slice()
