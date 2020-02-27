@@ -1,5 +1,8 @@
 # Changes
 
+# 0.8.4
+- Updated WalletService type to include callback for purchaseKey
+
 # 0.8.3
 - Updated Web3ServiceParams to include the network id, which is required
 
