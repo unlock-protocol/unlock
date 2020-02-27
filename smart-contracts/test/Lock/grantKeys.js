@@ -1,5 +1,6 @@
 const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
+const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -153,6 +154,7 @@ contract('Lock / grantKeys', accounts => {
         lock.grantKeys(
           [web3.utils.padLeft(0, 40)],
           [validExpirationTimestamp],
+          [web3.utils.padLeft(0, 40)],
           {
             from: lockCreator,
           }

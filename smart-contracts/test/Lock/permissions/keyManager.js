@@ -1,6 +1,5 @@
 const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
-const Units = require('ethereumjs-units')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 
@@ -17,7 +16,7 @@ contract('Permissions / KeyManager', accounts => {
   const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const [keyOwner1, keyOwner2, keyOwner3, evilKeyOwner] = keyOwners
-  const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const oneDay = new BigNumber(60 * 60 * 24)
   const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
   let iD
