@@ -1,6 +1,11 @@
 import React from 'react'
-import { RawLock } from '../../../unlockTypes'
+import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
+import {
+  lockKeysAvailable,
+  lockTickerSymbol,
+  userCanAffordKey,
+} from '../../../utils/checkoutLockUtils'
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
 
@@ -8,45 +13,14 @@ interface LockProps {
   lock: RawLock
   purchasingLockAddress: string | null
   setPurchasingLockAddress: (lockAddress: string) => void
-}
-
-interface LockKeysAvailableLock {
-  unlimitedKeys?: boolean
-  maxNumberOfKeys?: number
-  outstandingKeys?: number
-}
-
-export const lockKeysAvailable = ({
-  unlimitedKeys,
-  maxNumberOfKeys,
-  outstandingKeys,
-}: LockKeysAvailableLock) => {
-  if (unlimitedKeys) {
-    return 'Unlimited'
-  }
-
-  // maxNumberOfKeys and outstandingKeys are assumed to be defined
-  // if they are ever not, a runtime error can occur
-  return (maxNumberOfKeys! - outstandingKeys!).toLocaleString()
-}
-
-interface LockTickerSymbolLock {
-  currencyContractAddress: string | null
-  currencySymbol?: string
-}
-
-export const lockTickerSymbol = (lock: LockTickerSymbolLock) => {
-  if (lock.currencyContractAddress) {
-    // TODO: if there is no symbol, we probably need something better than "ERC20"
-    return (lock as any).currencySymbol || 'ERC20'
-  }
-  return 'ETH'
+  balances: Balances
 }
 
 export const Lock = ({
   lock,
   purchasingLockAddress,
   setPurchasingLockAddress,
+  balances,
 }: LockProps) => {
   const { purchaseKey, transactionHash } = usePurchaseKey(lock)
 
@@ -68,6 +42,8 @@ export const Lock = ({
     name: lock.name,
   }
 
+  const canAfford = userCanAffordKey(lock, balances)
+
   // This lock is being/has been purchased
   if (purchasingLockAddress === lock.address) {
     if (transactionHash) {
@@ -82,5 +58,9 @@ export const Lock = ({
   }
 
   // No lock is being/has been purchased
-  return <LockVariations.PurchaseableLock {...props} />
+  if (canAfford) {
+    return <LockVariations.PurchaseableLock {...props} />
+  }
+
+  return <LockVariations.InsufficientBalanceLock {...props} />
 }
