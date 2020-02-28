@@ -5,6 +5,7 @@ import queryString from 'query-string'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import { Locks } from '../interface/checkout/Locks'
+import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import {
   Account as AccountType,
@@ -26,19 +27,24 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
     : defaultLockAddresses
 
   return (
-    <CheckoutWrapper allowClose hideCheckout={() => console.log('clicked')}>
+    <CheckoutWrapper allowClose hideCheckout={() => {}}>
       <Head>
         <title>{pageTitle('Checkout')}</title>
       </Head>
-      <p>{config ? config.callToAction.default : ''}</p>
-      {account && (
-        <BrowserOnly>
+      <BrowserOnly>
+        <p>{config ? config.callToAction.default : ''}</p>
+        {!account && (
+          <>
+            <NotLoggedInLocks lockAddresses={lockAddresses} />
+          </>
+        )}
+        {account && (
           <Locks
             accountAddress={account.address}
             lockAddresses={lockAddresses}
           />
-        </BrowserOnly>
-      )}
+        )}
+      </BrowserOnly>
     </CheckoutWrapper>
   )
 }
