@@ -1,4 +1,4 @@
-FROM node:10.18.1-alpine
+FROM node:10.19.0-alpine
 LABEL Locksmith <ops@unlock-protocol.com>
 LABEL maintainer="ops@unlock-protocol.com"
 
