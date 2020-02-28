@@ -4,6 +4,7 @@ import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import {
   lockKeysAvailable,
   lockTickerSymbol,
+  userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
@@ -19,6 +20,7 @@ export const Lock = ({
   lock,
   purchasingLockAddress,
   setPurchasingLockAddress,
+  balances,
 }: LockProps) => {
   const { purchaseKey, transactionHash } = usePurchaseKey(lock)
 
@@ -40,6 +42,8 @@ export const Lock = ({
     name: lock.name,
   }
 
+  const canAfford = userCanAffordKey(lock, balances)
+
   // This lock is being/has been purchased
   if (purchasingLockAddress === lock.address) {
     if (transactionHash) {
@@ -54,5 +58,9 @@ export const Lock = ({
   }
 
   // No lock is being/has been purchased
-  return <LockVariations.PurchaseableLock {...props} />
+  if (canAfford) {
+    return <LockVariations.PurchaseableLock {...props} />
+  }
+
+  return <LockVariations.InsufficientBalanceLock {...props} />
 }

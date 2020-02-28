@@ -7,6 +7,14 @@ const balances = {
   eth: '500.00',
 }
 
+const lock = {
+  name: 'lock',
+  address: '0xlockaddress',
+  keyPrice: '0.04',
+  expirationDuration: 50,
+  currencyContractAddress: null,
+}
+
 describe('Checkout Lock', () => {
   describe('Lock', () => {
     let purchaseKey: () => void
@@ -24,14 +32,6 @@ describe('Checkout Lock', () => {
 
     it('purchases a key and sets the purchasing address on click', () => {
       expect.assertions(2)
-
-      const lock = {
-        name: 'lock',
-        address: '0xlockaddress',
-        keyPrice: '4000000',
-        expirationDuration: 50,
-        currencyContractAddress: null,
-      }
 
       const { getByText } = rtl.render(
         <Lock
@@ -53,14 +53,6 @@ describe('Checkout Lock', () => {
     it('does not purchase a key and set the purchasing address when there is already a purchase', () => {
       expect.assertions(2)
 
-      const lock = {
-        name: 'lock',
-        address: '0xlockaddress',
-        keyPrice: '4000000',
-        expirationDuration: 50,
-        currencyContractAddress: null,
-      }
-
       const { getByText } = rtl.render(
         <Lock
           lock={lock}
@@ -78,16 +70,28 @@ describe('Checkout Lock', () => {
       expect(setPurchasingLockAddress).not.toHaveBeenCalled()
     })
 
-    it('renders a disabled lock when there is a purchase for a different lock', () => {
+    it('renders an insufficient balance lock when the user cannot afford a key', () => {
       expect.assertions(0)
 
-      const lock = {
-        name: 'lock',
-        address: '0xlockaddress',
-        keyPrice: '4000000',
-        expirationDuration: 50,
-        currencyContractAddress: null,
+      const insufficientBalanceLock = {
+        ...lock,
+        currencyContractAddress: '0xcurrency',
       }
+
+      const { getByTestId } = rtl.render(
+        <Lock
+          lock={insufficientBalanceLock}
+          purchasingLockAddress={null}
+          setPurchasingLockAddress={setPurchasingLockAddress}
+          balances={balances}
+        />
+      )
+
+      getByTestId('InsufficientBalanceLock')
+    })
+
+    it('renders a disabled lock when there is a purchase for a different lock', () => {
+      expect.assertions(0)
 
       const { getByTestId } = rtl.render(
         <Lock
@@ -103,14 +107,6 @@ describe('Checkout Lock', () => {
 
     it('renders a processing lock when there is a purchase without transaction hash for this lock', () => {
       expect.assertions(0)
-
-      const lock = {
-        name: 'lock',
-        address: '0xlockaddress',
-        keyPrice: '4000000',
-        expirationDuration: 50,
-        currencyContractAddress: null,
-      }
 
       const { getByTestId } = rtl.render(
         <Lock
@@ -135,14 +131,6 @@ describe('Checkout Lock', () => {
         error: null,
         transactionHash: '0xhash',
       }))
-
-      const lock = {
-        name: 'lock',
-        address: '0xlockaddress',
-        keyPrice: '4000000',
-        expirationDuration: 50,
-        currencyContractAddress: null,
-      }
 
       const { getByTestId } = rtl.render(
         <Lock

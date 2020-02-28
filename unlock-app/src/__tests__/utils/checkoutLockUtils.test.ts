@@ -1,6 +1,7 @@
 import {
   lockKeysAvailable,
   lockTickerSymbol,
+  userCanAffordKey,
 } from '../../utils/checkoutLockUtils'
 
 describe('Checkout Lock Utils', () => {
@@ -52,6 +53,77 @@ describe('Checkout Lock Utils', () => {
       }
 
       expect(lockTickerSymbol(lock)).toEqual('ERC20')
+    })
+  })
+
+  describe('userCanAffordKey', () => {
+    const balances = {
+      eth: '50',
+      '0x123abc': '50',
+    }
+
+    it('returns true when the user has enough eth', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: '0.01',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeTruthy()
+    })
+
+    it('returns true when the user has enough erc20', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: '0.01',
+        currencyContractAddress: '0x123abc',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeTruthy()
+    })
+
+    it('returns false when the user has insufficient eth', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: '100',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+    })
+
+    it('returns false when the user has insufficient erc20', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: '100',
+        currencyContractAddress: '0x123abc',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+    })
+
+    it('returns false when the key price cannot be parsed', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: '100qq',
+        currencyContractAddress: '0x123abc',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+    })
+
+    it('returns false when the balance cannot be parsed', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: '100',
+        currencyContractAddress: '0xnotintheobject',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeFalsy()
     })
   })
 })
