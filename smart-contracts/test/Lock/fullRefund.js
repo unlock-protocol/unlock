@@ -1,10 +1,9 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -18,8 +17,8 @@ contract('Lock / fullRefund', accounts => {
 
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
-  const refundAmount = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const refundAmount = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   let lockOwner
 
   before(async () => {

@@ -1,6 +1,7 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { MetadataTable } from '../../../components/interface/MetadataTable'
+import { MemberFilters } from '../../../unlockTypes'
 
 const metadata = [
   {
@@ -43,6 +44,7 @@ describe('MetadataTable', () => {
             'emailAddress',
           ]}
           metadata={metadata}
+          filter={MemberFilters.ALL}
         />
       )
 
@@ -71,6 +73,7 @@ describe('MetadataTable', () => {
             'emailAddress',
           ]}
           metadata={metadata}
+          filter={MemberFilters.ALL}
         />
       )
 
@@ -84,6 +87,40 @@ describe('MetadataTable', () => {
         'support@tether.to',
       ].forEach((expectedValue, index) => {
         expect(values[index].textContent).toEqual(expectedValue)
+      })
+    })
+
+    describe('when there are no keys', () => {
+      it('should show a message when there is no match on when showing all keys', () => {
+        expect.assertions(1)
+
+        const wrapper = rtl.render(
+          <MetadataTable
+            columns={[]}
+            metadata={[]}
+            filter={MemberFilters.ALL}
+          />
+        )
+        expect(
+          wrapper.getByText('No keys have been purchased yet.', {
+            exact: false,
+          })
+        ).not.toBeNull()
+      })
+
+      it('should show a message when there is no match on when showing only active keys', () => {
+        expect.assertions(1)
+
+        const wrapper = rtl.render(
+          <MetadataTable
+            columns={[]}
+            metadata={[]}
+            filter={MemberFilters.ACTIVE}
+          />
+        )
+        expect(
+          wrapper.getByText('No keys found matching the current filter.')
+        ).not.toBeNull()
       })
     })
   })

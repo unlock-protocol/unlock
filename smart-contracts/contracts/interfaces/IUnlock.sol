@@ -83,11 +83,18 @@ interface IUnlock {
    *  Should throw if called by other than owner.
    */
   function configUnlock(
-    address _publicLockAddress,
     string calldata _symbol,
     string calldata _URI
   )
     external;
+
+  /**
+   * @notice Upgrade the PublicLock template used for future calls to `createLock`.
+   * @dev This will initialize the template and revokeOwnership.
+   */
+  function setLockTemplate(
+    address _publicLockAddress
+  ) external;
 
   // Allows the owner to change the value tracking variables as needed.
   function resetTrackedValue(

@@ -7,6 +7,8 @@ import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
 import { BlockchainData } from '../data-iframe/blockchainHandler/blockChainTypes'
 import { mainWindowHandlerInit } from './postMessageHub'
+import { PaywallConfig } from '../unlockTypes'
+import { normalizeConfig } from '../utils/config'
 
 interface hasPrototype {
   prototype?: any
@@ -24,7 +26,7 @@ export const IGNORE_CACHE = 'ignore'
 export default class MainWindowHandler {
   private window: UnlockWindowNoProtocolYet
 
-  private iframes: IframeHandler
+  public iframes: IframeHandler
 
   private showCheckoutWhenAccountsHides: boolean = false
 
@@ -32,7 +34,7 @@ export default class MainWindowHandler {
 
   private showingAccountsIframe: boolean = false
 
-  private lockStatus: LockStatus = undefined
+  public lockStatus: LockStatus = undefined
 
   private blockchainData: BlockchainData = {
     locks: {},
@@ -73,6 +75,7 @@ export default class MainWindowHandler {
     }[message]
 
     // Only update if there's actually a change
+    // Or when the config was changed!
     if (this.lockStatus !== message) {
       this.dispatchEvent(message)
       this.setCachedLockedState(isLocked)
@@ -146,6 +149,13 @@ export default class MainWindowHandler {
     }
     const getState = () => this.lockStatus
     const blockchainData = () => this.blockchainData
+    const resetConfig = (config: PaywallConfig) => {
+      this.lockStatus = undefined
+      const nornalizedConfig = normalizeConfig(config)
+      this.iframes.accounts.postMessage(PostMessages.CONFIG, nornalizedConfig)
+      this.iframes.checkout.postMessage(PostMessages.CONFIG, nornalizedConfig)
+      this.iframes.data.postMessage(PostMessages.CONFIG, nornalizedConfig)
+    }
 
     const unlockProtocol: hasPrototype = {}
 
@@ -166,6 +176,10 @@ export default class MainWindowHandler {
       },
       blockchainData: {
         value: blockchainData,
+        ...immutable,
+      },
+      resetConfig: {
+        value: resetConfig,
         ...immutable,
       },
     })

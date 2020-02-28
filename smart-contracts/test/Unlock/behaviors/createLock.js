@@ -1,8 +1,6 @@
-const Web3Utils = require('web3-utils')
-const Units = require('ethereumjs-units')
 const { reverts } = require('truffle-assertions')
 
-const PublicLock = artifacts.require('../../PublicLock.sol')
+const PublicLock = artifacts.require('PublicLock.sol')
 
 exports.shouldCreateLock = options => {
   describe('Unlock / behaviors / createLock', () => {
@@ -19,8 +17,8 @@ exports.shouldCreateLock = options => {
         transaction = await unlock.methods
           .createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
-            Web3Utils.padLeft(0, 40),
-            Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+            web3.utils.padLeft(0, 40),
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'New Lock',
             '0x000000000000000000000000'
@@ -46,8 +44,8 @@ exports.shouldCreateLock = options => {
         const event = transaction.events.NewLock
         assert(event)
         assert.equal(
-          Web3Utils.toChecksumAddress(event.returnValues.lockOwner),
-          Web3Utils.toChecksumAddress(accounts[0])
+          web3.utils.toChecksumAddress(event.returnValues.lockOwner),
+          web3.utils.toChecksumAddress(accounts[0])
         )
         assert(event.returnValues.newLockAddress)
       })
@@ -58,8 +56,8 @@ exports.shouldCreateLock = options => {
         )
         let unlockProtocol = await publicLock.unlockProtocol.call()
         assert.equal(
-          Web3Utils.toChecksumAddress(unlockProtocol),
-          Web3Utils.toChecksumAddress(unlock.address)
+          web3.utils.toChecksumAddress(unlockProtocol),
+          web3.utils.toChecksumAddress(unlock.address)
         )
       })
     })
@@ -70,8 +68,8 @@ exports.shouldCreateLock = options => {
           unlock.methods
             .createLock(
               60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-              Web3Utils.padLeft(0, 40),
-              Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
+              web3.utils.padLeft(0, 40),
+              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
               100, // maxNumberOfKeys
               'Too Big Expiration Lock',
               '0x000000000000000000000000'

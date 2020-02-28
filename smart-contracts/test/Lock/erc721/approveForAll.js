@@ -1,8 +1,7 @@
-const Units = require('ethereumjs-units')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
 let unlock
@@ -23,7 +22,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
   describe('when the key exists', () => {
     before(async () => {
       await lock.purchase(0, owner, web3.utils.padLeft(0, 40), [], {
-        value: Units.convert('0.01', 'eth', 'wei'),
+        value: web3.utils.toWei('0.01', 'ether'),
         from: owner,
       })
       ID = await lock.getTokenIdFor.call(owner)

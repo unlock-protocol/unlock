@@ -91,9 +91,12 @@ contract Unlock is
   );
 
   event ConfigUnlock(
-    address publicLockAddress,
     string globalTokenSymbol,
     string globalTokenURI
+  );
+
+  event SetLockTemplate(
+    address publicLockAddress
   );
 
   event ResetTrackedValue(
@@ -231,24 +234,42 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 6;
+    return 7;
   }
 
   // function for the owner to update configuration variables
   function configUnlock(
-    address _publicLockAddress,
     string calldata _symbol,
     string calldata _URI
   ) external
     onlyOwner
   {
     // ensure that this is an address to which a contract has been deployed.
-    require(_publicLockAddress.isContract(), 'NOT_A_CONTRACT');
-    publicLockAddress = _publicLockAddress;
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
 
-    emit ConfigUnlock(_publicLockAddress, _symbol, _URI);
+    emit ConfigUnlock(_symbol, _URI);
+  }
+
+  /**
+   * @notice Upgrade the PublicLock template used for future calls to `createLock`.
+   * @dev This will initialize the template and revokeOwnership.
+   */
+  function setLockTemplate(
+    address _publicLockAddress
+  ) external
+    onlyOwner
+  {
+    // First claim the template so that no-one else could
+    // this will revert if the template was already initialized.
+    IPublicLock(_publicLockAddress).initialize(
+      address(this), 0, address(0), 0, 0, ''
+    );
+    IPublicLock(_publicLockAddress).renounceOwnership();
+
+    publicLockAddress = _publicLockAddress;
+
+    emit SetLockTemplate(_publicLockAddress);
   }
 
   // allows the owner to set the exchange address to use for value conversions
@@ -273,5 +294,27 @@ contract Unlock is
     totalDiscountGranted = _totalDiscountGranted;
 
     emit ResetTrackedValue(_grossNetworkProduct, _totalDiscountGranted);
+  }
+
+  /**
+   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
+   */
+  function getGlobalBaseTokenURI()
+    external
+    view
+    returns (string memory)
+  {
+    return globalBaseTokenURI;
+  }
+
+  /**
+   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
+   */
+  function getGlobalTokenSymbol()
+    external
+    view
+    returns (string memory)
+  {
+    return globalTokenSymbol;
   }
 }

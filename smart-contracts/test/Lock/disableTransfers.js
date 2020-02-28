@@ -1,4 +1,3 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
@@ -19,7 +18,7 @@ contract('Lock / disableTransfers', accounts => {
   let tokenId
   const keyOwner = accounts[1]
   const accountWithNoKey = accounts[2]
-  const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const oneDay = new BigNumber(60 * 60 * 24)
 
   before(async () => {

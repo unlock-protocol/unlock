@@ -1,16 +1,15 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('../Unlock.sol')
+const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 let unlock
 let locks
 
 contract('Unlock / lockTotalSales', accounts => {
-  const price = new BigNumber(Units.convert('0.01', 'eth', 'wei'))
+  const price = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   let lock
 
   before(async () => {
