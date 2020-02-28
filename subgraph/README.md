@@ -17,9 +17,31 @@ You are now ready to build and deploy the Unlock Protocol subgraph.
 
 ### Building and Deploying the Unlock Protocol Subgraph
 
-Next run:
+### Updating The Subgraph
 
-```
-npm run codegen
-npm run deploy
-```
+After sometime with our subgraphs in production we have updated the tooling to better support our usage.
+
+The endgoal is to be able to easily deploy the same code to its respective subgraph any of the existing networks.
+
+## Building the subgraph.yml file
+
+In addition to the entities and handlers to be utilized, the file also includes the lock contract address and the relevant network name. In making this process easier, this file is now generated based upon a template. 
+
+Generate via the build script:
+
+`yarn build --network {network name}`
+
+
+## Generating code
+
+With `subgraph.yaml` created, we should generate the associated code with the following:
+`yarn codegen`
+
+
+## The following commands have been introduced:
+
+These command require the passing of the following command line arguments `--network` & `--environment`.
+
+* `yarn create` - Allows for the creation of the subgraph
+* `yarn remove` - Removes the subgraph from the graph node
+* `yarn deploy` - Deploy the latest subgraph code to the graph node
