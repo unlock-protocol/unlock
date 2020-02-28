@@ -67,33 +67,31 @@ export class SignUp extends React.Component<Props, State> {
 
     if (!emailAddress) {
       return (
-        <div>
-          <Heading>Create an Account to Pay by Credit Card</Heading>
+        <LogInWrapper>
           {!submitted && (
             <form onSubmit={this.handleSubmit}>
-              <Indent>
-                <Label htmlFor="emailAddress">Email</Label>
-                <Input
-                  name="emailAddress"
-                  id="emailAddress"
-                  type="email"
-                  placeholder="Enter your email to get started"
-                  onChange={this.handleInputChange}
-                />
-                <Description>
-                  Already have an account? {LogInLink('Log in')}. Have an
-                  Ethereum Wallet?{' '}
-                  <LinkButton
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
-                  >
-                    Connect it
-                  </LinkButton>
-                  .
-                </Description>
-              </Indent>
+              <Label htmlFor="emailAddress">Email</Label>
+              <Input
+                name="emailAddress"
+                id="emailAddress"
+                type="email"
+                placeholder="Enter your email to get started"
+                onChange={this.handleInputChange}
+              />
               <SubmitButton type="submit" value="Sign Up" />
+              <Description>
+                Already have an account? {LogInLink('Log in')}.
+                <br />
+                Have an Ethereum Wallet?{' '}
+                <LinkButton
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
+                >
+                  Connect it
+                </LinkButton>
+                .
+              </Description>
             </form>
           )}
           {submitted && (
@@ -106,7 +104,7 @@ export class SignUp extends React.Component<Props, State> {
               </div>
             </Confirmation>
           )}
-        </div>
+        </LogInWrapper>
       )
     }
 
@@ -160,69 +158,61 @@ export const mapDispatchToProps = (dispatch: any) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
 
-const Heading = styled.h1`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: bold;
-  color: var(--darkgrey);
-  padding: 24px 32px 24px 32px;
-  margin: 0;
+const LogInWrapper = styled.div`
+    width: 100%;
 `
 
 const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
-
-const Indent = styled.div`
-  padding: 0 32px;
+    display: block;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: var(--darkgrey);
+    margin-top: 16px;
+    margin-bottom: 5px;
 `
 
 const Description = styled.p`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 20px;
-  color: var(--darkgrey);
-  line-height: 24px;
+    font-family: 'IBM Plex Sans', sans;
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--darkgrey);
+    line-height: 24px;
 `
 
 const Input = styled.input`
-  height: 60px;
-  width: 100%;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
+    height: 48px;
+    width: 100%;
+    border: none;
+    background-color: var(--lightgrey);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
 `
 
 const SubmitButton = styled.input`
-  height: 60px;
-  width: 100%;
-  border: none;
-  background-color: var(--green);
-  border-bottom-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
+    height: 48px;
+    width: 100%;
+    border: none;
+    background-color: var(--green);
+    color: var(--white);
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 16px;
 `
 
 const Confirmation = styled.div`
-  font-size: 16px;
-  line-height: 20px;
-  text-align: center;
-  color: var(--slate);
-  & > div:first-child {
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: var(--slate);
+    & > div:first-child {
     font-weight: bold;
-  }
-  padding: 0 32px;
-  margin-bottom: 32px;
+    }
+    padding: 0 32px;
+    margin-bottom: 32px;
 `
 
 const LinkButton = styled.a`
-  cursor: pointer;
+    cursor: pointer;
 `

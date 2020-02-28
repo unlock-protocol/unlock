@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
@@ -13,6 +13,7 @@ import {
   PaywallConfig,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
+import LogInSignUp from '../interface/user-account/LogInSignUp'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -24,7 +25,8 @@ const defaultLockAddresses: string[] = []
 export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
   const lockAddresses = config
     ? Object.keys(config.locks)
-    : defaultLockAddresses
+                      : defaultLockAddresses
+  const [showingLogin, setShowingLogin] = useState(false)
 
   return (
     <CheckoutWrapper allowClose hideCheckout={() => {}}>
@@ -33,9 +35,13 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
       </Head>
       <BrowserOnly>
         <p>{config ? config.callToAction.default : ''}</p>
-        {!account && (
+        {!account && showingLogin && (
+          <LogInSignUp login />
+        )}
+        {!account && !showingLogin && (
           <>
             <NotLoggedInLocks lockAddresses={lockAddresses} />
+            <a onClick={() => setShowingLogin(true)}>Log in</a>
           </>
         )}
         {account && (

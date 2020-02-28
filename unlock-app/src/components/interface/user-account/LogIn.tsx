@@ -95,7 +95,7 @@ export class LogIn extends React.Component<Props, State> {
       return <LoadingButton roundBottomOnly>Logging In...</LoadingButton>
     }
 
-    return <InputSubmitButton type="submit" value="Submit" />
+    return <InputSubmitButton type="submit" value="Log In" />
   }
 
   render = () => {
@@ -107,33 +107,29 @@ export class LogIn extends React.Component<Props, State> {
 
     return (
       <LogInWrapper>
-        <Heading>Log In</Heading>
         <form onSubmit={this.handleSubmit}>
-          <Indent>
-            <Label htmlFor="emailInput">Email</Label>
-            <Input
-              name="emailAddress"
-              id="emailInput"
-              type="email"
-              placeholder="Enter your email"
-              onChange={this.handleInputChange}
-            />
-            <br />
-            <Label htmlFor="passwordInput">Password</Label>
-            <Input
-              name="password"
-              id="passwordInput"
-              type="password"
-              placeholder="Enter your password"
-              onChange={this.handleInputChange}
-            />
-            <Description>
-              Don&#39;t have an account?{' '}
-              <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
-            </Description>
-          </Indent>
+          <Label htmlFor="emailInput">Email</Label>
+          <Input
+            name="emailAddress"
+            id="emailInput"
+            type="email"
+            placeholder="Enter your email"
+            onChange={this.handleInputChange}
+          />
           <br />
+          <Label htmlFor="passwordInput">Password</Label>
+          <Input
+            name="password"
+            id="passwordInput"
+            type="password"
+            placeholder="Enter your password"
+            onChange={this.handleInputChange}
+          />
           {this.submitButton()}
+          <Description>
+            Don&#39;t have an account?{' '}
+            <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
+          </Description>
         </form>
       </LogInWrapper>
     )
@@ -167,61 +163,49 @@ export const mapStateToProps = ({ account, errors }: ReduxState) => {
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn)
 
 const LogInWrapper = styled.div`
-  width: 100%;
-`
-
-const Heading = styled.h1`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: bold;
-  color: var(--darkgrey);
-  padding: 24px 32px 24px 32px;
+    width: 100%;
 `
 
 const Description = styled.p`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 20px;
-  margin: 0;
-  color: var(--darkgrey);
-  padding-top: 24px;
+    font-family: 'IBM Plex Sans', sans;
+    font-weight: 300;
+    font-size: 12px;
+    margin: 0;
+    color: var(--darkgrey);
+    padding-top: 24px;
 `
 
 const Input = styled.input`
-  height: 60px;
-  width: 100%;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
+    height: 48px;
+    width: 100%;
+    border: none;
+    background-color: var(--lightgrey);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
 `
 
 const InputSubmitButton = styled.input`
-  height: 60px;
-  width: 100%;
-  border: none;
-  background-color: var(--green);
-  color: var(--white);
-  border-radius: 0 0 4px;
-  font-size: 16px;
-  cursor: pointer;
+    height: 48px;
+    width: 100%;
+    border: none;
+    background-color: var(--green);
+    color: var(--white);
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 16px;
 `
 
 const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
+    display: block;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: var(--darkgrey);
+    margin-top: 16px;
+    margin-bottom: 5px;
 `
 
 const LinkButton = styled.a`
-  cursor: pointer;
-`
-
-const Indent = styled.div`
-  padding: 0 32px;
+    cursor: pointer;
 `
