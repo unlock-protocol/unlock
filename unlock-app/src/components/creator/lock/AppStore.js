@@ -85,7 +85,7 @@ export class AppStore extends React.Component {
                 borderRadius="3px"
                 size="64px"
                 fillColor="var(--grey)"
-                href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
+                href="https://docs.unlock-protocol.com/"
                 target="_blank"
               >
                 <Svg.Documentation />
