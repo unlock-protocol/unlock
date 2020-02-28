@@ -58,12 +58,13 @@ const Wrapper = styled.section`
   padding: 10px 40px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
   ${Media.nophone`
-width: 600px;
+width: 380px;
 `}
   ${Media.phone`
 width: 100%;
