@@ -67,6 +67,7 @@ describe('Checkout Lock Utils', () => {
 
       const lock = {
         keyPrice: '0.01',
+        currencyContractAddress: null,
       }
 
       expect(userCanAffordKey(lock, balances)).toBeTruthy()
@@ -88,6 +89,7 @@ describe('Checkout Lock Utils', () => {
 
       const lock = {
         keyPrice: '100',
+        currencyContractAddress: null,
       }
 
       expect(userCanAffordKey(lock, balances)).toBeFalsy()
