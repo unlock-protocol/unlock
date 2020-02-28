@@ -17,7 +17,7 @@ interface LockTickerSymbolLock {
 }
 
 interface LockPriceLock {
-  currencyContractAddress?: string
+  currencyContractAddress: string | null
   keyPrice: string
 }
 
