@@ -27,7 +27,7 @@ contract MixinRefunds is
 
   /// @notice The typehash per the EIP-712 standard
   /// @dev This can be computed in JS instead of read from the contract
-  bytes32 public constant CANCEL_TYPEHASH = keccak256('cancelAndRefundFor(address _keyOwner)');
+  bytes32 private constant CANCEL_TYPEHASH = keccak256('cancelAndRefundFor(address _keyOwner)');
 
   event CancelKey(
     uint indexed tokenId,

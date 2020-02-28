@@ -327,17 +327,11 @@ contract IPublicLock is IERC721Enumerable {
 
   function beneficiary() external view returns (address );
 
-  function erc1820() external view returns (address );
-
   function expirationDuration() external view returns (uint256 );
 
   function freeTrialLength() external view returns (uint256 );
 
   function isAlive() external view returns (bool );
-
-  function keyCancelInterfaceId() external view returns (bytes32 );
-
-  function keySoldInterfaceId() external view returns (bytes32 );
 
   function keyPrice() external view returns (uint256 );
 
@@ -355,9 +349,6 @@ contract IPublicLock is IERC721Enumerable {
 
   function BASIS_POINTS_DEN() external view returns (uint256 );
 
-  /// @notice The typehash per the EIP-712 standard
-  /// @dev This can be computed in JS instead of read from the contract
-  function CANCEL_TYPEHASH() external view returns(bytes32);
   ///===================================================================
 
   /**
