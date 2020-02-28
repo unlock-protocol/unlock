@@ -1,3 +1,4 @@
+import { PaywallConfig } from 'src/unlockTypes'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
@@ -34,10 +35,11 @@ function dispatchEvent(detail: any, window: any) {
 export function startup(
   window: UnlockWindowNoProtocolYet,
   constants: StartupConstants,
+  rawConfig?: PaywallConfig,
   launchModal: boolean = false
 ) {
   // normalize all of the lock addresses
-  let config = normalizeConfig(window.unlockProtocolConfig)
+  let config = normalizeConfig(rawConfig)
 
   // this next line ensures that the minimally valid configuration is passed to Wallet
   // TODO: provide some kind of developer mode which lazy-loads more extensive validation
@@ -142,7 +144,17 @@ export default function startupWhenReady(
             startup(
               (window as unknown) as UnlockWindowNoProtocolYet,
               startupConstants,
+              ((window as unknown) as UnlockWindowNoProtocolYet)
+                .unlockProtocolConfig,
               true
+            )
+          },
+          resetConfig: (newConfig: PaywallConfig) => {
+            startup(
+              (window as unknown) as UnlockWindowNoProtocolYet,
+              startupConstants,
+              newConfig,
+              false
             )
           },
         }
@@ -158,14 +170,20 @@ export default function startupWhenReady(
   if (document.readyState !== 'loading') {
     // in most cases, we will start up after the document is interactive
     // so listening for the DOMContentLoaded or load events is superfluous
-    startup((window as unknown) as UnlockWindowNoProtocolYet, startupConstants)
+    startup(
+      (window as unknown) as UnlockWindowNoProtocolYet,
+      startupConstants,
+      ((window as unknown) as UnlockWindowNoProtocolYet).unlockProtocolConfig
+    )
     started = true
   } else {
     const begin = () => {
       if (!started)
         startup(
           (window as unknown) as UnlockWindowNoProtocolYet,
-          startupConstants
+          startupConstants,
+          ((window as unknown) as UnlockWindowNoProtocolYet)
+            .unlockProtocolConfig
         )
       started = true
     }

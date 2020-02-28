@@ -59,9 +59,8 @@ describe('unlock.js startup', () => {
     it('should set up the data iframe', async () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = config
       fakeWindow.web3 = { currentProvider: {} }
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, config)
 
       iframes.data.emit(PostMessages.READY)
 
@@ -79,8 +78,7 @@ describe('unlock.js startup', () => {
     it('should load the data iframe with the correct URL', () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = config
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, config)
 
       expect(iframes.data.iframe.src).toBe(
         `${dataOrigin}/static/data-iframe.1.0.html?origin=${encodeURIComponent(
@@ -92,8 +90,7 @@ describe('unlock.js startup', () => {
     it('should load the checkout iframe with the correct URL', () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = config
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, config)
 
       expect(iframes.checkout.iframe.src).toBe(
         `${dataOrigin}/checkout?origin=${encodeURIComponent(fakeWindow.origin)}`
@@ -103,8 +100,7 @@ describe('unlock.js startup', () => {
     it('should create the dummy accounts iframe with the correct URL', () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = config
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, config)
 
       expect(iframes.accounts.iframe.src).toBe(
         `${accountsOrigin}/account?origin=${encodeURIComponent(
@@ -117,9 +113,8 @@ describe('unlock.js startup', () => {
     it('should set up the checkout iframe', async () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = config
       fakeWindow.web3 = { currentProvider: {} }
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, config)
 
       checkoutHandlerInit({
         usingManagedAccount: false,
@@ -151,9 +146,8 @@ describe('unlock.js startup', () => {
     it('should set up the crypto wallet if present', async () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = config
       fakeWindow.makeWeb3()
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, config)
 
       iframes.data.emit(PostMessages.READY_WEB3)
 
@@ -175,11 +169,11 @@ describe('unlock.js startup', () => {
     it('should set up the main window unlockProtocol variable', async () => {
       expect.assertions(1)
 
-      fakeWindow.unlockProtocolConfig = {
+      const unlockProtocolConfig = {
         ...config,
         unlockUserAccounts: true,
       }
-      const iframes = startup(fakeWindow, constants)
+      const iframes = startup(fakeWindow, constants, unlockProtocolConfig)
 
       iframes.data.emit(PostMessages.READY_WEB3)
 
