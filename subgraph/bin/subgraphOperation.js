@@ -14,9 +14,8 @@ let executeCommand = command => {
 };
 
 let networkMap = {
-  development: {
-      /*this should be named to mainnet but can be a last move*/
-    local: {
+  development: {      
+    mainnet: {
       subgraph: "unlock-protocol/unlock",
       graphNode: "http://localhost:8020/",
       ipfs: "http://localhost:5001"

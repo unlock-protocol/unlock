@@ -56,16 +56,24 @@ function newKeyPurchase(
 
   genKey(event, lockContract);
 
-  if (event.block.number > BigInt.fromI32(4519015)) {
-    genKeyPurchase(
-      keyPurchaseID,
-      event.params._to,
-      event.address,
-      event.block.timestamp,
-      lockContract.tokenAddress(),
-      lockContract.keyPrice()
+  let tokenAddress = lockContract.try_tokenAddress();
+
+  if (!tokenAddress.reverted) {
+    lock.tokenAddress = tokenAddress.value;
+  } else {
+    lock.tokenAddress = Address.fromString(
+      "0000000000000000000000000000000000000000"
     );
   }
+
+  genKeyPurchase(
+    keyPurchaseID,
+    event.params._to,
+    event.address,
+    event.block.timestamp,
+    lock.tokenAddress as Bytes,
+    lockContract.keyPrice()
+  );
 }
 
 export function handleCancelKey(event: CancelKey): void {
