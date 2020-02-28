@@ -95,12 +95,20 @@ export class CreatorLockForm extends React.Component {
   constructor(props, context) {
     super(props, context)
 
+    // Set up the ERC20 address, based on query string or defaults to config.
+    const url = new window.URL(document.location)
+    this.ERC20Contract = props.config.ERC20Contract
+    if (url.searchParams.get('erc20')) {
+      this.ERC20Contract.address = url.searchParams.get('erc20')
+      this.ERC20Contract.name = url.searchParams.get('ticker') || 'ERC20'
+    }
+
     const newLockDefaults = {
       expirationDuration: 30 * 86400, // 30 days in seconds
       expirationDurationUnit: 86400, // days
       keyPrice: '0.01',
       maxNumberOfKeys: 10,
-      currency: null, // Defaults to Eth
+      currency: this.ERC20Contract.address, // Defaults to ERC20
       name: 'New Lock',
       address: null,
     }
@@ -119,14 +127,6 @@ export class CreatorLockForm extends React.Component {
     const { validityState: valid, errors } = this.formValidity(this.state)
     this.state.valid = valid
     this.state.errors = errors
-
-    // Set up the ERC20 address, based on query string or defaults to config.
-    const url = new window.URL(document.location)
-    this.ERC20Contract = props.config.ERC20Contract
-    if (url.searchParams.get('erc20')) {
-      this.ERC20Contract.address = url.searchParams.get('erc20')
-      this.ERC20Contract.name = url.searchParams.get('ticker') || 'ERC20'
-    }
   }
 
   /**
@@ -278,9 +278,9 @@ export class CreatorLockForm extends React.Component {
     const lockAddress = lock ? lock.address : ''
     // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
 
-    const symbol = currencySymbol(lock, this.ERC20Contract)
-
-    this.ERC20Contract.name
+    const symbol = !isNew
+      ? currencySymbol(lock, this.ERC20Contract)
+      : this.ERC20Contract.name
 
     return (
       <FormLockRow>
@@ -395,15 +395,17 @@ const LockLabelUnlimited = styled(LockLabel)`
   font-size: 11px;
   width: 100%;
   padding: 5px;
+  padding-left: 0px;
 `
 
 const LockLabelCurrency = styled(LockLabel).attrs(() => ({
   className: 'currency',
 }))`
   font-size: 11px;
+  cursor: pointer;
   width: 100%;
   padding: 5px;
-  padding-left: 25px;
+  padding-left: 40px;
 `
 
 const FormLockRow = styled(LockRow)`
@@ -493,7 +495,7 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
   input[type='text'],
   input[type='number'] {
     min-width: 30px;
-    width: 77%;
+    width: 60px;
     padding-right: 0;
   }
 `

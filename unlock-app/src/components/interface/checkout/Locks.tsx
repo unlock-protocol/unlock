@@ -15,7 +15,7 @@ export const Locks = ({ lockAddresses, accountAddress }: LocksProps) => {
   const [purchasingLockAddress, setPurchasingLockAddress] = useState(
     null as PurchasingLockAddress
   )
-  const { getTokenBalance } = useGetTokenBalance(accountAddress)
+  const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
 
   if (loading) {
@@ -36,6 +36,7 @@ export const Locks = ({ lockAddresses, accountAddress }: LocksProps) => {
           lock={lock}
           purchasingLockAddress={purchasingLockAddress}
           setPurchasingLockAddress={setPurchasingLockAddress}
+          balances={balances}
         />
       ))}
     </div>
