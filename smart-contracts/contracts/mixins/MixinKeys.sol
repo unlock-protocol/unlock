@@ -199,7 +199,7 @@ contract MixinKeys is
   * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _owner
+    address _keyOwner
   ) public view
     returns (uint)
   {
