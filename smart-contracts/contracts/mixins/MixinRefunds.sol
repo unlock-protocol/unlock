@@ -119,12 +119,12 @@ contract MixinRefunds is
    * than what the user reads from this call.
    */
   function getCancelAndRefundValueFor(
-    address _owner
+    address _keyOwner
   )
     external view
     returns (uint refund)
   {
-    return _getCancelAndRefundValue(_owner);
+    return _getCancelAndRefundValue(_keyOwner);
   }
 
   /**
@@ -180,16 +180,16 @@ contract MixinRefunds is
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
    * a cancelAndRefund now.
-   * @param _owner The owner of the key check the refund value for.
+   * @param _keyOwner The owner of the key check the refund value for.
    */
   function _getCancelAndRefundValue(
-    address _owner
+    address _keyOwner
   )
     private view
-    hasValidKey(_owner)
+    hasValidKey(_keyOwner)
     returns (uint refund)
   {
-    Key storage key = keyByOwner[_owner];
+    Key storage key = keyByOwner[_keyOwner];
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     if(timeRemaining + freeTrialLength >= expirationDuration) {
