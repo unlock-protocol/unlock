@@ -24,9 +24,9 @@ contract('Lock / purchaseFor', accounts => {
         'NOT_ENOUGH_FUNDS'
       )
       // Making sure we do not have a key set!
-      await reverts(
-        locks.FIRST.keyExpirationTimestampFor.call(accounts[0]),
-        'HAS_NEVER_OWNED_KEY'
+      assert.equal(
+        await locks.FIRST.keyExpirationTimestampFor.call(accounts[0]),
+        0
       )
     })
 
