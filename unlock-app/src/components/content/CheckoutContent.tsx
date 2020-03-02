@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
+import LogInSignUp from '../interface/LogInSignUp'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
@@ -26,6 +27,8 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
     ? Object.keys(config.locks)
     : defaultLockAddresses
 
+  const [showingLogin, setShowingLogin] = useState(false)
+
   return (
     <CheckoutWrapper allowClose hideCheckout={() => {}}>
       <Head>
@@ -33,9 +36,15 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
       </Head>
       <BrowserOnly>
         <p>{config ? config.callToAction.default : ''}</p>
-        {!account && (
+        {!account && showingLogin && <LogInSignUp login embedded />}
+        {!account && !showingLogin && (
           <>
             <NotLoggedInLocks lockAddresses={lockAddresses} />
+            <input
+              type="button"
+              onClick={() => setShowingLogin(true)}
+              value="Log in"
+            />
           </>
         )}
         {account && (
