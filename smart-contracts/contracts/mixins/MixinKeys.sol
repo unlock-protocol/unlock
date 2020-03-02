@@ -100,7 +100,11 @@ contract MixinKeys is
   modifier onlyKeyManager(
     uint _tokenId
   ) {
-    require(keyManagerOf[_tokenId] == msg.sender, 'NOT_MANAGER_OF_KEY');
+    if(keyManagerOf[_tokenId] == address(0)) {
+      require(isKeyOwner(_tokenId, msg.sender), 'ONLY_KEY_MANAGER: NOT_KEY_OWNER')
+    } else {
+      require(keyManagerOf[_tokenId] == msg.sender, 'NOT_MANAGER_OF_KEY');
+    }
     _;
   }
 

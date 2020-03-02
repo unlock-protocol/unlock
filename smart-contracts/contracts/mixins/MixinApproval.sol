@@ -32,12 +32,16 @@ contract MixinApproval is
   modifier onlyKeyManagerOrApproved(
     uint _tokenId
   ) {
-    require(
-      (keyManagerOf[_tokenId] == msg.sender) ||
-        _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(_ownerOf[_tokenId], msg.sender),
-      'ONLY_KEY_MANAGER_OR_APPROVED');
-    _;
+    if(keyManagerOf[_tokenId] == address(0)) {
+      require(isKeyOwner(_tokenId, msg.sender), 'ONLY_KM_OR_APPROVED: NOT_KEY_OWNER')
+    } else {
+      require(
+        (keyManagerOf[_tokenId] == msg.sender) ||
+          _isApproved(_tokenId, msg.sender) ||
+          isApprovedForAll(_ownerOf[_tokenId], msg.sender),
+        'ONLY_KEY_MANAGER_OR_APPROVED');
+      _;
+    }
   }
 
   /**
