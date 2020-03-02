@@ -1,13 +1,14 @@
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const testKeySoldHookContract = artifacts.require('TestKeySoldHook.sol')
+const TestEventHooks = artifacts.require('TestEventHooks.sol')
 const getProxy = require('../helpers/proxy')
 
 let lock
 let locks
 let unlock
-let testKeySoldHook
+let testEventHooks
 
 contract('Lock / onKeySoldHook', accounts => {
   const from = accounts[1]
@@ -19,17 +20,17 @@ contract('Lock / onKeySoldHook', accounts => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    testKeySoldHook = await testKeySoldHookContract.new()
-    await lock.updateBeneficiary(testKeySoldHook.address)
+    testEventHooks = await TestEventHooks.new()
+    await lock.setEventHooks(testEventHooks.address, constants.ZERO_ADDRESS)
     keyPrice = await lock.keyPrice()
-    await lock.purchase(0, to, web3.utils.padLeft(0, 40), dataField, {
+    await lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
       from,
       value: keyPrice,
     })
   })
 
   it('key sales should log the hook event', async () => {
-    const log = (await testKeySoldHook.getPastEvents('OnKeySold'))[0]
+    const log = (await testEventHooks.getPastEvents('OnKeySold'))[0]
       .returnValues
     assert.equal(log.lock, lock.address)
     assert.equal(log.from, from)
