@@ -172,41 +172,33 @@ describe('CreatorLockForm', () => {
   })
 
   describe('currency', () => {
-    it('should default to Ether', () => {
+    it('should default to the ERC20 currency', () => {
       expect.assertions(1)
       const wrapper = makeLockForm()
       // Link to change to ERC20 token
-      expect(
-        wrapper.getByText(`Use ${config.ERC20Contract.name}`)
-      ).not.toBeNull()
+      expect(wrapper.getByText('Use Ether')).not.toBeNull()
     })
 
     it('should handle toggling of the currency', () => {
-      expect.assertions(2)
+      expect.assertions(3)
       const wrapper = makeLockForm()
-
-      const switchToErc20Link = wrapper.getByText(
-        `Use ${config.ERC20Contract.name}`
-      )
-      rtl.fireEvent.click(switchToErc20Link)
 
       const switchToEther = wrapper.getByText('Use Ether')
       expect(switchToEther).not.toBeNull()
-
       rtl.fireEvent.click(switchToEther)
-      expect(
-        wrapper.getByText(`Use ${config.ERC20Contract.name}`)
-      ).not.toBeNull()
-    })
-
-    it('should create a lock with the chosen currency', () => {
-      expect.assertions(2)
-      const wrapper = makeLockForm()
 
       const switchToErc20Link = wrapper.getByText(
         `Use ${config.ERC20Contract.name}`
       )
+      expect(switchToErc20Link).not.toBeNull()
       rtl.fireEvent.click(switchToErc20Link)
+
+      expect(wrapper.getByText('Use Ether')).not.toBeNull()
+    })
+
+    it('should create a lock with the chosen ERC20 currency', () => {
+      expect.assertions(2)
+      const wrapper = makeLockForm()
 
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
@@ -215,6 +207,24 @@ describe('CreatorLockForm', () => {
       expect(actions.saveLock).toHaveBeenCalledWith(
         expect.objectContaining({
           currencyContractAddress: config.ERC20Contract.address,
+        })
+      )
+    })
+
+    it('should create a lock with the Ether currency', () => {
+      expect.assertions(2)
+      const wrapper = makeLockForm()
+
+      const switchToEther = wrapper.getByText('Use Ether')
+      rtl.fireEvent.click(switchToEther)
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+
+      rtl.fireEvent.click(submit)
+      expect(actions.saveLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          currencyContractAddress: null,
         })
       )
     })
@@ -505,13 +515,12 @@ describe('CreatorLockForm', () => {
       expect.assertions(2)
       const saveLock = jest.fn()
       const wrapper = makeLockForm({} /* lock */, { saveLock })
-
       const submit = wrapper.getByText('Submit')
       expect(submit).not.toBeNull()
       rtl.fireEvent.click(submit)
       expect(saveLock).toHaveBeenCalledWith(
         expect.objectContaining({
-          currencyContractAddress: null,
+          currencyContractAddress: config.ERC20Contract.address,
           keyPrice: '0.01',
           maxNumberOfKeys: 10,
           name: 'New Lock',
