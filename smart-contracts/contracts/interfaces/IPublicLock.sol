@@ -134,7 +134,7 @@ contract IPublicLock is IERC721Enumerable {
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _keyOwner address of the user for whom we search the key
-  * @dev Throws if owner has never owned a key for this lock
+  * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
     address _keyOwner
