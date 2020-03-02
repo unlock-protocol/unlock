@@ -9,7 +9,7 @@ pragma solidity 0.5.16;
 interface IUnlock {
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
-  function initialize(address _owner) external;
+  function initialize(address _unlockOwner) external;
 
   /**
   * @dev Create lock

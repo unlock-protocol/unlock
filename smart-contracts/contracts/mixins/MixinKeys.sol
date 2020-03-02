@@ -51,20 +51,20 @@ contract MixinKeys is
 
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
-    address _owner
+    address _keyOwner
   ) {
     require(
-      keyByOwner[_owner].expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
+      keyByOwner[_keyOwner].expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
     );
     _;
   }
 
   // Ensures that an owner has a valid key
   modifier hasValidKey(
-    address _owner
+    address _user
   ) {
     require(
-      getHasValidKey(_owner), 'KEY_NOT_VALID'
+      getHasValidKey(_user), 'KEY_NOT_VALID'
     );
     _;
   }
@@ -93,43 +93,43 @@ contract MixinKeys is
    * A function which lets the owner of the lock expire a users' key.
    */
   function expireKeyFor(
-    address _owner
+    address _keyOwner
   )
     public
     onlyOwner
-    hasValidKey(_owner)
+    hasValidKey(_keyOwner)
   {
-    Key storage key = keyByOwner[_owner];
+    Key storage key = keyByOwner[_keyOwner];
     key.expirationTimestamp = block.timestamp; // Effectively expiring the key
     emit ExpireKey(key.tokenId);
   }
 
   /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_owner`, either 0 or 1.
+   * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
   */
   function balanceOf(
-    address _owner
+    address _keyOwner
   )
     public
     view
     returns (uint)
   {
-    require(_owner != address(0), 'INVALID_ADDRESS');
-    return getHasValidKey(_owner) ? 1 : 0;
+    require(_keyOwner != address(0), 'INVALID_ADDRESS');
+    return getHasValidKey(_keyOwner) ? 1 : 0;
   }
 
   /**
    * Checks if the user has a non-expired key.
    */
   function getHasValidKey(
-    address _owner
+    address _keyOwner
   )
     public
     view
     returns (bool)
   {
-    return keyByOwner[_owner].expirationTimestamp > block.timestamp;
+    return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
   }
 
   /**
@@ -186,25 +186,25 @@ contract MixinKeys is
    */
   function isKeyOwner(
     uint _tokenId,
-    address _owner
+    address _keyOwner
   ) public view
     returns (bool)
   {
-    return _ownerOf[_tokenId] == _owner;
+    return _ownerOf[_tokenId] == _keyOwner;
   }
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
+  * @param _keyOwner address of the user for whom we search the key
   */
   function keyExpirationTimestampFor(
-    address _owner
+    address _keyOwner
   )
     public view
-    ownsOrHasOwnedKey(_owner)
+    ownsOrHasOwnedKey(_keyOwner)
     returns (uint timestamp)
   {
-    return keyByOwner[_owner].expirationTimestamp;
+    return keyByOwner[_keyOwner].expirationTimestamp;
   }
 
   /**
@@ -249,15 +249,15 @@ contract MixinKeys is
    * Records the owner of a given tokenId
    */
   function _recordOwner(
-    address _owner,
+    address _keyOwner,
     uint _tokenId
   ) internal
   {
-    if (_ownerOf[_tokenId] != _owner) {
+    if (_ownerOf[_tokenId] != _keyOwner) {
       // TODO: this may include duplicate entries
-      owners.push(_owner);
+      owners.push(_keyOwner);
       // We register the owner of the tokenID
-      _ownerOf[_tokenId] = _owner;
+      _ownerOf[_tokenId] = _keyOwner;
     }
   }
 
