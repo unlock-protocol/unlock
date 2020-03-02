@@ -36095,24 +36095,24 @@ Object {
           </div>
         </div>
         <div
-          class="sc-prOVx hQsYUG"
+          class="sc-prOVx oWMkW"
         >
           <h1
-            class="sc-fzqKxP hyXMVi"
+            class="sc-fzqKxP dCNzbW"
           >
             Log In to Your Account
           </h1>
           <form
-            class="sc-oTbqq jPmvqH"
+            class="sc-oTbqq JBBdL"
           >
             <label
-              class="sc-paXsP csnLVJ"
+              class="sc-paXsP glbedJ"
               for="emailInput"
             >
               Email Address
             </label>
             <input
-              class="sc-pIJJz gTZmwZ"
+              class="sc-pIJJz cjWGTh"
               id="emailInput"
               name="emailAddress"
               placeholder="Enter your email"
@@ -36120,13 +36120,13 @@ Object {
             />
             <br />
             <label
-              class="sc-paXsP csnLVJ"
+              class="sc-paXsP glbedJ"
               for="passwordInput"
             >
               Password
             </label>
             <input
-              class="sc-pIJJz gTZmwZ"
+              class="sc-pIJJz cjWGTh"
               id="passwordInput"
               name="password"
               placeholder="Enter your password"
@@ -36134,18 +36134,18 @@ Object {
             />
             <br />
             <input
-              class="sc-pRFjI VKISt"
+              class="sc-pRFjI fgUMHp"
               type="submit"
               value="Submit"
             />
           </form>
           <p
-            class="sc-pANHa fLUtOY"
+            class="sc-pANHa iwdFbE"
           >
             Don't have an account?
              
             <a
-              class="sc-pjSSY dzfgWB"
+              class="sc-pjSSY fcSIbN"
             >
               Sign up here.
             </a>
@@ -48330,24 +48330,24 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-prOVx hQsYUG"
+      class="sc-prOVx oWMkW"
     >
       <h1
-        class="sc-fzqKxP hyXMVi"
+        class="sc-fzqKxP dCNzbW"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-oTbqq jPmvqH"
+        class="sc-oTbqq JBBdL"
       >
         <label
-          class="sc-paXsP csnLVJ"
+          class="sc-paXsP glbedJ"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-pIJJz gTZmwZ"
+          class="sc-pIJJz cjWGTh"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48355,13 +48355,13 @@ Object {
         />
         <br />
         <label
-          class="sc-paXsP csnLVJ"
+          class="sc-paXsP glbedJ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-pIJJz gTZmwZ"
+          class="sc-pIJJz cjWGTh"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48369,18 +48369,18 @@ Object {
         />
         <br />
         <input
-          class="sc-pRFjI sc-pZBmh jwvTle"
+          class="sc-pRFjI sc-pZBmh fQsRky"
           type="submit"
           value="Retry"
         />
       </form>
       <p
-        class="sc-pANHa fLUtOY"
+        class="sc-pANHa iwdFbE"
       >
         Don't have an account?
          
         <a
-          class="sc-pjSSY dzfgWB"
+          class="sc-pjSSY fcSIbN"
         >
           Sign up here.
         </a>
@@ -48573,24 +48573,24 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-prOVx hQsYUG"
+      class="sc-prOVx oWMkW"
     >
       <h1
-        class="sc-fzqKxP hyXMVi"
+        class="sc-fzqKxP dCNzbW"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-oTbqq jPmvqH"
+        class="sc-oTbqq JBBdL"
       >
         <label
-          class="sc-paXsP csnLVJ"
+          class="sc-paXsP glbedJ"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-pIJJz gTZmwZ"
+          class="sc-pIJJz cjWGTh"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48598,13 +48598,13 @@ Object {
         />
         <br />
         <label
-          class="sc-paXsP csnLVJ"
+          class="sc-paXsP glbedJ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-pIJJz gTZmwZ"
+          class="sc-pIJJz cjWGTh"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48612,18 +48612,18 @@ Object {
         />
         <br />
         <input
-          class="sc-pRFjI VKISt"
+          class="sc-pRFjI fgUMHp"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-pANHa fLUtOY"
+        class="sc-pANHa iwdFbE"
       >
         Don't have an account?
          
         <a
-          class="sc-pjSSY dzfgWB"
+          class="sc-pjSSY fcSIbN"
         >
           Sign up here.
         </a>
@@ -48850,25 +48850,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-psCJM fdcA-Dy"
+      class="sc-psCJM bssYtG"
     >
       <h1
-        class="sc-qQmou fOIJRb"
+        class="sc-qQmou jHkcCD"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-qYiqT enVcXB"
+        class="sc-qYiqT aBMvl"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -48883,23 +48883,23 @@ Object {
         .
       </p>
       <form
-        class="sc-pJurq fQzwPW"
+        class="sc-pJurq fvqgES"
       >
         <label
-          class="sc-pkhIR deYrhb"
+          class="sc-pkhIR eneRCD"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-pRTZB kelbCg"
+          class="sc-pRTZB gJvlSM"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-qapaw csAbEk"
+          class="sc-qapaw LOxTE"
           type="submit"
           value="Sign Up"
         />
@@ -48909,11 +48909,11 @@ Object {
         />
       </form>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         Already have an account? 
         <a
-          class="sc-pbIaG enarvX"
+          class="sc-pbIaG hDwzvX"
         >
           Log in
         </a>
@@ -48922,7 +48922,7 @@ Object {
         Have an Ethereum Wallet?
          
         <a
-          class="sc-pbIaG enarvX"
+          class="sc-pbIaG hDwzvX"
           href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
           rel="noopener noreferrer"
           target="_blank"
@@ -49530,24 +49530,24 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-prOVx hQsYUG"
+      class="sc-prOVx oWMkW"
     >
       <h1
-        class="sc-fzqKxP hyXMVi"
+        class="sc-fzqKxP dCNzbW"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-oTbqq jPmvqH"
+        class="sc-oTbqq JBBdL"
       >
         <label
-          class="sc-paXsP csnLVJ"
+          class="sc-paXsP glbedJ"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-pIJJz gTZmwZ"
+          class="sc-pIJJz cjWGTh"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -49555,13 +49555,13 @@ Object {
         />
         <br />
         <label
-          class="sc-paXsP csnLVJ"
+          class="sc-paXsP glbedJ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-pIJJz gTZmwZ"
+          class="sc-pIJJz cjWGTh"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -49569,18 +49569,18 @@ Object {
         />
         <br />
         <input
-          class="sc-pRFjI VKISt"
+          class="sc-pRFjI fgUMHp"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-pANHa fLUtOY"
+        class="sc-pANHa iwdFbE"
       >
         Don't have an account?
          
         <a
-          class="sc-pjSSY dzfgWB"
+          class="sc-pjSSY fcSIbN"
         >
           Sign up here.
         </a>
@@ -49807,25 +49807,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-psCJM fdcA-Dy"
+      class="sc-psCJM bssYtG"
     >
       <h1
-        class="sc-qQmou fOIJRb"
+        class="sc-qQmou jHkcCD"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-qYiqT enVcXB"
+        class="sc-qYiqT aBMvl"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -49840,23 +49840,23 @@ Object {
         .
       </p>
       <form
-        class="sc-pJurq fQzwPW"
+        class="sc-pJurq fvqgES"
       >
         <label
-          class="sc-pkhIR deYrhb"
+          class="sc-pkhIR eneRCD"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-pRTZB kelbCg"
+          class="sc-pRTZB gJvlSM"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-qapaw csAbEk"
+          class="sc-qapaw LOxTE"
           type="submit"
           value="Sign Up"
         />
@@ -49866,11 +49866,11 @@ Object {
         />
       </form>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         Already have an account? 
         <a
-          class="sc-pbIaG enarvX"
+          class="sc-pbIaG hDwzvX"
         >
           Log in
         </a>
@@ -49879,7 +49879,7 @@ Object {
         Have an Ethereum Wallet?
          
         <a
-          class="sc-pbIaG enarvX"
+          class="sc-pbIaG hDwzvX"
           href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
           rel="noopener noreferrer"
           target="_blank"
@@ -58670,25 +58670,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-psCJM fdcA-Dy"
+      class="sc-psCJM bssYtG"
     >
       <h1
-        class="sc-qQmou fOIJRb"
+        class="sc-qQmou jHkcCD"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-qYiqT enVcXB"
+        class="sc-qYiqT aBMvl"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -58703,23 +58703,23 @@ Object {
         .
       </p>
       <form
-        class="sc-pJurq fQzwPW"
+        class="sc-pJurq fvqgES"
       >
         <label
-          class="sc-pkhIR deYrhb"
+          class="sc-pkhIR eneRCD"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-pRTZB kelbCg"
+          class="sc-pRTZB gJvlSM"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-qapaw csAbEk"
+          class="sc-qapaw LOxTE"
           type="submit"
           value="Sign Up"
         />
@@ -58729,11 +58729,11 @@ Object {
         />
       </form>
       <p
-        class="sc-pAZqv jAzmVm"
+        class="sc-pAZqv fajjbu"
       >
         Already have an account? 
         <a
-          class="sc-pbIaG enarvX"
+          class="sc-pbIaG hDwzvX"
         >
           Log in
         </a>
@@ -58742,7 +58742,7 @@ Object {
         Have an Ethereum Wallet?
          
         <a
-          class="sc-pbIaG enarvX"
+          class="sc-pbIaG hDwzvX"
           href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
           rel="noopener noreferrer"
           target="_blank"
