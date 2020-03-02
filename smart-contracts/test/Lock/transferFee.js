@@ -13,6 +13,7 @@ contract('Lock / transferFee', accounts => {
   let lock
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const keyOwner = accounts[1]
+  const denominator = 10000
 
   before(async () => {
     unlock = await getProxy(unlockContract)
@@ -26,8 +27,7 @@ contract('Lock / transferFee', accounts => {
 
   it('has a default fee of 0%', async () => {
     const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
-    const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
-    assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0)
+    assert.equal(feeNumerator.div(denominator).toFixed(), 0.0)
   })
 
   describe('once a fee of 5% is set', () => {
@@ -134,8 +134,7 @@ contract('Lock / transferFee', accounts => {
         const feeNumerator = new BigNumber(
           await lock.transferFeeBasisPoints.call()
         )
-        const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
-        assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0025)
+        assert.equal(feeNumerator.div(denominator).toFixed(), 0.0025)
       })
 
       it('emits TransferFeeChanged event', async () => {
