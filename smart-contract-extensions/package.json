@@ -52,7 +52,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "eth-gas-reporter": "0.2.15",
     "ganache-cli": "6.9.1",
-    "hardlydifficult-ethereum-contracts": "0.9.2",
+    "hardlydifficult-ethereum-contracts": "0.9.3",
     "prettier": "1.19.1",
     "solidity-coverage": "0.7.2",
     "solium": "1.2.5",
