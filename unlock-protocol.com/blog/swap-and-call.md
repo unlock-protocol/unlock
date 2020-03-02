@@ -32,7 +32,7 @@ This helps to overcome one of the challenges users have today - [“there are ju
 
 ## How it works
 
-[swap-and-call](https://github.com/unlock-protocol/swap-and-call) has an implementation that’s very similar to the [1inch.exchange](https://etherscan.io/address/0x11111254369792b2Ca5d084aB5eEA397cA8fa48B#code) contract. It’s basically a batch transaction processor with a little logic before and after for this use case. It is not built for Unlock specifically and does not assume any specific DEX, this approach should work for many other use cases as well.
+[swap-and-call](https://github.com/unlock-protocol/unlock/tree/master/smart-contract-extensions) has an implementation that’s very similar to the [1inch.exchange](https://etherscan.io/address/0x11111254369792b2Ca5d084aB5eEA397cA8fa48B#code) contract. It’s basically a batch transaction processor with a little logic before and after for this use case. It is not built for Unlock specifically and does not assume any specific DEX, this approach should work for many other use cases as well.
 
 High level steps for a swapAndCall transaction:
  - Collect tokens from the user using `transferFrom` (if spending tokens instead of ETH)

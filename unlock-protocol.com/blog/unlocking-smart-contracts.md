@@ -72,7 +72,7 @@ constructor(IPublicLock _lockAddress) public
 }
 ```
 
-We have to set the address for the Lock to use at some point. If you know it when this contract is deployed you can simply assign it in the constructor. However you might also consider a privileged call instead, allowing you to update the Lock in the future if needed. Here’s an example of a [MutableLock](https://github.com/HardlyDifficult/unlock-example-contracts/blob/master/contracts/MutableLock.sol).
+We have to set the address for the Lock to use at some point. If you know it when this contract is deployed you can simply assign it in the constructor. However you might also consider a privileged call instead, allowing you to update the Lock in the future if needed. Here’s an example of a [MutableLock](https://github.com/unlock-protocol/unlock/blob/master/smart-contract-extensions/contracts/unlock-examples/MutableLock.sol).
 
 ```
 require(lock.getHasValidKey(msg.sender), 'Purchase a key first!');
@@ -132,12 +132,12 @@ lock = await protocols.unlock.createTestLock(
 
 It deploys the Unlock Protocol, creates a Lock to use for testing, and returns a contract instance for interacting with the Lock… as shown with the `purchaseFor` line. With this you can now test as you normally would.
 
-If you want to step it up a notch here are a few mays you might monitize your contracts with Unlock:
+If you want to step it up a notch here are a few mays you might monetize your contracts with Unlock:
 
 - Unlock a discount on future transactions (or maybe make it free for key owners).
 - Unlock usage limits, such as defaulting to a free trial which enables 1 tx per day per account. Key owners unlock unlimited calls.
 - Unlock better odds, e.g. when rolling a DnD die key owners get +2 bonus on the roll.
 
-Here's a few [unlock-example-contracts](https://github.com/HardlyDifficult/unlock-example-contracts) with both contracts and sample tests to help you get started.
+Here's a few [example-contracts](https://github.com/unlock-protocol/unlock/tree/master/smart-contract-extensions/contracts/unlock-examples) with both contracts and sample tests to help you get started.
 
 Want to do this for your smart contract? Get in touch we’d love to help you set it up: hello@unlock-protocol.com
