@@ -118,7 +118,6 @@ export class CreatorLockForm extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
     this.saveLock = this.saveLock.bind(this)
-    this.processFormErrors = this.sendErrorsToRedux.bind(this)
     this.toggleCurrency = this.toggleCurrency.bind(this)
 
     // State represents the values in the form... and we may get a different format for them
@@ -136,17 +135,26 @@ export class CreatorLockForm extends React.Component {
    * invalid fields hash to the error constant (a string) that represents the error condition
    */
   formValidity(state) {
+    const { lock } = this.props
+    const isNew = !lock || !lock.address
+
     // the list of errors we will pass to setError
     const errors = []
     // for each field, retrieve the error triggered by current state
     // and then make sure we set it as existing.
-    const validityState = [
-      'expirationDuration',
-      // 'expirationDurationUnit',
-      'keyPrice',
-      'maxNumberOfKeys',
-      'name',
-    ].reduce((fieldValidity, field) => {
+    let fieldsToCheck = []
+    if (isNew) {
+      fieldsToCheck = [
+        'expirationDuration',
+        // 'expirationDurationUnit',
+        'keyPrice',
+        'maxNumberOfKeys',
+        'name',
+      ]
+    } else {
+      fieldsToCheck = ['keyPrice']
+    }
+    const validityState = fieldsToCheck.reduce((fieldValidity, field) => {
       // invalidError will either be the error name or false
       const invalidError = this.validate(field, state[field])
       fieldValidity[field] = !invalidError
