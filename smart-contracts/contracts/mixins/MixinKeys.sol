@@ -52,8 +52,8 @@ contract MixinKeys is
   address[] public owners;
 
   // A given key has both an owner and a manager.
-  // The owner and manager may be the same address
-  // Each key can have at most 1 keyManager, but may have no manager.
+  // If keyManager == address(0) then the key owner is also the manager
+  // Each key can have at most 1 keyManager.
   mapping (uint => address) public keyManagerOf;
 
   // Ensures that an owner owns or has owned a key in the past
@@ -228,8 +228,8 @@ contract MixinKeys is
   /**
   * @notice Update transfer and cancel rights for a given key
   * @param _tokenId The id of the key to assign rights for
-  * @param _keyManager The address to assign the rights to for the given key
-  * setting to address(0) disables transfers for this key until it expires
+  * @param _keyManager The address with the manager's rights for the given key.
+  * Setting _keyManager to address(0) means the keyOwner is also the keyManager
   * */
   //
   function setKeyManagerOf(
