@@ -18,15 +18,13 @@ export const SwitchPayment = ({
       {paymentOptions.map(option => {
         if (option === activePayment) {
           return (
-            <ActivePaymentOption key={option}>{option}</ActivePaymentOption>
+            <ActivePaymentOption data-testid={`active-${option}`} key={option}>
+              {option}
+            </ActivePaymentOption>
           )
         }
         return (
-          <PaymentOption
-            type="button"
-            onClick={() => setActivePayment(option)}
-            key={option}
-          >
+          <PaymentOption onClick={() => setActivePayment(option)} key={option}>
             {option}
           </PaymentOption>
         )

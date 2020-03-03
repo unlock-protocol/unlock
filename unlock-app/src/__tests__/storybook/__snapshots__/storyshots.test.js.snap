@@ -5162,25 +5162,21 @@ Object {
         </h4>
         <button
           class="c2"
-          type="button"
         >
           Credit Card
         </button>
         <button
           class="c2"
-          type="button"
         >
           BAT
         </button>
         <button
           class="c2"
-          type="button"
         >
           USDC
         </button>
         <button
           class="c2"
-          type="button"
         >
           DAI
         </button>
@@ -5202,25 +5198,21 @@ Object {
       </h4>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         Credit Card
       </button>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         BAT
       </button>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         USDC
       </button>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         DAI
       </button>
@@ -5342,24 +5334,22 @@ Object {
         </h4>
         <button
           class="c2"
-          type="button"
         >
           Credit Card
         </button>
         <button
           class="c2"
-          type="button"
         >
           BAT
         </button>
         <button
           class="c3"
+          data-testid="active-USDC"
         >
           USDC
         </button>
         <button
           class="c2"
-          type="button"
         >
           DAI
         </button>
@@ -5381,24 +5371,22 @@ Object {
       </h4>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         Credit Card
       </button>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         BAT
       </button>
       <button
         class="sc-pbYBj sc-pkUbs cMDqoF"
+        data-testid="active-USDC"
       >
         USDC
       </button>
       <button
         class="sc-pbYBj hoevgC"
-        type="button"
       >
         DAI
       </button>
