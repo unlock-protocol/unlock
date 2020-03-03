@@ -36,12 +36,13 @@ contract MixinGrantKeys is
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
       _assignNewTokenId(toKey);
-      _recordOwner(recipient, toKey.tokenId);
+      uint toId = toKey.tokenId;
+      _recordOwner(recipient, toId);
 
-      // Only assign the KeyManager for new or expired keys
-      if(toKey.expirationTimestamp <= block.timestamp) {
-        keyManagerOf[toKey.tokenId] = keyManager;
-        emit KeyManagerChanged(toKey.tokenId, keyManager);
+      // Set the key Manager if other than 0
+      if(keyManager != address(0)) {
+        keyManagerOf[toId] = keyManager;
+        emit KeyManagerChanged(toId, keyManager);
       }
       toKey.expirationTimestamp = expirationTimestamp;
 
@@ -49,7 +50,7 @@ contract MixinGrantKeys is
       emit Transfer(
         address(0), // This is a creation.
         recipient,
-        toKey.tokenId
+        toId
       );
     }
   }
