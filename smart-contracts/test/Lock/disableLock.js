@@ -103,7 +103,7 @@ contract('Lock / disableLock', accounts => {
 
     it('Lock owners can still fully refund keys', async () => {
       const refundAmount = web3.utils.toWei('0.01', 'ether')
-      await lock.fullRefund(keyOwner3, refundAmount, {
+      await lock.expireAndRefundFor(keyOwner3, refundAmount, {
         from: lockOwner,
       })
     })
@@ -112,8 +112,8 @@ contract('Lock / disableLock', accounts => {
       await lock.withdraw(await lock.tokenAddress.call(), 0)
     })
 
-    it('Lock owner can still expireKeyFor', async () => {
-      await lock.expireKeyFor(keyOwner2)
+    it('Lock owner can still expireAndRefundFor', async () => {
+      await lock.expireAndRefundFor(keyOwner2, 0)
     })
 
     it('Lock owner can still updateLockName', async () => {

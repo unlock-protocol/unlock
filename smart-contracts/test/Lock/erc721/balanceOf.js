@@ -41,7 +41,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
       value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[5],
     })
-    await locks.FIRST.expireKeyFor(accounts[5], {
+    await locks.FIRST.expireAndRefundFor(accounts[5], 0, {
       from: accounts[0],
     })
     const balance = new BigNumber(await locks.FIRST.balanceOf.call(accounts[5]))

@@ -247,7 +247,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
      * or Lock owner canceled the key first.
      */
     it('the key is expired', async () => {
-      await lock.expireKeyFor(keyOwners[3], {
+      await lock.expireAndRefundFor(keyOwners[3], 0, {
         from: lockOwner,
       })
 

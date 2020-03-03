@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / fullRefund', accounts => {
+contract('Lock / expireAndRefundFor', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
@@ -45,7 +45,7 @@ contract('Lock / fullRefund', accounts => {
       initialKeyOwnerBalance = new BigNumber(
         await web3.eth.getBalance(keyOwners[0])
       )
-      txObj = await lock.fullRefund(keyOwners[0], refundAmount, {
+      txObj = await lock.expireAndRefundFor(keyOwners[0], refundAmount, {
         from: lockOwner,
       })
     })
@@ -96,7 +96,7 @@ contract('Lock / fullRefund', accounts => {
   describe('should fail when', () => {
     it('should fail if invoked by the key owner', async () => {
       await reverts(
-        lock.fullRefund(keyOwners[3], refundAmount, {
+        lock.expireAndRefundFor(keyOwners[3], refundAmount, {
           from: keyOwners[3],
         }),
         ''
@@ -105,7 +105,7 @@ contract('Lock / fullRefund', accounts => {
 
     it('should fail if invoked by another user', async () => {
       await reverts(
-        lock.fullRefund(accounts[7], refundAmount, {
+        lock.expireAndRefundFor(accounts[7], refundAmount, {
           from: keyOwners[3],
         }),
         ''
@@ -117,7 +117,7 @@ contract('Lock / fullRefund', accounts => {
         from: lockOwner,
       })
       await reverts(
-        lock.fullRefund(keyOwners[3], refundAmount, {
+        lock.expireAndRefundFor(keyOwners[3], refundAmount, {
           from: lockOwner,
         }),
         ''
@@ -125,11 +125,11 @@ contract('Lock / fullRefund', accounts => {
     })
 
     it('the key is expired', async () => {
-      await lock.expireKeyFor(keyOwners[3], {
+      await lock.expireAndRefundFor(keyOwners[3], 0, {
         from: lockOwner,
       })
       await reverts(
-        lock.fullRefund(keyOwners[3], refundAmount, {
+        lock.expireAndRefundFor(keyOwners[3], refundAmount, {
           from: lockOwner,
         }),
         'KEY_NOT_VALID'
@@ -138,7 +138,7 @@ contract('Lock / fullRefund', accounts => {
 
     it('the owner does not have a key', async () => {
       await reverts(
-        lock.fullRefund(accounts[7], refundAmount, {
+        lock.expireAndRefundFor(accounts[7], refundAmount, {
           from: lockOwner,
         }),
         'KEY_NOT_VALID'

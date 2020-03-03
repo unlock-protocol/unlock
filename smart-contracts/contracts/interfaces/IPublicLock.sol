@@ -56,7 +56,7 @@ contract IPublicLock is IERC721Enumerable {
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
    * use cases.
    */
   function withdraw(
@@ -83,14 +83,6 @@ contract IPublicLock is IERC721Enumerable {
    * @param _beneficiary The new address to set as the beneficiary
    */
   function updateBeneficiary( address _beneficiary ) external;
-
-  /**
-   * A function which lets the owner of the lock expire a users' key.
-   * @dev Throws if called by other than lock owner
-   * @dev Throws if key owner does not have a valid key
-   * @param _keyOwner The address of the key owner
-   */
-  function expireKeyFor( address _keyOwner ) external;
 
     /**
    * Checks if the user has a non-expired key.
@@ -255,7 +247,7 @@ contract IPublicLock is IERC721Enumerable {
    * @dev Throws if called by other than owner
    * @dev Throws if _keyOwner does not have a valid key
    */
-  function fullRefund(
+  function expireAndRefundFor(
     address _keyOwner,
     uint amount
   ) external;

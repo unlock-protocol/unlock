@@ -90,21 +90,6 @@ contract MixinKeys is
   }
 
   /**
-   * A function which lets the owner of the lock expire a users' key.
-   */
-  function expireKeyFor(
-    address _keyOwner
-  )
-    public
-    onlyOwner
-    hasValidKey(_keyOwner)
-  {
-    Key storage key = keyByOwner[_keyOwner];
-    key.expirationTimestamp = block.timestamp; // Effectively expiring the key
-    emit ExpireKey(key.tokenId);
-  }
-
-  /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
   */
