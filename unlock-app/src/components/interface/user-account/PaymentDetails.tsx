@@ -1,216 +1,92 @@
 /* eslint react/display-name: 0 */
-import React from 'react'
+import React, { useState } from 'react'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { useForm } from 'react-hook-form'
 import {
-  ReactStripeElements,
-  StripeProvider,
   Elements,
-  injectStripe,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCVCElement,
-} from 'react-stripe-elements'
-import {
-  Item,
-  ItemLabel,
-  CardContainer,
-  Input,
-  SectionHeader,
-  Column,
-  Grid,
-  SubmitButton,
-  LoadingButton,
-} from './styles'
+  CardElement,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import { Input, SubmitButton, LoadingButton } from './styles'
+import configure from '../../../config'
 import { signPaymentData } from '../../../actions/user'
 import { UnlockError, isWarningError, WarningError } from '../../../utils/Error'
 import { resetError } from '../../../actions/error'
 
 interface PaymentDetailsProps {
-  stripe: stripe.Stripe | null
   signPaymentData: (stripeTokenId: string) => any
   close: (e: WarningError) => void
   errors: WarningError[]
 }
 
-interface PaymentFormProps {
-  signPaymentData: (stripeTokenId: string) => any
-  close: (e: WarningError) => void
-  errors: WarningError[]
+const { stripeApiKey } = configure()
+const stripePromise = loadStripe(stripeApiKey)
+
+export const PaymentDetails = ({}: PaymentDetailsProps) => {
+  return (
+    <Elements stripe={stripePromise}>
+      <Form />
+    </Elements>
+  )
 }
 
-interface PaymentFormState {
-  cardHolderName: string
-  addressCountry: string
-  addressZip: string
-  submitted: boolean
-}
-
-// Memoized because it would constantly rerender (which cleared the Stripe form)
-// because it couldn't tell the props were the same
-export const PaymentDetails = React.memo(
-  ({ stripe, signPaymentData, close, errors }: PaymentDetailsProps) => {
+export const getSubmitButton = (errorCount: number, submitted: boolean) => {
+  if (errorCount > 0) {
     return (
-      <StripeProvider stripe={stripe}>
-        <Elements>
-          <InjectedForm
-            signPaymentData={signPaymentData}
-            close={close}
-            errors={errors}
-          />
-        </Elements>
-      </StripeProvider>
-    )
-  }
-)
-
-export class PaymentForm extends React.Component<
-  PaymentFormProps & ReactStripeElements.InjectedStripeProps,
-  PaymentFormState
-> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      cardHolderName: '',
-      addressCountry: '',
-      addressZip: '',
-      submitted: false,
-    }
-  }
-
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target
-
-    this.setState(prevState => {
-      const newState = {
-        ...prevState,
-        [name]: value,
-      }
-
-      return newState
-    })
-  }
-
-  handleSubmit = async (event?: React.FormEvent) => {
-    if (event) {
-      event.preventDefault()
-    }
-
-    const { stripe, signPaymentData } = this.props
-    const { addressCountry, addressZip, cardHolderName } = this.state
-
-    this.setState({
-      submitted: true,
-    })
-
-    if (stripe) {
-      const result = await stripe.createToken({
-        address_country: addressCountry,
-        address_zip: addressZip,
-        name: cardHolderName,
-      })
-
-      // TODO: handle result.error case here
-      if (result.token) {
-        signPaymentData(result.token.id)
-      }
-
-      if (result.error) {
-        this.setState({
-          submitted: false,
-        })
-      }
-    }
-  }
-
-  handleReset = () => {
-    const { errors, close } = this.props
-    errors.forEach(e => close(e))
-    this.handleSubmit()
-  }
-
-  submitButton = () => {
-    const { errors } = this.props
-    const { submitted } = this.state
-
-    if (errors.length) {
-      return (
-        <SubmitButton backgroundColor="var(--red)" onClick={this.handleReset}>
-          Clear Errors and Retry
-        </SubmitButton>
-      )
-    }
-    if (submitted) {
-      return <LoadingButton>Submitting...</LoadingButton>
-    }
-
-    return (
-      <SubmitButton onClick={this.handleSubmit}>
-        Add Payment Method
+      <SubmitButton backgroundColor="var(--red)">
+        Clear Errors and Retry
       </SubmitButton>
     )
   }
 
-  render() {
-    const stripeElementStyles = {
-      base: { fontSize: '16px', lineHeight: '40px' },
-    }
-    return (
-      <Grid>
-        <SectionHeader>Card Details</SectionHeader>
-        <div>
-          <ItemLabel>Cardholder Name</ItemLabel>
-          <Input
-            name="cardHolderName"
-            id="cardHolderName"
-            type="text"
-            placeholder="Cardholder Name"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <CardContainer>
-          <div>
-            <ItemLabel>Country</ItemLabel>
-            <Input
-              name="addressCountry"
-              id="addressCountry"
-              type="country"
-              placeholder="Country"
-              onChange={this.handleInputChange}
-            />
-          </div>
-          <div>
-            <ItemLabel>Zip / Postal Code</ItemLabel>
-            <Input
-              name="addressZip"
-              id="addressZip"
-              type="text"
-              placeholder="Zip Code"
-              onChange={this.handleInputChange}
-            />
-          </div>
-        </CardContainer>
-        <Column size="full">
-          <Item title="Credit Card Number">
-            <CardNumberElement style={stripeElementStyles} />
-          </Item>
-          <CardContainer>
-            <div>
-              <ItemLabel>Expiry Date</ItemLabel>
-              <CardExpiryElement style={stripeElementStyles} />
-            </div>
-            <div>
-              <ItemLabel>CVC Number</ItemLabel>
-              <CardCVCElement style={stripeElementStyles} />
-            </div>
-          </CardContainer>
-        </Column>
-        <Column size="half">{this.submitButton()}</Column>
-      </Grid>
-    )
+  if (submitted) {
+    return <LoadingButton>Submitting...</LoadingButton>
   }
+
+  return (
+    <SubmitButton>
+      Add Payment Method
+    </SubmitButton>
+  )
 }
 
-const InjectedForm = injectStripe(PaymentForm)
+export const Form = () => {
+  const stripe = useStripe()
+  const elements = useElements()
+  const [submitted, setSubmitted] = useState(false)
+  const { register, handleSubmit, errors } = useForm()
+  const onSubmit = (data: any) => console.log(data)
+
+  console.log({
+    stripe,
+    elements
+  })
+
+  const stripeElementOptions = {
+    style: {
+      base: {
+        fontFamily: 'IBM Plex Sans, sans-serif',
+        fontSize: '16px',
+        lineHeight: '60px',
+      },
+    },
+  }
+  
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input type="text" placeholder="Cardholder Name" name="Cardholder Name" ref={register({required: true})} />
+      <Input type="text" placeholder="Country" name="Country" ref={register({required: true})} />
+      <Input type="text" placeholder="Zip / Postal Code" name="Zip / Postal Code" ref={register({required: true})} />
+      <CardContainer>
+        <CardElement options={stripeElementOptions} />
+      </CardContainer>
+      {getSubmitButton(Object.keys(errors).length, submitted)}
+    </form>
+  )
+}
 
 const mapDispatchToProps = (dispatch: any) => ({
   signPaymentData: (stripeTokenId: string) =>
@@ -237,3 +113,10 @@ const mapStateToProps = ({ account, errors }: ReduxState) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentDetails)
+
+export const CardContainer = styled.div`
+    background-color: var(--lightgrey);
+    padding-left: 10px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+`

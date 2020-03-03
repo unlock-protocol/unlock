@@ -8,9 +8,11 @@ import {
   displayCard,
 } from '../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PaymentMethods } from '../../components/interface/user-account/PaymentMethods'
+import { PaymentDetails } from '../../components/interface/user-account/PaymentDetails'
 import { EjectAccount } from '../../components/interface/user-account/EjectAccount'
 import { changePassword, signPurchaseData } from '../../actions/user'
 import { Grid } from '../../components/interface/user-account/styles'
+import doNothing from '../../utils/doNothing'
 
 const cards = [
   {
@@ -144,3 +146,14 @@ storiesOf('User Account/Settings', module).add('Mock settings page', () => {
     </Grid>
   )
 })
+
+storiesOf('User Account/Payment Details', module)
+  .add('Payment Details Form', () => {
+    return(
+      <PaymentDetails
+        signPaymentData={doNothing}
+        close={doNothing}
+        errors={[]}
+      />
+    )
+  })

@@ -58,15 +58,6 @@ export const globalStyle = `
   a:visited {
     color: var(--link);
   }
-
-  .StripeElement {
-    background-color: var(--lightgrey);
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 2rem;
-    height: 60px;
-    font-size: 16px;
-  }
 `
 
 export default createGlobalStyle`
