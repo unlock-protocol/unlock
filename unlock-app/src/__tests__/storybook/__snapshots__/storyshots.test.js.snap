@@ -15623,7 +15623,6 @@ Object {
             class="mlglvd-6 c2 name"
           >
             <input
-              data-valid="true"
               disabled=""
               name="name"
               type="text"
@@ -15634,7 +15633,6 @@ Object {
             class="mlglvd-8 c3 duration"
           >
             <input
-              data-valid="true"
               disabled=""
               inputmode="numeric"
               name="expirationDuration"
@@ -15649,7 +15647,6 @@ Object {
             class="mlglvd-9 c4 keys"
           >
             <input
-              data-valid="true"
               disabled=""
               name="maxNumberOfKeys"
               type="text"
@@ -15782,7 +15779,6 @@ Object {
           class="mlglvd-6 sc-1u8ov25-5 bVyyDs name"
         >
           <input
-            data-valid="true"
             disabled=""
             name="name"
             type="text"
@@ -15793,7 +15789,6 @@ Object {
           class="mlglvd-8 sc-1u8ov25-6 hMwoBi duration"
         >
           <input
-            data-valid="true"
             disabled=""
             inputmode="numeric"
             name="expirationDuration"
@@ -15808,7 +15803,6 @@ Object {
           class="mlglvd-9 sc-1u8ov25-7 hUHive keys"
         >
           <input
-            data-valid="true"
             disabled=""
             name="maxNumberOfKeys"
             type="text"
@@ -16208,7 +16202,6 @@ Object {
             class="mlglvd-6 c2 name"
           >
             <input
-              data-valid="true"
               disabled=""
               name="name"
               type="text"
@@ -16219,7 +16212,6 @@ Object {
             class="mlglvd-8 c3 duration"
           >
             <input
-              data-valid="true"
               disabled=""
               inputmode="numeric"
               name="expirationDuration"
@@ -16234,7 +16226,6 @@ Object {
             class="mlglvd-9 c4 keys"
           >
             <input
-              data-valid="true"
               disabled=""
               name="maxNumberOfKeys"
               type="text"
@@ -16367,7 +16358,6 @@ Object {
           class="mlglvd-6 sc-1u8ov25-5 bVyyDs name"
         >
           <input
-            data-valid="true"
             disabled=""
             name="name"
             type="text"
@@ -16378,7 +16368,6 @@ Object {
           class="mlglvd-8 sc-1u8ov25-6 hMwoBi duration"
         >
           <input
-            data-valid="true"
             disabled=""
             inputmode="numeric"
             name="expirationDuration"
@@ -16393,7 +16382,6 @@ Object {
           class="mlglvd-9 sc-1u8ov25-7 hUHive keys"
         >
           <input
-            data-valid="true"
             disabled=""
             name="maxNumberOfKeys"
             type="text"
