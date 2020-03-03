@@ -85,7 +85,7 @@ contract('Lock / purchaseFor', accounts => {
           }
         )
         // let's now expire the key
-        await locks.SECOND.expireKeyFor(accounts[4])
+        await locks.SECOND.expireAndRefundFor(accounts[4], 0)
         // Purchase a new one
         await locks.SECOND.purchase(
           0,
@@ -252,7 +252,7 @@ contract('Lock / purchaseFor', accounts => {
           }
         )
         // let's now expire the key
-        await locks.SHORT.expireKeyFor(accounts[4])
+        await locks.SHORT.expireAndRefundFor(accounts[4], 0)
         // sleep 10 seconds
         await sleep(10000)
       })

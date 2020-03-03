@@ -51,7 +51,7 @@ contract MixinRefunds is
    * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation
    * of the key
    */
-  function fullRefund(address _keyOwner, uint amount)
+  function expireAndRefundFor(address _keyOwner, uint amount)
     external
     onlyOwner
     hasValidKey(_keyOwner)
