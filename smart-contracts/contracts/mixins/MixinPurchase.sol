@@ -53,12 +53,9 @@ contract MixinPurchase is
 
     if (toKey.tokenId == 0) {
       // Assign a new tokenId (if a new owner or previously transferred)
+      // keyManager is set to 0 by default so we don't need to set it here
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
-      // Give the new key owner the right to manage their key
-      keyManagerOf[toKey.tokenId] = _recipient;
-      emit KeyManagerChanged(toKey.tokenId, _recipient);
-
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
@@ -80,10 +77,10 @@ contract MixinPurchase is
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
-      // If the purchaser is not already the key Manager, make it so
-      if(keyManagerOf[toKey.tokenId] != _recipient) {
-        keyManagerOf[toKey.tokenId] = _recipient;
-        emit KeyManagerChanged(toKey.tokenId, _recipient);
+      // If the key owner is not already the key Manager, make it so
+      if(keyManagerOf[toKey.tokenId] != address(0)) {
+        keyManagerOf[toKey.tokenId] = address(0);
+        emit KeyManagerChanged(toKey.tokenId, address(0));
       }
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
