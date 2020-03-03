@@ -147,13 +147,15 @@ storiesOf('User Account/Settings', module).add('Mock settings page', () => {
   )
 })
 
-storiesOf('User Account/Payment Details', module)
-  .add('Payment Details Form', () => {
-    return(
+storiesOf('User Account/Payment Details', module).add(
+  'Payment Details Form',
+  () => {
+    return (
       <PaymentDetails
         signPaymentData={doNothing}
         close={doNothing}
         errors={[]}
       />
     )
-  })
+  }
+)
