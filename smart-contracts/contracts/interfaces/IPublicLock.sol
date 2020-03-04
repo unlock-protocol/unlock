@@ -16,7 +16,7 @@ contract IPublicLock is IERC721Enumerable {
   /// Functions
 
   function initialize(
-    address _owner,
+    address _lockOwner,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -88,16 +88,16 @@ contract IPublicLock is IERC721Enumerable {
    * A function which lets the owner of the lock expire a users' key.
    * @dev Throws if called by other than lock owner
    * @dev Throws if key owner does not have a valid key
-   * @param _owner The address of the key owner
+   * @param _keyOwner The address of the key owner
    */
-  function expireKeyFor( address _owner ) external;
+  function expireKeyFor( address _keyOwner ) external;
 
     /**
    * Checks if the user has a non-expired key.
-   * @param _owner The address of the key owner
+   * @param _user The address of the key owner
    */
   function getHasValidKey(
-    address _owner
+    address _user
   ) external view returns (bool);
 
   /**
@@ -124,20 +124,20 @@ contract IPublicLock is IERC721Enumerable {
   /**
    * Checks if the given address owns the given tokenId.
    * @param _tokenId The tokenId of the key to check
-   * @param _owner The potential key owners address
+   * @param _keyOwner The potential key owners address
    */
   function isKeyOwner(
     uint _tokenId,
-    address _owner
+    address _keyOwner
   ) external view returns (bool);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
+  * @param _keyOwner address of the user for whom we search the key
   * @dev Throws if owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _owner
+    address _keyOwner
   ) external view returns (uint timestamp);
 
   /**
@@ -238,13 +238,13 @@ contract IPublicLock is IERC721Enumerable {
    * Determines how much of a fee a key owner would need to pay in order to
    * transfer the key to another account.  This is pro-rated so the fee goes down
    * overtime.
-   * @dev Throws if _owner does not have a valid key
-   * @param _owner The owner of the key check the transfer fee for.
+   * @dev Throws if _keyOwner does not have a valid key
+   * @param _keyOwner The owner of the key check the transfer fee for.
    * @param _time The amount of time to calculate the fee for.
    * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _owner,
+    address _keyOwner,
     uint _time
   ) external view returns (uint);
 
@@ -299,13 +299,13 @@ contract IPublicLock is IERC721Enumerable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * @param _owner The key owner to get the refund value for.
+   * @param _keyOwner The key owner to get the refund value for.
    * a cancelAndRefund block.timestamp.
    * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
   function getCancelAndRefundValueFor(
-    address _owner
+    address _keyOwner
   ) external view returns (uint refund);
 
   function keyOwnerToNonce(address ) external view returns (uint256 );
@@ -346,8 +346,6 @@ contract IPublicLock is IERC721Enumerable {
   function transferFeeBasisPoints() external view returns (uint256 );
 
   function unlockProtocol() external view returns (address );
-
-  function BASIS_POINTS_DEN() external view returns (uint256 );
 
   ///===================================================================
 

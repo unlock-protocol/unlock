@@ -59,7 +59,7 @@ contract MixinLockCore is
   address public beneficiary;
 
   // The denominator component for values specified in basis points.
-  uint public constant BASIS_POINTS_DEN = 10000;
+  uint internal constant BASIS_POINTS_DEN = 10000;
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {

@@ -16,6 +16,7 @@ interface Props {
   emailAddress?: string
   isLinkValid?: boolean
   account?: Account
+  embedded?: boolean
 }
 
 interface State {
@@ -56,7 +57,7 @@ export class SignUp extends React.Component<Props, State> {
 
   render() {
     const { submitted } = this.state
-    const { emailAddress, isLinkValid, account } = this.props
+    const { emailAddress, isLinkValid, account, embedded } = this.props
 
     if (account && account.address) {
       return <SignupSuccess />
@@ -68,39 +69,51 @@ export class SignUp extends React.Component<Props, State> {
 
     if (!emailAddress) {
       return (
-        <div>
-          <Heading>Pay For Content Seamlessly</Heading>
-          <SubHeading>
-            Unlock enables anyone to seamlessly buy and manage access to content
-            using blockchain technology.
-          </SubHeading>
-          <Description>
-            At Unlock, we believe that the more accessible paid content is, the
-            better it will be. To do that we&#39;re making it easy for readers
-            like you to seamlessly pay for and manage your content.
-          </Description>
-          <Description>
-            If you want to know more about Unlock&#39;s decentralized payment
-            protocol, check out{' '}
-            <Link href="https://unlock-protocol.com/blog">
-              <a target="_blank">
-                <span>our blog</span>
-              </a>
-            </Link>
-            .
-          </Description>
-          {!submitted && (
-            <Form onSubmit={this.handleSubmit}>
-              <Input
-                name="emailAddress"
-                type="email"
-                placeholder="Enter your email to get started"
-                onChange={this.handleInputChange}
-              />
-              <SubmitButton type="submit" value="Sign Up" />
+        <Container>
+          {!embedded && (
+            <>
+              <Heading>Pay For Content Seamlessly</Heading>
+              <SubHeading>
+                Unlock enables anyone to seamlessly buy and manage access to
+                content using blockchain technology.
+              </SubHeading>
               <Description>
-                Already have an account? {LogInLink('Log in')}. Have an Ethereum
-                Wallet?{' '}
+                At Unlock, we believe that the more accessible paid content is,
+                the better it will be. To do that we&#39;re making it easy for
+                readers like you to seamlessly pay for and manage your content.
+              </Description>
+              <Description>
+                If you want to know more about Unlock&#39;s decentralized
+                payment protocol, check out{' '}
+                <Link href="https://unlock-protocol.com/blog">
+                  <a target="_blank">
+                    <span>our blog</span>
+                  </a>
+                </Link>
+                .
+              </Description>
+            </>
+          )}
+          {!submitted && (
+            <>
+              <Form onSubmit={this.handleSubmit}>
+                <Label htmlFor="emailInput">Email Address</Label>
+                <Input
+                  name="emailAddress"
+                  id="emailInput"
+                  type="email"
+                  placeholder="Enter your email to get started"
+                  onChange={this.handleInputChange}
+                />
+                <SubmitButton type="submit" value="Sign Up" />
+
+                <br />
+                <div id="signin" />
+              </Form>
+              <Description>
+                Already have an account? {LogInLink('Log in')}.
+                <br />
+                Have an Ethereum Wallet?{' '}
                 <LinkButton
                   target="_blank"
                   rel="noopener noreferrer"
@@ -110,10 +123,7 @@ export class SignUp extends React.Component<Props, State> {
                 </LinkButton>
                 .
               </Description>
-
-              <br />
-              <div id="signin" />
-            </Form>
+            </>
           )}
           {submitted && (
             <Confirmation>
@@ -125,7 +135,7 @@ export class SignUp extends React.Component<Props, State> {
               </div>
             </Confirmation>
           )}
-        </div>
+        </Container>
       )
     }
 
@@ -198,14 +208,11 @@ const SubHeading = styled.h2`
 const Description = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
-  font-size: 20px;
+  font-size: 16px;
   color: var(--darkgrey);
 `
 
 const Form = styled.form`
-  display: grid;
-  grid-template-columns: 70% 30%;
-  grid-column-gap: 16px;
   max-width: 600px;
 `
 
@@ -216,15 +223,19 @@ const Input = styled.input`
   border-radius: 4px;
   padding: 10px;
   font-size: 16px;
+  width: 100%;
 `
 
 const SubmitButton = styled.input`
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  color: var(--white);
+  margin-top: 25px;
 `
 
 const Confirmation = styled.div`
@@ -239,4 +250,17 @@ const Confirmation = styled.div`
 
 const LinkButton = styled.a`
   cursor: pointer;
+`
+
+const Label = styled.label`
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+`
+
+const Container = styled.div`
+  width: 100%;
 `
