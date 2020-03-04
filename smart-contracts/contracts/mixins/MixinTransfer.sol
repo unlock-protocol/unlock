@@ -62,6 +62,7 @@ contract MixinTransfer is
     Key storage toKey = keyByOwner[_to];
     uint iDTo = toKey.tokenId;
     uint time;
+    uint previousExpiration = toKey.expirationTimestamp;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee based on amount of time wanted share
@@ -92,7 +93,14 @@ contract MixinTransfer is
         _to,
         iDTo
       );
+    } else if (previousExpiration <= block.timestamp) {
+      // reset the key Manager for expired keys
+      if(keyManagerOf[_tokenId] != address(0)) {
+        keyManagerOf[_tokenId] = address(0);
+        emit KeyManagerChanged(_tokenId, address(0));
+      }
     }
+
     // add time to new key
     _timeMachine(iDTo, time, true);
     // trigger event
@@ -140,6 +148,11 @@ contract MixinTransfer is
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
       toKey.tokenId = fromKey.tokenId;
       _recordOwner(_recipient, _tokenId);
+      // If the key owner is not already the key Manager, make it so
+      if(keyManagerOf[_tokenId] != address(0)) {
+        keyManagerOf[_tokenId] = address(0);
+        emit KeyManagerChanged(_tokenId, address(0));
+      }
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
