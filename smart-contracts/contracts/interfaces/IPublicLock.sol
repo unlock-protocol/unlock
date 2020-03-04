@@ -25,6 +25,16 @@ contract IPublicLock is IERC721Enumerable {
   ) external;
 
   /**
+   * @dev Never used directly
+   */
+  function initialize(address) external;
+
+  /**
+   * @dev Never used directly
+   */
+  function initialize() external;
+
+  /**
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
   */
@@ -186,6 +196,14 @@ contract IPublicLock is IERC721Enumerable {
   ) external view returns(string memory);
 
   /**
+   * @notice Allows a lock manager to add or remove an event hook
+   */
+  function setEventHooks(
+    address _onKeySoldHook,
+    address _onKeyCancelHook
+  ) external;
+
+  /**
    * Allows the Lock owner to give a collection of users a key with no charge.
    * Each key may be assigned a different expiration date.
    * @dev Throws if called by other than the lock-owner
@@ -313,6 +331,22 @@ contract IPublicLock is IERC721Enumerable {
     address _keyOwner,
     address _txSender
   ) external view returns (bytes32 approvalHash);
+
+  function addKeyGranter(address account) external;
+
+  function addLockManager(address account) external;
+
+  function isKeyGranter(address account) external view returns (bool);
+
+  function isLockManager(address account) external view returns (bool);
+
+  function onKeySoldHook() external view returns(address);
+
+  function onKeyCancelHook() external view returns(address);
+
+  function revokeKeyGranter(address _granter) external;
+
+  function renounceLockManager() external;
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
