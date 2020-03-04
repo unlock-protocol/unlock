@@ -13,6 +13,9 @@ contract MixinEventHooks is
   ILockEventHooks public onKeySoldHook;
   ILockEventHooks public onKeyCancelHook;
 
+  /**
+   * @notice Allows a lock manager to add or remove an event hook
+   */
   function setEventHooks(
     address _onKeySoldHook,
     address _onKeyCancelHook
