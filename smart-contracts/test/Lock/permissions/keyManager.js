@@ -2,6 +2,7 @@ const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
+const { ZERO_ADDRESS } = require('hardlydifficult-ethereum-contracts')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 
@@ -16,6 +17,7 @@ contract('Permissions / KeyManager', accounts => {
   const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const [keyOwner1, keyOwner2, keyOwner3, evilKeyOwner] = keyOwners
+  const keyOwner5 = accounts[5]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const oneDay = new BigNumber(60 * 60 * 24)
   const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
@@ -44,11 +46,11 @@ contract('Permissions / KeyManager', accounts => {
     let keyOwner
 
     // KM == KeyManager
-    it('should set KM == keyOwner for new purchases', async () => {
+    it('should leave the KM == 0x00(default) for new purchases', async () => {
       iD = await lock.getTokenIdFor(keyOwner1)
       keyManager = await lock.keyManagerOf.call(iD)
       keyOwner = await lock.ownerOf(iD)
-      assert.equal(keyManager, keyOwner)
+      assert.equal(keyManager, ZERO_ADDRESS)
     })
     it('should not change KM when topping-up valid keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
@@ -59,7 +61,7 @@ contract('Permissions / KeyManager', accounts => {
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
-    it('should not change KM when renewing expired keys', async () => {
+    it('should reset the KM == 0x00 when renewing expired keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.expireKeyFor(keyOwner1, { from: lockManager })
       await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
@@ -67,28 +69,57 @@ contract('Permissions / KeyManager', accounts => {
         from: keyOwner1,
       })
       keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManagerBefore, keyManager)
+      assert.equal(keyManager, ZERO_ADDRESS)
     })
   })
   describe('Key Transfers', () => {
-    it('should set KM == keyOwner for new recipients', async () => {
+    const expirationTimestamp = Math.round(Date.now() / 1000 + 6000000)
+
+    before(async () => {
+      await lock.grantKeys([keyOwner5], [expirationTimestamp], [lockCreator], {
+        from: lockCreator,
+      })
+      await lock.purchase(0, accounts[8], web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: accounts[8],
+      })
+    })
+
+    it('should leave the KM == 0x00(default) for new recipients', async () => {
+      iD = await lock.getTokenIdFor(keyOwner1)
       await lock.transferFrom(keyOwner1, accounts[9], iD, {
         from: keyOwner1,
       })
       keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, accounts[9])
+      assert.equal(keyManager, ZERO_ADDRESS)
     })
-    it('should not change KM for existing key owners', async () => {
-      let iD9 = await lock.getTokenIdFor(accounts[9])
+
+    it('should not change KM for existing valid key owners', async () => {
+      let iD8 = await lock.getTokenIdFor(accounts[8])
       iD = await lock.getTokenIdFor(keyOwner2)
       keyManagerBefore = await lock.keyManagerOf.call(iD)
-      await lock.transferFrom(accounts[9], keyOwner2, iD9, {
-        from: accounts[9],
+      await lock.transferFrom(accounts[8], keyOwner2, iD8, {
+        from: accounts[8],
       })
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
+
+    it('should reset the KM to 0x00 for expired key owners', async () => {
+      iD = await lock.getTokenIdFor(keyOwner5)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
+      assert.notEqual(keyManagerBefore, ZERO_ADDRESS)
+      await lock.expireAndRefundFor(keyOwner5, 0, { from: lockCreator })
+      assert.equal(await lock.getHasValidKey.call(keyOwner5), false)
+      iD = await lock.getTokenIdFor(keyOwner2)
+      await lock.transferFrom(keyOwner2, keyOwner5, iD, {
+        from: keyOwner2,
+      })
+      keyManager = await lock.keyManagerOf.call(iD)
+      assert.equal(keyManager, ZERO_ADDRESS)
+    })
   })
+
   describe('Key Sharing', () => {
     it('should let key sharer set an arbitrary KM for Child key', async () => {
       iD = await lock.getTokenIdFor(keyOwner3)
