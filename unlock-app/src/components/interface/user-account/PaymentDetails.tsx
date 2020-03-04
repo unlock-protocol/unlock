@@ -10,7 +10,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { Input, SubmitButton, LoadingButton } from './styles'
+import { Input, SubmitButton, LoadingButton, FormSubmitButton } from './styles'
 import configure from '../../../config'
 import { signPaymentData } from '../../../actions/user'
 import { UnlockError, isWarningError, WarningError } from '../../../utils/Error'
@@ -25,40 +25,44 @@ interface PaymentDetailsProps {
 const { stripeApiKey } = configure()
 const stripePromise = loadStripe(stripeApiKey)
 
-export const PaymentDetails = ({}: PaymentDetailsProps) => {
+export const PaymentDetails = ({ signPaymentData }: PaymentDetailsProps) => {
   return (
     <Elements stripe={stripePromise}>
-      <Form />
+      <Form signPaymentData={signPaymentData} />
     </Elements>
   )
 }
 
-export const getSubmitButton = (errorCount: number, submitted: boolean) => {
-  if (errorCount > 0) {
-    return (
-      <SubmitButton backgroundColor="var(--red)">
-        Clear Errors and Retry
-      </SubmitButton>
-    )
-  }
-
+export const getSubmitButton = (submitted: boolean) => {
   if (submitted) {
     return <LoadingButton>Submitting...</LoadingButton>
   }
 
   return (
-    <SubmitButton>
-      Add Payment Method
-    </SubmitButton>
+    <FormSubmitButton type="submit" value="Submit" />
   )
 }
 
-export const Form = () => {
+interface FormProps {
+  signPaymentData: (stripeTokenId: string) => any
+}
+
+export const Form = ({ signPaymentData }: FormProps) => {
   const stripe = useStripe()
   const elements = useElements()
   const [submitted, setSubmitted] = useState(false)
-  const { register, handleSubmit, errors } = useForm()
-  const onSubmit = (data: any) => console.log(data)
+  const { register, handleSubmit } = useForm()
+  const onSubmit = async (data: any) => {
+    setSubmitted(true)
+    const cardElement = elements!.getElement(CardElement)
+    const result = await stripe!.createToken(cardElement!, {
+      name: data['Cardholder Name'],
+    })
+
+    if (result.token) {
+      signPaymentData(result.token.id)
+    }
+  }
 
   console.log({
     stripe,
@@ -78,12 +82,11 @@ export const Form = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input type="text" placeholder="Cardholder Name" name="Cardholder Name" ref={register({required: true})} />
-      <Input type="text" placeholder="Country" name="Country" ref={register({required: true})} />
-      <Input type="text" placeholder="Zip / Postal Code" name="Zip / Postal Code" ref={register({required: true})} />
       <CardContainer>
         <CardElement options={stripeElementOptions} />
       </CardContainer>
-      {getSubmitButton(Object.keys(errors).length, submitted)}
+      
+      {getSubmitButton(submitted)}
     </form>
   )
 }
@@ -117,6 +120,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(PaymentDetails)
 export const CardContainer = styled.div`
     background-color: var(--lightgrey);
     padding-left: 10px;
+    padding-right: 10px;
     border-radius: 4px;
     margin-bottom: 1rem;
 `

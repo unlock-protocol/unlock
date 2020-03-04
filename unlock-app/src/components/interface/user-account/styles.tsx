@@ -115,6 +115,23 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   color: var(--white);
 `
 
+export const FormSubmitButton = styled.input`
+    height: 60px;
+    width: 100%;
+    border: none;
+    background-color: var(--green);
+    border-radius: 4px;
+    margin: 0;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    text-align: -webkit-center; /* Safari fix  */
+    justify-content: center;
+    color: var(--white);
+`
+
 interface LoadingButtonProps {
   children?: any
   backgroundColor?: string
