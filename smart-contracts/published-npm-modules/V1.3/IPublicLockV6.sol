@@ -7,7 +7,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721E
  */
 
 
-contract IPublicLock is IERC721Enumerable {
+contract IPublicLockV6 is IERC721Enumerable {
 
 // See indentationissue description here:
 // https://github.com/duaraghav8/Ethlint/issues/268

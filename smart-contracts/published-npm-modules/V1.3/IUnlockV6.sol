@@ -6,7 +6,7 @@ pragma solidity ^0.5.0;
  * @author Nick Furfaro (unlock-protocol.com)
 **/
 
-interface IUnlock {
+interface IUnlockV6 {
 
 
   // Events
