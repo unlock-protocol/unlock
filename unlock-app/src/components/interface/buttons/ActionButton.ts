@@ -32,3 +32,16 @@ export const AccountWrapper = styled.div`
   grid-template-columns: 1fr 144px;
   align-items: center;
 `
+
+export const LoadingButton = styled.button`
+  background-color: var(--link);
+  border: none;
+  font-size: 20px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
+  outline: none;
+  height: 60px;
+  width: 100%;
+`
