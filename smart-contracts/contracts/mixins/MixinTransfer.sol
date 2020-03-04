@@ -48,8 +48,7 @@ contract MixinTransfer is
   function shareKey(
     address _to,
     uint _tokenId,
-    uint _timeShared,
-    address _keyManager
+    uint _timeShared
   ) public
     onlyIfAlive
     onlyKeyManagerOrApproved(_tokenId)
