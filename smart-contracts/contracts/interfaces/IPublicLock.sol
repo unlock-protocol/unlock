@@ -104,8 +104,7 @@ contract IPublicLock is IERC721Enumerable {
 
   /**
    * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else revert
-   * @dev Throws if key owner does not have a valid key
+   * @return The tokenId of the NFT, else returns 0
    * @param _account The address of the key owner
   */
   function getTokenIdFor(
