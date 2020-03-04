@@ -103,17 +103,6 @@ contract IPublicLock is IERC721Enumerable {
   ) external view returns (uint);
 
   /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  * @dev Throws if there are no key owners yet
-  */
-  function getOwnersByPage(
-    uint _page,
-    uint _pageSize
-  ) external view returns (address[] memory);
-
-  /**
    * Checks if the given address owns the given tokenId.
    * @param _tokenId The tokenId of the key to check
    * @param _keyOwner The potential key owners address
