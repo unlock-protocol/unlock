@@ -33,7 +33,7 @@ contract MixinApproval is
     uint _tokenId
   ) {
     if(keyManagerOf[_tokenId] == address(0)) {
-      require(isKeyOwner(_tokenId, msg.sender), 'ONLY_KM_OR_APPROVED: NOT_KEY_OWNER')
+      require(isKeyOwner(_tokenId, msg.sender), 'ONLY_KM_OR_APPROVED: NOT_KEY_OWNER');
     } else {
       require(
         (keyManagerOf[_tokenId] == msg.sender) ||
