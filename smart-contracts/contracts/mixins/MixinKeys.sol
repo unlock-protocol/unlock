@@ -119,13 +119,11 @@ contract MixinKeys is
 
   /**
    * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else revert
+   * @return The tokenId of the NFT, else returns 0
   */
   function getTokenIdFor(
     address _account
-  )
-    public view
-    hasValidKey(_account)
+  ) public view
     returns (uint)
   {
     return keyByOwner[_account].tokenId;

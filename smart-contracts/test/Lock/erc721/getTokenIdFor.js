@@ -1,6 +1,5 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -15,8 +14,9 @@ contract('Lock / erc721 / getTokenIdFor', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  it('should abort when the key has no owner', async () => {
-    await reverts(locks.FIRST.getTokenIdFor.call(accounts[3]), 'KEY_NOT_VALID')
+  it('returns 0 when the address is not a keyOwner', async () => {
+    const id = await locks.FIRST.getTokenIdFor.call(accounts[3])
+    assert.equal(id, 0)
   })
 
   it("should return the tokenId for the owner's key", async () => {
