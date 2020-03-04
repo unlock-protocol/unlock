@@ -123,9 +123,7 @@ contract MixinKeys is
   */
   function getTokenIdFor(
     address _account
-  )
-    public view
-    hasValidKey(_account)
+  ) public view
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
