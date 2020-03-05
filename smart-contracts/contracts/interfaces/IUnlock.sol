@@ -6,9 +6,9 @@ pragma solidity 0.5.16;
  * @author Nick Furfaro (unlock-protocol.com)
 **/
 
-interface IUnlock {
-
-  // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
+interface IUnlock
+{
+  // Use initialize instead of a constructor to support proxies(for upgradeability via zos).
   function initialize(address _unlockOwner) external;
 
   /**
@@ -65,16 +65,32 @@ interface IUnlock {
   )
     external
     view
-    returns (uint discount, uint tokens);
+    returns(uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
   function globalBaseTokenURI()
+    external
+    view
+    returns(string memory);
+
+  /**
+   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.
+   */
+  function getGlobalBaseTokenURI()
     external
     view
     returns (string memory);
 
   // Function to read the globalTokenSymbol field.
   function globalTokenSymbol()
+    external
+    view
+    returns(string memory);
+
+  /**
+   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
+   */
+  function getGlobalTokenSymbol()
     external
     view
     returns (string memory);
@@ -101,4 +117,52 @@ interface IUnlock {
     uint _grossNetworkProduct,
     uint _totalDiscountGranted
   ) external;
+
+  function grossNetworkProduct() external view returns(uint);
+
+  function totalDiscountGranted() external view returns(uint);
+
+  function locks(address) external view returns(bool deployed, uint totalSales, uint yieldedDiscountTokens);
+
+  // The address of the public lock template, used when `createLock` is called
+  function publicLockAddress() external view returns(address);
+
+  // Map token address to exchange contract address if the token is supported
+  // Used for GDP calculations
+  function uniswapExchanges(address) external view returns(address);
+
+  // The version number of the current Unlock implementation on this network
+  function unlockVersion() external pure returns(uint16);
+
+  // allows the owner to set the exchange address to use for value conversions
+  // setting the _exchangeAddress to address(0) removes support for the token
+  function setExchange(
+    address _tokenAddress,
+    address _exchangeAddress
+  ) external;
+
+  /**
+   * @dev Returns true if the caller is the current owner.
+   */
+  function isOwner() external view returns(bool);
+
+  /**
+   * @dev Returns the address of the current owner.
+   */
+  function owner() external view returns(address);
+
+  /**
+   * @dev Leaves the contract without owner. It will not be possible to call
+   * `onlyOwner` functions anymore. Can only be called by the current owner.
+   *
+   * NOTE: Renouncing ownership will leave the contract without an owner,
+   * thereby removing any functionality that is only available to the owner.
+   */
+  function renounceOwnership() external;
+
+  /**
+   * @dev Transfers ownership of the contract to a new account (`newOwner`).
+   * Can only be called by the current owner.
+   */
+  function transferOwnership(address newOwner) external;
 }
