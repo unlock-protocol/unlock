@@ -222,17 +222,17 @@ contract MixinTransfer is
    * Determines how much of a fee a key owner would need to pay in order to
    * transfer the key to another account.  This is pro-rated so the fee goes down
    * overtime.
-   * @param _owner The owner of the key check the transfer fee for.
+   * @param _keyOwner The owner of the key check the transfer fee for.
    */
   function getTransferFee(
-    address _owner,
+    address _keyOwner,
     uint _time
   )
     public view
-    hasValidKey(_owner)
+    hasValidKey(_keyOwner)
     returns (uint)
   {
-    Key storage key = keyByOwner[_owner];
+    Key storage key = keyByOwner[_keyOwner];
     uint timeToTransfer;
     uint fee;
     // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive

@@ -6,6 +6,7 @@ import SignUp from './SignUp'
 interface Props {
   login?: boolean
   signup?: boolean
+  embedded?: boolean
 }
 
 interface State {
@@ -29,11 +30,16 @@ export default class LogInSignUp extends React.Component<Props, State> {
   }
 
   render() {
+    const { embedded } = this.props
     const { signup } = this.state
     return (
       <BrowserOnly>
-        {!signup && <LogIn toggleSignup={this.toggleSignup} />}
-        {signup && <SignUp toggleSignup={this.toggleSignup} />}
+        {!signup && (
+          <LogIn toggleSignup={this.toggleSignup} embedded={embedded} />
+        )}
+        {signup && (
+          <SignUp toggleSignup={this.toggleSignup} embedded={embedded} />
+        )}
       </BrowserOnly>
     )
   }

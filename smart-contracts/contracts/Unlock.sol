@@ -106,13 +106,13 @@ contract Unlock is
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
-    address _owner
+    address _unlockOwner
   )
     public
     initializer()
   {
     // We must manually initialize Ownable.sol
-    Ownable.initialize(_owner);
+    Ownable.initialize(_unlockOwner);
   }
 
   /**
