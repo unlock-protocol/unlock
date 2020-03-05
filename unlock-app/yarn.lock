@@ -3517,6 +3517,11 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/postmate@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@types/postmate/-/postmate-1.5.0.tgz#4f0256a0e4b475930b2bbc875d2480f68be44334"
+  integrity sha512-BEsuQsxTRQvc1ahZXTlbJDxLAP3wtjmvpaUGQPVl9+l5f41ShL/RaIfXMWWyOiuAUFNXu/oxXS9NXOIe5DzPZA==
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
@@ -14052,6 +14057,11 @@ postcss@^7.0.0, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.2, postcss@^7.0.2
     chalk "^2.4.2"
     source-map "^0.6.1"
     supports-color "^6.1.0"
+
+postmate@1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/postmate/-/postmate-1.5.2.tgz#d59a78b3780023c5d32225fd40633b364958bdb3"
+  integrity sha512-EHLlEmrUA/hALls49oBrtE7BzDXXjB9EiO4MZpsoO3R/jRuBmD+2WKQuYAbeuVEpTzrPpUTT79z2cz4qaFgPRg==
 
 precinct@^6.1.1, precinct@^6.1.2:
   version "6.2.0"
