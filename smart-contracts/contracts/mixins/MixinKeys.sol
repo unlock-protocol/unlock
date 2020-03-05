@@ -52,6 +52,11 @@ contract MixinKeys is
   // Addresses are never removed by design to avoid abuses around referals
   address[] public owners;
 
+  // A given key has both an owner and a manager.
+  // If keyManager == address(0) then the key owner is also the manager
+  // Each key can have at most 1 keyManager.
+  mapping (uint => address) public keyManagerOf;
+
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
     address _keyOwner
