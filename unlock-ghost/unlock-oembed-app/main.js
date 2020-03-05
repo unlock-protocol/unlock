@@ -16,7 +16,8 @@ const buildLocks = (rawLocks) => {
         let split = raw.split(',');
         return {
             address: split[0],
-            name: split[1],
+            name: new Buffer(split[1], 'base64').toString(),
+	    encoded: split[1]
         };
     });
     console.log(locks)
@@ -24,7 +25,7 @@ const buildLocks = (rawLocks) => {
 };
 
 const init = async () => {
-    const server = Hapi.server({ port: 8080, routes: {
+    const server = Hapi.server({ port: 8000, routes: {
         files: {
             relativeTo: Path.join(__dirname, 'public')
         }
@@ -52,6 +53,18 @@ const init = async () => {
         },
         relativeTo: __dirname,
         path: 'templates'
+    });
+
+    server.route({
+      method: 'GET',
+      path: '/',
+      handler: async (request, h) => {
+	      try {
+        return await request.render('generator.html', {server: URL_SERVER})
+	      } catch(e) {
+	        console.log(e);
+	      }
+      }
     });
 
     server.route({
