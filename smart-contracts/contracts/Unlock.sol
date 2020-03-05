@@ -45,6 +45,19 @@ contract Unlock is
   using Address for address;
   using Clone2Factory for address;
 
+  /**
+   * The struct for a lock
+   * We use deployed to keep track of deployments.
+   * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,
+   * which would be the same values when the lock is not set.
+   */
+  struct LockBalances
+  {
+    bool deployed;
+    uint totalSales; // This is in wei
+    uint yieldedDiscountTokens;
+  }
+
   modifier onlyFromDeployedLock() {
     require(locks[msg.sender].deployed, 'ONLY_LOCKS');
     _;

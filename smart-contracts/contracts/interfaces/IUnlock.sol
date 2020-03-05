@@ -8,19 +8,6 @@ pragma solidity 0.5.16;
 
 interface IUnlock
 {
-  /**
-   * The struct for a lock
-   * We use deployed to keep track of deployments.
-   * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,
-   * which would be the same values when the lock is not set.
-   */
-  struct LockBalances
-  {
-    bool deployed;
-    uint totalSales; // This is in wei
-    uint yieldedDiscountTokens;
-  }
-
   // Use initialize instead of a constructor to support proxies(for upgradeability via zos).
   function initialize(address _unlockOwner) external;
 
