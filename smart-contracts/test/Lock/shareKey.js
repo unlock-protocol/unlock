@@ -50,10 +50,10 @@ contract('Lock / shareKey', accounts => {
     describe('not meeting pre-requisites', () => {
       it('sender is not approved', async () => {
         await reverts(
-          lock.shareKey(accounts[7], 11, 1000, accountWithNoKey1, {
+          lock.shareKey(accounts[7], 11, 1000, {
             from: accountWithNoKey1,
           }),
-          'ONLY_KEY_MANAGER_OR_APPROVED'
+          'ONLY_KM_OR_APPROVED: NOT_KEY_OWNER'
         )
       })
 
@@ -63,12 +63,11 @@ contract('Lock / shareKey', accounts => {
             accounts[3],
             await lock.getTokenIdFor.call(keyOwners[0]),
             1000,
-            accounts[6],
             {
               from: accounts[6],
             }
           ),
-          'ONLY_KEY_MANAGER_OR_APPROVED'
+          'ONLY_KM_OR_APPROVED: NOT_KEY_OWNER'
         )
       })
 
@@ -78,7 +77,6 @@ contract('Lock / shareKey', accounts => {
             web3.utils.padLeft(0, 40),
             await lock.getTokenIdFor.call(keyOwners[0]),
             1000,
-            keyOwners[0],
             {
               from: keyOwners[0],
             }
@@ -93,7 +91,7 @@ contract('Lock / shareKey', accounts => {
       let ID = await lock.getTokenIdFor.call(keyOwner2)
       assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
       await reverts(
-        lock.shareKey(nonCompliantContract, ID, 1000, keyOwner2, {
+        lock.shareKey(nonCompliantContract, ID, 1000, {
           from: keyOwner2,
         })
       )
@@ -106,15 +104,9 @@ contract('Lock / shareKey', accounts => {
         let tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
         tokenId1 = await lock.getTokenIdFor.call(keyOwner1)
         assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
-        tx1 = await lock.shareKey(
-          accountWithNoKey1,
-          tokenId1,
-          tooMuchTime,
-          keyOwner1,
-          {
-            from: keyOwner1,
-          }
-        )
+        tx1 = await lock.shareKey(accountWithNoKey1, tokenId1, tooMuchTime, {
+          from: keyOwner1,
+        })
         let actualTimeShared = tx1.logs[3].args._amount.toNumber(10)
         assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true) // new owner now has a fresh key
         let newExpirationTimestamp = new BigNumber(
@@ -171,15 +163,9 @@ contract('Lock / shareKey', accounts => {
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner2, oneDay))
       tokenId2 = await lock.getTokenIdFor.call(keyOwner2)
       let keyManager = await lock.keyManagerOf.call(tokenId2)
-      tx2 = await lock.shareKey(
-        accountWithNoKey2,
-        tokenId2,
-        oneDay,
-        keyOwner2,
-        {
-          from: keyManager,
-        }
-      )
+      tx2 = await lock.shareKey(accountWithNoKey2, tokenId2, oneDay, {
+        from: keyManager,
+      })
       event1 = tx2.logs[0].event // ExpirationChanged
       event2 = tx2.logs[2].event // Transfer
       event3 = tx2.logs[3].event // ExpirationChanged
@@ -255,7 +241,7 @@ contract('Lock / shareKey', accounts => {
         await lock.keyExpirationTimestampFor.call(keyOwner3)
       )
       let keyManager = await lock.keyManagerOf.call(tokenId2)
-      await lock.shareKey(keyOwner3, tokenId2, oneDay, keyOwner2, {
+      await lock.shareKey(keyOwner3, tokenId2, oneDay, {
         from: keyManager,
       })
       let newExistingKeyExpiration = new BigNumber(
@@ -268,7 +254,7 @@ contract('Lock / shareKey', accounts => {
       let token = new BigNumber(await lock.getTokenIdFor(keyOwner2))
       // make sure recipient does not have a key
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), false)
-      await lock.shareKey(accountWithNoKey3, token, oneDay, approvedAddress, {
+      await lock.shareKey(accountWithNoKey3, token, oneDay, {
         from: approvedAddress,
       })
       // make sure recipient has a key

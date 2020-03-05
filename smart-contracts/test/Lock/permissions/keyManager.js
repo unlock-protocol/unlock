@@ -1,8 +1,8 @@
 const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
+// const { ZERO_ADDRESS } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
-const { ZERO_ADDRESS } = require('hardlydifficult-ethereum-contracts')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 
@@ -63,7 +63,7 @@ contract('Permissions / KeyManager', accounts => {
     })
     it('should reset the KM == 0x00 when renewing expired keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
-      await lock.expireKeyFor(keyOwner1, { from: lockManager })
+      await lock.expireAndRefundFor(keyOwner1, 0, { from: lockManager })
       await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: keyOwner1,
@@ -121,42 +121,68 @@ contract('Permissions / KeyManager', accounts => {
   })
 
   describe('Key Sharing', () => {
-    it('should let key sharer set an arbitrary KM for Child key', async () => {
+    it('should leave the KM == 0x00(default) for new recipients', async () => {
       iD = await lock.getTokenIdFor(keyOwner3)
-      await lock.shareKey(accounts[8], iD, oneDay, accounts[7], {
+      await lock.shareKey(accounts[8], iD, oneDay, {
         from: keyOwner3,
       })
       iD = await lock.getTokenIdFor(accounts[8])
       keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, accounts[7])
-    })
-    it('should let key sharer set no KM for Child key', async () => {
-      iD = await lock.getTokenIdFor(keyOwner3)
-      await lock.shareKey(accounts[6], iD, oneDay, ZERO_ADDRESS, {
-        from: keyOwner3,
-      })
-      iD = await lock.getTokenIdFor(accounts[6])
-      keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, ZERO_ADDRESS)
     })
-
-    // prevent key sharer from taking control of an existing key simply by sharing a small abount of time with it and setting self as KM !
-    it('does not allow the key sharer to update the KM for Child key', async () => {
-      hasKey = await lock.getHasValidKey(accounts[6])
-      assert.equal(hasKey, true)
-      iD = await lock.getTokenIdFor(evilKeyOwner)
-      await lock.shareKey(accounts[6], iD, oneDay, evilKeyOwner, {
-        from: evilKeyOwner,
+    it('should not change KM for existing valid key owners', async () => {
+      iD = await lock.getTokenIdFor(keyOwner3)
+      keyManagerBefore = await lock.keyManagerOf.call(iD)
+      const iD1 = await lock.getTokenIdFor(keyOwner1)
+      await lock.shareKey(keyOwner3, iD1, oneDay, {
+        from: keyOwner1,
       })
-      iD = await lock.getTokenIdFor(accounts[6])
       keyManager = await lock.keyManagerOf.call(iD)
-      assert.notEqual(keyManager, evilKeyOwner)
+      assert.equal(keyManagerBefore, keyManager)
+    })
+
+    it('should reset the KM to 0x00 for expired key owners', async () => {
+      // ensure keyOwner1 has a valid key
+      assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
+      const iD1 = await lock.getTokenIdFor.call(keyOwner1)
+      // the id is not 0
+      assert.notEqual(iD1, 0)
+      let keyManager = await lock.keyManagerOf.call(iD1)
+      // the KM is 0x00, so owner should be able to manage key
+      assert.equal(keyManager, ZERO_ADDRESS)
+      // keyOwner1 is the owner of iD1
+      const owner = await lock.ownerOf.call(iD1)
+      assert.equal(owner, keyOwner1)
+      // set KM to other than 0x00
+      await lock.setKeyManagerOf(iD1, accounts[9], { from: keyOwner1 })
+      keyManager = await lock.keyManagerOf.call(iD1)
+      // ensure KM is now accounts[9]
+      assert.equal(keyManager, accounts[9])
+      // expire the key to prep it for testing
+      await lock.expireAndRefundFor(keyOwner1, 0, { from: lockCreator })
+      // ensure it is now expired
+      assert.equal(await lock.getHasValidKey.call(keyOwner1), false)
+      // ensure keyOwner3 has a shareble key
+      await lock.purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner3,
+      })
+      iD = await lock.getTokenIdFor(keyOwner3)
+      //
+      let tx = await lock.shareKey(keyOwner1, iD, oneDay, {
+        from: keyOwner3,
+      })
+      keyManager = await lock.keyManagerOf.call(iD1)
+      console.log(tx.logs[0])
+      assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
+      assert.equal(keyManager, ZERO_ADDRESS)
     })
   })
+
   describe('Key Granting', () => {
     let validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
 
-    it('should let KeyGranter set an arbitrary KM for granted key', async () => {
+    it('should let KeyGranter set an arbitrary KM for new keys', async () => {
       await lock.grantKeys(
         [accounts[7]],
         [validExpirationTimestamp],
@@ -170,32 +196,26 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, accounts[8])
     })
 
-    it('should let KeyGranter set no KM for granted key', async () => {
-      await lock.grantKeys(
-        [accounts[1]],
-        [validExpirationTimestamp],
-        [ZERO_ADDRESS],
-        {
-          from: keyGranter,
-        }
-      )
-      iD = await lock.getTokenIdFor(accounts[1])
+    it('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
+      const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
+      assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
+      await lock.grantKeys([accounts[7]], [newTimestamp], [keyGranter], {
+        from: keyGranter,
+      })
+      iD = await lock.getTokenIdFor(accounts[7])
       keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, ZERO_ADDRESS)
+      assert.equal(keyManager, keyGranter)
     })
 
-    it('should not let the keyGranter overwrite the keyManager for valid keys', async () => {
-      assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
-      const iD = await lock.getTokenIdFor(accounts[7])
+    it('should let KeyGranter set an arbitrary KM for expired keys', async () => {
+      await lock.expireAndRefundFor(accounts[7], 0, { from: lockCreator })
+      assert.equal(await lock.getHasValidKey.call(accounts[7]), false)
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
-      const originalKeyManager = await lock.keyManagerOf.call(iD)
-      assert.notEqual(originalKeyManager, lockCreator)
-      // lockCreator attenpts to set herself as the keyManager
-      await lock.grantKeys([accounts[7]], [newTimestamp], [lockCreator], {
+      await lock.grantKeys([accounts[7]], [newTimestamp], [ZERO_ADDRESS], {
         from: lockCreator,
       })
       const newKeyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(originalKeyManager, newKeyManager)
+      assert.equal(newKeyManager, ZERO_ADDRESS)
     })
   })
 
@@ -203,7 +223,9 @@ contract('Permissions / KeyManager', accounts => {
     it('should allow the current keyManager to set a new KM', async () => {
       iD = await lock.getTokenIdFor(accounts[7])
       keyManagerBefore = await lock.keyManagerOf.call(iD)
-      await lock.setKeyManagerOf(iD, accounts[1], { from: keyManagerBefore })
+      // A KM of 0x00 means key owner is the manager
+      assert.equal(keyManagerBefore, ZERO_ADDRESS)
+      await lock.setKeyManagerOf(iD, accounts[1], { from: accounts[7] })
       keyManager = await lock.keyManagerOf.call(iD)
       assert.notEqual(keyManagerBefore, keyManager)
       assert.equal(keyManager, accounts[1])
@@ -221,7 +243,7 @@ contract('Permissions / KeyManager', accounts => {
     it('should fail to allow anyone else to set a new KM', async () => {
       await reverts(
         lock.setKeyManagerOf(iD, accounts[2], { from: evilKeyOwner }),
-        'SETKEYMANAGEROF_ACCESS_DENIED'
+        'SET_KEYMANAGEROF: ACCESS_DENIED'
       )
     })
   })

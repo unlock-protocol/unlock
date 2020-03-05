@@ -35,23 +35,24 @@ contract MixinGrantKeys is
       Key storage toKey = keyByOwner[recipient];
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
-      _assignNewTokenId(toKey);
-      uint toId = toKey.tokenId;
-      _recordOwner(recipient, toId);
+      uint idTo = toKey.tokenId;
 
-      // Set the key Manager if other than 0
-      if(keyManager != address(0)) {
-        keyManagerOf[toId] = keyManager;
-        emit KeyManagerChanged(toId, keyManager);
+      if(idTo == 0) {
+        _assignNewTokenId(toKey);
+        idTo = toKey.tokenId;
+        _recordOwner(recipient, idTo);
+        // trigger event
+        emit Transfer(
+          address(0), // This is a creation.
+          recipient,
+          idTo
+        );
       }
-      toKey.expirationTimestamp = expirationTimestamp;
+      // Set the key Manager
+      keyManagerOf[idTo] = keyManager;
+      emit KeyManagerChanged(idTo, keyManager);
 
-      // trigger event
-      emit Transfer(
-        address(0), // This is a creation.
-        recipient,
-        toId
-      );
+      toKey.expirationTimestamp = expirationTimestamp;
     }
   }
 }

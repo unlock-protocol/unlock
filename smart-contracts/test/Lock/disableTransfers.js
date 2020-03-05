@@ -16,6 +16,7 @@ contract('Lock / disableTransfers', accounts => {
 
   let lock
   let tokenId
+  const lockCreator = accounts[0]
   const keyOwner = accounts[1]
   const accountWithNoKey = accounts[2]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
@@ -28,12 +29,14 @@ contract('Lock / disableTransfers', accounts => {
       from: keyOwner,
     })
     // Change the fee to 100%
-    await lock.updateTransferFee(10000)
+    await lock.updateTransferFee(10000, { from: lockCreator })
   })
 
   describe('setting fee to 100%', () => {
     describe('disabling transferFrom', () => {
       it('should prevent key transfers by reverting', async () => {
+        // check transfer fee
+        assert.equal(await lock.transferFeeBasisPoints.call(), 10000)
         // check owner has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         tokenId = new BigNumber(await lock.getTokenIdFor.call(keyOwner))
@@ -62,7 +65,7 @@ contract('Lock / disableTransfers', accounts => {
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // try to share it
         await reverts(
-          lock.shareKey(accountWithNoKey, tokenId, oneDay, keyOwner, {
+          lock.shareKey(accountWithNoKey, tokenId, oneDay, {
             from: keyOwner,
           }),
           'KEY_TRANSFERS_DISABLED'

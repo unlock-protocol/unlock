@@ -38,13 +38,6 @@ contract MixinTransfer is
   // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
   uint public transferFeeBasisPoints;
 
-  /**
-  * @notice Allows the key owner to safely share their key (parent key) by
-  * transferring a portion of the remaining time to a new key (child key).
-  * @param _to The recipient of the shared key
-  * @param _tokenId the key to share
-  * @param _timeShared The amount of time shared
-  */
   function shareKey(
     address _to,
     uint _tokenId,
@@ -59,9 +52,8 @@ contract MixinTransfer is
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
-    uint iDTo = toKey.tokenId;
+    uint idTo = toKey.tokenId;
     uint time;
-    uint previousExpiration = toKey.expirationTimestamp;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee based on amount of time wanted share
@@ -82,31 +74,38 @@ contract MixinTransfer is
       emit ExpireKey(_tokenId);
     }
 
-    if (iDTo == 0) {
+    // if brand new key do one thing
+    // else if (expired key) do something else
+    // else (existing valid key) do the default thing
+
+
+    if (idTo == 0) {
       _assignNewTokenId(toKey);
-      iDTo = toKey.tokenId;
-      _recordOwner(_to, iDTo);
+      idTo = toKey.tokenId;
+      _recordOwner(_to, idTo);
       // keyManager is set to 0 by default so we don't need to set it
       emit Transfer(
         address(0), // This is a creation or time-sharing
         _to,
-        iDTo
+        idTo
       );
-    } else if (previousExpiration <= block.timestamp) {
+    }
+
+    if (idTo != 0 && toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      if(keyManagerOf[_tokenId] != address(0)) {
-        keyManagerOf[_tokenId] = address(0);
-        emit KeyManagerChanged(_tokenId, address(0));
+      if(keyManagerOf[idTo] != address(0)) {
+        keyManagerOf[idTo] = address(0);
+        emit KeyManagerChanged(idTo, address(0));
       }
     }
 
     // add time to new key
-    _timeMachine(iDTo, time, true);
+    _timeMachine(idTo, time, true);
     // trigger event
     emit Transfer(
       keyOwner,
       _to,
-      iDTo
+      idTo
     );
 
     require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
