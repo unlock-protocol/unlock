@@ -219,6 +219,31 @@ contract MixinKeys is
   }
 
   /**
+  * @notice Update transfer and cancel rights for a given key
+  * @param _tokenId The id of the key to assign rights for
+  * @param _keyManager The address with the manager's rights for the given key.
+  * Setting _keyManager to address(0) means the keyOwner is also the keyManager
+  * */
+  //
+  function setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
+  ) public
+    isKey(_tokenId)
+  {
+    require(
+      keyManagerOf[_tokenId] == msg.sender ||
+      isLockManager(msg.sender) ||
+      keyManagerOf[_tokenId] == address(0), 'UNAUTHORIZED_KEY_MANAGER_UPDATE'
+    );
+    if(keyManagerOf[_tokenId] == address(0)) {
+      require(isKeyOwner(_tokenId, msg.sender), 'KEY_MANAGER: NOT_KEY_OWNER');
+    }
+    keyManagerOf[_tokenId] = _keyManager;
+    emit KeyManagerChanged(_tokenId, _keyManager);
+  }
+
+  /**
    * Assigns the key a new tokenId (from totalSupply) if it does not already have
    * one assigned.
    */
