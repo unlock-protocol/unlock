@@ -372,6 +372,8 @@ contract IPublicLock is IERC721Enumerable {
 
   function unlockProtocol() external view returns (address );
 
+  function keyManagerOf(uint) external view returns (address );
+
   ///===================================================================
 
   /**
