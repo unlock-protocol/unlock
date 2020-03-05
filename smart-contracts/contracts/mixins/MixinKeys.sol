@@ -33,6 +33,9 @@ contract MixinKeys is
     bool _timeAdded
   );
 
+  event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
+
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
