@@ -1,11 +1,27 @@
 import Postmate from 'postmate'
-import {
-  CheckoutEvents,
-  UserInfo,
-  TransactionInfo,
-} from '../../../unlock-app/src/hooks/useCheckoutCommunication'
 
 declare let __ENVIRONMENT_VARIABLES__: { unlockAppUrl: string }
+
+/**
+ * These type definitions come from `useCheckoutCommunication` in
+ * `unlock-app`. We'll have to keep them in sync manually because we
+ * don't have access to `unlock-app` files in the `paywall` docker
+ * image.
+ */
+export interface UserInfo {
+  address: string
+}
+
+export interface TransactionInfo {
+  hash: string
+}
+
+export enum CheckoutEvents {
+  userInfo = 'checkout.userInfo',
+  closeModal = 'checkout.closeModal',
+  transactionInfo = 'checkout.transactionInfo',
+}
+/* end type definitions */
 
 const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
 const rawConfig = (window as any).unlockProtocolConfig
