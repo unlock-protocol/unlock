@@ -97,6 +97,14 @@ contract MixinKeys is
     _;
   }
 
+  // Ensure that the caller is the keyManager for this key
+  modifier onlyKeyManager(
+    uint _tokenId
+  ) {
+    require(isKeyManager(_tokenId, msg.sender), 'ONLY_KEY_MANAGER');
+    _;
+  }
+
   /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
@@ -223,8 +231,7 @@ contract MixinKeys is
   * @param _tokenId The id of the key to assign rights for
   * @param _keyManager The address with the manager's rights for the given key.
   * Setting _keyManager to address(0) means the keyOwner is also the keyManager
-  * */
-  //
+   */
   function setKeyManagerOf(
     uint _tokenId,
     address _keyManager
@@ -232,12 +239,30 @@ contract MixinKeys is
     isKey(_tokenId)
   {
     require(
-      keyManagerOf[_tokenId] == msg.sender ||
-      isLockManager(msg.sender) ||
-      keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender), 'UNAUTHORIZED_KEY_MANAGER_UPDATE'
+      isKeyManager(_tokenId, msg.sender) ||
+      isLockManager(msg.sender),
+      'UNAUTHORIZED_KEY_MANAGER_UPDATE'
     );
     keyManagerOf[_tokenId] = _keyManager;
     emit KeyManagerChanged(_tokenId, _keyManager);
+  }
+
+  /**
+  * Returns true if _keyManager is the manager of the key
+  * identified by _tokenId
+   */
+  function isKeyManager(
+    uint _tokenId,
+    address _keyManager
+  ) internal view
+    returns (bool)
+  {
+    if(keyManagerOf[_tokenId] == msg.sender ||
+      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender))) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**

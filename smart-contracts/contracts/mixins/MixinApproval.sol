@@ -43,6 +43,22 @@ contract MixinApproval is
     _;
   }
 
+  // Ensure that the caller is the keyManager of the key
+  // or that the caller has been approved
+  // for ownership of that key
+  modifier onlyKeyManagerOrApproved(
+    uint _tokenId
+  )
+  {
+    require(
+      isKeyManager(_tokenId, msg.sender) ||
+      _isApproved(_tokenId, msg.sender) ||
+      isApprovedForAll(_ownerOf[_tokenId], msg.sender),
+      'ONLY_KEY_MANAGER_OR_APPROVED'
+    );
+    _;
+  }
+
   /**
    * This approves _approved to get ownership of _tokenId.
    * Note: that since this is used for both purchase and transfer approvals
