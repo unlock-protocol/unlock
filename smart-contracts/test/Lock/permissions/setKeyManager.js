@@ -1,6 +1,6 @@
 const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
-// const { ZERO_ADDRESS } = require('hardlydifficult-ethereum-contracts')
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 
@@ -15,7 +15,6 @@ contract('Permissions / KeyManager', accounts => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
   let iD
   let keyManager
   let keyManagerBefore
@@ -34,7 +33,7 @@ contract('Permissions / KeyManager', accounts => {
     it('should have a default KM of 0x00', async () => {
       iD = await lock.getTokenIdFor(accounts[1])
       keyManagerBefore = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManagerBefore, ZERO_ADDRESS)
+      assert.equal(keyManagerBefore, constants.ZERO_ADDRESS)
     })
 
     // ensure that by default the owner is also the keyManager
