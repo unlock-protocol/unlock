@@ -2,14 +2,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  ReactStripeElements,
-  StripeProvider,
   Elements,
-  injectStripe,
+  ElementsConsumer,
   CardNumberElement,
   CardExpiryElement,
-  CardCVCElement,
-} from 'react-stripe-elements'
+  CardCvcElement,
+} from '@stripe/react-stripe-js'
+import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js'
 import {
   Item,
   ItemLabel,
@@ -24,9 +23,9 @@ import {
 import { signPaymentData } from '../../../actions/user'
 import { UnlockError, isWarningError, WarningError } from '../../../utils/Error'
 import { resetError } from '../../../actions/error'
+import configure from '../../../config'
 
 interface PaymentDetailsProps {
-  stripe: stripe.Stripe | null
   signPaymentData: (stripeTokenId: string) => any
   close: (e: WarningError) => void
   errors: WarningError[]
@@ -36,6 +35,8 @@ interface PaymentFormProps {
   signPaymentData: (stripeTokenId: string) => any
   close: (e: WarningError) => void
   errors: WarningError[]
+  stripe: Stripe | null
+  elements: StripeElements | null
 }
 
 interface PaymentFormState {
@@ -45,26 +46,33 @@ interface PaymentFormState {
   submitted: boolean
 }
 
-// Memoized because it would constantly rerender (which cleared the Stripe form)
-// because it couldn't tell the props were the same
-export const PaymentDetails = React.memo(
-  ({ stripe, signPaymentData, close, errors }: PaymentDetailsProps) => {
-    return (
-      <StripeProvider stripe={stripe}>
-        <Elements>
-          <InjectedForm
+const { stripeApiKey } = configure()
+const stripePromise = loadStripe(stripeApiKey)
+
+export const PaymentDetails = ({
+  signPaymentData,
+  close,
+  errors,
+}: PaymentDetailsProps) => {
+  return (
+    <Elements stripe={stripePromise}>
+      <ElementsConsumer>
+        {({ stripe, elements }) => (
+          <PaymentForm
+            stripe={stripe}
+            elements={elements}
             signPaymentData={signPaymentData}
             close={close}
             errors={errors}
           />
-        </Elements>
-      </StripeProvider>
-    )
-  }
-)
+        )}
+      </ElementsConsumer>
+    </Elements>
+  )
+}
 
 export class PaymentForm extends React.Component<
-  PaymentFormProps & ReactStripeElements.InjectedStripeProps,
+  PaymentFormProps,
   PaymentFormState
 > {
   constructor(props: any) {
@@ -95,15 +103,16 @@ export class PaymentForm extends React.Component<
       event.preventDefault()
     }
 
-    const { stripe, signPaymentData } = this.props
+    const { elements, stripe, signPaymentData } = this.props
     const { addressCountry, addressZip, cardHolderName } = this.state
 
     this.setState({
       submitted: true,
     })
 
-    if (stripe) {
-      const result = await stripe.createToken({
+    if (stripe && elements) {
+      const cardNumberElement = elements.getElement(CardNumberElement)
+      const result = await stripe.createToken(cardNumberElement!, {
         address_country: addressCountry,
         address_zip: addressZip,
         name: cardHolderName,
@@ -151,8 +160,10 @@ export class PaymentForm extends React.Component<
   }
 
   render() {
-    const stripeElementStyles = {
-      base: { fontSize: '16px', lineHeight: '40px' },
+    const stripeElementOptions = {
+      style: {
+        base: { fontSize: '16px', lineHeight: '40px' },
+      },
     }
     return (
       <Grid>
@@ -191,16 +202,16 @@ export class PaymentForm extends React.Component<
         </CardContainer>
         <Column size="full">
           <Item title="Credit Card Number">
-            <CardNumberElement style={stripeElementStyles} />
+            <CardNumberElement options={stripeElementOptions} />
           </Item>
           <CardContainer>
             <div>
               <ItemLabel>Expiry Date</ItemLabel>
-              <CardExpiryElement style={stripeElementStyles} />
+              <CardExpiryElement options={stripeElementOptions} />
             </div>
             <div>
               <ItemLabel>CVC Number</ItemLabel>
-              <CardCVCElement style={stripeElementStyles} />
+              <CardCvcElement options={stripeElementOptions} />
             </div>
           </CardContainer>
         </Column>
@@ -209,8 +220,6 @@ export class PaymentForm extends React.Component<
     )
   }
 }
-
-const InjectedForm = injectStripe(PaymentForm)
 
 const mapDispatchToProps = (dispatch: any) => ({
   signPaymentData: (stripeTokenId: string) =>

@@ -14,24 +14,6 @@ const config = {
 
 const store = createUnlockStore()
 
-/* const account = {
- *   emailAddress: 'john@smi.th',
- * }
- *
- * const mockCard: stripe.Card = {
- *   id: 'not_a_real_id',
- *   object: 'a string',
- *   brand: 'Visa',
- *   country: 'United States',
- *   dynamic_last4: '4242',
- *   exp_month: 12,
- *   exp_year: 2021,
- *   fingerprint: 'another string',
- *   funding: 'credit',
- *   last4: '4242',
- *   metadata: {},
- * } */
-
 describe('SettingsContent', () => {
   describe('Possible rendering states', () => {
     it('should prompt for login if there is no account', () => {
@@ -39,7 +21,7 @@ describe('SettingsContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <ConfigContext.Provider value={config}>
-            <SettingsContent config={config} account={null} cards={[]} />
+            <SettingsContent account={null} cards={[]} />
           </ConfigContext.Provider>
         </Provider>
       )
@@ -51,7 +33,7 @@ describe('SettingsContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <ConfigContext.Provider value={config}>
-            <SettingsContent config={config} account={{}} cards={[]} />
+            <SettingsContent account={{}} cards={[]} />
           </ConfigContext.Provider>
         </Provider>
       )

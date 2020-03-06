@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import styled from 'styled-components'
+import { Card } from '@stripe/stripe-js'
 import withConfig from '../../utils/withConfig'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
@@ -13,28 +14,11 @@ import Close from '../interface/buttons/layout/Close'
 import { dismissPurchaseModal } from '../../actions/keyPurchase'
 import svg from '../interface/svg'
 
-interface StripeWindow {
-  Stripe?: stripe.StripeStatic
-}
-
-declare global {
-  interface Window extends StripeWindow {}
-}
-
 interface AccountContentProps {
   emailAddress?: string
-  cards?: stripe.Card[]
+  cards?: Card[]
   pageIsLocked: boolean
-}
-
-interface FullAccountContentProps extends AccountContentProps {
-  config: {
-    stripeApiKey: string
-  }
   dismissPurchaseModal: () => any
-}
-interface AccountContentState {
-  stripe: stripe.Stripe | null
 }
 
 type PageMode =
@@ -43,138 +27,79 @@ type PageMode =
   | 'ConfirmPurchase'
   | 'Unlocked'
 
-export class AccountContent extends React.Component<
-  FullAccountContentProps,
-  AccountContentState
-> {
-  interval: number | null
+const currentPageMode = (
+  pageIsLocked: boolean,
+  emailAddress?: string,
+  cards?: Card[]
+): PageMode => {
+  if (!emailAddress) {
+    return 'LogIn'
+  }
+  if (!pageIsLocked) {
+    return 'Unlocked'
+  }
+  if (!cards || !cards.length) {
+    return 'CollectPaymentDetails'
+  }
+  return 'ConfirmPurchase'
+}
 
-  constructor(props: FullAccountContentProps) {
-    super(props)
-    this.state = {
-      stripe: null,
-    }
-    this.interval = null
+export const AccountContent = ({
+  dismissPurchaseModal,
+  emailAddress,
+  cards,
+  pageIsLocked,
+}: AccountContentProps) => {
+  const components: Record<PageMode, JSX.Element> = {
+    LogIn: <LogInSignUp login />,
+    CollectPaymentDetails: (
+      <GridPadding>
+        <PaymentDetails />
+      </GridPadding>
+    ),
+    ConfirmPurchase: <KeyPurchaseConfirmation />,
+    Unlocked: <AlreadyOwned />,
   }
 
-  componentDidMount() {
-    // componentDidMount only runs in the browser; this is necessary to check
-    // for the stripe-js library which *cannot* be rendered server side
-    this.interval = setInterval(this.getStripe, 500)
-  }
-
-  getComponent = (mode: PageMode) => {
-    const { stripe } = this.state
-    const components: Record<PageMode, JSX.Element> = {
-      LogIn: <LogInSignUp login />,
-      CollectPaymentDetails: (
-        <GridPadding>
-          <PaymentDetails stripe={stripe} />
-        </GridPadding>
-      ),
-      ConfirmPurchase: <KeyPurchaseConfirmation />,
-      Unlocked: <AlreadyOwned />,
-    }
-
-    return components[mode]
-  }
-
-  currentPageMode = (): PageMode => {
-    const { emailAddress, cards, pageIsLocked } = this.props
-    if (!emailAddress) {
-      return 'LogIn'
-    }
-    if (!pageIsLocked) {
-      return 'Unlocked'
-    }
-    if (!cards || !cards.length) {
-      return 'CollectPaymentDetails'
-    }
-    return 'ConfirmPurchase'
-  }
-
-  setStripe = (s: stripe.StripeStatic) => {
-    const {
-      config: { stripeApiKey },
-    } = this.props
-    this.setState({
-      stripe: s(stripeApiKey),
-    })
-  }
-
-  getStripe = () => {
-    getStripeHelper(window, this.interval, this.setStripe)
-  }
-
-  handleClose = () => {
-    const { dismissPurchaseModal } = this.props
-    dismissPurchaseModal()
-  }
-
-  render() {
-    const mode = this.currentPageMode()
-    return (
-      <StyledIframeWrapper>
-        <Head>
-          <title>{pageTitle('Account')}</title>
-          <script src="https://js.stripe.com/v3/" async />
-        </Head>
-        <Quit
-          backgroundColor="var(--lightgrey)"
-          fillColor="var(--grey)"
-          action={this.handleClose}
-        />
-        <ErrorContainer>
-          <Errors />
-        </ErrorContainer>
-        {this.getComponent(mode)}
-      </StyledIframeWrapper>
-    )
-  }
+  return (
+    <StyledIframeWrapper>
+      <Head>
+        <title>{pageTitle('Account')}</title>
+      </Head>
+      <Quit
+        backgroundColor="var(--lightgrey)"
+        fillColor="var(--grey)"
+        action={dismissPurchaseModal}
+      />
+      <ErrorContainer>
+        <Errors />
+      </ErrorContainer>
+      {components[currentPageMode(pageIsLocked, emailAddress, cards)]}
+    </StyledIframeWrapper>
+  )
 }
 
 interface ReduxState {
   account?: {
     emailAddress?: string
-    cards?: stripe.Card[]
+    cards?: Card[]
   }
   pageIsLocked: boolean
 }
 export const mapStateToProps = ({ account, pageIsLocked }: ReduxState) => {
-  const props: AccountContentProps = {
+  const emailAddress = account?.emailAddress
+  const cards = account?.cards
+
+  return {
+    emailAddress,
+    cards,
     pageIsLocked,
   }
-
-  if (account) {
-    const { emailAddress, cards } = account
-    if (emailAddress) {
-      props.emailAddress = emailAddress
-    }
-    if (account.cards) {
-      props.cards = cards
-    }
-  }
-
-  return props
 }
 
 export const mapDispatchToProps = (dispatch: any) => ({
   dismissPurchaseModal: () => dispatch(dismissPurchaseModal()),
 })
-
-export const getStripeHelper = (
-  window: StripeWindow,
-  interval: number | null,
-  setStripe: (s: stripe.StripeStatic) => void
-) => {
-  const { Stripe } = window
-  if (Stripe) {
-    setStripe(Stripe)
-    if (interval) {
-      clearInterval(interval)
-    }
-  }
-}
 
 export default withConfig(
   connect(mapStateToProps, mapDispatchToProps)(AccountContent)
