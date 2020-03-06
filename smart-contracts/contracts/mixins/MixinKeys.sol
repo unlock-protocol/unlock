@@ -259,10 +259,10 @@ contract MixinKeys is
   {
     if(keyManagerOf[_tokenId] == msg.sender ||
       (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender))) {
-        return true;
-      } else {
-        return false;
-      }
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
