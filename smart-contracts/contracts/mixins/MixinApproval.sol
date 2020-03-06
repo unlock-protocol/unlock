@@ -29,20 +29,6 @@ contract MixinApproval is
   // but the approval does not reset when a transfer occurs.
   mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
 
-  // Ensure that the caller has a key
-  // or that the caller has been approved
-  // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
-    uint _tokenId
-  ) {
-    require(
-      isKeyOwner(_tokenId, msg.sender) ||
-        _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(_ownerOf[_tokenId], msg.sender),
-      'ONLY_KEY_OWNER_OR_APPROVED');
-    _;
-  }
-
   // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
   // for ownership of that key
