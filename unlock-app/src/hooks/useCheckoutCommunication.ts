@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 
 export interface UserInfo {
@@ -14,30 +15,56 @@ export enum CheckoutEvents {
   transactionInfo = 'checkout.transactionInfo',
 }
 
+type Payload = UserInfo | TransactionInfo
+
+interface BufferedEvent {
+  kind: CheckoutEvents
+  payload?: Payload
+}
+
 // This is just a convenience hook that wraps the `emit` function
-// provided by the parent around some communication helpers. Consumers
-// are intended to check the `ready` property to know when to start
-// using the hook. If they do not, runtime errors may occur if any of
-// these functions are called before the postmate handshake completes.
+// provided by the parent around some communication helpers. If any
+// events are called before the handshake completes, they go into a
+// buffer. After that, once the handle to the parent is available, all
+// the buffered events are emitted and future events are emitted
+// directly.
 export const useCheckoutCommunication = () => {
+  const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const parent = usePostmateParent()
 
+  const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+    if (!parent) {
+      setBuffer([...buffer, { kind, payload }])
+    } else {
+      parent.emit(kind, payload)
+    }
+  }
+
+  // Once parent is available, we flush the buffer
+  useEffect(() => {
+    if (parent) {
+      buffer.forEach(event => {
+        parent.emit(event.kind, event.payload)
+      })
+      setBuffer([])
+    }
+  }, [parent])
+
   const emitUserInfo = (info: UserInfo) => {
-    parent!.emit(CheckoutEvents.userInfo, info)
+    pushOrEmit(CheckoutEvents.userInfo, info)
   }
 
   const emitCloseModal = () => {
-    parent!.emit(CheckoutEvents.closeModal)
+    pushOrEmit(CheckoutEvents.closeModal)
   }
 
   const emitTransactionInfo = (info: TransactionInfo) => {
-    parent!.emit(CheckoutEvents.transactionInfo, info)
+    pushOrEmit(CheckoutEvents.transactionInfo, info)
   }
 
   return {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
-    ready: !!parent,
   }
 }
