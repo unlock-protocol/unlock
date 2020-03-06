@@ -14,6 +14,7 @@
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "build-checkout": "yarn build-unlock.1.0.js && yarn build-data-iframe.1.0.js",
+    "watch-checkout": "webpack --watch --config unlock.2.0.js.webpack.config.js",
     "build-unlock.1.0.js": "webpack --config unlock.1.0.js.webpack.config.js",
     "build-unlock.2.0.js": "webpack --config unlock.2.0.js.webpack.config.js",
     "build-unlock-web": "cross-env UNLOCK_ENV=prod webpack --config unlock-web-module.webpack.config.js",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
@@ -14,6 +14,7 @@ import {
   PaywallConfig,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
+import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -29,12 +30,26 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
 
   const [showingLogin, setShowingLogin] = useState(false)
 
+  // TODO: consider using context API so we can call useCheckoutCommunication multiple times in different places
+  const { emitUserInfo, ready } = useCheckoutCommunication()
+
+  useEffect(() => {
+    if (ready && account && account.address) {
+      emitUserInfo({
+        address: account.address,
+      })
+    }
+  }, [account])
+
   return (
     <CheckoutWrapper allowClose hideCheckout={() => {}}>
       <Head>
         <title>{pageTitle('Checkout')}</title>
       </Head>
       <BrowserOnly>
+        {config && config.icon && (
+          <img alt="Publisher Icon" src={config.icon} />
+        )}
         <p>{config ? config.callToAction.default : ''}</p>
         {!account && showingLogin && <LogInSignUp login embedded />}
         {!account && !showingLogin && (

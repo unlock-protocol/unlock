@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { ChildAPI, Model } from 'postmate'
+import Postmate from 'postmate'
 
 export const usePostmateParent = (model: any = {}) => {
-  const [parent, setParent] = useState<ChildAPI | undefined>(undefined)
+  const [parent, setParent] = useState<Postmate.ChildAPI | undefined>(undefined)
 
   const handshake = async () => {
-    const parent = await new Model(model)
+    const parent = await new Postmate.Model(model)
     setParent(parent)
   }
 
