@@ -372,6 +372,8 @@ contract IPublicLock is IERC721Enumerable {
 
   function unlockProtocol() external view returns (address );
 
+  function keyManagerOf(uint) external view returns (address );
+
   ///===================================================================
 
   /**
@@ -391,6 +393,16 @@ contract IPublicLock is IERC721Enumerable {
     address _to,
     uint _tokenId,
     uint _timeShared
+  ) external;
+
+  /**
+  * @notice Update transfer and cancel rights for a given key
+  * @param _tokenId The id of the key to assign rights for
+  * @param _keyManager The address to assign the rights to for the given key
+  */
+  function setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
   ) external;
 
   /// @notice A descriptive name for a collection of NFTs in this contract
