@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import {
@@ -8,11 +8,13 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
+import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 
 interface LockProps {
   lock: RawLock
   purchasingLockAddress: string | null
   setPurchasingLockAddress: (lockAddress: string) => void
+  emitTransactionInfo: (info: TransactionInfo) => void
   balances: Balances
 }
 
@@ -20,6 +22,7 @@ export const Lock = ({
   lock,
   purchasingLockAddress,
   setPurchasingLockAddress,
+  emitTransactionInfo,
   balances,
 }: LockProps) => {
   const { purchaseKey, transactionHash } = usePurchaseKey(lock)
@@ -33,6 +36,14 @@ export const Lock = ({
     setPurchasingLockAddress(lock.address)
     purchaseKey()
   }
+
+  useEffect(() => {
+    if (transactionHash) {
+      emitTransactionInfo({
+        hash: transactionHash,
+      })
+    }
+  }, [transactionHash])
 
   const props: LockVariations.LockProps = {
     onClick,
