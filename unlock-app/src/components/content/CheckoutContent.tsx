@@ -30,8 +30,12 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
 
   const [showingLogin, setShowingLogin] = useState(false)
 
-  // TODO: consider using context API so we can call useCheckoutCommunication multiple times in different places
-  const { emitUserInfo, ready } = useCheckoutCommunication()
+  const {
+    emitTransactionInfo,
+    emitCloseModal,
+    emitUserInfo,
+    ready,
+  } = useCheckoutCommunication()
 
   useEffect(() => {
     if (ready && account && account.address) {
@@ -42,7 +46,7 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
   }, [account])
 
   return (
-    <CheckoutWrapper allowClose hideCheckout={() => {}}>
+    <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
       <Head>
         <title>{pageTitle('Checkout')}</title>
       </Head>
@@ -66,6 +70,7 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
           <Locks
             accountAddress={account.address}
             lockAddresses={lockAddresses}
+            emitTransactionInfo={emitTransactionInfo}
           />
         )}
       </BrowserOnly>
