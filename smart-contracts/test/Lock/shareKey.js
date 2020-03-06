@@ -53,7 +53,7 @@ contract('Lock / shareKey', accounts => {
           lock.shareKey(accounts[7], 11, 1000, {
             from: accountWithNoKey1,
           }),
-          'ONLY_KEY_OWNER_OR_APPROVED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
@@ -67,7 +67,7 @@ contract('Lock / shareKey', accounts => {
               from: accounts[6],
             }
           ),
-          'ONLY_KEY_OWNER_OR_APPROVED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
