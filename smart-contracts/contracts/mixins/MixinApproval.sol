@@ -56,7 +56,7 @@ contract MixinApproval is
   )
     public
     onlyIfAlive
-    onlyKeyOwnerOrApproved(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     require(msg.sender != _approved, 'APPROVE_SELF');
 
