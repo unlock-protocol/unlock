@@ -20,7 +20,7 @@ contract('Lock / erc721 / approve', accounts => {
         locks.FIRST.approve(accounts[2], 42, {
           from: accounts[1],
         }),
-        'ONLY_KEY_OWNER_OR_APPROVED'
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
   })
@@ -46,7 +46,7 @@ contract('Lock / erc721 / approve', accounts => {
           locks.FIRST.approve(accounts[2], ID, {
             from: accounts[2],
           }),
-          'ONLY_KEY_OWNER_OR_APPROVED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
     })
