@@ -66,5 +66,8 @@ export const useCheckoutCommunication = () => {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
+    // `ready` is primarily provided as an aid for testing the buffer
+    // implementation.
+    ready: !!parent,
   }
 }
