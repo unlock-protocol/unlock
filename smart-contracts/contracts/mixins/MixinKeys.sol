@@ -234,11 +234,8 @@ contract MixinKeys is
     require(
       keyManagerOf[_tokenId] == msg.sender ||
       isLockManager(msg.sender) ||
-      keyManagerOf[_tokenId] == address(0), 'UNAUTHORIZED_KEY_MANAGER_UPDATE'
+      keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender), 'UNAUTHORIZED_KEY_MANAGER_UPDATE'
     );
-    if(keyManagerOf[_tokenId] == address(0)) {
-      require(isKeyOwner(_tokenId, msg.sender), 'KEY_MANAGER: NOT_KEY_OWNER');
-    }
     keyManagerOf[_tokenId] = _keyManager;
     emit KeyManagerChanged(_tokenId, _keyManager);
   }
