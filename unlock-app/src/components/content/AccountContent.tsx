@@ -87,8 +87,8 @@ interface ReduxState {
   pageIsLocked: boolean
 }
 export const mapStateToProps = ({ account, pageIsLocked }: ReduxState) => {
-  const emailAddress = account?.emailAddress
-  const cards = account?.cards
+  const emailAddress = account ? account.emailAddress : undefined
+  const cards = account ? account.cards : undefined
 
   return {
     emailAddress,
