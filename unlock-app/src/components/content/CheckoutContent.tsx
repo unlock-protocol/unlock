@@ -34,11 +34,10 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
     emitTransactionInfo,
     emitCloseModal,
     emitUserInfo,
-    ready,
   } = useCheckoutCommunication()
 
   useEffect(() => {
-    if (ready && account && account.address) {
+    if (account && account.address) {
       emitUserInfo({
         address: account.address,
       })
