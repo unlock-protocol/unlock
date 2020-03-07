@@ -12,13 +12,13 @@ contract MixinSignatures
   );
 
   // Stores a nonce per user to use for signed messages
-  mapping(address => uint) public keyOwnerToNonce;
+  mapping(address => uint) public keyManagerToNonce;
 
   /// @notice Validates an off-chain approval signature.
   /// @dev If valid the nonce is consumed, else revert.
   modifier consumeOffchainApproval(
     bytes32 _hash,
-    address _keyOwner,
+    address _keyManager,
     uint8 _v,
     bytes32 _r,
     bytes32 _s
@@ -30,10 +30,10 @@ contract MixinSignatures
         _v,
         _r,
         _s
-      ) == _keyOwner, 'INVALID_SIGNATURE'
+      ) == _keyManager, 'INVALID_SIGNATURE'
     );
-    keyOwnerToNonce[_keyOwner]++;
-    emit NonceChanged(_keyOwner, keyOwnerToNonce[_keyOwner]);
+    keyManagerToNonce[_keyManager]++;
+    emit NonceChanged(_keyManager, keyManagerToNonce[_keyManager]);
     _;
   }
 
