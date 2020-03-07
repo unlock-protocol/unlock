@@ -95,18 +95,20 @@ contract MixinApproval is
   }
 
   /**
-   * @dev Tells whether an operator is approved by a given owner
+   * @dev Tells whether an operator is approved by a given keyManager
    * @param _keyOwner owner address which you want to query the approval of
    * @param _operator operator address which you want to query the approval of
    * @return bool whether the given operator is approved by the given owner
    */
   function isApprovedForAll(
-    address _keyOwner,
+    address _owner,
     address _operator
   ) public view
     returns (bool)
   {
-    return ownerToOperatorApproved[_keyOwner][_operator];
+    uint tokenId = keyByOwner[_owner].tokenId;
+    address keyManager = keyManagerOf[tokenId];
+    return managerToOperatorApproved[keyManager][_operator];
   }
 
   /**
