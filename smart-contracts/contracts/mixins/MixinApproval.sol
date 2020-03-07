@@ -96,7 +96,7 @@ contract MixinApproval is
 
   /**
    * @dev Tells whether an operator is approved by a given keyManager
-   * @param _keyOwner owner address which you want to query the approval of
+   * @param _owner owner address which you want to query the approval of
    * @param _operator operator address which you want to query the approval of
    * @return bool whether the given operator is approved by the given owner
    */
@@ -108,7 +108,11 @@ contract MixinApproval is
   {
     uint tokenId = keyByOwner[_owner].tokenId;
     address keyManager = keyManagerOf[tokenId];
-    return managerToOperatorApproved[keyManager][_operator];
+    if(keyManager == address(0)) {
+      return managerToOperatorApproved[_owner][_operator];
+    } else {
+      return managerToOperatorApproved[keyManager][_operator];
+    }
   }
 
   /**
