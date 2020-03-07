@@ -60,14 +60,17 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   * @dev Destroys the key and sends a refund based on the amount of time remaining.
+   * @param _tokenId The id of the key to cancel.
    */
-  function cancelAndRefund()
+  function cancelAndRefund(uint _tokenId)
     external
+    onlyKeyManager(_tokenId)
   {
-    uint refund = _getCancelAndRefundValue(msg.sender);
+    address keyOwner = ownerOf(_tokenId)
+    uint refund = _getCancelAndRefundValue(keyOwner);
 
-    _cancelAndRefund(msg.sender, refund);
+    _cancelAndRefund(keyOwner, refund);
   }
 
   /**
