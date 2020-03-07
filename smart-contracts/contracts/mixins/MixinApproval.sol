@@ -24,10 +24,12 @@ contract MixinApproval is
   // Note 3: for sales (new keys on restricted locks), both addresses will be the same
   mapping (uint => address) private approved;
 
-  // Keeping track of approved operators for a Key owner.
-  // Since an owner can have up to 1 Key, this is similiar to above
-  // but the approval does not reset when a transfer occurs.
-  mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
+  // Keeping track of approved operators for a given Key manager.
+  // This approves a given operator for all keys managed by the calling "keyManager"
+  // The caller may not currently be the keyManager for ANY keys.
+  // These approvals are never reset/revoked automatically, unlike "approved",
+  // which is reset on transfer.
+  mapping (address => mapping (address => bool)) private managerToOperatorApproved;
 
   // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
