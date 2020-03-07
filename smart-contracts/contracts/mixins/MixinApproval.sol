@@ -19,9 +19,7 @@ contract MixinApproval is
   // This is a mapping of addresses which have approved
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
-  // be a single approved beneficiary
-  // Note 2: for transfer, both addresses will be different
-  // Note 3: for sales (new keys on restricted locks), both addresses will be the same
+  // be a single approved address
   mapping (uint => address) private approved;
 
   // Keeping track of approved operators for a given Key manager.
@@ -79,7 +77,7 @@ contract MixinApproval is
     onlyIfAlive
   {
     require(_to != msg.sender, 'APPROVE_SELF');
-    ownerToOperatorApproved[msg.sender][_to] = _approved;
+    managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
