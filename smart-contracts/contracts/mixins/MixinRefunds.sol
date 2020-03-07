@@ -67,7 +67,7 @@ contract MixinRefunds is
     external
     onlyKeyManager(_tokenId)
   {
-    address keyOwner = ownerOf(_tokenId)
+    address keyOwner = ownerOf(_tokenId);
     uint refund = _getCancelAndRefundValue(keyOwner);
 
     _cancelAndRefund(keyOwner, refund);
