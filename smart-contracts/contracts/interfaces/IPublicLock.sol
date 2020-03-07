@@ -272,7 +272,7 @@ contract IPublicLock is IERC721Enumerable {
   /**
    * @notice Destroys the msg.sender's key and sends a refund based on the amount of time remaining.
    */
-  function cancelAndRefund() external;
+  function cancelAndRefund(uint) external;
 
   /**
    * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
