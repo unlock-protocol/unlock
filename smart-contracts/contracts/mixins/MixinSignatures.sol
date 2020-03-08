@@ -7,7 +7,7 @@ contract MixinSignatures
 {
   /// @notice emits anytime the nonce used for off-chain approvals changes.
   event NonceChanged(
-    address indexed keyOwner,
+    address indexed keyManager,
     uint nextAvailableNonce
   );
 
@@ -46,8 +46,8 @@ contract MixinSignatures
     uint _nextAvailableNonce
   ) external
   {
-    require(_nextAvailableNonce > keyOwnerToNonce[msg.sender], 'NONCE_ALREADY_USED');
-    keyOwnerToNonce[msg.sender] = _nextAvailableNonce;
+    require(_nextAvailableNonce > keyManagerToNonce[msg.sender], 'NONCE_ALREADY_USED');
+    keyManagerToNonce[msg.sender] = _nextAvailableNonce;
     emit NonceChanged(msg.sender, _nextAvailableNonce);
   }
 }
