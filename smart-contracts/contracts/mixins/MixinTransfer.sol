@@ -136,6 +136,12 @@ contract MixinTransfer is
       // an expired key is no longer a valid key, so the new tokenID is the sender's tokenID
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
       toKey.tokenId = fromKey.tokenId;
+
+      // If the key owner is not already the key Manager, make it so
+      if(keyManagerOf[toKey.tokenId] != address(0)) {
+        keyManagerOf[toKey.tokenId] = address(0);
+        emit KeyManagerChanged(toKey.tokenId, address(0));
+      }
       _recordOwner(_recipient, _tokenId);
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
