@@ -1,8 +1,9 @@
 import React from 'react'
+import { Card } from '@stripe/stripe-js'
 import { Grid, SectionHeader, Item, ItemValue } from './styles'
 
 interface PaymentMethodProps {
-  cards: stripe.Card[]
+  cards: Card[]
 }
 
 // TODO: Make this prettier

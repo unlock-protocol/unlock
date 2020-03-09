@@ -1,5 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
+import { Card } from '@stripe/stripe-js'
 import { Key, Lock } from '../../../../unlockTypes'
 import {
   KeyPurchaseConfirmation,
@@ -13,7 +14,7 @@ import { Fees } from '../../../../actions/keyPurchase'
 import { resetError } from '../../../../actions/error'
 import { WarningError, UnlockError } from '../../../../utils/Error'
 
-const cards: stripe.Card[] = [
+const cards: Card[] = [
   {
     id: 'card_1Eox8QIsiZS2oQBMkU2KqFnq',
     brand: 'Visa',
@@ -21,11 +22,22 @@ const cards: stripe.Card[] = [
     exp_year: 2020,
     last4: '4242',
     country: 'United States',
-    object: '',
     dynamic_last4: '4242',
     fingerprint: '',
     funding: 'credit',
     metadata: {},
+    address_city: null,
+    address_country: 'USA',
+    address_line1: null,
+    address_line1_check: null,
+    address_line2: null,
+    address_zip: '90210',
+    address_zip_check: null,
+    address_state: null,
+    object: 'card',
+    cvc_check: null,
+    name: 'Rupert Hendrickson',
+    tokenization_method: null,
   },
   {
     id: 'card_1EoxVMIsiZS2oQBMFzQ3ToR5',
@@ -34,11 +46,22 @@ const cards: stripe.Card[] = [
     exp_year: 2020,
     last4: '0005',
     country: 'United States',
-    object: '',
     dynamic_last4: '0005',
     fingerprint: '',
     funding: 'credit',
     metadata: {},
+    address_city: null,
+    address_country: 'USA',
+    address_line1: null,
+    address_line1_check: null,
+    address_line2: null,
+    address_zip: '90210',
+    address_zip_check: null,
+    address_state: null,
+    object: 'card',
+    cvc_check: null,
+    name: 'Rupert Hendrickson',
+    tokenization_method: null,
   },
 ]
 
