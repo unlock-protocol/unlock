@@ -258,7 +258,7 @@ contract IPublicLock is IERC721Enumerable {
   ) external view returns (uint);
 
   /**
-   * @dev Invoked by the lock owner to destroy the user's key and perform a refund and cancellation of the key
+   * @dev Invoked by the lock owner to expire the user's key and perform a refund and cancellation of the key
    * @param _keyOwner The key owner to whom we wish to send a refund to
    * @param amount The amount to refund the key-owner
    * @dev Throws if called by other than owner
@@ -270,13 +270,14 @@ contract IPublicLock is IERC721Enumerable {
   ) external;
 
    /**
-   * @dev Destroys the key managed by msg.sender and sends a refund
-   * based on the amount of time remaining.
+   * @dev allows the key manager to expire a given tokenId
+   * and send a refund to the keyOwner based on the amount of time remaining.
+   * @param _tokenId The id of the key to cancel.
    */
-  function cancelAndRefund(uint) external;
+  function cancelAndRefund(uint _tokenId) external;
 
   /**
-   * @dev Cancels a key managed by a different user and sends the funds to the msg.sender.
+   * @dev Cancels a key managed by a different user and sends the funds to the keyOwner.
    * @param _keyManager the key managed by this user will be canceled
    * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyManager
    * @param _tokenId The key to cancel
