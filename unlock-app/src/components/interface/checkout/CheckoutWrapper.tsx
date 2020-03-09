@@ -22,10 +22,7 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   icon,
 }: React.PropsWithChildren<WrapperProps>) => {
   return (
-    <Wrapper
-      bgColor="var(--offwhite)"
-      onClick={allowClose ? hideCheckout : () => {}}
-    >
+    <Wrapper bgColor="var(--offwhite)">
       {allowClose ? (
         <CloseButton
           backgroundColor="var(--lightgrey)"

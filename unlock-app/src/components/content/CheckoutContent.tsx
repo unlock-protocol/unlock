@@ -8,7 +8,6 @@ import LogInSignUp from '../interface/LogInSignUp'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
-import { Greyout } from '../interface/modal-templates/styles'
 import {
   Account as AccountType,
   Router,
@@ -46,37 +45,35 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
   }, [account])
 
   return (
-    <Greyout>
-      <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
-        <Head>
-          <title>{pageTitle('Checkout')}</title>
-        </Head>
-        <BrowserOnly>
-          {config && config.icon && (
-            <img alt="Publisher Icon" src={config.icon} />
-          )}
-          <p>{config ? config.callToAction.default : ''}</p>
-          {!account && showingLogin && <LogInSignUp login embedded />}
-          {!account && !showingLogin && (
-            <>
-              <NotLoggedInLocks lockAddresses={lockAddresses} />
-              <input
-                type="button"
-                onClick={() => setShowingLogin(true)}
-                value="Log in"
-              />
-            </>
-          )}
-          {account && (
-            <Locks
-              accountAddress={account.address}
-              lockAddresses={lockAddresses}
-              emitTransactionInfo={emitTransactionInfo}
+    <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
+      <Head>
+        <title>{pageTitle('Checkout')}</title>
+      </Head>
+      <BrowserOnly>
+        {config && config.icon && (
+          <img alt="Publisher Icon" src={config.icon} />
+        )}
+        <p>{config ? config.callToAction.default : ''}</p>
+        {!account && showingLogin && <LogInSignUp login embedded />}
+        {!account && !showingLogin && (
+          <>
+            <NotLoggedInLocks lockAddresses={lockAddresses} />
+            <input
+              type="button"
+              onClick={() => setShowingLogin(true)}
+              value="Log in"
             />
-          )}
-        </BrowserOnly>
-      </CheckoutWrapper>
-    </Greyout>
+          </>
+        )}
+        {account && (
+          <Locks
+            accountAddress={account.address}
+            lockAddresses={lockAddresses}
+            emitTransactionInfo={emitTransactionInfo}
+          />
+        )}
+      </BrowserOnly>
+    </CheckoutWrapper>
   )
 }
 
