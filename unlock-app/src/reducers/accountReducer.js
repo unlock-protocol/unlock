@@ -14,7 +14,10 @@ const accountReducer = (state = initialState, action) => {
   }
 
   if (action.type == UPDATE_ACCOUNT) {
-    return Object.assign(state, action.update)
+    return {
+      ...state,
+      ...action.update,
+    }
   }
 
   return state
