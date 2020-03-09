@@ -252,7 +252,7 @@ contract MixinKeys is
    * on transfer, sharing and purchase.
    * @param _tokenId The key to reset
    */
-  function resetKeyManager(
+  function _resetKeyManagerOf(
     uint _tokenId
   ) internal
   {
