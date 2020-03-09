@@ -248,6 +248,21 @@ contract MixinKeys is
   }
 
   /**
+   * @notice This is used internally for resetting expired keys
+   * on transfer, sharing and purchase.
+   * @param _tokenId The key to reset
+   */
+  function resetKeyManager(
+    uint _tokenId
+  ) internal
+  {
+    if(keyManagerOf[_tokenId] != address(0)) {
+      keyManagerOf[_tokenId] = address(0);
+      emit KeyManagerChanged(_tokenId, address(0));
+    }
+  }
+
+  /**
   * Returns true if _keyManager is the manager of the key
   * identified by _tokenId
    */
