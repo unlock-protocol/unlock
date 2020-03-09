@@ -76,11 +76,9 @@ contract MixinPurchase is
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
-      // If the key owner is not already the key Manager, make it so
-      if(keyManagerOf[toKey.tokenId] != address(0)) {
-        keyManagerOf[toKey.tokenId] = address(0);
-        emit KeyManagerChanged(toKey.tokenId, address(0));
-      }
+      // reset the key Managerto 0x00
+      _resetKeyManagerOf(toKey.tokenId);
+
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
