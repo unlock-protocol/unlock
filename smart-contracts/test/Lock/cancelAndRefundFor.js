@@ -37,6 +37,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   const txSender = accounts[9]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   let lockOwner
+  let tokenId
 
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
@@ -54,7 +55,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   })
 
   it('can read the current nonce', async () => {
-    const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwners[0]))
+    const nonce = new BigNumber(await lock.keyManagerToNonce.call(keyOwners[0]))
     assert.equal(nonce.toFixed(), 0)
   })
 
@@ -81,11 +82,13 @@ contract('Lock / cancelAndRefundFor', accounts => {
         }),
         keyOwners[0]
       )
+      tokenId = await lock.getTokenIdFor.call(keyOwners[0])
       txObj = await lock.cancelAndRefundFor(
         keyOwners[0],
         signature.v,
         signature.r,
         signature.s,
+        tokenId,
         {
           from: txSender,
         }
@@ -108,7 +111,9 @@ contract('Lock / cancelAndRefundFor', accounts => {
     })
 
     it('can read the non-zero nonce', async () => {
-      const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwners[0]))
+      const nonce = new BigNumber(
+        await lock.keyManagerToNonce.call(keyOwners[0])
+      )
       assert.equal(nonce.toFixed(), 1)
     })
 
@@ -131,7 +136,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
 
     it('emits NonceChanged', async () => {
       const e = txObj.receipt.logs.find(e => e.event === 'NonceChanged')
-      assert.equal(e.args.keyOwner, keyOwners[0])
+      assert.equal(e.args.keyManager, keyOwners[0])
       assert.equal(e.args.nextAvailableNonce, '1')
     })
   })
@@ -147,12 +152,14 @@ contract('Lock / cancelAndRefundFor', accounts => {
         keyOwners[1]
       )
       await lock.invalidateOffchainApproval('1', { from: keyOwners[1] })
+      tokenId = await lock.getTokenIdFor.call(keyOwners[1])
       await reverts(
         lock.cancelAndRefundFor(
           keyOwners[1],
           signature.v,
           signature.r,
           signature.s,
+          tokenId,
           {
             from: txSender,
           }
@@ -166,11 +173,13 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[2], txSender),
         keyOwners[2]
       )
+      tokenId = await lock.getTokenIdFor.call(keyOwners[2])
       await lock.cancelAndRefundFor(
         keyOwners[2],
         signature.v,
         signature.r,
         signature.s,
+        tokenId,
         {
           from: txSender,
         }
@@ -185,6 +194,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
           signature.v,
           signature.r,
           signature.s,
+          tokenId,
           {
             from: txSender,
           }
@@ -202,12 +212,14 @@ contract('Lock / cancelAndRefundFor', accounts => {
         signature.r.substr(0, 4) +
         (signature.r[4] === '0' ? '1' : '0') +
         signature.r.substr(5)
+      tokenId = await lock.getTokenIdFor.call(keyOwners[3])
       await reverts(
         lock.cancelAndRefundFor(
           keyOwners[3],
           signature.v,
           signature.r,
           signature.s,
+          tokenId,
           {
             from: txSender,
           }
@@ -228,12 +240,14 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )
+      tokenId = await lock.getTokenIdFor.call(keyOwners[3])
       await reverts(
         lock.cancelAndRefundFor(
           keyOwners[3],
           signature.v,
           signature.r,
           signature.s,
+          tokenId,
           {
             from: txSender,
           }
@@ -255,12 +269,14 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )
+      tokenId = await lock.getTokenIdFor.call(keyOwners[3])
       await reverts(
         lock.cancelAndRefundFor(
           keyOwners[3],
           signature.v,
           signature.r,
           signature.s,
+          tokenId,
           {
             from: txSender,
           }

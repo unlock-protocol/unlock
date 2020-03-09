@@ -21,7 +21,7 @@ contract('Lock / invalidateOffchainApproval', accounts => {
   })
 
   it('can read the current nonce', async () => {
-    const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwner))
+    const nonce = new BigNumber(await lock.keyManagerToNonce.call(keyOwner))
     assert.equal(nonce.toFixed(), 0)
   })
 
@@ -31,7 +31,7 @@ contract('Lock / invalidateOffchainApproval', accounts => {
     })
 
     it('can read the current nonce', async () => {
-      const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwner))
+      const nonce = new BigNumber(await lock.keyManagerToNonce.call(keyOwner))
       assert.equal(nonce.toFixed(), '1')
     })
   })
@@ -43,7 +43,7 @@ contract('Lock / invalidateOffchainApproval', accounts => {
     })
 
     it('can read the current nonce', async () => {
-      const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwner))
+      const nonce = new BigNumber(await lock.keyManagerToNonce.call(keyOwner))
       assert.equal(nonce.toFixed(), nonce)
     })
 

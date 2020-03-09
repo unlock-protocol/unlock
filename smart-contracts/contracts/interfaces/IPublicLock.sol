@@ -258,7 +258,7 @@ contract IPublicLock is IERC721Enumerable {
   ) external view returns (uint);
 
   /**
-   * @dev Invoked by the lock owner to destroy the user's key and perform a refund and cancellation of the key
+   * @dev Invoked by the lock owner to expire the user's key and perform a refund and cancellation of the key
    * @param _keyOwner The key owner to whom we wish to send a refund to
    * @param amount The amount to refund the key-owner
    * @dev Throws if called by other than owner
@@ -269,21 +269,25 @@ contract IPublicLock is IERC721Enumerable {
     uint amount
   ) external;
 
-  /**
-   * @notice Destroys the msg.sender's key and sends a refund based on the amount of time remaining.
+   /**
+   * @dev allows the key manager to expire a given tokenId
+   * and send a refund to the keyOwner based on the amount of time remaining.
+   * @param _tokenId The id of the key to cancel.
    */
-  function cancelAndRefund() external;
+  function cancelAndRefund(uint _tokenId) external;
 
   /**
-   * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
-   * @param _keyOwner this user's key will be canceled
-   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyOwner
+   * @dev Cancels a key managed by a different user and sends the funds to the keyOwner.
+   * @param _keyManager the key managed by this user will be canceled
+   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyManager
+   * @param _tokenId The key to cancel
    */
   function cancelAndRefundFor(
-    address _keyOwner,
+    address _keyManager,
     uint8 _v,
     bytes32 _r,
-    bytes32 _s
+    bytes32 _s,
+    uint _tokenId
   ) external;
 
   /**
@@ -317,17 +321,17 @@ contract IPublicLock is IERC721Enumerable {
     address _keyOwner
   ) external view returns (uint refund);
 
-  function keyOwnerToNonce(address ) external view returns (uint256 );
+  function keyManagerToNonce(address ) external view returns (uint256 );
 
   /**
    * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
    * @dev this can be computed in JS instead of read from the contract.
-   * @param _keyOwner The key owner's address (also the message signer)
+   * @param _keyManager The key manager's address (also the message signer)
    * @param _txSender The address cancelling cancel on behalf of the keyOwner
    * @return approvalHash The hash to sign
    */
   function getCancelAndRefundApprovalHash(
-    address _keyOwner,
+    address _keyManager,
     address _txSender
   ) external view returns (bytes32 approvalHash);
 
