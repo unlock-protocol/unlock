@@ -139,10 +139,8 @@ contract MixinTransfer is
       uint toId = toKey.tokenId
 
       // Reset the key Manager to the key owner
-      if(keyManagerOf[toId] != address(0)) {
-        keyManagerOf[toId] = address(0);
-        emit KeyManagerChanged(toId, address(0));
-      }
+      _resetKeyManagerOf(toId);
+
       _recordOwner(_recipient, _tokenId);
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
