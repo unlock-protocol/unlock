@@ -22,7 +22,13 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   icon,
 }: React.PropsWithChildren<WrapperProps>) => {
   return (
-    <Wrapper bgColor="var(--offwhite)">
+    <Wrapper
+      bgColor="var(--offwhite)"
+      onClick={e => {
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation()
+      }}
+    >
       {allowClose ? (
         <CloseButton
           backgroundColor="var(--lightgrey)"
