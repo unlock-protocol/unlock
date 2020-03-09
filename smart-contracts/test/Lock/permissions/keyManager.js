@@ -85,7 +85,7 @@ contract('Permissions / KeyManager', accounts => {
       })
     })
 
-    it.skip('should leave the KM == 0x00(default) for new recipients', async () => {
+    it('should leave the KM == 0x00(default) for new recipients', async () => {
       iD = await lock.getTokenIdFor(keyOwner1)
       await lock.transferFrom(keyOwner1, accounts[9], iD, {
         from: keyOwner1,
@@ -94,7 +94,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, ZERO_ADDRESS)
     })
 
-    it.skip('should not change KM for existing valid key owners', async () => {
+    it('should not change KM for existing valid key owners', async () => {
       let iD8 = await lock.getTokenIdFor(accounts[8])
       iD = await lock.getTokenIdFor(keyOwner2)
       keyManagerBefore = await lock.keyManagerOf.call(iD)
@@ -105,7 +105,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManagerBefore, keyManager)
     })
 
-    it.skip('should reset the KM to 0x00 for expired key owners', async () => {
+    it('should reset the KM to 0x00 for expired key owners', async () => {
       iD = await lock.getTokenIdFor(keyOwner5)
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       assert.notEqual(keyManagerBefore, ZERO_ADDRESS)
@@ -121,7 +121,7 @@ contract('Permissions / KeyManager', accounts => {
   })
 
   describe('Key Sharing', () => {
-    it.skip('should leave the KM == 0x00(default) for new recipients', async () => {
+    it('should leave the KM == 0x00(default) for new recipients', async () => {
       iD = await lock.getTokenIdFor(keyOwner3)
       await lock.shareKey(accounts[8], iD, oneDay, {
         from: keyOwner3,
@@ -130,7 +130,7 @@ contract('Permissions / KeyManager', accounts => {
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, ZERO_ADDRESS)
     })
-    it.skip('should not change KM for existing valid key owners', async () => {
+    it('should not change KM for existing valid key owners', async () => {
       iD = await lock.getTokenIdFor(keyOwner3)
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       const iD1 = await lock.getTokenIdFor(keyOwner1)
@@ -141,7 +141,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManagerBefore, keyManager)
     })
 
-    it.skip('should reset the KM to 0x00 for expired key owners', async () => {
+    it('should reset the KM to 0x00 for expired key owners', async () => {
       // ensure keyOwner1 has a valid key
       assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
       const iD1 = await lock.getTokenIdFor.call(keyOwner1)
@@ -182,7 +182,7 @@ contract('Permissions / KeyManager', accounts => {
   describe('Key Granting', () => {
     let validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
 
-    it.skip('should let KeyGranter set an arbitrary KM for new keys', async () => {
+    it('should let KeyGranter set an arbitrary KM for new keys', async () => {
       await lock.grantKeys(
         [accounts[7]],
         [validExpirationTimestamp],
@@ -196,7 +196,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, accounts[8])
     })
 
-    it.skip('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
+    it('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
       assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
       await lock.grantKeys([accounts[7]], [newTimestamp], [keyGranter], {
@@ -207,7 +207,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, keyGranter)
     })
 
-    it.skip('should let KeyGranter set an arbitrary KM for expired keys', async () => {
+    it('should let KeyGranter set an arbitrary KM for expired keys', async () => {
       await lock.expireAndRefundFor(accounts[7], 0, { from: lockCreator })
       assert.equal(await lock.getHasValidKey.call(accounts[7]), false)
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
