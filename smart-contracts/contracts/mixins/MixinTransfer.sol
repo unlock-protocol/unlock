@@ -92,10 +92,7 @@ contract MixinTransfer is
       );
     } else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      if(keyManagerOf[iDTo] != address(0)) {
-        keyManagerOf[iDTo] = address(0);
-        emit KeyManagerChanged(iDTo, address(0));
-      }
+      _resetKeyManagerOf(iDTo);
     }
 
     // add time to new key
