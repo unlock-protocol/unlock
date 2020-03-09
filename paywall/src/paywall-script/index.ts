@@ -1,6 +1,9 @@
 import Postmate from 'postmate'
+import './iframe.css'
+import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
 
 declare let __ENVIRONMENT_VARIABLES__: { unlockAppUrl: string }
+const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
  * These type definitions come from `useCheckoutCommunication` in
@@ -27,21 +30,39 @@ const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
 const rawConfig = (window as any).unlockProtocolConfig
 const encodedConfig = encodeURIComponent(JSON.stringify(rawConfig))
 
-const handshake = new Postmate({
-  url: `${unlockAppUrl}/checkout?paywallConfig=${encodedConfig}`,
-  classListArray: ['unlock-protocol-checkout'],
-})
+let iframe: Element | undefined
 
-handshake.then(child => {
-  child.on(CheckoutEvents.closeModal, () => {
-    console.log('Close the modal when we receive this event.')
+let loadCheckoutModal = () => {
+  if (iframe) {
+    iframe.classList.add('show')
+  } else {
+    shakeHands()
+  }
+}
+
+dispatchEvent('locked')
+
+async function shakeHands() {
+  const handshake = new Postmate({
+    url: `${unlockAppUrl}/checkout?paywallConfig=${encodedConfig}`,
+    classListArray: [checkoutIframeClassName, 'show'],
   })
 
-  child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
-    console.log(`got user address: ${info.address}`)
-  })
+  handshake.then(child => {
+    iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
 
-  child.on(CheckoutEvents.transactionInfo, (info: TransactionInfo) => {
-    console.log(`got transaction hash: ${info.hash}`)
+    child.on(CheckoutEvents.closeModal, () => {
+      iframe!.classList.remove('show')
+    })
+
+    child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
+      console.log(`got user address: ${info.address}`)
+    })
+
+    child.on(CheckoutEvents.transactionInfo, (info: TransactionInfo) => {
+      console.log(`got transaction hash: ${info.hash}`)
+    })
   })
-})
+}
+
+setupUnlockProtocolVariable({ loadCheckoutModal })

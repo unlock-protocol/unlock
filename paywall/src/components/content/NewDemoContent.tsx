@@ -51,6 +51,7 @@ export default function NewDemoContent() {
     url.searchParams.get('unlockUserAccounts') === 'true'
   const useMetadataInputs: boolean =
     url.searchParams.get('metadataInputs') === 'true'
+  const useNewCheckout: boolean = url.searchParams.get('newCheckout') === 'true'
 
   window.unlockProtocolConfig = {
     persistentCheckout: false,
@@ -90,11 +91,13 @@ export default function NewDemoContent() {
     window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
   }
 
+  const scriptVersion = useNewCheckout ? '2.0' : '1.0'
+
   return (
     <>
       <Head>
         <title>{pageTitle('Demo')}</title>
-        <script src="/static/unlock.1.0.min.js" />
+        <script src={`/static/unlock.${scriptVersion}.min.js`} />
       </Head>
       <DemoComponent locked={locked} checkout={checkout} />
     </>
