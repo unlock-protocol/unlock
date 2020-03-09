@@ -85,7 +85,7 @@ contract('Permissions / KeyManager', accounts => {
       await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
     })
 
-    it.skip('should leave the KM == 0x00(default) for new recipients', async () => {
+    it('should leave the KM == 0x00(default) for new recipients', async () => {
       iD = await lock.getTokenIdFor(keyOwner1)
       await lock.transferFrom(keyOwner1, accounts[8], iD, {
         from: keyOwner1,
@@ -95,7 +95,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, ZERO_ADDRESS)
     })
 
-    it.skip('should not change KM for existing valid key owners', async () => {
+    it('should not change KM for existing valid key owners', async () => {
       let iD8 = await lock.getTokenIdFor(accounts[8])
       iD = await lock.getTokenIdFor(keyOwner2)
       keyManagerBefore = await lock.keyManagerOf.call(iD)
@@ -106,7 +106,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManagerBefore, keyManager)
     })
 
-    it.skip('should reset the KM to 0x00 for expired key owners', async () => {
+    it('should reset the KM to 0x00 for expired key owners', async () => {
       iD = await lock.getTokenIdFor(keyOwner3)
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, accounts[9])

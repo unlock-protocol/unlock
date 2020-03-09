@@ -136,7 +136,7 @@ contract MixinTransfer is
       // an expired key is no longer a valid key, so the new tokenID is the sender's tokenID
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
       toKey.tokenId = fromKey.tokenId;
-      uint toId = toKey.tokenId
+      uint toId = toKey.tokenId;
 
       // Reset the key Manager to the key owner
       _resetKeyManagerOf(toId);
