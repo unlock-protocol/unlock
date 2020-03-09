@@ -34,7 +34,7 @@ contract('Lock / uniqueTokenIds', accounts => {
       let tokenId1Before = await lock.getTokenIdFor(keyOwner1)
       let tokenId2Before = await lock.getTokenIdFor(keyOwner2)
       const keyExpirations = keyOwners.map(account => {
-        return lock.expireKeyFor(account, {
+        return lock.expireAndRefundFor(account, 0, {
           from: lockOwner,
         })
       })

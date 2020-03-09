@@ -29,17 +29,19 @@ contract MixinApproval is
   // but the approval does not reset when a transfer occurs.
   mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
 
-  // Ensure that the caller has a key
+  // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
   // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
+  modifier onlyKeyManagerOrApproved(
     uint _tokenId
-  ) {
+  )
+  {
     require(
-      isKeyOwner(_tokenId, msg.sender) ||
-        _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(_ownerOf[_tokenId], msg.sender),
-      'ONLY_KEY_OWNER_OR_APPROVED');
+      isKeyManager(_tokenId, msg.sender) ||
+      _isApproved(_tokenId, msg.sender) ||
+      isApprovedForAll(_ownerOf[_tokenId], msg.sender),
+      'ONLY_KEY_MANAGER_OR_APPROVED'
+    );
     _;
   }
 
@@ -54,7 +56,7 @@ contract MixinApproval is
   )
     public
     onlyIfAlive
-    onlyKeyOwnerOrApproved(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     require(msg.sender != _approved, 'APPROVE_SELF');
 
@@ -94,17 +96,17 @@ contract MixinApproval is
 
   /**
    * @dev Tells whether an operator is approved by a given owner
-   * @param _owner owner address which you want to query the approval of
+   * @param _keyOwner owner address which you want to query the approval of
    * @param _operator operator address which you want to query the approval of
    * @return bool whether the given operator is approved by the given owner
    */
   function isApprovedForAll(
-    address _owner,
+    address _keyOwner,
     address _operator
   ) public view
     returns (bool)
   {
-    return ownerToOperatorApproved[_owner][_operator];
+    return ownerToOperatorApproved[_keyOwner][_operator];
   }
 
   /**

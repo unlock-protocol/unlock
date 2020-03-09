@@ -16,13 +16,23 @@ contract IPublicLock is IERC721Enumerable {
   /// Functions
 
   function initialize(
-    address _owner,
+    address _lockOwner,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string calldata _lockName
   ) external;
+
+  /**
+   * @dev Never used directly
+   */
+  function initialize(address) external;
+
+  /**
+   * @dev Never used directly
+   */
+  function initialize() external;
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -56,7 +66,7 @@ contract IPublicLock is IERC721Enumerable {
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
    * use cases.
    */
   function withdraw(
@@ -84,26 +94,17 @@ contract IPublicLock is IERC721Enumerable {
    */
   function updateBeneficiary( address _beneficiary ) external;
 
-  /**
-   * A function which lets the owner of the lock expire a users' key.
-   * @dev Throws if called by other than lock owner
-   * @dev Throws if key owner does not have a valid key
-   * @param _owner The address of the key owner
-   */
-  function expireKeyFor( address _owner ) external;
-
     /**
    * Checks if the user has a non-expired key.
-   * @param _owner The address of the key owner
+   * @param _user The address of the key owner
    */
   function getHasValidKey(
-    address _owner
+    address _user
   ) external view returns (bool);
 
   /**
    * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else revert
-   * @dev Throws if key owner does not have a valid key
+   * @return The tokenId of the NFT, else returns 0
    * @param _account The address of the key owner
   */
   function getTokenIdFor(
@@ -124,20 +125,20 @@ contract IPublicLock is IERC721Enumerable {
   /**
    * Checks if the given address owns the given tokenId.
    * @param _tokenId The tokenId of the key to check
-   * @param _owner The potential key owners address
+   * @param _keyOwner The potential key owners address
    */
   function isKeyOwner(
     uint _tokenId,
-    address _owner
+    address _keyOwner
   ) external view returns (bool);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  * @dev Throws if owner has never owned a key for this lock
+  * @param _keyOwner address of the user for whom we search the key
+  * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _owner
+    address _keyOwner
   ) external view returns (uint timestamp);
 
   /**
@@ -194,6 +195,14 @@ contract IPublicLock is IERC721Enumerable {
   ) external view returns(string memory);
 
   /**
+   * @notice Allows a lock manager to add or remove an event hook
+   */
+  function setEventHooks(
+    address _onKeySoldHook,
+    address _onKeyCancelHook
+  ) external;
+
+  /**
    * Allows the Lock owner to give a collection of users a key with no charge.
    * Each key may be assigned a different expiration date.
    * @dev Throws if called by other than the lock-owner
@@ -238,13 +247,13 @@ contract IPublicLock is IERC721Enumerable {
    * Determines how much of a fee a key owner would need to pay in order to
    * transfer the key to another account.  This is pro-rated so the fee goes down
    * overtime.
-   * @dev Throws if _owner does not have a valid key
-   * @param _owner The owner of the key check the transfer fee for.
+   * @dev Throws if _keyOwner does not have a valid key
+   * @param _keyOwner The owner of the key check the transfer fee for.
    * @param _time The amount of time to calculate the fee for.
    * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _owner,
+    address _keyOwner,
     uint _time
   ) external view returns (uint);
 
@@ -255,7 +264,7 @@ contract IPublicLock is IERC721Enumerable {
    * @dev Throws if called by other than owner
    * @dev Throws if _keyOwner does not have a valid key
    */
-  function fullRefund(
+  function expireAndRefundFor(
     address _keyOwner,
     uint amount
   ) external;
@@ -299,13 +308,13 @@ contract IPublicLock is IERC721Enumerable {
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * @param _owner The key owner to get the refund value for.
+   * @param _keyOwner The key owner to get the refund value for.
    * a cancelAndRefund block.timestamp.
    * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
   function getCancelAndRefundValueFor(
-    address _owner
+    address _keyOwner
   ) external view returns (uint refund);
 
   function keyOwnerToNonce(address ) external view returns (uint256 );
@@ -321,6 +330,22 @@ contract IPublicLock is IERC721Enumerable {
     address _keyOwner,
     address _txSender
   ) external view returns (bytes32 approvalHash);
+
+  function addKeyGranter(address account) external;
+
+  function addLockManager(address account) external;
+
+  function isKeyGranter(address account) external view returns (bool);
+
+  function isLockManager(address account) external view returns (bool);
+
+  function onKeySoldHook() external view returns(address);
+
+  function onKeyCancelHook() external view returns(address);
+
+  function revokeKeyGranter(address _granter) external;
+
+  function renounceLockManager() external;
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
@@ -347,7 +372,7 @@ contract IPublicLock is IERC721Enumerable {
 
   function unlockProtocol() external view returns (address );
 
-  function BASIS_POINTS_DEN() external view returns (uint256 );
+  function keyManagerOf(uint) external view returns (address );
 
   ///===================================================================
 
@@ -368,6 +393,16 @@ contract IPublicLock is IERC721Enumerable {
     address _to,
     uint _tokenId,
     uint _timeShared
+  ) external;
+
+  /**
+  * @notice Update transfer and cancel rights for a given key
+  * @param _tokenId The id of the key to assign rights for
+  * @param _keyManager The address to assign the rights to for the given key
+  */
+  function setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
   ) external;
 
   /// @notice A descriptive name for a collection of NFTs in this contract
