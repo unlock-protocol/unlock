@@ -96,7 +96,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Key owners can still cancel for a partial refund', async () => {
-      await lock.cancelAndRefund({
+      await lock.cancelAndRefund(ID, {
         from: keyOwner,
       })
     })
