@@ -29,7 +29,7 @@ export const SettingsContent = ({ cards, account }: SettingsContentProps) => {
         <>
           <AccountInfo />
           {cards.length > 0 && <PaymentMethods cards={cards} />}
-          {!cards.length && <PaymentDetails />}
+          {cards.length === 0 && <PaymentDetails />}
           <EjectAccount />
         </>
       )}
