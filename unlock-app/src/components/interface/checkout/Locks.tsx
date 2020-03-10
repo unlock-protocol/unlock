@@ -3,15 +3,21 @@ import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
+import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 
 interface LocksProps {
   accountAddress: string
   lockAddresses: string[]
+  emitTransactionInfo: (info: TransactionInfo) => void
 }
 
 type PurchasingLockAddress = string | null
 
-export const Locks = ({ lockAddresses, accountAddress }: LocksProps) => {
+export const Locks = ({
+  lockAddresses,
+  accountAddress,
+  emitTransactionInfo,
+}: LocksProps) => {
   const [purchasingLockAddress, setPurchasingLockAddress] = useState(
     null as PurchasingLockAddress
   )
@@ -36,6 +42,7 @@ export const Locks = ({ lockAddresses, accountAddress }: LocksProps) => {
           lock={lock}
           purchasingLockAddress={purchasingLockAddress}
           setPurchasingLockAddress={setPurchasingLockAddress}
+          emitTransactionInfo={emitTransactionInfo}
           balances={balances}
         />
       ))}

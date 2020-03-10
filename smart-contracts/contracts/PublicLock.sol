@@ -49,7 +49,7 @@ contract PublicLock is
   MixinRefunds
 {
   function initialize(
-    address _owner,
+    address _lockOwner,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -58,15 +58,15 @@ contract PublicLock is
   ) public
     initializer()
   {
-    Ownable.initialize(_owner);
+    Ownable.initialize(_lockOwner);
     MixinFunds._initializeMixinFunds(_tokenAddress);
     MixinDisable._initializeMixinDisable();
-    MixinLockCore._initializeMixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
+    MixinLockCore._initializeMixinLockCore(_lockOwner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRefunds._initializeMixinRefunds();
-    MixinLockManagerRole._initializeMixinLockManagerRole(_owner);
-    MixinKeyGranterRole._initializeMixinKeyGranterRole(_owner);
+    MixinLockManagerRole._initializeMixinLockManagerRole(_lockOwner);
+    MixinKeyGranterRole._initializeMixinKeyGranterRole(_lockOwner);
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);

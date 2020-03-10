@@ -59,7 +59,7 @@ contract MixinLockCore is
   address public beneficiary;
 
   // The denominator component for values specified in basis points.
-  uint public constant BASIS_POINTS_DEN = 10000;
+  uint internal constant BASIS_POINTS_DEN = 10000;
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
@@ -107,7 +107,7 @@ contract MixinLockCore is
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    *
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
    * use cases.
    */
   function withdraw(

@@ -100,7 +100,9 @@ contract('Lock / erc20', accounts => {
           await token.balanceOf(lock.address)
         )
 
-        await lock.fullRefund(keyOwner3, refundAmount, { from: accounts[0] })
+        await lock.expireAndRefundFor(keyOwner3, refundAmount, {
+          from: accounts[0],
+        })
         const balanceOwnerAfter = new BigNumber(
           await token.balanceOf(keyOwner3)
         )

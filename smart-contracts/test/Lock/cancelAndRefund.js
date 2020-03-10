@@ -12,6 +12,8 @@ let locks
 let token
 
 contract('Lock / cancelAndRefund', accounts => {
+  const denominator = 10000
+
   before(async () => {
     token = await tokens.dai.deploy(web3, accounts[0])
     await token.mint(accounts[0], 100, {
@@ -46,7 +48,6 @@ contract('Lock / cancelAndRefund', accounts => {
 
   it('should return the correct penalty', async () => {
     const numerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
-    const denominator = await lock.BASIS_POINTS_DEN.call()
     assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
   })
 
@@ -173,7 +174,6 @@ contract('Lock / cancelAndRefund', accounts => {
       const numerator = new BigNumber(
         await lock.refundPenaltyBasisPoints.call()
       )
-      const denominator = await lock.BASIS_POINTS_DEN.call()
       assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
 
@@ -200,7 +200,7 @@ contract('Lock / cancelAndRefund', accounts => {
     })
 
     it('the key is expired', async () => {
-      await lock.expireKeyFor(keyOwners[3], {
+      await lock.expireAndRefundFor(keyOwners[3], 0, {
         from: lockOwner,
       })
       await reverts(
