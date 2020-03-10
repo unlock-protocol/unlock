@@ -30,12 +30,14 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
     : defaultLockAddresses
 
   const [showingLogin, setShowingLogin] = useState(false)
+  const [aConfig, setConfig] = useState<PaywallConfig | undefined>(undefined)
+  console.log({ aConfig })
 
   const {
     emitTransactionInfo,
     emitCloseModal,
     emitUserInfo,
-  } = useCheckoutCommunication()
+  } = useCheckoutCommunication({ setConfig })
 
   useEffect(() => {
     if (account && account.address) {

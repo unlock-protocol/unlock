@@ -40,12 +40,18 @@ let loadCheckoutModal = () => {
   }
 }
 
+let setConfig: (config: any) => void | undefined
+
 const childCallBuffer: [string, any?][] = []
 
 // This definition is just a buffer until the child is available, it
 // will be replaced when the child is initialized.
 let resetConfig = (config: any) => {
-  childCallBuffer.push(['setConfig', config])
+  if (setConfig) {
+    setConfig(config)
+  } else {
+    childCallBuffer.push(['setConfig', config])
+  }
 }
 
 dispatchEvent('locked')
@@ -79,7 +85,7 @@ async function shakeHands() {
     childCallBuffer.forEach(bufferedCall => child.call(...bufferedCall))
 
     // replace the buffered version of resetConfig with the real one
-    resetConfig = (config: any) => {
+    setConfig = (config: any) => {
       child.call('setConfig', config)
     }
   })
