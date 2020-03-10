@@ -59,7 +59,7 @@ contract MixinTransfer is
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
-    uint iDTo = toKey.tokenId;
+    uint idTo = toKey.tokenId;
     uint time;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
@@ -81,27 +81,27 @@ contract MixinTransfer is
       emit ExpireKey(_tokenId);
     }
 
-    if (iDTo == 0) {
+    if (idTo == 0) {
       _assignNewTokenId(toKey);
-      iDTo = toKey.tokenId;
-      _recordOwner(_to, iDTo);
+      idTo = toKey.tokenId;
+      _recordOwner(_to, idTo);
       emit Transfer(
         address(0), // This is a creation or time-sharing
         _to,
-        iDTo
+        idTo
       );
     } else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      _resetKeyManagerOf(iDTo);
+      _resetKeyManagerOf(idTo);
     }
 
     // add time to new key
-    _timeMachine(iDTo, time, true);
+    _timeMachine(idTo, time, true);
     // trigger event
     emit Transfer(
       keyOwner,
       _to,
-      iDTo
+      idTo
     );
 
     require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
