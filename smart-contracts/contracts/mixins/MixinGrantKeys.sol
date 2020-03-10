@@ -41,18 +41,18 @@ contract MixinGrantKeys is
         _assignNewTokenId(toKey);
         idTo = toKey.tokenId;
         _recordOwner(recipient, idTo);
-        // trigger event
-        emit Transfer(
-          address(0), // This is a creation.
-          recipient,
-          idTo
-        );
       }
       // Set the key Manager
       keyManagerOf[idTo] = keyManager;
       emit KeyManagerChanged(idTo, keyManager);
 
       toKey.expirationTimestamp = expirationTimestamp;
+      // trigger event
+        emit Transfer(
+          address(0), // This is a creation.
+          recipient,
+          idTo
+        );
     }
   }
 }
