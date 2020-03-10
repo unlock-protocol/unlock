@@ -75,6 +75,10 @@ contract MixinPurchase is
       // (relative to the size of a uint)
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
+
+      // reset the key Manager to 0x00
+      _resetKeyManagerOf(toKey.tokenId);
+
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 

@@ -123,7 +123,8 @@ contract('Lock / erc20', accounts => {
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
         const balance = new BigNumber(await token.balanceOf(keyOwner))
-        await lock.cancelAndRefund({ from: keyOwner })
+        const ID = await lock.getTokenIdFor.call(keyOwner)
+        await lock.cancelAndRefund(ID, { from: keyOwner })
         assert(balance.lt(await token.balanceOf(keyOwner)))
       })
 

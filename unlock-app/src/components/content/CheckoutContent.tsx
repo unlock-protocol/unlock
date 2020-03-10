@@ -8,6 +8,7 @@ import LogInSignUp from '../interface/LogInSignUp'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
+import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import {
   Account as AccountType,
   Router,
@@ -18,23 +19,25 @@ import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 
 interface CheckoutContentProps {
   account: AccountType
-  config?: PaywallConfig
+  configFromSearch?: PaywallConfig
 }
 
 const defaultLockAddresses: string[] = []
 
-export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
-  const lockAddresses = config
-    ? Object.keys(config.locks)
-    : defaultLockAddresses
-
+export const CheckoutContent = ({
+  account,
+  configFromSearch,
+}: CheckoutContentProps) => {
   const [showingLogin, setShowingLogin] = useState(false)
+  const [configFromPostmate, setConfig] = useState<PaywallConfig | undefined>(
+    undefined
+  )
 
   const {
     emitTransactionInfo,
     emitCloseModal,
     emitUserInfo,
-  } = useCheckoutCommunication()
+  } = useCheckoutCommunication({ setConfig })
 
   useEffect(() => {
     if (account && account.address) {
@@ -44,36 +47,45 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
     }
   }, [account])
 
+  // Config value from postmate always takes precedence over the one in the URL if it is present.
+  const config = configFromPostmate || configFromSearch
+
+  const lockAddresses = config
+    ? Object.keys(config.locks)
+    : defaultLockAddresses
+
   return (
-    <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
-      <Head>
-        <title>{pageTitle('Checkout')}</title>
-      </Head>
-      <BrowserOnly>
-        {config && config.icon && (
-          <img alt="Publisher Icon" src={config.icon} />
-        )}
-        <p>{config ? config.callToAction.default : ''}</p>
-        {!account && showingLogin && <LogInSignUp login embedded />}
-        {!account && !showingLogin && (
-          <>
-            <NotLoggedInLocks lockAddresses={lockAddresses} />
-            <input
-              type="button"
-              onClick={() => setShowingLogin(true)}
-              value="Log in"
+    <CheckoutContainer close={emitCloseModal}>
+      <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
+        <Head>
+          <title>{pageTitle('Checkout')}</title>
+        </Head>
+        <BrowserOnly>
+          {config && config.icon && (
+            <img alt="Publisher Icon" src={config.icon} />
+          )}
+          <p>{config ? config.callToAction.default : ''}</p>
+          {!account && showingLogin && <LogInSignUp login embedded />}
+          {!account && !showingLogin && (
+            <>
+              <NotLoggedInLocks lockAddresses={lockAddresses} />
+              <input
+                type="button"
+                onClick={() => setShowingLogin(true)}
+                value="Log in"
+              />
+            </>
+          )}
+          {account && (
+            <Locks
+              accountAddress={account.address}
+              lockAddresses={lockAddresses}
+              emitTransactionInfo={emitTransactionInfo}
             />
-          </>
-        )}
-        {account && (
-          <Locks
-            accountAddress={account.address}
-            lockAddresses={lockAddresses}
-            emitTransactionInfo={emitTransactionInfo}
-          />
-        )}
-      </BrowserOnly>
-    </CheckoutWrapper>
+          )}
+        </BrowserOnly>
+      </CheckoutWrapper>
+    </CheckoutContainer>
   )
 }
 
@@ -85,11 +97,11 @@ interface ReduxState {
 export const mapStateToProps = ({ account, router }: ReduxState) => {
   const search = queryString.parse(router.location.search)
 
-  const config = getConfigFromSearch(search)
+  const configFromSearch = getConfigFromSearch(search)
 
   return {
     account,
-    config,
+    configFromSearch,
   }
 }
 
