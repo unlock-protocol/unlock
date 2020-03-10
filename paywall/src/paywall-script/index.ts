@@ -46,6 +46,7 @@ async function shakeHands() {
   const handshake = new Postmate({
     url: `${unlockAppUrl}/checkout?paywallConfig=${encodedConfig}`,
     classListArray: [checkoutIframeClassName, 'show'],
+    model: { config: rawConfig },
   })
 
   handshake.then(child => {
@@ -55,12 +56,16 @@ async function shakeHands() {
       iframe!.classList.remove('show')
     })
 
+    // TODO: use account address to know if user already has a key
+    // Lock list may have to wait for a go/no-go from the key check to
+    // prevent duplicate purchase.
     child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
       console.log(`got user address: ${info.address}`)
     })
 
-    child.on(CheckoutEvents.transactionInfo, (info: TransactionInfo) => {
-      console.log(`got transaction hash: ${info.hash}`)
+    // TODO: pass transaction hash to a function that will monitor it?
+    child.on(CheckoutEvents.transactionInfo, (_: TransactionInfo) => {
+      dispatchEvent('unlocked')
     })
   })
 }
