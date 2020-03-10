@@ -184,8 +184,23 @@ contract('Permissions / KeyManager', accounts => {
 
   describe('Key Granting', () => {
     let validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
+    before(async () => {
+      unlock = await getProxy(unlockContract)
+      locks = await deployLocks(unlock, lockCreator)
+      lock = locks.FIRST
+      const purchases = keyOwners.map(account => {
+        return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
+          value: keyPrice.toFixed(),
+          from: account,
+        })
+      })
+      await Promise.all(purchases)
+      iD = await lock.getTokenIdFor.call(keyOwner3)
+      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
+      await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
+    })
 
-    it.skip('should let KeyGranter set an arbitrary KM for new keys', async () => {
+    it('should let KeyGranter set an arbitrary KM for new keys', async () => {
       await lock.grantKeys(
         [accounts[7]],
         [validExpirationTimestamp],
@@ -199,7 +214,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, accounts[8])
     })
 
-    it.skip('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
+    it('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
       assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
       await lock.grantKeys([accounts[7]], [newTimestamp], [keyGranter], {
@@ -210,7 +225,7 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, keyGranter)
     })
 
-    it.skip('should let KeyGranter set an arbitrary KM for expired keys', async () => {
+    it('should let KeyGranter set an arbitrary KM for expired keys', async () => {
       await lock.expireAndRefundFor(accounts[7], 0, { from: lockCreator })
       assert.equal(await lock.getHasValidKey.call(accounts[7]), false)
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
