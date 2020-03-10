@@ -20,13 +20,15 @@ contract MixinGrantKeys is
    */
   function grantKeys(
     address[] calldata _recipients,
-    uint[] calldata _expirationTimestamps
+    uint[] calldata _expirationTimestamps,
+    address[] calldata _keyManagers
   ) external
     onlyKeyGranter
   {
     for(uint i = 0; i < _recipients.length; i++) {
       address recipient = _recipients[i];
       uint expirationTimestamp = _expirationTimestamps[i];
+      address keyManager = _keyManagers[i];
 
       require(recipient != address(0), 'INVALID_ADDRESS');
 
