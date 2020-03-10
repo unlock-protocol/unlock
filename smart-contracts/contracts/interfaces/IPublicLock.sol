@@ -211,7 +211,8 @@ contract IPublicLock is IERC721Enumerable {
    */
   function grantKeys(
     address[] calldata _recipients,
-    uint[] calldata _expirationTimestamps
+    uint[] calldata _expirationTimestamps,
+    address[] calldata _keyManagers
   ) external;
 
   /**

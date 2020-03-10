@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { constants, tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -59,7 +59,14 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
-    await lock.grantKeys([accounts[5]], [999999999999], { from: accounts[0] })
+    await lock.grantKeys(
+      [accounts[5]],
+      [999999999999],
+      [constants.ZERO_ADDRESS],
+      {
+        from: accounts[0],
+      }
+    )
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValueFor.call(accounts[5])
     )
@@ -67,9 +74,14 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
-    await locks.FREE.grantKeys([accounts[5]], [999999999999], {
-      from: accounts[0],
-    })
+    await locks.FREE.grantKeys(
+      [accounts[5]],
+      [999999999999],
+      [constants.ZERO_ADDRESS],
+      {
+        from: accounts[0],
+      }
+    )
     const estimatedRefund = new BigNumber(
       await locks.FREE.getCancelAndRefundValueFor.call(accounts[5])
     )
@@ -145,9 +157,14 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('can cancel a free key', async () => {
-    await locks.FREE.grantKeys([accounts[1]], [999999999999], {
-      from: accounts[0],
-    })
+    await locks.FREE.grantKeys(
+      [accounts[1]],
+      [999999999999],
+      [constants.ZERO_ADDRESS],
+      {
+        from: accounts[0],
+      }
+    )
     const iD = await lock.getTokenIdFor(keyOwners[1])
     const txObj = await locks.FREE.cancelAndRefund(iD, {
       from: accounts[1],
