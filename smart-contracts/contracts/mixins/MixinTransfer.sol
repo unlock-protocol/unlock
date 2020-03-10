@@ -117,35 +117,36 @@ contract MixinTransfer is
     hasValidKey(_from)
     onlyKeyManagerOrApproved(_tokenId)
   {
+    require(isKeyOwner(_tokenId, _from), 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
     uint fee = getTransferFee(_from, 0);
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_recipient];
-    uint id = fromKey.tokenId;
+    uint idTo = toKey.tokenId;
 
     uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
-    _timeMachine(id, fee, false);
+    _timeMachine(_tokenId, fee, false);
 
-    if (toKey.tokenId == 0) {
-      toKey.tokenId = fromKey.tokenId;
-      _recordOwner(_recipient, toKey.tokenId);
+    if (idTo == 0) {
+      toKey.tokenId = _tokenId;
+      idTo = _tokenId;
+      _recordOwner(_recipient, idTo);
     }
 
     if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the
-      // sender's key expiration
-      // an expired key is no longer a valid key, so the new tokenID is the sender's tokenID
+      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
+      // An expired key is no longer a valid key, so the new tokenID is the sender's tokenID
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
-      toKey.tokenId = fromKey.tokenId;
-      uint toId = toKey.tokenId;
+      toKey.tokenId = _tokenId;
+      idTo = _tokenId;
 
       // Reset the key Manager to the key owner
-      _resetKeyManagerOf(toId);
+      _resetKeyManagerOf(idTo);
 
-      _recordOwner(_recipient, _tokenId);
+      _recordOwner(_recipient, idTo);
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
@@ -166,7 +167,7 @@ contract MixinTransfer is
     emit Transfer(
       _from,
       _recipient,
-      _tokenId
+      idTo
     );
   }
 
