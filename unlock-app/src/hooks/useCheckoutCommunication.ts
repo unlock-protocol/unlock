@@ -28,9 +28,9 @@ interface BufferedEvent {
 // buffer. After that, once the handle to the parent is available, all
 // the buffered events are emitted and future events are emitted
 // directly.
-export const useCheckoutCommunication = () => {
+export const useCheckoutCommunication = (model?: any) => {
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
-  const parent = usePostmateParent()
+  const parent = usePostmateParent(model)
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
     if (!parent) {
