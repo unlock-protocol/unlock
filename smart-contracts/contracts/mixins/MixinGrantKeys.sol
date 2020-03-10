@@ -48,11 +48,11 @@ contract MixinGrantKeys is
 
       toKey.expirationTimestamp = expirationTimestamp;
       // trigger event
-        emit Transfer(
-          address(0), // This is a creation.
-          recipient,
-          idTo
-        );
+      emit Transfer(
+        address(0), // This is a creation.
+        recipient,
+        idTo
+      );
     }
   }
 }
