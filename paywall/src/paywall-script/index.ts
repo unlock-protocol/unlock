@@ -28,7 +28,6 @@ export enum CheckoutEvents {
 
 const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
 const rawConfig = (window as any).unlockProtocolConfig
-const encodedConfig = encodeURIComponent(JSON.stringify(rawConfig))
 
 let iframe: Element | undefined
 
@@ -58,7 +57,7 @@ dispatchEvent('locked')
 
 async function shakeHands() {
   const handshake = new Postmate({
-    url: `${unlockAppUrl}/checkout?paywallConfig=${encodedConfig}`,
+    url: `${unlockAppUrl}/checkout`,
     classListArray: [checkoutIframeClassName, 'show'],
   })
 
@@ -88,6 +87,8 @@ async function shakeHands() {
     setConfig = (config: any) => {
       child.call('setConfig', config)
     }
+
+    setConfig(rawConfig)
   })
 }
 
