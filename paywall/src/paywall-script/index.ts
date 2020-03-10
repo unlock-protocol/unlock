@@ -40,13 +40,20 @@ let loadCheckoutModal = () => {
   }
 }
 
+const childCallBuffer: [string, any?][] = []
+
+// This definition is just a buffer until the child is available, it
+// will be replaced when the child is initialized.
+let resetConfig = (config: any) => {
+  childCallBuffer.push(['setConfig', config])
+}
+
 dispatchEvent('locked')
 
 async function shakeHands() {
   const handshake = new Postmate({
     url: `${unlockAppUrl}/checkout?paywallConfig=${encodedConfig}`,
     classListArray: [checkoutIframeClassName, 'show'],
-    model: { config: rawConfig },
   })
 
   handshake.then(child => {
@@ -67,7 +74,15 @@ async function shakeHands() {
     child.on(CheckoutEvents.transactionInfo, (_: TransactionInfo) => {
       dispatchEvent('unlocked')
     })
+
+    // flush the buffer of child calls from before the iframe was ready
+    childCallBuffer.forEach(bufferedCall => child.call(...bufferedCall))
+
+    // replace the buffered version of resetConfig with the real one
+    resetConfig = (config: any) => {
+      child.call('setConfig', config)
+    }
   })
 }
 
-setupUnlockProtocolVariable({ loadCheckoutModal })
+setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
