@@ -90,7 +90,11 @@ contract MixinTransfer is
         _to,
         iDTo
       );
+    } else if (toKey.expirationTimestamp <= block.timestamp) {
+      // reset the key Manager for expired keys
+      _resetKeyManagerOf(iDTo);
     }
+
     // add time to new key
     _timeMachine(iDTo, time, true);
     // trigger event
@@ -136,6 +140,11 @@ contract MixinTransfer is
       // an expired key is no longer a valid key, so the new tokenID is the sender's tokenID
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
       toKey.tokenId = fromKey.tokenId;
+      uint toId = toKey.tokenId;
+
+      // Reset the key Manager to the key owner
+      _resetKeyManagerOf(toId);
+
       _recordOwner(_recipient, _tokenId);
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
