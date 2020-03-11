@@ -192,7 +192,7 @@ describe('Checkout Lock', () => {
       const { getByTestId } = rtl.render(
         <Lock
           lock={lock}
-          purchasingLockAddress="0xlockaddress"
+          purchasingLockAddress={null}
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
