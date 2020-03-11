@@ -23,7 +23,7 @@ contract MixinGrantKeys is
     uint[] calldata _expirationTimestamps,
     address[] calldata _keyManagers
   ) external
-    onlyKeyGranter
+    onlyKeyGranterOrManager
   {
     for(uint i = 0; i < _recipients.length; i++) {
       address recipient = _recipients[i];
