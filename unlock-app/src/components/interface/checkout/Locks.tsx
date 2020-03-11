@@ -4,7 +4,7 @@ import { LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
-import { useKeyOwnershipStatus } from '../../../hooks/useGetKeyForLockByOwner'
+import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
 
 interface LocksProps {
   accountAddress: string
@@ -24,15 +24,10 @@ export const Locks = ({
   )
   const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
-  const { keys, loading: keysLoading } = useKeyOwnershipStatus(
-    lockAddresses,
-    accountAddress
-  )
+  const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
 
   const now = new Date().getTime() / 1000
-  const activeKeys = keysLoading
-    ? []
-    : keys!.filter(key => key.expiration > now)
+  const activeKeys = keys.filter(key => key.expiration > now)
 
   if (loading) {
     return (

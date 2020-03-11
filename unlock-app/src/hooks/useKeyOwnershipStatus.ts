@@ -6,7 +6,7 @@ export const useKeyOwnershipStatus = (
   lockAddresses: string[],
   accountAddress: string
 ) => {
-  const [keys, setKeys] = useState<KeyResult[] | undefined>(undefined)
+  const [keys, setKeys] = useState<KeyResult[]>([])
   const [loading, setLoading] = useState(true)
 
   const web3Service: Web3Service = useContext(Web3ServiceContext)
