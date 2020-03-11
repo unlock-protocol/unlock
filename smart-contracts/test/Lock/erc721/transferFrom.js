@@ -96,6 +96,25 @@ contract('Lock / erc721 / transferFrom', accounts => {
       assert.equal(keyExpiration.toFixed(), expirationTimestamp.toFixed())
     })
 
+    it('should abort if the params are not consistent', async () => {
+      const id = await locks.FIRST.getTokenIdFor.call(accountWithKey)
+      const mismatchedId = id + 1
+      // testing an id mismatch
+      await reverts(
+        locks.FIRST.transferFrom(accountWithKey, to, mismatchedId, {
+          from: accountWithKey,
+        }),
+        'ONLY_KEY_MANAGER_OR_APPROVED'
+      )
+      // testing a mismatched _from address
+      await reverts(
+        locks.FIRST.transferFrom(accountWithKeyApproved, to, id, {
+          from: accountWithKey,
+        }),
+        'TRANSFER_FROM: NOT_KEY_OWNER'
+      )
+    })
+
     describe('when the recipient already has an expired key', () => {
       it('should transfer the key validity without extending it', async () => {
         // First let's make sure from has a key!

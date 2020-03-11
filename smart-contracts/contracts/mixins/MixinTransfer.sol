@@ -59,7 +59,7 @@ contract MixinTransfer is
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
-    uint iDTo = toKey.tokenId;
+    uint idTo = toKey.tokenId;
     uint time;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
@@ -81,27 +81,27 @@ contract MixinTransfer is
       emit ExpireKey(_tokenId);
     }
 
-    if (iDTo == 0) {
+    if (idTo == 0) {
       _assignNewTokenId(toKey);
-      iDTo = toKey.tokenId;
-      _recordOwner(_to, iDTo);
+      idTo = toKey.tokenId;
+      _recordOwner(_to, idTo);
       emit Transfer(
         address(0), // This is a creation or time-sharing
         _to,
-        iDTo
+        idTo
       );
     } else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      _resetKeyManagerOf(iDTo);
+      _resetKeyManagerOf(idTo);
     }
 
     // add time to new key
-    _timeMachine(iDTo, time, true);
+    _timeMachine(idTo, time, true);
     // trigger event
     emit Transfer(
       keyOwner,
       _to,
-      iDTo
+      idTo
     );
 
     require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
@@ -117,33 +117,31 @@ contract MixinTransfer is
     hasValidKey(_from)
     onlyKeyManagerOrApproved(_tokenId)
   {
+    require(isKeyOwner(_tokenId, _from), 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
     uint fee = getTransferFee(_from, 0);
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_recipient];
-    uint id = fromKey.tokenId;
 
     uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
-    _timeMachine(id, fee, false);
+    _timeMachine(_tokenId, fee, false);
 
     if (toKey.tokenId == 0) {
-      toKey.tokenId = fromKey.tokenId;
-      _recordOwner(_recipient, toKey.tokenId);
+      toKey.tokenId = _tokenId;
+      _recordOwner(_recipient, _tokenId);
     }
 
     if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the
-      // sender's key expiration
-      // an expired key is no longer a valid key, so the new tokenID is the sender's tokenID
+      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
+      // An expired key is no longer a valid key, so the new tokenID is the sender's tokenID
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
-      toKey.tokenId = fromKey.tokenId;
-      uint toId = toKey.tokenId;
+      toKey.tokenId = _tokenId;
 
       // Reset the key Manager to the key owner
-      _resetKeyManagerOf(toId);
+      _resetKeyManagerOf(_tokenId);
 
       _recordOwner(_recipient, _tokenId);
     } else {
