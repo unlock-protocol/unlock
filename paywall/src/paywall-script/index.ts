@@ -3,7 +3,7 @@ import './iframe.css'
 import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
 
 declare let __ENVIRONMENT_VARIABLES__: { unlockAppUrl: string }
-const checkoutIframeClassName = 'unlock-protocol-checkout'
+export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
  * These type definitions come from `useCheckoutCommunication` in
@@ -26,7 +26,7 @@ export enum CheckoutEvents {
 }
 /* end type definitions */
 
-class Paywall {
+export class Paywall {
   childCallBuffer: [string, any?][] = []
 
   userAccountAddress?: string
@@ -35,9 +35,7 @@ class Paywall {
 
   setConfig?: (config: any) => void
 
-  constructor() {
-    const rawConfig = (window as any).unlockProtocolConfig
-
+  constructor(paywallConfig: any) {
     const loadCheckoutModal = () => {
       if (this.iframe) {
         this.showIframe()
@@ -52,7 +50,7 @@ class Paywall {
       }
     }
 
-    resetConfig(rawConfig)
+    resetConfig(paywallConfig)
 
     setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
 
@@ -101,4 +99,5 @@ class Paywall {
   }
 }
 
-new Paywall()
+const rawConfig = (window as any).unlockProtocolConfig
+new Paywall(rawConfig)
