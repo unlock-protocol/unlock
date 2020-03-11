@@ -3,7 +3,7 @@ import './iframe.css'
 import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
 
 declare let __ENVIRONMENT_VARIABLES__: { unlockAppUrl: string }
-const checkoutIframeClassName = 'unlock-protocol-checkout'
+export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
  * These type definitions come from `useCheckoutCommunication` in
@@ -26,70 +26,78 @@ export enum CheckoutEvents {
 }
 /* end type definitions */
 
-const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
-const rawConfig = (window as any).unlockProtocolConfig
+export class Paywall {
+  childCallBuffer: [string, any?][] = []
 
-let iframe: Element | undefined
+  userAccountAddress?: string
 
-let loadCheckoutModal = () => {
-  if (iframe) {
-    iframe.classList.add('show')
-  } else {
-    shakeHands()
-  }
-}
+  iframe?: Element
 
-let setConfig: (config: any) => void | undefined
+  setConfig?: (config: any) => void
 
-const childCallBuffer: [string, any?][] = []
-
-// This definition is just a buffer until the child is available, it
-// will be replaced when the child is initialized.
-let resetConfig = (config: any) => {
-  if (setConfig) {
-    setConfig(config)
-  } else {
-    childCallBuffer.push(['setConfig', config])
-  }
-}
-
-dispatchEvent('locked')
-
-async function shakeHands() {
-  const handshake = new Postmate({
-    url: `${unlockAppUrl}/checkout`,
-    classListArray: [checkoutIframeClassName, 'show'],
-  })
-
-  handshake.then(child => {
-    iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
-
-    child.on(CheckoutEvents.closeModal, () => {
-      iframe!.classList.remove('show')
-    })
-
-    // TODO: use account address to know if user already has a key
-    // Lock list may have to wait for a go/no-go from the key check to
-    // prevent duplicate purchase.
-    child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
-      console.log(`got user address: ${info.address}`)
-    })
-
-    // TODO: pass transaction hash to a function that will monitor it?
-    child.on(CheckoutEvents.transactionInfo, (_: TransactionInfo) => {
-      dispatchEvent('unlocked')
-    })
-
-    // flush the buffer of child calls from before the iframe was ready
-    childCallBuffer.forEach(bufferedCall => child.call(...bufferedCall))
-
-    // replace the buffered version of resetConfig with the real one
-    setConfig = (config: any) => {
-      child.call('setConfig', config)
+  constructor(paywallConfig: any) {
+    const loadCheckoutModal = () => {
+      if (this.iframe) {
+        this.showIframe()
+      }
     }
 
-    setConfig(rawConfig)
-  })
+    const resetConfig = (config: any) => {
+      if (this.setConfig) {
+        this.setConfig(config)
+      } else {
+        this.childCallBuffer.push(['setConfig', config])
+      }
+    }
+
+    resetConfig(paywallConfig)
+
+    setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
+
+    this.lockPage()
+  }
+
+  shakeHands = async () => {
+    const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
+    const child = await new Postmate({
+      url: `${unlockAppUrl}/checkout`,
+      classListArray: [checkoutIframeClassName, 'show'],
+    })
+
+    this.iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
+
+    child.on(CheckoutEvents.closeModal, this.hideIframe)
+    child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
+      this.userAccountAddress = info.address
+    })
+
+    // transactionInfo event also carries transaction hash.
+    child.on(CheckoutEvents.transactionInfo, this.unlockPage)
+
+    // flush the buffer of child calls from before the iframe was ready
+    this.childCallBuffer.forEach(bufferedCall => child.call(...bufferedCall))
+
+    this.setConfig = (config: any) => {
+      child.call('setConfig', config)
+    }
+  }
+
+  showIframe = () => {
+    this.iframe!.classList.add('show')
+  }
+
+  hideIframe = () => {
+    this.iframe!.classList.remove('show')
+  }
+
+  lockPage = () => {
+    dispatchEvent('locked')
+  }
+
+  unlockPage = () => {
+    dispatchEvent('unlocked')
+  }
 }
 
-setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
+const rawConfig = (window as any).unlockProtocolConfig
+new Paywall(rawConfig)
