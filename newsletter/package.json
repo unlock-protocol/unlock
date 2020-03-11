@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@testing-library/jest-dom": "5.1.1",
-    "@testing-library/react": "9.4.1",
+    "@testing-library/react": "9.5.0",
     "@testing-library/react-hooks": "3.2.1",
-    "@types/node": "13.7.4",
+    "@types/node": "13.9.0",
     "@zeit/next-css": "1.0.1",
     "axios": "0.19.2",
     "babel-jest": "25.1.0",
@@ -25,16 +25,16 @@
     "ethers": "4.0.45",
     "jest": "25.1.0",
     "jest-date-mock": "1.0.8",
-    "netlify-cli": "2.35.0",
+    "netlify-cli": "2.37.0",
     "next": "9.2.2",
     "prettier": "1.19.1",
     "prop-types": "15.7.2",
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
-    "react-test-renderer": "16.12.0",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
+    "react-test-renderer": "16.13.0",
     "styled-components": "5.0.1",
     "ts-jest": "25.2.1",
-    "typescript": "3.8.2"
+    "typescript": "3.8.3"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [

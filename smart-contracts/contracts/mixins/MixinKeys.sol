@@ -33,6 +33,9 @@ contract MixinKeys is
     bool _timeAdded
   );
 
+  event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
+
+
   // Keys
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
@@ -49,22 +52,27 @@ contract MixinKeys is
   // Addresses are never removed by design to avoid abuses around referals
   address[] public owners;
 
+  // A given key has both an owner and a manager.
+  // If keyManager == address(0) then the key owner is also the manager
+  // Each key can have at most 1 keyManager.
+  mapping (uint => address) public keyManagerOf;
+
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
-    address _owner
+    address _keyOwner
   ) {
     require(
-      keyByOwner[_owner].expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
+      keyByOwner[_keyOwner].expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
     );
     _;
   }
 
   // Ensures that an owner has a valid key
   modifier hasValidKey(
-    address _owner
+    address _user
   ) {
     require(
-      getHasValidKey(_owner), 'KEY_NOT_VALID'
+      getHasValidKey(_user), 'KEY_NOT_VALID'
     );
     _;
   }
@@ -89,58 +97,49 @@ contract MixinKeys is
     _;
   }
 
-  /**
-   * A function which lets the owner of the lock expire a users' key.
-   */
-  function expireKeyFor(
-    address _owner
-  )
-    public
-    onlyOwner
-    hasValidKey(_owner)
-  {
-    Key storage key = keyByOwner[_owner];
-    key.expirationTimestamp = block.timestamp; // Effectively expiring the key
-    emit ExpireKey(key.tokenId);
+  // Ensure that the caller is the keyManager for this key
+  modifier onlyKeyManager(
+    uint _tokenId
+  ) {
+    require(isKeyManager(_tokenId, msg.sender), 'ONLY_KEY_MANAGER');
+    _;
   }
 
   /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_owner`, either 0 or 1.
+   * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
   */
   function balanceOf(
-    address _owner
+    address _keyOwner
   )
     public
     view
     returns (uint)
   {
-    require(_owner != address(0), 'INVALID_ADDRESS');
-    return getHasValidKey(_owner) ? 1 : 0;
+    require(_keyOwner != address(0), 'INVALID_ADDRESS');
+    return getHasValidKey(_keyOwner) ? 1 : 0;
   }
 
   /**
    * Checks if the user has a non-expired key.
    */
   function getHasValidKey(
-    address _owner
+    address _keyOwner
   )
     public
     view
     returns (bool)
   {
-    return keyByOwner[_owner].expirationTimestamp > block.timestamp;
+    return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
   }
 
   /**
    * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else revert
+   * @return The tokenId of the NFT, else returns 0
   */
   function getTokenIdFor(
     address _account
-  )
-    public view
-    hasValidKey(_account)
+  ) public view
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
@@ -186,25 +185,24 @@ contract MixinKeys is
    */
   function isKeyOwner(
     uint _tokenId,
-    address _owner
+    address _keyOwner
   ) public view
     returns (bool)
   {
-    return _ownerOf[_tokenId] == _owner;
+    return _ownerOf[_tokenId] == _keyOwner;
   }
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
+  * @param _keyOwner address of the user for whom we search the key
+  * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _owner
-  )
-    public view
-    ownsOrHasOwnedKey(_owner)
-    returns (uint timestamp)
+    address _keyOwner
+  ) public view
+    returns (uint)
   {
-    return keyByOwner[_owner].expirationTimestamp;
+    return keyByOwner[_keyOwner].expirationTimestamp;
   }
 
   /**
@@ -229,6 +227,60 @@ contract MixinKeys is
   }
 
   /**
+  * @notice Update transfer and cancel rights for a given key
+  * @param _tokenId The id of the key to assign rights for
+  * @param _keyManager The address with the manager's rights for the given key.
+  * Setting _keyManager to address(0) means the keyOwner is also the keyManager
+   */
+  function setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
+  ) public
+    isKey(_tokenId)
+  {
+    require(
+      isKeyManager(_tokenId, msg.sender) ||
+      isLockManager(msg.sender),
+      'UNAUTHORIZED_KEY_MANAGER_UPDATE'
+    );
+    keyManagerOf[_tokenId] = _keyManager;
+    emit KeyManagerChanged(_tokenId, _keyManager);
+  }
+
+  /**
+   * @notice This is used internally for resetting expired keys
+   * on transfer, sharing and purchase.
+   * @param _tokenId The key to reset
+   */
+  function _resetKeyManagerOf(
+    uint _tokenId
+  ) internal
+  {
+    if(keyManagerOf[_tokenId] != address(0)) {
+      keyManagerOf[_tokenId] = address(0);
+      emit KeyManagerChanged(_tokenId, address(0));
+    }
+  }
+
+  /**
+  * Returns true if _keyManager is the manager of the key
+  * identified by _tokenId
+   */
+  function isKeyManager(
+    uint _tokenId,
+    address _keyManager
+  ) internal view
+    returns (bool)
+  {
+    if(keyManagerOf[_tokenId] == msg.sender ||
+      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Assigns the key a new tokenId (from totalSupply) if it does not already have
    * one assigned.
    */
@@ -249,15 +301,15 @@ contract MixinKeys is
    * Records the owner of a given tokenId
    */
   function _recordOwner(
-    address _owner,
+    address _keyOwner,
     uint _tokenId
   ) internal
   {
-    if (_ownerOf[_tokenId] != _owner) {
+    if (_ownerOf[_tokenId] != _keyOwner) {
       // TODO: this may include duplicate entries
-      owners.push(_owner);
+      owners.push(_keyOwner);
       // We register the owner of the tokenID
-      _ownerOf[_tokenId] = _owner;
+      _ownerOf[_tokenId] = _keyOwner;
     }
   }
 

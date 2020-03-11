@@ -203,3 +203,12 @@ export enum MemberFilters {
   ALL = 'all',
   ACTIVE = 'active',
 }
+
+export interface UserMetadata {
+  publicData?: {
+    [key: string]: string
+  }
+  protectedData?: {
+    [key: string]: string
+  }
+}

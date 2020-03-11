@@ -1,18 +1,14 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
+import { Card } from '@stripe/stripe-js'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../../createUnlockStore'
 import {
   AccountContent,
   mapStateToProps,
   mapDispatchToProps,
-  getStripeHelper,
 } from '../../../components/content/AccountContent'
 import { DISMISS_PURCHASE_MODAL } from '../../../actions/keyPurchase'
-
-const config = {
-  stripeApiKey: 'pk_not_a_real_key',
-}
 
 const store = createUnlockStore({
   account: {
@@ -20,18 +16,29 @@ const store = createUnlockStore({
   },
 })
 
-const mockCard: stripe.Card = {
-  id: 'not_a_real_id',
-  object: 'a string',
+const mockCard: Card = {
+  id: 'card_1Eox8QIsiZS2oQBMkU2KqFnq',
   brand: 'Visa',
+  exp_month: 8,
+  exp_year: 2020,
+  last4: '4242',
   country: 'United States',
   dynamic_last4: '4242',
-  exp_month: 12,
-  exp_year: 2021,
-  fingerprint: 'another string',
+  fingerprint: '',
   funding: 'credit',
-  last4: '4242',
   metadata: {},
+  address_city: null,
+  address_country: 'USA',
+  address_line1: null,
+  address_line1_check: null,
+  address_line2: null,
+  address_zip: '90210',
+  address_zip_check: null,
+  address_state: null,
+  object: 'card',
+  cvc_check: null,
+  name: 'Rupert Hendrickson',
+  tokenization_method: null,
 }
 
 describe('AccountContent', () => {
@@ -41,7 +48,6 @@ describe('AccountContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <AccountContent
-            config={config}
             dismissPurchaseModal={() => true}
             pageIsLocked={false}
           />
@@ -56,7 +62,6 @@ describe('AccountContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <AccountContent
-            config={config}
             emailAddress="john@smi.th"
             cards={[]}
             dismissPurchaseModal={() => true}
@@ -74,7 +79,6 @@ describe('AccountContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <AccountContent
-            config={config}
             emailAddress="john@smi.th"
             cards={[]}
             dismissPurchaseModal={() => true}
@@ -92,7 +96,6 @@ describe('AccountContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <AccountContent
-            config={config}
             emailAddress="john@smi.th"
             cards={[mockCard]}
             dismissPurchaseModal={() => true}
@@ -112,7 +115,6 @@ describe('AccountContent', () => {
       const { getByTitle } = rtl.render(
         <Provider store={store}>
           <AccountContent
-            config={config}
             emailAddress="john@smi.th"
             cards={[mockCard]}
             dismissPurchaseModal={dismissPurchaseModal}
@@ -155,7 +157,7 @@ describe('AccountContent', () => {
     it('should grab and pass email and cards from account if available', () => {
       expect.assertions(1)
       const emailAddress = 'football@sports.gov'
-      const cards: stripe.Card[] = []
+      const cards: Card[] = []
       const state = {
         account: {
           emailAddress,
@@ -181,42 +183,6 @@ describe('AccountContent', () => {
       expect(dispatch).toHaveBeenCalledWith({
         type: DISMISS_PURCHASE_MODAL,
       })
-    })
-  })
-
-  describe('getStripeHelper', () => {
-    it('should do nothing when window does not contain stripe', () => {
-      expect.assertions(2)
-
-      jest.useFakeTimers()
-      const interval = setInterval(() => {}, 15000)
-      const setStripe = jest.fn()
-
-      getStripeHelper({}, interval, setStripe)
-
-      expect(clearInterval).not.toHaveBeenCalled()
-      expect(setStripe).not.toHaveBeenCalled()
-    })
-
-    it('should setStripe and clearInterval when the window does contain stripe', () => {
-      expect.assertions(2)
-
-      jest.useFakeTimers()
-      const interval = setInterval(() => {}, 15000)
-      const setStripe = jest.fn()
-      const Stripe = jest.fn()
-      ;(Stripe as any).version = 16000
-
-      getStripeHelper(
-        {
-          Stripe: Stripe as any,
-        },
-        interval,
-        setStripe
-      )
-
-      expect(clearInterval).toHaveBeenCalledWith(interval)
-      expect(setStripe).toHaveBeenCalledWith(Stripe)
     })
   })
 })

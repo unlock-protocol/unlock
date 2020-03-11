@@ -112,7 +112,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
         // Then let's expire the key for accountWithExpiredKey
-        await locks.FIRST.expireKeyFor(accountWithExpiredKey)
+        await locks.FIRST.expireAndRefundFor(accountWithExpiredKey, 0)
         await locks.FIRST.transferFrom(from, accountWithExpiredKey, ID, {
           from,
         })
