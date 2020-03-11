@@ -1,8 +1,12 @@
 import Postmate from 'postmate'
 import './iframe.css'
 import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
+import { keyExpirationTimestampFor } from '../utils/keyExpirationTimestampFor'
 
-declare let __ENVIRONMENT_VARIABLES__: { unlockAppUrl: string }
+declare let __ENVIRONMENT_VARIABLES__: {
+  unlockAppUrl: string
+  readOnlyProvider: string
+}
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
@@ -29,6 +33,8 @@ export enum CheckoutEvents {
 export class Paywall {
   childCallBuffer: [string, any?][] = []
 
+  paywallConfig: any
+
   userAccountAddress?: string
 
   iframe?: Element
@@ -43,6 +49,7 @@ export class Paywall {
     }
 
     const resetConfig = (config: any) => {
+      this.paywallConfig = config
       if (this.setConfig) {
         this.setConfig(config)
       } else {
@@ -67,9 +74,7 @@ export class Paywall {
     this.iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
 
     child.on(CheckoutEvents.closeModal, this.hideIframe)
-    child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
-      this.userAccountAddress = info.address
-    })
+    child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
 
     // transactionInfo event also carries transaction hash.
     child.on(CheckoutEvents.transactionInfo, this.unlockPage)
@@ -79,6 +84,27 @@ export class Paywall {
 
     this.setConfig = (config: any) => {
       child.call('setConfig', config)
+    }
+  }
+
+  handleUserInfoEvent = async (info: UserInfo) => {
+    const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+    this.userAccountAddress = info.address
+
+    const lockAddresses = Object.keys(this.paywallConfig.locks)
+    const timeStamps = await Promise.all(
+      lockAddresses.map(lockAddress => {
+        return keyExpirationTimestampFor(
+          readOnlyProvider,
+          lockAddress,
+          this.userAccountAddress!
+        )
+      })
+    )
+
+    if (timeStamps.some(val => val > new Date().getTime() / 1000)) {
+      // TODO: communicate to checkout iframe that there is already a valid key
+      this.unlockPage()
     }
   }
 
