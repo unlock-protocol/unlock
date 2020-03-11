@@ -9,7 +9,7 @@ import './IERC721Enumerable.sol';
  */
 
 
-contract IPublicLock is IERC721Enumerable, IERC721 {
+contract IPublicLockV5 is IERC721Enumerable, IERC721 {
 
 // See indentationissue description here:
 // https://github.com/duaraghav8/Ethlint/issues/268

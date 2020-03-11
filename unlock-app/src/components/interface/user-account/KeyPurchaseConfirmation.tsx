@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { Card } from '@stripe/stripe-js'
 import { signPurchaseData, PurchaseData } from '../../../actions/user'
 import Duration from '../../helpers/Duration'
 import { Lock } from '../../../unlockTypes'
@@ -145,7 +146,7 @@ export const makePriceBreakdown = (fees: Fees): { [key: string]: string } => {
   }
 }
 
-export const displayCard = (card: stripe.Card) => {
+export const displayCard = (card: Card) => {
   const { brand, last4 } = card
   return `${brand} ending in ${last4}`
 }
@@ -154,7 +155,7 @@ interface ReduxState {
   account: {
     emailAddress?: string
     address?: string
-    cards?: stripe.Card[]
+    cards?: Card[]
   }
   cart: {
     lock?: Lock

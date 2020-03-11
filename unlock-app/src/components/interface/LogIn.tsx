@@ -17,6 +17,7 @@ interface Props {
   account?: Account
   errors: WarningError[]
   close: (e: WarningError) => void
+  embedded?: boolean
 }
 
 interface State {
@@ -88,15 +89,15 @@ export class LogIn extends React.Component<Props, State> {
   }
 
   render = () => {
-    const { account } = this.props
+    const { account, embedded } = this.props
 
     if (account && account.address) {
       return <SignupSuccess />
     }
 
     return (
-      <div>
-        <Heading>Log In to Your Account</Heading>
+      <Container>
+        {!embedded && <Heading>Log In to Your Account</Heading>}
         <Form onSubmit={this.handleSubmit}>
           <Label htmlFor="emailInput">Email Address</Label>
           <Input
@@ -116,13 +117,13 @@ export class LogIn extends React.Component<Props, State> {
             onChange={this.handleInputChange}
           />
           <br />
-          <SubmitContainer>{this.submitButton()}</SubmitContainer>
+          {this.submitButton()}
         </Form>
         <Description>
           Don&#39;t have an account?{' '}
           <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
         </Description>
-      </div>
+      </Container>
     )
   }
 }
@@ -164,13 +165,13 @@ const Heading = styled.h1`
 const Description = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
-  font-size: 20px;
+  font-size: 16px;
   color: var(--darkgrey);
 `
 
 const Input = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -187,6 +188,7 @@ const SubmitButton = styled.input`
   font-size: 16px;
   cursor: pointer;
   color: var(--white);
+  margin-top: 25px;
 `
 
 const ErrorButton = styled(SubmitButton)`
@@ -194,11 +196,7 @@ const ErrorButton = styled(SubmitButton)`
 `
 
 const Form = styled.form`
-  max-width: 385px;
-`
-
-const SubmitContainer = styled.div`
-  margin-top: 25px;
+  max-width: 600px;
 `
 
 const Label = styled.label`
@@ -212,4 +210,8 @@ const Label = styled.label`
 
 const LinkButton = styled.a`
   cursor: pointer;
+`
+
+const Container = styled.div`
+  width: 100%;
 `

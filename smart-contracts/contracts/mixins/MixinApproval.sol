@@ -19,27 +19,29 @@ contract MixinApproval is
   // This is a mapping of addresses which have approved
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
-  // be a single approved beneficiary
-  // Note 2: for transfer, both addresses will be different
-  // Note 3: for sales (new keys on restricted locks), both addresses will be the same
+  // be a single approved address
   mapping (uint => address) private approved;
 
-  // Keeping track of approved operators for a Key owner.
-  // Since an owner can have up to 1 Key, this is similiar to above
-  // but the approval does not reset when a transfer occurs.
-  mapping (address => mapping (address => bool)) private ownerToOperatorApproved;
+  // Keeping track of approved operators for a given Key manager.
+  // This approves a given operator for all keys managed by the calling "keyManager"
+  // The caller may not currently be the keyManager for ANY keys.
+  // These approvals are never reset/revoked automatically, unlike "approved",
+  // which is reset on transfer.
+  mapping (address => mapping (address => bool)) private managerToOperatorApproved;
 
-  // Ensure that the caller has a key
+  // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
   // for ownership of that key
-  modifier onlyKeyOwnerOrApproved(
+  modifier onlyKeyManagerOrApproved(
     uint _tokenId
-  ) {
+  )
+  {
     require(
-      isKeyOwner(_tokenId, msg.sender) ||
-        _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(_ownerOf[_tokenId], msg.sender),
-      'ONLY_KEY_OWNER_OR_APPROVED');
+      isKeyManager(_tokenId, msg.sender) ||
+      _isApproved(_tokenId, msg.sender) ||
+      isApprovedForAll(_ownerOf[_tokenId], msg.sender),
+      'ONLY_KEY_MANAGER_OR_APPROVED'
+    );
     _;
   }
 
@@ -54,7 +56,7 @@ contract MixinApproval is
   )
     public
     onlyIfAlive
-    onlyKeyOwnerOrApproved(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     require(msg.sender != _approved, 'APPROVE_SELF');
 
@@ -75,7 +77,7 @@ contract MixinApproval is
     onlyIfAlive
   {
     require(_to != msg.sender, 'APPROVE_SELF');
-    ownerToOperatorApproved[msg.sender][_to] = _approved;
+    managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
@@ -93,7 +95,7 @@ contract MixinApproval is
   }
 
   /**
-   * @dev Tells whether an operator is approved by a given owner
+   * @dev Tells whether an operator is approved by a given keyManager
    * @param _owner owner address which you want to query the approval of
    * @param _operator operator address which you want to query the approval of
    * @return bool whether the given operator is approved by the given owner
@@ -104,7 +106,13 @@ contract MixinApproval is
   ) public view
     returns (bool)
   {
-    return ownerToOperatorApproved[_owner][_operator];
+    uint tokenId = keyByOwner[_owner].tokenId;
+    address keyManager = keyManagerOf[tokenId];
+    if(keyManager == address(0)) {
+      return managerToOperatorApproved[_owner][_operator];
+    } else {
+      return managerToOperatorApproved[keyManager][_operator];
+    }
   }
 
   /**
