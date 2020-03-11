@@ -1,23 +1,27 @@
-import * as UnlockV13 from 'unlock-abi-1-3'
-import { ethers } from 'ethers'
+import v13 from '../../v13'
+
 import Web3Service from '../../web3Service'
-import NockHelper from '../helpers/nockHelper'
 import utils from '../../utils'
-import { ZERO } from '../../constants'
+
 import erc20 from '../../erc20'
 
-const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */)
-const unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
+import { getTestLockContract } from '../helpers/contracts'
+import { getTestProvider } from '../helpers/provider'
+import { ZERO, MAX_UINT } from '../../constants'
 
-let web3Service
-const blockTime = 3
-const readOnlyProvider = 'http://127.0.0.1:8545'
-const requiredConfirmations = 12
+const provider = getTestProvider({})
+
 const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
-const checksumLockAddress = utils.toChecksumAddress(lockAddress)
 const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const erc20ContractAddress = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
+
+const lockContract = getTestLockContract({
+  lockAddress,
+  abi: v13.PublicLock.abi,
+  provider,
+})
+
+let web3Service
 
 jest.mock('../../erc20.js', () => {
   return {
@@ -29,126 +33,36 @@ jest.mock('../../erc20.js', () => {
 
 describe('v13', () => {
   describe('getLock', () => {
-    const metadata = new ethers.utils.Interface(UnlockV13.PublicLock.abi)
-    const contractMethods = metadata.functions
-    const resultEncoder = ethers.utils.defaultAbiCoder
-    const fakeContract = new ethers.utils.Interface([
-      'publicLockVersion() uint256',
-    ])
-    async function nockBeforeEach() {
-      nock.cleanAll()
-
-      nock.netVersionAndYield(0)
+    beforeEach(() => {
       web3Service = new Web3Service({
-        readOnlyProvider,
-        unlockAddress,
-        blockTime,
-        requiredConfirmations,
+        readOnlyProvider: '',
+        network: 1984,
       })
-      await nock.resolveWhenAllNocksUsed()
-    }
 
-    function nockGetLock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
-      // check to see what version that is
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV13.PublicLock.deployedBytecode
-      )
-      nock.ethCallAndYield(
-        fakeContract.functions['publicLockVersion()'].encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['uint256'], [3])
+      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v13))
+      web3Service.getLockContract = jest.fn(() => Promise.resolve(lockContract))
+
+      web3Service.getAddressBalance = jest.fn(() =>
+        Promise.resolve(utils.fromWei('3735944941', 'ether'))
       )
 
-      // retrieve the bytecode and compare to v01
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV13.PublicLock.deployedBytecode
-      )
-
-      // get the block number
-      nock.ethBlockNumber(1337)
-
-      // retrieve the bytecode and compare to v01
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV13.PublicLock.deployedBytecode
-      )
-
-      nock.getBalanceForAccountAndYieldBalance(
-        lockAddress,
-        utils.toRpcResultNumber('0xdeadfeed')
-      )
-
-      // call the attributes
-      nock.ethCallAndYield(
-        contractMethods.name.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.keyPrice.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(
-          ['uint256'],
-          [utils.toRpcResultNumber('10000000000000000')]
-        )
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.expirationDuration.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(2592000)])
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.maxNumberOfKeys.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(maxKeys)])
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.owner.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['address'], [owner])
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.totalSupply.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(17)])
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.tokenAddress.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['uint256'], [erc20ContractAddress])
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.publicLockVersion.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(4)])
-      )
-    }
-
-    function nockGetEthLock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
-      nockGetLock({ maxKeys, erc20ContractAddress })
-      nock.getBalanceForAccountAndYieldBalance(
-        lockAddress,
-        utils.toRpcResultNumber('0xdeadfeed')
-      )
-    }
-
-    function nockGetErc20Lock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
-      nockGetLock({ maxKeys, erc20ContractAddress })
-    }
+      web3Service.provider.getBlockNumber = jest.fn(() => Promise.resolve(1337))
+      lockContract.functions = {
+        'keyPrice()': jest.fn(() => utils.toWei('0.01', 'ether')),
+        'expirationDuration()': jest.fn(() => Promise.resolve(2592000)),
+        'maxNumberOfKeys()': jest.fn(() => Promise.resolve(10)),
+        'owner()': jest.fn(() => Promise.resolve(owner)),
+        'name()': jest.fn(() => Promise.resolve('My Lock')),
+        'tokenAddress()': jest.fn(() => Promise.resolve(ZERO)),
+        'publicLockVersion()': jest.fn(() =>
+          Promise.resolve('0x00000000000000000004')
+        ),
+        'totalSupply()': jest.fn(() => Promise.resolve(17)),
+      }
+    })
 
     it('should trigger an event when it has been loaded with an updated balance', async () => {
       expect.assertions(2)
-      await nockBeforeEach()
-      nockGetEthLock({})
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
@@ -171,8 +85,11 @@ describe('v13', () => {
 
     it('should successfully yield a lock with an ERC20 currency, with the right balance', async () => {
       expect.assertions(4)
-      await nockBeforeEach()
-      nockGetErc20Lock({ erc20ContractAddress })
+
+      lockContract.functions['tokenAddress()'] = jest.fn(
+        () => erc20ContractAddress
+      )
+
       const symbol = 'SYMBOL'
       erc20.getErc20TokenSymbol = jest.fn(() => {
         return Promise.resolve(symbol)
@@ -190,11 +107,11 @@ describe('v13', () => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
           name: 'My Lock',
-          balance: '1.929',
+          balance: utils.fromDecimal(balance, decimals),
           keyPrice: utils.fromDecimal('10000000000000000', decimals),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
-          currencySymbol: 'SYMBOL',
+          currencySymbol: symbol,
           owner,
           outstandingKeys: 17,
           asOf: 1337,
@@ -204,6 +121,7 @@ describe('v13', () => {
       })
 
       await web3Service.getLock(lockAddress)
+
       expect(erc20.getErc20BalanceForAddress).toHaveBeenCalledWith(
         erc20ContractAddress,
         lockAddress,
@@ -216,12 +134,7 @@ describe('v13', () => {
     })
 
     it('should successfully yield a lock with an unlimited number of keys', async () => {
-      expect.assertions(3)
-      await nockBeforeEach()
-      nockGetEthLock({
-        maxKeys:
-          '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-      })
+      expect.assertions(2)
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
@@ -230,19 +143,11 @@ describe('v13', () => {
         })
       })
 
-      const lock = await web3Service.getLock(lockAddress)
-      expect(lock).toEqual({
-        name: 'My Lock',
-        asOf: 1337,
-        balance: '0.000000003735944941',
-        expirationDuration: 2592000,
-        keyPrice: '0.01',
-        maxNumberOfKeys: -1,
-        outstandingKeys: 17,
-        owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-        currencyContractAddress: null,
-        publicLockVersion: 4,
-      })
+      lockContract.functions['maxNumberOfKeys()'] = jest.fn(() =>
+        Promise.resolve(MAX_UINT)
+      )
+
+      await web3Service.getLock(lockAddress)
     })
   })
 })
