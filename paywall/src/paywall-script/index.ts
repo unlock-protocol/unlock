@@ -103,6 +103,7 @@ export class Paywall {
     )
 
     if (timeStamps.some(val => val > new Date().getTime() / 1000)) {
+      // TODO: communicate to checkout iframe that there is already a valid key
       this.unlockPage()
     }
   }
