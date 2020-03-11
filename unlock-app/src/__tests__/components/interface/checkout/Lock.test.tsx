@@ -121,7 +121,7 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
-          activeKeys={[activeKeyForAnotherLock]}
+          activeKeys={[]}
         />
       )
 
@@ -134,11 +134,11 @@ describe('Checkout Lock', () => {
       const { getByTestId } = rtl.render(
         <Lock
           lock={lock}
-          purchasingLockAddress="0xneato"
+          purchasingLockAddress={null}
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
-          activeKeys={[]}
+          activeKeys={[activeKeyForAnotherLock]}
         />
       )
 
