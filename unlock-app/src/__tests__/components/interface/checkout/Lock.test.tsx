@@ -1,5 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
+import { KeyResult } from '@unlock-protocol/unlock-js'
 import { Lock } from '../../../../components/interface/checkout/Lock'
 import * as usePurchaseKey from '../../../../hooks/usePurchaseKey'
 import { TransactionInfo } from '../../../../hooks/useCheckoutCommunication'
@@ -14,6 +15,17 @@ const lock = {
   keyPrice: '0.04',
   expirationDuration: 50,
   currencyContractAddress: null,
+}
+
+const activeKeyForThisLock: KeyResult = {
+  lock: '0xlockaddress',
+  owner: '0xme',
+  expiration: 512345555,
+}
+
+const activeKeyForAnotherLock: KeyResult = {
+  ...activeKeyForThisLock,
+  lock: '0xanotherlockaddress',
 }
 
 describe('Checkout Lock', () => {
@@ -43,6 +55,7 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
         />
       )
 
@@ -64,6 +77,7 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
         />
       )
 
@@ -90,6 +104,7 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
         />
       )
 
@@ -106,6 +121,24 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[activeKeyForAnotherLock]}
+        />
+      )
+
+      getByTestId('DisabledLock')
+    })
+
+    it('renders a disabled lock when there is an active key for a different lock', () => {
+      expect.assertions(0)
+
+      const { getByTestId } = rtl.render(
+        <Lock
+          lock={lock}
+          purchasingLockAddress="0xneato"
+          setPurchasingLockAddress={setPurchasingLockAddress}
+          emitTransactionInfo={emitTransactionInfo}
+          balances={balances}
+          activeKeys={[]}
         />
       )
 
@@ -122,6 +155,7 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
         />
       )
 
@@ -145,6 +179,24 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+        />
+      )
+
+      getByTestId('ConfirmedLock')
+    })
+
+    it('renders a confirmed lock when there is an active key for this lock', () => {
+      expect.assertions(0)
+
+      const { getByTestId } = rtl.render(
+        <Lock
+          lock={lock}
+          purchasingLockAddress="0xlockaddress"
+          setPurchasingLockAddress={setPurchasingLockAddress}
+          emitTransactionInfo={emitTransactionInfo}
+          balances={balances}
+          activeKeys={[activeKeyForThisLock]}
         />
       )
 
@@ -168,6 +220,7 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
         />
       )
 
