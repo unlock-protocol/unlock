@@ -22,8 +22,8 @@ contract MixinKeyGranterRole is MixinLockManagerRole {
     }
   }
 
-  modifier onlyKeyGranter() {
-    require(isKeyGranter(msg.sender), 'MixinKeyGranter: caller does not have the KeyGranter role');
+  modifier onlyKeyGranterOrManager() {
+    require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'MixinKeyGranter: caller does not have the KeyGranter or LockManager role');
     _;
   }
 

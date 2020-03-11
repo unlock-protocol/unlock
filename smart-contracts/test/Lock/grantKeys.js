@@ -167,14 +167,26 @@ contract('Lock / grantKeys', accounts => {
       )
     })
 
-    it('should fail if called by someone other than the owner', async () => {
+    // By default, the lockCreator has both the LockManager & KeyGranter roles
+    it('should fail if called by anyone but LockManager or KeyGranter', async () => {
       await reverts(
         lock.grantKeys(
           [keyOwner],
           [validExpirationTimestamp],
           [constants.ZERO_ADDRESS],
           {
-            from: accounts[0],
+            from: keyOwner,
+          }
+        )
+      )
+
+      await reverts(
+        lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp],
+          [constants.ZERO_ADDRESS],
+          {
+            from: accounts[9],
           }
         )
       )
