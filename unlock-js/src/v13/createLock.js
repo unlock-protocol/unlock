@@ -1,5 +1,5 @@
 import ethersUtils from '../utils'
-import { GAS_AMOUNTS, ETHERS_MAX_UINT } from '../constants'
+import { ETHERS_MAX_UINT } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import { UNLIMITED_KEYS_COUNT, ZERO } from '../../lib/constants'
 import { getErc20Decimals } from '../erc20'
@@ -36,34 +36,28 @@ export default async function(lock, callback) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
 
-  const decimalKeyPrice = _getKeyPrice(lock, this.provider)
+  const decimalKeyPrice = await _getKeyPrice(lock, this.provider)
 
   const currencyContractAddress = lock.currencyContractAddress || ZERO
 
-  const lockName = lock.name || 'New Lock'
+  const lockName = lock.name
 
   // Building a salt from the lock name will prevent creators from creating 2 locks with the same name.
   const salt = ethersUtils
     .sha3(ethersUtils.utf8ToHex(lock.name))
     .substring(0, 26) // 2+24
-  const transactionPromise = unlockContract.functions[
-    'createLock(uint256,address,uint256,uint256,string,bytes12)'
-  ](
+  const transactionPromise = unlockContract.createLock(
     lock.expirationDuration,
     currencyContractAddress,
     decimalKeyPrice,
     maxNumberOfKeys,
     lockName,
-    salt,
-    {
-      gasLimit: GAS_AMOUNTS.createLock,
-    }
+    salt
   )
   const hash = await this._handleMethodCall(
     transactionPromise,
     TransactionTypes.LOCK_CREATION
   )
-
   if (callback) {
     callback(null, hash)
   }

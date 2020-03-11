@@ -1,4 +1,5 @@
 module.exports = {
+  collectCoverage: true,
   testPathIgnorePatterns: [
     '<rootDir>/lib/',
     '<rootDir>/node_modules/',
