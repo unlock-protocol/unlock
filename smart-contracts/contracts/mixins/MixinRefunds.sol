@@ -60,37 +60,43 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
+   * @dev Destroys the key and sends a refund based on the amount of time remaining.
+   * @param _tokenId The id of the key to cancel.
    */
-  function cancelAndRefund()
+  function cancelAndRefund(uint _tokenId)
     external
+    onlyKeyManager(_tokenId)
   {
-    uint refund = _getCancelAndRefundValue(msg.sender);
+    address keyOwner = ownerOf(_tokenId);
+    uint refund = _getCancelAndRefundValue(keyOwner);
 
-    _cancelAndRefund(msg.sender, refund);
+    _cancelAndRefund(keyOwner, refund);
   }
 
   /**
-   * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
-   * @param _keyOwner this user's key will be canceled
+   * @dev Cancels a key managed by a different user and sends the funds to the msg.sender.
+   * @param _keyManager the key managed by this user will be canceled
    * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyOwner
+   * @param _tokenId The key to cancel
    */
   function cancelAndRefundFor(
-    address _keyOwner,
+    address _keyManager,
     uint8 _v,
     bytes32 _r,
-    bytes32 _s
+    bytes32 _s,
+    uint _tokenId
   ) external
     consumeOffchainApproval(
-      getCancelAndRefundApprovalHash(_keyOwner, msg.sender),
-      _keyOwner,
+      getCancelAndRefundApprovalHash(_keyManager, msg.sender),
+      _keyManager,
       _v,
       _r,
       _s
     )
   {
-    uint refund = _getCancelAndRefundValue(_keyOwner);
-    _cancelAndRefund(_keyOwner, refund);
+    address keyOwner = ownerOf(_tokenId);
+    uint refund = _getCancelAndRefundValue(keyOwner);
+    _cancelAndRefund(keyOwner, refund);
   }
 
   /**
@@ -130,12 +136,12 @@ contract MixinRefunds is
   /**
    * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
    * @dev this can be computed in JS instead of read from the contract.
-   * @param _keyOwner The key owner's address (also the message signer)
+   * @param _keyManager The key manager's address (also the message signer)
    * @param _txSender The address cancelling cancel on behalf of the keyOwner
    * @return approvalHash The hash to sign
    */
   function getCancelAndRefundApprovalHash(
-    address _keyOwner,
+    address _keyManager,
     address _txSender
   ) public view
     returns (bytes32 approvalHash)
@@ -147,7 +153,7 @@ contract MixinRefunds is
         // The specific function the signer is approving
         CANCEL_TYPEHASH,
         // Approval enables only one cancel call
-        keyOwnerToNonce[_keyOwner],
+        keyManagerToNonce[_keyManager],
         // Approval allows only one account to broadcast the tx
         _txSender
       )

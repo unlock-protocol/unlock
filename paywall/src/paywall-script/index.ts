@@ -28,7 +28,6 @@ export enum CheckoutEvents {
 
 const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
 const rawConfig = (window as any).unlockProtocolConfig
-const encodedConfig = encodeURIComponent(JSON.stringify(rawConfig))
 
 let iframe: Element | undefined
 
@@ -40,11 +39,25 @@ let loadCheckoutModal = () => {
   }
 }
 
+let setConfig: (config: any) => void | undefined
+
+const childCallBuffer: [string, any?][] = []
+
+// This definition is just a buffer until the child is available, it
+// will be replaced when the child is initialized.
+let resetConfig = (config: any) => {
+  if (setConfig) {
+    setConfig(config)
+  } else {
+    childCallBuffer.push(['setConfig', config])
+  }
+}
+
 dispatchEvent('locked')
 
 async function shakeHands() {
   const handshake = new Postmate({
-    url: `${unlockAppUrl}/checkout?paywallConfig=${encodedConfig}`,
+    url: `${unlockAppUrl}/checkout`,
     classListArray: [checkoutIframeClassName, 'show'],
   })
 
@@ -55,14 +68,28 @@ async function shakeHands() {
       iframe!.classList.remove('show')
     })
 
+    // TODO: use account address to know if user already has a key
+    // Lock list may have to wait for a go/no-go from the key check to
+    // prevent duplicate purchase.
     child.on(CheckoutEvents.userInfo, (info: UserInfo) => {
       console.log(`got user address: ${info.address}`)
     })
 
-    child.on(CheckoutEvents.transactionInfo, (info: TransactionInfo) => {
-      console.log(`got transaction hash: ${info.hash}`)
+    // TODO: pass transaction hash to a function that will monitor it?
+    child.on(CheckoutEvents.transactionInfo, (_: TransactionInfo) => {
+      dispatchEvent('unlocked')
     })
+
+    // flush the buffer of child calls from before the iframe was ready
+    childCallBuffer.forEach(bufferedCall => child.call(...bufferedCall))
+
+    // replace the buffered version of resetConfig with the real one
+    setConfig = (config: any) => {
+      child.call('setConfig', config)
+    }
+
+    setConfig(rawConfig)
   })
 }
 
-setupUnlockProtocolVariable({ loadCheckoutModal })
+setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
