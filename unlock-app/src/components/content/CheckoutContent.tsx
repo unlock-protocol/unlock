@@ -9,13 +9,17 @@ import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
+import { MetadataForm } from '../interface/checkout/MetadataForm'
 import {
   Account as AccountType,
   Router,
   PaywallConfig,
+  UserMetadata,
+  DelayedPurchase,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
+import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -33,6 +37,10 @@ export const CheckoutContent = ({
   const [configFromPostmate, setConfig] = useState<PaywallConfig | undefined>(
     undefined
   )
+  const { setUserMetadata } = useSetUserMetadata()
+  const [delayedPurchase, setDelayedPurchase] = useState<
+    DelayedPurchase | undefined
+  >(undefined)
 
   const {
     emitTransactionInfo,
@@ -53,7 +61,13 @@ export const CheckoutContent = ({
 
   const metadataRequired = !!config?.metadataInputs
 
-  const onMetadataSubmit = (_lockAddress: string) => {
+  const onMetadataSubmit = (metadata: UserMetadata) => {
+    setUserMetadata(
+      delayedPurchase!.lockAddress,
+      account.address,
+      metadata,
+      delayedPurchase!.purchaseKey
+    )
     setShowingMetadataForm(false)
   }
 
@@ -68,6 +82,12 @@ export const CheckoutContent = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
+          {showingMetadataForm && config?.metadataInputs && (
+            <MetadataForm
+              fields={config.metadataInputs}
+              onSubmit={onMetadataSubmit}
+            />
+          )}
           {!showingMetadataForm && (
             <>
               {config && config.icon && (
@@ -91,7 +111,7 @@ export const CheckoutContent = ({
                   lockAddresses={lockAddresses}
                   emitTransactionInfo={emitTransactionInfo}
                   metadataRequired={metadataRequired}
-                  onMetadataSubmit={onMetadataSubmit}
+                  setDelayedPurchase={setDelayedPurchase}
                 />
               )}
             </>

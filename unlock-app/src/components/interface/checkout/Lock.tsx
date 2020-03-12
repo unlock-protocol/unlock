@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
-import { RawLock, Balances } from '../../../unlockTypes'
+import { RawLock, Balances, DelayedPurchase } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import {
   lockKeysAvailable,
@@ -19,7 +19,7 @@ interface LockProps {
   balances: Balances
   activeKeys: KeyResult[]
   metadataRequired: boolean
-  onMetadataSubmit: (lockAddress: string) => void
+  setDelayedPurchase: (d: DelayedPurchase) => void
 }
 
 export const Lock = ({
@@ -29,6 +29,8 @@ export const Lock = ({
   emitTransactionInfo,
   balances,
   activeKeys,
+  metadataRequired,
+  setDelayedPurchase,
 }: LockProps) => {
   const { purchaseKey, transactionHash } = usePurchaseKey(lock)
 
@@ -38,8 +40,19 @@ export const Lock = ({
       return
     }
 
-    setPurchasingLockAddress(lock.address)
-    purchaseKey()
+    const purchase = () => {
+      setPurchasingLockAddress(lock.address)
+      purchaseKey()
+    }
+
+    if (metadataRequired) {
+      setDelayedPurchase({
+        lockAddress: lock.address,
+        purchaseKey: purchase,
+      })
+    } else {
+      purchase()
+    }
   }
 
   useEffect(() => {

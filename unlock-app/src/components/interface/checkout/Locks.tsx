@@ -5,13 +5,14 @@ import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
+import { DelayedPurchase } from '../../../unlockTypes'
 
 interface LocksProps {
   accountAddress: string
   lockAddresses: string[]
   emitTransactionInfo: (info: TransactionInfo) => void
   metadataRequired: boolean
-  onMetadataSubmit: (lockAddress: string) => void
+  setDelayedPurchase: (d: DelayedPurchase) => void
 }
 
 type PurchasingLockAddress = string | null
@@ -21,7 +22,7 @@ export const Locks = ({
   accountAddress,
   emitTransactionInfo,
   metadataRequired,
-  onMetadataSubmit,
+  setDelayedPurchase,
 }: LocksProps) => {
   const [purchasingLockAddress, setPurchasingLockAddress] = useState(
     null as PurchasingLockAddress
@@ -55,7 +56,7 @@ export const Locks = ({
           balances={balances}
           activeKeys={activeKeys}
           metadataRequired={metadataRequired}
-          onMetadataSubmit={onMetadataSubmit}
+          setDelayedPurchase={setDelayedPurchase}
         />
       ))}
     </div>
