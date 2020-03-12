@@ -18,6 +18,8 @@ interface LockProps {
   emitTransactionInfo: (info: TransactionInfo) => void
   balances: Balances
   activeKeys: KeyResult[]
+  metadataRequired: boolean
+  onMetadataSubmit: (lockAddress: string) => void
 }
 
 export const Lock = ({

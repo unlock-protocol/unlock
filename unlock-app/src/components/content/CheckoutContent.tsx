@@ -29,6 +29,7 @@ export const CheckoutContent = ({
   configFromSearch,
 }: CheckoutContentProps) => {
   const [showingLogin, setShowingLogin] = useState(false)
+  const [showingMetadataForm, setShowingMetadataForm] = useState(false)
   const [configFromPostmate, setConfig] = useState<PaywallConfig | undefined>(
     undefined
   )
@@ -50,6 +51,12 @@ export const CheckoutContent = ({
   // Config value from postmate always takes precedence over the one in the URL if it is present.
   const config = configFromPostmate || configFromSearch
 
+  const metadataRequired = !!config?.metadataInputs
+
+  const onMetadataSubmit = (_lockAddress: string) => {
+    setShowingMetadataForm(false)
+  }
+
   const lockAddresses = config
     ? Object.keys(config.locks)
     : defaultLockAddresses
@@ -61,27 +68,33 @@ export const CheckoutContent = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
-          {config && config.icon && (
-            <img alt="Publisher Icon" src={config.icon} />
-          )}
-          <p>{config ? config.callToAction.default : ''}</p>
-          {!account && showingLogin && <LogInSignUp login embedded />}
-          {!account && !showingLogin && (
+          {!showingMetadataForm && (
             <>
-              <NotLoggedInLocks lockAddresses={lockAddresses} />
-              <input
-                type="button"
-                onClick={() => setShowingLogin(true)}
-                value="Log in"
-              />
+              {config && config.icon && (
+                <img alt="Publisher Icon" src={config.icon} />
+              )}
+              <p>{config ? config.callToAction.default : ''}</p>
+              {!account && showingLogin && <LogInSignUp login embedded />}
+              {!account && !showingLogin && (
+                <>
+                  <NotLoggedInLocks lockAddresses={lockAddresses} />
+                  <input
+                    type="button"
+                    onClick={() => setShowingLogin(true)}
+                    value="Log in"
+                  />
+                </>
+              )}
+              {account && (
+                <Locks
+                  accountAddress={account.address}
+                  lockAddresses={lockAddresses}
+                  emitTransactionInfo={emitTransactionInfo}
+                  metadataRequired={metadataRequired}
+                  onMetadataSubmit={onMetadataSubmit}
+                />
+              )}
             </>
-          )}
-          {account && (
-            <Locks
-              accountAddress={account.address}
-              lockAddresses={lockAddresses}
-              emitTransactionInfo={emitTransactionInfo}
-            />
           )}
         </BrowserOnly>
       </CheckoutWrapper>

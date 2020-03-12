@@ -10,6 +10,8 @@ interface LocksProps {
   accountAddress: string
   lockAddresses: string[]
   emitTransactionInfo: (info: TransactionInfo) => void
+  metadataRequired: boolean
+  onMetadataSubmit: (lockAddress: string) => void
 }
 
 type PurchasingLockAddress = string | null
@@ -18,6 +20,8 @@ export const Locks = ({
   lockAddresses,
   accountAddress,
   emitTransactionInfo,
+  metadataRequired,
+  onMetadataSubmit,
 }: LocksProps) => {
   const [purchasingLockAddress, setPurchasingLockAddress] = useState(
     null as PurchasingLockAddress
@@ -50,6 +54,8 @@ export const Locks = ({
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={activeKeys}
+          metadataRequired={metadataRequired}
+          onMetadataSubmit={onMetadataSubmit}
         />
       ))}
     </div>
