@@ -2,6 +2,7 @@ import Postmate from 'postmate'
 import './iframe.css'
 import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
 import { keyExpirationTimestampFor } from '../utils/keyExpirationTimestampFor'
+import { store, retrieve } from '../utils/localStorage'
 
 declare let __ENVIRONMENT_VARIABLES__: {
   unlockAppUrl: string
@@ -63,7 +64,44 @@ export class Paywall {
 
     setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
 
-    this.lockPage()
+    // Always do this last!
+    this.loadCache()
+  }
+
+  // Saves the user info in the cache
+  cacheUserInfo = async (info: UserInfo) => {
+    store('userInfo', info)
+  }
+
+  // Loads the cache
+  loadCache = async () => {
+    const info = retrieve('userInfo')
+    if (!info) {
+      return this.lockPage()
+    }
+    this.userAccountAddress = info.address
+    this.checkKeysAndLock()
+  }
+
+  checkKeysAndLock = async () => {
+    const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+
+    const lockAddresses = Object.keys(this.paywallConfig.locks)
+    const timeStamps = await Promise.all(
+      lockAddresses.map(lockAddress => {
+        return keyExpirationTimestampFor(
+          readOnlyProvider,
+          lockAddress,
+          this.userAccountAddress!
+        )
+      })
+    )
+
+    if (timeStamps.some(val => val > new Date().getTime() / 1000)) {
+      this.unlockPage()
+    } else {
+      this.lockPage()
+    }
   }
 
   shakeHands = async () => {
@@ -86,27 +124,14 @@ export class Paywall {
 
     this.setConfig = (config: any) => {
       child.call('setConfig', config)
+      this.checkKeysAndLock()
     }
   }
 
   handleUserInfoEvent = async (info: UserInfo) => {
-    const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
     this.userAccountAddress = info.address
-
-    const lockAddresses = Object.keys(this.paywallConfig.locks)
-    const timeStamps = await Promise.all(
-      lockAddresses.map(lockAddress => {
-        return keyExpirationTimestampFor(
-          readOnlyProvider,
-          lockAddress,
-          this.userAccountAddress!
-        )
-      })
-    )
-
-    if (timeStamps.some(val => val > new Date().getTime() / 1000)) {
-      this.unlockPage()
-    }
+    this.cacheUserInfo(info)
+    this.checkKeysAndLock()
   }
 
   showIframe = () => {
