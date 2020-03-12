@@ -24,3 +24,18 @@ export default function localStorageAvailable(window) {
     )
   }
 }
+
+export function store(key, value) {
+  if (localStorageAvailable(window)) {
+    window.localStorage.setItem(key, JSON.stringify(value))
+  } else {
+    // Fail silently!
+  }
+}
+
+export function retrieve(key) {
+  if (localStorageAvailable(window)) {
+    return JSON.parse(window.localStorage.getItem(key))
+  }
+  return undefined
+}
