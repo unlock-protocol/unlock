@@ -45,6 +45,8 @@ export class Paywall {
     const loadCheckoutModal = () => {
       if (this.iframe) {
         this.showIframe()
+      } else {
+        this.shakeHands()
       }
     }
 
