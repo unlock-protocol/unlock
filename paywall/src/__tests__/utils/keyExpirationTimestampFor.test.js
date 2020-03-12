@@ -1,4 +1,6 @@
-import keyExpirationTimestampFor from '../../utils/keyExpirationTimestampFor'
+import keyExpirationTimestampFor, {
+  NO_SUCH_KEY,
+} from '../../utils/keyExpirationTimestampFor'
 
 const jsonRpcEndpoint = 'https://eth-mainnet.alchemyapi.io/jsonrpc/'
 const lockAddress = '0x75fa3aa7e999b9899010c5f05e52cd0543dab465'
@@ -43,6 +45,23 @@ describe('keyExpirationTimestampFor', () => {
       JSON.stringify({
         jsonrpc: '2.0',
         result: '0x',
+        id: 1773,
+      })
+    )
+    const expiration = await keyExpirationTimestampFor(
+      'https://eth-mainnet.alchemyapi.io/jsonrpc/DazqAi1xewCexIggwLSZVkXdnztC-w0u',
+      '0x75fa3aa7e999b9899010c5f05e52cd0543dab465',
+      'c0f32eba9a4192d93209e83e03b95be7f81036d7'
+    )
+    expect(expiration).toEqual(0)
+  })
+
+  it('should return zero when result is NO_SUCH_KEY', async () => {
+    expect.assertions(1)
+    fetch.mockResponseOnce(
+      JSON.stringify({
+        jsonrpc: '2.0',
+        result: NO_SUCH_KEY,
         id: 1773,
       })
     )
