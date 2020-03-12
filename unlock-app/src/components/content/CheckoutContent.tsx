@@ -19,23 +19,25 @@ import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 
 interface CheckoutContentProps {
   account: AccountType
-  config?: PaywallConfig
+  configFromSearch?: PaywallConfig
 }
 
 const defaultLockAddresses: string[] = []
 
-export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
-  const lockAddresses = config
-    ? Object.keys(config.locks)
-    : defaultLockAddresses
-
+export const CheckoutContent = ({
+  account,
+  configFromSearch,
+}: CheckoutContentProps) => {
   const [showingLogin, setShowingLogin] = useState(false)
+  const [configFromPostmate, setConfig] = useState<PaywallConfig | undefined>(
+    undefined
+  )
 
   const {
     emitTransactionInfo,
     emitCloseModal,
     emitUserInfo,
-  } = useCheckoutCommunication()
+  } = useCheckoutCommunication({ setConfig })
 
   useEffect(() => {
     if (account && account.address) {
@@ -44,6 +46,13 @@ export const CheckoutContent = ({ account, config }: CheckoutContentProps) => {
       })
     }
   }, [account])
+
+  // Config value from postmate always takes precedence over the one in the URL if it is present.
+  const config = configFromPostmate || configFromSearch
+
+  const lockAddresses = config
+    ? Object.keys(config.locks)
+    : defaultLockAddresses
 
   return (
     <CheckoutContainer close={emitCloseModal}>
@@ -88,11 +97,11 @@ interface ReduxState {
 export const mapStateToProps = ({ account, router }: ReduxState) => {
   const search = queryString.parse(router.location.search)
 
-  const config = getConfigFromSearch(search)
+  const configFromSearch = getConfigFromSearch(search)
 
   return {
     account,
-    config,
+    configFromSearch,
   }
 }
 

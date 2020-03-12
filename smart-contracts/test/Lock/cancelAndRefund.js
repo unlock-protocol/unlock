@@ -93,7 +93,8 @@ contract('Lock / cancelAndRefund', accounts => {
       estimatedRefund = new BigNumber(
         await lock.getCancelAndRefundValueFor.call(keyOwners[0])
       )
-      txObj = await lock.cancelAndRefund({
+      const iD = await lock.getTokenIdFor(keyOwners[0])
+      txObj = await lock.cancelAndRefund(iD, {
         from: keyOwners[0],
       })
       withdrawalAmount = new BigNumber(
@@ -147,7 +148,8 @@ contract('Lock / cancelAndRefund', accounts => {
     await locks.FREE.grantKeys([accounts[1]], [999999999999], {
       from: accounts[0],
     })
-    const txObj = await locks.FREE.cancelAndRefund({
+    const iD = await lock.getTokenIdFor(keyOwners[1])
+    const txObj = await locks.FREE.cancelAndRefund(iD, {
       from: accounts[1],
     })
     assert.equal(txObj.logs[0].event, 'CancelKey')
@@ -178,7 +180,8 @@ contract('Lock / cancelAndRefund', accounts => {
     })
 
     it('should still allow refund', async () => {
-      const txObj = await lock.cancelAndRefund({
+      const iD = await lock.getTokenIdFor(keyOwners[2])
+      const txObj = await lock.cancelAndRefund(iD, {
         from: keyOwners[2],
       })
       const refund = new BigNumber(txObj.logs[0].args.refund)
@@ -187,12 +190,15 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   describe('should fail when', () => {
+    let iD
+
     it('should fail if the Lock owner withdraws too much funds', async () => {
       await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockOwner,
       })
+      iD = await lock.getTokenIdFor(keyOwners[3])
       await reverts(
-        lock.cancelAndRefund({
+        lock.cancelAndRefund(iD, {
           from: keyOwners[3],
         }),
         ''
@@ -203,8 +209,9 @@ contract('Lock / cancelAndRefund', accounts => {
       await lock.expireAndRefundFor(keyOwners[3], 0, {
         from: lockOwner,
       })
+      iD = await lock.getTokenIdFor(keyOwners[3])
       await reverts(
-        lock.cancelAndRefund({
+        lock.cancelAndRefund(iD, {
           from: keyOwners[3],
         }),
         'KEY_NOT_VALID'
@@ -212,11 +219,12 @@ contract('Lock / cancelAndRefund', accounts => {
     })
 
     it('the owner does not have a key', async () => {
+      iD = await lock.getTokenIdFor(accounts[7])
       await reverts(
-        lock.cancelAndRefund({
+        lock.cancelAndRefund(iD, {
           from: accounts[7],
         }),
-        'KEY_NOT_VALID'
+        'ONLY_KEY_MANAGER'
       )
     })
   })
@@ -236,8 +244,9 @@ contract('Lock / cancelAndRefund', accounts => {
       from: accounts[0],
     })
     assert.equal(await token.balanceOf(lock.address), 100)
+    const iD = await lock.getTokenIdFor(accounts[5])
     // cancel and refund
-    await lock.cancelAndRefund({ from: accounts[5] })
+    await lock.cancelAndRefund(iD, { from: accounts[5] })
     // check user's token balance
     assert(new BigNumber(await token.balanceOf(accounts[5])).gt(0))
   })

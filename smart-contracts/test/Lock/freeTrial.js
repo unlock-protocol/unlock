@@ -43,7 +43,8 @@ contract('Lock / freeTrial', accounts => {
 
     describe('should cancel and provide a full refund when enough time remains', () => {
       beforeEach(async () => {
-        await lock.cancelAndRefund({
+        const ID = await lock.getTokenIdFor.call(keyOwners[0])
+        await lock.cancelAndRefund(ID, {
           from: keyOwners[0],
         })
       })
@@ -58,8 +59,9 @@ contract('Lock / freeTrial', accounts => {
 
     describe('should cancel and provide a partial refund after the trial expires', () => {
       beforeEach(async () => {
+        const ID = await lock.getTokenIdFor.call(keyOwners[0])
         await sleep(6000)
-        await lock.cancelAndRefund({
+        await lock.cancelAndRefund(ID, {
           from: keyOwners[0],
         })
       })
