@@ -11,10 +11,9 @@ RUN apk add --no-cache \
     && pip install virtualenv
 
 RUN npm install -g npm@6.4.1
+ADD https://api.github.com/repos/unlock-protocol/unlock-subgraph/git/matching-refs/heads/master version.json
 RUN git clone https://github.com/unlock-protocol/unlock-subgraph.git
 WORKDIR /unlock-subgraph
-RUN git pull
-RUN git checkout 472fc3f
 
 COPY --chown=node ./deploy-subgraph.js /unlock-subgraph/.
 
