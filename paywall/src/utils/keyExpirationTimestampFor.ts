@@ -1,6 +1,3 @@
-export const NO_SUCH_KEY =
-  '0x08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000134841535f4e455645525f4f574e45445f4b455900000000000000000000000000'
-
 export const keyExpirationTimestampFor = async (
   provider: string,
   lock: string,
@@ -26,8 +23,8 @@ export const keyExpirationTimestampFor = async (
 
   const body = await response.json()
   const result = body.result
-
-  if (result === NO_SUCH_KEY) {
+  if (parseInt(result, 16) > Number.MAX_SAFE_INTEGER) {
+    // This will cover cases of locks returning NO_SUCH_KEY or `HAS_NEVER_OWNED_KEY` which are strings and much larger than Number.MAX_SAFE_INTEGER
     return 0
   }
   return parseInt(result, 16) || 0
