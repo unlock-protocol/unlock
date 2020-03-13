@@ -59,7 +59,7 @@ export const CheckoutContent = ({
   // Config value from postmate always takes precedence over the one in the URL if it is present.
   const config = configFromPostmate || configFromSearch
 
-  const metadataRequired = !!config?.metadataInputs
+  const metadataRequired = config ? !!config.metadataInputs : false
 
   const onMetadataSubmit = (metadata: UserMetadata) => {
     setUserMetadata(
