@@ -28,6 +28,8 @@ const activeKeyForAnotherLock: KeyResult = {
   lock: '0xanotherlockaddress',
 }
 
+const accountAddress = '0xuser'
+
 describe('Checkout Lock', () => {
   describe('Lock', () => {
     let purchaseKey: () => void
@@ -56,6 +58,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -78,6 +81,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -105,6 +109,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -122,6 +127,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -139,6 +145,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[activeKeyForAnotherLock]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -156,6 +163,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -180,6 +188,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -197,6 +206,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[activeKeyForThisLock]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -221,6 +231,7 @@ describe('Checkout Lock', () => {
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
