@@ -82,9 +82,9 @@ export const CheckoutContent = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
-          {showingMetadataForm && config?.metadataInputs && (
+          {showingMetadataForm && (
             <MetadataForm
-              fields={config.metadataInputs}
+              fields={config!.metadataInputs!}
               onSubmit={onMetadataSubmit}
             />
           )}
@@ -111,7 +111,10 @@ export const CheckoutContent = ({
                   lockAddresses={lockAddresses}
                   emitTransactionInfo={emitTransactionInfo}
                   metadataRequired={metadataRequired}
-                  setDelayedPurchase={setDelayedPurchase}
+                  setDelayedPurchase={(d: DelayedPurchase) => {
+                    setDelayedPurchase(d)
+                    setShowingMetadataForm(true)
+                  }}
                 />
               )}
             </>

@@ -31,7 +31,9 @@ describe('useSetUserMetadata', () => {
       if (context === ConfigContext) {
         return {
           services: {
-            storage: locksmithHost,
+            storage: {
+              host: locksmithHost,
+            },
           },
         }
       }

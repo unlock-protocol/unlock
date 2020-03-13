@@ -6,7 +6,9 @@ import { UserMetadata } from '../unlockTypes'
 
 interface Config {
   services: {
-    storage: string
+    storage: {
+      host: string
+    }
   }
 }
 
@@ -25,7 +27,7 @@ export const useSetUserMetadata = () => {
         lockAddress,
         userAddress,
         metadata,
-        locksmithHost: config.services.storage,
+        locksmithHost: config.services.storage.host,
       },
       callback
     )
