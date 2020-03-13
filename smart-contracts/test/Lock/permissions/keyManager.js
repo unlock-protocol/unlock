@@ -24,7 +24,7 @@ contract('Permissions / KeyManager', accounts => {
   let keyManager
 
   describe('Key Purchases', () => {
-    before(async () => {
+    beforeEach(async () => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
@@ -35,9 +35,6 @@ contract('Permissions / KeyManager', accounts => {
         })
       })
       await Promise.all(purchases)
-      iD = await lock.getTokenIdFor.call(keyOwner3)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
-      await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
     })
 
     it('should leave the KM == 0x00(default) for new purchases', async () => {
@@ -45,6 +42,7 @@ contract('Permissions / KeyManager', accounts => {
       const keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
+
     it('should not change KM when topping-up valid keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
@@ -54,14 +52,18 @@ contract('Permissions / KeyManager', accounts => {
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
+
     it('should reset the KM == 0x00 when renewing expired keys', async () => {
-      iD = await lock.getTokenIdFor(keyOwner3)
+      iD = await lock.getTokenIdFor(keyOwner1)
+      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner1 })
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, accounts[9])
-      await lock.purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [], {
+      await lock.expireAndRefundFor(keyOwner1, 0, { from: lockManager })
+      await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
-        from: keyOwner3,
+        from: keyOwner1,
       })
+      assert.notEqual(iD, 0)
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
