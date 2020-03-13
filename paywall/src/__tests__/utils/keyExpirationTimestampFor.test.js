@@ -1,6 +1,7 @@
-import keyExpirationTimestampFor, {
-  NO_SUCH_KEY,
-} from '../../utils/keyExpirationTimestampFor'
+import keyExpirationTimestampFor from '../../utils/keyExpirationTimestampFor'
+
+export const NO_SUCH_KEY =
+  '0x08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000134841535f4e455645525f4f574e45445f4b4559000000000000000000'
 
 const jsonRpcEndpoint = 'https://eth-mainnet.alchemyapi.io/jsonrpc/'
 const lockAddress = '0x75fa3aa7e999b9899010c5f05e52cd0543dab465'
