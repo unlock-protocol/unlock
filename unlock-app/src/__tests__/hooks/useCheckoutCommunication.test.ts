@@ -49,7 +49,7 @@ describe('useCheckoutCommunication', () => {
 
     await wait(() => result.current.ready)
 
-    const transactionInfo = { hash: '0xmyhash' }
+    const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
     result.current.emitTransactionInfo(transactionInfo)
 
     expect(emit).toHaveBeenCalledWith(
@@ -66,7 +66,7 @@ describe('useCheckoutCommunication', () => {
     const userInfo = { address: '0xmyaddress' }
     act(() => result.current.emitUserInfo(userInfo))
 
-    const transactionInfo = { hash: '0xmyhash' }
+    const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
     act(() => result.current.emitTransactionInfo(transactionInfo))
 
     act(() => result.current.emitCloseModal())
