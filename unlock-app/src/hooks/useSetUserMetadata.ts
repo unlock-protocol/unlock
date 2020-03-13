@@ -18,7 +18,7 @@ export const useSetUserMetadata = () => {
     lockAddress: string,
     userAddress: string,
     metadata: UserMetadata,
-    callback: (error: any, value: any) => void
+    callback: () => void
   ) => {
     walletService.setUserMetadata(
       {
