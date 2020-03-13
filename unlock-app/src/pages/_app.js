@@ -15,6 +15,7 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
+import { CheckoutStoreProvider } from '../hooks/useCheckoutStore'
 
 import FullScreenModal from '../components/interface/FullScreenModals'
 import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
@@ -155,9 +156,11 @@ The Unlock team
                 <Web3ServiceProvider value={web3Service}>
                   <WalletServiceProvider value={walletService}>
                     <ConfigProvider value={config}>
-                      <GlobalErrorConsumer>
-                        <Component {...pageProps} />
-                      </GlobalErrorConsumer>
+                      <CheckoutStoreProvider>
+                        <GlobalErrorConsumer>
+                          <Component {...pageProps} />
+                        </GlobalErrorConsumer>
+                      </CheckoutStoreProvider>
                     </ConfigProvider>
                   </WalletServiceProvider>
                 </Web3ServiceProvider>

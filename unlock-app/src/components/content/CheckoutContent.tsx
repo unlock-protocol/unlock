@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
@@ -16,6 +16,8 @@ import {
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
+import { useCheckoutStore } from '../../hooks/useCheckoutStore'
+import { setConfig, setShowingLogin } from '../../utils/checkoutActions'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -28,16 +30,18 @@ export const CheckoutContent = ({
   account,
   configFromSearch,
 }: CheckoutContentProps) => {
-  const [showingLogin, setShowingLogin] = useState(false)
-  const [configFromPostmate, setConfig] = useState<PaywallConfig | undefined>(
-    undefined
-  )
+  const { state, dispatch } = useCheckoutStore()
+  const { showingLogin, config } = state
 
   const {
     emitTransactionInfo,
     emitCloseModal,
     emitUserInfo,
-  } = useCheckoutCommunication({ setConfig })
+  } = useCheckoutCommunication({
+    setConfig: (config: PaywallConfig) => {
+      dispatch(setConfig(config))
+    },
+  })
 
   useEffect(() => {
     if (account && account.address) {
@@ -47,8 +51,11 @@ export const CheckoutContent = ({
     }
   }, [account])
 
-  // Config value from postmate always takes precedence over the one in the URL if it is present.
-  const config = configFromPostmate || configFromSearch
+  useEffect(() => {
+    if (!config && configFromSearch) {
+      dispatch(setConfig(configFromSearch))
+    }
+  }, [configFromSearch])
 
   const lockAddresses = config
     ? Object.keys(config.locks)
@@ -71,7 +78,7 @@ export const CheckoutContent = ({
               <NotLoggedInLocks lockAddresses={lockAddresses} />
               <input
                 type="button"
-                onClick={() => setShowingLogin(true)}
+                onClick={() => dispatch(setShowingLogin(true))}
                 value="Log in"
               />
             </>
