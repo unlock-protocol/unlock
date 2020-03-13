@@ -16,6 +16,8 @@ class MockWalletService extends EventEmitter {
 
 let mockWalletService: MockWalletService
 
+const accountAddress = '0xpurchaser'
+
 const lock = {
   asOf: 3196,
   name: 'ETH Lock',
@@ -47,7 +49,7 @@ describe('usePurchaseKey', () => {
   it('should return an object containing a function that will purchase a key', async () => {
     expect.assertions(1)
 
-    const { result } = renderHook(() => usePurchaseKey(lock))
+    const { result } = renderHook(() => usePurchaseKey(lock, accountAddress))
 
     await act(async () => {
       result.current.purchaseKey()
@@ -58,7 +60,7 @@ describe('usePurchaseKey', () => {
         erc20Address: lock.currencyContractAddress,
         keyPrice: lock.keyPrice,
         lockAddress: lock.address,
-        owner: lock.owner,
+        owner: accountAddress,
       },
       expect.any(Function)
     )
@@ -67,7 +69,7 @@ describe('usePurchaseKey', () => {
   it('should provide an error value if an error occurs', async () => {
     expect.assertions(2)
 
-    const { result } = renderHook(() => usePurchaseKey(lock))
+    const { result } = renderHook(() => usePurchaseKey(lock, accountAddress))
 
     mockWalletService.purchaseKey = jest.fn((_, callback: any) => {
       const error = new Error('failure')
@@ -86,7 +88,7 @@ describe('usePurchaseKey', () => {
   it('should provide a transaction hash when purchaseKey completes', async () => {
     expect.assertions(2)
 
-    const { result } = renderHook(() => usePurchaseKey(lock))
+    const { result } = renderHook(() => usePurchaseKey(lock, accountAddress))
 
     mockWalletService.purchaseKey = jest.fn((_, callback: any) => {
       const hash = '0xhash'

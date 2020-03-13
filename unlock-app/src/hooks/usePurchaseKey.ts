@@ -6,7 +6,7 @@ import { WalletServiceContext } from '../utils/withWalletService'
 type TransactionHash = string | null
 type PurchaseError = Error | null
 
-export const usePurchaseKey = (lock: RawLock) => {
+export const usePurchaseKey = (lock: RawLock, accountAddress: string) => {
   const [transactionHash, setTransactionHash] = useState(
     null as TransactionHash
   )
@@ -18,7 +18,7 @@ export const usePurchaseKey = (lock: RawLock) => {
     walletService.purchaseKey(
       {
         lockAddress: lock.address,
-        owner: lock.owner!,
+        owner: accountAddress,
         keyPrice: lock.keyPrice,
         erc20Address: lock.currencyContractAddress,
       },

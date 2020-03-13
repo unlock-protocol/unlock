@@ -18,6 +18,7 @@ interface LockProps {
   emitTransactionInfo: (info: TransactionInfo) => void
   balances: Balances
   activeKeys: KeyResult[]
+  accountAddress: string
 }
 
 export const Lock = ({
@@ -27,8 +28,9 @@ export const Lock = ({
   emitTransactionInfo,
   balances,
   activeKeys,
+  accountAddress,
 }: LockProps) => {
-  const { purchaseKey, transactionHash } = usePurchaseKey(lock)
+  const { purchaseKey, transactionHash } = usePurchaseKey(lock, accountAddress)
 
   const onClick = () => {
     if (purchasingLockAddress) {
