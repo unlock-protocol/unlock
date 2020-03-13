@@ -67,7 +67,7 @@ contract MixinPurchase is
         _recipient,
         idTo
       );
-    } else if (toKey.expirationTimestamp >= block.timestamp) {
+    } else if (toKey.expirationTimestamp > block.timestamp) {
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp.add(expirationDuration);
       toKey.expirationTimestamp = newTimeStamp;
