@@ -14,7 +14,7 @@ RUN npm install -g npm@6.4.1
 RUN git clone https://github.com/unlock-protocol/unlock-subgraph.git
 WORKDIR /unlock-subgraph
 RUN git pull
-RUN git checkout
+RUN git checkout 472fc3f
 
 COPY --chown=node ./deploy-subgraph.js /unlock-subgraph/.
 
