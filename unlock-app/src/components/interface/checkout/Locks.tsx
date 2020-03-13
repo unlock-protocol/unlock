@@ -50,6 +50,7 @@ export const Locks = ({
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={activeKeys}
+          accountAddress={accountAddress}
         />
       ))}
     </div>
