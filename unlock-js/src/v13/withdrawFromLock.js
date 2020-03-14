@@ -47,7 +47,7 @@ export default async function(
   )
 
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
 
   // Let's now wait for the funds to have been withdrawn
