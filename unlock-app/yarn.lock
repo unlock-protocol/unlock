@@ -3769,20 +3769,20 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@unlock-protocol/unlock-js@0.8.5":
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.5.tgz#89f66e411e6fe944721f24ff5cc35b87d6cd6a36"
-  integrity sha512-qrffKdJ7pIuZLF2V/AhRHVJNHyFyifLaVGL53SRBqS7LwRoHPdJ/yuvFdy/nbVivnvS045j/9t1oi+FcyhXvow==
+"@unlock-protocol/unlock-js@0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.6.tgz#c72c7dffc17820227fe513ddb93ecaddc1f9af68"
+  integrity sha512-w6Bbb+RCrBvKFcy9XgFaXAF/4ACgKh9oit3ogi3ZAqQMzLIisz3Eb02seA718c6tGVQmCtE2LSFcQcDAMVPrWg==
   dependencies:
     babel-jest "25.1.0"
     cross-fetch "3.0.4"
     eslint "6.8.0"
     ethers "4.0.45"
     jest "25.1.0"
-    lint-staged "10.0.7"
+    lint-staged "10.0.8"
     prettier "1.19.1"
     ts-jest "25.2.1"
-    typescript "3.8.2"
+    typescript "3.8.3"
 
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
@@ -11661,10 +11661,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@10.0.7:
-  version "10.0.7"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.0.7.tgz#d205f92d9359419a23bc6aa3b6f8546b1998da64"
-  integrity sha512-Byj0F4l7GYUpYYHEqyFH69NiI6ICTg0CeCKbhRorL+ickbzILKUlZLiyCkljZV02wnoh7yH7PmFyYm9PRNwk9g==
+lint-staged@10.0.8:
+  version "10.0.8"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-10.0.8.tgz#0f7849cdc336061f25f5d4fcbcfa385701ff4739"
+  integrity sha512-Oa9eS4DJqvQMVdywXfEor6F4vP+21fPHF8LUXgBbVWUSWBddjqsvO6Bv1LwMChmgQZZqwUvgJSHlu8HFHAPZmA==
   dependencies:
     chalk "^3.0.0"
     commander "^4.0.1"
@@ -17166,11 +17166,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typescript@3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
-  integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
 
 typescript@3.8.3:
   version "3.8.3"

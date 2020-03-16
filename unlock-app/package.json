@@ -27,7 +27,7 @@
     "@types/react-redux": "7.1.7",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.0.1",
-    "@unlock-protocol/unlock-js": "0.8.5",
+    "@unlock-protocol/unlock-js": "0.8.6",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
     "apollo-boost": "0.4.7",
