@@ -203,20 +203,62 @@ describe('StorageService', () => {
   describe('storeTransaction', () => {
     it('emits a success value', done => {
       expect.assertions(2)
-      const transactionHash = ' 0xhash'
-      const senderAddress = ' 0xsender'
-      const recipientAddress = ' 0xrecipient'
+      const transactionHash = '0xhash'
+      const senderAddress = '0xsender'
+      const recipientAddress = '0xrecipient'
+      const beneficiaryAddress = '0xbeneficiary'
+      const data = '0xdata'
+      const chain = 1
+
       axios.post.mockReturnValue({})
 
       storageService.storeTransaction(
         transactionHash,
         senderAddress,
-        recipientAddress
+        recipientAddress,
+        chain,
+        beneficiaryAddress,
+        data
       )
       expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
         transactionHash,
         sender: senderAddress,
         recipient: recipientAddress,
+        chain,
+        data,
+        for: beneficiaryAddress,
+      })
+      storageService.on(success.storeTransaction, hash => {
+        expect(hash).toBe(transactionHash)
+        done()
+      })
+    })
+
+    it('defaults to sender as beneficiary if none is set', done => {
+      expect.assertions(2)
+      const transactionHash = '0xhash'
+      const senderAddress = '0xsender'
+      const recipientAddress = '0xrecipient'
+      const data = '0xdata'
+      const chain = 1
+
+      axios.post.mockReturnValue({})
+
+      storageService.storeTransaction(
+        transactionHash,
+        senderAddress,
+        recipientAddress,
+        chain,
+        null,
+        data
+      )
+      expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
+        transactionHash,
+        sender: senderAddress,
+        recipient: recipientAddress,
+        chain,
+        data,
+        for: senderAddress,
       })
       storageService.on(success.storeTransaction, hash => {
         expect(hash).toBe(transactionHash)
@@ -240,6 +282,9 @@ describe('StorageService', () => {
         transactionHash,
         sender: senderAddress,
         recipient: recipientAddress,
+        chain: undefined,
+        data: undefined,
+        for: senderAddress,
       })
       storageService.on(failure.storeTransaction, err => {
         expect(err).toBe('I am error.')

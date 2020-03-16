@@ -2,8 +2,10 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import React from 'react'
 import { EventEmitter } from 'events'
 import { WalletServiceContext } from '../../utils/withWalletService'
-
+import { StorageServiceContext } from '../../utils/withStorageService'
+import { ConfigContext } from '../../utils/withConfig'
 import { usePurchaseKey } from '../../hooks/usePurchaseKey'
+import { StorageService } from '../../services/storageService'
 
 class MockWalletService extends EventEmitter {
   purchaseKey: jest.Mock<any, any>
@@ -33,13 +35,26 @@ const lock = {
   address: '0xEE9FE39966DF737eECa5920ABa975c283784Faf8',
 }
 
+let mockStorageService: StorageService
+let mockConfig: any
+
 describe('usePurchaseKey', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
+    mockStorageService = new StorageService()
+    mockConfig = {
+      requiredNetworkId: 1337,
+    }
     jest.spyOn(React, 'useContext').mockImplementation(context => {
       if (context === WalletServiceContext) {
         return mockWalletService
+      }
+      if (context === StorageServiceContext) {
+        return mockStorageService
+      }
+      if (context === ConfigContext) {
+        return mockConfig
       }
     })
 
@@ -89,10 +104,12 @@ describe('usePurchaseKey', () => {
     expect.assertions(2)
 
     const { result } = renderHook(() => usePurchaseKey(lock, accountAddress))
-
+    const transaction = {
+      data: '0xdata',
+    }
     mockWalletService.purchaseKey = jest.fn((_, callback: any) => {
       const hash = '0xhash'
-      callback(null, hash)
+      callback(null, hash, transaction)
     })
 
     expect(result.current.transactionHash).toBeNull()
@@ -102,5 +119,35 @@ describe('usePurchaseKey', () => {
     })
 
     expect(result.current.transactionHash).toEqual('0xhash')
+  })
+
+  it('should save the transaction', async () => {
+    expect.assertions(2)
+
+    const { result } = renderHook(() => usePurchaseKey(lock, accountAddress))
+    const transaction = {
+      hash: '0xhash',
+      data: '0xdata',
+    }
+    mockWalletService.purchaseKey = jest.fn((_, callback: any) => {
+      callback(null, transaction.hash, transaction)
+    })
+
+    expect(result.current.transactionHash).toBeNull()
+
+    mockStorageService.storeTransaction = jest.fn(() => Promise.resolve())
+
+    await act(async () => {
+      result.current.purchaseKey()
+    })
+
+    expect(mockStorageService.storeTransaction).toHaveBeenCalledWith(
+      transaction.hash,
+      accountAddress,
+      lock.address,
+      mockConfig.requiredNetworkId,
+      accountAddress,
+      transaction.data
+    )
   })
 })
