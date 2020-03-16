@@ -29115,7 +29115,21 @@ Object {
             Network mismatch
           </h1>
           <p>
-            You’re currently on the Mainnet network but you need to be on the Rinkeby network. Please switch to Rinkeby.
+            You’re currently on the 
+            Mainnet
+             network but you need to be on the 
+            Rinkeby
+             network. Please switch to 
+            Rinkeby
+            . 
+            <a
+              href="https://docs.unlock-protocol.com/frequently-asked-questions#what-networks-are-supported"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more
+            </a>
+            .
           </p>
         </div>
       </section>
@@ -29140,7 +29154,21 @@ Object {
           Network mismatch
         </h1>
         <p>
-          You’re currently on the Mainnet network but you need to be on the Rinkeby network. Please switch to Rinkeby.
+          You’re currently on the 
+          Mainnet
+           network but you need to be on the 
+          Rinkeby
+           network. Please switch to 
+          Rinkeby
+          . 
+          <a
+            href="https://docs.unlock-protocol.com/frequently-asked-questions#what-networks-are-supported"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+          </a>
+          .
         </p>
       </div>
     </section>
