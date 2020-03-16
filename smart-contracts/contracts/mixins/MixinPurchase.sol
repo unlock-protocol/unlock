@@ -5,7 +5,6 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinFunds.sol';
-import './MixinEventHooks.sol';
 
 
 /**
@@ -18,8 +17,7 @@ contract MixinPurchase is
   MixinFunds,
   MixinDisable,
   MixinLockCore,
-  MixinKeys,
-  MixinEventHooks
+  MixinKeys
 {
   using SafeMath for uint;
 
@@ -85,34 +83,77 @@ contract MixinPurchase is
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
-    // Let's get the actual price for the key from the Unlock smart contract
-    uint discount;
-    uint tokens;
-    uint inMemoryKeyPrice = keyPrice;
-    (discount, tokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
-
-    if (discount > inMemoryKeyPrice) {
-      inMemoryKeyPrice = 0;
-    } else {
-      // SafeSub not required as the if statement already confirmed `inMemoryKeyPrice - discount` cannot underflow
-      inMemoryKeyPrice -= discount;
-    }
-
-    if (discount > 0) {
+    (uint inMemoryKeyPrice, uint discount, uint tokens) = _purchasePriceFor(_recipient, _referrer, _data);
+    if (discount > 0)
+    {
       unlockProtocol.recordConsumedDiscount(discount, tokens);
     }
 
+    // Record price without any tips
     unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-    if(tokenAddress != address(0)) {
-      require(_value >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
-      inMemoryKeyPrice = _value;
+    uint pricePaid;
+    if(tokenAddress != address(0))
+    {
+      pricePaid = _value;
+      IERC20 token = IERC20(tokenAddress);
+      token.safeTransferFrom(msg.sender, address(this), _value);
     }
-    // Security: after state changes to minimize risk of re-entrancy
-    uint pricePaid = _chargeAtLeast(inMemoryKeyPrice);
+    else
+    {
+      pricePaid = msg.value;
+    }
+    require(pricePaid >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
 
-    // Security: last line to minimize risk of re-entrancy
-    _onKeySold(_recipient, _referrer, pricePaid, _data);
+    if(address(onKeyPurchaseHook) != address(0))
+    {
+      onKeyPurchaseHook.onKeyPurchase(msg.sender, _recipient, _referrer, _data, inMemoryKeyPrice, pricePaid);
+    }
+  }
+
+  /**
+   * @notice returns the minimum price paid for a purchase with these params.
+   * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
+   */
+  function purchasePriceFor(
+    address _recipient,
+    address _referrer,
+    bytes calldata _data
+  ) external view
+    returns (uint minKeyPrice)
+  {
+    (minKeyPrice, , ) = _purchasePriceFor(_recipient, _referrer, _data);
+  }
+
+  /**
+   * @notice returns the minimum price paid for a purchase with these params.
+   * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
+   * unlockDiscount and unlockTokens are the values returned from `computeAvailableDiscountFor`
+   */
+  function _purchasePriceFor(
+    address _recipient,
+    address _referrer,
+    bytes memory _data
+  ) internal view
+    returns (uint minKeyPrice, uint unlockDiscount, uint unlockTokens)
+  {
+    if(address(onKeyPurchaseHook) != address(0))
+    {
+      bool purchaseSupported;
+      (purchaseSupported, minKeyPrice) = onKeyPurchaseHook.keyPurchasePrice(msg.sender, _recipient, _referrer, _data);
+      require(purchaseSupported, 'PURCHASE_BLOCKED_BY_HOOK');
+    }
+    else
+    {
+      minKeyPrice = keyPrice;
+    }
+
+    if(minKeyPrice > 0)
+    {
+      (unlockDiscount, unlockTokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, minKeyPrice);
+      require(unlockDiscount <= minKeyPrice, 'INVALID_DISCOUNT_FROM_UNLOCK');
+      minKeyPrice -= unlockDiscount;
+    }
   }
 }
