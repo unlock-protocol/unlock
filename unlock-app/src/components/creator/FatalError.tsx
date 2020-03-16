@@ -92,16 +92,15 @@ export const WrongNetwork = ({ currentNetwork, requiredNetworkId }: DataPayload)
     illustration="/static/images/illustrations/network.svg"
     critical
   >
-    <p>
-      {`You’re currently on the ${currentNetwork} network but you need to be on the ${
+    <p>You’re currently on the {currentNetwork} network but you need to be on the {
             ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-          } network. Please switch to ${
+          } network. Please switch to {
             ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-          }.`}
+          }. <a target="_blank" rel="noopener noreferrer" href="https://docs.unlock-protocol.com/frequently-asked-questions#what-networks-are-supported">Learn more</a>.
     </p>
   </DefaultError>
 )
-  
+
 export const MissingProvider = () => (
   <DefaultError
     title="Wallet missing"
