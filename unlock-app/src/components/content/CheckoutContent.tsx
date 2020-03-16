@@ -16,7 +16,11 @@ import {
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
-import { useCheckoutStore } from '../../hooks/useCheckoutStore'
+import {
+  useCheckoutStore,
+  CheckoutStoreProvider,
+} from '../../hooks/useCheckoutStore'
+
 import { setConfig, setShowingLogin } from '../../utils/checkoutActions'
 
 interface CheckoutContentProps {
@@ -26,7 +30,22 @@ interface CheckoutContentProps {
 
 const defaultLockAddresses: string[] = []
 
+// This component wraps CheckoutContentInner so that it has access to the store.
 export const CheckoutContent = ({
+  account,
+  configFromSearch,
+}: CheckoutContentProps) => {
+  return (
+    <CheckoutStoreProvider>
+      <CheckoutContentInner
+        account={account}
+        configFromSearch={configFromSearch}
+      />
+    </CheckoutStoreProvider>
+  )
+}
+
+export const CheckoutContentInner = ({
   account,
   configFromSearch,
 }: CheckoutContentProps) => {
