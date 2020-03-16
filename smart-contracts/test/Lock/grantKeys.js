@@ -1,5 +1,6 @@
 const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -26,15 +27,20 @@ contract('Lock / grantKeys', accounts => {
     describe('can grant a key for a new user', () => {
       before(async () => {
         // the lock creator is assigned the KeyGranter role by default
-        tx = await lock.grantKeys([keyOwner], [validExpirationTimestamp], {
-          from: lockCreator,
-        })
+        tx = await lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp],
+          [constants.ZERO_ADDRESS],
+          {
+            from: lockCreator,
+          }
+        )
       })
 
       it('should log Transfer event', async () => {
-        assert.equal(tx.logs[0].event, 'Transfer')
-        assert.equal(tx.logs[0].args.from, 0)
-        assert.equal(tx.logs[0].args.to, accounts[2])
+        assert.equal(tx.logs[1].event, 'Transfer')
+        assert.equal(tx.logs[1].args.from, 0)
+        assert.equal(tx.logs[1].args.to, accounts[2])
       })
 
       it('should acknowledge that user owns key', async () => {
@@ -51,15 +57,20 @@ contract('Lock / grantKeys', accounts => {
 
       before(async () => {
         extendedExpiration = validExpirationTimestamp + 100
-        tx = await lock.grantKeys([keyOwner], [extendedExpiration], {
-          from: lockCreator,
-        })
+        tx = await lock.grantKeys(
+          [keyOwner],
+          [extendedExpiration],
+          [constants.ZERO_ADDRESS],
+          {
+            from: lockCreator,
+          }
+        )
       })
 
       it('should log Transfer event', async () => {
-        assert.equal(tx.logs[0].event, 'Transfer')
-        assert.equal(tx.logs[0].args.from, 0)
-        assert.equal(tx.logs[0].args.to, accounts[2])
+        assert.equal(tx.logs[1].event, 'Transfer')
+        assert.equal(tx.logs[1].args.from, 0)
+        assert.equal(tx.logs[1].args.to, accounts[2])
       })
 
       it('should acknowledge that user owns key', async () => {
@@ -76,9 +87,14 @@ contract('Lock / grantKeys', accounts => {
 
       it('should fail to grant keys when expiration dates are missing', async () => {
         await truffleAssert.fails(
-          lock.grantKeys(keyOwnerList, [validExpirationTimestamp], {
-            from: lockCreator,
-          }),
+          lock.grantKeys(
+            keyOwnerList,
+            [validExpirationTimestamp],
+            [constants.ZERO_ADDRESS],
+            {
+              from: lockCreator,
+            }
+          ),
           'revert'
         )
       })
@@ -116,7 +132,9 @@ contract('Lock / grantKeys', accounts => {
   describe('should fail', () => {
     it('should fail to revoke a key', async () => {
       await reverts(
-        lock.grantKeys([keyOwner], [42], { from: lockCreator }),
+        lock.grantKeys([keyOwner], [42], [constants.ZERO_ADDRESS], {
+          from: lockCreator,
+        }),
         'ALREADY_OWNS_KEY'
       )
     })
@@ -126,6 +144,7 @@ contract('Lock / grantKeys', accounts => {
         lock.grantKeys(
           [web3.utils.padLeft(0, 40)],
           [validExpirationTimestamp],
+          [constants.ZERO_ADDRESS],
           {
             from: lockCreator,
           }
@@ -136,18 +155,40 @@ contract('Lock / grantKeys', accounts => {
 
     it('should fail to reduce the time remaining on a key', async () => {
       await reverts(
-        lock.grantKeys([keyOwner], [validExpirationTimestamp - 1], {
-          from: lockCreator,
-        }),
+        lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp - 1],
+          [constants.ZERO_ADDRESS],
+          {
+            from: lockCreator,
+          }
+        ),
         'ALREADY_OWNS_KEY'
       )
     })
 
-    it('should fail if called by someone other than the owner', async () => {
+    // By default, the lockCreator has both the LockManager & KeyGranter roles
+    it('should fail if called by anyone but LockManager or KeyGranter', async () => {
       await reverts(
-        lock.grantKeys([keyOwner], [validExpirationTimestamp], {
-          from: accounts[0],
-        })
+        lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp],
+          [constants.ZERO_ADDRESS],
+          {
+            from: keyOwner,
+          }
+        )
+      )
+
+      await reverts(
+        lock.grantKeys(
+          [keyOwner],
+          [validExpirationTimestamp],
+          [constants.ZERO_ADDRESS],
+          {
+            from: accounts[9],
+          }
+        )
       )
     })
   })

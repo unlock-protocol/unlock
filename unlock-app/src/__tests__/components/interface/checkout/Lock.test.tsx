@@ -1,5 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
+import { KeyResult } from '@unlock-protocol/unlock-js'
 import { Lock } from '../../../../components/interface/checkout/Lock'
 import * as usePurchaseKey from '../../../../hooks/usePurchaseKey'
 import { TransactionInfo } from '../../../../hooks/useCheckoutCommunication'
@@ -15,6 +16,19 @@ const lock = {
   expirationDuration: 50,
   currencyContractAddress: null,
 }
+
+const activeKeyForThisLock: KeyResult = {
+  lock: '0xlockaddress',
+  owner: '0xme',
+  expiration: 512345555,
+}
+
+const activeKeyForAnotherLock: KeyResult = {
+  ...activeKeyForThisLock,
+  lock: '0xanotherlockaddress',
+}
+
+const accountAddress = '0xuser'
 
 describe('Checkout Lock', () => {
   describe('Lock', () => {
@@ -43,6 +57,8 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -64,6 +80,8 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -90,6 +108,8 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -106,6 +126,26 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
+        />
+      )
+
+      getByTestId('DisabledLock')
+    })
+
+    it('renders a disabled lock when there is an active key for a different lock', () => {
+      expect.assertions(0)
+
+      const { getByTestId } = rtl.render(
+        <Lock
+          lock={lock}
+          purchasingLockAddress={null}
+          setPurchasingLockAddress={setPurchasingLockAddress}
+          emitTransactionInfo={emitTransactionInfo}
+          balances={balances}
+          activeKeys={[activeKeyForAnotherLock]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -122,6 +162,8 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -145,6 +187,26 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
+        />
+      )
+
+      getByTestId('ConfirmedLock')
+    })
+
+    it('renders a confirmed lock when there is an active key for this lock', () => {
+      expect.assertions(0)
+
+      const { getByTestId } = rtl.render(
+        <Lock
+          lock={lock}
+          purchasingLockAddress={null}
+          setPurchasingLockAddress={setPurchasingLockAddress}
+          emitTransactionInfo={emitTransactionInfo}
+          balances={balances}
+          activeKeys={[activeKeyForThisLock]}
+          accountAddress={accountAddress}
         />
       )
 
@@ -168,6 +230,8 @@ describe('Checkout Lock', () => {
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={[]}
+          accountAddress={accountAddress}
         />
       )
 

@@ -4,6 +4,7 @@ import { LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
+import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
 
 interface LocksProps {
   accountAddress: string
@@ -23,6 +24,10 @@ export const Locks = ({
   )
   const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
+  const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
+
+  const now = new Date().getTime() / 1000
+  const activeKeys = keys.filter(key => key.expiration > now)
 
   if (loading) {
     return (
@@ -44,6 +49,8 @@ export const Locks = ({
           setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
+          activeKeys={activeKeys}
+          accountAddress={accountAddress}
         />
       ))}
     </div>

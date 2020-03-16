@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { KeyResult } from '@unlock-protocol/unlock-js'
 import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import {
@@ -16,6 +17,8 @@ interface LockProps {
   setPurchasingLockAddress: (lockAddress: string) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   balances: Balances
+  activeKeys: KeyResult[]
+  accountAddress: string
 }
 
 export const Lock = ({
@@ -24,8 +27,10 @@ export const Lock = ({
   setPurchasingLockAddress,
   emitTransactionInfo,
   balances,
+  activeKeys,
+  accountAddress,
 }: LockProps) => {
-  const { purchaseKey, transactionHash } = usePurchaseKey(lock)
+  const { purchaseKey, transactionHash } = usePurchaseKey(lock, accountAddress)
 
   const onClick = () => {
     if (purchasingLockAddress) {
@@ -55,16 +60,18 @@ export const Lock = ({
 
   const canAfford = userCanAffordKey(lock, balances)
 
+  const keyForThisLock = activeKeys.find(key => key.lock === lock.address)
+
   // This lock is being/has been purchased
-  if (purchasingLockAddress === lock.address) {
-    if (transactionHash) {
+  if (purchasingLockAddress === lock.address || keyForThisLock) {
+    if (transactionHash || keyForThisLock) {
       return <LockVariations.ConfirmedLock {...props} />
     }
     return <LockVariations.ProcessingLock {...props} />
   }
 
   // Some other lock is being/has been purchased
-  if (purchasingLockAddress) {
+  if (purchasingLockAddress || activeKeys.length) {
     return <LockVariations.DisabledLock {...props} />
   }
 
