@@ -1,5 +1,5 @@
 import utils from '../utils'
-import { GAS_AMOUNTS, ZERO } from '../constants'
+import { ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
 
@@ -19,33 +19,33 @@ export default async function(
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
-  if (!erc20Address || erc20Address !== ZERO) {
-    erc20Address = await lockContract.tokenAddress()
+  if (!owner) {
+    const signer = this.provider.getSigner()
+    owner = await signer.getAddress()
   }
 
-  // decimals could be 0!
-  if (decimals == null) {
+  // If erc20Address was not provided, get it
+  if (!erc20Address) {
+    erc20Address = await lockContract.tokenAddress()
+  }
+  let actualAmount
+  if (!keyPrice) {
+    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+    actualAmount = await lockContract.keyPrice()
+  } else if (decimals !== undefined && decimals !== null) {
+    // We have have a keyPrice and decinals, we just use them.
+    actualAmount = utils.toDecimal(keyPrice, decimals)
+  } else {
     // get the decimals from the ERC20 contract or default to 18
     if (erc20Address && erc20Address !== ZERO) {
       decimals = await getErc20Decimals(erc20Address, this.provider)
     } else {
       decimals = 18
     }
-  }
-
-  let actualAmount = utils.toDecimal(keyPrice, decimals)
-
-  if (!keyPrice) {
-    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-    actualAmount = await lockContract.keyPrice()
-  } else {
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  const purchaseForOptions = {
-    gasLimit: GAS_AMOUNTS.purchaseFor,
-  }
-
+  const purchaseForOptions = {}
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
       erc20Address,
@@ -59,15 +59,15 @@ export default async function(
         actualAmount,
         this.provider
       )
+      // Since we sent the approval transaction, we cannot rely on Ethers to do an estimate, because the computation would fail (since the approval might not have been mined yet)
+      purchaseForOptions.gasLimit = 300000
     }
   } else {
     purchaseForOptions.value = actualAmount
   }
 
   // TODO: add support for _referrer and _data
-  const transactionPromise = lockContract[
-    'purchase(uint256,address,address,bytes)'
-  ](
+  const transactionPromise = lockContract.purchase(
     actualAmount,
     owner,
     ZERO /* _referrer */,
