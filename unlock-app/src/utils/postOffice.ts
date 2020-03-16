@@ -71,10 +71,10 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
   window: PostOfficeWindow,
   target: PostMessageTarget,
   targetOrigin: string,
-  local: string,
-  remote: string
+  // these params were only used for debug logging which is now removed
+  _local: string,
+  _remote: string
 ) {
-  const debug = process.env.DEBUG
   if (!targetOrigin || !target) {
     throw new Error(
       'cannot safely postMessage without knowing the target origin'
@@ -92,25 +92,7 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
     const listeners = handlers[event.data.type]
     if (listeners && listeners.size) {
       listeners.forEach(listener => {
-        if (debug) {
-          // eslint-disable-next-line no-console
-          console.log(
-            `[pO] ${local} <-- ${remote}`,
-            event.data.type,
-            event.data.payload,
-            targetOrigin
-          )
-        }
         const responder = (type: T, response: ExtractPayload<T>) => {
-          if (debug) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `[pO respond] ${local} --> ${remote}`,
-              type,
-              response,
-              targetOrigin
-            )
-          }
           target.postMessage({ type, payload: response }, targetOrigin)
         }
         listener(event.data.payload, responder)
@@ -128,10 +110,6 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
       type: T,
       payload: ExtractPayload<T>
     ) => {
-      if (debug) {
-        // eslint-disable-next-line no-console
-        console.log(`[pO] ${local} --> ${remote}`, type, payload, targetOrigin)
-      }
       target.postMessage({ type, payload }, targetOrigin)
     },
   }
