@@ -3193,7 +3193,7 @@
     telejson "^3.2.0"
     util-deprecate "^1.0.2"
 
-"@stripe/react-stripe-js@^1.0.3":
+"@stripe/react-stripe-js@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.0.3.tgz#92224921d157728a3e11ce68ca5e5cb6fec37647"
   integrity sha512-9E0HRAyd95B1jSS+nh5ol4M5RvQUnWTCB+Td9xKKa68OrEvmRqpNy/wvMyY9SGCy7fcMkZfiST9Oy09OkkDM/A==
