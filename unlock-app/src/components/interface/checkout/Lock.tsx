@@ -10,11 +10,11 @@ import {
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
+import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
+import { setPurchasingLockAddress } from '../../../utils/checkoutActions'
 
 interface LockProps {
   lock: RawLock
-  purchasingLockAddress: string | null
-  setPurchasingLockAddress: (lockAddress: string) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   balances: Balances
   activeKeys: KeyResult[]
@@ -23,22 +23,21 @@ interface LockProps {
 
 export const Lock = ({
   lock,
-  purchasingLockAddress,
-  setPurchasingLockAddress,
   emitTransactionInfo,
   balances,
   activeKeys,
   accountAddress,
 }: LockProps) => {
   const { purchaseKey, transactionHash } = usePurchaseKey(lock, accountAddress)
+  const { state, dispatch } = useCheckoutStore()
 
   const onClick = () => {
-    if (purchasingLockAddress) {
+    if (state.purchasingLockAddress) {
       // There is already a key purchase in progress (or completed) -- do not start another one
       return
     }
 
-    setPurchasingLockAddress(lock.address)
+    dispatch(setPurchasingLockAddress(lock.address))
     purchaseKey()
   }
 
@@ -63,7 +62,7 @@ export const Lock = ({
   const keyForThisLock = activeKeys.find(key => key.lock === lock.address)
 
   // This lock is being/has been purchased
-  if (purchasingLockAddress === lock.address || keyForThisLock) {
+  if (state.purchasingLockAddress === lock.address || keyForThisLock) {
     if (transactionHash || keyForThisLock) {
       return <LockVariations.ConfirmedLock {...props} />
     }
@@ -71,7 +70,7 @@ export const Lock = ({
   }
 
   // Some other lock is being/has been purchased
-  if (purchasingLockAddress || activeKeys.length) {
+  if (state.purchasingLockAddress || activeKeys.length) {
     return <LockVariations.DisabledLock {...props} />
   }
 

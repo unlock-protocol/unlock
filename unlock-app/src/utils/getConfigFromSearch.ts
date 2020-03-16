@@ -6,7 +6,6 @@ export default function getConfigFromSearch(
   search: any
 ): PaywallConfig | undefined {
   if (typeof search.paywallConfig !== 'string') {
-    console.error('no paywall config found in URL, continuing with undefined')
     return undefined
   }
 

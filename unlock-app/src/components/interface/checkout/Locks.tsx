@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
@@ -12,16 +12,11 @@ interface LocksProps {
   emitTransactionInfo: (info: TransactionInfo) => void
 }
 
-type PurchasingLockAddress = string | null
-
 export const Locks = ({
   lockAddresses,
   accountAddress,
   emitTransactionInfo,
 }: LocksProps) => {
-  const [purchasingLockAddress, setPurchasingLockAddress] = useState(
-    null as PurchasingLockAddress
-  )
   const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
@@ -45,8 +40,6 @@ export const Locks = ({
         <Lock
           key={lock.name}
           lock={lock}
-          purchasingLockAddress={purchasingLockAddress}
-          setPurchasingLockAddress={setPurchasingLockAddress}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
           activeKeys={activeKeys}
