@@ -99,7 +99,7 @@ export class WalletService extends EventEmitter {
   getAccount: () => Promise<string | false>;
   // callback is never called with an error and is always called with
   // a hash -- this may change in the future.
-  purchaseKey: (params: PurchaseKeyParams, callback?: (error: Error | null, hash: string | null) => void) => Promise<string>;
+  purchaseKey: (params: PurchaseKeyParams, callback?: (error: Error | null, hash: string | null, transaction: any | null) => void) => Promise<string>;
   setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void;
   setUserMetadata: (params: SetUserMetadataParams, callback: any) => void;
   getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void;
