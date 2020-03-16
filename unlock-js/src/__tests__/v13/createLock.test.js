@@ -1,19 +1,25 @@
 import { ethers } from 'ethers'
-import * as UnlockV13 from 'unlock-abi-1-3'
-import utils from '../../utils'
+
+import abis from '../../abis'
+
+import v13 from '../../v13'
+import WalletService from '../../walletService'
 import TransactionTypes from '../../transactionTypes'
-import NockHelper from '../helpers/nockHelper'
-import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
-import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
+import utils from '../../utils'
+
+import { getTestProvider } from '../helpers/provider'
+import { getTestUnlockContract } from '../helpers/contracts'
+
+import {
+  UNLIMITED_KEYS_COUNT,
+  ETHERS_MAX_UINT,
+  ZERO,
+} from '../../../lib/constants'
 import erc20 from '../../erc20'
 
-const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */)
+const UnlockVersion = abis.v13
 
 let walletService
-let transaction
-let transactionResult
-let setupSuccess
 
 const lock = {
   name: 'My Fancy Lock',
@@ -23,87 +29,71 @@ const lock = {
   maxNumberOfKeys: 100,
 }
 
-const callMethodData = prepContract({
-  contract: UnlockV13.Unlock,
-  functionName: 'createLock',
-  signature: 'uint256,address,uint256,uint256,string,bytes12',
-  nock,
-})
-
 jest.mock('../../erc20.js', () => {
   return {
     getErc20Decimals: jest.fn(() => Promise.resolve(18)),
   }
 })
 
+const provider = getTestProvider({})
+provider.waitForTransaction = jest.fn(() => Promise.resolve(receipt))
+
+const unlockContract = getTestUnlockContract({
+  abi: v13.Unlock.abi,
+  provider,
+})
 const testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
-const EventInfo = new ethers.utils.Interface(UnlockV13.Unlock.abi)
+const EventInfo = new ethers.utils.Interface(UnlockVersion.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
 const receipt = {
   logs: [],
 }
 
+const lockCreationTransaction = {
+  hash: '0xcreateLock',
+}
+
 describe('v13', () => {
+  beforeEach(() => {
+    // Mock all the methods
+    walletService = new WalletService({
+      unlockAddress: '0xunlockAddress',
+    })
+    walletService.provider = provider
+    walletService.unlockContractAbiVersion = jest.fn(() => Promise.resolve(v13))
+    walletService.getUnlockContract = jest.fn(() => {
+      return Promise.resolve(unlockContract)
+    })
+    unlockContract.createLock = jest.fn(() =>
+      Promise.resolve(lockCreationTransaction)
+    )
+
+    walletService._handleMethodCall = jest.fn(() =>
+      Promise.resolve(lockCreationTransaction.hash)
+    )
+  })
+
   describe('createLock', () => {
-    async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
-      nock.cleanAll()
-      walletService = await prepWalletService(
-        UnlockV13.Unlock,
-        endpoint,
-        nock,
-        true // this is the Unlock contract, not PublicLock
-      )
-
-      const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
-
-      const {
-        testTransaction,
-        testTransactionResult,
-        success,
-      } = callMethodData(
-        lock.expirationDuration,
-        ethers.constants.AddressZero,
-        utils.toWei(lock.keyPrice, 'ether'),
-        maxNumberOfKeys,
-        lock.name,
-        salt
-      )
-
-      walletService.provider.waitForTransaction = jest.fn(() =>
-        Promise.resolve(receipt)
-      )
-      transaction = testTransaction
-      transactionResult = testTransactionResult
-      setupSuccess = success
-    }
-
     describe('when not explicitly providing the address of a denominating currency contract ', () => {
       it('should invoke _handleMethodCall with the right params', async () => {
         expect.assertions(2)
-
-        await nockBeforeEach()
-        setupSuccess()
-
-        walletService._handleMethodCall = jest.fn(() =>
-          Promise.resolve(transaction.hash)
-        )
-        const mock = walletService._handleMethodCall
-
         await walletService.createLock(lock)
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
 
-        expect(mock).toHaveBeenCalledWith(
+        expect(unlockContract.createLock).toHaveBeenCalledWith(
+          lock.expirationDuration,
+          ZERO,
+          { _hex: '0x016345785d8a0000' },
+          lock.maxNumberOfKeys,
+          lock.name,
+          salt // lock salt
+        )
+        expect(walletService._handleMethodCall).toHaveBeenCalledWith(
           expect.any(Promise),
           TransactionTypes.LOCK_CREATION
         )
-
-        // verify that the promise passed to _handleMethodCall actually resolves
-        // to the result the chain returns from a sendTransaction call to createLock
-        const result = await mock.mock.calls[0][0]
-        await result.wait()
-        expect(result).toEqual(transactionResult)
-        await nock.resolveWhenAllNocksUsed()
       })
     })
 
@@ -122,65 +112,34 @@ describe('v13', () => {
       })
 
       it('should invoke _handleMethodCall with the right params', async () => {
-        expect.assertions(0)
-
-        await nockBeforeEach()
-
-        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
-
-        const {
-          testTransaction,
-          testTransactionResult,
-          success,
-        } = callMethodData(
-          erc20Lock.expirationDuration,
-          testERC20ContractAddress,
-          utils.toDecimal(erc20Lock.keyPrice, 18),
-          erc20Lock.maxNumberOfKeys,
-          erc20Lock.name,
-          salt
-        )
-
-        transaction = testTransaction
-        transactionResult = testTransactionResult
-        setupSuccess = success
-
-        setupSuccess()
+        expect.assertions(2)
 
         await walletService.createLock(erc20Lock)
-        await nock.resolveWhenAllNocksUsed()
+        const salt = utils
+          .sha3(utils.utf8ToHex(erc20Lock.name))
+          .substring(0, 26)
+
+        expect(unlockContract.createLock).toHaveBeenCalledWith(
+          erc20Lock.expirationDuration,
+          erc20Lock.currencyContractAddress,
+          { _hex: '0x016345785d8a0000' },
+          erc20Lock.maxNumberOfKeys,
+          erc20Lock.name,
+          salt // lock salt
+        )
+        expect(walletService._handleMethodCall).toHaveBeenCalledWith(
+          expect.any(Promise),
+          TransactionTypes.LOCK_CREATION
+        )
       })
 
       it('should emit lock.updated with the right params', async () => {
         expect.assertions(2)
 
-        await nockBeforeEach()
-
-        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
-
-        const {
-          testTransaction,
-          testTransactionResult,
-          success,
-        } = callMethodData(
-          erc20Lock.expirationDuration,
-          testERC20ContractAddress,
-          utils.toDecimal(erc20Lock.keyPrice, 18),
-          erc20Lock.maxNumberOfKeys,
-          erc20Lock.name,
-          salt
-        )
-
-        transaction = testTransaction
-        transactionResult = testTransactionResult
-        setupSuccess = success
-
-        setupSuccess()
-
         walletService.on('lock.updated', (lockAddress, update) => {
           expect(lockAddress).toBe(erc20Lock.address)
           expect(update).toEqual({
-            transaction: transaction.hash,
+            transaction: lockCreationTransaction.hash,
             balance: '0',
             expirationDuration: erc20Lock.expirationDuration,
             keyPrice: erc20Lock.keyPrice,
@@ -192,103 +151,61 @@ describe('v13', () => {
         })
 
         await walletService.createLock(erc20Lock)
-        await nock.resolveWhenAllNocksUsed()
       })
 
       it('should retrieve the locks number of decimals to convert the key price to the right unit', async () => {
-        expect.assertions(0)
+        expect.assertions(2)
 
-        await nockBeforeEach()
         const decimals = 9
         erc20.getErc20Decimals = jest.fn(() => {
           return Promise.resolve(decimals)
         })
+        await walletService.createLock(erc20Lock)
 
-        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
-
-        const {
-          testTransaction,
-          testTransactionResult,
-          success,
-        } = callMethodData(
+        expect(unlockContract.createLock).toHaveBeenCalledWith(
           erc20Lock.expirationDuration,
-          testERC20ContractAddress,
-          utils.toDecimal(erc20Lock.keyPrice, decimals),
+          erc20Lock.currencyContractAddress,
+          { _hex: '0x05f5e100' },
           erc20Lock.maxNumberOfKeys,
           erc20Lock.name,
-          salt
+          expect.any(String) // lock salt
         )
-
-        transaction = testTransaction
-        transactionResult = testTransactionResult
-        setupSuccess = success
-
-        setupSuccess()
-
-        await walletService.createLock(erc20Lock)
-        await nock.resolveWhenAllNocksUsed()
+        expect(erc20.getErc20Decimals).toHaveBeenCalledWith(
+          erc20Lock.currencyContractAddress,
+          provider
+        )
       })
     })
 
-    it('should emit lock.updated with the transaction', async () => {
-      expect.assertions(2)
+    it('should callback with the transaction hash', async done => {
+      expect.assertions(1)
 
-      await nockBeforeEach()
-      setupSuccess()
-
-      walletService.on('lock.updated', (lockAddress, update) => {
-        expect(lockAddress).toBe(lock.address)
-        expect(update).toEqual({
-          transaction: transaction.hash,
-          balance: '0',
-          expirationDuration: lock.expirationDuration,
-          keyPrice: lock.keyPrice,
-          maxNumberOfKeys: lock.maxNumberOfKeys,
-          outstandingKeys: 0,
-          name: lock.name,
-        })
+      await walletService.createLock(lock, (error, hash) => {
+        expect(hash).toEqual(lockCreationTransaction.hash)
+        done()
       })
-
-      await walletService.createLock(lock)
-      await nock.resolveWhenAllNocksUsed()
     })
 
     it('should convert unlimited keys from UNLIMITED_KEYS_COUNT to ETHERS_MAX_UINT for the function call', async () => {
-      expect.assertions(2)
-
-      // this param tells the call to createLock to pass in this value instead of the lock's value
-      // for maxNumberOfKeys. The test will fail if the function call does not convert
-      await nockBeforeEach(ETHERS_MAX_UINT)
-      setupSuccess()
-
-      walletService.on('lock.updated', (lockAddress, update) => {
-        expect(lockAddress).toBe(lock.address)
-        expect(update).toEqual({
-          transaction: transaction.hash,
-          balance: '0',
-          expirationDuration: lock.expirationDuration,
-          keyPrice: lock.keyPrice,
-          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-          outstandingKeys: 0,
-          name: lock.name,
-        })
-      })
+      expect.assertions(1)
 
       await walletService.createLock({
         ...lock,
         maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       })
 
-      await nock.resolveWhenAllNocksUsed()
+      expect(unlockContract.createLock).toHaveBeenCalledWith(
+        lock.expirationDuration,
+        ZERO,
+        { _hex: '0x016345785d8a0000' },
+        ETHERS_MAX_UINT,
+        lock.name,
+        expect.any(String) // lock salt
+      )
     })
 
     it('should yield a promise of lock address', async () => {
       expect.assertions(1)
-
-      await nockBeforeEach()
-      setupSuccess()
-
-      // For now we do not use this
       const sender = '0x0000000000000000000000000000000000000000'
 
       walletService.provider.waitForTransaction = jest.fn(() =>
@@ -315,7 +232,6 @@ describe('v13', () => {
         })
       )
       const lockAddress = await walletService.createLock(lock)
-      await nock.resolveWhenAllNocksUsed()
       expect(lockAddress).toEqual(lock.address)
     })
   })

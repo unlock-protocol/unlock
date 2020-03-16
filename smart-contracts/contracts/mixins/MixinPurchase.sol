@@ -49,12 +49,15 @@ contract MixinPurchase is
 
     // Assign the key
     Key storage toKey = keyByOwner[_recipient];
+    uint idTo = toKey.tokenId;
     uint newTimeStamp;
 
-    if (toKey.tokenId == 0) {
+    if (idTo == 0) {
       // Assign a new tokenId (if a new owner or previously transferred)
       _assignNewTokenId(toKey);
-      _recordOwner(_recipient, toKey.tokenId);
+      // refresh the cached value
+      idTo = toKey.tokenId;
+      _recordOwner(_recipient, idTo);
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
@@ -62,9 +65,9 @@ contract MixinPurchase is
       emit Transfer(
         address(0), // This is a creation.
         _recipient,
-        toKey.tokenId
+        idTo
       );
-    } else if (toKey.expirationTimestamp >= block.timestamp) {
+    } else if (toKey.expirationTimestamp > block.timestamp) {
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp.add(expirationDuration);
       toKey.expirationTimestamp = newTimeStamp;
@@ -77,7 +80,7 @@ contract MixinPurchase is
       toKey.expirationTimestamp = newTimeStamp;
 
       // reset the key Manager to 0x00
-      _resetKeyManagerOf(toKey.tokenId);
+      _resetKeyManagerOf(idTo);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }

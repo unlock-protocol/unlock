@@ -20,28 +20,38 @@ contract MixinGrantKeys is
    */
   function grantKeys(
     address[] calldata _recipients,
-    uint[] calldata _expirationTimestamps
+    uint[] calldata _expirationTimestamps,
+    address[] calldata _keyManagers
   ) external
-    onlyKeyGranter
+    onlyKeyGranterOrManager
   {
     for(uint i = 0; i < _recipients.length; i++) {
       address recipient = _recipients[i];
       uint expirationTimestamp = _expirationTimestamps[i];
+      address keyManager = _keyManagers[i];
 
       require(recipient != address(0), 'INVALID_ADDRESS');
 
       Key storage toKey = keyByOwner[recipient];
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
-      _assignNewTokenId(toKey);
-      _recordOwner(recipient, toKey.tokenId);
-      toKey.expirationTimestamp = expirationTimestamp;
+      uint idTo = toKey.tokenId;
 
+      if(idTo == 0) {
+        _assignNewTokenId(toKey);
+        idTo = toKey.tokenId;
+        _recordOwner(recipient, idTo);
+      }
+      // Set the key Manager
+      keyManagerOf[idTo] = keyManager;
+      emit KeyManagerChanged(idTo, keyManager);
+
+      toKey.expirationTimestamp = expirationTimestamp;
       // trigger event
       emit Transfer(
         address(0), // This is a creation.
         recipient,
-        toKey.tokenId
+        idTo
       );
     }
   }
