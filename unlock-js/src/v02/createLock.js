@@ -33,7 +33,7 @@ export default async function(lock, callback) {
   )
 
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
 
   // Let's update the lock to reflect that it is linked to this

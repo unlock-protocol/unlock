@@ -18,7 +18,7 @@ export default async function({ lockAddress }, callback) {
     TransactionTypes.WITHDRAWAL
   )
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
   // Let's now wait for the funds to have been withdrawn
   const receipt = await this.provider.waitForTransaction(hash)

@@ -22,7 +22,7 @@ export default async function({ lockAddress, owner, keyPrice }, callback) {
   )
 
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
 
   // Let's now wait for the transaction to go thru to return the token id

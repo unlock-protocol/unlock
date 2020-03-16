@@ -70,7 +70,7 @@ export default async function(
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = lockContract.interface
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
 
   const transferEvent = receipt.logs
