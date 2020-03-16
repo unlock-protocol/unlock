@@ -66,6 +66,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -91,6 +92,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -117,6 +119,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -135,6 +138,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -151,6 +155,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[activeKeyForAnotherLock]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -169,6 +174,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -194,6 +200,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -210,6 +217,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[activeKeyForThisLock]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
@@ -233,6 +241,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          metadataRequired={false}
         />
       )
 
