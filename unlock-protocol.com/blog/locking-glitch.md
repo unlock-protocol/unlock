@@ -2,7 +2,7 @@
 title: "Locking Glitch"
 authorName: Julien Genestoux
 publishDate: March 17, 2020
-description: Glitch is a modern web development tool wich lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!
+description: Glitch is a modern web development tool which lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!
 image: /static/images/blog/locking-glitch/glitch.png
 ---
 
