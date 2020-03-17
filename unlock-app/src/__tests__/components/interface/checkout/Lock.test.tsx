@@ -179,12 +179,11 @@ describe('Checkout Lock', () => {
       expect.assertions(0)
 
       state.purchasingLockAddress = '0xlockaddress'
+      state.transactionHash = '0xhash'
 
       jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
         purchaseKey,
-        initiatedPurchase: false,
         error: null,
-        transactionHash: '0xhash',
       }))
 
       const { getByTestId } = rtl.render(
@@ -214,32 +213,6 @@ describe('Checkout Lock', () => {
       )
 
       getByTestId('ConfirmedLock')
-    })
-
-    it('calls emitTransactionInfo when a purchase resolves to a transaction hash', () => {
-      expect.assertions(1)
-
-      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
-        purchaseKey,
-        initiatedPurchase: false,
-        error: null,
-        transactionHash: '0xhash',
-      }))
-
-      rtl.render(
-        <Lock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          balances={balances}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-        />
-      )
-
-      expect(emitTransactionInfo).toHaveBeenCalledWith({
-        hash: '0xhash',
-        lock: lock.address,
-      })
     })
   })
 })

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
 import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
@@ -28,7 +28,7 @@ export const Lock = ({
   activeKeys,
   accountAddress,
 }: LockProps) => {
-  const { purchaseKey, transactionHash } = usePurchaseKey(lock, accountAddress)
+  const { purchaseKey } = usePurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
 
   const onClick = () => {
@@ -38,17 +38,8 @@ export const Lock = ({
     }
 
     dispatch(setPurchasingLockAddress(lock.address))
-    purchaseKey()
+    purchaseKey(lock, accountAddress)
   }
-
-  useEffect(() => {
-    if (transactionHash) {
-      emitTransactionInfo({
-        lock: lock.address,
-        hash: transactionHash,
-      })
-    }
-  }, [transactionHash])
 
   const props: LockVariations.LockProps = {
     onClick,
@@ -64,7 +55,7 @@ export const Lock = ({
 
   // This lock is being/has been purchased
   if (state.purchasingLockAddress === lock.address || keyForThisLock) {
-    if (transactionHash || keyForThisLock) {
+    if (state.transactionHash || keyForThisLock) {
       return <LockVariations.ConfirmedLock {...props} />
     }
     return <LockVariations.ProcessingLock {...props} />

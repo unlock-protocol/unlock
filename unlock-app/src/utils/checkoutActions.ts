@@ -1,6 +1,10 @@
 import { PaywallConfig } from '../unlockTypes'
 
-export type Action = SetConfig | SetShowingLogin | SetPurchasingLockAddress
+export type Action =
+  | SetConfig
+  | SetShowingLogin
+  | SetPurchasingLockAddress
+  | SetTransactionHash
 
 interface SetConfig {
   kind: 'setConfig'
@@ -32,4 +36,14 @@ export const setPurchasingLockAddress = (
 ): SetPurchasingLockAddress => ({
   kind: 'setPurchasingLockAddress',
   address,
+})
+
+interface SetTransactionHash {
+  kind: 'setTransactionHash'
+  hash: string
+}
+
+export const setTransactionHash = (hash: string): SetTransactionHash => ({
+  kind: 'setTransactionHash',
+  hash,
 })
