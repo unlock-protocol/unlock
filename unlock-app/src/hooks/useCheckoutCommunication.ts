@@ -7,6 +7,7 @@ export interface UserInfo {
 
 export interface TransactionInfo {
   hash: string
+  lock?: string
 }
 
 export enum CheckoutEvents {

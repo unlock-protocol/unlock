@@ -238,6 +238,7 @@ describe('Checkout Lock', () => {
 
       expect(emitTransactionInfo).toHaveBeenCalledWith({
         hash: '0xhash',
+        lock: lock.address,
       })
     })
   })
