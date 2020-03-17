@@ -123,7 +123,7 @@ contract IPublicLock
   ) external view returns (address[] memory);
 
   /**
-   * Checks if the given address _owns the given tokenId.
+   * Checks if the given address owns the given tokenId.
    * @param _tokenId The tokenId of the key to check
    * @param _keyOwner The potential key owners address
    */
