@@ -1,10 +1,12 @@
-import { PaywallConfig } from '../unlockTypes'
+import { PaywallConfig, DelayedPurchase } from '../unlockTypes'
 
 export type Action =
   | SetConfig
   | SetShowingLogin
   | SetPurchasingLockAddress
   | SetTransactionHash
+  | SetShowingMetadataForm
+  | SetDelayedPurchase
 
 interface SetConfig {
   kind: 'setConfig'
@@ -23,6 +25,18 @@ interface SetShowingLogin {
 
 export const setShowingLogin = (value: boolean): SetShowingLogin => ({
   kind: 'setShowingLogin',
+  value,
+})
+
+interface SetShowingMetadataForm {
+  kind: 'setShowingMetadataForm'
+  value: boolean
+}
+
+export const setShowingMetadataForm = (
+  value: boolean
+): SetShowingMetadataForm => ({
+  kind: 'setShowingMetadataForm',
   value,
 })
 
@@ -46,4 +60,16 @@ interface SetTransactionHash {
 export const setTransactionHash = (hash: string): SetTransactionHash => ({
   kind: 'setTransactionHash',
   hash,
+})
+
+interface SetDelayedPurchase {
+  kind: 'setDelayedPurchase'
+  purchase: DelayedPurchase
+}
+
+export const setDelayedPurchase = (
+  purchase: DelayedPurchase
+): SetDelayedPurchase => ({
+  kind: 'setDelayedPurchase',
+  purchase,
 })
