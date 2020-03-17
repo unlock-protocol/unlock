@@ -11,7 +11,7 @@ module.exports = () => {
     entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.2.0.ts'),
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
-      filename: 'data-iframe.2.0.min.js',
+      filename: 'data-iframe.latest.min.js',
     },
     module: {
       rules: [
