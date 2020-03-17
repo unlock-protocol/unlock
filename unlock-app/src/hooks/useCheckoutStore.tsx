@@ -7,12 +7,14 @@ interface State {
   showingLogin: boolean
   config: PaywallConfig | undefined
   purchasingLockAddress: string | undefined
+  transactionHash: string | undefined
 }
 
 export const defaultState: State = {
   showingLogin: false,
   config: undefined,
   purchasingLockAddress: undefined,
+  transactionHash: undefined,
 }
 
 function assertNever(x: never): never {
@@ -27,6 +29,8 @@ export function reducer(state = defaultState, action: Action): State {
       return { ...state, showingLogin: action.value }
     case 'setPurchasingLockAddress':
       return { ...state, purchasingLockAddress: action.address }
+    case 'setTransactionHash':
+      return { ...state, transactionHash: action.hash }
     default:
       // Exhaustiveness check, will cause compile error if you forget to implement an action
       return assertNever(action)
@@ -38,7 +42,7 @@ interface ContextValue {
   dispatch: React.Dispatch<Action>
 }
 
-const CheckoutStoreContext = createContext<ContextValue | null>(null)
+export const CheckoutStoreContext = createContext<ContextValue | null>(null)
 
 export const CheckoutStoreProvider: React.FunctionComponent = ({
   children,
