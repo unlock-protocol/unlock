@@ -84,12 +84,8 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
-        
-    container: node:10.18-jessie    
 
-    services:
-      ganache-integration:
-        image: trufflesuite/ganache-cli
+    container: trufflesuite/ganache-cli 
 
     steps:
     - uses: actions/checkout@v2
@@ -97,7 +93,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}         
-    - run: cd unlock-js && yarn      
+    - run: node /app/ganache-core.docker.cli.js -i 1984 --mnemonic 'hello unlock save the web' -b 3     
+    - run: cd unlock-js && yarn
     - run: cd unlock-js && yarn build     
     - run: cd unlock-js && yarn test
       env:
