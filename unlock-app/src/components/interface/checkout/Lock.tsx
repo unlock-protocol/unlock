@@ -44,6 +44,7 @@ export const Lock = ({
   useEffect(() => {
     if (transactionHash) {
       emitTransactionInfo({
+        lock: lock.address,
         hash: transactionHash,
       })
     }
