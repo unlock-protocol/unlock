@@ -76,7 +76,25 @@ jobs:
     - run: cd newsletter && yarn      
     - run: cd newsletter && yarn test
       env:
-        CI: true         
+        CI: true
+
+  unlock-js:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}         
+    - run: cd unlock-js && yarn      
+    - run: cd unlock-js && yarn test
+      env:
+        CI: true             
         
   tickets:
     runs-on: ubuntu-latest
