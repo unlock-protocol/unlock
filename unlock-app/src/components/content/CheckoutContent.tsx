@@ -80,6 +80,7 @@ export const CheckoutContentInner = ({
     ? Object.keys(config.locks)
     : defaultLockAddresses
 
+  const metadataRequired = config ? !!config.metadataInputs : false
   return (
     <CheckoutContainer close={emitCloseModal}>
       <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
@@ -107,6 +108,7 @@ export const CheckoutContentInner = ({
               accountAddress={account.address}
               lockAddresses={lockAddresses}
               emitTransactionInfo={emitTransactionInfo}
+              metadataRequired={metadataRequired}
             />
           )}
         </BrowserOnly>

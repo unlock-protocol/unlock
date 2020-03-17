@@ -19,6 +19,7 @@ interface LockProps {
   balances: Balances
   activeKeys: KeyResult[]
   accountAddress: string
+  metadataRequired?: boolean
 }
 
 export const Lock = ({
