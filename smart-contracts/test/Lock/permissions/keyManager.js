@@ -243,7 +243,7 @@ contract('Permissions / KeyManager', accounts => {
     })
   })
 
-  describe('updating the key manager', () => {
+  describe('configuring the key manager', () => {
     before(async () => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
