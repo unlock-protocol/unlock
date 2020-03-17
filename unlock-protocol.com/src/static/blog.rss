@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 10 Mar 2020 21:32:51 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 17 Mar 2020 13:56:41 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Locking Glitch]]></title>
+            <description><![CDATA[Glitch is a modern web development tool wich lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!]]></description>
+            <link>https://unlock-protocol.com/blog/locking-glitch</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/locking-glitch</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 17 Mar 2020 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[The Access Control Primitive]]></title>
             <description><![CDATA[The web is an operating system. Unlock Protocol is its access control primitive]]></description>
