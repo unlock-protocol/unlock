@@ -84,6 +84,8 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
+        
+    container: node:10.18-jessie    
 
     services:
       ganache-integration:
