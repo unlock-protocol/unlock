@@ -1,4 +1,4 @@
-pragma solidity 0.5.16;
+pragma solidity 0.5.17;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Mintable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Pausable.sol';
