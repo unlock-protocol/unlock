@@ -6,6 +6,7 @@ export type Action =
   | SetPurchasingLockAddress
   | SetDelayedPurchase
   | SetShowingMetadataForm
+  | SetTransactionHash
 
 interface SetConfig {
   kind: 'setConfig'
@@ -61,4 +62,16 @@ export const setDelayedPurchase = (
 ): SetDelayedPurchase => ({
   kind: 'setDelayedPurchase',
   purchase,
+})
+
+interface SetTransactionHash {
+  kind: 'setTransactionHash'
+  hash: string
+}
+
+export const setTransactionHash = (
+  hash: string
+): SetTransactionHash => ({
+  kind: 'setTransactionHash',
+  hash,
 })

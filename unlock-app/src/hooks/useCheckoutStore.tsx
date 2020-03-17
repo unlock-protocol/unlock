@@ -9,6 +9,7 @@ interface State {
   config: PaywallConfig | undefined
   purchasingLockAddress: string | undefined
   delayedPurchase: DelayedPurchase | undefined
+  transactionHash: string | undefined
 }
 
 export const defaultState: State = {
@@ -17,6 +18,7 @@ export const defaultState: State = {
   config: undefined,
   purchasingLockAddress: undefined,
   delayedPurchase: undefined,
+  transactionHash: undefined,
 }
 
 function assertNever(x: never): never {
@@ -35,6 +37,8 @@ export function reducer(state = defaultState, action: Action): State {
       return { ...state, purchasingLockAddress: action.address }
     case 'setDelayedPurchase':
       return { ...state, delayedPurchase: action.purchase }
+    case 'setTransactionHash':
+      return { ...state, transactionHash: action.hash }
     default:
       // Exhaustiveness check, will cause compile error if you forget to implement an action
       return assertNever(action)

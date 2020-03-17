@@ -3,18 +3,14 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { RawLock } from '../unlockTypes'
 import { WalletServiceContext } from '../utils/withWalletService'
 
-type TransactionHash = string | null
 type PurchaseError = Error | null
 
-export const usePurchaseKey = (lock: RawLock, accountAddress: string) => {
-  const [transactionHash, setTransactionHash] = useState(
-    null as TransactionHash
-  )
+export const usePurchaseKey = (setTransactionHash: (hash: string) => void) => {
   const [error, setError] = useState(null as PurchaseError)
 
   const walletService: WalletService = useContext(WalletServiceContext)
 
-  const purchaseKey = () => {
+  const purchaseKey = (lock: RawLock, accountAddress: string) => {
     walletService.purchaseKey(
       {
         lockAddress: lock.address,
@@ -25,12 +21,12 @@ export const usePurchaseKey = (lock: RawLock, accountAddress: string) => {
       (error, hash) => {
         if (error) {
           setError(error)
-        } else {
+        } else if (hash) {
           setTransactionHash(hash)
         }
       }
     )
   }
 
-  return { purchaseKey, error, transactionHash }
+  return { purchaseKey, error }
 }
