@@ -58,6 +58,24 @@ jobs:
     - run: cd wedlocks && yarn      
     - run: cd wedlocks && yarn test
       env:
+        CI: true 
+
+  newsletter:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}         
+    - run: cd newsletter && yarn      
+    - run: cd newsletter && yarn test
+      env:
         CI: true         
         
   tickets:
