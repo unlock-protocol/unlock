@@ -11,7 +11,7 @@ module.exports = () => {
     entry: path.resolve(__dirname, 'src', 'paywall-script', 'index.ts'),
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
-      filename: 'unlock.2.0.min.js',
+      filename: 'unlock.latest.min.js',
     },
     module: {
       rules: [
