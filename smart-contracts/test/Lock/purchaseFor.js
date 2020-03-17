@@ -21,7 +21,7 @@ contract('Lock / purchaseFor', accounts => {
         locks.FIRST.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
           value: web3.utils.toWei('0.0001', 'ether'),
         }),
-        'NOT_ENOUGH_FUNDS'
+        'INSUFFICIENT_VALUE'
       )
       // Making sure we do not have a key set!
       assert.equal(

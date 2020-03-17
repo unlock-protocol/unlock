@@ -6,7 +6,6 @@ import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
-import './MixinEventHooks.sol';
 
 
 contract MixinRefunds is
@@ -14,8 +13,7 @@ contract MixinRefunds is
   MixinSignatures,
   MixinFunds,
   MixinLockCore,
-  MixinKeys,
-  MixinEventHooks
+  MixinKeys
 {
   using SafeMath for uint;
 
@@ -180,7 +178,11 @@ contract MixinRefunds is
       _transfer(tokenAddress, _keyOwner, refund);
     }
 
-    _onKeyCancel(_keyOwner, refund);
+    // inform the hook if there is one registered
+    if(address(onKeyCancelHook) != address(0))
+    {
+      onKeyCancelHook.onKeyCancel(msg.sender, _keyOwner, refund);
+    }
   }
 
   /**

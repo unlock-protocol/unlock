@@ -1,4 +1,5 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -37,5 +38,12 @@ contract('Lock / onKeyCancelHook', accounts => {
     assert.equal(log.operator, to)
     assert.equal(log.to, to)
     assert.notEqual(log.refund, 0)
+  })
+
+  it('cannot set the hook to a non-contract address', async () => {
+    await reverts(
+      lock.setEventHooks(constants.ZERO_ADDRESS, accounts[1]),
+      'INVALID_ON_KEY_CANCEL_HOOK'
+    )
   })
 })

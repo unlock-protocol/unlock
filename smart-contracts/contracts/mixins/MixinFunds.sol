@@ -49,30 +49,6 @@ contract MixinFunds is Ownable
   }
 
   /**
-   * Ensures that the msg.sender has paid at least the price stated.
-   *
-   * With ETH, this means the function originally called was `payable` and the
-   * transaction included at least the amount requested.
-   *
-   * Security: be wary of re-entrancy when calling this function.
-   */
-  function _chargeAtLeast(
-    uint _price
-  ) internal returns (uint)
-  {
-    if(_price > 0) {
-      if(tokenAddress == address(0)) {
-        require(msg.value >= _price, 'NOT_ENOUGH_FUNDS');
-        return msg.value;
-      } else {
-        IERC20 token = IERC20(tokenAddress);
-        token.safeTransferFrom(msg.sender, address(this), _price);
-        return _price;
-      }
-    }
-  }
-
-  /**
    * Transfers funds from the contract to the account provided.
    *
    * Security: be wary of re-entrancy when calling this function.
