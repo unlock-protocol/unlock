@@ -85,6 +85,10 @@ jobs:
       matrix:
         node-version: [10.x]
 
+    services:
+      ganache-integration:
+        image: trufflesuite/ganache-cli
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
