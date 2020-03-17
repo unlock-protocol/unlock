@@ -138,9 +138,6 @@ jobs:
     - run: cd smart-contract-extensions && yarn ganache &
     - run: cd smart-contract-extensions && yarn test
 
-      # env:
-      #   CI: true
-
   smart-contracts:
     runs-on: ubuntu-latest
     container: node:10.18-jessie
