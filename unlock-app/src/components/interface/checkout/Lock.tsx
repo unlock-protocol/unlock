@@ -11,7 +11,11 @@ import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
-import { setPurchasingLockAddress } from '../../../utils/checkoutActions'
+import {
+  setPurchasingLockAddress,
+  setDelayedPurchase,
+  setShowingMetadataForm,
+} from '../../../utils/checkoutActions'
 
 interface LockProps {
   lock: RawLock
@@ -28,9 +32,15 @@ export const Lock = ({
   balances,
   activeKeys,
   accountAddress,
+  metadataRequired,
 }: LockProps) => {
   const { purchaseKey } = usePurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
+
+  const purchase = () => {
+    dispatch(setPurchasingLockAddress(lock.address))
+    purchaseKey(lock, accountAddress)
+  }
 
   const onClick = () => {
     if (state.purchasingLockAddress) {
@@ -38,8 +48,17 @@ export const Lock = ({
       return
     }
 
-    dispatch(setPurchasingLockAddress(lock.address))
-    purchaseKey(lock, accountAddress)
+    if (metadataRequired) {
+      dispatch(
+        setDelayedPurchase({
+          lockAddress: lock.address,
+          purchaseKey: purchase,
+        })
+      )
+      dispatch(setShowingMetadataForm(true))
+    } else {
+      purchase()
+    }
   }
 
   const props: LockVariations.LockProps = {
