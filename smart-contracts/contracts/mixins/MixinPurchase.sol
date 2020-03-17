@@ -140,9 +140,7 @@ contract MixinPurchase is
   {
     if(address(onKeyPurchaseHook) != address(0))
     {
-      bool purchaseSupported;
-      (purchaseSupported, minKeyPrice) = onKeyPurchaseHook.keyPurchasePrice(msg.sender, _recipient, _referrer, _data);
-      require(purchaseSupported, 'PURCHASE_BLOCKED_BY_HOOK');
+      minKeyPrice = onKeyPurchaseHook.keyPurchasePrice(msg.sender, _recipient, _referrer, _data);
     }
     else
     {

@@ -56,11 +56,11 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook
     address /*referrer*/,
     bytes calldata /*data*/
   ) external view
-    returns (bool purchaseSupported, uint minKeyPrice)
+    returns (uint minKeyPrice)
   {
-    purchaseSupported = isPurchaseSupported;
+    require(isPurchaseSupported, 'PURCHASE_BLOCKED_BY_HOOK');
     minKeyPrice = IPublicLock(msg.sender).keyPrice();
-    if(discount <= minKeyPrice)
+    if(discount < minKeyPrice)
     {
       minKeyPrice -= discount;
     }

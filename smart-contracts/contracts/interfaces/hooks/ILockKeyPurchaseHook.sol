@@ -10,12 +10,12 @@ interface ILockKeyPurchaseHook
   /**
    * @notice Used to determine the purchase price before issueing a transaction.
    * This allows the hook to offer a discount on purchases.
+   * This may revert to prevent a purchase.
    * @param from the msg.sender making the purchase
    * @param recipient the account which will be granted a key
    * @param referrer the account which referred this key sale
    * @param data arbitrary data populated by the front-end which initiated the sale
-   * @return true if the user may purchase the key, false to cause purchase to revert
-   *         the minimum value/price required to purchase a key with these settings
+   * @return the minimum value/price required to purchase a key with these settings
    * @dev the lock's address is the `msg.sender` when this function is called via
    * the lock's `purchasePriceFor` function
    */
@@ -25,7 +25,7 @@ interface ILockKeyPurchaseHook
     address referrer,
     bytes calldata data
   ) external view
-    returns (bool purchaseSupported, uint minKeyPrice);
+    returns (uint minKeyPrice);
 
   /**
    * @notice If the lock owner has registered an implementer then this hook
