@@ -272,8 +272,8 @@ contract MixinKeys is
   ) internal view
     returns (bool)
   {
-    if(keyManagerOf[_tokenId] == msg.sender ||
-      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender))) {
+    if(keyManagerOf[_tokenId] == _keyManager ||
+      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, _keyManager))) {
       return true;
     } else {
       return false;
