@@ -1,5 +1,4 @@
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const getProxy = require('../../helpers/proxy')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -10,10 +9,8 @@ let lock
 let lockCreator
 let lockAddress
 
-contract('Permissions / resetKeyManager', accounts => {
+contract('Permissions / isKeyManager', accounts => {
   lockCreator = accounts[0]
-  let keyManager
-  let iD
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const salt = 42
 
@@ -37,18 +34,27 @@ contract('Permissions / resetKeyManager', accounts => {
     })
   })
 
-  describe('resetting the key manager internally', () => {
-    before(async () => {
-      iD = await lock.getTokenIdFor(accounts[1])
-      await lock.setKeyManagerOf(iD, accounts[9], { from: accounts[1] })
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, accounts[9])
-      await lock.resetKeyManagerOf(iD)
-    })
+  describe('confirming the key manager', () => {
+    let isKeyManager
+    let iD
 
-    it('should reset to the default KeyManager of 0x00', async () => {
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+    it('should return true if address is the KM', async () => {
+      iD = await lock.getTokenIdFor.call(accounts[1])
+      isKeyManager = await lock.isKeyManager.call(iD, accounts[1], {
+        from: accounts[1],
+      })
+      assert.equal(isKeyManager, true)
+      // it shouldn't matter who is calling
+      isKeyManager = await lock.isKeyManager.call(iD, accounts[1], {
+        from: accounts[5],
+      })
+      assert.equal(isKeyManager, true)
+    })
+    it('should return false if address is not the KM', async () => {
+      isKeyManager = await lock.isKeyManager.call(iD, accounts[9], {
+        from: accounts[1],
+      })
+      assert.equal(isKeyManager, false)
     })
   })
 })
