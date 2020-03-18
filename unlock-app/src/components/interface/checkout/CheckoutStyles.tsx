@@ -17,7 +17,7 @@ export const CheckoutFooter = () => (
 )
 
 const FooterWrapper = styled.footer`
-  margin-top: 50px;
+  margin-top: 16px;
   font-size: 12px;
   text-align: center;
 
