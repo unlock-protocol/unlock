@@ -5116,6 +5116,97 @@ Object {
 }
 `;
 
+exports[`Storyshots Checkout Login Button Login button 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-size: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 10px;
+  color: var(--blue);
+  margin-top: 33px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <input
+        class="c0"
+        type="button"
+        value="Login"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <input
+      class="sc-pbYBj gnwUtg"
+      type="button"
+      value="Login"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Checkout Payment Selection Switch Payment 1`] = `
 Object {
   "asFragment": [Function],
@@ -5189,30 +5280,30 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-pbYBj bJESDU"
+      class="sc-pkUbs dJeYYg"
     >
       <h4
-        class="sc-pkUbs qJhVj"
+        class="sc-psQdR hctKjQ"
       >
         Switch payment to
       </h4>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         Credit Card
       </button>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         BAT
       </button>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         USDC
       </button>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         DAI
       </button>
@@ -5362,31 +5453,31 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-pbYBj bJESDU"
+      class="sc-pkUbs dJeYYg"
     >
       <h4
-        class="sc-pkUbs qJhVj"
+        class="sc-psQdR hctKjQ"
       >
         Switch payment to
       </h4>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         Credit Card
       </button>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         BAT
       </button>
       <button
-        class="sc-psQdR sc-qPlga csPEXp"
+        class="sc-qPlga sc-qXhiz HlnWQ"
         data-testid="active-USDC"
       >
         USDC
       </button>
       <button
-        class="sc-psQdR dzQJrF"
+        class="sc-qPlga IItmm"
       >
         DAI
       </button>
@@ -62414,14 +62505,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-qPwPv cTjqtV"
+      class="sc-qXRQq jpnOTC"
     >
       <div
-        class="sc-qXRQq geACvL"
+        class="sc-pAncQ gVbEqF"
         color="--green"
       >
         <div
-          class="sc-pXZzD khTcec"
+          class="sc-oUDcU doYKvY"
         >
           <svg
             viewBox="0 0 24 24"
@@ -62437,57 +62528,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pAncQ cBixuc"
+          class="sc-pIjat iQCkiP"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pIjat jLiAWT"
+          class="sc-pQdCa jhUoxG"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-oUDcU kNUODc"
+        class="sc-pczax lgcdJs"
       >
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Lock Name
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Token Id
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           53
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Owner Address
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           20 minutes ago
         </div>
@@ -62753,14 +62844,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-qPwPv cTjqtV"
+      class="sc-qXRQq jpnOTC"
     >
       <div
-        class="sc-qXRQq geACvL"
+        class="sc-pAncQ gVbEqF"
         color="--green"
       >
         <div
-          class="sc-pXZzD khTcec"
+          class="sc-oUDcU doYKvY"
         >
           <svg
             viewBox="0 0 24 24"
@@ -62776,62 +62867,62 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pAncQ cBixuc"
+          class="sc-pIjat iQCkiP"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pIjat jLiAWT"
+          class="sc-pQdCa jhUoxG"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-oUDcU kNUODc"
+        class="sc-pczax lgcdJs"
       >
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Lock Name
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Token Id
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           53
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Owner Address
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           20 minutes ago
         </div>
         <button
-          class="sc-fznBtT sc-pczax giOUSm"
+          class="sc-fznBtT sc-pktCe kvvpef"
         >
           Mark as Checked-In
         </button>
@@ -63068,14 +63159,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-qPwPv cTjqtV"
+      class="sc-qXRQq jpnOTC"
     >
       <div
-        class="sc-qXRQq geACvL"
+        class="sc-pAncQ gVbEqF"
         color="--green"
       >
         <div
-          class="sc-pXZzD khTcec"
+          class="sc-oUDcU doYKvY"
         >
           <svg
             viewBox="0 0 24 24"
@@ -63091,57 +63182,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pAncQ cBixuc"
+          class="sc-pIjat iQCkiP"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pIjat jLiAWT"
+          class="sc-pQdCa jhUoxG"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-oUDcU kNUODc"
+        class="sc-pczax lgcdJs"
       >
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Lock Name
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Token Id
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           53
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Owner Address
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           20 minutes ago
         </div>
@@ -63394,14 +63485,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-qPwPv cTjqtV"
+      class="sc-qXRQq jpnOTC"
     >
       <div
-        class="sc-qXRQq bXdJsr"
+        class="sc-pAncQ dRbcmV"
         color="--yellow"
       >
         <div
-          class="sc-pXZzD khTcec"
+          class="sc-oUDcU doYKvY"
         >
           <svg
             viewBox="0 0 24 24"
@@ -63417,18 +63508,18 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pAncQ cBixuc"
+          class="sc-pIjat iQCkiP"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pIjat jLiAWT"
+          class="sc-pQdCa jhUoxG"
         >
           Until 
           Jun 24th, 2020
         </h2>
         <h2
-          class="sc-pQdCa dBHRMe"
+          class="sc-pXZzD cAlFBB"
         >
           Checked-in 
           1 minute
@@ -63436,45 +63527,45 @@ Object {
         </h2>
       </div>
       <div
-        class="sc-oUDcU kNUODc"
+        class="sc-pczax lgcdJs"
       >
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Lock Name
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Token Id
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           53
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Owner Address
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-pktCe frrMgB"
+          class="sc-pspzH uVLfh"
         >
           Time Since signed
         </div>
         <div
-          class="sc-pspzH inRCgw"
+          class="sc-qPLKk iuVIpw"
         >
           20 minutes ago
         </div>
@@ -63619,14 +63710,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-qPwPv cTjqtV"
+      class="sc-qXRQq jpnOTC"
     >
       <div
-        class="sc-qXRQq jMDEUX"
+        class="sc-pAncQ dlnSBd"
         color="--red"
       >
         <div
-          class="sc-pXZzD khTcec"
+          class="sc-oUDcU doYKvY"
         >
           <svg
             viewBox="0 0 24 24"
@@ -63642,7 +63733,7 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pAncQ cBixuc"
+          class="sc-pIjat iQCkiP"
         >
           Key Invalid
         </h1>
