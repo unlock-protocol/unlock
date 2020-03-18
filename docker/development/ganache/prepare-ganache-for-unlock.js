@@ -39,7 +39,7 @@ const log = message => {
 
 // Wait for the node's http endpoint to be up.
 serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
-  .then(async () => {
+  .then(async function() {
     // Instantiate the walletService
     const walletService = new WalletService({})
     // We connect to a local node and we expect the node to have unlocked accounts
