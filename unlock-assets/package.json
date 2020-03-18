@@ -1,0 +1,12 @@
+{
+  "name": "@unlock-protocol/unlock-assets",
+  "version": "1.0.0",
+  "description": "A module with all of the unlock assets (images...)",
+  "main": "index.js",
+  "module": "main.js",
+  "author": "unlock inc",
+  "license": "MIT",
+  "dependencies": {
+    "esm": "3.2.25"
+  }
+}
