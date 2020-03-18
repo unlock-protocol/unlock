@@ -1,5 +1,11 @@
 # Changes
 
+# 0.8.7
+- Updated typescript definitions
+
+# 0.8.6
+- Callback on transaction yields the transaction object as 3rd argument
+
 # 0.8.5
 - Corrected type definition so that callback is optional on purchaseKey
 

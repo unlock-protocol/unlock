@@ -25,7 +25,7 @@ export default async function({ lockAddress, owner, keyPrice }, callback) {
   const parser = lockContract.interface
 
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
 
   const transferEvent = receipt.logs
