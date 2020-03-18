@@ -64,9 +64,10 @@ jobs:
     - run: cd unlock-js && yarn
     - run: cd unlock-js && yarn ganache &      
     - run: cd unlock-js && yarn build
+    - run: node  node ./docker/development/ganache/prepare-ganache-for-unlock.js
     - run: cd unlock-js && yarn test
-      # env:
-      #   CI: true        
+      env:
+        LOCKSMITH_PURCHASER_ADDRESS: 0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2    
         
   wedlocks:
     runs-on: ubuntu-latest

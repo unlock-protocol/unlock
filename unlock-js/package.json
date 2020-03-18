@@ -14,7 +14,7 @@
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
     "ci": "yarn test && yarn lint",
-    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" --blockTime 3",
+    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" --blockTime 1 -i 1984",
     "prepublishOnly": "yarn build"
   },
   "author": "",
