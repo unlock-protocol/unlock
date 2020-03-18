@@ -1,5 +1,9 @@
+import React from 'react'
 import * as rtl from '@testing-library/react'
-import { renderLock } from '../../../../components/interface/checkout/UserAccountLocks'
+import {
+  renderLock,
+  UserAccountLocks,
+} from '../../../../components/interface/checkout/UserAccountLocks'
 
 const lock = {
   name: 'a test lock',
@@ -14,6 +18,21 @@ const prices = {
     usd: '12.33',
   },
 }
+
+let usePaywallLocksMock: any
+const useFiatKeyPricesMock: any = {}
+
+jest.mock('../../../../hooks/usePaywallLocks', () => {
+  return {
+    usePaywallLocks: jest.fn(() => usePaywallLocksMock),
+  }
+})
+
+jest.mock('../../../../hooks/useFiatKeyPrices', () => {
+  return {
+    useFiatKeyPrices: jest.fn(() => useFiatKeyPricesMock),
+  }
+})
 
 describe('UserAccountLocks', () => {
   describe('renderLock helper', () => {
@@ -34,6 +53,32 @@ describe('UserAccountLocks', () => {
       // After future work, this won't be a DisabledLock but a UserAccountLock
       getByTestId('DisabledLock')
       getByText('$12.33')
+    })
+  })
+
+  describe('component', () => {
+    it('shows loading locks while loading', () => {
+      expect.assertions(0)
+
+      usePaywallLocksMock = { loading: true }
+
+      const { getByTestId } = rtl.render(
+        <UserAccountLocks lockAddresses={['0xlock']} />
+      )
+
+      getByTestId('LoadingLock')
+    })
+
+    it('shows live locks when usePaywallLocks resolves', () => {
+      expect.assertions(0)
+
+      usePaywallLocksMock = { loading: false, locks: [lock] }
+
+      const { getByTestId } = rtl.render(
+        <UserAccountLocks lockAddresses={['0xlock']} />
+      )
+
+      getByTestId('DisabledLock')
     })
   })
 })
