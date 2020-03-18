@@ -122,11 +122,13 @@ export const CheckoutContentInner = ({
               {!account && !showingLogin && (
                 <>
                   <NotLoggedInLocks lockAddresses={lockAddresses} />
-                  <input
-                    type="button"
-                    onClick={() => dispatch(setShowingLogin(true))}
-                    value="Log in"
-                  />
+                  {config && config.unlockUserAccounts && (
+                    <input
+                      type="button"
+                      onClick={() => dispatch(setShowingLogin(true))}
+                      value="Log in"
+                    />
+                  )}
                 </>
               )}
               {account && (
