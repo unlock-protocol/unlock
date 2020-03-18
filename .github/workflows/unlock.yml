@@ -158,10 +158,11 @@ jobs:
 
   smart-contracts:
     runs-on: ubuntu-latest
-    container: node:10.18-jessie
-    services:
-      ganache:
-        image: trufflesuite/ganache-cli
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -169,10 +170,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}         
     - run: cd smart-contracts && yarn      
-    # - run: cd smart-contracts && yarn build
-    # - run: cd smart-contracts && yarn test
-      env:
-        CI: true
+    - run: cd smart-contracts && yarn build
+    - run: cd smart-contracts && yarn ganache &
+    - run: cd smart-contracts && yarn test
         
   locksmith:
     runs-on: ubuntu-latest
