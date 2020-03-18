@@ -14,6 +14,7 @@
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
     "ci": "yarn test && yarn lint",
+    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\"",
     "prepublishOnly": "yarn build"
   },
   "author": "",
@@ -43,6 +44,7 @@
     "@babel/core": "7.8.7",
     "@babel/preset-env": "7.8.7",
     "babel-jest": "25.1.0",
+    "ganache-cli": "6.9.1",
     "jest": "25.1.0",
     "nock": "12.0.2",
     "unlock-abi-0": "1.0.4",

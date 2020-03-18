@@ -47,6 +47,26 @@ jobs:
     - run: cd paywall && yarn test
       env:
         CI: true
+
+  unlock-js:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}         
+    - run: cd unlock-js && yarn
+    - run: cd unlock-js && yarn ganache &      
+    - run: cd unlock-js && yarn build
+    - run: cd unlock-js && yarn test
+      # env:
+      #   CI: true        
         
   wedlocks:
     runs-on: ubuntu-latest
