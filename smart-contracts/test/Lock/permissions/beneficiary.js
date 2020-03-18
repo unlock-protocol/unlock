@@ -8,13 +8,13 @@ let unlock
 let locks
 let lock
 let lockCreator
-let notAuthorised
-let currentBenficiary
+let notAuthorized
+let currentBeneficiary
 let newBeneficiary
 
 contract('Permissions / Beneficiary', accounts => {
   lockCreator = accounts[0]
-  notAuthorised = accounts[9]
+  notAuthorized = accounts[9]
   newBeneficiary = accounts[1]
 
   before(async () => {
@@ -32,20 +32,20 @@ contract('Permissions / Beneficiary', accounts => {
   describe('modifying permissions on an existing lock', () => {
     it('should allow a lockManager to update the beneficiary', async () => {
       await lock.updateBeneficiary(newBeneficiary, { from: lockCreator })
-      currentBenficiary = await lock.beneficiary.call()
-      assert.equal(currentBenficiary, newBeneficiary)
+      currentBeneficiary = await lock.beneficiary.call()
+      assert.equal(currentBeneficiary, newBeneficiary)
     })
 
     it('should allow Beneficiary to update the beneficiary', async () => {
-      currentBenficiary = await lock.beneficiary.call()
-      await lock.updateBeneficiary(accounts[8], { from: currentBenficiary })
-      currentBenficiary = await lock.beneficiary.call()
-      assert.equal(currentBenficiary, accounts[8])
+      currentBeneficiary = await lock.beneficiary.call()
+      await lock.updateBeneficiary(accounts[8], { from: currentBeneficiary })
+      currentBeneficiary = await lock.beneficiary.call()
+      assert.equal(currentBeneficiary, accounts[8])
     })
 
     it('should not allow anyone else to update the beneficiary', async () => {
       await reverts(
-        lock.updateBeneficiary(accounts[5], { from: notAuthorised }),
+        lock.updateBeneficiary(accounts[5], { from: notAuthorized }),
         'ONLY_BENEFICIARY_OR_LOCKMANAGER'
       )
     })
