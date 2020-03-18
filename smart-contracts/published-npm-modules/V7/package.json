@@ -1,7 +1,7 @@
 {
-  "name": "unlock-abi-1-3",
+  "name": "unlock-abi-7",
   "version": "1.0.0",
-  "description": "The ABI (application binary interface) for version 7 of Unlock-protocol's PublicLock and Unlock contracts. These are built out of commit 31d7d1c inside the main unlock repository",
+  "description": "The ABI (application binary interface) for version 7 of Unlock-protocol's PublicLock and Unlock contracts. These are built out of commit e6e4fa48 inside the main unlock repository",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
