@@ -37,7 +37,7 @@ contract MixinApproval is
   )
   {
     require(
-      isKeyManager(_tokenId, msg.sender) ||
+      _isKeyManager(_tokenId, msg.sender) ||
       _isApproved(_tokenId, msg.sender) ||
       isApprovedForAll(_ownerOf[_tokenId], msg.sender),
       'ONLY_KEY_MANAGER_OR_APPROVED'
