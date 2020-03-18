@@ -173,8 +173,6 @@ jobs:
     - run: cd smart-contracts && yarn build
     - run: cd smart-contracts && yarn ganache &
     - run: cd smart-contracts && yarn test
-      # env:
-      #   CI: true
         
   locksmith:
     runs-on: ubuntu-latest
