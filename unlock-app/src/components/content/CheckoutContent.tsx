@@ -137,6 +137,7 @@ export const CheckoutContentInner = ({
                   lockAddresses={lockAddresses}
                   emitTransactionInfo={emitTransactionInfo}
                   metadataRequired={metadataRequired}
+                  usingUserAccounts={!!account.emailAddress}
                 />
               )}
             </>
