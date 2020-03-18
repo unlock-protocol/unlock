@@ -10,6 +10,7 @@ import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { MetadataForm } from '../interface/checkout/MetadataForm'
+import { LogInButton } from '../interface/checkout/LogInButton'
 import {
   Account as AccountType,
   Router,
@@ -123,10 +124,8 @@ export const CheckoutContentInner = ({
                 <>
                   <NotLoggedInLocks lockAddresses={lockAddresses} />
                   {config && config.unlockUserAccounts && (
-                    <input
-                      type="button"
+                    <LogInButton
                       onClick={() => dispatch(setShowingLogin(true))}
-                      value="Log in"
                     />
                   )}
                 </>
