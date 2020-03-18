@@ -6,7 +6,7 @@ export const ActionButton = styled.button`
     props.disabled ? 'var(--grey)' : 'var(--green)'};
   border: none;
   font-size: 16px;
-  color: var(--darkgrey);
+  color: var(--white);
   font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
   cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
@@ -22,6 +22,19 @@ export const CreateLockButton = styled(ActionButton)`
   padding: 10px;
   align-self: end;
   height: 48px;
+  ${Media.phone`
+    display: none;
+  `};
+`
+
+export const CancelCreateLockButton = styled(ActionButton)`
+  padding: 10px;
+  align-self: end;
+  height: 48px;
+  background-color: var(--yellow);
+  & :hover {
+    background-color: var(--red);
+  }
   ${Media.phone`
     display: none;
   `};

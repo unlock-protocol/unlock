@@ -412,8 +412,7 @@ const LockLabelCurrency = styled(LockLabel).attrs(() => ({
   font-size: 11px;
   cursor: pointer;
   width: 100%;
-  padding: 5px;
-  padding-left: 40px;
+  padding: 5px 0 0 0;
 `
 
 const FormLockRow = styled(LockRow)`
@@ -444,7 +443,7 @@ const FormLockDetails = styled(LockDetails)`
 
   input {
     background: var(--lightgrey);
-    border: 1px solid var(--lightgrey);
+    border: 1px solid var(--offwhite);
     border-radius: 4px;
     height: 26px;
     padding: 0 8px;
@@ -470,6 +469,7 @@ const FormLockDetails = styled(LockDetails)`
 
 const Status = styled(LockStatus)`
   padding-bottom: 15px;
+  background-color: var(--green);
 `
 
 const FormLockName = styled(LockName)`
@@ -514,7 +514,7 @@ const Button = styled.button`
   font-size: ${props => (props.cancel ? '10px' : '13px')};
   align-self: ${props => (props.cancel ? 'center' : 'end')};
   background: none;
-  color: inherit;
+  color: var(--white);
   border: none;
   outline: inherit;
   padding 0;

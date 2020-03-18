@@ -11,6 +11,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import {
   CreateLockButton,
+  CancelCreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { showForm, hideForm } from '../../actions/lockFormVisibility'
@@ -35,9 +36,19 @@ export const DashboardContent = ({
         <BrowserOnly>
           <AccountWrapper>
             <Account network={network} account={account} />
-            <CreateLockButton id="CreateLockButton" onClick={toggleForm}>
-              Create Lock
-            </CreateLockButton>
+            {formIsVisible && (
+              <CancelCreateLockButton
+                id="CreateLockButton"
+                onClick={toggleForm}
+              >
+                Cancel Lock
+              </CancelCreateLockButton>
+            )}
+            {!formIsVisible && (
+              <CreateLockButton id="CreateLockButton" onClick={toggleForm}>
+                Create Lock
+              </CreateLockButton>
+            )}
           </AccountWrapper>
           <Phone>
             <Warning>

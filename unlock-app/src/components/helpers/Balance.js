@@ -62,16 +62,16 @@ export const Currency = styled.span.attrs({
 `
 
 export const CurrencySymbol = styled.span`
-  min-width: 40px; /* supports 4 characters */
   max-width: 40px; /* supports 4 characters */
-  text-align: right;
+  text-align: left;
   padding-right: 0.3em;
   display: inline-block;
 `
 
 export const Eth = styled(CurrencySymbol)`
   &:before {
-    content: '三';
+    content: 'Ξ';
+    font-family: 'Arial', sans-serif;
   }
 `
 export const ERC20 = styled(CurrencySymbol)`
