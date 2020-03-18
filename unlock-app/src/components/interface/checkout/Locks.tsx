@@ -11,6 +11,7 @@ interface LocksProps {
   lockAddresses: string[]
   emitTransactionInfo: (info: TransactionInfo) => void
   metadataRequired?: boolean
+  usingUserAccounts?: boolean
 }
 
 export const Locks = ({
