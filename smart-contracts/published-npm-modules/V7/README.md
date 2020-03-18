@@ -7,6 +7,7 @@ The smart contracts have been compiled as of commit 31d7d1c
 Changelog:
 
 ```
+e6e4fa48 Fix compiler warning (#6236)
 8c4fedd3 Bump to solc 0.5.17 (#6245)
 12caa952 Fix interface dependency (#6246)
 b27c0b56 Add discount to the OnKeyPurchase hook (#6137)
