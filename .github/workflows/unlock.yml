@@ -173,6 +173,19 @@ jobs:
     # - run: cd smart-contracts && yarn test
       env:
         CI: true
+
+  circleci-trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Trigger exiting circleci job
+        uses: zivkaziv/circleci-trigger-github-action@master
+        with:
+          token: ${{ secrets.CIRCLE_CI_TOKEN }}
+          branch: master
+        
         
   locksmith:
     runs-on: ubuntu-latest
