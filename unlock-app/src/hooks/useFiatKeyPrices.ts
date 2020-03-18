@@ -22,7 +22,7 @@ interface KeyPriceUpdate {
   prices: KeyPrice
 }
 
-const keyPricesReducer = (prices: KeyPrices, update: KeyPriceUpdate) => {
+export const keyPricesReducer = (prices: KeyPrices, update: KeyPriceUpdate) => {
   if (Object.keys(update.prices).length === 0) {
     // Locks that are not approved for credit card purchases will have
     // an empty `prices` object. It's easier on the consumer side if
@@ -50,9 +50,7 @@ export const useFiatKeyPrices = (lockAddresses: string[]) => {
     const response = await fetch(
       `${config.services.storage.host}/price/fiat/${lockAddress}`
     )
-    console.log(response)
     const prices: KeyPrice = await response.json()
-    console.log(prices)
 
     updatePrice({
       lockAddress,
@@ -62,7 +60,7 @@ export const useFiatKeyPrices = (lockAddresses: string[]) => {
 
   useEffect(() => {
     lockAddresses.forEach(address => getFiatKeyPriceFor(address))
-  }, [...lockAddresses])
+  }, [JSON.stringify(lockAddresses)])
 
   return fiatKeyPrices
 }
