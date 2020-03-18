@@ -50,7 +50,9 @@ export const useFiatKeyPrices = (lockAddresses: string[]) => {
     const response = await fetch(
       `${config.services.storage.host}/price/fiat/${lockAddress}`
     )
+    console.log(response)
     const prices: KeyPrice = await response.json()
+    console.log(prices)
 
     updatePrice({
       lockAddress,

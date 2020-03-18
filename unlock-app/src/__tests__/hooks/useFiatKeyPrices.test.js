@@ -3,13 +3,10 @@ import { renderHook } from '@testing-library/react-hooks'
 import { useFiatKeyPrices } from '../../hooks/useFiatKeyPrices'
 import { ConfigContext } from '../../utils/withConfig'
 
-const getFetch = (): any => {
-  return fetch as any
-}
-
 describe('useFiatKeyPrices', () => {
   beforeEach(() => {
-    getFetch().resetMocks()
+    fetch.resetMocks()
+    fetch.mockResponseOnce(JSON.stringify({ data: '12345' }, { headers: { 'content-type': 'application/json' } }))
 
     jest.spyOn(React, 'useContext').mockImplementation(context => {
       if (context === ConfigContext) {
@@ -34,8 +31,6 @@ describe('useFiatKeyPrices', () => {
 
   it('should fetch fiat prices from locksmith', async () => {
     expect.assertions(1)
-
-    getFetch().mockResponseOnce(JSON.stringify({ data: '12345' }))
 
     const { result, wait } = renderHook(() =>
       useFiatKeyPrices(['0xlockaddress'])
