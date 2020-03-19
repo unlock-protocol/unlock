@@ -17,7 +17,6 @@ import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
 
 import FullScreenModal from '../components/interface/FullScreenModals'
-import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
@@ -155,9 +154,7 @@ The Unlock team
                 <Web3ServiceProvider value={web3Service}>
                   <WalletServiceProvider value={walletService}>
                     <ConfigProvider value={config}>
-                      <GlobalErrorConsumer>
-                        <Component {...pageProps} />
-                      </GlobalErrorConsumer>
+                      <Component {...pageProps} />
                     </ConfigProvider>
                   </WalletServiceProvider>
                 </Web3ServiceProvider>
