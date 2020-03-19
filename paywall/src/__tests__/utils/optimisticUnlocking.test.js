@@ -10,6 +10,7 @@ const savedTransactions = [
   {
     recipient: lock,
     transactionHash: '0xtransactionHash',
+    createdAt: new Date().toDateString(),
   },
   {
     recipient: lock,
@@ -19,7 +20,7 @@ const savedTransactions = [
 
 describe('optimisticUnlocking', () => {
   it('should yield true if any transaction is optimistic', async () => {
-    expect.assertions(5)
+    expect.assertions(4)
     jest
       .spyOn(OptimisticUnlocking, 'getTransactionsForUserAndLocks')
       .mockImplementationOnce(() => {
@@ -39,20 +40,12 @@ describe('optimisticUnlocking', () => {
     expect(
       OptimisticUnlocking.getTransactionsForUserAndLocks
     ).toHaveBeenCalledWith(locksmithUri, user, locks)
-    expect(OptimisticUnlocking.willUnlock).toHaveBeenCalledTimes(
-      savedTransactions.length
-    )
+    expect(OptimisticUnlocking.willUnlock).toHaveBeenCalledTimes(1)
     expect(OptimisticUnlocking.willUnlock).toHaveBeenNthCalledWith(
       1,
       user,
       lock,
       '0xtransactionHash'
-    )
-    expect(OptimisticUnlocking.willUnlock).toHaveBeenNthCalledWith(
-      2,
-      user,
-      lock,
-      '0xtransactionHash2'
     )
   })
 })
