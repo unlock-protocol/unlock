@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import v13 from '../../v13'
+import v7 from '../../v7'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 import erc20 from '../../erc20'
@@ -9,7 +9,7 @@ import { getTestProvider } from '../helpers/provider'
 import { getTestLockContract } from '../helpers/contracts'
 import WalletService from '../../walletService'
 
-const UnlockVersion = abis.v13
+const UnlockVersion = abis.v7
 const provider = getTestProvider({})
 
 let walletService
@@ -23,7 +23,7 @@ const amount = '20'
 
 const lockContract = getTestLockContract({
   lockAddress,
-  abi: v13.PublicLock.abi,
+  abi: v7.PublicLock.abi,
   provider,
 })
 
@@ -63,7 +63,7 @@ const transaction = {
 jest.mock('../../erc20.js', () => {
   return { getErc20Decimals: jest.fn() }
 })
-describe('v13', () => {
+describe('v7', () => {
   describe('withdrawFromLock', () => {
     beforeEach(() => {
       // Mock all the methods
@@ -73,7 +73,7 @@ describe('v13', () => {
         unlockAddress: '0xunlockAddress',
       })
       walletService.provider = provider
-      walletService.lockContractAbiVersion = jest.fn(() => Promise.resolve(v13))
+      walletService.lockContractAbiVersion = jest.fn(() => Promise.resolve(v7))
       walletService.getLockContract = jest.fn(() => {
         return Promise.resolve(lockContract)
       })

@@ -7,9 +7,9 @@ import withdrawFromLock from './withdrawFromLock'
 import initializeTemplate from './initializeTemplate'
 
 export default {
-  version: 'v13',
-  Unlock: abis.v13.Unlock,
-  PublicLock: abis.v13.PublicLock,
+  version: 'v7',
+  Unlock: abis.v7.Unlock,
+  PublicLock: abis.v7.PublicLock,
   createLock,
   getLock,
   initializeTemplate,
