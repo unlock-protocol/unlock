@@ -212,3 +212,8 @@ export interface UserMetadata {
     [key: string]: string
   }
 }
+
+export interface DelayedPurchase {
+  lockAddress: string
+  purchaseKey: () => void
+}
