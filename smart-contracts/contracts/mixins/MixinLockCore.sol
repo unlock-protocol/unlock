@@ -72,11 +72,11 @@ contract MixinLockCore is
     _;
   }
 
-  modifier onlyOwnerOrBeneficiary()
+  modifier onlyLockManagerOrBeneficiary()
   {
     require(
-      msg.sender == owner() || msg.sender == beneficiary,
-      'ONLY_LOCK_OWNER_OR_BENEFICIARY'
+      isLockManager(msg.sender) || msg.sender == beneficiary,
+      'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     );
     _;
   }
