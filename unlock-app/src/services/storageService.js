@@ -295,11 +295,16 @@ export class StorageService extends EventEmitter {
       headers: this.genAuthorizationHeader(token),
     }
     try {
-      await axios.post(`${this.host}/purchase`, purchaseRequest, opts)
+      const response = await axios.post(
+        `${this.host}/purchase`,
+        purchaseRequest,
+        opts
+      )
       this.emit(
         success.keyPurchase,
         purchaseRequest.message.purchaseRequest.lock
       )
+      return response.data.transactionHash
     } catch (error) {
       this.emit(failure.keyPurchase, error)
     }
