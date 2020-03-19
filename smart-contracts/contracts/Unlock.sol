@@ -26,6 +26,7 @@ pragma solidity 0.5.17;
  *  b. Keeping track of GNP
  */
 
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IUniswapExchange.sol';
@@ -38,7 +39,8 @@ import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
   IUnlock,
-  Initializable
+  Initializable,
+  Ownable
 {
   using Address for address;
   using Clone2Factory for address;
