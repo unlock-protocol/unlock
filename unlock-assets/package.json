@@ -3,10 +3,31 @@
   "version": "1.0.0",
   "description": "A module with all of the unlock assets (images...)",
   "main": "index.js",
-  "module": "main.js",
+  "module": "dist/main.js",
   "author": "unlock inc",
   "license": "MIT",
   "dependencies": {
     "esm": "3.2.25"
+  },
+  "scripts": {
+    "build": "webpack --mode=production",
+    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
+    "prepublish": "rm -rf ./dist && npm run svg-2-components && npm run build"
+  },
+  "peerDependencies": {
+    "react": "16.13.0",
+    "react-dom": "16.13.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.7",
+    "@babel/preset-env": "7.8.7",
+    "@babel/preset-react": "7.8.3",
+    "@svgr/cli": "5.2.0",
+    "babel-loader": "8.0.6",
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
+    "webpack": "4.42.0",
+    "webpack-cli": "3.3.11"
   }
 }
