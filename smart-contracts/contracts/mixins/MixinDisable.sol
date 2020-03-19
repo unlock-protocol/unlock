@@ -1,6 +1,5 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinFunds.sol';
 
 /**

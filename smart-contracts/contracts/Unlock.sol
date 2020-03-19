@@ -26,7 +26,6 @@ pragma solidity 0.5.17;
  *  b. Keeping track of GNP
  */
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IUniswapExchange.sol';
