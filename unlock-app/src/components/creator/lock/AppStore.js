@@ -37,7 +37,7 @@ export class AppStore extends React.Component {
     this.integrations = {
       adfree: {
         name: 'Ad-Free Experience',
-        icon: <Svg.Newsletter />,
+        icon: <Svg.Adfree />,
         href: 'https://docs.unlock-protocol.com/tutorials/ad-free-experience',
       },
       tickets: {
@@ -54,7 +54,7 @@ export class AppStore extends React.Component {
       },
       newsletter: {
         name: 'Newsletter',
-        icon: <Svg.Newsletters />,
+        icon: <Svg.Newsletter />,
         href:
           'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
       },
@@ -70,7 +70,7 @@ export class AppStore extends React.Component {
     const { config, lock } = this.props
     return (
       <Wrapper>
-        <DetailTitle>Apps</DetailTitle>
+        <DetailTitle>Integrate</DetailTitle>
         <Apps>
           {Object.keys(this.integrations).map(index => {
             const integration = this.integrations[index]
