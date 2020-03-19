@@ -29,7 +29,6 @@ import './mixins/MixinKeyGranterRole.sol';
 contract PublicLock is
   IPublicLock,
   ERC165,
-  Ownable,
   MixinSignatures,
   MixinFunds,
   MixinDisable,

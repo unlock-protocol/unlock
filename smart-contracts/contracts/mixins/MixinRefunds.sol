@@ -8,7 +8,6 @@ import './MixinFunds.sol';
 
 
 contract MixinRefunds is
-  Ownable,
   MixinSignatures,
   MixinFunds,
   MixinLockCore,

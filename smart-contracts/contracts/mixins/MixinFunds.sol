@@ -9,7 +9,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20
  * @title An implementation of the money related functions.
  * @author HardlyDifficult (unlock-protocol.com)
  */
-contract MixinFunds is Ownable
+contract MixinFunds
 {
   using Address for address payable;
   using SafeERC20 for IERC20;

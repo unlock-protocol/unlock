@@ -38,8 +38,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
   IUnlock,
-  Initializable,
-  Ownable
+  Initializable
 {
   using Address for address;
   using Clone2Factory for address;

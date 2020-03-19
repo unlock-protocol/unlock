@@ -18,7 +18,6 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
  */
 contract MixinLockCore is
   IERC721Enumerable,
-  Ownable,
   MixinFunds,
   MixinDisable,
   MixinLockManagerRole

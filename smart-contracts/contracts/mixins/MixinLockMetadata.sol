@@ -15,7 +15,6 @@ import './MixinLockCore.sol';
 contract MixinLockMetadata is
   IERC721Enumerable,
   ERC165,
-  Ownable,
   MixinLockCore,
   MixinKeys
 {

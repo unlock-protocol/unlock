@@ -7,7 +7,7 @@ import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
 
 
-contract MixinLockManagerRole is Ownable {
+contract MixinLockManagerRole {
   using Roles for Roles.Role;
 
   event LockManagerAdded(address indexed account);

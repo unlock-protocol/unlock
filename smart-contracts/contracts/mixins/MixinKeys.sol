@@ -11,7 +11,6 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
-  Ownable,
   MixinLockCore
 {
   using SafeMath for uint;

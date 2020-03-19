@@ -10,7 +10,6 @@ import './MixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinDisable is
-  Ownable,
   MixinFunds
 {
   // Used to disable payable functions when deprecating an old lock
