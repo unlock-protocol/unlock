@@ -1,3 +1,14 @@
+interface StoredTransaction {
+  transactionHash: string
+  sender: string
+  recipient: string
+  chain: number
+  for: string
+  data: string
+  createdAt: string
+  updatedAt: string
+}
+
 /**
  * Yields true if we should be optimistic for user and the locks
  * @param locks
@@ -13,8 +24,13 @@ export const optimisticUnlocking = async (
     user,
     locks
   )
+
+  const recentTransactions = userTransactions.filter(tx =>
+    withinLast24Hours(tx.createdAt)
+  )
+
   const unlocked = await Promise.all(
-    userTransactions.map((transaction: any) => {
+    recentTransactions.map(transaction => {
       return willUnlock(
         user,
         transaction.recipient,
@@ -57,7 +73,7 @@ export const getTransactionsForUserAndLocks = async (
   locksmithUri: string,
   user: string,
   locks: string[]
-) => {
+): Promise<StoredTransaction[]> => {
   const filterLocks = locks
     .map(
       (lockAddress: string) => `recipient[]=${encodeURIComponent(lockAddress)}`
@@ -68,6 +84,14 @@ export const getTransactionsForUserAndLocks = async (
   const response = await fetch(url)
   const body = await response.json()
   return body.transactions
+}
+
+export const withinLast24Hours = (dateString: string) => {
+  const oneDay = 86400000 // 24 * 60 * 60 * 1000
+  const yesterday = Date.now() - oneDay
+  const date = new Date(dateString).getTime()
+
+  return date > yesterday
 }
 
 export default optimisticUnlocking
