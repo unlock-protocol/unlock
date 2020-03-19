@@ -1238,7 +1238,7 @@ Object {
         <h3
           class="c1"
         >
-          Apps
+          Integrate
         </h3>
         <ul
           class="c2"
@@ -1248,7 +1248,35 @@ Object {
           >
             <a
               class="c4 c5"
-              href="https://tickets.unlock-protocol.com"
+              href="https://docs.unlock-protocol.com/tutorials/ad-free-experience"
+              target="_blank"
+              title="Ad-Free Experience"
+            >
+              <svg
+                viewBox="-3 -7 36 36"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M25.567 4.254l2.756-1.965L27.091.713.851 19.424 2.084 21l9.116-6.5.781 2.5h3.682L14 12.502l2.707-1.93V17h4.678c1.23-.006 2.344-.3 3.34-.879a6.03 6.03 0 002.324-2.422c.553-1.035.83-2.203.83-3.505v-.655c-.007-1.289-.293-2.451-.86-3.486a6.022 6.022 0 00-1.452-1.799zm-2.442 1.741l-2.99 2.133v6.235h1.191c.983 0 1.738-.348 2.266-1.044.527-.704.79-1.745.79-3.126v-.615c0-1.373-.263-2.409-.79-3.105a2.592 2.592 0 00-.466-.478z"
+                  fill-rule="evenodd"
+                />
+                <path
+                  d="M21.287 2.781c.136 0 .27.004.402.01l-4.982 3.553V2.78h4.58zM10.408 2.781l2.356 6.375-2.639 1.882-1.328-4.272-1.524 4.931H9.2L2.044 16.8 7.186 2.78h3.222z"
+                />
+              </svg>
+              <small
+                class="c6"
+              >
+                Ad-Free Experience
+              </small>
+            </a>
+          </li>
+          <li
+            class="c3"
+          >
+            <a
+              class="c4 c5"
+              href="https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event"
               target="_blank"
               title="Tickets"
             >
@@ -1273,7 +1301,7 @@ Object {
           >
             <a
               class="c4 c5"
-              href="https://donate.unlock-protocol.com/generate.html"
+              href="https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github"
               target="_blank"
               title="Donations"
             >
@@ -1288,6 +1316,31 @@ Object {
                 class="c6"
               >
                 Donations
+              </small>
+            </a>
+          </li>
+          <li
+            class="c3"
+          >
+            <a
+              class="c4 c5"
+              href="https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter"
+              target="_blank"
+              title="Newsletter"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M5.044 7.705A1 1 0 005 8v7a2 2 0 002 2h10a2 2 0 002-2V8a.998.998 0 00-.044-.295.497.497 0 01-.171.206l-5.931 4.106a1.5 1.5 0 01-1.708 0l-5.93-4.106a.498.498 0 01-.172-.206zm13.25-.66A1 1 0 0018 7H6a1 1 0 00-.295.044.503.503 0 01.08.045l5.93 4.106a.5.5 0 00.57 0l5.93-4.106a.502.502 0 01.08-.045z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c6"
+              >
+                Newsletter
               </small>
             </a>
           </li>
@@ -1414,7 +1467,7 @@ Object {
       <h3
         class="sc-1av0wj8-4 cJOOMW"
       >
-        Apps
+        Integrate
       </h3>
       <ul
         class="sc-1av0wj8-1 dpnHCk"
@@ -1424,7 +1477,35 @@ Object {
         >
           <a
             class="sc-850ddk-0 hRcuaU"
-            href="https://tickets.unlock-protocol.com"
+            href="https://docs.unlock-protocol.com/tutorials/ad-free-experience"
+            target="_blank"
+            title="Ad-Free Experience"
+          >
+            <svg
+              viewBox="-3 -7 36 36"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M25.567 4.254l2.756-1.965L27.091.713.851 19.424 2.084 21l9.116-6.5.781 2.5h3.682L14 12.502l2.707-1.93V17h4.678c1.23-.006 2.344-.3 3.34-.879a6.03 6.03 0 002.324-2.422c.553-1.035.83-2.203.83-3.505v-.655c-.007-1.289-.293-2.451-.86-3.486a6.022 6.022 0 00-1.452-1.799zm-2.442 1.741l-2.99 2.133v6.235h1.191c.983 0 1.738-.348 2.266-1.044.527-.704.79-1.745.79-3.126v-.615c0-1.373-.263-2.409-.79-3.105a2.592 2.592 0 00-.466-.478z"
+                fill-rule="evenodd"
+              />
+              <path
+                d="M21.287 2.781c.136 0 .27.004.402.01l-4.982 3.553V2.78h4.58zM10.408 2.781l2.356 6.375-2.639 1.882-1.328-4.272-1.524 4.931H9.2L2.044 16.8 7.186 2.78h3.222z"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 xpUCG"
+            >
+              Ad-Free Experience
+            </small>
+          </a>
+        </li>
+        <li
+          class="sc-1av0wj8-2 fGNovY"
+        >
+          <a
+            class="sc-850ddk-0 hRcuaU"
+            href="https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event"
             target="_blank"
             title="Tickets"
           >
@@ -1449,7 +1530,7 @@ Object {
         >
           <a
             class="sc-850ddk-0 hRcuaU"
-            href="https://donate.unlock-protocol.com/generate.html"
+            href="https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github"
             target="_blank"
             title="Donations"
           >
@@ -1464,6 +1545,31 @@ Object {
               class="sc-850ddk-1 xpUCG"
             >
               Donations
+            </small>
+          </a>
+        </li>
+        <li
+          class="sc-1av0wj8-2 fGNovY"
+        >
+          <a
+            class="sc-850ddk-0 hRcuaU"
+            href="https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter"
+            target="_blank"
+            title="Newsletter"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M5.044 7.705A1 1 0 005 8v7a2 2 0 002 2h10a2 2 0 002-2V8a.998.998 0 00-.044-.295.497.497 0 01-.171.206l-5.931 4.106a1.5 1.5 0 01-1.708 0l-5.93-4.106a.498.498 0 01-.172-.206zm13.25-.66A1 1 0 0018 7H6a1 1 0 00-.295.044.503.503 0 01.08.045l5.93 4.106a.5.5 0 00.57 0l5.93-4.106a.502.502 0 01.08-.045z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 xpUCG"
+            >
+              Newsletter
             </small>
           </a>
         </li>
@@ -56270,7 +56376,7 @@ Object {
 }
 
 .c1:hover:before {
-  content: 'AppStore';
+  content: 'About';
   position: absolute;
 }
 
@@ -56286,7 +56392,7 @@ Object {
 }
 
 .c2:hover:before {
-  content: 'About';
+  content: 'Adfree';
   position: absolute;
 }
 
@@ -56302,7 +56408,7 @@ Object {
 }
 
 .c3:hover:before {
-  content: 'Arrow';
+  content: 'AppStore';
   position: absolute;
 }
 
@@ -56318,7 +56424,7 @@ Object {
 }
 
 .c4:hover:before {
-  content: 'Attention';
+  content: 'Arrow';
   position: absolute;
 }
 
@@ -56334,7 +56440,7 @@ Object {
 }
 
 .c5:hover:before {
-  content: 'Checkmark';
+  content: 'Attention';
   position: absolute;
 }
 
@@ -56350,7 +56456,7 @@ Object {
 }
 
 .c6:hover:before {
-  content: 'Close';
+  content: 'Checkmark';
   position: absolute;
 }
 
@@ -56366,7 +56472,7 @@ Object {
 }
 
 .c7:hover:before {
-  content: 'Code';
+  content: 'Close';
   position: absolute;
 }
 
@@ -56382,7 +56488,7 @@ Object {
 }
 
 .c8:hover:before {
-  content: 'Cog';
+  content: 'Code';
   position: absolute;
 }
 
@@ -56398,7 +56504,7 @@ Object {
 }
 
 .c9:hover:before {
-  content: 'Copy';
+  content: 'Cog';
   position: absolute;
 }
 
@@ -56414,7 +56520,7 @@ Object {
 }
 
 .c10:hover:before {
-  content: 'Documentation';
+  content: 'Copy';
   position: absolute;
 }
 
@@ -56430,7 +56536,7 @@ Object {
 }
 
 .c11:hover:before {
-  content: 'Download';
+  content: 'Documentation';
   position: absolute;
 }
 
@@ -56446,7 +56552,7 @@ Object {
 }
 
 .c12:hover:before {
-  content: 'Edit';
+  content: 'Download';
   position: absolute;
 }
 
@@ -56462,7 +56568,7 @@ Object {
 }
 
 .c13:hover:before {
-  content: 'Eth';
+  content: 'Edit';
   position: absolute;
 }
 
@@ -56478,7 +56584,7 @@ Object {
 }
 
 .c14:hover:before {
-  content: 'Etherscan';
+  content: 'Eth';
   position: absolute;
 }
 
@@ -56494,7 +56600,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'EthSub';
+  content: 'Etherscan';
   position: absolute;
 }
 
@@ -56510,7 +56616,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'Export';
+  content: 'EthSub';
   position: absolute;
 }
 
@@ -56526,7 +56632,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'Github';
+  content: 'Export';
   position: absolute;
 }
 
@@ -56542,7 +56648,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Heart';
+  content: 'Github';
   position: absolute;
 }
 
@@ -56558,7 +56664,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Key';
+  content: 'Heart';
   position: absolute;
 }
 
@@ -56574,7 +56680,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'Lemniscate';
+  content: 'Key';
   position: absolute;
 }
 
@@ -56590,7 +56696,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'LiveDemo';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -56606,7 +56712,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'Loading';
+  content: 'LiveDemo';
   position: absolute;
 }
 
@@ -56622,7 +56728,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'LoadingDots';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -56638,7 +56744,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'LockClosed';
+  content: 'LoadingDots';
   position: absolute;
 }
 
@@ -56654,7 +56760,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Preview';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -56670,7 +56776,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -56686,7 +56792,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -56702,7 +56808,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -56718,7 +56824,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -56734,7 +56840,7 @@ Object {
 }
 
 .c30:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -56750,7 +56856,7 @@ Object {
 }
 
 .c31:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -56766,7 +56872,7 @@ Object {
 }
 
 .c32:hover:before {
-  content: 'Members';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -56782,7 +56888,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'Telegram';
+  content: 'Members';
   position: absolute;
 }
 
@@ -56798,7 +56904,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'Ticket';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -56814,7 +56920,7 @@ Object {
 }
 
 .c35:hover:before {
-  content: 'Twitter';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -56830,7 +56936,7 @@ Object {
 }
 
 .c36:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -56846,7 +56952,7 @@ Object {
 }
 
 .c37:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -56862,7 +56968,7 @@ Object {
 }
 
 .c38:hover:before {
-  content: 'Home';
+  content: 'ChevronUp';
   position: absolute;
 }
 
@@ -56878,7 +56984,7 @@ Object {
 }
 
 .c39:hover:before {
-  content: 'Qr';
+  content: 'Home';
   position: absolute;
 }
 
@@ -56894,6 +57000,22 @@ Object {
 }
 
 .c40:hover:before {
+  content: 'Qr';
+  position: absolute;
+}
+
+.c41 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c41:hover {
+  background-color: var(--offwhite);
+}
+
+.c41:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -56912,20 +57034,6 @@ Object {
         >
           <div
             class="c1"
-            name="AppStore"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <path
-                clip-rule="evenodd"
-                d="M11.766 4.56a.5.5 0 01.472 0l5.998 3.215a.5.5 0 01.264.441v7.566a.5.5 0 01-.264.44l-6 3.219a.5.5 0 01-.474 0l-5.999-3.222a.5.5 0 01-.263-.441l.004-7.562a.5.5 0 01.264-.44l5.998-3.217zM6.504 9.04l4.995 2.609v6.515L6.5 15.479l.004-6.438zm5.995 9.125l5.001-2.682V9.041l-5.001 2.608v6.516zm-.5-7.383L16.93 8.21l-4.928-2.643L7.073 8.21 12 10.782z"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </div>
-          <div
-            class="c2"
             name="About"
           >
             <svg
@@ -56939,7 +57047,38 @@ Object {
             </svg>
           </div>
           <div
+            class="c2"
+            name="Adfree"
+          >
+            <svg
+              viewBox="-3 -7 36 36"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M25.567 4.254l2.756-1.965L27.091.713.851 19.424 2.084 21l9.116-6.5.781 2.5h3.682L14 12.502l2.707-1.93V17h4.678c1.23-.006 2.344-.3 3.34-.879a6.03 6.03 0 002.324-2.422c.553-1.035.83-2.203.83-3.505v-.655c-.007-1.289-.293-2.451-.86-3.486a6.022 6.022 0 00-1.452-1.799zm-2.442 1.741l-2.99 2.133v6.235h1.191c.983 0 1.738-.348 2.266-1.044.527-.704.79-1.745.79-3.126v-.615c0-1.373-.263-2.409-.79-3.105a2.592 2.592 0 00-.466-.478z"
+                fill-rule="evenodd"
+              />
+              <path
+                d="M21.287 2.781c.136 0 .27.004.402.01l-4.982 3.553V2.78h4.58zM10.408 2.781l2.356 6.375-2.639 1.882-1.328-4.272-1.524 4.931H9.2L2.044 16.8 7.186 2.78h3.222z"
+              />
+            </svg>
+          </div>
+          <div
             class="c3"
+            name="AppStore"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M11.766 4.56a.5.5 0 01.472 0l5.998 3.215a.5.5 0 01.264.441v7.566a.5.5 0 01-.264.44l-6 3.219a.5.5 0 01-.474 0l-5.999-3.222a.5.5 0 01-.263-.441l.004-7.562a.5.5 0 01.264-.44l5.998-3.217zM6.504 9.04l4.995 2.609v6.515L6.5 15.479l.004-6.438zm5.995 9.125l5.001-2.682V9.041l-5.001 2.608v6.516zm-.5-7.383L16.93 8.21l-4.928-2.643L7.073 8.21 12 10.782z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c4"
             name="Arrow"
           >
             <svg
@@ -56953,7 +57092,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c4"
+            class="c5"
             name="Attention"
           >
             <svg
@@ -56967,7 +57106,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c5"
+            class="c6"
             name="Checkmark"
           >
             <svg
@@ -56981,7 +57120,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c6"
+            class="c7"
             name="Close"
           >
             <svg
@@ -56995,7 +57134,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c7"
+            class="c8"
             name="Code"
           >
             <svg
@@ -57009,7 +57148,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c8"
+            class="c9"
             name="Cog"
           >
             <svg
@@ -57021,7 +57160,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c9"
+            class="c10"
             name="Copy"
           >
             <svg
@@ -57035,7 +57174,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c11"
             name="Documentation"
           >
             <svg
@@ -57049,7 +57188,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c11"
+            class="c12"
             name="Download"
           >
             <svg
@@ -57063,7 +57202,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c12"
+            class="c13"
             name="Edit"
           >
             <svg
@@ -57080,7 +57219,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c13"
+            class="c14"
             name="Eth"
           >
             <svg
@@ -57094,7 +57233,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c14"
+            class="c15"
             name="Etherscan"
           >
             <svg
@@ -57108,7 +57247,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c15"
+            class="c16"
             name="EthSub"
           >
             <svg
@@ -57121,7 +57260,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c17"
             name="Export"
           >
             <svg
@@ -57135,7 +57274,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c18"
             name="Github"
           >
             <svg
@@ -57147,7 +57286,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c19"
             name="Heart"
           >
             <svg
@@ -57159,7 +57298,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c20"
             name="Key"
           >
             <svg
@@ -57174,7 +57313,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c21"
             name="Lemniscate"
           >
             <svg
@@ -57189,7 +57328,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c22"
             name="LiveDemo"
           >
             <svg
@@ -57217,7 +57356,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c23"
             name="Loading"
           >
             <svg
@@ -57369,7 +57508,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c24"
             name="LoadingDots"
           >
             <svg
@@ -57414,7 +57553,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="LockClosed"
           >
             <svg
@@ -57428,7 +57567,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Preview"
           >
             <svg
@@ -57448,7 +57587,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="Jobs"
           >
             <svg
@@ -57462,7 +57601,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="Unlock"
           >
             <svg
@@ -57474,7 +57613,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="UnlockWordMark"
           >
             <svg
@@ -57486,7 +57625,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="Upload"
           >
             <svg
@@ -57500,7 +57639,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c31"
             name="Withdraw"
           >
             <svg
@@ -57514,7 +57653,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c31"
+            class="c32"
             name="Newsletter"
           >
             <svg
@@ -57528,7 +57667,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c32"
+            class="c33"
             name="Members"
           >
             <svg
@@ -57542,7 +57681,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c33"
+            class="c34"
             name="Telegram"
           >
             <svg
@@ -57556,7 +57695,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c35"
             name="Ticket"
           >
             <svg
@@ -57570,7 +57709,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c36"
             name="Twitter"
           >
             <svg
@@ -57584,7 +57723,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c36"
+            class="c37"
             name="Bars"
           >
             <svg
@@ -57596,7 +57735,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c37"
+            class="c38"
             name="ChevronUp"
           >
             <svg
@@ -57610,7 +57749,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c38"
+            class="c39"
             name="Home"
           >
             <svg
@@ -57622,7 +57761,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c39"
+            class="c40"
             name="Qr"
           >
             <svg
@@ -57658,7 +57797,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c40"
+            class="c41"
             name="Wordpress"
           >
             <svg
@@ -57691,20 +57830,6 @@ Object {
         class="lx77hn-0 fCkYIz"
       >
         <div
-          class="lx77hn-1 ohpeR"
-          name="AppStore"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <path
-              clip-rule="evenodd"
-              d="M11.766 4.56a.5.5 0 01.472 0l5.998 3.215a.5.5 0 01.264.441v7.566a.5.5 0 01-.264.44l-6 3.219a.5.5 0 01-.474 0l-5.999-3.222a.5.5 0 01-.263-.441l.004-7.562a.5.5 0 01.264-.44l5.998-3.217zM6.504 9.04l4.995 2.609v6.515L6.5 15.479l.004-6.438zm5.995 9.125l5.001-2.682V9.041l-5.001 2.608v6.516zm-.5-7.383L16.93 8.21l-4.928-2.643L7.073 8.21 12 10.782z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </div>
-        <div
           class="lx77hn-1 exzkyy"
           name="About"
         >
@@ -57714,6 +57839,37 @@ Object {
             <path
               clip-rule="evenodd"
               d="M12.522 11.121c.023-.165.032-.334.032-.5l.001-1.724v-.432H7.577a3914.548 3914.548 0 000 2.225c.001 1.083.656 1.985 1.702 2.35 1.43.5 3.044-.454 3.243-1.919zm2.981-7.096v.178a860.597 860.597 0 01-.005 2.866h.825v1.446h-.825c0 .725.003 1.449.01 2.173.022 2.295-1.451 4.179-3.416 4.902-2.075.763-4.02.466-5.74-.929-1.195-.967-1.839-2.25-1.852-3.796-.007-.783-.009-1.566-.01-2.35h-.815V7.07h.816l.001-.894.002-2.055c0-.018.002-.036.004-.056l.003-.035h3.05v3.04h4.892V4.025h3.06z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 byCJDq"
+          name="Adfree"
+        >
+          <svg
+            viewBox="-3 -7 36 36"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M25.567 4.254l2.756-1.965L27.091.713.851 19.424 2.084 21l9.116-6.5.781 2.5h3.682L14 12.502l2.707-1.93V17h4.678c1.23-.006 2.344-.3 3.34-.879a6.03 6.03 0 002.324-2.422c.553-1.035.83-2.203.83-3.505v-.655c-.007-1.289-.293-2.451-.86-3.486a6.022 6.022 0 00-1.452-1.799zm-2.442 1.741l-2.99 2.133v6.235h1.191c.983 0 1.738-.348 2.266-1.044.527-.704.79-1.745.79-3.126v-.615c0-1.373-.263-2.409-.79-3.105a2.592 2.592 0 00-.466-.478z"
+              fill-rule="evenodd"
+            />
+            <path
+              d="M21.287 2.781c.136 0 .27.004.402.01l-4.982 3.553V2.78h4.58zM10.408 2.781l2.356 6.375-2.639 1.882-1.328-4.272-1.524 4.931H9.2L2.044 16.8 7.186 2.78h3.222z"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 ohpeR"
+          name="AppStore"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M11.766 4.56a.5.5 0 01.472 0l5.998 3.215a.5.5 0 01.264.441v7.566a.5.5 0 01-.264.44l-6 3.219a.5.5 0 01-.474 0l-5.999-3.222a.5.5 0 01-.263-.441l.004-7.562a.5.5 0 01.264-.44l5.998-3.217zM6.504 9.04l4.995 2.609v6.515L6.5 15.479l.004-6.438zm5.995 9.125l5.001-2.682V9.041l-5.001 2.608v6.516zm-.5-7.383L16.93 8.21l-4.928-2.643L7.073 8.21 12 10.782z"
               fill-rule="evenodd"
             />
           </svg>

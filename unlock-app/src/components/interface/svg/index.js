@@ -1,5 +1,6 @@
 import React from 'react'
 import About from './About'
+import Adfree from './Adfree'
 import AppStore from './AppStore'
 import Arrow from './Arrow'
 import Attention from './Attention'
@@ -46,8 +47,9 @@ function wrapViewBox(WrappedComponent, viewBox) {
 }
 
 export default {
-  AppStore: wrapViewBox(AppStore, '0 0 24 24'),
   About,
+  Adfree: wrapViewBox(Adfree, '-3 -7 36 36'),
+  AppStore: wrapViewBox(AppStore, '0 0 24 24'),
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Attention: wrapViewBox(Attention, '0 0 96 96'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
