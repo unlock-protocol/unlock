@@ -15,7 +15,7 @@ const lock = {
 
 const prices = {
   [lock.address]: {
-    usd: '12.33',
+    usd: '1233',
   },
 }
 
