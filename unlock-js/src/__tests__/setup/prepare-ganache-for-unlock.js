@@ -14,7 +14,6 @@ const versionName = latest
 
 const users = ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2']
 
-
 const log = message => {
   console.log(`GANACHE SETUP > ${message}`)
 }
@@ -38,7 +37,6 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
       users.map(async user => {
         await Ether.transfer(walletService.provider, 1, user, '10')
         log(`TRANSFERED 10 ETH to ${user}`)
-        return
       })
     )
 
