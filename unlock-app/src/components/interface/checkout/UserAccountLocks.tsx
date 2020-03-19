@@ -15,7 +15,10 @@ interface LocksProps {
 
 export const renderLock = (lock: RawLock, prices: KeyPrices) => {
   if (prices[lock.address]) {
-    const fiatPrice = `$${prices[lock.address].usd}`
+    // prices returned from locksmith are in cents
+    const basePrice = parseInt(prices[lock.address].usd)
+    const formattedPrice = (basePrice / 100).toFixed(2)
+    const fiatPrice = `$${formattedPrice}`
     return (
       <DisabledLock
         key={lock.name}
