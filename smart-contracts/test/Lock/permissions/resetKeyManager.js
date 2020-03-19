@@ -3,7 +3,7 @@ const { constants } = require('hardlydifficult-ethereum-contracts')
 const getProxy = require('../../helpers/proxy')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const KeyManagerMock = artifacts.require('ResetKeyManagerMock')
+const KeyManagerMock = artifacts.require('KeyManagerMock')
 
 let unlock
 let lock

@@ -9,10 +9,13 @@ import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
+import { MetadataForm } from '../interface/checkout/MetadataForm'
+import { LogInButton } from '../interface/checkout/LogInButton'
 import {
   Account as AccountType,
   Router,
   PaywallConfig,
+  UserMetadata,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
@@ -21,7 +24,12 @@ import {
   CheckoutStoreProvider,
 } from '../../hooks/useCheckoutStore'
 
-import { setConfig, setShowingLogin } from '../../utils/checkoutActions'
+import {
+  setConfig,
+  setShowingLogin,
+  setShowingMetadataForm,
+} from '../../utils/checkoutActions'
+import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -50,7 +58,8 @@ export const CheckoutContentInner = ({
   configFromSearch,
 }: CheckoutContentProps) => {
   const { state, dispatch } = useCheckoutStore()
-  const { showingLogin, config } = state
+  const { setUserMetadata } = useSetUserMetadata()
+  const { showingLogin, config, showingMetadataForm, delayedPurchase } = state
 
   const {
     emitTransactionInfo,
@@ -80,6 +89,17 @@ export const CheckoutContentInner = ({
     ? Object.keys(config.locks)
     : defaultLockAddresses
 
+  const metadataRequired = config ? !!config.metadataInputs : false
+  const onMetadataSubmit = (metadata: UserMetadata) => {
+    setUserMetadata(
+      delayedPurchase!.lockAddress,
+      account!.address,
+      metadata,
+      delayedPurchase!.purchaseKey
+    )
+    dispatch(setShowingMetadataForm(false))
+  }
+
   return (
     <CheckoutContainer close={emitCloseModal}>
       <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
@@ -87,27 +107,39 @@ export const CheckoutContentInner = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
-          {config && config.icon && (
-            <img alt="Publisher Icon" src={config.icon} />
-          )}
-          <p>{config ? config.callToAction.default : ''}</p>
-          {!account && showingLogin && <LogInSignUp login embedded />}
-          {!account && !showingLogin && (
-            <>
-              <NotLoggedInLocks lockAddresses={lockAddresses} />
-              <input
-                type="button"
-                onClick={() => dispatch(setShowingLogin(true))}
-                value="Log in"
-              />
-            </>
-          )}
-          {account && (
-            <Locks
-              accountAddress={account.address}
-              lockAddresses={lockAddresses}
-              emitTransactionInfo={emitTransactionInfo}
+          {showingMetadataForm && (
+            <MetadataForm
+              fields={config!.metadataInputs!}
+              onSubmit={onMetadataSubmit}
             />
+          )}
+          {!showingMetadataForm && (
+            <>
+              {config && config.icon && (
+                <img alt="Publisher Icon" src={config.icon} />
+              )}
+              <p>{config ? config.callToAction.default : ''}</p>
+              {!account && showingLogin && <LogInSignUp login embedded />}
+              {!account && !showingLogin && (
+                <>
+                  <NotLoggedInLocks lockAddresses={lockAddresses} />
+                  {config && config.unlockUserAccounts && (
+                    <LogInButton
+                      onClick={() => dispatch(setShowingLogin(true))}
+                    />
+                  )}
+                </>
+              )}
+              {account && (
+                <Locks
+                  accountAddress={account.address}
+                  lockAddresses={lockAddresses}
+                  emitTransactionInfo={emitTransactionInfo}
+                  metadataRequired={metadataRequired}
+                  usingUserAccounts={!!account.emailAddress}
+                />
+              )}
+            </>
           )}
         </BrowserOnly>
       </CheckoutWrapper>

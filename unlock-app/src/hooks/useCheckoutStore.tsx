@@ -1,18 +1,24 @@
 /* eslint-disable react/prop-types */
 import React, { createContext, useReducer, useContext } from 'react'
-import { PaywallConfig } from '../unlockTypes'
+import { PaywallConfig, DelayedPurchase } from '../unlockTypes'
 import { Action } from '../utils/checkoutActions'
 
 interface State {
   showingLogin: boolean
+  showingMetadataForm: boolean
   config: PaywallConfig | undefined
   purchasingLockAddress: string | undefined
+  transactionHash: string | undefined
+  delayedPurchase: DelayedPurchase | undefined
 }
 
 export const defaultState: State = {
   showingLogin: false,
+  showingMetadataForm: false,
   config: undefined,
   purchasingLockAddress: undefined,
+  transactionHash: undefined,
+  delayedPurchase: undefined,
 }
 
 function assertNever(x: never): never {
@@ -25,8 +31,14 @@ export function reducer(state = defaultState, action: Action): State {
       return { ...state, config: action.config }
     case 'setShowingLogin':
       return { ...state, showingLogin: action.value }
+    case 'setShowingMetadataForm':
+      return { ...state, showingMetadataForm: action.value }
     case 'setPurchasingLockAddress':
       return { ...state, purchasingLockAddress: action.address }
+    case 'setTransactionHash':
+      return { ...state, transactionHash: action.hash }
+    case 'setDelayedPurchase':
+      return { ...state, delayedPurchase: action.purchase }
     default:
       // Exhaustiveness check, will cause compile error if you forget to implement an action
       return assertNever(action)
@@ -38,7 +50,7 @@ interface ContextValue {
   dispatch: React.Dispatch<Action>
 }
 
-const CheckoutStoreContext = createContext<ContextValue | null>(null)
+export const CheckoutStoreContext = createContext<ContextValue | null>(null)
 
 export const CheckoutStoreProvider: React.FunctionComponent = ({
   children,

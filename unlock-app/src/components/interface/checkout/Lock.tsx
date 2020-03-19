@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
 import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
@@ -11,7 +11,11 @@ import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
-import { setPurchasingLockAddress } from '../../../utils/checkoutActions'
+import {
+  setPurchasingLockAddress,
+  setDelayedPurchase,
+  setShowingMetadataForm,
+} from '../../../utils/checkoutActions'
 
 interface LockProps {
   lock: RawLock
@@ -19,6 +23,7 @@ interface LockProps {
   balances: Balances
   activeKeys: KeyResult[]
   accountAddress: string
+  metadataRequired?: boolean
 }
 
 export const Lock = ({
@@ -27,9 +32,15 @@ export const Lock = ({
   balances,
   activeKeys,
   accountAddress,
+  metadataRequired,
 }: LockProps) => {
-  const { purchaseKey, transactionHash } = usePurchaseKey(lock, accountAddress)
+  const { purchaseKey } = usePurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
+
+  const purchase = () => {
+    dispatch(setPurchasingLockAddress(lock.address))
+    purchaseKey(lock, accountAddress)
+  }
 
   const onClick = () => {
     if (state.purchasingLockAddress) {
@@ -37,18 +48,18 @@ export const Lock = ({
       return
     }
 
-    dispatch(setPurchasingLockAddress(lock.address))
-    purchaseKey()
-  }
-
-  useEffect(() => {
-    if (transactionHash) {
-      emitTransactionInfo({
-        lock: lock.address,
-        hash: transactionHash,
-      })
+    if (metadataRequired) {
+      dispatch(
+        setDelayedPurchase({
+          lockAddress: lock.address,
+          purchaseKey: purchase,
+        })
+      )
+      dispatch(setShowingMetadataForm(true))
+    } else {
+      purchase()
     }
-  }, [transactionHash])
+  }
 
   const props: LockVariations.LockProps = {
     onClick,
@@ -64,7 +75,7 @@ export const Lock = ({
 
   // This lock is being/has been purchased
   if (state.purchasingLockAddress === lock.address || keyForThisLock) {
-    if (transactionHash || keyForThisLock) {
+    if (state.transactionHash || keyForThisLock) {
       return <LockVariations.ConfirmedLock {...props} />
     }
     return <LockVariations.ProcessingLock {...props} />

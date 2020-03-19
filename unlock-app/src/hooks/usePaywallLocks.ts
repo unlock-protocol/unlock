@@ -38,7 +38,7 @@ export const usePaywallLocks = (
 
   useEffect(() => {
     getLocks()
-  }, [])
+  }, [lockAddresses])
 
   return { locks, loading }
 }

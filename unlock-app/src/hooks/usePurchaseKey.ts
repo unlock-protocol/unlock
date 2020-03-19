@@ -5,21 +5,23 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
+import { useCheckoutStore } from './useCheckoutStore'
+import { setTransactionHash } from '../utils/checkoutActions'
+import { TransactionInfo } from './useCheckoutCommunication'
 
-type TransactionHash = string | null
 type PurchaseError = Error | null
 
-export const usePurchaseKey = (lock: RawLock, accountAddress: string) => {
-  const [transactionHash, setTransactionHash] = useState(
-    null as TransactionHash
-  )
+export const usePurchaseKey = (
+  emitTransactionInfo: (info: TransactionInfo) => void
+) => {
   const [error, setError] = useState(null as PurchaseError)
 
   const walletService: WalletService = useContext(WalletServiceContext)
   const config: any = useContext(ConfigContext)
   const storageService: StorageService = useContext(StorageServiceContext)
+  const { dispatch } = useCheckoutStore()
 
-  const purchaseKey = () => {
+  const purchaseKey = (lock: RawLock, accountAddress: string) => {
     walletService.purchaseKey(
       {
         lockAddress: lock.address,
@@ -31,8 +33,10 @@ export const usePurchaseKey = (lock: RawLock, accountAddress: string) => {
         if (error) {
           setError(error)
         } else if (hash) {
+          // notify the app store of the transaction hash
+          dispatch(setTransactionHash(hash))
+
           // Let's save this into locksmith!
-          setTransactionHash(hash)
           storageService.storeTransaction(
             hash,
             accountAddress,
@@ -41,10 +45,16 @@ export const usePurchaseKey = (lock: RawLock, accountAddress: string) => {
             accountAddress,
             transaction.data
           )
+
+          // emit transaction info to main window
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
         }
       }
     )
   }
 
-  return { purchaseKey, error, transactionHash }
+  return { purchaseKey, error }
 }
