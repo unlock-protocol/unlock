@@ -20,26 +20,24 @@ export default function Layout({ forContent, title, children }) {
     return <Loading />
   }
   return (
-    <GlobalErrorConsumer>
-      <Container>
-        <Left>
-          {!forContent && (
-            <Link href="/">
-              <a>
-                <RoundedLogo />
-              </a>
-            </Link>
-          )}
-        </Left>
-        <Content>
-          <Header forContent={forContent} title={title} />
-          {!termsAccepted && <Terms setTermsAccepted={saveTermsAccepted} />}
-          {children}
-          {forContent && <Footer />}
-        </Content>
-        <Right />
-      </Container>
-    </GlobalErrorConsumer>
+    <Container>
+      <Left>
+        {!forContent && (
+          <Link href="/">
+            <a>
+              <RoundedLogo />
+            </a>
+          </Link>
+        )}
+      </Left>
+      <Content>
+        <Header forContent={forContent} title={title} />
+        {!termsAccepted && <Terms setTermsAccepted={saveTermsAccepted} />}
+        <GlobalErrorConsumer>{children}</GlobalErrorConsumer>
+        {forContent && <Footer />}
+      </Content>
+      <Right />
+    </Container>
   )
 }
 
