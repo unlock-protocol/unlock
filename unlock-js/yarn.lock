@@ -1168,21 +1168,6 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unlock-protocol/unlock-js@0.8.7":
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.7.tgz#3f2e6a6a99d644beac59db0228716e39a3bde833"
-  integrity sha512-fhRVO2FAqe+n6Bak4POoV5s0Wek0Pbm53FP9BwfiIDd7tLjPaTyLkHyh6cfha82DgypyapVqwX2MPyVuXRBmPA==
-  dependencies:
-    babel-jest "25.1.0"
-    cross-fetch "3.0.4"
-    eslint "6.8.0"
-    ethers "4.0.45"
-    jest "25.1.0"
-    lint-staged "10.0.8"
-    prettier "1.19.1"
-    ts-jest "25.2.1"
-    typescript "3.8.3"
-
 abab@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.3.tgz#623e2075e02eb2d3f2475e49f99c91846467907a"
