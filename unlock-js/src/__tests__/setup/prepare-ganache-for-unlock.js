@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const { WalletService, latest } = require('@unlock-protocol/unlock-js')
+const { WalletService, latest } = require('../../../lib/index')
 const serverIsUp = require('./serverIsUp')
 const Erc1820 = require('./deploy-erc1820')
 const Erc20 = require('./deploy-erc20')
