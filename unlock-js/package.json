@@ -7,6 +7,7 @@
   "types": "index.d.ts",
   "sideEffects": false,
   "scripts": {
+    "pretest": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
@@ -14,7 +15,8 @@
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
     "ci": "yarn test && yarn lint",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -b 1"
   },
   "author": "",
   "license": "MIT",
@@ -43,6 +45,8 @@
     "@babel/core": "7.8.7",
     "@babel/preset-env": "7.8.7",
     "babel-jest": "25.1.0",
+    "erc1820": "0.0.2",
+    "ganache-cli": "6.9.1",
     "jest": "25.1.0",
     "nock": "12.0.2",
     "unlock-abi-0": "1.0.4",
