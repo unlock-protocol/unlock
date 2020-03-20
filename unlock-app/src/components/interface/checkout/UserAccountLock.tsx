@@ -3,7 +3,7 @@ import { KeyResult } from '@unlock-protocol/unlock-js'
 import { RawLock } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { lockKeysAvailable } from '../../../utils/checkoutLockUtils'
-import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
+import { useUserAccountsPurchaseKey } from '../../../hooks/useUserAccountsPurchaseKey'
 import * as LockVariations from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
@@ -31,7 +31,7 @@ export const UserAccountLock = ({
   formattedKeyPrice,
 }: UserAccountLockProps) => {
   // TODO: replace with user account purchasekey
-  const { purchaseKey } = usePurchaseKey(emitTransactionInfo)
+  const { purchaseKey } = useUserAccountsPurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
 
   const purchase = () => {

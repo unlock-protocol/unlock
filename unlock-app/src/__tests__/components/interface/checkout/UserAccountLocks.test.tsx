@@ -1,9 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import {
-  renderLock,
-  UserAccountLocks,
-} from '../../../../components/interface/checkout/UserAccountLocks'
+import { UserAccountLocks } from '../../../../components/interface/checkout/UserAccountLocks'
 
 const lock = {
   name: 'a test lock',
@@ -13,11 +10,9 @@ const lock = {
   currencyContractAddress: null,
 }
 
-const prices = {
-  [lock.address]: {
-    usd: '1233',
-  },
-}
+const accountAddress = '0xaccount'
+
+const emitTransactionInfo = jest.fn()
 
 let usePaywallLocksMock: any
 const useFiatKeyPricesMock: any = {}
@@ -28,6 +23,12 @@ jest.mock('../../../../hooks/usePaywallLocks', () => {
   }
 })
 
+jest.mock('../../../../hooks/useKeyOwnershipStatus', () => {
+  return {
+    useKeyOwnershipStatus: () => ({ keys: [], loading: false }),
+  }
+})
+
 jest.mock('../../../../hooks/useFiatKeyPrices', () => {
   return {
     useFiatKeyPrices: jest.fn(() => useFiatKeyPricesMock),
@@ -35,27 +36,6 @@ jest.mock('../../../../hooks/useFiatKeyPrices', () => {
 })
 
 describe('UserAccountLocks', () => {
-  describe('renderLock helper', () => {
-    it('renders a disabled crypto lock for locks that do not have fiat prices', () => {
-      expect.assertions(0)
-
-      const { getByTestId, getByText } = rtl.render(renderLock(lock, {}))
-
-      getByTestId('DisabledLock')
-      getByText('0.01 ETH')
-    })
-
-    it('renders a disabled USD lock for locks that do have fiat prices', () => {
-      expect.assertions(0)
-
-      const { getByTestId, getByText } = rtl.render(renderLock(lock, prices))
-
-      // After future work, this won't be a DisabledLock but a UserAccountLock
-      getByTestId('DisabledLock')
-      getByText('$12.33')
-    })
-  })
-
   describe('component', () => {
     it('shows loading locks while loading', () => {
       expect.assertions(0)
@@ -63,7 +43,11 @@ describe('UserAccountLocks', () => {
       usePaywallLocksMock = { loading: true }
 
       const { getByTestId } = rtl.render(
-        <UserAccountLocks lockAddresses={['0xlock']} />
+        <UserAccountLocks
+          lockAddresses={['0xlock']}
+          accountAddress={accountAddress}
+          emitTransactionInfo={emitTransactionInfo}
+        />
       )
 
       getByTestId('LoadingLock')
@@ -75,7 +59,11 @@ describe('UserAccountLocks', () => {
       usePaywallLocksMock = { loading: false, locks: [lock] }
 
       const { getByTestId } = rtl.render(
-        <UserAccountLocks lockAddresses={['0xlock']} />
+        <UserAccountLocks
+          lockAddresses={['0xlock']}
+          accountAddress={accountAddress}
+          emitTransactionInfo={emitTransactionInfo}
+        />
       )
 
       getByTestId('DisabledLock')

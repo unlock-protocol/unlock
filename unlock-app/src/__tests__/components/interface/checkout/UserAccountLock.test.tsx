@@ -2,7 +2,8 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
 import { UserAccountLock } from '../../../../components/interface/checkout/UserAccountLock'
-import * as usePurchaseKey from '../../../../hooks/usePurchaseKey'
+import * as useUserAccountsPurchaseKey from '../../../../hooks/useUserAccountsPurchaseKey'
+import * as useProvider from '../../../../hooks/useProvider'
 import { TransactionInfo } from '../../../../hooks/useCheckoutCommunication'
 import * as CheckoutStoreModule from '../../../../hooks/useCheckoutStore'
 import {
@@ -14,12 +15,10 @@ import {
 const lock = {
   name: 'lock',
   address: '0xlockaddress',
-  keyPrice: '1.23',
+  keyPrice: '0.04',
   expirationDuration: 50,
   currencyContractAddress: null,
 }
-
-const formattedKeyPrice = '$2.00'
 
 const activeKeyForThisLock: KeyResult = {
   lock: '0xlockaddress',
@@ -32,196 +31,209 @@ const activeKeyForAnotherLock: KeyResult = {
   lock: '0xanotherlockaddress',
 }
 
+const formattedKeyPrice = '$12.33'
+
 const accountAddress = '0xuser'
 
-describe('Checkout Lock', () => {
-  describe('Lock', () => {
-    let purchaseKey: () => void
-    let emitTransactionInfo: (info: TransactionInfo) => void
-    let state: any
-    let dispatch: jest.Mock<any, any>
-    beforeEach(() => {
-      purchaseKey = jest.fn()
-      emitTransactionInfo = jest.fn()
-      state = {}
-      dispatch = jest.fn()
+describe('UserAccountLock', () => {
+  let purchaseKey: () => Promise<void>
+  let emitTransactionInfo: (info: TransactionInfo) => void
+  let state: any
+  let dispatch: jest.Mock<any, any>
+  beforeEach(() => {
+    purchaseKey = jest.fn().mockResolvedValue('')
+    emitTransactionInfo = jest.fn()
+    state = {}
+    dispatch = jest.fn()
 
-      jest
-        .spyOn(CheckoutStoreModule, 'useCheckoutStore')
-        .mockImplementation(() => ({ state, dispatch }))
+    jest
+      .spyOn(CheckoutStoreModule, 'useCheckoutStore')
+      .mockImplementation(() => ({ state, dispatch }))
 
-      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
+    jest
+      .spyOn(useUserAccountsPurchaseKey, 'useUserAccountsPurchaseKey')
+      .mockImplementation(_ => ({
         purchaseKey,
-        initiatedPurchase: false,
-        error: null,
+        loading: false,
         transactionHash: null,
       }))
-    })
 
-    it('purchases a key and sets the purchasing address on click', () => {
-      expect.assertions(2)
+    jest.spyOn(useProvider, 'useProvider').mockImplementation(() => ({
+      provider: {
+        signKeyPurchaseRequestData: jest.fn(() => ({
+          data: 'data',
+          sig: 'sig',
+        })),
+      } as any,
+    }))
+  })
 
-      const { getByText } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+  it('purchases a key and sets the purchasing address on click', () => {
+    expect.assertions(2)
 
-      const validitySpan = getByText('Valid for')
+    const { getByText } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-      rtl.fireEvent.click(validitySpan)
+    const validitySpan = getByText('Valid for')
 
-      expect(purchaseKey).toHaveBeenCalled()
-      expect(dispatch).toHaveBeenCalledWith(
-        setPurchasingLockAddress('0xlockaddress')
-      )
-    })
+    rtl.fireEvent.click(validitySpan)
 
-    it('delays the purchase and shows metadata form when metadata is required', () => {
-      expect.assertions(2)
+    expect(purchaseKey).toHaveBeenCalled()
+    expect(dispatch).toHaveBeenCalledWith(
+      setPurchasingLockAddress('0xlockaddress')
+    )
+  })
 
-      const { getByText } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-          metadataRequired
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+  it('delays the purchase and shows metadata form when metadata is required', () => {
+    expect.assertions(2)
 
-      const validitySpan = getByText('Valid for')
+    const { getByText } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        metadataRequired
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-      rtl.fireEvent.click(validitySpan)
+    const validitySpan = getByText('Valid for')
 
-      expect(dispatch).toHaveBeenNthCalledWith(
-        1,
-        setDelayedPurchase({
-          lockAddress: '0xlockaddress',
-          purchaseKey: expect.any(Function),
-        })
-      )
-      expect(dispatch).toHaveBeenNthCalledWith(2, setShowingMetadataForm(true))
-    })
+    rtl.fireEvent.click(validitySpan)
 
-    it('does not purchase a key and set the purchasing address when there is already a purchase', () => {
-      expect.assertions(2)
+    expect(dispatch).toHaveBeenNthCalledWith(
+      1,
+      setDelayedPurchase({
+        lockAddress: '0xlockaddress',
+        purchaseKey: expect.any(Function),
+      })
+    )
+    expect(dispatch).toHaveBeenNthCalledWith(2, setShowingMetadataForm(true))
+  })
 
-      state.purchasingLockAddress = '0xapurchase'
+  it('does not purchase a key and set the purchasing address when there is already a purchase', () => {
+    expect.assertions(2)
 
-      const { getByText } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+    state.purchasingLockAddress = '0xapurchase'
 
-      const validitySpan = getByText('Valid for')
+    const { getByText } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-      rtl.fireEvent.click(validitySpan)
+    const validitySpan = getByText('Valid for')
 
-      expect(purchaseKey).not.toHaveBeenCalled()
-      expect(dispatch).not.toHaveBeenCalled()
-    })
+    rtl.fireEvent.click(validitySpan)
 
-    it('renders a disabled lock when there is a purchase for a different lock', () => {
-      expect.assertions(0)
+    expect(purchaseKey).not.toHaveBeenCalled()
+    expect(dispatch).not.toHaveBeenCalled()
+  })
 
-      state.purchasingLockAddress = '0xapurchase'
+  it('renders a disabled lock when there is a purchase for a different lock', () => {
+    expect.assertions(0)
 
-      const { getByTestId } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+    state.purchasingLockAddress = '0xapurchase'
 
-      getByTestId('DisabledLock')
-    })
+    const { getByTestId } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-    it('renders a disabled lock when there is an active key for a different lock', () => {
-      expect.assertions(0)
+    getByTestId('DisabledLock')
+  })
 
-      const { getByTestId } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[activeKeyForAnotherLock]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+  it('renders a disabled lock when there is an active key for a different lock', () => {
+    expect.assertions(0)
 
-      getByTestId('DisabledLock')
-    })
+    const { getByTestId } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[activeKeyForAnotherLock]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-    it('renders a processing lock when there is a purchase without transaction hash for this lock', () => {
-      expect.assertions(0)
+    getByTestId('DisabledLock')
+  })
 
-      state.purchasingLockAddress = '0xlockaddress'
+  it('renders a processing lock when there is a purchase without transaction hash for this lock', () => {
+    expect.assertions(0)
 
-      const { getByTestId } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+    state.purchasingLockAddress = '0xlockaddress'
 
-      getByTestId('ProcessingLock')
-    })
+    const { getByTestId } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-    it('renders a confirmed lock when there is a purchase with transaction hash for this lock', () => {
-      expect.assertions(0)
+    getByTestId('ProcessingLock')
+  })
 
-      state.purchasingLockAddress = '0xlockaddress'
-      state.transactionHash = '0xhash'
+  it('renders a confirmed lock when there is a purchase with transaction hash for this lock', () => {
+    expect.assertions(0)
 
-      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
+    state.purchasingLockAddress = '0xlockaddress'
+    state.transactionHash = '0xhash'
+
+    jest
+      .spyOn(useUserAccountsPurchaseKey, 'useUserAccountsPurchaseKey')
+      .mockImplementation(_ => ({
         purchaseKey,
         error: null,
+        loading: false,
       }))
 
-      const { getByTestId } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+    const { getByTestId } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-      getByTestId('ConfirmedLock')
-    })
+    getByTestId('ConfirmedLock')
+  })
 
-    it('renders a confirmed lock when there is an active key for this lock', () => {
-      expect.assertions(0)
+  it('renders a confirmed lock when there is an active key for this lock', () => {
+    expect.assertions(0)
 
-      const { getByTestId } = rtl.render(
-        <UserAccountLock
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          activeKeys={[activeKeyForThisLock]}
-          accountAddress={accountAddress}
-          formattedKeyPrice={formattedKeyPrice}
-        />
-      )
+    const { getByTestId } = rtl.render(
+      <UserAccountLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[activeKeyForThisLock]}
+        accountAddress={accountAddress}
+        formattedKeyPrice={formattedKeyPrice}
+      />
+    )
 
-      getByTestId('ConfirmedLock')
-    })
+    getByTestId('ConfirmedLock')
   })
 })
