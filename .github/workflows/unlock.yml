@@ -122,14 +122,11 @@ jobs:
         
   unlock-js:
     runs-on: ubuntu-latest
-<<<<<<< HEAD
     services:
       ganache-integration:
         image: unlockprotocol/unlock_ganache_cli
         ports:
           - 8545:8545
-=======
->>>>>>> Update paywall (#6287)
 
     strategy:
       matrix:
@@ -141,21 +138,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}         
-<<<<<<< HEAD
     - run: cd unlock-js && yarn
     - run: cd unlock-js && yarn test
       env:
         CI: false
         HTTP_PROVIDER_HOST: '127.0.0.1'      
-=======
-    - run:  cd unlock-js && yarn
-    - run: |        
-        (cd unlock-js && yarn ganache &)
-        (cd unlock-js && yarn test)        
-      env:
-        CI: false
->>>>>>> Update paywall (#6287)
-
 
   nudge:
     runs-on: ubuntu-latest
