@@ -105,13 +105,13 @@ contract MixinLockCore is
   }
 
   /**
-   * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
+   * @dev Called by a Lock Manager or Beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    *
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
+   * TODO: consider allowing anybody to trigger this as long as it goes to the intended recipient anyway?
    *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
    * use cases.
    */
@@ -119,7 +119,7 @@ contract MixinLockCore is
     address _tokenAddress,
     uint _amount
   ) external
-    onlyOwnerOrBeneficiary
+    onlyLockManagerOrBeneficiary
   {
     uint balance = getBalance(_tokenAddress, address(this));
     uint amount;
@@ -139,7 +139,7 @@ contract MixinLockCore is
   }
 
   /**
-   * A function which lets the owner of the lock change the pricing for future purchases.
+   * A function which lets a Lock Manager change the pricing for future purchases.
    * This consists of 2 parts: The token address and the price in the given token.
    * In order to set the token to ETH, use 0 for the token Address.
    */
@@ -163,14 +163,14 @@ contract MixinLockCore is
   }
 
   /**
-   * A function which lets the owner of the lock update the beneficiary account,
+   * A function which lets a Lock Manager or the Beneficiary update the beneficiary account,
    * which receives funds on withdrawal.
    */
   function updateBeneficiary(
     address _beneficiary
   ) external
+    onlyLockManagerOrBeneficiary
   {
-    require(msg.sender == beneficiary || isLockManager(msg.sender), 'ONLY_BENEFICIARY_OR_LOCKMANAGER');
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
   }

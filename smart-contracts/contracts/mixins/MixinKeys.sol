@@ -21,7 +21,7 @@ contract MixinKeys is
     uint expirationTimestamp;
   }
 
-  // Emitted when the Lock owner expires a user's Key
+  // Emitted when a Lock manager expires a user's Key
   event ExpireKey(uint indexed tokenId);
 
   // Emitted when the expiration of a key is modified

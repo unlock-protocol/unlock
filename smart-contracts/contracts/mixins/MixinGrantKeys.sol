@@ -5,7 +5,7 @@ import './MixinKeyGranterRole.sol';
 
 
 /**
- * @title Mixin allowing the Lock owner to grant / gift keys to users.
+ * @title Mixin allowing a Lock manager to grant / gift keys to users.
  * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
@@ -15,7 +15,7 @@ contract MixinGrantKeys is
   MixinKeyGranterRole
 {
   /**
-   * Allows the Lock owner to give a collection of users a key with no charge.
+   * Allows a Lock manager or Key granter to give a collection of users a key with no charge.
    * Each key may be assigned a different expiration date.
    */
   function grantKeys(

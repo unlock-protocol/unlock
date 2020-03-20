@@ -3,7 +3,7 @@ pragma solidity 0.5.17;
 import './MixinFunds.sol';
 
 /**
- * @title Mixin allowing the Lock owner to disable a Lock (preventing new purchases)
+ * @title Mixin allowing a Lock manager to disable a Lock (preventing new purchases)
  * and then destroy it.
  * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
@@ -34,7 +34,7 @@ contract MixinDisable is
    */
   function disableLock()
     external
-    onlyOwner
+    onlyLockManager
     onlyIfAlive
   {
     emit Disable();

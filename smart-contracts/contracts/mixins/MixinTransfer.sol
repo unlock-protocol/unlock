@@ -211,13 +211,13 @@ contract MixinTransfer is
   }
 
   /**
-   * Allow the Lock owner to change the transfer fee.
+   * Allow a Lock manager to change the transfer fee.
    */
   function updateTransferFee(
     uint _transferFeeBasisPoints
   )
     external
-    onlyOwner
+    onlyLockManager
   {
     emit TransferFeeChanged(
       _transferFeeBasisPoints

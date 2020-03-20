@@ -1,6 +1,6 @@
 pragma solidity 0.5.17;
 
-\import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
@@ -44,12 +44,12 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation
+   * @dev Invoked by a Lock Manager to destroy the user's ket and perform a refund and cancellation
    * of the key
    */
   function expireAndRefundFor(address _keyOwner, uint amount)
     external
-    onlyOwner
+    onlyLockManager
     hasValidKey(_keyOwner)
   {
     _cancelAndRefund(_keyOwner, amount);
@@ -96,14 +96,14 @@ contract MixinRefunds is
   }
 
   /**
-   * Allow the owner to change the refund penalty.
+   * Allow a Lock Manager to change the refund penalty.
    */
   function updateRefundPenalty(
     uint _freeTrialLength,
     uint _refundPenaltyBasisPoints
   )
     external
-    onlyOwner
+    onlyLockManager
   {
     emit RefundPenaltyChanged(
       _freeTrialLength,

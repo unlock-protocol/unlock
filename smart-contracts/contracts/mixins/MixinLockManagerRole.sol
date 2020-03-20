@@ -30,7 +30,7 @@ contract MixinLockManagerRole {
     return lockManagers.has(account);
   }
 
-  function addLockManager(address account) public onlyOwner {
+  function addLockManager(address account) public onlyLockManager {
     lockManagers.add(account);
     emit LockManagerAdded(account);
   }

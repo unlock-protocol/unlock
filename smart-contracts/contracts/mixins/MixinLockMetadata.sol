@@ -1,6 +1,6 @@
 pragma solidity 0.5.17;
 
-\import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
@@ -22,13 +22,13 @@ contract MixinLockMetadata is
   using UnlockUtils for address;
   using UnlockUtils for string;
 
-  /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock owner
+  /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock a Lock Manager
   string public name;
 
-  /// An abbreviated name for NFTs in this contract. Defaults to "KEY" but is settable by lock owner
+  /// An abbreviated name for NFTs in this contract. Defaults to "KEY" but is settable by a Lock Manager
   string private lockSymbol;
 
-  // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
+  // the base Token URI for this Lock. If not set by a Lock Manager, the global URI stored in Unlock is used.
   string private baseTokenURI;
 
   event NewLockSymbol(
@@ -47,23 +47,23 @@ contract MixinLockMetadata is
   }
 
   /**
-   * Allows the Lock owner to assign a descriptive name for this Lock.
+   * Allows the a Lock Manager to assign a descriptive name for this Lock.
    */
   function updateLockName(
     string calldata _lockName
   ) external
-    onlyOwner
+    onlyLockManager
   {
     name = _lockName;
   }
 
   /**
-   * Allows the Lock owner to assign a Symbol for this Lock.
+   * Allows the a Lock Manager to assign a Symbol for this Lock.
    */
   function updateLockSymbol(
     string calldata _lockSymbol
   ) external
-    onlyOwner
+    onlyLockManager
   {
     lockSymbol = _lockSymbol;
     emit NewLockSymbol(_lockSymbol);
@@ -85,12 +85,12 @@ contract MixinLockMetadata is
   }
 
   /**
-   * Allows the Lock owner to update the baseTokenURI for this Lock.
+   * Allows a Lock Manager to update the baseTokenURI for this Lock.
    */
   function setBaseTokenURI(
     string calldata _baseTokenURI
   ) external
-    onlyOwner
+    onlyLockManager
   {
     baseTokenURI = _baseTokenURI;
   }
