@@ -1,6 +1,7 @@
 pragma solidity 0.5.17;
 
 import './MixinFunds.sol';
+import './MixinLockManagerRole.sol';
 
 /**
  * @title Mixin allowing a Lock manager to disable a Lock (preventing new purchases)
@@ -10,7 +11,8 @@ import './MixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinDisable is
-  MixinFunds
+  MixinFunds,
+  MixinLockManagerRole
 {
   // Used to disable payable functions when deprecating an old lock
   bool public isAlive;
