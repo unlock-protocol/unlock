@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Cookies from 'universal-cookie'
 import { usePostmateParent } from './usePostmateParent'
 
 export interface UserInfo {
@@ -29,12 +30,15 @@ interface BufferedEvent {
 // buffer. After that, once the handle to the parent is available, all
 // the buffered events are emitted and future events are emitted
 // directly.
+// Communication also happens thru setting a cookie
+// Which is useful in the context of proxying where the checkout window is
+// not displayed in an iframe but as the main window.
 export const useCheckoutCommunication = (model?: any) => {
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const parent = usePostmateParent(model)
-
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
-    // Set the cookie too!
+    const cookies = new Cookies()
+    cookies.set(`__unlockCookie__${kind}__`, payload)
     if (!parent) {
       setBuffer([...buffer, { kind, payload }])
     } else {

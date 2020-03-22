@@ -5,16 +5,24 @@ import {
   CheckoutEvents,
 } from '../../hooks/useCheckoutCommunication'
 
-let emit = jest.fn()
+const mockCookies = {
+  set: jest.fn(),
+}
 
+jest.mock('universal-cookie', () => {
+  return () => mockCookies
+})
+
+let emit = jest.fn()
 describe('useCheckoutCommunication', () => {
   beforeEach(() => {
     emit = jest.fn()
     jest.spyOn(Postmate, 'Model').mockResolvedValue({ emit })
+    mockCookies.set = jest.fn()
   })
 
   it('emits a userInfo event when emitUserInfo is called', async () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     const { result, wait } = renderHook(() => useCheckoutCommunication())
 
@@ -24,10 +32,14 @@ describe('useCheckoutCommunication', () => {
     result.current.emitUserInfo(userInfo)
 
     expect(emit).toHaveBeenCalledWith(CheckoutEvents.userInfo, userInfo)
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      '__unlockCookie__checkout.userInfo__',
+      userInfo
+    )
   })
 
   it('emits a closeModal event when emitCloseModal is called', async () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     const { result, wait } = renderHook(() => useCheckoutCommunication())
 
@@ -40,10 +52,14 @@ describe('useCheckoutCommunication', () => {
     // isn't one. This has no impact on real code, since only the
     // event name is important in this case.
     expect(emit).toHaveBeenCalledWith(CheckoutEvents.closeModal, undefined)
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      '__unlockCookie__checkout.closeModal__',
+      undefined
+    )
   })
 
   it('emits a transactionInfo event when emitTransactionInfo is called', async () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     const { result, wait } = renderHook(() => useCheckoutCommunication())
 
@@ -54,6 +70,10 @@ describe('useCheckoutCommunication', () => {
 
     expect(emit).toHaveBeenCalledWith(
       CheckoutEvents.transactionInfo,
+      transactionInfo
+    )
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      '__unlockCookie__checkout.transactionInfo__',
       transactionInfo
     )
   })
