@@ -19,6 +19,7 @@ import {
   UserMetadata,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
+import getConfigFromDom from '../../utils/getConfigFromDom'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 import {
   useCheckoutStore,
@@ -34,7 +35,7 @@ import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
 
 interface CheckoutContentProps {
   account: AccountType
-  configFromSearch?: PaywallConfig
+  defaultConfig?: PaywallConfig
 }
 
 const defaultLockAddresses: string[] = []
@@ -42,21 +43,18 @@ const defaultLockAddresses: string[] = []
 // This component wraps CheckoutContentInner so that it has access to the store.
 export const CheckoutContent = ({
   account,
-  configFromSearch,
+  defaultConfig,
 }: CheckoutContentProps) => {
   return (
     <CheckoutStoreProvider>
-      <CheckoutContentInner
-        account={account}
-        configFromSearch={configFromSearch}
-      />
+      <CheckoutContentInner account={account} defaultConfig={defaultConfig} />
     </CheckoutStoreProvider>
   )
 }
 
 export const CheckoutContentInner = ({
   account,
-  configFromSearch,
+  defaultConfig,
 }: CheckoutContentProps) => {
   const { state, dispatch } = useCheckoutStore()
   const { setUserMetadata } = useSetUserMetadata()
@@ -81,10 +79,10 @@ export const CheckoutContentInner = ({
   }, [account])
 
   useEffect(() => {
-    if (!config && configFromSearch) {
-      dispatch(setConfig(configFromSearch))
+    if (!config && defaultConfig) {
+      dispatch(setConfig(defaultConfig))
     }
-  }, [configFromSearch])
+  }, [defaultConfig])
 
   const lockAddresses = config
     ? Object.keys(config.locks)
@@ -159,10 +157,11 @@ export const mapStateToProps = ({ account, router }: ReduxState) => {
   const search = queryString.parse(router.location.search)
 
   const configFromSearch = getConfigFromSearch(search)
+  const configFromDom = getConfigFromDom()
 
   return {
     account,
-    configFromSearch,
+    defaultConfig: configFromSearch || configFromDom,
   }
 }
 
