@@ -34,6 +34,7 @@ export const useCheckoutCommunication = (model?: any) => {
   const parent = usePostmateParent(model)
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+    // Set the cookie too!
     if (!parent) {
       setBuffer([...buffer, { kind, payload }])
     } else {
