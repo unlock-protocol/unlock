@@ -3,7 +3,6 @@ pragma solidity 0.5.17;
 // This contract mostly follows the pattern established by openzeppelin in
 // openzeppelin/contracts-ethereum-package/contracts/access/roles
 
-import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
 import './MixinLockManagerRole.sol';
 
