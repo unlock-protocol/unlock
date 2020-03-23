@@ -172,6 +172,23 @@ contract('Lock / cancelAndRefund', accounts => {
     assert.equal(txObj.logs[0].event, 'CancelKey')
   })
 
+  it('approved user can cancel a key', async () => {
+    await locks.FREE.grantKeys(
+      [accounts[1]],
+      [999999999999],
+      [constants.ZERO_ADDRESS],
+      {
+        from: accounts[0],
+      }
+    )
+    const iD = await locks.FREE.getTokenIdFor(accounts[1])
+    await locks.FREE.approve(accounts[9], iD, { from: accounts[1] })
+    const txObj = await locks.FREE.cancelAndRefund(iD, {
+      from: accounts[9],
+    })
+    assert.equal(txObj.logs[0].event, 'CancelKey')
+  })
+
   describe('allows the Lock owner to specify a different cancellation penalty', () => {
     let tx
 

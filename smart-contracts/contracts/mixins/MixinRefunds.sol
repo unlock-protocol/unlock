@@ -6,6 +6,7 @@ import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
+import './MixinApproval.sol';
 
 
 contract MixinRefunds is
@@ -13,7 +14,8 @@ contract MixinRefunds is
   MixinSignatures,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinApproval
 {
   using SafeMath for uint;
 
@@ -63,7 +65,7 @@ contract MixinRefunds is
    */
   function cancelAndRefund(uint _tokenId)
     external
-    onlyKeyManager(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     address keyOwner = ownerOf(_tokenId);
     uint refund = _getCancelAndRefundValue(keyOwner);
