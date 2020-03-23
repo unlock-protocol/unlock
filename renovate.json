@@ -78,10 +78,17 @@
       }
     },
     {
-      "packageNames": ["@unlock-protocol/unlock-js"],
+      "packageNames": ["@unlock-protocol/unlock-js", "@unlock-protocol/unlock-assets"],
       "schedule": ["at any time"],
       "minor": {
         "groupName": "unlock-js npm package"
+      }
+    },
+    {
+      "packagePatterns": ["unlock-abi-*"],
+      "schedule": ["at any time"],
+      "minor": {
+        "groupName": "unlock-abi npm package"
       }
     }
   ]

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { useState } from 'react'
+import { Web3Window } from '../../windowTypes'
 
 import {
   Locks,
@@ -128,6 +129,13 @@ export const Checkout = ({
             {lockAddresses.length === Object.keys(config.locks).length &&
               checkoutLocks}
           </CheckoutLocks>
+          {config.unlockUserAccounts && !(window as Web3Window).web3 && (
+            <NoWallet>
+              Pay using your credit card (you will be asked to signup for an
+              Unlock account), or using your Ethereum wallet, such as Metamask
+              or Coinbase Wallet.
+            </NoWallet>
+          )}
         </>
       )}
       {showingForm && (
@@ -153,4 +161,9 @@ const CheckoutLocks = styled.ul`
 const CallToActionParagraph = styled.p`
   font-size: 20px;
   margin: 5px;
+`
+
+const NoWallet = styled.p`
+  margin-top: 30px;
+  font-size: 12px;
 `

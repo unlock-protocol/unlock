@@ -53,19 +53,25 @@ export class StorageService extends EventEmitter {
    * @param {*} senderAddress
    * @param {*} recipientAddress
    * @param {*} chain
+   * @paran {*} data (input of transaction, optional)
    */
   async storeTransaction(
     transactionHash,
     senderAddress,
     recipientAddress,
-    chain
+    chain,
+    beneficiaryAddress /** Used in the context of key purchase *for* */,
+    data
   ) {
     const payload = {
       transactionHash,
       sender: senderAddress,
+      for: beneficiaryAddress || senderAddress,
       recipient: recipientAddress,
+      data,
       chain,
     }
+
     try {
       await axios.post(`${this.host}/transaction`, payload)
       this.emit(success.storeTransaction, transactionHash)
@@ -289,11 +295,16 @@ export class StorageService extends EventEmitter {
       headers: this.genAuthorizationHeader(token),
     }
     try {
-      await axios.post(`${this.host}/purchase`, purchaseRequest, opts)
+      const response = await axios.post(
+        `${this.host}/purchase`,
+        purchaseRequest,
+        opts
+      )
       this.emit(
         success.keyPurchase,
         purchaseRequest.message.purchaseRequest.lock
       )
+      return response.data.transactionHash
     } catch (error) {
       this.emit(failure.keyPurchase, error)
     }

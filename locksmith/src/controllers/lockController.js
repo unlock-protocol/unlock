@@ -2,8 +2,8 @@ import LockOwnership from '../data/lockOwnership'
 
 const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
-const lockIconUtils = require('../../src/utils/lockIcon').default
-const { getBaseTokenData } = require('../../src/operations/metadataOperations')
+const lockIconUtils = require('../utils/lockIcon').default
+const { getBaseTokenData } = require('../operations/metadataOperations')
 
 const config = require('../../config/config')
 

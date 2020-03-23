@@ -12,6 +12,7 @@ import { ActionButton } from './buttons/ActionButton'
 import withConfig from '../../utils/withConfig'
 import useTermsOfService from '../../hooks/useTermsOfService'
 import Loading from './Loading'
+import GlobalErrorConsumer from './GlobalErrorConsumer'
 
 export default function Layout({ forContent, title, children }) {
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -32,7 +33,7 @@ export default function Layout({ forContent, title, children }) {
       <Content>
         <Header forContent={forContent} title={title} />
         {!termsAccepted && <Terms setTermsAccepted={saveTermsAccepted} />}
-        {children}
+        <GlobalErrorConsumer>{children}</GlobalErrorConsumer>
         {forContent && <Footer />}
       </Content>
       <Right />
