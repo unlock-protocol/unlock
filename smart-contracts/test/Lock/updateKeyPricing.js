@@ -1,8 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const truffleAssert = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
-
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -16,12 +14,12 @@ let keyPriceBefore
 let tokenAddressBefore
 let transaction
 let token
-let lockOwner
+let lockCreator
 let invalidTokenAddress
 
 contract('Lock / updateKeyPricing', accounts => {
   invalidTokenAddress = accounts[9]
-  lockOwner = accounts[0]
+  lockCreator = accounts[0]
 
   before(async () => {
     token = await tokens.dai.deploy(web3, accounts[0])
@@ -38,12 +36,12 @@ contract('Lock / updateKeyPricing', accounts => {
     transaction = await lock.updateKeyPricing(
       web3.utils.toWei('0.3', 'ether'),
       token.address,
-      { from: lockOwner }
+      { from: lockCreator }
     )
   })
 
   it('should assign the owner to the LockManagerRole by default', async () => {
-    assert.equal(await lock.isLockManager(lockOwner), true)
+    assert.equal(await lock.isLockManager(lockCreator), true)
   })
 
   it('should change the actual keyPrice', async () => {
@@ -90,23 +88,14 @@ contract('Lock / updateKeyPricing', accounts => {
       assert.equal(keyPrice.toFixed(), keyPriceAfter.toFixed())
     })
 
-    it('should fail to let anyone but the owner add a lockManager', async () => {
-      // first we try an account whioch is not a lockManager
+    it('should fail to let anyone but a lockManager add another lockManager', async () => {
+      // first we try an account which is not a lockManager
       assert.equal(await lock.isLockManager(accounts[8]), false)
-      await truffleAssert.fails(
+      await reverts(
         lock.addLockManager(accounts[7], {
           from: accounts[8],
         }),
-        truffleAssert.ErrorType.REVERT
-      )
-      // next we also try with a lockManager
-      await lock.addLockManager(accounts[7], { from: lockOwner })
-      assert.equal(await lock.isLockManager(accounts[7]), true)
-      await truffleAssert.fails(
-        lock.addLockManager(accounts[6], {
-          from: accounts[7],
-        }),
-        truffleAssert.ErrorType.REVERT
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
   })
@@ -114,9 +103,9 @@ contract('Lock / updateKeyPricing', accounts => {
   describe('changing the token address', () => {
     it('should allow a LockManager to switch from eth => erc20', async () => {
       assert.equal(tokenAddressBefore, 0)
-      assert.equal(await lock.isLockManager(lockOwner), true)
+      assert.equal(await lock.isLockManager(lockCreator), true)
       await lock.updateKeyPricing(await lock.keyPrice.call(), token.address, {
-        from: lockOwner,
+        from: lockCreator,
       })
       let tokenAddressAfter = await lock.tokenAddress.call()
       assert.equal(tokenAddressAfter, token.address)
@@ -131,8 +120,8 @@ contract('Lock / updateKeyPricing', accounts => {
     })
 
     it('should allow a lock manager who is not the owner to make changes', async () => {
-      await lock.addLockManager(accounts[8], { from: lockOwner })
-      assert.notEqual(accounts[8], lockOwner)
+      await lock.addLockManager(accounts[8], { from: lockCreator })
+      assert.notEqual(accounts[8], lockCreator)
       assert.equal(await lock.isLockManager(accounts[8]), true)
       await lock.updateKeyPricing(
         web3.utils.toWei('0.42', 'ether'),
@@ -152,11 +141,10 @@ contract('Lock / updateKeyPricing', accounts => {
     })
 
     it('should revert if trying to switch to an invalid token address', async () => {
-      await truffleAssert.fails(
+      await reverts(
         lock.updateKeyPricing(await lock.keyPrice.call(), invalidTokenAddress, {
-          from: lockOwner,
-        }),
-        truffleAssert.ErrorType.REVERT
+          from: lockCreator,
+        })
       )
     })
   })
