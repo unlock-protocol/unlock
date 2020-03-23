@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
@@ -7,15 +7,30 @@ import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
+import { FiatLocks } from '../interface/checkout/FiatLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
+import { MetadataForm } from '../interface/checkout/MetadataForm'
+import { LogInButton } from '../interface/checkout/LogInButton'
 import {
   Account as AccountType,
   Router,
   PaywallConfig,
+  UserMetadata,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
+import {
+  useCheckoutStore,
+  CheckoutStoreProvider,
+} from '../../hooks/useCheckoutStore'
+
+import {
+  setConfig,
+  setShowingLogin,
+  setShowingMetadataForm,
+} from '../../utils/checkoutActions'
+import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -24,20 +39,38 @@ interface CheckoutContentProps {
 
 const defaultLockAddresses: string[] = []
 
+// This component wraps CheckoutContentInner so that it has access to the store.
 export const CheckoutContent = ({
   account,
   configFromSearch,
 }: CheckoutContentProps) => {
-  const [showingLogin, setShowingLogin] = useState(false)
-  const [configFromPostmate, setConfig] = useState<PaywallConfig | undefined>(
-    undefined
+  return (
+    <CheckoutStoreProvider>
+      <CheckoutContentInner
+        account={account}
+        configFromSearch={configFromSearch}
+      />
+    </CheckoutStoreProvider>
   )
+}
+
+export const CheckoutContentInner = ({
+  account,
+  configFromSearch,
+}: CheckoutContentProps) => {
+  const { state, dispatch } = useCheckoutStore()
+  const { setUserMetadata } = useSetUserMetadata()
+  const { showingLogin, config, showingMetadataForm, delayedPurchase } = state
 
   const {
     emitTransactionInfo,
     emitCloseModal,
     emitUserInfo,
-  } = useCheckoutCommunication({ setConfig })
+  } = useCheckoutCommunication({
+    setConfig: (config: PaywallConfig) => {
+      dispatch(setConfig(config))
+    },
+  })
 
   useEffect(() => {
     if (account && account.address) {
@@ -47,12 +80,26 @@ export const CheckoutContent = ({
     }
   }, [account])
 
-  // Config value from postmate always takes precedence over the one in the URL if it is present.
-  const config = configFromPostmate || configFromSearch
+  useEffect(() => {
+    if (!config && configFromSearch) {
+      dispatch(setConfig(configFromSearch))
+    }
+  }, [configFromSearch])
 
   const lockAddresses = config
     ? Object.keys(config.locks)
     : defaultLockAddresses
+
+  const metadataRequired = config ? !!config.metadataInputs : false
+  const onMetadataSubmit = (metadata: UserMetadata) => {
+    setUserMetadata(
+      delayedPurchase!.lockAddress,
+      account!.address,
+      metadata,
+      delayedPurchase!.purchaseKey
+    )
+    dispatch(setShowingMetadataForm(false))
+  }
 
   return (
     <CheckoutContainer close={emitCloseModal}>
@@ -61,27 +108,45 @@ export const CheckoutContent = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
-          {config && config.icon && (
-            <img alt="Publisher Icon" src={config.icon} />
-          )}
-          <p>{config ? config.callToAction.default : ''}</p>
-          {!account && showingLogin && <LogInSignUp login embedded />}
-          {!account && !showingLogin && (
-            <>
-              <NotLoggedInLocks lockAddresses={lockAddresses} />
-              <input
-                type="button"
-                onClick={() => setShowingLogin(true)}
-                value="Log in"
-              />
-            </>
-          )}
-          {account && (
-            <Locks
-              accountAddress={account.address}
-              lockAddresses={lockAddresses}
-              emitTransactionInfo={emitTransactionInfo}
+          {showingMetadataForm && (
+            <MetadataForm
+              fields={config!.metadataInputs!}
+              onSubmit={onMetadataSubmit}
             />
+          )}
+          {!showingMetadataForm && (
+            <>
+              {config && config.icon && (
+                <img alt="Publisher Icon" src={config.icon} />
+              )}
+              <p>{config ? config.callToAction.default : ''}</p>
+              {!account && showingLogin && <LogInSignUp login embedded />}
+              {!account && !showingLogin && (
+                <>
+                  <NotLoggedInLocks lockAddresses={lockAddresses} />
+                  {config && config.unlockUserAccounts && (
+                    <LogInButton
+                      onClick={() => dispatch(setShowingLogin(true))}
+                    />
+                  )}
+                </>
+              )}
+              {account && !account.emailAddress && (
+                <Locks
+                  accountAddress={account.address}
+                  lockAddresses={lockAddresses}
+                  emitTransactionInfo={emitTransactionInfo}
+                  metadataRequired={metadataRequired}
+                />
+              )}
+              {account && account.emailAddress && (
+                <FiatLocks
+                  lockAddresses={lockAddresses}
+                  accountAddress={account.address}
+                  emitTransactionInfo={emitTransactionInfo}
+                />
+              )}
+            </>
           )}
         </BrowserOnly>
       </CheckoutWrapper>

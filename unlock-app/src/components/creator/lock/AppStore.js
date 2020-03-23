@@ -35,15 +35,28 @@ export class AppStore extends React.Component {
     super(props, context)
 
     this.integrations = {
+      adfree: {
+        name: 'Ad-Free Experience',
+        icon: <Svg.Adfree />,
+        href: 'https://docs.unlock-protocol.com/tutorials/ad-free-experience',
+      },
       tickets: {
         name: 'Tickets',
         icon: <Svg.Ticket />,
-        href: 'https://tickets.unlock-protocol.com',
+        href:
+          'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
       },
       donations: {
         name: 'Donations',
         icon: <Svg.Heart />,
-        href: 'https://donate.unlock-protocol.com/generate.html',
+        href:
+          'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
+      },
+      newsletter: {
+        name: 'Newsletter',
+        icon: <Svg.Newsletter />,
+        href:
+          'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
       },
       wordpress: {
         name: 'Wordpress',
@@ -57,7 +70,7 @@ export class AppStore extends React.Component {
     const { config, lock } = this.props
     return (
       <Wrapper>
-        <DetailTitle>Apps</DetailTitle>
+        <DetailTitle>Integrate</DetailTitle>
         <Apps>
           {Object.keys(this.integrations).map(index => {
             const integration = this.integrations[index]

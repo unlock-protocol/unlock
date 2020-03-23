@@ -1,11 +1,14 @@
-pragma solidity 0.5.16;
+pragma solidity 0.5.17;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 import './MixinDisable.sol';
 import './MixinLockManagerRole.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
+import '../interfaces/hooks/ILockKeyCancelHook.sol';
+import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 
 
 /**
@@ -21,6 +24,7 @@ contract MixinLockCore is
   MixinDisable,
   MixinLockManagerRole
 {
+  using Address for address;
 
   event Withdrawal(
     address indexed sender,
@@ -60,6 +64,9 @@ contract MixinLockCore is
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
+
+  ILockKeyPurchaseHook public onKeyPurchaseHook;
+  ILockKeyCancelHook public onKeyCancelHook;
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
@@ -168,6 +175,21 @@ contract MixinLockCore is
     require(msg.sender == beneficiary || isLockManager(msg.sender), 'ONLY_BENEFICIARY_OR_LOCKMANAGER');
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
+  }
+
+  /**
+   * @notice Allows a lock manager to add or remove an event hook
+   */
+  function setEventHooks(
+    address _onKeyPurchaseHook,
+    address _onKeyCancelHook
+  ) external
+    onlyLockManager()
+  {
+    require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
+    require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
+    onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
+    onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
   }
 
   function totalSupply()

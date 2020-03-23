@@ -9,12 +9,12 @@ let locks
 let lock
 let result
 let lockCreator
-let notAuthorised
+let notAuthorized
 let newKeyGranter
 
 contract('Permissions / KeyGranter', accounts => {
   lockCreator = accounts[0]
-  notAuthorised = accounts[9]
+  notAuthorized = accounts[9]
   newKeyGranter = accounts[1]
 
   before(async () => {
@@ -40,17 +40,17 @@ contract('Permissions / KeyGranter', accounts => {
     })
 
     it('should not allow anyone else to add a KeyGranter', async () => {
-      result = await lock.isLockManager.call(notAuthorised)
+      result = await lock.isLockManager.call(notAuthorized)
       assert.equal(result, false)
       await reverts(
-        lock.addKeyGranter(accounts[5], { from: notAuthorised }),
+        lock.addKeyGranter(accounts[5], { from: notAuthorized }),
         'MixinLockManager: caller does not have the LockManager role'
       )
     })
 
     it('should only allow a lockManager to remove a KeyGranter', async () => {
       await reverts(
-        lock.revokeKeyGranter(newKeyGranter, { from: notAuthorised }),
+        lock.revokeKeyGranter(newKeyGranter, { from: notAuthorized }),
         'MixinLockManager: caller does not have the LockManager role'
       )
       await lock.revokeKeyGranter(newKeyGranter, { from: lockCreator })

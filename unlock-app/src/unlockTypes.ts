@@ -39,6 +39,8 @@ export interface Transactions {
 export interface Account {
   address: string
   balance: string // TODO: Stricter balance type (enforce currency, precision)
+  // emailAddress will be present when a user account is being used, but not otherwise
+  emailAddress?: string
 }
 
 export interface Network {
@@ -211,4 +213,9 @@ export interface UserMetadata {
   protectedData?: {
     [key: string]: string
   }
+}
+
+export interface DelayedPurchase {
+  lockAddress: string
+  purchaseKey: () => void
 }

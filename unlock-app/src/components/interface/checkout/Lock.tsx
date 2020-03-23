@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
 import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
@@ -10,45 +10,56 @@ import {
 import { usePurchaseKey } from '../../../hooks/usePurchaseKey'
 import * as LockVariations from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
+import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
+import {
+  setPurchasingLockAddress,
+  setDelayedPurchase,
+  setShowingMetadataForm,
+} from '../../../utils/checkoutActions'
 
 interface LockProps {
   lock: RawLock
-  purchasingLockAddress: string | null
-  setPurchasingLockAddress: (lockAddress: string) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   balances: Balances
   activeKeys: KeyResult[]
   accountAddress: string
+  metadataRequired?: boolean
 }
 
 export const Lock = ({
   lock,
-  purchasingLockAddress,
-  setPurchasingLockAddress,
   emitTransactionInfo,
   balances,
   activeKeys,
   accountAddress,
+  metadataRequired,
 }: LockProps) => {
-  const { purchaseKey, transactionHash } = usePurchaseKey(lock, accountAddress)
+  const { purchaseKey } = usePurchaseKey(emitTransactionInfo)
+  const { state, dispatch } = useCheckoutStore()
+
+  const purchase = () => {
+    dispatch(setPurchasingLockAddress(lock.address))
+    purchaseKey(lock, accountAddress)
+  }
 
   const onClick = () => {
-    if (purchasingLockAddress) {
+    if (state.purchasingLockAddress) {
       // There is already a key purchase in progress (or completed) -- do not start another one
       return
     }
 
-    setPurchasingLockAddress(lock.address)
-    purchaseKey()
-  }
-
-  useEffect(() => {
-    if (transactionHash) {
-      emitTransactionInfo({
-        hash: transactionHash,
-      })
+    if (metadataRequired) {
+      dispatch(
+        setDelayedPurchase({
+          lockAddress: lock.address,
+          purchaseKey: purchase,
+        })
+      )
+      dispatch(setShowingMetadataForm(true))
+    } else {
+      purchase()
     }
-  }, [transactionHash])
+  }
 
   const props: LockVariations.LockProps = {
     onClick,
@@ -63,15 +74,15 @@ export const Lock = ({
   const keyForThisLock = activeKeys.find(key => key.lock === lock.address)
 
   // This lock is being/has been purchased
-  if (purchasingLockAddress === lock.address || keyForThisLock) {
-    if (transactionHash || keyForThisLock) {
+  if (state.purchasingLockAddress === lock.address || keyForThisLock) {
+    if (state.transactionHash || keyForThisLock) {
       return <LockVariations.ConfirmedLock {...props} />
     }
     return <LockVariations.ProcessingLock {...props} />
   }
 
   // Some other lock is being/has been purchased
-  if (purchasingLockAddress || activeKeys.length) {
+  if (state.purchasingLockAddress || activeKeys.length) {
     return <LockVariations.DisabledLock {...props} />
   }
 

@@ -1,4 +1,4 @@
-pragma solidity 0.5.16;
+pragma solidity 0.5.17;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
@@ -6,7 +6,7 @@ import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
-import './MixinEventHooks.sol';
+import './MixinApproval.sol';
 
 
 contract MixinRefunds is
@@ -15,7 +15,7 @@ contract MixinRefunds is
   MixinFunds,
   MixinLockCore,
   MixinKeys,
-  MixinEventHooks
+  MixinApproval
 {
   using SafeMath for uint;
 
@@ -65,7 +65,7 @@ contract MixinRefunds is
    */
   function cancelAndRefund(uint _tokenId)
     external
-    onlyKeyManager(_tokenId)
+    onlyKeyManagerOrApproved(_tokenId)
   {
     address keyOwner = ownerOf(_tokenId);
     uint refund = _getCancelAndRefundValue(keyOwner);
@@ -180,7 +180,11 @@ contract MixinRefunds is
       _transfer(tokenAddress, _keyOwner, refund);
     }
 
-    _onKeyCancel(_keyOwner, refund);
+    // inform the hook if there is one registered
+    if(address(onKeyCancelHook) != address(0))
+    {
+      onKeyCancelHook.onKeyCancel(msg.sender, _keyOwner, refund);
+    }
   }
 
   /**

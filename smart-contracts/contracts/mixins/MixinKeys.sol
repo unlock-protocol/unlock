@@ -1,4 +1,4 @@
-pragma solidity 0.5.16;
+pragma solidity 0.5.17;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
@@ -94,14 +94,6 @@ contract MixinKeys is
     require(
       isKeyOwner(_tokenId, msg.sender), 'ONLY_KEY_OWNER'
     );
-    _;
-  }
-
-  // Ensure that the caller is the keyManager for this key
-  modifier onlyKeyManager(
-    uint _tokenId
-  ) {
-    require(isKeyManager(_tokenId, msg.sender), 'ONLY_KEY_MANAGER');
     _;
   }
 
@@ -239,7 +231,7 @@ contract MixinKeys is
     isKey(_tokenId)
   {
     require(
-      isKeyManager(_tokenId, msg.sender) ||
+      _isKeyManager(_tokenId, msg.sender) ||
       isLockManager(msg.sender),
       'UNAUTHORIZED_KEY_MANAGER_UPDATE'
     );
@@ -266,14 +258,14 @@ contract MixinKeys is
   * Returns true if _keyManager is the manager of the key
   * identified by _tokenId
    */
-  function isKeyManager(
+  function _isKeyManager(
     uint _tokenId,
     address _keyManager
   ) internal view
     returns (bool)
   {
-    if(keyManagerOf[_tokenId] == msg.sender ||
-      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, msg.sender))) {
+    if(keyManagerOf[_tokenId] == _keyManager ||
+      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, _keyManager))) {
       return true;
     } else {
       return false;
