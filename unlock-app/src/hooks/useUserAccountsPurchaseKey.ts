@@ -24,9 +24,11 @@ export const useUserAccountsPurchaseKey = (
   const purchaseKey = async (lock: RawLock, accountAddress: string) => {
     const { data, sig } = provider!.signKeyPurchaseRequestData({
       recipient: accountAddress,
-      lockAddress: lock.address,
+      lock: lock.address,
     })
+
     const transactionHash = await storageService.purchaseKey(data, btoa(sig))
+
     dispatch(setTransactionHash(transactionHash))
     emitTransactionInfo({
       hash: transactionHash,
