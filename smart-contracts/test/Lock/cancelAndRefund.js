@@ -165,14 +165,14 @@ contract('Lock / cancelAndRefund', accounts => {
         from: accounts[0],
       }
     )
-    const iD = await lock.getTokenIdFor(keyOwners[1])
+    const iD = await locks.FREE.getTokenIdFor(accounts[1])
     const txObj = await locks.FREE.cancelAndRefund(iD, {
       from: accounts[1],
     })
     assert.equal(txObj.logs[0].event, 'CancelKey')
   })
 
-  describe('allows the Lock owner to specify a different cancelation penalty', () => {
+  describe('allows the Lock owner to specify a different cancellation penalty', () => {
     let tx
 
     before(async () => {

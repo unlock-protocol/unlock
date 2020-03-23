@@ -14,6 +14,8 @@ if (process.env.CI) {
 
 const provider = `http://${host}:${port}`
 
+console.log(`this is the provider being used: ${provider}`)
+
 // This test suite will do the following:
 // For each version of the Unlock contract
 // 1. Deploy it
@@ -41,6 +43,11 @@ describe('Wallet Service Integration', () => {
       await walletService.connect(provider)
 
       await walletService.deployUnlock(versionName)
+
+      console.log(`this is the provider being used: ${provider}`)
+      console.log(
+        `this is the contract address: ${walletService.unlockContractAddress}`
+      )
 
       web3Service = new Web3Service({
         readOnlyProvider: provider,
