@@ -82,15 +82,18 @@ contract MixinApproval is
   }
 
   /**
-   * Will return the approved recipient for a key, if any.
+   * @notice Get the approved address for a single NFT
+   * @dev Throws if `_tokenId` is not a valid NFT.
+   * @param _tokenId The NFT to find the approved address for
+   * @return The approved address for this NFT, or the zero address if there is none
    */
   function getApproved(
     uint _tokenId
   ) public view
+    isKey(_tokenId)
     returns (address)
   {
     address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0), 'NONE_APPROVED');
     return approvedRecipient;
   }
 
