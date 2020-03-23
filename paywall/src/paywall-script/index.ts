@@ -45,6 +45,8 @@ export class Paywall {
 
   setConfig?: (config: any) => void
 
+  lockStatus?: string
+
   constructor(paywallConfig: any) {
     const loadCheckoutModal = () => {
       if (this.iframe) {
@@ -56,6 +58,7 @@ export class Paywall {
 
     const resetConfig = (config: any) => {
       this.paywallConfig = config
+      this.checkKeysAndLock()
       if (this.setConfig) {
         this.setConfig(config)
       } else {
@@ -63,9 +66,22 @@ export class Paywall {
       }
     }
 
+    const getUserAccountAddress = () => {
+      return this.userAccountAddress
+    }
+
+    const getState = () => {
+      return this.lockStatus
+    }
+
     resetConfig(paywallConfig)
 
-    setupUnlockProtocolVariable({ loadCheckoutModal, resetConfig })
+    setupUnlockProtocolVariable({
+      loadCheckoutModal,
+      resetConfig,
+      getUserAccountAddress,
+      getState,
+    })
 
     // Always do this last!
     this.loadCache()
@@ -91,6 +107,8 @@ export class Paywall {
   // If no valid key exists we check pending transactions to assess them
   // optimistically.
   checkKeysAndLock = async () => {
+    this.lockStatus = undefined
+
     const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
 
     const lockAddresses = Object.keys(this.paywallConfig.locks)
@@ -144,7 +162,6 @@ export class Paywall {
 
     this.setConfig = (config: any) => {
       child.call('setConfig', config)
-      this.checkKeysAndLock()
     }
   }
 
@@ -170,10 +187,12 @@ export class Paywall {
   }
 
   lockPage = () => {
+    this.lockStatus = 'locked'
     dispatchEvent('locked')
   }
 
   unlockPage = () => {
+    this.lockStatus = 'unlocked'
     dispatchEvent('unlocked')
   }
 }
