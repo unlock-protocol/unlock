@@ -54,4 +54,11 @@ describe('verifyEmailSignature', () => {
       )
     ).toBe(false)
   })
+
+  it('pulls the public key out of the config file if not provided in arguments', () => {
+    expect.assertions(1)
+    expect(verifyEmailSignature('another@unlock-protocol.com', signature)).toBe(
+      false
+    )
+  })
 })

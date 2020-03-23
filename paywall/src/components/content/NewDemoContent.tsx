@@ -91,7 +91,7 @@ export default function NewDemoContent() {
     window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
   }
 
-  const scriptVersion = useNewCheckout ? '2.0' : '1.0'
+  const scriptVersion = useNewCheckout ? 'latest' : '1.0'
 
   return (
     <>

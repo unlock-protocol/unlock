@@ -8,6 +8,14 @@ services:
     env_file: ../.env.dev.local
     ports:
       - 8545:8545
+  ganache-standup:    
+    build:
+      context: ./development
+      dockerfile: ganache.dockerfile
+    env_file: ../.env.dev.local
+    entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
+    depends_on:
+      - ganache      
   jaeger:
     restart: always
     image: jaegertracing/all-in-one:1.16

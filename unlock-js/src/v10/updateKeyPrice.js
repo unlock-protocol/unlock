@@ -44,7 +44,7 @@ export default async function(
   )
 
   if (callback) {
-    callback(null, hash)
+    callback(null, hash, await transactionPromise)
   }
 
   // Let's now wait for the keyPrice to have been changed before we return it

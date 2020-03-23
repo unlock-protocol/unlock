@@ -35,9 +35,7 @@ describe('getConfigFromSearch', () => {
     expect.assertions(2)
 
     expect(getConfigFromSearch({})).toBeUndefined()
-    expect(error).toHaveBeenCalledWith(
-      'no paywall config found in URL, continuing with undefined'
-    )
+    expect(error).not.toHaveBeenCalled()
   })
 
   it('should be undefined if paywall config is malformed JSON', () => {

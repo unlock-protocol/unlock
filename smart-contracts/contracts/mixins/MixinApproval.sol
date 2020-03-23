@@ -1,4 +1,4 @@
-pragma solidity 0.5.16;
+pragma solidity 0.5.17;
 
 import './MixinDisable.sol';
 import './MixinKeys.sol';
@@ -37,7 +37,7 @@ contract MixinApproval is
   )
   {
     require(
-      isKeyManager(_tokenId, msg.sender) ||
+      _isKeyManager(_tokenId, msg.sender) ||
       _isApproved(_tokenId, msg.sender) ||
       isApprovedForAll(_ownerOf[_tokenId], msg.sender),
       'ONLY_KEY_MANAGER_OR_APPROVED'

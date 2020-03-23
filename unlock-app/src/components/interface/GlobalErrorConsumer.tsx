@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Layout from './Layout'
 import { mapErrorToComponent } from '../creator/FatalError'
 /* eslint-disable */
 import { UnlockError, isFatalError, FatalError } from '../../utils/Error'
@@ -18,7 +17,7 @@ export function GlobalErrorConsumer({ children, error }: Props) {
   // the error object in this case is coming from the redux store and has a structure of {name, data}
   if (error) {
     const Error = mapErrorToComponent(error)
-    return <Layout title="">{Error}</Layout>
+    return <React.Fragment>{Error}</React.Fragment>
   }
   return <React.Fragment>{children}</React.Fragment>
 }
