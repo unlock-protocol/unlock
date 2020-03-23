@@ -97,14 +97,6 @@ contract MixinKeys is
     _;
   }
 
-  // Ensure that the caller is the keyManager for this key
-  modifier onlyKeyManager(
-    uint _tokenId
-  ) {
-    require(_isKeyManager(_tokenId, msg.sender), 'ONLY_KEY_MANAGER');
-    _;
-  }
-
   /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
