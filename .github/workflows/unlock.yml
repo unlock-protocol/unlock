@@ -88,8 +88,8 @@ jobs:
     - run: cd unlock-js && yarn
     - run: cd unlock-js && yarn test
       env:
-        CI: false
-        HTTP_PROVIDER_HOST: ganache-integration        
+        # CI: false
+        # HTTP_PROVIDER_HOST: ganache-integration        
 
   newsletter:
     runs-on: ubuntu-latest
