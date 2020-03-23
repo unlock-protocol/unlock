@@ -136,7 +136,7 @@ contract Unlock is
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // create lock
-    address newLock = publicLockAddress._createClone2(_salt);
+    address payable newLock = address(uint160(publicLockAddress._createClone2(_salt)));
     IPublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
@@ -257,7 +257,7 @@ contract Unlock is
    * @dev This will initialize the template and revokeOwnership.
    */
   function setLockTemplate(
-    address _publicLockAddress
+    address payable _publicLockAddress
   ) external
     onlyOwner
   {
