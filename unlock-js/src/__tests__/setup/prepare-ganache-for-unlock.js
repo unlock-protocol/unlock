@@ -7,7 +7,8 @@ const Erc20 = require('./deploy-erc20')
 const Ether = require('./transfer')
 const locks = require('./locks')
 
-const host = process.env.HTTP_PROVIDER_HOST || '127.0.0.1'
+// const host = process.env.HTTP_PROVIDER_HOST || '127.0.0.1'
+const host = process.env.HTTP_PROVIDER_HOST || '0.0.0.0'
 const port = process.env.HTTP_PROVIDER_PORT || 8545
 let providerURL = `http://${host}:${port}`
 const versionName = latest
