@@ -237,10 +237,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       })
 
       it('approval should be cleared after a transfer', async () => {
-        assert.equal(
-          await locks.FIRST.getApproved(accountApproved),
-          constants.ZERO_ADDRESS
-        )
+        assert.equal(await locks.FIRST.getApproved(ID), constants.ZERO_ADDRESS)
       })
     })
 
