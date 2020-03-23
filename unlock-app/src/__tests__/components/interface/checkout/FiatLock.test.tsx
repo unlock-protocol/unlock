@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
-import { UserAccountLock } from '../../../../components/interface/checkout/UserAccountLock'
+import { FiatLock } from '../../../../components/interface/checkout/FiatLock'
 import * as useUserAccountsPurchaseKey from '../../../../hooks/useUserAccountsPurchaseKey'
 import * as useProvider from '../../../../hooks/useProvider'
 import { TransactionInfo } from '../../../../hooks/useCheckoutCommunication'
@@ -35,7 +35,7 @@ const formattedKeyPrice = '$12.33'
 
 const accountAddress = '0xuser'
 
-describe('UserAccountLock', () => {
+describe('FiatLock', () => {
   let purchaseKey: () => Promise<void>
   let emitTransactionInfo: (info: TransactionInfo) => void
   let state: any
@@ -72,7 +72,7 @@ describe('UserAccountLock', () => {
     expect.assertions(2)
 
     const { getByText } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[]}
@@ -95,7 +95,7 @@ describe('UserAccountLock', () => {
     expect.assertions(2)
 
     const { getByText } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[]}
@@ -125,7 +125,7 @@ describe('UserAccountLock', () => {
     state.purchasingLockAddress = '0xapurchase'
 
     const { getByText } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[]}
@@ -148,7 +148,7 @@ describe('UserAccountLock', () => {
     state.purchasingLockAddress = '0xapurchase'
 
     const { getByTestId } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[]}
@@ -164,7 +164,7 @@ describe('UserAccountLock', () => {
     expect.assertions(0)
 
     const { getByTestId } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[activeKeyForAnotherLock]}
@@ -182,7 +182,7 @@ describe('UserAccountLock', () => {
     state.purchasingLockAddress = '0xlockaddress'
 
     const { getByTestId } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[]}
@@ -209,7 +209,7 @@ describe('UserAccountLock', () => {
       }))
 
     const { getByTestId } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[]}
@@ -225,7 +225,7 @@ describe('UserAccountLock', () => {
     expect.assertions(0)
 
     const { getByTestId } = rtl.render(
-      <UserAccountLock
+      <FiatLock
         lock={lock}
         emitTransactionInfo={emitTransactionInfo}
         activeKeys={[activeKeyForThisLock]}

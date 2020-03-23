@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { UserAccountLocks } from '../../../../components/interface/checkout/UserAccountLocks'
+import { FiatLocks } from '../../../../components/interface/checkout/FiatLocks'
 
 const lock = {
   name: 'a test lock',
@@ -35,7 +35,7 @@ jest.mock('../../../../hooks/useFiatKeyPrices', () => {
   }
 })
 
-describe('UserAccountLocks', () => {
+describe('FiatLocks', () => {
   describe('component', () => {
     it('shows loading locks while loading', () => {
       expect.assertions(0)
@@ -43,7 +43,7 @@ describe('UserAccountLocks', () => {
       usePaywallLocksMock = { loading: true }
 
       const { getByTestId } = rtl.render(
-        <UserAccountLocks
+        <FiatLocks
           lockAddresses={['0xlock']}
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
@@ -59,7 +59,7 @@ describe('UserAccountLocks', () => {
       usePaywallLocksMock = { loading: false, locks: [lock] }
 
       const { getByTestId } = rtl.render(
-        <UserAccountLocks
+        <FiatLocks
           lockAddresses={['0xlock']}
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}

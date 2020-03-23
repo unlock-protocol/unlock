@@ -13,7 +13,7 @@ import {
   setShowingMetadataForm,
 } from '../../../utils/checkoutActions'
 
-interface UserAccountLockProps {
+interface FiatLockProps {
   lock: RawLock
   formattedKeyPrice: string
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -22,15 +22,14 @@ interface UserAccountLockProps {
   metadataRequired?: boolean
 }
 
-export const UserAccountLock = ({
+export const FiatLock = ({
   lock,
   emitTransactionInfo,
   activeKeys,
   accountAddress,
   metadataRequired,
   formattedKeyPrice,
-}: UserAccountLockProps) => {
-  // TODO: replace with user account purchasekey
+}: FiatLockProps) => {
   const { purchaseKey } = useUserAccountsPurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
 

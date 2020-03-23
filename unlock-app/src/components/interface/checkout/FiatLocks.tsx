@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserAccountLock } from './UserAccountLock'
+import { FiatLock } from './FiatLock'
 import { DisabledLock, LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useFiatKeyPrices } from '../../../hooks/useFiatKeyPrices'
@@ -17,7 +17,7 @@ interface LocksProps {
   emitTransactionInfo: (info: TransactionInfo) => void
 }
 
-export const UserAccountLocks = ({
+export const FiatLocks = ({
   lockAddresses,
   accountAddress,
   emitTransactionInfo,
@@ -50,7 +50,7 @@ export const UserAccountLocks = ({
           const formattedPrice = (basePrice / 100).toFixed(2)
           const fiatPrice = `$${formattedPrice}`
           return (
-            <UserAccountLock
+            <FiatLock
               key={lock.name}
               lock={lock}
               formattedKeyPrice={fiatPrice}
