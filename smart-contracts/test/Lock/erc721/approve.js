@@ -1,3 +1,4 @@
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
@@ -112,7 +113,10 @@ contract('Lock / erc721 / approve', accounts => {
         })
 
         it('The zero address indicates there is no approved address', async () => {
-          await reverts(locks.FIRST.getApproved.call(ID), 'NONE_APPROVED')
+          assert.equal(
+            await locks.FIRST.getApproved.call(ID),
+            constants.ZERO_ADDRESS
+          )
         })
       })
     })
