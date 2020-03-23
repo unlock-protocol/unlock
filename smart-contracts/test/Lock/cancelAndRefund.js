@@ -165,7 +165,7 @@ contract('Lock / cancelAndRefund', accounts => {
         from: accounts[0],
       }
     )
-    const iD = await lock.getTokenIdFor(accounts[1])
+    const iD = await locks.FREE.getTokenIdFor(accounts[1])
     const txObj = await locks.FREE.cancelAndRefund(iD, {
       from: accounts[1],
     })
