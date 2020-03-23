@@ -1,5 +1,6 @@
 const BigNumber = require('bignumber.js')
 
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
@@ -236,7 +237,10 @@ contract('Lock / erc721 / transferFrom', accounts => {
       })
 
       it('approval should be cleared after a transfer', async () => {
-        await reverts(locks.FIRST.getApproved(accountApproved), 'NONE_APPROVED')
+        assert.equal(
+          await locks.FIRST.getApproved(accountApproved),
+          constants.ZERO_ADDRESS
+        )
       })
     })
 
