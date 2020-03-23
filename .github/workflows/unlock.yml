@@ -124,7 +124,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       ganache-integration:
-        image: unlockprotocol/unlock_ganache_cli
+        image: unlockprotocol/unlock_ganache_cli:latest
         ports:
           - 8545:8545
 
