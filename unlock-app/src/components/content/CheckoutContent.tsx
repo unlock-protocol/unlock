@@ -7,7 +7,7 @@ import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
-import { UserAccountLocks } from '../interface/checkout/UserAccountLocks'
+import { FiatLocks } from '../interface/checkout/FiatLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { MetadataForm } from '../interface/checkout/MetadataForm'
@@ -140,7 +140,11 @@ export const CheckoutContentInner = ({
                 />
               )}
               {account && account.emailAddress && (
-                <UserAccountLocks lockAddresses={lockAddresses} />
+                <FiatLocks
+                  lockAddresses={lockAddresses}
+                  accountAddress={account.address}
+                  emitTransactionInfo={emitTransactionInfo}
+                />
               )}
             </>
           )}
