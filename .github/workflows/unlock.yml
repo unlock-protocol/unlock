@@ -66,6 +66,30 @@ jobs:
         env:
           CI: true
 
+  unlock-js:
+    runs-on: ubuntu-latest
+    services:
+      ganache-integration:
+        image: unlockprotocol/unlock_ganache_cli:latest
+        ports:
+          - 8545:8545
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}         
+    - run: cd unlock-js && yarn
+    - run: cd unlock-js && yarn test
+      # env:
+        # CI: false
+        # HTTP_PROVIDER_HOST: ganache-integration        
+
   newsletter:
     runs-on: ubuntu-latest
 
