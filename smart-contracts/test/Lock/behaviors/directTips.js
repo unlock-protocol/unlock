@@ -14,7 +14,7 @@ module.exports.getBalanceBehavior = options => {
       assert.equal(balance.toString(), 42)
     })
 
-    it('can withdrawal ETH', async () => {
+    it('can withdraw ETH', async () => {
       await lock.withdraw(constants.ZERO_ADDRESS)
       const balance = await web3.eth.balanceOf(lock)
       assert.equal(balance.toString(), 0)
