@@ -69,4 +69,10 @@ contract PublicLock is
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
   }
+
+  /**
+   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
+   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
+   */
+  function() external payable {}
 }

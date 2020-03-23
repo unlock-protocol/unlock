@@ -109,7 +109,7 @@ interface IUnlock
    * @dev This will initialize the template and revokeOwnership.
    */
   function setLockTemplate(
-    address _publicLockAddress
+    address payable _publicLockAddress
   ) external;
 
   // Allows the owner to change the value tracking variables as needed.
