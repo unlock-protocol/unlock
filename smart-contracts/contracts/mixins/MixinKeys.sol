@@ -1,6 +1,5 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
@@ -12,7 +11,6 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
-  Ownable,
   MixinLockCore
 {
   using SafeMath for uint;
