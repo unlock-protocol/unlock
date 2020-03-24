@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe, StripeCardElementOptions } from '@stripe/stripe-js'
 import {
   CardElement,
   Elements,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
+import styled from 'styled-components'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
 import { useProvider } from '../../../hooks/useProvider'
@@ -27,6 +28,12 @@ export const PaymentDetails = (props: Props) => {
       <Form {...props} />
     </Elements>
   )
+}
+
+const cardElementOptions: StripeCardElementOptions = {
+  classes: {
+    base: 'checkout-details',
+  },
 }
 
 export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
@@ -61,18 +68,66 @@ export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input name="name" ref={register({ required: true })} />
-      <CardElement />
-      <select name="address_country" defaultValue="United States">
+      <Label>Name</Label>
+      <Input name="name" ref={register({ required: true })} />
+      <Label>Credit Card Details</Label>
+      <CardElement options={cardElementOptions} />
+      <Label>Country</Label>
+      <Select name="address_country" defaultValue="United States">
         {countries.map(country => (
           <option key={country} value={country}>
             {country}
           </option>
         ))}
-      </select>
-      <button type="submit" disabled={!stripe}>
+      </Select>
+      <Button type="submit" disabled={!stripe}>
         Submit
-      </button>
+      </Button>
     </form>
   )
 }
+
+const Input = styled.input`
+  height: 48px;
+  width: 100%;
+  border: thin var(--lightgrey) solid;
+  border-radius: 4px;
+  background-color: var(--lightgrey);
+  font-size: 16px;
+  padding: 0 8px;
+  color: var(--darkgrey);
+  margin-bottom: 16px;
+`
+
+const Label = styled.label`
+  font-size: 10px;
+  line-height: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 3px;
+`
+
+const Select = styled.select`
+  height: 48px;
+  width: 100%;
+  border: thin var(--lightgrey) solid;
+  border-radius: 4px;
+  background-color: var(--lightgrey);
+  font-size: 16px;
+  padding: 0 8px;
+  color: var(--darkgrey);
+  margin-bottom: 16px;
+  appearance: none;
+`
+
+const Button = styled.button`
+  width: 100%;
+  height: 48px;
+  background-color: var(--green);
+  border: none;
+  border-radius: 4px;
+  font-size: 20px;
+  color: var(--white);
+  margin-top: 16px;
+`
