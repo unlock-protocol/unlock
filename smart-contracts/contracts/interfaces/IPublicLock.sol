@@ -33,11 +33,6 @@ contract IPublicLock
   /**
    * @dev Never used directly
    */
-  function initialize(address) external;
-
-  /**
-   * @dev Never used directly
-   */
   function initialize() external;
 
   /**
@@ -429,16 +424,6 @@ contract IPublicLock
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
-  ///===================================================================
-
-  /// From Openzeppelin's Ownable.sol
-  function owner() external view returns (address );
-
-  function isOwner() external view returns (bool );
-
-  function renounceOwnership() external;
-
-  function transferOwnership(address newOwner) external;
   ///===================================================================
 
   /// From ERC165.sol
