@@ -1,5 +1,6 @@
 pragma solidity 0.5.17;
 
+import './MixinLockManagerRole.sol';
 import './MixinDisable.sol';
 import './MixinApproval.sol';
 import './MixinKeys.sol';
@@ -19,6 +20,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
 contract MixinTransfer is
   MixinFunds,
+  MixinLockManagerRole,
   MixinLockCore,
   MixinKeys,
   MixinApproval
