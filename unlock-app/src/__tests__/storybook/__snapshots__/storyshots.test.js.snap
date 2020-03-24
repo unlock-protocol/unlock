@@ -6936,27 +6936,27 @@ Object {
         </header>
         <form>
           <label
-            class="sc-psQdR bNMBGe"
+            class="sc-psQdR gbsImK"
           >
             Name
           </label>
           <input
-            class="sc-pkUbs bTSMty"
+            class="sc-pkUbs bBPTTG"
             name="name"
           />
           <label
-            class="sc-psQdR bNMBGe"
+            class="sc-psQdR gbsImK"
           >
             Credit Card Details
           </label>
           <div />
           <label
-            class="sc-psQdR bNMBGe"
+            class="sc-psQdR gbsImK"
           >
             Country
           </label>
           <select
-            class="sc-qPlga iMMrmF"
+            class="sc-qPlga flUCUh"
             name="address_country"
           >
             <option
@@ -8282,7 +8282,7 @@ Object {
             </option>
           </select>
           <button
-            class="sc-qXhiz gYokPV"
+            class="sc-qXhiz htrFqZ"
             disabled=""
             type="submit"
           >
