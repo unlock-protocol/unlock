@@ -76,7 +76,7 @@ contract MixinLockCore is
   {
     require(
       isLockManager(msg.sender) || msg.sender == beneficiary,
-      'ONLY_LOCK_OWNER_OR_BENEFICIARY'
+      'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     );
     _;
   }
