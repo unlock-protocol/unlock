@@ -81,7 +81,7 @@ contract('Lock / expireAndRefundFor', accounts => {
       )
     })
 
-    it("should increase the locks's balance by the keyPrice", async () => {
+    it("should increase the lock's balance by the keyPrice", async () => {
       const finalLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       ).minus(initialLockBalance)
@@ -99,7 +99,7 @@ contract('Lock / expireAndRefundFor', accounts => {
         lock.expireAndRefundFor(keyOwners[3], refundAmount, {
           from: keyOwners[3],
         }),
-        ''
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
 
@@ -108,7 +108,7 @@ contract('Lock / expireAndRefundFor', accounts => {
         lock.expireAndRefundFor(accounts[7], refundAmount, {
           from: keyOwners[3],
         }),
-        ''
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
 

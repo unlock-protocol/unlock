@@ -3,7 +3,6 @@ pragma solidity 0.5.17;
 
 import './interfaces/IPublicLock.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisable.sol';
@@ -32,14 +31,13 @@ contract PublicLock is
   IPublicLock,
   Initializable,
   ERC165,
-  Ownable,
+  MixinLockManagerRole,
+  MixinKeyGranterRole,
   MixinSignatures,
   MixinFunds,
-  MixinLockManagerRole,
   MixinDisable,
   MixinLockCore,
   MixinKeys,
-  MixinKeyGranterRole,
   MixinLockMetadata,
   MixinERC721Enumerable,
   MixinGrantKeys,
@@ -58,7 +56,6 @@ contract PublicLock is
   ) public
     initializer()
   {
-    Ownable.initialize(_lockOwner);
     MixinFunds._initializeMixinFunds(_tokenAddress);
     MixinDisable._initializeMixinDisable();
     MixinLockCore._initializeMixinLockCore(_lockOwner, _expirationDuration, _keyPrice, _maxNumberOfKeys);

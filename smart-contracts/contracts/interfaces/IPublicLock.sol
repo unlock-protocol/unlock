@@ -431,16 +431,6 @@ contract IPublicLock
   function name() external view returns (string memory _name);
   ///===================================================================
 
-  /// From Openzeppelin's Ownable.sol
-  function owner() external view returns (address );
-
-  function isOwner() external view returns (bool );
-
-  function renounceOwnership() external;
-
-  function transferOwnership(address newOwner) external;
-  ///===================================================================
-
   /// From ERC165.sol
   function supportsInterface(bytes4 interfaceId) external view returns (bool );
   ///===================================================================

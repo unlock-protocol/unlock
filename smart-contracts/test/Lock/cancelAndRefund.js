@@ -239,6 +239,13 @@ contract('Lock / cancelAndRefund', accounts => {
       )
     })
 
+    it('non-managers should fail to update the fee', async () => {
+      await reverts(
+        lock.updateRefundPenalty(0, 0, { from: accounts[1] }),
+        'MixinLockManager: caller does not have the LockManager role'
+      )
+    })
+
     it('the key is expired', async () => {
       await lock.expireAndRefundFor(keyOwners[3], 0, {
         from: lockOwner,

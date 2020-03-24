@@ -19,8 +19,8 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
  */
 
 contract MixinTransfer is
-  MixinFunds,
   MixinLockManagerRole,
+  MixinFunds,
   MixinLockCore,
   MixinKeys,
   MixinApproval
