@@ -4,6 +4,7 @@ import getLock from './getLock'
 import purchaseKey from './purchaseKey'
 import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
+import configureUnlock from './configureUnlock'
 
 export default {
   version: 'v12',
@@ -14,4 +15,5 @@ export default {
   updateKeyPrice,
   purchaseKey,
   withdrawFromLock,
+  configureUnlock,
 }

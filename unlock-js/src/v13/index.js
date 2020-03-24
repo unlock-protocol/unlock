@@ -5,6 +5,7 @@ import purchaseKey from './purchaseKey'
 import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
 import initializeTemplate from './initializeTemplate'
+import configureUnlock from './configureUnlock'
 
 export default {
   version: 'v13',
@@ -16,4 +17,5 @@ export default {
   updateKeyPrice,
   purchaseKey,
   withdrawFromLock,
+  configureUnlock,
 }
