@@ -219,7 +219,7 @@ contract MixinTransfer is
     uint _transferFeeBasisPoints
   )
     external
-    onlyOwner
+    onlyLockManager
   {
     emit TransferFeeChanged(
       _transferFeeBasisPoints
