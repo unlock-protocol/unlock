@@ -233,3 +233,5 @@ jobs:
           node-version: ${{ matrix.node-version }}        
       - name: Get Integration Test dependencies
         run: cd tests && yarn
+      - name: Setup Docker compose environment
+        run: ./scripts/docker-compose-build.sh
