@@ -19,8 +19,8 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 contract MixinLockCore is
   IERC721Enumerable,
   MixinFunds,
-  MixinDisable,
-  MixinLockManagerRole
+  MixinLockManagerRole,
+  MixinDisable
 {
   using Address for address;
 
