@@ -222,5 +222,5 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Build Docker Compose Stack
-        run: ./scripts/docker-compose-build.sh
+      - name: Get Integration Test dependencies
+        run: cd tests && yarn
