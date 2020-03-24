@@ -235,3 +235,5 @@ jobs:
         run: cd tests && yarn
       - name: Setup Docker compose environment
         run: ./scripts/docker-compose-build.sh
+      - name: Run Integration Test
+        run: ./scripts/integration-tests.sh
