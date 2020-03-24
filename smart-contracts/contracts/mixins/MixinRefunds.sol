@@ -1,10 +1,10 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
+import './MixinLockManagerRole.sol';
 import './MixinFunds.sol';
 import './MixinApproval.sol';
 
@@ -13,6 +13,7 @@ contract MixinRefunds is
   Ownable,
   MixinSignatures,
   MixinFunds,
+  MixinLockManagerRole,
   MixinLockCore,
   MixinKeys,
   MixinApproval
@@ -51,9 +52,11 @@ contract MixinRefunds is
    * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation
    * of the key
    */
-  function expireAndRefundFor(address _keyOwner, uint amount)
-    external
-    onlyOwner
+  function expireAndRefundFor(
+    address _keyOwner,
+    uint amount
+  ) external
+    onlyLockManager
     hasValidKey(_keyOwner)
   {
     _cancelAndRefund(_keyOwner, amount);
@@ -105,9 +108,8 @@ contract MixinRefunds is
   function updateRefundPenalty(
     uint _freeTrialLength,
     uint _refundPenaltyBasisPoints
-  )
-    external
-    onlyOwner
+  ) external
+    onlyLockManager
   {
     emit RefundPenaltyChanged(
       _freeTrialLength,
