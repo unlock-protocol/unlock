@@ -8,6 +8,7 @@ import v10 from './v10'
 import v11 from './v11'
 import v12 from './v12'
 import v13 from './v13'
+import v7 from './v7'
 
 import FastJsonRpcSigner from './FastJsonRpcSigner'
 
@@ -80,6 +81,10 @@ export default class UnlockService extends EventEmitter {
 
     if (version === 6) {
       return v13
+    }
+
+    if (version === 7) {
+      return v7
     }
 
     // Defaults to v0
