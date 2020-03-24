@@ -144,6 +144,7 @@ export const CheckoutContentInner = ({
                   lockAddresses={lockAddresses}
                   accountAddress={account.address}
                   emitTransactionInfo={emitTransactionInfo}
+                  cards={account.cards || []}
                 />
               )}
             </>

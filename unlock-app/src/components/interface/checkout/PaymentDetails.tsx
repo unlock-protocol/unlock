@@ -16,15 +16,20 @@ import { StorageService } from '../../../services/storageService'
 const { stripeApiKey } = configure()
 const stripePromise = loadStripe(stripeApiKey)
 
-export const PaymentDetails = () => {
+interface Props {
+  invokePurchase: () => void
+  setShowingPaymentForm: any
+}
+
+export const PaymentDetails = (props: Props) => {
   return (
     <Elements stripe={stripePromise}>
-      <Form />
+      <Form {...props} />
     </Elements>
   )
 }
 
-export const Form = () => {
+export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
   const { register, handleSubmit } = useForm()
   const stripe = useStripe()
   const elements = useElements()
@@ -45,6 +50,12 @@ export const Form = () => {
         data,
         sig
       )
+
+      // In some cases this will trigger the metadata form, which will
+      // cause a state update on an unmounted component. There will be an
+      // error in the console, but it shouldn't cause any issues.
+      invokePurchase()
+      setShowingPaymentForm({ visible: false })
     }
   }
 
@@ -52,13 +63,9 @@ export const Form = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input name="name" ref={register({ required: true })} />
       <CardElement />
-      <select name="address_country">
+      <select name="address_country" defaultValue="United States">
         {countries.map(country => (
-          <option
-            key={country}
-            value={country}
-            selected={country === 'United States'}
-          >
+          <option key={country} value={country}>
             {country}
           </option>
         ))}
