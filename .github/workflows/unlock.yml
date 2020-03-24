@@ -205,10 +205,6 @@ jobs:
           POSTGRES_PORT: 5432
 
   integration-test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x]    
     needs:
       [
         unlock-app,
@@ -222,8 +218,18 @@ jobs:
         smart-contracts,
         locksmith,
       ]
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]      
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }        
       - name: Get Integration Test dependencies
         run: cd tests && yarn
