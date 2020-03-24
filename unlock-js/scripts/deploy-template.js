@@ -35,7 +35,7 @@ async function run() {
   await walletService.connect(provider)
 
   const templateAddress = await walletService.deployTemplate(
-    'v13',
+    'v7',
     (error, hash) => {
       console.log('Template Transaction:')
       console.log({ hash })

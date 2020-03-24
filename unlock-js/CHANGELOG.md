@@ -1,5 +1,8 @@
 # Changes
 
+# 0.9
+- Adding support for v7 of PublicLock and Unlock smart contracts
+
 # 0.8.7
 - Updated typescript definitions
 
