@@ -29,7 +29,7 @@ contract('Lock / withdraw', accounts => {
       lock.withdraw(tokenAddress, 0, {
         from: accounts[1],
       }),
-      ''
+      'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     )
   })
 
@@ -155,7 +155,7 @@ contract('Lock / withdraw', accounts => {
         lock.withdraw(tokenAddress, 42, {
           from: accounts[4],
         }),
-        'ONLY_LOCK_OWNER_OR_BENEFICIARY'
+        'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
       )
     })
   })
