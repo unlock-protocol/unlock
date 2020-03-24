@@ -5244,7 +5244,7 @@ Object {
       <input
         class="c0"
         type="button"
-        value="Login"
+        value="Login to pay with credit card"
       />
     </div>
   </body>,
@@ -5256,7 +5256,7 @@ Object {
     <input
       class="sc-pbYBj gnwUtg"
       type="button"
-      value="Login"
+      value="Login to pay with credit card"
     />
   </div>,
   "debug": [Function],
