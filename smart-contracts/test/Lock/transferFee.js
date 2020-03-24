@@ -30,6 +30,13 @@ contract('Lock / transferFee', accounts => {
     assert.equal(feeNumerator.div(denominator).toFixed(), 0.0)
   })
 
+  it('reverts if a non-manager attempts to change the fee', async () => {
+    await reverts(
+      lock.updateTransferFee(0, { from: accounts[1] }),
+      'MixinLockManager: caller does not have the LockManager role'
+    )
+  })
+
   describe('once a fee of 5% is set', () => {
     let fee
     let fee1
