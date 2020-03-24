@@ -3967,15 +3967,15 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@unlock-protocol/unlock-js@0.8.7":
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.8.7.tgz#3f2e6a6a99d644beac59db0228716e39a3bde833"
-  integrity sha512-fhRVO2FAqe+n6Bak4POoV5s0Wek0Pbm53FP9BwfiIDd7tLjPaTyLkHyh6cfha82DgypyapVqwX2MPyVuXRBmPA==
+"@unlock-protocol/unlock-js@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.9.0.tgz#7790f51f4cb77b105ec60eb7a32e686a7528b06f"
+  integrity sha512-7hK8oCbn2nO9g8VovSa+A/Y2rxwix4YAsEsqySU7hyNYfWtazixBra7CgTY/jsctEiiNFNaIKO8U72E/aFeqKw==
   dependencies:
     babel-jest "25.1.0"
     cross-fetch "3.0.4"
     eslint "6.8.0"
-    ethers "4.0.45"
+    ethers "4.0.46"
     jest "25.1.0"
     lint-staged "10.0.8"
     prettier "1.19.1"
@@ -8251,10 +8251,10 @@ etag@1.8.1, etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-ethers@4.0.45:
-  version "4.0.45"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.45.tgz#8d4cd764d7c7690836b583d4849203c225eb56e2"
-  integrity sha512-N/Wmc6Mw4pQO+Sss1HnKDCSS6KSCx0luoBMiPNq+1GbOaO3YaZOyplBEhj+NEoYsizZYODtkITg2oecPeNnidQ==
+ethers@4.0.46:
+  version "4.0.46"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.46.tgz#13cd3ed099487f43ece00194b89a8a8781f71507"
+  integrity sha512-/dPMzzpInhtiip4hKFvsDiJKeRk64IhyA+Po7CtNXneQFSOCYXg8eBFt+jXbxUQyApgWnWOtYxWdfn9+CvvxDA==
   dependencies:
     aes-js "3.0.0"
     bn.js "^4.4.0"
