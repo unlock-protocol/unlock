@@ -1,3 +1,5 @@
+import { getTransaction } from './getTransaction'
+
 interface StoredTransaction {
   transactionHash: string
   sender: string
@@ -15,6 +17,7 @@ interface StoredTransaction {
  * @param user
  */
 export const optimisticUnlocking = async (
+  provider: string,
   locksmithUri: string,
   locks: string[],
   user: string
@@ -32,9 +35,11 @@ export const optimisticUnlocking = async (
   const unlocked = await Promise.all(
     recentTransactions.map(transaction => {
       return willUnlock(
+        provider,
         user,
         transaction.recipient,
-        transaction.transactionHash
+        transaction.transactionHash,
+        false // Passimistic if missing
       )
     })
   )
@@ -47,18 +52,24 @@ export const optimisticUnlocking = async (
 
 /**
  * This method will query the backend to ensure that a transaction will succeed in generating a key for that user.
+ * TODO: Everything in here should happen server side.
  * @param user
  * @param lock
  * @param transactionHash
  */
 export const willUnlock = async (
+  provider: string,
   user: string,
   lock: string,
-  transactionHash: string
+  transactionHash: string,
+  optimisticIfMissing: boolean
 ) => {
   if (user && lock && transactionHash) {
-    // TODO: implement!
-    return true
+    const transaction = await getTransaction(provider, transactionHash)
+    if (!transaction) {
+      return !!optimisticIfMissing
+    }
+    return !transaction.blockNumber
   }
   return false
 }
