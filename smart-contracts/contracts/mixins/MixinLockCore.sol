@@ -72,10 +72,10 @@ contract MixinLockCore is
     _;
   }
 
-  modifier onlyOwnerOrBeneficiary()
+  modifier onlyLockManagerOrBeneficiary()
   {
     require(
-      msg.sender == owner() || msg.sender == beneficiary,
+      isLockManager(msg.sender) || msg.sender == beneficiary,
       'ONLY_LOCK_OWNER_OR_BENEFICIARY'
     );
     _;
@@ -119,7 +119,7 @@ contract MixinLockCore is
     address _tokenAddress,
     uint _amount
   ) external
-    onlyOwnerOrBeneficiary
+    onlyLockManagerOrBeneficiary
   {
     uint balance = getBalance(_tokenAddress, address(this));
     uint amount;
