@@ -1,7 +1,7 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinFunds.sol';
+import './MixinLockManagerRole.sol';
 
 /**
  * @title Mixin allowing the Lock owner to disable a Lock (preventing new purchases)
@@ -11,7 +11,7 @@ import './MixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinDisable is
-  Ownable,
+  MixinLockManagerRole,
   MixinFunds
 {
   // Used to disable payable functions when deprecating an old lock
@@ -36,7 +36,7 @@ contract MixinDisable is
    */
   function disableLock()
     external
-    onlyOwner
+    onlyLockManager
     onlyIfAlive
   {
     emit Disable();

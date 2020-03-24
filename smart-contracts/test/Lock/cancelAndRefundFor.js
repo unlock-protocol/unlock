@@ -36,7 +36,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const txSender = accounts[9]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  let lockOwner
+  const lockCreator = accounts[0]
   let tokenId
 
   beforeEach(async () => {
@@ -51,7 +51,6 @@ contract('Lock / cancelAndRefundFor', accounts => {
       })
     })
     await Promise.all(purchases)
-    lockOwner = await lock.owner.call()
   })
 
   it('can read the current nonce', async () => {
@@ -233,7 +232,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
      */
     it('should fail if the Lock owner withdraws too much funds', async () => {
       await lock.withdraw(await lock.tokenAddress.call(), 0, {
-        from: lockOwner,
+        from: lockCreator,
       })
 
       const signature = await signMessage(
@@ -262,7 +261,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
      */
     it('the key is expired', async () => {
       await lock.expireAndRefundFor(keyOwners[3], 0, {
-        from: lockOwner,
+        from: lockCreator,
       })
 
       const signature = await signMessage(

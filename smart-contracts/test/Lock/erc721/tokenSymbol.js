@@ -70,7 +70,8 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
       await reverts(
         lock.updateLockSymbol('BTC', {
           from: accounts[1],
-        })
+        }),
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
 

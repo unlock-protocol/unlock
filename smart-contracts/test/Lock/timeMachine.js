@@ -33,7 +33,7 @@ contract('Lock / timeMachine', accounts => {
       `0x${salt.toString(16)}`,
       { from: lockOwner }
     )
-    lockAddress = tx.logs[1].args.newLockAddress
+    lockAddress = tx.logs[0].args.newLockAddress
 
     lock = await TimeMachineMock.at(lockAddress)
     // Change the fee to 5%

@@ -168,7 +168,5 @@ async function purchaseKeys(accounts) {
       from: account,
     })
   })
-  await Promise.all(purchases).then(() => {
-    return lock.owner.call()
-  })
+  await Promise.all(purchases)
 }

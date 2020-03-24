@@ -266,7 +266,7 @@ contract Unlock is
     IPublicLock(_publicLockAddress).initialize(
       address(this), 0, address(0), 0, 0, ''
     );
-    IPublicLock(_publicLockAddress).renounceOwnership();
+    IPublicLock(_publicLockAddress).renounceLockManager();
 
     publicLockAddress = _publicLockAddress;
 

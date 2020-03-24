@@ -32,7 +32,7 @@ contract('Lock / cancelAndRefund', accounts => {
     accounts[5],
   ]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  let lockOwner
+  const lockCreator = accounts[0]
 
   before(async () => {
     lock = locks.SECOND
@@ -43,7 +43,6 @@ contract('Lock / cancelAndRefund', accounts => {
       })
     })
     await Promise.all(purchases)
-    lockOwner = await lock.owner.call()
   })
 
   it('should return the correct penalty', async () => {
@@ -228,7 +227,7 @@ contract('Lock / cancelAndRefund', accounts => {
 
     it('should fail if the Lock owner withdraws too much funds', async () => {
       await lock.withdraw(await lock.tokenAddress.call(), 0, {
-        from: lockOwner,
+        from: lockCreator,
       })
       iD = await lock.getTokenIdFor(keyOwners[3])
       await reverts(
@@ -239,9 +238,16 @@ contract('Lock / cancelAndRefund', accounts => {
       )
     })
 
+    it('non-managers should fail to update the fee', async () => {
+      await reverts(
+        lock.updateRefundPenalty(0, 0, { from: accounts[1] }),
+        'MixinLockManager: caller does not have the LockManager role'
+      )
+    })
+
     it('the key is expired', async () => {
       await lock.expireAndRefundFor(keyOwners[3], 0, {
-        from: lockOwner,
+        from: lockCreator,
       })
       iD = await lock.getTokenIdFor(keyOwners[3])
       await reverts(
@@ -271,7 +277,7 @@ contract('Lock / cancelAndRefund', accounts => {
     assert.equal(await token.balanceOf(accounts[5]), 0)
     // update token address and price
     await lock.updateKeyPricing(11, token.address, {
-      from: lockOwner,
+      from: lockCreator,
     })
     // fund lock with new erc20 tokens to deal enable refunds
     await token.mint(lock.address, 100, {

@@ -1,11 +1,11 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
+import './MixinLockManagerRole.sol';
 
 /**
  * @title Mixin for metadata about the Lock.
@@ -16,7 +16,7 @@ import './MixinLockCore.sol';
 contract MixinLockMetadata is
   IERC721Enumerable,
   ERC165,
-  Ownable,
+  MixinLockManagerRole,
   MixinLockCore,
   MixinKeys
 {
@@ -54,7 +54,7 @@ contract MixinLockMetadata is
   function updateLockName(
     string calldata _lockName
   ) external
-    onlyOwner
+    onlyLockManager
   {
     name = _lockName;
   }
@@ -65,7 +65,7 @@ contract MixinLockMetadata is
   function updateLockSymbol(
     string calldata _lockSymbol
   ) external
-    onlyOwner
+    onlyLockManager
   {
     lockSymbol = _lockSymbol;
     emit NewLockSymbol(_lockSymbol);
@@ -92,7 +92,7 @@ contract MixinLockMetadata is
   function setBaseTokenURI(
     string calldata _baseTokenURI
   ) external
-    onlyOwner
+    onlyLockManager
   {
     baseTokenURI = _baseTokenURI;
   }

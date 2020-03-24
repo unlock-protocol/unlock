@@ -25,7 +25,8 @@ contract('Lock / erc721 / name', accounts => {
       await reverts(
         unnamedlock.updateLockName('Hardly', {
           from: accounts[1],
-        })
+        }),
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
 
