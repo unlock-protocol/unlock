@@ -11,6 +11,7 @@ import {
   setDelayedPurchase,
   setShowingMetadataForm,
 } from '../../../../utils/checkoutActions'
+import doNothing from '../../../../utils/doNothing'
 
 const lock = {
   name: 'lock',
@@ -78,6 +79,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -102,6 +104,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         metadataRequired
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -131,6 +134,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -154,6 +158,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -170,6 +175,7 @@ describe('FiatLock', () => {
         activeKeys={[activeKeyForAnotherLock]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -188,6 +194,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -215,6 +222,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -231,6 +239,7 @@ describe('FiatLock', () => {
         activeKeys={[activeKeyForThisLock]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
