@@ -33,11 +33,6 @@ contract IPublicLock
   /**
    * @dev Never used directly
    */
-  function initialize(address) external;
-
-  /**
-   * @dev Never used directly
-   */
   function initialize() external;
 
   /**
