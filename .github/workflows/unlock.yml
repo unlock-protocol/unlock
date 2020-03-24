@@ -206,6 +206,9 @@ jobs:
 
   integration-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]    
     needs:
       [
         unlock-app,
