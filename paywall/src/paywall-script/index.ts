@@ -107,9 +107,12 @@ export class Paywall {
   // If no valid key exists we check pending transactions to assess them
   // optimistically.
   checkKeysAndLock = async () => {
+    if (!this.userAccountAddress) {
+      return
+    }
     this.lockStatus = undefined
 
-    const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+    const { readOnlyProvider, locksmithUri } = __ENVIRONMENT_VARIABLES__
 
     const lockAddresses = Object.keys(this.paywallConfig.locks)
     const timeStamps = await Promise.all(
@@ -128,8 +131,8 @@ export class Paywall {
     }
 
     // If not key exists on chain, let's see if we can be optimistic before locking the page.
-    const { locksmithUri } = __ENVIRONMENT_VARIABLES__
     const optimistic = await optimisticUnlocking(
+      readOnlyProvider,
       locksmithUri,
       Object.keys(this.paywallConfig.locks),
       this.userAccountAddress!
@@ -166,7 +169,14 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const optimistic = await willUnlock(this.userAccountAddress!, lock, hash)
+    const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+    const optimistic = await willUnlock(
+      readOnlyProvider,
+      this.userAccountAddress!,
+      lock,
+      hash,
+      true // Optimistic if missing
+    )
     if (optimistic) {
       this.unlockPage()
     }

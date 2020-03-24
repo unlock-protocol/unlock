@@ -2,6 +2,10 @@ import { Paywall } from '../../paywall-script/index'
 import * as timeStampUtil from '../../utils/keyExpirationTimestampFor'
 import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 
+declare let __ENVIRONMENT_VARIABLES__: any
+// eslint-disable-next-line no-undef
+const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+
 const paywallConfig = {
   callToAction: {
     default: 'default',
@@ -108,6 +112,7 @@ describe('Paywall init script', () => {
       jest
         .spyOn(optimisticUnlockingUtils, 'willUnlock')
         .mockResolvedValueOnce(true)
+
       paywall.unlockPage = jest.fn()
 
       await paywall.handleTransactionInfoEvent({
@@ -115,9 +120,11 @@ describe('Paywall init script', () => {
         lock: '0xlock',
       })
       expect(optimisticUnlockingUtils.willUnlock).toHaveBeenCalledWith(
+        readOnlyProvider,
         undefined,
         '0xlock',
-        '0xhash'
+        '0xhash',
+        true
       )
       expect(paywall.unlockPage).toHaveBeenCalled()
     })
