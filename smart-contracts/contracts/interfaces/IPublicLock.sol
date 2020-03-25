@@ -76,8 +76,8 @@ contract IPublicLock
   ) external;
 
   /**
-   * A function which lets a manager of the lock to change the price for future purchases.
-   * @dev Throws if called by other than a manager
+   * A function which lets a Lock manager of the lock to change the price for future purchases.
+   * @dev Throws if called by other than a Lock manager
    * @dev Throws if lock has been disabled
    * @dev Throws if _tokenAddress is not a valid token
    * @param _keyPrice The new price to set for keys
@@ -87,9 +87,9 @@ contract IPublicLock
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
-   * A function which lets a lock manager update the beneficiary account,
+   * A function which lets a Lock manager update the beneficiary account,
    * which receives funds on withdrawal.
-   * @dev Throws if called by other than a lock manager or beneficiary
+   * @dev Throws if called by other than a Lock manager or beneficiary
    * @dev Throws if _beneficiary is address(0)
    * @param _beneficiary The new address to set as the beneficiary
    */
@@ -151,7 +151,7 @@ contract IPublicLock
   /**
    * Allows a Lock manager to assign a descriptive name for this Lock.
    * @param _lockName The new name for the lock
-   * @dev Throws if called by other than a lock manager
+   * @dev Throws if called by other than a Lock manager
    */
   function updateLockName(
     string calldata _lockName
@@ -160,7 +160,7 @@ contract IPublicLock
   /**
    * Allows a Lock manager to assign a Symbol for this Lock.
    * @param _lockSymbol The new Symbol for the lock
-   * @dev Throws if called by other than a lock manager
+   * @dev Throws if called by other than a Lock manager
    */
   function updateLockSymbol(
     string calldata _lockSymbol
@@ -176,7 +176,7 @@ contract IPublicLock
 
     /**
    * Allows a Lock manager to update the baseTokenURI for this Lock.
-   * @dev Throws if called by other than a lock manager
+   * @dev Throws if called by other than a Lock manager
    * @param _baseTokenURI String representing the base of the URI for this lock.
    */
   function setBaseTokenURI(
@@ -196,7 +196,7 @@ contract IPublicLock
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a lock manager to add or remove an event hook
+   * @notice Allows a Lock manager to add or remove an event hook
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -206,7 +206,7 @@ contract IPublicLock
   /**
    * Allows a Lock manager to give a collection of users a key with no charge.
    * Each key may be assigned a different expiration date.
-   * @dev Throws if called by other than a lock manager
+   * @dev Throws if called by other than a Lock manager
    * @param _recipients An array of receiving addresses
    * @param _expirationTimestamps An array of expiration Timestamps for the keys being granted
    */
@@ -224,7 +224,7 @@ contract IPublicLock
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
-  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a lock manager increases the
+  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
   * than keyPrice is approved for spending).
   */
