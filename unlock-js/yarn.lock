@@ -6835,10 +6835,10 @@ unlock-abi-1-3@1.0.2:
   resolved "https://registry.yarnpkg.com/unlock-abi-1-3/-/unlock-abi-1-3-1.0.2.tgz#83e6d7b1acf019fe1a7a5497eb90ac1da338b64e"
   integrity sha512-lNeDeE91aDLzKBxc802duQG/dGM7xNYTz73d1bGvE5Ve5aBUMwnR6TugbXV+uxL3i/LjvchZ1kVl33ECER9KHg==
 
-unlock-abi-7@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.0.tgz#95dbd024d78f0758a3251ce29a8203fceee365c8"
-  integrity sha512-fk/B89HtQ2IQLbvQNHvidTGn0E6IpAIipR30wMGWh8ypSzzaH0xoL4drfBj0uF36YOHXRGumlxxag20Skxe5WQ==
+unlock-abi-7@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.1.tgz#9d45ff060e952a6dd980858a4668a7da46f807c0"
+  integrity sha512-YM9IUN148Vz3YLZc8m0Z1X1IvdUD7dO4MT94PeKPknmzRUet7J7P3M1HN5QdJeddeb9mQswU75owVwgeRLNLZg==
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
