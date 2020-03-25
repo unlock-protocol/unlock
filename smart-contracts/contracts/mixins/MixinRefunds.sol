@@ -6,7 +6,6 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinLockManagerRole.sol';
 import './MixinFunds.sol';
-import './MixinApproval.sol';
 
 
 contract MixinRefunds is
@@ -14,8 +13,7 @@ contract MixinRefunds is
   MixinSignatures,
   MixinFunds,
   MixinLockCore,
-  MixinKeys,
-  MixinApproval
+  MixinKeys
 {
   using SafeMath for uint;
 

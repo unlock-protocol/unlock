@@ -4,7 +4,6 @@ pragma solidity 0.5.17;
 import './interfaces/IPublicLock.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import './mixins/MixinApproval.sol';
 import './mixins/MixinDisable.sol';
 import './mixins/MixinERC721Enumerable.sol';
 import './mixins/MixinFunds.sol';
@@ -42,7 +41,6 @@ contract PublicLock is
   MixinERC721Enumerable,
   MixinGrantKeys,
   MixinPurchase,
-  MixinApproval,
   MixinTransfer,
   MixinRefunds
 {
