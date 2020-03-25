@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Card } from '@stripe/stripe-js'
 import { FiatLock } from './FiatLock'
 import { DisabledLock, LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
@@ -10,23 +11,36 @@ import {
   lockTickerSymbol,
 } from '../../../utils/checkoutLockUtils'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
+import { PaymentDetails } from './PaymentDetails'
 
 interface LocksProps {
   lockAddresses: string[]
   accountAddress: string
   emitTransactionInfo: (info: TransactionInfo) => void
+  cards: Card[]
+}
+
+interface PaymentFormState {
+  visible: boolean
+  invokePurchase?: () => void
 }
 
 export const FiatLocks = ({
   lockAddresses,
   accountAddress,
   emitTransactionInfo,
+  cards,
 }: LocksProps) => {
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
   const fiatKeyPrices = useFiatKeyPrices(lockAddresses)
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
+  const [showingPaymentForm, setShowingPaymentForm] = useState<
+    PaymentFormState
+  >({ visible: false })
+
+  const needToCollectPaymentDetails = cards.length === 0
 
   const now = new Date().getTime() / 1000
   const activeKeys = keys.filter(key => key.expiration > now)
@@ -38,6 +52,15 @@ export const FiatLocks = ({
           <LoadingLock key={address} />
         ))}
       </div>
+    )
+  }
+
+  if (showingPaymentForm.visible) {
+    return (
+      <PaymentDetails
+        setShowingPaymentForm={setShowingPaymentForm}
+        invokePurchase={showingPaymentForm.invokePurchase!}
+      />
     )
   }
 
@@ -57,6 +80,8 @@ export const FiatLocks = ({
               activeKeys={activeKeys}
               accountAddress={accountAddress}
               emitTransactionInfo={emitTransactionInfo}
+              needToCollectPaymentDetails={needToCollectPaymentDetails}
+              setShowingPaymentForm={setShowingPaymentForm}
             />
           )
         }
