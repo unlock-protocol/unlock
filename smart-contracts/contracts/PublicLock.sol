@@ -40,9 +40,9 @@ contract PublicLock is
   MixinKeys,
   MixinLockMetadata,
   MixinERC721Enumerable,
+  MixinApproval,
   MixinGrantKeys,
   MixinPurchase,
-  MixinApproval,
   MixinTransfer,
   MixinRefunds
 {
