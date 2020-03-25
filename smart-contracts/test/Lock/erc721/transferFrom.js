@@ -146,12 +146,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
           fromExpirationTimestamp.toFixed()
         )
       })
-
-      it('should clear any erc721-approvals for the key', async () => {
-        const iD = await locks.FIRST.getTokenIdFor(accountWithExpiredKey)
-        const approved = await locks.FIRST.getApproved(iD)
-        assert.equal(approved, 0)
-      })
     })
 
     describe('when the recipient already has a non expired key', () => {
