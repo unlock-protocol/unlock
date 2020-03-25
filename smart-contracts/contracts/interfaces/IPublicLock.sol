@@ -25,6 +25,12 @@ contract IPublicLock
   ) external;
 
   /**
+   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
+   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
+   */
+  function() external payable;
+
+  /**
    * @dev Never used directly
    */
   function initialize(address) external;
