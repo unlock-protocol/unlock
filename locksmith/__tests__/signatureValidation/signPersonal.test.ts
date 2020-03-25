@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow  */
-import sigUtil from 'eth-sig-util'
+import * as sigUtil from 'eth-sig-util'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 
 import ethJsUtil = require('ethereumjs-util')
