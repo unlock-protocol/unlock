@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.17;
 
 /**
 * @title The PublicLock Interface
@@ -25,9 +25,10 @@ contract IPublicLockV7
   ) external;
 
   /**
-   * @dev Never used directly
+   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
+   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
-  function initialize(address) external;
+  function() external payable;
 
   /**
    * @dev Never used directly
@@ -425,16 +426,6 @@ contract IPublicLockV7
   function name() external view returns (string memory _name);
   ///===================================================================
 
-  /// From Openzeppelin's Ownable.sol
-  function owner() external view returns (address );
-
-  function isOwner() external view returns (bool );
-
-  function renounceOwnership() external;
-
-  function transferOwnership(address newOwner) external;
-  ///===================================================================
-
   /// From ERC165.sol
   function supportsInterface(bytes4 interfaceId) external view returns (bool );
   ///===================================================================
@@ -473,7 +464,14 @@ contract IPublicLockV7
      */
     function transferFrom(address from, address to, uint256 tokenId) public;
     function approve(address to, uint256 tokenId) public;
-    function getApproved(uint256 tokenId) public view returns (address operator);
+
+    /**
+    * @notice Get the approved address for a single NFT
+    * @dev Throws if `_tokenId` is not a valid NFT.
+    * @param _tokenId The NFT to find the approved address for
+    * @return The approved address for this NFT, or the zero address if there is none
+    */
+    function getApproved(uint256 _tokenId) public view returns (address operator);
 
     function setApprovalForAll(address operator, bool _approved) public;
     function isApprovedForAll(address _owner, address operator) public view returns (bool);
