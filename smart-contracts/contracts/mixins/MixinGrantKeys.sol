@@ -2,6 +2,7 @@ pragma solidity 0.5.17;
 
 import './MixinKeys.sol';
 import './MixinKeyGranterRole.sol';
+import './MixinApproval.sol';
 
 
 /**
@@ -12,7 +13,8 @@ import './MixinKeyGranterRole.sol';
  */
 contract MixinGrantKeys is
   MixinKeyGranterRole,
-  MixinKeys
+  MixinKeys,
+  MixinApproval
 {
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
@@ -44,6 +46,7 @@ contract MixinGrantKeys is
       }
       // Set the key Manager
       keyManagerOf[idTo] = keyManager;
+      _clearApproval(idTo);
       emit KeyManagerChanged(idTo, keyManager);
 
       toKey.expirationTimestamp = expirationTimestamp;
