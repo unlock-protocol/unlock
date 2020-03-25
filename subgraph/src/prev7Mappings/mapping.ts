@@ -1,12 +1,12 @@
-import { Lock, KeyHolder, Key, KeyPurchase } from "../generated/schema";
+import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
+import { CancelKey, ExpireKey } from "../../generated/Contract/PublicLock";
+import { Lock, KeyHolder, Key, KeyPurchase } from "../../generated/schema";
 import {
   Transfer,
   OwnershipTransferred,
   PriceChanged,
   PublicLock
-} from "../generated/templates/PublicLock/PublicLock";
-import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
-import { CancelKey, ExpireKey } from "../generated/Contract/PublicLock";
+} from "../../generated/templates/PublicLock/PublicLock";
 
 export function handleLockTransfer(event: OwnershipTransferred): void {
   let lock = Lock.load(event.address.toHex());
@@ -31,6 +31,24 @@ export function handleTransfer(event: Transfer): void {
   } else {
     existingKeyTransfer(event);
   }
+}
+
+export function handleCancelKey(event: CancelKey): void {
+  let keyID = genKeyID(event.address, event.params.tokenId.toString());
+  let key = Key.load(keyID);
+  let lockContract = PublicLock.bind(event.address);
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner);
+  key.save();
+}
+
+export function handleExpireKey(event: ExpireKey): void {
+  let keyID = genKeyID(event.address, event.params.tokenId.toString());
+  let key = Key.load(keyID);
+  let lockContract = PublicLock.bind(event.address);
+  key.expiration = lockContract.keyExpirationTimestampFor(
+    Address.fromString(key.owner)
+  );
+  key.save();
 }
 
 function existingKeyTransfer(event: Transfer): void {
@@ -74,24 +92,6 @@ function newKeyPurchase(
     lock.tokenAddress as Bytes,
     lockContract.keyPrice()
   );
-}
-
-export function handleCancelKey(event: CancelKey): void {
-  let keyID = genKeyID(event.address, event.params.tokenId.toString());
-  let key = Key.load(keyID);
-  let lockContract = PublicLock.bind(event.address);
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner);
-  key.save();
-}
-
-export function handleExpireKey(event: ExpireKey): void {
-  let keyID = genKeyID(event.address, event.params.tokenId.toString());
-  let key = Key.load(keyID);
-  let lockContract = PublicLock.bind(event.address);
-  key.expiration = lockContract.keyExpirationTimestampFor(
-    Address.fromString(key.owner)
-  );
-  key.save();
 }
 
 function genKey(event: Transfer, lockContract: PublicLock): void {

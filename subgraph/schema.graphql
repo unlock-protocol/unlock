@@ -30,6 +30,12 @@ type KeyPurchase @entity {
   tokenAddress: Bytes!
 }
 
+type LockManager @entity {
+  id: ID!
+  lock: Lock!
+  address: Bytes!
+}
+
 type Lock @entity {
   id: ID! #lock address
   address: Bytes!
@@ -40,6 +46,7 @@ type Lock @entity {
   expirationDuration: BigInt
   totalSupply: BigInt
   maxNumberOfKeys: BigInt
+  LockManagers: [LockManager!] @derivedFrom(field: "lock")
   keys: [Key!] @derivedFrom(field: "lock")
   owner: Bytes!
   version: BigInt

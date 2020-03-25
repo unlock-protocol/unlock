@@ -56,7 +56,7 @@ let networkMap = {
 };
 
 function selectConfig() {
-  let network = argv.network || "local";
+  let network = argv.network || "mainnet";
   let environment = argv.environment || "development";
 
   return networkMap[environment][network];
