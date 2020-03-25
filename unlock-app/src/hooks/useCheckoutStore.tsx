@@ -2,6 +2,7 @@
 import React, { createContext, useReducer, useContext } from 'react'
 import { PaywallConfig, DelayedPurchase } from '../unlockTypes'
 import { Action } from '../utils/checkoutActions'
+import { assertNever } from '../utils/assertNever'
 
 interface State {
   showingLogin: boolean
@@ -21,10 +22,6 @@ export const defaultState: State = {
   delayedPurchase: undefined,
 }
 
-function assertNever(x: never): never {
-  throw new Error(`Unexpected object: ${x}`)
-}
-
 export function reducer(state = defaultState, action: Action): State {
   switch (action.kind) {
     case 'setConfig':
@@ -41,7 +38,7 @@ export function reducer(state = defaultState, action: Action): State {
       return { ...state, delayedPurchase: action.purchase }
     default:
       // Exhaustiveness check, will cause compile error if you forget to implement an action
-      return assertNever(action)
+      assertNever(action)
   }
 }
 
