@@ -5,6 +5,7 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinFunds.sol';
+import './MixinApproval.sol';
 
 
 /**
@@ -17,7 +18,8 @@ contract MixinPurchase is
   MixinFunds,
   MixinDisable,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinApproval
 {
   using SafeMath for uint;
 
@@ -79,6 +81,7 @@ contract MixinPurchase is
 
       // reset the key Manager to 0x00
       _resetKeyManagerOf(idTo);
+      _clearApproval(idTo);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
