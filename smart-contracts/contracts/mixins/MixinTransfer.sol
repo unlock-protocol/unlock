@@ -2,7 +2,6 @@ pragma solidity 0.5.17;
 
 import './MixinLockManagerRole.sol';
 import './MixinDisable.sol';
-import './MixinApproval.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
@@ -22,8 +21,7 @@ contract MixinTransfer is
   MixinLockManagerRole,
   MixinFunds,
   MixinLockCore,
-  MixinKeys,
-  MixinApproval
+  MixinKeys
 {
   using SafeMath for uint;
   using Address for address;
