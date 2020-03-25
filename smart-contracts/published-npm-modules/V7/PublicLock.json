@@ -4593,7 +4593,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-03-25T00:39:01.078Z",
+  "updatedAt": "2020-03-25T02:28:25.566Z",
   "devdoc": {
     "author": "Julien Genestoux (unlock-protocol.com)",
     "details": "ERC165 allows our contract to be queried to determine whether it implements a given interface. Every ERC-721 compliant contract must implement the ERC165 interface. https://eips.ethereum.org/EIPS/eip-721",
