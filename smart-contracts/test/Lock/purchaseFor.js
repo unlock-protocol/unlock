@@ -113,12 +113,6 @@ contract('Lock / purchaseFor', accounts => {
           )
         )
       })
-
-      it('should clear any erc721-approvals for the key', async () => {
-        const iD = await locks.SECOND.getTokenIdFor(accounts[4])
-        const approved = await locks.SECOND.getApproved(iD)
-        assert.equal(approved, 0)
-      })
     })
 
     describe('when the user already owns a non expired key', () => {
