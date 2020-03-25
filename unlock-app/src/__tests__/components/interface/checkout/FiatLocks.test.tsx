@@ -47,6 +47,7 @@ describe('FiatLocks', () => {
           lockAddresses={['0xlock']}
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
+          cards={[]}
         />
       )
 
@@ -63,6 +64,7 @@ describe('FiatLocks', () => {
           lockAddresses={['0xlock']}
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
+          cards={[]}
         />
       )
 

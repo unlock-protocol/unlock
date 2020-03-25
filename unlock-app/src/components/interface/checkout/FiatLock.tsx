@@ -20,6 +20,8 @@ interface FiatLockProps {
   activeKeys: KeyResult[]
   accountAddress: string
   metadataRequired?: boolean
+  needToCollectPaymentDetails?: boolean
+  setShowingPaymentForm: any
 }
 
 export const FiatLock = ({
@@ -29,6 +31,8 @@ export const FiatLock = ({
   accountAddress,
   metadataRequired,
   formattedKeyPrice,
+  needToCollectPaymentDetails,
+  setShowingPaymentForm,
 }: FiatLockProps) => {
   const { purchaseKey } = useUserAccountsPurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
@@ -38,12 +42,7 @@ export const FiatLock = ({
     purchaseKey(lock, accountAddress)
   }
 
-  const onClick = () => {
-    if (state.purchasingLockAddress) {
-      // There is already a key purchase in progress (or completed) -- do not start another one
-      return
-    }
-
+  const invokePurchase = () => {
     if (metadataRequired) {
       dispatch(
         setDelayedPurchase({
@@ -54,6 +53,22 @@ export const FiatLock = ({
       dispatch(setShowingMetadataForm(true))
     } else {
       purchase()
+    }
+  }
+
+  const onClick = () => {
+    if (state.purchasingLockAddress) {
+      // There is already a key purchase in progress (or completed) -- do not start another one
+      return
+    }
+
+    if (needToCollectPaymentDetails) {
+      setShowingPaymentForm({
+        visible: true,
+        invokePurchase,
+      })
+    } else {
+      invokePurchase()
     }
   }
 

@@ -67,6 +67,18 @@ export const globalStyle = `
     height: 60px;
     font-size: 16px;
   }
+
+  .checkout-details {
+    height: 48px;
+    background-color: var(--lightgrey);
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 16px;
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 
 export default createGlobalStyle`
