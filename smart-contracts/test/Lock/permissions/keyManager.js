@@ -67,6 +67,12 @@ contract('Permissions / KeyManager', accounts => {
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
+
+    // confirm that approvals are cleared for expired keys
+    it('should clear any erc721-approvals for expired keys', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
+    })
   })
 
   describe('Key Transfers', () => {
@@ -118,6 +124,12 @@ contract('Permissions / KeyManager', accounts => {
       iD = await lock.getTokenIdFor(keyOwner3)
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
+    })
+
+    // confirm that approvals are cleared for expired keys
+    it('should clear any erc721-approvals for expired keys', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
     })
   })
 
@@ -181,6 +193,12 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
+
+    // confirm that approvals are cleared for expired keys
+    it('should clear any erc721-approvals for the key', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
+    })
   })
 
   describe('Key Granting', () => {
@@ -215,6 +233,12 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, accounts[8])
     })
 
+    // confirm that approvals are cleared for new keys
+    it('should clear any erc721-approvals for new keys', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
+    })
+
     it('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
       const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
       assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
@@ -224,6 +248,12 @@ contract('Permissions / KeyManager', accounts => {
       iD = await lock.getTokenIdFor(accounts[7])
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, keyGranter)
+    })
+
+    // confirm that approvals are cleared for valid keys
+    it('should clear any erc721-approvals for valid key', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
     })
 
     it('should let KeyGranter set an arbitrary KM for expired keys', async () => {
@@ -240,6 +270,12 @@ contract('Permissions / KeyManager', accounts => {
       )
       const newKeyManager = await lock.keyManagerOf.call(iD)
       assert.equal(newKeyManager, constants.ZERO_ADDRESS)
+    })
+
+    // confirm that approvals are cleared for expired keys
+    it('should clear any erc721-approvals for expired keys', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
     })
   })
 
