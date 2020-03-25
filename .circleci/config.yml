@@ -324,7 +324,7 @@ jobs:
 
   deploy-locksmith-beanstalk:
     docker:
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -355,7 +355,7 @@ jobs:
 
   deploy-nudge-beanstalk-staging:    
     docker:
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -382,7 +382,7 @@ jobs:
 
   deploy-nudge-beanstalk-production:    
     docker:
-      - image: circleci/python:3.6.4
+      - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:

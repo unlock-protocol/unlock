@@ -102,7 +102,7 @@ services:
       - postgres
       - ganache-integration
   ipfs:
-    image: ipfs/go-ipfs:v0.4.22
+    image: ipfs/go-ipfs:v0.4.23
     ports:
       - '5001:5001'
   subgraph_deployment:

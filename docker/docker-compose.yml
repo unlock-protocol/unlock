@@ -11,4 +11,4 @@ services:
     ports:
       - '5001:5001'
   postgres:
-    image: postgres:12.1
+    image: postgres:12.2
