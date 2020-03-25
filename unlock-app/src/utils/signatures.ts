@@ -1,4 +1,4 @@
-import sigUtil from 'eth-sig-util'
+import * as sigUtil from 'eth-sig-util'
 
 /**
  * Helper function which verifies that the signature matches the address and data

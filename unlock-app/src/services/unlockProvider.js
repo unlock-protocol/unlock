@@ -1,5 +1,5 @@
 import { providers } from 'ethers'
-import sigUtil from 'eth-sig-util'
+import * as sigUtil from 'eth-sig-util'
 import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from '../utils/accounts'
 import UnlockUser from '../structured_data/unlockUser'
