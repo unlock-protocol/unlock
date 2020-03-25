@@ -5347,7 +5347,7 @@ Object {
   outline: none;
 }
 
-.c6 {
+.c5 {
   height: 48px;
   width: 100%;
   border: thin var(--lightgrey) solid;
@@ -5359,7 +5359,7 @@ Object {
   margin-bottom: 16px;
 }
 
-.c5 {
+.c4 {
   font-size: 10px;
   line-height: 13px;
   -webkit-letter-spacing: 1px;
@@ -5371,7 +5371,7 @@ Object {
   margin-bottom: 3px;
 }
 
-.c7 {
+.c6 {
   height: 48px;
   width: 100%;
   border: thin var(--lightgrey) solid;
@@ -5386,7 +5386,7 @@ Object {
   appearance: none;
 }
 
-.c8 {
+.c7 {
   width: 100%;
   height: 48px;
   background-color: var(--green);
@@ -5420,13 +5420,15 @@ Object {
   align-items: center;
 }
 
-.c9 {
-  margin-top: 16px;
+.c8 {
+  margin-top: 32px;
+  margin-bottom: 6px;
   font-size: 12px;
   text-align: center;
+  color: var(--grey);
 }
 
-.c9 div {
+.c8 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -5434,7 +5436,7 @@ Object {
   height: 20px;
 }
 
-.c10 {
+.c9 {
   fill: var(--brand);
   width: 48px;
   margin-bottom: -1px;
@@ -5448,7 +5450,7 @@ Object {
 }
 
 .c1 {
-  padding: 10px 40px;
+  padding: 24px 40px 10px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5465,12 +5467,6 @@ Object {
   border-radius: 4px;
   position: relative;
   box-shadow: 0px 0px 60px rgba(0,0,0,0.25);
-}
-
-.c4 {
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
 }
 
 @media only screen and (min-width:736px) {
@@ -5514,34 +5510,29 @@ Object {
             </svg>
             
           </a>
-          <header>
-            <h1
-              class="c4"
-            />
-          </header>
           <form>
             <label
-              class="c5"
+              class="c4"
             >
               Name
             </label>
             <input
-              class="c6"
+              class="c5"
               name="name"
             />
             <label
-              class="c5"
+              class="c4"
             >
               Credit Card Details
             </label>
             <div />
             <label
-              class="c5"
+              class="c4"
             >
               Country
             </label>
             <select
-              class="c7"
+              class="c6"
               name="address_country"
             >
               <option
@@ -6867,7 +6858,7 @@ Object {
               </option>
             </select>
             <button
-              class="c8"
+              class="c7"
               disabled=""
               type="submit"
             >
@@ -6875,7 +6866,7 @@ Object {
             </button>
           </form>
           <footer
-            class="c9"
+            class="c8"
           >
             <span>
               Powered by
@@ -6887,7 +6878,7 @@ Object {
             >
               <svg
                 alt="Unlock"
-                class="cenpj1-1 c10"
+                class="cenpj1-1 c9"
                 viewBox="0 0 1200 256"
               >
                 <path
@@ -6909,7 +6900,7 @@ Object {
       class="sc-pzYib kbcpJt"
     >
       <section
-        class="sc-oUoif fKaagJ"
+        class="sc-oUoif jWpdWL"
       >
         <a
           class="sc-850ddk-0 jqtNoT sc-pZnSc fksgxS closeButton"
@@ -6929,11 +6920,6 @@ Object {
           </svg>
           
         </a>
-        <header>
-          <h1
-            class="sc-pcJja dDtOXR"
-          />
-        </header>
         <form>
           <label
             class="sc-psQdR gbsImK"
@@ -8290,7 +8276,7 @@ Object {
           </button>
         </form>
         <footer
-          class="sc-pItiW jlseYa"
+          class="sc-pItiW lBioK"
         >
           <span>
             Powered by
@@ -8441,30 +8427,30 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-ptDSg clQmnH"
+      class="sc-pcJja dLFWFx"
     >
       <h4
-        class="sc-qPwPv kItzkY"
+        class="sc-pliRl hdbKfT"
       >
         Switch payment to
       </h4>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         Credit Card
       </button>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         BAT
       </button>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         USDC
       </button>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         DAI
       </button>
@@ -8614,31 +8600,31 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-ptDSg clQmnH"
+      class="sc-pcJja dLFWFx"
     >
       <h4
-        class="sc-qPwPv kItzkY"
+        class="sc-pliRl hdbKfT"
       >
         Switch payment to
       </h4>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         Credit Card
       </button>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         BAT
       </button>
       <button
-        class="sc-qXRQq sc-pAncQ fKPtbb"
+        class="sc-ptDSg sc-qPwPv hcEGMa"
         data-testid="active-USDC"
       >
         USDC
       </button>
       <button
-        class="sc-qXRQq bZPGcu"
+        class="sc-ptDSg eNYzmt"
       >
         DAI
       </button>
@@ -47285,7 +47271,6 @@ Object {
               <span>
                 Valid for
               </span>
-              <br />
               <span>
                 12 Days
               </span>
@@ -47334,7 +47319,6 @@ Object {
               <span>
                 Valid for
               </span>
-              <br />
               <span>
                 12 Days
               </span>
@@ -47384,7 +47368,6 @@ Object {
               <span>
                 Valid for
               </span>
-              <br />
               <span>
                 12 Days
               </span>
@@ -47439,7 +47422,6 @@ Object {
               <span>
                 Valid for
               </span>
-              <br />
               <span>
                 12 Days
               </span>
@@ -47488,7 +47470,6 @@ Object {
               <span>
                 Valid for
               </span>
-              <br />
               <span>
                 12 Days
               </span>
@@ -47569,7 +47550,6 @@ Object {
               <span>
                 Valid for
               </span>
-              <br />
               <span>
                 12 Days
               </span>
@@ -47630,7 +47610,6 @@ Object {
             <span>
               Valid for
             </span>
-            <br />
             <span>
               12 Days
             </span>
@@ -47679,7 +47658,6 @@ Object {
             <span>
               Valid for
             </span>
-            <br />
             <span>
               12 Days
             </span>
@@ -47729,7 +47707,6 @@ Object {
             <span>
               Valid for
             </span>
-            <br />
             <span>
               12 Days
             </span>
@@ -47784,7 +47761,6 @@ Object {
             <span>
               Valid for
             </span>
-            <br />
             <span>
               12 Days
             </span>
@@ -47833,7 +47809,6 @@ Object {
             <span>
               Valid for
             </span>
-            <br />
             <span>
               12 Days
             </span>
@@ -47914,7 +47889,6 @@ Object {
             <span>
               Valid for
             </span>
-            <br />
             <span>
               12 Days
             </span>
@@ -65716,14 +65690,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pAyMl geycTo"
+      class="sc-qPLKk iQsuGw"
     >
       <div
-        class="sc-pITNg gIkoQU"
+        class="sc-qXHHN cebYfr"
         color="--green"
       >
         <div
-          class="sc-pdjNk dXluJj"
+          class="sc-pYNsO hSiXTX"
         >
           <svg
             viewBox="0 0 24 24"
@@ -65739,57 +65713,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pQsrT lnoByR"
+          class="sc-pAyMl bqhxug"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pYNsO gkmeiW"
+          class="sc-pITNg cHDCRZ"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-pkIrX cfTpXs"
+        class="sc-oUOMp gTbyvI"
       >
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Lock Name
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Token Id
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           53
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Owner Address
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Time Since signed
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           20 minutes ago
         </div>
@@ -66055,14 +66029,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pAyMl geycTo"
+      class="sc-qPLKk iQsuGw"
     >
       <div
-        class="sc-pITNg gIkoQU"
+        class="sc-qXHHN cebYfr"
         color="--green"
       >
         <div
-          class="sc-pdjNk dXluJj"
+          class="sc-pYNsO hSiXTX"
         >
           <svg
             viewBox="0 0 24 24"
@@ -66078,62 +66052,62 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pQsrT lnoByR"
+          class="sc-pAyMl bqhxug"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pYNsO gkmeiW"
+          class="sc-pITNg cHDCRZ"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-pkIrX cfTpXs"
+        class="sc-oUOMp gTbyvI"
       >
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Lock Name
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Token Id
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           53
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Owner Address
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Time Since signed
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           20 minutes ago
         </div>
         <button
-          class="sc-fznBtT sc-ptdsS fIyNbO"
+          class="sc-fznBtT sc-pdjNk cXkXah"
         >
           Mark as Checked-In
         </button>
@@ -66370,14 +66344,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pAyMl geycTo"
+      class="sc-qPLKk iQsuGw"
     >
       <div
-        class="sc-pITNg gIkoQU"
+        class="sc-qXHHN cebYfr"
         color="--green"
       >
         <div
-          class="sc-pdjNk dXluJj"
+          class="sc-pYNsO hSiXTX"
         >
           <svg
             viewBox="0 0 24 24"
@@ -66393,57 +66367,57 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pQsrT lnoByR"
+          class="sc-pAyMl bqhxug"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pYNsO gkmeiW"
+          class="sc-pITNg cHDCRZ"
         >
           Until 
           Jun 24th, 2020
         </h2>
       </div>
       <div
-        class="sc-pkIrX cfTpXs"
+        class="sc-oUOMp gTbyvI"
       >
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Lock Name
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Token Id
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           53
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Owner Address
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Time Since signed
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           20 minutes ago
         </div>
@@ -66696,14 +66670,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pAyMl geycTo"
+      class="sc-qPLKk iQsuGw"
     >
       <div
-        class="sc-pITNg bgpYdA"
+        class="sc-qXHHN dHZhgn"
         color="--yellow"
       >
         <div
-          class="sc-pdjNk dXluJj"
+          class="sc-pYNsO hSiXTX"
         >
           <svg
             viewBox="0 0 24 24"
@@ -66719,18 +66693,18 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pQsrT lnoByR"
+          class="sc-pAyMl bqhxug"
         >
           Valid Key
         </h1>
         <h2
-          class="sc-pYNsO gkmeiW"
+          class="sc-pITNg cHDCRZ"
         >
           Until 
           Jun 24th, 2020
         </h2>
         <h2
-          class="sc-oUOMp kExdyZ"
+          class="sc-pQsrT kMFQZJ"
         >
           Checked-in 
           1 minute
@@ -66738,45 +66712,45 @@ Object {
         </h2>
       </div>
       <div
-        class="sc-pkIrX cfTpXs"
+        class="sc-oUOMp gTbyvI"
       >
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Lock Name
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           Week in Ethereum News
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Token Id
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           53
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Owner Address
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           0x33ab07dF7f09e793dDD1E9A25b079989a557119A
         </div>
         <div
-          class="sc-qPXtF ejpzfD"
+          class="sc-pkIrX gJbxBw"
         >
           Time Since signed
         </div>
         <div
-          class="sc-qYsuA eMfxRu"
+          class="sc-ptdsS kLyvDB"
         >
           20 minutes ago
         </div>
@@ -66921,14 +66895,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-pAyMl geycTo"
+      class="sc-qPLKk iQsuGw"
     >
       <div
-        class="sc-pITNg kUJVoo"
+        class="sc-qXHHN vjPaL"
         color="--red"
       >
         <div
-          class="sc-pdjNk dXluJj"
+          class="sc-pYNsO hSiXTX"
         >
           <svg
             viewBox="0 0 24 24"
@@ -66944,7 +66918,7 @@ Object {
           </svg>
         </div>
         <h1
-          class="sc-pQsrT lnoByR"
+          class="sc-pAyMl bqhxug"
         >
           Key Invalid
         </h1>
