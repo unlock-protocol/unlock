@@ -104,11 +104,17 @@ export class Paywall {
 
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
+    const { readOnlyProvider, locksmithUri } = __ENVIRONMENT_VARIABLES__
     if (!this.userAccountAddress) {
       return
     }
     this.lockStatus = undefined
-    if (await isUnlocked(this.userAccountAddress, this.paywallConfig)) {
+    if (
+      await isUnlocked(this.userAccountAddress, this.paywallConfig, {
+        readOnlyProvider,
+        locksmithUri,
+      })
+    ) {
       return this.unlockPage()
     }
     return this.lockPage()
