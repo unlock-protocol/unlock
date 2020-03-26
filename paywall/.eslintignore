@@ -5,4 +5,5 @@
 /src/.next
 /src/out
 /.cache
+/src/paywall-script/dist/
 *.min.js

@@ -35,7 +35,10 @@ describe('isUnlocked', () => {
         .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
         .mockResolvedValue(futureTime)
 
-      const unlocked = await isUnlocked(userAccountAddress, paywallConfig)
+      const unlocked = await isUnlocked(userAccountAddress, paywallConfig, {
+        readOnlyProvider,
+        locksmithUri,
+      })
       expect(unlocked).toBe(true)
 
       expect(spy).toHaveBeenCalledTimes(2)
@@ -68,7 +71,10 @@ describe('isUnlocked', () => {
           .spyOn(optimisticUtil, 'optimisticUnlocking')
           .mockResolvedValue(true)
 
-        const unlocked = await isUnlocked(userAccountAddress, paywallConfig)
+        const unlocked = await isUnlocked(userAccountAddress, paywallConfig, {
+          readOnlyProvider,
+          locksmithUri,
+        })
         expect(unlocked).toBe(true)
         expect(spy).toHaveBeenCalledWith(
           readOnlyProvider,
@@ -85,7 +91,10 @@ describe('isUnlocked', () => {
           .spyOn(optimisticUtil, 'optimisticUnlocking')
           .mockResolvedValue(false)
 
-        const unlocked = await isUnlocked(userAccountAddress, paywallConfig)
+        const unlocked = await isUnlocked(userAccountAddress, paywallConfig, {
+          readOnlyProvider,
+          locksmithUri,
+        })
         expect(unlocked).toBe(false)
         expect(spy).toHaveBeenCalledWith(
           readOnlyProvider,

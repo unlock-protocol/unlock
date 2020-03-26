@@ -1,7 +1,8 @@
 import { keyExpirationTimestampFor } from './keyExpirationTimestampFor'
 import { optimisticUnlocking } from './optimisticUnlocking'
+import { PaywallConfig } from '../unlockTypes'
 
-declare let __ENVIRONMENT_VARIABLES__: {
+interface ModuleConfig {
   readOnlyProvider: string
   locksmithUri: string
 }
@@ -14,10 +15,9 @@ declare let __ENVIRONMENT_VARIABLES__: {
  */
 export const isUnlocked = async (
   userAccountAddress: string,
-  paywallConfig: any
+  paywallConfig: PaywallConfig,
+  { readOnlyProvider, locksmithUri }: ModuleConfig
 ): Promise<boolean> => {
-  const { readOnlyProvider, locksmithUri } = __ENVIRONMENT_VARIABLES__
-
   const lockAddresses = Object.keys(paywallConfig.locks)
   const timeStamps = await Promise.all(
     lockAddresses.map(lockAddress => {
