@@ -29,7 +29,7 @@ contract('Permissions / KeyManager', accounts => {
     })
   })
 
-  describe('setting the key manager manually', () => {
+  describe('setting the key manager', () => {
     it('should have a default KM of 0x00', async () => {
       iD = await lock.getTokenIdFor(accounts[1])
       keyManagerBefore = await lock.keyManagerOf.call(iD)
@@ -64,6 +64,21 @@ contract('Permissions / KeyManager', accounts => {
         lock.setKeyManagerOf(iD, accounts[2], { from: accounts[6] }),
         'UNAUTHORIZED_KEY_MANAGER_UPDATE'
       )
+    })
+    describe('setting the KM to 0x00', () => {
+      before(async () => {
+        iD = await lock.getTokenIdFor(accounts[1])
+        keyManager = await lock.keyManagerOf.call(iD)
+        await lock.setKeyManagerOf(iD, accounts[9], { from: keyManager })
+        keyManager = await lock.keyManagerOf.call(iD)
+        assert.equal(keyManager, accounts[9])
+        await lock.setKeyManagerOf(iD, constants.ZERO_ADDRESS)
+      })
+
+      it('should reset to the default KeyManager of 0x00', async () => {
+        keyManager = await lock.keyManagerOf.call(iD)
+        assert.equal(keyManager, constants.ZERO_ADDRESS)
+      })
     })
   })
 })
