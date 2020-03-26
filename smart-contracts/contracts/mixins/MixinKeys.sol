@@ -264,8 +264,11 @@ contract MixinKeys is
       isLockManager(msg.sender),
       'UNAUTHORIZED_KEY_MANAGER_UPDATE'
     );
-    keyManagerOf[_tokenId] = _keyManager;
-    emit KeyManagerChanged(_tokenId, _keyManager);
+    if(keyManagerOf[_tokenId] != _keyManager) {
+      keyManagerOf[_tokenId] = _keyManager;
+      _clearApproval(_tokenId);
+      emit KeyManagerChanged(_tokenId, address(0));
+    }
   }
 
     /**
@@ -321,21 +324,6 @@ contract MixinKeys is
       return managerToOperatorApproved[_owner][_operator];
     } else {
       return managerToOperatorApproved[keyManager][_operator];
-    }
-  }
-
-  /**
-   * @notice This is used internally for resetting expired keys
-   * on transfer, sharing and purchase.
-   * @param _tokenId The key to reset
-   */
-  function _resetKeyManagerOf(
-    uint _tokenId
-  ) internal
-  {
-    if(keyManagerOf[_tokenId] != address(0)) {
-      keyManagerOf[_tokenId] = address(0);
-      emit KeyManagerChanged(_tokenId, address(0));
     }
   }
 
