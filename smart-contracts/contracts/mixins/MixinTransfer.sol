@@ -92,7 +92,7 @@ contract MixinTransfer is
       );
     } else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      _resetKeyManagerOf(idTo);
+      _setKeyManagerOf(idTo, address(0));
     }
 
     // add time to new key
@@ -132,6 +132,8 @@ contract MixinTransfer is
     if (toKey.tokenId == 0) {
       toKey.tokenId = _tokenId;
       _recordOwner(_recipient, _tokenId);
+      // Clear any previous approvals
+      _clearApproval(_tokenId);
     }
 
     if (previousExpiration <= block.timestamp) {
@@ -141,7 +143,7 @@ contract MixinTransfer is
       toKey.tokenId = _tokenId;
 
       // Reset the key Manager to the key owner
-      _resetKeyManagerOf(_tokenId);
+      _setKeyManagerOf(_tokenId, address(0));
 
       _recordOwner(_recipient, _tokenId);
     } else {
@@ -156,9 +158,6 @@ contract MixinTransfer is
 
     // Set the tokenID to 0 for the previous owner to avoid duplicates
     fromKey.tokenId = 0;
-
-    // Clear any previous approvals
-    _clearApproval(_tokenId);
 
     // trigger event
     emit Transfer(

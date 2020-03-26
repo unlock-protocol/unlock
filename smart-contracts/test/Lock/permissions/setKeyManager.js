@@ -27,11 +27,14 @@ contract('Permissions / KeyManager', accounts => {
       value: keyPrice.toFixed(),
       from: accounts[1],
     })
+    iD = await lock.getTokenIdFor(accounts[1])
+    await lock.approve(accounts[7], iD, {
+      from: accounts[1],
+    })
   })
 
-  describe('setting the key manager manually', () => {
+  describe('setting the key manager', () => {
     it('should have a default KM of 0x00', async () => {
-      iD = await lock.getTokenIdFor(accounts[1])
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, constants.ZERO_ADDRESS)
     })
@@ -59,11 +62,32 @@ contract('Permissions / KeyManager', accounts => {
       assert.equal(keyManager, accounts[5])
     })
 
+    // confirm that approvals are cleared for expired keys
+    it('should clear any erc721-approvals for expired keys', async () => {
+      const approved = await lock.getApproved(iD)
+      assert.equal(approved, 0)
+    })
+
     it('should fail to allow anyone else to set a new KM', async () => {
       await reverts(
         lock.setKeyManagerOf(iD, accounts[2], { from: accounts[6] }),
         'UNAUTHORIZED_KEY_MANAGER_UPDATE'
       )
+    })
+    describe('setting the KM to 0x00', () => {
+      before(async () => {
+        iD = await lock.getTokenIdFor(accounts[1])
+        keyManager = await lock.keyManagerOf.call(iD)
+        await lock.setKeyManagerOf(iD, accounts[9], { from: keyManager })
+        keyManager = await lock.keyManagerOf.call(iD)
+        assert.equal(keyManager, accounts[9])
+        await lock.setKeyManagerOf(iD, constants.ZERO_ADDRESS)
+      })
+
+      it('should reset to the default KeyManager of 0x00', async () => {
+        keyManager = await lock.keyManagerOf.call(iD)
+        assert.equal(keyManager, constants.ZERO_ADDRESS)
+      })
     })
   })
 })

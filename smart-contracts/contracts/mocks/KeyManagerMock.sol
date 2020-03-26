@@ -5,12 +5,6 @@ import '../PublicLock.sol';
 contract KeyManagerMock is
   PublicLock
 {
-  function resetKeyManagerOf(
-    uint _tokenId
-  ) external
-  {
-    _resetKeyManagerOf(_tokenId);
-  }
 
   function isKeyManager(
     uint _tokenId,
