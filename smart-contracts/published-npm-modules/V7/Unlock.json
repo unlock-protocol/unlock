@@ -10529,7 +10529,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-03-26T16:44:32.160Z",
+  "updatedAt": "2020-03-26T17:11:58.391Z",
   "devdoc": {
     "details": "Must list the direct base contracts in the order from “most base-like” to “most derived”. https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization",
     "methods": {
