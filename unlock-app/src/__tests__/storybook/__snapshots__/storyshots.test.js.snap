@@ -9490,7 +9490,7 @@ Object {
           </a>
           <form>
             <h4>
-              Log In
+              Sign Up
             </h4>
             <label
               class="c4"
@@ -9501,21 +9501,11 @@ Object {
               class="c5"
               name="emailAddress"
             />
-            <label
-              class="c4"
-            >
-              Password
-            </label>
-            <input
-              class="c5"
-              name="password"
-              type="password"
-            />
             <button
               class="c6"
               type="submit"
             >
-              Log In
+              Sign Up
             </button>
           </form>
           <footer
@@ -9575,7 +9565,7 @@ Object {
         </a>
         <form>
           <h4>
-            Log In
+            Sign Up
           </h4>
           <label
             class="sc-qQYBZ ecVdXT"
@@ -9586,21 +9576,11 @@ Object {
             class="sc-pscky bXBIVn"
             name="emailAddress"
           />
-          <label
-            class="sc-qQYBZ ecVdXT"
-          >
-            Password
-          </label>
-          <input
-            class="sc-pscky bXBIVn"
-            name="password"
-            type="password"
-          />
           <button
             class="sc-pzMyG EhCcG"
             type="submit"
           >
-            Log In
+            Sign Up
           </button>
         </form>
         <footer
