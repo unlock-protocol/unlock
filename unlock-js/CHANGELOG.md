@@ -1,5 +1,8 @@
 # Changes
 
+# 0.9.1
+- Replaced owner with beneficiary for locks
+
 # 0.9
 - Adding support for v7 of PublicLock and Unlock smart contracts
 
