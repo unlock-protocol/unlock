@@ -248,7 +248,7 @@ contract MixinKeys is
   }
 
   /**
-  * @notice Update transfer and cancel rights for a given key
+  * @notice Public function for updating transfer and cancel rights for a given key
   * @param _tokenId The id of the key to assign rights for
   * @param _keyManager The address with the manager's rights for the given key.
   * Setting _keyManager to address(0) means the keyOwner is also the keyManager
@@ -264,8 +264,19 @@ contract MixinKeys is
       isLockManager(msg.sender),
       'UNAUTHORIZED_KEY_MANAGER_UPDATE'
     );
-    keyManagerOf[_tokenId] = _keyManager;
-    emit KeyManagerChanged(_tokenId, _keyManager);
+    _setKeyManagerOf(_tokenId, _keyManager);
+  }
+
+  function _setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
+  ) internal
+  {
+    if(keyManagerOf[_tokenId] != _keyManager) {
+      keyManagerOf[_tokenId] = _keyManager;
+      _clearApproval(_tokenId);
+      emit KeyManagerChanged(_tokenId, address(0));
+    }
   }
 
     /**
@@ -321,21 +332,6 @@ contract MixinKeys is
       return managerToOperatorApproved[_owner][_operator];
     } else {
       return managerToOperatorApproved[keyManager][_operator];
-    }
-  }
-
-  /**
-   * @notice This is used internally for resetting expired keys
-   * on transfer, sharing and purchase.
-   * @param _tokenId The key to reset
-   */
-  function _resetKeyManagerOf(
-    uint _tokenId
-  ) internal
-  {
-    if(keyManagerOf[_tokenId] != address(0)) {
-      keyManagerOf[_tokenId] = address(0);
-      emit KeyManagerChanged(_tokenId, address(0));
     }
   }
 
