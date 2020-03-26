@@ -48,8 +48,8 @@ const CloseButton = styled(Close).attrs(() => ({
   className: 'closeButton',
 }))`
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: 12px;
+  right: 12px;
 `
 
 const Wrapper = styled.section`
