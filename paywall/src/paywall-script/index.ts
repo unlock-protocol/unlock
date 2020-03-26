@@ -1,9 +1,9 @@
 import Postmate from 'postmate'
 import './iframe.css'
 import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
-import { keyExpirationTimestampFor } from '../utils/keyExpirationTimestampFor'
 import { store, retrieve } from '../utils/localStorage'
-import { optimisticUnlocking, willUnlock } from '../utils/optimisticUnlocking'
+import { willUnlock } from '../utils/optimisticUnlocking'
+import { isUnlocked } from '../utils/isUnlocked'
 
 declare let __ENVIRONMENT_VARIABLES__: {
   unlockAppUrl: string
@@ -102,47 +102,16 @@ export class Paywall {
     this.checkKeysAndLock()
   }
 
-  // This function is in charge of assessing if we should unlock the page
-  // First we check the chain, and if any valid key exists, then we unlock
-  // If no valid key exists we check pending transactions to assess them
-  // optimistically.
+  // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
     if (!this.userAccountAddress) {
       return
     }
     this.lockStatus = undefined
-
-    const { readOnlyProvider, locksmithUri } = __ENVIRONMENT_VARIABLES__
-
-    const lockAddresses = Object.keys(this.paywallConfig.locks)
-    const timeStamps = await Promise.all(
-      lockAddresses.map(lockAddress => {
-        return keyExpirationTimestampFor(
-          readOnlyProvider,
-          lockAddress,
-          this.userAccountAddress!
-        )
-      })
-    )
-
-    // If any key is valid, we unlock the page
-    if (timeStamps.some(val => val > new Date().getTime() / 1000)) {
+    if (await isUnlocked(this.userAccountAddress, this.paywallConfig)) {
       return this.unlockPage()
     }
-
-    // If not key exists on chain, let's see if we can be optimistic before locking the page.
-    const optimistic = await optimisticUnlocking(
-      readOnlyProvider,
-      locksmithUri,
-      Object.keys(this.paywallConfig.locks),
-      this.userAccountAddress!
-    )
-    if (optimistic) {
-      return this.unlockPage()
-    }
-
-    // If no key exists, or no transaction exists which could be optimistic, we lock
-    this.lockPage()
+    return this.lockPage()
   }
 
   shakeHands = async () => {
