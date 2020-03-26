@@ -1,12 +1,14 @@
-# Unlock ABI v1.3
+# Unlock ABI v7
 
 This npm module includes the ABI and interfaces for the smart contracts Unlock.sol and PublicLock.sol for v7
-The smart contracts have been compiled as of commit 10632fca
-.
+The smart contracts have been compiled as of commit 3660575.
 
 Changelog:
 
 ```
+f12313ee Refactoring 2 key manager functions (#6337)
+300348f4 Merging MixinKeys and MixinApproval  (#6336)
+1497691a Bump V7 module to 1.0.1 (#6329)
 10632fca Removing remnants of Owner (#6328)
 5d3ed751 Finish removing Ownable (#6326)
 9e6a335d Migrate Transfer/LockCore to use LockManager (#6317)
