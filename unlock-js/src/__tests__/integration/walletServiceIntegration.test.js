@@ -30,7 +30,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13']
+  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13', 'v7']
   describe.each(versions)('%s', versionName => {
     let walletService
     let web3Service
@@ -69,30 +69,32 @@ describe('Wallet Service Integration', () => {
     if (['v0', 'v01', 'v02', 'v10', 'v11'].indexOf(versionName) === -1) {
       let publicLockTemplateAddress
 
-      it('should be able to deploy the lock contract template', async () => {
-        expect.assertions(2)
-        publicLockTemplateAddress = await walletService.deployTemplate(
-          versionName,
-          (error, hash) => {
-            expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-          }
-        )
-        expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
-      })
+      describe('Configuration', () => {
+        it('should be able to deploy the lock contract template', async () => {
+          expect.assertions(2)
+          publicLockTemplateAddress = await walletService.deployTemplate(
+            versionName,
+            (error, hash) => {
+              expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+            }
+          )
+          expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
+        })
 
-      it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
-        expect.assertions(2)
-        let transactionHash
-        const receipt = await walletService.configureUnlock(
-          publicLockTemplateAddress,
-          'TESTK',
-          'https://locksmith.unlock-protocol.com/api/key/',
-          (error, hash) => {
-            transactionHash = hash
-            expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-          }
-        )
-        expect(receipt.transactionHash).toEqual(transactionHash)
+        it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
+          expect.assertions(2)
+          let transactionHash
+          const receipt = await walletService.configureUnlock(
+            publicLockTemplateAddress,
+            'TESTK',
+            'https://locksmith.unlock-protocol.com/api/key/',
+            (error, hash) => {
+              transactionHash = hash
+            }
+          )
+          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          expect(receipt.transactionHash).toEqual(transactionHash)
+        })
       })
     }
 

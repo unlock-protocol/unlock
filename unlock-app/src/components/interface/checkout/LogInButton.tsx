@@ -6,7 +6,13 @@ interface Props {
 }
 
 export const LogInButton = ({ onClick }: Props) => {
-  return <Button type="button" value="Login" onClick={onClick} />
+  return (
+    <Button
+      type="button"
+      value="Login to pay with credit card"
+      onClick={onClick}
+    />
+  )
 }
 
 const Button = styled.input`

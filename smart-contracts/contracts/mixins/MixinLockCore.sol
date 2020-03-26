@@ -1,7 +1,6 @@
 pragma solidity 0.5.17;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 import './MixinDisable.sol';
 import './MixinLockManagerRole.sol';
@@ -19,10 +18,9 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
  */
 contract MixinLockCore is
   IERC721Enumerable,
-  Ownable,
   MixinFunds,
-  MixinDisable,
-  MixinLockManagerRole
+  MixinLockManagerRole,
+  MixinDisable
 {
   using Address for address;
 
@@ -74,11 +72,11 @@ contract MixinLockCore is
     _;
   }
 
-  modifier onlyOwnerOrBeneficiary()
+  modifier onlyLockManagerOrBeneficiary()
   {
     require(
-      msg.sender == owner() || msg.sender == beneficiary,
-      'ONLY_LOCK_OWNER_OR_BENEFICIARY'
+      isLockManager(msg.sender) || msg.sender == beneficiary,
+      'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     );
     _;
   }
@@ -121,7 +119,7 @@ contract MixinLockCore is
     address _tokenAddress,
     uint _amount
   ) external
-    onlyOwnerOrBeneficiary
+    onlyLockManagerOrBeneficiary
   {
     uint balance = getBalance(_tokenAddress, address(this));
     uint amount;
