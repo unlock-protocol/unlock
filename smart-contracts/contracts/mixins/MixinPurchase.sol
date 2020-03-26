@@ -78,7 +78,7 @@ contract MixinPurchase is
       toKey.expirationTimestamp = newTimeStamp;
 
       // reset the key Manager to 0x00
-      setKeyManagerOf(idTo, address(0));
+      _setKeyManagerOf(idTo, address(0));
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }

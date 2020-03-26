@@ -43,7 +43,7 @@ contract MixinGrantKeys is
         _recordOwner(recipient, idTo);
       }
       // Set the key Manager
-      setKeyManagerOf(idTo, keyManager);
+      _setKeyManagerOf(idTo, keyManager);
       emit KeyManagerChanged(idTo, keyManager);
 
       toKey.expirationTimestamp = expirationTimestamp;

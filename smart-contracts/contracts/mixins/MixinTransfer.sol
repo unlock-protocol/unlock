@@ -92,7 +92,7 @@ contract MixinTransfer is
       );
     } else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      setKeyManagerOf(idTo, address(0));
+      _setKeyManagerOf(idTo, address(0));
     }
 
     // add time to new key
@@ -143,7 +143,7 @@ contract MixinTransfer is
       toKey.tokenId = _tokenId;
 
       // Reset the key Manager to the key owner
-      setKeyManagerOf(_tokenId, address(0));
+      _setKeyManagerOf(_tokenId, address(0));
 
       _recordOwner(_recipient, _tokenId);
     } else {
