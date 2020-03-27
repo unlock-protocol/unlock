@@ -36,8 +36,12 @@ export const CheckoutSignup = ({ signupEmail, toggleSignup }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h4>Sign Up</h4>
-      <Label>Email Address</Label>
-      <Input name="emailAddress" ref={register({ required: true })} />
+      <Label htmlFor="emailAddress">Email Address</Label>
+      <Input
+        name="emailAddress"
+        id="emailAddress"
+        ref={register({ required: true })}
+      />
       <Button type="submit">Sign Up</Button>
       <p>
         Already have an account?{' '}
@@ -47,8 +51,4 @@ export const CheckoutSignup = ({ signupEmail, toggleSignup }: Props) => {
   )
 }
 
-export const mapDispatchToProps = (dispatch: any) => ({
-  signupEmail: (email: string) => dispatch(signupEmail(email)),
-})
-
-export default connect(null, mapDispatchToProps)(CheckoutSignup)
+export default connect(null, { signupEmail })(CheckoutSignup)

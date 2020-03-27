@@ -9526,7 +9526,8 @@ Object {
               Log In
             </button>
             <p>
-              Need to create an account? 
+              Need to create an account?
+               
               <a
                 class="c7"
               >
@@ -9624,9 +9625,10 @@ Object {
             Log In
           </button>
           <p>
-            Need to create an account? 
+            Need to create an account?
+             
             <a
-              class="sc-pYA-dN kwzrDJ"
+              class="sc-pYA-dN bVkWeh"
             >
               Sign up here
             </a>
@@ -9932,7 +9934,8 @@ Object {
               Retry
             </button>
             <p>
-              Need to create an account? 
+              Need to create an account?
+               
               <a
                 class="c7"
               >
@@ -10029,9 +10032,10 @@ Object {
             Retry
           </button>
           <p>
-            Need to create an account? 
+            Need to create an account?
+             
             <a
-              class="sc-pYA-dN kwzrDJ"
+              class="sc-pYA-dN bVkWeh"
             >
               Sign up here
             </a>
@@ -10309,11 +10313,13 @@ Object {
             </h4>
             <label
               class="c4"
+              for="emailAddress"
             >
               Email Address
             </label>
             <input
               class="c5"
+              id="emailAddress"
               name="emailAddress"
             />
             <button
@@ -10323,7 +10329,8 @@ Object {
               Sign Up
             </button>
             <p>
-              Already have an account? 
+              Already have an account?
+               
               <a
                 class="c7"
               >
@@ -10393,11 +10400,13 @@ Object {
           </h4>
           <label
             class="sc-qQYBZ ecVdXT"
+            for="emailAddress"
           >
             Email Address
           </label>
           <input
             class="sc-pscky bXBIVn"
+            id="emailAddress"
             name="emailAddress"
           />
           <button
@@ -10407,9 +10416,10 @@ Object {
             Sign Up
           </button>
           <p>
-            Already have an account? 
+            Already have an account?
+             
             <a
-              class="sc-pYA-dN kwzrDJ"
+              class="sc-pYA-dN bVkWeh"
             >
               Log in here
             </a>
