@@ -24,7 +24,7 @@ const Checkmark = styled(Svg.Checkmark)`
   background-color: var(--green);
 `
 
-const Ellipsis = styled(Svg.LoadingDots)`
+export const Ellipsis = styled(Svg.LoadingDots)`
   width: 32px;
   margin-left: auto;
   margin-right: 8px;

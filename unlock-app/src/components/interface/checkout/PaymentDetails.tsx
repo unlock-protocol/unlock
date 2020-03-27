@@ -7,7 +7,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
-import styled from 'styled-components'
+import { Input, Label, Select, Button } from './FormStyles'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
 import { useProvider } from '../../../hooks/useProvider'
@@ -86,48 +86,3 @@ export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
     </form>
   )
 }
-
-const Input = styled.input`
-  height: 48px;
-  width: 100%;
-  border: thin var(--lightgrey) solid;
-  border-radius: 4px;
-  background-color: var(--lightgrey);
-  font-size: 16px;
-  padding: 0 8px;
-  color: var(--darkgrey);
-  margin-bottom: 16px;
-`
-
-const Label = styled.label`
-  font-size: 10px;
-  line-height: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 3px;
-`
-
-const Select = styled.select`
-  height: 48px;
-  width: 100%;
-  border: thin var(--lightgrey) solid;
-  border-radius: 4px;
-  background-color: var(--lightgrey);
-  font-size: 16px;
-  padding: 0 8px;
-  color: var(--darkgrey);
-  margin-bottom: 16px;
-  appearance: none;
-`
-
-const Button = styled.button`
-  width: 100%;
-  height: 48px;
-  background-color: var(--green);
-  border: none;
-  border-radius: 4px;
-  font-size: 20px;
-  color: var(--white);
-  margin-top: 16px;
-`
