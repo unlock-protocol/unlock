@@ -6,7 +6,7 @@ const nock = require('nock')
 const nockBack = require('nock').back
 const models = require('../../src/models')
 
-const lockAddress = '0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc'
+const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
 const unlockContractAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
 const stripeToken = 'sk_test_token'
 const web3HostURL = 'http://0.0.0.0:8545'

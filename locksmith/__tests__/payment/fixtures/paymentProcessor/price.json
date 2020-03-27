@@ -13,13 +13,13 @@
         "response": {
             "id": 76,
             "jsonrpc": "2.0",
-            "result": "0x1a7"
+            "result": "0x301"
         },
         "rawHeaders": [
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -53,143 +53,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ],
-        "responseIsBinary": false
-    },
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "eth_call",
-            "params": [
-                {
-                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
-                    "data": "0x74b6c106"
-                },
-                "latest"
-            ],
-            "id": 80,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 80,
-            "jsonrpc": "2.0",
-            "result": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ],
-        "responseIsBinary": false
-    },
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "eth_call",
-            "params": [
-                {
-                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
-                    "data": "0x38af3eed"
-                },
-                "latest"
-            ],
-            "id": 81,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 81,
-            "jsonrpc": "2.0",
-            "result": "0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ],
-        "responseIsBinary": false
-    },
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "eth_call",
-            "params": [
-                {
-                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
-                    "data": "0x11a4c03a"
-                },
-                "latest"
-            ],
-            "id": 79,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 79,
-            "jsonrpc": "2.0",
-            "result": "0x000000000000000000000000000000000000000000000000000000000000003c"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ],
-        "responseIsBinary": false
-    },
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "eth_call",
-            "params": [
-                {
-                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
-                    "data": "0xd1bbd49c"
-                },
-                "latest"
-            ],
-            "id": 84,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 84,
-            "jsonrpc": "2.0",
-            "result": "0x0000000000000000000000000000000000000000000000000000000000000007"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -223,7 +87,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -240,24 +104,24 @@
             "params": [
                 {
                     "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
-                    "data": "0x9d76ea58"
+                    "data": "0xd1bbd49c"
                 },
                 "latest"
             ],
-            "id": 83,
+            "id": 84,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 83,
+            "id": 84,
             "jsonrpc": "2.0",
-            "result": "0x000000000000000000000000fcd4fd1b4f3d5ceddc19004579a5d7039295dbb9"
+            "result": "0x0000000000000000000000000000000000000000000000000000000000000007"
         },
         "rawHeaders": [
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -291,7 +155,143 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
+                    "data": "0x74b6c106"
+                },
+                "latest"
+            ],
+            "id": 80,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 80,
+            "jsonrpc": "2.0",
+            "result": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
+                    "data": "0x38af3eed"
+                },
+                "latest"
+            ],
+            "id": 81,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 81,
+            "jsonrpc": "2.0",
+            "result": "0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
+                    "data": "0x9d76ea58"
+                },
+                "latest"
+            ],
+            "id": 83,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 83,
+            "jsonrpc": "2.0",
+            "result": "0x000000000000000000000000fcd4fd1b4f3d5ceddc19004579a5d7039295dbb9"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ],
+        "responseIsBinary": false
+    },
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": "0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc",
+                    "data": "0x11a4c03a"
+                },
+                "latest"
+            ],
+            "id": 79,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 79,
+            "jsonrpc": "2.0",
+            "result": "0x000000000000000000000000000000000000000000000000000000000000003c"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -322,7 +322,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -356,7 +356,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -387,7 +387,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -421,7 +421,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -452,7 +452,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -486,7 +486,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 27 Mar 2020 18:52:24 GMT",
+            "Fri, 27 Mar 2020 19:09:46 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
