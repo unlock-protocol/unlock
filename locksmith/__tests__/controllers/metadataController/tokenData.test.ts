@@ -45,10 +45,6 @@ const keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
 })
 
 const mockOnChainLockOwnership = {
-  owner: jest.fn(() => {
-    return Promise.resolve(lockOwner)
-  }),
-
   getKeyOwner: jest.fn(() => {
     return Promise.resolve(keyOwner)
   }),
@@ -65,6 +61,16 @@ jest.mock('../../../src/utils/lockData', () => {
     return mockOnChainLockOwnership
   }
 })
+
+const mockWeb3Service = {
+  isLockManager: jest.fn(() => Promise.resolve(false)),
+}
+
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+}))
 
 jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
   __esModule: true,
@@ -124,6 +130,8 @@ describe('Requesting Token Data', () => {
         },
       },
     })
+
+    mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
   })
 
   describe("when persisted data doesn't exist", () => {
@@ -210,7 +218,7 @@ describe('Requesting Token Data', () => {
       describe('when the lock owner has signed the request', () => {
         it('returns the protected metadata', async () => {
           expect.assertions(2)
-
+          mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
           const response = await request(app)
             .get(`/api/key/${lockAddress}/1`)
             .set('Authorization', `Bearer ${Base64.encode(sig)}`)

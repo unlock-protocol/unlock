@@ -1,21 +1,22 @@
 import request from 'supertest'
 
-const nock = require('nock')
+const nockBack = require('nock').back
 const app = require('../../src/app')
 const models = require('../../src/models')
 
 const { AuthorizedLock } = models
 
-nock.back.setMode('dryrun')
-nock.back.fixtures = `${__dirname}/fixtures/priceController`
-
 describe('Price Controller', () => {
-  beforeEach(async () => {
-    await nock.back('fetch_price.json')
+  beforeAll(async () => {
+    nockBack.fixtures = `${__dirname}/fixtures/priceController`
+    nockBack.setMode('dryrun')
   })
+
   describe('price', () => {
     it('return the price from our stub', async () => {
       expect.assertions(2)
+      const { nockDone } = await nockBack('fetch_price.json')
+
       const response = await request(app)
         .get('/price/0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc')
         .set('Accept', 'json')
@@ -29,6 +30,7 @@ describe('Price Controller', () => {
           unlockServiceFee: expect.any(Number),
         })
       )
+      nockDone()
     })
   })
 
@@ -44,16 +46,20 @@ describe('Price Controller', () => {
 
     it('return null price for usd if the lock has not been enabled for credit card purchases', async () => {
       expect.assertions(2)
+      const { nockDone } = await nockBack('fetch_fiat_price_no_cc.json')
+
       const response = await request(app)
         .get('/price/fiat/0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc')
         .set('Accept', 'json')
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual({})
+      nockDone()
     })
 
     it('return a price in usd which includes all fees for a lock which has been approved', async () => {
       expect.assertions(2)
+      const { nockDone } = await nockBack('fetch_fiat_price_cc.json')
 
       const lockAddress = '0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc'
 
@@ -72,6 +78,7 @@ describe('Price Controller', () => {
       // "creditCardProcessing": 35,
       // "unlockServiceFee": 50
       expect(response.body).toEqual({ usd: 185 })
+      nockDone()
     })
   })
 })
