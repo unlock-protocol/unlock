@@ -11,8 +11,8 @@ import './MixinKeyGranterRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinGrantKeys is
-  MixinKeys,
-  MixinKeyGranterRole
+  MixinKeyGranterRole,
+  MixinKeys
 {
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
@@ -43,7 +43,7 @@ contract MixinGrantKeys is
         _recordOwner(recipient, idTo);
       }
       // Set the key Manager
-      keyManagerOf[idTo] = keyManager;
+      _setKeyManagerOf(idTo, keyManager);
       emit KeyManagerChanged(idTo, keyManager);
 
       toKey.expirationTimestamp = expirationTimestamp;

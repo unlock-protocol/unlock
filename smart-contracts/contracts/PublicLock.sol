@@ -2,9 +2,8 @@ pragma solidity 0.5.17;
 
 
 import './interfaces/IPublicLock.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import './mixins/MixinApproval.sol';
 import './mixins/MixinDisable.sol';
 import './mixins/MixinERC721Enumerable.sol';
 import './mixins/MixinFunds.sol';
@@ -29,25 +28,24 @@ import './mixins/MixinKeyGranterRole.sol';
  */
 contract PublicLock is
   IPublicLock,
+  Initializable,
   ERC165,
-  Ownable,
+  MixinLockManagerRole,
+  MixinKeyGranterRole,
   MixinSignatures,
   MixinFunds,
   MixinDisable,
-  MixinLockManagerRole,
   MixinLockCore,
   MixinKeys,
-  MixinKeyGranterRole,
   MixinLockMetadata,
   MixinERC721Enumerable,
   MixinGrantKeys,
   MixinPurchase,
-  MixinApproval,
   MixinTransfer,
   MixinRefunds
 {
   function initialize(
-    address _lockOwner,
+    address _lockCreator,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -56,17 +54,22 @@ contract PublicLock is
   ) public
     initializer()
   {
-    Ownable.initialize(_lockOwner);
     MixinFunds._initializeMixinFunds(_tokenAddress);
     MixinDisable._initializeMixinDisable();
-    MixinLockCore._initializeMixinLockCore(_lockOwner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
+    MixinLockCore._initializeMixinLockCore(_lockCreator, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRefunds._initializeMixinRefunds();
-    MixinLockManagerRole._initializeMixinLockManagerRole(_lockOwner);
-    MixinKeyGranterRole._initializeMixinKeyGranterRole(_lockOwner);
+    MixinLockManagerRole._initializeMixinLockManagerRole(_lockCreator);
+    MixinKeyGranterRole._initializeMixinKeyGranterRole(_lockCreator);
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
   }
+
+  /**
+   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
+   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
+   */
+  function() external payable {}
 }

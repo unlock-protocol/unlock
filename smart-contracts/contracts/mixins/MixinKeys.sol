@@ -1,18 +1,17 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
 
 /**
- * @title Mixin for managing `Key` data.
+ * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
+ * standard.
  * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
-  Ownable,
   MixinLockCore
 {
   using SafeMath for uint;
@@ -56,6 +55,36 @@ contract MixinKeys is
   // If keyManager == address(0) then the key owner is also the manager
   // Each key can have at most 1 keyManager.
   mapping (uint => address) public keyManagerOf;
+
+    // Keeping track of approved transfers
+  // This is a mapping of addresses which have approved
+  // the transfer of a key to another address where their key can be transferred
+  // Note: the approver may actually NOT have a key... and there can only
+  // be a single approved address
+  mapping (uint => address) private approved;
+
+    // Keeping track of approved operators for a given Key manager.
+  // This approves a given operator for all keys managed by the calling "keyManager"
+  // The caller may not currently be the keyManager for ANY keys.
+  // These approvals are never reset/revoked automatically, unlike "approved",
+  // which is reset on transfer.
+  mapping (address => mapping (address => bool)) private managerToOperatorApproved;
+
+    // Ensure that the caller is the keyManager of the key
+  // or that the caller has been approved
+  // for ownership of that key
+  modifier onlyKeyManagerOrApproved(
+    uint _tokenId
+  )
+  {
+    require(
+      _isKeyManager(_tokenId, msg.sender) ||
+      _isApproved(_tokenId, msg.sender) ||
+      isApprovedForAll(_ownerOf[_tokenId], msg.sender),
+      'ONLY_KEY_MANAGER_OR_APPROVED'
+    );
+    _;
+  }
 
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
@@ -219,7 +248,7 @@ contract MixinKeys is
   }
 
   /**
-  * @notice Update transfer and cancel rights for a given key
+  * @notice Public function for updating transfer and cancel rights for a given key
   * @param _tokenId The id of the key to assign rights for
   * @param _keyManager The address with the manager's rights for the given key.
   * Setting _keyManager to address(0) means the keyOwner is also the keyManager
@@ -235,22 +264,74 @@ contract MixinKeys is
       isLockManager(msg.sender),
       'UNAUTHORIZED_KEY_MANAGER_UPDATE'
     );
-    keyManagerOf[_tokenId] = _keyManager;
-    emit KeyManagerChanged(_tokenId, _keyManager);
+    _setKeyManagerOf(_tokenId, _keyManager);
   }
 
-  /**
-   * @notice This is used internally for resetting expired keys
-   * on transfer, sharing and purchase.
-   * @param _tokenId The key to reset
-   */
-  function _resetKeyManagerOf(
-    uint _tokenId
+  function _setKeyManagerOf(
+    uint _tokenId,
+    address _keyManager
   ) internal
   {
-    if(keyManagerOf[_tokenId] != address(0)) {
-      keyManagerOf[_tokenId] = address(0);
+    if(keyManagerOf[_tokenId] != _keyManager) {
+      keyManagerOf[_tokenId] = _keyManager;
+      _clearApproval(_tokenId);
       emit KeyManagerChanged(_tokenId, address(0));
+    }
+  }
+
+    /**
+   * This approves _approved to get ownership of _tokenId.
+   * Note: that since this is used for both purchase and transfer approvals
+   * the approved token may not exist.
+   */
+  function approve(
+    address _approved,
+    uint _tokenId
+  )
+    public
+    onlyIfAlive
+    onlyKeyManagerOrApproved(_tokenId)
+  {
+    require(msg.sender != _approved, 'APPROVE_SELF');
+
+    approved[_tokenId] = _approved;
+    emit Approval(_ownerOf[_tokenId], _approved, _tokenId);
+  }
+
+    /**
+   * @notice Get the approved address for a single NFT
+   * @dev Throws if `_tokenId` is not a valid NFT.
+   * @param _tokenId The NFT to find the approved address for
+   * @return The approved address for this NFT, or the zero address if there is none
+   */
+  function getApproved(
+    uint _tokenId
+  ) public view
+    isKey(_tokenId)
+    returns (address)
+  {
+    address approvedRecipient = approved[_tokenId];
+    return approvedRecipient;
+  }
+
+    /**
+   * @dev Tells whether an operator is approved by a given keyManager
+   * @param _owner owner address which you want to query the approval of
+   * @param _operator operator address which you want to query the approval of
+   * @return bool whether the given operator is approved by the given owner
+   */
+  function isApprovedForAll(
+    address _owner,
+    address _operator
+  ) public view
+    returns (bool)
+  {
+    uint tokenId = keyByOwner[_owner].tokenId;
+    address keyManager = keyManagerOf[tokenId];
+    if(keyManager == address(0)) {
+      return managerToOperatorApproved[_owner][_operator];
+    } else {
+      return managerToOperatorApproved[keyManager][_operator];
     }
   }
 
@@ -336,5 +417,47 @@ contract MixinKeys is
       key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
+  }
+
+    /**
+   * @dev Sets or unsets the approval of a given operator
+   * An operator is allowed to transfer all tokens of the sender on their behalf
+   * @param _to operator address to set the approval
+   * @param _approved representing the status of the approval to be set
+   */
+  function setApprovalForAll(
+    address _to,
+    bool _approved
+  ) public
+    onlyIfAlive
+  {
+    require(_to != msg.sender, 'APPROVE_SELF');
+    managerToOperatorApproved[msg.sender][_to] = _approved;
+    emit ApprovalForAll(msg.sender, _to, _approved);
+  }
+
+    /**
+   * @dev Checks if the given user is approved to transfer the tokenId.
+   */
+  function _isApproved(
+    uint _tokenId,
+    address _user
+  ) internal view
+    returns (bool)
+  {
+    return approved[_tokenId] == _user;
+  }
+
+    /**
+   * @dev Function to clear current approval of a given token ID
+   * @param _tokenId uint256 ID of the token to be transferred
+   */
+  function _clearApproval(
+    uint256 _tokenId
+  ) internal
+  {
+    if (approved[_tokenId] != address(0)) {
+      approved[_tokenId] = address(0);
+    }
   }
 }

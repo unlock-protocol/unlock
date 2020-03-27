@@ -250,19 +250,13 @@ export default class WalletService extends UnlockService {
     globalBaseTokenURI,
     callback
   ) {
-    const unlockContract = await this.getUnlockContract()
-
-    const transaction = await unlockContract.functions[
-      'configUnlock(address,string,string)'
-    ](publicLockTemplateAddress, globalTokenSymbol, globalBaseTokenURI, {
-      gasLimit: 200000, // TODO use better value (per version?)
-    })
-
-    if (callback) {
-      callback(null, transaction.hash)
-    }
-
-    return this.provider.waitForTransaction(transaction.hash)
+    const version = await this.unlockContractAbiVersion()
+    return version.configureUnlock.bind(this)(
+      publicLockTemplateAddress,
+      globalTokenSymbol,
+      globalBaseTokenURI,
+      callback
+    )
   }
 
   /**

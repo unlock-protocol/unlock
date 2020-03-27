@@ -1,4 +1,4 @@
-import sigUtil from 'eth-sig-util'
+import * as sigUtil from 'eth-sig-util'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'

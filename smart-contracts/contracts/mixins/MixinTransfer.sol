@@ -1,7 +1,7 @@
 pragma solidity 0.5.17;
 
+import './MixinLockManagerRole.sol';
 import './MixinDisable.sol';
-import './MixinApproval.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
@@ -18,10 +18,10 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
  */
 
 contract MixinTransfer is
+  MixinLockManagerRole,
   MixinFunds,
   MixinLockCore,
-  MixinKeys,
-  MixinApproval
+  MixinKeys
 {
   using SafeMath for uint;
   using Address for address;
@@ -92,7 +92,7 @@ contract MixinTransfer is
       );
     } else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      _resetKeyManagerOf(idTo);
+      _setKeyManagerOf(idTo, address(0));
     }
 
     // add time to new key
@@ -132,6 +132,8 @@ contract MixinTransfer is
     if (toKey.tokenId == 0) {
       toKey.tokenId = _tokenId;
       _recordOwner(_recipient, _tokenId);
+      // Clear any previous approvals
+      _clearApproval(_tokenId);
     }
 
     if (previousExpiration <= block.timestamp) {
@@ -141,7 +143,7 @@ contract MixinTransfer is
       toKey.tokenId = _tokenId;
 
       // Reset the key Manager to the key owner
-      _resetKeyManagerOf(_tokenId);
+      _setKeyManagerOf(_tokenId, address(0));
 
       _recordOwner(_recipient, _tokenId);
     } else {
@@ -156,9 +158,6 @@ contract MixinTransfer is
 
     // Set the tokenID to 0 for the previous owner to avoid duplicates
     fromKey.tokenId = 0;
-
-    // Clear any previous approvals
-    _clearApproval(_tokenId);
 
     // trigger event
     emit Transfer(
@@ -217,7 +216,7 @@ contract MixinTransfer is
     uint _transferFeeBasisPoints
   )
     external
-    onlyOwner
+    onlyLockManager
   {
     emit TransferFeeChanged(
       _transferFeeBasisPoints

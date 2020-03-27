@@ -1,5 +1,5 @@
 import request from 'supertest'
-import sigUtil from 'eth-sig-util'
+import * as sigUtil from 'eth-sig-util'
 
 const ethJsUtil = require('ethereumjs-util')
 const app = require('../../src/app')

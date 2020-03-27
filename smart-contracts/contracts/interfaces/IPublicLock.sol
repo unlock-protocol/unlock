@@ -16,7 +16,7 @@ contract IPublicLock
   /// Functions
 
   function initialize(
-    address _lockOwner,
+    address _lockCreator,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -25,9 +25,10 @@ contract IPublicLock
   ) external;
 
   /**
-   * @dev Never used directly
+   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
+   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
-  function initialize(address) external;
+  function() external payable;
 
   /**
    * @dev Never used directly
@@ -54,14 +55,14 @@ contract IPublicLock
 
   /**
   * @notice Used to disable lock before migrating keys and/or destroying contract.
-  * @dev Throws if called by other than the owner.
+  * @dev Throws if called by other than a lock manager.
   * @dev Throws if lock contract has already been disabled.
   */
   function disableLock() external;
 
   /**
-   * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
-   * @dev Throws if called by other than the owner or beneficiary
+   * @dev Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.
+   * @dev Throws if called by other than a lock manager or beneficiary
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
@@ -75,8 +76,8 @@ contract IPublicLock
   ) external;
 
   /**
-   * A function which lets the owner of the lock to change the price for future purchases.
-   * @dev Throws if called by other than owner
+   * A function which lets a Lock manager of the lock to change the price for future purchases.
+   * @dev Throws if called by other than a Lock manager
    * @dev Throws if lock has been disabled
    * @dev Throws if _tokenAddress is not a valid token
    * @param _keyPrice The new price to set for keys
@@ -86,9 +87,9 @@ contract IPublicLock
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
-   * A function which lets the owner of the lock update the beneficiary account,
+   * A function which lets a Lock manager update the beneficiary account,
    * which receives funds on withdrawal.
-   * @dev Throws if called by other than owner of beneficiary
+   * @dev Throws if called by other than a Lock manager or beneficiary
    * @dev Throws if _beneficiary is address(0)
    * @param _beneficiary The new address to set as the beneficiary
    */
@@ -148,18 +149,18 @@ contract IPublicLock
   function numberOfOwners() external view returns (uint);
 
   /**
-   * Allows the Lock owner to assign a descriptive name for this Lock.
+   * Allows a Lock manager to assign a descriptive name for this Lock.
    * @param _lockName The new name for the lock
-   * @dev Throws if called by other than the lock owner
+   * @dev Throws if called by other than a Lock manager
    */
   function updateLockName(
     string calldata _lockName
   ) external;
 
   /**
-   * Allows the Lock owner to assign a Symbol for this Lock.
+   * Allows a Lock manager to assign a Symbol for this Lock.
    * @param _lockSymbol The new Symbol for the lock
-   * @dev Throws if called by other than the lock owner
+   * @dev Throws if called by other than a Lock manager
    */
   function updateLockSymbol(
     string calldata _lockSymbol
@@ -174,8 +175,8 @@ contract IPublicLock
     returns(string memory);
 
     /**
-   * Allows the Lock owner to update the baseTokenURI for this Lock.
-   * @dev Throws if called by other than the lock owner
+   * Allows a Lock manager to update the baseTokenURI for this Lock.
+   * @dev Throws if called by other than a Lock manager
    * @param _baseTokenURI String representing the base of the URI for this lock.
    */
   function setBaseTokenURI(
@@ -195,7 +196,7 @@ contract IPublicLock
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a lock manager to add or remove an event hook
+   * @notice Allows a Lock manager to add or remove an event hook
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -203,9 +204,9 @@ contract IPublicLock
   ) external;
 
   /**
-   * Allows the Lock owner to give a collection of users a key with no charge.
+   * Allows a Lock manager to give a collection of users a key with no charge.
    * Each key may be assigned a different expiration date.
-   * @dev Throws if called by other than the lock-owner
+   * @dev Throws if called by other than a Lock manager
    * @param _recipients An array of receiving addresses
    * @param _expirationTimestamps An array of expiration Timestamps for the keys being granted
    */
@@ -223,7 +224,7 @@ contract IPublicLock
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
-  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
+  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
   * than keyPrice is approved for spending).
   */
@@ -246,8 +247,8 @@ contract IPublicLock
     returns (uint);
 
   /**
-   * Allow the Lock owner to change the transfer fee.
-   * @dev Throws if called by other than lock-owner
+   * Allow a Lock manager to change the transfer fee.
+   * @dev Throws if called by other than a Lock manager
    * @param _transferFeeBasisPoints The new transfer fee in basis-points(bps).
    * Ex: 200 bps = 2%
    */
@@ -270,10 +271,10 @@ contract IPublicLock
   ) external view returns (uint);
 
   /**
-   * @dev Invoked by the lock owner to expire the user's key and perform a refund and cancellation of the key
+   * @dev Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key
    * @param _keyOwner The key owner to whom we wish to send a refund to
    * @param amount The amount to refund the key-owner
-   * @dev Throws if called by other than owner
+   * @dev Throws if called by other than a Lock manager
    * @dev Throws if _keyOwner does not have a valid key
    */
   function expireAndRefundFor(
@@ -312,8 +313,8 @@ contract IPublicLock
   ) external;
 
   /**
-   * Allow the owner to change the refund penalty.
-   * @dev Throws if called by other than owner
+   * Allow a Lock manager to change the refund penalty.
+   * @dev Throws if called by other than a Lock manager
    * @param _freeTrialLength The new duration of free trials for this lock
    * @param _refundPenaltyBasisPoints The new refund penaly in basis-points(bps)
    */
@@ -423,16 +424,6 @@ contract IPublicLock
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
-  ///===================================================================
-
-  /// From Openzeppelin's Ownable.sol
-  function owner() external view returns (address );
-
-  function isOwner() external view returns (bool );
-
-  function renounceOwnership() external;
-
-  function transferOwnership(address newOwner) external;
   ///===================================================================
 
   /// From ERC165.sol

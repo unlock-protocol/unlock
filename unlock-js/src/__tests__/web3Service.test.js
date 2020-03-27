@@ -13,8 +13,9 @@ import v10 from '../v10'
 import v11 from '../v11'
 import v12 from '../v12'
 import v13 from '../v13'
+import v7 from '../v7'
 
-const supportedVersions = [v0, v01, v02, v10, v11, v12, v13]
+const supportedVersions = [v0, v01, v02, v10, v11, v12, v13, v7]
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const blockTime = 3
