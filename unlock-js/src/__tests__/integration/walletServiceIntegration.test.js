@@ -30,7 +30,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13', 'v7']
+  const versions = ['v0'] // ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13', 'v7']
   describe.each(versions)('%s', versionName => {
     let walletService
     let web3Service
@@ -173,6 +173,15 @@ describe('Wallet Service Integration', () => {
           expect(lock.currencyContractAddress).toEqual(
             lockParams.currencyContractAddress
           )
+        })
+
+        it('should have set the creator as a lock manager', async () => {
+          expect.assertions(1)
+          const isLockManager = await web3Service.isLockManager(
+            lockAddress,
+            accounts[0]
+          )
+          expect(isLockManager).toBe(true)
         })
 
         it('should have deployed a lock to the right beneficiary', () => {
