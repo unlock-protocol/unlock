@@ -30,7 +30,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v0'] // ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13', 'v7']
+  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13', 'v7']
   describe.each(versions)('%s', versionName => {
     let walletService
     let web3Service
