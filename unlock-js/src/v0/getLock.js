@@ -45,6 +45,10 @@ export default async function(address) {
   constantPromises.push(getBalance(), getBlockNumber())
 
   await Promise.all(constantPromises)
+
+  update.beneficiary = update.owner
+  delete update.owner
+
   // Once all lock attributes have been fetched
   this.emit('lock.updated', address, update)
   return update

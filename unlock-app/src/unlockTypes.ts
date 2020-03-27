@@ -1,6 +1,8 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
 
+import { Card } from '@stripe/stripe-js'
+
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
   KEY_PURCHASE = 'Key Purchase',
@@ -41,6 +43,7 @@ export interface Account {
   balance: string // TODO: Stricter balance type (enforce currency, precision)
   // emailAddress will be present when a user account is being used, but not otherwise
   emailAddress?: string
+  cards?: Card[]
 }
 
 export interface Network {

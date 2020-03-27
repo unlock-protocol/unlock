@@ -1,4 +1,10 @@
-import { reducer } from '../../hooks/useCheckoutStore'
+import React from 'react'
+import * as rtl from '@testing-library/react'
+import {
+  reducer,
+  CheckoutStoreProvider,
+  useCheckoutStore,
+} from '../../hooks/useCheckoutStore'
 import {
   setConfig,
   setShowingLogin,
@@ -90,6 +96,24 @@ describe('useCheckoutStore -- reducer', () => {
       expect.objectContaining({
         delayedPurchase: newDelayedPurchase,
       })
+    )
+  })
+})
+
+describe('useCheckoutStore -- CheckoutStoreProvider', () => {
+  it('renders and provides a store', () => {
+    expect.assertions(0)
+
+    const Consumer = () => {
+      useCheckoutStore()
+
+      return <div />
+    }
+
+    rtl.render(
+      <CheckoutStoreProvider>
+        <Consumer />
+      </CheckoutStoreProvider>
     )
   })
 })

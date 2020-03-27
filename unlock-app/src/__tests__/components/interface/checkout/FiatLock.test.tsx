@@ -11,6 +11,7 @@ import {
   setDelayedPurchase,
   setShowingMetadataForm,
 } from '../../../../utils/checkoutActions'
+import doNothing from '../../../../utils/doNothing'
 
 const lock = {
   name: 'lock',
@@ -40,11 +41,13 @@ describe('FiatLock', () => {
   let emitTransactionInfo: (info: TransactionInfo) => void
   let state: any
   let dispatch: jest.Mock<any, any>
+  let setShowingPaymentForm: jest.Mock<any, any>
   beforeEach(() => {
     purchaseKey = jest.fn().mockResolvedValue('')
     emitTransactionInfo = jest.fn()
     state = {}
     dispatch = jest.fn()
+    setShowingPaymentForm = jest.fn()
 
     jest
       .spyOn(CheckoutStoreModule, 'useCheckoutStore')
@@ -78,6 +81,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -102,6 +106,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         metadataRequired
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -119,6 +124,33 @@ describe('FiatLock', () => {
     expect(dispatch).toHaveBeenNthCalledWith(2, setShowingMetadataForm(true))
   })
 
+  it('delays the purchase and shows payment details form when credit card information is required', () => {
+    expect.assertions(2)
+
+    const { getByText } = rtl.render(
+      <FiatLock
+        lock={lock}
+        emitTransactionInfo={emitTransactionInfo}
+        activeKeys={[]}
+        accountAddress={accountAddress}
+        metadataRequired
+        formattedKeyPrice={formattedKeyPrice}
+        needToCollectPaymentDetails
+        setShowingPaymentForm={setShowingPaymentForm}
+      />
+    )
+
+    const validitySpan = getByText('Valid for')
+
+    rtl.fireEvent.click(validitySpan)
+
+    expect(setShowingPaymentForm).toHaveBeenCalledWith({
+      visible: true,
+      invokePurchase: expect.any(Function),
+    })
+    expect(dispatch).not.toHaveBeenCalled()
+  })
+
   it('does not purchase a key and set the purchasing address when there is already a purchase', () => {
     expect.assertions(2)
 
@@ -131,6 +163,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -154,6 +187,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -170,6 +204,7 @@ describe('FiatLock', () => {
         activeKeys={[activeKeyForAnotherLock]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -188,6 +223,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -215,6 +251,7 @@ describe('FiatLock', () => {
         activeKeys={[]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 
@@ -231,6 +268,7 @@ describe('FiatLock', () => {
         activeKeys={[activeKeyForThisLock]}
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
+        setShowingPaymentForm={doNothing}
       />
     )
 

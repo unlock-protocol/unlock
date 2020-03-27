@@ -8,7 +8,6 @@ interface WrapperProps {
   hideCheckout: (...args: any[]) => any
   allowClose: boolean
   bgColor?: string
-  icon?: string
 }
 
 interface WrapperStyleProps {
@@ -19,7 +18,6 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   children,
   hideCheckout,
   allowClose = true,
-  icon,
 }: React.PropsWithChildren<WrapperProps>) => {
   return (
     <Wrapper
@@ -38,9 +36,6 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
       ) : (
         ''
       )}
-      <header>
-        <Title>{icon && <Logo src={icon} />}</Title>
-      </header>
       {children}
       <CheckoutFooter />
     </Wrapper>
@@ -53,12 +48,12 @@ const CloseButton = styled(Close).attrs(() => ({
   className: 'closeButton',
 }))`
   position: absolute;
-  top: 24px;
-  right: 24px;
+  top: 12px;
+  right: 12px;
 `
 
 const Wrapper = styled.section`
-  padding: 10px 40px;
+  padding: 24px 40px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,15 +68,4 @@ width: 380px;
   ${Media.phone`
 width: 100%;
 `}
-`
-
-const Title = styled.h1`
-  font-size: 40px;
-  font-weight: 200;
-  vertical-align: middle;
-`
-
-const Logo = styled.img`
-  max-height: 47px;
-  max-width: 200px;
 `

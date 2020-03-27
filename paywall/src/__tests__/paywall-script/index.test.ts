@@ -1,6 +1,10 @@
 import { Paywall } from '../../paywall-script/index'
-import * as timeStampUtil from '../../utils/keyExpirationTimestampFor'
+import * as isUnlockedUtil from '../../utils/isUnlocked'
 import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
+
+declare let __ENVIRONMENT_VARIABLES__: any
+// eslint-disable-next-line no-undef
+const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
 
 const paywallConfig = {
   callToAction: {
@@ -51,53 +55,33 @@ describe('Paywall init script', () => {
   })
 
   describe('checkKeysAndLock', () => {
-    it('unlocks the page if some key expiration timestamp is in the future', async () => {
-      expect.assertions(1)
-      paywall.userAccountAddress = '0xtheaddress'
-      const futureTime = new Date().getTime() / 1000 + 50000
-      jest
-        .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
-        .mockResolvedValueOnce(futureTime)
+    it('should return without locking or unlocking if the account is not set', async () => {
+      expect.assertions(2)
+      paywall.userAccountAddress = undefined
 
       await paywall.checkKeysAndLock()
-
-      expect(paywall.unlockPage).toHaveBeenCalled()
+      expect(paywall.unlockPage).not.toHaveBeenCalled()
+      expect(paywall.lockPage).not.toHaveBeenCalled()
     })
 
-    describe('when all key expiration timestamps are in the past', () => {
-      beforeEach(() => {
-        paywall.userAccountAddress = '0xtheaddress'
-        const futureTime = new Date().getTime() / 1000 - 50000
-        jest
-          .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
-          .mockResolvedValueOnce(futureTime)
-      })
+    it('should call isUnlocked and unlockPage the page if it yields true', async () => {
+      expect.assertions(2)
+      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce(true)
+      paywall.userAccountAddress = '0xUser'
 
-      it('checks whether the we should be optimistic for any past and unlock if it yields true', async () => {
-        expect.assertions(2)
+      await paywall.checkKeysAndLock()
+      expect(paywall.unlockPage).toHaveBeenCalled()
+      expect(paywall.lockPage).not.toHaveBeenCalled()
+    })
 
-        jest
-          .spyOn(optimisticUnlockingUtils, 'optimisticUnlocking')
-          .mockResolvedValueOnce(true)
+    it('should call isUnlocked and lockPage the page if it yields false', async () => {
+      expect.assertions(2)
+      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce(false)
+      paywall.userAccountAddress = '0xUser'
 
-        await paywall.checkKeysAndLock()
-
-        expect(paywall.lockPage).not.toHaveBeenCalled()
-        expect(paywall.unlockPage).toHaveBeenCalled()
-      })
-
-      it('checks whether we should be optimistic for any past transaction and lock if it yields false', async () => {
-        expect.assertions(2)
-
-        jest
-          .spyOn(optimisticUnlockingUtils, 'optimisticUnlocking')
-          .mockResolvedValueOnce(false)
-
-        await paywall.checkKeysAndLock()
-
-        expect(paywall.lockPage).toHaveBeenCalled()
-        expect(paywall.unlockPage).not.toHaveBeenCalled()
-      })
+      await paywall.checkKeysAndLock()
+      expect(paywall.unlockPage).not.toHaveBeenCalled()
+      expect(paywall.lockPage).toHaveBeenCalled()
     })
   })
 
@@ -108,6 +92,7 @@ describe('Paywall init script', () => {
       jest
         .spyOn(optimisticUnlockingUtils, 'willUnlock')
         .mockResolvedValueOnce(true)
+
       paywall.unlockPage = jest.fn()
 
       await paywall.handleTransactionInfoEvent({
@@ -115,9 +100,11 @@ describe('Paywall init script', () => {
         lock: '0xlock',
       })
       expect(optimisticUnlockingUtils.willUnlock).toHaveBeenCalledWith(
+        readOnlyProvider,
         undefined,
         '0xlock',
-        '0xhash'
+        '0xhash',
+        true
       )
       expect(paywall.unlockPage).toHaveBeenCalled()
     })

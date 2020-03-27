@@ -19,7 +19,7 @@ contract('Lock / expireAndRefundFor', accounts => {
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const refundAmount = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  let lockOwner
+  const lockCreator = accounts[0]
 
   before(async () => {
     lock = locks.SECOND
@@ -30,7 +30,6 @@ contract('Lock / expireAndRefundFor', accounts => {
       })
     })
     await Promise.all(purchases)
-    lockOwner = await lock.owner.call()
   })
 
   describe('should cancel and refund when enough time remains', () => {
@@ -46,7 +45,7 @@ contract('Lock / expireAndRefundFor', accounts => {
         await web3.eth.getBalance(keyOwners[0])
       )
       txObj = await lock.expireAndRefundFor(keyOwners[0], refundAmount, {
-        from: lockOwner,
+        from: lockCreator,
       })
     })
 
@@ -81,7 +80,7 @@ contract('Lock / expireAndRefundFor', accounts => {
       )
     })
 
-    it("should increase the locks's balance by the keyPrice", async () => {
+    it("should increase the lock's balance by the keyPrice", async () => {
       const finalLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       ).minus(initialLockBalance)
@@ -99,7 +98,7 @@ contract('Lock / expireAndRefundFor', accounts => {
         lock.expireAndRefundFor(keyOwners[3], refundAmount, {
           from: keyOwners[3],
         }),
-        ''
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
 
@@ -108,17 +107,17 @@ contract('Lock / expireAndRefundFor', accounts => {
         lock.expireAndRefundFor(accounts[7], refundAmount, {
           from: keyOwners[3],
         }),
-        ''
+        'MixinLockManager: caller does not have the LockManager role'
       )
     })
 
     it('should fail if the Lock owner withdraws too much funds', async () => {
       await lock.withdraw(await lock.tokenAddress.call(), 0, {
-        from: lockOwner,
+        from: lockCreator,
       })
       await reverts(
         lock.expireAndRefundFor(keyOwners[3], refundAmount, {
-          from: lockOwner,
+          from: lockCreator,
         }),
         ''
       )
@@ -126,11 +125,11 @@ contract('Lock / expireAndRefundFor', accounts => {
 
     it('the key is expired', async () => {
       await lock.expireAndRefundFor(keyOwners[3], 0, {
-        from: lockOwner,
+        from: lockCreator,
       })
       await reverts(
         lock.expireAndRefundFor(keyOwners[3], refundAmount, {
-          from: lockOwner,
+          from: lockCreator,
         }),
         'KEY_NOT_VALID'
       )
@@ -139,7 +138,7 @@ contract('Lock / expireAndRefundFor', accounts => {
     it('the owner does not have a key', async () => {
       await reverts(
         lock.expireAndRefundFor(accounts[7], refundAmount, {
-          from: lockOwner,
+          from: lockCreator,
         }),
         'KEY_NOT_VALID'
       )

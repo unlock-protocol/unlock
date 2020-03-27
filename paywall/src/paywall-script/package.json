@@ -1,0 +1,18 @@
+{
+  "name": "@unlock-protocol/paywall",
+  "version": "0.0.2",
+  "module": "dist/module.js",
+  "main": "dist/module.js",
+  "types": "module.d.ts",
+  "scripts": {
+    "build": "webpack --mode=production --config webpack.config.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11"
+  },
+  "dependencies": {
+    "postmate": "1.5.2"
+  }
+}

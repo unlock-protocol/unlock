@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
-import LogInSignUp from '../interface/LogInSignUp'
+import { CheckoutLoginSignup } from '../interface/checkout/CheckoutLoginSignup'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import { FiatLocks } from '../interface/checkout/FiatLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { MetadataForm } from '../interface/checkout/MetadataForm'
+import { CheckoutErrors } from '../interface/checkout/CheckoutErrors'
 import { LogInButton } from '../interface/checkout/LogInButton'
 import {
   Account as AccountType,
@@ -31,10 +32,13 @@ import {
   setShowingMetadataForm,
 } from '../../utils/checkoutActions'
 import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
+import { UnlockError } from '../../utils/Error'
+import { resetError } from '../../actions/error'
 
 interface CheckoutContentProps {
   account: AccountType
   configFromSearch?: PaywallConfig
+  errors: UnlockError[]
 }
 
 const defaultLockAddresses: string[] = []
@@ -43,12 +47,14 @@ const defaultLockAddresses: string[] = []
 export const CheckoutContent = ({
   account,
   configFromSearch,
+  errors,
 }: CheckoutContentProps) => {
   return (
     <CheckoutStoreProvider>
       <CheckoutContentInner
         account={account}
         configFromSearch={configFromSearch}
+        errors={errors}
       />
     </CheckoutStoreProvider>
   )
@@ -57,7 +63,9 @@ export const CheckoutContent = ({
 export const CheckoutContentInner = ({
   account,
   configFromSearch,
+  errors,
 }: CheckoutContentProps) => {
+  const reduxDispatch = useDispatch()
   const { state, dispatch } = useCheckoutStore()
   const { setUserMetadata } = useSetUserMetadata()
   const { showingLogin, config, showingMetadataForm, delayedPurchase } = state
@@ -120,7 +128,11 @@ export const CheckoutContentInner = ({
                 <img alt="Publisher Icon" src={config.icon} />
               )}
               <p>{config ? config.callToAction.default : ''}</p>
-              {!account && showingLogin && <LogInSignUp login embedded />}
+              <CheckoutErrors
+                errors={errors}
+                resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
+              />
+              {!account && showingLogin && <CheckoutLoginSignup login />}
               {!account && !showingLogin && (
                 <>
                   <NotLoggedInLocks lockAddresses={lockAddresses} />
@@ -144,6 +156,7 @@ export const CheckoutContentInner = ({
                   lockAddresses={lockAddresses}
                   accountAddress={account.address}
                   emitTransactionInfo={emitTransactionInfo}
+                  cards={account.cards || []}
                 />
               )}
             </>
@@ -157,16 +170,17 @@ export const CheckoutContentInner = ({
 interface ReduxState {
   account: AccountType
   router: Router
+  errors: UnlockError[]
 }
 
-export const mapStateToProps = ({ account, router }: ReduxState) => {
+export const mapStateToProps = ({ account, router, errors }: ReduxState) => {
   const search = queryString.parse(router.location.search)
-
   const configFromSearch = getConfigFromSearch(search)
 
   return {
     account,
     configFromSearch,
+    errors,
   }
 }
 

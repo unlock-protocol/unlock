@@ -1,5 +1,14 @@
 # Changes
 
+# 0.9.2
+- Adding isLockManager function to web3Service
+
+# 0.9.1
+- Replaced owner with beneficiary for locks
+
+# 0.9
+- Adding support for v7 of PublicLock and Unlock smart contracts
+
 # 0.8.7
 - Updated typescript definitions
 
