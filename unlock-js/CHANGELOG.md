@@ -1,5 +1,8 @@
 # Changes
 
+# 0.9.3
+- Exporting type definition for isLockManager
+
 # 0.9.2
 - Adding isLockManager function to web3Service
 
