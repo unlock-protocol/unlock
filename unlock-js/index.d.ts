@@ -59,6 +59,7 @@ export class Web3Service extends EventEmitter {
     tokenAddress: string,
     accountAddress: string
   ) => Promise<string>;
+  isLockManager: (lock: string, manager: string) => Promise<boolean>;
 }
 
 interface SetKeyMetadataParams {
