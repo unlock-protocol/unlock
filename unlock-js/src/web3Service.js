@@ -617,6 +617,16 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Refresh the lock's data.
+   * We use the block version
+   * @return Promise<Lock>
+   */
+  async isLockManager(lock, manager) {
+    const version = await this.lockContractAbiVersion(lock)
+    return version.isLockManager.bind(this)(lock, manager)
+  }
+
+  /**
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
