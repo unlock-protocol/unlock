@@ -6,7 +6,7 @@ const nock = require('nock')
 const nockBack = require('nock').back
 const models = require('../../src/models')
 
-const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
+const lockAddress = '0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc'
 const unlockContractAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
 const stripeToken = 'sk_test_token'
 const web3HostURL = 'http://0.0.0.0:8545'
@@ -192,15 +192,15 @@ describe('PaymentProcessor', () => {
       const { nockDone } = await nockBack('price.json')
 
       /**
-       * key price:          1
+       * key price:        100
        * gas fee:            0
        * unlockServiceFee:  50
-       * stripe percentage:  2 (51 * 0.029, rounded up)
-       * stripe flat fee:   30
+       * stripe percentage:  5 (150 * 0.029, rounded up)
+       * stripe flat fee:    30
        *                   ---
-       * total:             83
+       * total:            185
        */
-      const expectedKeyPrice = 83
+      const expectedKeyPrice = 185
       expect(await paymentProcessor.price(lockAddress)).toEqual(
         expectedKeyPrice
       )
