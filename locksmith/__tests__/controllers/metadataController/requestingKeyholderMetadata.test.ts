@@ -60,17 +60,15 @@ jest.mock('../../../src/utils/keyData', () => {
   })
 })
 
-const mockOnChainLockOwnership = {
-  owner: jest.fn(() => {
-    return Promise.resolve(lockOwningAddress)
-  }),
+const mockWeb3Service = {
+  isLockManager: jest.fn(() => Promise.resolve(false)),
 }
 
-jest.mock('../../../src/utils/lockData', () => {
-  return function() {
-    return mockOnChainLockOwnership
-  }
-})
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+}))
 
 const mockKeyHoldersByLock = {
   getKeyHoldingAddresses: jest.fn(() => {
@@ -88,9 +86,7 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
 describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate({ cascade: true })
-    mockOnChainLockOwnership.owner = jest.fn(() => {
-      return Promise.resolve(lockOwningAddress)
-    })
+    mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
   })
 
   describe('requesting key holder metadata', () => {
@@ -112,6 +108,8 @@ describe('Metadata Controller', () => {
     describe('when the lock owner makes a signed request', () => {
       it('returns the metadata', async () => {
         expect.assertions(2)
+
+        mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
 
         const typedData = generateTypedData({
           LockMetaData: {
@@ -142,7 +140,7 @@ describe('Metadata Controller', () => {
     })
 
     describe('when an unsigned request is received', () => {
-      it.skip('returns unauthorized', async () => {
+      it('returns unauthorized', async () => {
         expect.assertions(1)
         const response = await request(app)
           .get(`/api/key/${lockAddress}/keyHolderMetadata`)

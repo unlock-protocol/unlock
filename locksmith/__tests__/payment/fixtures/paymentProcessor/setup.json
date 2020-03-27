@@ -19,11 +19,12 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Fri, 04 Oct 2019 20:25:43 GMT",
+            "Fri, 27 Mar 2020 18:59:55 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
             "chunked"
-        ]
+        ],
+        "responseIsBinary": false
     }
 ]
