@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
-// The IPublicLock interface allows us to make calls to the Lock
-import 'unlock-abi-1-3/IPublicLockV6.sol';
+// The IPublicLockV7 interface allows us to make calls to the Lock
+import 'unlock-abi-7/IPublicLockV7.sol';
 
 
 /**
@@ -10,11 +10,11 @@ import 'unlock-abi-1-3/IPublicLockV6.sol';
 contract PaidOnlyFeature
 {
   // The address of the Lock for this content
-  IPublicLock public lock;
+  IPublicLockV7 public lock;
 
   // If the Lock's contract address is known when this is deployed
   // we can assign it in the constructor.
-  constructor(IPublicLock _lockAddress) public
+  constructor(IPublicLockV7 _lockAddress) public
   {
     lock = _lockAddress;
   }

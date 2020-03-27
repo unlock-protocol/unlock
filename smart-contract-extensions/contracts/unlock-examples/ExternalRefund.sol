@@ -1,12 +1,12 @@
 pragma solidity ^0.5.0;
 
-import 'unlock-abi-1-3/IPublicLockV6.sol';
+import 'unlock-abi-7/IPublicLockV7.sol';
 import '@openzeppelin/contracts/access/roles/WhitelistedRole.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract ExternalRefund is WhitelistedRole
 {
-  IPublicLock public lock;
+  IPublicLockV7 public lock;
   mapping(address => bool) public refundee;
   uint256 public refundAmount;
   IERC20 public baseToken;
@@ -17,7 +17,7 @@ contract ExternalRefund is WhitelistedRole
     uint _amount
   );
 
-  constructor(IPublicLock _lockAddress, uint256 _refundAmount, IERC20 _token) public
+  constructor(IPublicLockV7 _lockAddress, uint256 _refundAmount, IERC20 _token) public
   {
     lock = _lockAddress;
     refundAmount = _refundAmount;

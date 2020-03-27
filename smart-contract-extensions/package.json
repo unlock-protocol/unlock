@@ -57,6 +57,7 @@
     "solidity-coverage": "0.7.2",
     "solium": "1.2.5",
     "truffle": "5.1.16",
-    "truffle-assertions": "0.9.2"
+    "truffle-assertions": "0.9.2",
+    "unlock-abi-7": "1.0.2"
   }
 }
