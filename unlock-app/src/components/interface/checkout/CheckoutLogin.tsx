@@ -2,7 +2,14 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Label, Input, Button, ErrorButton, LoadingButton } from './FormStyles'
+import {
+  Label,
+  Input,
+  Button,
+  ErrorButton,
+  LoadingButton,
+  LinkButton,
+} from './FormStyles'
 import { Ellipsis } from './LockVariations'
 import { resetError } from '../../../actions/error'
 import { loginCredentials, Credentials } from '../../../actions/user'
@@ -12,9 +19,15 @@ interface Props {
   errors: WarningError[]
   close: (e: WarningError) => void
   loginCredentials: (credentials: Credentials) => void
+  toggleSignup: () => void
 }
 
-export const CheckoutLogin = ({ errors, close, loginCredentials }: Props) => {
+export const CheckoutLogin = ({
+  errors,
+  close,
+  loginCredentials,
+  toggleSignup,
+}: Props) => {
   const { register, handleSubmit } = useForm()
   const [loading, setLoading] = useState(false)
 
@@ -58,41 +71,43 @@ export const CheckoutLogin = ({ errors, close, loginCredentials }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h4>Log In</h4>
-      <Label>Email Address</Label>
-      <Input name="emailAddress" ref={register({ required: true })} />
-      <Label>Password</Label>
+      <Label htmlFor="emailAddress">Email Address</Label>
+      <Input
+        name="emailAddress"
+        id="emailAddress"
+        ref={register({ required: true })}
+      />
+      <Label htmlFor="password">Password</Label>
       <Input
         name="password"
+        id="password"
         type="password"
         ref={register({ required: true })}
       />
       {getButton()}
+      <p>
+        Need to create an account?{' '}
+        <LinkButton onClick={toggleSignup}>Sign up here</LinkButton>.
+      </p>
     </form>
   )
 }
 
-export const mapDispatchToProps = (dispatch: any) => ({
-  loginCredentials: ({ emailAddress, password }: Credentials) =>
-    dispatch(loginCredentials({ emailAddress, password })),
-  close: (e: WarningError) => {
-    dispatch(resetError(e))
-  },
-})
-
 interface ReduxState {
-  account?: Account
   errors: UnlockError[]
 }
 
-export const mapStateToProps = ({ account, errors }: ReduxState) => {
+export const mapStateToProps = ({ errors }: ReduxState) => {
   const logInWarnings = errors.filter(
     e => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
   )
 
   return {
-    account,
     errors: logInWarnings as WarningError[],
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CheckoutLogin)
+export default connect(mapStateToProps, {
+  loginCredentials,
+  close: resetError,
+})(CheckoutLogin)

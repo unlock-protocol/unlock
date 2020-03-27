@@ -2,14 +2,15 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Label, Input, Button } from './FormStyles'
+import { Label, Input, Button, LinkButton } from './FormStyles'
 import { signupEmail } from '../../../actions/user'
 
 interface Props {
   signupEmail: (email: string) => any
+  toggleSignup: () => void
 }
 
-export const CheckoutSignup = ({ signupEmail }: Props) => {
+export const CheckoutSignup = ({ signupEmail, toggleSignup }: Props) => {
   const { register, handleSubmit } = useForm()
   const [submitted, setSubmitted] = useState(false)
 
@@ -25,7 +26,8 @@ export const CheckoutSignup = ({ signupEmail }: Props) => {
         <h4>Please check your email</h4>
         <p>We need to confirm your email before proceeding.</p>
         <p>
-          Once you&#39;ve created your account you can <a>log in here</a>.
+          Once you&#39;ve created your account you can{' '}
+          <LinkButton onClick={toggleSignup}>log in here</LinkButton>.
         </p>
       </div>
     )
@@ -37,6 +39,10 @@ export const CheckoutSignup = ({ signupEmail }: Props) => {
       <Label>Email Address</Label>
       <Input name="emailAddress" ref={register({ required: true })} />
       <Button type="submit">Sign Up</Button>
+      <p>
+        Already have an account?{' '}
+        <LinkButton onClick={toggleSignup}>Log in here</LinkButton>.
+      </p>
     </form>
   )
 }

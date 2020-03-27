@@ -60,3 +60,7 @@ export const LoadingButton = styled(Button)`
     margin: 0 auto;
   }
 `
+
+export const LinkButton = styled.a`
+  cursor: pointer;
+`

@@ -5,7 +5,7 @@ import { CheckoutContainer } from '../../../components/interface/checkout/Checko
 import CheckoutWrapper from '../../../components/interface/checkout/CheckoutWrapper'
 import doNothing from '../../../utils/doNothing'
 
-storiesOf('CheckoutLogin', module)
+storiesOf('CheckoutSignup', module)
   .addDecorator(getStory => {
     return (
       <CheckoutContainer close={doNothing}>
@@ -16,5 +16,5 @@ storiesOf('CheckoutLogin', module)
     )
   })
   .add('Default', () => {
-    return <CheckoutSignup signupEmail={doNothing} />
+    return <CheckoutSignup signupEmail={doNothing} toggleSignup={doNothing} />
   })

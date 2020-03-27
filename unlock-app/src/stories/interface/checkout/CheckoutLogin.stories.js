@@ -21,6 +21,7 @@ storiesOf('CheckoutLogin', module)
         errors={[]}
         close={doNothing}
         loginCredentials={doNothing}
+        toggleSignup={doNothing}
       />
     )
   })
@@ -30,6 +31,7 @@ storiesOf('CheckoutLogin', module)
         errors={[{}, {}]}
         close={doNothing}
         loginCredentials={doNothing}
+        toggleSignup={doNothing}
       />
     )
   })

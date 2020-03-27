@@ -4,7 +4,7 @@ import Head from 'next/head'
 import queryString from 'query-string'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
-import LogInSignUp from '../interface/user-account/LogInSignUp'
+import { CheckoutLoginSignup } from '../interface/checkout/CheckoutLoginSignup'
 import { Locks } from '../interface/checkout/Locks'
 import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import { FiatLocks } from '../interface/checkout/FiatLocks'
@@ -132,7 +132,7 @@ export const CheckoutContentInner = ({
                 errors={errors}
                 resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
               />
-              {!account && showingLogin && <LogInSignUp login />}
+              {!account && showingLogin && <CheckoutLoginSignup login />}
               {!account && !showingLogin && (
                 <>
                   <NotLoggedInLocks lockAddresses={lockAddresses} />
