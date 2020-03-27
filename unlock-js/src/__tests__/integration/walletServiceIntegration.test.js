@@ -175,6 +175,15 @@ describe('Wallet Service Integration', () => {
           )
         })
 
+        it('should have set the creator as a lock manager', async () => {
+          expect.assertions(1)
+          const isLockManager = await web3Service.isLockManager(
+            lockAddress,
+            accounts[0]
+          )
+          expect(isLockManager).toBe(true)
+        })
+
         it('should have deployed a lock to the right beneficiary', () => {
           expect.assertions(1)
           expect(lock.beneficiary).toEqual(accounts[0]) // This is the default in walletService
