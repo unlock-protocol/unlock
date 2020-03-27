@@ -175,9 +175,9 @@ describe('Wallet Service Integration', () => {
           )
         })
 
-        it('should have deployed a lock to the right owner', () => {
+        it('should have deployed a lock to the right beneficiary', () => {
           expect.assertions(1)
-          expect(lock.owner).toEqual(accounts[0]) // This is the default in walletService
+          expect(lock.beneficiary).toEqual(accounts[0]) // This is the default in walletService
         })
 
         describe('updateKeyPrice', () => {
@@ -354,7 +354,7 @@ describe('Wallet Service Integration', () => {
               )
               // Get the ether balance of the beneficiary before the withdrawal
               userBalanceBefore = await web3Service.getAddressBalance(
-                lock.owner
+                lock.beneficiary
               )
             } else {
               // Get the erc20 balance of the lock before the purchase
@@ -365,7 +365,7 @@ describe('Wallet Service Integration', () => {
               // Get the erc20 balance of the user before the purchase
               userBalanceBefore = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lock.owner
+                lock.beneficiary
               )
             }
 
@@ -415,7 +415,7 @@ describe('Wallet Service Integration', () => {
             if (lock.currencyContractAddress === null) {
               // Get the ether balance of the beneficiary before the withdrawal
               beneficiaryBalanceAfter = await web3Service.getAddressBalance(
-                lock.owner
+                lock.beneficiary
               )
               // We should take gas paid into account... so the amount is larger than before
               // but smaller than the sum of the previous balance and the amount in the lock
@@ -426,7 +426,7 @@ describe('Wallet Service Integration', () => {
               // Get the erc20 balance of the user before the purchase
               beneficiaryBalanceAfter = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lock.owner
+                lock.beneficiary
               )
               expect(parseFloat(beneficiaryBalanceAfter)).toEqual(
                 parseFloat(userBalanceBefore) + parseFloat(withdrawnAmount)

@@ -23,7 +23,7 @@ export default async function(address) {
       }
       return utils.toNumber(value)
     },
-    owner: x => x,
+    beneficiary: x => x,
     totalSupply: parseInt,
     tokenAddress: x => x,
     publicLockVersion: parseInt,

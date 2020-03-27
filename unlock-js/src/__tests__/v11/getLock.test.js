@@ -109,7 +109,7 @@ describe('v11', () => {
       )
 
       nock.ethCallAndYield(
-        contractMethods.owner.encode([]),
+        contractMethods.beneficiary.encode([]),
         checksumLockAddress,
         resultEncoder.encode(['address'], [owner])
       )
@@ -158,7 +158,7 @@ describe('v11', () => {
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
-          owner,
+          beneficiary: owner,
           outstandingKeys: 17,
           asOf: 1337,
           currencyContractAddress: null,
@@ -195,7 +195,7 @@ describe('v11', () => {
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
           currencySymbol: 'SYMBOL',
-          owner,
+          beneficiary: owner,
           outstandingKeys: 17,
           asOf: 1337,
           currencyContractAddress: erc20ContractAddress,
@@ -239,7 +239,7 @@ describe('v11', () => {
         keyPrice: '0.01',
         maxNumberOfKeys: -1,
         outstandingKeys: 17,
-        owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+        beneficiary: owner,
         currencyContractAddress: null,
         publicLockVersion: 4,
       })

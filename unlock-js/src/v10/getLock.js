@@ -84,6 +84,10 @@ export default async function(address) {
   }
   delete update.tokenAddress
 
+  // beneficiary is added later but it is the owner originally
+  update.beneficiary = update.owner
+  delete update.owner
+
   // Once all lock attributes have been fetched
   this.emit('lock.updated', address, update)
   return update
