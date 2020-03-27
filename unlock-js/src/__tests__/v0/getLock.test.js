@@ -54,7 +54,7 @@ describe('v0', () => {
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
-          owner,
+          beneficiary: owner,
           outstandingKeys: 17,
           asOf: 1337,
           name: null,
@@ -86,7 +86,7 @@ describe('v0', () => {
         keyPrice: '0.01',
         maxNumberOfKeys: -1,
         outstandingKeys: 17,
-        owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+        beneficiary: owner,
         currencyContractAddress: null,
         name: null,
       })
