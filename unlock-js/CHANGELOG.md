@@ -1,5 +1,8 @@
 # Changes
 
+# 0.9.2
+- Adding isLockManager function to web3Service
+
 # 0.9.1
 - Replaced owner with beneficiary for locks
 
