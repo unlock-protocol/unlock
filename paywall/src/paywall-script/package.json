@@ -1,7 +1,7 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.0.1",
-  "module": "module.js",
+  "version": "0.0.2",
+  "module": "dist/module.js",
   "main": "dist/module.js",
   "types": "module.d.ts",
   "scripts": {
@@ -13,7 +13,6 @@
     "webpack-cli": "3.3.11"
   },
   "dependencies": {
-    "esm": "3.2.25",
     "postmate": "1.5.2"
   }
 }
