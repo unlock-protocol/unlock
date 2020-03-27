@@ -7,16 +7,6 @@ export default class LockData {
     this.provider = new ethers.providers.JsonRpcProvider(provider)
   }
 
-  async owner(address: string) {
-    const lock = new ethers.Contract(
-      address,
-      ['function owner() constant view returns (address)'],
-      this.provider
-    )
-
-    return await lock.owner()
-  }
-
   async getHasValidKey(lockAddress: string, keyHolder: string) {
     const lock = new ethers.Contract(
       lockAddress,

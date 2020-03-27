@@ -13,17 +13,15 @@ const privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
-const mockOnChainLockOwnership = {
-  owner: jest.fn(() => {
-    return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
-  }),
+const mockWeb3Service = {
+  isLockManager: jest.fn(() => Promise.resolve(false)),
 }
 
-jest.mock('../../../src/utils/lockData', () => {
-  return function() {
-    return mockOnChainLockOwnership
-  }
-})
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+}))
 
 const mockKeyHoldersByLock = {
   getKeyHoldingAddresses: jest.fn(() => {
@@ -81,11 +79,7 @@ describe('updateDefaults', () => {
 
   describe('when the signee does not own the lock', () => {
     beforeEach(() => {
-      mockOnChainLockOwnership.owner = jest.fn(() => {
-        return Promise.resolve(
-          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdfegdrtfeghr'
-        )
-      })
+      mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
     })
 
     it('returns unauthorized', async () => {
@@ -106,9 +100,7 @@ describe('updateDefaults', () => {
 
   describe('when the signee owns the lock', () => {
     beforeAll(() => {
-      mockOnChainLockOwnership.owner = jest.fn(() => {
-        return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
-      })
+      mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
     })
 
     it('stores the provided lock metadata', async () => {
