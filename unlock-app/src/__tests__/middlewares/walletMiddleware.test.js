@@ -530,7 +530,7 @@ describe('Wallet middleware', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: lock.maxNumberOfKeys,
           name: lock.name,
-          owner: lock.owner,
+          owner: account.address,
         })
 
         expect(next).toHaveBeenCalledWith(action)

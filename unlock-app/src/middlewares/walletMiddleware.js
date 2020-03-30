@@ -191,7 +191,7 @@ const walletMiddleware = (config, walletService) => {
               expirationDuration: action.lock.expirationDuration,
               keyPrice: action.lock.keyPrice,
               maxNumberOfKeys: action.lock.maxNumberOfKeys,
-              owner: action.lock.owner,
+              owner: getState().account.address,
               name: action.lock.name,
               currencyContractAddress: action.lock.currencyContractAddress,
             })

@@ -322,7 +322,7 @@ describe('Lock middleware', () => {
 
       invoke(action)
       expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(
-        lock.owner,
+        account.address,
         lock
       )
       expect(next).toHaveBeenCalledWith(action)
