@@ -133,7 +133,7 @@ export const ValidKey = ({
   const walletService: WalletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
 
-  const { isLockManager } = useIsLockManager(
+  const { isLockManager, loading: isLockManagerLoading } = useIsLockManager(
     ownedKey.lock.address,
     viewer || ''
   )
@@ -161,7 +161,7 @@ export const ValidKey = ({
     (Date.now() - signatureTimestamp) / 1000
   )
 
-  if (loading) {
+  if (loading || isLockManagerLoading) {
     return <Loading />
   }
 
