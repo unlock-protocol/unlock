@@ -49,7 +49,6 @@ export function getWalletService(listeners: { [key: string]: Function }) {
     setKeyMetadata: jest.fn(),
     setUserMetadata: jest.fn(),
     getKeyMetadata: jest.fn(),
-    isLockManager: jest.fn(),
   }
   return walletService
 }
@@ -83,6 +82,7 @@ export function getWeb3Service(listeners: { [key: string]: Function }) {
     },
     eventNames: jest.fn(),
     listenerCount: jest.fn(),
+    isLockManager: jest.fn(),
   }
   return web3Service
 }
