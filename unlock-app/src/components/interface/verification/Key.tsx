@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { WalletService } from '@unlock-protocol/unlock-js'
 import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
 import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
 import { pingPoap } from '../../../utils/poap'
@@ -13,6 +14,7 @@ import { ActionButton } from '../buttons/ActionButton'
 import { ConfigContext } from '../../../utils/withConfig'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import Loading from '../Loading'
+import useIsLockManager from '../../../hooks/useIsLockManager'
 
 /**
  * Shows an invalid key. Since we cannot trust any of the data, we don't show any
@@ -128,18 +130,20 @@ export const ValidKey = ({
   viewer,
   signature,
 }: ValidKeyProps) => {
-  const walletService = useContext(WalletServiceContext)
+  const walletService: WalletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
 
-  // Let's get metadata if the viewer is the lock owner
-  const viewerIsLockOwner =
-    !!viewer && viewer.toLowerCase() === ownedKey.lock.owner.toLowerCase()
+  const { isLockManager, loading: isLockManagerLoading } = useIsLockManager(
+    ownedKey.lock.address,
+    viewer || ''
+  )
+
   const { loading, metadata, error: getMetadataForError } = useGetMetadataFor(
     walletService,
     config,
     ownedKey.lock.address,
     ownedKey.keyId,
-    viewerIsLockOwner
+    isLockManager
   )
 
   const {
@@ -157,7 +161,7 @@ export const ValidKey = ({
     (Date.now() - signatureTimestamp) / 1000
   )
 
-  if (loading) {
+  if (loading || isLockManagerLoading) {
     return <Loading />
   }
 
@@ -168,7 +172,7 @@ export const ValidKey = ({
 
   return (
     <ValidKeyWithMetadata
-      viewerIsLockOwner={viewerIsLockOwner}
+      viewerIsLockOwner={isLockManager}
       ownedKey={ownedKey}
       timeElapsedSinceSignature={durationsAsTextFromSeconds(
         secondsElapsedFromSignature

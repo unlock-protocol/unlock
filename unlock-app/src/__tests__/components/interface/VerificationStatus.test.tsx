@@ -17,6 +17,10 @@ jest.mock('../../../utils/signatures', () => {
   }
 })
 
+jest.mock('../../../hooks/useIsLockManager', () => {
+  return jest.fn().mockImplementation(() => ({ isLockManager: true }))
+})
+
 const accountAddress = '0xdeadbeef'
 const account = {
   address: accountAddress,
