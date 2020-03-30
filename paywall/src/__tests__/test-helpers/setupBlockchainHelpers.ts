@@ -82,6 +82,7 @@ export function getWeb3Service(listeners: { [key: string]: Function }) {
     },
     eventNames: jest.fn(),
     listenerCount: jest.fn(),
+    isLockManager: jest.fn(),
   }
   return web3Service
 }
