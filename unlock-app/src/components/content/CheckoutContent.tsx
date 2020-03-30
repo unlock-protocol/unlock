@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import styled from 'styled-components'
 import { connect, useDispatch } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
@@ -125,7 +126,7 @@ export const CheckoutContentInner = ({
           {!showingMetadataForm && (
             <>
               {config && config.icon && (
-                <img alt="Publisher Icon" src={config.icon} />
+                <PaywallLogo alt="Publisher Icon" src={config.icon} />
               )}
               <p>{config ? config.callToAction.default : ''}</p>
               <CheckoutErrors
@@ -185,3 +186,8 @@ export const mapStateToProps = ({ account, router, errors }: ReduxState) => {
 }
 
 export default connect(mapStateToProps)(CheckoutContent)
+
+const PaywallLogo = styled.img`
+  max-width: 200px;
+  align-self: start;
+`
