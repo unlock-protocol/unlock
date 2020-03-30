@@ -196,7 +196,7 @@ export const useLocks = owner => {
         expirationDuration: lock.expirationDuration,
         keyPrice: lock.keyPrice,
         maxNumberOfKeys: lock.maxNumberOfKeys,
-        owner: lock.owner,
+        owner,
         name: lock.name,
         currencyContractAddress: lock.currencyContractAddress,
       },

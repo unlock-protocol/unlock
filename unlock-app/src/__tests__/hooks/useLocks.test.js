@@ -331,7 +331,7 @@ describe('useLocks', () => {
           expirationDuration: lock.expirationDuration,
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: lock.maxNumberOfKeys,
-          owner: lock.owner,
+          owner: ownerAddress,
           name: lock.name,
           currencyContractAddress: lock.currencyContractAddress,
         },
