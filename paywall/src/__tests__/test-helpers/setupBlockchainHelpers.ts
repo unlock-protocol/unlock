@@ -49,6 +49,7 @@ export function getWalletService(listeners: { [key: string]: Function }) {
     setKeyMetadata: jest.fn(),
     setUserMetadata: jest.fn(),
     getKeyMetadata: jest.fn(),
+    isLockManager: jest.fn(),
   }
   return walletService
 }
