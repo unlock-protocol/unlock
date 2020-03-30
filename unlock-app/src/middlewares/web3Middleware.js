@@ -88,7 +88,7 @@ const web3Middleware = web3Service => {
 
         if (action.type === CREATE_LOCK && !action.lock.address) {
           web3Service
-            .generateLockAddress(action.lock.owner, action.lock)
+            .generateLockAddress(getState().account.address, action.lock)
             .then(address => {
               action.lock.address = address
               dispatch(createLock(action.lock))
