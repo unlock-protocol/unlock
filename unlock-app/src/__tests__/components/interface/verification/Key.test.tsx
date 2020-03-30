@@ -30,6 +30,8 @@ jest.mock('../../../../hooks/useMarkAsCheckedIn.js', () => {
 
 jest.mock('../../../../utils/poap')
 
+const ownerViewer = '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715'
+
 const ownedKey: OwnedKey = {
   lock: {
     address: '0x123abc',
@@ -75,7 +77,7 @@ describe('ValidKey component', () => {
         ownedKey={ownedKey}
         signatureTimestamp={signatureTimestamp}
         owner={owner}
-        viewer={ownedKey.lock.owner}
+        viewer={ownerViewer}
       />
     )
     expect(wrapper.queryByText('Valid Key')).not.toBeNull()
@@ -98,7 +100,7 @@ describe('ValidKey component', () => {
         ownedKey={ownedKey}
         signatureTimestamp={signatureTimestamp}
         owner={owner}
-        viewer={ownedKey.lock.owner}
+        viewer={ownerViewer}
       />
     )
     expect(wrapper.queryByText('julien@unlock-protocol.com')).not.toBeNull()
@@ -134,7 +136,7 @@ describe('ValidKey component', () => {
         ownedKey={ownedKey}
         signatureTimestamp={signatureTimestamp}
         owner={owner}
-        viewer={ownedKey.lock.owner}
+        viewer={ownerViewer}
       />
     )
     const markAsCheckedInButton = wrapper.getByText('Mark as Checked-In')

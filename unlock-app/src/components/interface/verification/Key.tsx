@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
 import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
 import { pingPoap } from '../../../utils/poap'
@@ -13,6 +14,7 @@ import { ActionButton } from '../buttons/ActionButton'
 import { ConfigContext } from '../../../utils/withConfig'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import Loading from '../Loading'
+import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 
 /**
  * Shows an invalid key. Since we cannot trust any of the data, we don't show any
@@ -128,12 +130,14 @@ export const ValidKey = ({
   viewer,
   signature,
 }: ValidKeyProps) => {
-  const walletService = useContext(WalletServiceContext)
+  const walletService: WalletService = useContext(WalletServiceContext)
+  const web3Service: Web3Service = useContext(Web3ServiceContext)
   const config = useContext(ConfigContext)
 
   // Let's get metadata if the viewer is the lock owner
   const viewerIsLockOwner =
-    !!viewer && viewer.toLowerCase() === ownedKey.lock.owner.toLowerCase()
+    !!viewer && web3Service.isLockManager(ownedKey.lock.address, viewer)
+
   const { loading, metadata, error: getMetadataForError } = useGetMetadataFor(
     walletService,
     config,
