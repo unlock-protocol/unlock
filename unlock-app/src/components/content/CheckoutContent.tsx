@@ -110,9 +110,11 @@ export const CheckoutContentInner = ({
     dispatch(setShowingMetadataForm(false))
   }
 
+  const allowClose = !(!config || config.persistentCheckout)
+
   return (
     <CheckoutContainer close={emitCloseModal}>
-      <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
+      <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
         <Head>
           <title>{pageTitle('Checkout')}</title>
         </Head>
