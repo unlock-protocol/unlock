@@ -18,6 +18,9 @@ export const keyExpirationTimestampFor = async (
 
   const response = await fetch(provider, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(rpcRequest),
   })
 
