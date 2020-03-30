@@ -22,6 +22,10 @@ jest.mock('../../../../hooks/useGetMetadataFor.js', () => {
   })
 })
 
+jest.mock('../../../../hooks/useIsLockManager', () => {
+  return jest.fn().mockImplementation(() => ({ isLockManager: true }))
+})
+
 jest.mock('../../../../hooks/useMarkAsCheckedIn.js', () => {
   return jest.fn().mockImplementation(() => {
     return mockUseMarkAsCheckedIn
