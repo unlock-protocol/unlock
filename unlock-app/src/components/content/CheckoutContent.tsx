@@ -119,6 +119,14 @@ export const CheckoutContentInner = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
+          {config && config.icon && (
+            <PaywallLogo alt="Publisher Icon" src={config.icon} />
+          )}
+          <p>{config ? config.callToAction.default : ''}</p>
+          <CheckoutErrors
+            errors={errors}
+            resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
+          />
           {showingMetadataForm && (
             <MetadataForm
               fields={config!.metadataInputs!}
@@ -127,14 +135,6 @@ export const CheckoutContentInner = ({
           )}
           {!showingMetadataForm && (
             <>
-              {config && config.icon && (
-                <PaywallLogo alt="Publisher Icon" src={config.icon} />
-              )}
-              <p>{config ? config.callToAction.default : ''}</p>
-              <CheckoutErrors
-                errors={errors}
-                resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
-              />
               {!account && showingLogin && <CheckoutLoginSignup login />}
               {!account && !showingLogin && (
                 <>
