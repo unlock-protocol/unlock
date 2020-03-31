@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-const SvgOpera = ({ title, ...props }) => (
+const SvgOpera = ({ ...props }) => (
   <svg viewBox="0 0 120 120" fill="none" {...props}>
-    {title ? <title>{title}</title> : null}
     <mask
       id="opera_svg__a"
       maskUnits="userSpaceOnUse"
@@ -385,10 +383,4 @@ const SvgOpera = ({ title, ...props }) => (
   </svg>
 )
 
-SvgOpera.propTypes = {
-  title: PropTypes.string,
-}
-SvgOpera.defaultProps = {
-  title: 'Opera',
-}
 export default SvgOpera

@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-const SvgCoinbaseWallet = ({ title, ...props }) => (
+const SvgCoinbaseWallet = ({ ...props }) => (
   <svg viewBox="0 0 120 120" fill="none" {...props}>
-    {title ? <title>{title}</title> : null}
     <path
       d="M60 108.75c26.924 0 48.75-21.826 48.75-48.75S86.924 11.25 60 11.25 11.25 33.076 11.25 60 33.076 108.75 60 108.75z"
       fill="#fff"
@@ -28,10 +26,4 @@ const SvgCoinbaseWallet = ({ title, ...props }) => (
   </svg>
 )
 
-SvgCoinbaseWallet.propTypes = {
-  title: PropTypes.string,
-}
-SvgCoinbaseWallet.defaultProps = {
-  title: 'Coinbase Wallet',
-}
 export default SvgCoinbaseWallet
