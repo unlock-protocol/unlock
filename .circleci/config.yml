@@ -122,21 +122,6 @@ jobs:
           name: Paywall Tests
           command: scripts/tests.sh paywall
 
-  tickets-tests:
-    machine: true
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh tickets $CIRCLE_BRANCH
-      - run:
-          name: Build tickets Image
-          command: scripts/build-image.sh tickets
-      - run:
-          name: Tickets Tests
-          command: scripts/tests.sh tickets
-
   newsletter-tests:
     machine: true
     environment:
@@ -168,7 +153,7 @@ jobs:
           command: scripts/tests.sh wedlocks
 
   nudge-tests:
-    machine: true        
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -262,27 +247,6 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
-  deploy-tickets-netlify:
-    machine: true
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh tickets $CIRCLE_BRANCH
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Build tickets Image
-          command: scripts/build-image.sh tickets
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" tickets netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
   deploy-newsletter-netlify:
     machine: true
     environment:
@@ -330,7 +294,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH      
+          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -353,7 +317,7 @@ jobs:
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$LOCKSMITH_STAGING_ENVIRONMENT" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC" "$LOCKSMITH_STAGING_STRIPE_SECRET" "$LOCKSMITH_STAGING_PURCHASER_CREDENTIALS" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_UNLOCK_CONTRACT_ADDRESS" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$LOCKSMITH_STAGING_METADATA_HOST"
 
 
-  deploy-nudge-beanstalk-staging:    
+  deploy-nudge-beanstalk-staging:
     docker:
       - image: circleci/python:3.8.2
     environment:
@@ -380,7 +344,7 @@ jobs:
           name: Deploy Staging to Beanstalk
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-rinkeby" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
 
-  deploy-nudge-beanstalk-production:    
+  deploy-nudge-beanstalk-production:
     docker:
       - image: circleci/python:3.8.2
     environment:
@@ -406,7 +370,7 @@ jobs:
       - run:
           name: Deploy Staging to Beanstalk
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
-        
+
   promote-unlock-images:
     machine: true
     environment:
@@ -437,7 +401,6 @@ workflows:
     jobs:
       - locksmith-tests
       - paywall-tests
-      - tickets-tests
       - newsletter-tests
       - smart-contracts-tests
       - smart-contract-extensions-tests
@@ -455,15 +418,11 @@ workflows:
             - locksmith-tests
             - paywall-tests
             - wedlocks-tests
-            - tickets-tests
             - newsletter-tests
       - deploy-unlock-app-netlify:
           requires:
             - integration-tests
       - deploy-paywall-netlify:
-          requires:
-            - integration-tests
-      - deploy-tickets-netlify:
           requires:
             - integration-tests
       - deploy-newsletter-netlify:
@@ -481,7 +440,7 @@ workflows:
       - deploy-locksmith-beanstalk:
           filters:
             branches:
-              only: master        
+              only: master
           requires:
             - integration-tests
       - deploy-wedlocks-netlify:
@@ -495,10 +454,10 @@ workflows:
             branches:
               only: master
           requires:
-            - integration-tests    
+            - integration-tests
       - deploy-nudge-beanstalk-production:
           filters:
             branches:
               only: master
           requires:
-            - deploy-nudge-beanstalk-staging                
+            - deploy-nudge-beanstalk-staging

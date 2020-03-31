@@ -7,7 +7,7 @@
 if [ "$SKIP_SERVICES" != "true" ]; then
 
   ROOT_DIR=$(pwd)
-  
+
   SERVICES=(
       docker/development
       locksmith
@@ -15,13 +15,12 @@ if [ "$SKIP_SERVICES" != "true" ]; then
       paywall
       smart-contracts
       tests
-      tickets
       unlock-app
       unlock-js
       unlock-protocol.com
       wedlocks
   )
-  
+
   for i in "${SERVICES[@]}"
   do
       cd $i
@@ -29,5 +28,5 @@ if [ "$SKIP_SERVICES" != "true" ]; then
       yarn
       cd $ROOT_DIR
   done
-  
+
 fi

@@ -33,12 +33,6 @@
       "reviewers": ["NickCuso"]
     },
     {
-      "paths": ["tickets/**"],
-      "minor": {
-        "groupName": "tickets"
-      }
-    },
-    {
       "paths": ["unlock-app/**"],
       "minor": {
         "groupName": "unlock-app"

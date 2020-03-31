@@ -84,23 +84,6 @@ jobs:
         env:
           CI: true
 
-  tickets:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd tickets && yarn
-      - run: cd tickets && yarn test
-        env:
-          CI: true
 
   unlock-protocol-com:
     runs-on: ubuntu-latest
@@ -211,7 +194,6 @@ jobs:
         paywall,
         wedlocks,
         newsletter,
-        tickets,
         unlock-protocol-com,
         nudge,
         smart-contract-extensions,
@@ -222,7 +204,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x]      
+        node-version: [10.x]
 
     steps:
       - name: Check out repository code
@@ -230,6 +212,6 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}        
+          node-version: ${{ matrix.node-version }}
       - name: Get Integration Test dependencies
         run: cd tests && yarn
