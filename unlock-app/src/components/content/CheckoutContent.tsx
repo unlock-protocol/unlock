@@ -5,15 +5,13 @@ import Head from 'next/head'
 import queryString from 'query-string'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
-import { CheckoutLoginSignup } from '../interface/checkout/CheckoutLoginSignup'
 import { Locks } from '../interface/checkout/Locks'
-import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import { FiatLocks } from '../interface/checkout/FiatLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { MetadataForm } from '../interface/checkout/MetadataForm'
 import { CheckoutErrors } from '../interface/checkout/CheckoutErrors'
-import { LogInButton } from '../interface/checkout/LogInButton'
+import { NotLoggedIn } from '../interface/checkout/NotLoggedIn'
 import {
   Account as AccountType,
   Router,
@@ -135,16 +133,13 @@ export const CheckoutContentInner = ({
           )}
           {!showingMetadataForm && (
             <>
-              {!account && showingLogin && <CheckoutLoginSignup login />}
-              {!account && !showingLogin && (
-                <>
-                  <NotLoggedInLocks lockAddresses={lockAddresses} />
-                  {config && config.unlockUserAccounts && (
-                    <LogInButton
-                      onClick={() => dispatch(setShowingLogin(true))}
-                    />
-                  )}
-                </>
+              {config && !account && (
+                <NotLoggedIn
+                  showingLogin={showingLogin}
+                  showLogin={() => dispatch(setShowingLogin(true))}
+                  config={config}
+                  lockAddresses={lockAddresses}
+                />
               )}
               {account && !account.emailAddress && (
                 <Locks
