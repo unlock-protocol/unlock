@@ -4,11 +4,19 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 17 Mar 2020 13:56:41 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 31 Mar 2020 13:59:50 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
+            <title><![CDATA[The Unlock Cloudflare Worker]]></title>
+            <description><![CDATA[Cloudflare is a leading Content Delivery Network provider. Web sites and application can use Cloudflare to add a layer between consumers and their applications in order to increase delivery speed, reduce the impact of attacks... or, add an Unlock lock!]]></description>
+            <link>https://unlock-protocol.com/blog/cloudflare-worker</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/cloudflare-worker</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 31 Mar 2020 04:00:00 GMT</pubDate>
+        </item>
+        <item>
             <title><![CDATA[Locking Glitch]]></title>
-            <description><![CDATA[Glitch is a modern web development tool wich lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!]]></description>
+            <description><![CDATA[Glitch is a modern web development tool which lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!]]></description>
             <link>https://unlock-protocol.com/blog/locking-glitch</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/locking-glitch</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
