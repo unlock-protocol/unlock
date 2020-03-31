@@ -34,8 +34,10 @@ contract('CodeRequiredHook', accounts => {
       from: lockCreator,
     })
 
-    // Change the beneficiary to the hook to enable it
-    await lock.updateBeneficiary(hookContract.address, { from: lockCreator })
+    // Register the hook
+    await lock.setEventHooks(hookContract.address, constants.ZERO_ADDRESS, {
+      from: lockCreator,
+    })
   })
 
   it('can buy if you know the answer', async () => {
@@ -81,10 +83,7 @@ contract('CodeRequiredHook', accounts => {
 
   describe('uninstall hook', () => {
     beforeEach(async () => {
-      const callData = lock.contract.methods
-        .updateBeneficiary(lockCreator)
-        .encodeABI()
-      await hookContract.proxyCall(lock.address, callData, {
+      await lock.setEventHooks(constants.ZERO_ADDRESS, constants.ZERO_ADDRESS, {
         from: lockCreator,
       })
     })
@@ -94,15 +93,5 @@ contract('CodeRequiredHook', accounts => {
         from: keyBuyer,
       })
     })
-  })
-
-  it('non-admins cannot call proxyCall', async () => {
-    const callData = lock.contract.methods
-      .updateBeneficiary(lockCreator)
-      .encodeABI()
-    await reverts(
-      hookContract.proxyCall(lock.address, callData, { from: accounts[0] }),
-      'WhitelistAdminRole: caller does not have the WhitelistAdmin role'
-    )
   })
 })
