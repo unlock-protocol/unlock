@@ -6,11 +6,11 @@ import 'cross-fetch/polyfill'
 
 let host
 const port = 8545
-if (process.env.CI) {
-  host = 'ganache-integration'
-} else {
-  host = '127.0.0.1'
-}
+// if (process.env.CI) {
+host = 'ganache-integration'
+// } else {
+// host = '127.0.0.1'
+// }
 
 const provider = `http://${host}:${port}`
 
