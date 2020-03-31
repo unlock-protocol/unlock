@@ -160,6 +160,7 @@ export const CheckoutContentInner = ({
                   accountAddress={account.address}
                   emitTransactionInfo={emitTransactionInfo}
                   cards={account.cards || []}
+                  metadataRequired={metadataRequired}
                 />
               )}
             </>
