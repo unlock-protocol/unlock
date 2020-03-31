@@ -7,6 +7,7 @@ import Attention from './Attention'
 import Checkmark from './Checkmark'
 import Close from './Close'
 import Code from './Code'
+import CoinbaseWallet from './CoinbaseWallet'
 import Cog from './Cog'
 import Copy from './Copy'
 import Download from './Download'
@@ -18,13 +19,15 @@ import EthSub from './EthSub'
 import Export from './Export'
 import Github from './Github'
 import Heart from './Heart'
+import Jobs from './Jobs'
 import Key from './Key'
 import Lemniscate from './Lemniscate'
 import LiveDemo from './LiveDemo'
 import Loading from './Loading'
 import LoadingDots from './LoadingDots'
 import LockClosed from './LockClosed'
-import Jobs from './Jobs'
+import Metamask from './Metamask'
+import Opera from './Opera'
 import Preview from './Preview'
 import Unlock from './Unlock'
 import UnlockWordMark from './UnlockWordMark'
@@ -55,6 +58,7 @@ export default {
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
+  CoinbaseWallet,
   Cog,
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
@@ -72,6 +76,8 @@ export default {
   Loading: wrapViewBox(Loading, '0 0 32 32'),
   LoadingDots,
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
+  Metamask,
+  Opera,
   Preview: wrapViewBox(Preview, '0 0 24 24'),
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
   Unlock: wrapViewBox(Unlock, '0 0 56 56'),
