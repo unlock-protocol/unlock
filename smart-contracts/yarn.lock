@@ -1253,16 +1253,16 @@
     try-require "^1.2.1"
     web3 "1.2.2"
 
-"@openzeppelin/test-helpers@0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/test-helpers/-/test-helpers-0.5.4.tgz#2366703c37849dc1b3768bff41ab9213aee28c5a"
-  integrity sha512-sSjft0CcmC6Pwsd/j1uakk2MLamEH4mmphVlF5hzUUVyoxL0KGCbxQgBoLoEpUbw2M9HtFAEMJJPGccEcb9Cog==
+"@openzeppelin/test-helpers@0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/test-helpers/-/test-helpers-0.5.5.tgz#c0a549fdcf1a9f4b1fd041233e52a700ed988eb6"
+  integrity sha512-jTSCQojQ0Q7FBMN3Me7o0OIVuRnfHRR9TcE+ZlfbSfdqrHkFLwSfeDHSNWtQGlF1xPQR5r3iRI0ccsCrN+JblA==
   dependencies:
     "@openzeppelin/contract-loader" "^0.4.0"
     "@truffle/contract" "^4.0.35"
     ansi-colors "^3.2.3"
     chai "^4.2.0"
-    chai-bn "^0.2.0"
+    chai-bn "^0.2.1"
     ethjs-abi "^0.2.1"
     lodash.flatten "^4.4.0"
     semver "^5.6.0"
@@ -1273,6 +1273,47 @@
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/@openzeppelin/upgrades/-/upgrades-2.7.1.tgz#cd936af591553e4f76a7477ffdfb30b94e181f56"
   integrity sha512-oTYCgfC9+gHqqKQRn6Q8YGzXu5J1ioeUfVTHTZQG0opzmQplVA5zkudUvgkgqzr219vfEW6kKJpFJhXqBgkQIw==
+  dependencies:
+    "@types/cbor" "^2.0.0"
+    axios "^0.18.0"
+    bignumber.js "^7.2.0"
+    cbor "^4.1.5"
+    chalk "^2.4.1"
+    ethers "^4.0.20"
+    glob "^7.1.3"
+    lodash.concat "^4.5.0"
+    lodash.difference "^4.5.0"
+    lodash.every "^4.6.0"
+    lodash.findlast "^4.6.0"
+    lodash.flatten "^4.4.0"
+    lodash.includes "^4.3.0"
+    lodash.invertby "^4.7.0"
+    lodash.isempty "^4.4.0"
+    lodash.isequal "^4.5.0"
+    lodash.isstring "^4.0.1"
+    lodash.keys "^4.2.0"
+    lodash.map "^4.6.0"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    lodash.pickby "^4.6.0"
+    lodash.random "^3.2.0"
+    lodash.reverse "^4.0.1"
+    lodash.some "^4.6.0"
+    lodash.uniq "^4.5.0"
+    lodash.values "^4.3.0"
+    lodash.without "^4.4.0"
+    semver "^5.5.1"
+    spinnies "^0.4.2"
+    truffle-flattener "^1.4.0"
+    web3 "1.2.2"
+    web3-eth "1.2.2"
+    web3-eth-contract "1.2.2"
+    web3-utils "1.2.2"
+
+"@openzeppelin/upgrades@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/upgrades/-/upgrades-2.7.2.tgz#140124305af7aee935566e735f2aa970880ab3d1"
+  integrity sha512-RU63TpSLNRjoeC6M4IeaEA3lI8UP6DdWF5L+gru9uExU+A/OvrhfepHfNd5lFQtkCB77oQ2I1wauE75K5a/ysg==
   dependencies:
     "@types/cbor" "^2.0.0"
     axios "^0.18.0"
@@ -1442,6 +1483,13 @@
   resolved "https://registry.yarnpkg.com/@truffle/blockchain-utils/-/blockchain-utils-0.0.17.tgz#a1ab0ec9a9c3cbc6ada769f606d6b07f8e515120"
   integrity sha512-SqvkHCn65QbRFlNpA3M91tqcV8dVMSEfOu3lfXrPozKJyTTtFg/A8WMvMMs79/Q8SJlUuJARjsXwQmo5V3V78A==
 
+"@truffle/blockchain-utils@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@truffle/blockchain-utils/-/blockchain-utils-0.0.18.tgz#69e40e380729cc41fd5bf468304f9e32af57e666"
+  integrity sha512-XnRu5p1QO9krJizOeBY5WfzPDvEOmCnOT5u6qF8uN3Kkq9vcH3ZqW4XTuzz9ERZNpZfWb3UJx4PUosgeHLs5vw==
+  dependencies:
+    source-map-support "^0.5.16"
+
 "@truffle/compile-solidity@^4.2.22":
   version "4.2.22"
   resolved "https://registry.yarnpkg.com/@truffle/compile-solidity/-/compile-solidity-4.2.22.tgz#a3e11379692392f20b88c92dc798adf6b2388d5c"
@@ -1506,18 +1554,20 @@
     debug "^4.1.0"
     glob "^7.1.2"
 
-"@truffle/contract@4.1.11":
-  version "4.1.11"
-  resolved "https://registry.yarnpkg.com/@truffle/contract/-/contract-4.1.11.tgz#660718e253e81d97c65fc93a1fa248bb1d400774"
-  integrity sha512-gU+DXYlxpywmfTUMkbKb/mPENkMtNValxAFPjPY34rxKzMN4LbCzoEXPRUZJd4zBsoMY9ap20l2AptqETIlwUA==
+"@truffle/contract@4.1.13":
+  version "4.1.13"
+  resolved "https://registry.yarnpkg.com/@truffle/contract/-/contract-4.1.13.tgz#8703ff787f73df4fe74a0424837098e64352100b"
+  integrity sha512-LLtRU4rRBd9jw/ngpYKwr++pEzdR64/vu2UjSxeizP1wIDm1XAIJ7BH2QiWh4PV2i44KzAfgvPtOwgbwr2hvdw==
   dependencies:
-    "@truffle/blockchain-utils" "^0.0.17"
+    "@truffle/blockchain-utils" "^0.0.18"
     "@truffle/contract-schema" "^3.0.23"
     "@truffle/error" "^0.0.8"
-    "@truffle/interface-adapter" "^0.4.5"
+    "@truffle/interface-adapter" "^0.4.6"
     bignumber.js "^7.2.1"
     ethereum-ens "^0.8.0"
     ethers "^4.0.0-beta.1"
+    exorcist "^1.0.1"
+    source-map-support "^0.5.16"
     web3 "1.2.1"
     web3-core-promievent "1.2.1"
     web3-eth-abi "1.2.1"
@@ -1591,6 +1641,16 @@
     bn.js "^4.11.8"
     ethers "^4.0.32"
     lodash "^4.17.13"
+    web3 "1.2.1"
+
+"@truffle/interface-adapter@^0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@truffle/interface-adapter/-/interface-adapter-0.4.6.tgz#d904e2ae6e03712f310eb4da858a1fe07fa27d11"
+  integrity sha512-FZAUb7tx/7VbxpAbo70+K2v22j1O7y4BwhWypRwYpf1YbE2C1OCo/L8zInaW5LfzRd2BEsfb2GjUgbK9VaFrDA==
+  dependencies:
+    bn.js "^4.11.8"
+    ethers "^4.0.32"
+    source-map-support "^0.5.16"
     web3 "1.2.1"
 
 "@truffle/provider@^0.2.8":
@@ -3903,10 +3963,10 @@ chai-as-promised@^7.1.1:
   dependencies:
     check-error "^1.0.2"
 
-chai-bn@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/chai-bn/-/chai-bn-0.2.0.tgz#7da60617531e5a8bdf9fbd5d848e693b7405a5cb"
-  integrity sha512-h+XqIFikre13N3uiZSc50PZ0VztVjuD/Gytle07EUFkbd8z31tWp37DLAsR1dPozmOLA3yu4hi3IFjJDQ5CKBg==
+chai-bn@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/chai-bn/-/chai-bn-0.2.1.tgz#1dad95e24c3afcd8139ab0262e9bbefff8a30ab7"
+  integrity sha512-01jt2gSXAw7UYFPT5K8d7HYjdXj2vyeIuE+0T/34FWzlNcVbs1JkPxRu7rYMfQnJhrHT8Nr6qjSf5ZwwLU2EYg==
 
 chai@^4.2.0:
   version "4.2.0"
@@ -4621,7 +4681,7 @@ content-type@^1.0.4, content-type@~1.0.4:
   resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
   integrity sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
 
-convert-source-map@1.X, convert-source-map@^1.4.0, convert-source-map@^1.5.0, convert-source-map@^1.5.1, convert-source-map@^1.6.0, convert-source-map@^1.7.0:
+convert-source-map@1.X, convert-source-map@^1.1.0, convert-source-map@^1.4.0, convert-source-map@^1.5.0, convert-source-map@^1.5.1, convert-source-map@^1.6.0, convert-source-map@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.7.0.tgz#17a2cb882d7f77d3490585e2ce6c524424a3a442"
   integrity sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
@@ -6721,6 +6781,16 @@ exit@^0.1.2:
   resolved "https://registry.yarnpkg.com/exit/-/exit-0.1.2.tgz#0632638f8d877cc82107d30a0fff1a17cba1cd0c"
   integrity sha1-BjJjj42HfMghB9MKD/8aF8uhzQw=
 
+exorcist@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/exorcist/-/exorcist-1.0.1.tgz#79316e3c4885845490f7bb405c0e5b5db1167c52"
+  integrity sha1-eTFuPEiFhFSQ97tAXA5bXbEWfFI=
+  dependencies:
+    is-stream "~1.1.0"
+    minimist "0.0.5"
+    mkdirp "~0.5.1"
+    mold-source-map "~0.4.0"
+
 expand-brackets@^0.1.4:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/expand-brackets/-/expand-brackets-0.1.5.tgz#df07284e342a807cd733ac5af72411e581d1177b"
@@ -8177,20 +8247,19 @@ har-validator@~5.1.3:
     ajv "^6.5.5"
     har-schema "^2.0.0"
 
-hardlydifficult-ethereum-contracts@0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.9.3.tgz#401b59386b8f8723df0690b2e9bd819309681d87"
-  integrity sha512-L6f8ufG+mwRSzLi9VSq7ozmGdUPvRE34zNrG2d+B4pFoj7PZLGs73+p7jwhlS3k96ovY1ZmvY7RXbE42qxe7vg==
+hardlydifficult-ethereum-contracts@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.10.0.tgz#b6da9663d40a94eedaa6f20cb2785e6cc75c9085"
+  integrity sha512-7hQEOZ6bBmw6jYMbGZOjwHaBgN/W4vTfqtBfKS76VVQi4vSePt3MWEcOztMBMcC6tF8MHDfMDhYE/KCQiA+02w==
   dependencies:
     "@openzeppelin/contracts" "2.5.0"
     "@openzeppelin/contracts-ethereum-package" "2.4.0"
     "@openzeppelin/test-environment" "0.1.3"
-    "@openzeppelin/test-helpers" "0.5.4"
-    "@openzeppelin/upgrades" "2.7.1"
-    "@truffle/contract" "4.1.11"
+    "@openzeppelin/test-helpers" "0.5.5"
+    "@openzeppelin/upgrades" "2.7.2"
+    "@truffle/contract" "4.1.13"
     bignumber.js "9.0.0"
-    erc1820 "0.0.2"
-    unlock-abi-1-3 "1.0.1"
+    unlock-abi-7 "1.0.2"
     web3-utils "1.2.6"
 
 has-ansi@^0.1.0:
@@ -9093,7 +9162,7 @@ is-ssh@^1.3.0:
   dependencies:
     protocols "^1.1.0"
 
-is-stream@^1.0.0, is-stream@^1.0.1, is-stream@^1.1.0:
+is-stream@^1.0.0, is-stream@^1.0.1, is-stream@^1.1.0, is-stream@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
   integrity sha1-EtSj3U5o4Lec6428hBc66A2RykQ=
@@ -11204,6 +11273,11 @@ minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
   dependencies:
     brace-expansion "^1.1.7"
 
+minimist@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.5.tgz#d7aa327bcecf518f9106ac6b8f003fa3bcea8566"
+  integrity sha1-16oye87PUY+RBqxrjwA/o7zqhWY=
+
 minimist@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
@@ -11218,6 +11292,11 @@ minimist@^1.1.1, minimist@^1.2.0, minimist@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
   integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
+
+minimist@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
+  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
 minipass@^2.6.0, minipass@^2.8.6, minipass@^2.9.0:
   version "2.9.0"
@@ -11260,6 +11339,13 @@ mkdirp@0.5.1, mkdirp@0.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1:
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+mkdirp@~0.5.1:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.4.tgz#fd01504a6797ec5c9be81ff43d204961ed64a512"
+  integrity sha512-iG9AK/dJLtJ0XNgTuDbSyNS3zECqDlAhnQW4CsNxBG3LQJBbHmRX1egw39DmtOdCAqY+dKXV+sgPgilNWUKMVw==
+  dependencies:
+    minimist "^1.2.5"
 
 mocha@5.2.0, mocha@^5.2.0:
   version "5.2.0"
@@ -11333,6 +11419,14 @@ moize@^5.4.4, moize@^5.4.5:
     fast-equals "^1.6.0"
     fast-stringify "^1.1.0"
     micro-memoize "^2.1.1"
+
+mold-source-map@~0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/mold-source-map/-/mold-source-map-0.4.0.tgz#cf67e0b31c47ab9badb5c9c25651862127bb8317"
+  integrity sha1-z2fgsxxHq5uttcnCVlGGISe7gxc=
+  dependencies:
+    convert-source-map "^1.1.0"
+    through "~2.2.7"
 
 mout@^0.11.0:
   version "0.11.1"
@@ -14371,7 +14465,7 @@ source-map-support@^0.4.15:
   dependencies:
     source-map "^0.5.6"
 
-source-map-support@^0.5.6:
+source-map-support@^0.5.16, source-map-support@^0.5.6:
   version "0.5.16"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
   integrity sha512-efyLRJDr68D9hBBNIPWFjhpFzURh+KJykQwvMyW5UiZzYwoF6l4YMMDIJJEyFWxWCqfyxLzz6tSfUFR+kXXsVQ==
@@ -15123,6 +15217,11 @@ through@^2.3.6, through@^2.3.8, through@~2.3.4, through@~2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
+through@~2.2.7:
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/through/-/through-2.2.7.tgz#6e8e21200191d4eb6a99f6f010df46aa1c6eb2bd"
+  integrity sha1-bo4hIAGR1OtqmfbwEN9Gqhxusr0=
+
 tildify@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/tildify/-/tildify-1.2.0.tgz#dcec03f55dca9b7aa3e5b04f21817eb56e63588a"
@@ -15796,15 +15895,15 @@ unlock-abi-1-2@1.0.4:
   resolved "https://registry.yarnpkg.com/unlock-abi-1-2/-/unlock-abi-1-2-1.0.4.tgz#1aec8dca13221360b18e6eecd1d18421cd0d178a"
   integrity sha512-yQKJSjO7h4CWpv1VcMIuLL/azPkUZxWkK5Rl3RM6sgKEGgTmJyZn/9mi3s5qqtNh1Zn4ELRzlUUK91CugkOQGA==
 
-unlock-abi-1-3@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/unlock-abi-1-3/-/unlock-abi-1-3-1.0.1.tgz#3d835d87516d3e8c8af08653d38e12d690c8bba2"
-  integrity sha512-IC2CWz9W+oa0YSYExqRWImwvXErtpjwgA15r+gmJ1I91+V/xxETbnrt0Pf2tsdLG0eVpcPHpNTXbiC4YqN2stA==
-
 unlock-abi-1-3@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/unlock-abi-1-3/-/unlock-abi-1-3-1.0.2.tgz#83e6d7b1acf019fe1a7a5497eb90ac1da338b64e"
   integrity sha512-lNeDeE91aDLzKBxc802duQG/dGM7xNYTz73d1bGvE5Ve5aBUMwnR6TugbXV+uxL3i/LjvchZ1kVl33ECER9KHg==
+
+unlock-abi-7@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.2.tgz#ee25bc778f8c6063d29fddf62cb6847bdc0e5853"
+  integrity sha512-V+aUpw3a15fZkkj6kpht5UjhkOzi+s9aFyUrRtUOlGhiQv0uDHn4Jw2RncXCgVxWtMZnbdGWmL+6TgA9qDZRxQ==
 
 unorm@^1.3.3:
   version "1.6.0"
