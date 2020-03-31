@@ -64,6 +64,11 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     return sigUtil.personalSign(privateKey, { data })
   }
 
+  eth_signTypedData([_, data]) {
+    const privateKey = toBuffer(this.wallet.privateKey)
+    return sigUtil.signTypedData(privateKey, { data })
+  }
+
   // Signature methods
   // TODO: move these into their own module so they aren't directly accessible
   // on the provider?

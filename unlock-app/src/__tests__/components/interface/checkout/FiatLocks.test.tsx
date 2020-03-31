@@ -48,6 +48,7 @@ describe('FiatLocks', () => {
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
           cards={[]}
+          metadataRequired={false}
         />
       )
 
@@ -65,6 +66,7 @@ describe('FiatLocks', () => {
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
           cards={[]}
+          metadataRequired={false}
         />
       )
 
