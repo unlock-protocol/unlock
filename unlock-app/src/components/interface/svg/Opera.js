@@ -389,6 +389,6 @@ SvgOpera.propTypes = {
   title: PropTypes.string,
 }
 SvgOpera.defaultProps = {
-  title: '',
+  title: 'Opera',
 }
 export default SvgOpera

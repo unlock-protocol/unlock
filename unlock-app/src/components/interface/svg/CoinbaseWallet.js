@@ -32,6 +32,6 @@ SvgCoinbaseWallet.propTypes = {
   title: PropTypes.string,
 }
 SvgCoinbaseWallet.defaultProps = {
-  title: '',
+  title: 'Coinbase Wallet',
 }
 export default SvgCoinbaseWallet

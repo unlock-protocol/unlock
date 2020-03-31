@@ -95,6 +95,6 @@ SvgMetamask.propTypes = {
   title: PropTypes.string,
 }
 SvgMetamask.defaultProps = {
-  title: '',
+  title: 'Metamask',
 }
 export default SvgMetamask
