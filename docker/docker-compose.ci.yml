@@ -50,11 +50,6 @@ services:
     image: paywall
     ports:
       - 3001:3001
-  tickets:
-    env_file: ./integration.env
-    image: tickets
-    ports:
-      - 3003:3003
   newsletter:
     image: newsletter
     env_file: ./integration.env

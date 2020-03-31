@@ -33,7 +33,6 @@ const subDirs = [
   'smart-contracts',
   'tests',
   'unlock-app',
-  'tickets',
   'paywall',
   'unlock-js',
   'unlock-protocol.com',
