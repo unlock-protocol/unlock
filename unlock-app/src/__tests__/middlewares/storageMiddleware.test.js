@@ -389,11 +389,11 @@ describe('Storage middleware', () => {
         }
         const emailAddress = 'paul@bunyan.io'
         const password = 'guest'
-        const recoveryKey = {}
+        const recoveryKey = {
+          recovery: 'key',
+        }
 
-        accountUtils.reEncryptPrivateKey = jest.fn(() =>
-          Promise.resolve(recoveryKey)
-        )
+        accountUtils.reEncryptPrivateKey = jest.fn(() => recoveryKey)
 
         await mockStorageService.emit(success.createUser, {
           passwordEncryptedPrivateKey,

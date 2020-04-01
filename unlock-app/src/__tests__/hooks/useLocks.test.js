@@ -26,7 +26,7 @@ const mockStorageService = {}
 const mockGraphService = {}
 
 jest.mock('../../services/graphService', () => {
-  return () => {
+  return function() {
     return mockGraphService
   }
 })
