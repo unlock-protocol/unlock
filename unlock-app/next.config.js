@@ -1,4 +1,5 @@
 /* eslint no-console: 0 */
+const withTypescript = require('@zeit/next-typescript')
 const dotenv = require('dotenv')
 const path = require('path')
 const { exportPaths } = require('./src/utils/exportStatic')
@@ -10,7 +11,7 @@ dotenv.config({
 })
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
-const requiredConfigVariables = {
+let requiredConfigVariables = {
   unlockEnv,
   paywallUrl: process.env.PAYWALL_URL,
   paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
@@ -25,7 +26,7 @@ const requiredConfigVariables = {
   subgraphURI: process.env.SUBGRAPH_URI,
 }
 
-const optionalConfigVariables = {
+let optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
 }
 
@@ -49,14 +50,13 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = {
+module.exports = withTypescript({
   publicRuntimeConfig: {
     ...optionalConfigVariables,
     ...requiredConfigVariables,
   },
   webpack(config) {
-    config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
     return config
   },
   exportPathMap: exportPaths,
-}
+})
