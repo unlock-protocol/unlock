@@ -23,6 +23,16 @@ const diagnosticError = {
   message: 'That is not a great password',
 }
 
+const wrongNetworkError = {
+  level: 'Fatal',
+  kind: 'Storage',
+  message: 'FATAL_WRONG_NETWORK',
+  data: {
+    currentNetwork: 'Storynet',
+    requiredNetworkId: 1984,
+  },
+}
+
 storiesOf('Checkout Errors', module)
   .addDecorator(getStory => {
     return (
@@ -42,5 +52,10 @@ storiesOf('Checkout Errors', module)
         resetError={doNothing}
         errors={[fatalError, warningError, diagnosticError]}
       />
+    )
+  })
+  .add('With wrong network error', () => {
+    return (
+      <CheckoutErrors resetError={doNothing} errors={[wrongNetworkError]} />
     )
   })
