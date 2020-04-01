@@ -78,7 +78,6 @@
   },
   "devDependencies": {
     "@svgr/cli": "4.3.3",
-    "nodemon": "2.0.2",
     "npm-check": "5.9.2"
   },
   "engines": {
@@ -86,13 +85,12 @@
   },
   "engineStrict": true,
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "nodemon": "nodemon",
+    "dev": "next dev src",
     "build": "next build src",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-unlock-contract": "node scripts/deploy-unlock.js",
-    "start": "cross-env NODE_ENV=production node src/server.js",
+    "start": "cross-env NODE_ENV=production next start src --port ${PORT:=3000}",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
