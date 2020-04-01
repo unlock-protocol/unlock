@@ -1,5 +1,5 @@
 import React from 'react'
-import { configure, addDecorator, addParameters } from '@storybook/react'
+import { configure, addDecorator } from '@storybook/react'
 import GlobalStyle from '../src/theme/globalStyle'
 import Fonts from '../src/theme/fonts'
 
