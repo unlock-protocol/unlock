@@ -2,10 +2,12 @@
 const webpack = require('webpack')
 var path = require('path')
 
+const mode = process.env.UNLOCK_ENV === 'prod' ? 'production' : 'development'
+
 module.exports = () => {
   return {
     cache: false,
-    mode: 'development',
+    mode,
     devtool: 'source-map',
     entry: path.resolve(__dirname, 'module.js'),
     output: {

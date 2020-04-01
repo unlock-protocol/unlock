@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
-import { ActionButton, LoadingButton } from '../buttons/ActionButton'
+import { Button, LoadingButton, Input, Label } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
 
 interface Props {
@@ -29,52 +29,27 @@ export const MetadataForm = ({ fields, onSubmit }: Props) => {
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
       <p>We need to collect some additional information for your purchase.</p>
-      <FieldWrapper>
-        {fields.map(({ name, type, required }) => (
-          <Label required={required} key={name}>
-            <span>{name}</span>
-            <Input type={type} name={name} ref={register({ required })} />
-          </Label>
-        ))}
-      </FieldWrapper>
+      {fields.map(({ name, type, required }) => (
+        <StyledLabel required={required} key={name}>
+          <span>{name}</span>
+          <Input type={type} name={name} ref={register({ required })} />
+        </StyledLabel>
+      ))}
       {submittedForm && (
         <LoadingButton type="button">Submitting Metadata...</LoadingButton>
       )}
-      {!submittedForm && <ActionButton type="submit">Continue</ActionButton>}
+      {!submittedForm && <Button type="submit">Continue</Button>}
     </form>
   )
 }
 
 export default MetadataForm
 
-const FieldWrapper = styled.div`
-  margin-bottom: 32px;
-`
-
-const Input = styled.input`
-  height: 60px;
-  width: 100%;
-  background-color: var(--lightgrey);
-  border: medium none;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-`
-
 interface LabelProps {
   required: boolean
 }
 
-const Label = styled.label<LabelProps>`
-  & > span {
-    display: block;
-    text-transform: uppercase;
-    font-size: 10px;
-    color: var(--darkgrey);
-    margin-top: 16px;
-    margin-bottom: 5px;
-  }
-
+const StyledLabel = styled(Label)<LabelProps>`
   & > span:after {
     color: var(--red);
     content: ${(props: LabelProps) => (props.required ? '" *"' : '')};

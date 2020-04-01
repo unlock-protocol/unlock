@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react'
+import styled from 'styled-components'
 import { connect, useDispatch } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
-import { CheckoutLoginSignup } from '../interface/checkout/CheckoutLoginSignup'
 import { Locks } from '../interface/checkout/Locks'
-import { NotLoggedInLocks } from '../interface/checkout/NotLoggedInLocks'
 import { FiatLocks } from '../interface/checkout/FiatLocks'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { MetadataForm } from '../interface/checkout/MetadataForm'
 import { CheckoutErrors } from '../interface/checkout/CheckoutErrors'
-import { LogInButton } from '../interface/checkout/LogInButton'
+import { NotLoggedIn } from '../interface/checkout/NotLoggedIn'
 import {
   Account as AccountType,
   Router,
@@ -109,13 +108,23 @@ export const CheckoutContentInner = ({
     dispatch(setShowingMetadataForm(false))
   }
 
+  const allowClose = !(!config || config.persistentCheckout)
+
   return (
     <CheckoutContainer close={emitCloseModal}>
-      <CheckoutWrapper allowClose hideCheckout={emitCloseModal}>
+      <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
         <Head>
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
+          {config && config.icon && (
+            <PaywallLogo alt="Publisher Icon" src={config.icon} />
+          )}
+          <p>{config ? config.callToAction.default : ''}</p>
+          <CheckoutErrors
+            errors={errors}
+            resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
+          />
           {showingMetadataForm && (
             <MetadataForm
               fields={config!.metadataInputs!}
@@ -124,24 +133,13 @@ export const CheckoutContentInner = ({
           )}
           {!showingMetadataForm && (
             <>
-              {config && config.icon && (
-                <img alt="Publisher Icon" src={config.icon} />
-              )}
-              <p>{config ? config.callToAction.default : ''}</p>
-              <CheckoutErrors
-                errors={errors}
-                resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
-              />
-              {!account && showingLogin && <CheckoutLoginSignup login />}
-              {!account && !showingLogin && (
-                <>
-                  <NotLoggedInLocks lockAddresses={lockAddresses} />
-                  {config && config.unlockUserAccounts && (
-                    <LogInButton
-                      onClick={() => dispatch(setShowingLogin(true))}
-                    />
-                  )}
-                </>
+              {config && !account && (
+                <NotLoggedIn
+                  showingLogin={showingLogin}
+                  showLogin={() => dispatch(setShowingLogin(true))}
+                  config={config}
+                  lockAddresses={lockAddresses}
+                />
               )}
               {account && !account.emailAddress && (
                 <Locks
@@ -157,6 +155,7 @@ export const CheckoutContentInner = ({
                   accountAddress={account.address}
                   emitTransactionInfo={emitTransactionInfo}
                   cards={account.cards || []}
+                  metadataRequired={metadataRequired}
                 />
               )}
             </>
@@ -185,3 +184,8 @@ export const mapStateToProps = ({ account, router, errors }: ReduxState) => {
 }
 
 export default connect(mapStateToProps)(CheckoutContent)
+
+const PaywallLogo = styled.img`
+  max-width: 200px;
+  align-self: start;
+`

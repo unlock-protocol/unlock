@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useQuery } from '@apollo/react-hooks'
 import keyHolderQuery from '../../queries/keyholdersByLock'
 import { WalletServiceContext } from '../../utils/withWalletService'
+import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { MemberFilters } from '../../unlockTypes'
 
@@ -22,6 +23,7 @@ jest.mock('@apollo/react-hooks')
 jest.mock('react-redux')
 
 const signature = 'signature'
+const viewer = '0xlockOwner'
 const lock = {
   address: '0xlockAddress',
   owner: '0xlockOwner',
@@ -70,6 +72,10 @@ const walletService = {
     return callback(null, signature)
   }),
 }
+
+const web3Service = {
+  isLockManager: jest.fn(() => true),
+}
 const storageService = {
   getBulkMetadataFor: jest.fn(() => Promise.resolve(storedMetata)),
 }
@@ -83,6 +89,19 @@ useDispatch.mockImplementation(() => mockDispatch)
 describe('useMembers', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.spyOn(React, 'useContext').mockImplementation(context => {
+      if (context === Web3ServiceContext) {
+        return web3Service
+      }
+
+      if (context === WalletServiceContext) {
+        return walletService
+      }
+
+      if (context === StorageServiceContext) {
+        return storageService
+      }
+    })
   })
 
   describe('getAllKeysMetadataForLock', () => {
@@ -90,6 +109,7 @@ describe('useMembers', () => {
       expect.assertions(1)
       await getAllKeysMetadataForLock(
         lock,
+        viewer,
         walletService,
         storageService,
         dispatch
@@ -101,6 +121,7 @@ describe('useMembers', () => {
       expect.assertions(1)
       await getAllKeysMetadataForLock(
         lock,
+        viewer,
         walletService,
         storageService,
         dispatch
@@ -108,7 +129,7 @@ describe('useMembers', () => {
       expect(generateKeyTypedData).toHaveBeenCalledWith({
         LockMetaData: {
           address: lock.address,
-          owner: lock.owner,
+          owner: viewer,
           timestamp: expect.any(Number),
         },
       })
@@ -119,12 +140,13 @@ describe('useMembers', () => {
 
       await getAllKeysMetadataForLock(
         lock,
+        viewer,
         walletService,
         storageService,
         dispatch
       )
       expect(walletService.signData).toHaveBeenCalledWith(
-        lock.owner,
+        viewer,
         typedData,
         expect.any(Function)
       )
@@ -135,6 +157,7 @@ describe('useMembers', () => {
 
       const metadataForLock = await getAllKeysMetadataForLock(
         lock,
+        viewer,
         walletService,
         storageService,
         dispatch
@@ -151,6 +174,7 @@ describe('useMembers', () => {
       expect.assertions(1)
       await getAllKeysMetadataForLock(
         lock,
+        viewer,
         walletService,
         storageService,
         dispatch
@@ -257,51 +281,6 @@ describe('useMembers', () => {
       expect(result.current.error).toBe(true)
     })
 
-    describe('when the viewer is not a lock owner', () => {
-      it('should render the list of members without metadata', async () => {
-        expect.assertions(2)
-        useQuery.mockImplementation(() => ({
-          loading: false,
-          error: false,
-          data: {
-            locks: [lock],
-          },
-        }))
-        const { result, waitForNextUpdate } = renderHook(() =>
-          useMembers([lock.address], 'not lock.owner')
-        )
-        const initialResult = result.current
-        expect(initialResult).toEqual({
-          loading: true,
-          error: false,
-          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
-          list: [],
-        })
-        await waitForNextUpdate()
-
-        const loadedResult = result.current
-        expect(loadedResult).toEqual({
-          loading: false,
-          error: false,
-          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
-          list: [
-            {
-              expiration: 'Expired',
-              keyholderAddress: '0x126',
-              lockName: 'my lock',
-              token: '1',
-            },
-            {
-              expiration: 'Expired',
-              keyholderAddress: '0x252',
-              lockName: 'my lock',
-              token: '2',
-            },
-          ],
-        })
-      })
-    })
-
     describe('when the viewer is the lock owner', () => {
       it('should yield the metadata with keys', async () => {
         expect.assertions(2)
@@ -311,7 +290,9 @@ describe('useMembers', () => {
         const wrapper = ({ children }) => (
           <StorageServiceContext.Provider value={storageService}>
             <WalletServiceContext.Provider value={walletService}>
-              {children}
+              <Web3ServiceContext.Provider value={web3Service}>
+                {children}
+              </Web3ServiceContext.Provider>
             </WalletServiceContext.Provider>
           </StorageServiceContext.Provider>
         )
@@ -357,6 +338,52 @@ describe('useMembers', () => {
             {
               expiration: 'Expired',
               email: 'chris@unlock-protocol.com',
+              keyholderAddress: '0x252',
+              lockName: 'my lock',
+              token: '2',
+            },
+          ],
+        })
+      })
+    })
+
+    describe('when the viewer is not a lock owner', () => {
+      it('should render the list of members without metadata', async () => {
+        expect.assertions(2)
+        web3Service.isLockManager = jest.fn(() => false)
+        useQuery.mockImplementation(() => ({
+          loading: false,
+          error: false,
+          data: {
+            locks: [lock],
+          },
+        }))
+        const { result, waitForNextUpdate } = renderHook(() =>
+          useMembers([lock.address], 'not lock.owner')
+        )
+        const initialResult = result.current
+        expect(initialResult).toEqual({
+          loading: true,
+          error: false,
+          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
+          list: [],
+        })
+        await waitForNextUpdate()
+
+        const loadedResult = result.current
+        expect(loadedResult).toEqual({
+          loading: false,
+          error: false,
+          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
+          list: [
+            {
+              expiration: 'Expired',
+              keyholderAddress: '0x126',
+              lockName: 'my lock',
+              token: '1',
+            },
+            {
+              expiration: 'Expired',
               keyholderAddress: '0x252',
               lockName: 'my lock',
               token: '2',
