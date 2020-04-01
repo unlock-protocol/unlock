@@ -13,7 +13,7 @@ function getCodeAccount(lock, discountCode) {
   const codePK = web3.eth.abi.encodeParameters(
     ['address', 'bytes32'],
     // By including the lock address in the codePK, we can have
-    // answers reused for multiple locks without that being visible on-chain
+    // codes reused for multiple locks without that being visible on-chain
     [lock.address, web3.utils.keccak256(discountCode)]
   )
   return web3.eth.accounts.privateKeyToAccount(codePK)
