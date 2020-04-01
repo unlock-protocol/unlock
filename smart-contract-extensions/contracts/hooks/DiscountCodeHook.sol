@@ -26,7 +26,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, WhitelistAdminRole
    */
   function addCodes(
     address[] calldata _codeAddresses,
-    uint[] calldata _discounts
+    uint[] calldata _discountBasisPoints
   ) external
     onlyWhitelistAdmin()
   {
@@ -34,7 +34,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, WhitelistAdminRole
     {
       address codeAddress = _codeAddresses[i];
       require(codeAddress != address(0), 'INVALID_CODE');
-      codeAddressToDiscountBasisPoints[codeAddress] = _discounts[i];
+      codeAddressToDiscountBasisPoints[codeAddress] = _discountBasisPoints[i];
     }
   }
 
