@@ -217,5 +217,19 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Standup compose
+        run: cd docker && docker-compose -f docker-compose.yml -f docker-compose.integration.yml up --build -d
+      - name: Docker compose visibility
+        run: docker ps -a    
       - name: Get Integration Test dependencies
         run: cd tests && yarn
+      - name: Execute tests
+        run: cd tests && yarn test
+        env:
+          CI: true
+          UNLOCK_PROVIDER_APP_HOST: unlock-provider-unlock-app
+          UNLOCK_HOST: unlock-app
+          LOCKSMITH_HOST: locksmith
+          PAYWALL_HOST: paywall
+          SUBGRAPH_HOST: graph-node
+          HTTP_PROVIDER_HOST: ganache-integration

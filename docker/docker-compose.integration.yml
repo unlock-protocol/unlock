@@ -1,0 +1,88 @@
+version: '3'
+services:
+  ganache:
+    restart: always
+    image: trufflesuite/ganache-cli:v6.9.1
+    expose:
+      - 8545
+    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
+  ganache-standup:    
+    build:
+      context: ./development
+      dockerfile: ganache.dockerfile
+    env_file: ./integration.env
+    entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
+    depends_on:
+      - ganache-integration     
+  ganache-integration:
+    env_file: ./integration.env
+    restart: always
+    build:
+      context: ./development
+      dockerfile: ganache.dockerfile
+    ports:
+      - 8545:8545
+    expose:
+      - 8545
+  postgres:
+    env_file: ./integration.env
+  unlock-app:
+    env_file: ./integration.env
+    image: unlockprotocol/unlock-app:1585694180
+    ports:
+      - 3000:3000
+  unlock-provider-unlock-app:
+    env_file:
+      - integration.env
+      - integration-unlock-provider.env
+    image: unlockprotocol/unlock-app:1585694180
+    ports:
+      - 9000:9000
+    expose:
+      - 9000
+  unlock-protocol-com:    
+    image: unlockprotocol/unlock-protocol-com:1585694180
+    env_file: ./integration.env
+    ports:
+      - 3002:3002
+  paywall:    
+    image: unlockprotocol/paywall:1585669533
+    env_file: ./integration.env
+    ports:
+      - 3001:3001
+  wedlocks:
+    image: unlockprotocol/wedlocks:1585687325
+    env_file: ./integration.env
+  locksmith:
+    image: unlockprotocol/locksmith:1585687325
+    env_file:
+      - ./integration.env
+      - ./integration-locksmith.env
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn start'
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+      - ganache
+  graph-node:
+    env_file:
+      - ./integration.env
+      - ./integration-graph-node.env
+    depends_on:
+      - ipfs
+      - postgres
+      - ganache-integration
+  ipfs:
+    image: ipfs/go-ipfs:v0.4.23
+    ports:
+      - '5001:5001'
+  subgraph_deployment:
+    build:
+      context: ./development
+      dockerfile: subgraph.dockerfile
+    command: ['node', './deploy-subgraph.js']
+    depends_on:
+      - ipfs
+      - postgres
+      - graph-node
+      - ganache-integration
