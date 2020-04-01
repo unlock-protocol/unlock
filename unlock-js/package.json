@@ -8,7 +8,7 @@
   "sideEffects": false,
   "scripts": {
     "pretest": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
-    "test": "jest",
+    "test": "jest --runInBand",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
     "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",

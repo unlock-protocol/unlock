@@ -45,8 +45,6 @@ export default class WalletService extends UnlockService {
     if (typeof provider === 'string') {
       // This is when using a local provider with unlocked accounts
       this.provider = new FetchJsonProvider({ endpoint: provider })
-      console.log(`this is the associated provider ${this.provider}`)
-      console.log(this.provider)
       this.web3Provider = false
     } else if (provider.isUnlock) {
       // TODO: This is very temporary! Immediate priority is to refactor away
