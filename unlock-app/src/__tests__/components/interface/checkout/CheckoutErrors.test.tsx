@@ -1,6 +1,9 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { CheckoutErrors } from '../../../../components/interface/checkout/CheckoutErrors'
+import {
+  CheckoutErrors,
+  genericError,
+} from '../../../../components/interface/checkout/CheckoutErrors'
 import { UnlockError } from '../../../../utils/Error'
 
 const fatalError: UnlockError = {
@@ -35,7 +38,7 @@ describe('Checkout Errors', () => {
       <CheckoutErrors errors={errors} resetError={resetError} />
     )
 
-    getByText(fatalError.message)
+    getByText(genericError)
     getByText(warningError.message)
     getByText(diagnosticError.message)
   })
@@ -47,9 +50,9 @@ describe('Checkout Errors', () => {
       <CheckoutErrors errors={errors} resetError={resetError} />
     )
 
-    const fatal = getByText(fatalError.message)
-    rtl.fireEvent.click(fatal)
+    const warning = getByText(warningError.message)
+    rtl.fireEvent.click(warning)
 
-    expect(resetError).toHaveBeenCalledWith(fatalError)
+    expect(resetError).toHaveBeenCalledWith(warningError)
   })
 })
