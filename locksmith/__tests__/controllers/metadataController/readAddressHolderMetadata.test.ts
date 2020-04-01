@@ -16,23 +16,11 @@ const privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
-const mockOnChainLockOwnership = {
-  owner: jest.fn(() => {
-    return Promise.resolve(keyHolder[0])
-  }),
-}
-
 const mockKeyHoldersByLock = {
   getKeyHoldingAddresses: jest.fn(() => {
     return Promise.resolve([keyHolder[0]])
   }),
 }
-
-jest.mock('../../../src/utils/lockData', () => {
-  return function() {
-    return mockOnChainLockOwnership
-  }
-})
 
 jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
   __esModule: true,

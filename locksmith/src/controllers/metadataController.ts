@@ -1,5 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-use-before-define */
+
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
@@ -16,12 +18,12 @@ namespace MetadataController {
     lockAddress: string,
     signeeAddress: string
   ) => {
-    const lockData = new LockData(config.web3ProviderHost)
+    const web3Service = new Web3Service({
+      readOnlyProvider: config.web3ProviderHost,
+      unlockAddress: config.unlockContractAddress,
+    })
 
-    return (
-      Normalizer.ethereumAddress(signeeAddress) ===
-      Normalizer.ethereumAddress(await lockData.owner(lockAddress))
-    )
+    return web3Service.isLockManager(lockAddress, signeeAddress)
   }
 
   const evaluateKeyOwnership = async (

@@ -9,16 +9,19 @@ import { StorageServiceContext } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilters } from '../unlockTypes'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
+import { Web3ServiceContext } from '../utils/withWeb3Service'
 
 /**
  * Helper function to retrieve metadata for a all keys on a lock
  * @param {*} lock
+ * @param {string} viewer
  * @param {*} walletService
  * @param {*} storageService
  * @param {*} dispatch
  */
 export const getAllKeysMetadataForLock = async (
   lock,
+  viewer,
   walletService,
   storageService,
   dispatch
@@ -28,13 +31,13 @@ export const getAllKeysMetadataForLock = async (
     const typedData = generateKeyTypedData({
       LockMetaData: {
         address: lock.address,
-        owner: lock.owner,
+        owner: viewer,
         timestamp: Date.now(),
       },
     })
 
     dispatch(waitForWallet())
-    walletService.signData(lock.owner, typedData, async (error, signature) => {
+    walletService.signData(viewer, typedData, async (error, signature) => {
       dispatch(dismissWalletCheck())
       if (error) {
         reject('Could not sign typed data for metadata request.')
@@ -104,6 +107,7 @@ export const buildMembersWithMetadata = (lock, storedMetadata) => {
  */
 export const useMembers = (lockAddresses, viewer, filter) => {
   const walletService = useContext(WalletServiceContext)
+  const web3Service = useContext(Web3ServiceContext)
   const storageService = useContext(StorageServiceContext)
   const dispatch = useDispatch()
   const [members, setMembers] = useState({})
@@ -131,12 +135,17 @@ export const useMembers = (lockAddresses, viewer, filter) => {
     setLoading(true)
     const membersForLocksPromise = keyHolders.locks.map(async lock => {
       // If the viewer is not the lock owner, just show the members from chain
-      if (lock.owner.toLowerCase() !== viewer.toLowerCase()) {
+      const isLockManager = await web3Service.isLockManager(
+        lock.address,
+        viewer
+      )
+      if (!isLockManager) {
         return buildMembersWithMetadata(lock, [])
       }
       try {
         const storedMetadata = await getAllKeysMetadataForLock(
           lock,
+          viewer,
           walletService,
           storageService,
           dispatch

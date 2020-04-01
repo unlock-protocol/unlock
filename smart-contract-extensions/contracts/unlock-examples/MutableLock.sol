@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import 'unlock-abi-1-3/IPublicLockV6.sol';
+import 'unlock-abi-7/IPublicLockV7.sol';
 import '@openzeppelin/contracts/ownership/Ownable.sol';
 
 
@@ -9,9 +9,9 @@ import '@openzeppelin/contracts/ownership/Ownable.sol';
  */
 contract MutableLock is Ownable
 {
-  IPublicLock public lock;
+  IPublicLockV7 public lock;
 
-  function setLock(IPublicLock _lockAddress) public onlyOwner
+  function setLock(IPublicLockV7 _lockAddress) public onlyOwner
   {
     lock = _lockAddress;
   }

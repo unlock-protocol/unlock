@@ -6,6 +6,14 @@ services:
     expose:
       - 8545
     command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
+  ganache-standup:    
+    build:
+      context: ./development
+      dockerfile: ganache.dockerfile
+    env_file: ./integration.env
+    entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
+    depends_on:
+      - ganache-integration     
   ganache-integration:
     env_file: ./integration.env
     restart: always
@@ -50,11 +58,6 @@ services:
     image: paywall
     ports:
       - 3001:3001
-  tickets:
-    env_file: ./integration.env
-    image: tickets
-    ports:
-      - 3003:3003
   newsletter:
     image: newsletter
     env_file: ./integration.env

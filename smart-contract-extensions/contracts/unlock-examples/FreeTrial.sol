@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import 'unlock-abi-1-3/IPublicLockV6.sol';
+import 'unlock-abi-7/IPublicLockV7.sol';
 
 
 /**
@@ -9,10 +9,10 @@ import 'unlock-abi-1-3/IPublicLockV6.sol';
  */
 contract FreeTrial
 {
-  IPublicLock public lock;
+  IPublicLockV7 public lock;
   mapping(address => uint256) public accountLastUse;
 
-  constructor(IPublicLock _lockAddress) public
+  constructor(IPublicLockV7 _lockAddress) public
   {
     lock = _lockAddress;
   }

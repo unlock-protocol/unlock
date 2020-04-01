@@ -51,7 +51,7 @@ export default function NewDemoContent() {
     url.searchParams.get('unlockUserAccounts') === 'true'
   const useMetadataInputs: boolean =
     url.searchParams.get('metadataInputs') === 'true'
-  const useNewCheckout: boolean = url.searchParams.get('newCheckout') === 'true'
+  const useOldCheckout: boolean = url.searchParams.get('oldCheckout') === 'true'
 
   window.unlockProtocolConfig = {
     persistentCheckout: false,
@@ -91,7 +91,7 @@ export default function NewDemoContent() {
     window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
   }
 
-  const scriptVersion = useNewCheckout ? 'latest' : '1.0'
+  const scriptVersion = useOldCheckout ? '1.0' : 'latest'
 
   return (
     <>
