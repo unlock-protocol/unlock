@@ -8,7 +8,6 @@ import * as CheckoutStoreModule from '../../../../hooks/useCheckoutStore'
 import {
   setPurchasingLockAddress,
   setDelayedPurchase,
-  setShowingMetadataForm,
 } from '../../../../utils/checkoutActions'
 
 const balances = {
@@ -84,7 +83,7 @@ describe('Checkout Lock', () => {
     })
 
     it('delays the purchase and shows metadata form when metadata is required', () => {
-      expect.assertions(2)
+      expect.assertions(1)
 
       const { getByText } = rtl.render(
         <Lock
@@ -108,7 +107,6 @@ describe('Checkout Lock', () => {
           purchaseKey: expect.any(Function),
         })
       )
-      expect(dispatch).toHaveBeenNthCalledWith(2, setShowingMetadataForm(true))
     })
 
     it('does not purchase a key and set the purchasing address when there is already a purchase', () => {

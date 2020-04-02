@@ -14,7 +14,6 @@ import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
 import {
   setPurchasingLockAddress,
   setDelayedPurchase,
-  setShowingMetadataForm,
 } from '../../../utils/checkoutActions'
 
 interface LockProps {
@@ -55,7 +54,7 @@ export const Lock = ({
           purchaseKey: purchase,
         })
       )
-      dispatch(setShowingMetadataForm(true))
+      // TODO: send metadata state
     } else {
       purchase()
     }

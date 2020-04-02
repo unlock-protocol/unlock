@@ -9,7 +9,6 @@ import * as CheckoutStoreModule from '../../../../hooks/useCheckoutStore'
 import {
   setPurchasingLockAddress,
   setDelayedPurchase,
-  setShowingMetadataForm,
 } from '../../../../utils/checkoutActions'
 import doNothing from '../../../../utils/doNothing'
 
@@ -96,7 +95,7 @@ describe('FiatLock', () => {
   })
 
   it('delays the purchase and shows metadata form when metadata is required', () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const { getByText } = rtl.render(
       <FiatLock
@@ -121,7 +120,6 @@ describe('FiatLock', () => {
         purchaseKey: expect.any(Function),
       })
     )
-    expect(dispatch).toHaveBeenNthCalledWith(2, setShowingMetadataForm(true))
   })
 
   it('delays the purchase and shows payment details form when credit card information is required', () => {

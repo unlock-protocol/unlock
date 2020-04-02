@@ -1,22 +1,16 @@
 /* eslint-disable react/prop-types */
 import React, { createContext, useReducer, useContext } from 'react'
-import { PaywallConfig, DelayedPurchase } from '../unlockTypes'
+import { DelayedPurchase } from '../unlockTypes'
 import { Action } from '../utils/checkoutActions'
 import { assertNever } from '../utils/assertNever'
 
 interface State {
-  showingLogin: boolean
-  showingMetadataForm: boolean
-  config: PaywallConfig | undefined
   purchasingLockAddress: string | undefined
   transactionHash: string | undefined
   delayedPurchase: DelayedPurchase | undefined
 }
 
 export const defaultState: State = {
-  showingLogin: false,
-  showingMetadataForm: false,
-  config: undefined,
   purchasingLockAddress: undefined,
   transactionHash: undefined,
   delayedPurchase: undefined,
@@ -24,12 +18,6 @@ export const defaultState: State = {
 
 export function reducer(state = defaultState, action: Action): State {
   switch (action.kind) {
-    case 'setConfig':
-      return { ...state, config: action.config }
-    case 'setShowingLogin':
-      return { ...state, showingLogin: action.value }
-    case 'setShowingMetadataForm':
-      return { ...state, showingMetadataForm: action.value }
     case 'setPurchasingLockAddress':
       return { ...state, purchasingLockAddress: action.address }
     case 'setTransactionHash':
