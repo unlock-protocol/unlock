@@ -7,5 +7,5 @@ export class StripeCustomer extends Model<StripeCustomer> {
   publicKey!: string
 
   @Column
-  stripeCustomerId!: string
+  StripeCustomerId!: string
 }
