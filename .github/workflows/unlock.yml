@@ -227,9 +227,9 @@ jobs:
         run: cd tests && yarn test
         env:
           CI: true
-          UNLOCK_PROVIDER_APP_HOST: unlock-provider-unlock-app
-          LOCKSMITH_HOST: locksmith
-          PAYWALL_HOST: paywall
-          SUBGRAPH_HOST: graph-node
-          HTTP_PROVIDER_HOST: ganache-integration
+          # UNLOCK_PROVIDER_APP_HOST: unlock-provider-unlock-app
+          # LOCKSMITH_HOST: locksmith
+          # PAYWALL_HOST: paywall
+          # SUBGRAPH_HOST: graph-node
+          # HTTP_PROVIDER_HOST: ganache-integration
           # UNLOCK_HOST: unlock-app
