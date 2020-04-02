@@ -225,6 +225,8 @@ jobs:
         run: cd tests && yarn
       - name: Execute tests
         run: cd tests && yarn test
+      - name: Post Run Probe
+        run: docker ps -a            
         env:
           CI: true
           # UNLOCK_PROVIDER_APP_HOST: unlock-provider-unlock-app
