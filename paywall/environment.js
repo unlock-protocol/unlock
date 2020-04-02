@@ -21,7 +21,8 @@ const requiredConfigVariables = {
 }
 
 const optionalConfigVariables = {
-  httpProvider: process.env.HTTP_PROVIDER,
+  // httpProvider: process.env.HTTP_PROVIDER,
+  httpProvider: '127.0.0.1',
   debugMode: process.env.DEBUG,
 }
 
