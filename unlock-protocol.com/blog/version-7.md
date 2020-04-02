@@ -13,7 +13,7 @@ Some of you may have noticed a huge leap in our version numbers; the last releas
 
 ### Hooks
 
-A feature common to many areas of programming, code hooks give us a way to extend the functionality of a smart contract to meet changing needs & new use-cases. We're adding 2 hooks with v7: A `KeyPurchaseHook` and a `KeyCancelHook`. These are included in the new npm module (`unlock-abi-7`) as interfaces, allowing ~~for almost unlimited~~ a vast amount of flexibility in how they're implemented. A few example use-cases include adding custom cancellation logic, **<add 1 more example here>**, and the one we're most excited about; adding support for discount codes!
+A feature common to many areas of programming, code hooks give us a way to extend the functionality of a smart contract to meet changing needs & new use-cases. We're adding 2 hooks with v7: A `KeyPurchaseHook` and a `KeyCancelHook`. These are included in the new npm module (`unlock-abi-7`) as interfaces, allowing a vast amount of flexibility in how they're implemented. A couple of example use-cases include adding custom cancellation logic, and adding support for discount codes!
 
 ### Support for direct ETH tips
 
@@ -23,18 +23,13 @@ However, it is now generally considered somewhat of an antipattern to use `selfd
 ### Access-Control
 
 We've been using the Ownable pattern for access control since the beginning of the project. If you're not familiar with this, it is often implemented by inheriting from openzeppelin's `Ownable.sol` contract, which gives us some basic functionality to control who may access certain functionality in the derived contract. It works and is probably the simplest way to get started when beginning a project (which is why it's used so often).
-As is often the case with the simplest solution, it has its limitations. The main one for us at Unlock is that the Ownable pattern doesn't provide granular control of access. For this reason, we've migrated to using a more role-based access control system (RBAC), based on another openzeppelin contract `Roles.sol`. We're introducing LockManagers, KeyGranters and KeyManagers with v7. I'll be updating our docs in more detail around these changes, but here's an overview.
+As is often the case with the simplest solution, it has its limitations. The main one for us at Unlock is that the Ownable pattern doesn't provide granular control of access. For this reason, we've migrated to using a more role-based access control system (RBAC), based on another openzeppelin contract `Roles.sol`. We're introducing LockManagers, KeyGranters and KeyManagers with v7. We'll be updating our docs in more detail around these changes, but here's an overview.
 
 - LockManagers: This is a new role we've added to replace `owner`. The lock creator becomes the only LockManager by default, granting them the highest level of permissions for their lock. Unlike `owner`, there may be more than 1 LockManager.
 
 * KeyGranters: Also implemented as a role, the lock creator is also the default KeyGranter.The primary reason for this role is to support additional purchase mechanisms beyond direct key purchases (think credit-card purchases, where a user pays Unlock with a credit card, Unlock buys the key from the lock, and then grants it to the user).
 
 - KeyManagers: This is not a role in the same way the previous 2 are. It is more of an internal "title" assigned to a user, and there can only be 1 key manager per key. Only the key manager is authorized to transfer, share or cancel keys, and may or may not be the same entity as the key owner depending on how the key was originally acquired. This enables new use cases, such as the ability to "loan" your key to someone temporarily, while retaining the right to take it back when/if needed, or possibly putting keys (NFTs) inside of a vault contract as collateral by retaining ownership, but transfering the keyManager role to the vault itself!
-
-What this looks like from a creator's perspective is that the person who creates a lock is now referred to as the lock creator internally.
-
-- LockManagers, KeyGranters and KeyManagers
-- so long, Ownable!
 
 ### General Improvements
 
