@@ -34,6 +34,15 @@ export class PaymentProcessor {
     })
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async findOrCreateUserByPublicKey(publicKey: ethereumAddress) {
+    const normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
+
+    return UserReference.findOrCreate({
+      where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
+    })
+  }
+
   /**
    *  appropriate stripe customer id based on the provided token.
    *
@@ -45,16 +54,18 @@ export class PaymentProcessor {
     publicKey: ethereumAddress
   ): Promise<boolean> {
     try {
-      const user = await this.findUserByPublicKey(publicKey)
-
-      if (user && user.stripe_customer_id) {
+      const [user, created] = await this.findOrCreateUserByPublicKey(publicKey)
+      if (!created) {
+        return false
+      }
+      if (user.stripe_customer_id) {
         await this.stripe.customers.createSource(user.stripe_customer_id, {
           source: token,
         })
 
         return true
       }
-      if (user && !user.stripe_customer_id) {
+      if (!user.stripe_customer_id) {
         const customer = await this.createStripeCustomer(
           user.emailAddress,
           token
