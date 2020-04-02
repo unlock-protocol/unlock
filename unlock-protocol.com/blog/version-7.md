@@ -29,7 +29,7 @@ As is often the case with the simplest solution, it has its limitations. The mai
 
 * KeyGranters: Also implemented as a role, the lock creator is also the default KeyGranter.The primary reason for this role is to support additional purchase mechanisms beyond direct key purchases (think credit-card purchases, where a user pays Unlock with a credit card, Unlock buys the key from the lock, and then grants it to the user).
 
-- KeyManagers: This is not a role in the same way the previous 2 are. It is more of an internal "title" assigned to a user, and there can only be 1 key manager per key. Only the key manager is authorized to transfer, share or cancel keys, and may or may not be the same entity as the key owner depending on how the key was originally acquired.
+- KeyManagers: This is not a role in the same way the previous 2 are. It is more of an internal "title" assigned to a user, and there can only be 1 key manager per key. Only the key manager is authorized to transfer, share or cancel keys, and may or may not be the same entity as the key owner depending on how the key was originally acquired. This enables new use cases, such as the ability to "loan" your key to someone temporarily, while retaining the right to take it back when/if needed, or possibly putting keys (NFTs) inside of a vault contract as collateral by retaining ownership, but transfering the keyManager role to the vault itself!
 
 What this looks like from a creator's perspective is that the person who creates a lock is now referred to as the lock creator internally.
 
