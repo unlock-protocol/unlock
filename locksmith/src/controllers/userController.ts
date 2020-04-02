@@ -134,6 +134,21 @@ namespace UserController {
     return res.sendStatus(400)
   }
 
+  export const updateAddressPaymentDetails = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { publicKey } = req.params
+    const token = req.body.message.user.stripeTokenId
+
+    const result = await UserOperations.updatePaymentDetails(token, publicKey)
+
+    if (result) {
+      return res.sendStatus(202)
+    }
+    return res.sendStatus(400)
+  }
+
   export const updatePasswordEncryptedPrivateKey = async (
     req: Request,
     res: Response

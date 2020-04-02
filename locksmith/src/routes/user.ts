@@ -50,11 +50,15 @@ router.get(
 
 router.get('/:emailAddress/cards', userController.cards)
 router.put('/:emailAddress', userController.updateUser)
-router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
 router.put(
   '/:emailAddress/passwordEncryptedPrivateKey',
   userController.updatePasswordEncryptedPrivateKey
 )
 router.post('/:ethereumAddress/eject', userController.eject)
-
+router.put(
+  '/:ethereumAddress/credit-cards',
+  userController.updateAddressPaymentDetails
+)
+// Deprecated
+router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
 module.exports = router
