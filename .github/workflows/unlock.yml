@@ -12,6 +12,48 @@ on:
       - master
 
 jobs:
+  smart-contract-extensions:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    env:
+      CI: false
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd smart-contract-extensions && yarn
+      - run: cd smart-contract-extensions && yarn build
+      - run: cd smart-contract-extensions && yarn ganache &
+      - run: cd smart-contract-extensions && yarn test
+
+  smart-contracts:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+    
+    env:
+      CI: false
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd smart-contracts && yarn
+      - run: cd smart-contracts && yarn build
+      - run: cd smart-contracts && yarn ganache &
+      - run: cd smart-contracts && yarn test
+
   unlock-app:
     runs-on: ubuntu-latest
 
@@ -84,7 +126,6 @@ jobs:
         env:
           CI: true
 
-
   unlock-protocol-com:
     runs-on: ubuntu-latest
 
@@ -121,42 +162,6 @@ jobs:
         env:
           CI: true
 
-  # smart-contract-extensions:
-  #   runs-on: ubuntu-latest
-
-  #   strategy:
-  #     matrix:
-  #       node-version: [10.x]
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - run: cd smart-contract-extensions && yarn
-  #     - run: cd smart-contract-extensions && yarn build
-  #     - run: cd smart-contract-extensions && yarn ganache &
-  #     - run: cd smart-contract-extensions && yarn test
-
-  # smart-contracts:
-  #   runs-on: ubuntu-latest
-
-  #   strategy:
-  #     matrix:
-  #       node-version: [10.x]
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - run: cd smart-contracts && yarn
-  #     - run: cd smart-contracts && yarn build
-  #     - run: cd smart-contracts && yarn ganache &
-  #     - run: cd smart-contracts && yarn test
-
   locksmith:
     runs-on: ubuntu-latest
     container: node:10.18-jessie
@@ -188,8 +193,7 @@ jobs:
           POSTGRES_PORT: 5432
 
   integration-test:
-    needs:
-      [
+    needs: [
         unlock-app,
         paywall,
         wedlocks,
