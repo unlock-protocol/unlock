@@ -1,4 +1,4 @@
-const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
+const testHost = process.env.CI === 'true' ? 'ganache' : '127.0.0.1'
 
 module.exports = {
   networks: {
