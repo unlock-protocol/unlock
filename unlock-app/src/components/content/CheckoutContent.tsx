@@ -20,9 +20,15 @@ import {
   Account as AccountType,
   Router,
   PaywallConfig,
+  UserMetadata,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
-import { CheckoutStoreProvider } from '../../hooks/useCheckoutStore'
+import {
+  CheckoutStoreProvider,
+  useCheckoutStore,
+} from '../../hooks/useCheckoutStore'
+import MetadataForm from '../interface/checkout/MetadataForm'
+import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -31,6 +37,22 @@ interface CheckoutContentProps {
 }
 
 export const CheckoutContent = ({
+  account,
+  configFromSearch,
+  errors,
+}: CheckoutContentProps) => {
+  return (
+    <CheckoutStoreProvider>
+      <CheckoutContentInner
+        account={account}
+        configFromSearch={configFromSearch}
+        errors={errors}
+      />
+    </CheckoutStoreProvider>
+  )
+}
+
+export const CheckoutContentInner = ({
   errors,
   configFromSearch,
   account,
@@ -42,6 +64,8 @@ export const CheckoutContent = ({
   } = useCheckoutCommunication()
   const reduxDispatch = useDispatch()
   const [current, send] = useMachine(checkoutMachine)
+  const { setUserMetadata } = useSetUserMetadata()
+  const { state } = useCheckoutStore()
 
   const paywallConfig = config || configFromSearch
 
@@ -58,7 +82,18 @@ export const CheckoutContent = ({
   const metadataRequired = paywallConfig
     ? !!paywallConfig.metadataInputs
     : false
-  console.log({ value: current.value })
+
+  const onMetadataSubmit = (metadata: UserMetadata) => {
+    const { delayedPurchase } = state
+    setUserMetadata(
+      delayedPurchase!.lockAddress,
+      account!.address,
+      metadata,
+      delayedPurchase!.purchaseKey
+    )
+    send('metadataSubmitted')
+  }
+
   return (
     <CheckoutContainer close={emitCloseModal}>
       <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
@@ -66,28 +101,33 @@ export const CheckoutContent = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
-          <CheckoutStoreProvider>
-            {paywallConfig && paywallConfig.icon && (
-              <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
-            )}
-            <p>{paywallConfig ? paywallConfig.callToAction.default : ''}</p>
-            <CheckoutErrors
-              errors={errors}
-              resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
+          {paywallConfig && paywallConfig.icon && (
+            <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
+          )}
+          <p>{paywallConfig ? paywallConfig.callToAction.default : ''}</p>
+          <CheckoutErrors
+            errors={errors}
+            resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
+          />
+          {current.matches('loading') && <Loading />}
+          {current.matches('notLoggedIn') && (
+            <NotLoggedIn config={config!} lockAddresses={lockAddresses} />
+          )}
+          {current.matches('locks') && (
+            <Locks
+              accountAddress={account.address}
+              lockAddresses={lockAddresses}
+              emitTransactionInfo={emitTransactionInfo}
+              metadataRequired={metadataRequired}
+              showMetadataForm={() => send('collectMetadata')}
             />
-            {current.matches('loading') && <Loading />}
-            {current.matches('notLoggedIn') && (
-              <NotLoggedIn config={config!} lockAddresses={lockAddresses} />
-            )}
-            {current.matches('locks') && (
-              <Locks
-                accountAddress={account.address}
-                lockAddresses={lockAddresses}
-                emitTransactionInfo={emitTransactionInfo}
-                metadataRequired={metadataRequired}
-              />
-            )}
-          </CheckoutStoreProvider>
+          )}
+          {current.matches('metadataForm') && (
+            <MetadataForm
+              fields={config!.metadataInputs!}
+              onSubmit={onMetadataSubmit}
+            />
+          )}
         </BrowserOnly>
       </CheckoutWrapper>
     </CheckoutContainer>

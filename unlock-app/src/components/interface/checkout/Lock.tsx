@@ -23,6 +23,7 @@ interface LockProps {
   activeKeys: KeyResult[]
   accountAddress: string
   metadataRequired?: boolean
+  showMetadataForm: () => void
 }
 
 export const Lock = ({
@@ -32,6 +33,7 @@ export const Lock = ({
   activeKeys,
   accountAddress,
   metadataRequired,
+  showMetadataForm,
 }: LockProps) => {
   const { purchaseKey } = usePurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
@@ -54,7 +56,7 @@ export const Lock = ({
           purchaseKey: purchase,
         })
       )
-      // TODO: send metadata state
+      showMetadataForm()
     } else {
       purchase()
     }

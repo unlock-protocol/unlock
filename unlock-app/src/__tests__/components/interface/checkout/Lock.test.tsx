@@ -41,11 +41,13 @@ describe('Checkout Lock', () => {
     let emitTransactionInfo: (info: TransactionInfo) => void
     let state: any
     let dispatch: jest.Mock<any, any>
+    let showMetadataForm: jest.Mock<any, any>
     beforeEach(() => {
       purchaseKey = jest.fn()
       emitTransactionInfo = jest.fn()
       state = {}
       dispatch = jest.fn()
+      showMetadataForm = jest.fn()
 
       jest
         .spyOn(CheckoutStoreModule, 'useCheckoutStore')
@@ -69,6 +71,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -83,7 +86,7 @@ describe('Checkout Lock', () => {
     })
 
     it('delays the purchase and shows metadata form when metadata is required', () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       const { getByText } = rtl.render(
         <Lock
@@ -93,6 +96,7 @@ describe('Checkout Lock', () => {
           activeKeys={[]}
           accountAddress={accountAddress}
           metadataRequired
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -107,6 +111,7 @@ describe('Checkout Lock', () => {
           purchaseKey: expect.any(Function),
         })
       )
+      expect(showMetadataForm).toHaveBeenCalled()
     })
 
     it('does not purchase a key and set the purchasing address when there is already a purchase', () => {
@@ -121,6 +126,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -147,6 +153,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -165,6 +172,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -181,6 +189,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[activeKeyForAnotherLock]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -199,6 +208,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -223,6 +233,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
@@ -239,6 +250,7 @@ describe('Checkout Lock', () => {
           balances={balances}
           activeKeys={[activeKeyForThisLock]}
           accountAddress={accountAddress}
+          showMetadataForm={showMetadataForm}
         />
       )
 
