@@ -1,38 +1,28 @@
 import React, { useEffect } from 'react'
-import styled from 'styled-components'
-import { connect, useDispatch } from 'react-redux'
+import { useMachine } from '@xstate/react'
 import Head from 'next/head'
+import styled from 'styled-components'
+import { useDispatch, connect } from 'react-redux'
 import queryString from 'query-string'
+import { UnlockError } from '../../utils/Error'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
-import { Locks } from '../interface/checkout/Locks'
-import { FiatLocks } from '../interface/checkout/FiatLocks'
+import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
+import { checkoutMachine } from '../../stateMachines/checkout'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
-import { MetadataForm } from '../interface/checkout/MetadataForm'
 import { CheckoutErrors } from '../interface/checkout/CheckoutErrors'
 import { NotLoggedIn } from '../interface/checkout/NotLoggedIn'
+import { Locks } from '../interface/checkout/Locks'
+import Loading from '../interface/Loading'
+import { resetError } from '../../actions/error'
 import {
   Account as AccountType,
   Router,
   PaywallConfig,
-  UserMetadata,
 } from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
-import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
-import {
-  useCheckoutStore,
-  CheckoutStoreProvider,
-} from '../../hooks/useCheckoutStore'
-
-import {
-  setConfig,
-  setShowingLogin,
-  setShowingMetadataForm,
-} from '../../utils/checkoutActions'
-import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
-import { UnlockError } from '../../utils/Error'
-import { resetError } from '../../actions/error'
+import { CheckoutStoreProvider } from '../../hooks/useCheckoutStore'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -40,76 +30,35 @@ interface CheckoutContentProps {
   errors: UnlockError[]
 }
 
-const defaultLockAddresses: string[] = []
-
-// This component wraps CheckoutContentInner so that it has access to the store.
 export const CheckoutContent = ({
-  account,
-  configFromSearch,
   errors,
-}: CheckoutContentProps) => {
-  return (
-    <CheckoutStoreProvider>
-      <CheckoutContentInner
-        account={account}
-        configFromSearch={configFromSearch}
-        errors={errors}
-      />
-    </CheckoutStoreProvider>
-  )
-}
-
-export const CheckoutContentInner = ({
-  account,
   configFromSearch,
-  errors,
+  account,
 }: CheckoutContentProps) => {
-  const reduxDispatch = useDispatch()
-  const { state, dispatch } = useCheckoutStore()
-  const { setUserMetadata } = useSetUserMetadata()
-  const { showingLogin, config, showingMetadataForm, delayedPurchase } = state
-
   const {
-    emitTransactionInfo,
     emitCloseModal,
-    emitUserInfo,
-  } = useCheckoutCommunication({
-    setConfig: (config: PaywallConfig) => {
-      dispatch(setConfig(config))
-    },
-  })
+    emitTransactionInfo,
+    config,
+  } = useCheckoutCommunication()
+  const reduxDispatch = useDispatch()
+  const [current, send] = useMachine(checkoutMachine)
+
+  const paywallConfig = config || configFromSearch
 
   useEffect(() => {
-    if (account && account.address) {
-      emitUserInfo({
-        address: account.address,
-      })
+    if (account && paywallConfig) {
+      send('gotConfigAndAccount')
+    } else if (paywallConfig) {
+      setTimeout(() => send('gotConfig'), 500)
     }
-  }, [account])
+  }, [JSON.stringify(account), JSON.stringify(paywallConfig)])
 
-  useEffect(() => {
-    if (!config && configFromSearch) {
-      dispatch(setConfig(configFromSearch))
-    }
-  }, [configFromSearch])
-
-  const lockAddresses = config
-    ? Object.keys(config.locks)
-    : defaultLockAddresses
-
-  const metadataRequired = config ? !!config.metadataInputs : false
-  const onMetadataSubmit = (metadata: UserMetadata) => {
-    setUserMetadata(
-      delayedPurchase!.lockAddress,
-      account!.address,
-      metadata,
-      delayedPurchase!.purchaseKey
-    )
-    dispatch(setShowingMetadataForm(false))
-  }
-
-  const allowClose = !(!config || config.persistentCheckout)
-
+  const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
+  const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
+  const metadataRequired = paywallConfig
+    ? !!paywallConfig.metadataInputs
+    : false
+  console.log({ value: current.value })
   return (
     <CheckoutContainer close={emitCloseModal}>
       <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
@@ -117,49 +66,28 @@ export const CheckoutContentInner = ({
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <BrowserOnly>
-          {config && config.icon && (
-            <PaywallLogo alt="Publisher Icon" src={config.icon} />
-          )}
-          <p>{config ? config.callToAction.default : ''}</p>
-          <CheckoutErrors
-            errors={errors}
-            resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
-          />
-          {showingMetadataForm && (
-            <MetadataForm
-              fields={config!.metadataInputs!}
-              onSubmit={onMetadataSubmit}
+          <CheckoutStoreProvider>
+            {paywallConfig && paywallConfig.icon && (
+              <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
+            )}
+            <p>{paywallConfig ? paywallConfig.callToAction.default : ''}</p>
+            <CheckoutErrors
+              errors={errors}
+              resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
             />
-          )}
-          {!showingMetadataForm && (
-            <>
-              {config && !account && (
-                <NotLoggedIn
-                  showingLogin={showingLogin}
-                  showLogin={() => dispatch(setShowingLogin(true))}
-                  config={config}
-                  lockAddresses={lockAddresses}
-                />
-              )}
-              {account && !account.emailAddress && (
-                <Locks
-                  accountAddress={account.address}
-                  lockAddresses={lockAddresses}
-                  emitTransactionInfo={emitTransactionInfo}
-                  metadataRequired={metadataRequired}
-                />
-              )}
-              {account && account.emailAddress && (
-                <FiatLocks
-                  lockAddresses={lockAddresses}
-                  accountAddress={account.address}
-                  emitTransactionInfo={emitTransactionInfo}
-                  cards={account.cards || []}
-                  metadataRequired={metadataRequired}
-                />
-              )}
-            </>
-          )}
+            {current.matches('loading') && <Loading />}
+            {current.matches('notLoggedIn') && (
+              <NotLoggedIn config={config!} lockAddresses={lockAddresses} />
+            )}
+            {current.matches('locks') && (
+              <Locks
+                accountAddress={account.address}
+                lockAddresses={lockAddresses}
+                emitTransactionInfo={emitTransactionInfo}
+                metadataRequired={metadataRequired}
+              />
+            )}
+          </CheckoutStoreProvider>
         </BrowserOnly>
       </CheckoutWrapper>
     </CheckoutContainer>
