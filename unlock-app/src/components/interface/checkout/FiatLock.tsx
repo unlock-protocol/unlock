@@ -21,6 +21,7 @@ interface FiatLockProps {
   metadataRequired?: boolean
   needToCollectPaymentDetails?: boolean
   setShowingPaymentForm: any
+  showMetadataForm: () => void
 }
 
 export const FiatLock = ({
@@ -32,6 +33,7 @@ export const FiatLock = ({
   formattedKeyPrice,
   needToCollectPaymentDetails,
   setShowingPaymentForm,
+  showMetadataForm,
 }: FiatLockProps) => {
   const { purchaseKey } = useUserAccountsPurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
@@ -49,7 +51,7 @@ export const FiatLock = ({
           purchaseKey: purchase,
         })
       )
-      // TODO: send new state
+      showMetadataForm()
     } else {
       purchase()
     }

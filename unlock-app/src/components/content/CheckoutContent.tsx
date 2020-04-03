@@ -14,6 +14,7 @@ import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { CheckoutErrors } from '../interface/checkout/CheckoutErrors'
 import { NotLoggedIn } from '../interface/checkout/NotLoggedIn'
 import { Locks } from '../interface/checkout/Locks'
+import { FiatLocks } from '../interface/checkout/FiatLocks'
 import Loading from '../interface/Loading'
 import { resetError } from '../../actions/error'
 import {
@@ -60,6 +61,7 @@ export const CheckoutContentInner = ({
   const {
     emitCloseModal,
     emitTransactionInfo,
+    emitUserInfo,
     config,
   } = useCheckoutCommunication()
   const reduxDispatch = useDispatch()
@@ -70,7 +72,13 @@ export const CheckoutContentInner = ({
   const paywallConfig = config || configFromSearch
 
   useEffect(() => {
-    if (account && paywallConfig) {
+    if (account) {
+      emitUserInfo({ address: account.address })
+    }
+
+    if (account && account.emailAddress && paywallConfig) {
+      send('gotConfigAndUserAccount')
+    } else if (account && paywallConfig) {
       send('gotConfigAndAccount')
     } else if (paywallConfig) {
       setTimeout(() => send('gotConfig'), 500)
@@ -118,6 +126,16 @@ export const CheckoutContentInner = ({
               accountAddress={account.address}
               lockAddresses={lockAddresses}
               emitTransactionInfo={emitTransactionInfo}
+              metadataRequired={metadataRequired}
+              showMetadataForm={() => send('collectMetadata')}
+            />
+          )}
+          {current.matches('fiatLocks') && (
+            <FiatLocks
+              accountAddress={account.address}
+              lockAddresses={lockAddresses}
+              emitTransactionInfo={emitTransactionInfo}
+              cards={account.cards || []}
               metadataRequired={metadataRequired}
               showMetadataForm={() => send('collectMetadata')}
             />
