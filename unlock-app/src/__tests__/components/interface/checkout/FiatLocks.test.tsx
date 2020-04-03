@@ -1,6 +1,7 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { FiatLocks } from '../../../../components/interface/checkout/FiatLocks'
+import doNothing from '../../../../utils/doNothing'
 
 const lock = {
   name: 'a test lock',
@@ -49,6 +50,7 @@ describe('FiatLocks', () => {
           emitTransactionInfo={emitTransactionInfo}
           cards={[]}
           metadataRequired={false}
+          showMetadataForm={doNothing}
         />
       )
 
@@ -67,6 +69,7 @@ describe('FiatLocks', () => {
           emitTransactionInfo={emitTransactionInfo}
           cards={[]}
           metadataRequired={false}
+          showMetadataForm={doNothing}
         />
       )
 

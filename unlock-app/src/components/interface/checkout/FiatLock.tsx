@@ -10,7 +10,6 @@ import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
 import {
   setPurchasingLockAddress,
   setDelayedPurchase,
-  setShowingMetadataForm,
 } from '../../../utils/checkoutActions'
 
 interface FiatLockProps {
@@ -22,6 +21,7 @@ interface FiatLockProps {
   metadataRequired?: boolean
   needToCollectPaymentDetails?: boolean
   setShowingPaymentForm: any
+  showMetadataForm: () => void
 }
 
 export const FiatLock = ({
@@ -33,6 +33,7 @@ export const FiatLock = ({
   formattedKeyPrice,
   needToCollectPaymentDetails,
   setShowingPaymentForm,
+  showMetadataForm,
 }: FiatLockProps) => {
   const { purchaseKey } = useUserAccountsPurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
@@ -50,7 +51,7 @@ export const FiatLock = ({
           purchaseKey: purchase,
         })
       )
-      dispatch(setShowingMetadataForm(true))
+      showMetadataForm()
     } else {
       purchase()
     }

@@ -19,6 +19,7 @@ interface LocksProps {
   emitTransactionInfo: (info: TransactionInfo) => void
   cards: Card[]
   metadataRequired: boolean
+  showMetadataForm: () => void
 }
 
 interface PaymentFormState {
@@ -32,6 +33,7 @@ export const FiatLocks = ({
   emitTransactionInfo,
   cards,
   metadataRequired,
+  showMetadataForm,
 }: LocksProps) => {
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
@@ -85,6 +87,7 @@ export const FiatLocks = ({
               needToCollectPaymentDetails={needToCollectPaymentDetails}
               setShowingPaymentForm={setShowingPaymentForm}
               metadataRequired={metadataRequired}
+              showMetadataForm={showMetadataForm}
             />
           )
         }

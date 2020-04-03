@@ -28,7 +28,7 @@ const LoadingWrapper = styled.section<Props>`
   display: grid;
   justify-items: center;
   svg {
-    fill: var(--lightgrey);
+    fill: var(--grey);
     width: ${(props: Props) => props.size || 60}px;
   }
 `

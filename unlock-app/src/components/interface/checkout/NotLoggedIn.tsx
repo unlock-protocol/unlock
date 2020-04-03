@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PaywallConfig } from '../../../unlockTypes'
 import { CheckoutLoginSignup } from './CheckoutLoginSignup'
 import { NotLoggedInLocks } from './NotLoggedInLocks'
@@ -7,17 +7,11 @@ import { RecommendedWallets } from './RecommendWallets'
 
 interface NotLoggedInProps {
   config: PaywallConfig
-  showingLogin: boolean
   lockAddresses: string[]
-  showLogin: () => void
 }
 
-export const NotLoggedIn = ({
-  showingLogin,
-  config,
-  lockAddresses,
-  showLogin,
-}: NotLoggedInProps) => {
+export const NotLoggedIn = ({ config, lockAddresses }: NotLoggedInProps) => {
+  const [showingLogin, setShowingLogin] = useState(false)
   if (showingLogin) {
     return <CheckoutLoginSignup login />
   }
@@ -26,7 +20,7 @@ export const NotLoggedIn = ({
     return (
       <>
         <NotLoggedInLocks lockAddresses={lockAddresses} />
-        <LogInButton onClick={showLogin} />
+        <LogInButton onClick={() => setShowingLogin(true)} />
       </>
     )
   }
