@@ -49,9 +49,17 @@ export const saveStripeCustomerIdForAddress = async (
   stripeCustomerId: string
 ) => {
   const normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
+  try {
+    return await StripeCustomer.create({
+      publicKey: normalizedEthereumAddress,
+      StripeCustomerId: stripeCustomerId,
+    })
+  } catch (error) {
+    return false
+  }
+}
 
-  return await StripeCustomer.create({
-    publicKey: normalizedEthereumAddress,
-    stripeCustomerId: stripeCustomerId,
-  })
+export default {
+  saveStripeCustomerIdForAddress,
+  getStripeCustomerIdForAddress,
 }
