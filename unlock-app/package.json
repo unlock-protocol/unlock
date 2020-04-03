@@ -28,6 +28,7 @@
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.0.1",
     "@unlock-protocol/unlock-js": "0.9.3",
+    "@xstate/react": "0.8.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
     "apollo-boost": "0.4.7",
@@ -74,7 +75,8 @@
     "styled-components": "5.0.1",
     "ts-jest": "25.2.1",
     "typescript": "3.8.3",
-    "validator": "13.0.0"
+    "validator": "13.0.0",
+    "xstate": "4.8.0"
   },
   "devDependencies": {
     "@svgr/cli": "4.3.3",

@@ -9,7 +9,6 @@ import * as CheckoutStoreModule from '../../../../hooks/useCheckoutStore'
 import {
   setPurchasingLockAddress,
   setDelayedPurchase,
-  setShowingMetadataForm,
 } from '../../../../utils/checkoutActions'
 import doNothing from '../../../../utils/doNothing'
 
@@ -42,12 +41,14 @@ describe('FiatLock', () => {
   let state: any
   let dispatch: jest.Mock<any, any>
   let setShowingPaymentForm: jest.Mock<any, any>
+  let showMetadataForm: jest.Mock<any, any>
   beforeEach(() => {
     purchaseKey = jest.fn().mockResolvedValue('')
     emitTransactionInfo = jest.fn()
     state = {}
     dispatch = jest.fn()
     setShowingPaymentForm = jest.fn()
+    showMetadataForm = jest.fn()
 
     jest
       .spyOn(CheckoutStoreModule, 'useCheckoutStore')
@@ -82,6 +83,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -107,6 +109,7 @@ describe('FiatLock', () => {
         metadataRequired
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -121,7 +124,7 @@ describe('FiatLock', () => {
         purchaseKey: expect.any(Function),
       })
     )
-    expect(dispatch).toHaveBeenNthCalledWith(2, setShowingMetadataForm(true))
+    expect(showMetadataForm).toHaveBeenCalled()
   })
 
   it('delays the purchase and shows payment details form when credit card information is required', () => {
@@ -137,6 +140,7 @@ describe('FiatLock', () => {
         formattedKeyPrice={formattedKeyPrice}
         needToCollectPaymentDetails
         setShowingPaymentForm={setShowingPaymentForm}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -164,6 +168,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -188,6 +193,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -205,6 +211,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -224,6 +231,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -252,6 +260,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 
@@ -269,6 +278,7 @@ describe('FiatLock', () => {
         accountAddress={accountAddress}
         formattedKeyPrice={formattedKeyPrice}
         setShowingPaymentForm={doNothing}
+        showMetadataForm={showMetadataForm}
       />
     )
 

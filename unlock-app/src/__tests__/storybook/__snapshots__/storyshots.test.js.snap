@@ -11453,7 +11453,7 @@ Object {
 }
 
 .c17 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -12286,7 +12286,7 @@ Object {
           </div>
         </div>
         <section
-          class="sc-fzqKVi hZoETa"
+          class="sc-fzqKVi iHguEc"
         >
           <svg
             alt="loading"
@@ -25119,7 +25119,7 @@ Object {
 }
 
 .c26 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -26933,7 +26933,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-fzqKVi hZoETa"
+        class="sc-fzqKVi iHguEc"
       >
         <svg
           alt="loading"
@@ -27153,7 +27153,7 @@ Object {
 }
 
 .c7 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -27517,7 +27517,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-fzqKVi hZoETa"
+        class="sc-fzqKVi iHguEc"
       >
         <svg
           alt="loading"
@@ -39783,7 +39783,7 @@ Object {
 }
 
 .c28 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -40954,7 +40954,7 @@ Object {
           </div>
         </section>
         <section
-          class="sc-fzqKVi hZoETa"
+          class="sc-fzqKVi iHguEc"
         >
           <svg
             alt="loading"
@@ -42610,7 +42610,7 @@ Object {
 }
 
 .c28 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -43781,7 +43781,7 @@ Object {
           </div>
         </section>
         <section
-          class="sc-fzqKVi hZoETa"
+          class="sc-fzqKVi iHguEc"
         >
           <svg
             alt="loading"
@@ -44312,7 +44312,7 @@ Object {
 }
 
 .c28 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -45483,7 +45483,7 @@ Object {
           </div>
         </section>
         <section
-          class="sc-fzqKVi hZoETa"
+          class="sc-fzqKVi iHguEc"
         >
           <svg
             alt="loading"
@@ -46014,7 +46014,7 @@ Object {
 }
 
 .c28 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -47185,7 +47185,7 @@ Object {
           </div>
         </section>
         <section
-          class="sc-fzqKVi hZoETa"
+          class="sc-fzqKVi iHguEc"
         >
           <svg
             alt="loading"
@@ -62014,7 +62014,7 @@ Object {
 }
 
 .c23 svg {
-  fill: var(--lightgrey);
+  fill: var(--grey);
   width: 60px;
 }
 
@@ -62864,7 +62864,7 @@ Object {
         </div>
         <div>
           <section
-            class="sc-fzqKVi hZoETa"
+            class="sc-fzqKVi iHguEc"
           >
             <svg
               alt="loading"
