@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
-    
+
     env:
       CI: false
 
@@ -192,18 +192,30 @@ jobs:
           WEB3_PROVIDER_HOST: http://0.0.0.0:8545
           POSTGRES_PORT: 5432
 
-  integration-test:
-    needs: [
+  image_building:
+    needs:
+      [
         unlock-app,
         paywall,
         wedlocks,
         newsletter,
         unlock-protocol-com,
         nudge,
-        # smart-contract-extensions,
-        # smart-contracts,
+        smart-contract-extensions,
+        smart-contracts,
         locksmith,
       ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Build unlock-protocol-com
+        command: scripts/build-image.sh unlock-protocol-com
+
+  integration-test:
+    needs: [image_building]
 
     runs-on: ubuntu-latest
     strategy:
