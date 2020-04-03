@@ -212,7 +212,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Build unlock-protocol-com
-        command: scripts/build-image.sh unlock-protocol-com
+        run: scripts/build-image.sh unlock-protocol-com
 
   integration-test:
     needs: [image_building]
