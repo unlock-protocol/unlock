@@ -12,198 +12,198 @@ on:
       - master
 
 jobs:
-  smart-contract-extensions:
-    runs-on: ubuntu-latest
+  # smart-contract-extensions:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    env:
-      CI: false
+  #   env:
+  #     CI: false
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd smart-contract-extensions && yarn
-      - run: cd smart-contract-extensions && yarn build
-      - run: cd smart-contract-extensions && yarn ganache &
-      - run: cd smart-contract-extensions && yarn test
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd smart-contract-extensions && yarn
+  #     - run: cd smart-contract-extensions && yarn build
+  #     - run: cd smart-contract-extensions && yarn ganache &
+  #     - run: cd smart-contract-extensions && yarn test
 
-  smart-contracts:
-    runs-on: ubuntu-latest
+  # smart-contracts:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
     
-    env:
-      CI: false
+  #   env:
+  #     CI: false
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd smart-contracts && yarn
-      - run: cd smart-contracts && yarn build
-      - run: cd smart-contracts && yarn ganache &
-      - run: cd smart-contracts && yarn test
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd smart-contracts && yarn
+  #     - run: cd smart-contracts && yarn build
+  #     - run: cd smart-contracts && yarn ganache &
+  #     - run: cd smart-contracts && yarn test
 
-  unlock-app:
-    runs-on: ubuntu-latest
+  # unlock-app:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd unlock-app && yarn
-      - run: cd unlock-app && yarn test
-        env:
-          CI: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd unlock-app && yarn
+  #     - run: cd unlock-app && yarn test
+  #       env:
+  #         CI: true
 
-  paywall:
-    runs-on: ubuntu-latest
+  # paywall:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd paywall && yarn
-      - run: cd paywall && yarn test
-        env:
-          CI: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd paywall && yarn
+  #     - run: cd paywall && yarn test
+  #       env:
+  #         CI: true
 
-  wedlocks:
-    runs-on: ubuntu-latest
+  # wedlocks:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd wedlocks && yarn
-      - run: cd wedlocks && yarn test
-        env:
-          CI: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd wedlocks && yarn
+  #     - run: cd wedlocks && yarn test
+  #       env:
+  #         CI: true
 
-  newsletter:
-    runs-on: ubuntu-latest
+  # newsletter:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd newsletter && yarn
-      - run: cd newsletter && yarn test
-        env:
-          CI: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd newsletter && yarn
+  #     - run: cd newsletter && yarn test
+  #       env:
+  #         CI: true
 
-  unlock-protocol-com:
-    runs-on: ubuntu-latest
+  # unlock-protocol-com:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd unlock-protocol.com && yarn
-      - run: cd unlock-protocol.com && yarn test
-        env:
-          CI: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd unlock-protocol.com && yarn
+  #     - run: cd unlock-protocol.com && yarn test
+  #       env:
+  #         CI: true
 
-  nudge:
-    runs-on: ubuntu-latest
+  # nudge:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: cd nudge && yarn
-      - run: cd nudge && yarn test
-        env:
-          CI: true
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: cd nudge && yarn
+  #     - run: cd nudge && yarn test
+  #       env:
+  #         CI: true
 
-  locksmith:
-    runs-on: ubuntu-latest
-    container: node:10.18-jessie
+  # locksmith:
+  #   runs-on: ubuntu-latest
+  #   container: node:10.18-jessie
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: cd locksmith && yarn
-      - name: Run test
-        run: cd locksmith && yarn test
-        env:
-          POSTGRES_HOST: postgres
-          DB_HOSTNAME: postgres
-          DB_PASSWORD: postgres
-          DB_USERNAME: postgres
-          DB_NAME: postgres
-          WEB3_PROVIDER_HOST: http://0.0.0.0:8545
-          POSTGRES_PORT: 5432
+  #   services:
+  #     postgres:
+  #       image: postgres
+  #       env:
+  #         POSTGRES_PASSWORD: postgres
+  #       options: >-
+  #         --health-cmd pg_isready
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #   steps:
+  #     - name: Check out repository code
+  #       uses: actions/checkout@v2
+  #     - name: Install dependencies
+  #       run: cd locksmith && yarn
+  #     - name: Run test
+  #       run: cd locksmith && yarn test
+  #       env:
+  #         POSTGRES_HOST: postgres
+  #         DB_HOSTNAME: postgres
+  #         DB_PASSWORD: postgres
+  #         DB_USERNAME: postgres
+  #         DB_NAME: postgres
+  #         WEB3_PROVIDER_HOST: http://0.0.0.0:8545
+  #         POSTGRES_PORT: 5432
 
   integration-test:
-    needs: [
-        unlock-app,
-        paywall,
-        wedlocks,
-        newsletter,
-        unlock-protocol-com,
-        nudge,
-        # smart-contract-extensions,
-        # smart-contracts,
-        locksmith,
-      ]
+    # needs: [
+    #     unlock-app,
+    #     paywall,
+    #     wedlocks,
+    #     newsletter,
+    #     unlock-protocol-com,
+    #     nudge,
+    #     # smart-contract-extensions,
+    #     # smart-contracts,
+    #     locksmith,
+    #   ]
 
     runs-on: ubuntu-latest
     strategy:
