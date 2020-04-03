@@ -6,11 +6,13 @@ interface CheckoutStateSchema {
     metadataForm: {}
     notLoggedIn: {}
     locks: {}
+    fiatLocks: {}
   }
 }
 
 type CheckoutEvent =
   | { type: 'gotConfigAndAccount' }
+  | { type: 'gotConfigAndUserAccount' }
   | { type: 'gotConfig' }
   | { type: 'metadataSubmitted' }
   | { type: 'collectMetadata' }
@@ -21,6 +23,7 @@ export const checkoutMachine = Machine<CheckoutStateSchema, CheckoutEvent>({
   states: {
     loading: {
       on: {
+        gotConfigAndUserAccount: 'fiatLocks',
         gotConfigAndAccount: 'locks',
         gotConfig: 'notLoggedIn',
       },
@@ -32,12 +35,20 @@ export const checkoutMachine = Machine<CheckoutStateSchema, CheckoutEvent>({
     },
     notLoggedIn: {
       on: {
+        gotConfigAndUserAccount: 'fiatLocks',
         gotConfigAndAccount: 'locks',
       },
     },
     locks: {
       on: {
+        gotConfigAndUserAccount: 'fiatLocks',
         collectMetadata: 'metadataForm',
+      },
+    },
+    fiatLocks: {
+      on: {
+        collectMetadata: 'metadataForm',
+        gotConfigAndAccount: 'locks',
       },
     },
   },
