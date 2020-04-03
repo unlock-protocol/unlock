@@ -173,7 +173,9 @@ namespace UserOperations {
     return []
   }
 
-  const getCardDetailsFromStripe = async (customer_id: any): Promise<any[]> => {
+  export const getCardDetailsFromStripe = async (
+    customer_id: any
+  ): Promise<any[]> => {
     const stripe = new Stripe(config.stripeSecret)
 
     try {

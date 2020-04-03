@@ -1,6 +1,7 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
+import StripeOperations from '../operations/stripeOperations'
 
 import UserOperations = require('../operations/userOperations')
 
@@ -132,6 +133,41 @@ namespace UserController {
       return res.sendStatus(202)
     }
     return res.sendStatus(400)
+  }
+
+  export const updateAddressPaymentDetails = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { ethereumAddress } = req.params
+    const token = req.body.message.user.stripeTokenId
+    const result = await StripeOperations.saveStripeCustomerIdForAddress(
+      ethereumAddress,
+      token
+    )
+
+    if (result) {
+      return res.sendStatus(202)
+    }
+    return res.sendStatus(400)
+  }
+
+  export const getAddressPaymentDetails = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    const { ethereumAddress } = req.params
+    const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
+      ethereumAddress
+    )
+    if (!stripeCustomerId) {
+      return res.json([])
+    }
+    const result = await UserOperations.getCardDetailsFromStripe(
+      stripeCustomerId
+    )
+
+    return res.json(result)
   }
 
   export const updatePasswordEncryptedPrivateKey = async (

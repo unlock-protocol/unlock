@@ -75,7 +75,7 @@ describe('lockOperations', () => {
       await saveStripeCustomerIdForAddress(publicKey, stripeCustomerId)
       expect(StripeCustomer.create).toHaveBeenCalledWith({
         publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-        stripeCustomerId: 'cus_customerId',
+        StripeCustomerId: 'cus_customerId',
       })
     })
   })
