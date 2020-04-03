@@ -5,6 +5,7 @@ import About from '../build/svg-component/About'
 import AppStore from '../build/svg-component/AppStore'
 import Arrow from '../build/svg-component/Arrow'
 import Attention from '../build/svg-component/Attention'
+import Carret from '../build/svg-component/Carret'
 import Checkmark from '../build/svg-component/Checkmark'
 import Close from '../build/svg-component/Close'
 import Code from '../build/svg-component/Code'
@@ -52,6 +53,7 @@ export default {
   About,
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Attention: wrapViewBox(Attention, '0 0 96 96'),
+  Carret: wrapViewBox(Carret, '-6 -8 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
