@@ -1,11 +1,11 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0x3BD40B4258FbC246CCc5571d438f0323Ae132E28",
-      "constructorCode": "6080604052611346806100136000396000f3fe",
-      "bodyBytecodeHash": "e6f4120e0bc1097d1db96f54da3f6d1b3a9fdb8758405aed6af5e152da7a0046",
-      "localBytecodeHash": "5874cf64299a9d6122b84bf605152d812733bed5edfc4d95ccc2cbf631b081b7",
-      "deployedBytecodeHash": "5874cf64299a9d6122b84bf605152d812733bed5edfc4d95ccc2cbf631b081b7",
+      "address": "0xAD496b433D6A8CB25C47EabB4604E1dFf409622F",
+      "constructorCode": "6080604052611533806100136000396000f3fe",
+      "bodyBytecodeHash": "017f3d78af0611c0b7e71926f2bd47a4d8f84727a0775ac0157b9ee7e03f3083",
+      "localBytecodeHash": "6d8e2d384529c1afd44f8a1b05846c141d3c1743bb8b4d9782375f5568717f5e",
+      "deployedBytecodeHash": "6d8e2d384529c1afd44f8a1b05846c141d3c1743bb8b4d9782375f5568717f5e",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -36,21 +36,21 @@
           "members": [
             {
               "label": "deployed",
-              "astId": 2439,
+              "astId": 2365,
               "type": "t_bool",
-              "src": "2341:13:24"
+              "src": "2394:13:23"
             },
             {
               "label": "totalSales",
-              "astId": 2441,
+              "astId": 2367,
               "type": "t_uint256",
-              "src": "2360:15:24"
+              "src": "2413:15:23"
             },
             {
               "label": "yieldedDiscountTokens",
-              "astId": 2443,
+              "astId": 2369,
               "type": "t_uint256",
-              "src": "2399:26:24"
+              "src": "2452:26:23"
             }
           ]
         },
@@ -77,25 +77,25 @@
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 2176,
+          "astId": 2095,
           "type": "t_bool",
-          "src": "757:24:21"
+          "src": "757:24:20"
         },
         {
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 2178,
+          "astId": 2097,
           "type": "t_bool",
-          "src": "876:25:21"
+          "src": "876:25:20"
         },
         {
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 2234,
+          "astId": 2159,
           "type": "t_array:50<t_uint256>",
-          "src": "1951:29:21"
+          "src": "1982:29:20"
         },
         {
           "contract": "Ownable",
@@ -117,57 +117,57 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "grossNetworkProduct",
-          "astId": 2459,
+          "astId": 2385,
           "type": "t_uint256",
-          "src": "2537:31:24"
+          "src": "2590:31:23"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "totalDiscountGranted",
-          "astId": 2461,
+          "astId": 2387,
           "type": "t_uint256",
-          "src": "2573:32:24"
+          "src": "2626:32:23"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "locks",
-          "astId": 2465,
+          "astId": 2391,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-          "src": "2694:46:24"
+          "src": "2747:46:23"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalBaseTokenURI",
-          "astId": 2467,
+          "astId": 2393,
           "type": "t_string",
-          "src": "2838:32:24"
+          "src": "2891:32:23"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalTokenSymbol",
-          "astId": 2469,
+          "astId": 2395,
           "type": "t_string",
-          "src": "2968:31:24"
+          "src": "3021:31:23"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "publicLockAddress",
-          "astId": 2471,
+          "astId": 2397,
           "type": "t_address",
-          "src": "3083:32:24"
+          "src": "3136:32:23"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "uniswapExchanges",
-          "astId": 2475,
+          "astId": 2401,
           "type": "t_mapping<t_address>",
-          "src": "3229:53:24"
+          "src": "3282:61:23"
         }
       ],
       "warnings": {
@@ -181,9 +181,9 @@
             "contract": "Unlock",
             "path": "contracts/Unlock.sol",
             "label": "locks",
-            "astId": 2465,
+            "astId": 2391,
             "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-            "src": "2694:46:24"
+            "src": "2747:46:23"
           }
         ],
         "storageDiff": []
