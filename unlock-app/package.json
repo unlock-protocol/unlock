@@ -27,6 +27,7 @@
     "@types/react-redux": "7.1.7",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.0.1",
+    "@unlock-protocol/unlock-assets": "1.0.2",
     "@unlock-protocol/unlock-js": "0.9.3",
     "@xstate/react": "0.8.1",
     "@zeit/next-source-maps": "0.0.3",
@@ -79,7 +80,6 @@
     "xstate": "4.8.0"
   },
   "devDependencies": {
-    "@svgr/cli": "4.3.3",
     "npm-check": "5.9.2"
   },
   "engines": {
@@ -97,7 +97,6 @@
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "build-storybook": "build-storybook -c .storybook -o .out",
-    "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "ci": "yarn test && yarn lint",
     "npm-check": "npm-check -u",
     "tsc": "tsc"

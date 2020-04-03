@@ -6,13 +6,6 @@ const tasks = tasks => {
     .join(`&& cd ${__dirname} && `)
 }
 
-// If svg files are changed, generate the SVG Components
-const svg2Components = {
-  command:
-    'if [[ $(git diff --cached --name-only | grep -c "unlock-app/src/static/images/svg/.*.svg$") > 0 ]] ; then npm run svg-2-components && git add src/components/interface/svg/*.js; fi',
-  path: 'unlock-app',
-}
-
 // Run eslint on the files inside path for the last commit
 // It will try to amend the latest commit if possible to fix.
 const eslint = path => {
@@ -45,8 +38,6 @@ const prePushTasks = subDirs.map(dir => {
 const preCommitTasks = subDirs.map(dir => {
   return lintStaged(dir)
 })
-
-preCommitTasks.push(svg2Components)
 
 const config = {
   hooks: {
