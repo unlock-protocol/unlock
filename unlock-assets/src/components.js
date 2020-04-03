@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 
 import React from 'react'
+import Adfree from '../build/svg-component/Adfree'
 import About from '../build/svg-component/About'
 import AppStore from '../build/svg-component/AppStore'
 import Arrow from '../build/svg-component/Arrow'
@@ -9,6 +10,7 @@ import Carret from '../build/svg-component/Carret'
 import Checkmark from '../build/svg-component/Checkmark'
 import Close from '../build/svg-component/Close'
 import Code from '../build/svg-component/Code'
+import CoinbaseWallet from '../build/svg-component/CoinbaseWallet'
 import Cog from '../build/svg-component/Cog'
 import Copy from '../build/svg-component/Copy'
 import Download from '../build/svg-component/Download'
@@ -34,6 +36,8 @@ import Upload from '../build/svg-component/Upload'
 import Withdraw from '../build/svg-component/Withdraw'
 import Newsletter from '../build/svg-component/Email'
 import Members from '../build/svg-component/Members'
+import Metamask from '../build/svg-component/Metamask'
+import Opera from '../build/svg-component/Opera'
 import Telegram from '../build/svg-component/Telegram'
 import Ticket from '../build/svg-component/Ticket'
 import Twitter from '../build/svg-component/Twitter'
@@ -49,14 +53,16 @@ function wrapViewBox(WrappedComponent, viewBox) {
 }
 
 export default {
-  AppStore: wrapViewBox(AppStore, '0 0 24 24'),
   About,
+  Adfree: wrapViewBox(Adfree, '-3 -7 36 36'),
+  AppStore: wrapViewBox(AppStore, '0 0 24 24'),
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Attention: wrapViewBox(Attention, '0 0 96 96'),
   Carret: wrapViewBox(Carret, '-6 -8 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
+  CoinbaseWallet,
   Cog,
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
@@ -74,6 +80,8 @@ export default {
   Loading: wrapViewBox(Loading, '0 0 32 32'),
   LoadingDots,
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
+  Metamask,
+  Opera,
   Preview: wrapViewBox(Preview, '0 0 24 24'),
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
   Unlock: wrapViewBox(Unlock, '0 0 56 56'),
