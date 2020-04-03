@@ -7,7 +7,6 @@ import 'unlock-abi-7/IPublicLockV7.sol';
 /**
  * @notice Used with a Lock in order to require the user knows
  * a code in order to buy.
- * @dev Set this contract as the beneficiary of the lock.
  */
 contract CodeRequiredHook is ILockKeyPurchaseHookV7
 {
