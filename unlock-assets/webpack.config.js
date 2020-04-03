@@ -9,6 +9,7 @@ module.exports = {
     libraryTarget: 'umd',
     publicPath: '/dist/',
     umdNamedDefine: true,
+    globalObject: 'this',
   },
   module: {
     rules: [
