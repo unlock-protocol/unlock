@@ -2,6 +2,7 @@ import Stripe from 'stripe'
 import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
+import { getStripeCustomerIdForAddress } from './stripeOperations'
 // eslint-disable-line no-unused-vars
 import RecoveryPhrase = require('../utils/recoveryPhrase')
 
@@ -162,9 +163,12 @@ namespace UserOperations {
     const user = await UserReference.findOne({
       where: { emailAddress: Normalizer.emailAddress(emailAddress) },
     })
-
-    if (user) {
-      return getCardDetailsFromStripe(user.stripe_customer_id)
+    if (user && user.publicKey) {
+      const customerId = await getStripeCustomerIdForAddress(user.publicKey)
+      if (customerId) {
+        return getCardDetailsFromStripe(customerId)
+      }
+      return []
     }
     return []
   }

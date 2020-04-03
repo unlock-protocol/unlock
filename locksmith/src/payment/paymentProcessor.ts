@@ -5,6 +5,10 @@ import * as Normalizer from '../utils/normalizer'
 import KeyPricer from '../utils/keyPricer'
 import { ethereumAddress } from '../types' // eslint-disable-line import/named, no-unused-vars
 import Dispatcher from '../fulfillment/dispatcher'
+import {
+  getStripeCustomerIdForAddress,
+  saveStripeCustomerIdForAddress,
+} from '../operations/stripeOperations'
 
 const Sequelize = require('sequelize')
 
@@ -36,7 +40,6 @@ export class PaymentProcessor {
 
   /**
    *  appropriate stripe customer id based on the provided token.
-   *
    * @param token
    * @param emailAddress
    */
@@ -46,22 +49,21 @@ export class PaymentProcessor {
   ): Promise<boolean> {
     try {
       const user = await this.findUserByPublicKey(publicKey)
+      const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && user.stripe_customer_id) {
-        await this.stripe.customers.createSource(user.stripe_customer_id, {
+      if (user && stripeCustomerId) {
+        await this.stripe.customers.createSource(stripeCustomerId, {
           source: token,
         })
 
         return true
       }
-      if (user && !user.stripe_customer_id) {
+      if (user && !stripeCustomerId) {
         const customer = await this.createStripeCustomer(
           user.emailAddress,
           token
         )
-        user.stripe_customer_id = customer.id
-        await user.save()
-        return true
+        return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
       }
       return false
     } catch (e) {
@@ -86,12 +88,13 @@ export class PaymentProcessor {
     // eslint-disable-next-line no-useless-catch
     try {
       const user = await this.findUserByPublicKey(publicKey)
+      const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && user.stripe_customer_id) {
+      if (user && stripeCustomerId) {
         const charge = await this.stripe.charges.create({
           amount: await this.price(lock),
           currency: 'USD',
-          customer: user.stripe_customer_id,
+          customer: stripeCustomerId,
           metadata: { lock, publicKey },
         })
         return charge
