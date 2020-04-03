@@ -14,5 +14,5 @@ export class UserReference extends Model<UserReference> {
   publicKey!: string
 
   @Column
-  stripe_customer_id!: string
+  stripe_customer_id!: string // TODO: deprecated!
 }
