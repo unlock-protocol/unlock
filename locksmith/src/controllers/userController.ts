@@ -159,10 +159,18 @@ namespace UserController {
     return res.sendStatus(400)
   }
 
-  export const cards = async (req: Request, res: Response) => {
+  export const cards = async (req: SignedRequest, res: Response) => {
     const { emailAddress } = req.params
-    const result = await UserOperations.getCards(emailAddress)
-    return res.json(result)
+    const publicKey = await UserOperations.publicKeyByEmailAddress(emailAddress)
+
+    if (publicKey == null) {
+      return res.sendStatus(401)
+    } else if (publicKey != req.signee) {
+      return res.sendStatus(401)
+    } else {
+      const result = await UserOperations.getCards(emailAddress)
+      return res.json(result)
+    }
   }
 
   export const eject = async (req: SignedRequest, res: Response) => {

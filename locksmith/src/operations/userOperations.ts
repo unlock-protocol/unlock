@@ -70,6 +70,20 @@ namespace UserOperations {
     }
   }
 
+  export const publicKeyByEmailAddress = async (emailAddress: string) => {
+    try {
+      const user = await UserReference.findOne({
+        where: {
+          emailAddress: Normalizer.emailAddress(emailAddress),
+        },
+      })
+
+      return user ? user.publicKey : null
+    } catch (e) {
+      return null
+    }
+  }
+
   export const ejectionStatusByAddress = async (
     publicKey: string
   ): Promise<boolean> => {

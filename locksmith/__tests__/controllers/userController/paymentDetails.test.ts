@@ -27,16 +27,6 @@ afterAll(() => {
 describe('payment details', () => {
   const request = require('supertest')
 
-  describe("retrieving a user's card details ", () => {
-    it("return the user's card details if available", async () => {
-      expect.assertions(1)
-      UserOperations.getCards = jest.fn()
-
-      await request(app).get('/users/user@example.com/cards')
-      expect(UserOperations.getCards).toHaveBeenCalledWith('user@example.com')
-    })
-  })
-
   describe("when able to update the user's payment details", () => {
     it('returns 202', async () => {
       expect.assertions(1)
