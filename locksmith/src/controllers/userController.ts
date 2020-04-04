@@ -2,6 +2,7 @@ import { Request, Response } from 'express-serve-static-core' // eslint-disable-
 import { DecoyUser } from '../utils/decoyUser'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import StripeOperations from '../operations/stripeOperations'
+import * as Normalizer from '../utils/normalizer'
 
 import UserOperations = require('../operations/userOperations')
 
@@ -136,10 +137,17 @@ namespace UserController {
   }
 
   export const updateAddressPaymentDetails = async (
-    req: Request,
+    req: SignedRequest,
     res: Response
   ): Promise<any> => {
     const { ethereumAddress } = req.params
+
+    if (ethereumAddress == null) {
+      return res.sendStatus(401)
+    } else if (ethereumAddress != req.owner) {
+      return res.sendStatus(401)
+    }
+
     const token = req.body.message.user.stripeTokenId
     const result = await StripeOperations.saveStripeCustomerIdForAddress(
       ethereumAddress,
@@ -153,10 +161,20 @@ namespace UserController {
   }
 
   export const getAddressPaymentDetails = async (
-    req: Request,
+    req: SignedRequest,
     res: Response
   ): Promise<any> => {
     const { ethereumAddress } = req.params
+
+    if (!ethereumAddress || !req.signee) {
+      return res.sendStatus(401)
+    } else if (
+      Normalizer.ethereumAddress(ethereumAddress) !==
+      Normalizer.ethereumAddress(req.signee)
+    ) {
+      return res.sendStatus(401)
+    }
+
     const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
       ethereumAddress
     )
