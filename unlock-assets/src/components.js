@@ -7,6 +7,7 @@ import AppStore from '../build/svg-component/AppStore'
 import Arrow from '../build/svg-component/Arrow'
 import Attention from '../build/svg-component/Attention'
 import Carret from '../build/svg-component/Carret'
+import Blog from '../build/svg-component/Blog'
 import Checkmark from '../build/svg-component/Checkmark'
 import Close from '../build/svg-component/Close'
 import Code from '../build/svg-component/Code'
@@ -15,6 +16,7 @@ import Cog from '../build/svg-component/Cog'
 import Copy from '../build/svg-component/Copy'
 import Download from '../build/svg-component/Download'
 import Documentation from '../build/svg-component/Documentation'
+import Docs from '../build/svg-component/Docs'
 import Edit from '../build/svg-component/Edit'
 import Eth from '../build/svg-component/Eth'
 import Etherscan from '../build/svg-component/Etherscan'
@@ -28,6 +30,7 @@ import LiveDemo from '../build/svg-component/LiveDemo'
 import Loading from '../build/svg-component/Loading'
 import LoadingDots from '../build/svg-component/LoadingDots'
 import LockClosed from '../build/svg-component/LockClosed'
+import Log from '../build/svg-component/Log'
 import Jobs from '../build/svg-component/Jobs'
 import Preview from '../build/svg-component/Preview'
 import Unlock from '../build/svg-component/Unlock'
@@ -58,6 +61,7 @@ export default {
   AppStore: wrapViewBox(AppStore, '0 0 24 24'),
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Attention: wrapViewBox(Attention, '0 0 96 96'),
+  Blog,
   Carret: wrapViewBox(Carret, '-6 -8 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
@@ -66,6 +70,7 @@ export default {
   Cog,
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
+  Docs: wrapViewBox(Docs, '-6 -5 24 24'),
   Download: wrapViewBox(Download, '0 0 24 24'),
   Edit: wrapViewBox(Edit, '0 0 24 24'),
   Eth: wrapViewBox(Eth, '0 0 24 24'),
@@ -80,6 +85,7 @@ export default {
   Loading: wrapViewBox(Loading, '0 0 32 32'),
   LoadingDots,
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
+  Log: wrapViewBox(Log, '0 0 24 24'),
   Metamask,
   Opera,
   Preview: wrapViewBox(Preview, '0 0 24 24'),
