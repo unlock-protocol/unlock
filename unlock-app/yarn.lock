@@ -3798,10 +3798,10 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@unlock-protocol/unlock-assets@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.0.2.tgz#328746ed985a6eb7b681af15415f5e48f085b3cb"
-  integrity sha512-uTXM0IL9MQzDjeJidDUNfo6CDlYvo/nbmTYEyDwr04mDDoSeLCyB4JKP6dlVd/O7svaVPx++cwlLwCP46cC0Og==
+"@unlock-protocol/unlock-assets@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.0.3.tgz#54c21e5b6b6d96c5ec4db94b859fd10aec331fcf"
+  integrity sha512-4ZNmUKxtgGDR2evrgOemrpvpQQnr7PTG3P8Y+jzSQFAsiHhdoq82iTo9BPQA/UR2adfK338Rd/hhyMxSGpflgw==
   dependencies:
     esm "3.2.25"
 
