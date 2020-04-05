@@ -59,27 +59,6 @@ describe('payment details', () => {
     })
   })
 
-  describe("when able to update the user's payment details with an address", () => {
-    it('returns 202', async () => {
-      expect.assertions(1)
-
-      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-      const response = await request(app)
-        .put(`/users/${publicKey}/credit-cards`)
-        .set('Accept', /json/)
-        .send({
-          message: {
-            user: {
-              publicKey,
-              stripeTokenId: 'tok_visa',
-            },
-          },
-        })
-
-      expect(response.statusCode).toBe(202)
-    })
-  })
-
   describe("when unable to update the user's payment details", () => {
     it('returns 400', async () => {
       expect.assertions(1)
@@ -93,27 +72,6 @@ describe('payment details', () => {
           message: {
             user: {
               publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-              stripeTokenId: 'tok_INVALID',
-            },
-          },
-        })
-      expect(response.statusCode).toBe(400)
-    })
-  })
-
-  describe("when unable to update the user's payment details with the the public key", () => {
-    it('returns 400', async () => {
-      expect.assertions(1)
-      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-
-      // It should fail because we already have a record!
-      const response = await request(app)
-        .put(`/users/${publicKey}/credit-cards`)
-        .set('Accept', /json/)
-        .send({
-          message: {
-            user: {
-              publicKey,
               stripeTokenId: 'tok_INVALID',
             },
           },
