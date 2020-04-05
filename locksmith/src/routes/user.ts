@@ -10,6 +10,7 @@ const passwordEncryptedPrivateKeyPathRegex = new RegExp(
 )
 const userUpdatePathRegex = new RegExp('^/users/?$', 'i')
 const ejectionPathRegex = '/:ethereumAddress/eject'
+const cardsPathRegex = '/:ethereumAddress/credit-cards'
 
 router.post(
   ejectionPathRegex,
@@ -34,6 +35,24 @@ router.put(
   signatureValidationMiddleware.generateProcessor({
     name: 'user',
     required: ['publicKey', 'passwordEncryptedPrivateKey'],
+    signee: 'publicKey',
+  })
+)
+
+router.get(
+  cardsPathRegex,
+  signatureValidationMiddleware.generateSignatureEvaluator({
+    name: 'user',
+    required: ['publicKey'],
+    signee: 'publicKey',
+  })
+)
+
+router.put(
+  cardsPathRegex,
+  signatureValidationMiddleware.generateProcessor({
+    name: 'user',
+    required: ['publicKey'],
     signee: 'publicKey',
   })
 )

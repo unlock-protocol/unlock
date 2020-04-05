@@ -133,7 +133,6 @@ namespace SignatureValidationMiddleware {
         res.sendStatus(401)
       } else {
         const owner = handleSignaturePresent(req.body, signature, configuration)
-
         if (owner) {
           req.owner = owner
           next()
