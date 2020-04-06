@@ -2,6 +2,7 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { Card } from '@stripe/stripe-js'
 import { Provider } from 'react-redux'
+import { ConfigContext } from '../../../utils/withConfig'
 import createUnlockStore from '../../../createUnlockStore'
 import {
   AccountContent,
@@ -9,6 +10,7 @@ import {
   mapDispatchToProps,
 } from '../../../components/content/AccountContent'
 import { DISMISS_PURCHASE_MODAL } from '../../../actions/keyPurchase'
+import configure from '../../../config'
 
 const store = createUnlockStore({
   account: {
@@ -40,6 +42,8 @@ const mockCard: Card = {
   name: 'Rupert Hendrickson',
   tokenization_method: null,
 }
+
+const config = configure()
 
 describe('AccountContent', () => {
   describe('Possible rendering states', () => {
@@ -78,16 +82,18 @@ describe('AccountContent', () => {
 
       const { getByText } = rtl.render(
         <Provider store={store}>
-          <AccountContent
-            emailAddress="john@smi.th"
-            cards={[]}
-            dismissPurchaseModal={() => true}
-            pageIsLocked
-          />
+          <ConfigContext.Provider value={config}>
+            <AccountContent
+              emailAddress="john@smi.th"
+              cards={[]}
+              dismissPurchaseModal={() => true}
+              pageIsLocked
+            />
+          </ConfigContext.Provider>
         </Provider>
       )
 
-      getByText('Card Details')
+      getByText('Credit Card Details')
     })
 
     it('Should prompt to confirm purchase if we have an account with cards and the page is locked', () => {

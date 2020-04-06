@@ -220,9 +220,10 @@ describe('Updating encrypted private key', () => {
 describe("Retrieving a user's cards", () => {
   describe('when the user has credit cards', () => {
     beforeAll(() => {
-      UserReference.findOne = jest.fn().mockImplementationOnce(() => {
+      UserReference.findOne = jest.fn().mockImplementation(() => {
         return {
           stripe_customer_id: 'cus_AsampleID',
+          publicKey: '0xpublicKey',
         }
       })
     })

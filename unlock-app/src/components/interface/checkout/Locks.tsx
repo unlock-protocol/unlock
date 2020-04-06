@@ -11,6 +11,7 @@ interface LocksProps {
   lockAddresses: string[]
   emitTransactionInfo: (info: TransactionInfo) => void
   metadataRequired?: boolean
+  showMetadataForm: () => void
 }
 
 export const Locks = ({
@@ -18,6 +19,7 @@ export const Locks = ({
   accountAddress,
   emitTransactionInfo,
   metadataRequired,
+  showMetadataForm,
 }: LocksProps) => {
   const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
@@ -47,6 +49,7 @@ export const Locks = ({
           activeKeys={activeKeys}
           accountAddress={accountAddress}
           metadataRequired={metadataRequired}
+          showMetadataForm={showMetadataForm}
         />
       ))}
     </div>
