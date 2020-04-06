@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
-import { Card } from '@stripe/stripe-js'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
@@ -10,15 +9,17 @@ import { PaymentDetails } from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import EjectAccount from '../interface/user-account/EjectAccount'
 import LogInSignUp from '../interface/LogInSignUp'
+import { useCards } from '../../hooks/useCards'
+import { Account } from '../../unlockTypes'
+import Loading from '../interface/Loading'
 
 interface SettingsContentProps {
-  account: {
-    emailAddress?: string
-  } | null
-  cards: Card[]
+  account: Account | undefined
 }
 
-export const SettingsContent = ({ cards, account }: SettingsContentProps) => {
+export const SettingsContent = ({ account }: SettingsContentProps) => {
+  const { cards } = useCards(account)
+
   return (
     <Layout title="Account Settings">
       <Head>
@@ -28,8 +29,9 @@ export const SettingsContent = ({ cards, account }: SettingsContentProps) => {
       {account && account.emailAddress && (
         <>
           <AccountInfo />
-          {cards.length > 0 && <PaymentMethods cards={cards} />}
-          {cards.length === 0 && <PaymentDetails />}
+          {!cards && <Loading />}
+          {cards && cards.length > 0 && <PaymentMethods cards={cards} />}
+          {cards && cards.length === 0 && <PaymentDetails />}
           <EjectAccount />
         </>
       )}
@@ -45,21 +47,12 @@ export const SettingsContent = ({ cards, account }: SettingsContentProps) => {
 }
 
 interface ReduxState {
-  account: {
-    cards?: Card[]
-    emailAddress?: string
-  } | null
+  account: Account | null
 }
 
 export const mapStateToProps = ({ account }: ReduxState) => {
-  let cards: Card[] = []
-  if (account && account.cards) {
-    cards = account.cards
-  }
-
   return {
-    account,
-    cards,
+    account: account || undefined,
   }
 }
 
