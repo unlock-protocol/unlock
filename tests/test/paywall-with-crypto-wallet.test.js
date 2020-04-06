@@ -42,7 +42,10 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     )
 
     // save the lock address to pass it to the ad remover paywall
-    addresses.forEach((address, i) => (locks[i].address = address))
+
+    addresses.forEach((address, i) => {
+      locks[i].address = address
+    })
 
     lockSelectors = addresses.map(lock => path =>
       `[data-address="${lock}"] ${path}`
@@ -76,8 +79,8 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     await wait.forIframe(1)
     const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
-      unlockIcon => {
-        return !!document.body.querySelector(`img[src="${unlockIcon}"]`)
+      icon => {
+        return !!document.body.querySelector(`img[src="${icon}"]`)
       },
       {},
       unlockIcon
