@@ -8,13 +8,14 @@ import { UnlockError } from '../../utils/Error'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
-import { checkoutMachine } from '../../stateMachines/checkout'
+import { checkoutMachine, CheckoutState } from '../../stateMachines/checkout'
 import CheckoutWrapper from '../interface/checkout/CheckoutWrapper'
 import CheckoutContainer from '../interface/checkout/CheckoutContainer'
 import { CheckoutErrors } from '../interface/checkout/CheckoutErrors'
 import { NotLoggedIn } from '../interface/checkout/NotLoggedIn'
 import { Locks } from '../interface/checkout/Locks'
 import { FiatLocks } from '../interface/checkout/FiatLocks'
+import { CallToAction } from '../interface/checkout/CallToAction'
 import Loading from '../interface/Loading'
 import { resetError } from '../../actions/error'
 import {
@@ -112,16 +113,21 @@ export const CheckoutContentInner = ({
           {paywallConfig && paywallConfig.icon && (
             <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
           )}
-          <p>{paywallConfig ? paywallConfig.callToAction.default : ''}</p>
+          {paywallConfig && (
+            <CallToAction
+              state={current.value}
+              callToAction={paywallConfig.callToAction}
+            />
+          )}
           <CheckoutErrors
             errors={errors}
             resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
           />
-          {current.matches('loading') && <Loading />}
-          {current.matches('notLoggedIn') && (
+          {current.matches(CheckoutState.loading) && <Loading />}
+          {current.matches(CheckoutState.notLoggedIn) && (
             <NotLoggedIn config={config!} lockAddresses={lockAddresses} />
           )}
-          {current.matches('locks') && (
+          {current.matches(CheckoutState.locks) && (
             <Locks
               accountAddress={account.address}
               lockAddresses={lockAddresses}
@@ -130,7 +136,7 @@ export const CheckoutContentInner = ({
               showMetadataForm={() => send('collectMetadata')}
             />
           )}
-          {current.matches('fiatLocks') && (
+          {current.matches(CheckoutState.fiatLocks) && (
             <FiatLocks
               accountAddress={account.address}
               lockAddresses={lockAddresses}
@@ -140,7 +146,7 @@ export const CheckoutContentInner = ({
               showMetadataForm={() => send('collectMetadata')}
             />
           )}
-          {current.matches('metadataForm') && (
+          {current.matches(CheckoutState.metadataForm) && (
             <MetadataForm
               fields={config!.metadataInputs!}
               onSubmit={onMetadataSubmit}
