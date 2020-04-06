@@ -63,17 +63,17 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should open the checkout UI when clicking on the button', async () => {
     expect.assertions(1)
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
+    await wait.forIframe(1)
     await expect(page).toClick('button', {
       text: 'Unlock the ads free experience!',
     })
     // "show" is the classname that shows the checkout UI
-    await page.$('iframe[class="unlock start show"]')
+    await page.$('iframe[class="unlock-protocol-checkout show"]')
   })
 
   it('should show the logo on the checkout UI', async () => {
     expect.assertions(0)
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
+    await wait.forIframe(1)
     const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       unlockIcon => {
@@ -86,7 +86,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should show the 3 locks', async () => {
     expect.assertions(0)
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
+    await wait.forIframe(1)
     const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       lock1 => {
