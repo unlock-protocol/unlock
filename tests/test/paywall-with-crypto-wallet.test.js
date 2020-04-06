@@ -113,7 +113,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should attempt a key purchase when clicking on a lock, and hide the ads', async () => {
     expect.assertions(2)
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
+    await wait.forIframe(1)
     const checkoutIframe = iframes.checkoutIframe(page)
     const checkoutBody = await checkoutIframe.$('body')
     await expect(checkoutBody).toClick(lockSelectors[0](''))
@@ -130,45 +130,6 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
       {},
       lockSelectors[0]('footer')
     )
-    const adDisplay = await page.$$eval('.ad', ads => {
-      return ads.map(ad => ad.style.display)
-    })
-    expect(adDisplay).toEqual(['none', 'none'])
-  })
-
-  it('should continue monitoring the transaction after refresh, ads still hidden', async () => {
-    expect.assertions(2)
-    await page.reload()
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    await expect(page).toClick('button', {
-      text: 'Unlock the ads free experience!',
-    })
-    const checkoutIframe = iframes.checkoutIframe(page)
-    await checkoutIframe.waitForFunction(
-      lock1 => {
-        const lock = document.body.querySelector(lock1)
-        return (
-          lock &&
-          (lock.innerText === 'Payment Sent' ||
-            lock.innerText === 'Payment Pending' ||
-            lock.innerText === 'Payment Confirming')
-        )
-      },
-      {},
-      lockSelectors[0]('footer')
-    )
-    const adDisplay = await page.$$eval('.ad', ads => {
-      return ads.map(ad => ad.style.display)
-    })
-    expect(adDisplay).toEqual(['none', 'none'])
-  })
-
-  it('should hide the iframe when purchase is confirmed, ads still hidden', async () => {
-    expect.assertions(1)
-    // wait for 2 iframes to be loaded, the data and checkout iframes
-    await wait.forIframe(2)
-    // wait for the key purchase to be confirmed, and then the modal will dismiss
-    await wait.untilIsGone('iframe[class="unlock start show"]')
     const adDisplay = await page.$$eval('.ad', ads => {
       return ads.map(ad => ad.style.display)
     })
