@@ -3,10 +3,10 @@ import { storiesOf } from '@storybook/react'
 import BlogPost from '../../components/content/BlogPost'
 
 const markdownBody = `
-[Unlock](https://unlock-protocol.com) is an **access control protocol** that enables creators 
+[Unlock](https://unlock-protocol.com) is an **access control protocol** that enables creators
 to monetize their work directly - without relying on a middleman.
 
-Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when 
+Consumers manage all of their subscriptions in a consistent way, as well as earn discounts when
 they share the best content and applications they use.
 
 ## Access permissions on the blockchain
@@ -14,20 +14,20 @@ they share the best content and applications they use.
 Unlock is an open _protocol_ for payments on the web.
 
 Creators place a _lock_ on their content. (This could be an article, or a software app, a whole site, a mailing list,
-or anything where taking a payment could be appropriate.) Consumers can then purchase a _key_ to access that content. 
-Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for. 
+or anything where taking a payment could be appropriate.) Consumers can then purchase a _key_ to access that content.
+Creators can decide how expensive keys to their locks are, how many keys can exist, and how long they last for.
 Creators can create an unlimited number of locks.
 
 The blockchain allows us to store the ledger of who owns a lock and who owns keys in a decentralized place that nobody
 owns. It also allows creators to prove that they own a particular lock, and consumers to prove that they own a key for
 that lock. These facts are stored in the open, and don't require proprietary software to determine. Therefore, it's easy
-for any software application to integrate the Unlock protocol, free from licensing or restrictions. 
+for any software application to integrate the Unlock protocol, free from licensing or restrictions.
 
 ## A decentralized protocol vs a centralized product
 
 While the open source code in this project is designed to set the standard for what the protocol can do, nobody is forced to
-use our code in order to use the protocol. It would be perfectly reasonable for someone else to 
-build a completely different codebase that uses the protocol. Think of this project as both a reference implementation 
+use our code in order to use the protocol. It would be perfectly reasonable for someone else to
+build a completely different codebase that uses the protocol. Think of this project as both a reference implementation
 and the first service to use the open Unlock protocol for payments.
 
 Here's a random list:
@@ -35,13 +35,13 @@ Here's a random list:
  * We need to include a list here so we can make sure the style displays properly, both for long list items
  * ... and for short ones.
  * [Here's our homepage](https://unlock-protocol.com)
- 
+
 And a numbered list:
 
  1. We need to include a list here so we can make sure the style displays properly, both for long list items
  2. ... and for short ones.
  3. [Here's our homepage](https://unlock-protocol.com)
- 
+
 And an image:
 
 ![Unlock](/static/images/unlock-word-mark.png)
@@ -111,6 +111,20 @@ storiesOf('BlogPost', module)
         publishDate={publishDate}
         title={title}
         permalink="#"
+      />
+    )
+  })
+  .add('Blog post from markdown with scripts', () => {
+    const scripts = ['/script.js']
+    return (
+      <BlogPost
+        body={markdownBody}
+        authorName={authorName}
+        publishDate={publishDate}
+        title={title}
+        subTitle={subtitle}
+        permalink="#"
+        scripts={scripts}
       />
     )
   })
