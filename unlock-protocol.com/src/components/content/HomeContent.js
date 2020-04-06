@@ -29,22 +29,24 @@ const integrations = [
   },
   {
     name: 'Tickets',
-    link: 'https://tickets.unlock-protocol.com/',
+    link:
+      'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
     image: '/static/images/pages/svg/tickets.svg',
   },
   {
     name: 'Donations',
-    link: 'https://donate.unlock-protocol.com/about.html',
+    link:
+      'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
     image: '/static/images/pages/svg/donations.svg',
   },
   {
     name: 'Newsletters',
-    link: 'https://newsletter.unlock-protocol.com',
+    link: 'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
     image: '/static/images/blog/introducing-newsletter/newsletter.jpg',
   },
 ]
 export const HomeContent = () => {
-  let { isMember, becomeMember } = useContext(MembershipContext)
+  const { isMember, becomeMember } = useContext(MembershipContext)
   return (
     <Layout forContent>
       <Head>

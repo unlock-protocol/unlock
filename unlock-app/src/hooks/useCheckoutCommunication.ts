@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
+import { PaywallConfig } from '../unlockTypes'
 
 export interface UserInfo {
   address: string
@@ -29,9 +30,14 @@ interface BufferedEvent {
 // buffer. After that, once the handle to the parent is available, all
 // the buffered events are emitted and future events are emitted
 // directly.
-export const useCheckoutCommunication = (model?: any) => {
+export const useCheckoutCommunication = () => {
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
-  const parent = usePostmateParent(model)
+  const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
+  const parent = usePostmateParent({
+    setConfig: (config: PaywallConfig) => {
+      setConfig(config)
+    },
+  })
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
     if (!parent) {
@@ -67,6 +73,7 @@ export const useCheckoutCommunication = (model?: any) => {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
+    config,
     // `ready` is primarily provided as an aid for testing the buffer
     // implementation.
     ready: !!parent,

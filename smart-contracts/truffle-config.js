@@ -53,7 +53,7 @@ if (mainnetProviderUrl) {
 }
 
 // When running CI, we connect to the 'ganache' container
-const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
+const testHost = process.env.CI === 'true' ? 'ganache' : '127.0.0.1'
 
 function mainnetProvider() {
   return new HDWalletProvider(

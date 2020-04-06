@@ -1,248 +1,86 @@
-/* eslint react/display-name: 0 */
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useContext } from 'react'
+import { useForm } from 'react-hook-form'
+import { loadStripe, StripeCardElementOptions } from '@stripe/stripe-js'
 import {
+  CardElement,
   Elements,
-  ElementsConsumer,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement,
+  useStripe,
+  useElements,
 } from '@stripe/react-stripe-js'
-import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js'
-import {
-  Item,
-  ItemLabel,
-  CardContainer,
-  Input,
-  SectionHeader,
-  Column,
-  Grid,
-  SubmitButton,
-  LoadingButton,
-} from './styles'
-import { signPaymentData } from '../../../actions/user'
-import { UnlockError, isWarningError, WarningError } from '../../../utils/Error'
-import { resetError } from '../../../actions/error'
+import styled from 'styled-components'
+import { Input, Label, Select, Button } from '../checkout/FormStyles'
+import { SectionHeader } from './styles'
 import configure from '../../../config'
-
-interface PaymentDetailsProps {
-  signPaymentData: (stripeTokenId: string) => any
-  close: (e: WarningError) => void
-  errors: WarningError[]
-}
-
-interface PaymentFormProps {
-  signPaymentData: (stripeTokenId: string) => any
-  close: (e: WarningError) => void
-  errors: WarningError[]
-  stripe: Stripe | null
-  elements: StripeElements | null
-}
-
-interface PaymentFormState {
-  cardHolderName: string
-  addressCountry: string
-  addressZip: string
-  submitted: boolean
-}
+import { countries } from '../../../utils/countries'
+import { useProvider } from '../../../hooks/useProvider'
+import { StorageServiceContext } from '../../../utils/withStorageService'
+import { StorageService } from '../../../services/storageService'
 
 const { stripeApiKey } = configure()
 const stripePromise = loadStripe(stripeApiKey)
 
-export const PaymentDetails = ({
-  signPaymentData,
-  close,
-  errors,
-}: PaymentDetailsProps) => {
+export const PaymentDetails = () => {
   return (
     <Elements stripe={stripePromise}>
-      <ElementsConsumer>
-        {({ stripe, elements }) => (
-          <PaymentForm
-            stripe={stripe}
-            elements={elements}
-            signPaymentData={signPaymentData}
-            close={close}
-            errors={errors}
-          />
-        )}
-      </ElementsConsumer>
+      <Form />
     </Elements>
   )
 }
 
-export class PaymentForm extends React.Component<
-  PaymentFormProps,
-  PaymentFormState
-> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      cardHolderName: '',
-      addressCountry: '',
-      addressZip: '',
-      submitted: false,
-    }
-  }
+const cardElementOptions: StripeCardElementOptions = {
+  classes: {
+    base: 'checkout-details',
+  },
+}
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target
+export const Form = () => {
+  const { register, handleSubmit } = useForm()
+  const stripe = useStripe()
+  const elements = useElements()
+  const { provider } = useProvider()
+  const storageService: StorageService = useContext(StorageServiceContext)
 
-    this.setState(prevState => {
-      const newState = {
-        ...prevState,
-        [name]: value,
-      }
-
-      return newState
-    })
-  }
-
-  handleSubmit = async (event?: React.FormEvent) => {
-    if (event) {
-      event.preventDefault()
-    }
-
-    const { elements, stripe, signPaymentData } = this.props
-    const { addressCountry, addressZip, cardHolderName } = this.state
-
-    this.setState({
-      submitted: true,
+  const onSubmit = async (data: Record<string, any>) => {
+    const cardElement = elements!.getElement(CardElement)
+    const result = await stripe!.createToken(cardElement!, {
+      address_country: data.address_country,
+      name: data.name,
     })
 
-    if (stripe && elements) {
-      const cardNumberElement = elements.getElement(CardNumberElement)
-      const result = await stripe.createToken(cardNumberElement!, {
-        address_country: addressCountry,
-        address_zip: addressZip,
-        name: cardHolderName,
-      })
-
-      // TODO: handle result.error case here
-      if (result.token) {
-        signPaymentData(result.token.id)
-      }
-
-      if (result.error) {
-        this.setState({
-          submitted: false,
-        })
-      }
-    }
-  }
-
-  handleReset = () => {
-    const { errors, close } = this.props
-    errors.forEach(e => close(e))
-    this.handleSubmit()
-  }
-
-  submitButton = () => {
-    const { errors } = this.props
-    const { submitted } = this.state
-
-    if (errors.length) {
-      return (
-        <SubmitButton backgroundColor="var(--red)" onClick={this.handleReset}>
-          Clear Errors and Retry
-        </SubmitButton>
+    if (result.token) {
+      const { data, sig } = provider!.signPaymentData(result.token.id)
+      await storageService.addPaymentMethod(
+        data.message.user.emailAddress,
+        data,
+        sig
       )
     }
-    if (submitted) {
-      return <LoadingButton>Submitting...</LoadingButton>
-    }
-
-    return (
-      <SubmitButton onClick={this.handleSubmit}>
-        Add Payment Method
-      </SubmitButton>
-    )
   }
 
-  render() {
-    const stripeElementOptions = {
-      style: {
-        base: { fontSize: '16px', lineHeight: '40px' },
-      },
-    }
-    return (
-      <Grid>
-        <SectionHeader>Card Details</SectionHeader>
-        <div>
-          <ItemLabel>Cardholder Name</ItemLabel>
-          <Input
-            name="cardHolderName"
-            id="cardHolderName"
-            type="text"
-            placeholder="Cardholder Name"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <CardContainer>
-          <div>
-            <ItemLabel>Country</ItemLabel>
-            <Input
-              name="addressCountry"
-              id="addressCountry"
-              type="country"
-              placeholder="Country"
-              onChange={this.handleInputChange}
-            />
-          </div>
-          <div>
-            <ItemLabel>Zip / Postal Code</ItemLabel>
-            <Input
-              name="addressZip"
-              id="addressZip"
-              type="text"
-              placeholder="Zip Code"
-              onChange={this.handleInputChange}
-            />
-          </div>
-        </CardContainer>
-        <Column size="full">
-          <Item title="Credit Card Number">
-            <CardNumberElement options={stripeElementOptions} />
-          </Item>
-          <CardContainer>
-            <div>
-              <ItemLabel>Expiry Date</ItemLabel>
-              <CardExpiryElement options={stripeElementOptions} />
-            </div>
-            <div>
-              <ItemLabel>CVC Number</ItemLabel>
-              <CardCvcElement options={stripeElementOptions} />
-            </div>
-          </CardContainer>
-        </Column>
-        <Column size="half">{this.submitButton()}</Column>
-      </Grid>
-    )
-  }
-}
-
-const mapDispatchToProps = (dispatch: any) => ({
-  signPaymentData: (stripeTokenId: string) =>
-    dispatch(signPaymentData(stripeTokenId)),
-  close: (e: WarningError) => {
-    dispatch(resetError(e))
-  },
-})
-
-interface ReduxState {
-  account?: Account
-  errors: UnlockError[]
-}
-
-const mapStateToProps = ({ account, errors }: ReduxState) => {
-  const storageWarnings = errors.filter(
-    e => isWarningError(e) && e.kind === 'Storage'
+  return (
+    <>
+      <SectionHeader>Add a Payment Method</SectionHeader>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <Label>Name</Label>
+        <Input name="name" ref={register({ required: true })} />
+        <Label>Credit Card Details</Label>
+        <CardElement options={cardElementOptions} />
+        <Label>Country</Label>
+        <Select name="address_country" defaultValue="United States">
+          {countries.map(country => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </Select>
+        <Button type="submit" disabled={!stripe}>
+          Submit
+        </Button>
+      </StyledForm>
+    </>
   )
-
-  return {
-    account,
-    errors: storageWarnings as WarningError[],
-  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaymentDetails)
+const StyledForm = styled.form`
+  max-width: 50%;
+`

@@ -21,7 +21,7 @@ describe('SettingsContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <ConfigContext.Provider value={config}>
-            <SettingsContent account={null} cards={[]} />
+            <SettingsContent account={undefined} />
           </ConfigContext.Provider>
         </Provider>
       )
@@ -33,7 +33,7 @@ describe('SettingsContent', () => {
       const { getByText } = rtl.render(
         <Provider store={store}>
           <ConfigContext.Provider value={config}>
-            <SettingsContent account={{}} cards={[]} />
+            <SettingsContent account={{ address: '', balance: '' }} />
           </ConfigContext.Provider>
         </Provider>
       )
@@ -44,7 +44,7 @@ describe('SettingsContent', () => {
   })
 
   describe('mapStateToProps', () => {
-    it('with default state it should return null account and empty cards list', () => {
+    it('with default state it should return undefined account', () => {
       expect.assertions(1)
 
       expect(
@@ -52,8 +52,7 @@ describe('SettingsContent', () => {
           account: null,
         })
       ).toEqual({
-        account: null,
-        cards: [],
+        account: undefined,
       })
     })
   })

@@ -8,13 +8,10 @@ beforeAll(() => {
 
   const { UserReference } = models
   const { User } = models
-
-  UserOperations.updatePaymentDetails = jest
-    .fn()
-    .mockReturnValueOnce(true)
-    .mockReturnValueOnce(false)
+  const { StripeCustomer } = models
 
   return Promise.all([
+    StripeCustomer.truncate({ cascade: true }),
     UserReference.truncate({ cascade: true }),
     User.truncate({ cascade: true }),
   ])
@@ -40,6 +37,12 @@ describe('payment details', () => {
   describe("when able to update the user's payment details", () => {
     it('returns 202', async () => {
       expect.assertions(1)
+
+      UserOperations.updatePaymentDetails = jest
+        .fn()
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(false)
+
       const response = await request(app)
         .put('/users/user@example.com/paymentdetails')
         .set('Accept', /json/)
@@ -55,9 +58,13 @@ describe('payment details', () => {
       expect(response.statusCode).toBe(202)
     })
   })
+
   describe("when unable to update the user's payment details", () => {
     it('returns 400', async () => {
       expect.assertions(1)
+
+      UserOperations.updatePaymentDetails = jest.fn().mockReturnValueOnce(false)
+
       const response = await request(app)
         .put('/users/user@example.com/paymentdetails')
         .set('Accept', /json/)
