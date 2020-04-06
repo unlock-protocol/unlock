@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
-import Unlock from './svg/Unlock'
-import UnlockWordMark from './svg/UnlockWordMark'
+import { SvgComponents } from '@unlock-protocol/unlock-assets'
 
 /**
  * This wraps the Unlock SVG component into a pink circle.
@@ -11,7 +10,7 @@ import UnlockWordMark from './svg/UnlockWordMark'
  */
 export const RoundedLogo = ({ size }) => (
   <Circle size={size}>
-    <Unlock viewBox="0 0 56 56" />
+    <SvgComponents.Unlock viewBox="0 0 56 56" />
   </Circle>
 )
 
@@ -34,6 +33,6 @@ const Circle = styled.div`
   }
 `
 
-export const WordMarkLogo = styled(UnlockWordMark)`
+export const WordMarkLogo = styled(SvgComponents.UnlockWordMark)`
   fill: var(--brand);
 `
