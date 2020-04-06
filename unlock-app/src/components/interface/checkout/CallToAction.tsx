@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { PaywallCallToAction } from '../../../unlockTypes'
 import { CheckoutState } from '../../../stateMachines/checkout'
 
@@ -23,12 +24,21 @@ export const stateToCTAKey: {
   [CheckoutState.notLoggedIn]: 'noWallet',
 }
 
-export const CallToAction = (
-  state: any,
+interface CallToActionProps {
+  state: any
   callToAction?: PaywallCallToAction
-) => {
+}
+
+export const CallToAction = ({ state, callToAction }: CallToActionProps) => {
+  if (state === CheckoutState.loading) {
+    return <Message>Loading...</Message>
+  }
   const key = stateToCTAKey[state as keyof typeof CheckoutState]
   const message =
     (callToAction && callToAction[key]) || defaultCallToAction[key]
-  return <p>{message}</p>
+  return <Message>{message}</Message>
 }
+
+const Message = styled.p`
+  width: 100%;
+`

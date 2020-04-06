@@ -102,7 +102,7 @@ export const CheckoutContentInner = ({
     )
     send('metadataSubmitted')
   }
-
+  console.log(current)
   return (
     <CheckoutContainer close={emitCloseModal}>
       <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
