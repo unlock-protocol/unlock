@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import Head from 'next/head'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
 import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
-import { saveEmail, getEmail } from '../../utils/token'
 import { usePaywall } from '../../hooks/usePaywall'
 import configure from '../../config'
 
@@ -16,23 +14,14 @@ const config = configure()
 /**
  * The form
  */
-export const EmailForm = ({ email, onSubmit, onChange, label }) => (
+export const EmailForm = ({ onSubmit, label }) => (
   <Form onSubmit={onSubmit}>
-    <Input
-      value={email}
-      required
-      type="email"
-      placeholder="Enter your email address"
-      onChange={onChange}
-    />
     <Button type="submit" value={label} />
   </Form>
 )
 
 EmailForm.propTypes = {
-  email: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
 }
 
@@ -45,56 +34,18 @@ export default function HomeContent() {
     return null
   }
 
-  const web3 = window.web3
   const urlParams = new URLSearchParams(window.location.search)
   const title = urlParams.get('title')
   const description = urlParams.get('description')
   const lockAddresses = urlParams.getAll('locks')
 
   // Let's now add the snippet!
-  const [lockState, lockWithKey] = usePaywall(lockAddresses)
+  const [lockState] = usePaywall(lockAddresses)
   const [checkWallet, setCheckWallet] = useState(false)
-  const [email, setEmail] = useState(undefined)
 
-  const retrieveEmail = async () => {
-    if (lockWithKey) {
-      const web3Provider = new ethers.providers.Web3Provider(
-        web3.currentProvider
-      )
-      const savedEmail = await getEmail(web3Provider, lockWithKey)
-      setEmail(savedEmail)
-    }
-  }
-  useEffect(() => {
-    if (window.web3) {
-      // Connect (this is not cool becuase it pops up immediately for the user...)
-      // But this is currently the only way we can prompt the user to get their saved
-      // address. Also, this means the unlock status is loaded immediately
-      window.web3.currentProvider.enable()
-      if (lockState === 'unlocked') {
-        retrieveEmail()
-      }
-    }
-  }, [lockWithKey])
-
-  const onSubmit = async (event, isUpdate) => {
+  const onSubmit = async event => {
     event.preventDefault()
-    setCheckWallet(true)
-    // Ask user to sign token
-    // TODO : remove once the paywall application can manage that natively
-    const web3Provider = new ethers.providers.Web3Provider(web3.currentProvider)
-    const saved = await saveEmail(web3Provider, lockAddresses, email)
-    setCheckWallet(false)
-    if (!isUpdate) {
-      if (saved) {
-        // Let's now process with Unlock!
-        window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
-      } else {
-        alert('We could not save your email address!')
-      }
-    } else {
-      alert('Email address saved...')
-    }
+    window.unlockProtocol.loadCheckoutModal()
   }
 
   if (lockAddresses.length === 0) {
@@ -109,41 +60,13 @@ export default function HomeContent() {
         </Paragraph>
         <Paragraph>
           <a href="https://unlock-protocol.com/">Unlock</a> is a protocol for
-          memberships which lets creators monetize in a decentralized way. If you want to use Unlock for your newsletter, drop us a line at <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>!
-        </Paragraph>
-      </Layout>
-    )
-  }
-
-  // TODO: remove once paywall supports saving token metadata natively
-  if (!web3) {
-    return (
-      <Layout>
-        <Head>
-          <title>{pageTitle('Newsletter')}</title>
-        </Head>
-        <Title>{title}</Title>
-
-        <Error>
-          You need to a use a web browser with a crypto enabled wallet. We
-          recommend{' '}
-          <a
-            href="https://metamask.io/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            MetaMask
-          </a>{' '}
-          for Firefox or Chrome, or{' '}
-          <a
-            href="https://www.opera.com/crypto"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Opera
+          memberships which lets creators monetize in a decentralized way. If
+          you want to use Unlock for your newsletter, drop us a line at{' '}
+          <a href="mailto:hello@unlock-protocol.com">
+            hello@unlock-protocol.com
           </a>
-          .
-        </Error>
+          !
+        </Paragraph>
       </Layout>
     )
   }
@@ -176,22 +99,22 @@ export default function HomeContent() {
         {lockState === 'unlocked' && (
           <>
             <Confirmed>You have successfuly subscribed! Thank you...</Confirmed>
-            <EmailForm
-              email={email}
-              onSubmit={event => onSubmit(event, true)}
-              onChange={evt => setEmail(evt.target.value)}
-              label="Update"
-            />
+            <p>
+              Use your{' '}
+              <a
+                rel="noopener noreferrer"
+                target="_blank"
+                href={`${config.unlockAppUrl}/keychain`}
+              >
+                keychain to update your membership
+              </a>
+              !
+            </p>
           </>
         )}
 
         {lockState === 'locked' && (
-          <EmailForm
-            email={email}
-            onSubmit={onSubmit}
-            onChange={evt => setEmail(evt.target.value)}
-            label="Join"
-          />
+          <EmailForm onSubmit={onSubmit} label="Join" />
         )}
       </Grid>
     </Layout>
@@ -200,10 +123,6 @@ export default function HomeContent() {
 
 const Paragraph = styled.p`
   font-size: 20px;
-`
-
-const Error = styled(Paragraph)`
-  color: var(--red);
 `
 
 const Confirmed = styled(Paragraph)`
@@ -216,26 +135,11 @@ const Form = styled.form`
   grid-template-columns: 1fr 110px;
 `
 
-const Input = styled.input`
-  font-family: IBM Plex Sans;
-  font-size: 16px;
-
-  padding-left: 20px;
-  line-height: 20px;
-  background: #f6f6f6;
-  border: none;
-  border-radius: 4px 0px 0px 4px;
-
-  /* or 125% */
-  height: 60px;
-  color: #4a4a4a;
-`
-
 const Button = styled.input`
   color: #ffffff;
   background: #74ce63;
   border: none;
-  border-radius: 0px 4px 4px 0px;
+  border-radius: 4px 4px 4px 4px;
   height: 60px;
   font-family: IBM Plex Sans;
   font-style: normal;

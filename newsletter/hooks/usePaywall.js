@@ -5,14 +5,12 @@ const config = configure()
 
 export const usePaywall = lockAddresses => {
   const [lockState, setLockState] = useState('loading')
-  const [lockWithKey, setLockWithKey] = useState()
 
   useEffect(() => {
     if (lockAddresses.length) {
       // Add the Unlock config!
       const unlockConfig = {
-        icon:
-          'https://staging-app.unlock-protocol.com/static/images/svg/default.svg',
+        icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
         callToAction: {
           default:
             'Purchase access to the newsletter with crypto! You will need to send two transactions, one to approve the ERC20 transfer, and one for the actual purchase.',
@@ -27,6 +25,14 @@ export const usePaywall = lockAddresses => {
         locks[lockAddress] = {}
         return locks
       }, {})
+
+      unlockConfig.metadataInputs = [
+        {
+          name: 'Email Address',
+          type: 'email',
+          required: true,
+        },
+      ]
       window.unlockProtocolConfig = unlockConfig
 
       // And then the Unlock script
@@ -34,23 +40,13 @@ export const usePaywall = lockAddresses => {
       const scriptContent = window.document.createTextNode(`(function(d, s) {
 var js = d.createElement(s),
 sc = d.getElementsByTagName(s)[0];
-js.src="${config.paywallUrl}/static/unlock.1.0.min.js";
+js.src="${config.paywallUrl}/static/unlock.latest.min.js";
 sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
       script.appendChild(scriptContent)
       window.document.body.appendChild(script)
 
       // Set the lock state, based on the event
       const handler = event => {
-        // WARNING: THIS IS NOT DOCUMENTED!
-        // Let's look at the data that we have
-        if (window.unlockProtocol && window.unlockProtocol.blockchainData) {
-          const data = window.unlockProtocol.blockchainData()
-          if (data.keys) {
-            // They should be indexed by lock.
-            // Let's assume there is only one valid.
-            setLockWithKey(Object.keys(data.keys)[0])
-          }
-        }
         setLockState(event.detail)
       }
       window.addEventListener('unlockProtocol', handler)
@@ -66,7 +62,7 @@ sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
     return () => {}
   }, [JSON.stringify(lockAddresses)])
 
-  return [lockState, lockWithKey]
+  return [lockState]
 }
 
 export default usePaywall
