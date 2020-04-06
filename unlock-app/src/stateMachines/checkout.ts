@@ -1,12 +1,20 @@
 import { Machine } from 'xstate'
 
+export enum CheckoutState {
+  loading = 'loading',
+  metadataForm = 'metadataForm',
+  notLoggedIn = 'notLoggedIn',
+  locks = 'locks',
+  fiatLocks = 'fiatLocks',
+}
+
 interface CheckoutStateSchema {
   states: {
-    loading: {}
-    metadataForm: {}
-    notLoggedIn: {}
-    locks: {}
-    fiatLocks: {}
+    [CheckoutState.loading]: {}
+    [CheckoutState.metadataForm]: {}
+    [CheckoutState.notLoggedIn]: {}
+    [CheckoutState.locks]: {}
+    [CheckoutState.fiatLocks]: {}
   }
 }
 
@@ -21,31 +29,31 @@ export const checkoutMachine = Machine<CheckoutStateSchema, CheckoutEvent>({
   id: 'checkout',
   initial: 'loading',
   states: {
-    loading: {
+    [CheckoutState.loading]: {
       on: {
         gotConfigAndUserAccount: 'fiatLocks',
         gotConfigAndAccount: 'locks',
         gotConfig: 'notLoggedIn',
       },
     },
-    metadataForm: {
+    [CheckoutState.metadataForm]: {
       on: {
         metadataSubmitted: 'locks',
       },
     },
-    notLoggedIn: {
+    [CheckoutState.notLoggedIn]: {
       on: {
         gotConfigAndUserAccount: 'fiatLocks',
         gotConfigAndAccount: 'locks',
       },
     },
-    locks: {
+    [CheckoutState.locks]: {
       on: {
         gotConfigAndUserAccount: 'fiatLocks',
         collectMetadata: 'metadataForm',
       },
     },
-    fiatLocks: {
+    [CheckoutState.fiatLocks]: {
       on: {
         collectMetadata: 'metadataForm',
         gotConfigAndAccount: 'locks',
