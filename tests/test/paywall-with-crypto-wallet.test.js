@@ -66,10 +66,10 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should open the checkout UI when clicking on the button', async () => {
     expect.assertions(1)
-    await wait.forIframe(1)
     await expect(page).toClick('button', {
       text: 'Unlock the ads free experience!',
     })
+    await wait.forIframe(1)
     // "show" is the classname that shows the checkout UI
     await page.$('iframe[class="unlock-protocol-checkout show"]')
   })
