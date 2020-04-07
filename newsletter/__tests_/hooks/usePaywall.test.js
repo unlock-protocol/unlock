@@ -18,11 +18,17 @@ describe('usePaywall', () => {
         pending:
           'Your transaction has been sent. As soon as it has been mined, you will receive your Non Fungible Token!',
       },
-      icon:
-        'https://staging-app.unlock-protocol.com/static/images/svg/default.svg',
+      icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
       locks: {
         '0xabc': {},
       },
+      metadataInputs: [
+        {
+          name: 'Email Address',
+          type: 'email',
+          required: true,
+        },
+      ],
     })
     act(() => {
       window.dispatchEvent(
