@@ -12,18 +12,20 @@ import PaywallTags from '../components/page/PaywallTags'
 
 // TODO: move to PostContent
 const Post = ({ slug, post }) => {
-  let title = post.title || ''
-  let subTitle = post.subTitle || ''
-  let description = post.description || ''
-  let authorName = post.authorName || 'Unlock team'
-  let publishDate = post.publishDate || ''
-  let paywallLock = post.paywallLock || ''
-  let body = post.__content || ''
-  let membersOnly = post.membersOnly || ''
-  let nonMembersOnly = post.nonMembersOnly || ''
-  let scripts = post.scripts || []
-  let permalink = '/blog/' + slug
-  let image = post.image
+  const title = post.title || ''
+  const subTitle = post.subTitle || ''
+  const description = post.description || ''
+  const authorName = post.authorName || 'Unlock team'
+  const publishDate = post.publishDate || ''
+  const latestUpdateDate = post.latestUpdateDate || ''
+  const paywallLock = post.paywallLock || ''
+  /* eslint-disable no-underscore-dangle */
+  const body = post.__content || ''
+  const membersOnly = post.membersOnly || ''
+  const nonMembersOnly = post.nonMembersOnly || ''
+  const scripts = post.scripts || []
+  const permalink = `/blog/${slug}`
+  const { image } = post
 
   return (
     <Layout forContent>
@@ -50,6 +52,7 @@ const Post = ({ slug, post }) => {
       <BlogPost
         body={body}
         publishDate={publishDate}
+        latestUpdateDate={latestUpdateDate}
         title={title}
         subTitle={subTitle}
         scripts={scripts}
@@ -69,7 +72,7 @@ Post.propTypes = {
 
 Post.getInitialProps = async context => {
   const { slug } = context.query
-  return await preparePostProps(slug)
+  return preparePostProps(slug)
 }
 
 export default Post

@@ -5,6 +5,7 @@ authorName: Julien Genestoux
 publishDate: July 10, 2019
 description: Integrating Unlock with React is straighforward! Here's a quick tutorial on how to get there!
 image: /static/images/blog/react-integration/react-logo.png
+latestUpdateDate: April 6, 2020
 ---
 
 React is one of the main JavaScript front end frameworks. Unlock's JavaScript API provides an easy way for any creator to restrict access to content or features. For example, on this very blog (which [uses React](https://github.com/unlock-protocol/unlock/tree/master/unlock-protocol.com)), only the members (who own a key to the creator's lock) can leave comments.
@@ -21,7 +22,7 @@ We do that by changing the `index.html` (main HTML template) of our application.
 <script> (function (d, s) {
     var js = d.createElement(s),
       sc = d.getElementsByTagName(s)[0];
-    js.src = "https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+    js.src = "https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
     sc.parentNode.insertBefore(js, sc);
   }(document, "script"));
 </script>

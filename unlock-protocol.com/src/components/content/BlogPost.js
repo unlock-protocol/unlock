@@ -58,6 +58,7 @@ export class BlogPost extends React.Component {
       authorName,
       nonMembersOnly,
       membersOnly,
+      latestUpdateDate,
     } = this.props
 
     return (
@@ -75,6 +76,11 @@ export class BlogPost extends React.Component {
             <Button onClick={becomeMember}>
               <Markdown markup={nonMembersOnly} />
             </Button>
+          )}
+          {latestUpdateDate && (
+            <p>
+              <em>This was post was last updated on {latestUpdateDate}</em>
+            </p>
           )}
         </Body>
         <CommentSeparator />
@@ -98,6 +104,7 @@ BlogPost.propTypes = {
   body: PropTypes.string.isRequired,
   authorName: PropTypes.string,
   publishDate: PropTypes.string.isRequired,
+  latestUpdateDate: PropTypes.string,
   nonMembersOnly: PropTypes.string,
   membersOnly: PropTypes.string,
   scripts: PropTypes.arrayOf(PropTypes.string),
@@ -109,6 +116,7 @@ BlogPost.defaultProps = {
   nonMembersOnly: '',
   membersOnly: '',
   scripts: [],
+  latestUpdateDate: null,
 }
 
 export default BlogPost
