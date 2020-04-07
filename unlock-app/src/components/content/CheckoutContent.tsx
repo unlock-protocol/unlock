@@ -125,7 +125,10 @@ export const CheckoutContentInner = ({
           />
           {current.matches(CheckoutState.loading) && <Loading />}
           {current.matches(CheckoutState.notLoggedIn) && (
-            <NotLoggedIn config={config!} lockAddresses={lockAddresses} />
+            <NotLoggedIn
+              config={paywallConfig!}
+              lockAddresses={lockAddresses}
+            />
           )}
           {current.matches(CheckoutState.locks) && (
             <Locks
@@ -148,7 +151,7 @@ export const CheckoutContentInner = ({
           )}
           {current.matches(CheckoutState.metadataForm) && (
             <MetadataForm
-              fields={config!.metadataInputs!}
+              fields={paywallConfig!.metadataInputs!}
               onSubmit={onMetadataSubmit}
             />
           )}
