@@ -7,6 +7,6 @@
   "dependencies": {
     "@unlock-protocol/unlock-js": "0.9.3",
     "erc1820": "0.0.2",
-    "ethers": "4.0.45"
+    "ethers": "4.0.46"
   }
 }
