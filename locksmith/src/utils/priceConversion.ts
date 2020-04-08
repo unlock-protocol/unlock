@@ -7,7 +7,7 @@ export default class PriceConversion {
     this.client = new coinbase.Client({
       apiKey: ' ',
       apiSecret: ' ',
-//https://stackoverflow.com/questions/60735849/unable-to-get-issuer-cert-locally-error-when-calling-the-coinbase-nodejs-api
+      // https://stackoverflow.com/questions/60735849/unable-to-get-issuer-cert-locally-error-when-calling-the-coinbase-nodejs-api
       strictSSL: false,
     })
   }
