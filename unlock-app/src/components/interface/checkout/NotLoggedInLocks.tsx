@@ -20,7 +20,7 @@ export const NotLoggedInLocks = ({ lockAddresses }: LocksProps) => {
     return (
       <div>
         {lockAddresses.map(address => (
-          <LoadingLock key={address} />
+          <LoadingLock address={address} key={address} />
         ))}
       </div>
     )
@@ -30,6 +30,7 @@ export const NotLoggedInLocks = ({ lockAddresses }: LocksProps) => {
     <div>
       {locks.map(lock => (
         <DisabledLock
+          address={lock.address}
           key={lock.name}
           name={lock.name}
           formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}
