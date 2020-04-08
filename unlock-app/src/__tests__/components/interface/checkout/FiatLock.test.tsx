@@ -69,7 +69,6 @@ describe('FiatLock', () => {
           sig: 'sig',
         })),
       } as any,
-      loading: true,
     }))
   })
 
