@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Card } from '@stripe/stripe-js'
 import { FiatLock } from './FiatLock'
 import { DisabledLock, LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
@@ -12,12 +11,12 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { PaymentDetails } from './PaymentDetails'
+import { useCards } from '../../../hooks/useCards'
 
 interface LocksProps {
   lockAddresses: string[]
   accountAddress: string
   emitTransactionInfo: (info: TransactionInfo) => void
-  cards: Card[]
   metadataRequired: boolean
   showMetadataForm: () => void
 }
@@ -31,10 +30,11 @@ export const FiatLocks = ({
   lockAddresses,
   accountAddress,
   emitTransactionInfo,
-  cards,
   metadataRequired,
   showMetadataForm,
 }: LocksProps) => {
+  const { cards, loading: cardsLoading } = useCards(accountAddress)
+
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
@@ -49,7 +49,7 @@ export const FiatLocks = ({
   const now = new Date().getTime() / 1000
   const activeKeys = keys.filter(key => key.expiration > now)
 
-  if (loading) {
+  if (loading || cardsLoading) {
     return (
       <div>
         {lockAddresses.map(address => (

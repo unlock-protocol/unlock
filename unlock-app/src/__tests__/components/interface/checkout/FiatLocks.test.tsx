@@ -16,6 +16,7 @@ const accountAddress = '0xaccount'
 const emitTransactionInfo = jest.fn()
 
 let usePaywallLocksMock: any
+let useCardsMock: any
 const useFiatKeyPricesMock: any = {}
 
 jest.mock('../../../../hooks/usePaywallLocks', () => {
@@ -36,19 +37,25 @@ jest.mock('../../../../hooks/useFiatKeyPrices', () => {
   }
 })
 
+jest.mock('../../../../hooks/useCards', () => {
+  return {
+    useCards: jest.fn(() => useCardsMock),
+  }
+})
+
 describe('FiatLocks', () => {
   describe('component', () => {
     it('shows loading locks while loading', () => {
       expect.assertions(0)
 
       usePaywallLocksMock = { loading: true }
+      useCardsMock = { loading: false, cards: [] }
 
       const { getByTestId } = rtl.render(
         <FiatLocks
           lockAddresses={['0xlock']}
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
-          cards={[]}
           metadataRequired={false}
           showMetadataForm={doNothing}
         />
@@ -57,17 +64,36 @@ describe('FiatLocks', () => {
       getByTestId('LoadingLock')
     })
 
-    it('shows live locks when usePaywallLocks resolves', () => {
+    it('shows loading locks while cards are loading', () => {
       expect.assertions(0)
 
-      usePaywallLocksMock = { loading: false, locks: [lock] }
+      usePaywallLocksMock = { loading: false }
+      useCardsMock = { loading: true, cards: [] }
 
       const { getByTestId } = rtl.render(
         <FiatLocks
           lockAddresses={['0xlock']}
           accountAddress={accountAddress}
           emitTransactionInfo={emitTransactionInfo}
-          cards={[]}
+          metadataRequired={false}
+          showMetadataForm={doNothing}
+        />
+      )
+
+      getByTestId('LoadingLock')
+    })
+
+    it('shows live locks when usePaywallLocks useCards resolves', () => {
+      expect.assertions(0)
+
+      usePaywallLocksMock = { loading: false, locks: [lock] }
+      useCardsMock = { loading: false, cards: [] }
+
+      const { getByTestId } = rtl.render(
+        <FiatLocks
+          lockAddresses={['0xlock']}
+          accountAddress={accountAddress}
+          emitTransactionInfo={emitTransactionInfo}
           metadataRequired={false}
           showMetadataForm={doNothing}
         />
