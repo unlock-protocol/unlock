@@ -16,6 +16,8 @@ import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
 
+import { Web3ProviderContext } from '../hooks/useProvider'
+
 import FullScreenModal from '../components/interface/FullScreenModals'
 
 // Middlewares
@@ -50,10 +52,10 @@ const storageService = new StorageService(config.services.storage.host)
 
 function getOrCreateStore(initialState, path) {
   const middlewares = [
-    providerMiddleware(config),
+    providerMiddleware(config, getWeb3Provider, setWeb3Provider),
     web3Middleware(web3Service),
     currencyConversionMiddleware(config),
-    walletMiddleware(config, walletService),
+    walletMiddleware(config, walletService, getWeb3Provider),
     wedlocksMiddleware(config),
     storageMiddleware(storageService),
   ]
@@ -89,6 +91,17 @@ const ConfigProvider = ConfigContext.Provider
 const WalletServiceProvider = WalletServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 const StorageServiceProvider = StorageServiceContext.Provider
+const Web3ProviderContextProvider = Web3ProviderContext.Provider
+
+// web3 provider
+let web3Provider = null
+const setWeb3Provider = provider => {
+  web3Provider = provider
+}
+
+const getWeb3Provider = () => {
+  return web3Provider
+}
 
 class UnlockApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -150,15 +163,19 @@ The Unlock team
           <Provider store={store}>
             <FullScreenModal />
             <ConnectedRouter>
-              <StorageServiceProvider value={storageService}>
-                <Web3ServiceProvider value={web3Service}>
-                  <WalletServiceProvider value={walletService}>
-                    <ConfigProvider value={config}>
-                      <Component {...pageProps} />
-                    </ConfigProvider>
-                  </WalletServiceProvider>
-                </Web3ServiceProvider>
-              </StorageServiceProvider>
+              <Web3ProviderContextProvider
+                value={{ getWeb3Provider, setWeb3Provider }}
+              >
+                <StorageServiceProvider value={storageService}>
+                  <Web3ServiceProvider value={web3Service}>
+                    <WalletServiceProvider value={walletService}>
+                      <ConfigProvider value={config}>
+                        <Component {...pageProps} />
+                      </ConfigProvider>
+                    </WalletServiceProvider>
+                  </Web3ServiceProvider>
+                </StorageServiceProvider>
+              </Web3ProviderContextProvider>
             </ConnectedRouter>
           </Provider>
         </Container>
