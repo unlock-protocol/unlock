@@ -6,7 +6,6 @@ import PaymentProcessor from '../payment/paymentProcessor'
 const config = require('../../config/config')
 
 namespace PurchaseController {
-  // eslint-disable-next-line import/prefer-default-export
   export const purchase = async (
     req: SignedRequest,
     res: Response
@@ -38,6 +37,19 @@ namespace PurchaseController {
     return res.send({
       transactionHash: hash,
     })
+  }
+
+  export const purchaseUSD = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const { expiry } = req.body.message.purchaseRequest
+
+    if (expired(expiry)) {
+      return res.sendStatus(412)
+    }
+
+    return res.sendStatus(200)
   }
 
   const expired = (expiry: number): Boolean => {
