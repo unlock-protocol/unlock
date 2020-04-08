@@ -84,11 +84,33 @@ describe('Checkout Lock Utils', () => {
       expect(userCanAffordKey(lock, balances)).toBeTruthy()
     })
 
+    it('returns true when the user has exactly the right amount of erc20', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: balances['0x123abc'],
+        currencyContractAddress: '0x123abc',
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeTruthy()
+    })
+
     it('returns false when the user has insufficient eth', () => {
       expect.assertions(1)
 
       const lock = {
         keyPrice: '100',
+        currencyContractAddress: null,
+      }
+
+      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+    })
+
+    it('returns false when the user has exactly the right amount of eth', () => {
+      expect.assertions(1)
+
+      const lock = {
+        keyPrice: balances.eth,
         currencyContractAddress: null,
       }
 
