@@ -42,10 +42,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     )
 
     // save the lock address to pass it to the ad remover paywall
-
-    addresses.forEach((address, i) => {
-      locks[i].address = address
-    })
+    addresses.forEach((address, i) => (locks[i].address = address))
 
     lockSelectors = addresses.map(lock => path =>
       `[data-address="${lock}"] ${path}`
@@ -66,21 +63,21 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should open the checkout UI when clicking on the button', async () => {
     expect.assertions(1)
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     await expect(page).toClick('button', {
       text: 'Unlock the ads free experience!',
     })
-    await wait.forIframe(1)
     // "show" is the classname that shows the checkout UI
-    await page.$('iframe[class="unlock-protocol-checkout show"]')
+    await page.$('iframe[class="unlock start show"]')
   })
 
   it('should show the logo on the checkout UI', async () => {
     expect.assertions(0)
-    await wait.forIframe(1)
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
-      icon => {
-        return !!document.body.querySelector(`img[src="${icon}"]`)
+      unlockIcon => {
+        return !!document.body.querySelector(`img[src="${unlockIcon}"]`)
       },
       {},
       unlockIcon
@@ -89,7 +86,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should show the 3 locks', async () => {
     expect.assertions(0)
-    await wait.forIframe(1)
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       lock1 => {
@@ -116,7 +113,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
 
   it('should attempt a key purchase when clicking on a lock, and hide the ads', async () => {
     expect.assertions(2)
-    await wait.forIframe(1)
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     const checkoutIframe = iframes.checkoutIframe(page)
     const checkoutBody = await checkoutIframe.$('body')
     await expect(checkoutBody).toClick(lockSelectors[0](''))
@@ -133,6 +130,45 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
       {},
       lockSelectors[0]('footer')
     )
+    const adDisplay = await page.$$eval('.ad', ads => {
+      return ads.map(ad => ad.style.display)
+    })
+    expect(adDisplay).toEqual(['none', 'none'])
+  })
+
+  it('should continue monitoring the transaction after refresh, ads still hidden', async () => {
+    expect.assertions(2)
+    await page.reload()
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
+    await expect(page).toClick('button', {
+      text: 'Unlock the ads free experience!',
+    })
+    const checkoutIframe = iframes.checkoutIframe(page)
+    await checkoutIframe.waitForFunction(
+      lock1 => {
+        const lock = document.body.querySelector(lock1)
+        return (
+          lock &&
+          (lock.innerText === 'Payment Sent' ||
+            lock.innerText === 'Payment Pending' ||
+            lock.innerText === 'Payment Confirming')
+        )
+      },
+      {},
+      lockSelectors[0]('footer')
+    )
+    const adDisplay = await page.$$eval('.ad', ads => {
+      return ads.map(ad => ad.style.display)
+    })
+    expect(adDisplay).toEqual(['none', 'none'])
+  })
+
+  it('should hide the iframe when purchase is confirmed, ads still hidden', async () => {
+    expect.assertions(1)
+    // wait for 2 iframes to be loaded, the data and checkout iframes
+    await wait.forIframe(2)
+    // wait for the key purchase to be confirmed, and then the modal will dismiss
+    await wait.untilIsGone('iframe[class="unlock start show"]')
     const adDisplay = await page.$$eval('.ad', ads => {
       return ads.map(ad => ad.style.display)
     })
