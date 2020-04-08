@@ -56,5 +56,12 @@ export const userCanAffordKey = (
     return false
   }
 
+  // For eth need some gas so if the balance is exactly the same as key price
+  // this would fail
+  if (currency === 'eth') {
+    return keyPrice < balance
+  }
+
+  // TODO: take balance of eth into account for gas (it's tricky!)
   return keyPrice <= balance
 }
