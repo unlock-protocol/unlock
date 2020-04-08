@@ -33,6 +33,7 @@ function generateTypedData(message: any) {
         { name: 'recipient', type: 'address' },
         { name: 'lock', type: 'address' },
         { name: 'expiry', type: 'uint64' },
+        { name: 'USDAmount', type: 'uint64' },
       ],
     },
     domain: {
