@@ -11,17 +11,14 @@ import { MessageBox } from './modal-templates/styles'
 import { ActionButton } from './buttons/ActionButton'
 import withConfig from '../../utils/withConfig'
 import useTermsOfService from '../../hooks/useTermsOfService'
-import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
 import GlobalErrorConsumer from './GlobalErrorConsumer'
 
 export default function Layout({ forContent, title, children }) {
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
-  const { loading: providerLoading } = useProvider()
-  if (termsLoading || providerLoading) {
+  if (termsLoading) {
     return <Loading />
   }
-
   return (
     <Container>
       <Left>

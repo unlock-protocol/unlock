@@ -33,6 +33,7 @@ describe('config', () => {
       window.top = window
 
       const config = configure(
+        global,
         {
           unlockEnv: 'dev',
           httpProvider: '127.0.0.1',
@@ -51,6 +52,7 @@ describe('config', () => {
       }
 
       const config = configure(
+        global,
         {
           unlockEnv: 'dev',
           httpProvider: '127.0.0.1',
@@ -64,6 +66,7 @@ describe('config', () => {
     it('should return true when an exception is thrown', () => {
       expect.assertions(1)
       const config = configure(
+        global,
         {
           unlockEnv: 'dev',
           httpProvider: '127.0.0.1',
@@ -76,7 +79,7 @@ describe('config', () => {
   })
 
   describe('dev', () => {
-    const config = configure({
+    let config = configure(global, {
       unlockEnv: 'dev',
       httpProvider: '127.0.0.1',
     })
@@ -90,8 +93,32 @@ describe('config', () => {
     })
 
     it('should have the right keys in dev', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Dev')
+      expect(config.providers).toHaveProperty('Unlock')
+    })
+
+    it('should have the right keys in dev when there is a web3 provider', () => {
+      expect.assertions(1)
+      config = configure(
+        {
+          web3: {
+            currentProvider: {
+              isMetaMask: true,
+            },
+          },
+        },
+        {
+          unlockEnv: 'dev',
+          httpProvider: '127.0.0.1',
+        }
+      )
+      expect(config.providers).toMatchObject({
+        Unlock: expect.any(Object),
+        Metamask: {
+          isMetaMask: true,
+        },
+      })
     })
 
     it('should contain the right URLs for chain explorers', () => {
@@ -102,10 +129,19 @@ describe('config', () => {
   })
 
   describe('staging', () => {
-    const config = configure({
-      unlockEnv: 'staging',
-      httpProvider: '127.0.0.1',
-    })
+    const config = configure(
+      {
+        web3: {
+          currentProvider: {
+            isMetaMask: true,
+          },
+        },
+      },
+      {
+        unlockEnv: 'staging',
+        httpProvider: '127.0.0.1',
+      }
+    )
 
     it('should require rinkeby', () => {
       expect.assertions(4)
@@ -116,8 +152,13 @@ describe('config', () => {
     })
 
     it('should have the right keys ', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Rinkeby')
+      expect(config.providers).toMatchObject({
+        Metamask: {
+          isMetaMask: true,
+        },
+      })
     })
 
     it('should contain the right URLs for chain explorers', () => {
@@ -130,7 +171,7 @@ describe('config', () => {
   })
 
   describe('production', () => {
-    const config = configure({
+    const config = configure(global, {
       unlockEnv: 'prod',
       httpProvider: '127.0.0.1',
     })
@@ -144,8 +185,10 @@ describe('config', () => {
     })
 
     it('should have the right keys in production', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Mainnet')
+      // No web3 provider, but Unlock provider is always there
+      expect(config.providers).toHaveProperty('Unlock')
     })
 
     it('should contain the right URLs for chain explorers', () => {

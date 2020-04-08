@@ -35,8 +35,6 @@ let state = {}
 const transaction = {}
 const network = {}
 
-const mockProvider = {}
-
 /**
  * This is a "fake" middleware caller
  * Taken from https://redux.js.org/recipes/writing-tests#middleware
@@ -48,13 +46,7 @@ const create = (dispatchImplementation = () => true) => {
   }
   const next = jest.fn()
 
-  const getProvider = () => mockProvider
-
-  const handler = walletMiddleware(
-    mockConfig,
-    mockWalletService,
-    getProvider
-  )(store)
+  const handler = walletMiddleware(mockConfig, mockWalletService)(store)
 
   const invoke = action => handler(next)(action)
 
@@ -457,9 +449,10 @@ describe('Wallet middleware', () => {
     const { next, invoke } = create()
     const action = { type: PROVIDER_READY }
     mockWalletService.connect = jest.fn()
-    const mockProvider = {}
     invoke(action)
-    expect(mockWalletService.connect).toHaveBeenCalledWith(mockProvider)
+    expect(mockWalletService.connect).toHaveBeenCalledWith(
+      mockConfig.providers[state.provider]
+    )
     expect(next).toHaveBeenCalledWith(action)
   })
 
