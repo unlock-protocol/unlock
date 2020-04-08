@@ -152,4 +152,69 @@ describe('Purchase Controller', () => {
       })
     })
   })
+
+  describe('purchase in USD initiation', () => {
+    describe("when the purchase hasn't been signed correctly", () => {
+      it('returns a 401 status code', async () => {
+        expect.assertions(1)
+        const response = await request(app).post('/purchase/USD')
+        expect(response.status).toBe(401)
+      })
+    })
+
+    describe('when the purchase request is appropriately signed and user has payment details', () => {
+      const message = {
+        purchaseRequest: {
+          recipient,
+          lock: participatingLock,
+          expiry: 16733658026,
+          USDAmount: 250,
+        },
+      }
+
+      const typedData = generateTypedData(message)
+
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+      })
+
+      it('responds with a 200 and transaction hash', async () => {
+        expect.assertions(1)
+
+        const response = await request(app)
+          .post('/purchase/USD')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toBe(200)
+      })
+    })
+  })
+
+  describe('when the purchase request is past its expiry window', () => {
+    const message = {
+      purchaseRequest: {
+        recipient,
+        lock: participatingLock,
+        expiry: 702764221,
+        USDAmount: 250,
+      },
+    }
+
+    const typedData = generateTypedData(message)
+
+    const sig = sigUtil.signTypedData(privateKey, {
+      data: typedData,
+    })
+    it('responds with a 412', async () => {
+      expect.assertions(1)
+      const response = await request(app)
+        .post('/purchase')
+        .set('Accept', 'json')
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+      expect(response.status).toBe(412)
+    })
+  })
 })
