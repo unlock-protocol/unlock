@@ -1,13 +1,10 @@
+import UnlockProvider from '../services/unlockProvider'
+
 import { reEncryptPrivateKey } from '../utils/accounts'
-import { SET_PROVIDER, providerReady } from '../actions/provider'
+import { providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
 import { resetRecoveryPhrase } from '../actions/recovery'
-import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
-import {
-  FATAL_MISSING_PROVIDER,
-  FATAL_NOT_ENABLED_IN_PROVIDER,
-} from '../errors'
-import { Application, LogIn } from '../utils/Error'
+import { LogIn } from '../utils/Error'
 import { Action } from '../unlockTypes' // eslint-disable-line
 import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
@@ -22,40 +19,6 @@ import {
   SIGN_ACCOUNT_EJECTION,
   signedAccountEjection,
 } from '../actions/user'
-
-interface Provider {
-  enable?: () => any
-  isUnlock?: boolean
-}
-
-export function initializeProvider(provider: Provider, dispatch: any) {
-  // TODO: when UnlockProvider is enabled, this error should never happen.
-  if (!provider) {
-    dispatch(setError(Application.Fatal(FATAL_MISSING_PROVIDER)))
-    return
-  }
-
-  // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
-  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-  if (provider.enable) {
-    dispatch(waitForWallet())
-    provider
-      .enable()
-      .then(() => {
-        dispatch(dismissWalletCheck())
-        dispatch(providerReady())
-      })
-      .catch(() => {
-        dispatch(dismissWalletCheck())
-        dispatch(setError(Application.Fatal(FATAL_NOT_ENABLED_IN_PROVIDER)))
-      })
-  } else if (provider.isUnlock) {
-    // This initialization is handled on receipt of GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD
-  } else {
-    // Default case, provider doesn't have an enable method, so it must already be ready
-    dispatch(providerReady())
-  }
-}
 
 interface ChangePasswordArgs {
   oldPassword: string
@@ -111,26 +74,28 @@ export async function initializeUnlockProvider(
   }
 }
 
-export const providerMiddleware = (config: any) => {
-  return ({ getState, dispatch }: { [key: string]: any }) => {
-    return function(next: any) {
-      // Initialize provider based on the one grabbed in the state. Fragile?
-      setTimeout(() => {
-        const provider = config.providers[getState().provider]
-        initializeProvider(provider, dispatch)
-      }, 0)
-
-      return function(action: Action) {
-        const providerName = getState().provider
-        const provider = config.providers[providerName]
-        if (action.type === SET_PROVIDER) {
-          // Only initialize the provider if we haven't already done so.
-          if (action.provider !== providerName) {
-            const newProvider = config.providers[action.provider]
-            initializeProvider(newProvider, dispatch)
-          }
-        } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
-          initializeUnlockProvider(action, provider, dispatch)
+/**
+ *
+ * @param config
+ * @param getProvider
+ */
+export const providerMiddleware = (
+  config: any,
+  getProvider: () => any,
+  setProvider: (provider: any) => void
+) => {
+  const { readOnlyProvider, requiredNetworkId } = config
+  return ({ dispatch }: { [key: string]: any }) => {
+    return function middleware(next: any) {
+      return function handler(action: Action) {
+        const provider = getProvider()
+        if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
+          const unlockProvider = new UnlockProvider({
+            readOnlyProvider,
+            requiredNetworkId,
+          })
+          setProvider(unlockProvider)
+          initializeUnlockProvider(action, unlockProvider, dispatch)
         } else if (action.type === SIGN_USER_DATA) {
           const payload = provider.signUserData(action.data)
           dispatch(signedUserData(payload))
