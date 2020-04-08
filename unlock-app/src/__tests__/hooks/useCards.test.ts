@@ -57,7 +57,7 @@ describe('useCards', () => {
       json: () => Promise.resolve([]),
     } as any)
 
-    const { result, wait } = renderHook(() => useCards(account))
+    const { result, wait } = renderHook(() => useCards(account.address))
 
     await wait(() => !!result.current.cards)
 
@@ -72,7 +72,7 @@ describe('useCards', () => {
 
     fetch.mockRejectedValue(new Error('fail'))
 
-    const { result, wait } = renderHook(() => useCards(account))
+    const { result, wait } = renderHook(() => useCards(account.address))
 
     await wait(() => !!result.current.error)
 
