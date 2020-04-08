@@ -3,7 +3,6 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { Card } from '@stripe/stripe-js'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
-import { Account } from '../unlockTypes'
 
 interface Config {
   services: {
@@ -43,23 +42,24 @@ export function generateTypedData(publicKey: string) {
   }
 }
 
-export const useCards = (account?: Account) => {
+export const useCards = (address?: string) => {
   const walletService: WalletService = useContext(WalletServiceContext)
   const config: Config = useContext(ConfigContext)
-  const [cards, setCards] = useState<Card[] | undefined>(undefined)
+  const [cards, setCards] = useState<Card[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error | undefined>(undefined)
 
-  const getSignature = async (account: Account) => {
-    const typedData = generateTypedData(account.address)
+  const getSignature = async (typedData: any, address: string) => {
     const signature = await (walletService as any).unformattedSignTypedData(
-      account.address,
+      address,
       typedData
     )
     return signature
   }
 
-  const getCards = async (account: Account) => {
-    const signature = await getSignature(account)
+  const getCards = async (address: string) => {
+    const typedData = generateTypedData(address)
+    const signature = await getSignature(typedData, address)
     const token = Buffer.from(signature).toString('base64')
     const opts = {
       method: 'GET',
@@ -69,8 +69,8 @@ export const useCards = (account?: Account) => {
     try {
       const response = await fetch(
         `${config.services.storage.host}/users/${encodeURIComponent(
-          account.emailAddress!
-        )}/cards`,
+          address!
+        )}/credit-cards?data=${JSON.stringify(typedData)}`,
         opts
       )
       const json = await response.json()
@@ -78,13 +78,14 @@ export const useCards = (account?: Account) => {
     } catch (e) {
       setError(e)
     }
+    setLoading(false)
   }
 
   useEffect(() => {
-    if (account && account.emailAddress) {
-      getCards(account)
+    if (address) {
+      getCards(address)
     }
-  }, [JSON.stringify(account)])
+  }, [address])
 
-  return { cards, error }
+  return { cards, error, loading }
 }

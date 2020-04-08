@@ -144,7 +144,6 @@ export const CheckoutContentInner = ({
               accountAddress={account.address}
               lockAddresses={lockAddresses}
               emitTransactionInfo={emitTransactionInfo}
-              cards={account.cards || []}
               metadataRequired={metadataRequired}
               showMetadataForm={() => send('collectMetadata')}
             />
