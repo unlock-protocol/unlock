@@ -1,4 +1,7 @@
+import { getCurrentProvider } from '@unlock-protocol/unlock-js'
+
 import getConfig from 'next/config'
+import UnlockProvider from './services/unlockProvider'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // cribbed from https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
@@ -19,6 +22,7 @@ export function inIframe(window) {
  * @param {*} environment (in the JS sense: `window` most likely)
  */
 export default function configure(
+  environment = global,
   runtimeConfig = getConfig().publicRuntimeConfig,
   useWindow = global.window
 ) {
@@ -32,6 +36,7 @@ export default function configure(
   let googleDiscoveryDocs
   let googleScopes
 
+  const providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
@@ -73,8 +78,15 @@ export default function configure(
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
 
+  // If there is an existing web3 injected provider, we also add this one to the list of possible providers
+  if (typeof environment.web3 !== 'undefined') {
+    providers[getCurrentProvider(environment)] =
+      environment.web3.currentProvider
+  }
+
   if (env === 'test') {
     // In test, we fake the HTTP provider
+    providers.HTTP = `http://${httpProvider}:8545`
     blockTime = 1000 // in mseconds.
     supportedProviders = ['HTTP']
     services.storage = {
@@ -196,6 +208,8 @@ export default function configure(
     readOnlyProvider = readOnlyProviderUrl
   }
 
+  providers.Unlock = new UnlockProvider({ readOnlyProvider, requiredNetworkId })
+
   return {
     base64WedlocksPublicKey,
     blockTime,
@@ -203,7 +217,7 @@ export default function configure(
     isServer,
     isInIframe,
     env,
-    httpProvider,
+    providers,
     isRequiredNetwork,
     readOnlyProvider,
     requiredNetworkId,
