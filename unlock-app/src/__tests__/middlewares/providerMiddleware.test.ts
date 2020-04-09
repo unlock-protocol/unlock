@@ -2,10 +2,9 @@ import providerMiddleware, {
   changePassword,
   initializeUnlockProvider,
 } from '../../middlewares/providerMiddleware'
-import { SET_PROVIDER, providerReady } from '../../actions/provider'
+
 import { setError } from '../../actions/error'
-import { FATAL_MISSING_PROVIDER } from '../../errors'
-import { Application, LogIn } from '../../utils/Error'
+import { LogIn } from '../../utils/Error'
 import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   SIGN_USER_DATA,
@@ -21,63 +20,34 @@ import { EncryptedPrivateKey } from '../../unlockTypes'
 jest.mock('../../utils/accounts')
 
 const config = {
-  providers: {
-    UNLOCK: {
+  readOnlyProvider: '',
+  requiredNetworkId: '',
+}
+
+let dispatch: () => any
+
+let mockProvider = {
+  isUnlock: true,
+  signUserData: jest.fn(() => ({ data: {}, sig: {} })),
+  signPaymentData: jest.fn(() => ({ data: {}, sig: {} })),
+  signKeyPurchaseRequestData: jest.fn(() => ({ data: {}, sig: {} })),
+  generateSignedEjectionRequest: jest.fn(() => ({ data: {}, sig: {} })),
+}
+
+const getProvider = jest.fn(() => {
+  return mockProvider
+})
+const setProvider = jest.fn(() => {})
+
+describe('provider middleware', () => {
+  beforeEach(() => {
+    mockProvider = {
       isUnlock: true,
       signUserData: jest.fn(() => ({ data: {}, sig: {} })),
       signPaymentData: jest.fn(() => ({ data: {}, sig: {} })),
       signKeyPurchaseRequestData: jest.fn(() => ({ data: {}, sig: {} })),
       generateSignedEjectionRequest: jest.fn(() => ({ data: {}, sig: {} })),
-    },
-    NUNLOCK: {
-      enable: jest.fn(() => new Promise(resolve => resolve(true))),
-    },
-    METAMASQUE: {
-      enable: jest.fn(() => new Promise(resolve => resolve(true))),
-    },
-    NOENABLE: {},
-  },
-}
-
-const getState = () => ({
-  provider: 'NUNLOCK',
-})
-
-const metamasqueAction = {
-  type: SET_PROVIDER,
-  provider: 'METAMASQUE',
-}
-
-const erroneousAction = {
-  type: SET_PROVIDER,
-  provider: 'HONLOCK',
-}
-
-const sameAction = {
-  type: SET_PROVIDER,
-  provider: 'NUNLOCK',
-}
-
-const unlockAction = {
-  type: SET_PROVIDER,
-  provider: 'UNLOCK',
-}
-
-const noEnableAction = {
-  type: SET_PROVIDER,
-  provider: 'NOENABLE',
-}
-
-let dispatch: () => any
-
-describe('provider middleware', () => {
-  beforeEach(() => {
-    config.providers.NUNLOCK.enable = jest.fn(
-      () => new Promise(resolve => resolve(true))
-    )
-    config.providers.METAMASQUE.enable = jest.fn(
-      () => new Promise(resolve => resolve(true))
-    )
+    }
     dispatch = jest.fn()
   })
 
@@ -113,92 +83,18 @@ describe('provider middleware', () => {
     })
   })
 
-  describe('SET_PROVIDER', () => {
-    it('should initialize the provider when provider is different from one in state', done => {
-      expect.assertions(2)
-      const next = () => {
-        expect(config.providers.METAMASQUE.enable).toHaveBeenCalled()
-        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
-        done()
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(metamasqueAction)
-    })
-
-    it('should set an error and return if there is no matching provider', done => {
-      expect.assertions(3)
-      const next = () => {
-        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
-        expect(config.providers.METAMASQUE.enable).not.toHaveBeenCalled()
-        expect(dispatch).toHaveBeenCalledWith(
-          setError(Application.Fatal(FATAL_MISSING_PROVIDER))
-        )
-        done()
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(erroneousAction)
-    })
-
-    it('should set an error and return if the call to enable fails', done => {
-      expect.assertions(2)
-      config.providers.METAMASQUE.enable = jest.fn(() => {
-        // eslint-disable-next-line promise/param-names
-        return new Promise((_, reject) => {
-          reject('The front fell off.')
-        })
-      })
-
-      const next = () => {
-        expect(config.providers.METAMASQUE.enable).toHaveBeenCalled()
-        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
-        done()
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(metamasqueAction)
-    })
-
-    it('should do nothing if provider is the same as in state', done => {
-      expect.assertions(3)
-      const next = () => {
-        expect(config.providers.METAMASQUE.enable).not.toHaveBeenCalled()
-        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
-        expect(dispatch).not.toHaveBeenCalled()
-        done()
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(sameAction)
-    })
-
-    it('should do nothing if using unlockProvider', done => {
-      expect.assertions(3)
-      const next = () => {
-        expect(config.providers.METAMASQUE.enable).not.toHaveBeenCalled()
-        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
-        expect(dispatch).not.toHaveBeenCalled()
-        done()
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(unlockAction)
-    })
-
-    it('should simply dispatch providerReady if provider does not have enable method', () => {
-      expect.assertions(1)
-      const next = () => {
-        expect(dispatch).toHaveBeenCalledWith(providerReady())
-      }
-
-      providerMiddleware(config)({ getState, dispatch })(next)(noEnableAction)
-    })
-  })
-
   describe('SIGN_USER_DATA', () => {
     it('should call UnlockProvider', () => {
       expect.assertions(1)
       const next = () => {
-        expect(config.providers.UNLOCK.signUserData).toHaveBeenCalled()
+        expect(mockProvider.signUserData).toHaveBeenCalled()
       }
 
-      providerMiddleware(config)({
+      providerMiddleware(
+        config,
+        getProvider,
+        setProvider
+      )({
         getState: () => ({ provider: 'UNLOCK' }),
         dispatch,
       })(next)({
@@ -212,12 +108,16 @@ describe('provider middleware', () => {
     it('should call UnlockProvider', () => {
       expect.assertions(1)
       const next = () => {
-        expect(config.providers.UNLOCK.signPaymentData).toHaveBeenCalledWith(
+        expect(mockProvider.signPaymentData).toHaveBeenCalledWith(
           'tok_1EPsocIsiZS2oQBMRXzw21xh'
         )
       }
 
-      providerMiddleware(config)({
+      providerMiddleware(
+        config,
+        getProvider,
+        setProvider
+      )({
         getState: () => ({ provider: 'UNLOCK' }),
         dispatch,
       })(next)({
@@ -235,12 +135,16 @@ describe('provider middleware', () => {
         lock: '0x321cba',
       }
       const next = () => {
-        expect(
-          config.providers.UNLOCK.signKeyPurchaseRequestData
-        ).toHaveBeenCalledWith(data)
+        expect(mockProvider.signKeyPurchaseRequestData).toHaveBeenCalledWith(
+          data
+        )
       }
 
-      providerMiddleware(config)({
+      providerMiddleware(
+        config,
+        getProvider,
+        setProvider
+      )({
         getState: () => ({ provider: 'UNLOCK' }),
         dispatch,
       })(next)({
@@ -256,11 +160,15 @@ describe('provider middleware', () => {
 
       const next = () => {
         expect(
-          config.providers.UNLOCK.generateSignedEjectionRequest
+          mockProvider.generateSignedEjectionRequest
         ).toHaveBeenCalledWith()
       }
 
-      providerMiddleware(config)({
+      providerMiddleware(
+        config,
+        getProvider,
+        setProvider
+      )({
         getState: () => ({ provider: 'UNLOCK' }),
         dispatch,
       })(next)({
