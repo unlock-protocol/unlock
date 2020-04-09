@@ -6,13 +6,6 @@
     <script src="adRemoverUtils.js"></script>
     <script>
       var us = new URL(document.location)
-      const loginafter = +us.searchParams.get('logindelay') || 0
-      if (!loginafter) {
-        hookupGanache(window)
-      } else {
-        // log into ganache after a delay
-        setTimeout(() => hookupGanache(window), loginafter * 1000)
-      }
       ;(function(d, s) {
         var js = d.createElement(s),
           sc = d.getElementsByTagName(s)[0]
@@ -36,6 +29,9 @@
 
     window.addEventListener('unlockProtocol', function(e) {
       var state = e.detail
+      console.log({
+        state
+      })
       if (state === 'locked') {
         loadAds(document)
       } else if (state === 'unlocked') {
