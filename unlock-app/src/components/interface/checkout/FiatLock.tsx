@@ -79,6 +79,7 @@ export const FiatLock = ({
     formattedKeyPrice,
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: lock.name,
+    address: lock.address,
   }
 
   const keyForThisLock = activeKeys.find(key => key.lock === lock.address)

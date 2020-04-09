@@ -53,7 +53,7 @@ export const FiatLocks = ({
     return (
       <div>
         {lockAddresses.map(address => (
-          <LoadingLock key={address} />
+          <LoadingLock address={address} key={address} />
         ))}
       </div>
     )
@@ -94,6 +94,7 @@ export const FiatLocks = ({
 
         return (
           <DisabledLock
+            address={lock.address}
             key={lock.name}
             name={lock.name}
             formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}

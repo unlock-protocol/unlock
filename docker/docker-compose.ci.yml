@@ -39,6 +39,8 @@ services:
     image: unlock-app
     ports:
       - 3000:3000
+    expose:
+      - 3000
   unlock-provider-unlock-app:
     env_file:
       - integration.env

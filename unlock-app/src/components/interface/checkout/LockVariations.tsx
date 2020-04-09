@@ -167,6 +167,7 @@ export const ValidityDuration = styled.div`
 `
 
 export interface LockProps {
+  address: string
   name: string
   formattedKeyPrice: string
   formattedDuration: string
@@ -174,21 +175,26 @@ export interface LockProps {
   onClick: () => void
 }
 
-export const LoadingLock = () => {
+export interface LoadingLockProps {
+  address: string
+}
+
+export const LoadingLock = ({ address }: LoadingLockProps) => {
   return (
-    <LockContainer data-testid="LoadingLock">
+    <LockContainer data-address={address} data-testid="LoadingLock">
       <LoadingLockBody />
     </LockContainer>
   )
 }
 
 export const SoldOutLock = ({
+  address,
   name,
   formattedDuration,
   formattedKeyPrice,
 }: LockProps) => {
   return (
-    <DisabledLockContainer data-testid="SoldOutLock">
+    <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <SoldOut>Sold Out</SoldOut>
@@ -206,13 +212,17 @@ export const SoldOutLock = ({
 }
 
 export const InsufficientBalanceLock = ({
+  address,
   name,
   formattedDuration,
   formattedKeyPrice,
   formattedKeysAvailable,
 }: LockProps) => {
   return (
-    <DisabledLockContainer data-testid="InsufficientBalanceLock">
+    <DisabledLockContainer
+      data-address={address}
+      data-testid="InsufficientBalanceLock"
+    >
       <InfoWrapper>
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
@@ -233,12 +243,13 @@ export const InsufficientBalanceLock = ({
 }
 
 export const DisabledLock = ({
+  address,
   name,
   formattedDuration,
   formattedKeyPrice,
 }: LockProps) => {
   return (
-    <DisabledLockContainer data-testid="DisabledLock">
+    <DisabledLockContainer data-address={address} data-testid="DisabledLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
       </InfoWrapper>
@@ -255,6 +266,7 @@ export const DisabledLock = ({
 }
 
 export const PurchaseableLock = ({
+  address,
   name,
   formattedDuration,
   formattedKeyPrice,
@@ -262,7 +274,7 @@ export const PurchaseableLock = ({
   onClick,
 }: LockProps) => {
   return (
-    <LockContainer data-testid="PurchaseableLock">
+    <LockContainer data-address={address} data-testid="PurchaseableLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
@@ -280,12 +292,13 @@ export const PurchaseableLock = ({
 }
 
 export const ProcessingLock = ({
+  address,
   name,
   formattedDuration,
   formattedKeyPrice,
 }: LockProps) => {
   return (
-    <LockContainer data-testid="ProcessingLock">
+    <LockContainer data-address={address} data-testid="ProcessingLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <Processing>Processing</Processing>
@@ -303,13 +316,14 @@ export const ProcessingLock = ({
 }
 
 export const ConfirmedLock = ({
+  address,
   name,
   formattedDuration,
   formattedKeyPrice,
   formattedKeysAvailable,
 }: LockProps) => {
   return (
-    <LockContainer data-testid="ConfirmedLock">
+    <LockContainer data-address={address} data-testid="ConfirmedLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
         <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
