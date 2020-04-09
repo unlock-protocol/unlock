@@ -31,7 +31,7 @@ import { SIGN_DATA, signedData } from '../actions/signature'
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
 
-const walletMiddleware = (config, walletService) => {
+const walletMiddleware = (config, walletService, getProvider) => {
   return ({ getState, dispatch }) => {
     /**
      * Helper function which ensures that the walletService is ready
@@ -184,7 +184,7 @@ const walletMiddleware = (config, walletService) => {
     return function(next) {
       return function(action) {
         if (action.type === PROVIDER_READY) {
-          walletService.connect(config.providers[getState().provider])
+          walletService.connect(getProvider())
         } else if (action.type === CREATE_LOCK && action.lock.address) {
           ensureReadyBefore(() => {
             walletService.createLock({
