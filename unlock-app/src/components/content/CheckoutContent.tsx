@@ -31,6 +31,7 @@ import {
 } from '../../hooks/useCheckoutStore'
 import MetadataForm from '../interface/checkout/MetadataForm'
 import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
+import { useProvider } from '../../hooks/useProvider'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -43,6 +44,11 @@ export const CheckoutContent = ({
   configFromSearch,
   errors,
 }: CheckoutContentProps) => {
+  const { loading } = useProvider()
+  if (loading) {
+    return <></>
+  }
+
   return (
     <CheckoutStoreProvider>
       <CheckoutContentInner
