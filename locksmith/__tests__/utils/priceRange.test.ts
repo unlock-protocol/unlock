@@ -5,13 +5,17 @@ describe('PriceRange', () => {
     describe('when the requested price is within the acceptable range', () => {
       it('returns true', () => {
         expect.assertions(1)
-        expect(PriceRange.within(5, 5)).toBe(true)
+        expect(PriceRange.within({ requestPrice: 5, currentPrice: 5 })).toBe(
+          true
+        )
       })
     })
     describe('when the requested price is outside of the acceptable range', () => {
       it('returns false', () => {
         expect.assertions(1)
-        expect(PriceRange.within(5, 100)).toBe(false)
+        expect(PriceRange.within({ requestPrice: 5, currentPrice: 100 })).toBe(
+          false
+        )
       })
     })
   })
