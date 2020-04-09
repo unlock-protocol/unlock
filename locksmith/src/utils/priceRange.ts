@@ -1,6 +1,6 @@
 const THERSHOLD = 0.03
 
-export function within(requestedPrice: number, current: number): boolean {  
+export function within(requestedPrice: number, current: number): boolean {
   const range = generateRange(current, THERSHOLD)
   return requestedPrice >= range.lower && requestedPrice <= range.upper
 }
