@@ -19,6 +19,13 @@ const mockPaymentProcessor = {
   initiatePurchase: jest.fn().mockResolvedValue('this is a transaction hash'),
 }
 
+const keyPricer = {
+  keyPriceUSD: jest
+    .fn()
+    .mockReturnValueOnce(250)
+    .mockReturnValueOnce(1000000),
+}
+
 function generateTypedData(message: any) {
   return {
     types: {
@@ -48,6 +55,12 @@ function generateTypedData(message: any) {
 jest.mock('../../src/payment/paymentProcessor', () => {
   return jest.fn().mockImplementation(() => {
     return mockPaymentProcessor
+  })
+})
+
+jest.mock('../../src/utils/keyPricer', () => {
+  return jest.fn().mockImplementation(() => {
+    return keyPricer
   })
 })
 
@@ -178,16 +191,32 @@ describe('Purchase Controller', () => {
         data: typedData,
       })
 
-      it('responds with a 200 and transaction hash', async () => {
-        expect.assertions(1)
+      describe('when the requested price is within the valid range of drift', () => {
+        it('responds with a 200 status code', async () => {
+          expect.assertions(1)
 
-        const response = await request(app)
-          .post('/purchase/USD')
-          .set('Accept', 'json')
-          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
-          .send(typedData)
+          const response = await request(app)
+            .post('/purchase/USD')
+            .set('Accept', 'json')
+            .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+            .send(typedData)
 
-        expect(response.status).toBe(200)
+          expect(response.status).toBe(200)
+        })
+      })
+
+      describe('when the requested price is outside of the valid range of drift', () => {
+        it('responds with a 417 status code', async () => {
+          expect.assertions(1)
+
+          const response = await request(app)
+            .post('/purchase/USD')
+            .set('Accept', 'json')
+            .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+            .send(typedData)
+
+          expect(response.status).toBe(417)
+        })
       })
     })
   })
