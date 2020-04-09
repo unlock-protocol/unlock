@@ -17,6 +17,13 @@ export default class KeyPricer {
     })
   }
 
+  // eslint-disable-next-line no-unused-vars
+  keyPriceUSD(_lockAddress: string): number {
+    // this is a stub to be implemented in a following
+    // commit
+    return 0
+  }
+
   async keyPrice(lockAddress: string): Promise<number> {
     const lock = await this.readOnlyEthereumService.getLock(lockAddress)
     return Math.round(Number(lock.keyPrice) * 100)

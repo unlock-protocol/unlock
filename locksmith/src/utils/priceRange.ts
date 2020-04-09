@@ -1,8 +1,15 @@
 const THRESHOLD = 0.03
 
-export function within(requestedPrice: number, current: number): boolean {
-  const range = generateRange(current, THRESHOLD)
-  return requestedPrice >= range.lower && requestedPrice <= range.upper
+interface WithinParams {
+  requestPrice: number
+  currentPrice: number
+}
+
+export function within(params: WithinParams): boolean {
+  const range = generateRange(params.currentPrice, THRESHOLD)
+  return (
+    params.requestPrice >= range.lower && params.requestPrice <= range.upper
+  )
 }
 
 function generateRange(value: number, percentage: number): any {
