@@ -14,6 +14,7 @@ module.exports = {
       // This will write shared memory files into /tmp instead of /dev/shm,
       // because Docker’s default for /dev/shm is 64MB
       '--disable-dev-shm-usage',
+      '--disable-features=site-per-process',
     ],
   },
   browserContext: 'default',
