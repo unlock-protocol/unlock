@@ -1,4 +1,4 @@
-const THERSHOLD = 0.03
+const THRESHOLD = 0.03
 
 export function within(requestedPrice: number, current: number): boolean {
   const range = generateRange(current, THRESHOLD)
