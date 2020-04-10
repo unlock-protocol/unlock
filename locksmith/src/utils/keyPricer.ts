@@ -1,5 +1,6 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
+import PriceConversion from './priceConversion'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
@@ -17,16 +18,23 @@ export default class KeyPricer {
     })
   }
 
-  // eslint-disable-next-line no-unused-vars
-  keyPriceUSD(_lockAddress: string): number {
-    // this is a stub to be implemented in a following
-    // commit
-    return 0
-  }
-
   async keyPrice(lockAddress: string): Promise<number> {
     const lock = await this.readOnlyEthereumService.getLock(lockAddress)
     return Math.round(Number(lock.keyPrice) * 100)
+  }
+
+  async keyPriceUSD(lockAddress: string): Promise<number> {
+    let symbol: string
+
+    const lock = await this.readOnlyEthereumService.getLock(lockAddress)
+    if (lock.tokenAddress == '0x0000000000000000000000000000000000000000') {
+      symbol = 'ETH'
+    } else {
+      symbol = lock.erc20Symbol
+    }
+
+    const priceConversion = new PriceConversion()
+    return priceConversion.convertToUSD(symbol, lock.keyPrice)
   }
 
   // Fee denominated in cents
