@@ -108,7 +108,7 @@ describe('The Unlock Ad Remover Paywall (logged in user, ERC20)', () => {
   })
 
   it('should attempt a key purchase when clicking on a lock, and hide the ads', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
     const checkoutIframe = await iframes.waitFor(page, /\/checkout/)
     const checkoutBody = await checkoutIframe.$('body')
     // Wait for the lock to be purchasable
@@ -129,9 +129,10 @@ describe('The Unlock Ad Remover Paywall (logged in user, ERC20)', () => {
       {},
       lockSelectors[0]('')
     )
-    const adDisplay = await page.$$eval('.ad', ads => {
-      return ads.map(ad => ad.style.display)
-    })
-    expect(adDisplay).toEqual(['none', 'none'])
+
+    await page.waitForFunction(() => {
+      const ads = document.body.querySelectorAll('.ad')
+      return [...ads].reduce(ad => ad.style.display === 'none')
+    }, {})
   })
 })

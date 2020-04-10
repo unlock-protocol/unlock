@@ -120,7 +120,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   })
 
   it('should attempt a key purchase when clicking on a lock, and hide the ads', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
     const checkoutIframe = await iframes.waitFor(page, /\/checkout/)
 
     const checkoutBody = await checkoutIframe.$('body')
@@ -132,7 +132,9 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
       {},
       lockSelectors[0]('')
     )
+
     await expect(checkoutBody).toClick(lockSelectors[0](''))
+
     await checkoutIframe.waitForFunction(
       lock1 => {
         const lock = document.body.querySelector(lock1)
@@ -142,9 +144,9 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
       lockSelectors[0]('')
     )
 
-    const adDisplay = await page.$$eval('.ad', ads => {
-      return ads.map(ad => ad.style.display)
-    })
-    expect(adDisplay).toEqual(['none', 'none'])
+    await page.waitForFunction(() => {
+      const ads = document.body.querySelectorAll('.ad')
+      return [...ads].reduce(ad => ad.style.display === 'none')
+    }, {})
   })
 })
