@@ -1,10 +1,12 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { ethers } from 'ethers'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import PriceConversion from './priceConversion'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
 const stripePercentage = 0.029
+const ZERO = ethers.constants.AddressZero
 
 export default class KeyPricer {
   readOnlyEthereumService: any
@@ -27,7 +29,7 @@ export default class KeyPricer {
     let symbol: string
 
     const lock = await this.readOnlyEthereumService.getLock(lockAddress)
-    if (lock.tokenAddress == '0x0000000000000000000000000000000000000000') {
+    if (lock.tokenAddress == ZERO) {
       symbol = 'ETH'
     } else {
       symbol = lock.erc20Symbol
