@@ -18,14 +18,14 @@ interface PaymentSettings {
 }
 
 export const PaymentSettings = ({ address }: PaymentSettings) => {
-  const { cards, loading, deleteCard } = useCards(address)
+  const { cards, loading, saveCard, deleteCard } = useCards(address)
   if (loading) {
     return <Loading />
   }
   if (cards.length > 0) {
     return <PaymentMethods cards={cards} deleteCard={deleteCard} />
   }
-  return <PaymentDetails />
+  return <PaymentDetails saveCard={(token: string) => saveCard(token)} />
 }
 
 interface SettingsContentProps {
