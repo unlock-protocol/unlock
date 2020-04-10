@@ -1,4 +1,5 @@
 import { getTransaction } from './getTransaction'
+import { keyExpirationTimestampFor } from './keyExpirationTimestampFor'
 
 interface StoredTransaction {
   transactionHash: string
@@ -69,7 +70,13 @@ export const willUnlock = async (
     if (!transaction) {
       return !!optimisticIfMissing
     }
-    return !transaction.blockNumber
+    if (transaction.blockNumber) {
+      // The transaction has actually been mined, so we should check whether indeed there is a key!
+      const expiration = await keyExpirationTimestampFor(provider, lock, user)
+      return expiration > new Date().getTime() / 1000
+    }
+    // The transaction, has not been mined, let's be optimisic
+    return true
   }
   return false
 }
