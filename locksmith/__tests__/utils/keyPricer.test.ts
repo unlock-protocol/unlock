@@ -1,4 +1,5 @@
 import KeyPricer from '../../src/utils/keyPricer'
+import PriceConversion from '../../src/utils/priceConversion'
 
 const standardLock = {
   asOf: 227,
@@ -8,13 +9,27 @@ const standardLock = {
   maxNumberOfKeys: 10,
   outstandingKeys: 1,
   owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+  tokenAddress: '0x0000000000000000000000000000000000000000',
+}
+
+const zzzLock = {
+  asOf: 227,
+  balance: '0.01',
+  expirationDuration: 2592000,
+  keyPrice: '0.01',
+  maxNumberOfKeys: 10,
+  outstandingKeys: 1,
+  erc20Symbol: 'ZZZ',
+  owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+  tokenAddress: '0x0100000000000000000000000000000000000001',
 }
 
 const mockWeb3Service: { getLock: any } = {
   getLock: jest
     .fn()
-    .mockResolvedValue(standardLock)
-    .mockResolvedValueOnce(standardLock),
+    .mockResolvedValueOnce(standardLock)
+    .mockResolvedValueOnce(zzzLock)
+    .mockResolvedValue(standardLock),
 }
 
 function getMockWeb3Service() {
@@ -26,8 +41,29 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
 }))
 
 const keyPricer = new KeyPricer('provider url', 'unlock contract address')
+const spy = jest.spyOn(PriceConversion.prototype, 'convertToUSD')
 
 describe('KeyPricer', () => {
+  describe('keyPriceUSD', () => {
+    describe('when the lock currency has an exchange rate on coinbase', () => {
+      it('returns the key price in USD', async () => {
+        expect.assertions(1)
+        await keyPricer.keyPriceUSD('an address')
+        expect(spy).toBeCalledWith('ETH', '0.01')
+      })
+    })
+    describe('when the lock currency does not have an exchange rate on coinbase', () => {
+      it('throws an error', async () => {
+        expect.assertions(1)
+        try {
+          await keyPricer.keyPriceUSD('zzz address')
+        } catch {
+          expect(spy).toBeCalledWith('ZZZ', '0.01')
+        }
+      })
+    })
+  })
+
   describe('gasFee', () => {
     it('should return zero cents because gas is covered by the service fee', () => {
       expect.assertions(1)
