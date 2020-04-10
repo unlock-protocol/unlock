@@ -1,5 +1,6 @@
 import * as OptimisticUnlocking from '../../utils/optimisticUnlocking'
 import * as TransactionUtil from '../../utils/getTransaction'
+import * as Keys from '../../utils/keyExpirationTimestampFor'
 
 const user = '0xuser'
 const lock = '0xlock'
@@ -127,24 +128,52 @@ describe('willUnlock', () => {
       ).toBe(true)
     })
 
-    it('should return false if the transaction has been mined', async () => {
-      expect.assertions(1)
+    describe('if the transaction has been mined', () => {
+      it('should return false if the transaction has been mined and no key was created', async () => {
+        expect.assertions(1)
 
-      TransactionUtil.getTransaction = jest.fn(() => {
-        return Promise.resolve({
-          blockNumber: 1337,
+        Keys.keyExpirationTimestampFor = jest.fn(() => Promise.resolve(0))
+
+        TransactionUtil.getTransaction = jest.fn(() => {
+          return Promise.resolve({
+            blockNumber: 1337,
+          })
         })
+
+        expect(
+          await OptimisticUnlocking.willUnlock(
+            readOnlyProvider,
+            user,
+            lock,
+            transaction,
+            true
+          )
+        ).toBe(false)
       })
 
-      expect(
-        await OptimisticUnlocking.willUnlock(
-          readOnlyProvider,
-          user,
-          lock,
-          transaction,
-          true
+      it('should return true if the transaction has been mined and a key was created', async () => {
+        expect.assertions(1)
+
+        Keys.keyExpirationTimestampFor = jest.fn(() =>
+          Promise.resolve(new Date().getTime() / 1000 + 60)
         )
-      ).toBe(false)
+
+        TransactionUtil.getTransaction = jest.fn(() => {
+          return Promise.resolve({
+            blockNumber: 1337,
+          })
+        })
+
+        expect(
+          await OptimisticUnlocking.willUnlock(
+            readOnlyProvider,
+            user,
+            lock,
+            transaction,
+            true
+          )
+        ).toBe(true)
+      })
     })
   })
 })
