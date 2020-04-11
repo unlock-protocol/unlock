@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import fetch from 'jest-fetch-mock'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
-import { useCards } from '../../hooks/useCards'
+import * as UseCards from '../../hooks/useCards'
 
 class MockWalletService extends EventEmitter {
   constructor() {
@@ -16,31 +16,34 @@ let mockWalletService: any
 
 const locksmithHost = 'https://locksmith'
 const userAddress = '0xuser'
-const emailAddress = 'ted@nelson.xanadu'
 
-const account = {
-  address: userAddress,
-  emailAddress,
-  balance: '5',
+const stripeToken = 'tok_token'
+
+const config = {
+  services: {
+    storage: {
+      host: locksmithHost,
+    },
+  },
 }
 
-describe('useCards', () => {
+const signature = 'signature'
+
+const walletService = {
+  unformattedSignTypedData: jest.fn(() => signature),
+}
+
+describe('UseCards', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
     fetch.resetMocks()
+    jest.clearAllMocks()
 
     jest.spyOn(React, 'useContext').mockImplementation(context => {
       if (context === WalletServiceContext) {
         return mockWalletService
       }
       if (context === ConfigContext) {
-        return {
-          services: {
-            storage: {
-              host: locksmithHost,
-            },
-          },
-        }
+        return config
       }
     })
 
@@ -50,32 +53,80 @@ describe('useCards', () => {
       .mockResolvedValue('a signature')
   })
 
-  it('should call WalletService.unformattedSignTypedData with the correct values', async () => {
-    expect.assertions(1)
+  describe('useCards', () => {
+    it('should call WalletService.unformattedSignTypedData with the correct values', async () => {
+      expect.assertions(1)
 
-    fetch.mockResolvedValue({
-      json: () => Promise.resolve([]),
-    } as any)
+      fetch.mockResponseOnce(JSON.stringify([]))
 
-    const { result, wait } = renderHook(() => useCards(account.address))
+      const { result, wait } = renderHook(() => UseCards.useCards(userAddress))
 
-    await wait(() => !!result.current.cards)
+      await wait(() => !!result.current.cards)
 
-    expect(mockWalletService.unformattedSignTypedData).toHaveBeenCalledWith(
-      account.address,
-      expect.any(Object)
-    )
+      expect(mockWalletService.unformattedSignTypedData).toHaveBeenCalledWith(
+        userAddress,
+        expect.any(Object)
+      )
+    })
+
+    it('should return an error when the fetch fails', async () => {
+      expect.assertions(1)
+
+      fetch.mockRejectedValueOnce(new Error('fail'))
+
+      const { result, wait } = renderHook(() => UseCards.useCards(userAddress))
+
+      await wait(() => !!result.current.error)
+
+      expect(result.current.error!.message).toEqual('fail')
+    })
   })
 
-  it('should return an error when the fetch fails', async () => {
-    expect.assertions(1)
+  describe('saveCardsForAddress', () => {
+    it('should send the signed request to locksmith', async () => {
+      expect.assertions(6)
 
-    fetch.mockRejectedValue(new Error('fail'))
+      fetch.mockResponseOnce(JSON.stringify(['FUCK']))
 
-    const { result, wait } = renderHook(() => useCards(account.address))
+      const typedData = {
+        domain: { name: 'Unlock', version: '1' },
+        message: {
+          user: { publicKey: userAddress, stripeTokenId: 'tok_token' },
+        },
+        primaryType: 'User',
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+            { name: 'salt', type: 'bytes32' },
+          ],
+          User: [{ name: 'publicKey', type: 'address' }],
+        },
+      }
 
-    await wait(() => !!result.current.error)
-
-    expect(result.current.error!.message).toEqual('fail')
+      await UseCards.saveCardsForAddress(
+        config,
+        walletService,
+        userAddress,
+        stripeToken
+      )
+      expect(walletService.unformattedSignTypedData).toHaveBeenCalledWith(
+        userAddress,
+        typedData
+      )
+      expect(fetch.mock.calls.length).toEqual(1)
+      expect(fetch.mock.calls[0][0]).toEqual(
+        `${locksmithHost}/users/${userAddress}/credit-cards`
+      )
+      const request = fetch.mock.calls[0][1]
+      expect(JSON.parse(request?.body as string)).toEqual(typedData)
+      expect(request?.headers).toEqual({
+        Authorization: ' Bearer c2lnbmF0dXJl',
+        'Content-Type': 'application/json',
+      })
+      expect(request?.method).toEqual('PUT')
+    })
   })
 })
