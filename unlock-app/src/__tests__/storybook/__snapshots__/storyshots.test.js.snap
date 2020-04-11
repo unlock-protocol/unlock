@@ -32080,6 +32080,46 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c20 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c21 {
+  width: 72px;
+}
+
+.c22 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c22 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c22 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
 .c0 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -32210,6 +32250,14 @@ Object {
   }
 }
 
+@media (max-width:500px) {
+  .c20 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
     display: -webkit-box;
@@ -32240,7 +32288,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
+  .c23 {
     display: none;
   }
 }
@@ -32480,9 +32528,34 @@ Object {
               </button>
             </div>
           </div>
+          <section
+            class="c20"
+          >
+            <img
+              class="c21"
+              src="/static/images/illustrations/wallet.svg"
+            />
+            <div
+              class="c22"
+            >
+              <h1>
+                Wallet missing
+              </h1>
+              <p>
+                It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
+                 
+                <a
+                  href="https://metamask.io/"
+                >
+                  Metamask
+                </a>
+                .
+              </p>
+            </div>
+          </section>
         </div>
         <div
-          class="c20"
+          class="c23"
         />
       </div>
     </div>
@@ -32722,6 +32795,31 @@ Object {
             </button>
           </div>
         </div>
+        <section
+          class="sc-fzqKxP bqmVrm"
+        >
+          <img
+            class="sc-pANHa eMPpXq"
+            src="/static/images/illustrations/wallet.svg"
+          />
+          <div
+            class="sc-pIJJz doBmDm"
+          >
+            <h1>
+              Wallet missing
+            </h1>
+            <p>
+              It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
+               
+              <a
+                href="https://metamask.io/"
+              >
+                Metamask
+              </a>
+              .
+            </p>
+          </div>
+        </section>
       </div>
       <div
         class="hm3mhg-4 fEldZt"
@@ -33132,6 +33230,46 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c24 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c25 {
+  width: 72px;
+}
+
+.c26 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c26 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c26 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
 .c3 {
   display: grid;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -33262,6 +33400,14 @@ Object {
   }
 }
 
+@media (max-width:500px) {
+  .c24 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c3 {
     display: -webkit-box;
@@ -33292,7 +33438,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c24 {
+  .c27 {
     display: none;
   }
 }
@@ -33596,9 +33742,34 @@ Object {
               </button>
             </div>
           </div>
+          <section
+            class="c24"
+          >
+            <img
+              class="c25"
+              src="/static/images/illustrations/wallet.svg"
+            />
+            <div
+              class="c26"
+            >
+              <h1>
+                Wallet missing
+              </h1>
+              <p>
+                It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
+                 
+                <a
+                  href="https://metamask.io/"
+                >
+                  Metamask
+                </a>
+                .
+              </p>
+            </div>
+          </section>
         </div>
         <div
-          class="c24"
+          class="c27"
         />
       </div>
     </div>
@@ -33902,6 +34073,31 @@ Object {
             </button>
           </div>
         </div>
+        <section
+          class="sc-fzqKxP bqmVrm"
+        >
+          <img
+            class="sc-pANHa eMPpXq"
+            src="/static/images/illustrations/wallet.svg"
+          />
+          <div
+            class="sc-pIJJz doBmDm"
+          >
+            <h1>
+              Wallet missing
+            </h1>
+            <p>
+              It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
+               
+              <a
+                href="https://metamask.io/"
+              >
+                Metamask
+              </a>
+              .
+            </p>
+          </div>
+        </section>
       </div>
       <div
         class="hm3mhg-4 fEldZt"

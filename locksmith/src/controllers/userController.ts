@@ -149,9 +149,10 @@ namespace UserController {
     }
 
     const token = req.body.message.user.stripeTokenId
-    const result = await StripeOperations.saveStripeCustomerIdForAddress(
-      ethereumAddress,
-      token
+
+    const result = await UserOperations.updatePaymentDetails(
+      token,
+      ethereumAddress
     )
 
     if (result) {

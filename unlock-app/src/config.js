@@ -218,6 +218,7 @@ export default function configure(
     isInIframe,
     env,
     providers,
+    httpProvider,
     isRequiredNetwork,
     readOnlyProvider,
     requiredNetworkId,

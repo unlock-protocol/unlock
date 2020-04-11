@@ -203,6 +203,10 @@ describe('when updating cards', () => {
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
+      jest
+        .spyOn(UserOperations, 'updatePaymentDetails')
+        .mockReturnValueOnce(Promise.resolve(true))
+
       const typedData = generateTypedData(message)
       const sig = sigUtil.personalSign(privateKey, {
         data: JSON.stringify(typedData),
@@ -238,7 +242,10 @@ describe('when updating cards', () => {
         data: JSON.stringify(typedData),
       })
 
-      // It should fail because we already have a record!
+      jest
+        .spyOn(UserOperations, 'updatePaymentDetails')
+        .mockReturnValueOnce(Promise.resolve(false))
+
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
         .set('Authorization', `Bearer-Simple ${Base64.encode(sig)}`)
