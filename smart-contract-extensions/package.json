@@ -35,6 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "2.5.0",
+    "@openzeppelin/contracts-ethereum-package": "2.5.0",
     "@openzeppelin/test-helpers": "0.5.5",
     "@openzeppelin/upgrades": "2.8.0",
     "@typescript-eslint/eslint-plugin": "2.26.0",
@@ -52,7 +53,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "eth-gas-reporter": "0.2.16",
     "ganache-cli": "6.9.1",
-    "hardlydifficult-ethereum-contracts": "0.10.0",
+    "hardlydifficult-ethereum-contracts": "0.11.1",
     "prettier": "1.19.1",
     "solidity-coverage": "0.7.2",
     "solium": "1.2.5",

@@ -31,6 +31,7 @@ import {
 } from '../../hooks/useCheckoutStore'
 import MetadataForm from '../interface/checkout/MetadataForm'
 import { useSetUserMetadata } from '../../hooks/useSetUserMetadata'
+import { useProvider } from '../../hooks/useProvider'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -43,6 +44,11 @@ export const CheckoutContent = ({
   configFromSearch,
   errors,
 }: CheckoutContentProps) => {
+  const { loading } = useProvider()
+  if (loading) {
+    return <></>
+  }
+
   return (
     <CheckoutStoreProvider>
       <CheckoutContentInner
@@ -125,7 +131,10 @@ export const CheckoutContentInner = ({
           />
           {current.matches(CheckoutState.loading) && <Loading />}
           {current.matches(CheckoutState.notLoggedIn) && (
-            <NotLoggedIn config={config!} lockAddresses={lockAddresses} />
+            <NotLoggedIn
+              config={paywallConfig!}
+              lockAddresses={lockAddresses}
+            />
           )}
           {current.matches(CheckoutState.locks) && (
             <Locks
@@ -141,14 +150,13 @@ export const CheckoutContentInner = ({
               accountAddress={account.address}
               lockAddresses={lockAddresses}
               emitTransactionInfo={emitTransactionInfo}
-              cards={account.cards || []}
               metadataRequired={metadataRequired}
               showMetadataForm={() => send('collectMetadata')}
             />
           )}
           {current.matches(CheckoutState.metadataForm) && (
             <MetadataForm
-              fields={config!.metadataInputs!}
+              fields={paywallConfig!.metadataInputs!}
               onSubmit={onMetadataSubmit}
             />
           )}

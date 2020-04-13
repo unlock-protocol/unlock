@@ -14,6 +14,12 @@
   },
   "packageRules": [
     {
+      "paths": ["tests/**"],
+      "minor": {
+        "groupName": "tests"
+      }
+    },
+    {
       "paths": ["locksmith/**"],
       "minor": {
         "groupName": "locksmith"
