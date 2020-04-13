@@ -48,6 +48,15 @@ router.get(
   })
 )
 
+router.delete(
+  cardsPathRegex,
+  signatureValidationMiddleware.generateSignatureEvaluator({
+    name: 'user',
+    required: ['publicKey'],
+    signee: 'publicKey',
+  })
+)
+
 router.put(
   cardsPathRegex,
   signatureValidationMiddleware.generateProcessor({
@@ -83,6 +92,10 @@ router.post('/:ethereumAddress/eject', userController.eject)
 router.put(
   '/:ethereumAddress/credit-cards',
   userController.updateAddressPaymentDetails
+)
+router.delete(
+  '/:ethereumAddress/credit-cards',
+  userController.deleteAddressPaymentDetails
 )
 // Deprecated
 router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
