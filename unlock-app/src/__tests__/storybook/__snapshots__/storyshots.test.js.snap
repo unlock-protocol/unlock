@@ -1351,6 +1351,1224 @@ Object {
 }
 `;
 
+exports[`Storyshots Authenticate when the provider has loaded and everything is fine 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <p>
+        All good!
+      </p>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <p>
+      All good!
+    </p>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Authenticate when the provider has loaded and is available but the user is on the wrong network 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c1 {
+  width: 72px;
+}
+
+.c2 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c2 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c2 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
+@media (max-width:500px) {
+  .c0 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <img
+          class="c1"
+          src="/static/images/illustrations/network.svg"
+        />
+        <div
+          class="c2"
+        >
+          <h1>
+            Network mismatch
+          </h1>
+          <p>
+            You’re currently on the 
+            Unknown Network
+             network but you need to be on the 
+            Rinkeby
+             network. Please switch to 
+            Rinkeby
+            . 
+            <a
+              href="https://docs.unlock-protocol.com/frequently-asked-questions#what-networks-are-supported"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more
+            </a>
+            .
+          </p>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-fzqNJr jlvXjb"
+    >
+      <img
+        class="sc-fzoyAV abAzR"
+        src="/static/images/illustrations/network.svg"
+      />
+      <div
+        class="sc-fzoLag cVwILg"
+      >
+        <h1>
+          Network mismatch
+        </h1>
+        <p>
+          You’re currently on the 
+          Unknown Network
+           network but you need to be on the 
+          Rinkeby
+           network. Please switch to 
+          Rinkeby
+          . 
+          <a
+            href="https://docs.unlock-protocol.com/frequently-asked-questions#what-networks-are-supported"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+          </a>
+          .
+        </p>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Authenticate when the provider has loaded and is available but there is no user 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c1 {
+  width: 72px;
+}
+
+.c2 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c2 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c2 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
+@media (max-width:500px) {
+  .c0 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <img
+          class="c1"
+          src="/static/images/illustrations/wallet.svg"
+        />
+        <div
+          class="c2"
+        >
+          <h1>
+            Not enabled in provider
+          </h1>
+          <p>
+            You did not approve Unlock in your web3 wallet.
+          </p>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-fzqNJr jlvXjb"
+    >
+      <img
+        class="sc-fzoyAV abAzR"
+        src="/static/images/illustrations/wallet.svg"
+      />
+      <div
+        class="sc-fzoLag cVwILg"
+      >
+        <h1>
+          Not enabled in provider
+        </h1>
+        <p>
+          You did not approve Unlock in your web3 wallet.
+        </p>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Authenticate when the provider has loaded and none is available 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
+}
+
+.c1 {
+  width: 72px;
+}
+
+.c2 {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.c2 > h1 {
+  font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
+}
+
+.c2 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
+}
+
+@media (max-width:500px) {
+  .c0 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <img
+          class="c1"
+          src="/static/images/illustrations/wallet.svg"
+        />
+        <div
+          class="c2"
+        >
+          <h1>
+            Wallet missing
+          </h1>
+          <p>
+            It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
+             
+            <a
+              href="https://metamask.io/"
+            >
+              Metamask
+            </a>
+            .
+          </p>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-fzqNJr jlvXjb"
+    >
+      <img
+        class="sc-fzoyAV abAzR"
+        src="/static/images/illustrations/wallet.svg"
+      />
+      <div
+        class="sc-fzoLag cVwILg"
+      >
+        <h1>
+          Wallet missing
+        </h1>
+        <p>
+          It looks like you’re using an incompatible browser or are missing a crypto wallet. If you’re using Chrome or Firefox you can install
+           
+          <a
+            href="https://metamask.io/"
+          >
+            Metamask
+          </a>
+          .
+        </p>
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Authenticate when the provider has loaded and none is available but user accounts are enabled 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c6 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--darkgrey);
+}
+
+.c4 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--white);
+  margin-top: 25px;
+}
+
+.c2 {
+  max-width: 600px;
+}
+
+.c3 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c7 {
+  cursor: pointer;
+}
+
+.c0 {
+  width: 100%;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <h1
+          class="c1"
+        >
+          Log In to Your Account
+        </h1>
+        <form
+          class="c2"
+        >
+          <label
+            class="c3"
+            for="emailInput"
+          >
+            Email Address
+          </label>
+          <input
+            class="c4"
+            id="emailInput"
+            name="emailAddress"
+            placeholder="Enter your email"
+            type="email"
+          />
+          <br />
+          <label
+            class="c3"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="c4"
+            id="passwordInput"
+            name="password"
+            placeholder="Enter your password"
+            type="password"
+          />
+          <br />
+          <input
+            class="c5"
+            type="submit"
+            value="Submit"
+          />
+        </form>
+        <p
+          class="c6"
+        >
+          Don't have an account?
+           
+          <a
+            class="c7"
+          >
+            Sign up here.
+          </a>
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-fzqzEs cenkjM"
+    >
+      <h1
+        class="sc-fzoxnE jUFyRE"
+      >
+        Log In to Your Account
+      </h1>
+      <form
+        class="sc-fznOgF iVgmxi"
+      >
+        <label
+          class="sc-fznYue kPkCDk"
+          for="emailInput"
+        >
+          Email Address
+        </label>
+        <input
+          class="sc-fzoWqW hMWJcs"
+          id="emailInput"
+          name="emailAddress"
+          placeholder="Enter your email"
+          type="email"
+        />
+        <br />
+        <label
+          class="sc-fznYue kPkCDk"
+          for="passwordInput"
+        >
+          Password
+        </label>
+        <input
+          class="sc-fzoWqW hMWJcs"
+          id="passwordInput"
+          name="password"
+          placeholder="Enter your password"
+          type="password"
+        />
+        <br />
+        <input
+          class="sc-fzplgP jMnFnF"
+          type="submit"
+          value="Submit"
+        />
+      </form>
+      <p
+        class="sc-fzoMdx eHsZPs"
+      >
+        Don't have an account?
+         
+        <a
+          class="sc-fzonjX hBflvJ"
+        >
+          Sign up here.
+        </a>
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Authenticate when the provider is loading 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  justify-items: center;
+}
+
+.c0 svg {
+  fill: var(--grey);
+  width: 60px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <svg
+          alt="loading"
+          viewBox="0 0 32 32"
+        >
+          <title>
+            loading
+          </title>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+          >
+            <animate
+              attributeName="r"
+              begin="0"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(45 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.125s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(90 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.25s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(135 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.375s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(180 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.5s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(225 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.625s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(270 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.75s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(315 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.875s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(180 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.5s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+        </svg>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-fzokOt kbIedK"
+    >
+      <svg
+        alt="loading"
+        viewBox="0 0 32 32"
+      >
+        <title>
+          loading
+        </title>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+        >
+          <animate
+            attributeName="r"
+            begin="0"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(45 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.125s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(90 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.25s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(135 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.375s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(180 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.5s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(225 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.625s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(270 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.75s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(315 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.875s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(180 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.5s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+      </svg>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Buttons/Layout Buttons About 1`] = `
 Object {
   "asFragment": [Function],
