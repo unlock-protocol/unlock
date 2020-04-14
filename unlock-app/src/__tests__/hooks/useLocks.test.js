@@ -82,7 +82,7 @@ describe('useLocks', () => {
     )
     mockStorageService.storeTransaction = jest.fn(() => {})
 
-    mockGraphService.locksByOwner = jest.fn(() => Promise.resolve(graphLocks))
+    mockGraphService.locksByManager = jest.fn(() => Promise.resolve(graphLocks))
   })
 
   it('should default to loading and an empty list', async () => {
@@ -117,7 +117,7 @@ describe('useLocks', () => {
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(2)
-    expect(mockGraphService.locksByOwner).toHaveBeenCalledWith(ownerAddress)
+    expect(mockGraphService.locksByManager).toHaveBeenCalledWith(ownerAddress)
   })
 
   describe('pending trasanctions', () => {
