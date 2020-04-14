@@ -58,8 +58,6 @@
     "netlify-cli": "2.44.0",
     "next": "9.3.4",
     "path-match": "1.2.4",
-    "postcss-nested": "4.2.1",
-    "postcss-simple-vars": "5.0.2",
     "postmate": "1.5.2",
     "prettier": "1.19.1",
     "prop-types": "15.7.2",
