@@ -2,11 +2,12 @@ import { Response } from 'express-serve-static-core' // eslint-disable-line no-u
 import { SignedRequest, ethereumAddress } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import PaymentProcessor from '../payment/paymentProcessor'
+import * as PriceRange from '../utils/priceRange'
+import KeyPricer from '../utils/keyPricer'
 
 const config = require('../../config/config')
 
 namespace PurchaseController {
-  // eslint-disable-next-line import/prefer-default-export
   export const purchase = async (
     req: SignedRequest,
     res: Response
@@ -38,6 +39,37 @@ namespace PurchaseController {
     return res.send({
       transactionHash: hash,
     })
+  }
+
+  export const purchaseUSD = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const { expiry } = req.body.message.purchaseRequest
+    const { lock } = req.body.message.purchaseRequest
+    const requestedPurchaseAmount = req.body.message.purchaseRequest.USDAmount
+
+    if (expired(expiry)) {
+      return res.sendStatus(412)
+    }
+
+    const keyPricer = new KeyPricer(
+      config.web3ProviderHost,
+      config.unlockContractAddress
+    )
+
+    const currentPrice = await keyPricer.keyPriceUSD(lock)
+
+    const validRequestPrice = PriceRange.within({
+      requestPrice: requestedPurchaseAmount,
+      currentPrice,
+    })
+
+    if (validRequestPrice) {
+      return res.sendStatus(200)
+    } else {
+      return res.sendStatus(417)
+    }
   }
 
   const expired = (expiry: number): Boolean => {

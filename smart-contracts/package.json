@@ -42,7 +42,7 @@
     "eth-gas-reporter": "0.2.16",
     "eth-sig-util": "2.5.3",
     "ganache-cli": "6.9.1",
-    "hardlydifficult-ethereum-contracts": "0.9.3",
+    "hardlydifficult-ethereum-contracts": "0.11.1",
     "jest": "25.2.7",
     "lint-staged": "10.1.2",
     "netlify-cli": "2.40.0",
