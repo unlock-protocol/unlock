@@ -49624,6 +49624,788 @@ Object {
 }
 `;
 
+exports[`Storyshots Loading the inline loading icon 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  width: 60px;
+  margin-left: 60px;
+}
+
+.c0 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <span
+        class="c0"
+      >
+        <svg
+          alt="loading"
+          viewBox="0 0 32 32"
+        >
+          <title>
+            loading
+          </title>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+          >
+            <animate
+              attributeName="r"
+              begin="0"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(45 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.125s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(90 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.25s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(135 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.375s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(180 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.5s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(225 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.625s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(270 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.75s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(315 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.875s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(180 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.5s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+        </svg>
+      </span>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <span
+      class="sc-fzqyOu fRjevr"
+    >
+      <svg
+        alt="loading"
+        viewBox="0 0 32 32"
+      >
+        <title>
+          loading
+        </title>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+        >
+          <animate
+            attributeName="r"
+            begin="0"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(45 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.125s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(90 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.25s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(135 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.375s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(180 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.5s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(225 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.625s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(270 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.75s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(315 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.875s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(180 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.5s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+      </svg>
+    </span>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Loading the loading icon 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  justify-items: center;
+}
+
+.c0 svg {
+  fill: var(--grey);
+  width: 60px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <svg
+          alt="loading"
+          viewBox="0 0 32 32"
+        >
+          <title>
+            loading
+          </title>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+          >
+            <animate
+              attributeName="r"
+              begin="0"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(45 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.125s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(90 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.25s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(135 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.375s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(180 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.5s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(225 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.625s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(270 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.75s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(315 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.875s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+          <circle
+            cx="16"
+            cy="3"
+            r="0"
+            transform="rotate(180 16 16)"
+          >
+            <animate
+              attributeName="r"
+              begin="0.5s"
+              calcMode="spline"
+              dur="1s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              repeatCount="indefinite"
+              values="0;3;0;0"
+            />
+          </circle>
+        </svg>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-fzonZV eWeqnU"
+    >
+      <svg
+        alt="loading"
+        viewBox="0 0 32 32"
+      >
+        <title>
+          loading
+        </title>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+        >
+          <animate
+            attributeName="r"
+            begin="0"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(45 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.125s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(90 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.25s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(135 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.375s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(180 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.5s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(225 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.625s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(270 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.75s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(315 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.875s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+        <circle
+          cx="16"
+          cy="3"
+          r="0"
+          transform="rotate(180 16 16)"
+        >
+          <animate
+            attributeName="r"
+            begin="0.5s"
+            calcMode="spline"
+            dur="1s"
+            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+            repeatCount="indefinite"
+            values="0;3;0;0"
+          />
+        </circle>
+      </svg>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Lock Variations All variations 1`] = `
 Object {
   "asFragment": [Function],
@@ -62822,9 +63604,6 @@ Object {
             <svg
               viewBox="0 0 56 56"
             >
-              <title>
-                Unlock
-              </title>
               <path
                 d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
               />
@@ -66281,6 +67060,9 @@ Object {
             <svg
               viewBox="-3 -7 36 36"
             >
+              <title>
+                Adfree
+              </title>
               <path
                 clip-rule="evenodd"
                 d="M25.567 4.254l2.756-1.965L27.091.713.851 19.424 2.084 21l9.116-6.5.781 2.5h3.682L14 12.502l2.707-1.93V17h4.678c1.23-.006 2.344-.3 3.34-.879a6.03 6.03 0 002.324-2.422c.553-1.035.83-2.203.83-3.505v-.655c-.007-1.289-.293-2.451-.86-3.486a6.022 6.022 0 00-1.452-1.799zm-2.442 1.741l-2.99 2.133v6.235h1.191c.983 0 1.738-.348 2.266-1.044.527-.704.79-1.745.79-3.126v-.615c0-1.373-.263-2.409-.79-3.105a2.592 2.592 0 00-.466-.478z"
@@ -66349,6 +67131,9 @@ Object {
             <svg
               viewBox="0 0 24 24"
             >
+              <title>
+                Blog
+              </title>
               <path
                 clip-rule="evenodd"
                 d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z"
@@ -66368,6 +67153,9 @@ Object {
             <svg
               viewBox="-6 -8 24 24"
             >
+              <title>
+                Carret
+              </title>
               <path
                 d="M0 0h12L6 8 0 0z"
               />
@@ -66432,6 +67220,9 @@ Object {
               fill="none"
               viewBox="0 0 120 120"
             >
+              <title>
+                CoinbaseWallet
+              </title>
               <path
                 d="M60 108.75c26.924 0 48.75-21.826 48.75-48.75S86.924 11.25 60 11.25 11.25 33.076 11.25 60 33.076 108.75 60 108.75z"
                 fill="#fff"
@@ -66517,6 +67308,9 @@ Object {
             <svg
               viewBox="-6 -5 24 24"
             >
+              <title>
+                Docs
+              </title>
               <path
                 clip-rule="evenodd"
                 d="M1 0a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V1a1 1 0 00-1-1H1zm2 4a1 1 0 010-2h6a1 1 0 110 2H3zM2 7a1 1 0 001 1h6a1 1 0 100-2H3a1 1 0 00-1 1zm1 5a1 1 0 110-2h4a1 1 0 110 2H3z"
@@ -66890,6 +67684,9 @@ Object {
               text-rendering="geometricPrecision"
               viewBox="0 0 32 32"
             >
+              <title>
+                LoadingDots
+              </title>
               <style>
                 @keyframes ep1opzeolwb3_f_o{0%,to{fill-opacity:0}29.411765%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}52.941176%,76.470588%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb4_f_o{0%,82.352941%,to{fill-opacity:0}11.764706%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}35.294118%,58.823529%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb5_f_o{0%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}23.529412%,47.058824%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}70.588235%,to{fill-opacity:0}}
               </style>
@@ -66949,6 +67746,9 @@ Object {
             <svg
               viewBox="0 0 24 24"
             >
+              <title>
+                Log
+              </title>
               <path
                 clip-rule="evenodd"
                 d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
@@ -66964,6 +67764,9 @@ Object {
               fill="none"
               viewBox="0 0 122 113"
             >
+              <title>
+                Metamask
+              </title>
               <path
                 d="M115.024 1L68.2 35.776 76.86 15.26 115.024 1z"
                 fill="#E2761B"
@@ -67058,6 +67861,9 @@ Object {
               fill="none"
               viewBox="0 0 120 120"
             >
+              <title>
+                Opera
+              </title>
               <mask
                 height="120"
                 id="opera_svg__a"
@@ -68416,6 +69222,9 @@ Object {
             <svg
               viewBox="0 0 56 56"
             >
+              <title>
+                Unlock
+              </title>
               <path
                 d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
               />
@@ -68701,6 +69510,9 @@ Object {
           <svg
             viewBox="-3 -7 36 36"
           >
+            <title>
+              Adfree
+            </title>
             <path
               clip-rule="evenodd"
               d="M25.567 4.254l2.756-1.965L27.091.713.851 19.424 2.084 21l9.116-6.5.781 2.5h3.682L14 12.502l2.707-1.93V17h4.678c1.23-.006 2.344-.3 3.34-.879a6.03 6.03 0 002.324-2.422c.553-1.035.83-2.203.83-3.505v-.655c-.007-1.289-.293-2.451-.86-3.486a6.022 6.022 0 00-1.452-1.799zm-2.442 1.741l-2.99 2.133v6.235h1.191c.983 0 1.738-.348 2.266-1.044.527-.704.79-1.745.79-3.126v-.615c0-1.373-.263-2.409-.79-3.105a2.592 2.592 0 00-.466-.478z"
@@ -68769,6 +69581,9 @@ Object {
           <svg
             viewBox="0 0 24 24"
           >
+            <title>
+              Blog
+            </title>
             <path
               clip-rule="evenodd"
               d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12z"
@@ -68788,6 +69603,9 @@ Object {
           <svg
             viewBox="-6 -8 24 24"
           >
+            <title>
+              Carret
+            </title>
             <path
               d="M0 0h12L6 8 0 0z"
             />
@@ -68852,6 +69670,9 @@ Object {
             fill="none"
             viewBox="0 0 120 120"
           >
+            <title>
+              CoinbaseWallet
+            </title>
             <path
               d="M60 108.75c26.924 0 48.75-21.826 48.75-48.75S86.924 11.25 60 11.25 11.25 33.076 11.25 60 33.076 108.75 60 108.75z"
               fill="#fff"
@@ -68937,6 +69758,9 @@ Object {
           <svg
             viewBox="-6 -5 24 24"
           >
+            <title>
+              Docs
+            </title>
             <path
               clip-rule="evenodd"
               d="M1 0a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V1a1 1 0 00-1-1H1zm2 4a1 1 0 010-2h6a1 1 0 110 2H3zM2 7a1 1 0 001 1h6a1 1 0 100-2H3a1 1 0 00-1 1zm1 5a1 1 0 110-2h4a1 1 0 110 2H3z"
@@ -69310,6 +70134,9 @@ Object {
             text-rendering="geometricPrecision"
             viewBox="0 0 32 32"
           >
+            <title>
+              LoadingDots
+            </title>
             <style>
               @keyframes ep1opzeolwb3_f_o{0%,to{fill-opacity:0}29.411765%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}52.941176%,76.470588%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb4_f_o{0%,82.352941%,to{fill-opacity:0}11.764706%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}35.294118%,58.823529%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}}@keyframes ep1opzeolwb5_f_o{0%{fill-opacity:0;animation-timing-function:cubic-bezier(.42,0,1,1)}23.529412%,47.058824%{fill-opacity:1;animation-timing-function:cubic-bezier(.42,0,1,1)}70.588235%,to{fill-opacity:0}}
             </style>
@@ -69369,6 +70196,9 @@ Object {
           <svg
             viewBox="0 0 24 24"
           >
+            <title>
+              Log
+            </title>
             <path
               clip-rule="evenodd"
               d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
@@ -69384,6 +70214,9 @@ Object {
             fill="none"
             viewBox="0 0 122 113"
           >
+            <title>
+              Metamask
+            </title>
             <path
               d="M115.024 1L68.2 35.776 76.86 15.26 115.024 1z"
               fill="#E2761B"
@@ -69478,6 +70311,9 @@ Object {
             fill="none"
             viewBox="0 0 120 120"
           >
+            <title>
+              Opera
+            </title>
             <mask
               height="120"
               id="opera_svg__a"
