@@ -246,7 +246,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 7;
+    return 8;
   }
 
   // function for the owner to update configuration variables
