@@ -2,7 +2,7 @@ import ApolloClient from 'apollo-boost'
 import { utils } from 'ethers'
 
 import GraphService from '../../services/graphService'
-import locksByOwner from '../../queries/locksByOwner'
+import locksByManager from '../../queries/locksByManager'
 
 jest.mock('apollo-boost')
 jest.mock('ethers')
@@ -15,16 +15,20 @@ describe('GraphService', () => {
     graphService = new GraphService(graphEndpoint)
   })
 
-  describe('locksByOwner', () => {
+  describe('locksByManager', () => {
     const owner = '0xowner'
-    it('should use the locksByOwner query to return the list of locks', async () => {
+    it('should use the locksByManager query to return the list of locks', async () => {
       expect.assertions(5)
-      const locks = [
+      const lockManagers = [
         {
-          address: '0xlock1',
+          lock: {
+            address: '0xlock1',
+          },
         },
         {
-          address: '0xlock2',
+          lock: {
+            address: '0xlock2',
+          },
         },
       ]
 
@@ -33,7 +37,7 @@ describe('GraphService', () => {
       apolloClientMock.query = jest.fn(() => {
         return Promise.resolve({
           data: {
-            locks,
+            lockManagers,
           },
         })
       })
@@ -42,17 +46,17 @@ describe('GraphService', () => {
         return address
       })
 
-      const ownerLocks = await graphService.locksByOwner(owner)
+      const ownerLocks = await graphService.locksByManager(owner)
 
       expect(utils.getAddress).toHaveBeenCalledTimes(2)
       expect(apolloClientMock.query).toHaveBeenCalledWith({
-        query: locksByOwner(),
+        query: locksByManager(),
         variables: {
           owner,
         },
       })
       expect(graphService.client.query).toHaveBeenCalledTimes(1)
-      expect(ownerLocks).toEqual(locks)
+      expect(ownerLocks).toEqual(lockManagers.map(manager => manager.lock))
     })
   })
 })

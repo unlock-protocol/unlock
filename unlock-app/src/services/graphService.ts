@@ -1,7 +1,6 @@
 import ApolloClient from 'apollo-boost'
 import { utils } from 'ethers'
-import locksByOwner from '../queries/locksByOwner'
-import { Lock } from '../unlockTypes'
+import locksByManager from '../queries/locksByManager'
 
 export default class GraphService {
   public client: any
@@ -12,8 +11,8 @@ export default class GraphService {
     })
   }
 
-  locksByOwner = async (owner: string) => {
-    const query = locksByOwner()
+  locksByManager = async (owner: string) => {
+    const query = locksByManager()
     const result = await this.client.query({
       query,
       variables: {
@@ -26,10 +25,10 @@ export default class GraphService {
     // the Graph returns lower cased addresses.
     // To make sure we stay consistent with the rest of the app
     // We use checksumed addresses.
-    return result.data.locks.map((lock: Lock) => {
+    return result.data.lockManagers.map((manager: any) => {
       return {
-        ...lock,
-        address: utils.getAddress(lock.address),
+        ...manager.lock,
+        address: utils.getAddress(manager.lock.address),
       }
     })
   }
