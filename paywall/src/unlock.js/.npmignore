@@ -1,6 +1,0 @@
-*
-!dist
-dist/*
-!dist/index.js*
-!lib
-!lib/index.d.ts

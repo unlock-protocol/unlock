@@ -5,7 +5,6 @@ import {
   Transaction,
   TransactionStatus,
 } from '../unlockTypes'
-import { isValidKey } from '../data-iframe/blockchainHandler/keyStatus'
 
 export function getTransactionsFor(
   transactions: Transactions,
@@ -80,4 +79,11 @@ export function getHighestStatus(statuses: KeyStatus[]): KeyStatus {
     table[KeyStatus.EXPIRED] ||
     KeyStatus.NONE
   )
+}
+
+/**
+ * Determine whether a key is valid based solely on its expiration
+ */
+export function isValidKey(key: KeyResult): boolean {
+  return key.expiration > new Date().getTime() / 1000
 }
