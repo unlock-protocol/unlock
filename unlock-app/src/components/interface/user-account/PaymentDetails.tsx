@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { loadStripe, StripeCardElementOptions } from '@stripe/stripe-js'
 import {
@@ -12,17 +12,18 @@ import { Input, Label, Select, Button } from '../checkout/FormStyles'
 import { SectionHeader } from './styles'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
-import { useProvider } from '../../../hooks/useProvider'
-import { StorageServiceContext } from '../../../utils/withStorageService'
-import { StorageService } from '../../../services/storageService'
 
 const { stripeApiKey } = configure()
 const stripePromise = loadStripe(stripeApiKey)
 
-export const PaymentDetails = () => {
+interface PaymentDetailsProps {
+  saveCard: (stripeToken: string) => any
+}
+
+export const PaymentDetails = ({ saveCard }: PaymentDetailsProps) => {
   return (
     <Elements stripe={stripePromise}>
-      <Form />
+      <Form saveCard={saveCard} />
     </Elements>
   )
 }
@@ -33,12 +34,14 @@ const cardElementOptions: StripeCardElementOptions = {
   },
 }
 
-export const Form = () => {
+interface FormProps {
+  saveCard: (stripeToken: string) => any
+}
+
+export const Form = ({ saveCard }: FormProps) => {
   const { register, handleSubmit } = useForm()
   const stripe = useStripe()
   const elements = useElements()
-  const { provider } = useProvider()
-  const storageService: StorageService = useContext(StorageServiceContext)
 
   const onSubmit = async (data: Record<string, any>) => {
     const cardElement = elements!.getElement(CardElement)
@@ -48,12 +51,7 @@ export const Form = () => {
     })
 
     if (result.token) {
-      const { data, sig } = provider!.signPaymentData(result.token.id)
-      await storageService.addPaymentMethod(
-        data.message.user.emailAddress,
-        data,
-        sig
-      )
+      saveCard(result.token.id)
     }
   }
 

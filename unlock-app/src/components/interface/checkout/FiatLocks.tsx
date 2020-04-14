@@ -33,8 +33,7 @@ export const FiatLocks = ({
   metadataRequired,
   showMetadataForm,
 }: LocksProps) => {
-  const { cards, loading: cardsLoading } = useCards(accountAddress)
-
+  const { cards, loading: cardsLoading, saveCard } = useCards(accountAddress)
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
   const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
@@ -43,7 +42,6 @@ export const FiatLocks = ({
   const [showingPaymentForm, setShowingPaymentForm] = useState<
     PaymentFormState
   >({ visible: false })
-
   const needToCollectPaymentDetails = cards.length === 0
 
   const now = new Date().getTime() / 1000
@@ -62,6 +60,7 @@ export const FiatLocks = ({
   if (showingPaymentForm.visible) {
     return (
       <PaymentDetails
+        saveCard={token => saveCard(token)}
         setShowingPaymentForm={setShowingPaymentForm}
         invokePurchase={showingPaymentForm.invokePurchase!}
       />

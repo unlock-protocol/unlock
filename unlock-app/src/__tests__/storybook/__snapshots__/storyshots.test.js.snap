@@ -7793,7 +7793,7 @@ Object {
               disabled=""
               type="submit"
             >
-              Submit
+              Purchase
             </button>
           </form>
           <footer
@@ -9203,7 +9203,7 @@ Object {
             disabled=""
             type="submit"
           >
-            Submit
+            Purchase
           </button>
         </form>
         <footer
