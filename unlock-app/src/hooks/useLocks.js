@@ -59,11 +59,6 @@ export const useLocks = owner => {
   // TODO: move to context
   const graphService = new GraphService(subgraphURI)
 
-  // Connect to the provider.
-  // TODO: this should probably be moved upstream
-  // It is noop if already called somewhere else
-  walletService.connect(config.providers[Object.keys(config.providers)[0]])
-
   /**
    * Helper function: retrieves a lock object at the address
    */
