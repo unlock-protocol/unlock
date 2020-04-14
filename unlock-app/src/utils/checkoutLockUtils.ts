@@ -51,11 +51,6 @@ export const userCanAffordKey = (
   const keyPrice = parseFloat(lock.keyPrice)
   const balance = parseFloat(balances[currency])
 
-  if (typeof keyPrice !== 'number' || typeof balance !== 'number') {
-    // we could not parse one of these numbers, ipso facto we cannot afford a key
-    return false
-  }
-
   // For eth need some gas so if the balance is exactly the same as key price
   // this would fail
   if (currency === 'eth') {
