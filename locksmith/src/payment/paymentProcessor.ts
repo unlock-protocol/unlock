@@ -102,6 +102,46 @@ export class PaymentProcessor {
     }
   }
 
+  /**
+   *  Charges an appropriately configured user with purchasing details, with the amount specified
+   *  in the purchase details
+   * @param publicKey
+   * @param purchaseDetails
+   */
+  async chargeUserForConnectedAccount(
+    publicKey: ethereumAddress,
+    lock: ethereumAddress,
+    // eslint-disable-next-line no-unused-vars
+    connectedStripeId: string
+  ) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const user = await this.findUserByPublicKey(publicKey)
+      const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
+      const keyPriceUSD = this.keyPricer.keyPriceUSD(lock)
+      const applicationFee = keyPriceUSD * 0.1
+
+      if (user && stripeCustomerId) {
+        const charge = await this.stripe.charges.create(
+          {
+            amount: keyPriceUSD,
+            currency: 'USD',
+            customer: stripeCustomerId,
+            metadata: { lock, publicKey },
+            application_fee_amount: applicationFee,
+          },
+          {
+            stripe_account: connectedStripeId,
+          }
+        )
+        return charge
+      }
+      throw new Error('Customer lacks purchasing details')
+    } catch (error) {
+      throw error
+    }
+  }
+
   async price(lock: ethereumAddress): Promise<number> {
     const itemizedPrice = await this.keyPricer.generate(lock)
     return Object.values(itemizedPrice).reduce((a, b) => a + b)
