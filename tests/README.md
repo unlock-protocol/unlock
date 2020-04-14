@@ -38,3 +38,16 @@ what is being rendered on screen.
 
 There are a few interesting and useful debugging options [on this page](https://github.com/GoogleChrome/puppeteer#debugging-tips) including
 the ability to 'slow down' execution via `slowMo`...
+
+## TODO
+
+We are missing integration coverage for a few pieces of the checkout.
+
+- User Accounts (will require infrastructure setup, approving lock, figuring out how to deal with Stripe API call, etc.)
+  - User can create account
+  - User can log in to existing account
+  - User can save a credit card
+  - User can purchase a key with a credit card
+
+- Metadata collection
+  - Ensure that paywall saves metadata when specified in config
