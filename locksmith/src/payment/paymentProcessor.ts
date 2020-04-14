@@ -118,7 +118,7 @@ export class PaymentProcessor {
     try {
       const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
-      const keyPriceUSD = this.keyPricer.keyPriceUSD(lock)
+      const keyPriceUSD: number = await this.keyPricer.keyPriceUSD(lock)
       const applicationFee = keyPriceUSD * 0.1
 
       if (user && stripeCustomerId) {
