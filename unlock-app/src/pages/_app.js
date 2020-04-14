@@ -22,7 +22,6 @@ import FullScreenModal from '../components/interface/FullScreenModals'
 
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
-import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
 import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
@@ -53,7 +52,6 @@ function getOrCreateStore(initialState, path) {
   const middlewares = [
     providerMiddleware(config, getWeb3Provider, setWeb3Provider),
     web3Middleware(web3Service),
-    currencyConversionMiddleware(config),
     walletMiddleware(config, walletService, getWeb3Provider),
     wedlocksMiddleware(config),
     storageMiddleware(storageService),
