@@ -43,6 +43,7 @@ describe('exportStatic', () => {
       '/': { page: '/home' },
       '/account': { page: '/account' },
       '/dashboard': { page: '/dashboard' },
+      '/demo': { page: '/demo' },
       '/keychain': { page: '/keychain' },
       '/login': { page: '/login' },
       '/signup': { page: '/signup' },
