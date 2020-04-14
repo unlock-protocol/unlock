@@ -124,6 +124,40 @@ export const getCardsForAddress = async (
   return response.json()
 }
 
+/**
+ * Deletes card for a given address
+ * @param walletService
+ * @param address
+ */
+export const deleteCardForAddress = async (
+  config: any,
+  walletService: any,
+  address: string
+) => {
+  const typedData = generateTypedData({
+    user: {
+      publicKey: address,
+    },
+  })
+  const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
+
+  const opts = {
+    method: 'DELETE',
+    headers: {
+      ...genAuthorizationHeader(token),
+      'Content-Type': 'application/json',
+    },
+  }
+
+  const response = fetch(
+    `${config.services.storage.host}/users/${encodeURIComponent(
+      address!
+    )}/credit-cards?data=${JSON.stringify(typedData)}`,
+    opts
+  )
+  return (await response).status === 202
+}
 export const useCards = (address: string) => {
   const walletService: WalletService = useContext(WalletServiceContext)
   const config: Config = useContext(ConfigContext)
@@ -133,7 +167,6 @@ export const useCards = (address: string) => {
 
   /**
    * retrieves cards for an address
-   * TODO: the address param is redundant
    * @param address
    */
   const getCards = async () => {
@@ -149,7 +182,6 @@ export const useCards = (address: string) => {
 
   /**
    * saves cards (stripe token) for an address
-   * TODO: the address param is redundant
    * @param address
    */
   const saveCard = async (stripeTokenId: string) => {
@@ -164,11 +196,27 @@ export const useCards = (address: string) => {
     setLoading(false)
   }
 
+  /**
+   * Deletes a card for a user!
+   */
+  const deleteCard = async () => {
+    setLoading(true)
+    try {
+      const deleted = await deleteCardForAddress(config, walletService, address)
+      if (deleted) {
+        setCards([])
+      }
+    } catch (e) {
+      setError(e)
+    }
+    setLoading(false)
+  }
+
   useEffect(() => {
     if (address) {
       getCards()
     }
   }, [address])
 
-  return { cards, error, loading, saveCard }
+  return { cards, error, loading, saveCard, deleteCard }
 }

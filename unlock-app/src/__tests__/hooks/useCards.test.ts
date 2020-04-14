@@ -129,4 +129,48 @@ describe('UseCards', () => {
       expect(request?.method).toEqual('PUT')
     })
   })
+
+  describe('deleteCardForAddress', () => {
+    it('should send the signed request to locksmith', async () => {
+      expect.assertions(5)
+
+      fetch.mockResponseOnce(JSON.stringify(''))
+
+      const typedData = {
+        types: {
+          EIP712Domain: [
+            { name: 'name', type: 'string' },
+            { name: 'version', type: 'string' },
+            { name: 'chainId', type: 'uint256' },
+            { name: 'verifyingContract', type: 'address' },
+            { name: 'salt', type: 'bytes32' },
+          ],
+          User: [{ name: 'publicKey', type: 'address' }],
+        },
+        domain: { name: 'Unlock', version: '1' },
+        primaryType: 'User',
+        message: {
+          user: { publicKey: userAddress },
+        },
+      }
+
+      await UseCards.deleteCardForAddress(config, walletService, userAddress)
+      expect(walletService.unformattedSignTypedData).toHaveBeenCalledWith(
+        userAddress,
+        typedData
+      )
+      expect(fetch.mock.calls.length).toEqual(1)
+      expect(fetch.mock.calls[0][0]).toEqual(
+        `${locksmithHost}/users/${userAddress}/credit-cards?data=${JSON.stringify(
+          typedData
+        )}`
+      )
+      const request = fetch.mock.calls[0][1]
+      expect(request?.headers).toEqual({
+        Authorization: ' Bearer c2lnbmF0dXJl',
+        'Content-Type': 'application/json',
+      })
+      expect(request?.method).toEqual('DELETE')
+    })
+  })
 })

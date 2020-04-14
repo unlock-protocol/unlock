@@ -18,12 +18,12 @@ interface PaymentSettings {
 }
 
 export const PaymentSettings = ({ address }: PaymentSettings) => {
-  const { cards, loading } = useCards(address)
+  const { cards, loading, deleteCard } = useCards(address)
   if (loading) {
     return <Loading />
   }
   if (cards.length > 0) {
-    return <PaymentMethods cards={cards} />
+    return <PaymentMethods cards={cards} deleteCard={deleteCard} />
   }
   return <PaymentDetails />
 }
