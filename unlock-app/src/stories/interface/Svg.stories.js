@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react'
 import Svg from '../../components/interface/svg'
 
 const wrapSvg = name => {
-  return React.createElement(Svg[name], {})
+  return React.createElement(Svg[name], { title: name })
 }
 
 storiesOf('SVG', module).add('Icons', () => {

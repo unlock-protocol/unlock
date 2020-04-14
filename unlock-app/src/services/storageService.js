@@ -114,30 +114,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Store the details of the provide Lock. In the case of failure a rejected promise is
-   * returned to the caller.
-   *
-   * @param {*} lockDetails
-   * @param {*} token
-   */
-  async storeLockDetails(lockDetails, token) {
-    const opts = {}
-    if (token) {
-      // TODO: Token is no longer necessary here. Update this function and callsites.
-      opts.headers = this.genAuthorizationHeader(token)
-    }
-    try {
-      await axios.post(`${this.host}/lock`, lockDetails, opts)
-      this.emit(success.storeLockDetails, lockDetails.message.lock.address)
-    } catch (error) {
-      this.emit(failure.storeLockDetails, {
-        address: lockDetails.message.lock.address,
-        error,
-      })
-    }
-  }
-
-  /**
    * Creates a user. In the case of failure a rejected promise is returned to
    * the caller.  On success, the encrypted key payload and the credentials are
    * emitted so that the user can automatically be signed in.
@@ -174,10 +150,7 @@ export class StorageService extends EventEmitter {
    */
   async updateUserEncryptedPrivateKey(emailAddress, user, token) {
     const opts = {}
-    if (token) {
-      // TODO: tokens aren't optional
-      opts.headers = this.genAuthorizationHeader(token)
-    }
+    opts.headers = this.genAuthorizationHeader(token)
     try {
       await axios.put(
         `${this.host}/users/${encodeURIComponent(
