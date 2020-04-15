@@ -194,7 +194,29 @@ describe('PaymentProcessor', () => {
     })
   })
 
-  // https://dashboard.stripe.com/test/connect/accounts/overview
+  describe('price', () => {
+    it('returns the total price of the key purchase for the provided lock', async () => {
+      expect.assertions(1)
+      const { nockDone } = await nockBack('price.json')
+
+      /**
+       * key price:        100
+       * gas fee:            0
+       * unlockServiceFee:  50
+       * stripe percentage:  5 (150 * 0.029, rounded up)
+       * stripe flat fee:    30
+       *                   ---
+       * total:            185
+       */
+      const expectedKeyPrice = 185
+      expect(await paymentProcessor.price(lockAddress)).toEqual(
+        expectedKeyPrice
+      )
+      nockDone()
+    })
+  })
+
+  // // https://dashboard.stripe.com/test/connect/accounts/overview
 
   describe('chargeUserForConnectedAccount', () => {
     const accountId = 'acct_1GXsNrL9eCzn3mEi'
@@ -247,28 +269,6 @@ describe('PaymentProcessor', () => {
           })
         })
       })
-    })
-  })
-
-  describe('price', () => {
-    it('returns the total price of the key purchase for the provided lock', async () => {
-      expect.assertions(1)
-      const { nockDone } = await nockBack('price.json')
-
-      /**
-       * key price:        100
-       * gas fee:            0
-       * unlockServiceFee:  50
-       * stripe percentage:  5 (150 * 0.029, rounded up)
-       * stripe flat fee:    30
-       *                   ---
-       * total:            185
-       */
-      const expectedKeyPrice = 185
-      expect(await paymentProcessor.price(lockAddress)).toEqual(
-        expectedKeyPrice
-      )
-      nockDone()
     })
   })
 
