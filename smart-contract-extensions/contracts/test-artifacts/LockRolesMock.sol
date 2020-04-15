@@ -21,23 +21,4 @@ contract LockRolesMock is LockRoles
   {
     // no-op
   }
-
-  function isKeyManagerMock(
-    IPublicLockV7 _lock,
-    uint _tokenId,
-    address _user
-  ) external view
-    returns (bool)
-  {
-    return _isKeyManager(_lock, _tokenId, _user);
-  }
-
-  function onlyKeyManagerMock(
-    IPublicLockV7 _lock,
-    uint _tokenId
-  ) external
-    onlyKeyManager(_lock, _tokenId)
-  {
-    // no-op
-  }
 }

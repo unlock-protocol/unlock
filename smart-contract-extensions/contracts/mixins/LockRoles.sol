@@ -29,36 +29,4 @@ contract LockRoles
     require(_lock.isKeyGranter(msg.sender) || _lock.isLockManager(msg.sender), 'ONLY_KEY_GRANTER');
     _;
   }
-
-  /**
-   * @notice The key manager role is required to transfer or cancel a key.
-   * This is typically the key owner by default.
-   */
-  function _isKeyManager(
-    IPublicLockV7 _lock,
-    uint _tokenId,
-    address _user
-  ) internal view
-    returns (bool)
-  {
-    address keyManager = _lock.keyManagerOf(_tokenId);
-    if(keyManager != address(0))
-    {
-      return keyManager == _user;
-    }
-    return _lock.isKeyOwner(_tokenId, _user);
-  }
-
-  /**
-   * @notice The key manager role is required to transfer or cancel a key.
-   * This is typically the key owner by default.
-   */
-  modifier onlyKeyManager(
-    IPublicLockV7 _lock,
-    uint _tokenId
-  )
-  {
-    require(_isKeyManager(_lock, _tokenId, msg.sender), 'ONLY_KEY_MANAGER');
-    _;
-  }
 }
