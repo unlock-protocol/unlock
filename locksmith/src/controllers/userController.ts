@@ -1,7 +1,7 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
-import StripeOperations from '../operations/stripeOperations'
+import * as StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 
 import UserOperations = require('../operations/userOperations')
@@ -149,9 +149,10 @@ namespace UserController {
     }
 
     const token = req.body.message.user.stripeTokenId
-    const result = await StripeOperations.saveStripeCustomerIdForAddress(
-      ethereumAddress,
-      token
+
+    const result = await UserOperations.updatePaymentDetails(
+      token,
+      ethereumAddress
     )
 
     if (result) {
@@ -186,6 +187,31 @@ namespace UserController {
     )
 
     return res.json(result)
+  }
+
+  export const deleteAddressPaymentDetails = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const { ethereumAddress } = req.params
+
+    if (!ethereumAddress || !req.signee) {
+      return res.sendStatus(401)
+    } else if (
+      Normalizer.ethereumAddress(ethereumAddress) !==
+      Normalizer.ethereumAddress(req.signee)
+    ) {
+      return res.sendStatus(401)
+    }
+
+    const result = await StripeOperations.deletePaymentDetailsForAddress(
+      ethereumAddress
+    )
+
+    if (result) {
+      return res.sendStatus(202)
+    }
+    return res.sendStatus(400)
   }
 
   export const updatePasswordEncryptedPrivateKey = async (

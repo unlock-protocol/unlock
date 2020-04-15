@@ -59,7 +59,35 @@ export const saveStripeCustomerIdForAddress = async (
   }
 }
 
+/**
+ * Method which delets the stripe customer id for an address
+ */
+export const deletePaymentDetailsForAddress = async (
+  publicKey: ethereumAddress
+) => {
+  const normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
+
+  // First, let's delete the StripeCustomer
+  const deletedStripeCustomer = await StripeCustomer.destroy({
+    where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
+  })
+
+  // Then, update UserReference
+  // TODO: deprecate when all stripe_customer_id UserReferences have been moved to use StripeCustomer
+  const [updatedUserReference] = await UserReference.update(
+    {
+      stripe_customer_id: null,
+    },
+    {
+      where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
+    }
+  )
+
+  return deletedStripeCustomer > 0 || updatedUserReference > 0
+}
+
 export default {
-  saveStripeCustomerIdForAddress,
+  deletePaymentDetailsForAddress,
   getStripeCustomerIdForAddress,
+  saveStripeCustomerIdForAddress,
 }
