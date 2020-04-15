@@ -19,7 +19,7 @@ export const NotLoggedIn = ({ config, lockAddresses }: NotLoggedInProps) => {
   if (config.unlockUserAccounts) {
     return (
       <>
-        <NotLoggedInLocks lockAddresses={lockAddresses} />
+        <NotLoggedInLocks config={config} lockAddresses={lockAddresses} />
         <LogInButton onClick={() => setShowingLogin(true)} />
       </>
     )
