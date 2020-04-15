@@ -159,16 +159,17 @@ export const CheckoutContentInner = ({
             />
           )}
           {(current.matches(CheckoutState.fiatLocks) ||
-            current.matches(CheckoutState.locks)) && (
-            <SwitchPayment
-              paymentOptions={['Credit Card']}
-              activePayment={activePayment}
-              setActivePayment={(option: string | null) => {
-                setActivePayment(option)
-                send('changeCurrency')
-              }}
-            />
-          )}
+            current.matches(CheckoutState.locks)) &&
+            !account.emailAddress && (
+              <SwitchPayment
+                paymentOptions={['Credit Card']}
+                activePayment={activePayment}
+                setActivePayment={(option: string | null) => {
+                  setActivePayment(option)
+                  send('changeCurrency')
+                }}
+              />
+            )}
           {current.matches(CheckoutState.metadataForm) && (
             <MetadataForm
               fields={paywallConfig!.metadataInputs!}
