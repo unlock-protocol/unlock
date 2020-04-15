@@ -46,6 +46,20 @@ jest.mock('../../src/fulfillment/dispatcher', () => {
   })
 })
 
+jest.mock('../../src/utils/keyPricer', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      generate: jest.fn().mockReturnValue({
+        keyPrice: 10,
+        gasFee: 5,
+        creditCardProcessing: 100,
+        unlockServiceFee: 70,
+      }),
+      keyPriceUSD: jest.fn().mockResolvedValue(42),
+    }
+  })
+})
+
 describe('PaymentProcessor', () => {
   let paymentProcessor: PaymentProcessor
 
