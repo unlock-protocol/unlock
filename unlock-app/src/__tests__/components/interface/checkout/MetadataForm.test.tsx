@@ -31,6 +31,22 @@ const fieldsWithRequired: MetadataInput[] = [
   },
 ]
 
+const fieldsWithDefault: MetadataInput[] = [
+  {
+    name: 'First Name',
+    type: 'text',
+    defaultValue: 'Satoshi',
+    required: false,
+    public: true,
+  },
+  {
+    name: 'Last Name',
+    type: 'text',
+    defaultValue: 'Nakomoto',
+    required: false,
+  },
+]
+
 describe('Metadata Form', () => {
   describe('no required fields', () => {
     let onSubmit: jest.Mock<any, any>
@@ -125,6 +141,61 @@ describe('Metadata Form', () => {
       await rtl.act(async () => {
         rtl.fireEvent.change(firstNameInput, { target: { value: 'Jeff' } })
         rtl.fireEvent.change(lastNameInput, { target: { value: 'Petersen' } })
+        rtl.fireEvent.click(submitButton)
+      })
+
+      expect(onSubmit).toHaveBeenCalledWith({
+        publicData: {
+          'First Name': 'Jeff',
+        },
+        protectedData: {
+          'Last Name': 'Petersen',
+        },
+      })
+    })
+  })
+
+  describe('with default values', () => {
+    let onSubmit: jest.Mock<any, any>
+    let submitButton: any
+    let firstNameInput: any
+    let lastNameInput: any
+
+    beforeEach(() => {
+      onSubmit = jest.fn()
+      const { getByText, getByLabelText } = rtl.render(
+        <MetadataForm fields={fieldsWithDefault} onSubmit={onSubmit} />
+      )
+      submitButton = getByText('Continue')
+      firstNameInput = getByLabelText('First Name')
+      lastNameInput = getByLabelText('Last Name')
+    })
+
+    it('submits with the default value if it was not changed', async () => {
+      expect.assertions(1)
+
+      await rtl.act(async () => {
+        rtl.fireEvent.click(submitButton)
+      })
+
+      expect(onSubmit).toHaveBeenCalledWith({
+        publicData: {
+          'First Name': 'Satoshi',
+        },
+        protectedData: {
+          'Last Name': 'Nakomoto',
+        },
+      })
+    })
+
+    it('submits with changed inputs', async () => {
+      expect.assertions(1)
+
+      await rtl.act(async () => {
+        rtl.fireEvent.change(firstNameInput, { target: { value: 'Jeff' } })
+        rtl.fireEvent.change(lastNameInput, {
+          target: { value: 'Petersen' },
+        })
         rtl.fireEvent.click(submitButton)
       })
 

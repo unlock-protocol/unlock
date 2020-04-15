@@ -32,3 +32,24 @@ storiesOf('Checkout Metadata Form', module)
   .add('Basic', () => {
     return <MetadataForm fields={metadataInputs} onSubmit={doNothing} />
   })
+  .add('With a default value', () => {
+    const metadataInputsWithDefault = [
+      ...metadataInputs,
+      {
+        name: 'Email',
+        defaultValue: 'hello@unlock-protocol.com',
+        type: 'text',
+        required: true,
+        public: true,
+      },
+    ]
+    return (
+      <MetadataForm
+        fields={metadataInputsWithDefault}
+        onSubmit={args => {
+          console.log('---')
+          console.log(args)
+        }}
+      />
+    )
+  })

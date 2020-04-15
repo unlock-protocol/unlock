@@ -10,11 +10,25 @@ interface Props {
   onSubmit: (metadata: UserMetadata) => void
 }
 
+interface DefautltValues {
+  [key: string]: string
+}
+
 export const MetadataForm = ({ fields, onSubmit }: Props) => {
   // We can also destructure the `errors` field here and use it for
   // validation -- we'll have to consider how to handle the different
   // kinds of errors so that we can show the right message
-  const { handleSubmit, register } = useForm()
+
+  const defaultValues = {} as DefautltValues
+  fields.forEach(field => {
+    if (field.name && field.defaultValue) {
+      defaultValues[field.name] = field.defaultValue
+    }
+  })
+
+  const { handleSubmit, register } = useForm({
+    defaultValues,
+  })
   const [submittedForm, setSubmittedForm] = useState(false)
 
   // The form returns a map of key-value pair strings. We need to

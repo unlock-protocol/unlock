@@ -172,6 +172,7 @@ export interface KeyholdersByLock {
 
 export interface MetadataInput {
   name: string
+  defaultValue?: string
   type: 'text' | 'date' | 'color' | 'email' | 'url'
   required: boolean
   public?: true // optional, all non-public fields are treated as protected
