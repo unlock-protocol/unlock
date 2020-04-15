@@ -6,12 +6,14 @@ import { HomepageButton } from '../../../components/interface/buttons/homepage/H
 describe('HomepageButton', () => {
   it('should display the terms once the dashboard button has been pressed', () => {
     expect.assertions(1)
-    let wrapper = rtl.render(<HomepageButton label="Go to Your Dashboard" />)
+    const wrapper = rtl.render(
+      <HomepageButton destination="/" label="Go to Your Dashboard" />
+    )
 
-    let button = wrapper.getByText('Go to Your Dashboard')
+    const button = wrapper.getByText('Go to Your Dashboard')
     rtl.fireEvent.click(button)
 
-    let dashboardButton = wrapper.getByText('I Agree')
+    const dashboardButton = wrapper.getByText('I Agree')
 
     expect(dashboardButton).not.toBe(null)
   })

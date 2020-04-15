@@ -58,7 +58,7 @@
     "react-dom": "16.13.1",
     "react-ga": "2.7.0",
     "react-intercom": "1.0.15",
-    "react-showdown": "1.6.0",
+    "react-showdown": "2.0.3",
     "react-test-renderer": "16.13.1",
     "rss": "1.2.2",
     "styled-components": "5.1.0",
