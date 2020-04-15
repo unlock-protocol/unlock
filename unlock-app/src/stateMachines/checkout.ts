@@ -24,6 +24,10 @@ type CheckoutEvent =
   | { type: 'gotConfig' }
   | { type: 'metadataSubmitted' }
   | { type: 'collectMetadata' }
+  // this handles the current binary state of "crypto" vs "fiat". We
+  // may need to start tracking more sophisticated event contexts if
+  // we want to be more granular than that.
+  | { type: 'changeCurrency' }
 
 export const checkoutMachine = Machine<CheckoutStateSchema, CheckoutEvent>({
   id: 'checkout',
@@ -51,12 +55,14 @@ export const checkoutMachine = Machine<CheckoutStateSchema, CheckoutEvent>({
       on: {
         gotConfigAndUserAccount: 'fiatLocks',
         collectMetadata: 'metadataForm',
+        changeCurrency: 'fiatLocks',
       },
     },
     [CheckoutState.fiatLocks]: {
       on: {
         collectMetadata: 'metadataForm',
         gotConfigAndAccount: 'locks',
+        changeCurrency: 'locks',
       },
     },
   },
