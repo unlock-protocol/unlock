@@ -16,6 +16,8 @@ EXTRA_ARGS=$*
 # prior to attempting to run the tests. This line is critical!
 docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE down
 
+exit
+
 # re-build the images. This will use local docker cache
 # and because we source the script, it will inherit our environment variables
 # NOTE: we cannot using the build-image.sh script or docker-compose-build.sh scripts

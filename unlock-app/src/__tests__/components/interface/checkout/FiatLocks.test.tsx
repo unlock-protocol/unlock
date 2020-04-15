@@ -2,6 +2,7 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { FiatLocks } from '../../../../components/interface/checkout/FiatLocks'
 import doNothing from '../../../../utils/doNothing'
+import { PaywallConfig } from '../../../../unlockTypes'
 
 const lock = {
   name: 'a test lock',
@@ -18,6 +19,24 @@ const emitTransactionInfo = jest.fn()
 let usePaywallLocksMock: any
 let useCardsMock: any
 const useFiatKeyPricesMock: any = {}
+
+const paywallConfig: PaywallConfig = {
+  locks: {
+    '0xlock1': {
+      name: 'Lock name override',
+    },
+    '0xlock2': {
+      name: '2nd Lock',
+    },
+  },
+  callToAction: {
+    default: 'You need a membership',
+    expired: '',
+    pending: '',
+    confirmed: '',
+    noWallet: '',
+  },
+}
 
 jest.mock('../../../../hooks/usePaywallLocks', () => {
   return {
@@ -58,6 +77,7 @@ describe('FiatLocks', () => {
           emitTransactionInfo={emitTransactionInfo}
           metadataRequired={false}
           showMetadataForm={doNothing}
+          config={paywallConfig}
         />
       )
 
@@ -77,6 +97,7 @@ describe('FiatLocks', () => {
           emitTransactionInfo={emitTransactionInfo}
           metadataRequired={false}
           showMetadataForm={doNothing}
+          config={paywallConfig}
         />
       )
 
@@ -96,6 +117,7 @@ describe('FiatLocks', () => {
           emitTransactionInfo={emitTransactionInfo}
           metadataRequired={false}
           showMetadataForm={doNothing}
+          config={paywallConfig}
         />
       )
 

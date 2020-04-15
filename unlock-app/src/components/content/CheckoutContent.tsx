@@ -143,6 +143,7 @@ export const CheckoutContentInner = ({
               emitTransactionInfo={emitTransactionInfo}
               metadataRequired={metadataRequired}
               showMetadataForm={() => send('collectMetadata')}
+              config={paywallConfig!}
             />
           )}
           {current.matches(CheckoutState.fiatLocks) && (
@@ -152,6 +153,7 @@ export const CheckoutContentInner = ({
               emitTransactionInfo={emitTransactionInfo}
               metadataRequired={metadataRequired}
               showMetadataForm={() => send('collectMetadata')}
+              config={paywallConfig!}
             />
           )}
           {current.matches(CheckoutState.metadataForm) && (

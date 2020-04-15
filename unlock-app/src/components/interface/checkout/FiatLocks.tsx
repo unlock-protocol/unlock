@@ -12,6 +12,7 @@ import {
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { PaymentDetails } from './PaymentDetails'
 import { useCards } from '../../../hooks/useCards'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface LocksProps {
   lockAddresses: string[]
@@ -19,6 +20,7 @@ interface LocksProps {
   emitTransactionInfo: (info: TransactionInfo) => void
   metadataRequired: boolean
   showMetadataForm: () => void
+  config: PaywallConfig
 }
 
 interface PaymentFormState {
@@ -32,11 +34,16 @@ export const FiatLocks = ({
   emitTransactionInfo,
   metadataRequired,
   showMetadataForm,
+  config,
 }: LocksProps) => {
   const { cards, loading: cardsLoading, saveCard } = useCards(accountAddress)
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
-  const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
+  const { locks, loading } = usePaywallLocks(
+    lockAddresses,
+    getTokenBalance,
+    config
+  )
   const fiatKeyPrices = useFiatKeyPrices(lockAddresses)
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
   const [showingPaymentForm, setShowingPaymentForm] = useState<

@@ -1,11 +1,12 @@
 import { useContext, useState, useEffect } from 'react'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
-import { RawLock } from '../unlockTypes'
+import { RawLock, PaywallConfig } from '../unlockTypes'
 
 export const usePaywallLocks = (
   lockAddresses: string[],
-  getTokenBalance: (contractAddress: string) => void
+  getTokenBalance: (contractAddress: string) => void,
+  config: PaywallConfig
 ) => {
   const web3Service: Web3Service = useContext(Web3ServiceContext)
 
@@ -30,7 +31,11 @@ export const usePaywallLocks = (
       }
 
       // getLock doesn't always return the lock address apparently
+      // We keep consistency from the config
       lock.address = lockAddresses[index]
+      if (config.locks[lock.address].name) {
+        lock.name = config.locks[lock.address].name
+      }
     })
     setLoading(false)
     setLocks(locks)
