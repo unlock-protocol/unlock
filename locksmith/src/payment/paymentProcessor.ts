@@ -51,31 +51,28 @@ export class PaymentProcessor {
       const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && stripeCustomerId) {
+      // If we already have a stripe customer id
+      if (stripeCustomerId) {
         await this.stripe.customers.createSource(stripeCustomerId, {
           source: token,
         })
 
         return true
       }
-      if (user && !stripeCustomerId) {
-        const customer = await this.createStripeCustomer(
-          user.emailAddress,
-          token
-        )
-        return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
+
+      const customer = await this.stripe.customers.create({
+        email: user ? user.emailAddress : '', // The stripe API does not require a valid email to be passed
+        source: token,
+      })
+
+      if (!customer) {
+        return false
       }
-      return false
+
+      return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
     } catch (e) {
       return false
     }
-  }
-
-  createStripeCustomer(emailAddress: string, token: string) {
-    return this.stripe.customers.create({
-      email: emailAddress,
-      source: token,
-    })
   }
 
   /**

@@ -129,18 +129,6 @@ describe('PaymentProcessor', () => {
         expect(user).toBe(true)
       })
     })
-
-    describe('when the user can not be created', () => {
-      it('returns false', async () => {
-        expect.assertions(1)
-        const user = await paymentProcessor.updateUserPaymentDetails(
-          'tok_unknown',
-          '0xb76ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
-        )
-
-        expect(user).toBe(false)
-      })
-    })
   })
 
   describe('chargeUser', () => {
