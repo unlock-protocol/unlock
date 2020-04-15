@@ -4,7 +4,7 @@ import styled from 'styled-components'
 interface SwitchPaymentProps {
   paymentOptions: string[]
   activePayment: string | null
-  setActivePayment: (option: string) => void
+  setActivePayment: (option: string | null) => void
 }
 
 export const SwitchPayment = ({
@@ -14,7 +14,10 @@ export const SwitchPayment = ({
 }: SwitchPaymentProps) => {
   return (
     <Container>
-      <Header>Switch payment to</Header>
+      <HeaderRow>
+        <Header>Switch payment to</Header>
+        <ResetText onClick={() => setActivePayment(null)}>Reset</ResetText>
+      </HeaderRow>
       {paymentOptions.map(option => {
         if (option === activePayment) {
           return (
@@ -37,7 +40,13 @@ const Container = styled.div`
   width: 240px;
 `
 
-const Header = styled.h4`
+const HeaderRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 17px;
+`
+
+const Header = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
@@ -46,9 +55,16 @@ const Header = styled.h4`
   color: var(--darkgrey);
 `
 
+const ResetText = styled(Header)`
+  color: var(--link);
+  cursor: pointer;
+  width: 100%;
+  text-align: right;
+`
+
 const PaymentOption = styled.button`
   padding: 8px;
-  margin: 4px;
+  margin: 4px 4px 0 0;
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: bold;
@@ -58,6 +74,7 @@ const PaymentOption = styled.button`
   border-radius: 4px;
   color: var(--link);
   border: none;
+  cursor: pointer;
 `
 
 const ActivePaymentOption = styled(PaymentOption)`

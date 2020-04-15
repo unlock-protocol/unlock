@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMachine } from '@xstate/react'
 import Head from 'next/head'
 import styled from 'styled-components'
@@ -16,6 +16,7 @@ import { NotLoggedIn } from '../interface/checkout/NotLoggedIn'
 import { Locks } from '../interface/checkout/Locks'
 import { FiatLocks } from '../interface/checkout/FiatLocks'
 import { CallToAction } from '../interface/checkout/CallToAction'
+import { SwitchPayment } from '../interface/checkout/SwitchPayment'
 import Loading from '../interface/Loading'
 import { resetError } from '../../actions/error'
 import {
@@ -75,6 +76,7 @@ export const CheckoutContentInner = ({
   const [current, send] = useMachine(checkoutMachine)
   const { setUserMetadata } = useSetUserMetadata()
   const { state } = useCheckoutStore()
+  const [activePayment, setActivePayment] = useState<string | null>(null)
 
   const paywallConfig = config || configFromSearch
 
@@ -154,6 +156,17 @@ export const CheckoutContentInner = ({
               metadataRequired={metadataRequired}
               showMetadataForm={() => send('collectMetadata')}
               config={paywallConfig!}
+            />
+          )}
+          {(current.matches(CheckoutState.fiatLocks) ||
+            current.matches(CheckoutState.locks)) && (
+            <SwitchPayment
+              paymentOptions={['Credit Card']}
+              activePayment={activePayment}
+              setActivePayment={(option: string | null) => {
+                setActivePayment(option)
+                send('changeCurrency')
+              }}
             />
           )}
           {current.matches(CheckoutState.metadataForm) && (
