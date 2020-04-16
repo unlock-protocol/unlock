@@ -52,7 +52,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
    * @param _recipient the account which will be granted a key
    * @param _signature the signature created from the code's private key, signing
    * the message `"\x19Ethereum Signed Message:\n32" + keccak256(_recipient)`.
-   * This is passed throw the lock by setting the `_data` field on purchase.
+   * This is passed through the lock by setting the `_data` field on purchase.
    */
   function keyPurchasePrice(
     address /*from*/,
