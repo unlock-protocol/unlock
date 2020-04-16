@@ -174,6 +174,36 @@ export class PaymentProcessor {
     }
     return null
   }
+
+  async initiatePurchaseForConnectedStripeAccount(
+    recipient: ethereumAddress /** this is the managed user/buyer */,
+    lock: ethereumAddress,
+    credentials: string,
+    providerHost: string,
+    buyer: ethereumAddress,
+    connectedStripeAccount: string
+  ) {
+    const fulfillmentDispatcher = new Dispatcher(
+      'unlockAddress',
+      credentials,
+      providerHost,
+      buyer
+    )
+
+    if (await this.isKeyFree(lock)) {
+      return fulfillmentDispatcher.purchase(lock, recipient)
+    } else {
+      const successfulCharge = await this.chargeUserForConnectedAccount(
+        recipient,
+        lock,
+        connectedStripeAccount
+      )
+      if (successfulCharge) {
+        return fulfillmentDispatcher.grantKeys(lock, recipient)
+      }
+      return null
+    }
+  }
 }
 
 export default PaymentProcessor

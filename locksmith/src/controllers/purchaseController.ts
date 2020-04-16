@@ -22,13 +22,7 @@ namespace PurchaseController {
     if (!(await authorizedLock(lock))) {
       return res.sendStatus(451)
     }
-    const paymentProcessor = new PaymentProcessor(
-      config.stripeSecret,
-      config.web3ProviderHost,
-      config.unlockContractAddress
-    )
-
-    const hash = await paymentProcessor.initiatePurchase(
+    const hash = await processor().initiatePurchase(
       purchaser,
       lock,
       config.purchaserCredentails,
@@ -48,6 +42,7 @@ namespace PurchaseController {
     const { expiry } = req.body.message.purchaseRequest
     const { lock } = req.body.message.purchaseRequest
     const requestedPurchaseAmount = req.body.message.purchaseRequest.USDAmount
+    const purchaser = req.body.message.purchaseRequest.recipient
 
     if (expired(expiry)) {
       return res.sendStatus(412)
@@ -66,10 +61,29 @@ namespace PurchaseController {
     })
 
     if (validRequestPrice) {
-      return res.sendStatus(200)
+      const hash = await processor().initiatePurchaseForConnectedStripeAccount(
+        purchaser,
+        lock,
+        config.purchaserCredentails,
+        config.web3ProviderHost,
+        purchaser,
+        'connectedStripeAccount'
+      )
+
+      return res.send({
+        transactionHash: hash,
+      })
     } else {
       return res.sendStatus(417)
     }
+  }
+
+  const processor = (): PaymentProcessor => {
+    return new PaymentProcessor(
+      config.stripeSecret,
+      config.web3ProviderHost,
+      config.unlockContractAddress
+    )
   }
 
   const expired = (expiry: number): Boolean => {
