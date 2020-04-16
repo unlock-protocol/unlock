@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
 import Link from 'next/link'
-
+import Authenticate from '../interface/Authenticate'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
@@ -48,29 +48,31 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
       <Head>
         <title>{pageTitle('Members')}</title>
       </Head>
-      {account && (
-        <BrowserOnly>
-          <Account network={network} account={account} />
-          <Filters>
-            Show{' '}
-            <Filter
-              value={MemberFilters.ACTIVE}
-              current={filter}
-              setFilter={value => setFilter(value)}
+      <Authenticate>
+        {account && (
+          <BrowserOnly>
+            <Account network={network} account={account} />
+            <Filters>
+              Show{' '}
+              <Filter
+                value={MemberFilters.ACTIVE}
+                current={filter}
+                setFilter={value => setFilter(value)}
+              />
+              <Filter
+                value={MemberFilters.ALL}
+                current={filter}
+                setFilter={value => setFilter(value)}
+              />
+            </Filters>
+            <MetadataTableWrapper
+              lockAddresses={lockAddresses}
+              accountAddress={account.address}
+              filter={filter}
             />
-            <Filter
-              value={MemberFilters.ALL}
-              current={filter}
-              setFilter={value => setFilter(value)}
-            />
-          </Filters>
-          <MetadataTableWrapper
-            lockAddresses={lockAddresses}
-            accountAddress={account.address}
-            filter={filter}
-          />
-        </BrowserOnly>
-      )}
+          </BrowserOnly>
+        )}
+      </Authenticate>
     </Layout>
   )
 }
