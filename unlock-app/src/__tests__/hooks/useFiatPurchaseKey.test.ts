@@ -1,11 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks'
 import React from 'react'
 import { StorageServiceContext } from '../../utils/withStorageService'
-import { useUserAccountsPurchaseKey } from '../../hooks/useUserAccountsPurchaseKey'
+import { useFiatPurchaseKey } from '../../hooks/useFiatPurchaseKey'
 import { StorageService } from '../../services/storageService'
 import * as Store from '../../hooks/useCheckoutStore'
 import * as Provider from '../../hooks/useProvider'
 import { setTransactionHash } from '../../utils/checkoutActions'
+import { WalletServiceContext } from '../../utils/withWalletService'
 
 const accountAddress = '0xpurchaser'
 
@@ -27,10 +28,13 @@ const lock = {
 let mockStorageService: StorageService
 let emitTransactionInfo: jest.Mock<any, any>
 let dispatch: jest.Mock<any, any>
+let unformattedSignTypedData: jest.Mock<any, any>
 
 describe('usePurchaseKey', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+
+    unformattedSignTypedData = jest.fn()
 
     mockStorageService = new StorageService()
 
@@ -40,6 +44,10 @@ describe('usePurchaseKey', () => {
     jest.spyOn(React, 'useContext').mockImplementation(context => {
       if (context === StorageServiceContext) {
         return mockStorageService
+      }
+
+      if (context === WalletServiceContext) {
+        return { unformattedSignTypedData }
       }
     })
 
@@ -64,9 +72,7 @@ describe('usePurchaseKey', () => {
   it('should return an object with a loading value and a purchaseKey function', () => {
     expect.assertions(1)
 
-    const { result } = renderHook(() =>
-      useUserAccountsPurchaseKey(emitTransactionInfo)
-    )
+    const { result } = renderHook(() => useFiatPurchaseKey(emitTransactionInfo))
 
     expect(result.current).toEqual(
       expect.objectContaining({
@@ -81,9 +87,7 @@ describe('usePurchaseKey', () => {
 
     mockStorageService.purchaseKey = jest.fn(() => Promise.resolve('txhash'))
 
-    const { result } = renderHook(() =>
-      useUserAccountsPurchaseKey(emitTransactionInfo)
-    )
+    const { result } = renderHook(() => useFiatPurchaseKey(emitTransactionInfo))
 
     await result.current.purchaseKey(lock, accountAddress)
 
