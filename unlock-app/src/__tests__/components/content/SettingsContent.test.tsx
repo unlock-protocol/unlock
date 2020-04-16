@@ -3,10 +3,19 @@ import * as rtl from '@testing-library/react'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
+
 import {
   SettingsContent,
   mapStateToProps,
 } from '../../../components/content/SettingsContent'
+
+let useCardsMock: any
+
+jest.mock('../../../hooks/useCards.ts', () => {
+  return {
+    useCards: jest.fn(() => useCardsMock),
+  }
+})
 
 const config = {
   stripeApiKey: 'pk_not_a_real_key',
@@ -15,6 +24,10 @@ const config = {
 const store = createUnlockStore()
 
 describe('SettingsContent', () => {
+  beforeEach(() => {
+    useCardsMock = { loading: false, cards: [] }
+  })
+
   describe('Possible rendering states', () => {
     it('should prompt for login if there is no account', () => {
       expect.assertions(0)
@@ -28,7 +41,7 @@ describe('SettingsContent', () => {
       getByText('Log In to Your Account')
     })
 
-    it('should tell crypto users that they do not need the settings page', () => {
+    it('should only show crypto users the option to save a credit card', () => {
       expect.assertions(0)
       const { getByText } = rtl.render(
         <Provider store={store}>
@@ -37,9 +50,7 @@ describe('SettingsContent', () => {
           </ConfigContext.Provider>
         </Provider>
       )
-      getByText(
-        "This page contains settings for managed account users. Crypto users (like you!) don't need it."
-      )
+      getByText('Add a Payment Method')
     })
   })
 

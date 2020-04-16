@@ -38,21 +38,12 @@ export const SettingsContent = ({ account }: SettingsContentProps) => {
       <Head>
         <title>{pageTitle('Account Settings')}</title>
       </Head>
+
       <Errors />
-      {account && account.emailAddress && (
-        <>
-          <AccountInfo />
-          <PaymentSettings address={account.address} />
-          <EjectAccount />
-        </>
-      )}
       {!account && <LogInSignUp login />}
-      {account && !account.emailAddress && (
-        <p>
-          This page contains settings for managed account users. Crypto users
-          (like you!) don&apos;t need it.
-        </p>
-      )}
+      {account && account.emailAddress && <AccountInfo />}
+      {account && <PaymentSettings address={account.address} />}
+      {account && account.emailAddress && <EjectAccount />}
     </Layout>
   )
 }
