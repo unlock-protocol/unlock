@@ -9711,7 +9711,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
-  width: 240px;
+  width: 100%;
 }
 
 .c1 {
@@ -9808,39 +9808,39 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-pbYBj etJngk"
+      class="sc-pbYBj iSxwUG"
     >
       <div
-        class="sc-pkUbs gJyGjB"
+        class="sc-pkUbs hXFRcx"
       >
         <span
-          class="sc-psQdR cbZAhY"
+          class="sc-psQdR hctKjQ"
         >
           Switch payment to
         </span>
         <span
-          class="sc-psQdR sc-qPlga dbkzhr"
+          class="sc-psQdR sc-qPlga fjOYlX"
         >
           Reset
         </span>
       </div>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         Credit Card
       </button>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         BAT
       </button>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         USDC
       </button>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         DAI
       </button>
@@ -9905,7 +9905,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
-  width: 240px;
+  width: 100%;
 }
 
 .c1 {
@@ -10020,40 +10020,40 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-pbYBj etJngk"
+      class="sc-pbYBj iSxwUG"
     >
       <div
-        class="sc-pkUbs gJyGjB"
+        class="sc-pkUbs hXFRcx"
       >
         <span
-          class="sc-psQdR cbZAhY"
+          class="sc-psQdR hctKjQ"
         >
           Switch payment to
         </span>
         <span
-          class="sc-psQdR sc-qPlga dbkzhr"
+          class="sc-psQdR sc-qPlga fjOYlX"
         >
           Reset
         </span>
       </div>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         Credit Card
       </button>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         BAT
       </button>
       <button
-        class="sc-qXhiz sc-pzYib hlMcxk"
+        class="sc-qXhiz sc-pzYib cZhVzs"
         data-testid="active-USDC"
       >
         USDC
       </button>
       <button
-        class="sc-qXhiz fPcwVN"
+        class="sc-qXhiz bjxCmJ"
       >
         DAI
       </button>

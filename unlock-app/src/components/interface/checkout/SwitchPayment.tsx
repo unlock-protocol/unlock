@@ -37,7 +37,7 @@ export const SwitchPayment = ({
 }
 
 const Container = styled.div`
-  width: 240px;
+  width: 100%;
 `
 
 const HeaderRow = styled.div`
