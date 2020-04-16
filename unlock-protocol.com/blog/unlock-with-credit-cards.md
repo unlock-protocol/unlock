@@ -13,7 +13,7 @@ About 6 months ago, we introduced our [Unlock accounts](https://unlock-protocol.
 
 Today, I am very proud to introduce the next iteration of our work on supporting credit cards. Starting now, **crypto users can also purchase memberships using their credit cards** on selected locks.
 
-We believe that wallets are great to store money and access keys, but that they are also a very good identity mechanism. In other words, you should be able to [login into any website using your wallet](https://www.nickgrossman.is/2020/digital-bearer-assets/), rather than using an email address and password. Wether the wallet actually holds money could almost be irrelevant. As such, we think memberships should be attached to the wallet, whether they have actually been purchased _from_ the wallet, or using another payment mechanism, such as credit cards!
+We believe that wallets are great to store money and access keys, but that they are also a very good identity mechanism. In other words, you should be able to [login into any website using your wallet](https://www.nickgrossman.is/2020/digital-bearer-assets/), rather than using an email address and password. Whether the wallet actually holds money could almost be irrelevant. As such, we think memberships should be attached to the wallet, whether they have actually been purchased _from_ the wallet, or using another payment mechanism, such as credit cards!
 
 1. When a user finds a lock with credit cards enabled, they can select _Credit Card_ as their payment mechanism.
 2. The price will be slightly higher to cover credit card fees.
