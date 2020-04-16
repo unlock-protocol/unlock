@@ -2,10 +2,9 @@ const { protocols, tokens } = require('hardlydifficult-ethereum-contracts')
 
 const KeyPurchaserFactory = artifacts.require('KeyPurchaserFactory.sol')
 const KeyPurchaser = artifacts.require('KeyPurchaser.sol')
-const { reverts } = require('truffle-assertions')
 
 contract('keyPurchaserFactory', accounts => {
-  const [endUser, lockCreator, tokenMinter, otherAccount] = accounts
+  const [endUser, lockCreator, tokenMinter] = accounts
   let dai
   let lock
   let factory
