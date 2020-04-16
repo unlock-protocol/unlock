@@ -29,15 +29,6 @@ contract('keyPurchaserFactory', accounts => {
     })
   })
 
-  it('non-lock manager cannot make a purchaser via the factory', async () => {
-    await reverts(
-      factory.deployKeyPurchaser(lock.address, keyPrice, 42, 99, 0, {
-        from: otherAccount,
-      }),
-      'ONLY_LOCK_MANAGER'
-    )
-  })
-
   describe('on creation', () => {
     let purchaser
 

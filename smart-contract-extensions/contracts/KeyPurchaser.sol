@@ -7,6 +7,7 @@ import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
 import 'unlock-abi-7/IPublicLockV7.sol';
+import './mixins/LockRoles.sol';
 
 /**
  * @notice Purchase a key priced in any ERC-20 token - either once or as a regular subscription.
@@ -18,11 +19,16 @@ import 'unlock-abi-7/IPublicLockV7.sol';
  * Risk: if the user transfers or cancels the key, they would naturally expect that also cancels
  * the subscription but it does not. This should be handled by the frontend.
  */
-contract KeyPurchaser is Initializable, Stoppable
+contract KeyPurchaser is Initializable, LockRoles
 {
   using Address for address payable;
   using SafeERC20 for IERC20;
   using SafeMath for uint;
+
+  /**
+   * @notice Emitted when the stop is triggered by a stopper (`account`).
+   */
+  event Stopped(address account);
 
   // set on initialize and cannot change
 
@@ -71,6 +77,12 @@ contract KeyPurchaser is Initializable, Stoppable
    */
   bool internal hidden;
 
+  /**
+   * @notice Indicates if the contract has been disabled by a lock manager. Once stopped it
+   * may never start again.
+   */
+  bool public stopped;
+
   // store minimal history
 
   /**
@@ -86,7 +98,6 @@ contract KeyPurchaser is Initializable, Stoppable
    */
   function initialize(
     IPublicLockV7 _lock,
-    address _admin,
     uint _maxPurchasePrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -94,13 +105,30 @@ contract KeyPurchaser is Initializable, Stoppable
   ) public
     initializer()
   {
-    _initializeAdminRole(_admin);
     lock = _lock;
     maxPurchasePrice = _maxPurchasePrice;
     renewWindow = _renewWindow;
     renewMinFrequency = _renewMinFrequency;
     msgSenderReward = _msgSenderReward;
     approveSpending();
+  }
+
+  /**
+   * @dev Modifier to make a function callable only when the contract is not stopped.
+   */
+  modifier whenNotStopped()
+  {
+    require(!stopped, 'Stoppable: stopped');
+    _;
+  }
+
+  /**
+    * @notice Called by a stopper to stop, triggers stopped state.
+    */
+  function stop() public onlyLockManager(lock) whenNotStopped
+  {
+    stopped = true;
+    emit Stopped(msg.sender);
   }
 
   /**
@@ -126,7 +154,7 @@ contract KeyPurchaser is Initializable, Stoppable
     string memory _name,
     bool _hidden
   ) public
-    onlyAdmin()
+    onlyLockManager(lock)
   {
     name = _name;
     hidden = _hidden;
@@ -138,7 +166,7 @@ contract KeyPurchaser is Initializable, Stoppable
    */
   function shouldBeDisplayed() public view returns(bool)
   {
-    return !stopped() && !hidden;
+    return !stopped && !hidden;
   }
 
   /**

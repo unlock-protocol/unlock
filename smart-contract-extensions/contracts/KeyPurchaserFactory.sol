@@ -42,7 +42,7 @@ contract KeyPurchaserFactory
   ) private pure
     returns (bytes32)
   {
-    return keccak256(abi.encodePacked(address(_lock), _maxKeyPrice, _renewWindow, _renewMinFrequency));
+    return keccak256(abi.encodePacked(address(_lock), _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward));
   }
 
   /**
@@ -73,14 +73,10 @@ contract KeyPurchaserFactory
     uint _msgSenderReward
   ) public
   {
-    // This require is not strictly necessary, but helps to maintain trust when surfacing these
-    // options on the frontend.
-    require(_lock.isLockManager(msg.sender), 'ONLY_LOCK_MANAGER');
-
     bytes32 salt = _getClone2Salt(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward);
     address purchaser = keyPurchaserTemplate.createClone2(salt);
 
-    KeyPurchaser(purchaser).initialize(_lock, msg.sender, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward);
+    KeyPurchaser(purchaser).initialize(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward);
     lockToKeyPurchasers[address(_lock)].push(purchaser);
     emit KeyPurchaserCreated(address(_lock), purchaser);
   }

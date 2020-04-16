@@ -39,17 +39,9 @@ contract('keyPurchaser', accounts => {
 
   describe('Single purchase / exact price', () => {
     beforeEach(async () => {
-      await keyPurchaser.initialize(
-        lock.address,
-        lockCreator,
-        keyPrice,
-        35,
-        0,
-        0,
-        {
-          from: lockCreator,
-        }
-      )
+      await keyPurchaser.initialize(lock.address, keyPrice, 35, 0, 0, {
+        from: lockCreator,
+      })
     })
 
     it('purchase fails without approval', async () => {
@@ -175,7 +167,7 @@ contract('keyPurchaser', accounts => {
       it('metadata cannot be set by anyone', async () => {
         await reverts(
           keyPurchaser.config('Test', false, { from: otherAccount }),
-          'AdminRole: caller does not have the Admin role'
+          'ONLY_LOCK_MANAGER'
         )
       })
 
@@ -257,17 +249,9 @@ contract('keyPurchaser', accounts => {
 
   describe('Subscription capped by renewWindow', () => {
     beforeEach(async () => {
-      await keyPurchaser.initialize(
-        lock.address,
-        lockCreator,
-        keyPrice,
-        15,
-        1,
-        0,
-        {
-          from: lockCreator,
-        }
-      )
+      await keyPurchaser.initialize(lock.address, keyPrice, 15, 1, 0, {
+        from: lockCreator,
+      })
 
       // Make first purchase
       await dai.approve(keyPurchaser.address, -1, { from: endUser })
@@ -307,17 +291,9 @@ contract('keyPurchaser', accounts => {
 
   describe('Subscription capped by renewMinFrequency', () => {
     beforeEach(async () => {
-      await keyPurchaser.initialize(
-        lock.address,
-        lockCreator,
-        keyPrice,
-        1,
-        15,
-        0,
-        {
-          from: lockCreator,
-        }
-      )
+      await keyPurchaser.initialize(lock.address, keyPrice, 1, 15, 0, {
+        from: lockCreator,
+      })
 
       // Make first purchase
       await dai.approve(keyPurchaser.address, -1, { from: endUser })
@@ -365,17 +341,9 @@ contract('keyPurchaser', accounts => {
         from: lockCreator,
         tokenAddress: dai.address,
       })
-      await keyPurchaser.initialize(
-        freeLock.address,
-        lockCreator,
-        0,
-        35,
-        0,
-        0,
-        {
-          from: lockCreator,
-        }
-      )
+      await keyPurchaser.initialize(freeLock.address, 0, 35, 0, 0, {
+        from: lockCreator,
+      })
     })
 
     it('purchase fails if the lock price increased', async () => {
@@ -414,7 +382,6 @@ contract('keyPurchaser', accounts => {
     beforeEach(async () => {
       await keyPurchaser.initialize(
         lock.address,
-        lockCreator,
         keyPrice,
         35,
         0,
