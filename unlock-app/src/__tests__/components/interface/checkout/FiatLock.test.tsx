@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { KeyResult } from '@unlock-protocol/unlock-js'
 import { FiatLock } from '../../../../components/interface/checkout/FiatLock'
-import * as useUserAccountsPurchaseKey from '../../../../hooks/useUserAccountsPurchaseKey'
+import * as useFiatPurchaseKey from '../../../../hooks/useFiatPurchaseKey'
 import * as useProvider from '../../../../hooks/useProvider'
 import { TransactionInfo } from '../../../../hooks/useCheckoutCommunication'
 import * as CheckoutStoreModule from '../../../../hooks/useCheckoutStore'
@@ -55,7 +55,7 @@ describe('FiatLock', () => {
       .mockImplementation(() => ({ state, dispatch }))
 
     jest
-      .spyOn(useUserAccountsPurchaseKey, 'useUserAccountsPurchaseKey')
+      .spyOn(useFiatPurchaseKey, 'useFiatPurchaseKey')
       .mockImplementation(_ => ({
         purchaseKey,
         loading: false,
@@ -246,7 +246,7 @@ describe('FiatLock', () => {
     state.transactionHash = '0xhash'
 
     jest
-      .spyOn(useUserAccountsPurchaseKey, 'useUserAccountsPurchaseKey')
+      .spyOn(useFiatPurchaseKey, 'useFiatPurchaseKey')
       .mockImplementation(_ => ({
         purchaseKey,
         error: null,
