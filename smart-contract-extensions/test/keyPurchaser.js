@@ -259,7 +259,7 @@ contract('keyPurchaser', accounts => {
         from: otherAccount,
       })
 
-      // Ensure at least 1 second has past to avoid the min frequency check
+      // Ensure at least 1 second has passed to avoid the min frequency check
       await time.increase(1)
     })
 
