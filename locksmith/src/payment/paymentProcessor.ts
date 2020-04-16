@@ -84,10 +84,9 @@ export class PaymentProcessor {
   async chargeUser(publicKey: ethereumAddress, lock: ethereumAddress) {
     // eslint-disable-next-line no-useless-catch
     try {
-      const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && stripeCustomerId) {
+      if (stripeCustomerId) {
         const charge = await this.stripe.charges.create({
           amount: await this.price(lock),
           currency: 'USD',
