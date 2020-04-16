@@ -48,13 +48,7 @@ namespace PurchaseController {
       return res.sendStatus(412)
     }
 
-    const keyPricer = new KeyPricer(
-      config.web3ProviderHost,
-      config.unlockContractAddress
-    )
-
-    const currentPrice = await keyPricer.keyPriceUSD(lock)
-
+    const currentPrice = await keyPricer().keyPriceUSD(lock)
     const validRequestPrice = PriceRange.within({
       requestPrice: requestedPurchaseAmount,
       currentPrice,
@@ -76,6 +70,10 @@ namespace PurchaseController {
     } else {
       return res.sendStatus(417)
     }
+  }
+
+  const keyPricer = (): KeyPricer => {
+    return new KeyPricer(config.web3ProviderHost, config.unlockContractAddress)
   }
 
   const processor = (): PaymentProcessor => {
