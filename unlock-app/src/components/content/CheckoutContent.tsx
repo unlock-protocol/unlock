@@ -160,7 +160,8 @@ export const CheckoutContentInner = ({
           )}
           {(current.matches(CheckoutState.fiatLocks) ||
             current.matches(CheckoutState.locks)) &&
-            !account.emailAddress && (
+            !account.emailAddress &&
+            !!paywallConfig!.unlockUserAccounts && (
               <SwitchPayment
                 paymentOptions={['Credit Card']}
                 activePayment={activePayment}
