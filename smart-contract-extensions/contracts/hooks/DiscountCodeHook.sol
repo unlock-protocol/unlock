@@ -16,6 +16,8 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
 {
   using SafeMath for uint;
 
+  event AddCode(address lock, address codeAddress, uint discountBasisPoints);
+
   /**
    * @notice The code expressed as an address where the private key is
    * keccak256(abi.encode(code, lock.address)).
@@ -38,7 +40,9 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
     {
       address codeAddress = _codeAddresses[i];
       require(codeAddress != address(0), 'INVALID_CODE');
-      lockToCodeAddressToDiscountBasisPoints[address(_lock)][codeAddress] = _discountBasisPoints[i];
+      uint discountBasisPoints = _discountBasisPoints[i];
+      lockToCodeAddressToDiscountBasisPoints[address(_lock)][codeAddress] = discountBasisPoints;
+      emit AddCode(address(_lock), codeAddress, discountBasisPoints);
     }
   }
 
