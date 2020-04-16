@@ -16,7 +16,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
 {
   using SafeMath for uint;
 
-  event AddCode(address lock, address codeAddress, uint discountBasisPoints);
+  event AddCode(address indexed lock, address codeAddress, uint discountBasisPoints);
 
   /**
    * @notice The code expressed as an address where the private key is
