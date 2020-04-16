@@ -15,6 +15,14 @@ const network = {
   name: 1984,
 }
 
+const mockProvider = { loading: false, provider: {} }
+
+jest.mock('../../../hooks/useProvider.ts', () => {
+  return {
+    useProvider: jest.fn(() => mockProvider),
+  }
+})
+
 jest.mock('../../../hooks/useLocks', () => {
   return {
     useLocks: jest.fn(() => [false, []]),

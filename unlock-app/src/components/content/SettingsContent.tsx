@@ -8,7 +8,7 @@ import AccountInfo from '../interface/user-account/AccountInfo'
 import { PaymentDetails } from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import LogInSignUp from '../interface/LogInSignUp'
+import Authenticate from '../interface/Authenticate'
 import { useCards } from '../../hooks/useCards'
 import { Account } from '../../unlockTypes'
 import Loading from '../interface/Loading'
@@ -38,12 +38,12 @@ export const SettingsContent = ({ account }: SettingsContentProps) => {
       <Head>
         <title>{pageTitle('Account Settings')}</title>
       </Head>
-
-      <Errors />
-      {!account && <LogInSignUp login />}
-      {account && account.emailAddress && <AccountInfo />}
-      {account && <PaymentSettings address={account.address} />}
-      {account && account.emailAddress && <EjectAccount />}
+      <Authenticate unlockUserAccount>
+        <Errors />
+        {account && account.emailAddress && <AccountInfo />}
+        {account && <PaymentSettings address={account.address} />}
+        {account && account.emailAddress && <EjectAccount />}
+      </Authenticate>
     </Layout>
   )
 }
