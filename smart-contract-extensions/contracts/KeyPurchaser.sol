@@ -217,7 +217,7 @@ contract KeyPurchaser is Initializable, LockRoles
     purchasePrice = purchasePrice.add(msgSenderReward);
 
     // It's okay if the lock changes tokenAddress as the ERC-20 approval is specifically
-    // the token the endUser wanted to spend
+    // for the token the endUser wanted to spend
     IERC20 token = IERC20(lock.tokenAddress());
     require(token.balanceOf(_recipient) >= purchasePrice, 'INSUFFICIENT_BALANCE');
     require(token.allowance(_recipient, address(this)) >= purchasePrice, 'INSUFFICIENT_ALLOWANCE');
