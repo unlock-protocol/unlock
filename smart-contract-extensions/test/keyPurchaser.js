@@ -276,7 +276,7 @@ contract('keyPurchaser', accounts => {
       )
     })
 
-    describe('after enough time has past', () => {
+    describe('after enough time has passed', () => {
       beforeEach(async () => {
         await time.increase(15)
       })
