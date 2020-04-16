@@ -17,6 +17,7 @@ const privateKey = ethJsUtil.toBuffer(
 const mockPaymentProcessor = {
   chargeUser: jest.fn().mockResolvedValue('true'),
   initiatePurchase: jest.fn().mockResolvedValue('this is a transaction hash'),
+  initiatePurchaseForConnectedStripeAccount: jest.fn().mockResolvedValue(''),
 }
 
 const keyPricer = {
