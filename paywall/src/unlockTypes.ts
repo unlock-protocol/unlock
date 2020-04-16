@@ -176,3 +176,5 @@ export interface UserMetadata {
     [key: string]: string
   }
 }
+
+export type UnlockNetworks = number

@@ -16,6 +16,8 @@ import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
 
+import { Web3ProviderContext } from '../hooks/useProvider'
+
 import FullScreenModal from '../components/interface/FullScreenModals'
 
 // Middlewares
@@ -25,7 +27,6 @@ import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
 import wedlocksMiddleware from '../middlewares/wedlocksMiddleware'
-import postOfficeMiddleware from '../middlewares/postOfficeMiddleware'
 
 const config = configure()
 
@@ -50,24 +51,13 @@ const storageService = new StorageService(config.services.storage.host)
 
 function getOrCreateStore(initialState, path) {
   const middlewares = [
-    providerMiddleware(config),
+    providerMiddleware(config, getWeb3Provider, setWeb3Provider),
     web3Middleware(web3Service),
     currencyConversionMiddleware(config),
-    walletMiddleware(config, walletService),
+    walletMiddleware(config, walletService, getWeb3Provider),
     wedlocksMiddleware(config),
     storageMiddleware(storageService),
   ]
-  // Cannot load postOfficeMiddleware on the server
-  if (!config.isServer) {
-    const target = window.parent
-    const url = new URL(window.location.href)
-    const origin = url.searchParams.get('origin')
-    // postOfficeMiddleware can't instantiate postOfficeService without these
-    // values
-    if (target && origin) {
-      middlewares.push(postOfficeMiddleware(window, config))
-    }
-  }
 
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
@@ -89,6 +79,17 @@ const ConfigProvider = ConfigContext.Provider
 const WalletServiceProvider = WalletServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 const StorageServiceProvider = StorageServiceContext.Provider
+const Web3ProviderContextProvider = Web3ProviderContext.Provider
+
+// web3 provider
+let web3Provider = null
+const setWeb3Provider = provider => {
+  web3Provider = provider
+}
+
+const getWeb3Provider = () => {
+  return web3Provider
+}
 
 class UnlockApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -150,15 +151,19 @@ The Unlock team
           <Provider store={store}>
             <FullScreenModal />
             <ConnectedRouter>
-              <StorageServiceProvider value={storageService}>
-                <Web3ServiceProvider value={web3Service}>
-                  <WalletServiceProvider value={walletService}>
-                    <ConfigProvider value={config}>
-                      <Component {...pageProps} />
-                    </ConfigProvider>
-                  </WalletServiceProvider>
-                </Web3ServiceProvider>
-              </StorageServiceProvider>
+              <Web3ProviderContextProvider
+                value={{ getWeb3Provider, setWeb3Provider }}
+              >
+                <StorageServiceProvider value={storageService}>
+                  <Web3ServiceProvider value={web3Service}>
+                    <WalletServiceProvider value={walletService}>
+                      <ConfigProvider value={config}>
+                        <Component {...pageProps} />
+                      </ConfigProvider>
+                    </WalletServiceProvider>
+                  </Web3ServiceProvider>
+                </StorageServiceProvider>
+              </Web3ProviderContextProvider>
             </ConnectedRouter>
           </Provider>
         </Container>

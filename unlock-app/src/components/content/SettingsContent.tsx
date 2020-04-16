@@ -13,13 +13,26 @@ import { useCards } from '../../hooks/useCards'
 import { Account } from '../../unlockTypes'
 import Loading from '../interface/Loading'
 
+interface PaymentSettings {
+  address: string
+}
+
+export const PaymentSettings = ({ address }: PaymentSettings) => {
+  const { cards, loading, deleteCard } = useCards(address)
+  if (loading) {
+    return <Loading />
+  }
+  if (cards.length > 0) {
+    return <PaymentMethods cards={cards} deleteCard={deleteCard} />
+  }
+  return <PaymentDetails />
+}
+
 interface SettingsContentProps {
   account: Account | undefined
 }
 
 export const SettingsContent = ({ account }: SettingsContentProps) => {
-  const { cards } = useCards(account)
-
   return (
     <Layout title="Account Settings">
       <Head>
@@ -29,9 +42,7 @@ export const SettingsContent = ({ account }: SettingsContentProps) => {
       {account && account.emailAddress && (
         <>
           <AccountInfo />
-          {!cards && <Loading />}
-          {cards && cards.length > 0 && <PaymentMethods cards={cards} />}
-          {cards && cards.length === 0 && <PaymentDetails />}
+          <PaymentSettings address={account.address} />
           <EjectAccount />
         </>
       )}

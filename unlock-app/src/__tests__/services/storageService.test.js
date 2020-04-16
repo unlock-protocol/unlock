@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { StorageService, success, failure } from '../../services/storageService'
 import UnlockUser from '../../structured_data/unlockUser'
-import UnlockLock from '../../structured_data/unlockLock'
 
 jest.mock('axios')
 
@@ -30,16 +29,6 @@ const passwordEncryptedPrivateKey = {
   version: 3,
 }
 
-const lockName = 'A Paywall Concerning Human Understanding'
-const lockOwner = publicKey
-const lockAddress = '0xA875DB01d7113741C2E2037e9E12eCe5bd8A7363'
-
-const lock = UnlockLock.build({
-  name: lockName,
-  owner: lockOwner,
-  address: lockAddress,
-})
-
 const user = UnlockUser.build({
   emailAddress,
   publicKey,
@@ -53,40 +42,6 @@ describe('StorageService', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     storageService = new StorageService(serviceHost)
-  })
-
-  describe('storeLockDetails', () => {
-    describe('when storing a new lock', () => {
-      it('emits a success', done => {
-        expect.assertions(2)
-        axios.post.mockReturnValue()
-        storageService.storeLockDetails(lock)
-
-        storageService.on(success.storeLockDetails, address => {
-          expect(address).toEqual(lockAddress)
-          done()
-        })
-
-        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
-      })
-    })
-
-    describe('when attempting to store an existing lock', () => {
-      it('emits a failure', done => {
-        expect.assertions(3)
-        axios.post.mockRejectedValue('An Error')
-
-        storageService.storeLockDetails(lock)
-
-        storageService.on(failure.storeLockDetails, ({ address, error }) => {
-          expect(address).toBe(lockAddress)
-          expect(error).toBe('An Error')
-          done()
-        })
-
-        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
-      })
-    })
   })
 
   describe('getRecentTransactionsHashesSentBy', () => {
@@ -353,7 +308,7 @@ describe('StorageService', () => {
         storageService.updateUserEncryptedPrivateKey(
           'hello@unlock-protocol.com',
           user,
-          null
+          'token'
         )
 
         storageService.on(success.updateUser, ({ emailAddress }) => {
@@ -366,7 +321,11 @@ describe('StorageService', () => {
             'hello@unlock-protocol.com'
           )}/passwordEncryptedPrivateKey`,
           user,
-          {}
+          {
+            headers: {
+              Authorization: ' Bearer token',
+            },
+          }
         )
       })
     })
@@ -378,7 +337,7 @@ describe('StorageService', () => {
         storageService.updateUserEncryptedPrivateKey(
           'hello@unlock-protocol.com',
           user,
-          null
+          'token'
         )
 
         storageService.on(failure.updateUser, ({ emailAddress, error }) => {
@@ -392,7 +351,11 @@ describe('StorageService', () => {
             'hello@unlock-protocol.com'
           )}/passwordEncryptedPrivateKey`,
           user,
-          {}
+          {
+            headers: {
+              Authorization: ' Bearer token',
+            },
+          }
         )
       })
     })

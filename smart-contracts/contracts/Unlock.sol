@@ -136,7 +136,18 @@ contract Unlock is
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // create lock
-    address payable newLock = address(uint160(publicLockAddress._createClone2(_salt)));
+    bytes32 salt;
+    // solium-disable-next-line
+    assembly
+    {
+      let pointer := mload(0x40)
+      // The salt is the msg.sender
+      mstore(pointer, shl(96, caller))
+      // followed by the _salt provided
+      mstore(add(pointer, 0x14), _salt)
+      salt := mload(pointer)
+    }
+    address payable newLock = address(uint160(publicLockAddress.createClone2(salt)));
     IPublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
@@ -235,7 +246,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 7;
+    return 8;
   }
 
   // function for the owner to update configuration variables

@@ -6,8 +6,6 @@ import {
   initialRouterState,
 } from 'connected-next-router'
 
-import configure from './config'
-
 // Reducers
 
 import loadingReducer, {
@@ -55,8 +53,6 @@ import pageStatusReducer, {
 import signatureReducer, {
   initialState as defaultSignatureState,
 } from './reducers/signatureReducer'
-
-const config = configure()
 
 export const createUnlockStore = (
   defaultState = {},
@@ -107,7 +103,7 @@ export const createUnlockStore = (
     cart: defaultCartState,
     pageIsLocked: defaultPageStatus,
     signature: defaultSignatureState,
-    provider: Object.keys(config.providers)[0],
+    provider: null, // This will be set in the UI!
     ...defaultState,
   }
 

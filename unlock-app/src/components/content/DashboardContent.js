@@ -16,6 +16,10 @@ import {
 } from '../interface/buttons/ActionButton'
 import { showForm, hideForm } from '../../actions/lockFormVisibility'
 import { Phone } from '../../theme/media'
+import { useProvider } from '../../hooks/useProvider'
+import { FATAL_MISSING_PROVIDER } from '../../errors'
+import Error from '../../utils/Error'
+import { mapErrorToComponent } from '../creator/FatalError'
 
 export const DashboardContent = ({
   account,
@@ -24,6 +28,7 @@ export const DashboardContent = ({
   showForm,
   hideForm,
 }) => {
+  const { provider } = useProvider()
   const toggleForm = () => {
     formIsVisible ? hideForm() : showForm()
   }
@@ -32,6 +37,8 @@ export const DashboardContent = ({
       <Head>
         <title>{pageTitle('Dashboard')}</title>
       </Head>
+      {!provider &&
+        mapErrorToComponent(Error.Application.Fatal(FATAL_MISSING_PROVIDER))}
       {account && (
         <BrowserOnly>
           <AccountWrapper>
