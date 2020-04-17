@@ -62,12 +62,6 @@ const manyKeyHolderStore = createUnlockStore({
   router,
 })
 
-const noUserStore = createUnlockStore({
-  account: undefined,
-  network,
-  router,
-})
-
 const ConfigProvider = ConfigContext.Provider
 
 // generate `n' fake keys to use in mock
@@ -187,13 +181,6 @@ storiesOf('KeychainContent', module)
   .add('the key chain, no keys', () => {
     return (
       <Provider store={store}>
-        <KeychainContent />
-      </Provider>
-    )
-  })
-  .add('the key chain, no user account', () => {
-    return (
-      <Provider store={noUserStore}>
         <KeychainContent />
       </Provider>
     )

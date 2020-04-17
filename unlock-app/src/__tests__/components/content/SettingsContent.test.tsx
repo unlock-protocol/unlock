@@ -4,8 +4,7 @@ import { Provider } from 'react-redux'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
 
-import {
-  SettingsContent,
+import SettingsContent, {
   mapStateToProps,
 } from '../../../components/content/SettingsContent'
 
@@ -17,24 +16,36 @@ jest.mock('../../../hooks/useCards.ts', () => {
   }
 })
 
+let useProviderMock: any
+
+jest.mock('../../../hooks/useProvider.ts', () => {
+  return {
+    useProvider: jest.fn(() => useProviderMock),
+  }
+})
+
 const config = {
   stripeApiKey: 'pk_not_a_real_key',
+  requiredNetworkId: 1984,
 }
 
-const store = createUnlockStore()
+let store = createUnlockStore()
 
 describe('SettingsContent', () => {
   beforeEach(() => {
+    store = createUnlockStore()
     useCardsMock = { loading: false, cards: [] }
+    useProviderMock = { loading: false, provider: {} }
   })
 
   describe('Possible rendering states', () => {
     it('should prompt for login if there is no account', () => {
       expect.assertions(0)
+      useProviderMock = { loading: false, provider: null }
       const { getByText } = rtl.render(
         <Provider store={store}>
           <ConfigContext.Provider value={config}>
-            <SettingsContent account={undefined} />
+            <SettingsContent />
           </ConfigContext.Provider>
         </Provider>
       )
@@ -43,10 +54,15 @@ describe('SettingsContent', () => {
 
     it('should only show crypto users the option to save a credit card', () => {
       expect.assertions(0)
+
+      store = createUnlockStore({
+        account: { address: '', balance: '' },
+      })
+
       const { getByText } = rtl.render(
         <Provider store={store}>
           <ConfigContext.Provider value={config}>
-            <SettingsContent account={{ address: '', balance: '' }} />
+            <SettingsContent />
           </ConfigContext.Provider>
         </Provider>
       )

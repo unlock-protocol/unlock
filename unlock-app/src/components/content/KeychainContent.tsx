@@ -5,7 +5,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import LogInSignUp from '../interface/LogInSignUp'
+import Authenticate from '../interface/Authenticate'
 import { Account as AccountType, Network } from '../../unlockTypes'
 import { signData } from '../../actions/signature'
 import { qrEmail } from '../../actions/user'
@@ -38,21 +38,19 @@ export const KeychainContent = ({
       <Head>
         <title>{pageTitle('Key Chain')}</title>
       </Head>
-      {account && (
-        <BrowserOnly>
-          <Account network={network} account={account} />
-          <KeyDetails
-            address={account.address.toLowerCase()}
-            signData={signData}
-            signatures={signatures}
-            qrEmail={qrEmail}
-          />
-        </BrowserOnly>
-      )}
-      {!account && (
-        // Default to log in form. User can toggle to signup.
-        <LogInSignUp login />
-      )}
+      <Authenticate unlockUserAccount>
+        {account && (
+          <BrowserOnly>
+            <Account network={network} account={account} />
+            <KeyDetails
+              address={account.address.toLowerCase()}
+              signData={signData}
+              signatures={signatures}
+              qrEmail={qrEmail}
+            />
+          </BrowserOnly>
+        )}
+      </Authenticate>
     </Layout>
   )
 }

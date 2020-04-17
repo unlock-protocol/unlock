@@ -88,7 +88,7 @@ export class PaymentProcessor {
 
       if (stripeCustomerId) {
         const charge = await this.stripe.charges.create({
-          amount: await this.price(lock),
+          amount: await this.price(lock), // we should be careful here and charge at most 35
           currency: 'USD',
           customer: stripeCustomerId,
           metadata: { lock, publicKey },
