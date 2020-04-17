@@ -23,9 +23,6 @@ import providerReducer, {
 import transactionsReducer, {
   initialState as defaultTransactions,
 } from './reducers/transactionsReducer'
-import currencyReducer, {
-  initialState as defaultCurrency,
-} from './reducers/currencyReducer'
 import errorsReducer, {
   initialState as defaultError,
 } from './reducers/errorsReducer'
@@ -67,7 +64,6 @@ export const createUnlockStore = (
     network: networkReducer,
     provider: providerReducer,
     transactions: transactionsReducer,
-    currency: currencyReducer,
     errors: errorsReducer,
     lockFormStatus: lockFormVisibilityReducer,
     fullScreenModalStatus: fullScreenModalsReducer,
@@ -94,7 +90,6 @@ export const createUnlockStore = (
     network: defaultNetwork,
     provider: defaultProvider,
     transactions: defaultTransactions,
-    currency: defaultCurrency,
     errors: defaultError,
     lockFormStatus: defaultLockFormVisibility,
     fullScreenModalStatus: defaultFullScreenModalsStatus,

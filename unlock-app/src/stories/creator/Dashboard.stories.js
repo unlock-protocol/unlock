@@ -80,10 +80,6 @@ const router = {
   },
 }
 
-const currency = {
-  USD: 195.99,
-}
-
 const lockFormStatus = {
   visible: false,
 }
@@ -94,7 +90,6 @@ const waitingStore = createUnlockStore({
   router,
   locks,
   transactions,
-  currency,
   fullScreenModalStatus: {
     active: true,
     kindOfModal: KindOfModal.WalletCheckOverlay,

@@ -13930,7 +13930,7 @@ exports[`Storyshots CreatorLock Confirming 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c12 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -13947,7 +13947,7 @@ Object {
   border-radius: 0 4px 4px 0;
 }
 
-.c15 {
+.c13 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -13959,7 +13959,7 @@ Object {
   align-self: end;
 }
 
-.c16 {
+.c14 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -14005,25 +14005,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -14089,13 +14072,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
@@ -14248,28 +14231,12 @@ Object {
                 0.01
               </span>
             </span>
-            <div
-              class="c10"
-            >
-              <span
-                class="c7 currency"
-              >
-                <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
-                >
-                  1.96
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class=""
           >
             <div
-              class="c12"
+              class="c10"
             >
               <div
                 class="c6"
@@ -14286,26 +14253,10 @@ Object {
                     0
                   </span>
                 </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                      0
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
-              class="c13"
+              class="c11"
             >
               <div
                 class="c6"
@@ -14322,20 +14273,19 @@ Object {
                     0
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
           <div
-            class="c14"
+            class="c12"
           >
             <div
-              class="c15"
+              class="c13"
             >
               Confirming
             </div>
             <div
-              class="c16"
+              class="c14"
             >
               4
                / 
@@ -14472,22 +14422,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -14510,22 +14444,6 @@ Object {
                   0
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    0
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -14546,7 +14464,6 @@ Object {
                   0
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -14627,7 +14544,7 @@ exports[`Storyshots CreatorLock Deployed 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c15 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -14639,25 +14556,25 @@ Object {
   line-height: '15px';
 }
 
-.c17 > svg {
+.c15 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c17:hover {
+.c15:hover {
   background-color: var(--link);
 }
 
-.c17:hover > svg {
+.c15:hover > svg {
   fill: white;
 }
 
-.c17:focus {
+.c15:focus {
   outline: none;
 }
 
-.c18 {
+.c16 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -14673,23 +14590,23 @@ Object {
   color: var(--link);
 }
 
-.c16:hover .c18 {
+.c14:hover .c16 {
   display: inline-block;
 }
 
-.c14 {
+.c12 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c15 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c19 {
+.c17 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -14732,25 +14649,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -14816,19 +14716,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c12 {
     display: none;
   }
 }
@@ -14981,21 +14881,49 @@ Object {
                 0.01
               </span>
             </span>
+          </div>
+          <div
+            class=""
+          >
             <div
               class="c10"
             >
-              <span
-                class="c7 currency"
+              <div
+                class="c6"
               >
                 <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
+                  class="c7 currency"
                 >
-                  1.96
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
                 </span>
-              </span>
+              </div>
+            </div>
+            <div
+              class="c11"
+            >
+              <div
+                class="c6"
+              >
+                <span
+                  class="c7 currency"
+                >
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -15005,71 +14933,10 @@ Object {
               class="c12"
             >
               <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                      8.82
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              class="c13"
-            >
-              <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                
-              </div>
-            </div>
-          </div>
-          <div
-            class=""
-          >
-            <div
-              class="c14"
-            >
-              <div
-                class="c15"
+                class="c13"
               >
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                   title="Withdraw"
                 >
@@ -15084,13 +14951,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Withdraw
                   </small>
                 </button>
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                   title="Edit"
                 >
@@ -15108,13 +14975,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Edit
                   </small>
                 </button>
                 <a
-                  class="c16 c17"
+                  class="c14 c15"
                   href="/members?locks=0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
                   target="_self"
                   title="Members"
@@ -15130,13 +14997,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Members
                   </small>
                 </a>
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                   title="Integrations"
                 >
@@ -15151,13 +15018,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Integrations
                   </small>
                 </button>
                 <a
-                  class="c16 c17"
+                  class="c14 c15"
                   href="https://etherscan.io/address/0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
                   target="_blank"
                   title="Etherscan"
@@ -15173,7 +15040,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Etherscan
                   </small>
@@ -15181,7 +15048,7 @@ Object {
               </div>
             </div>
             <div
-              class="c19"
+              class="c17"
             />
           </div>
         </div>
@@ -15314,22 +15181,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -15352,22 +15203,6 @@ Object {
                   0.045
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    8.82
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -15388,7 +15223,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -15879,7 +15713,6 @@ Object {
                 0.01
               </span>
             </span>
-            
           </div>
           <div
             class=""
@@ -15903,7 +15736,6 @@ Object {
                     0.045
                   </span>
                 </span>
-                
               </div>
             </div>
             <div
@@ -15925,7 +15757,6 @@ Object {
                     0.045
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -16072,7 +15903,6 @@ Object {
               0.01
             </span>
           </span>
-          
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -16096,7 +15926,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
           <div
@@ -16118,7 +15947,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -16195,7 +16023,7 @@ exports[`Storyshots CreatorLock Not found 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -16207,25 +16035,25 @@ Object {
   line-height: '15px';
 }
 
-.c17 > svg {
+.c15 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c17:hover {
+.c15:hover {
   background-color: white;
 }
 
-.c17:hover > svg {
+.c15:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c17:focus {
+.c15:focus {
   outline: none;
 }
 
-.c18 {
+.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -16237,25 +16065,25 @@ Object {
   line-height: '15px';
 }
 
-.c18 > svg {
+.c16 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c18:hover {
+.c16:hover {
   background-color: var(--link);
 }
 
-.c18:hover > svg {
+.c16:hover > svg {
   fill: white;
 }
 
-.c18:focus {
+.c16:focus {
   outline: none;
 }
 
-.c19 {
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -16271,23 +16099,23 @@ Object {
   color: var(--link);
 }
 
-.c16:hover .c19 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
-.c14 {
+.c12 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c15 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c20 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -16330,25 +16158,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -16414,19 +16225,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c12 {
     display: none;
   }
 }
@@ -16579,21 +16390,49 @@ Object {
                 0.01
               </span>
             </span>
+          </div>
+          <div
+            class=""
+          >
             <div
               class="c10"
             >
-              <span
-                class="c7 currency"
+              <div
+                class="c6"
               >
                 <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
+                  class="c7 currency"
                 >
-                  1.96
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                     - 
+                  </span>
                 </span>
-              </span>
+              </div>
+            </div>
+            <div
+              class="c11"
+            >
+              <div
+                class="c6"
+              >
+                <span
+                  class="c7 currency"
+                >
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                     - 
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -16603,71 +16442,10 @@ Object {
               class="c12"
             >
               <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                     - 
-                  </span>
-                </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                       - 
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              class="c13"
-            >
-              <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                     - 
-                  </span>
-                </span>
-                
-              </div>
-            </div>
-          </div>
-          <div
-            class=""
-          >
-            <div
-              class="c14"
-            >
-              <div
-                class="c15"
+                class="c13"
               >
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                 >
                   <svg
@@ -16683,7 +16461,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c16 c18"
+                  class="c14 c16"
                   target="_self"
                   title="Edit"
                 >
@@ -16701,13 +16479,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Edit
                   </small>
                 </button>
                 <a
-                  class="c16 c18"
+                  class="c14 c16"
                   href="/members?locks=0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   target="_self"
                   title="Members"
@@ -16723,13 +16501,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Members
                   </small>
                 </a>
                 <button
-                  class="c16 c18"
+                  class="c14 c16"
                   target="_self"
                   title="Integrations"
                 >
@@ -16744,13 +16522,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Integrations
                   </small>
                 </button>
                 <a
-                  class="c16 c18"
+                  class="c14 c16"
                   href="https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                   target="_blank"
                   title="Etherscan"
@@ -16766,7 +16544,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Etherscan
                   </small>
@@ -16774,7 +16552,7 @@ Object {
               </div>
             </div>
             <div
-              class="c20"
+              class="c18"
             />
           </div>
         </div>
@@ -16907,22 +16685,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -16945,22 +16707,6 @@ Object {
                    - 
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                     - 
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -16981,7 +16727,6 @@ Object {
                    - 
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -17166,7 +16911,7 @@ exports[`Storyshots CreatorLock Submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c12 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -17183,7 +16928,7 @@ Object {
   border-radius: 0 4px 4px 0;
 }
 
-.c15 {
+.c13 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -17195,7 +16940,7 @@ Object {
   align-self: end;
 }
 
-.c16 {
+.c14 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -17241,25 +16986,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -17325,13 +17053,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
@@ -17484,28 +17212,12 @@ Object {
                 0.01
               </span>
             </span>
-            <div
-              class="c10"
-            >
-              <span
-                class="c7 currency"
-              >
-                <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
-                >
-                  1.96
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class=""
           >
             <div
-              class="c12"
+              class="c10"
             >
               <div
                 class="c6"
@@ -17522,26 +17234,10 @@ Object {
                     0
                   </span>
                 </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                      0
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
-              class="c13"
+              class="c11"
             >
               <div
                 class="c6"
@@ -17558,20 +17254,19 @@ Object {
                     0
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
           <div
-            class="c14"
+            class="c12"
           >
             <div
-              class="c15"
+              class="c13"
             >
               Submitted
             </div>
             <div
-              class="c16"
+              class="c14"
             />
           </div>
         </div>
@@ -17704,22 +17399,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -17742,22 +17421,6 @@ Object {
                   0
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    0
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -17778,7 +17441,6 @@ Object {
                   0
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -18156,7 +17818,6 @@ Object {
                 0.01
               </span>
             </span>
-            
           </div>
           <div
             class=""
@@ -18180,7 +17841,6 @@ Object {
                     0.045
                   </span>
                 </span>
-                
               </div>
             </div>
             <div
@@ -18202,7 +17862,6 @@ Object {
                     0.045
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -18349,7 +18008,6 @@ Object {
               0.01
             </span>
           </span>
-          
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -18373,7 +18031,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
           <div
@@ -18395,7 +18052,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -18472,7 +18128,7 @@ exports[`Storyshots CreatorLock With key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c15 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -18484,25 +18140,25 @@ Object {
   line-height: '15px';
 }
 
-.c17 > svg {
+.c15 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c17:hover {
+.c15:hover {
   background-color: var(--link);
 }
 
-.c17:hover > svg {
+.c15:hover > svg {
   fill: white;
 }
 
-.c17:focus {
+.c15:focus {
   outline: none;
 }
 
-.c18 {
+.c16 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -18518,23 +18174,23 @@ Object {
   color: var(--link);
 }
 
-.c16:hover .c18 {
+.c14:hover .c16 {
   display: inline-block;
 }
 
-.c14 {
+.c12 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c15 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c19 {
+.c17 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -18577,25 +18233,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -18661,19 +18300,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c12 {
     display: none;
   }
 }
@@ -18826,21 +18465,49 @@ Object {
                 0.01
               </span>
             </span>
+          </div>
+          <div
+            class=""
+          >
             <div
               class="c10"
             >
-              <span
-                class="c7 currency"
+              <div
+                class="c6"
               >
                 <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
+                  class="c7 currency"
                 >
-                  1.96
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
                 </span>
-              </span>
+              </div>
+            </div>
+            <div
+              class="c11"
+            >
+              <div
+                class="c6"
+              >
+                <span
+                  class="c7 currency"
+                >
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -18850,71 +18517,10 @@ Object {
               class="c12"
             >
               <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                      8.82
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              class="c13"
-            >
-              <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                
-              </div>
-            </div>
-          </div>
-          <div
-            class=""
-          >
-            <div
-              class="c14"
-            >
-              <div
-                class="c15"
+                class="c13"
               >
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                   title="Withdraw"
                 >
@@ -18929,13 +18535,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Withdraw
                   </small>
                 </button>
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                   title="Edit"
                 >
@@ -18953,13 +18559,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Edit
                   </small>
                 </button>
                 <a
-                  class="c16 c17"
+                  class="c14 c15"
                   href="/members?locks=0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
                   target="_self"
                   title="Members"
@@ -18975,13 +18581,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Members
                   </small>
                 </a>
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                   title="Integrations"
                 >
@@ -18996,13 +18602,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Integrations
                   </small>
                 </button>
                 <a
-                  class="c16 c17"
+                  class="c14 c15"
                   href="https://etherscan.io/address/0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
                   target="_blank"
                   title="Etherscan"
@@ -19018,7 +18624,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c18"
+                    class="c16"
                   >
                     Etherscan
                   </small>
@@ -19026,7 +18632,7 @@ Object {
               </div>
             </div>
             <div
-              class="c19"
+              class="c17"
             />
           </div>
         </div>
@@ -19159,22 +18765,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -19197,22 +18787,6 @@ Object {
                   0.045
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    8.82
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -19233,7 +18807,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -19423,7 +18996,7 @@ exports[`Storyshots CreatorLock Withdrawal submitted 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -19435,25 +19008,25 @@ Object {
   line-height: '15px';
 }
 
-.c17 > svg {
+.c15 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c17:hover {
+.c15:hover {
   background-color: white;
 }
 
-.c17:hover > svg {
+.c15:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c17:focus {
+.c15:focus {
   outline: none;
 }
 
-.c18 {
+.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -19465,25 +19038,25 @@ Object {
   line-height: '15px';
 }
 
-.c18 > svg {
+.c16 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c18:hover {
+.c16:hover {
   background-color: var(--link);
 }
 
-.c18:hover > svg {
+.c16:hover > svg {
   fill: white;
 }
 
-.c18:focus {
+.c16:focus {
   outline: none;
 }
 
-.c19 {
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -19499,23 +19072,23 @@ Object {
   color: var(--link);
 }
 
-.c16:hover .c19 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
-.c14 {
+.c12 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c15 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c20 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -19558,25 +19131,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -19642,19 +19198,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c12 {
     display: none;
   }
 }
@@ -19807,21 +19363,49 @@ Object {
                 0.01
               </span>
             </span>
+          </div>
+          <div
+            class=""
+          >
             <div
               class="c10"
             >
-              <span
-                class="c7 currency"
+              <div
+                class="c6"
               >
                 <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
+                  class="c7 currency"
                 >
-                  1.96
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
                 </span>
-              </span>
+              </div>
+            </div>
+            <div
+              class="c11"
+            >
+              <div
+                class="c6"
+              >
+                <span
+                  class="c7 currency"
+                >
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -19831,71 +19415,10 @@ Object {
               class="c12"
             >
               <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                      8.82
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              class="c13"
-            >
-              <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                
-              </div>
-            </div>
-          </div>
-          <div
-            class=""
-          >
-            <div
-              class="c14"
-            >
-              <div
-                class="c15"
+                class="c13"
               >
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                 >
                   <svg
@@ -19911,7 +19434,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c16 c18"
+                  class="c14 c16"
                   target="_self"
                   title="Edit"
                 >
@@ -19929,13 +19452,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Edit
                   </small>
                 </button>
                 <a
-                  class="c16 c18"
+                  class="c14 c16"
                   href="/members?locks=0xdefcab445"
                   target="_self"
                   title="Members"
@@ -19951,13 +19474,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Members
                   </small>
                 </a>
                 <button
-                  class="c16 c18"
+                  class="c14 c16"
                   target="_self"
                   title="Integrations"
                 >
@@ -19972,13 +19495,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Integrations
                   </small>
                 </button>
                 <a
-                  class="c16 c18"
+                  class="c14 c16"
                   href="https://etherscan.io/address/0xdefcab445"
                   target="_blank"
                   title="Etherscan"
@@ -19994,7 +19517,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Etherscan
                   </small>
@@ -20002,7 +19525,7 @@ Object {
               </div>
             </div>
             <div
-              class="c20"
+              class="c18"
             >
               Submitted to Network...
             </div>
@@ -20137,22 +19660,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -20175,22 +19682,6 @@ Object {
                   0.045
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    8.82
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -20211,7 +19702,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -20398,7 +19888,7 @@ exports[`Storyshots CreatorLock Withdrawing 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c17 {
+    .c15 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -20410,25 +19900,25 @@ Object {
   line-height: '15px';
 }
 
-.c17 > svg {
+.c15 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c17:hover {
+.c15:hover {
   background-color: white;
 }
 
-.c17:hover > svg {
+.c15:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c17:focus {
+.c15:focus {
   outline: none;
 }
 
-.c18 {
+.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -20440,25 +19930,25 @@ Object {
   line-height: '15px';
 }
 
-.c18 > svg {
+.c16 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c18:hover {
+.c16:hover {
   background-color: var(--link);
 }
 
-.c18:hover > svg {
+.c16:hover > svg {
   fill: white;
 }
 
-.c18:focus {
+.c16:focus {
   outline: none;
 }
 
-.c19 {
+.c17 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -20474,23 +19964,23 @@ Object {
   color: var(--link);
 }
 
-.c16:hover .c19 {
+.c14:hover .c17 {
   display: inline-block;
 }
 
-.c14 {
+.c12 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c15 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c20 {
+.c18 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -20533,25 +20023,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c11 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c11:before {
-  content: '$';
-}
-
 .c9 {
   white-space: nowrap;
-}
-
-.c10 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c4 {
@@ -20617,19 +20090,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c12 {
+  .c10 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c12 {
     display: none;
   }
 }
@@ -20782,21 +20255,49 @@ Object {
                 0.01
               </span>
             </span>
+          </div>
+          <div
+            class=""
+          >
             <div
               class="c10"
             >
-              <span
-                class="c7 currency"
+              <div
+                class="c6"
               >
                 <span
-                  class="buwkmd-2 c11"
-                />
-                <span
-                  class="c9"
+                  class="c7 currency"
                 >
-                  1.96
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
                 </span>
-              </span>
+              </div>
+            </div>
+            <div
+              class="c11"
+            >
+              <div
+                class="c6"
+              >
+                <span
+                  class="c7 currency"
+                >
+                  <span
+                    class="buwkmd-2 c8"
+                  />
+                  <span
+                    class="c9"
+                  >
+                    0.045
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -20806,71 +20307,10 @@ Object {
               class="c12"
             >
               <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                <div
-                  class="c10"
-                >
-                  <span
-                    class="c7 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c11"
-                    />
-                    <span
-                      class="c9"
-                    >
-                      8.82
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div
-              class="c13"
-            >
-              <div
-                class="c6"
-              >
-                <span
-                  class="c7 currency"
-                >
-                  <span
-                    class="buwkmd-2 c8"
-                  />
-                  <span
-                    class="c9"
-                  >
-                    0.045
-                  </span>
-                </span>
-                
-              </div>
-            </div>
-          </div>
-          <div
-            class=""
-          >
-            <div
-              class="c14"
-            >
-              <div
-                class="c15"
+                class="c13"
               >
                 <button
-                  class="c16 c17"
+                  class="c14 c15"
                   target="_self"
                 >
                   <svg
@@ -20886,7 +20326,7 @@ Object {
                   
                 </button>
                 <button
-                  class="c16 c18"
+                  class="c14 c16"
                   target="_self"
                   title="Edit"
                 >
@@ -20904,13 +20344,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Edit
                   </small>
                 </button>
                 <a
-                  class="c16 c18"
+                  class="c14 c16"
                   href="/members?locks=0xfeedbabe"
                   target="_self"
                   title="Members"
@@ -20926,13 +20366,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Members
                   </small>
                 </a>
                 <button
-                  class="c16 c18"
+                  class="c14 c16"
                   target="_self"
                   title="Integrations"
                 >
@@ -20947,13 +20387,13 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Integrations
                   </small>
                 </button>
                 <a
-                  class="c16 c18"
+                  class="c14 c16"
                   href="https://etherscan.io/address/0xfeedbabe"
                   target="_blank"
                   title="Etherscan"
@@ -20969,7 +20409,7 @@ Object {
                     />
                   </svg>
                   <small
-                    class="c19"
+                    class="c17"
                   >
                     Etherscan
                   </small>
@@ -20977,7 +20417,7 @@ Object {
               </div>
             </div>
             <div
-              class="c20"
+              class="c18"
             >
               Confirming Withdrawal 
               2
@@ -21115,22 +20555,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -21153,22 +20577,6 @@ Object {
                   0.045
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    8.82
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -21189,7 +20597,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -21379,7 +20786,7 @@ exports[`Storyshots CreatorLock version 1.2 vulnerability 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c13 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -21396,7 +20803,7 @@ Object {
   border-radius: 0 4px 4px 0;
 }
 
-.c16 {
+.c14 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -21408,7 +20815,7 @@ Object {
   align-self: end;
 }
 
-.c17 {
+.c15 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -21454,25 +20861,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c12 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c12:before {
-  content: '$';
-}
-
 .c10 {
   white-space: nowrap;
-}
-
-.c11 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c5 {
@@ -21551,13 +20941,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c14 {
+  .c12 {
     display: none;
   }
 }
@@ -21724,28 +21114,12 @@ Object {
                 0.01
               </span>
             </span>
-            <div
-              class="c11"
-            >
-              <span
-                class="c8 currency"
-              >
-                <span
-                  class="buwkmd-2 c12"
-                />
-                <span
-                  class="c10"
-                >
-                  1.96
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class=""
           >
             <div
-              class="c13"
+              class="c11"
             >
               <div
                 class="c7"
@@ -21762,26 +21136,10 @@ Object {
                     0.045
                   </span>
                 </span>
-                <div
-                  class="c11"
-                >
-                  <span
-                    class="c8 currency"
-                  >
-                    <span
-                      class="buwkmd-2 c12"
-                    />
-                    <span
-                      class="c10"
-                    >
-                      8.82
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
-              class="c14"
+              class="c12"
             >
               <div
                 class="c7"
@@ -21798,20 +21156,19 @@ Object {
                     0.045
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
           <div
-            class="c15"
+            class="c13"
           >
             <div
-              class="c16"
+              class="c14"
             >
               Submitted
             </div>
             <div
-              class="c17"
+              class="c15"
             />
           </div>
         </div>
@@ -21958,22 +21315,6 @@ Object {
               0.01
             </span>
           </span>
-          <div
-            class="buwkmd-7 fIaATZ"
-          >
-            <span
-              class="buwkmd-1 kSHpM currency"
-            >
-              <span
-                class="buwkmd-2 buwkmd-5 kfVBho"
-              />
-              <span
-                class="buwkmd-6 bimvwU"
-              >
-                1.96
-              </span>
-            </span>
-          </div>
         </div>
         <div
           class="mlglvd-5 ipQvif"
@@ -21996,22 +21337,6 @@ Object {
                   0.045
                 </span>
               </span>
-              <div
-                class="buwkmd-7 fIaATZ"
-              >
-                <span
-                  class="buwkmd-1 kSHpM currency"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-5 kfVBho"
-                  />
-                  <span
-                    class="buwkmd-6 bimvwU"
-                  >
-                    8.82
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
           <div
@@ -22032,7 +21357,6 @@ Object {
                   0.045
                 </span>
               </span>
-              
             </div>
           </div>
         </div>
@@ -26362,7 +25686,7 @@ exports[`Storyshots CreatorLocks loading with locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c22 {
+    .c20 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -26374,25 +25698,25 @@ Object {
   line-height: '15px';
 }
 
-.c22 > svg {
+.c20 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c22:hover {
+.c20:hover {
   background-color: white;
 }
 
-.c22:hover > svg {
+.c20:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c22:focus {
+.c20:focus {
   outline: none;
 }
 
-.c23 {
+.c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -26404,25 +25728,25 @@ Object {
   line-height: '15px';
 }
 
-.c23 > svg {
+.c21 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c23:hover {
+.c21:hover {
   background-color: var(--link);
 }
 
-.c23:hover > svg {
+.c21:hover > svg {
   fill: white;
 }
 
-.c23:focus {
+.c21:focus {
   outline: none;
 }
 
-.c24 {
+.c22 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -26438,33 +25762,33 @@ Object {
   color: var(--link);
 }
 
-.c21:hover .c24 {
+.c19:hover .c22 {
   display: inline-block;
 }
 
-.c26 {
+.c24 {
   display: grid;
   justify-items: center;
 }
 
-.c26 svg {
+.c24 svg {
   fill: var(--grey);
   width: 60px;
 }
 
-.c19 {
+.c17 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c20 {
+.c18 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c25 {
+.c23 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -26507,25 +25831,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c18 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c18:before {
-  content: '$';
-}
-
 .c16 {
   white-space: nowrap;
-}
-
-.c17 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c11 {
@@ -26666,7 +25973,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
+  .c17 {
     display: none;
   }
 }
@@ -26889,22 +26196,6 @@ Object {
                   0.01
                 </span>
               </span>
-              <div
-                class="c17"
-              >
-                <span
-                  class="c14 currency"
-                >
-                  <span
-                    class="buwkmd-2 c18"
-                  />
-                  <span
-                    class="c16"
-                  >
-                    ---
-                  </span>
-                </span>
-              </div>
             </div>
             <div
               class=""
@@ -26927,22 +26218,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  <div
-                    class="c17"
-                  >
-                    <span
-                      class="c14 currency"
-                    >
-                      <span
-                        class="buwkmd-2 c18"
-                      />
-                      <span
-                        class="c16"
-                      >
-                         - 
-                      </span>
-                    </span>
-                  </div>
                 </div>
               </div>
               <div
@@ -26963,7 +26238,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  
                 </div>
               </div>
             </div>
@@ -26971,13 +26245,13 @@ Object {
               class=""
             >
               <div
-                class="c19"
+                class="c17"
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <button
-                    class="c21 c22"
+                    class="c19 c20"
                     target="_self"
                   >
                     <svg
@@ -26993,7 +26267,7 @@ Object {
                     
                   </button>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Edit"
                   >
@@ -27011,13 +26285,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Edit
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="/members?locks=0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                     target="_self"
                     title="Members"
@@ -27033,13 +26307,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Members
                     </small>
                   </a>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Integrations"
                   >
@@ -27054,13 +26328,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Integrations
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                     target="_blank"
                     title="Etherscan"
@@ -27076,7 +26350,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Etherscan
                     </small>
@@ -27084,7 +26358,7 @@ Object {
                 </div>
               </div>
               <div
-                class="c25"
+                class="c23"
               />
             </div>
           </div>
@@ -27210,22 +26484,6 @@ Object {
                   1.00
                 </span>
               </span>
-              <div
-                class="c17"
-              >
-                <span
-                  class="c14 currency"
-                >
-                  <span
-                    class="buwkmd-2 c18"
-                  />
-                  <span
-                    class="c16"
-                  >
-                    ---
-                  </span>
-                </span>
-              </div>
             </div>
             <div
               class=""
@@ -27248,22 +26506,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  <div
-                    class="c17"
-                  >
-                    <span
-                      class="c14 currency"
-                    >
-                      <span
-                        class="buwkmd-2 c18"
-                      />
-                      <span
-                        class="c16"
-                      >
-                         - 
-                      </span>
-                    </span>
-                  </div>
                 </div>
               </div>
               <div
@@ -27284,7 +26526,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  
                 </div>
               </div>
             </div>
@@ -27292,13 +26533,13 @@ Object {
               class=""
             >
               <div
-                class="c19"
+                class="c17"
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <button
-                    class="c21 c22"
+                    class="c19 c20"
                     target="_self"
                   >
                     <svg
@@ -27314,7 +26555,7 @@ Object {
                     
                   </button>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Edit"
                   >
@@ -27332,13 +26573,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Edit
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="/members?locks=0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                     target="_self"
                     title="Members"
@@ -27354,13 +26595,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Members
                     </small>
                   </a>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Integrations"
                   >
@@ -27375,13 +26616,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Integrations
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="https://etherscan.io/address/0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                     target="_blank"
                     title="Etherscan"
@@ -27397,7 +26638,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Etherscan
                     </small>
@@ -27405,13 +26646,13 @@ Object {
                 </div>
               </div>
               <div
-                class="c25"
+                class="c23"
               />
             </div>
           </div>
         </div>
         <section
-          class="c26"
+          class="c24"
         >
           <svg
             alt="loading"
@@ -27740,22 +26981,6 @@ Object {
                 0.01
               </span>
             </span>
-            <div
-              class="buwkmd-7 fIaATZ"
-            >
-              <span
-                class="buwkmd-1 kSHpM currency"
-              >
-                <span
-                  class="buwkmd-2 buwkmd-5 kfVBho"
-                />
-                <span
-                  class="buwkmd-6 bimvwU"
-                >
-                  ---
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class="mlglvd-5 ipQvif"
@@ -27778,22 +27003,6 @@ Object {
                      - 
                   </span>
                 </span>
-                <div
-                  class="buwkmd-7 fIaATZ"
-                >
-                  <span
-                    class="buwkmd-1 kSHpM currency"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-5 kfVBho"
-                    />
-                    <span
-                      class="buwkmd-6 bimvwU"
-                    >
-                       - 
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
@@ -27814,7 +27023,6 @@ Object {
                      - 
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -28061,22 +27269,6 @@ Object {
                 1.00
               </span>
             </span>
-            <div
-              class="buwkmd-7 fIaATZ"
-            >
-              <span
-                class="buwkmd-1 kSHpM currency"
-              >
-                <span
-                  class="buwkmd-2 buwkmd-5 kfVBho"
-                />
-                <span
-                  class="buwkmd-6 bimvwU"
-                >
-                  ---
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class="mlglvd-5 ipQvif"
@@ -28099,22 +27291,6 @@ Object {
                      - 
                   </span>
                 </span>
-                <div
-                  class="buwkmd-7 fIaATZ"
-                >
-                  <span
-                    class="buwkmd-1 kSHpM currency"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-5 kfVBho"
-                    />
-                    <span
-                      class="buwkmd-6 bimvwU"
-                    >
-                       - 
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
@@ -28135,7 +27311,6 @@ Object {
                      - 
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -29060,7 +28235,7 @@ exports[`Storyshots CreatorLocks multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c22 {
+    .c20 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -29072,25 +28247,25 @@ Object {
   line-height: '15px';
 }
 
-.c22 > svg {
+.c20 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c22:hover {
+.c20:hover {
   background-color: white;
 }
 
-.c22:hover > svg {
+.c20:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c22:focus {
+.c20:focus {
   outline: none;
 }
 
-.c23 {
+.c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -29102,25 +28277,25 @@ Object {
   line-height: '15px';
 }
 
-.c23 > svg {
+.c21 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c23:hover {
+.c21:hover {
   background-color: var(--link);
 }
 
-.c23:hover > svg {
+.c21:hover > svg {
   fill: white;
 }
 
-.c23:focus {
+.c21:focus {
   outline: none;
 }
 
-.c24 {
+.c22 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -29136,23 +28311,23 @@ Object {
   color: var(--link);
 }
 
-.c21:hover .c24 {
+.c19:hover .c22 {
   display: inline-block;
 }
 
-.c19 {
+.c17 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c20 {
+.c18 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c25 {
+.c23 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -29195,25 +28370,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c18 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c18:before {
-  content: '$';
-}
-
 .c16 {
   white-space: nowrap;
-}
-
-.c17 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c11 {
@@ -29354,7 +28512,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
+  .c17 {
     display: none;
   }
 }
@@ -29577,22 +28735,6 @@ Object {
                   0.01
                 </span>
               </span>
-              <div
-                class="c17"
-              >
-                <span
-                  class="c14 currency"
-                >
-                  <span
-                    class="buwkmd-2 c18"
-                  />
-                  <span
-                    class="c16"
-                  >
-                    ---
-                  </span>
-                </span>
-              </div>
             </div>
             <div
               class=""
@@ -29615,22 +28757,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  <div
-                    class="c17"
-                  >
-                    <span
-                      class="c14 currency"
-                    >
-                      <span
-                        class="buwkmd-2 c18"
-                      />
-                      <span
-                        class="c16"
-                      >
-                         - 
-                      </span>
-                    </span>
-                  </div>
                 </div>
               </div>
               <div
@@ -29651,7 +28777,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  
                 </div>
               </div>
             </div>
@@ -29659,13 +28784,13 @@ Object {
               class=""
             >
               <div
-                class="c19"
+                class="c17"
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <button
-                    class="c21 c22"
+                    class="c19 c20"
                     target="_self"
                   >
                     <svg
@@ -29681,7 +28806,7 @@ Object {
                     
                   </button>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Edit"
                   >
@@ -29699,13 +28824,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Edit
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="/members?locks=0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                     target="_self"
                     title="Members"
@@ -29721,13 +28846,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Members
                     </small>
                   </a>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Integrations"
                   >
@@ -29742,13 +28867,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Integrations
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                     target="_blank"
                     title="Etherscan"
@@ -29764,7 +28889,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Etherscan
                     </small>
@@ -29772,7 +28897,7 @@ Object {
                 </div>
               </div>
               <div
-                class="c25"
+                class="c23"
               />
             </div>
           </div>
@@ -29898,22 +29023,6 @@ Object {
                   1.00
                 </span>
               </span>
-              <div
-                class="c17"
-              >
-                <span
-                  class="c14 currency"
-                >
-                  <span
-                    class="buwkmd-2 c18"
-                  />
-                  <span
-                    class="c16"
-                  >
-                    ---
-                  </span>
-                </span>
-              </div>
             </div>
             <div
               class=""
@@ -29936,22 +29045,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  <div
-                    class="c17"
-                  >
-                    <span
-                      class="c14 currency"
-                    >
-                      <span
-                        class="buwkmd-2 c18"
-                      />
-                      <span
-                        class="c16"
-                      >
-                         - 
-                      </span>
-                    </span>
-                  </div>
                 </div>
               </div>
               <div
@@ -29972,7 +29065,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  
                 </div>
               </div>
             </div>
@@ -29980,13 +29072,13 @@ Object {
               class=""
             >
               <div
-                class="c19"
+                class="c17"
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <button
-                    class="c21 c22"
+                    class="c19 c20"
                     target="_self"
                   >
                     <svg
@@ -30002,7 +29094,7 @@ Object {
                     
                   </button>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Edit"
                   >
@@ -30020,13 +29112,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Edit
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="/members?locks=0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                     target="_self"
                     title="Members"
@@ -30042,13 +29134,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Members
                     </small>
                   </a>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Integrations"
                   >
@@ -30063,13 +29155,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Integrations
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="https://etherscan.io/address/0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
                     target="_blank"
                     title="Etherscan"
@@ -30085,7 +29177,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Etherscan
                     </small>
@@ -30093,7 +29185,7 @@ Object {
                 </div>
               </div>
               <div
-                class="c25"
+                class="c23"
               />
             </div>
           </div>
@@ -30273,22 +29365,6 @@ Object {
                 0.01
               </span>
             </span>
-            <div
-              class="buwkmd-7 fIaATZ"
-            >
-              <span
-                class="buwkmd-1 kSHpM currency"
-              >
-                <span
-                  class="buwkmd-2 buwkmd-5 kfVBho"
-                />
-                <span
-                  class="buwkmd-6 bimvwU"
-                >
-                  ---
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class="mlglvd-5 ipQvif"
@@ -30311,22 +29387,6 @@ Object {
                      - 
                   </span>
                 </span>
-                <div
-                  class="buwkmd-7 fIaATZ"
-                >
-                  <span
-                    class="buwkmd-1 kSHpM currency"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-5 kfVBho"
-                    />
-                    <span
-                      class="buwkmd-6 bimvwU"
-                    >
-                       - 
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
@@ -30347,7 +29407,6 @@ Object {
                      - 
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -30594,22 +29653,6 @@ Object {
                 1.00
               </span>
             </span>
-            <div
-              class="buwkmd-7 fIaATZ"
-            >
-              <span
-                class="buwkmd-1 kSHpM currency"
-              >
-                <span
-                  class="buwkmd-2 buwkmd-5 kfVBho"
-                />
-                <span
-                  class="buwkmd-6 bimvwU"
-                >
-                  ---
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class="mlglvd-5 ipQvif"
@@ -30632,22 +29675,6 @@ Object {
                      - 
                   </span>
                 </span>
-                <div
-                  class="buwkmd-7 fIaATZ"
-                >
-                  <span
-                    class="buwkmd-1 kSHpM currency"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-5 kfVBho"
-                    />
-                    <span
-                      class="buwkmd-6 bimvwU"
-                    >
-                       - 
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
@@ -30668,7 +29695,6 @@ Object {
                      - 
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>
@@ -32010,7 +31036,7 @@ exports[`Storyshots CreatorLocks single lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c22 {
+    .c20 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -32022,25 +31048,25 @@ Object {
   line-height: '15px';
 }
 
-.c22 > svg {
+.c20 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c22:hover {
+.c20:hover {
   background-color: white;
 }
 
-.c22:hover > svg {
+.c20:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c22:focus {
+.c20:focus {
   outline: none;
 }
 
-.c23 {
+.c21 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -32052,25 +31078,25 @@ Object {
   line-height: '15px';
 }
 
-.c23 > svg {
+.c21 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c23:hover {
+.c21:hover {
   background-color: var(--link);
 }
 
-.c23:hover > svg {
+.c21:hover > svg {
   fill: white;
 }
 
-.c23:focus {
+.c21:focus {
   outline: none;
 }
 
-.c24 {
+.c22 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -32086,23 +31112,23 @@ Object {
   color: var(--link);
 }
 
-.c21:hover .c24 {
+.c19:hover .c22 {
   display: inline-block;
 }
 
-.c19 {
+.c17 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c20 {
+.c18 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c25 {
+.c23 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -32145,25 +31171,8 @@ Object {
   font-family: 'Arial',sans-serif;
 }
 
-.c18 {
-  max-width: 40px;
-  text-align: left;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c18:before {
-  content: '$';
-}
-
 .c16 {
   white-space: nowrap;
-}
-
-.c17 {
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 }
 
 .c11 {
@@ -32304,7 +31313,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
+  .c17 {
     display: none;
   }
 }
@@ -32527,22 +31536,6 @@ Object {
                   0.01
                 </span>
               </span>
-              <div
-                class="c17"
-              >
-                <span
-                  class="c14 currency"
-                >
-                  <span
-                    class="buwkmd-2 c18"
-                  />
-                  <span
-                    class="c16"
-                  >
-                    ---
-                  </span>
-                </span>
-              </div>
             </div>
             <div
               class=""
@@ -32565,22 +31558,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  <div
-                    class="c17"
-                  >
-                    <span
-                      class="c14 currency"
-                    >
-                      <span
-                        class="buwkmd-2 c18"
-                      />
-                      <span
-                        class="c16"
-                      >
-                         - 
-                      </span>
-                    </span>
-                  </div>
                 </div>
               </div>
               <div
@@ -32601,7 +31578,6 @@ Object {
                        - 
                     </span>
                   </span>
-                  
                 </div>
               </div>
             </div>
@@ -32609,13 +31585,13 @@ Object {
               class=""
             >
               <div
-                class="c19"
+                class="c17"
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <button
-                    class="c21 c22"
+                    class="c19 c20"
                     target="_self"
                   >
                     <svg
@@ -32631,7 +31607,7 @@ Object {
                     
                   </button>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Edit"
                   >
@@ -32649,13 +31625,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Edit
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="/members?locks=0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                     target="_self"
                     title="Members"
@@ -32671,13 +31647,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Members
                     </small>
                   </a>
                   <button
-                    class="c21 c23"
+                    class="c19 c21"
                     target="_self"
                     title="Integrations"
                   >
@@ -32692,13 +31668,13 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Integrations
                     </small>
                   </button>
                   <a
-                    class="c21 c23"
+                    class="c19 c21"
                     href="https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
                     target="_blank"
                     title="Etherscan"
@@ -32714,7 +31690,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="c24"
+                      class="c22"
                     >
                       Etherscan
                     </small>
@@ -32722,7 +31698,7 @@ Object {
                 </div>
               </div>
               <div
-                class="c25"
+                class="c23"
               />
             </div>
           </div>
@@ -32902,22 +31878,6 @@ Object {
                 0.01
               </span>
             </span>
-            <div
-              class="buwkmd-7 fIaATZ"
-            >
-              <span
-                class="buwkmd-1 kSHpM currency"
-              >
-                <span
-                  class="buwkmd-2 buwkmd-5 kfVBho"
-                />
-                <span
-                  class="buwkmd-6 bimvwU"
-                >
-                  ---
-                </span>
-              </span>
-            </div>
           </div>
           <div
             class="mlglvd-5 ipQvif"
@@ -32940,22 +31900,6 @@ Object {
                      - 
                   </span>
                 </span>
-                <div
-                  class="buwkmd-7 fIaATZ"
-                >
-                  <span
-                    class="buwkmd-1 kSHpM currency"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-5 kfVBho"
-                    />
-                    <span
-                      class="buwkmd-6 bimvwU"
-                    >
-                       - 
-                    </span>
-                  </span>
-                </div>
               </div>
             </div>
             <div
@@ -32976,7 +31920,6 @@ Object {
                      - 
                   </span>
                 </span>
-                
               </div>
             </div>
           </div>

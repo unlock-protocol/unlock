@@ -12,9 +12,6 @@ const config = configure()
 const ConfigProvider = ConfigContext.Provider
 
 const store = createUnlockStore({
-  currency: {
-    USD: 195.99,
-  },
   account: {
     address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
   },
