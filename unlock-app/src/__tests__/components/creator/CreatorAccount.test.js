@@ -12,10 +12,7 @@ const account = {
 const network = {
   name: 4,
 }
-const currency = {
-  USD: 195.99,
-}
-const store = createUnlockStore({ currency })
+const store = createUnlockStore({})
 
 let wrapper
 
