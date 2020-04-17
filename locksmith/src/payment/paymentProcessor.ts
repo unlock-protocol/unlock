@@ -14,6 +14,8 @@ const Sequelize = require('sequelize')
 
 const { Op } = Sequelize
 
+const APPPLICATION_FEE_PERCENTAGE = 0.1
+
 export class PaymentProcessor {
   stripe: Stripe
 
@@ -115,12 +117,14 @@ export class PaymentProcessor {
   ) {
     // eslint-disable-next-line no-useless-catch
     try {
-      const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && stripeCustomerId) {
-        const keyPriceUSD: number = await this.keyPricer.keyPriceUSD(lock)
-        const applicationFee = keyPriceUSD * 0.1
+      if (stripeCustomerId) {
+        const keyPriceUSD: number =
+          Math.ceil(await this.keyPricer.keyPriceUSD(lock)) * 100
+        const applicationFee = Math.ceil(
+          keyPriceUSD * APPPLICATION_FEE_PERCENTAGE
+        )
         const charge = await this.stripe.charges.create(
           {
             amount: keyPriceUSD,
@@ -173,6 +177,36 @@ export class PaymentProcessor {
       return fulfillmentDispatcher.purchase(lock, recipient)
     }
     return null
+  }
+
+  async initiatePurchaseForConnectedStripeAccount(
+    recipient: ethereumAddress /** this is the managed user/buyer */,
+    lock: ethereumAddress,
+    credentials: string,
+    providerHost: string,
+    buyer: ethereumAddress,
+    connectedStripeAccount: string
+  ) {
+    const fulfillmentDispatcher = new Dispatcher(
+      'unlockAddress',
+      credentials,
+      providerHost,
+      buyer
+    )
+
+    if (await this.isKeyFree(lock)) {
+      return fulfillmentDispatcher.purchase(lock, recipient)
+    } else {
+      const successfulCharge = await this.chargeUserForConnectedAccount(
+        recipient,
+        lock,
+        connectedStripeAccount
+      )
+      if (successfulCharge) {
+        return fulfillmentDispatcher.grantKeys(lock, recipient)
+      }
+      return null
+    }
   }
 }
 
