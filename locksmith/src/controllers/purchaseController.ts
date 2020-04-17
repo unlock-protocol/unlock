@@ -61,7 +61,7 @@ namespace PurchaseController {
         config.purchaserCredentails,
         config.web3ProviderHost,
         purchaser,
-        'connectedStripeAccount'
+        'connectedStripeAccount' // The expectation is this will come from an external data source
       )
 
       return res.send({
