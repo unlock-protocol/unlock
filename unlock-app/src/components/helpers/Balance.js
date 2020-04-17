@@ -8,29 +8,17 @@ import BalanceProvider from './BalanceProvider'
  * Component which shows a balance in Eth using default styles.
  * use the BalanceProvider
  * @param {*} amount: the amount to convert to Eth
- * @param {boolean} convertCurrency: show the converted value
  */
-export const Balance = ({ amount, currency, convertCurrency }) => (
+export const Balance = ({ amount, currency }) => (
   <BalanceProvider
-    convertCurrency={convertCurrency}
     amount={amount}
-    render={(ethWithPresentation, convertedUSDValue) => (
+    render={ethWithPresentation => (
       <BalanceWithConversion>
         <Currency>
           {!currency && <Eth />}
           {!!currency && <ERC20 name={currency} />}
           <BalanceWithUnit>{ethWithPresentation}</BalanceWithUnit>
         </Currency>
-        {convertCurrency ? (
-          <SubBalance>
-            <Currency>
-              <USD />
-              <BalanceWithUnit>{convertedUSDValue}</BalanceWithUnit>
-            </Currency>
-          </SubBalance>
-        ) : (
-          ''
-        )}
       </BalanceWithConversion>
     )}
   />
@@ -38,13 +26,11 @@ export const Balance = ({ amount, currency, convertCurrency }) => (
 
 Balance.propTypes = {
   amount: PropTypes.string,
-  convertCurrency: PropTypes.bool,
   currency: PropTypes.string,
 }
 
 Balance.defaultProps = {
   amount: null,
-  convertCurrency: true,
   currency: '',
 }
 
@@ -88,12 +74,6 @@ export const USD = styled(CurrencySymbol)`
 
 export const BalanceWithUnit = styled.span`
   white-space: nowrap;
-`
-
-const SubBalance = styled.div`
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 5px;
 `
 
 export default Balance

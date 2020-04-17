@@ -7,11 +7,7 @@ import createUnlockStore from '../createUnlockStore'
 import { ConfigContext } from '../utils/withConfig'
 import configure from '../config'
 
-const store = createUnlockStore({
-  currency: {
-    USD: 195.99,
-  },
-})
+const store = createUnlockStore({})
 
 const ConfigProvider = ConfigContext.Provider
 

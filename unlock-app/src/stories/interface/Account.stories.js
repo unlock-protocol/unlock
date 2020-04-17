@@ -5,11 +5,7 @@ import { Provider } from 'react-redux'
 import { Account } from '../../components/interface/Account'
 import createUnlockStore from '../../createUnlockStore'
 
-const store = createUnlockStore({
-  currency: {
-    USD: 195.99,
-  },
-})
+const store = createUnlockStore({})
 
 storiesOf('Account', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)

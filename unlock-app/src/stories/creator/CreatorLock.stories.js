@@ -64,9 +64,6 @@ const store = createUnlockStore({
       type: TransactionType.WITHDRAWAL,
     },
   },
-  currency: {
-    USD: 195.99,
-  },
 })
 
 const config = configure()
