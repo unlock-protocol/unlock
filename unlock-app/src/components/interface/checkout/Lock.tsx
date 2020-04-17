@@ -68,6 +68,7 @@ export const Lock = ({
     formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(lock)}`,
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: lock.name,
+    address: lock.address,
   }
 
   const canAfford = userCanAffordKey(lock, balances)

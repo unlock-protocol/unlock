@@ -51,31 +51,28 @@ export class PaymentProcessor {
       const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && stripeCustomerId) {
+      // If we already have a stripe customer id
+      if (stripeCustomerId) {
         await this.stripe.customers.createSource(stripeCustomerId, {
           source: token,
         })
 
         return true
       }
-      if (user && !stripeCustomerId) {
-        const customer = await this.createStripeCustomer(
-          user.emailAddress,
-          token
-        )
-        return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
+
+      const customer = await this.stripe.customers.create({
+        email: user ? user.emailAddress : '', // The stripe API does not require a valid email to be passed
+        source: token,
+      })
+
+      if (!customer) {
+        return false
       }
-      return false
+
+      return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
     } catch (e) {
       return false
     }
-  }
-
-  createStripeCustomer(emailAddress: string, token: string) {
-    return this.stripe.customers.create({
-      email: emailAddress,
-      source: token,
-    })
   }
 
   /**
@@ -87,16 +84,55 @@ export class PaymentProcessor {
   async chargeUser(publicKey: ethereumAddress, lock: ethereumAddress) {
     // eslint-disable-next-line no-useless-catch
     try {
-      const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && stripeCustomerId) {
+      if (stripeCustomerId) {
         const charge = await this.stripe.charges.create({
-          amount: await this.price(lock),
+          amount: await this.price(lock), // we should be careful here and charge at most 35
           currency: 'USD',
           customer: stripeCustomerId,
           metadata: { lock, publicKey },
         })
+        return charge
+      }
+      throw new Error('Customer lacks purchasing details')
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   *  Charges an appropriately configured user with purchasing details, with the amount specified
+   *  in the purchase details
+   * @param publicKey
+   * @param purchaseDetails
+   */
+  async chargeUserForConnectedAccount(
+    publicKey: ethereumAddress,
+    lock: ethereumAddress,
+    // eslint-disable-next-line no-unused-vars
+    connectedStripeId: string
+  ) {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const user = await this.findUserByPublicKey(publicKey)
+      const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
+
+      if (user && stripeCustomerId) {
+        const keyPriceUSD: number = await this.keyPricer.keyPriceUSD(lock)
+        const applicationFee = keyPriceUSD * 0.1
+        const charge = await this.stripe.charges.create(
+          {
+            amount: keyPriceUSD,
+            currency: 'USD',
+            customer: stripeCustomerId,
+            metadata: { lock, publicKey },
+            application_fee_amount: applicationFee,
+          },
+          {
+            stripe_account: connectedStripeId,
+          }
+        )
         return charge
       }
       throw new Error('Customer lacks purchasing details')

@@ -2259,7 +2259,9 @@ Object {
             <div
               class="c18"
             >
-              <div>
+              <div
+                tables="true"
+              >
                 <p>
                   This is some sample markdown content for the purposes of displaying a blog post within Storybook. You can edit this
 markdown content within the blog post story itself.
@@ -2324,6 +2326,7 @@ are intentionally not generated from this file date, in case we want to override
                   .
                 </p>
               </div>
+              
             </div>
             <hr
               class="c19"
@@ -2719,7 +2722,9 @@ are intentionally not generated from this file date, in case we want to override
           <div
             class="sc-8h5qi4-6 fRPtnH"
           >
-            <div>
+            <div
+              tables="true"
+            >
               <p>
                 This is some sample markdown content for the purposes of displaying a blog post within Storybook. You can edit this
 markdown content within the blog post story itself.
@@ -2784,6 +2789,7 @@ are intentionally not generated from this file date, in case we want to override
                 .
               </p>
             </div>
+            
           </div>
           <hr
             class="sc-8h5qi4-0 eBXWiK"
@@ -4042,7 +4048,9 @@ Object {
         <div
           class="c6"
         >
-          <div>
+          <div
+            tables="true"
+          >
             <p>
               <a
                 href="https://unlock-protocol.com"
@@ -4266,7 +4274,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
       <div
         class="sc-8h5qi4-6 fRPtnH"
       >
-        <div>
+        <div
+          tables="true"
+        >
           <p>
             <a
               href="https://unlock-protocol.com"
@@ -4655,7 +4665,9 @@ Object {
         <div
           class="c5"
         >
-          <div>
+          <div
+            tables="true"
+          >
             <p>
               <a
                 href="https://unlock-protocol.com"
@@ -4875,7 +4887,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
       <div
         class="sc-8h5qi4-6 fRPtnH"
       >
-        <div>
+        <div
+          tables="true"
+        >
           <p>
             <a
               href="https://unlock-protocol.com"
@@ -5264,7 +5278,9 @@ Object {
         <div
           class="c5"
         >
-          <div>
+          <div
+            tables="true"
+          >
             <p>
               <a
                 href="https://unlock-protocol.com"
@@ -5484,7 +5500,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
       <div
         class="sc-8h5qi4-6 fRPtnH"
       >
-        <div>
+        <div
+          tables="true"
+        >
           <p>
             <a
               href="https://unlock-protocol.com"
@@ -5886,7 +5904,9 @@ Object {
         <div
           class="c6"
         >
-          <div>
+          <div
+            tables="true"
+          >
             <p>
               <a
                 href="https://unlock-protocol.com"
@@ -6114,7 +6134,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
       <div
         class="sc-8h5qi4-6 fRPtnH"
       >
-        <div>
+        <div
+          tables="true"
+        >
           <p>
             <a
               href="https://unlock-protocol.com"
@@ -6516,7 +6538,9 @@ Object {
         <div
           class="c6"
         >
-          <div>
+          <div
+            tables="true"
+          >
             <p>
               <a
                 href="https://unlock-protocol.com"
@@ -6740,7 +6764,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
       <div
         class="sc-8h5qi4-6 fRPtnH"
       >
-        <div>
+        <div
+          tables="true"
+        >
           <p>
             <a
               href="https://unlock-protocol.com"

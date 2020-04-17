@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { loadStripe, StripeCardElementOptions } from '@stripe/stripe-js'
 import {
@@ -10,14 +10,12 @@ import {
 import { Input, Label, Select, Button } from './FormStyles'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
-import { useProvider } from '../../../hooks/useProvider'
-import { StorageServiceContext } from '../../../utils/withStorageService'
-import { StorageService } from '../../../services/storageService'
 
 const { stripeApiKey } = configure()
 const stripePromise = loadStripe(stripeApiKey)
 
 interface Props {
+  saveCard: (token: string) => void
   invokePurchase: () => void
   setShowingPaymentForm: any
 }
@@ -36,12 +34,14 @@ const cardElementOptions: StripeCardElementOptions = {
   },
 }
 
-export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
+export const Form = ({
+  invokePurchase,
+  setShowingPaymentForm,
+  saveCard,
+}: Props) => {
   const { register, handleSubmit } = useForm()
   const stripe = useStripe()
   const elements = useElements()
-  const { provider } = useProvider()
-  const storageService: StorageService = useContext(StorageServiceContext)
 
   const onSubmit = async (data: Record<string, any>) => {
     const cardElement = elements!.getElement(CardElement)
@@ -51,13 +51,7 @@ export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
     })
 
     if (result.token) {
-      const { data, sig } = provider!.signPaymentData(result.token.id)
-      await storageService.addPaymentMethod(
-        data.message.user.emailAddress,
-        data,
-        sig
-      )
-
+      await saveCard(result.token.id)
       // In some cases this will trigger the metadata form, which will
       // cause a state update on an unmounted component. There will be an
       // error in the console, but it shouldn't cause any issues.
@@ -81,7 +75,7 @@ export const Form = ({ invokePurchase, setShowingPaymentForm }: Props) => {
         ))}
       </Select>
       <Button type="submit" disabled={!stripe}>
-        Submit
+        Purchase
       </Button>
     </form>
   )

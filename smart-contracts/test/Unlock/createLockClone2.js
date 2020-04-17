@@ -54,8 +54,7 @@ contract('Unlock / createLockClone2', accounts => {
           const address = await utils.create2.buildClone2Address(
             unlock.address,
             templateAddress,
-            accounts[0],
-            salt
+            accounts[0] + salt.replace('0x', '')
           )
           assert.equal(address, lock.address)
         })

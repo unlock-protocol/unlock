@@ -28,27 +28,14 @@ import {
 import { currencySymbol } from '../../utils/lock'
 import { INFINITY } from '../../constants'
 
-const BalanceOnLock = withConfig(
-  ({ lock, attribute, skipConversion, config }) => {
-    const currency = currencySymbol(lock, config.ERC20Contract)
-    return (
-      <Balance
-        amount={lock[attribute]}
-        currency={currency}
-        convertCurrency={!skipConversion && !currency}
-      />
-    )
-  }
-)
+const BalanceOnLock = withConfig(({ lock, attribute, config }) => {
+  const currency = currencySymbol(lock, config.ERC20Contract)
+  return <Balance amount={lock[attribute]} currency={currency} />
+})
 
 BalanceOnLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   attribute: PropTypes.string.isRequired,
-  skipConversion: PropTypes.bool,
-}
-
-BalanceOnLock.defaultProps = {
-  skipConversion: false,
 }
 
 const LockKeysNumbers = ({ lock }) => (
@@ -140,7 +127,7 @@ export const CreatorLock = ({ lock: lockFromProps }) => {
             <BalanceOnLock lock={lock} attribute="balance" />
           </NoPhone>
           <Phone>
-            <BalanceOnLock lock={lock} attribute="balance" skipConversion />
+            <BalanceOnLock lock={lock} attribute="balance" />
           </Phone>
         </BalanceContainer>
         <LockIconBar

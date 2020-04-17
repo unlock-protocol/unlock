@@ -54,7 +54,7 @@ const appButtons = [
   {
     Button: PageNavButtons.Settings,
     page: '/settings',
-    allowedUsers: [accountTypes.managed],
+    allowedUsers: [accountTypes.managed, accountTypes.crypto],
   },
   {
     Button: PageNavButtons.Keychain,

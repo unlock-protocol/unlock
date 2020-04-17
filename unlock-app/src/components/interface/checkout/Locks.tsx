@@ -5,6 +5,7 @@ import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface LocksProps {
   accountAddress: string
@@ -12,6 +13,7 @@ interface LocksProps {
   emitTransactionInfo: (info: TransactionInfo) => void
   metadataRequired?: boolean
   showMetadataForm: () => void
+  config: PaywallConfig
 }
 
 export const Locks = ({
@@ -20,9 +22,14 @@ export const Locks = ({
   emitTransactionInfo,
   metadataRequired,
   showMetadataForm,
+  config,
 }: LocksProps) => {
   const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
-  const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
+  const { locks, loading } = usePaywallLocks(
+    lockAddresses,
+    getTokenBalance,
+    config
+  )
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
 
   const now = new Date().getTime() / 1000
@@ -32,7 +39,7 @@ export const Locks = ({
     return (
       <div>
         {lockAddresses.map(address => (
-          <LoadingLock key={address} />
+          <LoadingLock address={address} key={address} />
         ))}
       </div>
     )
@@ -42,7 +49,7 @@ export const Locks = ({
     <div>
       {locks.map(lock => (
         <Lock
-          key={lock.name}
+          key={lock.address}
           lock={lock}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}

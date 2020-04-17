@@ -17,9 +17,6 @@ jest.mock('../../constants')
 const network = {
   name: 4,
 }
-const currency = {
-  USD: 195.99,
-}
 const router = {
   location: {
     pathname: '/',
@@ -34,7 +31,7 @@ const account = {
 }
 
 ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
-const store = createUnlockStore({ currency, network, router })
+const store = createUnlockStore({ network, router })
 const ConfigProvider = ConfigContext.Provider
 
 describe('Pages', () => {
