@@ -61,7 +61,7 @@ namespace PurchaseController {
         config.purchaserCredentails,
         config.web3ProviderHost,
         purchaser,
-        'connectedStripeAccount' // The expectation is this will come from an external data source
+        'connectedStripeAccount' // TODO: replace with value coming from lock metadata, saved by one of the lock managers
       )
 
       return res.send({

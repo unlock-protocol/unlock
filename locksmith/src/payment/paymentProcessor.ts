@@ -14,6 +14,8 @@ const Sequelize = require('sequelize')
 
 const { Op } = Sequelize
 
+const APPPLICATION_FEE_PERCENTAGE = 0.1
+
 export class PaymentProcessor {
   stripe: Stripe
 
@@ -120,7 +122,9 @@ export class PaymentProcessor {
       if (stripeCustomerId) {
         const keyPriceUSD: number =
           Math.ceil(await this.keyPricer.keyPriceUSD(lock)) * 100
-        const applicationFee = Math.ceil(keyPriceUSD * 0.1)
+        const applicationFee = Math.ceil(
+          keyPriceUSD * APPPLICATION_FEE_PERCENTAGE
+        )
         const charge = await this.stripe.charges.create(
           {
             amount: keyPriceUSD,
