@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
-import withConfig from '../../../utils/withConfig'
 
 const Integration = ({ name, icon, href }) => (
   <App>
@@ -67,7 +66,7 @@ export class AppStore extends React.Component {
   }
 
   render() {
-    const { config, lock } = this.props
+    const { lock } = this.props
     return (
       <Wrapper>
         <DetailTitle>Integrate</DetailTitle>
@@ -107,7 +106,7 @@ export class AppStore extends React.Component {
             </ExtraLink>
             <ExtraLink>
               <Button
-                href={`${config.paywallUrl}/newdemo?lock=${lock.address}`}
+                href={`/demo?lock=${lock.address}`}
                 target="_blank"
                 backgroundColor="white"
                 borderRadius="3px"
@@ -127,10 +126,9 @@ export class AppStore extends React.Component {
 
 AppStore.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
-export default withConfig(AppStore)
+export default AppStore
 
 const Wrapper = styled.section`
   padding-top: 20px;

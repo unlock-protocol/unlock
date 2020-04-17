@@ -6,8 +6,6 @@ import {
   initialRouterState,
 } from 'connected-next-router'
 
-import configure from './config'
-
 // Reducers
 
 import loadingReducer, {
@@ -25,9 +23,6 @@ import providerReducer, {
 import transactionsReducer, {
   initialState as defaultTransactions,
 } from './reducers/transactionsReducer'
-import currencyReducer, {
-  initialState as defaultCurrency,
-} from './reducers/currencyReducer'
 import errorsReducer, {
   initialState as defaultError,
 } from './reducers/errorsReducer'
@@ -56,8 +51,6 @@ import signatureReducer, {
   initialState as defaultSignatureState,
 } from './reducers/signatureReducer'
 
-const config = configure()
-
 export const createUnlockStore = (
   defaultState = {},
   middlewares = [],
@@ -71,7 +64,6 @@ export const createUnlockStore = (
     network: networkReducer,
     provider: providerReducer,
     transactions: transactionsReducer,
-    currency: currencyReducer,
     errors: errorsReducer,
     lockFormStatus: lockFormVisibilityReducer,
     fullScreenModalStatus: fullScreenModalsReducer,
@@ -98,7 +90,6 @@ export const createUnlockStore = (
     network: defaultNetwork,
     provider: defaultProvider,
     transactions: defaultTransactions,
-    currency: defaultCurrency,
     errors: defaultError,
     lockFormStatus: defaultLockFormVisibility,
     fullScreenModalStatus: defaultFullScreenModalsStatus,
@@ -107,7 +98,7 @@ export const createUnlockStore = (
     cart: defaultCartState,
     pageIsLocked: defaultPageStatus,
     signature: defaultSignatureState,
-    provider: Object.keys(config.providers)[0],
+    provider: null, // This will be set in the UI!
     ...defaultState,
   }
 

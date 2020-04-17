@@ -3,7 +3,7 @@ import { KeyResult } from '@unlock-protocol/unlock-js'
 import { RawLock } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { lockKeysAvailable } from '../../../utils/checkoutLockUtils'
-import { useUserAccountsPurchaseKey } from '../../../hooks/useUserAccountsPurchaseKey'
+import { useFiatPurchaseKey } from '../../../hooks/useFiatPurchaseKey'
 import * as LockVariations from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
@@ -35,7 +35,7 @@ export const FiatLock = ({
   setShowingPaymentForm,
   showMetadataForm,
 }: FiatLockProps) => {
-  const { purchaseKey } = useUserAccountsPurchaseKey(emitTransactionInfo)
+  const { purchaseKey } = useFiatPurchaseKey(emitTransactionInfo)
   const { state, dispatch } = useCheckoutStore()
 
   const purchase = () => {
@@ -79,6 +79,7 @@ export const FiatLock = ({
     formattedKeyPrice,
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: lock.name,
+    address: lock.address,
   }
 
   const keyForThisLock = activeKeys.find(key => key.lock === lock.address)

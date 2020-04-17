@@ -16,21 +16,21 @@
     "prepublish": "rm -rf ./dist && npm run svg-2-components && npm run build"
   },
   "peerDependencies": {
-    "react": "16.13.0",
-    "react-dom": "16.13.0"
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
   },
   "devDependencies": {
     "@babel/cli": "7.8.4",
-    "@babel/core": "7.8.7",
-    "@babel/preset-env": "7.8.7",
-    "@babel/preset-react": "7.8.3",
-    "@storybook/react": "^5.3.18",
-    "@svgr/cli": "5.2.0",
-    "babel-loader": "8.0.6",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
+    "@babel/core": "7.9.0",
+    "@babel/preset-env": "7.9.5",
+    "@babel/preset-react": "7.9.4",
+    "@storybook/react": "5.3.18",
+    "@svgr/cli": "5.3.1",
+    "babel-loader": "8.1.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "storybook": "5.3.18",
-    "webpack": "4.42.0",
+    "webpack": "4.42.1",
     "webpack-cli": "3.3.11"
   }
 }

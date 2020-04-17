@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Card } from '@stripe/stripe-js'
 import { FiatLock } from './FiatLock'
 import { DisabledLock, LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
@@ -12,14 +11,16 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import { PaymentDetails } from './PaymentDetails'
+import { useCards } from '../../../hooks/useCards'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface LocksProps {
   lockAddresses: string[]
   accountAddress: string
   emitTransactionInfo: (info: TransactionInfo) => void
-  cards: Card[]
   metadataRequired: boolean
   showMetadataForm: () => void
+  config: PaywallConfig
 }
 
 interface PaymentFormState {
@@ -31,29 +32,34 @@ export const FiatLocks = ({
   lockAddresses,
   accountAddress,
   emitTransactionInfo,
-  cards,
   metadataRequired,
   showMetadataForm,
+  config,
 }: LocksProps) => {
+  const { cards, loading: cardsLoading, saveCard } = useCards(accountAddress)
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
-  const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
+  const { locks, loading } = usePaywallLocks(
+    lockAddresses,
+    getTokenBalance,
+    config
+  )
+
   const fiatKeyPrices = useFiatKeyPrices(lockAddresses)
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
   const [showingPaymentForm, setShowingPaymentForm] = useState<
     PaymentFormState
   >({ visible: false })
-
   const needToCollectPaymentDetails = cards.length === 0
 
   const now = new Date().getTime() / 1000
   const activeKeys = keys.filter(key => key.expiration > now)
 
-  if (loading) {
+  if (loading || cardsLoading) {
     return (
       <div>
         {lockAddresses.map(address => (
-          <LoadingLock key={address} />
+          <LoadingLock address={address} key={address} />
         ))}
       </div>
     )
@@ -62,6 +68,7 @@ export const FiatLocks = ({
   if (showingPaymentForm.visible) {
     return (
       <PaymentDetails
+        saveCard={token => saveCard(token)}
         setShowingPaymentForm={setShowingPaymentForm}
         invokePurchase={showingPaymentForm.invokePurchase!}
       />
@@ -78,7 +85,7 @@ export const FiatLocks = ({
           const fiatPrice = `$${formattedPrice}`
           return (
             <FiatLock
-              key={lock.name}
+              key={lock.address}
               lock={lock}
               formattedKeyPrice={fiatPrice}
               activeKeys={activeKeys}
@@ -94,7 +101,8 @@ export const FiatLocks = ({
 
         return (
           <DisabledLock
-            key={lock.name}
+            address={lock.address}
+            key={lock.address}
             name={lock.name}
             formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}
             formattedKeysAvailable={lockKeysAvailable(lock)}

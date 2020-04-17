@@ -5,7 +5,9 @@ authorName: Ben Werdmuller
 publishDate: July 2, 2019
 description: The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.
 image: /static/images/blog/known/known-unlock.png
+latestUpdateDate: April 6, 2020
 ---
+
 Thousands of people participate in the [IndieWeb](https://indieweb.org): a growing movement that encourages people to publish on their own site rather than "silo" networks like Facebook and Twitter. [As The New Yorker put it](https://www.newyorker.com/tech/annals-of-technology/can-indie-social-media-save-us):
 
 > Proponents of the IndieWeb offer a fairly straightforward analysis of our current social-media crisis. They frame it in terms of a single question: Who owns the servers? The bulk of our online activity takes places on servers owned by a small number of massive companies. Servers cost money to run. If you’re using a company’s servers without paying for the privilege, then that company must be finding other ways to “extract value” from you—and it’s that quest for large-scale value extraction, they argue, that leads directly to the crises of compromised privacy and engineered addictiveness with which we’re currently grappling.
@@ -30,7 +32,7 @@ To build the plugin, I used two aspects of Unlock in tandem: the paywall and the
 
 ![The Unlock paywall on Known.](/static/images/blog/known/known-unlock.png)
 
-## 1. The paywall. 
+## 1. The paywall.
 
 I added the site-wide ability to attach a lock to my Known site. When this is present, all long-form posts will be protected by that Unlock lock.
 
@@ -85,7 +87,7 @@ And then the library itself:
     (function (d, s) {
     var js = d.createElement(s),
     sc = d.getElementsByTagName(s)[0];
-    js.src = "https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+    js.src = "https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
     sc.parentNode.insertBefore(js, sc);
     }(document, "script"));
 </script>

@@ -5,12 +5,10 @@ import {
   Transactions,
   Balance,
   UserMetadata,
+  KeyResults,
+  UnlockNetworks,
 } from './unlockTypes'
 import { web3MethodCall, Web3WalletInfo, web3MethodResult } from './windowTypes'
-import {
-  KeyResults,
-  unlockNetworks,
-} from './data-iframe/blockchainHandler/blockChainTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
 
@@ -115,7 +113,7 @@ export type Message =
     }
   | {
       type: PostMessages.UPDATE_NETWORK
-      payload: unlockNetworks
+      payload: UnlockNetworks
     }
   | {
       type: PostMessages.UPDATE_WALLET

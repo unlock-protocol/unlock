@@ -59,11 +59,6 @@ export const useLocks = owner => {
   // TODO: move to context
   const graphService = new GraphService(subgraphURI)
 
-  // Connect to the provider.
-  // TODO: this should probably be moved upstream
-  // It is noop if already called somewhere else
-  walletService.connect(config.providers[Object.keys(config.providers)[0]])
-
   /**
    * Helper function: retrieves a lock object at the address
    */
@@ -87,7 +82,7 @@ export const useLocks = owner => {
     // The locks from the subgraph miss some important things, such as balance,
     // ERC20 info.. etc so we need to retrieve them from unlock-js too.
     // TODO: add these missing fields to the graph!
-    const locks = await graphService.locksByOwner(owner)
+    const locks = await graphService.locksByManager(owner)
 
     const lockPromises = locks.map(async (lock, index) => {
       addToLocks({

@@ -8,40 +8,42 @@ import AccountInfo from '../interface/user-account/AccountInfo'
 import { PaymentDetails } from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import LogInSignUp from '../interface/LogInSignUp'
+import Authenticate from '../interface/Authenticate'
 import { useCards } from '../../hooks/useCards'
 import { Account } from '../../unlockTypes'
 import Loading from '../interface/Loading'
+
+interface PaymentSettings {
+  address: string
+}
+
+export const PaymentSettings = ({ address }: PaymentSettings) => {
+  const { cards, loading, saveCard, deleteCard } = useCards(address)
+  if (loading) {
+    return <Loading />
+  }
+  if (cards.length > 0) {
+    return <PaymentMethods cards={cards} deleteCard={deleteCard} />
+  }
+  return <PaymentDetails saveCard={(token: string) => saveCard(token)} />
+}
 
 interface SettingsContentProps {
   account: Account | undefined
 }
 
 export const SettingsContent = ({ account }: SettingsContentProps) => {
-  const { cards } = useCards(account)
-
   return (
     <Layout title="Account Settings">
       <Head>
         <title>{pageTitle('Account Settings')}</title>
       </Head>
-      <Errors />
-      {account && account.emailAddress && (
-        <>
-          <AccountInfo />
-          {!cards && <Loading />}
-          {cards && cards.length > 0 && <PaymentMethods cards={cards} />}
-          {cards && cards.length === 0 && <PaymentDetails />}
-          <EjectAccount />
-        </>
-      )}
-      {!account && <LogInSignUp login />}
-      {account && !account.emailAddress && (
-        <p>
-          This page contains settings for managed account users. Crypto users
-          (like you!) don&apos;t need it.
-        </p>
-      )}
+      <Authenticate unlockUserAccount>
+        <Errors />
+        {account && account.emailAddress && <AccountInfo />}
+        {account && <PaymentSettings address={account.address} />}
+        {account && account.emailAddress && <EjectAccount />}
+      </Authenticate>
     </Layout>
   )
 }

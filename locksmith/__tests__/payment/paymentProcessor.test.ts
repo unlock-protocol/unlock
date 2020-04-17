@@ -46,6 +46,20 @@ jest.mock('../../src/fulfillment/dispatcher', () => {
   })
 })
 
+jest.mock('../../src/utils/keyPricer', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      generate: jest.fn().mockReturnValue({
+        keyPrice: 10,
+        gasFee: 5,
+        creditCardProcessing: 100,
+        unlockServiceFee: 70,
+      }),
+      keyPriceUSD: jest.fn().mockResolvedValue(42),
+    }
+  })
+})
+
 describe('PaymentProcessor', () => {
   let paymentProcessor: PaymentProcessor
 
@@ -81,6 +95,25 @@ describe('PaymentProcessor', () => {
     await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress(
+          'connected_account_user@example.com'
+        ),
+        stripe_customer_id: 'cus_H669IyGrYp85kA',
+        User: {
+          publicKey: Normalizer.ethereumAddress(
+            '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
+          ),
+          recoveryPhrase: 'a recovery phrase',
+          passwordEncryptedPrivateKey: "{ a: 'blob' }",
+        },
+      },
+      {
+        include: User,
+      }
+    )
+
+    await UserReference.create(
+      {
+        emailAddress: Normalizer.emailAddress(
           'user_without_payment_details@example.com'
         ),
         User: {
@@ -95,6 +128,7 @@ describe('PaymentProcessor', () => {
         include: User,
       }
     )
+
     nockDone()
   })
 
@@ -127,18 +161,6 @@ describe('PaymentProcessor', () => {
           source: mockVisaToken,
         })
         expect(user).toBe(true)
-      })
-    })
-
-    describe('when the user can not be created', () => {
-      it('returns false', async () => {
-        expect.assertions(1)
-        const user = await paymentProcessor.updateUserPaymentDetails(
-          'tok_unknown',
-          '0xb76ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
-        )
-
-        expect(user).toBe(false)
       })
     })
   })
@@ -205,6 +227,62 @@ describe('PaymentProcessor', () => {
         expectedKeyPrice
       )
       nockDone()
+    })
+  })
+
+  // // https://dashboard.stripe.com/test/connect/accounts/overview
+
+  describe('chargeUserForConnectedAccount', () => {
+    const accountId = 'acct_1GXsNrL9eCzn3mEi'
+    describe("when the user lack's payment details", () => {
+      it('raises an error', async () => {
+        expect.assertions(1)
+        await expect(
+          paymentProcessor.chargeUserForConnectedAccount(
+            '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
+            lockAddress,
+            accountId
+          )
+        ).rejects.toEqual(new Error('Customer lacks purchasing details'))
+      })
+
+      describe('when the user has payment details', () => {
+        describe('when the user can be charged', () => {
+          it('returns a charge', async () => {
+            expect.assertions(1)
+            const { nockDone } = await nockBack(
+              'connected_account_charged_user.json'
+            )
+            const charge = await paymentProcessor.chargeUserForConnectedAccount(
+              '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
+              lockAddress,
+              accountId
+            )
+
+            expect(charge).not.toBeNull()
+            nockDone()
+          })
+        })
+
+        describe('when the user cant be charged', () => {
+          it('returns an error', async () => {
+            expect.assertions(1)
+            const { nockDone } = await nockBack(
+              'connected_account_non_charged_user.json'
+            )
+            await expect(
+              paymentProcessor.chargeUserForConnectedAccount(
+                '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b9',
+                lockAddress,
+                accountId
+              )
+            ).rejects.toMatchObject(
+              new Error('Customer lacks purchasing details')
+            )
+            nockDone()
+          })
+        })
+      })
     })
   })
 

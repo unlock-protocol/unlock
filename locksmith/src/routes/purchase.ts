@@ -4,13 +4,24 @@ import signatureValidationMiddleware from '../middlewares/signatureValidationMid
 const router = express.Router()
 const purchaseController = require('../controllers/purchaseController')
 
-router.use(
+router.post(
+  '/',
   signatureValidationMiddleware.generateProcessor({
     name: 'purchaseRequest',
     required: ['recipient', 'lock', 'expiry'],
     signee: 'recipient',
   })
 )
+
+router.post(
+  '/USD',
+  signatureValidationMiddleware.generateProcessor({
+    name: 'purchaseRequest',
+    required: ['recipient', 'lock', 'expiry', 'USDAmount'],
+    signee: 'recipient',
+  })
+)
 router.post('/', purchaseController.purchase)
+router.post('/USD', purchaseController.purchaseUSD)
 
 module.exports = router
