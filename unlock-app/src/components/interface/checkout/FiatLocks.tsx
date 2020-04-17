@@ -44,6 +44,7 @@ export const FiatLocks = ({
     getTokenBalance,
     config
   )
+
   const fiatKeyPrices = useFiatKeyPrices(lockAddresses)
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
   const [showingPaymentForm, setShowingPaymentForm] = useState<
@@ -84,7 +85,7 @@ export const FiatLocks = ({
           const fiatPrice = `$${formattedPrice}`
           return (
             <FiatLock
-              key={lock.name}
+              key={lock.address}
               lock={lock}
               formattedKeyPrice={fiatPrice}
               activeKeys={activeKeys}
@@ -101,7 +102,7 @@ export const FiatLocks = ({
         return (
           <DisabledLock
             address={lock.address}
-            key={lock.name}
+            key={lock.address}
             name={lock.name}
             formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}
             formattedKeysAvailable={lockKeysAvailable(lock)}

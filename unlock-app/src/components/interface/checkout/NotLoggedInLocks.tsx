@@ -37,7 +37,7 @@ export const NotLoggedInLocks = ({ lockAddresses, config }: LocksProps) => {
       {locks.map(lock => (
         <DisabledLock
           address={lock.address}
-          key={lock.name}
+          key={lock.address}
           name={lock.name}
           formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}
           formattedKeysAvailable={lockKeysAvailable(lock)}
