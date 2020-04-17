@@ -16,6 +16,7 @@ import {
 } from '../interface/buttons/ActionButton'
 import { showForm, hideForm } from '../../actions/lockFormVisibility'
 import { Phone } from '../../theme/media'
+import Authenticate from '../interface/Authenticate'
 
 export const DashboardContent = ({
   account,
@@ -32,7 +33,7 @@ export const DashboardContent = ({
       <Head>
         <title>{pageTitle('Dashboard')}</title>
       </Head>
-      {account && (
+      <Authenticate>
         <BrowserOnly>
           <AccountWrapper>
             <Account network={network} account={account} />
@@ -59,7 +60,7 @@ export const DashboardContent = ({
 
           <CreatorLocks />
         </BrowserOnly>
-      )}
+      </Authenticate>
     </Layout>
   )
 }

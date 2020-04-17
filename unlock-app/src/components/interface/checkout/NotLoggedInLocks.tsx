@@ -6,21 +6,27 @@ import {
   lockTickerSymbol,
 } from '../../../utils/checkoutLockUtils'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface LocksProps {
   lockAddresses: string[]
+  config: PaywallConfig
 }
 
-export const NotLoggedInLocks = ({ lockAddresses }: LocksProps) => {
+export const NotLoggedInLocks = ({ lockAddresses, config }: LocksProps) => {
   // Dummy function -- we don't have an account address so we cannot get balance
   const getTokenBalance = () => {}
-  const { locks, loading } = usePaywallLocks(lockAddresses, getTokenBalance)
+  const { locks, loading } = usePaywallLocks(
+    lockAddresses,
+    getTokenBalance,
+    config
+  )
 
   if (loading) {
     return (
       <div>
         {lockAddresses.map(address => (
-          <LoadingLock key={address} />
+          <LoadingLock address={address} key={address} />
         ))}
       </div>
     )
@@ -30,6 +36,7 @@ export const NotLoggedInLocks = ({ lockAddresses }: LocksProps) => {
     <div>
       {locks.map(lock => (
         <DisabledLock
+          address={lock.address}
           key={lock.name}
           name={lock.name}
           formattedKeyPrice={`${lock.keyPrice} ${lockTickerSymbol(lock)}`}

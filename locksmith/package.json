@@ -60,6 +60,7 @@
     "aws-sdk": "2.635.0",
     "babel-jest": "25.1.0",
     "body-parser": "1.19.0",
+    "coinbase": "2.0.8",
     "color-scheme": "1.0.1",
     "cors": "2.8.5",
     "cross-env": "7.0.2",

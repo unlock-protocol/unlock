@@ -14,6 +14,7 @@ module.exports = {
   purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
+  logging: false,
   jaeger: {
     serviceName: 'locksmith',
     tags: [],
