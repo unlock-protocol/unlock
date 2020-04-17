@@ -25,6 +25,5 @@ This is by far the easiest way to purchase your first crypto asset. Want to try 
 - [Livepeer dashboards on Scout](https://medium.com/@scout_cool/announcing-livepeer-orchestrator-dashboard-with-an-unlock-fca60750843b), like [this one](https://scout.cool/livepeer/mainnet/dashboards/5e28c582bfbf6c00177109e0?&nodeaddress=0xE9E284277648fcdb09B8EfC1832c73c09b5Ecf59)
 - Ben's free [startup feedback sessions](https://werd.io/2020/free-startup-feedback-sessions-for-members) (only for members!)
 - Stake for the [HackMoney hackathon](https://hack.ethglobal.co/online/hacker)
-- Unlock Jeremy Epstein marketing blog!
 
 Soon, we will introduce another iteration of our work on the credit card front. Our goal is to enable credit card purchase for any user (who have their own wallets or not), on any lock, whether they use stable coins or not. We believe this will unlock the next 10M crypto users ;)
