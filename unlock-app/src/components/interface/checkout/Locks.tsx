@@ -49,7 +49,7 @@ export const Locks = ({
     <div>
       {locks.map(lock => (
         <Lock
-          key={lock.name}
+          key={lock.address}
           lock={lock}
           emitTransactionInfo={emitTransactionInfo}
           balances={balances}
