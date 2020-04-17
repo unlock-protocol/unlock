@@ -115,12 +115,12 @@ export class PaymentProcessor {
   ) {
     // eslint-disable-next-line no-useless-catch
     try {
-      const user = await this.findUserByPublicKey(publicKey)
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
-      if (user && stripeCustomerId) {
-        const keyPriceUSD: number = await this.keyPricer.keyPriceUSD(lock)
-        const applicationFee = keyPriceUSD * 0.1
+      if (stripeCustomerId) {
+        const keyPriceUSD: number =
+          Math.ceil(await this.keyPricer.keyPriceUSD(lock)) * 100
+        const applicationFee = Math.ceil(keyPriceUSD * 0.1)
         const charge = await this.stripe.charges.create(
           {
             amount: keyPriceUSD,
