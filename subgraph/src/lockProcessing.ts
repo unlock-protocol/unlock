@@ -83,7 +83,7 @@ function processPreV7(event: NewLock, lock: Lock): void {
   }
   PublicLockTemplate.create(event.params.newLockAddress);
   lock.save();
-  addInitialLockManager(lock.address, lock.owner as Bytes);
+  // addInitialLockManager(lock.address, lock.owner as Bytes);
 }
 
 function addInitialLockManager(lockAddress: Bytes, manager: Bytes): void {

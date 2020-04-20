@@ -17,17 +17,29 @@ import {
 export function handleLockTransfer(event: OwnershipTransferred): void {
   let lock = Lock.load(event.address.toHex());
   let newOwner = event.params.newOwner;
+  let previousOwner = event.params.previousOwner;
 
-  let newLockManager = new LockManager(
-    lock.address.toHex().concat(newOwner.toHex())
-  );
+  let newLockManagerId = lock.address.toHex().concat(newOwner.toHex());
+  let newLockManager = LockManager.load(newLockManagerId);
+
+  if (newLockManager == null) {
+    newLockManager = new LockManager(newLockManagerId);
+  }
+
   newLockManager.lock = lock.address.toHex();
   newLockManager.address = newOwner;
   newLockManager.save();
 
-  let existingLockManager = LockManager.load(
-    lock.address.toHex().concat(lock.owner.toHex())
-  );
+  let existingLockManagerId = lock.address
+    .toHex()
+    .concat(previousOwner.toHex());
+
+  let existingLockManager = LockManager.load(existingLockManagerId);
+
+  if (existingLockManager == null) {
+    existingLockManager = new LockManager(existingLockManagerId);
+  }
+
   existingLockManager.lock = Address.fromString(
     "0000000000000000000000000000000000000000"
   ).toHex();
