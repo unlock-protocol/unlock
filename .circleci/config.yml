@@ -456,7 +456,7 @@ workflows:
             - integration-tests
       - deploy-locksmith-beanstalk-production:
           requires:
-            - integration-test            
+            - integration-tests            
       - promote-unlock-images:
           filters:
             branches:
