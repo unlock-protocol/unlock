@@ -4,6 +4,7 @@ const TransactionType = {
   WITHDRAWAL: 'WITHDRAWAL',
   UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
   FAILED_TO_CREATE_LOCK: 'FAILED_TO_CREATE_LOCK',
+  GRANT_KEY: 'GRANT_KEY',
 }
 
 export default TransactionType
