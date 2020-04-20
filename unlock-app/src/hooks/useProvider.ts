@@ -53,7 +53,7 @@ export const useProvider = (providerAdapter?: any) => {
     const ethereumWindow = (window as unknown) as EthereumWindow
 
     if (providerAdapter) {
-      // If we are using a provider in the "main window" via the paywall script
+      // If we are using an "explicit" provider (rather than one which was "injected").
       setWeb3Provider(providerAdapter)
     } else if (ethereumWindow.ethereum) {
       // If there is an injected provider
