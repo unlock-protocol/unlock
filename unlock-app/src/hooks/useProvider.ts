@@ -28,7 +28,7 @@ interface Config {
   httpProvider: string
 }
 
-export const useProvider = () => {
+export const useProvider = (providerAdapter?: any) => {
   const config: Config = React.useContext(ConfigContext)
   const { getWeb3Provider, setWeb3Provider } = React.useContext<
     Web3ProviderContextType
@@ -52,8 +52,11 @@ export const useProvider = () => {
 
     const ethereumWindow = (window as unknown) as EthereumWindow
 
-    // If there is an injected provider
-    if (ethereumWindow.ethereum) {
+    if (providerAdapter) {
+      // If we are using an "explicit" provider (rather than one which was "injected").
+      setWeb3Provider(providerAdapter)
+    } else if (ethereumWindow.ethereum) {
+      // If there is an injected provider
       dispatch(waitForWallet())
       try {
         // Request account access if needed
@@ -76,8 +79,14 @@ export const useProvider = () => {
   }
 
   React.useEffect(() => {
-    // Try to initalize the provider
-    initializeProvider()
+    const provider = getWeb3Provider()
+    if (provider) {
+      // The context already has a provider, we're ready to work
+      setLoading(false)
+    } else {
+      // Try to initalize the provider if there isn't one already
+      initializeProvider()
+    }
   }, [])
 
   return { provider: getWeb3Provider(), loading }
