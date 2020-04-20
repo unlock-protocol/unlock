@@ -38,7 +38,7 @@ export default class WalletService extends UnlockService {
    * Temporary function that allows us to use ethers functionality
    * without interfering with web3
    */
-  async connect(provider) {
+  async connect(provider, signer) {
     // Reset the connection
     this.ready = false
 
@@ -60,6 +60,10 @@ export default class WalletService extends UnlockService {
       this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
     }
+
+    // The signer can be passed as the 2nd argument
+    this.signer = signer || this.provider.getSigner()
+
     const { chainId: networkId } = await this.provider.getNetwork()
 
     if (this.networkId !== networkId) {
@@ -171,7 +175,7 @@ export default class WalletService extends UnlockService {
     const factory = new ethers.ContractFactory(
       abis[version].PublicLock.abi,
       bytecode[version].PublicLock,
-      this.provider.getSigner()
+      this.signer
     )
 
     const contract = await factory.deploy({
@@ -206,7 +210,7 @@ export default class WalletService extends UnlockService {
     const factory = new ethers.ContractFactory(
       abis[version].Unlock.abi,
       bytecode[version].Unlock,
-      this.provider.getSigner()
+      this.signer
     )
     const unlockContract = await factory.deploy({
       gasLimit: GAS_AMOUNTS.deployContract,
@@ -222,10 +226,8 @@ export default class WalletService extends UnlockService {
     this.unlockContractAddress = unlockContract.address
 
     // Let's now run the initialization
-    const address = await this.provider.getSigner().getAddress()
-    const writableUnlockContract = unlockContract.connect(
-      this.provider.getSigner()
-    )
+    const address = await this.signer.getAddress()
+    const writableUnlockContract = unlockContract.connect(this.signer)
     const transaction = await writableUnlockContract.initialize(address, {
       gasLimit: 1000000,
     })
@@ -319,8 +321,7 @@ export default class WalletService extends UnlockService {
 
   async signMessage(data, method) {
     const dataHash = utils.utf8ToHex(data)
-    const signer = this.provider.getSigner()
-    const addr = await signer.getAddress()
+    const addr = await this.signer.getAddress()
     let firstParam = dataHash
     let secondParam = addr.toLowerCase()
     if (method === 'eth_sign') {

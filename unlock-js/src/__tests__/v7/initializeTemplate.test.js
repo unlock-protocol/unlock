@@ -14,10 +14,11 @@ const lockContract = {
 }
 const templateAddress = '0xtemplate'
 const accountAddress = '0xaccount'
+const signer = {
+  getAddress: jest.fn(() => Promise.resolve(accountAddress)),
+}
 const provider = {
-  getSigner: () => ({
-    getAddress: jest.fn(() => Promise.resolve(accountAddress)),
-  }),
+  getSigner: () => signer,
   waitForTransaction: jest.fn(() => Promise.resolve()),
 }
 
@@ -27,6 +28,7 @@ describe('v7', () => {
       unlockAddress: '0xunlockAddress',
     })
     walletService.provider = provider
+    walletService.signer = signer
     walletService.lockContractAbiVersion = jest.fn(() => {
       return v7
     })
