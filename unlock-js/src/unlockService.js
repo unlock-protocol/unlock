@@ -172,7 +172,7 @@ export default class UnlockService extends EventEmitter {
   async getWritableContract(address, contract) {
     // TODO: replace this when v5 of ethers is out
     // see https://github.com/ethers-io/ethers.js/issues/511
-    const signer = new FastJsonRpcSigner(this.provider.getSigner())
+    const signer = new FastJsonRpcSigner(this.signer)
     return new ethers.Contract(address, contract.abi, signer)
   }
 
