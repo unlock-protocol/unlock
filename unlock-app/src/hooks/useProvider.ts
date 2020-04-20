@@ -28,7 +28,7 @@ interface Config {
   httpProvider: string
 }
 
-export const useProvider = () => {
+export const useProvider = (providerAdapter?: any) => {
   const config: Config = React.useContext(ConfigContext)
   const { getWeb3Provider, setWeb3Provider } = React.useContext<
     Web3ProviderContextType
@@ -52,8 +52,11 @@ export const useProvider = () => {
 
     const ethereumWindow = (window as unknown) as EthereumWindow
 
-    // If there is an injected provider
-    if (ethereumWindow.ethereum) {
+    if (providerAdapter) {
+      // If we are using a provider in the "main window" via the paywall script
+      setWeb3Provider(providerAdapter)
+    } else if (ethereumWindow.ethereum) {
+      // If there is an injected provider
       dispatch(waitForWallet())
       try {
         // Request account access if needed
