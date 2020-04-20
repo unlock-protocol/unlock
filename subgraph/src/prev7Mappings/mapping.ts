@@ -1,16 +1,42 @@
 import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import { CancelKey, ExpireKey } from "../../generated/Contract/PublicLock";
-import { Lock, KeyHolder, Key, KeyPurchase } from "../../generated/schema";
+import {
+  Lock,
+  KeyHolder,
+  Key,
+  KeyPurchase,
+  LockManager,
+} from "../../generated/schema";
 import {
   Transfer,
   OwnershipTransferred,
   PriceChanged,
-  PublicLock
+  PublicLock,
 } from "../../generated/templates/PublicLock/PublicLock";
 
 export function handleLockTransfer(event: OwnershipTransferred): void {
   let lock = Lock.load(event.address.toHex());
-  lock.owner = event.params.newOwner;
+  let newOwner = event.params.newOwner;
+
+  let newLockManager = new LockManager(
+    lock.address.toHex().concat(newOwner.toHex())
+  );
+  newLockManager.lock = lock.address.toHex();
+  newLockManager.address = newOwner;
+  newLockManager.save();
+
+  let existingLockManager = LockManager.load(
+    lock.address.toHex().concat(lock.owner.toHex())
+  );
+  existingLockManager.lock = Address.fromString(
+    "0000000000000000000000000000000000000000"
+  ).toHex();
+  existingLockManager.address = Address.fromString(
+    "0000000000000000000000000000000000000000"
+  );
+  existingLockManager.save();
+
+  lock.owner = newOwner;
   lock.save();
 }
 
