@@ -29,6 +29,7 @@ interface Config {
 }
 
 export const useProvider = (providerAdapter?: any) => {
+  console.log({ providerAdapter })
   const config: Config = React.useContext(ConfigContext)
   const { getWeb3Provider, setWeb3Provider } = React.useContext<
     Web3ProviderContextType
