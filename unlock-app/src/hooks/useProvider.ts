@@ -76,8 +76,14 @@ export const useProvider = () => {
   }
 
   React.useEffect(() => {
-    // Try to initalize the provider
-    initializeProvider()
+    const provider = getWeb3Provider()
+    if (provider) {
+      // The context already has a provider, we're ready to work
+      setLoading(false)
+    } else {
+      // Try to initalize the provider if there isn't one already
+      initializeProvider()
+    }
   }, [])
 
   return { provider: getWeb3Provider(), loading }

@@ -134,5 +134,29 @@ describe('useProvider', () => {
         })
       })
     })
+
+    describe('when the context already has a provider', () => {
+      it('should stop loading and use the existing provider', async () => {
+        expect.assertions(2)
+
+        const provider = {
+          enable: jest.fn(() => Promise.resolve([])),
+          currentProvider: {},
+        }
+
+        mockWeb3ProviderContext.getWeb3Provider = jest.fn(() => provider)
+
+        mockWeb3ProviderContext.setWeb3Provider = jest.fn()
+
+        const { result, wait } = renderHook(() => useProvider())
+
+        await wait(() => !result.current.loading)
+        expect(mockWeb3ProviderContext.setWeb3Provider).not.toHaveBeenCalled()
+        expect(result.current).toEqual({
+          provider,
+          loading: false,
+        })
+      })
+    })
   })
 })
