@@ -5,8 +5,7 @@ import { ZERO } from '../constants'
  * @param {PropTypes.contract} contract
  */
 export default async function({ templateAddress }, callback) {
-  const signer = this.provider.getSigner()
-  const owner = await signer.getAddress()
+  const owner = await this.signer.getAddress()
   const expirationDuration = 0
   const tokenAddress = ZERO
   const keyPrice = 0

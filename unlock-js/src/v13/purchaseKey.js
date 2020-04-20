@@ -20,8 +20,7 @@ export default async function(
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!owner) {
-    const signer = this.provider.getSigner()
-    owner = await signer.getAddress()
+    owner = await this.signer.getAddress()
   }
 
   // If erc20Address was not provided, get it
