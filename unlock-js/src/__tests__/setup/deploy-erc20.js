@@ -12,12 +12,10 @@ const decimals = 18
  * @param {*} providerUrl
  */
 const deploy = async (provider, signer) => {
-  let wallet = await provider.getSigner(signer)
-
   let factory = new ethers.ContractFactory(
     testErc20Token.abi,
     testErc20Token.bytecode,
-    wallet
+    signer
   )
 
   let erc20Contract = await factory.deploy({ gasLimit: 6000000 })
@@ -39,12 +37,10 @@ const transfer = async (
   recipient,
   amount
 ) => {
-  let wallet = await provider.getSigner(signer)
-
   let erc20Contract = new ethers.Contract(
     contractAddress,
     testErc20Token.abi,
-    wallet
+    signer
   )
 
   const mintTx = await erc20Contract.mint(

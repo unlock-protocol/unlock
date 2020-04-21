@@ -166,14 +166,16 @@ describe('v13', () => {
           expect(erc20.getAllowance).toHaveBeenCalledWith(
             erc20Address,
             lockAddress,
-            walletService.provider
+            walletService.provider,
+            walletService.signer
           )
 
           expect(erc20.approveTransfer).toHaveBeenCalledWith(
             erc20Address,
             lockAddress,
             utils.toDecimal(keyPrice, decimals),
-            walletService.provider
+            walletService.provider,
+            walletService.signer
           )
 
           expect(lockContract.purchase).toHaveBeenCalledWith(

@@ -49,14 +49,16 @@ export default async function(
     const approvedAmount = await getAllowance(
       erc20Address,
       lockAddress,
-      this.provider
+      this.provider,
+      this.signer
     )
     if (approvedAmount < actualAmount) {
       await approveTransfer(
         erc20Address,
         lockAddress,
         actualAmount,
-        this.provider
+        this.provider,
+        this.signer
       )
       // Since we sent the approval transaction, we cannot rely on Ethers to do an estimate, because the computation would fail (since the approval might not have been mined yet)
       purchaseForOptions.gasLimit = 300000
