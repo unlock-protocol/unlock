@@ -203,7 +203,7 @@ export class PaymentProcessor {
         connectedStripeAccount
       )
       if (successfulCharge) {
-        return fulfillmentDispatcher.grantKeys(lock, recipient)
+        return fulfillmentDispatcher.grantKey(lock, recipient)
       }
       return null
     }

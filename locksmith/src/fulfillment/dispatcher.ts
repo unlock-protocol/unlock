@@ -1,5 +1,4 @@
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
-import { KeyGranter } from './keyGranter'
 
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const {
@@ -31,7 +30,6 @@ export default class Dispatcher {
     this.unlockAddress = unlockAddress
     this.provider = new HDWalletProvider(credentials, host)
     this.buyer = buyer
-    this.keyGranter = new KeyGranter(credentials, host)
   }
 
   async retrieveLock(lockAddress: string) {
@@ -47,8 +45,14 @@ export default class Dispatcher {
     }
   }
 
-  async grantKeys(lockAddress: string, recipient: string) {
-    return await this.keyGranter.grantKeys(lockAddress, recipient)
+  async grantKey(lockAddress: string, recipient: string) {
+    const walletService = new WalletService({
+      unlockAddress: this.unlockAddress,
+    })
+    return await walletService.grantKey({
+      lockAddress,
+      recipient,
+    })
   }
 
   async purchase(lockAddress: string, recipient: string) {
