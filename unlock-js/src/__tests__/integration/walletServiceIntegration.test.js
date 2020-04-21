@@ -219,6 +219,64 @@ describe('Wallet Service Integration', () => {
           })
         })
 
+        if (['v0'].indexOf(versionName) === -1) {
+          describe('grantKey', () => {
+            let tokenId
+            let key
+            let keyGrantee
+            let transactionHash
+            beforeAll(async () => {
+              keyGrantee = accounts[7]
+
+              tokenId = await walletService.grantKey(
+                {
+                  lockAddress,
+                  recipient: keyGrantee,
+                },
+                (error, hash) => {
+                  transactionHash = hash
+                }
+              )
+              key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyGrantee
+              )
+            })
+
+            it('should have yielded a transaction hash', () => {
+              expect.assertions(1)
+              expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+            })
+
+            it('should yield the tokenId', () => {
+              expect.assertions(1)
+              expect(tokenId).not.toBe(null) // We don't know very much beyond the fact that it is not null
+            })
+
+            it('should have assigned the key to the right user', async () => {
+              expect.assertions(1)
+              expect(key.owner).toEqual(keyGrantee)
+            })
+
+            it('should have assigned the key to the right lock', async () => {
+              expect.assertions(1)
+              expect(key.lock).toEqual(lockAddress)
+            })
+
+            it('should have set the right duration on the key', () => {
+              expect.assertions(1)
+              // the actual expiration depends on mining time (which we do not control)
+              // We round to the minute!
+              expect(
+                parseInt(key.expiration) -
+                  parseInt(
+                    lock.expirationDuration + new Date().getTime() / 1000
+                  )
+              ).toBeLessThan(60)
+            })
+          })
+        }
+
         describe('purchaseKey', () => {
           let tokenId
           let key
