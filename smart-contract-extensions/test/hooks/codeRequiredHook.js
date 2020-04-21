@@ -30,7 +30,10 @@ contract('CodeRequiredHook', accounts => {
     answerAccount = web3.eth.accounts.privateKeyToAccount(answerPK)
 
     // Create the hook contract with that answer
-    hookContract = await CodeRequiredHook.new(answerAccount.address, {
+    hookContract = await CodeRequiredHook.new({
+      from: lockCreator,
+    })
+    await hookContract.addCodes(lock.address, [answerAccount.address], {
       from: lockCreator,
     })
 
@@ -38,6 +41,13 @@ contract('CodeRequiredHook', accounts => {
     await lock.setEventHooks(hookContract.address, constants.ZERO_ADDRESS, {
       from: lockCreator,
     })
+  })
+
+  it('non lock managers cannot add codes', async () => {
+    await reverts(
+      hookContract.addCodes(lock.address, [constants.ZERO_ADDRESS]),
+      'ONLY_LOCK_MANAGER'
+    )
   })
 
   it('can buy if you know the answer', async () => {
@@ -79,6 +89,27 @@ contract('CodeRequiredHook', accounts => {
       }),
       'INCORRECT_CODE'
     )
+  })
+
+  describe('can remove codes', () => {
+    beforeEach(async () => {
+      await hookContract.removeCodes(lock.address, [answerAccount.address], {
+        from: lockCreator,
+      })
+    })
+
+    it('cannot buy even with the previous code', async () => {
+      const messageToSign = web3.utils.keccak256(
+        web3.eth.abi.encodeParameters(['address'], [keyBuyer])
+      )
+      const signature = (await answerAccount.sign(messageToSign)).signature
+      await reverts(
+        lock.purchase('0', keyBuyer, constants.ZERO_ADDRESS, signature, {
+          from: keyBuyer,
+        }),
+        'INCORRECT_CODE'
+      )
+    })
   })
 
   describe('uninstall hook', () => {
