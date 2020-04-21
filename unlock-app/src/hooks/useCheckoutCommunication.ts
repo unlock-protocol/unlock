@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { providers } from 'ethers'
 import Postmate from 'postmate'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfig } from '../unlockTypes'
@@ -16,6 +17,7 @@ export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  methodCall = 'checkout.methodCall'
 }
 
 type Payload = UserInfo | TransactionInfo
@@ -27,15 +29,32 @@ interface BufferedEvent {
   payload?: Payload
 }
 
-export class ProviderAdapter {
-  private emit: Emitter
+export class ProviderAdapter extends providers.JsonRpcProvider {
+  private parent: Postmate.ChildAPI
+  private callId = 0
 
-  constructor(emit: Emitter) {
-    this.emit = emit
+  constructor(parent: Postmate.ChildAPI) {
+    super()
+    this.parent = parent
   }
 
-  foo() {
-    this.emit(CheckoutEvents.closeModal)
+  async send(method: any, params: any) {
+    this.callId++
+    console.log({ method, params, callId: this.callId })
+
+    const result = await new Promise(resolve => {
+      const methodId = `methodResult-${this.callId}`
+    })
+  }
+}
+
+const handler: ProxyHandler<ProviderAdapter> = {
+  get: function(target, prop, receiver) {
+    console.log({
+      target,
+      prop,
+      receiver,
+    })
   }
 }
 
@@ -63,7 +82,8 @@ export const useCheckoutCommunication = () => {
   >(undefined)
   parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
-      setProviderAdapter(new ProviderAdapter(pushOrEmit))
+      const provider = new Proxy(new ProviderAdapter(parent!), handler)
+      setProviderAdapter(provider)
       setConfig(config)
     },
   })

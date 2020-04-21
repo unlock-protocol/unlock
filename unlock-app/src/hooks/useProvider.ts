@@ -29,7 +29,6 @@ interface Config {
 }
 
 export const useProvider = (providerAdapter?: any) => {
-  console.log({ providerAdapter })
   const config: Config = React.useContext(ConfigContext)
   const { getWeb3Provider, setWeb3Provider } = React.useContext<
     Web3ProviderContextType
@@ -56,6 +55,7 @@ export const useProvider = (providerAdapter?: any) => {
     if (providerAdapter) {
       // If we are using an "explicit" provider (rather than one which was "injected").
       setWeb3Provider(providerAdapter)
+      dispatch(providerReady())
     } else if (ethereumWindow.ethereum) {
       // If there is an injected provider
       dispatch(waitForWallet())
