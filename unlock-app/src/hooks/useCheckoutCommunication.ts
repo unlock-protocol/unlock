@@ -49,14 +49,6 @@ export type AsyncSendable = {
   send?: (request: any, callback: (error: any, response: any) => void) => void
 }
 
-export const getNextId = (function() {
-  let currentId = 0
-  return function() {
-    currentId++
-    return currentId
-  }
-})()
-
 // Callbacks from method calls that have been sent to the parent
 // iframe are held here, once the parent iframe has resolved the call
 // it will trigger the callback and remove it from the table.
