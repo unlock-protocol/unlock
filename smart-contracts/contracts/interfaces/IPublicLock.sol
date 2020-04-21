@@ -391,6 +391,9 @@ contract IPublicLock
 
   function keyManagerOf(uint) external view returns (address );
 
+  function baseTokenURI() external view returns (string memory );
+
+
   ///===================================================================
 
   /**
