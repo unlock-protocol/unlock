@@ -27,10 +27,22 @@ export interface TransactionInfo {
   lock: string
 }
 
+export interface RemoteCall {
+  method: string
+  params: any[]
+  callId: number
+}
+
+export interface RemoteCallResult {
+  callId: number
+  result: any
+}
+
 export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  methodCall = 'checkout.methodCall',
 }
 /* end type definitions */
 
@@ -45,7 +57,11 @@ export class Paywall {
 
   setConfig?: (config: any) => void
 
+  returnMethodCallResult?: (result: RemoteCallResult) => void
+
   lockStatus?: string
+
+  connectedProvider?: any
 
   constructor(paywallConfig: any) {
     const loadCheckoutModal = () => {
@@ -131,6 +147,7 @@ export class Paywall {
 
     child.on(CheckoutEvents.closeModal, this.hideIframe)
     child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
+    child.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
 
     // transactionInfo event also carries transaction hash.
     child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
@@ -140,6 +157,10 @@ export class Paywall {
 
     this.setConfig = (config: any) => {
       child.call('setConfig', config)
+    }
+
+    this.returnMethodCallResult = (result: RemoteCallResult) => {
+      child.call('returnMethodCallResult', result)
     }
   }
 
@@ -163,6 +184,11 @@ export class Paywall {
     this.checkKeysAndLock()
   }
 
+  handleMethodCallEvent = (call: RemoteCall) => {
+    console.log(`called with ${call.method}`)
+    this.returnMethodCallResult!({ callId: call.callId, result: 1984 })
+  }
+
   showIframe = () => {
     this.iframe!.classList.add('show')
   }
@@ -179,6 +205,10 @@ export class Paywall {
   unlockPage = () => {
     this.lockStatus = 'unlocked'
     dispatchEvent('unlocked')
+  }
+
+  setConnectedProvider = (connectedProvider: any) => {
+    this.connectedProvider = connectedProvider
   }
 }
 
