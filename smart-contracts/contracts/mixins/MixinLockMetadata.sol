@@ -31,7 +31,7 @@ contract MixinLockMetadata is
   string private lockSymbol;
 
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
-  string private baseTokenURI;
+  string public baseTokenURI;
 
   event NewLockSymbol(
     string symbol
