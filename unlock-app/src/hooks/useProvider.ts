@@ -55,6 +55,7 @@ export const useProvider = (providerAdapter?: any) => {
     if (providerAdapter) {
       // If we are using an "explicit" provider (rather than one which was "injected").
       setWeb3Provider(providerAdapter)
+      dispatch(providerReady())
     } else if (ethereumWindow.ethereum) {
       // If there is an injected provider
       dispatch(waitForWallet())
