@@ -81,7 +81,7 @@
     "multer-s3": "2.9.0",
     "nock": "12.0.2",
     "node-mocks-http": "1.8.1",
-    "pg": "7.18.2",
+    "pg": "8.0.2",
     "random-words": "1.1.0",
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
