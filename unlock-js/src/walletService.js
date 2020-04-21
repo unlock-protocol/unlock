@@ -44,7 +44,9 @@ export default class WalletService extends UnlockService {
 
     if (typeof provider === 'string') {
       // This is when using a local provider with unlocked accounts
-      this.provider = new FetchJsonProvider({ endpoint: provider })
+      this.provider = new FetchJsonProvider({
+        endpoint: provider,
+      })
       this.web3Provider = false
     } else if (provider.isUnlock) {
       // TODO: This is very temporary! Immediate priority is to refactor away
@@ -103,7 +105,9 @@ export default class WalletService extends UnlockService {
 
     this.emit('account.changed', address)
     if (this.provider.emailAddress) {
-      this.emit('account.updated', { emailAddress: this.provider.emailAddress })
+      this.emit('account.updated', {
+        emailAddress: this.provider.emailAddress,
+      })
     }
     this.emit('ready')
     return address
@@ -277,6 +281,16 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKey.bind(this)(params, callback)
+  }
+
+  /**
+   * Grants a key to an address
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+  async grantKey(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.grantKey.bind(this)(params, callback)
   }
 
   /**
