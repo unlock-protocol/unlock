@@ -107,5 +107,11 @@ contract('Lock / erc721 / tokenURI', accounts => {
         'MixinLockManager: caller does not have the LockManager role'
       )
     })
+
+    it('should let anyone get the baseTokenURI for a lock', async () => {
+      const URI = await lock.baseTokenURI.call()
+      // should be the same as the previously set URI
+      assert.equal(URI, 'https:/newURI.com/api/key/')
+    })
   })
 })
