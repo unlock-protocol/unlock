@@ -6,6 +6,7 @@ import utils from './utils'
 import { generateKeyMetadataPayload } from './typedData/keyMetadata'
 import { generateKeyHolderMetadataPayload } from './typedData/keyHolderMetadata'
 import 'cross-fetch/polyfill'
+import FastJsonRpcSigner from './FastJsonRpcSigner'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -48,6 +49,7 @@ export default class WalletService extends UnlockService {
         endpoint: provider,
       })
       this.web3Provider = false
+      this.signer = this.provider.getSigner()
     } else if (provider.isUnlock) {
       // TODO: This is very temporary! Immediate priority is to refactor away
       // various special cases for provider instantiation, since having 3
@@ -58,13 +60,19 @@ export default class WalletService extends UnlockService {
       // common kernel of capability, even if that means MetaMask experience
       // will be somewhat degraded.
       this.web3Provider = false
-    } else {
+    } else if (!signer) {
+      // Assume this is a web3Provider?
       this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
+      // TODO: replace this when v5 of ethers is out
+      // see https://github.com/ethers-io/ethers.js/issues/511
+      this.signer = new FastJsonRpcSigner(this.provider.getSigner())
+    } else {
+      this.provider = provider
+      this.signer = signer
     }
 
     // The signer can be passed as the 2nd argument
-    this.signer = signer || this.provider.getSigner()
 
     const { chainId: networkId } = await this.provider.getNetwork()
 
@@ -137,7 +145,12 @@ export default class WalletService extends UnlockService {
       transactionType,
       'submitted'
     )
-    const finalTransaction = await transaction.wait() // TODO: why do we wait here? This should return instantly: getting a hash should not require i/o
+    if (transaction.hash) {
+      return transaction.hash
+    }
+    // TODO: Transaction sent thru a JSON RPC endpoint will take a little time to get the hash
+    // So we have to wait for it.
+    const finalTransaction = await transaction.wait()
     return finalTransaction.hash
     // errors fall through
   }
