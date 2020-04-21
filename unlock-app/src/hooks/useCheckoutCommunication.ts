@@ -18,7 +18,7 @@ export enum CheckoutEvents {
   methodCall = 'checkout.methodCall',
 }
 
-type Payload = UserInfo | TransactionInfo
+type Payload = UserInfo | TransactionInfo | MethodCall
 
 interface BufferedEvent {
   kind: CheckoutEvents
@@ -37,6 +37,33 @@ export interface MethodCallResult {
   error?: any
 }
 
+// Taken from https://github.com/ethers-io/ethers.js/blob/master/src.ts/providers/web3-provider.ts
+export type AsyncSendable = {
+  isMetaMask?: boolean
+  host?: string
+  path?: string
+  sendAsync?: (
+    request: any,
+    callback: (error: any, response: any) => void
+  ) => void
+  send?: (request: any, callback: (error: any, response: any) => void) => void
+}
+
+export const getNextId = (function() {
+  let currentId = 0
+  return function() {
+    currentId++
+    return currentId
+  }
+})()
+
+// Callbacks from method calls that have been sent to the parent
+// iframe are held here, once the parent iframe has resolved the call
+// it will trigger the callback and remove it from the table.
+const waitingMethodCalls: {
+  [id: number]: (error: any, response: any) => void
+} = {}
+
 // This is just a convenience hook that wraps the `emit` function
 // provided by the parent around some communication helpers. If any
 // events are called before the handshake completes, they go into a
@@ -44,11 +71,25 @@ export interface MethodCallResult {
 // the buffered events are emitted and future events are emitted
 // directly.
 export const useCheckoutCommunication = () => {
+  let providerAdapter: AsyncSendable | undefined
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setConfig(config)
+    },
+    resolveMethodCall: (result: MethodCallResult) => {
+      const callback = waitingMethodCalls[result.id]
+      if (!callback) {
+        console.error(
+          `Received a method call result for unknown method: ${JSON.stringify(
+            result
+          )}`
+        )
+        return
+      }
+      delete waitingMethodCalls[result.id]
+      callback(result.error, result.response)
     },
   })
 
@@ -62,13 +103,13 @@ export const useCheckoutCommunication = () => {
 
   // Once parent is available, we flush the buffer
   useEffect(() => {
-    if (parent) {
+    if (parent && buffer.length > 0) {
       buffer.forEach(event => {
         parent.emit(event.kind, event.payload)
       })
       setBuffer([])
     }
-  }, [parent])
+  }, [parent, buffer])
 
   const emitUserInfo = (info: UserInfo) => {
     pushOrEmit(CheckoutEvents.userInfo, info)
@@ -82,11 +123,25 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.transactionInfo, info)
   }
 
+  const emitMethodCall = (call: MethodCall) => {
+    pushOrEmit(CheckoutEvents.methodCall, call)
+  }
+
+  if (config && config.useDelegatedProvider) {
+    providerAdapter = {
+      send: (request: MethodCall, callback) => {
+        waitingMethodCalls[request.id] = callback
+        emitMethodCall(request)
+      },
+    }
+  }
+
   return {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
     config,
+    providerAdapter,
     // `ready` is primarily provided as an aid for testing the buffer
     // implementation.
     ready: !!parent,
