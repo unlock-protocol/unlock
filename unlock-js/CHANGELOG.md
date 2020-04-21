@@ -2,6 +2,7 @@
 
 # Next
 
+- adding support for grantKey function
 - adding ability to pass signer
 
 # 0.9.3
