@@ -72,7 +72,7 @@
     "ethers": "4.0.45",
     "express": "4.17.1",
     "express-jwt": "5.3.1",
-    "graphql": "14.6.0",
+    "graphql": "15.0.0",
     "graphql-tag": "2.10.3",
     "isomorphic-fetch": "2.2.1",
     "jest": "25.1.0",
