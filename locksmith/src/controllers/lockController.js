@@ -24,10 +24,6 @@ const lockSave = async (req, res) => {
 
 const lockGet = async (req, res) => {
   logger.logLockDetailsRequest(req.params.lockAddress)
-  const lock = await getLockByAddress(req.params.lockAddress)
-  if (!lock) {
-    return res.sendStatus(404)
-  }
   // Serve lock metadata!
   const baseTokenData = await getBaseTokenData(
     req.params.lockAddress,
