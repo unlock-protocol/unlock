@@ -1,6 +1,6 @@
 # Changes
 
-# Next
+# 0.10.0
 
 - adding support for grantKey function
 - adding ability to pass signer

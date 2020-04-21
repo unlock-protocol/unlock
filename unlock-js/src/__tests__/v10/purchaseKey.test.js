@@ -187,7 +187,8 @@ describe('v10', () => {
             erc20Address,
             lockAddress,
             utils.toDecimal(keyPrice, 4),
-            walletService.provider
+            walletService.provider,
+            walletService.signer
           )
 
           await nock.resolveWhenAllNocksUsed()

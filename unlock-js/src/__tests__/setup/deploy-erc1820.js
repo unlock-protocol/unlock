@@ -7,7 +7,6 @@ const ethers = require('ethers')
  * @param {*} providerUrl
  */
 const deploy = async (provider, signer) => {
-  const wallet = provider.getSigner(signer)
   const erc1820DeployTransaction = erc1820.generateDeployTx()
 
   // First : check if the contract has been deployed
@@ -18,7 +17,7 @@ const deploy = async (provider, signer) => {
   // If the contract has not been deployed, let's do it!
   if (deployedCode.length <= 3) {
     // First send a little bit of Eth to the right address
-    const transferTransaction = await wallet.sendTransaction({
+    const transferTransaction = await signer.sendTransaction({
       to: erc1820DeployTransaction.sender,
       value: ethers.utils.parseEther('0.1'),
     })

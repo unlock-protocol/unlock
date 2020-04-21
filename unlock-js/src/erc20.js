@@ -65,9 +65,9 @@ export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
 export async function getAllowance(
   erc20ContractAddress,
   lockContractAddress,
-  provider
+  provider,
+  signer
 ) {
-  const signer = provider.getSigner()
   const purchaser = await signer.getAddress()
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   let amount = '0'
@@ -83,13 +83,18 @@ export async function approveTransfer(
   erc20ContractAddress,
   lockContractAddress,
   value,
-  provider
+  provider,
+  signer
 ) {
   // Using the FastJsonRpcSigner so that we immediately return and not have the user wait for the approval transaction
   // to succeed.
   // TODO: add test to ensure that this is actually retuning instantly?
-  const signer = new FastJsonRpcSigner(provider.getSigner())
-  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
+  const fastSigner = new FastJsonRpcSigner(signer)
+  const contract = new ethers.Contract(
+    erc20ContractAddress,
+    erc20abi,
+    fastSigner
+  )
   return contract.approve(lockContractAddress, value)
 }
 
