@@ -80,15 +80,6 @@ describe('lockController', () => {
         expect(response.statusCode).toBe(200)
       })
     })
-
-    describe('when the lock details are unavailable', () => {
-      test('it should returns an appropriate error code', async () => {
-        expect.assertions(1)
-        const response = await request(app).get('/lock/0xdeadbeef')
-
-        expect(response.statusCode).toBe(404)
-      })
-    })
   })
 
   describe('setting lock details', () => {
