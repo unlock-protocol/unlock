@@ -8,6 +8,7 @@ export const defaultCallToAction: PaywallCallToAction = {
     'You have reached your limit of free articles. Please purchase access',
   expired: 'Your access has expired. Please purchase a new key to continue',
   pending: 'Purchase pending...',
+  metadata: 'We need to collect some additional information for your purchase.',
   confirmed: 'Purchase confirmed, content unlocked!',
   noWallet:
     'To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.',
@@ -20,7 +21,7 @@ export const stateToCTAKey: {
   [CheckoutState.loading]: 'default',
   [CheckoutState.fiatLocks]: 'default',
   [CheckoutState.locks]: 'default',
-  [CheckoutState.metadataForm]: 'default',
+  [CheckoutState.metadataForm]: 'metadata',
   [CheckoutState.notLoggedIn]: 'noWallet',
 }
 

@@ -7255,9 +7255,6 @@ Object {
             
           </a>
           <form>
-            <p>
-              We need to collect some additional information for your purchase.
-            </p>
             <label
               class="sc-psCJM c4"
               required=""
@@ -7347,9 +7344,6 @@ Object {
           
         </a>
         <form>
-          <p>
-            We need to collect some additional information for your purchase.
-          </p>
           <label
             class="sc-psCJM sc-pHIBf jLkhMY"
             required=""
@@ -7650,9 +7644,6 @@ Object {
             
           </a>
           <form>
-            <p>
-              We need to collect some additional information for your purchase.
-            </p>
             <label
               class="sc-psCJM c4"
               required=""
@@ -7755,9 +7746,6 @@ Object {
           
         </a>
         <form>
-          <p>
-            We need to collect some additional information for your purchase.
-          </p>
           <label
             class="sc-psCJM sc-pHIBf jLkhMY"
             required=""

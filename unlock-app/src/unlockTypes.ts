@@ -88,6 +88,7 @@ export interface PaywallCallToAction {
   pending: string
   confirmed: string
   noWallet: string
+  metadata: string
 }
 
 export interface PaywallConfigLocks {

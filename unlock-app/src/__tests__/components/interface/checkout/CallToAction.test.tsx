@@ -8,6 +8,7 @@ import { PaywallCallToAction } from '../../../../unlockTypes'
 
 const callToAction = {
   noWallet: 'Hey, you need a wallet for this to work',
+  metadata: 'We need to collect some additional information for your purchase.',
 }
 
 describe('CallToAction', () => {
@@ -38,5 +39,18 @@ describe('CallToAction', () => {
     )
 
     getByText(callToAction.noWallet)
+  })
+
+  it('renders a message from the cta object when provided when in the metadata stare', () => {
+    expect.assertions(0)
+
+    const { getByText } = rtl.render(
+      <CallToAction
+        state="metadataForm"
+        callToAction={callToAction as PaywallCallToAction}
+      />
+    )
+
+    getByText(callToAction.metadata)
   })
 })

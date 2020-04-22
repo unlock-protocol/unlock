@@ -56,6 +56,7 @@ export const isValidCTA = callToAction => {
     'pending',
     'confirmed',
     'noWallet',
+    'metadata',
   ]
 
   const ctaKeys = Object.keys(callToAction)
@@ -145,6 +146,7 @@ export const isValidConfigLocks = configLocks => {
  *      pending: 'Purchase pending...',
  *      confirmed: 'Your content is unlocked!',
  *      noWallet: 'Please, get a wallet!',
+ *      metadata: 'We need more info.',
  *   },
  * }
  *

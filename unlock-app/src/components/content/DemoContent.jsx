@@ -51,7 +51,18 @@ const usePaywall = () => {
       locks: {
         [url.searchParams.get('lock')]: {},
       },
-      callToAction: {},
+      callToAction: {
+        default: 'This content is locked. You need to unlock it!',
+        expired:
+          'Your previous membership has now expired.. You need to get a new membership!',
+        pending:
+          'Thanks for your trust. The transaction is now being processed.',
+        confirmed: 'Thanks for being a member!',
+        metadata:
+          'We need to collect some additional information for your purchase.',
+        noWallet:
+          'You need to use a crypto-wallet in order to unlock this content.',
+      },
     }
 
     // Remove localStorage (on the demo we do not want to store any accoun)
