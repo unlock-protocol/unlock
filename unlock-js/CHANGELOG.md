@@ -1,5 +1,9 @@
 # Changes
 
+# 0.10.2
+
+- Fixing unlock provider handling inside of WalletService
+
 # 0.10.1
 
 - Support Ether providers and signers in WalletService
