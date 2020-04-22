@@ -50,6 +50,8 @@ export const defaultValue: PaywallConfig = {
     expired: 'Your access has expired. Please purchase a new key to continue',
     pending: 'Purchase pending...',
     confirmed: 'Purchase confirmed, content unlocked!',
+    metadata:
+      'We need to collect some additional information for your purchase.',
     noWallet:
       'To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.',
   },

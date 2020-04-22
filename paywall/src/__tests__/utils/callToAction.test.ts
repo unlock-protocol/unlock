@@ -7,6 +7,7 @@ const ctas: PaywallCallToAction = {
   pending: 'The Pending CTA',
   expired: 'This key is past its sell-by date',
   noWallet: 'You do not have a wallet',
+  metadata: 'We need more info',
 }
 
 const onlyDefaultCta: any = {
