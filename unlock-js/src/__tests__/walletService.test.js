@@ -55,6 +55,10 @@ describe('WalletService (ethers)', () => {
       resetTests()
     })
 
+    afterEach(() => {
+      resetTests()
+    })
+
     it('properly connects to the ethers jsonRpcProvider', async () => {
       expect.assertions(1)
 
@@ -100,9 +104,45 @@ describe('WalletService (ethers)', () => {
         ethers.providers.Web3Provider
       )
     })
+
+    it('properly connect to the unlock provider without a signer supplied', async () => {
+      expect.assertions(2)
+
+      const signer = {}
+      const provider = {
+        isUnlock: true,
+        getSigner: () => signer,
+        getNetwork: () => Promise.resolve({ chainId: 1337 }),
+      }
+      await walletService.connect(provider)
+
+      expect(walletService.provider).toBe(provider)
+      expect(walletService.signer).toBe(signer)
+    })
+
+    it('properly connect to the unlock provider with a signer', async () => {
+      expect.assertions(2)
+
+      const signer = {}
+      const provider = {
+        isUnlock: true,
+        getSigner: () => {
+          'signer'
+        },
+        getNetwork: () => Promise.resolve({ chainId: 1337 }),
+      }
+      await walletService.connect(provider, signer)
+
+      expect(walletService.provider).toBe(provider)
+      expect(walletService.signer).toBe(signer)
+    })
   })
 
   describe('once connected', () => {
+    beforeEach(() => {
+      resetTests()
+    })
+
     describe('isUnlockContractDeployed', () => {
       it('should yield true if the opCode is not 0x', async done => {
         expect.assertions(2)

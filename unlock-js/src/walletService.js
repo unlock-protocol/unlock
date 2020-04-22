@@ -55,11 +55,8 @@ export default class WalletService extends UnlockService {
       // various special cases for provider instantiation, since having 3
       // distinct kinds of provider isn't the Right Thing.
       this.provider = provider
-      // TODO: In particular, we want to avoid caring about whether a provider
-      // is MetaMask or any other specific one. We want to support a single
-      // common kernel of capability, even if that means MetaMask experience
-      // will be somewhat degraded.
       this.web3Provider = false
+      this.signer = signer || this.provider.getSigner()
     } else if (!signer) {
       // Assume this is a web3Provider?
       this.provider = new ethers.providers.Web3Provider(provider)
@@ -71,8 +68,6 @@ export default class WalletService extends UnlockService {
       this.provider = provider
       this.signer = signer
     }
-
-    // The signer can be passed as the 2nd argument
 
     const { chainId: networkId } = await this.provider.getNetwork()
 
