@@ -124,7 +124,7 @@ export const useCheckoutCommunication = () => {
   // If the page is not inside an iframe, window and window.top will be identical
   const insideIframe = window.top !== window
 
-  if (config && config.useDelegatedProvider) {
+  if (config && config.useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({
       sendAsync: (request: MethodCall, callback) => {
         waitingMethodCalls[request.id] = (error: any, response: any) => {
