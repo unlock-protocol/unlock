@@ -5,36 +5,44 @@ import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import '@openzeppelin/contracts/access/roles/WhitelistAdminRole.sol';
 import 'unlock-abi-7/ILockKeyPurchaseHookV7.sol';
 import 'unlock-abi-7/IPublicLockV7.sol';
+import '../mixins/LockRoles.sol';
+
 
 /**
  * @notice Used with a Lock to offer discounts if the user enters a code.
+ * @dev One instance of this contract may be used for all v7 locks.
  */
-contract DiscountCodeHook is ILockKeyPurchaseHookV7, WhitelistAdminRole
+contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
 {
   using SafeMath for uint;
+
+  event AddCode(address indexed lock, address codeAddress, uint discountBasisPoints);
 
   /**
    * @notice The code expressed as an address where the private key is
    * keccak256(abi.encode(code, lock.address)).
    * The discount is in basis points, so 1000 == 10%
    */
-  mapping(address => uint) public codeAddressToDiscountBasisPoints;
+  mapping(address => mapping(address => uint)) public lockToCodeAddressToDiscountBasisPoints;
 
   /**
-   * @notice Allows an admin to add or remove discount codes.
+   * @notice Allows a lock manager to add or remove discount codes.
    * @dev To remove a code, just set the discount to 0.
    */
   function addCodes(
+    IPublicLockV7 _lock,
     address[] calldata _codeAddresses,
     uint[] calldata _discountBasisPoints
   ) external
-    onlyWhitelistAdmin()
+    onlyLockManager(_lock)
   {
     for(uint i = 0; i < _codeAddresses.length; i++)
     {
       address codeAddress = _codeAddresses[i];
       require(codeAddress != address(0), 'INVALID_CODE');
-      codeAddressToDiscountBasisPoints[codeAddress] = _discountBasisPoints[i];
+      uint discountBasisPoints = _discountBasisPoints[i];
+      lockToCodeAddressToDiscountBasisPoints[address(_lock)][codeAddress] = discountBasisPoints;
+      emit AddCode(address(_lock), codeAddress, discountBasisPoints);
     }
   }
 
@@ -42,19 +50,21 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, WhitelistAdminRole
    * @notice Returns the price per key after considering the code entered.
    * If the code is missing or incorrect, the lock's normal keyPrice will be used.
    * @param _recipient the account which will be granted a key
-   * @param _data arbitrary data populated by the front-end which initiated the sale
+   * @param _signature the signature created from the code's private key, signing
+   * the message `"\x19Ethereum Signed Message:\n32" + keccak256(_recipient)`.
+   * This is passed through the lock by setting the `_data` field on purchase.
    */
   function keyPurchasePrice(
     address /*from*/,
     address _recipient,
     address /*referrer*/,
-    bytes calldata _data
+    bytes calldata _signature
   ) external view
     returns (uint minKeyPrice)
   {
-    bytes32 secretHash = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));
-    address codeAddress = ECDSA.recover(secretHash, _data);
-    uint discountBP = codeAddressToDiscountBasisPoints[codeAddress];
+    bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));
+    address codeAddress = ECDSA.recover(secretMessage, _signature);
+    uint discountBP = lockToCodeAddressToDiscountBasisPoints[msg.sender][codeAddress];
     minKeyPrice = IPublicLockV7(msg.sender).keyPrice();
     if(discountBP > 0)
     {

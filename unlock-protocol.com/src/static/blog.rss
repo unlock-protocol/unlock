@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 08 Apr 2020 19:58:42 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 16 Apr 2020 22:14:01 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Unlocking with a credit card]]></title>
+            <description><![CDATA[Unlock memberships with credit cards, whether you use a crypto wallet, or not!]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-with-credit-cards</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-with-credit-cards</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Thu, 16 Apr 2020 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Introducing the Latest Unlock Paywall]]></title>
             <description><![CDATA[Unlock introduces a new paywall architecture in response to customer needs]]></description>
