@@ -58,12 +58,21 @@ contract('DiscountCodeHook', accounts => {
 
     // Add supported discount codes
     await hookContract.addCodes(
+      lock.address,
       [getCodeAddress(lock, 'joerogan'), getCodeAddress(lock, 'unlock 25')],
       [5000, 2500],
       {
         from: lockCreator,
       }
     )
+  })
+
+  it('you can read the discount amount for a given lock and code', async () => {
+    const discount = await hookContract.lockToCodeAddressToDiscountBasisPoints(
+      lock.address,
+      getCodeAddress(lock, 'joerogan')
+    )
+    assert.equal(discount, 5000)
   })
 
   it('you can buy without a code', async () => {
@@ -175,20 +184,30 @@ contract('DiscountCodeHook', accounts => {
     assert.equal(purchasePrice.toString(), keyPrice.times(0.75).toFixed())
   })
 
-  it('non-admins cannot modify codes', async () => {
+  it('non-lock managers cannot modify codes', async () => {
     await reverts(
-      hookContract.addCodes([getCodeAddress(lock, 'fail')], [5000], {
-        from: keyBuyer,
-      }),
-      'WhitelistAdminRole: caller does not have the WhitelistAdmin role'
+      hookContract.addCodes(
+        lock.address,
+        [getCodeAddress(lock, 'fail')],
+        [5000],
+        {
+          from: keyBuyer,
+        }
+      ),
+      'ONLY_LOCK_MANAGER.'
     )
   })
 
   describe('codes can be removed', () => {
     beforeEach(async () => {
-      await hookContract.addCodes([getCodeAddress(lock, 'joerogan')], [0], {
-        from: lockCreator,
-      })
+      await hookContract.addCodes(
+        lock.address,
+        [getCodeAddress(lock, 'joerogan')],
+        [0],
+        {
+          from: lockCreator,
+        }
+      )
     })
 
     it('now the code no longer offers any discount', async () => {
