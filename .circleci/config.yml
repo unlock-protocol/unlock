@@ -455,6 +455,9 @@ workflows:
           requires:
             - integration-tests
       - deploy-locksmith-beanstalk-production:
+          filters:
+            branches:
+              only: production
           requires:
             - integration-tests            
       - promote-unlock-images:
@@ -484,6 +487,6 @@ workflows:
       - deploy-nudge-beanstalk-production:
           filters:
             branches:
-              only: production
+              only: master
           requires:
             - deploy-nudge-beanstalk-staging
