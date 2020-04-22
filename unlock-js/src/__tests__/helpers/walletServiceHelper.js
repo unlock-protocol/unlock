@@ -8,6 +8,7 @@ import * as UnlockV13 from 'unlock-abi-1-3'
 import * as UnlockV7 from 'unlock-abi-7'
 import { ethers } from 'ethers'
 
+import { BigNumber } from 'ethers/utils'
 import utils from '../../utils'
 import { GAS_AMOUNTS } from '../../constants'
 
@@ -146,12 +147,14 @@ export const prepContract = ({
       blockHash: null,
       blockNumber: null,
       transactionIndex: 0,
+      chainId: 0,
       confirmations: 0,
       creates: null,
       networkId: 0,
       nonce: 0,
       value: utils.bigNumberify(encodedValue),
       gasLimit: utils.bigNumberify(testParams.gas),
+      gasPrice: expect.any(BigNumber),
       hash: transactionHash,
       wait: expect.any(Function),
     }

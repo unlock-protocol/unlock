@@ -1,5 +1,9 @@
 # Changes
 
+# 0.10.1
+
+- Support Ether providers and signers in WalletService
+
 # 0.10.0
 
 - adding support for grantKey function
