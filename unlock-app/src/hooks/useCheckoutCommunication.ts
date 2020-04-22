@@ -70,18 +70,9 @@ export const useCheckoutCommunication = () => {
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
-      if (config.useDelegatedProvider) {
-        setProviderAdapter({
-          send: (request: MethodCall, callback) => {
-            waitingMethodCalls[request.id] = callback
-            emitMethodCall(request)
-          },
-        })
-      }
       setConfig(config)
     },
     resolveMethodCall: (result: MethodCallResult) => {
-      console.log({ result })
       const callback = waitingMethodCalls[result.id]
       if (!callback) {
         console.error(
@@ -132,6 +123,17 @@ export const useCheckoutCommunication = () => {
 
   // If the page is not inside an iframe, window and window.top will be identical
   const insideIframe = window.top !== window
+
+  if (config && config.useDelegatedProvider) {
+    setProviderAdapter({
+      sendAsync: (request: MethodCall, callback) => {
+        waitingMethodCalls[request.id] = (error: any, response: any) => {
+          callback(error, response)
+        }
+        emitMethodCall(request)
+      },
+    })
+  }
 
   return {
     emitUserInfo,

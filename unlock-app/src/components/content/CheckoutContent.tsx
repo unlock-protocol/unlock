@@ -24,7 +24,18 @@ export const CheckoutContent = ({
   errors,
 }: CheckoutContentProps) => {
   const checkoutCommunication = useCheckoutCommunication()
-  if (checkoutCommunication.insideIframe && !checkoutCommunication.config) {
+
+  // We need to delay render until we have a config at least, and
+  // further if we haven't yet set up the adapter for delegated web3
+  // calls
+  const noConfig =
+    checkoutCommunication.insideIframe && !checkoutCommunication.config
+  const noProviderAdapter =
+    checkoutCommunication.config &&
+    checkoutCommunication.config.useDelegatedProvider &&
+    !checkoutCommunication.providerAdapter
+
+  if (noConfig || noProviderAdapter) {
     return <></>
   }
 
