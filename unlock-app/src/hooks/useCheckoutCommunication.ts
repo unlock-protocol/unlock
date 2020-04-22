@@ -68,6 +68,14 @@ export const useCheckoutCommunication = () => {
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
+      if (config.useDelegatedProvider) {
+        providerAdapter = {
+          send: (request: MethodCall, callback) => {
+            waitingMethodCalls[request.id] = callback
+            emitMethodCall(request)
+          },
+        }
+      }
       setConfig(config)
     },
     resolveMethodCall: (result: MethodCallResult) => {
@@ -119,14 +127,8 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.methodCall, call)
   }
 
-  if (config && config.useDelegatedProvider) {
-    providerAdapter = {
-      send: (request: MethodCall, callback) => {
-        waitingMethodCalls[request.id] = callback
-        emitMethodCall(request)
-      },
-    }
-  }
+  // If the page is not inside an iframe, window and window.top will be identical
+  const insideIframe = window.top !== window
 
   return {
     emitUserInfo,
@@ -134,6 +136,7 @@ export const useCheckoutCommunication = () => {
     emitTransactionInfo,
     config,
     providerAdapter,
+    insideIframe,
     // `ready` is primarily provided as an aid for testing the buffer
     // implementation.
     ready: !!parent,

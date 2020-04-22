@@ -11,7 +11,6 @@ import {
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { CheckoutStoreProvider } from '../../hooks/useCheckoutStore'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
-import { useProvider } from '../../hooks/useProvider'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -25,8 +24,7 @@ export const CheckoutContent = ({
   errors,
 }: CheckoutContentProps) => {
   const checkoutCommunication = useCheckoutCommunication()
-  const { loading } = useProvider()
-  if (loading) {
+  if (checkoutCommunication.insideIframe && !checkoutCommunication.config) {
     return <></>
   }
 
