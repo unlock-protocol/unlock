@@ -63,22 +63,25 @@ const waitingMethodCalls: {
 // the buffered events are emitted and future events are emitted
 // directly.
 export const useCheckoutCommunication = () => {
-  let providerAdapter: AsyncSendable | undefined
+  const [providerAdapter, setProviderAdapter] = useState<
+    AsyncSendable | undefined
+  >(undefined)
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       if (config.useDelegatedProvider) {
-        providerAdapter = {
+        setProviderAdapter({
           send: (request: MethodCall, callback) => {
             waitingMethodCalls[request.id] = callback
             emitMethodCall(request)
           },
-        }
+        })
       }
       setConfig(config)
     },
     resolveMethodCall: (result: MethodCallResult) => {
+      console.log({ result })
       const callback = waitingMethodCalls[result.id]
       if (!callback) {
         console.error(
