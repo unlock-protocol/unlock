@@ -3,29 +3,56 @@ pragma solidity 0.5.17;
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import 'unlock-abi-7/ILockKeyPurchaseHookV7.sol';
 import 'unlock-abi-7/IPublicLockV7.sol';
+import '../mixins/LockRoles.sol';
+
 
 /**
  * @notice Used with a Lock in order to require the user knows
  * a code in order to buy.
+ * @dev One instance of this contract may be used for all v7 locks.
  */
-contract CodeRequiredHook is ILockKeyPurchaseHookV7
+contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
 {
   /**
-   * @notice The answer expressed as an address where the private key is
-   * keccak256(abi.encode(answer, lock.address))
+   * @notice The code expressed as an address where the private key is
+   * keccak256(abi.encode(code, lock.address))
    */
-  address public answerAddress;
+  mapping(address => mapping(address => bool)) public lockToCodeAddress;
 
-  constructor(
-    address _answerAddress
-  ) public
+  /**
+   * @notice Allows the lock manager to add one or more codes.
+   */
+  function addCodes(
+    IPublicLockV7 _lock,
+    address[] calldata _codeAddresses
+  ) external
+    onlyLockManager(_lock)
   {
-    require(_answerAddress != address(0), 'INVALID_ANSWER');
-    answerAddress = _answerAddress;
+    for(uint i = 0; i < _codeAddresses.length; i++)
+    {
+      require(_codeAddresses[i] != address(0), 'INVALID_CODE');
+      lockToCodeAddress[address(_lock)][_codeAddresses[i]] = true;
+    }
   }
 
   /**
-   * @notice Returns the price per key.
+   * @notice Allows the lock manager to remove one or more codes.
+   */
+  function removeCodes(
+    IPublicLockV7 _lock,
+    address[] calldata _codeAddresses
+  ) external
+    onlyLockManager(_lock)
+  {
+    for(uint i = 0; i < _codeAddresses.length; i++)
+    {
+      require(_codeAddresses[i] != address(0), 'INVALID_CODE');
+      lockToCodeAddress[address(_lock)][_codeAddresses[i]] = false;
+    }
+  }
+
+  /**
+   * @notice Returns the price per key which is unaffected by this hook.
    */
   function keyPurchasePrice(
     address /*from*/,
@@ -53,7 +80,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7
   ) external
   {
     // Confirm `_to` (the new keyOwner)
-    bytes32 secretHash = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));
-    require(ECDSA.recover(secretHash, _data) == answerAddress, 'INCORRECT_CODE');
+    bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));
+    require(lockToCodeAddress[msg.sender][ECDSA.recover(secretMessage, _data)], 'INCORRECT_CODE');
   }
 }
