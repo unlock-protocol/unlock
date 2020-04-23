@@ -31,7 +31,7 @@ contract MixinLockMetadata is
   string private lockSymbol;
 
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
-  string public baseTokenURI;
+  string private baseTokenURI;
 
   event NewLockSymbol(
     string symbol
@@ -86,6 +86,14 @@ contract MixinLockMetadata is
     }
   }
 
+  function getBaseTokenURI()
+   external
+   view
+   returns(string memory)
+  {
+    return baseTokenURI;
+  }
+
   /**
    * Allows the Lock owner to update the baseTokenURI for this Lock.
    */
@@ -113,14 +121,18 @@ contract MixinLockMetadata is
     string memory URI;
     if(bytes(baseTokenURI).length == 0) {
       URI = unlockProtocol.globalBaseTokenURI();
-    } else {
-      URI = baseTokenURI;
-    }
-
-    return URI.strConcat(
+      return URI.strConcat(
       address(this).address2Str(),
       '/',
       _tokenId.uint2Str()
     );
+    } else {
+      URI = baseTokenURI;
+      return URI.strConcat(
+      '',
+      '/',
+      _tokenId.uint2Str()
+    );
+    }
   }
 }
