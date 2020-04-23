@@ -10,7 +10,6 @@ let txObj
 let event
 let baseTokenURI
 let uri
-let lowerCaseAddress
 
 // Helper function to deal with the lock returning the address part of the URI in lowercase.
 function stringShifter(str) {
@@ -95,13 +94,11 @@ contract('Lock / erc721 / tokenURI', accounts => {
         value: web3.utils.toWei('0.01', 'ether'),
       })
       uri = await lock.tokenURI.call(1)
-      const lockAddressStr = lock.address.toString()
-      lowerCaseAddress = stringShifter(lockAddressStr)
-      assert.equal(uri, `https:/newURI.com/api/key/${lowerCaseAddress}` + '/1')
+      assert.equal(uri, 'https:/newURI.com/api/key/' + '/1')
     })
 
     it('should let anyone get the baseTokenURI for a lock', async () => {
-      baseTokenURI = await lock.baseTokenURI.call()
+      baseTokenURI = await lock.getBaseTokenURI.call()
       // should be the same as the previously set URI
       assert.equal(baseTokenURI, 'https:/newURI.com/api/key/')
     })
@@ -110,9 +107,11 @@ contract('Lock / erc721 / tokenURI', accounts => {
       await lock.setBaseTokenURI('', {
         from: accounts[0],
       })
-      baseTokenURI = await lock.baseTokenURI.call()
+      baseTokenURI = await lock.getBaseTokenURI.call()
       assert.equal(baseTokenURI, '')
       uri = await lock.tokenURI.call(1)
+      const lockAddressStr = lock.address.toString()
+      const lowerCaseAddress = stringShifter(lockAddressStr)
       assert.equal(
         uri,
         `https://newTokenURI.com/api/key/${lowerCaseAddress}` + '/1'
