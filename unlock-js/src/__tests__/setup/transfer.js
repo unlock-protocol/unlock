@@ -6,9 +6,7 @@ const ethers = require('ethers')
  * @param {*} recipients
  */
 async function transfer(provider, signer, recipient, amount) {
-  let wallet = await provider.getSigner(signer)
-
-  const transaction = await wallet.sendTransaction({
+  const transaction = await signer.sendTransaction({
     to: recipient,
     value: ethers.utils.parseEther(amount),
   })

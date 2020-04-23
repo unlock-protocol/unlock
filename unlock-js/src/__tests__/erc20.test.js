@@ -114,6 +114,7 @@ describe('erc20', () => {
       const transactionData =
         '0x095ea7b3000000000000000000000000e29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a0000000000000000000000000000000000000000000000000000000000000002'
 
+      const signer = provider.getSigner()
       nock.accountsAndYield([callerAddress])
       nock.netVersionAndYield(0)
       nock.ethGetCodeAndYield(erc20ContractAddress, '0x0')
@@ -155,7 +156,8 @@ describe('erc20', () => {
         erc20ContractAddress,
         lockContractAddress,
         approvalAmount,
-        provider
+        provider,
+        signer
       )
       expect(result).toHaveProperty('hash', transactionHash)
       expect(result).toHaveProperty('data', transactionData)

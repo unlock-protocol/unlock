@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
 import utils from './utils'
-import FastJsonRpcSigner from './FastJsonRpcSigner'
 import erc20abi from './erc20abi'
 
 // The SAI contract does not have the symbol method implemented correctly
@@ -65,9 +64,9 @@ export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
 export async function getAllowance(
   erc20ContractAddress,
   lockContractAddress,
-  provider
+  provider,
+  signer
 ) {
-  const signer = provider.getSigner()
   const purchaser = await signer.getAddress()
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   let amount = '0'
@@ -83,12 +82,9 @@ export async function approveTransfer(
   erc20ContractAddress,
   lockContractAddress,
   value,
-  provider
+  provider,
+  signer
 ) {
-  // Using the FastJsonRpcSigner so that we immediately return and not have the user wait for the approval transaction
-  // to succeed.
-  // TODO: add test to ensure that this is actually retuning instantly?
-  const signer = new FastJsonRpcSigner(provider.getSigner())
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
   return contract.approve(lockContractAddress, value)
 }

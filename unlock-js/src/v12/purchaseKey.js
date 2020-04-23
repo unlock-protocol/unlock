@@ -50,14 +50,16 @@ export default async function(
     const approvedAmount = await getAllowance(
       erc20Address,
       lockAddress,
-      this.provider
+      this.provider,
+      this.signer
     )
     if (approvedAmount < actualAmount) {
       await approveTransfer(
         erc20Address,
         lockAddress,
         actualAmount,
-        this.provider
+        this.provider,
+        this.signer
       )
     }
   } else {

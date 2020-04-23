@@ -1,7 +1,7 @@
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
-import { KeyGranter } from './keyGranter'
 
-const HDWalletProvider = require('@truffle/hdwallet-provider')
+const { ethers } = require('ethers')
+
 const {
   findOrCreateTransaction,
 } = require('../operations/transactionOperations')
@@ -29,15 +29,13 @@ export default class Dispatcher {
     this.host = host
 
     this.unlockAddress = unlockAddress
-    this.provider = new HDWalletProvider(credentials, host)
     this.buyer = buyer
-    this.keyGranter = new KeyGranter(credentials, host)
   }
 
   async retrieveLock(lockAddress: string) {
     try {
       const w3s = new Web3Service({
-        readOnlyProvider: this.provider,
+        readOnlyProvider: this.host,
         unlockAddress: this.unlockAddress,
       })
 
@@ -47,8 +45,14 @@ export default class Dispatcher {
     }
   }
 
-  async grantKeys(lockAddress: string, recipient: string) {
-    return await this.keyGranter.grantKeys(lockAddress, recipient)
+  async grantKey(lockAddress: string, recipient: string) {
+    const walletService = new WalletService({
+      unlockAddress: this.unlockAddress,
+    })
+    return await walletService.grantKey({
+      lockAddress,
+      recipient,
+    })
   }
 
   async purchase(lockAddress: string, recipient: string) {
@@ -86,7 +90,10 @@ export default class Dispatcher {
       )
     })
 
-    await walletService.connect(this.provider)
+    const provider = new ethers.providers.JsonRpcProvider(this.host)
+    const walletWithProvider = new ethers.Wallet(this.credentials, provider)
+    await walletService.connect(provider, walletWithProvider)
+
     // Let's not await on the transaction to be mined
     walletService.purchaseKey({
       lockAddress,

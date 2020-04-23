@@ -1,55 +1,81 @@
 # Changes
 
+# 0.10.2
+
+- Fixing unlock provider handling inside of WalletService
+
+# 0.10.1
+
+- Support Ether providers and signers in WalletService
+
+# 0.10.0
+
+- adding support for grantKey function
+- adding ability to pass signer
+
 # 0.9.3
+
 - Exporting type definition for isLockManager
 
 # 0.9.2
+
 - Adding isLockManager function to web3Service
 
 # 0.9.1
+
 - Replaced owner with beneficiary for locks
 
 # 0.9
+
 - Adding support for v7 of PublicLock and Unlock smart contracts
 
 # 0.8.7
+
 - Updated typescript definitions
 
 # 0.8.6
+
 - Callback on transaction yields the transaction object as 3rd argument
 
 # 0.8.5
+
 - Corrected type definition so that callback is optional on purchaseKey
 
 # 0.8.4
+
 - Updated WalletService type to include callback for purchaseKey
 
 # 0.8.3
+
 - Updated Web3ServiceParams to include the network id, which is required
 
 # 0.8.2
+
 - Hardcoding the symbol for SAI
 
 # 0.8.1
+
 - Addition of setUserMetadata, which follows the same argument pattern
   as the other metadata methods
 
 # 0.8.0
+
 - BREAKING: getKeyMetadata now takes an object for non-callback
   params, now including an optional signature to retrieve protected metadata
 - BREAKING: setKeyMetadata takes an object for non-callback params to
   keep calling conventions consistent for the setter and the getter
 
 # 0.7.2
+
 - bumped gas limits
 - Adding script to initialize a template
 
 # 0.7.1
+
 - Code cleaned witth automated linting fixes
 - Adjusted lint config to ignore violations that could not be fixed auttomatically
 - Added setKeyMetadata and getKeyMetadata methods to WalletService
 - Update gas prices
-
 
 # 0.7.0
 

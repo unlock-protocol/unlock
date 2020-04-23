@@ -30,7 +30,9 @@ describe('UnlockService', () => {
     unlockService = new UnlockService({
       unlockAddress,
     })
-    unlockService.provider = new ethersProviders.JsonRpcProvider(endpoint)
+    const provider = new ethersProviders.JsonRpcProvider(endpoint)
+    unlockService.signer = provider.getSigner()
+    unlockService.provider = provider
     await nock.resolveWhenAllNocksUsed()
   }
 

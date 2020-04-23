@@ -42,7 +42,6 @@ export const MetadataForm = ({ fields, onSubmit }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
-      <p>We need to collect some additional information for your purchase.</p>
       {fields.map(({ name, type, required }) => (
         <StyledLabel required={required} key={name}>
           <span>{name}</span>
