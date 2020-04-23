@@ -183,4 +183,8 @@ export class Paywall {
 }
 
 const rawConfig = (window as any).unlockProtocolConfig
-new Paywall(rawConfig)
+if (!rawConfig) {
+  console.error('Missing window.unlockProtocolConfig.')
+} else {
+  new Paywall(rawConfig)
+}
