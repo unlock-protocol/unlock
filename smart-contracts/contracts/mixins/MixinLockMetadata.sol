@@ -122,17 +122,17 @@ contract MixinLockMetadata is
     if(bytes(baseTokenURI).length == 0) {
       URI = unlockProtocol.globalBaseTokenURI();
       return URI.strConcat(
-      address(this).address2Str(),
-      '/',
-      _tokenId.uint2Str()
-    );
+        address(this).address2Str(),
+        '/',
+        _tokenId.uint2Str()
+      );
     } else {
       URI = baseTokenURI;
       return URI.strConcat(
-      '',
-      '/',
-      _tokenId.uint2Str()
-    );
+        '',
+        '/',
+        _tokenId.uint2Str()
+      );
     }
   }
 }
