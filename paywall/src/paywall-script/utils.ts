@@ -1,20 +1,38 @@
-export const dispatchEvent = (detail: any) => {
+/**
+ * Dispatches events
+ * @param eventName
+ * @param params
+ */
+export const dispatchEvent = (eventName: string, params: any) => {
+  if (eventName === unlockEvents.status) {
+    // Supporting legacy unlockProtocol event
+    dispatchEvent('unlockProtocol', params.state)
+  }
   let event: any
   try {
-    event = new window.CustomEvent('unlockProtocol', { detail })
+    event = new window.CustomEvent(eventName, { detail: params })
   } catch (e) {
     // older browsers do events this clunky way.
     // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events#The_old-fashioned_way
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/initCustomEvent#Parameters
     event = window.document.createEvent('customevent')
     event.initCustomEvent(
-      'unlockProtocol',
+      eventName,
       true /* canBubble */,
       true /* cancelable */,
-      detail
+      params
     )
   }
   window.dispatchEvent(event)
+}
+
+/**
+ * Mapping between events and their names
+ */
+export const unlockEvents = {
+  status: 'unlockProtocol.status',
+  authenticated: 'unlockProtocol.authenticated',
+  transactionSent: 'unlockProtocol.transactionSent',
 }
 
 export const setupUnlockProtocolVariable = (properties: {

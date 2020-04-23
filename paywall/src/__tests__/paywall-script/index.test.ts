@@ -1,5 +1,6 @@
 import { Paywall } from '../../paywall-script/index'
 import * as isUnlockedUtil from '../../utils/isUnlocked'
+import * as paywallScriptUtils from '../../paywall-script/utils'
 import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 
 declare let __ENVIRONMENT_VARIABLES__: any
@@ -25,6 +26,7 @@ let paywall: Paywall
 
 describe('Paywall init script', () => {
   beforeEach(() => {
+    jest.resetAllMocks()
     paywall = new Paywall(paywallConfig)
     paywall.unlockPage = jest.fn()
     paywall.lockPage = jest.fn()
@@ -51,6 +53,22 @@ describe('Paywall init script', () => {
       })
       expect(paywall.checkKeysAndLock).toHaveBeenCalledWith()
       expect(paywall.userAccountAddress).toBe('0xtheaddress')
+    })
+
+    it('should dispatch an event', async () => {
+      expect.assertions(1)
+
+      jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+
+      paywall.unlockPage = jest.fn()
+
+      await paywall.handleUserInfoEvent({ address: '0xtheaddress' })
+      expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
+        paywallScriptUtils.unlockEvents.authenticated,
+        {
+          address: '0xtheaddress',
+        }
+      )
     })
   })
 
@@ -101,12 +119,32 @@ describe('Paywall init script', () => {
       })
       expect(optimisticUnlockingUtils.willUnlock).toHaveBeenCalledWith(
         readOnlyProvider,
-        undefined,
+        '0xtheaddress',
         '0xlock',
         '0xhash',
         true
       )
       expect(paywall.unlockPage).toHaveBeenCalled()
+    })
+
+    it('should dispatch an event', async () => {
+      expect.assertions(1)
+
+      jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+
+      paywall.unlockPage = jest.fn()
+
+      await paywall.handleTransactionInfoEvent({
+        hash: '0xhash',
+        lock: '0xlock',
+      })
+      expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
+        paywallScriptUtils.unlockEvents.transactionSent,
+        {
+          hash: '0xhash',
+          lock: '0xlock',
+        }
+      )
     })
   })
 })
