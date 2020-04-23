@@ -1,6 +1,7 @@
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 
-const HDWalletProvider = require('@truffle/hdwallet-provider')
+const { ethers } = require('ethers')
+
 const {
   findOrCreateTransaction,
 } = require('../operations/transactionOperations')
@@ -28,14 +29,13 @@ export default class Dispatcher {
     this.host = host
 
     this.unlockAddress = unlockAddress
-    this.provider = new HDWalletProvider(credentials, host)
     this.buyer = buyer
   }
 
   async retrieveLock(lockAddress: string) {
     try {
       const w3s = new Web3Service({
-        readOnlyProvider: this.provider,
+        readOnlyProvider: this.host,
         unlockAddress: this.unlockAddress,
       })
 
@@ -90,7 +90,10 @@ export default class Dispatcher {
       )
     })
 
-    await walletService.connect(this.provider)
+    const provider = new ethers.providers.JsonRpcProvider(this.host)
+    const walletWithProvider = new ethers.Wallet(this.credentials, provider)
+    await walletService.connect(provider, walletWithProvider)
+
     // Let's not await on the transaction to be mined
     walletService.purchaseKey({
       lockAddress,
