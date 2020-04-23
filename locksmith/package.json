@@ -36,7 +36,6 @@
     "@opencensus/core": "0.0.20",
     "@opencensus/exporter-jaeger": "0.0.20",
     "@opencensus/nodejs": "0.0.20",
-    "@truffle/hdwallet-provider": "1.0.32",
     "@types/cors": "2.8.6",
     "@types/eth-sig-util": "2.1.0",
     "@types/ethereumjs-util": "5.2.0",
