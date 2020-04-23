@@ -8,4 +8,7 @@ export class AuthorizedLock extends Model<AuthorizedLock> {
 
   @Column
   authorizedAt!: Date
+
+  @Column
+  stripe_account_id!: string
 }
