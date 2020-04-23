@@ -127,8 +127,7 @@ contract MixinLockMetadata is
         _tokenId.uint2Str()
       );
     } else {
-      URI = baseTokenURI;
-      return URI.strConcat(
+      return baseTokenURI.strConcat(
         '',
         '/',
         _tokenId.uint2Str()
