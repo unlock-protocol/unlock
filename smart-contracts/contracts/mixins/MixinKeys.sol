@@ -137,7 +137,6 @@ contract MixinKeys is
     view
     returns (uint)
   {
-    require(_keyOwner != address(0), 'INVALID_ADDRESS');
     return getHasValidKey(_keyOwner) ? 1 : 0;
   }
 
