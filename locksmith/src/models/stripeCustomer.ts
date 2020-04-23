@@ -8,4 +8,7 @@ export class StripeCustomer extends Model<StripeCustomer> {
 
   @Column
   StripeCustomerId!: string
+
+  @Column
+  stripeConnectedAccountId!: string
 }
