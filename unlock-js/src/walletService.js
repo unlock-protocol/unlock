@@ -6,6 +6,7 @@ import utils from './utils'
 import { generateKeyMetadataPayload } from './typedData/keyMetadata'
 import { generateKeyHolderMetadataPayload } from './typedData/keyHolderMetadata'
 import 'cross-fetch/polyfill'
+import FastJsonRpcSigner from './FastJsonRpcSigner'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -38,28 +39,36 @@ export default class WalletService extends UnlockService {
    * Temporary function that allows us to use ethers functionality
    * without interfering with web3
    */
-  async connect(provider) {
+  async connect(provider, signer) {
     // Reset the connection
     this.ready = false
 
     if (typeof provider === 'string') {
       // This is when using a local provider with unlocked accounts
-      this.provider = new FetchJsonProvider({ endpoint: provider })
+      this.provider = new FetchJsonProvider({
+        endpoint: provider,
+      })
       this.web3Provider = false
+      this.signer = this.provider.getSigner()
     } else if (provider.isUnlock) {
       // TODO: This is very temporary! Immediate priority is to refactor away
       // various special cases for provider instantiation, since having 3
       // distinct kinds of provider isn't the Right Thing.
       this.provider = provider
-      // TODO: In particular, we want to avoid caring about whether a provider
-      // is MetaMask or any other specific one. We want to support a single
-      // common kernel of capability, even if that means MetaMask experience
-      // will be somewhat degraded.
       this.web3Provider = false
-    } else {
+      this.signer = signer || this.provider.getSigner()
+    } else if (!signer) {
+      // Assume this is a web3Provider?
       this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
+      // TODO: replace this when v5 of ethers is out
+      // see https://github.com/ethers-io/ethers.js/issues/511
+      this.signer = new FastJsonRpcSigner(this.provider.getSigner())
+    } else {
+      this.provider = provider
+      this.signer = signer
     }
+
     const { chainId: networkId } = await this.provider.getNetwork()
 
     if (this.networkId !== networkId) {
@@ -99,7 +108,9 @@ export default class WalletService extends UnlockService {
 
     this.emit('account.changed', address)
     if (this.provider.emailAddress) {
-      this.emit('account.updated', { emailAddress: this.provider.emailAddress })
+      this.emit('account.updated', {
+        emailAddress: this.provider.emailAddress,
+      })
     }
     this.emit('ready')
     return address
@@ -129,7 +140,12 @@ export default class WalletService extends UnlockService {
       transactionType,
       'submitted'
     )
-    const finalTransaction = await transaction.wait() // TODO: why do we wait here? This should return instantly: getting a hash should not require i/o
+    if (transaction.hash) {
+      return transaction.hash
+    }
+    // TODO: Transaction sent thru a JSON RPC endpoint will take a little time to get the hash
+    // So we have to wait for it.
+    const finalTransaction = await transaction.wait()
     return finalTransaction.hash
     // errors fall through
   }
@@ -171,7 +187,7 @@ export default class WalletService extends UnlockService {
     const factory = new ethers.ContractFactory(
       abis[version].PublicLock.abi,
       bytecode[version].PublicLock,
-      this.provider.getSigner()
+      this.signer
     )
 
     const contract = await factory.deploy({
@@ -206,7 +222,7 @@ export default class WalletService extends UnlockService {
     const factory = new ethers.ContractFactory(
       abis[version].Unlock.abi,
       bytecode[version].Unlock,
-      this.provider.getSigner()
+      this.signer
     )
     const unlockContract = await factory.deploy({
       gasLimit: GAS_AMOUNTS.deployContract,
@@ -222,10 +238,8 @@ export default class WalletService extends UnlockService {
     this.unlockContractAddress = unlockContract.address
 
     // Let's now run the initialization
-    const address = await this.provider.getSigner().getAddress()
-    const writableUnlockContract = unlockContract.connect(
-      this.provider.getSigner()
-    )
+    const address = await this.signer.getAddress()
+    const writableUnlockContract = unlockContract.connect(this.signer)
     const transaction = await writableUnlockContract.initialize(address, {
       gasLimit: 1000000,
     })
@@ -278,6 +292,16 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Grants a key to an address
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+  async grantKey(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.grantKey.bind(this)(params, callback)
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress
@@ -319,8 +343,7 @@ export default class WalletService extends UnlockService {
 
   async signMessage(data, method) {
     const dataHash = utils.utf8ToHex(data)
-    const signer = this.provider.getSigner()
-    const addr = await signer.getAddress()
+    const addr = await this.signer.getAddress()
     let firstParam = dataHash
     let secondParam = addr.toLowerCase()
     if (method === 'eth_sign') {

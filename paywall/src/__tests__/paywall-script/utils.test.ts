@@ -1,6 +1,7 @@
 import {
   dispatchEvent,
   setupUnlockProtocolVariable,
+  unlockEvents,
 } from '../../paywall-script/utils'
 
 describe('Paywall script utils', () => {
@@ -15,7 +16,7 @@ describe('Paywall script utils', () => {
       const windowDispatchEvent = jest.fn()
       ;(global as any).CustomEvent = CustomEvent
       ;(global as any).dispatchEvent = windowDispatchEvent
-      dispatchEvent('neato')
+      dispatchEvent('neato', 'ditto')
 
       expect((global as any).dispatchEvent).toHaveBeenCalledWith({
         event: 'custom',
@@ -34,13 +35,39 @@ describe('Paywall script utils', () => {
       ;(global as any).CustomEvent = undefined
       ;(global as any).document.createEvent = createEvent
       ;(global as any).dispatchEvent = windowDispatchEvent
-      dispatchEvent('neato')
+      dispatchEvent('neato', 'ditto')
 
       expect((global as any).dispatchEvent).toHaveBeenCalledWith(
         expect.objectContaining({
           initCustomEvent: expect.any(Function),
         })
       )
+    })
+
+    it('should emit the legacy unlockProtocol event when unlockProtocol.status', () => {
+      expect.assertions(3)
+      const state = 'locked'
+
+      const CustomEvent = jest.fn((name, opts) => {
+        return { name, opts }
+      })
+      const windowDispatchEvent = jest.fn()
+      ;(global as any).CustomEvent = CustomEvent
+      ;(global as any).dispatchEvent = windowDispatchEvent
+
+      dispatchEvent(unlockEvents.status, {
+        state,
+      })
+
+      expect((global as any).dispatchEvent).toHaveBeenCalledTimes(2)
+      expect((global as any).dispatchEvent).toHaveBeenNthCalledWith(1, {
+        name: 'unlockProtocol',
+        opts: { detail: state },
+      })
+      expect((global as any).dispatchEvent).toHaveBeenNthCalledWith(2, {
+        name: 'unlockProtocol.status',
+        opts: { detail: { state } },
+      })
     })
   })
 
@@ -61,6 +88,17 @@ describe('Paywall script utils', () => {
       })
 
       expect((global as any).unlockProtocol).toBeDefined()
+    })
+  })
+
+  describe('unlockEvents', () => {
+    it('should define the right events', () => {
+      expect.assertions(1)
+      expect(unlockEvents).toEqual({
+        authenticated: 'unlockProtocol.authenticated',
+        status: 'unlockProtocol.status',
+        transactionSent: 'unlockProtocol.transactionSent',
+      })
     })
   })
 })

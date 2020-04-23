@@ -35,6 +35,7 @@ const paywallConfig: PaywallConfig = {
     pending: '',
     confirmed: '',
     noWallet: '',
+    metadata: '',
   },
 }
 

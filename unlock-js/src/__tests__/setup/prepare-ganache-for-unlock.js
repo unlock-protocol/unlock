@@ -31,17 +31,23 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     await walletService.connect(providerURL)
 
     // Deploy ERC1820
-    await Erc1820.deploy(walletService.provider, 2)
+    await Erc1820.deploy(
+      walletService.provider,
+      await walletService.provider.getSigner(2)
+    )
     log('ERC1820 CONTRACT DEPLOYED')
     // Deploy an ERC20
-    const erc20Address = await Erc20.deploy(walletService.provider, 3)
+    const erc20Address = await Erc20.deploy(
+      walletService.provider,
+      await walletService.provider.getSigner(3)
+    )
     log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
     // We then transfer some ERC20 tokens to some users
     await Promise.all(
       users.map(async user => {
         await Erc20.transfer(
           walletService.provider,
-          3,
+          await walletService.provider.getSigner(3),
           erc20Address,
           user,
           '500'
@@ -55,7 +61,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     // This way, any test or application which requires the ganache to be completely set can just wait for the balance of 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 to be >0.
     await Ether.transfer(
       walletService.provider,
-      1, // Use the same signer for all Ether transfers
+      await walletService.provider.getSigner(1), // Use the same signer for all Ether transfers
       '0xa3056617a6f63478ca68a890c0d28b42f4135ae4',
       '0.000000000000000001'
     )
