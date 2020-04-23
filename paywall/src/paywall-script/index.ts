@@ -4,6 +4,11 @@ import { setupUnlockProtocolVariable, dispatchEvent } from './utils'
 import { store, retrieve } from '../utils/localStorage'
 import { willUnlock } from '../utils/optimisticUnlocking'
 import { isUnlocked } from '../utils/isUnlocked'
+import {
+  Enabler,
+  getProvider,
+  Web3Window,
+} from '../utils/enableInjectedProvider'
 
 declare let __ENVIRONMENT_VARIABLES__: {
   unlockAppUrl: string
@@ -47,6 +52,8 @@ export class Paywall {
 
   lockStatus?: string
 
+  provider?: Enabler
+
   constructor(paywallConfig: any) {
     const loadCheckoutModal = () => {
       if (this.iframe) {
@@ -82,6 +89,8 @@ export class Paywall {
       getUserAccountAddress,
       getState,
     })
+
+    this.provider = getProvider(window as Web3Window)
 
     // Always do this last!
     this.loadCache()

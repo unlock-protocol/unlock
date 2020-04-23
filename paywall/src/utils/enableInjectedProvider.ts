@@ -1,8 +1,8 @@
-type Enabler = {
+export type Enabler = {
   enable: () => Promise<void>
 }
 
-interface Web3Window {
+export interface Web3Window {
   // Present with more recent injected providers
   ethereum?: Enabler
   // Present with legacy injected providers
