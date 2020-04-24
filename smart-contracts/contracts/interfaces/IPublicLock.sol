@@ -174,11 +174,6 @@ contract IPublicLock
     external view
     returns(string memory);
 
-  // Allows anoyone to get the baseTokenURI for this Lock.
-  function getBaseTokenURI()
-   external view
-   returns(string memory);
-
     /**
    * Allows a Lock manager to update the baseTokenURI for this Lock.
    * @dev Throws if called by other than a Lock manager

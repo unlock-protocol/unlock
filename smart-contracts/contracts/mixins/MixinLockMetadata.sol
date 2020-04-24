@@ -86,18 +86,6 @@ contract MixinLockMetadata is
     }
   }
 
-  function getBaseTokenURI()
-   external
-   view
-   returns(string memory)
-  {
-    if(bytes(baseTokenURI).length == 0) {
-      return unlockProtocol.globalBaseTokenURI();
-    } else {
-      return baseTokenURI;
-    }
-  }
-
   /**
    * Allows the Lock owner to update the baseTokenURI for this Lock.
    */
