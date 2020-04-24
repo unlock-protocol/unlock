@@ -13,6 +13,8 @@ const paywallConfig = {
     expired: 'expired',
     pending: 'pending',
     confirmed: 'confirmed',
+    noWallet: 'noWallet',
+    metadata: 'metadata',
   },
   locks: {
     '0x1234567890123456789012345678901234567890': {
@@ -37,7 +39,10 @@ describe('Paywall init script', () => {
 
     expect(paywall.childCallBuffer).toHaveLength(1)
 
-    expect(paywall.childCallBuffer[0]).toEqual(['setConfig', paywallConfig])
+    // Constuctor will update config with provider info
+    const expectedConfig = paywallScriptUtils.injectProviderInfo(paywallConfig)
+
+    expect(paywall.childCallBuffer[0]).toEqual(['setConfig', expectedConfig])
   })
 
   describe('userInfo event', () => {
