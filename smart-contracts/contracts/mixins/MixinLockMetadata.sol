@@ -91,7 +91,11 @@ contract MixinLockMetadata is
    view
    returns(string memory)
   {
-    return baseTokenURI;
+    if(bytes(baseTokenURI).length == 0) {
+      return unlockProtocol.globalBaseTokenURI();
+    } else {
+      return baseTokenURI;
+    }
   }
 
   /**
@@ -106,32 +110,42 @@ contract MixinLockMetadata is
   }
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
-   * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC
-   *  3986. The URI may point to a JSON file that conforms to the "ERC721
-   *  Metadata JSON Schema".
+   * @param _tokenId The iD of the token  for which we want to retrieve the URI.
+   * If 0 is passed here, we just return the appropriate baseTokenURI.
+   * @dev  URIs are defined in RFC 3986. The URI may point to a JSON file
+   * that conforms to the "ERC721 Metadata JSON Schema".
    * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
    */
   function tokenURI(
     uint256 _tokenId
   ) external
     view
-    isKey(_tokenId)
     returns(string memory)
   {
     string memory URI;
+    string memory tokenId;
+    string memory lockAddress = address(this).address2Str();
+    string memory seperator;
+
+    if(_tokenId != 0) {
+      tokenId = _tokenId.uint2Str();
+    } else {
+      tokenId = '';
+    }
+
     if(bytes(baseTokenURI).length == 0) {
       URI = unlockProtocol.globalBaseTokenURI();
-      return URI.strConcat(
-        address(this).address2Str(),
-        '/',
-        _tokenId.uint2Str()
-      );
+      seperator = '/';
     } else {
-      return baseTokenURI.strConcat(
-        '',
-        '/',
-        _tokenId.uint2Str()
-      );
+      URI = baseTokenURI;
+      seperator = '';
+      lockAddress = '';
     }
+
+    return URI.strConcat(
+        lockAddress,
+        seperator,
+        tokenId
+      );
   }
 }
