@@ -4,6 +4,7 @@ import {
   setupUnlockProtocolVariable,
   dispatchEvent,
   unlockEvents,
+  injectProviderInfo,
 } from './utils'
 import { store, retrieve } from '../utils/localStorage'
 import { willUnlock } from '../utils/optimisticUnlocking'
@@ -59,6 +60,8 @@ export class Paywall {
   provider?: Enabler
 
   constructor(paywallConfig: any) {
+    this.provider = getProvider(window as Web3Window)
+
     const loadCheckoutModal = () => {
       if (this.iframe) {
         this.showIframe()
@@ -68,12 +71,12 @@ export class Paywall {
     }
 
     const resetConfig = (config: any) => {
-      this.paywallConfig = config
+      this.paywallConfig = injectProviderInfo(config, this.provider)
       this.checkKeysAndLock()
       if (this.setConfig) {
-        this.setConfig(config)
+        this.setConfig(this.paywallConfig)
       } else {
-        this.childCallBuffer.push(['setConfig', config])
+        this.childCallBuffer.push(['setConfig', this.paywallConfig])
       }
     }
 
@@ -93,8 +96,6 @@ export class Paywall {
       getUserAccountAddress,
       getState,
     })
-
-    this.provider = getProvider(window as Web3Window)
 
     // Always do this last!
     this.loadCache()

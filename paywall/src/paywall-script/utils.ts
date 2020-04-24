@@ -1,3 +1,6 @@
+import { PaywallConfig } from 'src/unlockTypes'
+import { Enabler } from 'src/utils/enableInjectedProvider'
+
 /**
  * Dispatches events
  * @param eventName
@@ -79,4 +82,21 @@ export const setupUnlockProtocolVariable = (properties: {
     // eslint-disable-next-line no-console
     console.warn('WARNING: unlockProtocol already defined, cannot re-define it')
   }
+}
+
+export const injectProviderInfo = (
+  config: PaywallConfig,
+  provider?: Enabler
+) => {
+  const newConfig = { ...config }
+
+  // We want to inform the checkout iframe about the availability of a
+  // delegated provider. However, we will not overwrite an existing
+  // value in the config, in case the paywall owner has reason to
+  // force it one way or the other.
+  if (!newConfig.useDelegatedProvider) {
+    newConfig.useDelegatedProvider = !!provider
+  }
+
+  return newConfig
 }
