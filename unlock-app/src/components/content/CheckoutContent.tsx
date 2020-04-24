@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import { UnlockError } from '../../utils/Error'
-import BrowserOnly from '../helpers/BrowserOnly'
 import { Checkout } from '../interface/checkout/Checkout'
 import {
   Account as AccountType,
@@ -25,37 +24,21 @@ export const CheckoutContent = ({
   configFromSearch,
   errors,
 }: CheckoutContentProps) => {
+  const checkoutCommunication = useCheckoutCommunication()
   const { loading } = useProvider()
   if (loading) {
     return <></>
   }
 
   return (
-    <BrowserOnly>
-      <CheckoutStoreProvider>
-        <CheckoutContentInner
-          account={account}
-          configFromSearch={configFromSearch}
-          errors={errors}
-        />
-      </CheckoutStoreProvider>
-    </BrowserOnly>
-  )
-}
-
-export const CheckoutContentInner = ({
-  errors,
-  configFromSearch,
-  account,
-}: CheckoutContentProps) => {
-  const checkoutCommunication = useCheckoutCommunication()
-  return (
-    <Checkout
-      errors={errors}
-      configFromSearch={configFromSearch}
-      account={account}
-      {...checkoutCommunication}
-    />
+    <CheckoutStoreProvider>
+      <Checkout
+        account={account}
+        configFromSearch={configFromSearch}
+        errors={errors}
+        {...checkoutCommunication}
+      />
+    </CheckoutStoreProvider>
   )
 }
 
