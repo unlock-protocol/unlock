@@ -9,7 +9,7 @@ module.exports = {
       table,
       ['publicKey', 'stripeConnectedAccountId'],
       {
-        type: 'primary key',
+        type: 'unique',
         name: 'stripe_customers_pkey',
       }
     )
