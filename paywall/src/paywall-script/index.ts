@@ -13,6 +13,7 @@ import {
   Enabler,
   getProvider,
   Web3Window,
+  enableInjectedProvider,
 } from '../utils/enableInjectedProvider'
 
 declare let __ENVIRONMENT_VARIABLES__: {
@@ -41,6 +42,19 @@ export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  methodCall = 'checkout.methodCall',
+}
+
+export interface MethodCall {
+  method: string
+  params: any
+  id: number
+}
+
+export interface MethodCallResult {
+  id: number
+  response?: any
+  error?: any
 }
 /* end type definitions */
 
@@ -58,6 +72,8 @@ export class Paywall {
   lockStatus?: string
 
   provider?: Enabler
+
+  child?: Postmate.ParentAPI
 
   constructor(paywallConfig: any) {
     this.provider = getProvider(window as Web3Window)
@@ -141,10 +157,13 @@ export class Paywall {
       classListArray: [checkoutIframeClassName, 'show'],
     })
 
+    this.child = child
+
     this.iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
 
     child.on(CheckoutEvents.closeModal, this.hideIframe)
     child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
+    child.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
 
     // transactionInfo event also carries transaction hash.
     child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
@@ -177,6 +196,16 @@ export class Paywall {
     dispatchEvent(unlockEvents.authenticated, info)
     this.cacheUserInfo(info)
     this.checkKeysAndLock()
+  }
+
+  handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
+    await enableInjectedProvider(this.provider)
+    ;(this.provider! as any).sendAsync(
+      { method, params, id },
+      (error: any, response: any) => {
+        this.child!.call('resolveMethodCall', { id, error, response })
+      }
+    )
   }
 
   showIframe = () => {
