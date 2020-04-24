@@ -1,3 +1,4 @@
+import { Enabler } from 'src/utils/enableInjectedProvider'
 import { Paywall } from '../../paywall-script/index'
 import * as isUnlockedUtil from '../../utils/isUnlocked'
 import * as paywallScriptUtils from '../../paywall-script/utils'
@@ -73,6 +74,35 @@ describe('Paywall init script', () => {
         {
           address: '0xtheaddress',
         }
+      )
+    })
+  })
+
+  describe('methodCall event', () => {
+    it('forwards the method call to the injected provider', async () => {
+      expect.assertions(2)
+
+      const provider = {
+        enable: jest.fn(),
+        sendAsync: jest.fn(),
+      }
+
+      paywall.provider = provider as Enabler
+
+      await paywall.handleMethodCallEvent({
+        method: 'net_version',
+        params: [],
+        id: 31337,
+      })
+
+      expect(provider.enable).toHaveBeenCalledWith()
+      expect(provider.sendAsync).toHaveBeenCalledWith(
+        {
+          method: 'net_version',
+          params: [],
+          id: 31337,
+        },
+        expect.any(Function)
       )
     })
   })
