@@ -5,8 +5,6 @@ import configure from '../config'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
-import { WindowContext } from '../hooks/browser/useWindow'
-
 const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
@@ -49,11 +47,9 @@ The Unlock team
     return (
       <>
         <GlobalStyle />
-        <WindowContext.Provider value={global.window}>
-          <ConfigProvider value={config}>
-            <Component {...pageProps} />
-          </ConfigProvider>
-        </WindowContext.Provider>
+        <ConfigProvider value={config}>
+          <Component {...pageProps} />
+        </ConfigProvider>
       </>
     )
   }

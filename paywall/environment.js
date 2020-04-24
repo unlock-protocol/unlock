@@ -11,18 +11,12 @@ dotenv.config({
 const requiredConfigVariables = {
   unlockEnv,
   unlockAppUrl: process.env.UNLOCK_APP_URL,
-  accountsUrl: process.env.USER_IFRAME_URL,
-  paywallUrl: process.env.PAYWALL_URL,
-  usersIframeUrl: process.env.USER_IFRAME_URL,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithUri: process.env.LOCKSMITH_URI,
-  erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
-  erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
 }
 
 const optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
-  debugMode: process.env.DEBUG,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
