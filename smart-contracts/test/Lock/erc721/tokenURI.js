@@ -100,7 +100,8 @@ contract('Lock / erc721 / tokenURI', accounts => {
       assert.equal(uri, 'https:/customBaseTokenURI.com/api/key/' + '1')
     })
 
-    it('should let anyone get the baseTokenURI for a lock', async () => {
+    it('should let anyone get the baseTokenURI for a lock by passing tokenId 0', async () => {
+      // here we pass 0 as the tokenId to get the baseTokenURI
       baseTokenURI = await lock.tokenURI.call(0)
       // should be the same as the previously set URI
       assert.equal(baseTokenURI, 'https:/customBaseTokenURI.com/api/key/')

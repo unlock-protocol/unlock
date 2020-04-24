@@ -100,6 +100,8 @@ contract MixinLockMetadata is
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @param _tokenId The iD of the token  for which we want to retrieve the URI.
    * If 0 is passed here, we just return the appropriate baseTokenURI.
+   * If a custom URI has been set we don't return the lock address.
+   * It may be included in the custom baseTokenURI if needed.
    * @dev  URIs are defined in RFC 3986. The URI may point to a JSON file
    * that conforms to the "ERC721 Metadata JSON Schema".
    * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
