@@ -40,7 +40,10 @@ const Title = styled.h1`
   ${Media.phone`
     display: grid;
     grid-gap: 0;
-    grid-template-columns: 123px auto;
+    ${props =>
+      props.forContent
+        ? 'grid-template-columns: 123px auto;'
+        : 'grid-template-columns: 50px auto;'}
   `};
 `
 
