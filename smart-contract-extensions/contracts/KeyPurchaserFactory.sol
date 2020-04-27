@@ -38,11 +38,12 @@ contract KeyPurchaserFactory
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
-    uint _msgSenderReward
+    uint _msgSenderReward,
+    uint _nonce
   ) private pure
     returns (bytes32)
   {
-    return keccak256(abi.encodePacked(address(_lock), _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward));
+    return keccak256(abi.encodePacked(address(_lock), _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward, _nonce));
   }
 
   /**
@@ -54,11 +55,12 @@ contract KeyPurchaserFactory
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
-    uint _msgSenderReward
+    uint _msgSenderReward,
+    uint _nonce
   ) external view
     returns (address)
   {
-    bytes32 salt = _getClone2Salt(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward);
+    bytes32 salt = _getClone2Salt(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward, _nonce);
     return keyPurchaserTemplate.getClone2Address(salt);
   }
 
@@ -70,10 +72,11 @@ contract KeyPurchaserFactory
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
-    uint _msgSenderReward
+    uint _msgSenderReward,
+    uint _nonce
   ) public
   {
-    bytes32 salt = _getClone2Salt(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward);
+    bytes32 salt = _getClone2Salt(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward, _nonce);
     address purchaser = keyPurchaserTemplate.createClone2(salt);
 
     KeyPurchaser(purchaser).initialize(_lock, _maxKeyPrice, _renewWindow, _renewMinFrequency, _msgSenderReward);

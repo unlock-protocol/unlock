@@ -38,6 +38,7 @@ contract('keyPurchaserFactory', accounts => {
         42,
         99,
         1,
+        0,
         {
           from: lockCreator,
         }
@@ -72,7 +73,8 @@ contract('keyPurchaserFactory', accounts => {
         maxPurchasePrice,
         renewWindow,
         renewMinFrequency,
-        msgSenderReward
+        msgSenderReward,
+        0
       )
       assert.equal(expectedAddress, purchaser.address)
     })
@@ -101,6 +103,7 @@ contract('keyPurchaserFactory', accounts => {
             50,
             99 + i,
             0,
+            0,
             {
               from: lockCreator,
             }
@@ -112,6 +115,21 @@ contract('keyPurchaserFactory', accounts => {
         const purchasers = await factory.getKeyPurchasers(lock.address)
         assert.equal(purchasers.length, purchaserCount)
         assert.equal(purchasers[0], purchaser.address) // sanity check
+      })
+    })
+
+    describe('with a different nonce', () => {
+      beforeEach(async () => {
+        await factory.deployKeyPurchaser(lock.address, keyPrice, 50, 99, 0, 1, {
+          from: lockCreator,
+        })
+      })
+
+      it('can read the purchasers', async () => {
+        const purchasers = await factory.getKeyPurchasers(lock.address)
+        assert.equal(purchasers.length, 2)
+        assert.equal(purchasers[0], purchaser.address) // sanity check
+        assert.notEqual(purchasers[1], purchaser.address) // sanity check
       })
     })
   })
