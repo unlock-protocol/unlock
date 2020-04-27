@@ -467,9 +467,6 @@ workflows:
           requires:
             - integration-tests
       - deploy-locksmith-beanstalk-staging:
-          filters:
-            branches:
-              only: master
           requires:
             - integration-tests
       - deploy-wedlocks-netlify:

@@ -51,7 +51,7 @@ function deploy()
 }
 
 check_is_forked_pr
-check_if_locksmith_changed
+# check_if_locksmith_changed
 
 cd locksmith
 
