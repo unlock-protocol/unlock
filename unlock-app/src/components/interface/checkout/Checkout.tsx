@@ -29,6 +29,7 @@ import {
 } from '../../../hooks/useCheckoutCommunication'
 import { useSetUserMetadata } from '../../../hooks/useSetUserMetadata'
 import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
+import { useProvider } from '../../../hooks/useProvider'
 
 interface CheckoutProps {
   account: AccountType
@@ -38,6 +39,7 @@ interface CheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
   config?: PaywallConfig
+  providerAdapter: any
 }
 
 export const Checkout = ({
@@ -48,7 +50,10 @@ export const Checkout = ({
   emitTransactionInfo,
   emitUserInfo,
   config,
+  providerAdapter,
 }: CheckoutProps) => {
+  // solely called for side effect of initializing with provider
+  useProvider(providerAdapter)
   const reduxDispatch = useDispatch()
   const [current, send] = useMachine(checkoutMachine)
   const { setUserMetadata } = useSetUserMetadata()

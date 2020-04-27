@@ -11,7 +11,6 @@ import {
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { CheckoutStoreProvider } from '../../hooks/useCheckoutStore'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
-import { useProvider } from '../../hooks/useProvider'
 
 interface CheckoutContentProps {
   account: AccountType
@@ -25,8 +24,18 @@ export const CheckoutContent = ({
   errors,
 }: CheckoutContentProps) => {
   const checkoutCommunication = useCheckoutCommunication()
-  const { loading } = useProvider()
-  if (loading) {
+
+  // We need to delay render until we have a config at least, and
+  // further if we haven't yet set up the adapter for delegated web3
+  // calls
+  const noConfig =
+    checkoutCommunication.insideIframe && !checkoutCommunication.config
+  const noProviderAdapter =
+    checkoutCommunication.config &&
+    checkoutCommunication.config.useDelegatedProvider &&
+    !checkoutCommunication.providerAdapter
+
+  if (noConfig || noProviderAdapter) {
     return <></>
   }
 
