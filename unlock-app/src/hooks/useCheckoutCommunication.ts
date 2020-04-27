@@ -15,6 +15,7 @@ export enum CheckoutEvents {
   userInfo = 'checkout.userInfo',
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
+  methodCall = 'checkout.methodCall',
 }
 
 type Payload = UserInfo | TransactionInfo
@@ -22,6 +23,18 @@ type Payload = UserInfo | TransactionInfo
 interface BufferedEvent {
   kind: CheckoutEvents
   payload?: Payload
+}
+
+export interface MethodCall {
+  method: string
+  params: any
+  id: number
+}
+
+export interface MethodCallResult {
+  id: number
+  response?: any
+  error?: any
 }
 
 // This is just a convenience hook that wraps the `emit` function
