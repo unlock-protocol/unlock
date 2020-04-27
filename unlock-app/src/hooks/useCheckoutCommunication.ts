@@ -52,9 +52,23 @@ export type AsyncSendable = {
 // Callbacks from method calls that have been sent to the parent
 // iframe are held here, once the parent iframe has resolved the call
 // it will trigger the callback and remove it from the table.
-const waitingMethodCalls: {
+export const waitingMethodCalls: {
   [id: number]: (error: any, response: any) => void
 } = {}
+
+export const resolveMethodCall = (result: MethodCallResult) => {
+  const callback = waitingMethodCalls[result.id]
+  if (!callback) {
+    console.error(
+      `Received a method call result for unknown method: ${JSON.stringify(
+        result
+      )}`
+    )
+    return
+  }
+  delete waitingMethodCalls[result.id]
+  callback(result.error, result.response)
+}
 
 // This is just a convenience hook that wraps the `emit` function
 // provided by the parent around some communication helpers. If any
@@ -72,19 +86,7 @@ export const useCheckoutCommunication = () => {
     setConfig: (config: PaywallConfig) => {
       setConfig(config)
     },
-    resolveMethodCall: (result: MethodCallResult) => {
-      const callback = waitingMethodCalls[result.id]
-      if (!callback) {
-        console.error(
-          `Received a method call result for unknown method: ${JSON.stringify(
-            result
-          )}`
-        )
-        return
-      }
-      delete waitingMethodCalls[result.id]
-      callback(result.error, result.response)
-    },
+    resolveMethodCall,
   })
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
@@ -139,6 +141,7 @@ export const useCheckoutCommunication = () => {
     emitUserInfo,
     emitCloseModal,
     emitTransactionInfo,
+    emitMethodCall,
     config,
     providerAdapter,
     insideIframe,
