@@ -64,6 +64,8 @@ templates:
           handler: handleCancelKey
         - event: ExpireKey(uint256)
           handler: handleExpireKey
+        - event: Disable()
+          handler: handleDisable
 
       file: ./src/prev7Mappings/mapping.ts
 
@@ -96,6 +98,8 @@ templates:
           handler: pricingChanged
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: transfer
+        - event: Disable()
+          handler: handleDisable          
 
       file: ./src/v7Mappings/mapping.ts
     

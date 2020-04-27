@@ -1,4 +1,4 @@
-import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
+import { Address, Bytes, BigInt, store } from "@graphprotocol/graph-ts";
 import { Lock, LockManager, KeyHolder, Key, KeyPurchase } from "../../generated/schema";
 import {
   ExpireKey,
@@ -8,7 +8,8 @@ import {
   LockManagerRemoved,
   PricingChanged,
   Transfer,
-  PublicLock
+  PublicLock,
+  Disable
 } from "../../generated/templates/PublicLock7/PublicLock";
 
 export function cancelKey(event: CancelKey): void {
@@ -83,6 +84,18 @@ export function transfer(event: Transfer): void {
   } else {
     existingKeyTransfer(event);
   }
+}
+
+export function handleDisable(event: Disable): void {  
+  let lockId = event.address.toHex().toString();
+  let lock = Lock.load(lockId) as Lock;
+
+  lock.LockManagers.forEach((lockManager) =>{
+    let lockManagerId = event.address.toHex().toString().concat(lockManager) as string;    
+    store.remove('LockManager', lockManagerId);
+  })
+
+  store.remove('Lock', lockId);
 }
 
 function newKeyPurchase(
