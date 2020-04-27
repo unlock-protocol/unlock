@@ -60,6 +60,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-test-renderer": "16.13.1",
+    "style-loader": "1.2.0",
     "styled-components": "5.1.0",
     "ts-jest": "25.4.0",
     "ts-loader": "7.0.1",
