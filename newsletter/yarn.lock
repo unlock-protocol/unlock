@@ -1373,13 +1373,13 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@netlify/build@^0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@netlify/build/-/build-0.3.6.tgz#0c71c38ae7db432c52327ba2ddd0c7e16531b38a"
-  integrity sha512-dWkm2Zeq5QfFTRImLkagzgTkUsOajxBlT7l2kWTETKw7EPONsfrU2CH2jW2jOOL4WQ7jCPc+sPjaHAJoUaWxhw==
+"@netlify/build@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@netlify/build/-/build-0.4.1.tgz#1f852f289906cf1d5d8d8977a3ce28cc825a0606"
+  integrity sha512-8hBkt9oLFPMrJtlnsIzBWqlWyLJqlqsYH4NJfk6kdeVzVQp53pTY7AFeMWzkQF1SFDfjrLWEINjmdBLUsKCb9Q==
   dependencies:
     "@netlify/cache-utils" "^0.4.1"
-    "@netlify/config" "^0.10.1"
+    "@netlify/config" "^0.11.0"
     "@netlify/functions-utils" "^0.2.4"
     "@netlify/git-utils" "^0.2.2"
     "@netlify/run-utils" "^0.1.1"
@@ -1393,7 +1393,6 @@
     filter-obj "^2.0.1"
     global-cache-dir "^1.0.1"
     got "^9.6.0"
-    group-by "^0.0.1"
     indent-string "^4.0.0"
     is-ci "^2.0.0"
     is-plain-obj "^2.1.0"
@@ -1434,10 +1433,10 @@
     path-exists "^4.0.0"
     readdirp "^3.4.0"
 
-"@netlify/config@^0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@netlify/config/-/config-0.10.1.tgz#9619cfac3c78cc8531b764cd7208526c51105a53"
-  integrity sha512-Mga1JkycTSCPauaO1EWfnUaC3WoC8K7TRBuxBR3kdwmPDvNUt56SFzmvmAWMiGvh+U5KsGdBXIBWfBvjLV5LVg==
+"@netlify/config@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@netlify/config/-/config-0.11.0.tgz#d140bc6df09142c9afe48363006fc8b9584cee34"
+  integrity sha512-gIGkDXndKPCgntHKyXetnpy29u0V1NzAx3xXNhLTHmVkMrDXcgOIf79JWZbK2onh8tWcFA8xDl8JJpPg5JsCUw==
   dependencies:
     array-flat-polyfill "^1.0.1"
     chalk "^3.0.0"
@@ -1449,12 +1448,12 @@
     indent-string "^4.0.0"
     is-plain-obj "^2.1.0"
     js-yaml "^3.13.1"
-    map-obj "^4.1.0"
     netlify "^4.0.5"
     p-filter "^2.1.0"
     p-locate "^4.1.0"
     path-exists "^4.0.0"
     toml "^3.0.0"
+    tomlify-j0.4 "^3.0.0"
     yargs "^15.3.0"
 
 "@netlify/config@^0.9.1":
@@ -1776,10 +1775,10 @@
     "@babel/runtime" "^7.5.4"
     "@types/testing-library__react-hooks" "^3.0.0"
 
-"@testing-library/react@10.0.2":
-  version "10.0.2"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-10.0.2.tgz#8eca7aa52d810cf7150048a2829fdc487162006d"
-  integrity sha512-YT6Mw0oJz7R6vlEkmo1FlUD+K15FeXApOB5Ffm9zooFVnrwkt00w18dUJFMOh1yRp9wTdVRonbor7o4PIpFCmA==
+"@testing-library/react@10.0.3":
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-10.0.3.tgz#7781adc75cce172f8cda28faa77be29c6270ab43"
+  integrity sha512-EVmd3ghDFBEjOSLnISUdi7OcLdP6tsqjmTprpMaBz5TreoM8jnxGKIPkLD579CE0LYGqK01iffQiy6wwW/RUig==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@testing-library/dom" "^7.1.0"
@@ -1911,10 +1910,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.4.tgz#4cfd90175a200ee9b02bd6b1cd19bc349741607e"
   integrity sha512-Lue/mlp2egZJoHXZr4LndxDAd7i/7SQYhV0EjWfb/a4/OZ6tuVwMCVPiwkU5nsEipxEf7hmkSU7Em5VQ8P5NGA==
 
-"@types/node@13.13.0":
-  version "13.13.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.0.tgz#30d2d09f623fe32cde9cb582c7a6eda2788ce4a8"
-  integrity sha512-WE4IOAC6r/yBZss1oQGM5zs2D7RuKR6Q+w+X2SouPofnWn+LbCqClRyhO3ZE7Ix8nmFgo/oVuuE01cJT2XB13A==
+"@types/node@13.13.4":
+  version "13.13.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.4.tgz#1581d6c16e3d4803eb079c87d4ac893ee7501c2c"
+  integrity sha512-x26ur3dSXgv5AwKS0lNfbjpCakGIduWU1DU91Zz58ONRWrIKGunmZBNv4P7N+e27sJkiGDsw/3fT4AtsqQBrBA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -3674,11 +3673,6 @@ component-emitter@^1.2.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
   integrity sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==
-
-component-props@*:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/component-props/-/component-props-1.1.1.tgz#f9b7df9b9927b6e6d97c9bd272aa867670f34944"
-  integrity sha1-+bffm5kntubZfJvScqqGdnDzSUQ=
 
 compose-function@3.0.3:
   version "3.0.3"
@@ -6028,13 +6022,6 @@ graceful-fs@^4.1.10, graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
-
-group-by@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/group-by/-/group-by-0.0.1.tgz#857620575f6714786f8d86bb19fd13e188dd68a4"
-  integrity sha1-hXYgV19nFHhvjYa7Gf0T4YjdaKQ=
-  dependencies:
-    to-function "*"
 
 growly@^1.3.0:
   version "1.3.0"
@@ -8394,13 +8381,13 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.0.tgz#0fbdcf3e13fe4994781280524f8b96b0cdff9c61"
   integrity sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==
 
-netlify-cli@2.47.0:
-  version "2.47.0"
-  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.47.0.tgz#a4566749366c10c8fae999d6b60f83fe202a2d97"
-  integrity sha512-nyrr47vPV3a5yCRLpetvmg6ZLOWW/6H+b0WqN6YcspdDDGlK1TzPu+bUV5gKmI4cmBM1Zfru81sLW5AtlX4DbA==
+netlify-cli@2.48.0:
+  version "2.48.0"
+  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.48.0.tgz#56ccbb90d7f2172f23fd2c55ee00499216b8816f"
+  integrity sha512-LSXTBjJB+Wj8no2VBkZiiIAX0I7eY8Vpzjuyo2bKdI74+nBKqzLeLZjC/6GHhJuEeO42/sCIKVWVtdf1+0cN/A==
   dependencies:
-    "@netlify/build" "^0.3.6"
-    "@netlify/config" "^0.10.1"
+    "@netlify/build" "^0.4.1"
+    "@netlify/config" "^0.11.0"
     "@netlify/zip-it-and-ship-it" "^0.4.0-14"
     "@oclif/command" "^1.5.18"
     "@oclif/config" "^1.13.2"
@@ -11684,13 +11671,6 @@ to-fast-properties@^2.0.0:
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=
 
-to-function@*:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/to-function/-/to-function-2.0.6.tgz#7d56cd9c3b92fa8dbd7b22e83d51924de740ebc5"
-  integrity sha1-fVbNnDuS+o29eyLoPVGSTedA68U=
-  dependencies:
-    component-props "*"
-
 to-object-path@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/to-object-path/-/to-object-path-0.3.0.tgz#297588b7b0e7e0ac08e04e672f85c1f4999e17af"
@@ -11737,6 +11717,11 @@ toml@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/toml/-/toml-3.0.0.tgz#342160f1af1904ec9d204d03a5d61222d762c5ee"
   integrity sha512-y/mWCZinnvxjTKYhJ+pYxwD0mRLVvOtdS2Awbgxln6iEnt4rk0yBxeSBHkGJcPucRiG0e55mwWp+g/05rsrd6w==
+
+tomlify-j0.4@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tomlify-j0.4/-/tomlify-j0.4-3.0.0.tgz#99414d45268c3a3b8bf38be82145b7bba34b7473"
+  integrity sha512-2Ulkc8T7mXJ2l0W476YC/A209PR38Nw8PuaCNtk9uI3t1zzFdGQeWYGQvmj2PZkVvRC/Yoi4xQKMRnWc/N29tQ==
 
 tough-cookie@^2.3.3:
   version "2.5.0"
