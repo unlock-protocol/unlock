@@ -3,6 +3,8 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import {
   useCheckoutCommunication,
   CheckoutEvents,
+  waitingMethodCalls,
+  resolveMethodCall,
 } from '../../hooks/useCheckoutCommunication'
 
 let emit = jest.fn()
@@ -58,6 +60,19 @@ describe('useCheckoutCommunication', () => {
     )
   })
 
+  it('emits a methodCall event when emitMethodCall is called', async () => {
+    expect.assertions(1)
+
+    const { result, wait } = renderHook(() => useCheckoutCommunication())
+
+    await wait(() => result.current.ready)
+
+    const methodCall = { method: 'net_version', id: 42, params: [] }
+    result.current.emitMethodCall(methodCall)
+
+    expect(emit).toHaveBeenCalledWith(CheckoutEvents.methodCall, methodCall)
+  })
+
   it('buffers an arbitrary number of events before the emitter is ready', async () => {
     expect.assertions(4)
 
@@ -90,5 +105,40 @@ describe('useCheckoutCommunication', () => {
       CheckoutEvents.closeModal,
       undefined
     )
+  })
+})
+
+describe('useCheckoutCommunication - resolveMethodCall', () => {
+  const resultCallback = jest.fn()
+  const errorCallback = jest.fn()
+  waitingMethodCalls[1] = resultCallback
+  waitingMethodCalls[2] = errorCallback
+
+  it('maps a successful method result to the appropriate callback', () => {
+    expect.assertions(3)
+
+    expect(Object.keys(waitingMethodCalls).length).toEqual(2)
+
+    resolveMethodCall({ id: 1, response: 'response' })
+
+    expect(resultCallback).toHaveBeenCalledWith(undefined, 'response')
+    expect(Object.keys(waitingMethodCalls).length).toEqual(1)
+  })
+
+  it('maps an unsuccessful method result to the appropriate callback', () => {
+    expect.assertions(3)
+
+    expect(Object.keys(waitingMethodCalls).length).toEqual(1)
+
+    resolveMethodCall({ id: 2, error: 'fail' })
+
+    expect(errorCallback).toHaveBeenCalledWith('fail', undefined)
+    expect(Object.keys(waitingMethodCalls).length).toEqual(0)
+  })
+
+  it('returns after logging if a callback does not exist', () => {
+    expect.assertions(1)
+
+    expect(resolveMethodCall({ id: 31337, response: 'neat' })).toBeUndefined()
   })
 })
