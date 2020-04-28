@@ -1,7 +1,7 @@
 import * as UnlockV0 from '@unlock-protocol/unlock-abi-0'
 import * as UnlockV1 from '@unlock-protocol/unlock-abi-1'
 import * as UnlockV2 from '@unlock-protocol/unlock-abi-2'
-import * as UnlockV10 from '@unlock-protocol/unlock-abi-3'
+import * as UnlockV3 from '@unlock-protocol/unlock-abi-3'
 import * as UnlockV11 from '@unlock-protocol/unlock-abi-4'
 import * as UnlockV12 from '@unlock-protocol/unlock-abi-5'
 import * as UnlockV13 from '@unlock-protocol/unlock-abi-6'
@@ -46,8 +46,8 @@ export const prepWalletService = async (
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000002'
       break
-    case UnlockV10.Unlock:
-    case UnlockV10.PublicLock:
+    case UnlockV3.Unlock:
+    case UnlockV3.PublicLock:
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000003'
       break

@@ -50,7 +50,7 @@ export default {
       currencyContractAddress: null, // Not supported in v2
     },
   ],
-  v10: [
+  v3: [
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',

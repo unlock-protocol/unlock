@@ -1,5 +1,5 @@
 /**
- * Configures unlock version v10
+ * Configures unlock version v3
  * @param {PropTypes.lock} publicLockTemplateAddress
  * @param {PropTypes.string} globalTokenSymbol
  * @param {PropTypes.string} globalBaseTokenURI

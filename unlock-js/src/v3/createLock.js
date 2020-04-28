@@ -25,7 +25,7 @@ async function _getKeyPrice(lock, provider) {
 }
 
 /**
- * Creates a lock on behalf of the user, using version v10
+ * Creates a lock on behalf of the user, using version v3
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */
