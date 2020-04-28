@@ -15236,6 +15236,11 @@ unlock-abi-7@1.0.2:
   resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.2.tgz#ee25bc778f8c6063d29fddf62cb6847bdc0e5853"
   integrity sha512-V+aUpw3a15fZkkj6kpht5UjhkOzi+s9aFyUrRtUOlGhiQv0uDHn4Jw2RncXCgVxWtMZnbdGWmL+6TgA9qDZRxQ==
 
+unlock-abi-7@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.3.tgz#8db190f907511a80be1e6b1c4692221f010f7100"
+  integrity sha512-eYAJMuPoYURcfcDkpSV0mpL3lszrLfJQz1W49Y8SJlVsQF0WvwB0icbBgbZMSFO9vbfPdI6q/zOThz4VA48kCA==
+
 unorm@^1.3.3:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/unorm/-/unorm-1.6.0.tgz#029b289661fba714f1a9af439eb51d9b16c205af"
