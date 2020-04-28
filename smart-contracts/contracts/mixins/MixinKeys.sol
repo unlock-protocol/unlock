@@ -239,7 +239,6 @@ contract MixinKeys is
   function ownerOf(
     uint _tokenId
   ) public view
-    isKey(_tokenId)
     returns(address)
   {
     return _ownerOf[_tokenId];
