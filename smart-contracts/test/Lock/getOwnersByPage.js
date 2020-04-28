@@ -1,4 +1,3 @@
-const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -11,15 +10,6 @@ contract('Lock / getOwnersByPage', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-  })
-
-  describe('when there are 0 key owners', () => {
-    it('should return an error', async () => {
-      await reverts(
-        locks.FIRST.getOwnersByPage.call(0, 2, { from: accounts[5] }),
-        'NO_OUTSTANDING_KEYS'
-      )
-    })
   })
 
   describe('when there are less owners than the page size', () => {
