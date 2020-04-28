@@ -235,7 +235,6 @@ contract MixinTransfer is
     uint _time
   )
     public view
-    hasValidKey(_keyOwner)
     returns (uint)
   {
     Key storage key = keyByOwner[_keyOwner];
