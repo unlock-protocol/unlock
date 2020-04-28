@@ -216,7 +216,8 @@ contract('Lock / shareKey', accounts => {
     })
 
     it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
-      await reverts(lock.ownerOf.call(0), 'NO_SUCH_KEY')
+      const zeroOwner = await lock.ownerOf.call(0)
+      assert.notEqual(zeroOwner, accountWithNoKey2)
     })
 
     it('total time remaining is <= original time + fee', async () => {
