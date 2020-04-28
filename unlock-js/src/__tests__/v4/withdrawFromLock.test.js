@@ -1,12 +1,12 @@
 import { ethers } from 'ethers'
-import * as UnlockV11 from '@unlock-protocol/unlock-abi-4'
+import * as UnlockV4 from '@unlock-protocol/unlock-abi-4'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import abis from '../../abis'
 
-const UnlockVersion = abis.v11
+const UnlockVersion = abis.v4
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 let walletService
@@ -14,7 +14,7 @@ let transaction
 let transactionResult
 let setupSuccess
 
-describe('v11', () => {
+describe('v4', () => {
   describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const beneficiary = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
@@ -22,13 +22,13 @@ describe('v11', () => {
     async function nockBeforeEach(amount) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV11.PublicLock,
+        UnlockV4.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV11.PublicLock,
+        contract: UnlockV4.PublicLock,
         functionName: 'withdraw',
         signature: 'uint256',
         nock,

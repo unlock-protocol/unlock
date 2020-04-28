@@ -15,7 +15,7 @@ const v0 = require('@unlock-protocol/unlock-abi-0')
 const v1 = require('@unlock-protocol/unlock-abi-1')
 const v2 = require('@unlock-protocol/unlock-abi-2')
 const v3 = require('@unlock-protocol/unlock-abi-3')
-const v11 = require('@unlock-protocol/unlock-abi-4')
+const v4 = require('@unlock-protocol/unlock-abi-4')
 const v12 = require('@unlock-protocol/unlock-abi-5')
 const v13 = require('@unlock-protocol/unlock-abi-6')
 const v7 = require('@unlock-protocol/unlock-abi-7')
@@ -26,7 +26,7 @@ const toCompress = {
   v1,
   v2,
   v3,
-  v11,
+  v4,
   v12,
   v13,
   v7,
