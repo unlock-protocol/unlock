@@ -2,6 +2,4 @@
 # See https://www.netlify.com/docs/redirects/#rewrites-and-proxying
 
 / /index 200
-/demo/* /demo 200
-/checkout /checkout 200
-/* /paywall 200
+/static/unlock.1.0.min.js /static/unlock.latest.min.js
