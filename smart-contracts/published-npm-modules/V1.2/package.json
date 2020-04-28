@@ -1,5 +1,5 @@
 {
-  "name": "unlock-abi-1-2",
+  "name": "@unlock-protocol/unlock-abi-1-2",
   "version": "1.0.4",
   "description": "The ABI (application binary interface) for version 1.2 of Unlock-protocol's PublicLock and Unlock contracts. These are built out of commit fb826f9 inside the main unlock repository",
   "main": "index.js",
