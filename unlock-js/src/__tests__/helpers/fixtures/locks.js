@@ -119,7 +119,7 @@ export default {
       currencyContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9', // ERC20 deployed in docker container
     },
   ],
-  v13: [
+  v6: [
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',

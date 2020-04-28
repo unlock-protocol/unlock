@@ -43,7 +43,7 @@ export default class Web3Service extends UnlockService {
         return this.getLock(args.newLockAddress)
       },
       Transfer: (transactionHash, contractAddress, blockNumber, args) => {
-        const owner = args._to || args.to // v13 uses to instead of _to
+        const owner = args._to || args.to // v6 uses to instead of _to
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner), // TODO: use the token id!
           for: owner, // this is not necessarily the same as the "from" address
@@ -184,7 +184,7 @@ export default class Web3Service extends UnlockService {
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (['v5', 'v13', 'v7'].indexOf(version.version) > -1) {
+    if (['v5', 'v6', 'v7'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
       // Compute the hash identically to v5 (TODO: extract this?)

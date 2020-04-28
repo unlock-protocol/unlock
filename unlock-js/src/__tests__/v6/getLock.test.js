@@ -1,4 +1,4 @@
-import v13 from '../../v13'
+import v6 from '../../v6'
 
 import Web3Service from '../../web3Service'
 import utils from '../../utils'
@@ -17,7 +17,7 @@ const erc20ContractAddress = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
 
 const lockContract = getTestLockContract({
   lockAddress,
-  abi: v13.PublicLock.abi,
+  abi: v6.PublicLock.abi,
   provider,
 })
 
@@ -31,7 +31,7 @@ jest.mock('../../erc20.js', () => {
   }
 })
 
-describe('v13', () => {
+describe('v6', () => {
   describe('getLock', () => {
     beforeEach(() => {
       web3Service = new Web3Service({
@@ -39,7 +39,7 @@ describe('v13', () => {
         network: 1984,
       })
 
-      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v13))
+      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v6))
       web3Service.getLockContract = jest.fn(() => Promise.resolve(lockContract))
 
       web3Service.getAddressBalance = jest.fn(() =>

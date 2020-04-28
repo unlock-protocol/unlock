@@ -1,5 +1,5 @@
 import WalletService from '../../walletService'
-import v13 from '../../v13'
+import v6 from '../../v6'
 import { ZERO } from '../../constants'
 
 let walletService
@@ -22,7 +22,7 @@ const provider = {
   waitForTransaction: jest.fn(() => Promise.resolve()),
 }
 
-describe('v13', () => {
+describe('v6', () => {
   beforeEach(() => {
     walletService = new WalletService({
       unlockAddress: '0xunlockAddress',
@@ -30,7 +30,7 @@ describe('v13', () => {
     walletService.provider = provider
     walletService.signer = signer
     walletService.lockContractAbiVersion = jest.fn(() => {
-      return v13
+      return v6
     })
   })
 

@@ -1,4 +1,4 @@
-import v13 from '../../v13'
+import v6 from '../../v6'
 
 import Web3Service from '../../web3Service'
 import { getTestLockContract } from '../helpers/contracts'
@@ -11,13 +11,13 @@ const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
 const lockContract = getTestLockContract({
   lockAddress,
-  abi: v13.PublicLock.abi,
+  abi: v6.PublicLock.abi,
   provider,
 })
 
 let web3Service
 
-describe('v13', () => {
+describe('v6', () => {
   describe('isLockManager', () => {
     beforeEach(() => {
       web3Service = new Web3Service({
@@ -25,7 +25,7 @@ describe('v13', () => {
         network: 1984,
       })
 
-      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v13))
+      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v6))
       web3Service.getLockContract = jest.fn(() => Promise.resolve(lockContract))
       lockContract.owner = jest.fn(() => {
         return owner
