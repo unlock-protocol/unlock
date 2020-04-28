@@ -1,3 +1,4 @@
+const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -10,6 +11,26 @@ contract('Lock / getOwnersByPage', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
+  })
+
+  describe('when there are no owners', () => {
+    it('should return an empty array', async () => {
+      // when _page = 0 this returns an empty array
+      const result = await locks.FIRST.getOwnersByPage.call(0, 10, {
+        from: accounts[0],
+      })
+      assert.equal(result.length, 0)
+    })
+
+    it('should revert', async () => {
+      // when _page > 0 this reverts
+      await reverts(
+        locks.FIRST.getOwnersByPage.call(1, 1, {
+          from: accounts[0],
+        }),
+        'VM Exception while processing transaction: revert'
+      )
+    })
   })
 
   describe('when there are less owners than the page size', () => {
