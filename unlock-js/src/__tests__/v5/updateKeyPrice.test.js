@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV12 from '@unlock-protocol/unlock-abi-5'
+import * as UnlockV5 from '@unlock-protocol/unlock-abi-5'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 import NockHelper from '../helpers/nockHelper'
@@ -9,7 +9,7 @@ import abis from '../../abis'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
-const UnlockVersion = abis.v12
+const UnlockVersion = abis.v5
 
 let walletService
 let transaction
@@ -19,7 +19,7 @@ let setupSuccess
 jest.mock('../../erc20.js', () => {
   return { getErc20Decimals: jest.fn() }
 })
-describe('v12', () => {
+describe('v5', () => {
   describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const keyPrice = '2' // new keyPrice
@@ -29,12 +29,12 @@ describe('v12', () => {
     async function nockBeforeEach(decimals = 18, erc20Address) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV12.PublicLock,
+        UnlockV5.PublicLock,
         endpoint,
         nock
       )
 
-      const metadata = new ethers.utils.Interface(UnlockV12.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(UnlockV5.PublicLock.abi)
       const contractMethods = metadata.functions
       const resultEncoder = ethers.utils.defaultAbiCoder
 
@@ -48,7 +48,7 @@ describe('v12', () => {
       }
 
       const callMethodData = prepContract({
-        contract: UnlockV12.PublicLock,
+        contract: UnlockV5.PublicLock,
         functionName: 'updateKeyPrice',
         signature: 'uint256',
         nock,

@@ -9,9 +9,9 @@ import configureUnlock from './configureUnlock'
 import isLockManager from './isLockManager'
 
 export default {
-  version: 'v12',
-  Unlock: abis.v12.Unlock,
-  PublicLock: abis.v12.PublicLock,
+  version: 'v5',
+  Unlock: abis.v5.Unlock,
+  PublicLock: abis.v5.PublicLock,
   createLock,
   getLock,
   updateKeyPrice,

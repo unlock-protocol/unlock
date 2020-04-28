@@ -184,10 +184,10 @@ export default class Web3Service extends UnlockService {
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (['v12', 'v13', 'v7'].indexOf(version.version) > -1) {
+    if (['v5', 'v13', 'v7'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
-      // Compute the hash identically to v12 (TODO: extract this?)
+      // Compute the hash identically to v5 (TODO: extract this?)
       const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
       return this._create2Address(
         this.unlockContractAddress,
@@ -196,7 +196,7 @@ export default class Web3Service extends UnlockService {
         lockSalt
       )
     }
-    // TODO: once the contracts have been moved to v12, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
+    // TODO: once the contracts have been moved to v5, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
     const transactionCount = await this.provider.getTransactionCount(
       this.unlockContractAddress
     )

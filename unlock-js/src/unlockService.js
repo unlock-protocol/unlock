@@ -6,7 +6,7 @@ import v1 from './v1'
 import v2 from './v2'
 import v3 from './v3'
 import v4 from './v4'
-import v12 from './v12'
+import v5 from './v5'
 import v13 from './v13'
 import v7 from './v7'
 
@@ -74,7 +74,7 @@ export default class UnlockService extends EventEmitter {
     }
 
     if (version === 5) {
-      return v12
+      return v5
     }
 
     if (version === 6) {

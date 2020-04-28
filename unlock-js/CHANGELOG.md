@@ -104,7 +104,7 @@
 
 # 0.5.0
 
-- Support for smart contract v12 (version 5)
+- Support for smart contract v5 (version 5)
 - Deprecated the deploy script in favor of using walletService
 - Adding support for configureUnlock to support version 12
 - Adding support for deployTemplate to support version 12 which reduces gas costs when deploying new locks

@@ -1,4 +1,4 @@
-import * as UnlockV12 from '@unlock-protocol/unlock-abi-5'
+import * as UnlockV5 from '@unlock-protocol/unlock-abi-5'
 import { ethers } from 'ethers'
 import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
@@ -27,9 +27,9 @@ jest.mock('../../erc20.js', () => {
   }
 })
 
-describe('v12', () => {
+describe('v5', () => {
   describe('getLock', () => {
-    const metadata = new ethers.utils.Interface(UnlockV12.PublicLock.abi)
+    const metadata = new ethers.utils.Interface(UnlockV5.PublicLock.abi)
     const contractMethods = metadata.functions
     const resultEncoder = ethers.utils.defaultAbiCoder
     const fakeContract = new ethers.utils.Interface([
@@ -50,30 +50,21 @@ describe('v12', () => {
 
     function nockGetLock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
       // check to see what version that is
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV12.PublicLock.deployedBytecode
-      )
+      nock.ethGetCodeAndYield(lockAddress, UnlockV5.PublicLock.deployedBytecode)
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
         checksumLockAddress,
         resultEncoder.encode(['uint256'], [3])
       )
 
-      // retrieve the bytecode and compare to v12
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV12.PublicLock.deployedBytecode
-      )
+      // retrieve the bytecode and compare to v5
+      nock.ethGetCodeAndYield(lockAddress, UnlockV5.PublicLock.deployedBytecode)
 
       // get the block number
       nock.ethBlockNumber(1337)
 
-      // retrieve the bytecode and compare to v12
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV12.PublicLock.deployedBytecode
-      )
+      // retrieve the bytecode and compare to v5
+      nock.ethGetCodeAndYield(lockAddress, UnlockV5.PublicLock.deployedBytecode)
 
       nock.getBalanceForAccountAndYieldBalance(
         lockAddress,
