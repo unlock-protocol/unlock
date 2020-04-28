@@ -64,6 +64,32 @@ describe('isUnlocked', () => {
         .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
         .mockResolvedValue(pastTime)
     })
+
+    describe('when the config is pessimistic', () => {
+      it('should return false even if the user has a pending transaction', async () => {
+        expect.assertions(2)
+        const spy = jest
+          .spyOn(optimisticUtil, 'optimisticUnlocking')
+          .mockResolvedValue(true)
+
+        const pesimisticConfig = {
+          ...paywallConfig,
+          pessimistic: true,
+        }
+
+        const unlocked = await isUnlocked(
+          userAccountAddress,
+          pesimisticConfig,
+          {
+            readOnlyProvider,
+            locksmithUri,
+          }
+        )
+        expect(unlocked).toBe(false)
+        expect(spy).not.toHaveBeenCalled()
+      })
+    })
+
     describe('when the user has a pending transaction for which we should be optimistic', () => {
       it('should return true', async () => {
         expect.assertions(2)

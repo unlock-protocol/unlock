@@ -84,6 +84,7 @@ export interface MetadataInput {
 
 // This interface describes an individual paywall's config
 export interface PaywallConfig {
+  pessimistic?: boolean
   icon?: string
   unlockUserAccounts?: true | 'true' | false
   callToAction: PaywallCallToAction

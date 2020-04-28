@@ -181,5 +181,26 @@ describe('Paywall init script', () => {
         }
       )
     })
+
+    it('should not try to optimistically unlock if the config has a pessimistic field', async () => {
+      expect.assertions(1)
+      const pessimisticConfig = {
+        ...paywallConfig,
+        pessimistic: true,
+      }
+      const paywall = new Paywall(pessimisticConfig)
+
+      jest
+        .spyOn(optimisticUnlockingUtils, 'willUnlock')
+        .mockResolvedValueOnce(true)
+
+      paywall.lockPage = jest.fn()
+
+      await paywall.handleTransactionInfoEvent({
+        hash: '0xhash',
+        lock: '0xlock',
+      })
+      expect(optimisticUnlockingUtils.willUnlock).not.toHaveBeenCalled()
+    })
   })
 })
