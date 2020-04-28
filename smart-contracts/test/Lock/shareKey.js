@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -217,7 +217,7 @@ contract('Lock / shareKey', accounts => {
 
     it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
       const zeroOwner = await lock.ownerOf.call(0)
-      assert.notEqual(zeroOwner, accountWithNoKey2)
+      assert.equal(zeroOwner, constants.ZERO_ADDRESS)
     })
 
     it('total time remaining is <= original time + fee', async () => {

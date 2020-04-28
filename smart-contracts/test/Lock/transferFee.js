@@ -154,6 +154,13 @@ contract('Lock / transferFee', accounts => {
       it('called by an account which does not own the lock', async () => {
         await reverts(lock.updateTransferFee(1000, { from: accounts[1] }))
       })
+
+      it('is called for an account with no key', async () => {
+        await reverts(
+          lock.getTransferFee(accounts[9], 0, { from: accounts[3] }),
+          'KEY_NOT_VALID'
+        )
+      })
     })
   })
 })
