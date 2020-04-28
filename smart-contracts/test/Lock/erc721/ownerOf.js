@@ -1,4 +1,3 @@
-const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -11,10 +10,6 @@ contract('Lock / erc721 / ownerOf', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-  })
-
-  it('should revert when key is nonexistent', async () => {
-    await reverts(locks.FIRST.ownerOf.call(accounts[3]), 'NO_SUCH_KEY')
   })
 
   it('should return the owner of the key', async () => {
