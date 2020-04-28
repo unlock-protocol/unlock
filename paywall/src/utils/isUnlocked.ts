@@ -34,15 +34,17 @@ export const isUnlocked = async (
     return true
   }
 
-  // If not key exists on chain, let's see if we can be optimistic before locking the page.
-  const optimistic = await optimisticUnlocking(
-    readOnlyProvider,
-    locksmithUri,
-    Object.keys(paywallConfig.locks),
-    userAccountAddress!
-  )
-  if (optimistic) {
-    return true
+  if (!paywallConfig.pessimistic) {
+    // If not key exists on chain, let's see if we can be optimistic before locking the page.
+    const optimistic = await optimisticUnlocking(
+      readOnlyProvider,
+      locksmithUri,
+      Object.keys(paywallConfig.locks),
+      userAccountAddress!
+    )
+    if (optimistic) {
+      return true
+    }
   }
 
   // If no key exists, or no transaction exists which could be optimistic, we lock

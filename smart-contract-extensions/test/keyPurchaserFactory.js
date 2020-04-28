@@ -38,6 +38,7 @@ contract('keyPurchaserFactory', accounts => {
         42,
         99,
         1,
+        0,
         {
           from: lockCreator,
         }
@@ -72,7 +73,8 @@ contract('keyPurchaserFactory', accounts => {
         maxPurchasePrice,
         renewWindow,
         renewMinFrequency,
-        msgSenderReward
+        msgSenderReward,
+        0
       )
       assert.equal(expectedAddress, purchaser.address)
     })
@@ -101,6 +103,7 @@ contract('keyPurchaserFactory', accounts => {
             50,
             99 + i,
             0,
+            0,
             {
               from: lockCreator,
             }
@@ -112,6 +115,58 @@ contract('keyPurchaserFactory', accounts => {
         const purchasers = await factory.getKeyPurchasers(lock.address)
         assert.equal(purchasers.length, purchaserCount)
         assert.equal(purchasers[0], purchaser.address) // sanity check
+      })
+    })
+
+    describe('with a different nonce', () => {
+      let newPurchaser
+
+      beforeEach(async () => {
+        const tx = await factory.deployKeyPurchaser(
+          lock.address,
+          keyPrice,
+          42,
+          99,
+          1,
+          1,
+          {
+            from: lockCreator,
+          }
+        )
+
+        newPurchaser = await KeyPurchaser.at(
+          tx.receipt.logs[0].args.keyPurchaser
+        )
+      })
+
+      it('can read the purchasers', async () => {
+        const purchasers = await factory.getKeyPurchasers(lock.address)
+        assert.equal(purchasers.length, 2)
+        assert.equal(purchasers[0], purchaser.address) // sanity check
+        assert.notEqual(purchasers[1], purchaser.address) // sanity check
+      })
+
+      it('both purchasers have the same configuration', async () => {
+        const maxPurchasePrice = await purchaser.maxPurchasePrice()
+        const renewWindow = await purchaser.renewWindow()
+        const renewMinFrequency = await purchaser.renewMinFrequency()
+        const msgSenderReward = await purchaser.msgSenderReward()
+
+        const newMaxPurchasePrice = await newPurchaser.maxPurchasePrice()
+        const newRenewWindow = await newPurchaser.renewWindow()
+        const newRenewMinFrequency = await newPurchaser.renewMinFrequency()
+        const newMsgSenderReward = await newPurchaser.msgSenderReward()
+
+        assert.equal(
+          maxPurchasePrice.toString(),
+          newMaxPurchasePrice.toString()
+        )
+        assert.equal(renewWindow.toString(), newRenewWindow.toString())
+        assert.equal(
+          renewMinFrequency.toString(),
+          newRenewMinFrequency.toString()
+        )
+        assert.equal(msgSenderReward.toString(), newMsgSenderReward.toString())
       })
     })
   })
