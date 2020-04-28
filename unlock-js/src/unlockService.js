@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import { ethers } from 'ethers'
 
 import v0 from './v0'
-import v01 from './v01'
+import v1 from './v1'
 import v02 from './v02'
 import v10 from './v10'
 import v11 from './v11'
@@ -58,7 +58,7 @@ export default class UnlockService extends EventEmitter {
     }
 
     if (version === 1) {
-      return v01
+      return v1
     }
 
     if (version === 2) {
@@ -149,7 +149,7 @@ export default class UnlockService extends EventEmitter {
       version = parseInt(contractVersion, 10) || 0
     } catch (error) {
       // This is an older version of Unlock which did not support unlockVersion
-      // It can be either v0 or v01. To distinguish let's use their opcode!
+      // It can be either v0 or v1. To distinguish let's use their opcode!
       const opCode = await this.provider.getCode(address)
       const hash = ethers.utils.sha256(opCode)
       if (

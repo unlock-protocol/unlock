@@ -1,11 +1,11 @@
-import * as UnlockV0 from 'unlock-abi-0'
-import * as UnlockV01 from 'unlock-abi-0-1'
-import * as UnlockV02 from 'unlock-abi-0-2'
-import * as UnlockV10 from 'unlock-abi-1-0'
-import * as UnlockV11 from 'unlock-abi-1-1'
-import * as UnlockV12 from 'unlock-abi-1-2'
-import * as UnlockV13 from 'unlock-abi-1-3'
-import * as UnlockV7 from 'unlock-abi-7'
+import * as UnlockV0 from '@unlock-protocol/unlock-abi-0'
+import * as UnlockV1 from '@unlock-protocol/unlock-abi-1'
+import * as UnlockV02 from '@unlock-protocol/unlock-abi-2'
+import * as UnlockV10 from '@unlock-protocol/unlock-abi-3'
+import * as UnlockV11 from '@unlock-protocol/unlock-abi-4'
+import * as UnlockV12 from '@unlock-protocol/unlock-abi-5'
+import * as UnlockV13 from '@unlock-protocol/unlock-abi-6'
+import * as UnlockV7 from '@unlock-protocol/unlock-abi-7'
 import { ethers } from 'ethers'
 
 import { BigNumber } from 'ethers/utils'
@@ -36,9 +36,9 @@ export const prepWalletService = async (
 
   let unlockVersion
   switch (contract) {
-    case UnlockV01.Unlock:
+    case UnlockV1.Unlock:
     case UnlockV02.PublicLock:
-    case UnlockV01.PublicLock: // version 0 is version 1 (oops)
+    case UnlockV1.PublicLock: // version 0 is version 1 (oops)
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000001'
       break

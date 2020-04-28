@@ -36,8 +36,8 @@ export default async function(address) {
   }
 
   const update = {
-    currencyContractAddress: null, // v01 only supports Ether locks
-    name: null, // v01 does not support lock names
+    currencyContractAddress: null, // v1 only supports Ether locks
+    name: null, // v1 does not support lock names
   }
 
   const constantPromises = Object.keys(attributes).map(async attribute => {

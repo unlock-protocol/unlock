@@ -18,20 +18,20 @@ export default {
       currencyContractAddress: null, // Not supported in v0
     },
   ],
-  v01: [
+  v1: [
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',
       maxNumberOfKeys: 100,
       name: '', // Not set when created, defaults to '' in the contract
-      currencyContractAddress: null, // Not supported in v01
+      currencyContractAddress: null, // Not supported in v1
     },
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',
       maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       name: '', // Not set when created, defaults to '' in the contract
-      currencyContractAddress: null, // Not supported in v01
+      currencyContractAddress: null, // Not supported in v1
     },
   ],
   v02: [

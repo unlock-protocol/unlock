@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-import * as UnlockV12 from 'unlock-abi-1-2'
+import * as UnlockV12 from '@unlock-protocol/unlock-abi-5'
 import abis from '../../abis'
 
 import TransactionTypes from '../../transactionTypes'

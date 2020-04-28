@@ -4,7 +4,7 @@ import TransactionTypes from '../transactionTypes'
 import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
 
 /**
- * Creates a lock on behalf of the user, using version v01
+ * Creates a lock on behalf of the user, using version v1
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */

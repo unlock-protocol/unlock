@@ -17,7 +17,7 @@ export default {
   updateKeyPrice,
   withdrawFromLock,
   isLockManager,
-  version: 'v01',
-  Unlock: abis.v01.Unlock,
-  PublicLock: abis.v01.PublicLock,
+  version: 'v1',
+  Unlock: abis.v1.Unlock,
+  PublicLock: abis.v1.PublicLock,
 }

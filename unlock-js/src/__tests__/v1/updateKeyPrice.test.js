@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV01 from 'unlock-abi-0-1'
+import * as UnlockV1 from '@unlock-protocol/unlock-abi-1'
 import abis from '../../abis'
 import utils from '../../utils'
 import NockHelper from '../helpers/nockHelper'
@@ -7,14 +7,14 @@ import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
-const UnlockVersion = abis.v01
+const UnlockVersion = abis.v1
 
 let walletService
 let transaction
 let transactionResult
 let setupSuccess
 
-describe('v01', () => {
+describe('v1', () => {
   describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const keyPrice = '100000000'
@@ -22,13 +22,13 @@ describe('v01', () => {
     async function nockBeforeEach() {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV01.PublicLock,
+        UnlockV1.PublicLock,
         endpoint,
         nock
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV01.PublicLock,
+        contract: UnlockV1.PublicLock,
         functionName: 'updateKeyPrice',
         signature: 'uint256',
         nock,

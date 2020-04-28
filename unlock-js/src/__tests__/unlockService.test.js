@@ -6,7 +6,7 @@ import UnlockService, { Errors } from '../unlockService'
 import NockHelper from './helpers/nockHelper'
 import bytecode from './helpers/bytecode'
 import v0 from '../v0'
-import v01 from '../v01'
+import v1 from '../v1'
 import v02 from '../v02'
 
 const endpoint = 'http://127.0.0.1:8545'
@@ -87,16 +87,16 @@ describe('UnlockService', () => {
     it('returns 1 for contract version 1', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const metadata = new ethers.utils.Interface(v01.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(v1.PublicLock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v01.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v1.PublicLock)
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
         coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v01.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v1.PublicLock)
 
       const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
@@ -185,7 +185,7 @@ describe('UnlockService', () => {
       expect(unlockService.versionForAddress[unlockAddress]).toEqual(0)
     })
 
-    it('should return v01 if version is 1', async () => {
+    it('should return v1 if version is 1', async () => {
       expect.assertions(3)
       await nockBeforeEach()
       unlockService._getVersionFromContract = jest.fn(() => {
@@ -197,7 +197,7 @@ describe('UnlockService', () => {
       expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
-      expect(version).toEqual(v01)
+      expect(version).toEqual(v1)
       expect(unlockService.versionForAddress[unlockAddress]).toEqual(1)
     })
 
@@ -230,7 +230,7 @@ describe('UnlockService', () => {
       expect(unlockService.versionForAddress[address]).toEqual(0)
     })
 
-    it('should return UnlockV01 when the version matches', async () => {
+    it('should return UnlockV1 when the version matches', async () => {
       expect.assertions(3)
       await nockBeforeEach()
       unlockService._getPublicLockVersionFromContract = jest.fn(() => {
@@ -243,7 +243,7 @@ describe('UnlockService', () => {
       expect(
         unlockService._getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
-      expect(version).toEqual(v01)
+      expect(version).toEqual(v1)
       expect(unlockService.versionForAddress[address]).toEqual(1)
     })
 

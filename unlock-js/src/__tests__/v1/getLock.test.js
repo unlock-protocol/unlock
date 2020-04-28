@@ -1,4 +1,4 @@
-import * as UnlockV01 from 'unlock-abi-0-1'
+import * as UnlockV1 from '@unlock-protocol/unlock-abi-1'
 import { ethers } from 'ethers'
 import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
@@ -16,9 +16,9 @@ const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 const checksumLockAddress = utils.toChecksumAddress(lockAddress)
 const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
-describe('v01', () => {
+describe('v1', () => {
   describe('getLock', () => {
-    const metadata = new ethers.utils.Interface(UnlockV01.PublicLock.abi)
+    const metadata = new ethers.utils.Interface(UnlockV1.PublicLock.abi)
     const contractMethods = metadata.functions
     const resultEncoder = ethers.utils.defaultAbiCoder
     const fakeContract = new ethers.utils.Interface([
@@ -38,32 +38,23 @@ describe('v01', () => {
     }
 
     function callReadOnlyFunction({ maxKeys }) {
-      // check to see if this is v0 or v01
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV01.PublicLock.deployedBytecode
-      )
-      // what version is this? v01 succeeds with version 0 (oops)
+      // check to see if this is v0 or v1
+      nock.ethGetCodeAndYield(lockAddress, UnlockV1.PublicLock.deployedBytecode)
+      // what version is this? v1 succeeds with version 0 (oops)
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
         checksumLockAddress,
         resultEncoder.encode(['uint256'], [1])
       )
 
-      // retrieve the bytecode and compare to v01
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV01.PublicLock.deployedBytecode
-      )
+      // retrieve the bytecode and compare to v1
+      nock.ethGetCodeAndYield(lockAddress, UnlockV1.PublicLock.deployedBytecode)
 
       // get the block number
       nock.ethBlockNumber(1337)
 
-      // retrieve the bytecode and compare to v01
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV01.PublicLock.deployedBytecode
-      )
+      // retrieve the bytecode and compare to v1
+      nock.ethGetCodeAndYield(lockAddress, UnlockV1.PublicLock.deployedBytecode)
 
       nock.getBalanceForAccountAndYieldBalance(
         lockAddress,

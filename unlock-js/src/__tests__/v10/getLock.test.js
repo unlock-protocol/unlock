@@ -1,4 +1,4 @@
-import * as UnlockV10 from 'unlock-abi-1-0'
+import * as UnlockV10 from '@unlock-protocol/unlock-abi-3'
 import { ethers } from 'ethers'
 import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
@@ -60,7 +60,7 @@ describe('v10', () => {
         resultEncoder.encode(['uint256'], [3])
       )
 
-      // retrieve the bytecode and compare to v01
+      // retrieve the bytecode and compare to v1
       nock.ethGetCodeAndYield(
         lockAddress,
         UnlockV10.PublicLock.deployedBytecode
@@ -69,7 +69,7 @@ describe('v10', () => {
       // get the block number
       nock.ethBlockNumber(1337)
 
-      // retrieve the bytecode and compare to v01
+      // retrieve the bytecode and compare to v1
       nock.ethGetCodeAndYield(
         lockAddress,
         UnlockV10.PublicLock.deployedBytecode
