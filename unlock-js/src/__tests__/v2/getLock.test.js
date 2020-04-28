@@ -1,4 +1,4 @@
-import * as UnlockV02 from '@unlock-protocol/unlock-abi-2'
+import * as UnlockV2 from '@unlock-protocol/unlock-abi-2'
 import { ethers } from 'ethers'
 import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
@@ -16,9 +16,9 @@ const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 const checksumLockAddress = utils.toChecksumAddress(lockAddress)
 const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
-describe('v02', () => {
+describe('v2', () => {
   describe('getLock', () => {
-    const metadata = new ethers.utils.Interface(UnlockV02.PublicLock.abi)
+    const metadata = new ethers.utils.Interface(UnlockV2.PublicLock.abi)
     const contractMethods = metadata.functions
     const resultEncoder = ethers.utils.defaultAbiCoder
     const fakeContract = new ethers.utils.Interface([
@@ -39,11 +39,8 @@ describe('v02', () => {
 
     function callReadOnlyFunction({ maxKeys }) {
       // check to see if this is v0 or v1
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV02.PublicLock.deployedBytecode
-      )
-      // what version is this? v02 succeeds with version 1
+      nock.ethGetCodeAndYield(lockAddress, UnlockV2.PublicLock.deployedBytecode)
+      // what version is this? v2 succeeds with version 1
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
         checksumLockAddress,
@@ -51,19 +48,13 @@ describe('v02', () => {
       )
 
       // retrieve the bytecode and compare to v1
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV02.PublicLock.deployedBytecode
-      )
+      nock.ethGetCodeAndYield(lockAddress, UnlockV2.PublicLock.deployedBytecode)
 
       // get the block number
       nock.ethBlockNumber(1337)
 
       // retrieve the bytecode and compare to v1
-      nock.ethGetCodeAndYield(
-        lockAddress,
-        UnlockV02.PublicLock.deployedBytecode
-      )
+      nock.ethGetCodeAndYield(lockAddress, UnlockV2.PublicLock.deployedBytecode)
 
       nock.getBalanceForAccountAndYieldBalance(
         lockAddress,

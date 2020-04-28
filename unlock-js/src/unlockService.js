@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 
 import v0 from './v0'
 import v1 from './v1'
-import v02 from './v02'
+import v2 from './v2'
 import v10 from './v10'
 import v11 from './v11'
 import v12 from './v12'
@@ -62,7 +62,7 @@ export default class UnlockService extends EventEmitter {
     }
 
     if (version === 2) {
-      return v02
+      return v2
     }
 
     if (version === 3) {
@@ -119,11 +119,11 @@ export default class UnlockService extends EventEmitter {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
       if (version === 1) {
-        // v02 returns 1 as publicLockVersion
+        // v2 returns 1 as publicLockVersion
         const code = await this.provider.getCode(address)
 
-        // if the deployed bytecode is v02, we have a match
-        if (v02.PublicLock.bytecodeHash === ethers.utils.sha256(code)) {
+        // if the deployed bytecode is v2, we have a match
+        if (v2.PublicLock.bytecodeHash === ethers.utils.sha256(code)) {
           return 2
         }
       }

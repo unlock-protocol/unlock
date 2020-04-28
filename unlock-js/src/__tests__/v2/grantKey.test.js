@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import abis from '../../abis'
 import TransactionTypes from '../../transactionTypes'
 
-import v02 from '../../v02'
+import v2 from '../../v2'
 import WalletService from '../../walletService'
 
 import { getTestProvider } from '../helpers/provider'
@@ -11,7 +11,7 @@ import { getTestLockContract } from '../helpers/contracts'
 
 const provider = getTestProvider({})
 
-const UnlockVersion = abis.v02
+const UnlockVersion = abis.v2
 
 let walletService
 
@@ -20,7 +20,7 @@ const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
 
 const lockContract = getTestLockContract({
   lockAddress,
-  abi: v02.PublicLock.abi,
+  abi: v2.PublicLock.abi,
   provider,
 })
 
@@ -65,7 +65,7 @@ const grantKeyTransaction = {
 
 const expirationDuration = 60 * 60 * 24 * 7
 
-describe('v02', () => {
+describe('v2', () => {
   describe('grantKey', () => {
     beforeEach(() => {
       // Mock all the methods
@@ -76,7 +76,7 @@ describe('v02', () => {
       })
       walletService.provider = provider
       walletService.signer = provider.getSigner()
-      walletService.lockContractAbiVersion = jest.fn(() => Promise.resolve(v02))
+      walletService.lockContractAbiVersion = jest.fn(() => Promise.resolve(v2))
       walletService.getLockContract = jest.fn(() => {
         return Promise.resolve(lockContract)
       })

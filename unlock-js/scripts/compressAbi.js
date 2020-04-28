@@ -13,7 +13,7 @@ const path = require('path')
 /* eslint-disable import/no-extraneous-dependencies */
 const v0 = require('@unlock-protocol/unlock-abi-0')
 const v1 = require('@unlock-protocol/unlock-abi-1')
-const v02 = require('@unlock-protocol/unlock-abi-2')
+const v2 = require('@unlock-protocol/unlock-abi-2')
 const v10 = require('@unlock-protocol/unlock-abi-3')
 const v11 = require('@unlock-protocol/unlock-abi-4')
 const v12 = require('@unlock-protocol/unlock-abi-5')
@@ -24,7 +24,7 @@ const v7 = require('@unlock-protocol/unlock-abi-7')
 const toCompress = {
   v0,
   v1,
-  v02,
+  v2,
   v10,
   v11,
   v12,

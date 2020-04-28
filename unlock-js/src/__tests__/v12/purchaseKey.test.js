@@ -10,7 +10,7 @@ import erc20 from '../../erc20'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 
-const UnlockVersion = abis.v02
+const UnlockVersion = abis.v2
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)

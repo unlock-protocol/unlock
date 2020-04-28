@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV02 from '@unlock-protocol/unlock-abi-2'
+import * as UnlockV2 from '@unlock-protocol/unlock-abi-2'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -21,7 +21,7 @@ const lock = {
 }
 
 const callMethodData = prepContract({
-  contract: UnlockV02.Unlock,
+  contract: UnlockV2.Unlock,
   functionName: 'createLock',
   signature: 'uint256,address,uint256,uint256',
   nock,
@@ -29,19 +29,19 @@ const callMethodData = prepContract({
 
 const testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
-const EventInfo = new ethers.utils.Interface(UnlockV02.Unlock.abi)
+const EventInfo = new ethers.utils.Interface(UnlockV2.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
 const receipt = {
   logs: [],
 }
 
-describe('v02', () => {
+describe('v2', () => {
   describe('createLock', () => {
     async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV02.Unlock,
+        UnlockV2.Unlock,
         endpoint,
         nock,
         true // this is the Unlock contract, not PublicLock
