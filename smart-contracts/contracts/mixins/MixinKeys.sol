@@ -304,7 +304,6 @@ contract MixinKeys is
   function getApproved(
     uint _tokenId
   ) public view
-    isKey(_tokenId)
     returns (address)
   {
     address approvedRecipient = approved[_tokenId];
