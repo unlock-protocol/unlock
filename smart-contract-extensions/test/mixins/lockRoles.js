@@ -1,4 +1,4 @@
-const { protocols } = require('hardlydifficult-ethereum-contracts')
+const { protocols } = require('hardlydifficult-eth')
 const { reverts } = require('truffle-assertions')
 
 const LockRolesMock = artifacts.require('LockRolesMock.sol')

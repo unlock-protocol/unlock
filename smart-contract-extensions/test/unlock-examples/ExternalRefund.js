@@ -1,8 +1,4 @@
-const {
-  constants,
-  tokens,
-  protocols,
-} = require('hardlydifficult-ethereum-contracts')
+const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const truffleAssert = require('truffle-assertions')
 
 const ExternalRefund = artifacts.require('ExternalRefund')
@@ -41,7 +37,7 @@ contract('ExternalRefund', accounts => {
     await token.mint(refundingContract.address, totalMintedAmount, {
       from: accounts[1],
     })
-    await refundingContract.addWhitelisted(whitelistedAccount)
+    await lock.addLockManager(whitelistedAccount, { from: accounts[1] })
   })
 
   describe('refund', () => {
@@ -49,7 +45,7 @@ contract('ExternalRefund', accounts => {
       it('reverts', async () => {
         await truffleAssert.reverts(
           refundingContract.refund(nonKeyOwner),
-          'WhitelistedRole: caller does not have the Whitelisted role'
+          'ONLY_LOCK_MANAGER'
         )
       })
     })
@@ -101,10 +97,13 @@ contract('ExternalRefund', accounts => {
   describe('drain', () => {
     describe('when the caller is a whitelisted admin', () => {
       it('transfers the contracts owned tokens to the caller', async () => {
-        await refundingContract.drain()
+        await refundingContract.drain({ from: accounts[1] })
 
         let newBalance = totalMintedAmount - refundAmount
-        assert((await token.balanceOf(accounts[0])) == newBalance)
+        assert.equal(
+          (await token.balanceOf(accounts[1])).toString(),
+          newBalance
+        )
       })
     })
 
@@ -112,7 +111,7 @@ contract('ExternalRefund', accounts => {
       it('reverts', async () => {
         await truffleAssert.reverts(
           refundingContract.drain({ from: nonKeyOwner }),
-          'WhitelistAdminRole: caller does not have the WhitelistAdmin role'
+          'ONLY_LOCK_MANAGER'
         )
       })
     })
