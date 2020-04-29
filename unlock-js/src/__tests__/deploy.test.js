@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
 import { getContractAddress } from 'ethers/utils'
-import v0 from 'unlock-abi-0'
-import v01 from 'unlock-abi-0-1'
-import v02 from 'unlock-abi-0-2'
+import v0 from '@unlock-protocol/unlock-abi-0'
+import v1 from '@unlock-protocol/unlock-abi-1'
+import v2 from '@unlock-protocol/unlock-abi-2'
 
 import deploy from '../deploy'
 import { GAS_AMOUNTS } from '../constants'
@@ -127,8 +127,8 @@ describe('contract deployer', () => {
 
   describe.each([
     ['v0', 'v0', v0.Unlock],
-    ['v01', 'v01', v01.Unlock],
-    ['v02', 'v02', v02.Unlock],
+    ['v1', 'v1', v1.Unlock],
+    ['v2', 'v2', v2.Unlock],
     // TODO: we're missing tests here for the latest versions of the contract!
     ['Full contract', v0.Unlock, v0.Unlock],
   ])('%s', (name, ContractParameter, UnlockContract) => {

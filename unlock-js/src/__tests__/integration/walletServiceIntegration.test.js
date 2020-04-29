@@ -30,7 +30,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13', 'v7']
+  const versions = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7']
   describe.each(versions)('%s', versionName => {
     let walletService
     let web3Service
@@ -66,7 +66,7 @@ describe('Wallet Service Integration', () => {
       expect(abiVersion.version).toEqual(versionName)
     })
 
-    if (['v0', 'v01', 'v02', 'v10', 'v11'].indexOf(versionName) === -1) {
+    if (['v0', 'v1', 'v2', 'v3', 'v4'].indexOf(versionName) === -1) {
       let publicLockTemplateAddress
 
       describe('Configuration', () => {

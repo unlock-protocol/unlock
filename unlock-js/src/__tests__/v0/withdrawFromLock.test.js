@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV0 from '@unlock-protocol/unlock-abi-0'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
