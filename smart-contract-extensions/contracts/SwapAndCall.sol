@@ -1,10 +1,11 @@
-pragma solidity 0.5.17;
+pragma solidity 0.6.6;
 
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
-import '@openzeppelin/contracts/lifecycle/Pausable.sol';
-import 'hardlydifficult-ethereum-contracts/contracts/proxies/CallContract.sol';
+import '@openzeppelin/contracts/utils/Pausable.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import 'hardlydifficult-eth/contracts/proxies/CallContract.sol';
 import './TokenSpender.sol';
 
 /**
@@ -17,7 +18,7 @@ import './TokenSpender.sol';
  * Idea from 1inch.exchange
  * https://etherscan.io/address/0x11111254369792b2Ca5d084aB5eEA397cA8fa48B#code
  */
-contract SwapAndCall is Pausable
+contract SwapAndCall is Pausable, Ownable
 {
   using Address for address payable;
   using CallContract for address;
@@ -41,7 +42,7 @@ contract SwapAndCall is Pausable
    * @notice accept ETH from other contracts.
    * @dev this is required for some calls such as a Uniswap from tokens to ETH.
    */
-  function() external payable
+  receive() external payable
   {
     // solium-disable-next-line security/no-tx-origin
     require(msg.sender != tx.origin, 'ONLY_CALLABLE_BY_CONTRACTS');
@@ -153,5 +154,21 @@ contract SwapAndCall is Pausable
         _tokenToRefund.safeTransfer(msg.sender, amount);
       }
     }
+  }
+
+  /**
+  * @dev Triggers stopped state.
+  */
+  function pause() public onlyOwner
+  {
+    _pause();
+  }
+
+  /**
+  * @dev Returns to normal state.
+  */
+  function unpause() public onlyOwner
+  {
+    _unpause();
   }
 }

@@ -1,8 +1,4 @@
-const {
-  constants,
-  protocols,
-  tokens,
-} = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols, tokens } = require('hardlydifficult-eth')
 
 const KeyPurchaser = artifacts.require('KeyPurchaser.sol')
 const { reverts } = require('truffle-assertions')

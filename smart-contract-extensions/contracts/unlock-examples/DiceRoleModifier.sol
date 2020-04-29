@@ -1,6 +1,6 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.6.6;
 
-import 'unlock-abi-7/IPublicLockV7.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 
 
 /**
@@ -8,10 +8,10 @@ import 'unlock-abi-7/IPublicLockV7.sol';
  */
 contract DiceRoleModifier
 {
-  IPublicLockV7 public lock;
+  IPublicLockV7Sol6 public lock;
   event Roll(uint256 value);
 
-  constructor(IPublicLockV7 _lockAddress) public
+  constructor(IPublicLockV7Sol6 _lockAddress) public
   {
     lock = _lockAddress;
   }

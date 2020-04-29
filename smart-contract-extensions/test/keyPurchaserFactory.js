@@ -1,4 +1,4 @@
-const { protocols, tokens } = require('hardlydifficult-ethereum-contracts')
+const { protocols, tokens } = require('hardlydifficult-eth')
 
 const KeyPurchaserFactory = artifacts.require('KeyPurchaserFactory.sol')
 const KeyPurchaser = artifacts.require('KeyPurchaser.sol')

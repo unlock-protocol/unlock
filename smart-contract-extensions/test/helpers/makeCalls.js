@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-ethereum-contracts')
+const { constants } = require('hardlydifficult-eth')
 
 /**
  * @param swapAndCallContract the truffle contract object

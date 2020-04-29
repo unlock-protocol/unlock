@@ -1,10 +1,9 @@
-pragma solidity 0.5.17;
+pragma solidity 0.6.6;
 
 import '@openzeppelin/contracts/math/SafeMath.sol';
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
-import '@openzeppelin/contracts/access/roles/WhitelistAdminRole.sol';
-import 'unlock-abi-7/ILockKeyPurchaseHookV7.sol';
-import 'unlock-abi-7/IPublicLockV7.sol';
+import '@unlock-protocol/unlock-abi-7/ILockKeyPurchaseHookV7.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 import '../mixins/LockRoles.sol';
 
 
@@ -30,7 +29,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
    * @dev To remove a code, just set the discount to 0.
    */
   function addCodes(
-    IPublicLockV7 _lock,
+    IPublicLockV7Sol6 _lock,
     address[] calldata _codeAddresses,
     uint[] calldata _discountBasisPoints
   ) external
@@ -59,17 +58,20 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
     address _recipient,
     address /*referrer*/,
     bytes calldata _signature
-  ) external view
+  ) external override view
     returns (uint minKeyPrice)
   {
-    bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));
-    address codeAddress = ECDSA.recover(secretMessage, _signature);
-    uint discountBP = lockToCodeAddressToDiscountBasisPoints[msg.sender][codeAddress];
-    minKeyPrice = IPublicLockV7(msg.sender).keyPrice();
-    if(discountBP > 0)
+    minKeyPrice = IPublicLockV7Sol6(msg.sender).keyPrice();
+    if(_signature.length == 65)
     {
-      uint discount = minKeyPrice.mul(discountBP).div(10000);
-      minKeyPrice = minKeyPrice.sub(discount);
+      bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));
+      address codeAddress = ECDSA.recover(secretMessage, _signature);
+      uint discountBP = lockToCodeAddressToDiscountBasisPoints[msg.sender][codeAddress];
+      if(discountBP > 0)
+      {
+        uint discount = minKeyPrice.mul(discountBP).div(10000);
+        minKeyPrice = minKeyPrice.sub(discount);
+      }
     }
   }
 
@@ -84,7 +86,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
     bytes calldata /*_data*/,
     uint /*minKeyPrice*/,
     uint /*pricePaid*/
-  ) external
+  ) external override
   {
     // no-op
   }

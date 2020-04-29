@@ -1,9 +1,5 @@
 const BigNumber = require('bignumber.js')
-const {
-  constants,
-  protocols,
-  tokens,
-} = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols, tokens } = require('hardlydifficult-eth')
 
 const SwapAndCall = artifacts.require('SwapAndCall.sol')
 const { reverts, fails } = require('truffle-assertions')

@@ -1,4 +1,4 @@
-const { constants, protocols } = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols } = require('hardlydifficult-eth')
 const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 
@@ -104,6 +104,24 @@ contract('DiscountCodeHook', accounts => {
         value: keyPrice.toFixed(),
         from: keyBuyer,
       }
+    )
+  })
+
+  it('you cannot buy if an invalid code is entered', async () => {
+    // Ideally the purchase here would be successful but try/catch only works with external calls
+    // ECDSA is an internal library so the only way to make this work would be to copy and modify it for this use case
+    await reverts(
+      lock.purchase(
+        '0',
+        keyBuyer,
+        constants.ZERO_ADDRESS,
+        '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+        {
+          value: keyPrice.toFixed(),
+          from: keyBuyer,
+        }
+      ),
+      "ECDSA: invalid signature 'v' value"
     )
   })
 

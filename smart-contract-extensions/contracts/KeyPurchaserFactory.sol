@@ -1,9 +1,9 @@
-pragma solidity 0.5.17;
+pragma solidity 0.6.6;
 
 import './KeyPurchaser.sol';
-import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
-import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Probe.sol';
-import 'unlock-abi-7/IPublicLockV7.sol';
+import 'hardlydifficult-eth/contracts/proxies/Clone2Factory.sol';
+import 'hardlydifficult-eth/contracts/proxies/Clone2Probe.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 
 /**
  * @notice A factory for creating keyPurchasers.
@@ -34,7 +34,7 @@ contract KeyPurchaserFactory
   }
 
   function _getClone2Salt(
-    IPublicLockV7 _lock,
+    IPublicLockV7Sol6 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -51,7 +51,7 @@ contract KeyPurchaserFactory
    * @dev This works whether or not the keyPurchaser has actually been deployed yet.
    */
   function getExpectedAddress(
-    IPublicLockV7 _lock,
+    IPublicLockV7Sol6 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -71,7 +71,7 @@ contract KeyPurchaserFactory
    * @dev See KeyPurchaser for a description of the other params.
    */
   function deployKeyPurchaser(
-    IPublicLockV7 _lock,
+    IPublicLockV7Sol6 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
