@@ -87,6 +87,13 @@ contract('Lock / transferFee', accounts => {
       assert.equal(fee3, 129600)
     })
 
+    it('should return 0 if called for an account with no key', async () => {
+      fee = await lock.getTransferFee(accounts[9], 0, {
+        from: accounts[3],
+      })
+      assert.equal(fee, 0)
+    })
+
     describe('when the key is transferred', () => {
       const newOwner = accounts[2]
       let tokenId
@@ -153,13 +160,6 @@ contract('Lock / transferFee', accounts => {
     describe('should fail if', () => {
       it('called by an account which does not own the lock', async () => {
         await reverts(lock.updateTransferFee(1000, { from: accounts[1] }))
-      })
-
-      it('is called for an account with no key', async () => {
-        await reverts(
-          lock.getTransferFee(accounts[9], 0, { from: accounts[3] }),
-          'KEY_NOT_VALID'
-        )
       })
     })
   })
