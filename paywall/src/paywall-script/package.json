@@ -13,6 +13,7 @@
     "webpack-cli": "3.3.11"
   },
   "dependencies": {
-    "postmate": "1.5.2"
+    "postmate": "1.5.2",
+    "style-loader": "^1.2.1"
   }
 }
