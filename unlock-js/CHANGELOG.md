@@ -1,5 +1,9 @@
 # Changes
 
+# 0.12.0
+
+- Refactored getTransaction to yield a promise of transaction object and does not emit events anymore
+
 # 0.11.0
 
 - Better implementation of unformattedSignTypedData
