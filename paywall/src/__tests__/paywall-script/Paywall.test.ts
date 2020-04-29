@@ -1,5 +1,5 @@
-import { Enabler } from 'src/utils/enableInjectedProvider'
-import { Paywall } from '../../paywall-script/index'
+import { Enabler } from '../../utils/enableInjectedProvider'
+import { Paywall } from '../../paywall-script/Paywall'
 import * as isUnlockedUtil from '../../utils/isUnlocked'
 import * as paywallScriptUtils from '../../paywall-script/utils'
 import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
@@ -27,7 +27,7 @@ const paywallConfig = {
 
 let paywall: Paywall
 
-describe('Paywall init script', () => {
+describe('Paywall object', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     paywall = new Paywall(paywallConfig)
