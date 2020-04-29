@@ -7,15 +7,15 @@ import utils from '../utils'
 import erc20 from '../erc20'
 
 import v0 from '../v0'
-import v01 from '../v01'
-import v02 from '../v02'
-import v10 from '../v10'
-import v11 from '../v11'
-import v12 from '../v12'
-import v13 from '../v13'
+import v1 from '../v1'
+import v2 from '../v2'
+import v3 from '../v3'
+import v4 from '../v4'
+import v5 from '../v5'
+import v6 from '../v6'
 import v7 from '../v7'
 
-const supportedVersions = [v0, v01, v02, v10, v11, v12, v13, v7]
+const supportedVersions = [v0, v1, v2, v3, v4, v5, v6, v7]
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const blockTime = 3
@@ -221,7 +221,7 @@ describe('Web3Service', () => {
   })
 
   describe('generateLockAddress', () => {
-    describe('when deployed a v12 lock', () => {
+    describe('when deployed a v5 lock', () => {
       it('generates the correct address from the template contract', async () => {
         expect.assertions(1)
         await nockBeforeEach({})
@@ -229,7 +229,7 @@ describe('Web3Service', () => {
         const owner = '0x123'
         web3Service.unlockContractAbiVersion = jest.fn(() => {
           return {
-            version: 'v12',
+            version: 'v5',
           }
         })
         const unlockContact = {
@@ -269,13 +269,13 @@ describe('Web3Service', () => {
     })
 
     describe('when deploying an older lock', () => {
-      // TODO: remove this once upgrade to v12 is done
+      // TODO: remove this once upgrade to v5 is done
       it('generates the correct address from nonce and contract address', async () => {
         expect.assertions(3)
         await nockBeforeEach({})
         web3Service.unlockContractAbiVersion = jest.fn(() => {
           return {
-            version: 'v11',
+            version: 'v4',
           }
         })
         nock.getTransactionCount(unlockAddress.toLowerCase(), 0)

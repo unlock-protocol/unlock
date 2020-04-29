@@ -104,7 +104,7 @@
 
 # 0.5.0
 
-- Support for smart contract v12 (version 5)
+- Support for smart contract v5 (version 5)
 - Deprecated the deploy script in favor of using walletService
 - Adding support for configureUnlock to support version 12
 - Adding support for deployTemplate to support version 12 which reduces gas costs when deploying new locks
@@ -235,7 +235,7 @@
 
 ## 0.2.7
 
-- Removed `partialWithdraw` since it is unused and, starting from v11, `withdraw` implements the required logic
+- Removed `partialWithdraw` since it is unused and, starting from v4, `withdraw` implements the required logic
 - `getLock` yields the lock name from the on chain data.
 
 ## 0.2.6
@@ -254,7 +254,7 @@
 
 ## 0.2.3
 
-- Adding support for v11 of the smart contracts.
+- Adding support for v4 of the smart contracts.
 
 ## 0.2.2
 

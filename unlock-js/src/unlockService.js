@@ -2,12 +2,12 @@ import EventEmitter from 'events'
 import { ethers } from 'ethers'
 
 import v0 from './v0'
-import v01 from './v01'
-import v02 from './v02'
-import v10 from './v10'
-import v11 from './v11'
-import v12 from './v12'
-import v13 from './v13'
+import v1 from './v1'
+import v2 from './v2'
+import v3 from './v3'
+import v4 from './v4'
+import v5 from './v5'
+import v6 from './v6'
 import v7 from './v7'
 
 // mute warnings from overloaded smart contract methods (https://github.com/ethers-io/ethers.js/issues/499)
@@ -58,27 +58,27 @@ export default class UnlockService extends EventEmitter {
     }
 
     if (version === 1) {
-      return v01
+      return v1
     }
 
     if (version === 2) {
-      return v02
+      return v2
     }
 
     if (version === 3) {
-      return v10
+      return v3
     }
 
     if (version === 4) {
-      return v11
+      return v4
     }
 
     if (version === 5) {
-      return v12
+      return v5
     }
 
     if (version === 6) {
-      return v13
+      return v6
     }
 
     if (version === 7) {
@@ -119,11 +119,11 @@ export default class UnlockService extends EventEmitter {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
       if (version === 1) {
-        // v02 returns 1 as publicLockVersion
+        // v2 returns 1 as publicLockVersion
         const code = await this.provider.getCode(address)
 
-        // if the deployed bytecode is v02, we have a match
-        if (v02.PublicLock.bytecodeHash === ethers.utils.sha256(code)) {
+        // if the deployed bytecode is v2, we have a match
+        if (v2.PublicLock.bytecodeHash === ethers.utils.sha256(code)) {
           return 2
         }
       }
@@ -149,7 +149,7 @@ export default class UnlockService extends EventEmitter {
       version = parseInt(contractVersion, 10) || 0
     } catch (error) {
       // This is an older version of Unlock which did not support unlockVersion
-      // It can be either v0 or v01. To distinguish let's use their opcode!
+      // It can be either v0 or v1. To distinguish let's use their opcode!
       const opCode = await this.provider.getCode(address)
       const hash = ethers.utils.sha256(opCode)
       if (
