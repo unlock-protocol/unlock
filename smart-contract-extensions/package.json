@@ -10,7 +10,7 @@
     "lintFix": "solium -d ./contracts/ --fix && eslint . --fix",
     "coverage": "truffle run coverage && cat coverage/lcov.info | coveralls",
     "ganache": "ganache-cli",
-    "ci": "yarn build && yarn test && yarn lint"
+    "ci": "yarn build && yarn test"
   },
   "files": [
     "build",
