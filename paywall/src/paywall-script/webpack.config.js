@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
 const webpack = require('webpack')
 var path = require('path')
-const configVariables = require('../../environment')
 
 const mode = process.env.UNLOCK_ENV === 'prod' ? 'production' : 'development'
 
@@ -38,9 +37,6 @@ module.exports = () => {
     plugins: [
       new webpack.DefinePlugin({
         fetch: "require('node-fetch')",
-      }),
-      new webpack.DefinePlugin({
-        __ENVIRONMENT_VARIABLES__: JSON.stringify(configVariables),
       }),
     ],
   }
