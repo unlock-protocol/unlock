@@ -16,7 +16,7 @@ import {
   enableInjectedProvider,
 } from '../utils/enableInjectedProvider'
 
-declare let __ENVIRONMENT_VARIABLES__: {
+interface ModuleConfig {
   unlockAppUrl: string
   readOnlyProvider: string
   locksmithUri: string
@@ -75,7 +75,10 @@ export class Paywall {
 
   child?: Postmate.ParentAPI
 
-  constructor(paywallConfig: any) {
+  moduleConfig: ModuleConfig
+
+  constructor(paywallConfig: any, moduleConfig: ModuleConfig) {
+    this.moduleConfig = moduleConfig
     this.provider = getProvider(window as Web3Window)
 
     const loadCheckoutModal = () => {
@@ -134,7 +137,7 @@ export class Paywall {
 
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
-    const { readOnlyProvider, locksmithUri } = __ENVIRONMENT_VARIABLES__
+    const { readOnlyProvider, locksmithUri } = this.moduleConfig
     if (!this.userAccountAddress) {
       return
     }
@@ -151,7 +154,7 @@ export class Paywall {
   }
 
   shakeHands = async () => {
-    const { unlockAppUrl } = __ENVIRONMENT_VARIABLES__
+    const { unlockAppUrl } = this.moduleConfig
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
@@ -177,7 +180,7 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+    const { readOnlyProvider } = this.moduleConfig
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
     if (!this.paywallConfig.pessimistic) {
       const optimistic = await willUnlock(
