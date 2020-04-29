@@ -77,9 +77,10 @@ export class Paywall {
 
   moduleConfig: ModuleConfig
 
-  constructor(paywallConfig: any, moduleConfig: ModuleConfig) {
+  constructor(paywallConfig: any, moduleConfig: ModuleConfig, provider?: any) {
     this.moduleConfig = moduleConfig
-    this.provider = getProvider(window as Web3Window)
+    // Use provider in parameter, fall back to injected provider in window (if any)
+    this.provider = provider || getProvider(window as Web3Window)
 
     const loadCheckoutModal = () => {
       if (this.iframe) {
