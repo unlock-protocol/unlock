@@ -235,21 +235,24 @@ contract MixinTransfer is
     uint _time
   )
     public view
-    hasValidKey(_keyOwner)
     returns (uint)
   {
-    Key storage key = keyByOwner[_keyOwner];
-    uint timeToTransfer;
-    uint fee;
-    // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
-    // this is for standard key transfers
-    if(_time == 0) {
-      timeToTransfer = key.expirationTimestamp - block.timestamp;
+    if(! getHasValidKey(_keyOwner)) {
+      return 0;
     } else {
-      timeToTransfer = _time;
+      Key storage key = keyByOwner[_keyOwner];
+      uint timeToTransfer;
+      uint fee;
+      // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
+      // this is for standard key transfers
+      if(_time == 0) {
+        timeToTransfer = key.expirationTimestamp - block.timestamp;
+      } else {
+        timeToTransfer = _time;
+      }
+      fee = timeToTransfer.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
+      return fee;
     }
-    fee = timeToTransfer.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
-    return fee;
   }
 
   /**

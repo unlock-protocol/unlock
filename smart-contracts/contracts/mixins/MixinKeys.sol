@@ -176,7 +176,6 @@ contract MixinKeys is
     view
     returns (address[] memory)
   {
-    require(owners.length > 0, 'NO_OUTSTANDING_KEYS');
     uint pageSize = _pageSize;
     uint _startIndex = _page * pageSize;
     uint endOfPageIndex;
@@ -241,7 +240,6 @@ contract MixinKeys is
   function ownerOf(
     uint _tokenId
   ) public view
-    isKey(_tokenId)
     returns(address)
   {
     return _ownerOf[_tokenId];

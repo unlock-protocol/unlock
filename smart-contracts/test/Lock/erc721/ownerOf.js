@@ -1,4 +1,4 @@
-const { reverts } = require('truffle-assertions')
+const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -13,8 +13,9 @@ contract('Lock / erc721 / ownerOf', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  it('should revert when key is nonexistent', async () => {
-    await reverts(locks.FIRST.ownerOf.call(accounts[3]), 'NO_SUCH_KEY')
+  it('should return 0x0 when key is nonexistent', async () => {
+    let address = await locks.FIRST.ownerOf.call(42)
+    assert.equal(address, constants.ZERO_ADDRESS)
   })
 
   it('should return the owner of the key', async () => {
@@ -22,7 +23,7 @@ contract('Lock / erc721 / ownerOf', accounts => {
       value: web3.utils.toWei('0.01', 'ether'),
       from: accounts[1],
     })
-    let ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
+    const ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
     let address = await locks.FIRST.ownerOf.call(ID)
     assert.equal(address, accounts[1])
   })
