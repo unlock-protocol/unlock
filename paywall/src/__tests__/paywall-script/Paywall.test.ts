@@ -6,7 +6,8 @@ import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 
 declare let __ENVIRONMENT_VARIABLES__: any
 // eslint-disable-next-line no-undef
-const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__
+const moduleConfig = __ENVIRONMENT_VARIABLES__
+const { readOnlyProvider } = moduleConfig
 
 const paywallConfig = {
   callToAction: {
@@ -30,7 +31,7 @@ let paywall: Paywall
 describe('Paywall object', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    paywall = new Paywall(paywallConfig)
+    paywall = new Paywall(paywallConfig, moduleConfig)
     paywall.unlockPage = jest.fn()
     paywall.lockPage = jest.fn()
   })
@@ -188,7 +189,7 @@ describe('Paywall object', () => {
         ...paywallConfig,
         pessimistic: true,
       }
-      const paywall = new Paywall(pessimisticConfig)
+      const paywall = new Paywall(pessimisticConfig, moduleConfig)
 
       jest
         .spyOn(optimisticUnlockingUtils, 'willUnlock')
