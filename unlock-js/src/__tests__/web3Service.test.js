@@ -428,24 +428,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('_emitKeyOwners', () => {
-    it('resolves the promises and emits keys.page', async done => {
-      expect.assertions(3)
-      await nockBeforeEach({})
-
-      const keyPromises = [Promise.resolve(null), Promise.resolve('key')]
-
-      web3Service.on('keys.page', (lock, page, keys) => {
-        expect(lock).toBe(lockAddress)
-        expect(page).toBe(2)
-        expect(keys).toEqual(['key'])
-        done()
-      })
-
-      web3Service._emitKeyOwners(lockAddress, 2, keyPromises)
-    })
-  })
-
   describe('versions', () => {
     const versionSpecificLockMethods = ['getLock']
 
