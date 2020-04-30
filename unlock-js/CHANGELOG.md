@@ -2,6 +2,7 @@
 
 # Next version (minor)
 
+- Removed getKeysForLockOnPage (breaking change)
 - Removed getPastLockTransactions (breaking change)
 - Removed getPastLockCreationsTransactionsForUser (breaking if you're using it!)
 

@@ -172,54 +172,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('_getPastTransactionsForContract', () => {
-    it("should getPastEvents on the contract and emit 'transaction.new' for each event", async () => {
-      expect.assertions(3)
-      await nockBeforeEach({})
-
-      const logs = [
-        {
-          logIndex: '0x2',
-          transactionIndex: '0x0',
-          transactionHash:
-            '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd',
-          blockHash:
-            '0xf42e7b871541fe9f4b705633a8d5fd5e36899054ea4db817ff533d5ab1015e99',
-          blockNumber: '0xcc9',
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          data: '0x00',
-          topics: [
-            '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
-            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a',
-          ],
-          type: 'mined',
-        },
-      ]
-      web3Service.provider.getLogs = jest.fn(() => {
-        return Promise.resolve(logs)
-      })
-
-      const filter = { a: 'b' }
-
-      web3Service.once('transaction.new', transactionHash => {
-        expect(transactionHash).toEqual(
-          '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd'
-        )
-        expect(web3Service.provider.getLogs).toHaveBeenCalledWith(
-          expect.objectContaining({
-            fromBlock: 0,
-            toBlock: 'latest',
-            a: 'b',
-          })
-        )
-      })
-
-      const ret = await web3Service._getPastTransactionsForContract(filter)
-      expect(ret).toEqual(logs)
-    })
-  })
-
   describe('generateLockAddress', () => {
     describe('when deployed a v5 lock', () => {
       it('generates the correct address from the template contract', async () => {
