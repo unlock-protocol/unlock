@@ -1,11 +1,6 @@
 import Postmate from 'postmate'
 import './iframe.css'
-import {
-  setupUnlockProtocolVariable,
-  dispatchEvent,
-  unlockEvents,
-  injectProviderInfo,
-} from './utils'
+import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from '../utils/localStorage'
 import { willUnlock } from '../utils/optimisticUnlocking'
 import { isUnlocked } from '../utils/isUnlocked'
@@ -77,47 +72,41 @@ export class Paywall {
 
   moduleConfig: ModuleConfig
 
-  constructor(paywallConfig: any, moduleConfig: ModuleConfig) {
+  constructor(paywallConfig: any, moduleConfig: ModuleConfig, provider?: any) {
     this.moduleConfig = moduleConfig
-    this.provider = getProvider(window as Web3Window)
+    // Use provider in parameter, fall back to injected provider in window (if any)
+    this.provider = provider || getProvider(window as Web3Window)
 
-    const loadCheckoutModal = () => {
-      if (this.iframe) {
-        this.showIframe()
-      } else {
-        this.shakeHands()
-      }
-    }
-
-    const resetConfig = (config: any) => {
-      this.paywallConfig = injectProviderInfo(config, this.provider)
-      this.checkKeysAndLock()
-      if (this.setConfig) {
-        this.setConfig(this.paywallConfig)
-      } else {
-        this.childCallBuffer.push(['setConfig', this.paywallConfig])
-      }
-    }
-
-    const getUserAccountAddress = () => {
-      return this.userAccountAddress
-    }
-
-    const getState = () => {
-      return this.lockStatus
-    }
-
-    resetConfig(paywallConfig)
-
-    setupUnlockProtocolVariable({
-      loadCheckoutModal,
-      resetConfig,
-      getUserAccountAddress,
-      getState,
-    })
+    this.resetConfig(paywallConfig)
 
     // Always do this last!
     this.loadCache()
+  }
+
+  loadCheckoutModal = () => {
+    if (this.iframe) {
+      this.showIframe()
+    } else {
+      this.shakeHands()
+    }
+  }
+
+  getUserAccountAddress = () => {
+    return this.userAccountAddress
+  }
+
+  resetConfig = (config: any) => {
+    this.paywallConfig = injectProviderInfo(config, this.provider)
+    this.checkKeysAndLock()
+    if (this.setConfig) {
+      this.setConfig(this.paywallConfig)
+    } else {
+      this.childCallBuffer.push(['setConfig', this.paywallConfig])
+    }
+  }
+
+  getState = () => {
+    return this.lockStatus
   }
 
   // Saves the user info in the cache

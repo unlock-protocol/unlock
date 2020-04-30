@@ -11,5 +11,5 @@ export function isUnlocked(
 ): Promise<boolean>
 
 export class Paywall {
-  constructor(paywallConfig: any, moduleConfig: PaywallModuleConfig)
+  constructor(paywallConfig: any, moduleConfig: PaywallModuleConfig, provider?: any)
 }
