@@ -413,35 +413,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('getPastLockCreationsTransactionsForUser', () => {
-    it('should getPastEvents for the Unlock contract', async () => {
-      expect.assertions(3)
-      await versionedNockBeforeEach()
-
-      const getUnlockContract = jest.spyOn(web3Service, 'getUnlockContract')
-
-      const userAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-      web3Service._getPastTransactionsForContract = jest.fn(() => 'hi')
-
-      const pastTransactions = await web3Service.getPastLockCreationsTransactionsForUser(
-        userAddress
-      )
-      expect(getUnlockContract).toHaveBeenCalled()
-
-      expect(web3Service._getPastTransactionsForContract).toHaveBeenCalledWith(
-        expect.objectContaining({
-          address: unlockAddress,
-          topics: [
-            '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
-            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-          ],
-        })
-      )
-      // ensure we return what is returned to us
-      expect(pastTransactions).toBe('hi')
-    })
-  })
-
   describe('_parseTransactionFromInput', () => {
     it('should emit transaction.updated with the transaction marked with the right state', async done => {
       expect.assertions(2)

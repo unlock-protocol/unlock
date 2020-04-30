@@ -3,6 +3,7 @@
 # Next version (minor)
 
 - Removed getPastLockTransactions (breaking change)
+- Removed getPastLockCreationsTransactionsForUser (breaking if you're using it!)
 
 # 0.10.2
 

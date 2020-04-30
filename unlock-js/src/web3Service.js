@@ -265,18 +265,6 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
-   * to create a new Lock.
-   * @param {*} address
-   */
-  async getPastLockCreationsTransactionsForUser(address) {
-    const unlock = await this.getUnlockContract()
-    // only retrieve NewLock events
-    const filter = unlock.filters.NewLock(address)
-    return this._getPastTransactionsForContract(filter)
-  }
-
-  /**
    * This function is able to retrieve the past transaction on a lock as long as these transactions
    * triggered events.
    * @param {*} lockAddress
