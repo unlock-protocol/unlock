@@ -1,5 +1,9 @@
 # Changes
 
+# Next version (minor)
+
+- Removed getPastLockTransactions (breaking change)
+
 # 0.10.2
 
 - Fixing unlock provider handling inside of WalletService

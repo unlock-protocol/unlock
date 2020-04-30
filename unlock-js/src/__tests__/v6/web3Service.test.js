@@ -466,25 +466,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('getPastLockTransactions', () => {
-    it('should getPastEvents for the Lock contract', async () => {
-      expect.assertions(2)
-      await versionedNockBeforeEach()
-      const lockAddress = '0x123'
-
-      web3Service._getPastTransactionsForContract = jest.fn(() => 'hi')
-
-      const pastTransactions = await web3Service.getPastLockTransactions(
-        lockAddress
-      )
-      expect(web3Service._getPastTransactionsForContract).toHaveBeenCalledWith(
-        lockAddress
-      )
-      // ensure we return what we are given from _getPastTransactionsForContract
-      expect(pastTransactions).toBe('hi')
-    })
-  })
-
   describe('_parseTransactionFromInput', () => {
     it('should emit transaction.updated with the transaction marked as pending', async done => {
       expect.assertions(2)
