@@ -20,17 +20,26 @@ export const useSetUserMetadata = () => {
     lockAddress: string,
     userAddress: string,
     metadata: UserMetadata,
-    callback: () => void
+    callback: (error: Error, saved: boolean) => void
   ) => {
-    walletService.setUserMetadata(
-      {
-        lockAddress,
-        userAddress,
-        metadata,
-        locksmithHost: config.services.storage.host,
-      },
-      callback
-    )
+    try {
+      walletService.setUserMetadata(
+        {
+          lockAddress,
+          userAddress,
+          metadata,
+          locksmithHost: config.services.storage.host,
+        },
+        callback
+      )
+    } catch (error) {
+      callback(
+        new Error(
+          'There was an error which prevented your data from being saved.'
+        ),
+        false
+      )
+    }
   }
 
   return { setUserMetadata }

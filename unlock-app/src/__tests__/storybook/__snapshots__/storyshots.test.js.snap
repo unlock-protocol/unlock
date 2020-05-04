@@ -6514,7 +6514,7 @@ Object {
           <div
             class="sc-prOVx c4"
           >
-            This is a generic error because something just broke but we’re not sure what.
+            Could not log in
           </div>
           <div
             class="sc-prOVx c5"
@@ -6584,7 +6584,7 @@ Object {
         <div
           class="sc-prOVx sc-qQmou iCzPkc"
         >
-          This is a generic error because something just broke but we’re not sure what.
+          Could not log in
         </div>
         <div
           class="sc-prOVx sc-qYiqT icqcPJ"
