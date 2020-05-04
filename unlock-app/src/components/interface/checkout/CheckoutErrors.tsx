@@ -26,7 +26,7 @@ const getMessage = (error: UnlockError) => {
   }
 
   if (error.level === 'Fatal') {
-    return fatalErrorMessages[error.message] || genericError
+    return fatalErrorMessages[error.message] || error.message || genericError
   }
 
   return error.message

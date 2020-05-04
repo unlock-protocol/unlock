@@ -78,4 +78,19 @@ describe('useSetUserMetadata', () => {
 
     expect(callback).toHaveBeenCalled()
   })
+
+  it('should callback even when there are error', () => {
+    expect.assertions(2)
+
+    const { result } = renderHook(() => useSetUserMetadata())
+
+    expect(callback).not.toHaveBeenCalled()
+
+    mockWalletService.setUserMetadata = jest.fn(() => {
+      throw new Error()
+    })
+    result.current.setUserMetadata(lockAddress, userAddress, metadata, callback)
+
+    expect(callback).toHaveBeenCalled()
+  })
 })
