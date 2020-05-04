@@ -1,12 +1,11 @@
-pragma solidity 0.5.17;
+pragma solidity 0.6.6;
 
-import 'hardlydifficult-ethereum-contracts/contracts/lifecycle/Stoppable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
-import 'unlock-abi-7/IPublicLockV7.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 import './mixins/LockRoles.sol';
 
 /**
@@ -35,7 +34,7 @@ contract KeyPurchaser is Initializable, LockRoles
   /**
    * @notice This is the lock for the content users are subscribing to.
    */
-  IPublicLockV7 public lock;
+  IPublicLockV7Sol6 public lock;
 
   /**
    * @notice The most you will spend on a single key purchase.
@@ -97,7 +96,7 @@ contract KeyPurchaser is Initializable, LockRoles
    * contract may be deployed with a minimal proxy.
    */
   function initialize(
-    IPublicLockV7 _lock,
+    IPublicLockV7Sol6 _lock,
     uint _maxPurchasePrice,
     uint _renewWindow,
     uint _renewMinFrequency,

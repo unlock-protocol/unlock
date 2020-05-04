@@ -7,15 +7,15 @@ import utils from '../utils'
 import erc20 from '../erc20'
 
 import v0 from '../v0'
-import v01 from '../v01'
-import v02 from '../v02'
-import v10 from '../v10'
-import v11 from '../v11'
-import v12 from '../v12'
-import v13 from '../v13'
+import v1 from '../v1'
+import v2 from '../v2'
+import v3 from '../v3'
+import v4 from '../v4'
+import v5 from '../v5'
+import v6 from '../v6'
 import v7 from '../v7'
 
-const supportedVersions = [v0, v01, v02, v10, v11, v12, v13, v7]
+const supportedVersions = [v0, v1, v2, v3, v4, v5, v6, v7]
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const blockTime = 3
@@ -172,56 +172,8 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('_getPastTransactionsForContract', () => {
-    it("should getPastEvents on the contract and emit 'transaction.new' for each event", async () => {
-      expect.assertions(3)
-      await nockBeforeEach({})
-
-      const logs = [
-        {
-          logIndex: '0x2',
-          transactionIndex: '0x0',
-          transactionHash:
-            '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd',
-          blockHash:
-            '0xf42e7b871541fe9f4b705633a8d5fd5e36899054ea4db817ff533d5ab1015e99',
-          blockNumber: '0xcc9',
-          address: '0x3f313221a2af33fd8a430891291370632cb471bf',
-          data: '0x00',
-          topics: [
-            '0x01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be7',
-            '0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            '0x000000000000000000000000dc069c4d26510749bea2057c4db43ba8efe4d23a',
-          ],
-          type: 'mined',
-        },
-      ]
-      web3Service.provider.getLogs = jest.fn(() => {
-        return Promise.resolve(logs)
-      })
-
-      const filter = { a: 'b' }
-
-      web3Service.once('transaction.new', transactionHash => {
-        expect(transactionHash).toEqual(
-          '0x8a7c22fe9bcb5ee44c06410c584139f96a2f5cff529866bbed615986100eb6bd'
-        )
-        expect(web3Service.provider.getLogs).toHaveBeenCalledWith(
-          expect.objectContaining({
-            fromBlock: 0,
-            toBlock: 'latest',
-            a: 'b',
-          })
-        )
-      })
-
-      const ret = await web3Service._getPastTransactionsForContract(filter)
-      expect(ret).toEqual(logs)
-    })
-  })
-
   describe('generateLockAddress', () => {
-    describe('when deployed a v12 lock', () => {
+    describe('when deployed a v5 lock', () => {
       it('generates the correct address from the template contract', async () => {
         expect.assertions(1)
         await nockBeforeEach({})
@@ -229,7 +181,7 @@ describe('Web3Service', () => {
         const owner = '0x123'
         web3Service.unlockContractAbiVersion = jest.fn(() => {
           return {
-            version: 'v12',
+            version: 'v5',
           }
         })
         const unlockContact = {
@@ -269,13 +221,13 @@ describe('Web3Service', () => {
     })
 
     describe('when deploying an older lock', () => {
-      // TODO: remove this once upgrade to v12 is done
+      // TODO: remove this once upgrade to v5 is done
       it('generates the correct address from nonce and contract address', async () => {
         expect.assertions(3)
         await nockBeforeEach({})
         web3Service.unlockContractAbiVersion = jest.fn(() => {
           return {
-            version: 'v11',
+            version: 'v4',
           }
         })
         nock.getTransactionCount(unlockAddress.toLowerCase(), 0)
@@ -473,24 +425,6 @@ describe('Web3Service', () => {
         lock: '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e',
         owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
       })
-    })
-  })
-
-  describe('_emitKeyOwners', () => {
-    it('resolves the promises and emits keys.page', async done => {
-      expect.assertions(3)
-      await nockBeforeEach({})
-
-      const keyPromises = [Promise.resolve(null), Promise.resolve('key')]
-
-      web3Service.on('keys.page', (lock, page, keys) => {
-        expect(lock).toBe(lockAddress)
-        expect(page).toBe(2)
-        expect(keys).toEqual(['key'])
-        done()
-      })
-
-      web3Service._emitKeyOwners(lockAddress, 2, keyPromises)
     })
   })
 

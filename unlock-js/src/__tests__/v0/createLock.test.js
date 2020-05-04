@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV0 from 'unlock-abi-0'
+import * as UnlockV0 from '@unlock-protocol/unlock-abi-0'
 import v0 from '../../v0'
 
 import { getTestProvider } from '../helpers/provider'
