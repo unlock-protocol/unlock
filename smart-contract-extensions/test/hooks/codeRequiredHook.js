@@ -1,4 +1,4 @@
-const { constants, protocols } = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols } = require('hardlydifficult-eth')
 const { reverts } = require('truffle-assertions')
 
 const CodeRequiredHook = artifacts.require('CodeRequiredHook.sol')
@@ -65,7 +65,7 @@ contract('CodeRequiredHook', accounts => {
       lock.purchase('0', keyBuyer, constants.ZERO_ADDRESS, [], {
         from: keyBuyer,
       }),
-      'INCORRECT_CODE'
+      'ECDSA: invalid signature length'
     )
   })
 

@@ -43,7 +43,7 @@ export default class Web3Service extends UnlockService {
         return this.getLock(args.newLockAddress)
       },
       Transfer: (transactionHash, contractAddress, blockNumber, args) => {
-        const owner = args._to || args.to // v13 uses to instead of _to
+        const owner = args._to || args.to // v6 uses to instead of _to
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner), // TODO: use the token id!
           for: owner, // this is not necessarily the same as the "from" address
@@ -184,10 +184,10 @@ export default class Web3Service extends UnlockService {
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (['v12', 'v13', 'v7'].indexOf(version.version) > -1) {
+    if (['v5', 'v6', 'v7'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
-      // Compute the hash identically to v12 (TODO: extract this?)
+      // Compute the hash identically to v5 (TODO: extract this?)
       const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
       return this._create2Address(
         this.unlockContractAddress,
@@ -196,7 +196,7 @@ export default class Web3Service extends UnlockService {
         lockSalt
       )
     }
-    // TODO: once the contracts have been moved to v12, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
+    // TODO: once the contracts have been moved to v5, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
     const transactionCount = await this.provider.getTransactionCount(
       this.unlockContractAddress
     )
@@ -262,44 +262,6 @@ export default class Web3Service extends UnlockService {
         // Unknown transaction
         return null
     }
-  }
-
-  /**
-   * This function is able to retrieve past transaction sent by a user to the Unlock smart contract
-   * to create a new Lock.
-   * @param {*} address
-   */
-  async getPastLockCreationsTransactionsForUser(address) {
-    const unlock = await this.getUnlockContract()
-    // only retrieve NewLock events
-    const filter = unlock.filters.NewLock(address)
-    return this._getPastTransactionsForContract(filter)
-  }
-
-  /**
-   * This function is able to retrieve the past transaction on a lock as long as these transactions
-   * triggered events.
-   * @param {*} lockAddress
-   */
-  async getPastLockTransactions(lockAddress) {
-    return this._getPastTransactionsForContract(lockAddress)
-  }
-
-  /**
-   * This function retrieves past transactions from events on a given contract
-   * @param {*} filter
-   * @private
-   */
-  async _getPastTransactionsForContract(filter) {
-    const events = await this.provider.getLogs({
-      fromBlock: 0, // TODO start only when the smart contract was deployed?
-      toBlock: 'latest',
-      ...filter,
-    })
-    events.forEach(event => {
-      this.emit('transaction.new', event.transactionHash)
-    })
-    return events
   }
 
   /**
@@ -670,106 +632,6 @@ export default class Web3Service extends UnlockService {
     } catch (error) {
       return 0
     }
-  }
-
-  _emitKeyOwners(lock, page, keyPromises) {
-    return Promise.all(keyPromises).then(keys => {
-      this.emit(
-        'keys.page',
-        lock,
-        page,
-        keys.filter(key => !!key)
-      )
-    })
-  }
-
-  /**
-   * @private
-   * @param {*} lock
-   * @param {*} lockContract
-   * @param {*} ownerAddress
-   */
-  _packageKeyholderInfo(lock, lockContract, ownerAddress) {
-    return this._getKeyByLockForOwner(lockContract, ownerAddress).then(
-      expiration => {
-        return {
-          id: KEY_ID(lock, ownerAddress),
-          lock,
-          owner: ownerAddress,
-          expiration,
-        }
-      }
-    )
-  }
-
-  _genKeyOwnersFromLockContractIterative(lock, lockContract, page, byPage) {
-    const startIndex = page * byPage
-    return new Promise(resolve => {
-      const keyPromises = Array.from(Array(byPage).keys()).map(n => {
-        return lockContract.functions
-          .owners(n + startIndex)
-          .then(ownerAddress => {
-            return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
-          })
-          .catch(() => {
-            return null
-          })
-      })
-
-      resolve(keyPromises)
-    })
-  }
-
-  _genKeyOwnersFromLockContract(lock, lockContract, page, byPage) {
-    return new Promise((resolve, reject) => {
-      lockContract.functions
-        .getOwnersByPage(page, byPage)
-        .then(ownerAddresses => {
-          const keyPromises = ownerAddresses.map(ownerAddress => {
-            return this._packageKeyholderInfo(lock, lockContract, ownerAddress)
-          })
-
-          resolve(keyPromises)
-        })
-        .catch(error => reject(error))
-    })
-  }
-
-  /**
-   * This loads and returns the keys for a lock per page
-   * we fetch byPage number of keyOwners and dispatch for futher details.
-   *
-   * This method will attempt to retrieve keyholders directly from the smart contract, if this
-   * raises and exception the code will attempt to iteratively retrieve the keyholders.
-   * (Relevant to issue #1116)
-   * @param {PropTypes.string}
-   * @param {PropTypes.integer}
-   * @param {PropTypes.integer}
-   */
-  async getKeysForLockOnPage(lock, page, byPage) {
-    const lockContract = await this.getLockContract(lock)
-
-    this._genKeyOwnersFromLockContract(lock, lockContract, page, byPage)
-      .then(keyPromises => {
-        if (keyPromises.length == 0) {
-          this._genKeyOwnersFromLockContractIterative(
-            lock,
-            lockContract,
-            page,
-            byPage
-          ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
-        } else {
-          this._emitKeyOwners(lock, page, keyPromises)
-        }
-      })
-      .catch(() => {
-        this._genKeyOwnersFromLockContractIterative(
-          lock,
-          lockContract,
-          page,
-          byPage
-        ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
-      })
   }
 
   /**

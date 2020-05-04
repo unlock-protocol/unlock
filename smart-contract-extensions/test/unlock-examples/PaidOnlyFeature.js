@@ -1,4 +1,4 @@
-const { constants, protocols } = require('hardlydifficult-ethereum-contracts')
+const { constants, protocols } = require('hardlydifficult-eth')
 const truffleAssert = require('truffle-assertions')
 
 const PaidOnlyFeature = artifacts.require('PaidOnlyFeature')

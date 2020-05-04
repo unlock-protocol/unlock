@@ -1,12 +1,12 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.6.6;
 
-import 'unlock-abi-7/IPublicLockV7.sol';
-import '@openzeppelin/contracts/access/roles/WhitelistedRole.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '../mixins/LockRoles.sol';
 
-contract ExternalRefund is WhitelistedRole
+contract ExternalRefund is LockRoles
 {
-  IPublicLockV7 public lock;
+  IPublicLockV7Sol6 public lock;
   mapping(address => bool) public refundee;
   uint256 public refundAmount;
   IERC20 public baseToken;
@@ -17,14 +17,14 @@ contract ExternalRefund is WhitelistedRole
     uint _amount
   );
 
-  constructor(IPublicLockV7 _lockAddress, uint256 _refundAmount, IERC20 _token) public
+  constructor(IPublicLockV7Sol6 _lockAddress, uint256 _refundAmount, IERC20 _token) public
   {
     lock = _lockAddress;
     refundAmount = _refundAmount;
     baseToken = _token;
   }
 
-  function refund(address recipient) public onlyWhitelisted()
+  function refund(address recipient) public onlyLockManager(lock)
   {
     require(!refundee[recipient], 'Recipient has already been refunded');
     require(lock.getHasValidKey(recipient), 'Recipient does not own a key');
@@ -34,7 +34,7 @@ contract ExternalRefund is WhitelistedRole
     emit Refund(recipient, baseToken, refundAmount);
   }
 
-  function drain() public onlyWhitelistAdmin()
+  function drain() public onlyLockManager(lock)
   {
     uint256 balance = baseToken.balanceOf(address(this));
     baseToken.transfer(msg.sender, balance);

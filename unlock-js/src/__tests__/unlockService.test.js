@@ -6,8 +6,8 @@ import UnlockService, { Errors } from '../unlockService'
 import NockHelper from './helpers/nockHelper'
 import bytecode from './helpers/bytecode'
 import v0 from '../v0'
-import v01 from '../v01'
-import v02 from '../v02'
+import v1 from '../v1'
+import v2 from '../v2'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -66,9 +66,9 @@ describe('UnlockService', () => {
     it('returns 0 for v0, which does not have publicLockVersion', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const metadata = new ethers.utils.Interface(v02.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(v2.PublicLock.abi)
 
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v2.PublicLock)
       nock.ethCallAndFail(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
@@ -87,16 +87,16 @@ describe('UnlockService', () => {
     it('returns 1 for contract version 1', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const metadata = new ethers.utils.Interface(v01.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(v1.PublicLock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v01.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v1.PublicLock)
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
         coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v01.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v1.PublicLock)
 
       const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
@@ -110,16 +110,16 @@ describe('UnlockService', () => {
     it('returns 2 for contract version 2', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const metadata = new ethers.utils.Interface(v02.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(v2.PublicLock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v2.PublicLock)
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
         coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.PublicLock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v2.PublicLock)
 
       const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
@@ -135,10 +135,10 @@ describe('UnlockService', () => {
     it('calls publicLockVersion', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const metadata = new ethers.utils.Interface(v02.Unlock.abi)
+      const metadata = new ethers.utils.Interface(v2.Unlock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.Unlock)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v2.Unlock)
       nock.ethCallAndYield(
         metadata.functions['unlockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
@@ -165,7 +165,7 @@ describe('UnlockService', () => {
       expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
-      expect(version).toEqual(v02)
+      expect(version).toEqual(v2)
       expect(unlockService.versionForAddress[unlockAddress]).toEqual(2)
     })
 
@@ -185,7 +185,7 @@ describe('UnlockService', () => {
       expect(unlockService.versionForAddress[unlockAddress]).toEqual(0)
     })
 
-    it('should return v01 if version is 1', async () => {
+    it('should return v1 if version is 1', async () => {
       expect.assertions(3)
       await nockBeforeEach()
       unlockService._getVersionFromContract = jest.fn(() => {
@@ -197,7 +197,7 @@ describe('UnlockService', () => {
       expect(unlockService._getVersionFromContract).toHaveBeenCalledWith(
         unlockAddress
       )
-      expect(version).toEqual(v01)
+      expect(version).toEqual(v1)
       expect(unlockService.versionForAddress[unlockAddress]).toEqual(1)
     })
 
@@ -208,7 +208,7 @@ describe('UnlockService', () => {
       unlockService.versionForAddress[unlockAddress] = 2
       const version = await unlockService.unlockContractAbiVersion()
       expect(unlockService._getVersionFromContract).not.toHaveBeenCalled()
-      expect(version).toEqual(v02)
+      expect(version).toEqual(v2)
     })
   })
 
@@ -230,7 +230,7 @@ describe('UnlockService', () => {
       expect(unlockService.versionForAddress[address]).toEqual(0)
     })
 
-    it('should return UnlockV01 when the version matches', async () => {
+    it('should return UnlockV1 when the version matches', async () => {
       expect.assertions(3)
       await nockBeforeEach()
       unlockService._getPublicLockVersionFromContract = jest.fn(() => {
@@ -243,7 +243,7 @@ describe('UnlockService', () => {
       expect(
         unlockService._getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
-      expect(version).toEqual(v01)
+      expect(version).toEqual(v1)
       expect(unlockService.versionForAddress[address]).toEqual(1)
     })
 
@@ -260,7 +260,7 @@ describe('UnlockService', () => {
       expect(
         unlockService._getPublicLockVersionFromContract
       ).toHaveBeenCalledWith(address)
-      expect(version).toEqual(v02)
+      expect(version).toEqual(v2)
       expect(unlockService.versionForAddress[address]).toEqual(2)
     })
 
@@ -276,7 +276,7 @@ describe('UnlockService', () => {
       expect(
         unlockService._getPublicLockVersionFromContract
       ).not.toHaveBeenCalled()
-      expect(version).toEqual(v02)
+      expect(version).toEqual(v2)
       expect(unlockService.versionForAddress[address]).toEqual(2)
     })
   })
@@ -336,7 +336,7 @@ describe('UnlockService', () => {
       await nockBeforeEach()
       const lockAddress = '0x1234567890123456789012345678901234567890'
 
-      unlockService.lockContractAbiVersion = jest.fn(() => v02)
+      unlockService.lockContractAbiVersion = jest.fn(() => v2)
 
       const contract = await unlockService.getLockContract(lockAddress)
 
@@ -344,7 +344,7 @@ describe('UnlockService', () => {
         ethers.Contract
       )
       expect(contract).toBeInstanceOf(ethers.Contract)
-      expect(contract.interface.abi).toEqual(parseAbi(v02.PublicLock.abi))
+      expect(contract.interface.abi).toEqual(parseAbi(v2.PublicLock.abi))
     })
 
     it('retrieves memoized lock contract', async () => {
@@ -352,7 +352,7 @@ describe('UnlockService', () => {
       await nockBeforeEach()
       const lockAddress = '0x1234567890123456789012345678901234567890'
 
-      unlockService.lockContractAbiVersion = jest.fn(() => v02)
+      unlockService.lockContractAbiVersion = jest.fn(() => v2)
       unlockService.lockContracts = {
         [lockAddress]: 'hi',
       }
@@ -369,20 +369,20 @@ describe('UnlockService', () => {
       expect.assertions(3)
       await nockBeforeEach()
 
-      unlockService.unlockContractAbiVersion = jest.fn(() => v02)
+      unlockService.unlockContractAbiVersion = jest.fn(() => v2)
 
       const contract = await unlockService.getUnlockContract()
 
       expect(unlockService.unlockContract).toBeInstanceOf(ethers.Contract)
       expect(contract).toBeInstanceOf(ethers.Contract)
-      expect(contract.interface.abi).toEqual(parseAbi(v02.Unlock.abi))
+      expect(contract.interface.abi).toEqual(parseAbi(v2.Unlock.abi))
     })
 
     it('retrieves memoized unlock contract', async () => {
       expect.assertions(2)
       await nockBeforeEach()
 
-      unlockService.unlockContractAbiVersion = jest.fn(() => v02)
+      unlockService.unlockContractAbiVersion = jest.fn(() => v2)
 
       unlockService.unlockContract = 'hi'
 

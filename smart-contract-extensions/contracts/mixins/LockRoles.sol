@@ -1,6 +1,6 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.6.6;
 
-import 'unlock-abi-7/IPublicLockV7.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 
 
 /**
@@ -12,7 +12,7 @@ contract LockRoles
    * @notice Lock managers are admins for the lock contract.
    */
   modifier onlyLockManager(
-    IPublicLockV7 _lock
+    IPublicLockV7Sol6 _lock
   )
   {
     require(_lock.isLockManager(msg.sender), 'ONLY_LOCK_MANAGER');
@@ -23,7 +23,7 @@ contract LockRoles
    * @notice Key granters and lock managers have permission to distribute keys without any expense.
    */
   modifier onlyKeyGranterOrManager(
-    IPublicLockV7 _lock
+    IPublicLockV7Sol6 _lock
   )
   {
     require(_lock.isKeyGranter(msg.sender) || _lock.isLockManager(msg.sender), 'ONLY_KEY_GRANTER');

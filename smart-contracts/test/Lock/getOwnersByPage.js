@@ -13,11 +13,22 @@ contract('Lock / getOwnersByPage', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  describe('when there are 0 key owners', () => {
-    it('should return an error', async () => {
+  describe('when there are no owners', () => {
+    it('should return an empty array', async () => {
+      // when _page = 0 this returns an empty array
+      const result = await locks.FIRST.getOwnersByPage.call(0, 10, {
+        from: accounts[0],
+      })
+      assert.equal(result.length, 0)
+    })
+
+    it('should revert', async () => {
+      // when _page > 0 this reverts
       await reverts(
-        locks.FIRST.getOwnersByPage.call(0, 2, { from: accounts[5] }),
-        'NO_OUTSTANDING_KEYS'
+        locks.FIRST.getOwnersByPage.call(1, 1, {
+          from: accounts[0],
+        }),
+        'VM Exception while processing transaction: revert'
       )
     })
   })

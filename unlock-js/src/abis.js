@@ -71,7 +71,7 @@ const abis = {
         '0x86edf160e4e30f3ce7e9577dfb1cd335b967f4a8856a78bc63dec68dbad7b6e9',
     },
   },
-  v01: {
+  v1: {
     PublicLock: {
       contractName: 'PublicLock',
       abi: [
@@ -166,7 +166,7 @@ const abis = {
         '0x886b9da11c0a665e98fd914bc79908925a4f6a549286de92ee6825e441a26309',
     },
   },
-  v02: {
+  v2: {
     PublicLock: {
       contractName: 'PublicLock',
       abi: [
@@ -263,7 +263,7 @@ const abis = {
         '0x960a13a719e5937b7218323937da3bf6927cfd015d4d04c4987d387ad043d2d6',
     },
   },
-  v10: {
+  v3: {
     PublicLock: {
       contractName: 'PublicLock',
       abi: [
@@ -378,7 +378,7 @@ const abis = {
         '0x61aa1e23d7edf8e39df534763b853b6844412c3b8f54b20fc4d7ced561f00f01',
     },
   },
-  v11: {
+  v4: {
     PublicLock: {
       contractName: 'PublicLock',
       abi: [
@@ -495,7 +495,7 @@ const abis = {
         '0xa1e7ddfa6d9183443aca067a96bd252f3ffa72a55ce36564ab77e79ce6527ac3',
     },
   },
-  v12: {
+  v5: {
     PublicLock: {
       contractName: 'PublicLock',
       abi: [
@@ -618,7 +618,7 @@ const abis = {
         '0xc26dbbd8c1c73980d527fbd1eaa89d01f75c9719f0b12ea51da5e54106e06f2a',
     },
   },
-  v13: {
+  v6: {
     PublicLock: {
       contractName: 'PublicLock',
       abi: [
