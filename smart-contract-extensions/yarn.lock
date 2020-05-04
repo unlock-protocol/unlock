@@ -1404,6 +1404,11 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.5.2.tgz#4d74670ead39e4f4fdab605a393ba8ea2390a2c4"
   integrity sha512-uRyvnvVYmgNmTBpWDbBsH/0kPESQhQpEc4KsvMRLVzFJ1o1s0uIv0Y6Y9IB5vI1Dwz2CbS4X/y4Wyw/75cTFnQ==
 
+"@solidity-parser/parser@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.6.0.tgz#deb964a4dbb8c21a342ee35b4acefb505fd04ea1"
+  integrity sha512-RiJXfS22frulogcfQCFhbKrd5ATu6P4tYUv/daChiIh6VHyKQ1kkVZVfX6aP7c2YGU/Bf9RwGNKdwLjfpaoqYQ==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
@@ -1786,40 +1791,40 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
-"@typescript-eslint/eslint-plugin@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.30.0.tgz#312a37e80542a764d96e8ad88a105316cdcd7b05"
-  integrity sha512-PGejii0qIZ9Q40RB2jIHyUpRWs1GJuHP1pkoCiaeicfwO9z7Fx03NQzupuyzAmv+q9/gFNHu7lo1ByMXe8PNyg==
+"@typescript-eslint/eslint-plugin@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.31.0.tgz#942c921fec5e200b79593c71fafb1e3f57aa2e36"
+  integrity sha512-iIC0Pb8qDaoit+m80Ln/aaeu9zKQdOLF4SHcGLarSeY1gurW6aU4JsOPMjKQwXlw70MvWKZQc6S2NamA8SJ/gg==
   dependencies:
-    "@typescript-eslint/experimental-utils" "2.30.0"
+    "@typescript-eslint/experimental-utils" "2.31.0"
     functional-red-black-tree "^1.0.1"
     regexpp "^3.0.0"
     tsutils "^3.17.1"
 
-"@typescript-eslint/experimental-utils@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.30.0.tgz#9845e868c01f3aed66472c561d4b6bac44809dd0"
-  integrity sha512-L3/tS9t+hAHksy8xuorhOzhdefN0ERPDWmR9CclsIGOUqGKy6tqc/P+SoXeJRye5gazkuPO0cK9MQRnolykzkA==
+"@typescript-eslint/experimental-utils@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.31.0.tgz#a9ec514bf7fd5e5e82bc10dcb6a86d58baae9508"
+  integrity sha512-MI6IWkutLYQYTQgZ48IVnRXmLR/0Q6oAyJgiOror74arUMh7EWjJkADfirZhRsUMHeLJ85U2iySDwHTSnNi9vA==
   dependencies:
     "@types/json-schema" "^7.0.3"
-    "@typescript-eslint/typescript-estree" "2.30.0"
+    "@typescript-eslint/typescript-estree" "2.31.0"
     eslint-scope "^5.0.0"
     eslint-utils "^2.0.0"
 
-"@typescript-eslint/parser@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.30.0.tgz#7681c305a6f4341ae2579f5e3a75846c29eee9ce"
-  integrity sha512-9kDOxzp0K85UnpmPJqUzdWaCNorYYgk1yZmf4IKzpeTlSAclnFsrLjfwD9mQExctLoLoGAUXq1co+fbr+3HeFw==
+"@typescript-eslint/parser@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.31.0.tgz#beddd4e8efe64995108b229b2862cd5752d40d6f"
+  integrity sha512-uph+w6xUOlyV2DLSC6o+fBDzZ5i7+3/TxAsH4h3eC64tlga57oMb96vVlXoMwjR/nN+xyWlsnxtbDkB46M2EPQ==
   dependencies:
     "@types/eslint-visitor-keys" "^1.0.0"
-    "@typescript-eslint/experimental-utils" "2.30.0"
-    "@typescript-eslint/typescript-estree" "2.30.0"
+    "@typescript-eslint/experimental-utils" "2.31.0"
+    "@typescript-eslint/typescript-estree" "2.31.0"
     eslint-visitor-keys "^1.1.0"
 
-"@typescript-eslint/typescript-estree@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.30.0.tgz#1b8e848b55144270255ffbfe4c63291f8f766615"
-  integrity sha512-nI5WOechrA0qAhnr+DzqwmqHsx7Ulr/+0H7bWCcClDhhWkSyZR5BmTvnBEyONwJCTWHfc5PAQExX24VD26IAVw==
+"@typescript-eslint/typescript-estree@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.31.0.tgz#ac536c2d46672aa1f27ba0ec2140d53670635cfd"
+  integrity sha512-vxW149bXFXXuBrAak0eKHOzbcu9cvi6iNcJDzEtOkRwGHxJG15chiAQAwhLOsk+86p9GTr/TziYvw+H9kMaIgA==
   dependencies:
     debug "^4.1.1"
     eslint-visitor-keys "^1.1.0"
@@ -11546,12 +11551,12 @@ sol-explore@1.6.1:
   resolved "https://registry.yarnpkg.com/sol-explore/-/sol-explore-1.6.1.tgz#b59f073c69fe332560d5a10c32ba8ca7f2986cfb"
   integrity sha1-tZ8HPGn+MyVg1aEMMrqMp/KYbPs=
 
-solidity-coverage@0.7.4:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/solidity-coverage/-/solidity-coverage-0.7.4.tgz#5bff265016edfc609e981601d953b125cbd55aab"
-  integrity sha512-eaYjKLJK7n+uAN9Xrm2kDujXOkxxBbHfNrjK+ZabU1DR4QWSVQiwDDF2JLciN943kkZdd2JOzJGp32NxCbdCWA==
+solidity-coverage@0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/solidity-coverage/-/solidity-coverage-0.7.5.tgz#29a738b5644b23687e540688520457ce6792ce94"
+  integrity sha512-UaNwVhK7I1ULYK3qDTATs7Hz0YKhJnE+rm5aU9ufUBowOImB2dWYXox2l/tMbSkHfTMWwHE/6TNqn0/ec0rwOw==
   dependencies:
-    "@solidity-parser/parser" "^0.5.2"
+    "@solidity-parser/parser" "^0.6.0"
     "@truffle/provider" "^0.1.17"
     chalk "^2.4.2"
     death "^1.1.0"
@@ -12416,13 +12421,13 @@ truffle-assertions@0.9.2:
     assertion-error "^1.1.0"
     lodash.isequal "^4.5.0"
 
-truffle-flattener@1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/truffle-flattener/-/truffle-flattener-1.4.3.tgz#dec22219b1bb71cde372a4e65ef119f9ed872f3e"
-  integrity sha512-r29fkSkV8i9oMW35KbpKR0bP4iPnzIJqlW2S+CL3BjLsxq6YnlMn9+e0BpiJIJPmeXJgeYHQvCGceucpM0Dovg==
+truffle-flattener@1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/truffle-flattener/-/truffle-flattener-1.4.4.tgz#747a99204001f7d6dce43ea92771e1ff6ac3eafb"
+  integrity sha512-S/WmvubzlUj1mn56wEI6yo1bmPpKDNdEe5rtyVC1C5iNfZWobD/V69pAYI15IBDJrDqUyh+iXgpTkzov50zpQw==
   dependencies:
     "@resolver-engine/imports-fs" "^0.2.2"
-    "@solidity-parser/parser" "^0.5.2"
+    "@solidity-parser/parser" "^0.6.0"
     find-up "^2.1.0"
     mkdirp "^1.0.4"
     tsort "0.0.1"
@@ -12438,10 +12443,10 @@ truffle-flattener@^1.4.0:
     solidity-parser-antlr "^0.4.11"
     tsort "0.0.1"
 
-truffle@5.1.23:
-  version "5.1.23"
-  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.23.tgz#6c48b5921ae937cfbf2a6f5d5e593bf177b8b86c"
-  integrity sha512-ovdkrAgF/6cGiVtoiGzSTUheEBowoFcBuPY3wOjdlICW8VsASuT+kYuWLG/bPAJSg9QFrFLwqgUcnA9MOwi6yg==
+truffle@5.1.24:
+  version "5.1.24"
+  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.24.tgz#2e7afc28b1748f2b44f2da351b3605744f3546e4"
+  integrity sha512-2TAidfvwZD3cCBVM8cgyU7hAUR7NTSkKnBzsasdIIwCOGZ1+IqG/pALSuATjeeHbo4tqzjvs3Nau2U1yo5wDAw==
   dependencies:
     app-module-path "^2.2.0"
     mocha "5.2.0"
