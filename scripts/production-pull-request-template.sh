@@ -15,6 +15,7 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 
 ## Paywall
 * [ ] Go to https://www.ouvre-boite.com/page-with-ads-staging.html and make sure ads (red blocks are loading)
+* [ ] Save the metadata
 * [ ] Purchase a key to unlock the ad free experience
 * [ ] Make sure the ads go away immediately (even before you close the modal)
 * [ ] Refresh the page and make sure the page has no more ads
