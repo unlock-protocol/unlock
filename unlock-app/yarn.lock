@@ -4092,12 +4092,10 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@unlock-protocol/unlock-assets@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.0.3.tgz#54c21e5b6b6d96c5ec4db94b859fd10aec331fcf"
-  integrity sha512-4ZNmUKxtgGDR2evrgOemrpvpQQnr7PTG3P8Y+jzSQFAsiHhdoq82iTo9BPQA/UR2adfK338Rd/hhyMxSGpflgw==
-  dependencies:
-    esm "3.2.25"
+"@unlock-protocol/unlock-assets@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.1.0.tgz#e7e98ca86b4a894411dd544ab236ad5233dcb953"
+  integrity sha512-oM3FDOXXgn6MqAg7ne2/eJ1Ie3Kbjm5jFpvvd5cZO7JyxmcY2yImdWRKwyrw8neufX6FMYsJM+zOqhwnm2qJvA==
 
 "@unlock-protocol/unlock-js@0.11.0":
   version "0.11.0"
@@ -8501,11 +8499,6 @@ eslint@6.8.0:
     table "^5.2.3"
     text-table "^0.2.0"
     v8-compile-cache "^2.0.3"
-
-esm@3.2.25:
-  version "3.2.25"
-  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
-  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
 
 espree@^6.1.2:
   version "6.1.2"
