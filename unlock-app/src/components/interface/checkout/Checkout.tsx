@@ -59,7 +59,7 @@ export const Checkout = ({
   const { setUserMetadata } = useSetUserMetadata()
   const { state } = useCheckoutStore()
   const [activePayment, setActivePayment] = useState<string | null>(null)
-
+  const [checkoutError, setCheckoutError] = useState(errors)
   const paywallConfig = config || configFromSearch
 
   useEffect(() => {
@@ -88,7 +88,20 @@ export const Checkout = ({
       delayedPurchase!.lockAddress,
       account!.address,
       metadata,
-      delayedPurchase!.purchaseKey
+      (error: any, saved: boolean) => {
+        if (error || !saved) {
+          setCheckoutError([
+            {
+              level: 'Fatal',
+              kind: 'Storage',
+              message: 'Your info could not be saved.',
+            },
+          ])
+        }
+        if (saved) {
+          delayedPurchase!.purchaseKey()
+        }
+      }
     )
     send('metadataSubmitted')
   }
@@ -109,7 +122,7 @@ export const Checkout = ({
           />
         )}
         <CheckoutErrors
-          errors={errors}
+          errors={checkoutError}
           resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
         />
         {current.matches(CheckoutState.loading) && <Loading />}

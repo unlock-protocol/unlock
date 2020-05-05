@@ -1,13 +1,13 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.6.6;
 
-import 'unlock-abi-7/IPublicLockV7.sol';
+import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 import '../mixins/LockRoles.sol';
 
 
 contract LockRolesMock is LockRoles
 {
   function onlyLockManagerMock(
-    IPublicLockV7 _lock
+    IPublicLockV7Sol6 _lock
   ) external
     onlyLockManager(_lock)
   {
@@ -15,7 +15,7 @@ contract LockRolesMock is LockRoles
   }
 
   function onlyKeyGranterOrManagerMock(
-    IPublicLockV7 _lock
+    IPublicLockV7Sol6 _lock
   ) external
     onlyKeyGranterOrManager(_lock)
   {

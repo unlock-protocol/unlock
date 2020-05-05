@@ -3,19 +3,19 @@ import http from 'http'
 import NockHelper from './helpers/nockHelper'
 
 import v0 from '../v0'
-import v01 from '../v01'
-import v02 from '../v02'
-import v10 from '../v10'
-import v11 from '../v11'
-import v12 from '../v12'
-import v13 from '../v13'
+import v1 from '../v1'
+import v2 from '../v2'
+import v3 from '../v3'
+import v4 from '../v4'
+import v5 from '../v5'
+import v6 from '../v6'
 import v7 from '../v7'
 
 import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
-const supportedVersions = [v0, v01, v02, v10, v11, v12, v13, v7]
+const supportedVersions = [v0, v1, v2, v3, v4, v5, v6, v7]
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -326,12 +326,11 @@ describe('WalletService (ethers)', () => {
               return thing
             })
         }
-        metamask.isMetaMask = true
         await nock.resolveWhenAllNocksUsed()
       }
 
-      it('should use eth_signTypedData_v3 and stringify for Metamask wallets', async done => {
-        expect.assertions(2)
+      it('should use unformattedSignTypedData', async done => {
+        expect.assertions(3)
         const hash =
           '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
         const returned = Buffer.from(hash).toString('base64')
@@ -346,9 +345,17 @@ describe('WalletService (ethers)', () => {
           hash
         )
 
+        walletService.unformattedSignTypedData = jest.fn(() =>
+          Promise.resolve(hash)
+        )
+
         await walletService.signData(unlockAddress, data, (error, result) => {
           expect(error).toBeNull()
           expect(result).toBe(returned)
+          expect(walletService.unformattedSignTypedData).toHaveBeenCalledWith(
+            unlockAddress,
+            []
+          )
           done()
         })
       })
@@ -461,6 +468,58 @@ describe('WalletService (ethers)', () => {
           expect(error).toBeInstanceOf(Error)
           done()
         })
+      })
+    })
+
+    describe('unformattedSignTypedData', () => {
+      const userAddress = '0x123'
+      const data = { hello: 'world' }
+      it('should try several method and return the result of the first one which succeeds', async () => {
+        expect.assertions(2)
+        const signature = 'signature'
+        walletService.provider = {
+          send: jest.fn(method => {
+            if (method === 'eth_signTypedData') {
+              return Promise.reject(new Error())
+            }
+            return Promise.resolve(signature)
+          }),
+        }
+        const result = await walletService.unformattedSignTypedData(
+          userAddress,
+          data
+        )
+        expect(walletService.provider.send).toHaveBeenCalledTimes(2)
+        expect(result).toEqual(signature)
+      })
+      it('should fail if all methods fail', async () => {
+        expect.assertions(5)
+        walletService.provider = {
+          send: jest.fn(() => {
+            return Promise.reject(new Error())
+          }),
+        }
+        try {
+          await walletService.unformattedSignTypedData(userAddress, data)
+        } catch (error) {
+          expect(true).toBe(true) // This should have been called as unformattedSignTypedData fails
+        }
+        expect(walletService.provider.send).toHaveBeenCalledTimes(3)
+        expect(walletService.provider.send).toHaveBeenNthCalledWith(
+          1,
+          'eth_signTypedData',
+          ['0x123', { hello: 'world' }]
+        )
+        expect(walletService.provider.send).toHaveBeenNthCalledWith(
+          2,
+          'eth_signTypedData_v3',
+          ['0x123', '{"hello":"world"}']
+        )
+        expect(walletService.provider.send).toHaveBeenNthCalledWith(
+          3,
+          'eth_signTypedData_v4',
+          ['0x123', '{"hello":"world"}']
+        )
       })
     })
   })

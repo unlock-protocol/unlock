@@ -1230,25 +1230,20 @@
     fs-extra "^8.1.0"
     try-require "^1.2.1"
 
-"@openzeppelin/contracts-ethereum-package@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-ethereum-package/-/contracts-ethereum-package-2.5.0.tgz#cfb4b91f8132edde7e04bcd032575d4c6b544f4a"
-  integrity sha512-14CijdTyy4Y/3D3UUeFC2oW12nt1Yq1M8gFOtkuODEvSYPe3YSAKnKyhUeGf0UDNCZzwfGr15KdiFK6AoJjoSQ==
+"@openzeppelin/contracts@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.0.0.tgz#89bc0d32fc9eb257cf6499f2497a1b4a6715f186"
+  integrity sha512-u7oATjUK6jffDOoIjVQ7vJ2fnFKlfDS1CJzrMpp+YtGQ2fhdSk0kXjZTxk8Pj1SPVZRNES3yo0r144v8BsuRhQ==
 
-"@openzeppelin/contracts@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.0.tgz#e327a98ba1d26b7756ff62885a0aa0967a375449"
-  integrity sha512-t3jm8FrhL9tkkJTofkznTqo/XXdHi21w5yXwalEnaMOp22ZwZ0f/mmKdlgMMLPFa6bSVHbY88mKESwJT/7m5Lg==
+"@openzeppelin/contracts@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.0.1.tgz#2f327f77d16b43f14674086b2b634bda38cb0838"
+  integrity sha512-uSrD7hZ0ViuHGqHZbeHawZBi/uy7aBiNramXAt2dFFuSuoU4u9insS3V3zdVfOnYSPreUo636xSOuQIFN4//HA==
 
-"@openzeppelin/contracts@2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.1.tgz#c76e3fc57aa224da3718ec351812a4251289db31"
-  integrity sha512-qIy6tLx8rtybEsIOAlrM4J/85s2q2nPkDqj/Rx46VakBZ0LwtFhXIVub96LXHczQX0vaqmAueDqNPXtbSXSaYQ==
-
-"@openzeppelin/test-environment@0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/test-environment/-/test-environment-0.1.3.tgz#2ac7a6f436fef3345796b2d4d8f4e0cad7a6af12"
-  integrity sha512-joYTi4hFbXjKEWvgtitQm43q5HtnQvPnz8eBoqHg+fijNi2v8HqC76Id+m2yOtXtDwG0XSvNzbiJaT1lxNBc1w==
+"@openzeppelin/test-environment@0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/test-environment/-/test-environment-0.1.4.tgz#05946c22b88366069f4d588af555a8a71815aa81"
+  integrity sha512-RzzfiJI6079CRT6D6n8S9wXBIkrvW54CP/deTTRrGbNDV0MNcQE0U0DwRaQAtyztXQM+2RISy7B66JZUpGSUzQ==
   dependencies:
     "@openzeppelin/contract-loader" "^0.6.1"
     "@truffle/contract" "^4.0.38"
@@ -1259,7 +1254,7 @@
     ganache-core "^2.8.0"
     lodash.merge "^4.6.2"
     p-queue "^6.2.0"
-    semver "^6.3.0"
+    semver "^7.1.3"
     try-require "^1.2.1"
     web3 "1.2.2"
 
@@ -1409,6 +1404,11 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.5.2.tgz#4d74670ead39e4f4fdab605a393ba8ea2390a2c4"
   integrity sha512-uRyvnvVYmgNmTBpWDbBsH/0kPESQhQpEc4KsvMRLVzFJ1o1s0uIv0Y6Y9IB5vI1Dwz2CbS4X/y4Wyw/75cTFnQ==
 
+"@solidity-parser/parser@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.6.0.tgz#deb964a4dbb8c21a342ee35b4acefb505fd04ea1"
+  integrity sha512-RiJXfS22frulogcfQCFhbKrd5ATu6P4tYUv/daChiIh6VHyKQ1kkVZVfX6aP7c2YGU/Bf9RwGNKdwLjfpaoqYQ==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
@@ -1432,13 +1432,22 @@
     crypto-js "^3.1.9-1"
     debug "^4.1.0"
 
-"@truffle/contract@4.1.15":
-  version "4.1.15"
-  resolved "https://registry.yarnpkg.com/@truffle/contract/-/contract-4.1.15.tgz#c82ef6e98e02d069f3cbf9c6d2fc88e142769ad1"
-  integrity sha512-3LHxoVYBziLguvPq6u0VdZsc1l2OIXjDuVGJDYdddfKuDNX/2NuH1JYRP2FM0PA8OYBuGyFolmlldPWRzuucng==
+"@truffle/contract-schema@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@truffle/contract-schema/-/contract-schema-3.1.0.tgz#00c04c427a2ecd74fe4399e1896dda49820959c4"
+  integrity sha512-eCMc1CwAmxIpQDsuGM9rCp4q/6GMcdQLTw3Tzd1qufyuti0vWGQwJbBAgSvfofr9ItXHueGwn7I5lVsIbOVYpQ==
+  dependencies:
+    ajv "^6.10.0"
+    crypto-js "^3.1.9-1"
+    debug "^4.1.0"
+
+"@truffle/contract@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@truffle/contract/-/contract-4.2.2.tgz#13f14b1becfcfefd73247e1acfef6bc4f3e48050"
+  integrity sha512-SxwXITIgBYysyMa6/G9zU3yZCzPfHjqDrbPa5QSlS6n3NKMd06mz1L8slV9iZdzqFWe1Rd7U9/bGP+UXmNiScA==
   dependencies:
     "@truffle/blockchain-utils" "^0.0.18"
-    "@truffle/contract-schema" "^3.0.23"
+    "@truffle/contract-schema" "^3.1.0"
     "@truffle/error" "^0.0.8"
     "@truffle/interface-adapter" "^0.4.6"
     bignumber.js "^7.2.1"
@@ -1782,40 +1791,40 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
-"@typescript-eslint/eslint-plugin@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.30.0.tgz#312a37e80542a764d96e8ad88a105316cdcd7b05"
-  integrity sha512-PGejii0qIZ9Q40RB2jIHyUpRWs1GJuHP1pkoCiaeicfwO9z7Fx03NQzupuyzAmv+q9/gFNHu7lo1ByMXe8PNyg==
+"@typescript-eslint/eslint-plugin@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.31.0.tgz#942c921fec5e200b79593c71fafb1e3f57aa2e36"
+  integrity sha512-iIC0Pb8qDaoit+m80Ln/aaeu9zKQdOLF4SHcGLarSeY1gurW6aU4JsOPMjKQwXlw70MvWKZQc6S2NamA8SJ/gg==
   dependencies:
-    "@typescript-eslint/experimental-utils" "2.30.0"
+    "@typescript-eslint/experimental-utils" "2.31.0"
     functional-red-black-tree "^1.0.1"
     regexpp "^3.0.0"
     tsutils "^3.17.1"
 
-"@typescript-eslint/experimental-utils@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.30.0.tgz#9845e868c01f3aed66472c561d4b6bac44809dd0"
-  integrity sha512-L3/tS9t+hAHksy8xuorhOzhdefN0ERPDWmR9CclsIGOUqGKy6tqc/P+SoXeJRye5gazkuPO0cK9MQRnolykzkA==
+"@typescript-eslint/experimental-utils@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.31.0.tgz#a9ec514bf7fd5e5e82bc10dcb6a86d58baae9508"
+  integrity sha512-MI6IWkutLYQYTQgZ48IVnRXmLR/0Q6oAyJgiOror74arUMh7EWjJkADfirZhRsUMHeLJ85U2iySDwHTSnNi9vA==
   dependencies:
     "@types/json-schema" "^7.0.3"
-    "@typescript-eslint/typescript-estree" "2.30.0"
+    "@typescript-eslint/typescript-estree" "2.31.0"
     eslint-scope "^5.0.0"
     eslint-utils "^2.0.0"
 
-"@typescript-eslint/parser@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.30.0.tgz#7681c305a6f4341ae2579f5e3a75846c29eee9ce"
-  integrity sha512-9kDOxzp0K85UnpmPJqUzdWaCNorYYgk1yZmf4IKzpeTlSAclnFsrLjfwD9mQExctLoLoGAUXq1co+fbr+3HeFw==
+"@typescript-eslint/parser@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.31.0.tgz#beddd4e8efe64995108b229b2862cd5752d40d6f"
+  integrity sha512-uph+w6xUOlyV2DLSC6o+fBDzZ5i7+3/TxAsH4h3eC64tlga57oMb96vVlXoMwjR/nN+xyWlsnxtbDkB46M2EPQ==
   dependencies:
     "@types/eslint-visitor-keys" "^1.0.0"
-    "@typescript-eslint/experimental-utils" "2.30.0"
-    "@typescript-eslint/typescript-estree" "2.30.0"
+    "@typescript-eslint/experimental-utils" "2.31.0"
+    "@typescript-eslint/typescript-estree" "2.31.0"
     eslint-visitor-keys "^1.1.0"
 
-"@typescript-eslint/typescript-estree@2.30.0":
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.30.0.tgz#1b8e848b55144270255ffbfe4c63291f8f766615"
-  integrity sha512-nI5WOechrA0qAhnr+DzqwmqHsx7Ulr/+0H7bWCcClDhhWkSyZR5BmTvnBEyONwJCTWHfc5PAQExX24VD26IAVw==
+"@typescript-eslint/typescript-estree@2.31.0":
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.31.0.tgz#ac536c2d46672aa1f27ba0ec2140d53670635cfd"
+  integrity sha512-vxW149bXFXXuBrAak0eKHOzbcu9cvi6iNcJDzEtOkRwGHxJG15chiAQAwhLOsk+86p9GTr/TziYvw+H9kMaIgA==
   dependencies:
     debug "^4.1.1"
     eslint-visitor-keys "^1.1.0"
@@ -1824,6 +1833,11 @@
     lodash "^4.17.15"
     semver "^6.3.0"
     tsutils "^3.17.1"
+
+"@unlock-protocol/unlock-abi-7@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-7/-/unlock-abi-7-1.0.3.tgz#aac869185f363e7fc26b8956142019545867c2d1"
+  integrity sha512-YLG2ir0+tL/oFVAo8TiN+7khbZgGniG0Zxnk0f/YYmeEEOLcxvt6rSahgWjBYzLWh4y2x3zBz7yMyn3dl0yhAg==
 
 "@vue/cli-shared-utils@^4.3.1":
   version "4.3.1"
@@ -7285,20 +7299,18 @@ har-validator@~5.1.3:
     ajv "^6.5.5"
     har-schema "^2.0.0"
 
-hardlydifficult-ethereum-contracts@0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/hardlydifficult-ethereum-contracts/-/hardlydifficult-ethereum-contracts-0.11.1.tgz#496f922862b4169c6fa158215574f3b9777bd76f"
-  integrity sha512-Zwr23DGbX/FR2AQOAncwBe1dvM3lEH2eZ+Eq6Mkb7ETaj86t4tujowch6aj9oBmxt7LMAlgdzIIWgboO2Wc/2g==
+hardlydifficult-eth@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hardlydifficult-eth/-/hardlydifficult-eth-1.0.0.tgz#a47ad1af673612d8a811ebe417210997ca6818b6"
+  integrity sha512-8YR9mlIwXyCBxYWBEbWk00VIyidAG5PQa467HMWtd/Nm9babmEkcAoX19n0Epw9YNjmV+/g0s88lzweQIrulaQ==
   dependencies:
-    "@openzeppelin/contracts" "2.5.0"
-    "@openzeppelin/contracts-ethereum-package" "2.5.0"
-    "@openzeppelin/test-environment" "0.1.3"
+    "@openzeppelin/contracts" "3.0.0"
+    "@openzeppelin/test-environment" "0.1.4"
     "@openzeppelin/test-helpers" "0.5.5"
-    "@openzeppelin/upgrades" "2.8.0"
-    "@truffle/contract" "4.1.15"
+    "@truffle/contract" "4.2.2"
     bignumber.js "9.0.0"
     unlock-abi-7 "1.0.2"
-    web3-utils "1.2.6"
+    web3-utils "1.2.7"
 
 has-ansi@^2.0.0:
   version "2.0.0"
@@ -11269,6 +11281,11 @@ semver@^6.1.0, semver@^6.1.2, semver@^6.3.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
+semver@^7.1.3:
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
+  integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
+
 semver@~5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
@@ -11534,12 +11551,12 @@ sol-explore@1.6.1:
   resolved "https://registry.yarnpkg.com/sol-explore/-/sol-explore-1.6.1.tgz#b59f073c69fe332560d5a10c32ba8ca7f2986cfb"
   integrity sha1-tZ8HPGn+MyVg1aEMMrqMp/KYbPs=
 
-solidity-coverage@0.7.4:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/solidity-coverage/-/solidity-coverage-0.7.4.tgz#5bff265016edfc609e981601d953b125cbd55aab"
-  integrity sha512-eaYjKLJK7n+uAN9Xrm2kDujXOkxxBbHfNrjK+ZabU1DR4QWSVQiwDDF2JLciN943kkZdd2JOzJGp32NxCbdCWA==
+solidity-coverage@0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/solidity-coverage/-/solidity-coverage-0.7.5.tgz#29a738b5644b23687e540688520457ce6792ce94"
+  integrity sha512-UaNwVhK7I1ULYK3qDTATs7Hz0YKhJnE+rm5aU9ufUBowOImB2dWYXox2l/tMbSkHfTMWwHE/6TNqn0/ec0rwOw==
   dependencies:
-    "@solidity-parser/parser" "^0.5.2"
+    "@solidity-parser/parser" "^0.6.0"
     "@truffle/provider" "^0.1.17"
     chalk "^2.4.2"
     death "^1.1.0"
@@ -12404,13 +12421,13 @@ truffle-assertions@0.9.2:
     assertion-error "^1.1.0"
     lodash.isequal "^4.5.0"
 
-truffle-flattener@1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/truffle-flattener/-/truffle-flattener-1.4.3.tgz#dec22219b1bb71cde372a4e65ef119f9ed872f3e"
-  integrity sha512-r29fkSkV8i9oMW35KbpKR0bP4iPnzIJqlW2S+CL3BjLsxq6YnlMn9+e0BpiJIJPmeXJgeYHQvCGceucpM0Dovg==
+truffle-flattener@1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/truffle-flattener/-/truffle-flattener-1.4.4.tgz#747a99204001f7d6dce43ea92771e1ff6ac3eafb"
+  integrity sha512-S/WmvubzlUj1mn56wEI6yo1bmPpKDNdEe5rtyVC1C5iNfZWobD/V69pAYI15IBDJrDqUyh+iXgpTkzov50zpQw==
   dependencies:
     "@resolver-engine/imports-fs" "^0.2.2"
-    "@solidity-parser/parser" "^0.5.2"
+    "@solidity-parser/parser" "^0.6.0"
     find-up "^2.1.0"
     mkdirp "^1.0.4"
     tsort "0.0.1"
@@ -12426,10 +12443,10 @@ truffle-flattener@^1.4.0:
     solidity-parser-antlr "^0.4.11"
     tsort "0.0.1"
 
-truffle@5.1.23:
-  version "5.1.23"
-  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.23.tgz#6c48b5921ae937cfbf2a6f5d5e593bf177b8b86c"
-  integrity sha512-ovdkrAgF/6cGiVtoiGzSTUheEBowoFcBuPY3wOjdlICW8VsASuT+kYuWLG/bPAJSg9QFrFLwqgUcnA9MOwi6yg==
+truffle@5.1.24:
+  version "5.1.24"
+  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.24.tgz#2e7afc28b1748f2b44f2da351b3605744f3546e4"
+  integrity sha512-2TAidfvwZD3cCBVM8cgyU7hAUR7NTSkKnBzsasdIIwCOGZ1+IqG/pALSuATjeeHbo4tqzjvs3Nau2U1yo5wDAw==
   dependencies:
     app-module-path "^2.2.0"
     mocha "5.2.0"
@@ -12736,11 +12753,6 @@ unlock-abi-7@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.2.tgz#ee25bc778f8c6063d29fddf62cb6847bdc0e5853"
   integrity sha512-V+aUpw3a15fZkkj6kpht5UjhkOzi+s9aFyUrRtUOlGhiQv0uDHn4Jw2RncXCgVxWtMZnbdGWmL+6TgA9qDZRxQ==
-
-unlock-abi-7@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/unlock-abi-7/-/unlock-abi-7-1.0.3.tgz#8db190f907511a80be1e6b1c4692221f010f7100"
-  integrity sha512-eYAJMuPoYURcfcDkpSV0mpL3lszrLfJQz1W49Y8SJlVsQF0WvwB0icbBgbZMSFO9vbfPdI6q/zOThz4VA48kCA==
 
 unorm@^1.3.3:
   version "1.6.0"
@@ -14202,6 +14214,20 @@ web3-utils@1.2.6, web3-utils@^1.2.1:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/web3-utils/-/web3-utils-1.2.6.tgz#b9a25432da00976457fcc1094c4af8ac6d486db9"
   integrity sha512-8/HnqG/l7dGmKMgEL9JeKPTtjScxOePTzopv5aaKFExPfaBrYRkgoMqhoowCiAl/s16QaTn4DoIF1QC4YsT7Mg==
+  dependencies:
+    bn.js "4.11.8"
+    eth-lib "0.2.7"
+    ethereum-bloom-filters "^1.0.6"
+    ethjs-unit "0.1.6"
+    number-to-bn "1.7.0"
+    randombytes "^2.1.0"
+    underscore "1.9.1"
+    utf8 "3.0.0"
+
+web3-utils@1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/web3-utils/-/web3-utils-1.2.7.tgz#b68e232917e4376f81cf38ef79878e5903d18e93"
+  integrity sha512-FBh/CPJND+eiPeUF9KVbTyTZtXNWxPWtByBaWS6e2x4ACazPX711EeNaZaChIOGSLGe6se2n7kg6wnawe/MjuQ==
   dependencies:
     bn.js "4.11.8"
     eth-lib "0.2.7"

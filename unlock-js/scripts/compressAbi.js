@@ -11,24 +11,24 @@ const fs = require('fs')
 const path = require('path')
 
 /* eslint-disable import/no-extraneous-dependencies */
-const v0 = require('unlock-abi-0')
-const v01 = require('unlock-abi-0-1')
-const v02 = require('unlock-abi-0-2')
-const v10 = require('unlock-abi-1-0')
-const v11 = require('unlock-abi-1-1')
-const v12 = require('unlock-abi-1-2')
-const v13 = require('unlock-abi-1-3')
-const v7 = require('unlock-abi-7')
+const v0 = require('@unlock-protocol/unlock-abi-0')
+const v1 = require('@unlock-protocol/unlock-abi-1')
+const v2 = require('@unlock-protocol/unlock-abi-2')
+const v3 = require('@unlock-protocol/unlock-abi-3')
+const v4 = require('@unlock-protocol/unlock-abi-4')
+const v5 = require('@unlock-protocol/unlock-abi-5')
+const v6 = require('@unlock-protocol/unlock-abi-6')
+const v7 = require('@unlock-protocol/unlock-abi-7')
 /* eslint-enable import/no-extraneous-dependencies */
 
 const toCompress = {
   v0,
-  v01,
-  v02,
-  v10,
-  v11,
-  v12,
-  v13,
+  v1,
+  v2,
+  v3,
+  v4,
+  v5,
+  v6,
   v7,
 }
 const output = {}
