@@ -51,7 +51,7 @@ import Qr from '../build/svg-component/Qr'
 import Wordpress from '../build/svg-component/Wordpress'
 
 function wrapViewBox(WrappedComponent, viewBox) {
-  const Wrapped = props => <WrappedComponent viewBox={viewBox} {...props} />
+  const Wrapped = (props) => <WrappedComponent viewBox={viewBox} {...props} />
   return Wrapped
 }
 
@@ -103,5 +103,5 @@ export default {
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
   Home,
   Qr: wrapViewBox(Qr, '0 0 60 60'),
-  Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
+  Wordpress: wrapViewBox(Wordpress, '0 0 340 340')
 }
