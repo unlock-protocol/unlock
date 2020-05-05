@@ -1,7 +1,8 @@
 # Changes
 
-# Next version (minor)
+# 0.11.0
 
+- Better implementation of unformattedSignTypedData
 - Removed getKeysForLockOnPage (breaking change)
 - Removed getPastLockTransactions (breaking change)
 - Removed getPastLockCreationsTransactionsForUser (breaking if you're using it!)
