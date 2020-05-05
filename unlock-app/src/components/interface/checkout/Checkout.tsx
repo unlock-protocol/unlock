@@ -99,7 +99,7 @@ export const Checkout = ({
           ])
         }
         if (saved) {
-          delayedPurchase!.purchaseKey
+          delayedPurchase!.purchaseKey()
         }
       }
     )
