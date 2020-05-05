@@ -2,8 +2,6 @@
 
 set -e
 
-REVIEWER=$1
-
 if ! [ -x "$(command -v hub)" ]; then
   echo 'Error: hub is not installed. It is required to open the pull-request' >&2
   exit 1
@@ -71,6 +69,6 @@ git push origin $BRANCH --no-verify
 echo "Open pull request"
 PROD_DEPLOY_TYPE="manual"
 source "${BASH_SOURCE%/*}/production-pull-request-template.sh"
-GITHUB_TOKEN=$GITHUB_API_TOKEN hub pull-request -b production -h $BRANCH --message "$MESSAGE" -r $REVIEWER
+GITHUB_TOKEN=$GITHUB_API_TOKEN hub pull-request -b production -h $BRANCH --message "$MESSAGE"
 
 git checkout master
