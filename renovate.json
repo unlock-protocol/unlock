@@ -7,7 +7,7 @@
     ":doNotPinPackage(node)"
   ],
   "timezone": "America/Los_Angeles",
-  "schedule": ["on sunday"],
+  "schedule": ["on the first day of the month"],
   "rebaseStalePrs": false,
   "minor": {
     "groupName": "minor and patch updates"

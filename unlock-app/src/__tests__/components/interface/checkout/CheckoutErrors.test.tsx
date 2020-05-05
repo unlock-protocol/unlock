@@ -6,6 +6,12 @@ import {
 } from '../../../../components/interface/checkout/CheckoutErrors'
 import { UnlockError } from '../../../../utils/Error'
 
+const fatalUnknowError: UnlockError = {
+  level: 'Fatal',
+  kind: 'Storage',
+  message: '',
+}
+
 const fatalError: UnlockError = {
   level: 'Fatal',
   kind: 'Storage',
@@ -24,7 +30,7 @@ const diagnosticError: UnlockError = {
   message: 'That is not a great password',
 }
 
-const errors = [fatalError, warningError, diagnosticError]
+const errors = [fatalUnknowError, fatalError, warningError, diagnosticError]
 let resetError: jest.Mock<any, any>
 describe('Checkout Errors', () => {
   beforeEach(() => {
@@ -39,6 +45,7 @@ describe('Checkout Errors', () => {
     )
 
     getByText(genericError)
+    getByText(fatalError.message)
     getByText(warningError.message)
     getByText(diagnosticError.message)
   })
