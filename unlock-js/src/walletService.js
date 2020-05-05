@@ -332,13 +332,43 @@ export default class WalletService extends UnlockService {
     }
   }
 
+  /**
+   * Tries multiple approaches for eth_signTypedData
+   * @param {*} account
+   * @param {*} data
+   */
   async unformattedSignTypedData(account, data) {
-    const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
-    const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
-    const sendData = isMetaMask ? JSON.stringify(data) : data
+    // Tries multiple methods because support for 'eth_signTypedData' is still fairly bad.
+    const methods = {
+      eth_signTypedData: data => data,
+      eth_signTypedData_v3: data => JSON.stringify(data),
+      eth_signTypedData_v4: data => JSON.stringify(data),
+    }
+    const toTry = Object.keys(methods)
 
-    const result = await this.provider.send(method, [account, sendData])
-    return result
+    return new Promise((resolve, reject) => {
+      // Try each
+      const tryNext = async tries => {
+        const method = tries.shift()
+        if (!method) {
+          // They all failed
+          return reject(new Error('All signing method failed'))
+        }
+        try {
+          const sendData = methods[method](data)
+          const result = await this.provider.send(method, [account, sendData])
+          if (result) {
+            return resolve(result)
+          }
+        } catch (error) {
+          console.error(`Method ${method} not supported by provider.`)
+          console.error(error)
+        }
+        return tryNext(tries)
+      }
+
+      tryNext(toTry)
+    })
   }
 
   async signMessage(data, method) {
@@ -440,7 +470,6 @@ export default class WalletService extends UnlockService {
         currentAddress,
         payload
       )
-
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
