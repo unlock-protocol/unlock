@@ -28,7 +28,7 @@
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.0",
     "@unlock-protocol/unlock-assets": "1.1.0",
-    "@unlock-protocol/unlock-js": "0.11.0",
+    "@unlock-protocol/unlock-js": "0.12.1",
     "@xstate/react": "0.8.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
