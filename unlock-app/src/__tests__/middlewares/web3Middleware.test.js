@@ -2,11 +2,7 @@ import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
 import { GET_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_ACCOUNT } from '../../actions/accounts'
-import {
-  ADD_TRANSACTION,
-  UPDATE_TRANSACTION,
-  NEW_TRANSACTION,
-} from '../../actions/transaction'
+import { ADD_TRANSACTION, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import { START_LOADING, DONE_LOADING } from '../../actions/loading'
@@ -217,20 +213,6 @@ describe('Lock middleware', () => {
           hash: transaction.hash,
           network: 'test',
         },
-      })
-    )
-  })
-
-  it('it should handle transaction.updated events triggered by the web3Service', () => {
-    expect.assertions(1)
-    const { store } = create()
-    const update = {}
-    mockWeb3Service.emit('transaction.updated', transaction.hash, update)
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: UPDATE_TRANSACTION,
-        hash: transaction.hash,
-        update,
       })
     )
   })
