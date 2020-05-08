@@ -1,5 +1,9 @@
 # Changes
 
+# 0.12.1
+
+- Awaiting for transaction input to be parsed for richer object
+
 # 0.12.0
 
 - Refactored getTransaction to yield a promise of transaction object and does not emit events anymore

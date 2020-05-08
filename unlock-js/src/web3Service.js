@@ -357,7 +357,7 @@ export default class Web3Service extends UnlockService {
    * @param {object} defaults
    * @private
    */
-  _getSubmittedTransaction(transaction, version, defaults) {
+  async _getSubmittedTransaction(transaction, version, defaults) {
     // If we have default values for the transaction (passed by the walletService)
     if (defaults) {
       const contractAddress = ethers.utils.getAddress(defaults.to)
@@ -366,7 +366,7 @@ export default class Web3Service extends UnlockService {
           ? version.Unlock
           : version.PublicLock
 
-      this._parseTransactionFromInput(
+      await this._parseTransactionFromInput(
         transaction,
         contract,
         defaults.input,
@@ -386,14 +386,14 @@ export default class Web3Service extends UnlockService {
    * @param {*} blockTransaction
    * @private
    */
-  _getPendingTransaction(transaction, version, blockTransaction) {
+  async _getPendingTransaction(transaction, version, blockTransaction) {
     const contractAddress = ethers.utils.getAddress(blockTransaction.to)
     const contract =
       this.unlockContractAddress === contractAddress
         ? version.Unlock
         : version.PublicLock
 
-    this._parseTransactionFromInput(
+    await this._parseTransactionFromInput(
       transaction,
       contract,
       blockTransaction.data,
@@ -401,6 +401,7 @@ export default class Web3Service extends UnlockService {
       blockTransaction.from,
       'pending'
     )
+
     return transaction
   }
 
