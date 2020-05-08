@@ -45,7 +45,6 @@ describe('Wallet Service Integration', () => {
       web3Service = new Web3Service({
         readOnlyProvider: provider,
         unlockAddress: walletService.unlockContractAddress,
-        requiredConfirmations: 2,
       })
 
       accounts = await walletService.provider.listAccounts()

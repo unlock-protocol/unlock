@@ -27,7 +27,9 @@ export default class UnlockService extends EventEmitter {
   constructor({ unlockAddress, writable = false }) {
     super()
     this.writable = writable
-    this.unlockContractAddress = unlockAddress
+    if (unlockAddress) {
+      this.unlockContractAddress = ethers.utils.getAddress(unlockAddress) // normalized!
+    }
     this.web3 = null
     this.provider = null
     // Used to cache

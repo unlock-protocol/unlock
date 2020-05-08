@@ -9,11 +9,8 @@ const nock = new NockHelper(endpoint, false /** debug */)
 const unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
 let web3Service
-const blockTime = 3
 const readOnlyProvider = 'http://127.0.0.1:8545'
-const requiredConfirmations = 12
 const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
-const checksumLockAddress = utils.toChecksumAddress(lockAddress)
 const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 
 describe('v2', () => {
@@ -31,8 +28,6 @@ describe('v2', () => {
       web3Service = new Web3Service({
         readOnlyProvider,
         unlockAddress,
-        blockTime,
-        requiredConfirmations,
       })
       await nock.resolveWhenAllNocksUsed()
     }
@@ -43,7 +38,7 @@ describe('v2', () => {
       // what version is this? v2 succeeds with version 1
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['uint256'], [2])
       )
 
@@ -64,13 +59,13 @@ describe('v2', () => {
       // call the attributes
       nock.ethCallAndYield(
         contractMethods.name.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
       )
 
       nock.ethCallAndYield(
         contractMethods.keyPrice.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(
           ['uint256'],
           [utils.toRpcResultNumber('10000000000000000')]
@@ -79,31 +74,31 @@ describe('v2', () => {
 
       nock.ethCallAndYield(
         contractMethods.expirationDuration.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(2592000)])
       )
 
       nock.ethCallAndYield(
         contractMethods.maxNumberOfKeys.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(maxKeys)])
       )
 
       nock.ethCallAndYield(
         contractMethods.owner.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['address'], [owner])
       )
 
       nock.ethCallAndYield(
         contractMethods.totalSupply.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(17)])
       )
 
       nock.ethCallAndYield(
         contractMethods.publicLockVersion.encode([]),
-        checksumLockAddress,
+        lockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(2)])
       )
     }
