@@ -72,7 +72,7 @@ describe('v6', () => {
       provider.waitForTransaction = jest.fn(() => Promise.resolve(receipt))
 
       walletService = new WalletService({
-        unlockAddress: '0xunlockAddress',
+        unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
       })
       walletService.provider = provider
       walletService.signer = provider.getSigner()
