@@ -11,11 +11,12 @@ import { createUnlockStore } from '../createUnlockStore'
 
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
+import { GraphServiceContext } from '../utils/withGraphService'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { StorageService } from '../services/storageService'
-
+import { GraphService } from '../services/graphService'
 import { Web3ProviderContext } from '../hooks/useProvider'
 
 import FullScreenModal from '../components/interface/FullScreenModals'
@@ -30,6 +31,8 @@ import wedlocksMiddleware from '../middlewares/wedlocksMiddleware'
 const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
+
+const graphService = new GraphService(config.subgraphURI)
 
 const walletService = new WalletService(config)
 const {
@@ -74,6 +77,7 @@ function getOrCreateStore(initialState, path) {
 }
 
 const ConfigProvider = ConfigContext.Provider
+const GraphServiceProvider = GraphServiceContext.Provider
 const WalletServiceProvider = WalletServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 const StorageServiceProvider = StorageServiceContext.Provider
@@ -155,9 +159,11 @@ The Unlock team
                 <StorageServiceProvider value={storageService}>
                   <Web3ServiceProvider value={web3Service}>
                     <WalletServiceProvider value={walletService}>
-                      <ConfigProvider value={config}>
-                        <Component {...pageProps} />
-                      </ConfigProvider>
+                      <GraphServiceProvider value={graphService}>
+                        <ConfigProvider value={config}>
+                          <Component {...pageProps} />
+                        </ConfigProvider>
+                      </GraphServiceProvider>
                     </WalletServiceProvider>
                   </Web3ServiceProvider>
                 </StorageServiceProvider>

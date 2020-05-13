@@ -97,7 +97,7 @@ describe('config', () => {
     it('should contain the right URLs for chain explorers', () => {
       expect.assertions(2)
       expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual('')
+      expect(config.chainExplorerUrlBuilders.etherscan('/0x0')).toEqual('')
     })
   })
 
@@ -123,8 +123,8 @@ describe('config', () => {
     it('should contain the right URLs for chain explorers', () => {
       expect.assertions(2)
       expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(
-        'https://rinkeby.etherscan.io/address/0x0'
+      expect(config.chainExplorerUrlBuilders.etherscan('/0x0')).toEqual(
+        'https://rinkeby.etherscan.io/0x0'
       )
     })
   })
@@ -151,8 +151,8 @@ describe('config', () => {
     it('should contain the right URLs for chain explorers', () => {
       expect.assertions(2)
       expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherScan('0x0')).toEqual(
-        'https://etherscan.io/address/0x0'
+      expect(config.chainExplorerUrlBuilders.etherscan('/0x0')).toEqual(
+        'https://etherscan.io/0x0'
       )
     })
   })

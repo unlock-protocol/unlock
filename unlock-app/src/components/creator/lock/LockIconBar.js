@@ -8,7 +8,7 @@ import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
 import withConfig from '../../../utils/withConfig'
-import { TransactionType } from '../../../unlockTypes'
+import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 import configure from '../../../config'
 
@@ -16,26 +16,35 @@ const config = configure()
 
 export function LockIconBar({
   lock,
-  priceUpdateTransaction,
   toggleCode,
-  lockCreationTransaction,
   withdrawalTransaction,
   config,
   edit,
 }) {
   // If there is any blocking transaction, we show the lock as either submitted or confirming
-  const blockingTransaction = lockCreationTransaction || priceUpdateTransaction
+  const blockingTransaction =
+    lock.creationTransaction || lock.priceUpdateTransaction
+
   if (blockingTransaction) {
-    if (!blockingTransaction.confirmations) {
-      return <CreatorLockStatus lock={lock} status="Submitted" />
+    if (blockingTransaction.status !== TransactionStatus.MINED) {
+      return (
+        <CreatorLockStatus
+          hash={blockingTransaction.hash}
+          lock={lock}
+          status="Submitted"
+        />
+      )
     }
-    return (
-      <CreatorLockStatus
-        lock={lock}
-        status="Confirming"
-        confirmations={blockingTransaction.confirmations}
-      />
-    )
+    if (blockingTransaction.confirmations < config.requiredConfirmations) {
+      return (
+        <CreatorLockStatus
+          lock={lock}
+          hash={blockingTransaction.hash}
+          status="Confirming"
+          confirmations={blockingTransaction.confirmations}
+        />
+      )
+    }
   }
 
   const etherscanAddress = `https://etherscan.io/address/${lock.address}`
@@ -78,19 +87,16 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   edit: PropTypes.func, // this will be required when we wire it up, no-op for now
-  lockCreationTransaction: UnlockPropTypes.transaction,
   withdrawalTransaction: UnlockPropTypes.transaction,
-  priceUpdateTransaction: UnlockPropTypes.transaction,
   config: UnlockPropTypes.configuration.isRequired,
 }
 
 LockIconBar.defaultProps = {
-  lockCreationTransaction: null,
-  priceUpdateTransaction: null,
   withdrawalTransaction: null,
   edit: () => {},
 }
 
+// TODO: remove transactions from redux store when we have moved withdrawal to a hook
 export const mapStateToProps = ({ transactions }, { lock }) => {
   // Get all pending transactions as they will impact how we display the lock
   const lockTransactions = Object.values(transactions)
@@ -115,29 +121,13 @@ export const mapStateToProps = ({ transactions }, { lock }) => {
       return 1
     })
 
-  // Get lock creation transaction
-  const lockCreationTransaction =
-    lock.creationTransaction ||
-    lockTransactions.find(transaction => {
-      return transaction.type === TransactionType.LOCK_CREATION
-    })
-
   // Get latest lock withdrawal transacion
   const withdrawalTransaction = lockTransactions.find(transaction => {
     return transaction.type === TransactionType.WITHDRAWAL
   })
 
-  // Get latest lock price update transacion
-  const priceUpdateTransaction =
-    lock.priceUpdateTransaction ||
-    lockTransactions.find(transaction => {
-      return transaction.type === TransactionType.UPDATE_KEY_PRICE
-    })
-
   return {
-    lockCreationTransaction,
     withdrawalTransaction,
-    priceUpdateTransaction,
   }
 }
 

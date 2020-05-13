@@ -541,10 +541,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unlock-protocol/unlock-js@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.11.0.tgz#f842c95100b9b4e138720656ec0e671059655bdd"
-  integrity sha512-9+xtly5J3eeRsLdFR8MVMRDRNjAJXiPWp1C0uqKyiFeHlX+QdxvwEk+FIH/rjKofi5SNMhnMrdVbncFEVdZEEA==
+"@unlock-protocol/unlock-js@0.12.1":
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.12.1.tgz#fa1c417bbd5c2c6cb822a01dc84e195bc22f5673"
+  integrity sha512-A1VDU9QNjX6jnvooCz8HcvITZHeby0Rpurx7YUAC8tojrXri49yUT8+ecODn8QU3oHkmh9F+TbOqY+NF3SSYkQ==
   dependencies:
     babel-jest "25.5.1"
     cross-fetch "3.0.4"

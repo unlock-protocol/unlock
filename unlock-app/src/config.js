@@ -58,7 +58,7 @@ export default function configure(
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let blockTime = 8000 // in mseconds.
   const chainExplorerUrlBuilders = {
-    etherScan: () => '',
+    etherscan: () => '',
   }
   // Publishable key from Stripe dashboard, make sure to use the test key when
   // developing.
@@ -130,8 +130,8 @@ export default function configure(
   if (env === 'staging') {
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
-    chainExplorerUrlBuilders.etherScan = address =>
-      `https://rinkeby.etherscan.io/address/${address}`
+    chainExplorerUrlBuilders.etherscan = path =>
+      `https://rinkeby.etherscan.io${path}`
     requiredNetworkId = 4
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
@@ -150,8 +150,8 @@ export default function configure(
   if (env === 'dev-kovan') {
     // In dev-kovan, the network can only be Kovan
     isRequiredNetwork = networkId => networkId === 42
-    chainExplorerUrlBuilders.etherScan = address =>
-      `https://kovan.etherscan.io/address/${address}`
+    chainExplorerUrlBuilders.etherscan = path =>
+      `https://kovan.etherscan.io${path}`
     requiredNetworkId = 42
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
@@ -170,8 +170,7 @@ export default function configure(
   if (env === 'prod') {
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
-    chainExplorerUrlBuilders.etherScan = address =>
-      `https://etherscan.io/address/${address}`
+    chainExplorerUrlBuilders.etherscan = path => `https://etherscan.io${path}`
     requiredNetworkId = 1
 
     supportedProviders = ['Metamask', 'Opera']
