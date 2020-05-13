@@ -1,5 +1,9 @@
 # Changes
 
+# 0.12.2
+
+- Small fix to make sure inputs are defined
+
 # 0.12.1
 
 - Awaiting for transaction input to be parsed for richer object

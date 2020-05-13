@@ -358,8 +358,8 @@ export default class Web3Service extends UnlockService {
    * @private
    */
   async _getSubmittedTransaction(transaction, version, defaults) {
-    // If we have default values for the transaction (passed by the walletService)
-    if (defaults) {
+    // If we have default values for the transaction's input
+    if (defaults && defaults.input) {
       const contractAddress = ethers.utils.getAddress(defaults.to)
       const contract =
         this.unlockContractAddress === contractAddress
