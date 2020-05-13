@@ -203,6 +203,7 @@ const walletMiddleware = (config, walletService, getProvider) => {
             })
           })
         } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
+          // TODO: remove as this is managed thru hook!
           ensureReadyBefore(() => {
             walletService.updateKeyPrice({
               lockAddress: action.address,

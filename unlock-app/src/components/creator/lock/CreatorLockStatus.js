@@ -4,16 +4,22 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import withConfig from '../../../utils/withConfig'
 
-export function CreatorLockStatus({ config, status, confirmations }) {
+export function CreatorLockStatus({ config, hash, status, confirmations }) {
   return (
-    <LockStatus>
+    <LockStatus
+      target="_blank"
+      rel="noopener noreferrer"
+      href={config.chainExplorerUrlBuilders.etherscan(`/tx/${hash}`)}
+    >
       <Status>{status}</Status>
       <Confirmations>
-        {confirmations > 0 && (
-          <>
-            {confirmations} / {config.requiredConfirmations}
-          </>
-        )}
+        {status === 'Confirming' &&
+          confirmations >= 0 &&
+          config.requiredConfirmations >= confirmations && (
+            <>
+              {confirmations} / {config.requiredConfirmations}
+            </>
+          )}
       </Confirmations>
     </LockStatus>
   )
@@ -21,6 +27,7 @@ export function CreatorLockStatus({ config, status, confirmations }) {
 
 CreatorLockStatus.propTypes = {
   status: PropTypes.string.isRequired,
+  hash: PropTypes.string.isRequired,
   confirmations: PropTypes.number,
   config: UnlockPropTypes.configuration.isRequired,
 }
@@ -31,7 +38,7 @@ CreatorLockStatus.defaultProps = {
 
 export default withConfig(CreatorLockStatus)
 
-export const LockStatus = styled.div`
+export const LockStatus = styled.a`
   align-self: stretch;
   align-items: stretch;
   display: grid;
@@ -41,6 +48,10 @@ export const LockStatus = styled.div`
   font-weight: 200;
   color: var(--grey);
   border-radius: 0 4px 4px 0;
+
+  &:visited {
+    color: var(--grey);
+  }
 `
 
 const Status = styled.div`

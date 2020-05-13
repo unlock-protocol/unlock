@@ -2,7 +2,7 @@ import ApolloClient from 'apollo-boost'
 import { utils } from 'ethers'
 import locksByManager from '../queries/locksByManager'
 
-export default class GraphService {
+export class GraphService {
   public client: any
 
   constructor(uri: string) {
@@ -33,3 +33,5 @@ export default class GraphService {
     })
   }
 }
+
+export default GraphService

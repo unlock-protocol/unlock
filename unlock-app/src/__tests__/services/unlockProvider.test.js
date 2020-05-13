@@ -150,7 +150,9 @@ describe('Unlock Provider', () => {
       it('should be compatible with walletService', async done => {
         expect.assertions(1)
 
-        const ws = new WalletService({ unlockAddress: 'does not matter here' })
+        const ws = new WalletService({
+          unlockAddress: '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93',
+        })
         await ws.connect(provider)
         ws.signDataPersonal('account', 'this is my data', error => {
           expect(error).toBeNull()

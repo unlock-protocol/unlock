@@ -109,6 +109,7 @@ export const CreatorLock = ({ lock: lockFromProps }) => {
       <LockDetails
         className="lock" // Used by integration tests
         data-address={`${lock.address}`}
+        data-block={lock.creationBlock}
       >
         <DoubleHeightCell>
           <Icon lock={lock} />
