@@ -39,7 +39,7 @@
     "@types/styled-components": "5.1.0",
     "@typescript-eslint/eslint-plugin": "2.30.0",
     "@typescript-eslint/parser": "2.30.0",
-    "@unlock-protocol/unlock-js": "0.12.1",
+    "@unlock-protocol/unlock-js": "0.12.2",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "babel-eslint": "10.1.0",
