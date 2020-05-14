@@ -16,6 +16,8 @@ const { Op } = Sequelize
 
 const APPPLICATION_FEE_PERCENTAGE = 0.1
 
+const config = require('../../config/config')
+
 export class PaymentProcessor {
   stripe: Stripe
 
@@ -163,7 +165,7 @@ export class PaymentProcessor {
     buyer: ethereumAddress
   ) {
     const fulfillmentDispatcher = new Dispatcher(
-      'unlockAddress',
+      config.unlockContractAddress,
       credentials,
       providerHost,
       buyer
@@ -188,7 +190,7 @@ export class PaymentProcessor {
     connectedStripeAccount: string
   ) {
     const fulfillmentDispatcher = new Dispatcher(
-      'unlockAddress',
+      config.unlockContractAddress,
       credentials,
       providerHost,
       buyer
