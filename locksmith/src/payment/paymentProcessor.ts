@@ -190,7 +190,7 @@ export class PaymentProcessor {
     connectedStripeAccount: string
   ) {
     const fulfillmentDispatcher = new Dispatcher(
-      'unlockAddress',
+      config.unlockContractAddress,
       credentials,
       providerHost,
       buyer
