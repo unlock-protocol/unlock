@@ -39,6 +39,12 @@ export const retrieveLocks = async (
   // ERC20 info.. etc so we need to retrieve them from unlock-js too.
   // TODO: add these missing fields to the graph!
   const locks = await graphService.locksByManager(owner)
+
+  // Sort locks to show the most recent first
+  locks.sort((x, y) => {
+    return parseInt(y.creationBlock) - parseInt(x.creationBlock)
+  })
+
   const loadNext = async (locks, done) => {
     const lock = locks.shift()
     if (!lock) {
@@ -46,7 +52,11 @@ export const retrieveLocks = async (
     }
     const lockFromChain = await getLockAtAddress(web3Service, lock.address)
     if (lockFromChain) {
-      addToLocks(lockFromChain)
+      // Merge the data from subgraph and data from chain to have the most complete object
+      addToLocks({
+        ...lock,
+        ...lockFromChain,
+      })
     }
     // HACK: We delay each lock retrieval by 300ms to avoid rate limits...
     setTimeout(() => {
@@ -224,7 +234,6 @@ export const useLocks = owner => {
         ...lock,
       }
     }
-
     return [...locks].sort((x, y) => {
       return parseInt(y.creationBlock) - parseInt(x.creationBlock)
     })
