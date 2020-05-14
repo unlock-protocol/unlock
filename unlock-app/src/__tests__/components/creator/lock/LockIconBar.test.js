@@ -34,6 +34,9 @@ describe('LockIconBar', () => {
 
     const config = {
       requiredConfirmations: 10,
+      chainExplorerUrlBuilders: {
+        etherscan: path => path,
+      },
     }
     const wrapper = rtl.render(
       <Provider store={store}>

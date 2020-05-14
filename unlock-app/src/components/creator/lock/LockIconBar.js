@@ -47,7 +47,9 @@ export function LockIconBar({
     }
   }
 
-  const etherscanAddress = `https://etherscan.io/address/${lock.address}`
+  const etherscanAddress = config.chainExplorerUrlBuilders.etherscan(
+    `/address/${lock.address}`
+  )
 
   const membersPage = `/members?locks=${lock.address}`
 
