@@ -16,7 +16,7 @@ const port = process.env.HTTP_PROVIDER_PORT || 8545
 const locksmithHost = process.env.LOCKSMITH_HOST
 const locksmithPort = process.env.LOCKSMITH_PORT
 
-let providerURL = `http://${host}:${port}`
+const providerURL = `http://${host}:${port}`
 
 const versionName = latest
 
@@ -52,7 +52,6 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
       users.map(async user => {
         await Ether.transfer(walletService.provider, 1, user, '10')
         log(`TRANSFERED 10 ETH to ${user}`)
-        return
       })
     )
 

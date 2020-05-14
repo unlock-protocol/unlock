@@ -34,6 +34,9 @@ describe('LockIconBar', () => {
 
     const config = {
       requiredConfirmations: 10,
+      chainExplorerUrlBuilders: {
+        etherscan: path => path,
+      },
     }
     const wrapper = rtl.render(
       <Provider store={store}>
@@ -57,19 +60,9 @@ describe('LockIconBar', () => {
       address: '0xlock',
     }
 
-    it('should return lockCreationTransaction, withdrawalTransaction and priceUpdateTransaction', () => {
-      expect.assertions(3)
+    it('should return withdrawalTransaction', () => {
+      expect.assertions(1)
       const transactions = {
-        '0xlockCreation': {
-          hash: '0xlockCreation',
-          lock: '0xlock',
-          type: TransactionType.LOCK_CREATION,
-        },
-        '0xlockPriceUpdate': {
-          hash: '0xlockPriceUpdate',
-          to: '0xlock',
-          type: TransactionType.UPDATE_KEY_PRICE,
-        },
         '0xlockWithdrawal': {
           hash: '0xlockWithdrawal',
           to: '0xlock',
@@ -77,25 +70,12 @@ describe('LockIconBar', () => {
         },
       }
       const props = mapStateToProps({ transactions }, { lock })
-      expect(props.lockCreationTransaction.hash).toBe('0xlockCreation')
       expect(props.withdrawalTransaction.hash).toBe('0xlockWithdrawal')
-      expect(props.priceUpdateTransaction.hash).toBe('0xlockPriceUpdate')
     })
 
     it('should return only transactions which are not full confirmed', () => {
-      expect.assertions(3)
+      expect.assertions(1)
       const transactions = {
-        '0xlockCreation': {
-          hash: '0xlockCreation',
-          lock: '0xlock',
-          type: TransactionType.LOCK_CREATION,
-          confirmations: 100,
-        },
-        '0xlockPriceUpdate': {
-          hash: '0xlockPriceUpdate',
-          to: '0xlock',
-          type: TransactionType.UPDATE_KEY_PRICE,
-        },
         '0xlockWithdrawal': {
           hash: '0xlockWithdrawal',
           to: '0xlock',
@@ -103,24 +83,12 @@ describe('LockIconBar', () => {
         },
       }
       const props = mapStateToProps({ transactions }, { lock })
-      expect(props.lockCreationTransaction).toBe(undefined)
       expect(props.withdrawalTransaction.hash).toBe('0xlockWithdrawal')
-      expect(props.priceUpdateTransaction.hash).toBe('0xlockPriceUpdate')
     })
 
     it('should return only transactions which are for the lock being displayed', () => {
-      expect.assertions(3)
+      expect.assertions(1)
       const transactions = {
-        '0xlockCreation': {
-          hash: '0xlockCreation',
-          lock: '0xlock',
-          type: TransactionType.LOCK_CREATION,
-        },
-        '0xlockPriceUpdate': {
-          hash: '0xlockPriceUpdate',
-          to: '0xanotherLock',
-          type: TransactionType.UPDATE_KEY_PRICE,
-        },
         '0xlockWithdrawal': {
           hash: '0xlockWithdrawal',
           to: '0xlock',
@@ -128,41 +96,25 @@ describe('LockIconBar', () => {
         },
       }
       const props = mapStateToProps({ transactions }, { lock })
-      expect(props.lockCreationTransaction.hash).toBe('0xlockCreation')
       expect(props.withdrawalTransaction.hash).toBe('0xlockWithdrawal')
-      expect(props.priceUpdateTransaction).toBe(undefined)
     })
 
     it('should return only the most recent transaction if there are 2 of a kind', () => {
-      expect.assertions(3)
+      expect.assertions(1)
       const transactions = {
-        '0xlockCreation': {
-          hash: '0xlockCreation',
-          lock: '0xlock',
-          type: TransactionType.LOCK_CREATION,
-        },
-        '0xlockPriceUpdate': {
-          blockNumber: 100,
-          hash: '0xlockPriceUpdate',
-          to: '0xlock',
-          type: TransactionType.UPDATE_KEY_PRICE,
-        },
-        '0xlockPriceUpdate2': {
-          blockNumber: 101,
-          hash: '0xlockPriceUpdate2',
-          to: '0xlock',
-          type: TransactionType.UPDATE_KEY_PRICE,
-        },
         '0xlockWithdrawal': {
           hash: '0xlockWithdrawal',
           to: '0xlock',
           type: TransactionType.WITHDRAWAL,
         },
+        '0xlockWithdrawal2': {
+          hash: '0xlockWithdrawal2',
+          to: '0xlock',
+          type: TransactionType.WITHDRAWAL,
+        },
       }
       const props = mapStateToProps({ transactions }, { lock })
-      expect(props.lockCreationTransaction.hash).toBe('0xlockCreation')
-      expect(props.withdrawalTransaction.hash).toBe('0xlockWithdrawal')
-      expect(props.priceUpdateTransaction.hash).toBe('0xlockPriceUpdate2')
+      expect(props.withdrawalTransaction.hash).toBe('0xlockWithdrawal2')
     })
   })
 })
