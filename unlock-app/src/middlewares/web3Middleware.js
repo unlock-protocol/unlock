@@ -7,13 +7,11 @@ import { updateAccount } from '../actions/accounts'
 import { setError } from '../actions/error'
 import {
   addTransaction,
-  updateTransaction,
   ADD_TRANSACTION,
   NEW_TRANSACTION,
 } from '../actions/transaction'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 
-import { transactionTypeMapping } from '../utils/types'
 import { Web3 } from '../utils/Error'
 
 // This middleware listen to redux events and invokes the web3Service API.
@@ -40,14 +38,6 @@ const web3Middleware = web3Service => {
       if (!lock || !lock.asOf || lock.asOf < update.asOf) {
         dispatch(updateLock(address, update))
       }
-    })
-
-    web3Service.on('transaction.updated', (transactionHash, update) => {
-      // Mapping the transaction type
-      if (update.type) {
-        update.type = transactionTypeMapping(update.type)
-      }
-      dispatch(updateTransaction(transactionHash, update))
     })
 
     web3Service.on('transaction.new', transactionHash => {

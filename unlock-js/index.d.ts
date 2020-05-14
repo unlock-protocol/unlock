@@ -5,8 +5,6 @@ import { providers, Wallet } from 'ethers'
 interface Web3ServiceParams {
   readOnlyProvider: string
   unlockAddress: string
-  blockTime: number
-  requiredConfirmations: number
   network: number
 }
 
@@ -47,19 +45,19 @@ export interface KeyResult {
 type Web3Provider = string | providers.Web3Provider
 
 export class Web3Service extends EventEmitter {
-  constructor(params: Web3ServiceParams);
-  refreshAccountBalance: ({ address }: { address: string }) => Promise<string>;
+  constructor(params: Web3ServiceParams)
+  refreshAccountBalance: ({ address }: { address: string }) => Promise<string>
   getTransaction: (
     transactionHash: string,
     defaults?: TransactionDefaults
-  ) => Promise<void>;
-  getLock: (address: string) => Promise<RawLock>;
-  getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>;
+  ) => Promise<void>
+  getLock: (address: string) => Promise<RawLock>
+  getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
   getTokenBalance: (
     tokenAddress: string,
     accountAddress: string
-  ) => Promise<string>;
-  isLockManager: (lock: string, manager: string) => Promise<boolean>;
+  ) => Promise<string>
+  isLockManager: (lock: string, manager: string) => Promise<boolean>
 }
 
 interface SetKeyMetadataParams {
@@ -93,15 +91,22 @@ interface GetKeyMetadataParams {
 }
 
 export class WalletService extends EventEmitter {
-  constructor({ unlockAddress }: { unlockAddress: string });
-  ready: boolean;
-  provider?: any;
-  connect: (provider: Web3Provider) => Promise<void>;
-  getAccount: () => Promise<string | false>;
+  constructor({ unlockAddress }: { unlockAddress: string })
+  ready: boolean
+  provider?: any
+  connect: (provider: Web3Provider) => Promise<void>
+  getAccount: () => Promise<string | false>
   // callback is never called with an error and is always called with
   // a hash -- this may change in the future.
-  purchaseKey: (params: PurchaseKeyParams, callback?: (error: Error | null, hash: string | null, transaction: any | null) => void) => Promise<string>;
-  setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void;
-  setUserMetadata: (params: SetUserMetadataParams, callback: any) => void;
-  getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void;
+  purchaseKey: (
+    params: PurchaseKeyParams,
+    callback?: (
+      error: Error | null,
+      hash: string | null,
+      transaction: any | null
+    ) => void
+  ) => Promise<string>
+  setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void
+  setUserMetadata: (params: SetUserMetadataParams, callback: any) => void
+  getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void
 }

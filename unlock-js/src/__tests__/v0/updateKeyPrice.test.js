@@ -73,7 +73,7 @@ describe('v0', () => {
     beforeEach(() => {
       // Mock all the methods
       walletService = new WalletService({
-        unlockAddress: '0xunlockAddress',
+        unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
       })
       walletService.provider = provider
       walletService.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
