@@ -2,7 +2,6 @@
 
 set -e
 
-
 if ! [ -x "$(command -v hub)" ]; then
   echo 'Error: hub is not installed. It is required to open the pull-request' >&2
   exit 1
