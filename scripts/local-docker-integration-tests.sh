@@ -23,8 +23,6 @@ exit
 # NOTE: we cannot using the build-image.sh script or docker-compose-build.sh scripts
 # they are designed for CI and never hit cache locally.
 
-docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $REPO_ROOT
-
 docker build -t unlock-app -f $REPO_ROOT/docker/unlock-app.dockerfile $REPO_ROOT &
 docker build -t wedlocks -f $REPO_ROOT/docker/wedlocks.dockerfile $REPO_ROOT &
 docker build -t smart-contracts -f $REPO_ROOT/docker/smart-contracts.dockerfile $REPO_ROOT &
