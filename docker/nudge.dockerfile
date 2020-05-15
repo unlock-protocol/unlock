@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core
 
 RUN mkdir /home/unlock/nudge
 COPY --chown=node nudge/yarn.lock /home/unlock/nudge/.
