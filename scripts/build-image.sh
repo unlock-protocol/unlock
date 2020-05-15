@@ -10,6 +10,29 @@ ARGS=""
 DOCKER_REPOSITORY="unlockprotocol"
 CACHED_IMAGE_TAG="master"
 SKIP_CORE=$2
+ENV_TARGET=$3
+TARGET=$4
+
+# We extract the env vars from CI using a PREFIX logic
+# TODO: reconsider prefix based on TARGET : PROD should be PROD everywhere!
+# For staging deploys we pass all environment variables which start with STAGING_ and for production
+# deploys we pass all environment variables which start with PROD_. We also remove the prefix so that
+# the deploy script is identical in both cases
+ENV_PREFIX="STAGING_"
+if [ "$ENV_TARGET" = "prod" ]; then
+  ENV_PREFIX="PROD_"
+fi
+
+# Custom variables passed for the target
+# The convention is to name the environment variables starting with the UPPERCASE version of the $TARGET,
+# then the $TARGET and finally $ENV_TARGET.
+# For example: UNLOCK_APP_NETLIFY_STAGING_SITE_ID will be passed as SITE_ID
+UPCASE_IMAGE_NAME="${IMAGE_NAME^^}"
+TARGET_PREFIX="${UPCASE_IMAGE_NAME//-/_}_${TARGET^^}_$ENV_PREFIX"
+
+
+BUILD_ARGS=`env | grep $TARGET_PREFIX | awk '{print "--build-arg ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
+
 
 if [ "$SKIP_CORE" != "true" ]; then
   echo "Pulling $DOCKER_REPOSITORY/unlock-core:$CACHED_IMAGE_TAG to use as cache for unlock-core"
@@ -24,8 +47,8 @@ wait
 if [ "$SKIP_CORE" != "true" ]; then
   # Then build unlock-core (it will most often be 100% cached as it should rarely change from master)
   ARGS="--cache-from $DOCKER_REPOSITORY/unlock-core:master"
-  docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $ARGS $REPO_ROOT
+  docker build $BUILD_ARGS -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $ARGS $REPO_ROOT
 fi
 
 ARGS="--cache-from $IMAGE_CACHE"
-docker build -t $IMAGE_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
+docker build $BUILD_ARGS -t $IMAGE_NAME -f $DOCKERFILE $ARGS $REPO_ROOT
