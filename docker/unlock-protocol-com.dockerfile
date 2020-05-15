@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core
 
 # Dependencies for unlock-protocol.com
 RUN mkdir /home/unlock/unlock-protocol.com

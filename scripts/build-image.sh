@@ -34,8 +34,7 @@ BUILD_ARGS=`env | grep $TARGET_PREFIX | awk '{print "--build-arg ",$1}' ORS=' ' 
 
 IMAGE_CACHE="$DOCKER_REPOSITORY/$IMAGE_NAME:$CACHED_IMAGE_TAG"
 echo "Pulling $IMAGE_CACHE to use as cache for $IMAGE_NAME"
-docker pull $IMAGE_CACHE &
-wait
+docker pull $IMAGE_CACHE
 
 ARGS="--cache-from $IMAGE_CACHE"
 docker build $BUILD_ARGS -t $IMAGE_NAME -f $DOCKERFILE $ARGS $REPO_ROOT

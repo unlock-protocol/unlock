@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core
 
 # Dependencies for wedlocks
 RUN mkdir /home/unlock/wedlocks
