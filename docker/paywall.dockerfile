@@ -10,5 +10,7 @@ RUN yarn --production
 # Build paywall
 COPY --chown=node paywall/ /home/unlock/paywall/.
 RUN yarn build
+RUN yarn deploy
+
 EXPOSE 3001
 CMD  ["yarn", "start"]

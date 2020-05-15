@@ -10,3 +10,4 @@ RUN yarn --production
 # Build wedlocks
 COPY --chown=node wedlocks/ /home/unlock/wedlocks/.
 RUN yarn build
+RUN yarn deploy

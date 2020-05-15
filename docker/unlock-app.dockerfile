@@ -21,6 +21,8 @@ USER node
 # Build unlock-app
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
 RUN yarn build
+RUN yarn deploy
+
 
 # Copy the .git stuff
 # We do this last because this can never be cached (every commit will change it...)
