@@ -6,25 +6,35 @@ const net = require('net')
  */
 const serverIsUp = (host, port, delay, maxAttempts) =>
   new Promise((resolve, reject) => {
-    let attempts = 1
-    const tryConnecting = () => {
+    const tryConnecting = attempts => {
       const socket = net.connect(port, host, () => {
-        resolve()
-        return socket.end() // clean-up
+        socket.end() // clean-up
+        return resolve()
       })
 
       socket.on('error', error => {
         if (error.code === 'ECONNREFUSED') {
-          if (attempts < maxAttempts) {
-            attempts += 1
-            return setTimeout(tryConnecting, delay)
+          if (attempts <= maxAttempts) {
+            return setTimeout(() => {
+              tryConnecting(attempts + 1)
+            }, delay)
           }
-          return reject(error)
+          return reject(
+            new Error(
+              `We could not reach ${host}:${port} after ${attempts} attempts (${(delay *
+                maxAttempts) /
+                1000} seconds)`
+            )
+          )
         }
-        return reject(error)
+        return reject(
+          new Error(
+            `There was an unexpected error reaching ${host}:${port}. ${error.message}`
+          )
+        )
       })
     }
-    tryConnecting()
+    tryConnecting(1)
   })
 
 module.exports = serverIsUp

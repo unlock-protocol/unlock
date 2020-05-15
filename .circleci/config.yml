@@ -10,9 +10,6 @@ jobs:
       - run:
           command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
       - run:
-          name: Build unlock-protocol-com Image
-          command: scripts/build-image.sh unlock-protocol-com test
-      - run:
           name: unlock-protocol-com tests
           command: scripts/tests.sh unlock-protocol-com
 
@@ -25,9 +22,6 @@ jobs:
       - run:
           command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
       - run:
-          name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app test
-      - run:
           name: unlock-app tests
           command: scripts/tests.sh unlock-app
 
@@ -39,9 +33,6 @@ jobs:
       - checkout
       - run:
           command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
-      - run:
-          name: Build unlock-js Image
-          command: scripts/build-image.sh unlock-js test
       - run:
           name: unlock-js tests
           command: scripts/unlockjs-tests.sh unlock-js
@@ -59,9 +50,6 @@ jobs:
       - run:
           command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
       - run:
-          name: Build smart-contracts Image
-          command: scripts/build-image.sh smart-contracts test
-      - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
 
@@ -73,9 +61,6 @@ jobs:
       - checkout
       - run:
           command: scripts/monorepo.sh smart-contract-extensions $CIRCLE_BRANCH
-      - run:
-          name: Build smart-contract-extensions Image
-          command: scripts/build-image.sh smart-contract-extensions false test
       - run:
           name: Smart Contract Extension Tests
           command: scripts/tests.sh smart-contract-extensions
@@ -93,9 +78,6 @@ jobs:
       - run:
           command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
-          name: Build Locksmith Image
-          command: scripts/build-image.sh locksmith test
-      - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
 
@@ -107,9 +89,6 @@ jobs:
       - checkout
       - run:
           command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: Build paywall Image
-          command: scripts/build-image.sh paywall test
       - run:
           name: Paywall Tests
           command: scripts/tests.sh paywall
@@ -123,9 +102,6 @@ jobs:
       - run:
           command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
       - run:
-          name: Build newsletter Image
-          command: scripts/build-image.sh newsletter test
-      - run:
           name: Newsletter Tests
           command: scripts/tests.sh newsletter
 
@@ -137,9 +113,6 @@ jobs:
       - checkout
       - run:
           command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
-      - run:
-          name: Build wedlocks Image
-          command: scripts/build-image.sh wedlocks test
       - run:
           name: Wedlocks Tests
           command: scripts/tests.sh wedlocks
@@ -153,9 +126,6 @@ jobs:
       - run:
           command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
       - run:
-          name: Build Nudge Image
-          command: scripts/build-image.sh nudge test
-      - run:
           name: Nudge Tests
           command: scripts/tests.sh nudge
 
@@ -166,9 +136,6 @@ jobs:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
       - checkout
-      - run:
-          name: Build Images
-          command: ./scripts/docker-compose-build.sh
       - run:
           name: Integration Tests
           command: scripts/integration-tests.sh
@@ -194,9 +161,6 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app "$ENV_TARGET" netlify
-      - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
@@ -211,9 +175,6 @@ jobs:
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Build unlock-protocol-com Image
-          command: scripts/build-image.sh unlock-protocol-com "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -233,9 +194,6 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build paywall Image
-          command: scripts/build-image.sh paywall "$ENV_TARGET" netlify
-      - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
@@ -254,9 +212,6 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build newsletter Image
-          command: scripts/build-image.sh newsletter "$ENV_TARGET" netlify
-      - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
@@ -271,9 +226,6 @@ jobs:
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Build wedlocks Image
-          command: scripts/build-image.sh wedlocks "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -394,7 +346,7 @@ jobs:
       - checkout
       - run:
           name: Build Images
-          command: ./scripts/docker-compose-build.sh
+          command: docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
       - run:
           name: Push Images
           command: scripts/push-all-image.sh
@@ -416,12 +368,11 @@ workflows:
       - nudge-tests
       - integration-tests:
           requires:
-            - smart-contracts-tests
-            - smart-contract-extensions-tests
             - unlock-protocol-com-tests
             - unlock-app-tests
             - locksmith-tests
             - paywall-tests
+            - nudge-tests
             - wedlocks-tests
             - newsletter-tests
       - deploy-unlock-app-netlify:

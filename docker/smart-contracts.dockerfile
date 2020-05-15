@@ -16,6 +16,5 @@ RUN apk add --no-cache --virtual .build-deps-2 \
     && apk del .build-deps-2
 
 USER node
-# Build smart contract
+
 COPY --chown=node smart-contracts/ /home/unlock/smart-contracts/.
-RUN yarn build

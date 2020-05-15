@@ -22,11 +22,11 @@ Finally, you can learn more [on our documentation wiki](https://github.com/unloc
 ## Contributing
 
 Thanks for your interest in contributing to Unlock! We're excited you're here. There are a variety of ways to contribute to the project.
-Please read more about contributing in our [contributor guide](https://github.com/unlock-protocol/unlock/blob/master/CONTRIBUTING.md). Please also check our [code of conduct](https://github.com/unlock-protocol/unlock/blob/master/CODE_OF_CONDUCT.md) for all participants in our community.
+Please read more about contributing in our [contributor guide](https://github.com/unlock-protocol/unlock/wiki/Getting-Started). Please also check our [code of conduct](https://github.com/unlock-protocol/unlock/blob/master/CODE_OF_CONDUCT.md) for all participants in our community.
 
 ## Getting started
 
-We use [docker](https://docker.com/) to run a set or containers which provide the required infrastructure.
+We use [docker](https://docker.com/) to run a set of containers which provide the required infrastructure (database, local ethereum test network, subgraph...)
 
 1. Check out the code from this repository
 
@@ -78,8 +78,8 @@ Once [docker has been installed](https://docs.docker.com/install/) on your machi
 $ cd docker && docker-compose up --build
 ```
 
-This cluster includes all the required "infrastructure" to run our apps locally (mostly ganache, which is an ethereum dev node.)
-When starting this script does several things: deploys the unlock smart contract, transfers eth to your address, ... etc
+This cluster includes all the required "infrastructure" to run our apps locally.
+When starting this script does several things: deploys the unlock smart contract, transfers eth to your address, ... etc. It is actually defined in both `docker-compose.yml` and `docker-compose.override.yml`.
 
 5. Run the app
 
@@ -88,6 +88,8 @@ This applies to any of our applications, but we'll take `unlock-app` as an examp
 ```
 cd unlock-app && yarn dev
 ```
+
+Important: You should then head to `http://localhost:3000/dashboard` so you can start using the application and deploy locks locally. (going to the root will redirect you to `http://localhost:3002` which is our static landing page site.)
 
 ## Thank you
 

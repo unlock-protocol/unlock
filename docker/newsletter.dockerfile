@@ -9,8 +9,6 @@ RUN yarn --production
 
 # Build newsletter
 COPY --chown=node newsletter/ /home/unlock/newsletter/.
-RUN yarn build
-RUN yarn deploy
 
 EXPOSE 3003
 CMD ["yarn", "start"]

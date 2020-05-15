@@ -27,10 +27,6 @@ export default function configure(
 
   const env = runtimeConfig.unlockEnv
 
-  console.log({
-    env,
-  })
-
   let googleClientId
   let googleApiKey
   let googleDiscoveryDocs
