@@ -11,7 +11,7 @@ jobs:
           command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
       - run:
           name: Build unlock-protocol-com Image
-          command: scripts/build-image.sh unlock-protocol-com false test
+          command: scripts/build-image.sh unlock-protocol-com test
       - run:
           name: unlock-protocol-com tests
           command: scripts/tests.sh unlock-protocol-com
@@ -26,7 +26,7 @@ jobs:
           command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
       - run:
           name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app false test
+          command: scripts/build-image.sh unlock-app test
       - run:
           name: unlock-app tests
           command: scripts/tests.sh unlock-app
@@ -41,7 +41,7 @@ jobs:
           command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
       - run:
           name: Build unlock-js Image
-          command: scripts/build-image.sh unlock-js false test
+          command: scripts/build-image.sh unlock-js test
       - run:
           name: unlock-js tests
           command: scripts/unlockjs-tests.sh unlock-js
@@ -60,7 +60,7 @@ jobs:
           command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
       - run:
           name: Build smart-contracts Image
-          command: scripts/build-image.sh smart-contracts false test
+          command: scripts/build-image.sh smart-contracts test
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
@@ -94,7 +94,7 @@ jobs:
           command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
           name: Build Locksmith Image
-          command: scripts/build-image.sh locksmith false test
+          command: scripts/build-image.sh locksmith test
       - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
@@ -109,7 +109,7 @@ jobs:
           command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
       - run:
           name: Build paywall Image
-          command: scripts/build-image.sh paywall false test
+          command: scripts/build-image.sh paywall test
       - run:
           name: Paywall Tests
           command: scripts/tests.sh paywall
@@ -124,7 +124,7 @@ jobs:
           command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
       - run:
           name: Build newsletter Image
-          command: scripts/build-image.sh newsletter false test
+          command: scripts/build-image.sh newsletter test
       - run:
           name: Newsletter Tests
           command: scripts/tests.sh newsletter
@@ -139,7 +139,7 @@ jobs:
           command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
       - run:
           name: Build wedlocks Image
-          command: scripts/build-image.sh wedlocks false test
+          command: scripts/build-image.sh wedlocks test
       - run:
           name: Wedlocks Tests
           command: scripts/tests.sh wedlocks
@@ -154,7 +154,7 @@ jobs:
           command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
       - run:
           name: Build Nudge Image
-          command: scripts/build-image.sh nudge false test
+          command: scripts/build-image.sh nudge test
       - run:
           name: Nudge Tests
           command: scripts/tests.sh nudge
@@ -195,7 +195,7 @@ jobs:
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app false "$ENV_TARGET" netlify
+          command: scripts/build-image.sh unlock-app "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -213,7 +213,7 @@ jobs:
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Build unlock-protocol-com Image
-          command: scripts/build-image.sh unlock-protocol-com false "$ENV_TARGET" netlify
+          command: scripts/build-image.sh unlock-protocol-com "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -234,7 +234,7 @@ jobs:
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Build paywall Image
-          command: scripts/build-image.sh paywall false "$ENV_TARGET" netlify
+          command: scripts/build-image.sh paywall "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -255,7 +255,7 @@ jobs:
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Build newsletter Image
-          command: scripts/build-image.sh newsletter false "$ENV_TARGET" netlify
+          command: scripts/build-image.sh newsletter "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -273,7 +273,7 @@ jobs:
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Build wedlocks Image
-          command: scripts/build-image.sh wedlocks false "$ENV_TARGET" netlify
+          command: scripts/build-image.sh wedlocks "$ENV_TARGET" netlify
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"

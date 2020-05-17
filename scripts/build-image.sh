@@ -9,8 +9,8 @@ DOCKERFILE=$REPO_ROOT/docker/$IMAGE_NAME.dockerfile
 ARGS=""
 DOCKER_REPOSITORY="unlockprotocol"
 CACHED_IMAGE_TAG="master"
-ENV_TARGET=$3
-TARGET=$4
+ENV_TARGET=$2
+TARGET=$3
 
 # We extract the env vars from CI using a PREFIX logic
 # TODO: reconsider prefix based on TARGET : PROD should be PROD everywhere!
