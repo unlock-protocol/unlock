@@ -383,7 +383,6 @@ describe('Storage middleware', () => {
       it('should dispatch setEncryptedPrivateKey, gotEncryptedPrivateKeyPayload, and welcomeEmail after an account is created', async () => {
         expect.assertions(3)
         const { store } = create()
-
         const passwordEncryptedPrivateKey = {
           id: 'this is the encrypted key',
         }
@@ -391,9 +390,7 @@ describe('Storage middleware', () => {
         const password = 'guest'
         const recoveryKey = {}
 
-        accountUtils.reEncryptPrivateKey = jest.fn(() =>
-          Promise.resolve(recoveryKey)
-        )
+        accountUtils.reEncryptPrivateKey = jest.fn(() => recoveryKey)
 
         await mockStorageService.emit(success.createUser, {
           passwordEncryptedPrivateKey,

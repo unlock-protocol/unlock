@@ -19,4 +19,4 @@ docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE up ganache-standu
 
 # And then run the integration tests
 COMMAND="yarn run ci"
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -v /tmp/screenshots:/screenshots $EXTRA_ARGS integration-tests bash -c "$COMMAND"
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -e UNLOCK_ENV=test -v /tmp/screenshots:/screenshots $EXTRA_ARGS integration-tests bash -c "$COMMAND"
