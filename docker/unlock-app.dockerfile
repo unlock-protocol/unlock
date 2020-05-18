@@ -6,7 +6,6 @@ COPY --chown=node unlock-app/yarn.lock /home/unlock/unlock-app/.
 COPY --chown=node unlock-app/package.json /home/unlock/unlock-app/.
 WORKDIR /home/unlock/unlock-app
 
-
 USER root
 
 RUN apk add --no-cache --virtual .build-deps-2 \
@@ -15,14 +14,9 @@ RUN apk add --no-cache --virtual .build-deps-2 \
     && yarn --production \
     && apk del .build-deps-2
 
-# RUN yarn --production
-
 USER node
 # Build unlock-app
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
-RUN yarn build
-RUN yarn deploy
-
 
 # Copy the .git stuff
 # We do this last because this can never be cached (every commit will change it...)
