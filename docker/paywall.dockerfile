@@ -7,10 +7,11 @@ COPY --chown=node paywall/package.json /home/unlock/paywall/.
 WORKDIR /home/unlock/paywall
 RUN yarn --production
 
-# Build paywall
+
 COPY --chown=node paywall/ /home/unlock/paywall/.
-RUN yarn build
-RUN yarn deploy
+
+# Create folder for export
+RUN mkdir out
 
 EXPOSE 3001
 CMD  ["yarn", "start"]

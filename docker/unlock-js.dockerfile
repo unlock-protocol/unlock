@@ -19,4 +19,3 @@ USER node
 
 # Build unlock-js
 COPY --chown=node unlock-js/ /home/unlock/unlock-js/.
-RUN yarn build

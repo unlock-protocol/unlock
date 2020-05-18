@@ -1,11 +1,10 @@
 /* eslint no-console: 0 */
+
 const dotenv = require('dotenv')
 const path = require('path')
 const { exportPaths } = require('./src/utils/exportStatic')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
-
-console.log(`Starting unlock-app in ${unlockEnv}`)
 
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),

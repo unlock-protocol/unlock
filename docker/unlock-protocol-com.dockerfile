@@ -9,9 +9,6 @@ RUN yarn --production
 
 # Build Unlock app
 COPY --chown=node unlock-protocol.com/ /home/unlock/unlock-protocol.com/.
-RUN yarn build
-RUN yarn deploy
-
 
 EXPOSE 3002
 CMD ["yarn", "start"]

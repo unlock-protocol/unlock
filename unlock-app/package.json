@@ -87,10 +87,11 @@
   "scripts": {
     "dev": "next dev src",
     "build": "next build src",
+    "predeploy": "yarn build",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-unlock-contract": "node scripts/deploy-unlock.js",
-    "prestart": "yarn run build",
+    "prestart": "yarn build",
     "start": "cross-env NODE_ENV=production next start src --port ${PORT:=3000}",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js src/",

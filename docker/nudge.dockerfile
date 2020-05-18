@@ -17,6 +17,5 @@ RUN apk add --no-cache --virtual .build-deps \
 USER node
 
 COPY --chown=node nudge/ /home/unlock/nudge/.
-RUN yarn build
 
 CMD ["yarn", "start"]

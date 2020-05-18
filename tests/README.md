@@ -24,26 +24,19 @@ In CI, running these tests requires 3 docker images:
 
 ## Running locally
 
-It is possible to run the tests locally, without docker running. Additionally, running the test
-locally allows for a little more flexibility to debug. For example, even if the tests are running in
-a headless way by default, they can be run in an actual web browser which lets the developer see
-what is being rendered on screen.
+It is possible to run these tests locally with docker.
+The script `/scripts/integration-tests.sh` at the root of the mono-repo has all the required steps.
+It will build and run all the required images and then will run the tests inside of this repo.
+Note that images expose the ports both inside and outside of the docker compose cluster, which means that you should be able to run tests outside of docker as well with `yarn test` inside of `/tests`.
 
-- start a docker dev cluster (at the root): see instruction in the main [README.md](https://github.com/unlock-protocol/unlock/blob/master/README.md)
-- run the dashboard application (in `/unlock-app`): `UNLOCK_ENV=test yarn start` (you may need to build the application first: `yarn build`)
-- run the dashboard application without an injected provider (required to test unlock accounts) (in `/unlock-app`): `PORT=9000 UNLOCK_ENV=unlock-provider-integration yarn start`
-- run the locksmith application (in `/locksmith`): `UNLOCK_ENV=test yarn start`
-- run the paywall application (in `/paywall`): `UNLOCK_ENV=test USER_IFRAME_URL=http://localhost:9000/account yarn start` (you may need to build the application first: `yarn build`)
-- execute the tests (in `/tests`): `yarn test`
-
-There are a few interesting and useful debugging options [on this page](https://github.com/GoogleChrome/puppeteer#debugging-tips) including
-the ability to 'slow down' execution via `slowMo`...
+There are a few interesting and useful debugging options [on this page](https://github.com/GoogleChrome/puppeteer#debugging-tips) including the ability to 'slow down' execution via `slowMo`...
 
 ## TODO
 
-We are missing integration coverage for a few pieces of the checkout.
+We are currently missing integration coverage for a few pieces of the checkout.
 
 - User Accounts (will require infrastructure setup, approving lock, figuring out how to deal with Stripe API call, etc.)
+
   - User can create account
   - User can log in to existing account
   - User can save a credit card
