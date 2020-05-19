@@ -8,7 +8,7 @@ services:
     command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
 
   ganache-standup: # Sets up the ganache instance with the required smart contracts and balances
-    image: ganache-standups
+    image: ganache-standup
     build:
       context: ./development
       dockerfile: ganache.dockerfile
@@ -157,7 +157,7 @@ services:
       dockerfile: ./docker/integration-tests.dockerfile
       cache_from:
         - integration-tests
-        - unlockprotocol/integration-tests :master
+        - unlockprotocol/integration-tests:master
 
     env_file: ./integration.env
     depends_on:
@@ -176,7 +176,7 @@ services:
       dockerfile: ./docker/locksmith.dockerfile
       cache_from:
         - locksmith
-        - unlockprotocol/locksmith :master
+        - unlockprotocol/locksmith:master
     env_file:
       - ./integration.env
       - ./integration-locksmith.env
