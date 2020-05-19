@@ -133,7 +133,7 @@ jobs:
     machine:
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlrotocol
+      DOCKER_REPOSITORY: unlockprotocol
     steps:
       - checkout
       - run:
