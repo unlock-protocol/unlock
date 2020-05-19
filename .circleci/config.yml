@@ -133,7 +133,7 @@ jobs:
     machine:
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_REPOSITORY: unlrotocol
     steps:
       - checkout
       - run:
@@ -339,14 +339,15 @@ jobs:
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
 
   promote-unlock-images:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
       - checkout
       - run:
           name: Build Images
-          command: docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
+          command: docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build # check support of --parallel (but it looks like the docker compose version is too old)
       - run:
           name: Push Images
           command: scripts/push-all-image.sh

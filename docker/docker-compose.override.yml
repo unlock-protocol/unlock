@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
   ganache:
     restart: always
@@ -10,6 +10,7 @@ services:
       - 8545:8545
 
   ganache-standup:
+    image: ganache-standup
     build:
       context: ./development
       dockerfile: ganache.dockerfile
@@ -38,22 +39,32 @@ services:
 
   locksmith-migration:
     env_file: development.env
+    image: locksmith
     build:
-      context: ../locksmith/
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/locksmith.dockerfile
+      cache_from:
+        - locksmith
+        - unlockprotocol/locksmith:master
     command: yarn db:migrate
     depends_on:
       - postgres
+      - ganache
 
   locksmith:
     env_file: development.env
+    image: locksmith
     build:
-      context: ../locksmith/
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/locksmith.dockerfile
+      cache_from:
+        - locksmith
+        - unlockprotocol/locksmith:master
     ports:
       - '8080:8080'
     depends_on:
       - postgres
+      - ganache
 
   subgraph_deployment:
     build:
@@ -77,10 +88,14 @@ services:
       - postgres
 
   nudge-migration:
+    image: nudge
     env_file: development.env
     build:
-      context: ../nudge
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/nudge.dockerfile
+      cache_from:
+        - nudge
+        - unlockprotocol/nudge:master
     command: yarn db:migrate
     depends_on:
       - postgres
@@ -88,10 +103,14 @@ services:
       - wedlocks
 
   nudge:
+    image: nudge
     env_file: development.env
     build:
-      context: ../nudge
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/nudge.dockerfile
+      cache_from:
+        - nudge
+        - unlockprotocol/nudge:master
     depends_on:
       - postgres
       - locksmith
