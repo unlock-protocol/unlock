@@ -43,6 +43,12 @@ module.exports = withCSS({
         join(dir, 'static', '_redirects'),
         join(outDir, '_redirects')
       )
+
+      // Export s3config.json which is used by s3 for URL rewrites
+      await copyFile(
+        join(dir, 'static', 's3config.json'),
+        join(outDir, 's3config.json')
+      )
     }
 
     return {

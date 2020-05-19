@@ -147,7 +147,8 @@ jobs:
           when: on_fail
 
   deploy-unlock-app-netlify:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -165,7 +166,8 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-unlock-protocol-com-netlify:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -179,8 +181,28 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
+  deploy-paywall-aws:
+    machine:
+      docker_layer_caching: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Deploy to AWS
+          command: scripts/deploy-aws.sh "$ENV_TARGET" paywall "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
   deploy-paywall-netlify:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -198,7 +220,8 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-newsletter-netlify:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -216,7 +239,8 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-wedlocks-netlify:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -380,6 +404,9 @@ workflows:
           requires:
             - integration-tests
       - deploy-paywall-netlify:
+          requires:
+            - integration-tests
+      - deploy-paywall-aws:
           requires:
             - integration-tests
       - deploy-newsletter-netlify:
