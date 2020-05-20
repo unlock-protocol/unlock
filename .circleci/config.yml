@@ -2,9 +2,13 @@ version: 2
 
 jobs:
   unlock-protocol-com-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -14,9 +18,13 @@ jobs:
           command: scripts/tests.sh unlock-protocol-com
 
   unlock-app-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -26,9 +34,13 @@ jobs:
           command: scripts/tests.sh unlock-app
 
   unlock-js-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -42,9 +54,13 @@ jobs:
           when: on_fail
 
   smart-contracts-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -54,9 +70,13 @@ jobs:
           command: scripts/tests.sh smart-contracts
 
   smart-contract-extensions-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -66,9 +86,13 @@ jobs:
           command: scripts/tests.sh smart-contract-extensions
 
   locksmith-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
       DB_NAME: locksmith_test
@@ -82,9 +106,13 @@ jobs:
           command: scripts/tests.sh locksmith
 
   paywall-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -94,9 +122,13 @@ jobs:
           command: scripts/tests.sh paywall
 
   newsletter-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -106,9 +138,13 @@ jobs:
           command: scripts/tests.sh newsletter
 
   wedlocks-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -118,9 +154,13 @@ jobs:
           command: scripts/tests.sh wedlocks
 
   nudge-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -131,9 +171,12 @@ jobs:
 
   integration-tests:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -148,9 +191,12 @@ jobs:
 
   deploy-unlock-app-netlify:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -167,9 +213,12 @@ jobs:
 
   deploy-unlock-protocol-com-netlify:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -183,9 +232,12 @@ jobs:
 
   deploy-paywall-aws:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -202,9 +254,12 @@ jobs:
 
   deploy-paywall-netlify:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -221,9 +276,12 @@ jobs:
 
   deploy-newsletter-netlify:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -240,9 +298,12 @@ jobs:
 
   deploy-wedlocks-netlify:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -259,6 +320,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -286,6 +349,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -313,6 +378,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -340,6 +407,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -364,14 +433,17 @@ jobs:
 
   promote-unlock-images:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           name: Build Images
-          command: docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build # check support of --parallel (but it looks like the docker compose version is too old)
+          command: docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
       - run:
           name: Push Images
           command: scripts/push-all-image.sh
