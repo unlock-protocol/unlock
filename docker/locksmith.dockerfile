@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for locksmith
 RUN mkdir /home/unlock/locksmith
@@ -9,9 +9,6 @@ WORKDIR /home/unlock/locksmith
 USER root
 
 RUN apk add --no-cache --virtual .build-deps \
-    git \
-    python \
-    build-base \
     && yarn --production \
     && apk del .build-deps
 
