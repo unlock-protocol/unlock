@@ -53,8 +53,6 @@ module.exports = withCSS({
 
     return {
       '/': { page: '/home' },
-      '/newdemo': { page: '/newdemo' },
-      '/checkout': { page: '/checkout' },
     }
   },
 })
