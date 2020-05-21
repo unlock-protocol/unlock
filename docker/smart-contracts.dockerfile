@@ -9,6 +9,9 @@ WORKDIR /home/unlock/smart-contracts
 USER root
 
 RUN apk add --no-cache --virtual .build-deps-2 \
+    git \
+    python \
+    build-base \
     && yarn --production \
     && apk del .build-deps-2
 
