@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for smart-contract-extensions
 RUN mkdir /home/unlock/smart-contract-extensions
@@ -9,9 +9,6 @@ WORKDIR /home/unlock/smart-contract-extensions
 USER root
 
 RUN apk add --no-cache --virtual .build-deps-2 \
-    git \
-    python \
-    build-base \
     && yarn --production \
     && apk del .build-deps-2
 

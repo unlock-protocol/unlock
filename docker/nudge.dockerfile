@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core
+FROM unlockprotocol/unlock-core:master
 
 RUN mkdir /home/unlock/nudge
 COPY --chown=node nudge/yarn.lock /home/unlock/nudge/.
@@ -8,9 +8,6 @@ WORKDIR /home/unlock/nudge
 USER root
 
 RUN apk add --no-cache --virtual .build-deps \
-    git \
-    python \
-    build-base \
     && yarn --production \
     && apk del .build-deps
 

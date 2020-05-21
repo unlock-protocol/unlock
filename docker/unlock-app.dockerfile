@@ -9,8 +9,6 @@ WORKDIR /home/unlock/unlock-app
 USER root
 
 RUN apk add --no-cache --virtual .build-deps-2 \
-    python \
-    build-base \
     && yarn --production \
     && apk del .build-deps-2
 
