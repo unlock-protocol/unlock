@@ -20,6 +20,10 @@ docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE down
 # improvments we want. We already have a script to build images with build-image.sh which should
 # make that easy.
 
+# start unlock-app to make sure it's built by the time the tests run
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE up --detach unlock-app
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE up --detach unlock-provider-unlock-app
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE up --detach paywall
 
 # Deploy the subgraph
 # TODO make the script idempotent so that it does not deploy twice!
