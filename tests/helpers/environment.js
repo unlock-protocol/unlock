@@ -27,7 +27,7 @@ class UnlockEnvironment extends PuppeteerEnvironment {
       unlockHost,
       unlockPort,
       1000 /* every s */,
-      60 * 3 /* up to 3m, building takes more than 1 minute! */
+      60 * 5 /* up to 5m, building takes more than 1 minute! */
     )
     console.log(`Waiting for Locksmith at ${locksmithHost}:${locksmithPort}`)
     await serverIsUp(

@@ -14,9 +14,6 @@
 /src/unlock.js/dist
 .next/
 out/
-*.min.js*
-!/src/static/unlock.1.0.min.js
-!/src/static/data-iframe.1.0.min.js
 
 # misc
 .DS_Store
