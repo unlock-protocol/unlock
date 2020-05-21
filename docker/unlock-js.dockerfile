@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for unlock-js
 RUN mkdir /home/unlock/unlock-js
@@ -9,6 +9,9 @@ WORKDIR /home/unlock/unlock-js
 USER root
 
 RUN apk add --no-cache --virtual .build-deps \
+    git \
+    python \
+    build-base \
     && yarn \
     && apk del .build-deps
 

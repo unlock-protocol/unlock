@@ -8,6 +8,9 @@ WORKDIR /home/unlock/nudge
 USER root
 
 RUN apk add --no-cache --virtual .build-deps \
+    git \
+    python \
+    build-base \
     && yarn --production \
     && apk del .build-deps
 
