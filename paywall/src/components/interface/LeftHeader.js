@@ -30,8 +30,7 @@ const TopHeader = styled.header`
 
   ${Media.phone`
     grid-template-columns: [first] 1fr [second] 48px;
-    grid-template-rows: ${props =>
-      props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
+    grid-template-rows: [first] auto;
     height: auto;
   `};
 `
