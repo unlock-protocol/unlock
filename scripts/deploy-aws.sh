@@ -42,7 +42,7 @@ ENV_VARS=`env | grep $TARGET_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s
 
 NPM_SCRIPT="yarn deploy"
 
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS -e UNLOCK_ENV=prod $SERVICE $NPM_SCRIPT
 docker cp `docker ps -alq`:/home/unlock/$SERVICE/out .
 
 BUCKET_NAME_VAR="${UPCASE_SERVICE//-/_}_${ENV_PREFIX}BUCKET_NAME"
