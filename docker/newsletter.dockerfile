@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for newsletter
 RUN mkdir /home/unlock/newsletter
@@ -9,6 +9,6 @@ RUN yarn --production
 
 # Build newsletter
 COPY --chown=node newsletter/ /home/unlock/newsletter/.
-RUN yarn build
+
 EXPOSE 3003
 CMD ["yarn", "start"]
