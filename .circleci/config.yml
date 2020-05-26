@@ -2,88 +2,97 @@ version: 2
 
 jobs:
   unlock-protocol-com-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
       - run:
-          name: Build unlock-protocol-com Image
-          command: scripts/build-image.sh unlock-protocol-com
-      - run:
           name: unlock-protocol-com tests
           command: scripts/tests.sh unlock-protocol-com
 
   unlock-app-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
       - run:
-          name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app
-      - run:
           name: unlock-app tests
           command: scripts/tests.sh unlock-app
 
   unlock-js-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
       - run:
-          name: Build unlock-js Image
-          command: scripts/build-image.sh unlock-js
-      - run:
           name: unlock-js tests
-          command: scripts/unlockjs-tests.sh unlock-js
+          command: scripts/tests.sh unlock-js
       - run:
           name: Log failing tests
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
   smart-contracts-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
       - run:
-          name: Build smart-contracts Image
-          command: scripts/build-image.sh smart-contracts
-      - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
 
   smart-contract-extensions-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh smart-contract-extensions $CIRCLE_BRANCH
       - run:
-          name: Build smart-contract-extensions Image
-          command: scripts/build-image.sh smart-contract-extensions
-      - run:
           name: Smart Contract Extension Tests
           command: scripts/tests.sh smart-contract-extensions
 
   locksmith-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
       DB_NAME: locksmith_test
@@ -93,82 +102,83 @@ jobs:
       - run:
           command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
-          name: Build Locksmith Image
-          command: scripts/build-image.sh locksmith
-      - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
 
   paywall-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
       - run:
-          name: Build paywall Image
-          command: scripts/build-image.sh paywall
-      - run:
           name: Paywall Tests
           command: scripts/tests.sh paywall
 
   newsletter-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
       - run:
-          name: Build newsletter Image
-          command: scripts/build-image.sh newsletter
-      - run:
           name: Newsletter Tests
           command: scripts/tests.sh newsletter
 
   wedlocks-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
       - run:
-          name: Build wedlocks Image
-          command: scripts/build-image.sh wedlocks
-      - run:
           name: Wedlocks Tests
           command: scripts/tests.sh wedlocks
 
   nudge-tests:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Build Nudge Image
-          command: scripts/build-image.sh nudge
       - run:
           name: Nudge Tests
           command: scripts/tests.sh nudge
 
   integration-tests:
     machine:
+      image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
-      - run:
-          name: Build Images
-          command: ./scripts/docker-compose-build.sh
       - run:
           name: Integration Tests
           command: scripts/integration-tests.sh
@@ -180,9 +190,13 @@ jobs:
           when: on_fail
 
   deploy-unlock-app-netlify:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -194,16 +208,17 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app
-      - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-unlock-protocol-com-netlify:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -212,16 +227,17 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build unlock-protocol-com Image
-          command: scripts/build-image.sh unlock-protocol-com
-      - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
-  deploy-paywall-netlify:
-    machine: true
+  deploy-paywall-aws:
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -233,16 +249,39 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build paywall Image
-          command: scripts/build-image.sh paywall
+          name: Deploy to AWS
+          command: scripts/deploy-aws.sh "$ENV_TARGET" paywall "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
+  deploy-paywall-netlify:
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-newsletter-netlify:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -254,16 +293,17 @@ jobs:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Build newsletter Image
-          command: scripts/build-image.sh newsletter
-      - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-wedlocks-netlify:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -271,9 +311,6 @@ jobs:
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Build wedlocks Image
-          command: scripts/build-image.sh wedlocks
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
@@ -283,6 +320,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -310,6 +349,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -337,6 +378,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -364,6 +407,8 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -387,14 +432,18 @@ jobs:
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
 
   promote-unlock-images:
-    machine: true
+    machine:
+      image: ubuntu-1604:202004-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
           name: Build Images
-          command: ./scripts/docker-compose-build.sh
+          command: UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
       - run:
           name: Push Images
           command: scripts/push-all-image.sh
@@ -416,18 +465,20 @@ workflows:
       - nudge-tests
       - integration-tests:
           requires:
-            - smart-contracts-tests
-            - smart-contract-extensions-tests
             - unlock-protocol-com-tests
             - unlock-app-tests
             - locksmith-tests
             - paywall-tests
+            - nudge-tests
             - wedlocks-tests
             - newsletter-tests
       - deploy-unlock-app-netlify:
           requires:
             - integration-tests
       - deploy-paywall-netlify:
+          requires:
+            - integration-tests
+      - deploy-paywall-aws:
           requires:
             - integration-tests
       - deploy-newsletter-netlify:

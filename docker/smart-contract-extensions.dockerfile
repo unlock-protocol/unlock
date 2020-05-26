@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for smart-contract-extensions
 RUN mkdir /home/unlock/smart-contract-extensions
@@ -16,6 +16,6 @@ RUN apk add --no-cache --virtual .build-deps-2 \
     && apk del .build-deps-2
 
 USER node
-# Build smart contract
+
+
 COPY --chown=node smart-contract-extensions/ /home/unlock/smart-contract-extensions/.
-RUN yarn build

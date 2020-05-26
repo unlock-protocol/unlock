@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
   ganache:
     restart: always
@@ -8,14 +8,17 @@ services:
     env_file: ../.env.dev.local
     ports:
       - 8545:8545
-  ganache-standup:    
+
+  ganache-standup:
+    image: ganache-standup
     build:
       context: ./development
       dockerfile: ganache.dockerfile
     env_file: ../.env.dev.local
     entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
     depends_on:
-      - ganache      
+      - ganache
+
   jaeger:
     restart: always
     image: jaegertracing/all-in-one:1.17
@@ -27,28 +30,42 @@ services:
       - '16686:16686'
       - '14268:14268'
       - '9411:9411'
+
   postgres:
     command: ['postgres', '-cshared_preload_libraries=pg_stat_statements']
     env_file: development.env
     ports:
       - '5432:5432'
+
   locksmith-migration:
     env_file: development.env
+    image: locksmith
     build:
-      context: ../locksmith/
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/locksmith.dockerfile
+      cache_from:
+        - locksmith
+        - unlockprotocol/locksmith:master
     command: yarn db:migrate
     depends_on:
       - postgres
+      - ganache
+
   locksmith:
     env_file: development.env
+    image: locksmith
     build:
-      context: ../locksmith/
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/locksmith.dockerfile
+      cache_from:
+        - locksmith
+        - unlockprotocol/locksmith:master
     ports:
       - '8080:8080'
     depends_on:
       - postgres
+      - ganache
+
   subgraph_deployment:
     build:
       context: ./development
@@ -56,33 +73,45 @@ services:
     command: ['node', './deploy-subgraph.js']
     depends_on:
       - graph-node
+
   wedlocks:
     image: unlockprotocol/wedlocks
     command: yarn dev
     env_file: development.env
     ports:
       - '1337:1337'
+
   graph-node:
     env_file: development.env
     depends_on:
       - ipfs
       - postgres
+
   nudge-migration:
+    image: nudge
     env_file: development.env
     build:
-      context: ../nudge
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: ./docker/nudge.dockerfile
+      cache_from:
+        - nudge
+        - unlockprotocol/nudge:master
     command: yarn db:migrate
-    depends_on: 
+    depends_on:
       - postgres
       - locksmith
       - wedlocks
+
   nudge:
+    image: nudge
     env_file: development.env
     build:
-      context: ../nudge
-      dockerfile: Dockerfile
-    depends_on: 
+      context: ../
+      dockerfile: ./docker/nudge.dockerfile
+      cache_from:
+        - nudge
+        - unlockprotocol/nudge:master
+    depends_on:
       - postgres
       - locksmith
       - wedlocks

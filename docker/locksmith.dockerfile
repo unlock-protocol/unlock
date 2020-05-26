@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for locksmith
 RUN mkdir /home/unlock/locksmith
@@ -15,11 +15,9 @@ RUN apk add --no-cache --virtual .build-deps \
     && yarn --production \
     && apk del .build-deps
 
-
 USER node
 # Build Locksmith
 COPY --chown=node locksmith/ /home/unlock/locksmith/.
-RUN yarn build
-EXPOSE 8080
 
+EXPOSE 8080
 CMD ["yarn", "start"]

@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for wedlocks
 RUN mkdir /home/unlock/wedlocks
@@ -9,4 +9,3 @@ RUN yarn --production
 
 # Build wedlocks
 COPY --chown=node wedlocks/ /home/unlock/wedlocks/.
-RUN yarn build
