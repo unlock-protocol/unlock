@@ -11,6 +11,9 @@ REPO_ROOT=`dirname "$0"`/..
 BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 
+# Setting the right env var
+export UNLOCK_ENV=$ENV_TARGET
+
 
 if [ "$IS_FORKED_PR" = "true" ]; then
   echo "Skipping deployment because this is a pull request from a forked repository."
