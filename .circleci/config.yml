@@ -4,9 +4,7 @@ jobs:
   unlock-protocol-com-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -20,9 +18,7 @@ jobs:
   unlock-app-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -36,9 +32,7 @@ jobs:
   unlock-js-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -56,9 +50,7 @@ jobs:
   smart-contracts-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -72,9 +64,7 @@ jobs:
   smart-contract-extensions-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -88,9 +78,7 @@ jobs:
   locksmith-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
       DB_USERNAME: locksmith_test
@@ -108,9 +96,7 @@ jobs:
   paywall-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -124,9 +110,7 @@ jobs:
   newsletter-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -140,9 +124,7 @@ jobs:
   wedlocks-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -156,9 +138,7 @@ jobs:
   nudge-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -174,7 +154,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -194,7 +173,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -216,7 +194,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -235,7 +212,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -257,7 +233,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -279,7 +254,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -301,7 +275,6 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -319,7 +292,6 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -348,7 +320,6 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -377,7 +348,6 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -406,7 +376,6 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
@@ -436,7 +405,7 @@ jobs:
       image: ubuntu-1604:202004-01
       docker_layer_caching: true
     environment:
-      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_REPOSITORY: xxunlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
