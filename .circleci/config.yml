@@ -443,7 +443,7 @@ jobs:
       - checkout
       - run:
           name: Build Images
-          command: docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
+          command: UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
       - run:
           name: Push Images
           command: scripts/push-all-image.sh
