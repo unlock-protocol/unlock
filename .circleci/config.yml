@@ -47,7 +47,7 @@ jobs:
           command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
       - run:
           name: unlock-js tests
-          command: scripts/unlockjs-tests.sh unlock-js
+          command: scripts/tests.sh unlock-js
       - run:
           name: Log failing tests
           command: ./scripts/docker-compose-log.sh
