@@ -1,4 +1,4 @@
-FROM unlock-core
+FROM unlockprotocol/unlock-core:master
 
 # Dependencies for unlock-protocol.com
 RUN mkdir /home/unlock/unlock-protocol.com
@@ -9,7 +9,6 @@ RUN yarn --production
 
 # Build Unlock app
 COPY --chown=node unlock-protocol.com/ /home/unlock/unlock-protocol.com/.
-RUN yarn build
 
 EXPOSE 3002
 CMD ["yarn", "start"]
