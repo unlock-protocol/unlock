@@ -152,7 +152,6 @@ jobs:
   integration-tests:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -171,7 +170,6 @@ jobs:
   deploy-unlock-app-netlify:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -192,7 +190,6 @@ jobs:
   deploy-unlock-protocol-com-netlify:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -210,7 +207,6 @@ jobs:
   deploy-paywall-aws:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -231,7 +227,6 @@ jobs:
   deploy-paywall-netlify:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -252,7 +247,6 @@ jobs:
   deploy-newsletter-netlify:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -273,7 +267,6 @@ jobs:
   deploy-wedlocks-netlify:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
@@ -403,7 +396,6 @@ jobs:
   promote-unlock-images:
     machine:
       image: ubuntu-1604:202004-01
-      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: xxunlockprotocol
       DOCKER_BUILDKIT: 1
