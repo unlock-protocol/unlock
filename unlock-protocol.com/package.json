@@ -67,7 +67,6 @@
     "yaml-front-matter": "4.1.0"
   },
   "devDependencies": {
-    "@svgr/cli": "4.3.3",
     "nodemon": "2.0.4"
   },
   "engines": {
