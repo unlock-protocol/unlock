@@ -32,7 +32,7 @@
     "apollo-boost": "0.4.9",
     "axios": "0.19.2",
     "babel-eslint": "10.1.0",
-    "babel-jest": "25.5.1",
+    "babel-jest": "26.0.1",
     "babel-loader": "8.1.0",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "1.10.7",
