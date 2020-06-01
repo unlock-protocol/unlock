@@ -62,7 +62,7 @@
     "react-test-renderer": "16.13.1",
     "rss": "1.2.2",
     "styled-components": "5.1.1",
-    "ts-jest": "25.5.1",
+    "ts-jest": "26.1.0",
     "typescript": "3.9.3",
     "yaml-front-matter": "4.1.0"
   },
