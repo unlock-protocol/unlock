@@ -6811,10 +6811,10 @@ configstore@^5.0.1:
     write-file-atomic "^3.0.0"
     xdg-basedir "^4.0.0"
 
-connected-next-router@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/connected-next-router/-/connected-next-router-1.0.2.tgz#ccb33b38508c2e76f6cdd1b52883970a67d8fd67"
-  integrity sha512-JxCgUwdEv9eTDsQQcyrME8Z79ngRbAB4aB1yhDDL0qqJX3dpJcNqpqTTctO9JMUJiXE2XRajx94NsOvFYVmNqw==
+connected-next-router@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/connected-next-router/-/connected-next-router-3.0.1.tgz#c7cc638db74d8a046ca9999b8b118aad8be2987d"
+  integrity sha512-ZbUear7ZgusM2MOS2/HqsJGNSLXinJYLdKWBODhXKeXZm3IJqiCN75hyC6l0BEoThP4qe8ZMHxhN5dxQhwNcGw==
 
 console-browserify@^1.1.0:
   version "1.2.0"
