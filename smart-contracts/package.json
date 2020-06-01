@@ -12,7 +12,7 @@
   "engineStrict": true,
   "dependencies": {
     "@openzeppelin/cli": "2.8.2",
-    "@openzeppelin/contracts-ethereum-package": "2.5.0",
+    "@openzeppelin/contracts-ethereum-package": "3.0.0",
     "@openzeppelin/upgrades": "2.8.0",
     "@typescript-eslint/eslint-plugin": "2.31.0",
     "@typescript-eslint/parser": "2.31.0",
