@@ -28,7 +28,7 @@
     "jest": "25.5.4",
     "lint-staged": "10.2.7",
     "prettier": "1.19.1",
-    "ts-jest": "25.5.1",
+    "ts-jest": "26.1.0",
     "typescript": "3.9.3"
   },
   "browserslist": "> 0.25%, not dead",

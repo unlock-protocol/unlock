@@ -71,7 +71,7 @@
     "react-test-renderer": "16.13.1",
     "redux": "4.0.5",
     "styled-components": "5.1.1",
-    "ts-jest": "25.5.1",
+    "ts-jest": "26.1.0",
     "typescript": "3.9.3",
     "validator": "13.0.0",
     "xstate": "4.10.0"
