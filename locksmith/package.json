@@ -57,7 +57,7 @@
     "apollo-server": "2.11.0",
     "apollo-server-express": "2.11.0",
     "aws-sdk": "2.635.0",
-    "babel-jest": "25.1.0",
+    "babel-jest": "26.0.1",
     "body-parser": "1.19.0",
     "coinbase": "2.0.8",
     "color-scheme": "1.0.1",
