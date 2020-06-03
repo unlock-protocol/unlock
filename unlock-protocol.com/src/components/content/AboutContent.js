@@ -25,7 +25,7 @@ const Post = ({ publishDate, description, slug }) => (
     <p>
       {description}
       &nbsp;
-      <a href={'/blog/' + slug} target="_blank" rel="noopener noreferrer">
+      <a href={`/blog/${slug}`} target="_blank" rel="noopener noreferrer">
         More...
       </a>
     </p>

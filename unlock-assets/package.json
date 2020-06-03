@@ -30,7 +30,7 @@
     "@svgr/cli": "5.4.0",
     "babel-eslint": "10.1.0",
     "cross-env": "7.0.2",
-    "eslint": "6.8.0",
+    "eslint": "7.1.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-config-standard": "14.1.1",
     "eslint-config-standard-react": "9.2.0",

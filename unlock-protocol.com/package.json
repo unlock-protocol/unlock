@@ -17,11 +17,8 @@
     "@types/react": "16.9.35",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.0",
-    "@typescript-eslint/eslint-plugin": "3.1.0",
-    "@typescript-eslint/parser": "3.1.0",
     "@unlock-protocol/unlock-assets": "1.1.0",
     "@zeit/next-source-maps": "0.0.3",
-    "@zeit/next-typescript": "1.1.1",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.0.1",
     "babel-loader": "8.1.0",
@@ -30,21 +27,13 @@
     "babel-preset-react-app": "9.1.2",
     "cross-env": "7.0.2",
     "dotenv": "8.2.0",
-    "eslint": "5.16.0",
+    "eslint": "7.1.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-config-standard": "14.1.1",
     "eslint-import-resolver-typescript": "2.0.0",
-    "eslint-plugin-import": "2.20.2",
-    "eslint-plugin-jest": "23.13.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-mocha": "6.3.0",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "3.1.3",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.20.0",
     "eslint-plugin-react-hooks": "4.0.4",
-    "eslint-plugin-standard": "4.0.1",
     "jest": "25.5.4",
     "jest-styled-components": "7.0.2",
     "lint-staged": "10.2.7",
@@ -75,14 +64,14 @@
   "engineStrict": true,
   "scripts": {
     "predev": "yarn build && yarn build-blog",
-    "dev": "nodemon src/server.js",
+    "dev": "next dev src",
     "build": "next build src",
     "build-blog": "node scripts/build-blog.js",
     "predeploy": "yarn build && yarn build-blog",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "prestart": "yarn build && yarn build-blog",
-    "start": "cross-env NODE_ENV=production node src/server.js",
+    "start": "cross-env NODE_ENV=production next start src",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
@@ -94,11 +83,6 @@
       "eslint --fix"
     ],
     "*.js.snap": []
-  },
-  "nodemonConfig": {
-    "watch": [
-      "src/server.js"
-    ]
   },
   "browserslist": [
     ">0.2%",
