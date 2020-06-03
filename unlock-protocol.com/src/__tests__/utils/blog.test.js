@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const MOCK_FILE_INFO = {
   '/foo/bar/blog/test1.md': `---
 title: This is a sample post
@@ -57,7 +58,7 @@ describe('blog', () => {
   it('should generate a blog feed array from a set of given markdown files', () => {
     expect.assertions(4)
     const blog = require('../../utils/blog')
-    let feed = blog.generateBlogFeed('/foo/bar')
+    const feed = blog.generateBlogFeed('/foo/bar')
 
     expect(feed[0].slug).toEqual('test2')
     expect(feed[1].slug).toEqual('test1')
@@ -69,8 +70,8 @@ describe('blog', () => {
     expect.assertions(4)
     const blog = require('../../utils/blog')
 
-    let feed = blog.generateBlogFeed('/foo/bar')
-    let pages = blog.generatePostPages(feed)
+    const feed = blog.generateBlogFeed('/foo/bar')
+    const pages = blog.generatePostPages(feed)
 
     expect(pages['/blog/test1'].page).toEqual('/post')
     expect(pages['/blog/test1'].query.slug).toEqual('test1')
@@ -82,8 +83,8 @@ describe('blog', () => {
     expect.assertions(8)
     const blog = require('../../utils/blog')
 
-    let feed = ['post1', 'post2', 'post3', 'post4', 'post5', 'post6', 'post7']
-    let pages = blog.generateBlogPages(feed.length, 2)
+    const feed = ['post1', 'post2', 'post3', 'post4', 'post5', 'post6', 'post7']
+    const pages = blog.generateBlogPages(feed.length, 2)
 
     expect(pages['/blog/1'].page).toEqual('/blog')
     expect(pages['/blog/1'].query.slug).toEqual('1')
@@ -100,7 +101,7 @@ describe('blog', () => {
 
     const blog = require('../../utils/blog')
 
-    let feed = blog.generateBlogFeed('/foo/bar')
+    const feed = blog.generateBlogFeed('/foo/bar')
     blog.generateBlogIndexFile('/foo/bar', feed, () => {
       expect(writtenData).toEqual(blogJson)
       done()
@@ -112,16 +113,16 @@ describe('blog', () => {
 
     const blog = require('../../utils/blog')
 
-    let feed = blog.generateBlogFeed('/foo/bar')
+    const feed = blog.generateBlogFeed('/foo/bar')
     blog.generateRSSFile(
       '/foo/bar',
       feed,
       'https://unlock-protocol.com',
       () => {
         const parser = new DOMParser()
-        let xmlDoc = parser.parseFromString(writtenData, 'text/xml')
+        const xmlDoc = parser.parseFromString(writtenData, 'text/xml')
 
-        let items = xmlDoc.getElementsByTagName('item')
+        const items = xmlDoc.getElementsByTagName('item')
 
         expect(xmlDoc.getElementsByTagName('channel').length).toEqual(1)
         expect(items.length).toEqual(2)

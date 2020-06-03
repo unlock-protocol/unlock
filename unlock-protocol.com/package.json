@@ -19,7 +19,6 @@
     "@types/styled-components": "5.1.0",
     "@unlock-protocol/unlock-assets": "1.1.0",
     "@zeit/next-source-maps": "0.0.3",
-    "@zeit/next-typescript": "1.1.1",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.0.1",
     "babel-loader": "8.1.0",
@@ -65,14 +64,14 @@
   "engineStrict": true,
   "scripts": {
     "predev": "yarn build && yarn build-blog",
-    "dev": "nodemon src/server.js",
+    "dev": "next dev src",
     "build": "next build src",
     "build-blog": "node scripts/build-blog.js",
     "predeploy": "yarn build && yarn build-blog",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "prestart": "yarn build && yarn build-blog",
-    "start": "cross-env NODE_ENV=production node src/server.js",
+    "start": "cross-env NODE_ENV=production next start src",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
@@ -84,11 +83,6 @@
       "eslint --fix"
     ],
     "*.js.snap": []
-  },
-  "nodemonConfig": {
-    "watch": [
-      "src/server.js"
-    ]
   },
   "browserslist": [
     ">0.2%",

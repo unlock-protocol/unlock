@@ -20,6 +20,65 @@ const isLocalhost = Boolean(
     )
 )
 
+async function registerValidSW(swUrl) {
+  try {
+    const registration = await navigator.serviceWorker.register(swUrl)
+
+    registration.onupdatefound = () => {
+      const installingWorker = registration.installing
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed') {
+          if (navigator.serviceWorker.controller) {
+            // At this point, the old content will have been purged and
+            // the fresh content will have been added to the cache.
+            // It's the perfect time to display a "New content is
+            // available; please refresh." message in your web app.
+            console.log('New content is available; please refresh.')
+          } else {
+            // At this point, everything has been precached.
+            // It's the perfect time to display a
+            // "Content is cached for offline use." message.
+            console.log('Content is cached for offline use.')
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error during service worker registration:', error)
+  }
+}
+
+async function checkValidServiceWorker(swUrl) {
+  // Check if the service worker can be found. If it can't reload the page.
+
+  try {
+    const response = await fetch(swUrl)
+    // Ensure service worker exists, and that we really are getting a JS file.
+    if (
+      response.status === 404 ||
+      response.headers.get('content-type').indexOf('javascript') === -1
+    ) {
+      // No service worker found. Probably a different app. Reload the page.
+
+      const registration = await navigator.serviceWorker.ready
+      await registration.unregister()
+      window.location.reload()
+    } else {
+      // Service worker found. Proceed as normal.
+      registerValidSW(swUrl)
+    }
+  } catch (error) {
+    console.log('No internet connection found. App is running in offline mode.')
+  }
+}
+
+export async function unregister() {
+  if ('serviceWorker' in navigator) {
+    const registration = await navigator.serviceWorker.ready
+    registration.unregister()
+  }
+}
+
 export default function register() {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
@@ -50,64 +109,5 @@ export default function register() {
         registerValidSW(swUrl)
       }
     })
-  }
-}
-
-async function registerValidSW(swUrl) {
-  try {
-    let registration = await navigator.serviceWorker.register(swUrl)
-
-    registration.onupdatefound = () => {
-      const installingWorker = registration.installing
-      installingWorker.onstatechange = () => {
-        if (installingWorker.state === 'installed') {
-          if (navigator.serviceWorker.controller) {
-            // At this point, the old content will have been purged and
-            // the fresh content will have been added to the cache.
-            // It's the perfect time to display a "New content is
-            // available; please refresh." message in your web app.
-            console.log('New content is available; please refresh.')
-          } else {
-            // At this point, everything has been precached.
-            // It's the perfect time to display a
-            // "Content is cached for offline use." message.
-            console.log('Content is cached for offline use.')
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Error during service worker registration:', error)
-  }
-}
-
-async function checkValidServiceWorker(swUrl) {
-  // Check if the service worker can be found. If it can't reload the page.
-
-  try {
-    let response = await fetch(swUrl)
-    // Ensure service worker exists, and that we really are getting a JS file.
-    if (
-      response.status === 404 ||
-      response.headers.get('content-type').indexOf('javascript') === -1
-    ) {
-      // No service worker found. Probably a different app. Reload the page.
-
-      let registration = await navigator.serviceWorker.ready
-      await registration.unregister()
-      window.location.reload()
-    } else {
-      // Service worker found. Proceed as normal.
-      registerValidSW(swUrl)
-    }
-  } catch (error) {
-    console.log('No internet connection found. App is running in offline mode.')
-  }
-}
-
-export async function unregister() {
-  if ('serviceWorker' in navigator) {
-    let registration = await navigator.serviceWorker.ready
-    registration.unregister()
   }
 }

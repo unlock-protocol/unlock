@@ -10,9 +10,6 @@ import {
 const config = getConfig().publicRuntimeConfig
 
 export const TwitterTags = ({ title, description, image }) => {
-  if (!title) title = pageTitle()
-  if (!description) description = PAGE_DESCRIPTION
-  if (!image) image = PAGE_DEFAULT_IMAGE
   const absolutePathImage = `${config.urlBase || ''}${image}`
 
   return (

@@ -6,9 +6,9 @@
  * @returns {string}
  */
 export const pageTitle = title => {
-  let pageTitle = ''
-  if (title) pageTitle += `${title} | `
-  return (pageTitle += "Unlock: The Web's new business model")
+  let baseTitle = ''
+  if (title) baseTitle += `${title} | `
+  return `${baseTitle}Unlock: The Web's new business model`
 }
 
 export const PAGE_DESCRIPTION =
