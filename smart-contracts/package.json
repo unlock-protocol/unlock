@@ -26,7 +26,7 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-config-standard": "14.1.1",
     "eslint-import-resolver-typescript": "2.0.0",
-    "eslint-plugin-mocha": "6.3.0",
+    "eslint-plugin-mocha": "7.0.1",
     "eslint-plugin-react-hooks": "4.0.4",
     "eth-gas-reporter": "0.2.17",
     "eth-sig-util": "2.5.3",
