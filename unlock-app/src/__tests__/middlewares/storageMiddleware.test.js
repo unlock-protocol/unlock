@@ -1,3 +1,4 @@
+/* eslint-disable no-import-assign */
 import { EventEmitter } from 'events'
 import * as accountUtils from '../../utils/accounts'
 import storageMiddleware from '../../middlewares/storageMiddleware'

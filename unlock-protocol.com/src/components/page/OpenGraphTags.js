@@ -10,11 +10,6 @@ import {
 const config = getConfig().publicRuntimeConfig
 
 export const OpenGraphTags = ({ title, description, image, canonicalPath }) => {
-  if (!title) title = pageTitle()
-  if (!description) description = PAGE_DESCRIPTION
-  if (!image) image = PAGE_DEFAULT_IMAGE
-  if (!canonicalPath) canonicalPath = '/'
-
   const absolutePath = `${config.urlBase || ''}${canonicalPath}`
   const absolutePathImage = `${config.urlBase || ''}${image}`
 

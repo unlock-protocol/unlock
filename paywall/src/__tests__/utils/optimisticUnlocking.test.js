@@ -1,3 +1,4 @@
+/* eslint-disable no-import-assign */
 import * as OptimisticUnlocking from '../../utils/optimisticUnlocking'
 import * as TransactionUtil from '../../utils/getTransaction'
 import * as Keys from '../../utils/keyExpirationTimestampFor'

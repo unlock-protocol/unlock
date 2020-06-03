@@ -43,7 +43,7 @@
     "cross-fetch": "3.0.4",
     "deep-object-diff": "1.1.0",
     "dotenv": "8.2.0",
-    "eslint": "6.8.0",
+    "eslint": "7.1.0",
     "eth-sig-util": "2.5.3",
     "ethereumjs-utils": "5.2.5",
     "ethers": "4.0.47",

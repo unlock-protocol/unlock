@@ -19,7 +19,7 @@ describe('blogLoader', () => {
           '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","publishDate":"Jan 7, 2037","slug":"future"}]}',
       }
     })
-    let { posts } = await loadBlogIndexFile(10)
+    const { posts } = await loadBlogIndexFile(10)
     expect(posts[0].slug).toEqual('test2')
     expect(posts[1].slug).toEqual('test1')
   })
@@ -33,7 +33,7 @@ describe('blogLoader', () => {
           '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","publishDate":"Jan 7, 2037","slug":"future"}]}',
       }
     })
-    let { posts } = await loadBlogIndexFile(1)
+    const { posts } = await loadBlogIndexFile(1)
     expect(posts[0].slug).toEqual('test2')
     expect(posts[1]).toBe(undefined)
   })
@@ -44,7 +44,7 @@ describe('blogLoader', () => {
     jest.mock('../../../blog/blog.index', () => {
       return { default: '{"foo":"bar"}' }
     })
-    let { posts } = await loadBlogIndexFile(10)
+    const { posts } = await loadBlogIndexFile(10)
     expect(posts.length).toEqual(0)
   })
 
@@ -62,7 +62,7 @@ Here is some markdown
 `,
       }
     })
-    let post = await loadBlogPost('what-is-unlock')
+    const post = await loadBlogPost('what-is-unlock')
     expect(post.title).toEqual('This is a sample post')
     expect(post.__content).toContain('Here is some markdown')
   })
@@ -81,7 +81,7 @@ Here is some markdown
 `,
       }
     })
-    let { slug, post } = await preparePostProps('what-is-unlock')
+    const { slug, post } = await preparePostProps('what-is-unlock')
     expect(slug).toEqual('what-is-unlock')
     expect(post.title).toEqual('This is a sample post')
   })
@@ -95,7 +95,7 @@ Here is some markdown
           '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","publishDate":"Jan 7, 2037","slug":"future"}]}',
       }
     })
-    let { posts } = await prepareBlogProps(10, 1)
+    const { posts } = await prepareBlogProps(10, 1)
     expect(posts[0].slug).toEqual('test2')
     expect(posts[1].slug).toEqual('test1')
   })
@@ -108,7 +108,7 @@ Here is some markdown
         default: '<arbitrary-tag>Hello, I am not JSON</arbitrary-tag>',
       }
     })
-    let { posts } = await loadBlogIndexFile(10)
+    const { posts } = await loadBlogIndexFile(10)
     expect(posts.length).toEqual(0)
   })
 
@@ -121,7 +121,7 @@ Here is some markdown
           '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","publishDate":"Jan 7, 2037","slug":"future"}]}',
       }
     })
-    let { posts } = await loadBlogIndexFile(10)
+    const { posts } = await loadBlogIndexFile(10)
     expect(posts.length).toEqual(2) // Ignores the future post
     expect(posts[0].slug).toEqual('test2')
     expect(posts[1].slug).toEqual('test1')

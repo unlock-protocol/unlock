@@ -18,7 +18,7 @@ const Blog = ({ posts, page, totalPages }) => {
   if (page > 1) {
     title += ` - Page ${page}`
   }
-  let description = 'News and updates from the Unlock Protocol team.'
+  const description = 'News and updates from the Unlock Protocol team.'
 
   return (
     <Layout forContent>
@@ -53,7 +53,7 @@ const Blog = ({ posts, page, totalPages }) => {
             </Link>
           </Left>
         )}
-        {page != totalPages && (
+        {page !== totalPages && (
           <Right>
             <Link href={`/blog/${totalPages}`}>
               <a>Last Page →</a>
@@ -80,8 +80,7 @@ Blog.propTypes = {
 
 Blog.getInitialProps = async context => {
   const { slug } = context.query // The slug is the page number
-  const page = parseInt(slug)
-  return await prepareBlogProps(10, page)
+  return prepareBlogProps(10, parseInt(slug, 10))
 }
 
 export default Blog

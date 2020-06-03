@@ -12,9 +12,8 @@ export const PaywallTags = ({ lock }) => {
         <meta name="lock" content={lock} />
       </>
     )
-  } else {
-    return <></>
   }
+  return <></>
 }
 
 PaywallTags.propTypes = {

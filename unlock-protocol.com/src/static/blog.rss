@@ -4,11 +4,11 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 27 May 2020 12:47:38 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 03 Jun 2020 14:32:09 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
             <title><![CDATA[Hooks]]></title>
-            <description><![CDATA[Our Public Lock contracts implements a hook pattern to let lock owners customize the beahvior of their lock upon key purchases.]]></description>
+            <description><![CDATA[Our Public Lock contracts implements a hook pattern to let lock owners customize the behavior of their lock upon key purchases and key cancellations.]]></description>
             <link>https://unlock-protocol.com/blog/hooks</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/hooks</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>

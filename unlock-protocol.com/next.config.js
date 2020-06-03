@@ -4,7 +4,6 @@ const path = require('path')
 const fs = require('fs')
 const { join, resolve } = require('path')
 const { promisify } = require('util')
-const withTypescript = require('@zeit/next-typescript')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
 
 const copyFile = promisify(fs.copyFile)
@@ -19,7 +18,7 @@ dotenv.config({
 // NOTE: do not set defaults here!
 // This is a mechanism to ensure that we do not deploy code with missing/wrong
 // environment variables
-let requiredConfigVariables = {
+const requiredConfigVariables = {
   unlockEnv,
   googleAnalyticsId,
   urlBase: process.env.URL_BASE,
@@ -31,9 +30,10 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
     if (requiredConfigVariables.unlockEnv === 'test') return
     if (requiredConfigVariables.unlockEnv === 'dev') {
-      return console.error(
+      console.error(
         `The configuration variable ${configVariableName} is falsy.`
       )
+      return
     }
     throw new Error(
       `The configuration variable ${configVariableName} is falsy.`
@@ -41,7 +41,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = withTypescript({
+module.exports = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({
@@ -68,7 +68,7 @@ module.exports = withTypescript({
     }
 
     // Our statically-defined pages to export
-    let pages = {
+    const pages = {
       '/': { page: '/home' },
       '/about': { page: '/about' },
       '/jobs': { page: '/jobs' },
@@ -79,4 +79,4 @@ module.exports = withTypescript({
 
     return addBlogPagesToPageObject(resolve(dir, '..'), pages)
   },
-})
+}

@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const yamlFront = require('yaml-front-matter')
 
 /**
@@ -42,7 +43,7 @@ export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
  */
 export const loadBlogPost = async slug => {
   try {
-    const fileContents = await require('../../blog/' + slug + '.md') // eslint-disable-line import/no-dynamic-require
+    const fileContents = await require(`../../blog/${slug}.md`) // eslint-disable-line import/no-dynamic-require
     return yamlFront.loadFront(fileContents.default)
   } catch (e) {
     return {}
