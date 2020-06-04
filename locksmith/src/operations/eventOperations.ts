@@ -1,4 +1,4 @@
-import * as Sequelize from 'sequelize'
+import { Op } from 'sequelize'
 import Normalizer from '../utils/normalizer'
 import { EventCreation } from '../types' // eslint-disable-line no-unused-vars
 import { EventLink } from '../models'
@@ -6,7 +6,6 @@ import { EventLink } from '../models'
 const models = require('../models')
 
 const { Event } = models
-const { Op } = Sequelize
 
 namespace EventOperations {
   export const create = async (event: EventCreation): Promise<any> => {

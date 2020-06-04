@@ -1,9 +1,7 @@
-import * as Sequelize from 'sequelize'
+import { Op } from 'sequelize'
 import EventOperations from '../../src/operations/eventOperations'
 
 const models = require('../../src/models')
-
-const { Op } = Sequelize
 
 const { Event } = models
 const eventData = {
