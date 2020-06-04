@@ -13,14 +13,14 @@ services:
       context: ./development
       dockerfile: ganache.dockerfile
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
     depends_on:
       - ganache-integration
 
   ganache-integration: # Used for integration tests
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     restart: always
     image: ganache-integratio
     build:
@@ -55,7 +55,7 @@ services:
 
   unlock-app: # Container for the dashboard
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     image: unlock-app
     build:
       context: ../
@@ -70,8 +70,8 @@ services:
 
   unlock-provider-unlock-app: # Container for the dashboard with unlock accounts ready
     env_file:
-      - ./${UNLOCK_ENV}.env
-      - integration-unlock-provider.env
+      - ../${UNLOCK_ENV}.env
+      - ../integration-unlock-provider.env
     image: unlock-app
     build:
       context: ../
@@ -86,7 +86,7 @@ services:
 
   unlock-protocol-com: # Container for the static site
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     image: unlock-protocol-com
     build:
       context: ../
@@ -99,7 +99,7 @@ services:
 
   paywall: # Container for the paywall application
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     image: paywall
     build:
       context: ../
@@ -119,7 +119,7 @@ services:
         - newsletter
         - unlockprotocol/newsletter:master
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     ports:
       - 3003:3003
 
@@ -132,7 +132,7 @@ services:
         - unlock-js
         - unlockprotocol/unlock-js:master
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     depends_on:
       - ganache-integration
 
@@ -145,7 +145,7 @@ services:
         - nudge
         - unlockprotocol/nudge:master
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
 
   wedlocks: # Container for wedlocks
     image: wedlocks
@@ -156,7 +156,7 @@ services:
         - wedlocks
         - unlockprotocol/wedlocks:master
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
 
   integration-tests: # Imagewhich runs integration tests
     image: integration-tests
@@ -168,7 +168,7 @@ services:
         - unlockprotocol/integration-tests:master
 
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
     depends_on:
       - ganache-integration
       - unlock-app
@@ -187,8 +187,8 @@ services:
         - locksmith
         - unlockprotocol/locksmith:master
     env_file:
-      - ././${UNLOCK_ENV}.env
-      - ./integration-locksmith.env
+      - ../${UNLOCK_ENV}.env
+      - ../integration-locksmith.env
     command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn start'
     ports:
       - 8080:8080
@@ -202,8 +202,8 @@ services:
 
   graph-node: # subgraph
     env_file:
-      - ././${UNLOCK_ENV}.env
-      - ./integration-graph-node.env
+      - ../${UNLOCK_ENV}.env
+      - ../integration-graph-node.env
     depends_on:
       - ipfs
       - postgres
@@ -228,4 +228,4 @@ services:
 
   postgres: # locksmith the subgraph store data in it
     env_file:
-      - ./${UNLOCK_ENV}.env
+      - ../${UNLOCK_ENV}.env
