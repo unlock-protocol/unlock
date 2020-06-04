@@ -54,7 +54,7 @@
     "eth-gas-reporter": "0.2.17",
     "ganache-cli": "6.9.1",
     "hardlydifficult-eth": "1.0.0",
-    "prettier": "1.19.1",
+    "prettier": "2.0.5",
     "solidity-coverage": "0.7.5",
     "solium": "1.2.5",
     "truffle": "5.1.28",

@@ -40,7 +40,7 @@
     "netlify-cli": "2.52.0",
     "next": "9.4.4",
     "path-match": "1.2.4",
-    "prettier": "1.19.1",
+    "prettier": "2.0.5",
     "prop-types": "15.7.2",
     "raw-loader": "4.0.1",
     "react": "16.13.1",
