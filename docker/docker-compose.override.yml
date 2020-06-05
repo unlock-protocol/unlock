@@ -33,12 +33,12 @@ services:
 
   postgres:
     command: ['postgres', '-cshared_preload_libraries=pg_stat_statements']
-    env_file: ../development.env
+    env_file: development.env
     ports:
       - '5432:5432'
 
   locksmith-migration:
-    env_file: ../development.env
+    env_file: development.env
     image: locksmith
     build:
       context: ../
@@ -52,7 +52,7 @@ services:
       - ganache
 
   locksmith:
-    env_file: ../development.env
+    env_file: development.env
     image: locksmith
     build:
       context: ../
@@ -77,19 +77,19 @@ services:
   wedlocks:
     image: unlockprotocol/wedlocks
     command: yarn dev
-    env_file: ../development.env
+    env_file: development.env
     ports:
       - '1337:1337'
 
   graph-node:
-    env_file: ../development.env
+    env_file: development.env
     depends_on:
       - ipfs
       - postgres
 
   nudge-migration:
     image: nudge
-    env_file: ../development.env
+    env_file: development.env
     build:
       context: ../
       dockerfile: ./docker/nudge.dockerfile
@@ -104,7 +104,7 @@ services:
 
   nudge:
     image: nudge
-    env_file: ../development.env
+    env_file: development.env
     build:
       context: ../
       dockerfile: ./docker/nudge.dockerfile
