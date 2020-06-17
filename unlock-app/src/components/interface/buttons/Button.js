@@ -34,11 +34,8 @@ const Button = ({
   )
 
   // Use Next nav for non external links
-  if (href) {
-    if (target != '_blank') {
-      return <Link href={href}>{button}</Link>
-    }
-    return button
+  if (href && target !== '_blank' && !href.startsWith('http')) {
+    return <Link href={href}>{button}</Link>
   }
 
   return button
