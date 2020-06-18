@@ -31,7 +31,7 @@ const BaseButton = ({
       {label && <Label>{label}</Label>}
     </ButtonLink>
   )
-  if (href) {
+  if (href && !href.startsWith('http')) {
     return <Link href={href}>{button}</Link>
   }
   return button
