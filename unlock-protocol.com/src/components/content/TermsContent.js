@@ -87,12 +87,10 @@ export const TermsContent = () => (
         at{' '}
         <Link href="/privacy">
           <a>Privacy Policy</a>
-        </Link>{' '}
+        </Link>
         and is incorporated into this Agreement. For inquiries in regard to the
         Privacy Policy, or to report a privacy related problem, please contact{' '}
-        <Link href="mailto:hello@unlock-protocol.com">
-          <a>hello@unlock-protocol.com</a>
-        </Link>
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
         .
       </Paragraph>
 
@@ -267,9 +265,7 @@ export const TermsContent = () => (
         fraudulent, misleading, or inappropriate manner, or if you cannot
         adequately resolve a dispute with a third party, you may notify Unlock
         Support at{' '}
-        <Link href="mailto:unlock-protocol.com">
-          <a>hello@unlock-protocol.com</a>
-        </Link>{' '}
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
         so that we may consider what action to take, if any, at our sole
         discretion. Your use or access to the Services, and any interaction with
         any third party services, products or protocols, especially including
@@ -612,8 +608,8 @@ export const TermsContent = () => (
         <ListItem>
           Identification of the Content that has been removed or to which access
           has been disabled and the location at which the Content appeared
-          before it was removed or disabled;
-        </ListItem>
+          before it was removed or{' '}
+        </ListItem>{' '}
         <ListItem>
           A statement that the Content provider, member or user has a good faith
           belief that the Content was removed or disabled as a result of mistake
@@ -649,13 +645,7 @@ export const TermsContent = () => (
       <Paragraph>
         Unlock Inc,
         <br />
-        163 Wyckoff Street,
-        <br />
-        Brooklyn, NY, 11217
-        <br />
-        <Link href="mailto:hello@unlock-protocol.com">
-          <a>hello@unlock-protocol.com</a>
-        </Link>
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
       </Paragraph>
 
       <SubTitle>Contact</SubTitle>
@@ -663,13 +653,7 @@ export const TermsContent = () => (
       <Paragraph>
         Unlock Inc,
         <br />
-        163 Wyckoff Street,
-        <br />
-        Brooklyn, NY, 11217
-        <br />
-        <Link href="mailto:hello@unlock-protocol.com">
-          <a>hello@unlock-protocol.com</a>
-        </Link>
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
       </Paragraph>
     </Section>
 
