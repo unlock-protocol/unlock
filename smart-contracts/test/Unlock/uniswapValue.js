@@ -13,7 +13,7 @@ let locks
 let lock
 let token
 
-contract('Unlock / uniswapValue', accounts => {
+contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
   beforeEach(async () => {
@@ -98,10 +98,10 @@ contract('Unlock / uniswapValue', accounts => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
         // 0.01 DAI is ~0.00006 ETH
         assert.equal(
-          gdp.shiftedBy(18).toFixed(5),
+          gdp.shiftedBy(-18).toFixed(5),
           gdpBefore
             .plus(web3.utils.toWei('0.00006', 'ether'))
-            .shiftedBy(18)
+            .shiftedBy(-18)
             .toFixed(5)
         )
       })
