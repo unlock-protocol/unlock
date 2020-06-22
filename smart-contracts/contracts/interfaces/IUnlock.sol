@@ -12,6 +12,14 @@ interface IUnlock
   function initialize(address _unlockOwner) external;
 
   /**
+   * @notice Allows the owner to set the WETH token address.
+   * @dev Used for value calculations
+   */
+  function initializeWeth(
+    address _weth
+  ) external;
+
+  /**
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
@@ -129,16 +137,22 @@ interface IUnlock
 
   // Map token address to exchange contract address if the token is supported
   // Used for GDP calculations
-  function uniswapExchanges(address) external view returns(address);
+  function uniswapOracles(address) external view returns(address);
+
+  // The WETH token address, used for value calculations
+  function weth() external view returns(address);
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns(uint16);
 
-  // allows the owner to set the exchange address to use for value conversions
-  // setting the _exchangeAddress to address(0) removes support for the token
-  function setExchange(
+  /**
+   * @notice allows the owner to set the oracle address to use for value conversions
+   * setting the _oracleAddress to address(0) removes support for the token
+   * @dev This will also call update to ensure at least one datapoint has been recorded.
+   */
+  function setOracle(
     address _tokenAddress,
-    address _exchangeAddress
+    address _oracleAddress
   ) external;
 
   /**
