@@ -11,8 +11,8 @@ contract('Unlock / initializers', accounts => {
   })
 
   it('There is only 1 public initializer in Unlock', async () => {
-    const count = unlockContract.abi.filter(x =>
-      x.name.toLowerCase().includes('initialize')
+    const count = unlockContract.abi.filter(
+      x => x.name.toLowerCase() === 'initialize'
     ).length
     assert.equal(count, 1)
   })
