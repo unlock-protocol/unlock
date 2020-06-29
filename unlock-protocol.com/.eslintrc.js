@@ -6,7 +6,7 @@ module.exports = {
     },
   },
   rules: {
-    'react/prefer-stateless-function': [2],
+    'no-underscore-dangle': 0,
     'react/forbid-prop-types': 2,
     'jsx-a11y/anchor-is-valid': [
       'error',
