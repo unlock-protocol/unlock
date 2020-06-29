@@ -76,8 +76,8 @@ describe('Price Controller', () => {
       // "keyPrice": 100,
       // "gasFee": 0,
       // "creditCardProcessing": 35,
-      // "unlockServiceFee": 50
-      expect(response.body).toEqual({ usd: 185 })
+      // "unlockServiceFee": 100
+      expect(response.body).toEqual({ usd: 236 })
       nockDone()
     })
   })

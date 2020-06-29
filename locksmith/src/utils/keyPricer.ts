@@ -57,7 +57,7 @@ export default class KeyPricer {
 
   // Fee denominated in cents
   unlockServiceFee(): number {
-    return 50
+    return 100 // gas prices are high!
   }
 
   async generate(lockAddress: string): Promise<ItemizedKeyPrice> {

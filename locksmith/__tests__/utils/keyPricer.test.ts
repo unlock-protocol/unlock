@@ -76,7 +76,7 @@ describe('KeyPricer', () => {
     it('should return our vig', () => {
       expect.assertions(1)
 
-      expect(keyPricer.unlockServiceFee()).toBe(50)
+      expect(keyPricer.unlockServiceFee()).toBe(100)
     })
   })
 
@@ -105,7 +105,7 @@ describe('KeyPricer', () => {
        * total:              185
        */
 
-      expect(keyPricer.creditCardProcessingFee(100)).toBe(35)
+      expect(keyPricer.creditCardProcessingFee(100)).toBe(36)
     })
 
     it('should return $0.61 on a 10DAI lock', () => {
@@ -114,14 +114,14 @@ describe('KeyPricer', () => {
       /**
        * key price:          1000
        * gas fee:               0
-       * unlockServiceFee:     50
-       * stripe percentage:    31 (1050 * 0.029, rounded up)
-       * stripe flat fee:      30
+       * unlockServiceFee:    100
+       * stripe percentage:    32 (1100 * 0.029, rounded up)
+       * stripe flat fee:       30
        *                   ------
-       * total:              1111
+       * total:              1112
        */
 
-      expect(keyPricer.creditCardProcessingFee(1000)).toBe(61)
+      expect(keyPricer.creditCardProcessingFee(1000)).toBe(62)
     })
   })
 })
