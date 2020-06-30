@@ -397,7 +397,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_REPOSITORY: xxunlockprotocol
+      DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
