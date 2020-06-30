@@ -59,25 +59,6 @@ const People = [
             interaction between people and objects and questions our
             relationship with progress.`,
   },
-  {
-    name: 'Akeem Adeniji',
-    picture: '/static/images/illustrations/akeem.jpg',
-    personalLink: 'http://akeemadeniji.com',
-    linkedIn: 'https://www.linkedin.com/in/akeemadeniji',
-    bio: `I'm a software engineer, comfortable wearing many hats, and
-            excited to help build our future enabling people with technology.
-            Prior to joining Unlock, I worked to launch and scale projects at
-            Facebook.`,
-  },
-  {
-    name: 'Christopher Nascone',
-    picture: '/static/images/illustrations/chris.jpg',
-    personalLink: 'https://nasc.one',
-    linkedIn: '',
-    bio: `I'm a software engineer from New Jersey, which means I have only
-          one degree of separation from the entire staff of Bell Labs. When I'm
-          not on the computer, you might find me wandering around in the woods.`,
-  },
 ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
 const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
