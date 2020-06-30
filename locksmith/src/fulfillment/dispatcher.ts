@@ -1,6 +1,7 @@
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 
 const { ethers } = require('ethers')
+const logger = require('../logger')
 
 const {
   findOrCreateTransaction,
@@ -65,6 +66,12 @@ export default class Dispatcher {
     if (lock.outstandingKeys == lock.maxNumberOfKeys) {
       throw new Error('No Available Keys.')
     }
+
+    logger.info('Send key purchase transaction', {
+      lockAddress,
+      recipient,
+      provider: this.host,
+    })
 
     const txHashPromise = new Promise(resolve => {
       // TODO: do not rely on 'transaction.new' event (as future versions of unlockjs may not be an event emitter anymore, but on the optional callback to purchaseKey. Unfortunately, that callback only includes the transaction hash for now. We will need unlock-js to yield the sender, recipient and data too)

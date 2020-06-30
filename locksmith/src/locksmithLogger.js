@@ -1,5 +1,6 @@
 const logger = require('./logger')
 
+// TODO: remove me
 module.exports = {
   logLockClone: (startAddress, targetAddress) => {
     logger.info(`${startAddress} -> ${targetAddress}`)
