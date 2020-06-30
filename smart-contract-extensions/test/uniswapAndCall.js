@@ -9,7 +9,7 @@ async function createAndFundExchange(uniswap, token, tokenOwner) {
   let tx = await uniswap.createExchange(token.address, {
     from: tokenOwner,
   })
-  const exchange = await protocols.uniswap.getExchange(
+  const exchange = await protocols.uniswapV1.getExchange(
     web3,
     tx.logs[0].args.exchange
   )
@@ -48,7 +48,7 @@ contract('swapAndCall', accounts => {
     sourceToken = await tokens.sai.deploy(web3, owner)
 
     // Uniswap exchange with liquidity for testing
-    const uniswap = await protocols.uniswap.deploy(web3, owner)
+    const uniswap = await protocols.uniswapV1.deploy(web3, owner)
     targetExchange = await createAndFundExchange(uniswap, targetToken, owner)
     sourceExchange = await createAndFundExchange(uniswap, sourceToken, owner)
 

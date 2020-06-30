@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 
 import Layout from '../interface/Layout'
 import Signature from '../interface/Signature'
@@ -115,9 +114,7 @@ export const PrivacyContent = () => (
         without verification of parental consent, we will delete that
         information. If you believe we might have any information from or about
         a child under 16, please contact us at
-        <Link href="mailto:hello@unlock-protocol.com">
-          <a>mailto:hello@unlock-protocol.com</a>
-        </Link>
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
         .
       </Paragraph>
 
@@ -368,9 +365,7 @@ export const PrivacyContent = () => (
       </Paragraph>
       <Paragraph>
         You may also send us an email at{' '}
-        <Link href="mailto:hello@unlock-protocol.com">
-          <a>hello@unlock-protocol.com</a>
-        </Link>{' '}
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
         to request access to, correct or delete any Personal Information that
         you have provided to us. We cannot delete your Personal Information
         except by also deleting your user account. We may not accommodate a
@@ -401,8 +396,7 @@ export const PrivacyContent = () => (
           You may request deletion of your account information from our servers
           by sending an e-mail to hello@unlock-protocol.com. Please note that
           some information may remain in our records after deletion of your
-          account. Remember, we do not own or control any blockchain
-          technologies and we cannot delete information present on the Ethereum
+          account. Re control any blockc information present on the Ethereum
           blockchain or other decentralized networks at any time. Your use of
           any blockchain technologies are at your own risk.
         </ListItem>
@@ -431,9 +425,7 @@ export const PrivacyContent = () => (
       <Paragraph>
         If you have any questions or concerns regarding privacy on the Services,
         please send us a detailed message at{' '}
-        <Link href="mailto:hello@unlock-protocol.com">
-          <a>hello@unlock-protocol.com</a>
-        </Link>
+        <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
         . We will make every effort to resolve your concerns.
       </Paragraph>
     </Section>

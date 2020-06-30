@@ -1,7 +1,6 @@
 const BigNumber = require('bignumber.js')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
-
-const { protocols } = require('hardlydifficult-ethereum-contracts')
+const { constants, tokens, protocols } = require('hardlydifficult-eth')
+const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -13,11 +12,9 @@ let unlock
 let locks
 let lock
 let token
-let exchange
 
 contract('Unlock / uniswapValue', accounts => {
-  const price = '10000000000000000'
-  const ethValue = '9969999900' // an arbitrary goal based on the liquidity provided for this test
+  const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
@@ -25,58 +22,73 @@ contract('Unlock / uniswapValue', accounts => {
 
   describe('A supported token', () => {
     beforeEach(async () => {
-      token = await tokens.dai.deploy(web3, accounts[0])
+      token = await tokens.dai.deploy(web3, protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(accounts[0], '1000000000000000000000000', {
-        from: accounts[0],
+      await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
+        from: protocolOwner,
       })
 
-      locks = await deployLocks(unlock, accounts[0], token.address)
+      locks = await deployLocks(unlock, protocolOwner, token.address)
       lock = locks.FIRST
 
       // Deploy the exchange
-      const uniswapFactory = await protocols.uniswap.deploy(web3, accounts[0])
-      const tx = await uniswapFactory.createExchange(token.address, {
-        from: accounts[0],
-      })
-      exchange = await protocols.uniswap.getExchange(
+      const weth = await tokens.weth.deploy(web3, protocolOwner)
+      const uniswapRouter = await protocols.uniswapV2.deploy(
         web3,
-        tx.logs[0].args.exchange
+        protocolOwner,
+        constants.ZERO_ADDRESS,
+        weth.address
+      )
+      // Create DAI <-> WETH pool
+      await token.mint(liquidityOwner, web3.utils.toWei('100000', 'ether'), {
+        from: protocolOwner,
+      })
+      await token.approve(uniswapRouter.address, constants.MAX_UINT, {
+        from: liquidityOwner,
+      })
+      await uniswapRouter.addLiquidityETH(
+        token.address,
+        web3.utils.toWei('2000', 'ether'),
+        '1',
+        '1',
+        liquidityOwner,
+        constants.MAX_UINT,
+        { from: liquidityOwner, value: web3.utils.toWei('10', 'ether') }
       )
 
-      // Approve transferring tokens to the exchange
-      await token.approve(exchange.address, -1, { from: accounts[0] })
+      const uniswapOracle = await protocols.uniswapOracle.deploy(
+        web3,
+        protocolOwner,
+        await uniswapRouter.factory()
+      )
 
-      // And seed it
-      await exchange.addLiquidity(
-        '1',
-        '1000000000000000000000000',
-        Math.round(Date.now() / 1000) + 60,
-        {
-          from: accounts[0],
-          value: web3.utils.toWei('1', 'ether'),
-        }
+      // Advancing time to avoid an intermittent test fail
+      await time.increase(time.duration.hours(1))
+
+      // Do a swap so there is some data accumulated
+      await uniswapRouter.swapExactETHForTokens(
+        1,
+        [weth.address, token.address],
+        keyOwner,
+        constants.MAX_UINT,
+        { from: keyOwner, value: web3.utils.toWei('1', 'ether') }
       )
 
       // Config in Unlock
-      await unlock.setExchange(token.address, exchange.address)
-    })
+      await unlock.initializeWeth(weth.address)
+      await unlock.setOracle(token.address, uniswapOracle.address)
 
-    it('Uniswap reports a non-zero value', async () => {
-      const value = await exchange.getTokenToEthInputPrice(price)
-      assert.equal(value.toString(), ethValue)
+      // Advance time so 1 full period has past and then update again so we have data point to read
+      await time.increase(time.duration.hours(30))
     })
 
     describe('Purchase key', () => {
-      const keyOwner = accounts[1]
       let gdpBefore
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await token.mint(keyOwner, price, { from: accounts[0] })
         await token.approve(lock.address, -1, { from: keyOwner })
-
         await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
         })
@@ -84,31 +96,36 @@ contract('Unlock / uniswapValue', accounts => {
 
       it('GDP went up by the expected ETH value', async () => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(gdp.toFixed(), gdpBefore.plus(ethValue).toFixed())
+        // 0.01 DAI is ~0.00006 ETH
+        assert.equal(
+          gdp.shiftedBy(-18).toFixed(5),
+          gdpBefore
+            .plus(web3.utils.toWei('0.00006', 'ether'))
+            .shiftedBy(-18)
+            .toFixed(5)
+        )
       })
     })
   })
 
   describe('A unsupported token', () => {
     beforeEach(async () => {
-      token = await tokens.dai.deploy(web3, accounts[0])
+      token = await tokens.dai.deploy(web3, protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(accounts[0], '1000000000000000000000000', {
-        from: accounts[0],
+      await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
+        from: protocolOwner,
       })
 
-      locks = await deployLocks(unlock, accounts[0], token.address)
+      locks = await deployLocks(unlock, protocolOwner, token.address)
       lock = locks.FIRST
     })
 
     describe('Purchase key', () => {
-      const keyOwner = accounts[1]
       let gdpBefore
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await token.mint(keyOwner, price, { from: accounts[0] })
         await token.approve(lock.address, -1, { from: keyOwner })
 
         await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
@@ -125,12 +142,11 @@ contract('Unlock / uniswapValue', accounts => {
 
   describe('ETH', () => {
     beforeEach(async () => {
-      locks = await deployLocks(unlock, accounts[0])
+      locks = await deployLocks(unlock, protocolOwner)
       lock = locks.FIRST
     })
 
     describe('Purchase key', () => {
-      const keyOwner = accounts[1]
       let gdpBefore
 
       beforeEach(async () => {
@@ -138,13 +154,13 @@ contract('Unlock / uniswapValue', accounts => {
 
         await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
-          value: price,
+          value: keyPrice,
         })
       })
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(gdp.toFixed(), gdpBefore.plus(price).toFixed())
+        assert.equal(gdp.toFixed(), gdpBefore.plus(keyPrice).toFixed())
       })
     })
   })

@@ -29,11 +29,10 @@ pragma solidity 0.5.17;
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
-import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IUniswapExchange.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IUnlock.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
-
+import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -81,9 +80,12 @@ contract Unlock is
   // The address of the public lock template, used when `createLock` is called
   address public publicLockAddress;
 
-  // Map token address to exchange contract address if the token is supported
+  // Map token address to oracle contract address if the token is supported
   // Used for GDP calculations
-  mapping (address => IUniswapExchange) public uniswapExchanges;
+  mapping (address => IUniswapOracle) public uniswapOracles;
+
+  // The WETH token address, used for value calculations
+  address public weth;
 
   // Events
   event NewLock(
@@ -114,6 +116,18 @@ contract Unlock is
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_unlockOwner);
+  }
+
+  /**
+   * @notice Allows the owner to set the WETH token address.
+   * @dev Used for value calculations
+   */
+  function initializeWeth(
+    address _weth
+  ) public
+    onlyOwner
+  {
+    weth = _weth;
   }
 
   /**
@@ -203,14 +217,11 @@ contract Unlock is
     if(_value > 0) {
       uint valueInETH;
       address tokenAddress = IPublicLock(msg.sender).tokenAddress();
-      if(tokenAddress != address(0)) {
-        // If priced in an ERC-20 token, find the supported uniswap exchange
-        IUniswapExchange exchange = uniswapExchanges[tokenAddress];
-        if(address(exchange) != address(0)) {
-          valueInETH = exchange.getTokenToEthInputPrice(_value);
-        } else {
-          // If the token type is not supported, assume 0 value
-          valueInETH = 0;
+      if(tokenAddress != address(0) && tokenAddress != weth) {
+        // If priced in an ERC-20 token, find the supported uniswap oracle
+        IUniswapOracle oracle = uniswapOracles[tokenAddress];
+        if(address(oracle) != address(0)) {
+          valueInETH = oracle.updateAndConsult(tokenAddress, _value, weth);
         }
       }
       else {
@@ -284,15 +295,21 @@ contract Unlock is
     emit SetLockTemplate(_publicLockAddress);
   }
 
-  // allows the owner to set the exchange address to use for value conversions
-  // setting the _exchangeAddress to address(0) removes support for the token
-  function setExchange(
+  /**
+   * @notice allows the owner to set the oracle address to use for value conversions
+   * setting the _oracleAddress to address(0) removes support for the token
+   * @dev This will also call update to ensure at least one datapoint has been recorded.
+   */
+  function setOracle(
     address _tokenAddress,
-    address _exchangeAddress
+    address _oracleAddress
   ) external
     onlyOwner
   {
-    uniswapExchanges[_tokenAddress] = IUniswapExchange(_exchangeAddress);
+    uniswapOracles[_tokenAddress] = IUniswapOracle(_oracleAddress);
+    if(_oracleAddress != address(0)) {
+      IUniswapOracle(_oracleAddress).update(_tokenAddress, weth);
+    }
   }
 
   // Allows the owner to change the value tracking variables as needed.
