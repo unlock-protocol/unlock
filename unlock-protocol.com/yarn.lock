@@ -15351,10 +15351,10 @@ react-focus-lock@^2.1.0:
     use-callback-ref "^1.2.1"
     use-sidecar "^1.0.1"
 
-react-ga@2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
-  integrity sha512-AjC7UOZMvygrWTc2hKxTDvlMXEtbmA0IgJjmkhgmQQ3RkXrWR11xEagLGFGaNyaPnmg24oaIiaNPnEoftUhfXA==
+react-ga@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-3.0.0.tgz#4d665389cf0c489c36c5fdf97722a7e53efdfc5b"
+  integrity sha512-IKqqCtSMe0IfSRNvbHAiwXwIXbuza4VvHvB/2N3hEiMFGSjv8fNI6obPH6bkDdIjDpwzbUqKs8895OxBckWJ2g==
 
 react-helmet-async@^1.0.2:
   version "1.0.4"
