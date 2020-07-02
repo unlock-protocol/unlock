@@ -1,4 +1,4 @@
-import { Address, Bytes, BigInt } from '@graphprotocol/graph-ts'
+import { Address, Bytes, BigInt, store } from '@graphprotocol/graph-ts'
 import {
   Lock,
   LockManager,
@@ -66,9 +66,8 @@ export function lockManagerRemoved(event: LockManagerRemoved): void {
   const lockAddress = event.address.toHex()
   const manager = event.params.account.toHex()
 
-  const lockManager = new LockManager(lockAddress.concat(manager))
-  lockManager.lock = Address.fromI32(0).toHex()
-  lockManager.save()
+  // Here we need to find the LockManager and remove it
+  store.remove('LockManager', lockAddress.concat(manager))
 }
 
 export function pricingChanged(event: PricingChanged): void {
