@@ -66,14 +66,8 @@ const Terms = withConfig(({ setTermsAccepted, config }) => {
             ✨
           </span>
           , but you need to agree to our{' '}
-          <Link href={`${config.unlockStaticUrl}/terms`}>
-            <a>Terms of Service</a>
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy">
-            <a>Privacy Policy</a>
-          </Link>
-          .
+          <a href={`${config.unlockStaticUrl}/terms`}>Terms of Service</a>
+          and <a href={`${config.unlockStaticUrl}/privacy`}>Privacy Policy</a>.
         </Message>
         <TermsButton onClick={() => setTermsAccepted(true)}>
           I agree
