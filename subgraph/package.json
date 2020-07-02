@@ -3,18 +3,25 @@
   "license": "UNLICENSED",
   "scripts": {
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
-    
-    "codegen": "graph codegen",  
+    "codegen": "graph codegen",
     "build": "node ./bin/build",
-
     "create": "node ./bin/create",
     "remove": "node ./bin/remove",
-    "deploy": "node ./bin/deploy"
+    "deploy": "node ./bin/deploy",
+    "lint": "eslint --ext .ts,.js src/ bin/"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.18.0",
     "@graphprotocol/graph-ts": "0.18.1",
+    "eslint": "7.3.1",
+    "fs-extra": "9.0.1",
     "handlebars": "4.7.6",
+    "lint-staged": "10.2.11",
     "yargs": "15.3.1"
+  },
+  "lint-staged": {
+    ".{js,ts,tsx}": [
+      "eslint --fix"
+    ]
   }
 }
