@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { BigInt, Bytes, Address } from '@graphprotocol/graph-ts'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock as PublicLock7 } from '../generated/templates/PublicLock7/PublicLock'
@@ -10,9 +11,9 @@ import {
 import { NewLock } from '../generated/Contract/Contract'
 
 export function processNewLock(event: NewLock): void {
-  const lockAddress = event.params.newLockAddress
-  const chainPublicLock = PublicLock.bind(lockAddress)
-  const lock = bootstrapLock(chainPublicLock)
+  let lockAddress = event.params.newLockAddress
+  let chainPublicLock = PublicLock.bind(lockAddress)
+  let lock = bootstrapLock(chainPublicLock)
 
   if (lock.version >= BigInt.fromI32(7)) {
     processV7(event, lock)
@@ -22,14 +23,14 @@ export function processNewLock(event: NewLock): void {
 }
 
 function processV7(event: NewLock, lock: Lock): void {
-  const chainPublicLock = PublicLock7.bind(event.params.newLockAddress)
+  let chainPublicLock = PublicLock7.bind(event.params.newLockAddress)
   lock.address = event.params.newLockAddress
   lock.price = chainPublicLock.keyPrice()
   lock.expirationDuration = chainPublicLock.expirationDuration()
   lock.creationBlock = event.block.number
   lock.owner = event.params.lockOwner
 
-  const lockName = chainPublicLock.try_name()
+  let lockName = chainPublicLock.try_name()
 
   if (!lockName.reverted) {
     lock.name = lockName.value
@@ -37,12 +38,12 @@ function processV7(event: NewLock, lock: Lock): void {
     lock.name = ''
   }
 
-  const totalSupply = chainPublicLock.try_totalSupply()
+  let totalSupply = chainPublicLock.try_totalSupply()
   if (!totalSupply.reverted) {
     lock.totalSupply = totalSupply.value
   }
 
-  const tokenAddress = chainPublicLock.try_tokenAddress()
+  let tokenAddress = chainPublicLock.try_tokenAddress()
   if (!tokenAddress.reverted) {
     lock.tokenAddress = tokenAddress.value
   } else {
@@ -57,14 +58,14 @@ function processV7(event: NewLock, lock: Lock): void {
 }
 
 function processPreV7(event: NewLock, lock: Lock): void {
-  const chainPublicLock = PublicLock.bind(event.params.newLockAddress)
+  let chainPublicLock = PublicLock.bind(event.params.newLockAddress)
   lock.address = event.params.newLockAddress
   lock.price = chainPublicLock.keyPrice()
   lock.expirationDuration = chainPublicLock.expirationDuration()
   lock.maxNumberOfKeys = chainPublicLock.maxNumberOfKeys()
   lock.owner = chainPublicLock.owner()
   lock.creationBlock = event.block.number
-  const tokenAddress = chainPublicLock.try_tokenAddress()
+  let tokenAddress = chainPublicLock.try_tokenAddress()
 
   if (!tokenAddress.reverted) {
     lock.tokenAddress = tokenAddress.value
@@ -73,13 +74,13 @@ function processPreV7(event: NewLock, lock: Lock): void {
       '0000000000000000000000000000000000000000'
     )
   }
-  const lockName = chainPublicLock.try_name()
+  let lockName = chainPublicLock.try_name()
   if (!lockName.reverted) {
     lock.name = lockName.value
   } else {
     lock.name = ''
   }
-  const totalSupply = chainPublicLock.try_totalSupply()
+  let totalSupply = chainPublicLock.try_totalSupply()
   if (!totalSupply.reverted) {
     lock.totalSupply = totalSupply.value
   }
@@ -89,18 +90,16 @@ function processPreV7(event: NewLock, lock: Lock): void {
 }
 
 function addInitialLockManager(lockAddress: Bytes, manager: Bytes): void {
-  const lockManager = new LockManager(
-    lockAddress.toHex().concat(manager.toHex())
-  )
+  let lockManager = new LockManager(lockAddress.toHex().concat(manager.toHex()))
   lockManager.lock = lockAddress.toHex()
   lockManager.address = manager
   lockManager.save()
 }
 
 function bootstrapLock(publicLock: PublicLock): Lock {
-  const version = publicLock.try_publicLockVersion()
+  let version = publicLock.try_publicLockVersion()
 
-  const lock = new Lock(publicLock._address.toHexString())
+  let lock = new Lock(publicLock._address.toHexString())
   if (!version.reverted) {
     lock.version = BigInt.fromI32(version.value)
   } else {

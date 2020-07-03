@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable prefer-destructuring */
 import { Address, Bytes, BigInt } from '@graphprotocol/graph-ts'
 import { CancelKey, ExpireKey } from '../../generated/Contract/PublicLock'
 import {
@@ -15,11 +17,11 @@ import {
 } from '../../generated/templates/PublicLock/PublicLock'
 
 export function handleLockTransfer(event: OwnershipTransferred): void {
-  const lock = Lock.load(event.address.toHex())
-  const { newOwner } = event.params
-  const { previousOwner } = event.params
+  let lock = Lock.load(event.address.toHex())
+  let newOwner = event.params.newOwner
+  let previousOwner = event.params.previousOwner
 
-  const newLockManagerId = lock.address.toHex().concat(newOwner.toHex())
+  let newLockManagerId = lock.address.toHex().concat(newOwner.toHex())
   let newLockManager = LockManager.load(newLockManagerId)
 
   if (newLockManager == null) {
@@ -30,9 +32,7 @@ export function handleLockTransfer(event: OwnershipTransferred): void {
   newLockManager.address = newOwner
   newLockManager.save()
 
-  const existingLockManagerId = lock.address
-    .toHex()
-    .concat(previousOwner.toHex())
+  let existingLockManagerId = lock.address.toHex().concat(previousOwner.toHex())
 
   let existingLockManager = LockManager.load(existingLockManagerId)
 
@@ -53,16 +53,16 @@ export function handleLockTransfer(event: OwnershipTransferred): void {
 }
 
 export function handlePriceChanged(event: PriceChanged): void {
-  const lockAddress = event.address.toHex()
-  const lock = Lock.load(lockAddress)
+  let lockAddress = event.address.toHex()
+  let lock = Lock.load(lockAddress)
   lock.price = event.params.keyPrice
   lock.save()
 }
 
 export function handleTransfer(event: Transfer): void {
-  const lock = Lock.load(event.address.toHex()) as Lock
-  const zeroAddress = '0x0000000000000000000000000000000000000000'
-  const lockContract = PublicLock.bind(event.address)
+  let lock = Lock.load(event.address.toHex()) as Lock
+  let zeroAddress = '0x0000000000000000000000000000000000000000'
+  let lockContract = PublicLock.bind(event.address)
 
   if (event.params._from.toHex() == zeroAddress) {
     newKeyPurchase(event, lock, lockContract)
@@ -72,17 +72,17 @@ export function handleTransfer(event: Transfer): void {
 }
 
 export function handleCancelKey(event: CancelKey): void {
-  const keyID = genKeyID(event.address, event.params.tokenId.toString())
-  const key = Key.load(keyID)
-  const lockContract = PublicLock.bind(event.address)
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
+  let key = Key.load(keyID)
+  let lockContract = PublicLock.bind(event.address)
   key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner)
   key.save()
 }
 
 export function handleExpireKey(event: ExpireKey): void {
-  const keyID = genKeyID(event.address, event.params.tokenId.toString())
-  const key = Key.load(keyID)
-  const lockContract = PublicLock.bind(event.address)
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
+  let key = Key.load(keyID)
+  let lockContract = PublicLock.bind(event.address)
   key.expiration = lockContract.keyExpirationTimestampFor(
     Address.fromString(key.owner)
   )
@@ -90,11 +90,11 @@ export function handleExpireKey(event: ExpireKey): void {
 }
 
 function existingKeyTransfer(event: Transfer): void {
-  const lockContract = PublicLock.bind(event.address)
-  const keyID = genKeyID(event.address, event.params._tokenId.toString())
-  const key = Key.load(keyID)
+  let lockContract = PublicLock.bind(event.address)
+  let keyID = genKeyID(event.address, event.params._tokenId.toString())
+  let key = Key.load(keyID)
 
-  const keyHolder = loadKeyHolder(event.params._to.toHex())
+  let keyHolder = loadKeyHolder(event.params._to.toHex())
   keyHolder.save()
 
   key.owner = event.params._to.toHex()
@@ -107,12 +107,12 @@ function newKeyPurchase(
   lock: Lock,
   lockContract: PublicLock
 ): void {
-  const keyID = genKeyID(event.address, event.params._tokenId.toString())
-  const keyPurchaseID = `${keyID}-${event.block.number.toString()}`
+  let keyID = genKeyID(event.address, event.params._tokenId.toString())
+  let keyPurchaseID = `${keyID}-${event.block.number.toString()}`
 
   genKey(event, lockContract)
 
-  const tokenAddress = lockContract.try_tokenAddress()
+  let tokenAddress = lockContract.try_tokenAddress()
 
   if (!tokenAddress.reverted) {
     lock.tokenAddress = tokenAddress.value
@@ -133,10 +133,10 @@ function newKeyPurchase(
 }
 
 function genKey(event: Transfer, lockContract: PublicLock): void {
-  const keyID = genKeyID(event.address, event.params._tokenId.toString())
+  let keyID = genKeyID(event.address, event.params._tokenId.toString())
 
   newlyMintedKey(event)
-  const key = new Key(keyID)
+  let key = new Key(keyID)
   key.lock = event.address.toHex()
   key.keyId = event.params._tokenId
   key.owner = event.params._to.toHex()
@@ -144,10 +144,10 @@ function genKey(event: Transfer, lockContract: PublicLock): void {
   // key.tokenURI = lockContract.tokenURI(key.keyId);
   key.createdAt = event.block.timestamp
 
-  const lock = Lock.load(key.lock)
+  let lock = Lock.load(key.lock)
 
   if (lock.version > BigInt.fromI32(0)) {
-    const tokenURI = lockContract.try_tokenURI(key.keyId)
+    let tokenURI = lockContract.try_tokenURI(key.keyId)
 
     if (!tokenURI.reverted) {
       key.tokenURI = lockContract.tokenURI(key.keyId)
@@ -165,7 +165,7 @@ function genKeyPurchase(
   tokenAddress: Bytes,
   price: BigInt
 ): void {
-  const keyPurchase = new KeyPurchase(keyID)
+  let keyPurchase = new KeyPurchase(keyID)
   keyPurchase.purchaser = purchaser
   keyPurchase.lock = lock
   keyPurchase.timestamp = timestamp
@@ -179,18 +179,18 @@ function genKeyID(lockAddress: Address, tokenId: string): string {
 }
 
 function loadKeyHolder(id: string): KeyHolder {
-  const keyHolder = KeyHolder.load(id)
+  let keyHolder = KeyHolder.load(id)
 
   if (keyHolder != null) {
     return keyHolder as KeyHolder
   } else {
-    const keyHolder = new KeyHolder(id)
+    let keyHolder = new KeyHolder(id)
     keyHolder.address = Address.fromString(id)
     return keyHolder
   }
 }
 
 function newlyMintedKey(event: Transfer): void {
-  const keyHolder = loadKeyHolder(event.params._to.toHex())
+  let keyHolder = loadKeyHolder(event.params._to.toHex())
   keyHolder.save()
 }

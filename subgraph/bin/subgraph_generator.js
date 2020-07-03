@@ -7,11 +7,11 @@ const fs = require('fs-extra')
 
 const templateValues = (network) => {
   let address
-
+  let networkName
   switch (network.toLowerCase()) {
-    case 'local-dev':
+    case 'winston':
       address = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
-      networkName = 'mainnet'
+      networkName = 'winston'
       break
     case 'kovan':
       address = '0x0B9fe963b789151E53b8bd601590Ea32F9f2453D'
@@ -25,6 +25,10 @@ const templateValues = (network) => {
       address = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
       networkName = 'mainnet'
       break
+    default:
+      console.error(
+        'Please provide a network name [winston, kovan, rinkeby, mainnet]'
+      )
   }
 
   return { network: networkName, unlockContractAddress: address }
@@ -47,7 +51,7 @@ let generationValues
 if (argv.network) {
   generationValues = templateValues(argv.network)
 } else {
-  generationValues = templateValues('local-dev')
+  generationValues = templateValues('winston')
 }
 
 generate(generationValues)

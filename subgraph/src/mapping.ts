@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-const */
 import { BigInt } from '@graphprotocol/graph-ts'
 import {
   NewLock,
@@ -12,7 +14,7 @@ import { processNewLock } from './lockProcessing'
 export function handleNewLock(event: NewLock): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  const entityId = event.transaction.hash.toHex()
+  let entityId = event.transaction.hash.toHex()
   let entity = UnlockEntity.load(entityId)
 
   // Entities only exist after they have been saved to the store;
@@ -22,7 +24,7 @@ export function handleNewLock(event: NewLock): void {
     entity.count = BigInt.fromI32(0)
   }
 
-  entity.count += BigInt.fromI32(1)
+  entity.count = BigInt.fromI32(1).plus(entity.count)
   entity.lockOwner = event.params.lockOwner
   entity.newLockAddress = event.params.newLockAddress
   entity.save()
@@ -30,17 +32,20 @@ export function handleNewLock(event: NewLock): void {
   processNewLock(event)
 }
 
-export function handleNewTokenURI(event: NewTokenURI): void {}
-export function handleNewGlobalTokenSymbol(event: NewGlobalTokenSymbol): void {}
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+export function handleNewTokenURI(_event: NewTokenURI): void {}
+export function handleNewGlobalTokenSymbol(
+  _event: NewGlobalTokenSymbol
+): void {}
+export function handleOwnershipTransferred(
+  _event: OwnershipTransferred
+): void {}
 export function handleCreateLock(call: CreateLockCall): void {
-  const entityId = call.transaction.hash.toHex()
+  let entityId = call.transaction.hash.toHex()
   let entity = UnlockEntity.load(entityId)
 
   if (entity == null) {
     entity = new UnlockEntity(entityId)
   }
 
-  const tokenAddress = call.inputs._tokenAddress.toHex()
   entity.save()
 }
