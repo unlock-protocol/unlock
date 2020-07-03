@@ -1,5 +1,4 @@
 #!/usr/bin/env node
 
-const SubgraphOperation = require('./subgraphOperation')
-
+const SubgraphOperation = require("./subgraphOperation");
 SubgraphOperation.process('remove')
