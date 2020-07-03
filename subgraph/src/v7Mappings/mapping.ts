@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable prefer-const */
-import { Address, Bytes, BigInt } from '@graphprotocol/graph-ts'
+import { Address, Bytes, BigInt, store } from '@graphprotocol/graph-ts'
 import {
   Lock,
   LockManager,
@@ -84,9 +84,7 @@ export function lockManagerRemoved(event: LockManagerRemoved): void {
   let lockAddress = event.address.toHex()
   let manager = event.params.account.toHex()
 
-  let lockManager = new LockManager(lockAddress.concat(manager))
-  lockManager.lock = Address.fromI32(0).toHex()
-  lockManager.save()
+  store.remove('LockManager', lockAddress.concat(manager))
 }
 
 export function pricingChanged(event: PricingChanged): void {
