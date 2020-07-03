@@ -19,7 +19,6 @@ if [ "$SKIP_SERVICES" != "true" ]; then
       unlock-js
       unlock-protocol.com
       wedlocks
-      subgraph
   )
 
   for i in "${SERVICES[@]}"
