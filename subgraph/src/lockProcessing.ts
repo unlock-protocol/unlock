@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign */
 /* eslint-disable prefer-const */
 import { BigInt, Bytes, Address } from '@graphprotocol/graph-ts'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
@@ -10,16 +12,23 @@ import {
 
 import { NewLock } from '../generated/Contract/Contract'
 
-export function processNewLock(event: NewLock): void {
-  let lockAddress = event.params.newLockAddress
-  let chainPublicLock = PublicLock.bind(lockAddress)
-  let lock = bootstrapLock(chainPublicLock)
+function addInitialLockManager(lockAddress: Bytes, manager: Bytes): void {
+  let lockManager = new LockManager(lockAddress.toHex().concat(manager.toHex()))
+  lockManager.lock = lockAddress.toHex()
+  lockManager.address = manager
+  lockManager.save()
+}
 
-  if (lock.version >= BigInt.fromI32(7)) {
-    processV7(event, lock)
+function bootstrapLock(publicLock: PublicLock): Lock {
+  let version = publicLock.try_publicLockVersion()
+
+  let lock = new Lock(publicLock._address.toHexString())
+  if (!version.reverted) {
+    lock.version = BigInt.fromI32(version.value)
   } else {
-    processPreV7(event, lock)
+    lock.version = BigInt.fromI32(0)
   }
+  return lock
 }
 
 function processV7(event: NewLock, lock: Lock): void {
@@ -89,21 +98,14 @@ function processPreV7(event: NewLock, lock: Lock): void {
   addInitialLockManager(lock.address, lock.owner as Bytes)
 }
 
-function addInitialLockManager(lockAddress: Bytes, manager: Bytes): void {
-  let lockManager = new LockManager(lockAddress.toHex().concat(manager.toHex()))
-  lockManager.lock = lockAddress.toHex()
-  lockManager.address = manager
-  lockManager.save()
-}
+export function processNewLock(event: NewLock): void {
+  let lockAddress = event.params.newLockAddress
+  let chainPublicLock = PublicLock.bind(lockAddress)
+  let lock = bootstrapLock(chainPublicLock)
 
-function bootstrapLock(publicLock: PublicLock): Lock {
-  let version = publicLock.try_publicLockVersion()
-
-  let lock = new Lock(publicLock._address.toHexString())
-  if (!version.reverted) {
-    lock.version = BigInt.fromI32(version.value)
+  if (lock.version >= BigInt.fromI32(7)) {
+    processV7(event, lock)
   } else {
-    lock.version = BigInt.fromI32(0)
+    processPreV7(event, lock)
   }
-  return lock
 }

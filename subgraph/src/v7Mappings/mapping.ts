@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable prefer-const */
 import { Address, Bytes, BigInt } from '@graphprotocol/graph-ts'
 import {
@@ -17,6 +19,21 @@ import {
   Transfer,
   PublicLock,
 } from '../../generated/templates/PublicLock7/PublicLock'
+
+function loadKeyHolder(id: string): KeyHolder {
+  let keyHolder = KeyHolder.load(id)
+
+  if (keyHolder != null) {
+    return keyHolder as KeyHolder
+  }
+  let newKeyHolder = new KeyHolder(id)
+  newKeyHolder.address = Address.fromString(id)
+  return newKeyHolder
+}
+
+function genKeyID(lockAddress: Address, tokenId: string): string {
+  return lockAddress.toHex().concat('-').concat(tokenId)
+}
 
 export function cancelKey(event: CancelKey): void {
   let keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -80,16 +97,64 @@ export function pricingChanged(event: PricingChanged): void {
   lock.save()
 }
 
-export function transfer(event: Transfer): void {
-  let lock = Lock.load(event.address.toHex()) as Lock
-  let zeroAddress = '0x0000000000000000000000000000000000000000'
-  let lockContract = PublicLock.bind(event.address)
+function newlyMintedKey(event: Transfer): void {
+  let keyHolder = loadKeyHolder(event.params.to.toHex())
+  keyHolder.save()
+}
 
-  if (event.params.from.toHex() == zeroAddress) {
-    newKeyPurchase(event, lock, lockContract)
-  } else {
-    existingKeyTransfer(event)
+function existingKeyTransfer(event: Transfer): void {
+  let lockContract = PublicLock.bind(event.address)
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
+  let key = Key.load(keyID)
+
+  let keyHolder = loadKeyHolder(event.params.to.toHex())
+  keyHolder.save()
+
+  key.owner = event.params.to.toHex()
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.to)
+  key.save()
+}
+
+function genKey(event: Transfer, lockContract: PublicLock): void {
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
+
+  newlyMintedKey(event)
+  let key = new Key(keyID)
+  key.lock = event.address.toHex()
+  key.keyId = event.params.tokenId
+  key.owner = event.params.to.toHex()
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.to)
+  key.tokenURI = lockContract.tokenURI(key.keyId)
+  key.createdAt = event.block.timestamp
+
+  let lock = Lock.load(key.lock)
+
+  if (lock.version > BigInt.fromI32(0)) {
+    let tokenURI = lockContract.try_tokenURI(key.keyId)
+
+    if (!tokenURI.reverted) {
+      key.tokenURI = lockContract.tokenURI(key.keyId)
+    }
   }
+
+  key.save()
+}
+
+function genKeyPurchase(
+  keyID: string,
+  purchaser: Bytes,
+  lock: Bytes,
+  timestamp: BigInt,
+  tokenAddress: Bytes,
+  price: BigInt
+): void {
+  let keyPurchase = new KeyPurchase(keyID)
+  keyPurchase.purchaser = purchaser
+  keyPurchase.lock = lock
+  keyPurchase.timestamp = timestamp
+  keyPurchase.tokenAddress = tokenAddress
+  keyPurchase.price = price
+  keyPurchase.save()
 }
 
 function newKeyPurchase(
@@ -122,78 +187,14 @@ function newKeyPurchase(
   )
 }
 
-function genKeyPurchase(
-  keyID: string,
-  purchaser: Bytes,
-  lock: Bytes,
-  timestamp: BigInt,
-  tokenAddress: Bytes,
-  price: BigInt
-): void {
-  let keyPurchase = new KeyPurchase(keyID)
-  keyPurchase.purchaser = purchaser
-  keyPurchase.lock = lock
-  keyPurchase.timestamp = timestamp
-  keyPurchase.tokenAddress = tokenAddress
-  keyPurchase.price = price
-  keyPurchase.save()
-}
-
-function newlyMintedKey(event: Transfer): void {
-  let keyHolder = loadKeyHolder(event.params.to.toHex())
-  keyHolder.save()
-}
-
-function genKey(event: Transfer, lockContract: PublicLock): void {
-  let keyID = genKeyID(event.address, event.params.tokenId.toString())
-
-  newlyMintedKey(event)
-  let key = new Key(keyID)
-  key.lock = event.address.toHex()
-  key.keyId = event.params.tokenId
-  key.owner = event.params.to.toHex()
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.to)
-  key.tokenURI = lockContract.tokenURI(key.keyId)
-  key.createdAt = event.block.timestamp
-
-  let lock = Lock.load(key.lock)
-
-  if (lock.version > BigInt.fromI32(0)) {
-    let tokenURI = lockContract.try_tokenURI(key.keyId)
-
-    if (!tokenURI.reverted) {
-      key.tokenURI = lockContract.tokenURI(key.keyId)
-    }
-  }
-
-  key.save()
-}
-
-function existingKeyTransfer(event: Transfer): void {
+export function transfer(event: Transfer): void {
+  let lock = Lock.load(event.address.toHex()) as Lock
+  let zeroAddress = '0x0000000000000000000000000000000000000000'
   let lockContract = PublicLock.bind(event.address)
-  let keyID = genKeyID(event.address, event.params.tokenId.toString())
-  let key = Key.load(keyID)
 
-  let keyHolder = loadKeyHolder(event.params.to.toHex())
-  keyHolder.save()
-
-  key.owner = event.params.to.toHex()
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.to)
-  key.save()
-}
-
-function loadKeyHolder(id: string): KeyHolder {
-  let keyHolder = KeyHolder.load(id)
-
-  if (keyHolder != null) {
-    return keyHolder as KeyHolder
+  if (event.params.from.toHex() === zeroAddress) {
+    newKeyPurchase(event, lock, lockContract)
   } else {
-    let keyHolder = new KeyHolder(id)
-    keyHolder.address = Address.fromString(id)
-    return keyHolder
+    existingKeyTransfer(event)
   }
-}
-
-function genKeyID(lockAddress: Address, tokenId: string): string {
-  return lockAddress.toHex().concat('-').concat(tokenId)
 }
