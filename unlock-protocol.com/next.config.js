@@ -26,7 +26,7 @@ const requiredConfigVariables = {
   intercomAppId: 'f99d98d3', // Hardcoded for now
 }
 
-Object.keys(requiredConfigVariables).forEach(configVariableName => {
+Object.keys(requiredConfigVariables).forEach((configVariableName) => {
   if (!requiredConfigVariables[configVariableName]) {
     if (requiredConfigVariables.unlockEnv === 'test') return
     if (requiredConfigVariables.unlockEnv === 'dev') {
