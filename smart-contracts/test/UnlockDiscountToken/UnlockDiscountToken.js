@@ -4,7 +4,7 @@ const { reverts } = require('truffle-assertions')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountToken.sol')
 const getProxy = require('../helpers/proxy')
 
-contract('UnlockDiscountToken', (accounts) => {
+contract('UnlockDiscountToken', accounts => {
   let unlockDiscountToken
   const minter = accounts[1]
 
