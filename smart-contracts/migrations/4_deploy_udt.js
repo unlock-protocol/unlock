@@ -3,6 +3,7 @@ const { scripts, ConfigManager } = require('@openzeppelin/cli')
 const { add, create, push } = scripts
 
 module.exports = async (deployer, networkName, accounts) => {
+  const minter = accounts[1]
   const proxyAdmin = accounts[9]
 
   const { network, txParams } = await ConfigManager.initNetworkConfiguration({
@@ -30,7 +31,7 @@ module.exports = async (deployer, networkName, accounts) => {
   await create({
     contractAlias: 'UnlockDiscountToken',
     methodName: 'initialize',
-    methodArgs: [],
+    methodArgs: [minter],
     from: proxyAdmin,
     network,
     txParams,
