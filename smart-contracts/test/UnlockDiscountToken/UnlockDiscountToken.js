@@ -4,16 +4,19 @@ const { reverts } = require('truffle-assertions')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountToken.sol')
 const getProxy = require('../helpers/proxy')
 
-contract('UnlockDiscountToken', accounts => {
+contract('UnlockDiscountToken', (accounts) => {
   let unlockDiscountToken
-  const owner = accounts[9]
+  const minter = accounts[1]
 
   before(async () => {
     unlockDiscountToken = await getProxy(UnlockDiscountToken)
   })
 
   it('shouldFail to call init again', async () => {
-    await reverts(unlockDiscountToken.initialize())
+    await reverts(
+      unlockDiscountToken.initialize(minter),
+      'Contract instance has already been initialized'
+    )
   })
 
   describe('Supply', () => {
@@ -36,7 +39,7 @@ contract('UnlockDiscountToken', accounts => {
           await unlockDiscountToken.totalSupply()
         )
         await unlockDiscountToken.mint(recipient, mintAmount, {
-          from: owner,
+          from: minter,
         })
       })
 
@@ -70,7 +73,7 @@ contract('UnlockDiscountToken', accounts => {
     before(async () => {
       for (let i = 0; i < 3; i++) {
         await unlockDiscountToken.mint(accounts[i], mintAmount, {
-          from: owner,
+          from: minter,
         })
       }
     })
@@ -106,6 +109,35 @@ contract('UnlockDiscountToken', accounts => {
         assert(
           balanceBefore1.plus(transferAmount).eq(balanceAfter1),
           'Recipient balance must have gone down by amount sent'
+        )
+      })
+    })
+  })
+
+  describe('Minters', () => {
+    const newMinter = accounts[2]
+
+    before(async () => {
+      await unlockDiscountToken.addMinter(newMinter, { from: minter })
+    })
+
+    it('newMinter can mint', async () => {
+      await unlockDiscountToken.mint(accounts[0], 1, {
+        from: newMinter,
+      })
+    })
+
+    describe('Renounce minter', () => {
+      before(async () => {
+        await unlockDiscountToken.renounceMinter({ from: newMinter })
+      })
+
+      it('newMinter cannot mint anymore', async () => {
+        await reverts(
+          unlockDiscountToken.mint(accounts[0], 1, {
+            from: newMinter,
+          }),
+          'MinterRole: caller does not have the Minter role'
         )
       })
     })
