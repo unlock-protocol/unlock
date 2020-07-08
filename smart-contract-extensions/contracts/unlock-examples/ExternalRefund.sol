@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.6.11;
 
 import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
