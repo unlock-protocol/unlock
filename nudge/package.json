@@ -26,7 +26,7 @@
     "blake2": "4.0.1",
     "cron": "1.8.2",
     "dotenv": "8.2.0",
-    "ethereumjs-util": "6.2.0",
+    "ethereumjs-util": "7.0.3",
     "ethers": "4.0.47",
     "graphql": "15.2.0",
     "graphql-tag": "2.10.3",
