@@ -65,8 +65,6 @@ contract Unlock is
     _;
   }
 
-  uint internal constant BASIS_POINTS_DEN = 10000;
-
   uint public grossNetworkProduct;
 
   uint public totalDiscountGranted;
@@ -93,7 +91,7 @@ contract Unlock is
   address public weth;
 
   // The UDT token address, used to mint tokens on referral
-  IMintableERC20 public udt;
+  address public udt;
 
   // The approx amount of gas required to purchase a key
   uint public estimatedGasForPurchase;
@@ -105,6 +103,9 @@ contract Unlock is
   );
 
   event ConfigUnlock(
+    address udt,
+    address weth,
+    uint estimatedGasForPurchase,
     string globalTokenSymbol,
     string globalTokenURI
   );
@@ -127,22 +128,6 @@ contract Unlock is
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_unlockOwner);
-  }
-
-  /**
-   * @notice Allows the owner to set key token addresses and configuration variables.
-   * @dev Used for value calculations and minting
-   */
-  function configure(
-    address _udt,
-    address _weth,
-    uint _estimatedGasForPurchase
-  ) public
-    onlyOwner
-  {
-    udt = IMintableERC20(_udt);
-    weth = _weth;
-    estimatedGasForPurchase = _estimatedGasForPurchase;
   }
 
   /**
@@ -251,16 +236,14 @@ contract Unlock is
       // Mint UDT
       if(_referrer != address(0))
       {
-        IUniswapOracle udtOracle = uniswapOracles[address(udt)];
+        IUniswapOracle udtOracle = uniswapOracles[udt];
         if(address(udtOracle) != address(0))
         {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
-          uint udtPrice = udtOracle.updateAndConsult(address(udt), 10 ** 18, weth);
+          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
           uint gasCost = estimatedGasForPurchase * tx.gasprice;
           uint tokensToMint = gasCost / udtPrice;
-          // If the delta is < 0.01% then no tokens will be minted
-          uint percentGNPChangeInBP = BASIS_POINTS_DEN.mul(valueInETH) / grossNetworkProduct;
-          uint maxTokens = percentGNPChangeInBP.mul(udt.totalSupply()) / BASIS_POINTS_DEN;
+          uint maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
           if(tokensToMint > maxTokens)
           {
             tokensToMint = maxTokens;
@@ -269,10 +252,10 @@ contract Unlock is
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
             uint devReward = tokensToMint.mul(20) / 100;
-            udt.mint(_referrer, tokensToMint - devReward);
+            IMintableERC20(udt).mint(_referrer, tokensToMint - devReward);
             if(devReward > 0)
             {
-              udt.mint(owner(), devReward);
+              IMintableERC20(udt).mint(owner(), devReward);
             }
           }
         }
@@ -306,18 +289,26 @@ contract Unlock is
     return 8;
   }
 
-  // function for the owner to update configuration variables
+  /**
+   * @notice Allows the owner to update configuration variables
+   */
   function configUnlock(
+    address _udt,
+    address _weth,
+    uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI
   ) external
     onlyOwner
   {
-    // ensure that this is an address to which a contract has been deployed.
+    udt = _udt;
+    weth = _weth;
+    estimatedGasForPurchase = _estimatedGasForPurchase;
+
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
 
-    emit ConfigUnlock(_symbol, _URI);
+    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI);
   }
 
   /**
