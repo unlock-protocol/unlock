@@ -76,6 +76,15 @@ contract IPublicLock
   ) external;
 
   /**
+   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   */
+  function approveBeneficiary(
+    address _spender,
+    uint _amount
+  ) external
+    returns (bool);
+
+  /**
    * A function which lets a Lock manager of the lock to change the price for future purchases.
    * @dev Throws if called by other than a Lock manager
    * @dev Throws if lock has been disabled
