@@ -482,4 +482,18 @@ contract IPublicLock
     function tokenOfOwnerByIndex(address _owner, uint256 index) public view returns (uint256 tokenId);
 
     function tokenByIndex(uint256 index) public view returns (uint256);
+
+
+
+    /**
+     * @notice An ERC-20 style transfer.
+     * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
+     * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
+     * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
+     */
+    function transfer(
+      address _to,
+      uint _value
+    ) public
+      returns (bool success);
 }
