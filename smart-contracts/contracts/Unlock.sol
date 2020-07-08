@@ -33,6 +33,8 @@ import './interfaces/IPublicLock.sol';
 import './interfaces/IUnlock.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import './interfaces/IMintableERC20.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -43,6 +45,7 @@ contract Unlock is
 {
   using Address for address;
   using Clone2Factory for address;
+  using SafeMath for uint;
 
   /**
    * The struct for a lock
@@ -61,6 +64,8 @@ contract Unlock is
     require(locks[msg.sender].deployed, 'ONLY_LOCKS');
     _;
   }
+
+  uint internal constant BASIS_POINTS_DEN = 10000;
 
   uint public grossNetworkProduct;
 
@@ -86,6 +91,12 @@ contract Unlock is
 
   // The WETH token address, used for value calculations
   address public weth;
+
+  // The UDT token address, used to mint tokens on referral
+  IMintableERC20 public udt;
+
+  // The approx amount of gas required to purchase a key
+  uint public estimatedGasForPurchase;
 
   // Events
   event NewLock(
@@ -119,15 +130,19 @@ contract Unlock is
   }
 
   /**
-   * @notice Allows the owner to set the WETH token address.
-   * @dev Used for value calculations
+   * @notice Allows the owner to set key token addresses and configuration variables.
+   * @dev Used for value calculations and minting
    */
-  function initializeWeth(
-    address _weth
+  function configure(
+    address _udt,
+    address _weth,
+    uint _estimatedGasForPurchase
   ) public
     onlyOwner
   {
+    udt = IMintableERC20(_udt);
     weth = _weth;
+    estimatedGasForPurchase = _estimatedGasForPurchase;
   }
 
   /**
@@ -209,7 +224,7 @@ contract Unlock is
    */
   function recordKeyPurchase(
     uint _value,
-    address /* _referrer */
+    address _referrer
   )
     public
     onlyFromDeployedLock()
@@ -229,8 +244,39 @@ contract Unlock is
         valueInETH = _value;
       }
 
-      grossNetworkProduct += valueInETH;
+      grossNetworkProduct = grossNetworkProduct.add(valueInETH);
+      // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
+
+      // Mint UDT
+      if(_referrer != address(0))
+      {
+        IUniswapOracle udtOracle = uniswapOracles[address(udt)];
+        if(address(udtOracle) != address(0))
+        {
+          // Get the value of 1 UDT (w/ 18 decimals) in ETH
+          uint udtPrice = udtOracle.updateAndConsult(address(udt), 10 ** 18, weth);
+          uint gasCost = estimatedGasForPurchase * tx.gasprice;
+          uint tokensToMint = gasCost / udtPrice;
+          // If the delta is < 0.01% then no tokens will be minted
+          uint percentGNPChangeInBP = BASIS_POINTS_DEN.mul(valueInETH) / grossNetworkProduct;
+          uint maxTokens = percentGNPChangeInBP.mul(udt.totalSupply()) / BASIS_POINTS_DEN;
+          if(tokensToMint > maxTokens)
+          {
+            tokensToMint = maxTokens;
+          }
+          if(tokensToMint > 0)
+          {
+            // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
+            uint devReward = tokensToMint.mul(20) / 100;
+            udt.mint(_referrer, tokensToMint - devReward);
+            if(devReward > 0)
+            {
+              udt.mint(owner(), devReward);
+            }
+          }
+        }
+      }
     }
   }
 
