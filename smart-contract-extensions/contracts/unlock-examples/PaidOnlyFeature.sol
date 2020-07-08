@@ -12,6 +12,9 @@ contract PaidOnlyFeature
   // The address of the Lock for this content
   IPublicLockV7Sol6 public lock;
 
+  // A very simple example functionality
+  uint public callCounter;
+
   // If the Lock's contract address is known when this is deployed
   // we can assign it in the constructor.
   constructor(IPublicLockV7Sol6 _lockAddress) public
@@ -26,6 +29,7 @@ contract PaidOnlyFeature
     require(lock.getHasValidKey(msg.sender), 'Purchase a key first!');
 
     // ...and then implement your feature as normal
+    callCounter++;
   }
 
   // You can also have free features of course
