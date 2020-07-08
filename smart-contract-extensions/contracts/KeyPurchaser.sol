@@ -1,4 +1,5 @@
-pragma solidity 0.6.6;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.6.11;
 
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
@@ -71,7 +72,7 @@ contract KeyPurchaser is Initializable, LockRoles
   string public name;
 
   /**
-   * @notice Metadata for these subscription terms which can be used to supress the offering
+   * @dev Metadata for these subscription terms which can be used to supress the offering
    * from the frontend.
    */
   bool internal hidden;

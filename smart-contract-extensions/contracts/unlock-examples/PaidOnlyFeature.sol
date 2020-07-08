@@ -1,4 +1,5 @@
-pragma solidity 0.6.6;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.6.11;
 
 // The IPublicLockV7Sol6 interface allows us to make calls to the Lock
 import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
@@ -11,6 +12,9 @@ contract PaidOnlyFeature
 {
   // The address of the Lock for this content
   IPublicLockV7Sol6 public lock;
+
+  // A very simple example functionality
+  uint public callCounter;
 
   // If the Lock's contract address is known when this is deployed
   // we can assign it in the constructor.
@@ -26,6 +30,7 @@ contract PaidOnlyFeature
     require(lock.getHasValidKey(msg.sender), 'Purchase a key first!');
 
     // ...and then implement your feature as normal
+    callCounter++;
   }
 
   // You can also have free features of course

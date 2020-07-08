@@ -196,4 +196,17 @@ contract MixinLockCore is
   {
     return _totalSupply;
   }
+
+  /**
+   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   */
+  function approveBeneficiary(
+    address _spender,
+    uint _amount
+  ) public
+    onlyLockManagerOrBeneficiary
+    returns (bool)
+  {
+    return IERC20(tokenAddress).approve(_spender, _amount);
+  }
 }

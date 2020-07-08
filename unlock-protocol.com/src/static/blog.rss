@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Thu, 18 Jun 2020 15:43:30 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 03 Jul 2020 18:30:24 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Recurring Memberships]]></title>
+            <description><![CDATA[Leveraring the ERC20 approach to allowances lets anyone easily create a recurring membership!]]></description>
+            <link>https://unlock-protocol.com/blog/recurring-memberships</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/recurring-memberships</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Fri, 03 Jul 2020 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Hooks]]></title>
             <description><![CDATA[Our Public Lock contracts implements a hook pattern to let lock owners customize the behavior of their lock upon key purchases and key cancellations.]]></description>
@@ -335,19 +343,19 @@
             <pubDate>Wed, 10 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Digital Cash. Big Deal.]]></title>
-            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
-            <link>https://unlock-protocol.com/blog/digital-cash</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
-            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Integrating Unlock with Known]]></title>
             <description><![CDATA[The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.]]></description>
             <link>https://unlock-protocol.com/blog/integrating-unlock-with-known</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/integrating-unlock-with-known</guid>
             <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Digital Cash. Big Deal.]]></title>
+            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
+            <link>https://unlock-protocol.com/blog/digital-cash</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
             <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
