@@ -8,7 +8,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / approveBeneficiary', (accounts) => {
+contract('Lock / approveBeneficiary', accounts => {
   const [daiOwner, beneficiary, keyOwner, spender, other] = accounts
 
   before(async () => {
