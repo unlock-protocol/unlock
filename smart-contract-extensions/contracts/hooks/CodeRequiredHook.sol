@@ -1,4 +1,5 @@
-pragma solidity 0.6.6;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.6.11;
 
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import '@unlock-protocol/unlock-abi-7/ILockKeyPurchaseHookV7.sol';
