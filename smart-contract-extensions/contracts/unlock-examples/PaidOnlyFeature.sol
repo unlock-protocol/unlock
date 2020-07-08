@@ -1,4 +1,4 @@
-pragma solidity 0.6.6;
+pragma solidity 0.6.11;
 
 // The IPublicLockV7Sol6 interface allows us to make calls to the Lock
 import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';

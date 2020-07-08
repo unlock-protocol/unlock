@@ -1,4 +1,4 @@
-pragma solidity 0.6.6;
+pragma solidity 0.6.11;
 
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
