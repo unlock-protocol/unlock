@@ -494,6 +494,6 @@ contract IPublicLock
     function transfer(
       address _to,
       uint _value
-    ) public
+    ) external
       returns (bool success);
 }
