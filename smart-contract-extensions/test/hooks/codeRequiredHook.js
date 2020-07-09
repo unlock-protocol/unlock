@@ -50,6 +50,24 @@ contract('CodeRequiredHook', accounts => {
     )
   })
 
+  it('reverts if adding a zero code', async () => {
+    await reverts(
+      hookContract.addCodes(lock.address, [constants.ZERO_ADDRESS], {
+      from: lockCreator,
+    }),
+      'INVALID_CODE'
+    )
+  })
+
+  it('reverts if removing a zero code', async () => {
+    await reverts(
+      hookContract.removeCodes(lock.address, [constants.ZERO_ADDRESS], {
+      from: lockCreator,
+    }),
+      'INVALID_CODE'
+    )
+  })
+
   it('can buy if you know the code', async () => {
     const messageToSign = web3.utils.keccak256(
       web3.eth.abi.encodeParameters(['address'], [keyBuyer])
