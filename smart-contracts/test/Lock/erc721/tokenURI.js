@@ -26,7 +26,7 @@ function stringShifter(str) {
   return lowercaseAddress
 }
 
-contract('Lock / erc721 / tokenURI', (accounts) => {
+contract('Lock / erc721 / tokenURI', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
 
