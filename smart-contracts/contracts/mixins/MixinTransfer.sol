@@ -168,6 +168,34 @@ contract MixinTransfer is
   }
 
   /**
+   * @notice An ERC-20 style transfer.
+   * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
+   * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
+   * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
+   */
+  function transfer(
+    address _to,
+    uint _value
+  ) public
+    returns (bool success)
+  {
+    uint maxTimeToSend = _value * expirationDuration;
+    Key storage fromKey = keyByOwner[msg.sender];
+    uint timeRemaining = fromKey.expirationTimestamp.sub(block.timestamp);
+    if(maxTimeToSend < timeRemaining)
+    {
+      shareKey(_to, fromKey.tokenId, maxTimeToSend);
+    }
+    else
+    {
+      transferFrom(msg.sender, _to, fromKey.tokenId);
+    }
+
+    // Errors will cause a revert
+    return true;
+  }
+
+  /**
   * @notice Transfers the ownership of an NFT from one address to another address
   * @dev This works identically to the other function with an extra data parameter,
   *  except this function just sets data to ''

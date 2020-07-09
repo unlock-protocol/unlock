@@ -12,9 +12,9 @@
     "deploy": "node ./bin/deploy"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.15.0",
-    "@graphprotocol/graph-ts": "0.15.0",
-    "handlebars": "^4.7.3",
-    "yargs": "^15.1.0"
+    "@graphprotocol/graph-cli": "0.18.0",
+    "@graphprotocol/graph-ts": "0.18.1",
+    "handlebars": "4.7.6",
+    "yargs": "15.3.1"
   }
 }
