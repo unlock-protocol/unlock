@@ -13,7 +13,7 @@ let lock
 
 const estimateGas = 252166
 
-contract('UnlockDiscountToken / mintingTokens', (accounts) => {
+contract('UnlockDiscountToken / mintingTokens', accounts => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
@@ -159,7 +159,10 @@ contract('UnlockDiscountToken / mintingTokens', (accounts) => {
           .times(rate)
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
-        gasSpent.times(0.2).shiftedBy(-18).toFixed(3)
+        gasSpent
+          .times(0.2)
+          .shiftedBy(-18)
+          .toFixed(3)
       )
     })
   })
