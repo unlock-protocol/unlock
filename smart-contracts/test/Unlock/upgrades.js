@@ -112,11 +112,7 @@ contract('Unlock / upgrades', accounts => {
               })
             } else {
               await unlock.methods
-                .configUnlock(
-                  lockTemplate._address,
-                  '',
-                  ''
-                )
+                .configUnlock(lockTemplate._address, '', '')
                 .send({
                   from: unlockOwner,
                   gas: constants.MAX_GAS,
