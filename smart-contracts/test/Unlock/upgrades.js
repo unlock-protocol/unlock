@@ -113,9 +113,6 @@ contract('Unlock / upgrades', accounts => {
             } else {
               await unlock.methods
                 .configUnlock(
-                  await unlock.udt(),
-                  await unlock.weth(),
-                  0,
                   lockTemplate._address,
                   '',
                   ''
