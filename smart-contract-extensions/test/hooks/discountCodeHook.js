@@ -218,6 +218,20 @@ contract('DiscountCodeHook', accounts => {
     )
   })
 
+  it('fails if you attempt to modify an address(0) code', async () => {
+    await reverts(
+      hookContract.addCodes(
+        lock.address,
+        [constants.ZERO_ADDRESS],
+        [5000],
+        {
+          from: lockCreator,
+        }
+      ),
+      'INVALID_CODE'
+    )
+  })
+
   describe('codes can be removed', () => {
     beforeEach(async () => {
       await hookContract.addCodes(
