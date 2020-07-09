@@ -75,7 +75,13 @@ contract('Unlock / uniswapValue', accounts => {
       )
 
       // Config in Unlock
-      await unlock.initializeWeth(weth.address)
+      await unlock.configUnlock(
+        await unlock.udt(),
+        weth.address,
+        await unlock.estimatedGasForPurchase(),
+        await unlock.globalTokenSymbol(),
+        await unlock.globalBaseTokenURI()
+      )
       await unlock.setOracle(token.address, uniswapOracle.address)
 
       // Advance time so 1 full period has past and then update again so we have data point to read
