@@ -33,6 +33,8 @@ import './interfaces/IPublicLock.sol';
 import './interfaces/IUnlock.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import './interfaces/IMintableERC20.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -43,6 +45,7 @@ contract Unlock is
 {
   using Address for address;
   using Clone2Factory for address;
+  using SafeMath for uint;
 
   /**
    * The struct for a lock
@@ -87,6 +90,12 @@ contract Unlock is
   // The WETH token address, used for value calculations
   address public weth;
 
+  // The UDT token address, used to mint tokens on referral
+  address public udt;
+
+  // The approx amount of gas required to purchase a key
+  uint public estimatedGasForPurchase;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -94,6 +103,9 @@ contract Unlock is
   );
 
   event ConfigUnlock(
+    address udt,
+    address weth,
+    uint estimatedGasForPurchase,
     string globalTokenSymbol,
     string globalTokenURI
   );
@@ -116,18 +128,6 @@ contract Unlock is
   {
     // We must manually initialize Ownable.sol
     Ownable.initialize(_unlockOwner);
-  }
-
-  /**
-   * @notice Allows the owner to set the WETH token address.
-   * @dev Used for value calculations
-   */
-  function initializeWeth(
-    address _weth
-  ) public
-    onlyOwner
-  {
-    weth = _weth;
   }
 
   /**
@@ -209,7 +209,7 @@ contract Unlock is
    */
   function recordKeyPurchase(
     uint _value,
-    address /* _referrer */
+    address _referrer
   )
     public
     onlyFromDeployedLock()
@@ -229,8 +229,40 @@ contract Unlock is
         valueInETH = _value;
       }
 
-      grossNetworkProduct += valueInETH;
+      grossNetworkProduct = grossNetworkProduct.add(valueInETH);
+      // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
+
+      // Mint UDT
+      if(_referrer != address(0))
+      {
+        IUniswapOracle udtOracle = uniswapOracles[udt];
+        if(address(udtOracle) != address(0))
+        {
+          // Get the value of 1 UDT (w/ 18 decimals) in ETH
+          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
+
+          // tokensToMint is either == to the gas cost times 1.25 to cover the 20% dev cut
+          uint tokensToMint = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
+          // or tokensToMint is capped by percent growth
+          uint maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
+          if(tokensToMint > maxTokens)
+          {
+            tokensToMint = maxTokens;
+          }
+
+          if(tokensToMint > 0)
+          {
+            // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
+            uint devReward = tokensToMint.mul(20) / 100;
+            IMintableERC20(udt).mint(_referrer, tokensToMint - devReward);
+            if(devReward > 0)
+            {
+              IMintableERC20(udt).mint(owner(), devReward);
+            }
+          }
+        }
+      }
     }
   }
 
@@ -260,18 +292,26 @@ contract Unlock is
     return 8;
   }
 
-  // function for the owner to update configuration variables
+  /**
+   * @notice Allows the owner to update configuration variables
+   */
   function configUnlock(
+    address _udt,
+    address _weth,
+    uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI
   ) external
     onlyOwner
   {
-    // ensure that this is an address to which a contract has been deployed.
+    udt = _udt;
+    weth = _weth;
+    estimatedGasForPurchase = _estimatedGasForPurchase;
+
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
 
-    emit ConfigUnlock(_symbol, _URI);
+    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI);
   }
 
   /**

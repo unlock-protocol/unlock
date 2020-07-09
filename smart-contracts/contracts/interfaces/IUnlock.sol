@@ -12,14 +12,6 @@ interface IUnlock
   function initialize(address _unlockOwner) external;
 
   /**
-   * @notice Allows the owner to set the WETH token address.
-   * @dev Used for value calculations
-   */
-  function initializeWeth(
-    address _weth
-  ) external;
-
-  /**
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
@@ -103,10 +95,13 @@ interface IUnlock
     view
     returns (string memory);
 
-  /** Function for the owner to update configuration variables.
-   *  Should throw if called by other than owner.
+  /**
+   * @notice Allows the owner to update configuration variables
    */
   function configUnlock(
+    address _udt,
+    address _weth,
+    uint _estimatedGasForPurchase,
     string calldata _symbol,
     string calldata _URI
   )
@@ -141,6 +136,12 @@ interface IUnlock
 
   // The WETH token address, used for value calculations
   function weth() external view returns(address);
+
+  // The UDT token address, used to mint tokens on referral
+  function udt() external view returns(address);
+
+  // The approx amount of gas required to purchase a key
+  function estimatedGasForPurchase() external view returns(uint);
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns(uint16);
