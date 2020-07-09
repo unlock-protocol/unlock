@@ -16,7 +16,7 @@ ERC20Detailed
    * @notice A one-time call to configure the token.
    * @param _minter A wallet with permissions to mint tokens and/or add other minters.
    */
-  function initialize(address _minter) public
+  function initialize(address _minter) public initializer()
   {
     ERC20Mintable.initialize(_minter);
     ERC20Detailed.initialize('Unlock Discount Token', 'UDT', 18);

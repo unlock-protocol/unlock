@@ -241,13 +241,16 @@ contract Unlock is
         {
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
-          uint gasCost = estimatedGasForPurchase * tx.gasprice;
-          uint tokensToMint = gasCost / udtPrice;
+
+          // tokensToMint is either == to the gas cost times 1.25 to cover the 20% dev cut
+          uint tokensToMint = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
+          // or tokensToMint is capped by percent growth
           uint maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
           if(tokensToMint > maxTokens)
           {
             tokensToMint = maxTokens;
           }
+
           if(tokensToMint > 0)
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer

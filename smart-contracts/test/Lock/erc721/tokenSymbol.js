@@ -9,7 +9,7 @@ let lock
 let txObj
 let event
 
-contract('Lock / erc721 / tokenSymbol', accounts => {
+contract('Lock / erc721 / tokenSymbol', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
 
@@ -25,6 +25,9 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
     describe('set the global symbol', () => {
       beforeEach(async () => {
         txObj = await unlock.configUnlock(
+          await unlock.udt(),
+          await unlock.weth(),
+          0,
           'KEY',
           await unlock.globalBaseTokenURI(),
           {
@@ -52,9 +55,16 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
       await reverts(
-        unlock.configUnlock('BTC', await unlock.globalBaseTokenURI(), {
-          from: accounts[1],
-        })
+        unlock.configUnlock(
+          await unlock.udt(),
+          await unlock.weth(),
+          0,
+          'BTC',
+          await unlock.globalBaseTokenURI(),
+          {
+            from: accounts[1],
+          }
+        )
       )
     })
   })

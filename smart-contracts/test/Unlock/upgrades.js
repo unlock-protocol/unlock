@@ -40,7 +40,7 @@ let project
 let proxy
 let unlock
 
-contract('Unlock / upgrades', accounts => {
+contract('Unlock / upgrades', (accounts) => {
   const unlockOwner = accounts[9]
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
@@ -112,7 +112,14 @@ contract('Unlock / upgrades', accounts => {
               })
             } else {
               await unlock.methods
-                .configUnlock(lockTemplate._address, '', '')
+                .configUnlock(
+                  await unlock.udt(),
+                  await unlock.weth(),
+                  0,
+                  lockTemplate._address,
+                  '',
+                  ''
+                )
                 .send({
                   from: unlockOwner,
                   gas: constants.MAX_GAS,
