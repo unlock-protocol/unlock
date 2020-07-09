@@ -15,8 +15,8 @@ contract('Lock / configUnlock', accounts => {
   describe('configuring the Unlock contract', () => {
     it('should let the owner configure the Unlock contract', async () => {
       await unlock.configUnlock(
-        await unlock.udt,
-        await unlock.weth,
+        await unlock.udt(),
+        await unlock.weth(),
         0,
         '',
         '',
