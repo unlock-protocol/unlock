@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let lock
 
-contract('Lock / transfer', (accounts) => {
+contract('Lock / transfer', accounts => {
   const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
 
   beforeEach(async () => {
