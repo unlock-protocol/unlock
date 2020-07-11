@@ -72,7 +72,7 @@
     "build": "truffle compile --all",
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -e 1000000",
     "zos": "openzeppelin",
-    "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
+    "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (truffle-flattener contracts/Unlock.sol > build/Unlock-Flattened.sol) && (truffle-flattener contracts/UnlockDiscountToken.sol > build/UnlockDiscountToken-Flattened.sol) && (echo Wrote files: build/*-Flattened.sol)",
     "verify": "truffle run verify contracts/Unlock.sol contracts/PublicLock.sol contracts/UnlockDiscountToken.sol",
     "debug": "truffle debug"
   },
