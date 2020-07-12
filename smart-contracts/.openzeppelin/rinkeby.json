@@ -454,11 +454,11 @@
       }
     },
     "PublicLock": {
-      "address": "0xaEfDC771c8b63C6727bD915cB85fEF4A0e933B9C",
-      "constructorCode": "608060405234801561001057600080fd5b50615b5b80620000216000396000f3fe",
-      "bodyBytecodeHash": "181d8ae90ccfb2109a8cb747306c8d33da67270088aa911ee0303b78853d0b9a",
-      "localBytecodeHash": "21a84fb4ef837b6b379f276cb721094636624235cf83af3f65a1a701cf66ba01",
-      "deployedBytecodeHash": "21a84fb4ef837b6b379f276cb721094636624235cf83af3f65a1a701cf66ba01",
+      "address": "0xbbC908e8cFf9eebe7E85B3E95836C3248563600a",
+      "constructorCode": "608060405234801561001057600080fd5b50615b5a80620000216000396000f3fe",
+      "bodyBytecodeHash": "ef4f208db71a89671d56187a38600d98c956ead7b606a0524098b62148783875",
+      "localBytecodeHash": "60c330f321620b54f6aff1e81aa0a3e59879ed763de971f6da07dbd577a300e9",
+      "deployedBytecodeHash": "60c330f321620b54f6aff1e81aa0a3e59879ed763de971f6da07dbd577a300e9",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -798,7 +798,34 @@
         "hasSelfDestruct": false,
         "hasDelegateCall": false,
         "hasInitialValuesInDeclarations": false,
-        "uninitializedBaseContracts": []
+        "uninitializedBaseContracts": [],
+        "storageUncheckedVars": [
+          {
+            "contract": "MixinLockManagerRole",
+            "path": "contracts/mixins/MixinLockManagerRole.sol",
+            "label": "lockManagers",
+            "astId": 5445,
+            "type": "t_struct<Roles.Role>",
+            "src": "431:31:38"
+          },
+          {
+            "contract": "MixinKeyGranterRole",
+            "path": "contracts/mixins/MixinKeyGranterRole.sol",
+            "label": "keyGranters",
+            "astId": 4234,
+            "type": "t_struct<Roles.Role>",
+            "src": "490:30:35"
+          },
+          {
+            "contract": "MixinKeys",
+            "path": "contracts/mixins/MixinKeys.sol",
+            "label": "keyByOwner",
+            "astId": 4355,
+            "type": "t_mapping<t_struct<MixinKeys.Key>>",
+            "src": "1158:44:36"
+          }
+        ],
+        "storageDiff": []
       }
     }
   },
@@ -815,7 +842,7 @@
     ]
   },
   "zosversion": "2.2",
-  "version": "0.5.0",
+  "version": "0.0.8",
   "proxyAdmin": {
     "address": "0xB43499AD74aA983560da379554fe798CF59C3E42"
   }
