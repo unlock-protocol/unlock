@@ -167,10 +167,14 @@ function existingKeyTransfer(event: Transfer): void {
 
 export function handleTransfer(event: Transfer): void {
   let lock = Lock.load(event.address.toHex()) as Lock
-  let zeroAddress = '0x0000000000000000000000000000000000000000'
+  let zeroAddress = Address.fromString(
+    '0000000000000000000000000000000000000000'
+  ).toHexString()
   let lockContract = PublicLock.bind(event.address)
 
-  if (event.params._from.toHex() === zeroAddress) {
+  // When using === the strings are different.
+  // eslint-disable-next-line eqeqeq
+  if (event.params._from.toHexString() == zeroAddress) {
     newKeyPurchase(event, lock, lockContract)
   } else {
     existingKeyTransfer(event)

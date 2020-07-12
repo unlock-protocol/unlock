@@ -190,7 +190,9 @@ export function transfer(event: Transfer): void {
   let zeroAddress = '0x0000000000000000000000000000000000000000'
   let lockContract = PublicLock.bind(event.address)
 
-  if (event.params.from.toHex() === zeroAddress) {
+  // When using === the strings are different.
+  // eslint-disable-next-line eqeqeq
+  if (event.params.from.toHex() == zeroAddress) {
     newKeyPurchase(event, lock, lockContract)
   } else {
     existingKeyTransfer(event)
