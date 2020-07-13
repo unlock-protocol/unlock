@@ -25,7 +25,7 @@ The endgoal is to be able to easily deploy the same code to its respective subgr
 
 ## Building the subgraph.yml file
 
-In addition to the entities and handlers to be utilized, the file also includes the lock contract address and the relevant network name. In making this process easier, this file is now generated based upon a template. 
+In addition to the entities and handlers to be utilized, the file also includes the lock contract address and the relevant network name. In making this process easier, this file is now generated based upon a template.
 
 Generate via the build script:
 

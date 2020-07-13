@@ -7,59 +7,88 @@
     ":doNotPinPackage(node)"
   ],
   "timezone": "America/Los_Angeles",
-  "schedule": ["on the first day of the month"],
+  "schedule": [
+    "on the first day of the month"
+  ],
   "rebaseStalePrs": false,
   "minor": {
     "groupName": "minor and patch updates"
   },
   "packageRules": [
     {
-      "paths": ["tests/**"],
+      "paths": [
+        "tests/**"
+      ],
       "minor": {
         "groupName": "tests"
       }
     },
     {
-      "paths": ["locksmith/**"],
+      "paths": [
+        "locksmith/**"
+      ],
       "minor": {
         "groupName": "locksmith"
       }
     },
     {
-      "paths": ["paywall/**"],
+      "paths": [
+        "paywall/**"
+      ],
       "minor": {
         "groupName": "paywall"
       }
     },
     {
-      "paths": ["smart-contracts/**", "smart-contract-extensions/**"],
+      "paths": [
+        "smart-contracts/**",
+        "smart-contract-extensions/**"
+      ],
       "minor": {
         "groupName": "smart-contracts"
       },
-      "reviewers": ["NickCuso"]
+      "reviewers": [
+        "NickCuso"
+      ]
     },
     {
-      "paths": ["unlock-app/**"],
+      "paths": [
+        "unlock-app/**"
+      ],
       "minor": {
         "groupName": "unlock-app"
       }
     },
     {
-      "paths": ["unlock-js/**"],
+      "paths": [
+        "unlock-js/**"
+      ],
       "minor": {
         "groupName": "unlock-js"
       }
     },
     {
-      "paths": ["unlock-protocol.com/**"],
+      "paths": [
+        "unlock-protocol.com/**"
+      ],
       "minor": {
         "groupName": "unlock-protocol.com"
       }
     },
     {
-      "paths": ["wedlocks/**"],
+      "paths": [
+        "wedlocks/**"
+      ],
       "minor": {
         "groupName": "wedlocks"
+      }
+    },
+    {
+      "paths": [
+        "subgraph/**"
+      ],
+      "minor": {
+        "groupName": "subgraph"
       }
     },
     {
@@ -71,22 +100,35 @@
       }
     },
     {
-      "packageNames": ["hardlydifficult-ethereum-contracts"],
-      "schedule": ["at any time"],
+      "packageNames": [
+        "hardlydifficult-ethereum-contracts"
+      ],
+      "schedule": [
+        "at any time"
+      ],
       "minor": {
         "groupName": "hardlydifficult-ethereum-contracts"
       }
     },
     {
-      "packageNames": ["@unlock-protocol/unlock-js", "@unlock-protocol/unlock-assets"],
-      "schedule": ["at any time"],
+      "packageNames": [
+        "@unlock-protocol/unlock-js",
+        "@unlock-protocol/unlock-assets"
+      ],
+      "schedule": [
+        "at any time"
+      ],
       "minor": {
         "groupName": "unlock-js npm package"
       }
     },
     {
-      "packagePatterns": ["unlock-abi-*"],
-      "schedule": ["at any time"],
+      "packagePatterns": [
+        "unlock-abi-*"
+      ],
+      "schedule": [
+        "at any time"
+      ],
       "minor": {
         "groupName": "unlock-abi npm package"
       }
