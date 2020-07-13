@@ -1,5 +1,6 @@
 const { constants } = require('hardlydifficult-eth')
 const { reverts } = require('truffle-assertions')
+const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -53,9 +54,12 @@ contract('Lock / transfer', accounts => {
     })
 
     it('fails if no time remains', async () => {
+      // Push the clock forward 1 second so that the test failure reason is consistent
+      await time.increase(1)
+
       await reverts(
         lock.transfer(destination, 1, { from: singleKeyOwner }),
-        'KEY_NOT_VALID'
+        'SafeMath: subtraction overflow'
       )
     })
   })
