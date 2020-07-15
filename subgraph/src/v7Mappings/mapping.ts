@@ -18,6 +18,7 @@ import {
   PricingChanged,
   Transfer,
   PublicLock,
+  RenewKeyPurchase,
 } from '../../generated/templates/PublicLock7/PublicLock'
 
 function loadKeyHolder(id: string): KeyHolder {
@@ -93,6 +94,27 @@ export function pricingChanged(event: PricingChanged): void {
   lock.price = event.params.keyPrice
   lock.tokenAddress = event.params.tokenAddress
   lock.save()
+}
+
+/**
+ * Event triggered on key renewed.
+ *  - owner
+ * @param event
+ */
+export function renewKeyPurchase(event: RenewKeyPurchase): void {
+  let lockContract = PublicLock.bind(event.address)
+
+  let tokenId = lockContract.getTokenIdFor(event.params.owner)
+
+  // Get the KeyId
+  let keyID = genKeyID(event.address, tokenId.toString())
+
+  // Load the key
+  let key = Key.load(keyID)
+
+  // Update its expiration
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner)
+  key.save()
 }
 
 function newlyMintedKey(event: Transfer): void {
