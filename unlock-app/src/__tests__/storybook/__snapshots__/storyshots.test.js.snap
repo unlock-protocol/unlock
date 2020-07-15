@@ -49046,7 +49046,7 @@ Object {
 
 .c12 {
   height: 48px;
-  width: 115px;
+  width: 120px;
   border-radius: 4px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -49069,6 +49069,7 @@ Object {
   justify-content: flex-end;
   margin-left: 12px;
   margin-bottom: 2px;
+  white-space: nowrap;
 }
 
 .c1 {
@@ -49275,7 +49276,7 @@ Object {
   font-size: 20px;
   margin-left: 12px;
   text-align: right;
-  width: 115px;
+  width: 120px;
 }
 
 .c7 {
@@ -49644,6 +49645,60 @@ Object {
             </svg>
           </div>
         </div>
+        <div
+          class="c2"
+          data-testid="CreditCardNotAvailableLock"
+        >
+          <div
+            class="c3"
+          >
+            <span
+              class="c4"
+            >
+              Credit Card Not Available
+            </span>
+            <span
+              class="c11"
+            >
+              1,300
+               Available
+            </span>
+          </div>
+          <div
+            class="c5"
+          >
+            <span
+              class="c6"
+            >
+              0.01 ETH
+            </span>
+            <div
+              class="c7"
+            >
+              <span>
+                Valid for
+              </span>
+              <span>
+                12 Days
+              </span>
+            </div>
+            <svg
+              class="c8 c9"
+              viewBox="0 0 24 24"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c12"
+          >
+            Credit Card Not Available
+          </div>
+        </div>
       </div>
     </div>
   </body>,
@@ -49678,7 +49733,7 @@ Object {
           class="sc-pjstK sc-qYIQh lcfiRX"
         >
           <span
-            class="sc-qQYBZ gVeLyQ"
+            class="sc-qQYBZ kSrFmC"
           >
             0.01 ETH
           </span>
@@ -49726,7 +49781,7 @@ Object {
           class="sc-pjstK sc-qYIQh lcfiRX"
         >
           <span
-            class="sc-qQYBZ gVeLyQ"
+            class="sc-qQYBZ kSrFmC"
           >
             0.01 ETH
           </span>
@@ -49775,7 +49830,7 @@ Object {
           class="sc-pjstK sc-qYIQh lcfiRX"
         >
           <span
-            class="sc-qQYBZ gVeLyQ"
+            class="sc-qQYBZ kSrFmC"
           >
             0.01 ETH
           </span>
@@ -49801,7 +49856,7 @@ Object {
           </svg>
         </div>
         <div
-          class="sc-prorn fYEbxo"
+          class="sc-prorn eZJFke"
         >
           Insufficient Balance
         </div>
@@ -49829,7 +49884,7 @@ Object {
           class="sc-pjstK ekdZNT"
         >
           <span
-            class="sc-qQYBZ gVeLyQ"
+            class="sc-qQYBZ kSrFmC"
           >
             0.01 ETH
           </span>
@@ -49877,7 +49932,7 @@ Object {
           class="sc-pjstK ekdZNT"
         >
           <span
-            class="sc-qQYBZ gVeLyQ"
+            class="sc-qQYBZ kSrFmC"
           >
             0.01 ETH
           </span>
@@ -49957,7 +50012,7 @@ Object {
           class="sc-pjstK sc-pBzUF ebeeJH"
         >
           <span
-            class="sc-qQYBZ gVeLyQ"
+            class="sc-qQYBZ kSrFmC"
           >
             0.01 ETH
           </span>
@@ -49981,6 +50036,60 @@ Object {
               fill-rule="evenodd"
             />
           </svg>
+        </div>
+      </div>
+      <div
+        class="sc-pJUVA sc-pRtAn fMzoog"
+        data-testid="CreditCardNotAvailableLock"
+      >
+        <div
+          class="sc-pscky kAnrdf"
+        >
+          <span
+            class="sc-pZOBi licApf"
+          >
+            Credit Card Not Available
+          </span>
+          <span
+            class="sc-oTNDV GPGKZ"
+          >
+            1,300
+             Available
+          </span>
+        </div>
+        <div
+          class="sc-pjstK sc-qYIQh lcfiRX"
+        >
+          <span
+            class="sc-qQYBZ kSrFmC"
+          >
+            0.01 ETH
+          </span>
+          <div
+            class="sc-qZtCU jcwzPt"
+          >
+            <span>
+              Valid for
+            </span>
+            <span>
+              12 Days
+            </span>
+          </div>
+          <svg
+            class="sc-pZaHX hBTWXy"
+            viewBox="0 0 24 24"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-prorn eZJFke"
+        >
+          Credit Card Not Available
         </div>
       </div>
     </div>

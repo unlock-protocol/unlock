@@ -51,7 +51,7 @@ export const BaseLockBody = styled.div`
 
 export const InsufficentBalanceOverlay = styled.div`
   height: 48px;
-  width: 115px;
+  width: 120px;
   border-radius: 4px;
   display: flex;
   flex-direction: row;
@@ -63,6 +63,7 @@ export const InsufficentBalanceOverlay = styled.div`
   justify-content: flex-end;
   margin-left: 12px;
   margin-bottom: 2px;
+  white-space: nowrap;
 `
 
 export const LoadingLockBody = styled(BaseLockBody)`
@@ -145,7 +146,7 @@ export const LockPrice = styled.span`
   font-size: 20px;
   margin-left: 12px;
   text-align: right;
-  width: 115px;
+  width: 120px;
 `
 
 export const ValidityDuration = styled.div`
@@ -237,6 +238,37 @@ export const InsufficientBalanceLock = ({
       </DisabledLockBody>
       <InsufficentBalanceOverlay>
         Insufficient Balance
+      </InsufficentBalanceOverlay>
+    </DisabledLockContainer>
+  )
+}
+
+export const CreditCardNotAvailableLock = ({
+  address,
+  name,
+  formattedDuration,
+  formattedKeyPrice,
+  formattedKeysAvailable,
+}: LockProps) => {
+  return (
+    <DisabledLockContainer
+      data-address={address}
+      data-testid="CreditCardNotAvailableLock"
+    >
+      <InfoWrapper>
+        <LockName>{name}</LockName>
+        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
+      </InfoWrapper>
+      <DisabledLockBody>
+        <LockPrice>{formattedKeyPrice}</LockPrice>
+        <ValidityDuration>
+          <span>Valid for</span>
+          <span>{formattedDuration}</span>
+        </ValidityDuration>
+        <Arrow />
+      </DisabledLockBody>
+      <InsufficentBalanceOverlay>
+        Credit Card Not Available
       </InsufficentBalanceOverlay>
     </DisabledLockContainer>
   )
