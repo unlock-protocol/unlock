@@ -13,7 +13,8 @@
       "optimizer": {
         "enabled": true,
         "runs": "200"
-      }
+      },
+      "evmVersion": "istanbul"
     },
     "solcVersion": "0.5.17"
   },
