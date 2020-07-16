@@ -121,6 +121,7 @@ module.exports = {
     },
   },
   compilers: {
+    // When changing the following settings, update .openzeppelin/project.json to match
     solc: {
       version: '0.5.17',
       settings: {
@@ -128,6 +129,8 @@ module.exports = {
           enabled: true,
           runs: 200,
         },
+        // evmVersion is optional here but must be manually specified in .openzeppelin/project.json
+        evmVersion: 'istanbul',
       },
     },
   },
