@@ -122,7 +122,7 @@ describe('FiatLocks', () => {
         />
       )
 
-      getByTestId('CreditCardNotAvailableLock')
+      getByTestId('DisabledLock')
     })
   })
 })
