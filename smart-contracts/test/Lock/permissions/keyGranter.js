@@ -12,7 +12,7 @@ let lockCreator
 let notAuthorized
 let newKeyGranter
 
-contract('Permissions / KeyGranter', accounts => {
+contract('Permissions / KeyGranter', (accounts) => {
   lockCreator = accounts[0]
   notAuthorized = accounts[9]
   newKeyGranter = accounts[1]

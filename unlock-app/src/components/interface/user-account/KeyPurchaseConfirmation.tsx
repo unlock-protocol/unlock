@@ -90,7 +90,7 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
 
   handleReset = () => {
     const { errors, close } = this.props
-    errors.forEach(e => close(e))
+    errors.forEach((e) => close(e))
   }
 
   timeRemaining = () => {
@@ -171,7 +171,7 @@ export const mapStateToProps = (state: ReduxState) => {
   } = state
 
   const storageErrors = errors.filter(
-    e => isWarningError(e) && e.kind === 'Storage'
+    (e) => isWarningError(e) && e.kind === 'Storage'
   )
 
   let priceBreakdown = {}

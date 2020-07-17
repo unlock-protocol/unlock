@@ -89,10 +89,10 @@ describe('Web3Service', () => {
               'Content-Length': data.length,
             },
           }
-          const req = http.request(options, res => {
+          const req = http.request(options, (res) => {
             let responseString = ''
 
-            res.on('data', data => {
+            res.on('data', (data) => {
               responseString += data
               // save all the data from response
             })
@@ -125,7 +125,7 @@ describe('Web3Service', () => {
       expect(addressBalance).toEqual(expectedBalance)
     })
 
-    it('should emit an error on error', async done => {
+    it('should emit an error on error', async (done) => {
       expect.assertions(1)
       await nockBeforeEach({})
       const address = '0x1df62f291b2e969fb0849d99d9ce41e2f137006e'
@@ -134,7 +134,7 @@ describe('Web3Service', () => {
         code: 404,
       })
 
-      web3Service.on('error', e => {
+      web3Service.on('error', (e) => {
         expect(e).toBeInstanceOf(Error)
         done()
       })
@@ -164,7 +164,7 @@ describe('Web3Service', () => {
         })
       })
 
-      web3Service.on('error', err => {
+      web3Service.on('error', (err) => {
         throw err // this is the only way we will see test failures!
       })
 
@@ -366,7 +366,7 @@ describe('Web3Service', () => {
       await nockBeforeEach({})
       web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
       web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           return resolve(100)
         })
       })
@@ -385,7 +385,7 @@ describe('Web3Service', () => {
       await nockBeforeEach({})
       web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
       web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           return resolve(100)
         })
       })
@@ -404,7 +404,7 @@ describe('Web3Service', () => {
 
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
-      async method => {
+      async (method) => {
         await nockBeforeEach({})
         const args = []
         const result = {}
@@ -425,8 +425,8 @@ describe('Web3Service', () => {
     // for each supported version, let's make sure it implements all methods
     it.each(supportedVersions)(
       'should implement all the required methods',
-      version => {
-        versionSpecificLockMethods.forEach(method => {
+      (version) => {
+        versionSpecificLockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
       }
@@ -533,7 +533,7 @@ describe('Web3Service', () => {
             from: account,
           }
 
-          web3Service._getSubmittedTransaction = jest.fn(transaction => {
+          web3Service._getSubmittedTransaction = jest.fn((transaction) => {
             transaction.status = 'submitted'
             return transaction
           })
@@ -563,7 +563,7 @@ describe('Web3Service', () => {
         it('should return the transaction parsed from its submitted data', async () => {
           expect.assertions(2)
 
-          web3Service._getPendingTransaction = jest.fn(transaction => {
+          web3Service._getPendingTransaction = jest.fn((transaction) => {
             transaction.status = 'pending'
             return transaction
           })
@@ -714,7 +714,7 @@ describe('Web3Service', () => {
       })
     })
 
-    it('should call the handler if the transaction input can be parsed', async done => {
+    it('should call the handler if the transaction input can be parsed', async (done) => {
       expect.assertions(4)
       web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
       const input =

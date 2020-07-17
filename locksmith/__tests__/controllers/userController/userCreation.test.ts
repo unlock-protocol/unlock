@@ -1,6 +1,7 @@
 import models = require('../../../src/models')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
+
 const UserOperations = require('../../../src/operations/userOperations')
 
 function generateTypedData(message: any) {

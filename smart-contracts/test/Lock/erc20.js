@@ -7,7 +7,7 @@ const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
 const deployLocks = require('../helpers/deployLocks')
 
-contract('Lock / erc20', accounts => {
+contract('Lock / erc20', (accounts) => {
   let unlock
   let token
   let lock

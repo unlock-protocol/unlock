@@ -8,7 +8,7 @@ import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */
-export default async function(lock, callback) {
+export default async function (lock, callback) {
   const unlockContract = await this.getUnlockContract()
   let { maxNumberOfKeys } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -50,10 +50,10 @@ export default async function(lock, callback) {
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = unlockContract.interface
   const newLockEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       return parser.parseLog(log)
     })
-    .filter(event => event.name === 'NewLock')[0]
+    .filter((event) => event.name === 'NewLock')[0]
 
   if (newLockEvent) {
     return newLockEvent.values.newLockAddress

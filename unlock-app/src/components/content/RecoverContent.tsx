@@ -71,7 +71,7 @@ export const RecoverContent = ({
       <SetPassword
         buttonLabel="Resetting password"
         emailAddress={emailAddress}
-        onSubmit={credentials => changePassword(credentials, recoveryPhrase)}
+        onSubmit={(credentials) => changePassword(credentials, recoveryPhrase)}
       />
     )
   }
@@ -86,6 +86,12 @@ export const RecoverContent = ({
       {form}
     </Layout>
   )
+}
+
+RecoverContent.defaultProps = {
+  account: null,
+  emailAddress: '',
+  recoveryPhrase: '',
 }
 
 export const mapDispatchToProps = (dispatch: any) => ({

@@ -9,14 +9,14 @@ const defaultMetadata = {
  * This hook retrieves metadata for a token
  * @param {*} address
  */
-export const useMetadata = url => {
+export const useMetadata = (url) => {
   const [metadata, setMetadata] = useState(defaultMetadata)
 
   const getMetadata = async () => {
     if (url) {
       let tokenMetadata = defaultMetadata
       try {
-        tokenMetadata = await axios.get(url).then(response => response.data)
+        tokenMetadata = await axios.get(url).then((response) => response.data)
       } catch (error) {
         // Do not fail on error, we'll keep defaulting to the default values
       }

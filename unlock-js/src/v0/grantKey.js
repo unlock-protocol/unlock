@@ -1,3 +1,3 @@
-export default async function() {
+export default async function () {
   throw new Error('Method not supported')
 }

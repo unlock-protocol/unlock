@@ -73,7 +73,7 @@ export class SetPassword extends React.Component<Props, State> {
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const newState = {
         ...prevState,
         [name]: value,

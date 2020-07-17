@@ -94,7 +94,7 @@ export class StorageService extends EventEmitter {
         `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`
       )
       if (response.data && response.data.transactions) {
-        hashes = response.data.transactions.map(t => ({
+        hashes = response.data.transactions.map((t) => ({
           hash: t.transactionHash,
           network: t.chain,
           to: t.recipient,
@@ -109,7 +109,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  genAuthorizationHeader = token => {
+  genAuthorizationHeader = (token) => {
     return { Authorization: ` Bearer ${token}` }
   }
 
@@ -294,7 +294,7 @@ export class StorageService extends EventEmitter {
       if (result.data && result.data.locks) {
         this.emit(
           success.getLockAddressesForUser,
-          result.data.locks.map(lock => lock.address)
+          result.data.locks.map((lock) => lock.address)
         )
       } else {
         this.emit(

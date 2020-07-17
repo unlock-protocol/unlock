@@ -85,4 +85,12 @@ export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
     />
   )
 }
+
+VerificationStatus.defaultProps = {
+  account: null,
+  data: null,
+  sig: '',
+  hexData: '',
+}
+
 export default VerificationStatus

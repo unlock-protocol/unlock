@@ -4,7 +4,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import Svg from '../../components/interface/svg'
 
-const wrapSvg = name => {
+const wrapSvg = (name) => {
   return React.createElement(Svg[name], {})
 }
 
@@ -13,7 +13,7 @@ storiesOf('SVG', module).add('Icons', () => {
     <div>
       <h1>All SVGs</h1>
       <Wrapper>
-        {Object.keys(Svg).map(svgName => {
+        {Object.keys(Svg).map((svgName) => {
           return (
             <Well key={svgName} name={svgName}>
               {wrapSvg(svgName)}
@@ -46,7 +46,7 @@ const Well = styled.div`
   &:hover {
     background-color: var(--offwhite);
     &:before {
-      content: '${props => props.name}';
+      content: '${(props) => props.name}';
       position: absolute;
     }
   }

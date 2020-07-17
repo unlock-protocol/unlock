@@ -19,7 +19,7 @@ export const route = (args, callback) => {
   }
 
   const templateParams = {}
-  Object.keys(args.params).forEach(key => {
+  Object.keys(args.params).forEach((key) => {
     const param = args.params[key]
     if (typeof param === 'object' && param.encrypt) {
       templateParams[key] = encrypter.signParam(param.value)

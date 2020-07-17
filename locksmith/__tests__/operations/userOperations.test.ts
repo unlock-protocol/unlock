@@ -1,9 +1,9 @@
+import Sequelize from 'sequelize'
 import UserOperations from '../../src/operations/userOperations'
 import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 
-import Sequelize = require('sequelize')
-
 const { Op } = Sequelize
+
 const models = require('../../src/models')
 
 const { User } = models

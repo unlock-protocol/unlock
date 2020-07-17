@@ -45,6 +45,12 @@ export const VerificationContent = ({
   )
 }
 
+VerificationContent.defaultProps = {
+  data: null,
+  hexData: '',
+  sig: '',
+}
+
 interface ReduxState {
   account: AccountType
   network: Network

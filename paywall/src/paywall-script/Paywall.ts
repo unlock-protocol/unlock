@@ -161,7 +161,7 @@ export class Paywall {
     child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
 
     // flush the buffer of child calls from before the iframe was ready
-    this.childCallBuffer.forEach(bufferedCall => child.call(...bufferedCall))
+    this.childCallBuffer.forEach((bufferedCall) => child.call(...bufferedCall))
 
     this.setConfig = (config: any) => {
       child.call('setConfig', config)

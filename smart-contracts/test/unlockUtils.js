@@ -2,7 +2,7 @@ const mockArtifact = artifacts.require('UnlockUtilsMock')
 
 let mock
 
-contract('unlockUtils', accounts => {
+contract('unlockUtils', (accounts) => {
   before(async () => {
     mock = await mockArtifact.new()
   })

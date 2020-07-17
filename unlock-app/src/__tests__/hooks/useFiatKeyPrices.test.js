@@ -10,7 +10,7 @@ describe('useFiatKeyPrices', () => {
   beforeEach(() => {
     fetch.resetMocks()
 
-    jest.spyOn(React, 'useContext').mockImplementation(context => {
+    jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === ConfigContext) {
         return {
           services: {

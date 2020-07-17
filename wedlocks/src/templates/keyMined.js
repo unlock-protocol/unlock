@@ -1,6 +1,6 @@
 export default {
   subject: () => 'A key was added to your wallet!',
-  text: params =>
+  text: (params) =>
     `Hello!
 
 A new key (#${params.keyId}) to the lock "${params.lockName}" was just mined for you!

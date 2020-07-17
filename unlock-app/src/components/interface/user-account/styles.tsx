@@ -127,7 +127,7 @@ export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
 }: LoadingButtonProps) => {
   return (
     <SubmitButton
-      backgroundColor={backgroundColor || 'var(--blue)'}
+      backgroundColor={backgroundColor}
       roundBottomOnly={!!roundBottomOnly}
     >
       <LoadingTextWrapper>
@@ -136,6 +136,12 @@ export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
       </LoadingTextWrapper>
     </SubmitButton>
   )
+}
+
+LoadingButton.defaultProps = {
+  children: [],
+  backgroundColor: 'var(--blue)',
+  roundBottomOnly: false,
 }
 
 const LoadingTextWrapper = styled.div`
@@ -201,13 +207,16 @@ interface ItemProps {
   size?: ColumnSize
 }
 export const Item = ({ title, children, size }: ItemProps) => {
-  size = size || 'half'
   return (
     <Column size={size}>
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
   )
+}
+
+Item.defaultProps = {
+  size: 'half',
 }
 
 // To be used when two credit card fields need to sit on the same line
@@ -338,8 +347,8 @@ export const StyledCheckbox = styled.div<StyledCheckboxProps>`
   display: inline-block;
   width: 32px;
   height: 32px;
-  background: ${p => (p.checked ? 'var(--white)' : 'var(--lightgrey)')};
-  border: thin ${p => (p.checked ? 'var(--red)' : 'var(--lightgrey)')} solid;
+  background: ${(p) => (p.checked ? 'var(--white)' : 'var(--lightgrey)')};
+  border: thin ${(p) => (p.checked ? 'var(--red)' : 'var(--lightgrey)')} solid;
   border-radius: 3px;
   margin-right: 16px;
   transition: all 100ms;
@@ -347,7 +356,7 @@ export const StyledCheckbox = styled.div<StyledCheckboxProps>`
     box-shadow: 0 0 0 3px var(--blue);
   }
   ${Checkmark} {
-    visibility: ${p => (p.checked ? 'visible' : 'hidden')};
+    visibility: ${(p) => (p.checked ? 'visible' : 'hidden')};
   }
 `
 

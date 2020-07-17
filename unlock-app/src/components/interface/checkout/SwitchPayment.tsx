@@ -18,7 +18,7 @@ export const SwitchPayment = ({
         <Header>Switch payment to</Header>
         <ResetText onClick={() => setActivePayment(null)}>Reset</ResetText>
       </HeaderRow>
-      {paymentOptions.map(option => {
+      {paymentOptions.map((option) => {
         if (option === activePayment) {
           return (
             <ActivePaymentOption data-testid={`active-${option}`} key={option}>

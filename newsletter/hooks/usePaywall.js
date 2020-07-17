@@ -3,7 +3,7 @@ import configure from '../config'
 
 const config = configure()
 
-export const usePaywall = lockAddresses => {
+export const usePaywall = (lockAddresses) => {
   const [lockState, setLockState] = useState('loading')
 
   useEffect(() => {
@@ -46,7 +46,7 @@ sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
       window.document.body.appendChild(script)
 
       // Set the lock state, based on the event
-      const handler = event => {
+      const handler = (event) => {
         setLockState(event.detail)
       }
       window.addEventListener('unlockProtocol', handler)

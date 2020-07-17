@@ -18,8 +18,8 @@ const store = createUnlockStore({
 })
 
 storiesOf('CreatorLockForm/invalid', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('missing name', () => {

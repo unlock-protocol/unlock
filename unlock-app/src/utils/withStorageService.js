@@ -15,7 +15,7 @@ export default function withStorageService(Component) {
   function componentWithStorageService(props) {
     return (
       <StorageServiceContext.Consumer>
-        {storageService => (
+        {(storageService) => (
           <Component {...props} storageService={storageService} />
         )}
       </StorageServiceContext.Consumer>

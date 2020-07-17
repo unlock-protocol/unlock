@@ -11,7 +11,7 @@ import TransactionTypes from '../transactionTypes'
  * - {string} data
  * @param {function} callback invoked with the transaction hash
  */
-export default async function(
+export default async function (
   { lockAddress, owner, keyPrice, data },
   callback
 ) {
@@ -38,10 +38,10 @@ export default async function(
   const parser = lockContract.interface
 
   const transferEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       return parser.parseLog(log)
     })
-    .filter(event => {
+    .filter((event) => {
       return event.name === 'Transfer'
     })[0]
   if (transferEvent) {

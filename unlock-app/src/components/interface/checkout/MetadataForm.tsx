@@ -20,7 +20,7 @@ export const MetadataForm = ({ fields, onSubmit }: Props) => {
   // kinds of errors so that we can show the right message
 
   const defaultValues = {} as DefautltValues
-  fields.forEach(field => {
+  fields.forEach((field) => {
     if (field.name && field.defaultValue) {
       defaultValues[field.name] = field.defaultValue
     }
