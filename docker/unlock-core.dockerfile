@@ -12,7 +12,6 @@ WORKDIR /home/unlock
 # before the file changes. This will allow docker to not install
 # dependencies again if they are not changed.
 
-COPY --chown=node scripts/postinstall.sh /home/unlock/scripts/postinstall.sh
 COPY --chown=node yarn.lock /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 COPY --chown=node .eslintrc.js /home/unlock/.
