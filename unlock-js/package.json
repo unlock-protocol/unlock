@@ -27,7 +27,6 @@
     "ethers": "4.0.47",
     "jest": "25.5.4",
     "lint-staged": "10.2.11",
-    "prettier": "2.0.5",
     "ts-jest": "26.1.1",
     "typescript": "3.9.6"
   },

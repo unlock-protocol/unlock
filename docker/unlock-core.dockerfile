@@ -16,7 +16,6 @@ COPY --chown=node scripts/postinstall.sh /home/unlock/scripts/postinstall.sh
 COPY --chown=node yarn.lock /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 COPY --chown=node .eslintrc.js /home/unlock/.
-COPY --chown=node .prettierrc /home/unlock/.
 
 # Setting user as root to handle apk install
 USER root
