@@ -183,7 +183,7 @@ function newKeyPurchase(
   lockContract: PublicLock
 ): void {
   let keyID = genKeyID(event.address, event.params.tokenId.toString())
-  let keyPurchaseID = `${keyID}-${event.block.number.toString()}`
+  let keyPurchaseID = keyID.concat('-').concat(event.block.number.toString())
 
   genKey(event, lockContract)
 
