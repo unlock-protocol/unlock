@@ -89,6 +89,7 @@
     "prestart": "yarn build && yarn build-blog",
     "start": "cross-env NODE_ENV=production next start src",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
+    "prettier": "prettier",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "ci": "yarn test && yarn lint",
