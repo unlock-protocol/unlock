@@ -403,6 +403,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Build Core Image
+          command: UNLOCK_ENV=test docker build . -f docker/unlock-core.dockerfile
+      - run:
           name: Build Images
           command: UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
       - run:
