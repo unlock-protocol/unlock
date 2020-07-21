@@ -404,16 +404,16 @@ jobs:
       - checkout
       - run:
           name: Build Core Image
-          command: UNLOCK_ENV=test docker build . -f docker/unlock-core.dockerfile
+          command: UNLOCK_ENV=test docker build . -f docker/unlock-core.dockerfile -t unlockprotocol/unlock-core:master
       - run:
           name: Push Core Image
-          command: docker push unlockprotocol/unlock-core:master
+          command: scripts/push-images.sh unlock-core
       - run:
           name: Build Images
           command: UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
       - run:
           name: Push Images
-          command: scripts/push-all-image.sh
+          command: scripts/push-images.sh unlock-core paywall smart-contracts unlock-app locksmith integration-tests wedlocks unlock-protocol-com unlock-js newsletter nudge smart-contract-extensions
 
 workflows:
   version: 2
