@@ -36,7 +36,7 @@ const columnSpans = {
 
 type ColumnSize = 'full' | 'half' | 'third' | 'quarter' | 'threeQuarter'
 interface ColumnProps {
-  size: ColumnSize
+  count: ColumnSize
 }
 
 export const Column = styled.div`
@@ -47,7 +47,7 @@ export const Column = styled.div`
     margin-top: auto;
   }
   @media (min-width: 500px) {
-    grid-column: span ${(props: ColumnProps) => columnSpans[props.size]};
+    grid-column: span ${(props: ColumnProps) => columnSpans[props.count]};
   }
 `
 
@@ -204,19 +204,18 @@ export const DisabledButton = styled(SubmitButton)`
 interface ItemProps {
   title: string
   children: React.ReactNode
-  size?: ColumnSize
+  count: ColumnSize
 }
-export const Item = ({ title, children, size }: ItemProps) => {
+export const Item = ({ title, children, count }: ItemProps) => {
+  if (!count) {
+    count = 'half'
+  }
   return (
-    <Column size={size}>
+    <Column count={count}>
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
   )
-}
-
-Item.defaultProps = {
-  size: 'half',
 }
 
 // To be used when two credit card fields need to sit on the same line

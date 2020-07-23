@@ -113,7 +113,7 @@ export const ValidKeyWithMetadata = ({
 
 interface ValidKeyProps {
   ownedKey: OwnedKey
-  viewer?: string
+  viewer?: string | null
   signatureTimestamp: number
   owner: string
   signature: string
@@ -187,7 +187,7 @@ export const ValidKey = ({
 }
 
 ValidKey.defaultProps = {
-  viewer: '',
+  viewer: null,
 }
 
 /**

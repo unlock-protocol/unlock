@@ -17,7 +17,7 @@ interface VerificationData {
 
 interface Props {
   account?: AccountType
-  data?: VerificationData
+  data?: VerificationData | null
   sig?: string
   hexData?: string
 }

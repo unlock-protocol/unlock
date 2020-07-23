@@ -106,10 +106,10 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
       <KeyPurchaseWrapper>
         <Indent>
           <Heading>Confirm Purchase</Heading>
-          <Item title="Account" size="full">
+          <Item title="Account" count="full">
             <Value>{emailAddress}</Value>
           </Item>
-          <Item title="Credit Card" size="full">
+          <Item title="Credit Card" count="full">
             <Value>{card}</Value>
           </Item>
           <LockInfo

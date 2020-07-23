@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow  */
 import * as sigUtil from 'eth-sig-util'
-import ethJsUtil from 'ethereumjs-util'
+import * as ethJsUtil from 'ethereumjs-util'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 
 import Base64 = require('../../src/utils/base64')

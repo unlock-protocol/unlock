@@ -12,14 +12,14 @@ import { changePassword } from '../../actions/user'
 import Loading from '../interface/Loading'
 
 interface Props {
-  account?: Account
+  account?: Account | null
   emailAddress?: string
   recoveryPhrase?: string
   changePassword: (credentials: Credentials, password: string) => any
 }
 interface StoreState {
   router: Router
-  account?: Account
+  account?: Account | null
   recoveryPhrase: string
 }
 
