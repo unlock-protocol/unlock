@@ -72045,13 +72045,13 @@ Object {
 
 @media (min-width:500px) {
   .c2 {
-    grid-column: span 6;
+    grid-column: span 12;
   }
 }
 
 @media (min-width:500px) {
   .c3 {
-    grid-column: span;
+    grid-column: span 6;
   }
 }
 
@@ -72150,10 +72150,10 @@ Object {
         Change Password
       </span>
       <div
-        class="sc-fzoiQi XSfsQ"
+        class="sc-fzoiQi fLDTVB"
       >
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi XSfsQ"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -72169,7 +72169,7 @@ Object {
           />
         </div>
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi XSfsQ"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -72185,7 +72185,7 @@ Object {
           />
         </div>
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi XSfsQ"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -72202,7 +72202,7 @@ Object {
         </div>
       </div>
       <div
-        class="sc-fzoiQi XSfsQ"
+        class="sc-fzoiQi fLDTVB"
       >
         <span
           class="sc-fzoNJl cwAlei"
@@ -72858,7 +72858,7 @@ Object {
 
 @media (min-width:500px) {
   .c3 {
-    grid-column: span;
+    grid-column: span 12;
   }
 }
 
@@ -73084,7 +73084,7 @@ Object {
           Confirm Purchase
         </h1>
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi fLDTVB"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -73098,7 +73098,7 @@ Object {
           </span>
         </div>
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi fLDTVB"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -73480,7 +73480,7 @@ Object {
 
 @media (min-width:500px) {
   .c3 {
-    grid-column: span;
+    grid-column: span 12;
   }
 }
 
@@ -73578,7 +73578,7 @@ Object {
           Confirm Purchase
         </h1>
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi fLDTVB"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -73592,7 +73592,7 @@ Object {
           </span>
         </div>
         <div
-          class="sc-fzoiQi eIIUeK"
+          class="sc-fzoiQi fLDTVB"
         >
           <span
             class="sc-fzqARJ dUDXCs"
@@ -74017,23 +74017,6 @@ Object {
   margin-top: auto;
 }
 
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-content: flex-end;
-  -ms-flex-line-pack: end;
-  align-content: flex-end;
-}
-
-.c9 > :first-child {
-  margin-top: auto;
-}
-
 .c3 {
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -74129,12 +74112,6 @@ Object {
 
 @media (min-width:500px) {
   .c5 {
-    grid-column: span;
-  }
-}
-
-@media (min-width:500px) {
-  .c9 {
     grid-column: span 12;
   }
 }
@@ -74193,10 +74170,10 @@ Object {
             Change Password
           </span>
           <div
-            class="c2"
+            class="c5"
           >
             <div
-              class="c5"
+              class="c2"
             >
               <span
                 class="c3"
@@ -74212,7 +74189,7 @@ Object {
               />
             </div>
             <div
-              class="c5"
+              class="c2"
             >
               <span
                 class="c3"
@@ -74228,7 +74205,7 @@ Object {
               />
             </div>
             <div
-              class="c5"
+              class="c2"
             >
               <span
                 class="c3"
@@ -74245,7 +74222,7 @@ Object {
             </div>
           </div>
           <div
-            class="c2"
+            class="c5"
           >
             <span
               class="c7"
@@ -74267,7 +74244,7 @@ Object {
             Payment Options
           </span>
           <div
-            class="c9"
+            class="c5"
           >
             <span
               class="c3"
@@ -74293,7 +74270,7 @@ Object {
             </span>
           </div>
           <div
-            class="c9"
+            class="c5"
           >
             <span
               class="c3"
@@ -74376,10 +74353,10 @@ Object {
           Change Password
         </span>
         <div
-          class="sc-fzoiQi XSfsQ"
+          class="sc-fzoiQi fLDTVB"
         >
           <div
-            class="sc-fzoiQi eIIUeK"
+            class="sc-fzoiQi XSfsQ"
           >
             <span
               class="sc-fzqARJ dUDXCs"
@@ -74395,7 +74372,7 @@ Object {
             />
           </div>
           <div
-            class="sc-fzoiQi eIIUeK"
+            class="sc-fzoiQi XSfsQ"
           >
             <span
               class="sc-fzqARJ dUDXCs"
@@ -74411,7 +74388,7 @@ Object {
             />
           </div>
           <div
-            class="sc-fzoiQi eIIUeK"
+            class="sc-fzoiQi XSfsQ"
           >
             <span
               class="sc-fzqARJ dUDXCs"
@@ -74428,7 +74405,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-fzoiQi XSfsQ"
+          class="sc-fzoiQi fLDTVB"
         >
           <span
             class="sc-fzoNJl cwAlei"

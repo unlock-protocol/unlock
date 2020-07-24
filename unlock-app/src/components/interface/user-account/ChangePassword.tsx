@@ -111,7 +111,7 @@ export class ChangePassword extends React.Component<
     return (
       <Grid>
         <SectionHeader>Change Password</SectionHeader>
-        <Column count="half">
+        <Column count="full">
           <Item count="half" title="Old Password">
             <Input
               name="currentPassword"
@@ -140,7 +140,7 @@ export class ChangePassword extends React.Component<
             />
           </Item>
         </Column>
-        <Column count="half">
+        <Column count="full">
           <Error>{errors.length ? errors[0] : ''}</Error>
           {!submitted && (
             <Submit onClick={this.handleClick}>Update Password</Submit>
