@@ -88,10 +88,7 @@ describe('lockController', () => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130837000)
 
-        await request(app)
-          .post('/lock')
-          .set('Accept', /json/)
-          .send(lockPayload)
+        await request(app).post('/lock').set('Accept', /json/).send(lockPayload)
 
         const record = await Lock.findOne({
           where: { address: validLockAddress },

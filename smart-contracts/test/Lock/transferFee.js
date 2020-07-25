@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / transferFee', accounts => {
+contract('Lock / transferFee', (accounts) => {
   let lock
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const keyOwner = accounts[1]
@@ -61,19 +61,13 @@ contract('Lock / transferFee', accounts => {
       // Fee is <= the expected fee before the call
       assert(
         fee.lte(
-          expiration
-            .minus(nowBefore)
-            .times(0.05)
-            .dp(0, BigNumber.ROUND_DOWN)
+          expiration.minus(nowBefore).times(0.05).dp(0, BigNumber.ROUND_DOWN)
         )
       )
       // and >= the expected fee after the call
       assert(
         fee.gte(
-          expiration
-            .minus(nowAfter)
-            .times(0.05)
-            .dp(0, BigNumber.ROUND_DOWN)
+          expiration.minus(nowAfter).times(0.05).dp(0, BigNumber.ROUND_DOWN)
         )
       )
     })

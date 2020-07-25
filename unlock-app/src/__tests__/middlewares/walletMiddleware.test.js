@@ -56,7 +56,7 @@ const create = (dispatchImplementation = () => true) => {
     getProvider
   )(store)
 
-  const invoke = action => handler(next)(action)
+  const invoke = (action) => handler(next)(action)
 
   return { next, invoke, store }
 }
@@ -315,7 +315,7 @@ describe('Wallet middleware', () => {
         const networkId = 1984
         const error = new Error('An error')
         mockWalletService.getAccount = jest.fn()
-        mockWalletService.isUnlockContractDeployed = jest.fn(callback => {
+        mockWalletService.isUnlockContractDeployed = jest.fn((callback) => {
           return callback(error)
         })
 
@@ -341,7 +341,7 @@ describe('Wallet middleware', () => {
         const networkId = 1984
 
         mockWalletService.getAccount = jest.fn()
-        mockWalletService.isUnlockContractDeployed = jest.fn(callback => {
+        mockWalletService.isUnlockContractDeployed = jest.fn((callback) => {
           return callback(null, false /* non deployed */)
         })
 
@@ -369,7 +369,7 @@ describe('Wallet middleware', () => {
 
           state.network.name = 1773
           mockWalletService.getAccount = jest.fn()
-          mockWalletService.isUnlockContractDeployed = jest.fn(callback => {
+          mockWalletService.isUnlockContractDeployed = jest.fn((callback) => {
             return callback(null, true /* deployed */)
           })
 

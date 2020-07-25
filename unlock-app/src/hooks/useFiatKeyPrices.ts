@@ -59,7 +59,7 @@ export const useFiatKeyPrices = (lockAddresses: string[]) => {
   }
 
   useEffect(() => {
-    lockAddresses.forEach(address => getFiatKeyPriceFor(address))
+    lockAddresses.forEach((address) => getFiatKeyPriceFor(address))
   }, [JSON.stringify(lockAddresses)])
 
   return fiatKeyPrices

@@ -8,7 +8,7 @@ import createUnlockStore from '../../createUnlockStore'
 const store = createUnlockStore({})
 
 storiesOf('Account', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('With no key purchased', () => {
     const account = {
       address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',

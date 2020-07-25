@@ -65,7 +65,7 @@ const manyKeyHolderStore = createUnlockStore({
 const ConfigProvider = ConfigContext.Provider
 
 // generate `n' fake keys to use in mock
-const generateKeys = n => {
+const generateKeys = (n) => {
   const keys = []
   for (let i = 0; i < n; i++) {
     keys.push({
@@ -152,7 +152,7 @@ const config = configure({
 })
 
 storiesOf('KeychainContent', module)
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => (
     <ConfigProvider value={config}>
       <MockedProvider mocks={mocks}>{getStory()}</MockedProvider>
     </ConfigProvider>

@@ -6,7 +6,7 @@ const WalletService = require('../helpers/walletServiceMock.js')
 
 let unlock
 
-contract('Unlock / gas', accounts => {
+contract('Unlock / gas', (accounts) => {
   let createLockGas = new BigNumber(42)
 
   beforeEach(async () => {

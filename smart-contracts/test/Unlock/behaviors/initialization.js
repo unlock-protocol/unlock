@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-exports.shouldHaveInitialized = options => {
+exports.shouldHaveInitialized = (options) => {
   describe('Unlock / behaviors / initialization', () => {
     let unlock
     let unlockOwner

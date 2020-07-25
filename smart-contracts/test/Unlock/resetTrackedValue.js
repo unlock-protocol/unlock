@@ -11,7 +11,7 @@ const keyPrice = web3.utils.toWei('0.01', 'ether')
 let unlock
 let lock
 
-contract('Unlock / resetTrackedValue', accounts => {
+contract('Unlock / resetTrackedValue', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])

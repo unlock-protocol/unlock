@@ -49,7 +49,7 @@ export const setupUnlockProtocolVariable = (properties: {
     enumerable: false,
   }
 
-  const immutableProperties = Object.keys(properties).map(name => {
+  const immutableProperties = Object.keys(properties).map((name) => {
     return {
       [name]: {
         value: properties[name],

@@ -13,7 +13,7 @@ let locks
 let lock
 let token
 
-contract('Unlock / uniswapValue', accounts => {
+contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
   beforeEach(async () => {

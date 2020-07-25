@@ -55,7 +55,7 @@ export class LogIn extends React.Component<Props, State> {
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       [name]: value,
     }))
@@ -69,7 +69,7 @@ export class LogIn extends React.Component<Props, State> {
 
   handleReset = () => {
     const { errors, close } = this.props
-    errors.forEach(e => close(e))
+    errors.forEach((e) => close(e))
   }
 
   submitButton = () => {
@@ -143,7 +143,7 @@ interface ReduxState {
 
 const mapStateToProps = ({ account, errors }: ReduxState) => {
   const logInWarnings = errors.filter(
-    e => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
+    (e) => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
   )
 
   return {

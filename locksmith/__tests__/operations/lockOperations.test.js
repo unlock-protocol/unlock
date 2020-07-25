@@ -37,7 +37,7 @@ describe('lockOperations', () => {
   describe('getLockByAddress', () => {
     it('should invoke Lock.findOne with the checksummed lock address and return the lock object', async () => {
       expect.assertions(4)
-      Lock.findOne = jest.fn(query => {
+      Lock.findOne = jest.fn((query) => {
         expect(query.where.address[Op.eq]).toEqual(
           '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
         )
@@ -88,7 +88,7 @@ describe('lockOperations', () => {
   describe('getLocksByOwner', () => {
     it('should invoke Lock.findOne with the checksummed lock address and return the lock object', async () => {
       expect.assertions(4)
-      Lock.findAll = jest.fn(query => {
+      Lock.findAll = jest.fn((query) => {
         expect(query.where.owner[Op.eq]).toEqual(
           '0xCA750f9232C1c38e34D27e77534e1631526eC99e'
         )

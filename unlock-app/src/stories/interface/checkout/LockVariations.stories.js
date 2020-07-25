@@ -10,7 +10,7 @@ import {
   ConfirmedLock,
 } from '../../../components/interface/checkout/LockVariations'
 
-const makeProps = name => ({
+const makeProps = (name) => ({
   name,
   formattedKeyPrice: '0.01 ETH',
   formattedDuration: '12 Days',
@@ -30,7 +30,7 @@ const components = {
 storiesOf('Lock Variations', module).add('All variations', () => {
   return (
     <div>
-      {Object.keys(components).map(name => {
+      {Object.keys(components).map((name) => {
         const Component = components[name]
         const props = makeProps(name)
         return <Component key={name} {...props} />

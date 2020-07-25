@@ -9,7 +9,7 @@ let lock
 let lockCreator
 let lockAddress
 
-contract('Permissions / isKeyManager', accounts => {
+contract('Permissions / isKeyManager', (accounts) => {
   lockCreator = accounts[0]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const salt = 42

@@ -52,16 +52,16 @@ const web3Service = {
 const walletService = {}
 
 storiesOf('CreatorLocks', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => (
     <Web3ServiceProvider value={web3Service}>{getStory()}</Web3ServiceProvider>
   ))
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => (
     <WalletServiceProvider value={walletService}>
       {getStory()}
     </WalletServiceProvider>
   ))
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('no lock', () => {

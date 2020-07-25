@@ -73,7 +73,7 @@ export const Lock = ({
 
   const canAfford = userCanAffordKey(lock, balances)
 
-  const keyForThisLock = activeKeys.find(key => key.lock === lock.address)
+  const keyForThisLock = activeKeys.find((key) => key.lock === lock.address)
 
   // This lock is being/has been purchased
   if (state.purchasingLockAddress === lock.address || keyForThisLock) {
@@ -94,4 +94,8 @@ export const Lock = ({
   }
 
   return <LockVariations.InsufficientBalanceLock {...props} />
+}
+
+Lock.defaultProps = {
+  metadataRequired: false,
 }

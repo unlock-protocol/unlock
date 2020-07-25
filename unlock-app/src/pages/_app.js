@@ -85,7 +85,7 @@ const Web3ProviderContextProvider = Web3ProviderContext.Provider
 
 // web3 provider
 let web3Provider = null
-const setWeb3Provider = provider => {
+const setWeb3Provider = (provider) => {
   web3Provider = provider
 }
 

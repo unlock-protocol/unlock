@@ -1,7 +1,7 @@
 export default class GoogleDrive {
-  filePresent = async name => {
+  filePresent = async (name) => {
     const response = await this.getFile()
-    const matchedFile = response.result.files.find(file => file.name == name)
+    const matchedFile = response.result.files.find((file) => file.name == name)
     return !!matchedFile
   }
 
@@ -40,7 +40,7 @@ export default class GoogleDrive {
       body: multipartRequestBody,
     })
     if (!callback) {
-      callback = function(file) {
+      callback = function (file) {
         console.log(file)
       }
     }

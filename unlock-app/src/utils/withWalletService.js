@@ -15,7 +15,7 @@ export default function withWalletService(Component) {
   function componentWithWalletService(props) {
     return (
       <WalletServiceContext.Consumer>
-        {walletService => (
+        {(walletService) => (
           <Component {...props} walletService={walletService} />
         )}
       </WalletServiceContext.Consumer>

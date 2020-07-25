@@ -8,22 +8,22 @@ module.exports = {
   logCloneUnable: (address, requester) => {
     logger.error(`unable to clone ${address}, requester: ${requester}`)
   },
-  logCloneMissingInfo: address => {
+  logCloneMissingInfo: (address) => {
     logger.error(`unable to clone ${address} required information missing`)
   },
-  logLockDetailsStored: address => {
+  logLockDetailsStored: (address) => {
     logger.info(`${address} details stored`)
   },
-  logAttemptedOverwrite: address => {
+  logAttemptedOverwrite: (address) => {
     logger.error(`An attempt at overwriting ${address}`)
   },
-  logLockDetailsRequest: address => {
+  logLockDetailsRequest: (address) => {
     logger.debug(`requesting lock details for ${address}`)
   },
-  logFailureRequestingBlockTimestamp: error => {
+  logFailureRequestingBlockTimestamp: (error) => {
     logger.error(error)
   },
-  logFailureToStoreLock: error => {
+  logFailureToStoreLock: (error) => {
     logger.error(error)
   },
 }

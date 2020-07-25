@@ -64,7 +64,7 @@ export const retrieveLocks = async (
     }, 300)
   }
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     loadNext(locks, () => {
       setLoading(false)
       resolve()
@@ -124,7 +124,7 @@ export const retrieveLockCreationTransactions = async (
   } = await storageService.getRecentTransactionsHashesSentBy(owner)
 
   // For each of the hashes, let's retrieve the transaction
-  userTransactions.forEach(async transaction => {
+  userTransactions.forEach(async (transaction) => {
     try {
       processLockCreationTransaction(
         web3Service,
@@ -208,8 +208,8 @@ export const createLock = async (
  * This hook yields the list of locks for the owner based on data from the graph and the chain
  * @param {*} address
  */
-export const useLocks = owner => {
-  const network = useSelector(state => state.network)
+export const useLocks = (owner) => {
+  const network = useSelector((state) => state.network)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const storageService = useContext(StorageServiceContext)
@@ -221,7 +221,7 @@ export const useLocks = owner => {
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
     const index = locks.findIndex(
-      element => element.address.toLowerCase() === lock.address.toLowerCase()
+      (element) => element.address.toLowerCase() === lock.address.toLowerCase()
     )
 
     if (index === -1) {

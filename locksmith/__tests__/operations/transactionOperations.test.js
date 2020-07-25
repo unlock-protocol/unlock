@@ -23,7 +23,7 @@ describe('lockOperations', () => {
       const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       const recipient = '0xca750f9232c1c38e34d27e77534e1631526ec99e'
       const chain = 1984
-      Transaction.findOrCreate = jest.fn(query => {
+      Transaction.findOrCreate = jest.fn((query) => {
         expect(query.where).toEqual({
           transactionHash,
         })
@@ -51,7 +51,7 @@ describe('lockOperations', () => {
     it('should get the list of transactions by that sender after having checksummed the address', async () => {
       expect.assertions(2)
       const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
-      Transaction.findAll = jest.fn(query => {
+      Transaction.findAll = jest.fn((query) => {
         expect(query.where.sender[Op.eq]).toEqual(
           '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
         )
@@ -64,7 +64,7 @@ describe('lockOperations', () => {
       it('only returns transactions for the appropriate recipient', async () => {
         expect.assertions(2)
         const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
-        Transaction.findAll = jest.fn(query => {
+        Transaction.findAll = jest.fn((query) => {
           expect(query.where.sender[Op.eq]).toEqual(
             '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
           )

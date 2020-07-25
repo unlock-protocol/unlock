@@ -6,18 +6,18 @@ import { UNLIMITED_KEYS_COUNT } from '../constants'
  * We use the block version
  * @return Promise<Lock>
  */
-export default async function(address) {
+export default async function (address) {
   const contract = await this.getLockContract(address)
   const attributes = {
-    keyPrice: x => utils.fromWei(x, 'ether'),
+    keyPrice: (x) => utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
-    maxNumberOfKeys: value => {
+    maxNumberOfKeys: (value) => {
       if (utils.isInfiniteKeys(value)) {
         return UNLIMITED_KEYS_COUNT
       }
       return utils.toNumber(value)
     },
-    owner: x => x,
+    owner: (x) => x,
     outstandingKeys: parseInt,
   }
 
@@ -38,7 +38,7 @@ export default async function(address) {
     name: null, // v0 does not support lock names
   }
 
-  const constantPromises = Object.keys(attributes).map(async attribute => {
+  const constantPromises = Object.keys(attributes).map(async (attribute) => {
     const result = await contract.functions[`${attribute}()`]()
     update[attribute] = attributes[attribute](result) // We cast the value
   })

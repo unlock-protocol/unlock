@@ -71,7 +71,7 @@ export class AppStore extends React.Component {
       <Wrapper>
         <DetailTitle>Integrate</DetailTitle>
         <Apps>
-          {Object.keys(this.integrations).map(index => {
+          {Object.keys(this.integrations).map((index) => {
             const integration = this.integrations[index]
             return (
               <Integration

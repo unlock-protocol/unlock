@@ -10,7 +10,7 @@ jest.mock('../encrypter')
 
 describe('route', () => {
   describe('when there is no matching template', () => {
-    it('should yield an error', done => {
+    it('should yield an error', (done) => {
       expect.assertions(2)
       route({ template: 'notATemplate' }, (error, info) => {
         expect(info).toBe(undefined)
@@ -28,13 +28,13 @@ describe('route', () => {
         }),
       }
 
-      nodemailer.createTransport = jest.fn(params => {
+      nodemailer.createTransport = jest.fn((params) => {
         expect(params).toEqual(config)
         return transporter
       })
     })
 
-    it('should use the template with all the params', done => {
+    it('should use the template with all the params', (done) => {
       expect.assertions(4)
       templates.template = {
         subject: jest.fn(() => 'subject'),
@@ -53,7 +53,7 @@ describe('route', () => {
         attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
       }
 
-      encrypter.signParam = jest.fn(value => {
+      encrypter.signParam = jest.fn((value) => {
         expect(value).toEqual(args.params.encryptedEmail.value)
         return 'encrypted!'
       })
@@ -71,7 +71,7 @@ describe('route', () => {
       })
     })
 
-    it('should send the email using the transporter', done => {
+    it('should send the email using the transporter', (done) => {
       expect.assertions(4)
       templates.template = {
         subject: jest.fn(() => 'subject'),
@@ -98,7 +98,7 @@ describe('route', () => {
           return callback()
         }),
       }
-      nodemailer.createTransport = jest.fn(params => {
+      nodemailer.createTransport = jest.fn((params) => {
         expect(params).toEqual(config)
         return transporter
       })
@@ -111,7 +111,7 @@ describe('route', () => {
     })
 
     describe('when the email was sent succesfuly', () => {
-      it('should yield its enveloppe', done => {
+      it('should yield its enveloppe', (done) => {
         expect.assertions(3)
         templates.template = {
           subject: jest.fn(() => 'subject'),
@@ -129,7 +129,7 @@ describe('route', () => {
             })
           }),
         }
-        nodemailer.createTransport = jest.fn(params => {
+        nodemailer.createTransport = jest.fn((params) => {
           expect(params).toEqual(config)
           return transporter
         })
@@ -145,7 +145,7 @@ describe('route', () => {
     })
 
     describe('when the email was not sent succesfuly', () => {
-      it('should yield the error message', done => {
+      it('should yield the error message', (done) => {
         expect.assertions(3)
         templates.template = {
           subject: jest.fn(() => 'subject'),
@@ -161,7 +161,7 @@ describe('route', () => {
             return callback(new Error('something went wrong'))
           }),
         }
-        nodemailer.createTransport = jest.fn(params => {
+        nodemailer.createTransport = jest.fn((params) => {
           expect(params).toEqual(config)
           return transporter
         })

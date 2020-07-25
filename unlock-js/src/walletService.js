@@ -340,15 +340,15 @@ export default class WalletService extends UnlockService {
   async unformattedSignTypedData(account, data) {
     // Tries multiple methods because support for 'eth_signTypedData' is still fairly bad.
     const methods = {
-      eth_signTypedData: data => data,
-      eth_signTypedData_v3: data => JSON.stringify(data),
-      eth_signTypedData_v4: data => JSON.stringify(data),
+      eth_signTypedData: (data) => data,
+      eth_signTypedData_v3: (data) => JSON.stringify(data),
+      eth_signTypedData_v4: (data) => JSON.stringify(data),
     }
     const toTry = Object.keys(methods)
 
     return new Promise((resolve, reject) => {
       // Try each
-      const tryNext = async tries => {
+      const tryNext = async (tries) => {
         const method = tries.shift()
         if (!method) {
           // They all failed

@@ -1,6 +1,6 @@
 const helpers = require('hardlydifficult-ethereum-contracts')
 
-contract('test-artifacts / uniswap', accounts => {
+contract('test-artifacts / uniswap', (accounts) => {
   const protocolOwner = accounts[0]
   let uniswap
   let sai

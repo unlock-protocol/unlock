@@ -25,7 +25,7 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
   return (
     <Grid>
       <SectionHeader>Export Account</SectionHeader>
-      <Column size="full">
+      <Column count="full">
         <Description>
           Exporting your account will eject it from the Unlock platform. The
           following things will happen:

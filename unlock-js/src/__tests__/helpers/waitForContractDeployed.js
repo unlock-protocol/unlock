@@ -5,7 +5,7 @@
  * @param {*} address
  */
 export const waitForContractDeployed = async (provider, address) => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const pollHasContractDeployed = async (address, delay, tries) => {
       let opCode = '0x'
       try {

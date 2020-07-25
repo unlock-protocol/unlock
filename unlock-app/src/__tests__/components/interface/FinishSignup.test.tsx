@@ -32,7 +32,7 @@ describe('FinishSignup', () => {
     ]
     const submit = getByDisplayValue('Submit')
 
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       rtl.fireEvent.change(input, { target: { value: password } })
     })
 

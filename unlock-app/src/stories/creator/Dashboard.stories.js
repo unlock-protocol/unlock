@@ -112,7 +112,7 @@ const config = configure({
   requiredConfirmations: 12,
 })
 storiesOf('DashboardContent', module)
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('the dashboard, waiting for wallet', () => {
