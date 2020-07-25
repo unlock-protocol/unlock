@@ -1,9 +1,9 @@
+import Sequelize from 'sequelize'
 import * as Normalizer from '../utils/normalizer'
 
 const models = require('../models')
 
 const { AuthorizedLock } = models
-import Sequelize = require('sequelize')
 
 const { Op } = Sequelize
 

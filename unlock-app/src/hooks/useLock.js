@@ -91,7 +91,7 @@ export const updateKeyPriceOnLock = (
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  * @param {*} lock
  */
-export const useLock = lockFromProps => {
+export const useLock = (lockFromProps) => {
   const [lock, setLock] = useState(lockFromProps)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)

@@ -6,7 +6,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / getHasValidKey', accounts => {
+contract('Lock / getHasValidKey', (accounts) => {
   const account = accounts[1]
   let lock
 

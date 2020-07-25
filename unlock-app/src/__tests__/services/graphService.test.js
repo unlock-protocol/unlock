@@ -42,7 +42,7 @@ describe('GraphService', () => {
         })
       })
 
-      utils.getAddress = jest.fn(address => {
+      utils.getAddress = jest.fn((address) => {
         return address
       })
 
@@ -56,7 +56,7 @@ describe('GraphService', () => {
         },
       })
       expect(graphService.client.query).toHaveBeenCalledTimes(1)
-      expect(ownerLocks).toEqual(lockManagers.map(manager => manager.lock))
+      expect(ownerLocks).toEqual(lockManagers.map((manager) => manager.lock))
     })
   })
 })

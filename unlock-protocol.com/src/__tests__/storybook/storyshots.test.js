@@ -5,7 +5,7 @@ import { render as renderer } from '@testing-library/react'
 
 initStoryshots({
   renderer,
-  test: info => {
+  test: (info) => {
     /* eslint-disable no-console */
 
     const { error } = console

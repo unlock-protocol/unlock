@@ -6,7 +6,7 @@ import CheckoutWrapper from '../../../components/interface/checkout/CheckoutWrap
 import doNothing from '../../../utils/doNothing'
 
 storiesOf('Recommended Wallets', module)
-  .addDecorator(getStory => {
+  .addDecorator((getStory) => {
     return (
       <CheckoutContainer close={doNothing}>
         <CheckoutWrapper hideCheckout={doNothing} allowClose>

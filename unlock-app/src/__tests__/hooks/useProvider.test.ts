@@ -28,13 +28,13 @@ jest.mock('react-redux', () => {
   }
 })
 
-jest.spyOn(Redux, 'useSelector').mockImplementation(selector => {
+jest.spyOn(Redux, 'useSelector').mockImplementation((selector) => {
   return selector({
     provider: 'Unlock',
   })
 })
 
-jest.spyOn(React, 'useContext').mockImplementation(context => {
+jest.spyOn(React, 'useContext').mockImplementation((context) => {
   if (context === ConfigContext) {
     return mockConfig
   }
@@ -45,7 +45,7 @@ describe('useProvider', () => {
   beforeEach(() => {
     mockDispatch = jest.fn()
     mockWeb3Provider = null
-    mockWeb3ProviderContext.setWeb3Provider = jest.fn(web3Provider => {
+    mockWeb3ProviderContext.setWeb3Provider = jest.fn((web3Provider) => {
       mockWeb3Provider = web3Provider
     })
     mockWeb3ProviderContext.getWeb3Provider = jest.fn(() => mockWeb3Provider)

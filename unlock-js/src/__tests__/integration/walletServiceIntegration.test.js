@@ -31,7 +31,7 @@ let accounts
 // Tests
 describe('Wallet Service Integration', () => {
   const versions = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7']
-  describe.each(versions)('%s', versionName => {
+  describe.each(versions)('%s', (versionName) => {
     let walletService
     let web3Service
 
@@ -50,7 +50,7 @@ describe('Wallet Service Integration', () => {
       accounts = await walletService.provider.listAccounts()
     })
 
-    it('should yield true to isUnlockContractDeployed', done => {
+    it('should yield true to isUnlockContractDeployed', (done) => {
       expect.assertions(2)
       walletService.isUnlockContractDeployed((error, deployed) => {
         expect(error).toBeNull()

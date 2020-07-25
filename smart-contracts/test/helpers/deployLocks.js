@@ -11,7 +11,7 @@ module.exports = async function deployLocks(
 ) {
   let locks = {}
   await Promise.all(
-    Object.keys(Locks).map(async name => {
+    Object.keys(Locks).map(async (name) => {
       const tx = await unlock.createLock(
         Locks[name].expirationDuration.toFixed(),
         tokenAddress,
@@ -22,7 +22,7 @@ module.exports = async function deployLocks(
         `0x${(saltCounter++).toString(16)}`,
         { from }
       )
-      const evt = tx.logs.find(v => v.event === 'NewLock')
+      const evt = tx.logs.find((v) => v.event === 'NewLock')
       const address = await PublicLock.at(evt.args.newLockAddress)
       locks[name] = address
       locks[name].params = Locks[name]

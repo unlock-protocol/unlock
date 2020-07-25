@@ -12,7 +12,7 @@ const config = configure()
 const store = createUnlockStore({})
 
 storiesOf('Buttons/Lock Buttons', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('Withdraw, no balance', () => {
     const lock = {
       address: '0xabc',

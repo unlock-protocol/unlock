@@ -57,7 +57,7 @@ CreatorLocksFromHook.propTypes = {
   hideForm: PropTypes.func.isRequired,
 }
 
-export const CreatorLocks = props => {
+export const CreatorLocks = (props) => {
   const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
 
   return (
@@ -77,14 +77,14 @@ export const CreatorLocks = props => {
       {formIsVisible && (
         <CreatorLockForm
           hideAction={hideForm}
-          saveLock={async lock => {
+          saveLock={async (lock) => {
             await createLock(lock, hideForm)
           }}
           pending
         />
       )}
       {lockFeed.length > 0 &&
-        lockFeed.map(lock => {
+        lockFeed.map((lock) => {
           return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
         })}
       {lockFeed.length === 0 && !loading && !formIsVisible && (
@@ -115,8 +115,8 @@ CreatorLocks.defaultProps = {
   lockFeed: [],
 }
 
-const mapDispatchToProps = dispatch => ({
-  createLock: lock => dispatch(createLock(lock)),
+const mapDispatchToProps = (dispatch) => ({
+  createLock: (lock) => dispatch(createLock(lock)),
   hideForm: () => dispatch(hideForm()),
 })
 

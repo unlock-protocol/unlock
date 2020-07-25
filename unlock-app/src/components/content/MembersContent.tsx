@@ -23,7 +23,7 @@ import useMembers from '../../hooks/useMembers'
 interface FilterProps {
   value: string
   current: string
-  setFilter: (string) => any
+  setFilter: (filter: string) => any
 }
 
 const Filter = ({ value, current, setFilter }: FilterProps) => {
@@ -57,12 +57,12 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
               <Filter
                 value={MemberFilters.ACTIVE}
                 current={filter}
-                setFilter={value => setFilter(value)}
+                setFilter={(value) => setFilter(value)}
               />
               <Filter
                 value={MemberFilters.ALL}
                 current={filter}
-                setFilter={value => setFilter(value)}
+                setFilter={(value) => setFilter(value)}
               />
             </Filters>
             <MetadataTableWrapper
@@ -80,6 +80,7 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
 interface MetadataTableWrapperProps {
   lockAddresses: string[]
   accountAddress: string
+  filter: string
 }
 /**
  * This just wraps the metadataTable component, providing the data
@@ -115,6 +116,8 @@ const MetadataTableWrapper = ({
   // TODO: rename metadata into members inside of MetadataTable
   return <MetadataTable columns={columns} metadata={list} />
 }
+
+MetadataTableWrapper.defaultProps = {}
 
 interface ReduxState {
   account: AccountType
@@ -161,8 +164,8 @@ const StyledFilter = styled.li`
     props.active ? 'not-allowed' : 'pointer'};
   display: inline-block;
   margin: 5px;
-  color: ${props => (props.active ? 'var(--darkgrey)' : 'var(--blue)')};
-  font-weight: ${props => (props.active ? '700' : '300')};
+  color: ${(props) => (props.active ? 'var(--darkgrey)' : 'var(--blue)')};
+  font-weight: ${(props) => (props.active ? '700' : '300')};
 `
 
 export default connect(mapStateToProps)(MembersContent)

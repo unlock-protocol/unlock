@@ -8,7 +8,7 @@ let unlock
 let lock
 let templateAddress
 
-contract('Unlock / createLockClone2', accounts => {
+contract('Unlock / createLockClone2', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     templateAddress = await unlock.publicLockAddress()
@@ -41,7 +41,7 @@ contract('Unlock / createLockClone2', accounts => {
               from: accounts[0],
             }
           )
-          const evt = tx.logs.find(v => v.event === 'NewLock')
+          const evt = tx.logs.find((v) => v.event === 'NewLock')
           lock = await PublicLock.at(evt.args.newLockAddress)
         })
 

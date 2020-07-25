@@ -45,7 +45,7 @@ export const CheckoutLogin = ({
       return (
         <ErrorButton
           onClick={() => {
-            errors.forEach(error => close(error))
+            errors.forEach((error) => close(error))
             handleSubmit(onSubmit)()
           }}
         >
@@ -99,7 +99,7 @@ interface ReduxState {
 
 export const mapStateToProps = ({ errors }: ReduxState) => {
   const logInWarnings = errors.filter(
-    e => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
+    (e) => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
   )
 
   return {

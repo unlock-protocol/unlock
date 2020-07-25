@@ -8,7 +8,7 @@ import utils from '../utils'
  * @param {PropTypes.address} lockAddress
  * @param {function} callback invoked with the transaction hash
  */
-export default async function({ lockAddress }, callback) {
+export default async function ({ lockAddress }, callback) {
   const lockContract = await this.getLockContract(lockAddress)
   const transactionPromise = lockContract['withdraw()']({
     gasLimit: GAS_AMOUNTS.withdraw,
@@ -24,11 +24,11 @@ export default async function({ lockAddress }, callback) {
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = lockContract.interface
   const withdrawalEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter(event => {
+    .filter((event) => {
       return event && event.name === 'Withdrawal'
     })[0]
   if (withdrawalEvent) {

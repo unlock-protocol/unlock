@@ -44,7 +44,7 @@ const blockGet = async (req, res) => {
   }
 }
 
-const prepareChainId = chainIdentifier => {
+const prepareChainId = (chainIdentifier) => {
   if (chainIdentifier === null || chainIdentifier === undefined) {
     return 1
   }

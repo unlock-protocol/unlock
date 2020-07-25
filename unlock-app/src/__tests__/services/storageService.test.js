@@ -45,7 +45,7 @@ describe('StorageService', () => {
   })
 
   describe('getRecentTransactionsHashesSentBy', () => {
-    it('should succeed with a list of hashes', done => {
+    it('should succeed with a list of hashes', (done) => {
       expect.assertions(3)
       const sender = '0xabc'
       axios.get.mockReturnValue({
@@ -98,14 +98,14 @@ describe('StorageService', () => {
       )
     })
 
-    it('should fail with an error', done => {
+    it('should fail with an error', (done) => {
       expect.assertions(1)
 
       axios.get.mockRejectedValue('I am error.')
 
       storageService.getRecentTransactionsHashesSentBy('0xabc')
 
-      storageService.on(failure.getTransactionHashesSentBy, err => {
+      storageService.on(failure.getTransactionHashesSentBy, (err) => {
         expect(err).toBe('I am error.')
         done()
       })
@@ -156,7 +156,7 @@ describe('StorageService', () => {
   })
 
   describe('storeTransaction', () => {
-    it('emits a success value', done => {
+    it('emits a success value', (done) => {
       expect.assertions(2)
       const transactionHash = '0xhash'
       const senderAddress = '0xsender'
@@ -183,13 +183,13 @@ describe('StorageService', () => {
         data,
         for: beneficiaryAddress,
       })
-      storageService.on(success.storeTransaction, hash => {
+      storageService.on(success.storeTransaction, (hash) => {
         expect(hash).toBe(transactionHash)
         done()
       })
     })
 
-    it('defaults to sender as beneficiary if none is set', done => {
+    it('defaults to sender as beneficiary if none is set', (done) => {
       expect.assertions(2)
       const transactionHash = '0xhash'
       const senderAddress = '0xsender'
@@ -215,13 +215,13 @@ describe('StorageService', () => {
         data,
         for: senderAddress,
       })
-      storageService.on(success.storeTransaction, hash => {
+      storageService.on(success.storeTransaction, (hash) => {
         expect(hash).toBe(transactionHash)
         done()
       })
     })
 
-    it('emits a failure value', done => {
+    it('emits a failure value', (done) => {
       expect.assertions(2)
       const transactionHash = ' 0xhash'
       const senderAddress = ' 0xsender'
@@ -241,7 +241,7 @@ describe('StorageService', () => {
         data: undefined,
         for: senderAddress,
       })
-      storageService.on(failure.storeTransaction, err => {
+      storageService.on(failure.storeTransaction, (err) => {
         expect(err).toBe('I am error.')
         done()
       })
@@ -250,7 +250,7 @@ describe('StorageService', () => {
 
   describe('Create user', () => {
     describe('When a user can be created', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(5)
         const recoveryPhrase = 'recoveryPhrase'
         axios.post.mockReturnValue({
@@ -262,7 +262,7 @@ describe('StorageService', () => {
         const emailAddress = 'johnnyapple@seed.ly'
         const password = 'password123'
 
-        storageService.on(success.createUser, result => {
+        storageService.on(success.createUser, (result) => {
           expect(result.passwordEncryptedPrivateKey).toEqual(
             passwordEncryptedPrivateKey
           )
@@ -282,11 +282,11 @@ describe('StorageService', () => {
     })
 
     describe('When a user cannot be created', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(2)
         axios.post.mockRejectedValue('Hark! An Error')
         storageService.createUser(user)
-        storageService.on(failure.createUser, error => {
+        storageService.on(failure.createUser, (error) => {
           expect(error).toEqual('Hark! An Error')
           done()
         })
@@ -302,7 +302,7 @@ describe('StorageService', () => {
 
   describe('Update user', () => {
     describe('When a user can be updated', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(2)
         axios.put.mockReturnValue()
         storageService.updateUserEncryptedPrivateKey(
@@ -331,7 +331,7 @@ describe('StorageService', () => {
     })
 
     describe('When a user cannot be updated', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(3)
         axios.put.mockRejectedValue('Egads! An Error')
         storageService.updateUserEncryptedPrivateKey(
@@ -363,7 +363,7 @@ describe('StorageService', () => {
 
   describe('Add payment method', () => {
     describe('When a payment method is successfully added', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(2)
         axios.put.mockReturnValue()
         storageService.addPaymentMethod(
@@ -388,7 +388,7 @@ describe('StorageService', () => {
     })
 
     describe('when a payment method cannot be successfully added', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(1)
         axios.put.mockRejectedValue()
         storageService.addPaymentMethod(
@@ -406,7 +406,7 @@ describe('StorageService', () => {
 
   describe('Retrieve a private key for a user', () => {
     describe('When a private key can be retrieved', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(3)
         axios.get.mockReturnValue({
           data: {
@@ -438,7 +438,7 @@ describe('StorageService', () => {
     })
 
     describe('When a private key cannot be retrieved', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(3)
         axios.get.mockRejectedValue('Great Snakes! An Error')
 
@@ -466,14 +466,14 @@ describe('StorageService', () => {
 
   describe('Retrieve user payment details', () => {
     describe('When a request succeeds with at least one card', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(2)
         const emailAddress = 'geoff@bitconnect.gov'
         axios.get.mockReturnValue({ data: [{ id: 'a card object' }] })
 
         storageService.getCards(emailAddress)
 
-        storageService.on(success.getCards, cards => {
+        storageService.on(success.getCards, (cards) => {
           expect(cards[0].id).toEqual('a card object')
           done()
         })
@@ -485,14 +485,14 @@ describe('StorageService', () => {
     })
 
     describe('When a request succeeds without a card', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(2)
         const emailAddress = 'geoff@bitconnect.gov'
         axios.get.mockReturnValue({ data: [] })
 
         storageService.getCards(emailAddress)
 
-        storageService.on(success.getCards, cards => {
+        storageService.on(success.getCards, (cards) => {
           expect(cards).toHaveLength(0)
           done()
         })
@@ -504,7 +504,7 @@ describe('StorageService', () => {
     })
 
     describe('When a request fails', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(1)
         const emailAddress = 'geoff@bitconnect.gov'
         axios.get.mockRejectedValue('Could not fulfill request due to sunspots')
@@ -521,7 +521,7 @@ describe('StorageService', () => {
 
   describe('Retrieve a key price', () => {
     describe('When a request succeeds', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(1)
         const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
         axios.get.mockReturnValue({
@@ -535,7 +535,7 @@ describe('StorageService', () => {
 
         storageService.getKeyPrice(lockAddress)
 
-        storageService.on(success.getKeyPrice, data => {
+        storageService.on(success.getKeyPrice, (data) => {
           expect(data).toEqual({
             creditCardProcessing: 450,
             gasFee: 30,
@@ -548,14 +548,14 @@ describe('StorageService', () => {
     })
 
     describe('When a request fails', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(1)
         const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
         axios.get.mockRejectedValue('could not communicate with server')
 
         storageService.getKeyPrice(lockAddress)
 
-        storageService.on(failure.getKeyPrice, error => {
+        storageService.on(failure.getKeyPrice, (error) => {
           expect(error).toEqual('could not communicate with server')
           done()
         })
@@ -564,7 +564,7 @@ describe('StorageService', () => {
   })
 
   describe('ejecting user', () => {
-    it('should send a request to eject a user', done => {
+    it('should send a request to eject a user', (done) => {
       expect.assertions(1)
       axios.post.mockReturnValue({})
       const data = {}
@@ -590,7 +590,7 @@ describe('StorageService', () => {
 
   describe('Retrieve a user recovery phrase', () => {
     describe('When a recovery phrase can be retrieved', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(3)
         axios.get.mockReturnValue({
           data: {
@@ -620,7 +620,7 @@ describe('StorageService', () => {
     })
 
     describe('When a recovery phrase cannot be retrieved', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(3)
         axios.get.mockRejectedValue('Zounds! An Error')
 
@@ -648,7 +648,7 @@ describe('StorageService', () => {
 
   describe('Purchase key', () => {
     describe('When a key purchase succeeds', () => {
-      it('emits a success', done => {
+      it('emits a success', (done) => {
         expect.assertions(2)
         const data = {
           message: {
@@ -677,7 +677,7 @@ describe('StorageService', () => {
     })
 
     describe('when a key purchase fails', () => {
-      it('emits a failure', done => {
+      it('emits a failure', (done) => {
         expect.assertions(1)
         axios.post.mockRejectedValue()
         storageService.on(failure.keyPurchase, () => {
@@ -691,7 +691,7 @@ describe('StorageService', () => {
   })
 
   describe('getLockAddressesForUser', () => {
-    it('should retrieve the list of locks for a user and emit emit success.getLockAddressesForUser', done => {
+    it('should retrieve the list of locks for a user and emit emit success.getLockAddressesForUser', (done) => {
       expect.assertions(2)
       const user = '0xabc'
       const locks = [
@@ -716,8 +716,8 @@ describe('StorageService', () => {
         },
       })
 
-      storageService.on(success.getLockAddressesForUser, addresses => {
-        expect(addresses).toEqual(locks.map(lock => lock.address))
+      storageService.on(success.getLockAddressesForUser, (addresses) => {
+        expect(addresses).toEqual(locks.map((lock) => lock.address))
         done()
       })
 
@@ -726,7 +726,7 @@ describe('StorageService', () => {
       expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
     })
 
-    it('should emit failure.getLockAddressesForUser if the data does not have the expected format', done => {
+    it('should emit failure.getLockAddressesForUser if the data does not have the expected format', (done) => {
       expect.assertions(2)
       const user = '0xabc'
       axios.get.mockReturnValue({
@@ -735,7 +735,7 @@ describe('StorageService', () => {
 
       storageService.getLockAddressesForUser(user)
 
-      storageService.on(failure.getLockAddressesForUser, error => {
+      storageService.on(failure.getLockAddressesForUser, (error) => {
         expect(error).toBe('We could not retrieve lock addresses for that user')
         done()
       })
@@ -743,7 +743,7 @@ describe('StorageService', () => {
       expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
     })
 
-    it('should emit failure.getLockAddressesForUser if there was an error', done => {
+    it('should emit failure.getLockAddressesForUser if there was an error', (done) => {
       expect.assertions(2)
       const user = '0xabc'
       const httpError = 'An Error'
@@ -751,7 +751,7 @@ describe('StorageService', () => {
 
       storageService.getLockAddressesForUser(user)
 
-      storageService.on(failure.getLockAddressesForUser, error => {
+      storageService.on(failure.getLockAddressesForUser, (error) => {
         expect(error).toBe(httpError)
         done()
       })
@@ -761,7 +761,7 @@ describe('StorageService', () => {
   })
 
   describe('getMetadataFor', () => {
-    it('should emit success on success', done => {
+    it('should emit success on success', (done) => {
       expect.assertions(2)
 
       const lockAddress = 'address'
@@ -783,7 +783,7 @@ describe('StorageService', () => {
         },
       })
 
-      storageService.on(success.getMetadataFor, result => {
+      storageService.on(success.getMetadataFor, (result) => {
         expect(result).toEqual({
           lockAddress,
           keyId,
@@ -813,7 +813,7 @@ describe('StorageService', () => {
       )
     })
 
-    it('should emit failure on failure', done => {
+    it('should emit failure on failure', (done) => {
       expect.assertions(1)
 
       const lockAddress = 'address'
@@ -822,7 +822,7 @@ describe('StorageService', () => {
 
       axios.get.mockRejectedValue('welp')
 
-      storageService.on(failure.getMetadataFor, error => {
+      storageService.on(failure.getMetadataFor, (error) => {
         expect(error).toBe('welp')
         done()
       })
@@ -837,7 +837,7 @@ describe('StorageService', () => {
   })
 
   describe('getBulkMetadataFor', () => {
-    it('should emit success on success', done => {
+    it('should emit success on success', (done) => {
       expect.assertions(2)
 
       const lockAddress = 'address'
@@ -873,7 +873,7 @@ describe('StorageService', () => {
       )
     })
 
-    it('should emit failure on failure', done => {
+    it('should emit failure on failure', (done) => {
       expect.assertions(1)
 
       const lockAddress = 'address'
@@ -881,7 +881,7 @@ describe('StorageService', () => {
 
       axios.get.mockRejectedValue('welp')
 
-      storageService.on(failure.getBulkMetadataFor, error => {
+      storageService.on(failure.getBulkMetadataFor, (error) => {
         expect(error).toBe('welp')
         done()
       })

@@ -82,7 +82,7 @@ export const FiatLock = ({
     address: lock.address,
   }
 
-  const keyForThisLock = activeKeys.find(key => key.lock === lock.address)
+  const keyForThisLock = activeKeys.find((key) => key.lock === lock.address)
 
   // This lock is being/has been purchased
   if (state.purchasingLockAddress === lock.address || keyForThisLock) {
@@ -99,4 +99,9 @@ export const FiatLock = ({
 
   // No lock is being/has been purchased
   return <LockVariations.PurchaseableLock {...props} />
+}
+
+FiatLock.defaultProps = {
+  metadataRequired: false,
+  needToCollectPaymentDetails: false,
 }

@@ -16,7 +16,7 @@ export class BlogPost extends React.Component {
     this.loadCommmentsIfMember()
     // Load scripts if any!
     const { scripts } = this.props
-    this.scripts = scripts.map(url => {
+    this.scripts = scripts.map((url) => {
       const element = document.createElement('script')
       element.async = true
       element.src = url
@@ -31,7 +31,7 @@ export class BlogPost extends React.Component {
   }
 
   componentWillUnmount() {
-    this.scripts.forEach(element => {
+    this.scripts.forEach((element) => {
       element.parentElement.removeChild(element)
     })
     this.scripts = []

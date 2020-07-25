@@ -23,10 +23,7 @@ export const lockIcon = (address: string) => {
   // Default colors
   const scheme = new ColorScheme()
   const mainColor = address.substring(2, 8).toUpperCase()
-  scheme
-    .from_hex(mainColor)
-    .scheme('triade')
-    .variation('pastel')
+  scheme.from_hex(mainColor).scheme('triade').variation('pastel')
   const colors = scheme.colors().map((c: string) => `#${c}`)
 
   // Default origin icon

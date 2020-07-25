@@ -9,7 +9,7 @@ export const buildCSV = (columns: string[], objects: any[]) => {
         })
         .join(',')
     })
-    .filter(row => row)
+    .filter((row) => row)
 
   csv.unshift(columns.map((col: string) => camelCaseToTitle(col)).join(','))
   return csv.join('\n')

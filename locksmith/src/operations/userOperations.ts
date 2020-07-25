@@ -1,4 +1,5 @@
 import Stripe from 'stripe'
+import Sequelize from 'sequelize'
 import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
@@ -10,7 +11,6 @@ const config = require('../../config/config')
 const models = require('../models')
 
 const { User, UserReference } = models
-import Sequelize = require('sequelize')
 
 const { Op } = Sequelize
 

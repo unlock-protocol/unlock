@@ -3,12 +3,12 @@ export const UPDATE_TRANSACTION = 'transaction/UPDATE_TRANSACTION'
 export const DELETE_TRANSACTION = 'transaction/DELETE_TRANSACTION'
 export const NEW_TRANSACTION = 'transaction/NEW_TRANSACTION'
 
-export const newTransaction = transaction => ({
+export const newTransaction = (transaction) => ({
   type: NEW_TRANSACTION,
   transaction,
 })
 
-export const addTransaction = transaction => ({
+export const addTransaction = (transaction) => ({
   type: ADD_TRANSACTION,
   transaction,
 })
@@ -19,7 +19,7 @@ export const updateTransaction = (hash, update) => ({
   update,
 })
 
-export const deleteTransaction = transaction => ({
+export const deleteTransaction = (transaction) => ({
   type: DELETE_TRANSACTION,
   transaction,
 })

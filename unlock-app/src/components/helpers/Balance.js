@@ -12,7 +12,7 @@ import BalanceProvider from './BalanceProvider'
 export const Balance = ({ amount, currency }) => (
   <BalanceProvider
     amount={amount}
-    render={ethWithPresentation => (
+    render={(ethWithPresentation) => (
       <BalanceWithConversion>
         <Currency>
           {!currency && <Eth />}
@@ -62,7 +62,7 @@ export const Eth = styled(CurrencySymbol)`
 `
 export const ERC20 = styled(CurrencySymbol)`
   &:before {
-    content: '${props => props.name}';
+    content: '${(props) => props.name}';
   }
 `
 

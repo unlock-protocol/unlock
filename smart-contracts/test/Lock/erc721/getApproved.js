@@ -6,7 +6,7 @@ const getProxy = require('../../helpers/proxy')
 
 let locks
 
-contract('Lock / erc721 / getApproved', accounts => {
+contract('Lock / erc721 / getApproved', (accounts) => {
   before(async () => {
     this.unlock = await getProxy(unlockContract)
     locks = await deployLocks(this.unlock, accounts[0])

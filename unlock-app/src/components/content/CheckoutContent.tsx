@@ -51,6 +51,10 @@ export const CheckoutContent = ({
   )
 }
 
+CheckoutContent.defaultProps = {
+  configFromSearch: null,
+}
+
 interface ReduxState {
   account: AccountType
   router: Router

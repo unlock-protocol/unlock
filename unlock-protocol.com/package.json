@@ -62,6 +62,22 @@
     "node": "^10"
   },
   "engineStrict": true,
+  "workspaces": [
+    "docker/development",
+    "locksmith",
+    "newsletter",
+    "nudge",
+    "paywall",
+    "smart-contract-extensions",
+    "smart-contracts",
+    "subgraph",
+    "tests",
+    "unlock-app",
+    "unlock-assets",
+    "unlock-js",
+    "unlock-protocol.com",
+    "wedlocks"
+  ],
   "scripts": {
     "predev": "yarn build && yarn build-blog",
     "dev": "next dev -p 3002 src",
@@ -73,6 +89,7 @@
     "prestart": "yarn build && yarn build-blog",
     "start": "cross-env NODE_ENV=production next start src",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
+    "prettier": "prettier",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "ci": "yarn test && yarn lint",

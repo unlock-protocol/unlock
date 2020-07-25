@@ -177,7 +177,7 @@ describe('v6', () => {
       })
     })
 
-    it('should callback with the transaction hash', async done => {
+    it('should callback with the transaction hash', async (done) => {
       expect.assertions(1)
 
       await walletService.createLock(lock, (error, hash) => {

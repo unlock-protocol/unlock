@@ -77,7 +77,7 @@ export const createUnlockStore = (
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
   // values with null
   Object.keys(defaultState).forEach(
-    k => defaultState[k] == null && delete defaultState[k]
+    (k) => defaultState[k] == null && delete defaultState[k]
   )
 
   // We build the initial state by taking first each reducer's default values

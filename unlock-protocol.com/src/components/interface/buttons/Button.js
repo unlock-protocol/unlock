@@ -20,7 +20,7 @@ const BaseButton = ({
   const button = (
     <ButtonLink
       href={href}
-      onClick={e => {
+      onClick={(e) => {
         if (!disabled) return clickAction(e, action)
         return false
       }}
@@ -60,27 +60,27 @@ BaseButton.defaultProps = {
 }
 
 export const ButtonLink = styled.a`
-  background-color: ${props => props.backgroundColor || 'var(--grey)'};
+  background-color: ${(props) => props.backgroundColor || 'var(--grey)'};
   cursor: pointer;
   border-radius: 50%;
-  height: ${props => props.size || ' 24px'};
-  width: ${props => props.size || ' 24px'};
+  height: ${(props) => props.size || ' 24px'};
+  width: ${(props) => props.size || ' 24px'};
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: ${props => props.size || ' 15px'};
+  line-height: ${(props) => props.size || ' 15px'};
 
   > svg {
-    fill: ${props => props.fillColor || 'white'};
-    height: ${props => props.size || ' 24px'};
-    width: ${props => props.size || ' 24px'};
+    fill: ${(props) => props.fillColor || 'white'};
+    height: ${(props) => props.size || ' 24px'};
+    width: ${(props) => props.size || ' 24px'};
   }
 
   &:hover {
-    background-color: ${props => props.backgroundHoverColor || 'var(--link)'};
+    background-color: ${(props) => props.backgroundHoverColor || 'var(--link)'};
 
     > svg {
-      fill: ${props => props.fillHoverColor || 'white'};
+      fill: ${(props) => props.fillHoverColor || 'white'};
     }
   }
   & :focus {

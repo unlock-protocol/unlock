@@ -10,7 +10,7 @@ const store = createUnlockStore({})
 const config = configure()
 
 storiesOf('Footer', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('the footer', () => {
     const ConfigProvider = ConfigContext.Provider
     return (

@@ -9,7 +9,7 @@ import { ConfigContext } from '../../utils/withConfig'
 import { TransactionType } from '../../unlockTypes'
 import configure from '../../config'
 
-const lockWith = params => {
+const lockWith = (params) => {
   const standardLock = {
     address: '0xabcdef123',
     asOf: 31337,
@@ -75,11 +75,11 @@ const web3Service = {
   off: () => {},
 }
 storiesOf('CreatorLock', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => (
     <Web3ServiceProvider value={web3Service}>{getStory()}</Web3ServiceProvider>
   ))
-  .addDecorator(getStory => (
+  .addDecorator((getStory) => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('version 1.2 vulnerability', () => {

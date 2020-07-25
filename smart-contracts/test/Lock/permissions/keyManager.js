@@ -11,7 +11,7 @@ let locks
 let lock
 let lockCreator
 
-contract('Permissions / KeyManager', accounts => {
+contract('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
   const keyGranter = lockCreator
@@ -28,7 +28,7 @@ contract('Permissions / KeyManager', accounts => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map(account => {
+      const purchases = keyOwners.map((account) => {
         return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
           value: keyPrice.toFixed(),
           from: account,
@@ -74,7 +74,7 @@ contract('Permissions / KeyManager', accounts => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map(account => {
+      const purchases = keyOwners.map((account) => {
         return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
           value: keyPrice.toFixed(),
           from: account,
@@ -126,7 +126,7 @@ contract('Permissions / KeyManager', accounts => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map(account => {
+      const purchases = keyOwners.map((account) => {
         return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
           value: keyPrice.toFixed(),
           from: account,
@@ -189,7 +189,7 @@ contract('Permissions / KeyManager', accounts => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map(account => {
+      const purchases = keyOwners.map((account) => {
         return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
           value: keyPrice.toFixed(),
           from: account,
@@ -248,7 +248,7 @@ contract('Permissions / KeyManager', accounts => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map(account => {
+      const purchases = keyOwners.map((account) => {
         return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
           value: keyPrice.toFixed(),
           from: account,

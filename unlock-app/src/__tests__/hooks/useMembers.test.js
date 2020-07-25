@@ -89,7 +89,7 @@ useDispatch.mockImplementation(() => mockDispatch)
 describe('useMembers', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.spyOn(React, 'useContext').mockImplementation(context => {
+    jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === Web3ServiceContext) {
         return web3Service
       }

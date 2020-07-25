@@ -12,7 +12,7 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onKeyPurchaseHook', accounts => {
+contract('Lock / onKeyPurchaseHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
   const dataField = web3.utils.asciiToHex('TestData')

@@ -8,7 +8,7 @@ import TransactionTypes from '../transactionTypes'
  * - {string} keyPrice : new price for the lock, as a string (as wei)
  * @param {function} callback invoked with the transaction hash
  */
-export default async function({ lockAddress, keyPrice }, callback) {
+export default async function ({ lockAddress, keyPrice }, callback) {
   const lockContract = await this.getLockContract(lockAddress)
 
   const transactionPromise = lockContract.updateKeyPrice(
@@ -29,10 +29,10 @@ export default async function({ lockAddress, keyPrice }, callback) {
   const parser = lockContract.interface
 
   const priceChangedEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       return parser.parseLog(log)
     })
-    .filter(event => {
+    .filter((event) => {
       return event.name === 'PriceChanged'
     })[0]
   if (priceChangedEvent) {

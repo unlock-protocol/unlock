@@ -71,7 +71,7 @@ storiesOf('LogInSignUp', module)
   ))
 
 storiesOf('SignUp', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('SignUp', () => <SignUp />)
   .add('FinishSignUp', () => (
     <SignUp emailAddress="geoff@bitconnect.gov" isLinkValid />

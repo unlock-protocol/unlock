@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / invalidateOffchainApproval', accounts => {
+contract('Lock / invalidateOffchainApproval', (accounts) => {
   let lock
   const keyOwner = accounts[1]
 

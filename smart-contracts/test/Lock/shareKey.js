@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / shareKey', accounts => {
+contract('Lock / shareKey', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
@@ -37,7 +37,7 @@ contract('Lock / shareKey', accounts => {
 
   before(async () => {
     lock = locks.FIRST
-    const purchases = keyOwners.map(account => {
+    const purchases = keyOwners.map((account) => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,

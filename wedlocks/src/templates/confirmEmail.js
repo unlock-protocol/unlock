@@ -1,6 +1,6 @@
 export default {
   subject: () => 'Please confirm your email address',
-  text: params =>
+  text: (params) =>
     `Welcome to Unlock!
 
 To get started, please confirm your email address by clicking on the following link:

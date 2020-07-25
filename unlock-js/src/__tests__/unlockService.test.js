@@ -20,7 +20,7 @@ describe('UnlockService', () => {
   // this helper is used to generate the kind of structure that is used internally by ethers.
   // by using this, we can assert against a contract being the same in tests below
   function parseAbi(abi) {
-    return abi.map(sig => utils.parseSignature(sig))
+    return abi.map((sig) => utils.parseSignature(sig))
   }
 
   async function nockBeforeEach() {

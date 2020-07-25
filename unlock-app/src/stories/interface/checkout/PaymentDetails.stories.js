@@ -15,7 +15,7 @@ const config = {
 }
 
 storiesOf('Checkout Payment Details', module)
-  .addDecorator(getStory => {
+  .addDecorator((getStory) => {
     return (
       <Provider store={store}>
         <StorageServiceContext.Provider value={{}}>

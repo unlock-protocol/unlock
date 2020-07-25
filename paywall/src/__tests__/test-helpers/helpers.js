@@ -25,7 +25,7 @@ export class Catcher extends React.Component {
   }
 }
 
-export const wrapperMaker = config =>
+export const wrapperMaker = (config) =>
   function wrapper(props) {
     return (
       <Catcher>
@@ -55,7 +55,7 @@ export function expectError(cb, err) {
 export function fakeLocksmithFetch(window, setResolver) {
   const fetchResponse = {
     json: () => ({
-      then: cb => {
+      then: (cb) => {
         setResolver(cb)
         return {
           catch: () => {},
@@ -66,7 +66,7 @@ export function fakeLocksmithFetch(window, setResolver) {
 
   window.fetch = jest.fn(() => {
     return {
-      then: first => {
+      then: (first) => {
         return first(fetchResponse)
       },
     }

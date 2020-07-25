@@ -1,10 +1,10 @@
 import request from 'supertest'
 
+import ethJsUtil = require('ethereumjs-util')
+import sigUtil = require('eth-sig-util')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
-import ethJsUtil = require('ethereumjs-util')
 import models = require('../../../src/models')
-import sigUtil = require('eth-sig-util')
 import UserOperations = require('../../../src/operations/userOperations')
 
 function generateTypedData(message: any) {

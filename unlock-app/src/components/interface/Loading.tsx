@@ -14,12 +14,20 @@ const Loading = ({ size }: Props) => {
   )
 }
 
+Loading.defaultProps = {
+  size: 60,
+}
+
 export const InlineLoading = ({ size }: Props) => {
   return (
     <InlineLoadingWrapper size={size}>
       <Svg.Loading title="loading" alt="loading" />
     </InlineLoadingWrapper>
   )
+}
+
+InlineLoading.defaultProps = {
+  size: 60,
 }
 
 export default Loading
@@ -29,15 +37,15 @@ const LoadingWrapper = styled.section<Props>`
   justify-items: center;
   svg {
     fill: var(--grey);
-    width: ${(props: Props) => props.size || 60}px;
+    width: ${(props: Props) => props.size}px;
   }
 `
 
 const InlineLoadingWrapper = styled.span<Props>`
-  width: ${(props: Props) => props.size || 60}px;
-  margin-left: ${(props: Props) => props.size || 60}px;
+  width: ${(props: Props) => props.size}px;
+  margin-left: ${(props: Props) => props.size}px;
   svg {
     fill: var(--lightgrey);
-    width: ${(props: Props) => props.size || 60}px;
+    width: ${(props: Props) => props.size}px;
   }
 `

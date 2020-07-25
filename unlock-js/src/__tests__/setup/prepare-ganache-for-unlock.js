@@ -12,7 +12,7 @@ let providerURL = `http://${host}:${port}`
 
 const users = ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2']
 
-const log = message => {
+const log = (message) => {
   console.log(`GANACHE SETUP > ${message}`)
 }
 
@@ -44,7 +44,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
     // We then transfer some ERC20 tokens to some users
     await Promise.all(
-      users.map(async user => {
+      users.map(async (user) => {
         await Erc20.transfer(
           walletService.provider,
           await walletService.provider.getSigner(3),
@@ -67,7 +67,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     )
     log('NODE READY FOR UNLOCK')
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error)
     process.exit(1)
   })

@@ -8,7 +8,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / freeTrial', accounts => {
+contract('Lock / freeTrial', (accounts) => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
@@ -17,7 +17,7 @@ contract('Lock / freeTrial', accounts => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.SECOND
-    const purchases = keyOwners.map(account => {
+    const purchases = keyOwners.map((account) => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
@@ -78,5 +78,5 @@ contract('Lock / freeTrial', accounts => {
 })
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

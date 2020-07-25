@@ -3,17 +3,19 @@ import { connect } from 'react-redux'
 import { KindOfModal, Dispatch } from '../../unlockTypes' // eslint-disable-line
 import { WalletCheck, styles } from './modal-templates'
 
-interface Props {
+const templates = {
+  [KindOfModal.WalletCheckOverlay]: WalletCheck,
+}
+
+interface FullScreenModalProps {
   active: boolean
   kindOfModal: KindOfModal
   dispatch: Dispatch
 }
 
-const templates = {
-  [KindOfModal.WalletCheckOverlay]: WalletCheck,
-}
-
-export const FullScreenModal = ({ active, kindOfModal, dispatch }: Props) => {
+export const FullScreenModal = (props: FullScreenModalProps) => {
+  // eslint-disable-next-line react/prop-types
+  const { kindOfModal, active, dispatch } = props
   const Template = templates[kindOfModal]
 
   if (active) {

@@ -51,7 +51,7 @@ const transactionsGet = async (req, res) => {
   res.json({ transactions })
 }
 
-const buildFilter = req => {
+const buildFilter = (req) => {
   const filter = {}
 
   if (req.query.sender) {

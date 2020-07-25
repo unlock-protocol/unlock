@@ -8,7 +8,7 @@ let unlock
 let unnamedlock
 let namedLock
 
-contract('Lock / erc721 / name', accounts => {
+contract('Lock / erc721 / name', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])

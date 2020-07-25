@@ -70,7 +70,7 @@ describe('useMarkAsCheckedIn', () => {
       useMarkAsCheckedIn(walletService, config, key)
     )
 
-    walletService.setKeyMetadata = jest.fn(params => {
+    walletService.setKeyMetadata = jest.fn((params) => {
       expect(params.lockAddress).toEqual(key.lock.address)
       expect(params.keyId).toEqual(key.keyId)
       expect(params.metadata.checkedInAt).toBeGreaterThan(

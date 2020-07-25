@@ -21,7 +21,7 @@ export default class FetchJsonProvider extends providers.JsonRpcProvider {
    */
   async send(method, params) {
     return new Promise(async (resolve, reject) => {
-      const sendOnce = async tries => {
+      const sendOnce = async (tries) => {
         let response
         try {
           response = await providers.JsonRpcProvider.prototype.send.call(

@@ -40,7 +40,7 @@ export const CheckoutErrors = ({ errors, resetError }: CheckoutErrorsProps) => {
   }
   return (
     <>
-      {errors.map(error => {
+      {errors.map((error) => {
         const Component = components[error.level]
         const onClick = () => resetError(error)
         return (

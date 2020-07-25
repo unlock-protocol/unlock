@@ -117,7 +117,7 @@ const defaultMappings = (address: string, host: string) => {
 
   // Custom mappings
   // TODO: move that to a datastore at some point...
-  Metadata.forEach(lockMetadata => {
+  Metadata.forEach((lockMetadata) => {
     if (address.toLowerCase() == lockMetadata.address.toLowerCase()) {
       defaultResponse.name = lockMetadata.name
       defaultResponse.description = lockMetadata.description

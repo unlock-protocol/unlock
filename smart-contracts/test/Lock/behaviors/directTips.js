@@ -1,6 +1,6 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
 
-module.exports.getBalanceBehavior = options => {
+module.exports.getBalanceBehavior = (options) => {
   describe('Lock / behaviors / directTips', () => {
     let lock
 

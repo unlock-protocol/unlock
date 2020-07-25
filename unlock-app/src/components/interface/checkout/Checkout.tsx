@@ -173,6 +173,11 @@ export const Checkout = ({
   )
 }
 
+Checkout.defaultProps = {
+  configFromSearch: null,
+  config: null,
+}
+
 const PaywallLogo = styled.img`
   max-width: 200px;
   align-self: start;

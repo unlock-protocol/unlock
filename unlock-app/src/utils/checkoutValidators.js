@@ -6,7 +6,7 @@ import { ACCOUNT_REGEXP } from '../constants'
 
 const { env } = configure()
 
-export const log = message => {
+export const log = (message) => {
   if (env !== 'test') {
     // eslint-disable-next-line no-console
     console.log(message)
@@ -14,29 +14,29 @@ export const log = message => {
 }
 
 // tests whether a field's value was not entered by the user
-export const isNotEmpty = val => val || val === 0
+export const isNotEmpty = (val) => val || val === 0
 
 // tests whether a number is non-negative and not a decimal number
-export const isPositiveInteger = val => {
+export const isPositiveInteger = (val) => {
   const parsedInt = parseInt(val)
   return !isNaN(parsedInt) && val == parsedInt && +val >= 0
 }
 
 // tests whether a number is a non-negative real number (decimals allowed)
-export const isPositiveNumber = val => {
+export const isPositiveNumber = (val) => {
   const parsedFloat = parseFloat(val)
   return !isNaN(parsedFloat) && +parsedFloat >= 0
 }
 
-export const isAccount = val => {
+export const isAccount = (val) => {
   return val && typeof val === 'string' && val.match(ACCOUNT_REGEXP)
 }
 
-export const isAccountOrNull = val => {
+export const isAccountOrNull = (val) => {
   return val === null || isAccount(val)
 }
 
-export const isValidIcon = icon => {
+export const isValidIcon = (icon) => {
   if (typeof icon !== 'string') {
     log('The paywall config\'s "icon" property is not a string.')
     return false
@@ -56,7 +56,7 @@ export const isValidIcon = icon => {
   return true
 }
 
-export const isValidCTA = callToAction => {
+export const isValidCTA = (callToAction) => {
   const callsToAction = [
     'default',
     'expired',
@@ -74,14 +74,14 @@ export const isValidCTA = callToAction => {
     )
     return false
   }
-  if (ctaKeys.filter(key => !callsToAction.includes(key)).length) {
+  if (ctaKeys.filter((key) => !callsToAction.includes(key)).length) {
     // TODO: log which key is bad, or remove this check
     log(
       'The paywall config\'s "callToAction" properties contain an unexpected entry.'
     )
     return false
   }
-  if (ctaKeys.filter(key => typeof callToAction[key] !== 'string').length) {
+  if (ctaKeys.filter((key) => typeof callToAction[key] !== 'string').length) {
     log(
       'The paywall config\'s "callToAction" properties contain an entry whose value is not a string.'
     )
@@ -110,7 +110,7 @@ export const isValidConfigLock = (lock, configLocks) => {
   return true
 }
 
-export const isValidConfigLocks = configLocks => {
+export const isValidConfigLocks = (configLocks) => {
   if (typeof configLocks !== 'object') {
     log('The paywall configs\'s "locks" field is not an object.')
     return false
@@ -118,7 +118,7 @@ export const isValidConfigLocks = configLocks => {
   const locks = Object.keys(configLocks)
   if (!locks.length) return false
   if (
-    locks.filter(lock => isValidConfigLock(lock, configLocks)).length !==
+    locks.filter((lock) => isValidConfigLock(lock, configLocks)).length !==
     locks.length
   ) {
     // The logging of lock failures in `isValidConfigLock` should make
@@ -159,7 +159,7 @@ export const isValidConfigLocks = configLocks => {
  *
  * The fields in callToAction are all optional, and icon can be false for none
  */
-export const isValidPaywallConfig = config => {
+export const isValidPaywallConfig = (config) => {
   if (!config) {
     log('No paywall config provided.')
     return false
@@ -241,7 +241,7 @@ function isValidObject(obj, validKeys) {
   const keys = Object.keys(obj)
 
   if (keys.length < validKeys.length) return false
-  if (validKeys.filter(key => !keys.includes(key)).length) return false
+  if (validKeys.filter((key) => !keys.includes(key)).length) return false
   return true
 }
 
@@ -268,7 +268,7 @@ function isValidKeyStatus(status) {
 /**
  * validate a single key. This should match the type in unlockTypes.ts
  */
-export const isValidKey = key => {
+export const isValidKey = (key) => {
   if (
     !isValidObject(key, [
       'expiration',
@@ -315,7 +315,7 @@ export const isValidKey = key => {
 /**
  * validate a single lock. This should match the type in unlockTypes.ts
  */
-export const isValidLock = lock => {
+export const isValidLock = (lock) => {
   if (
     !isValidObject(lock, ['address', 'keyPrice', 'expirationDuration', 'key'])
   ) {
@@ -346,12 +346,12 @@ export const isValidLock = lock => {
 /**
  * validate the list of locks returned from the data iframe
  */
-export const isValidLocks = locks => {
+export const isValidLocks = (locks) => {
   if (!locks || typeof locks !== 'object' || Array.isArray(locks)) return false
   const keys = Object.keys(locks)
-  if (keys.filter(key => !isAccount(key)).length) return false
+  if (keys.filter((key) => !isAccount(key)).length) return false
   const lockValues = Object.values(locks)
-  if (lockValues.filter(lock => !isValidLock(lock)).length) return false
+  if (lockValues.filter((lock) => !isValidLock(lock)).length) return false
   return true
 }
 
@@ -374,7 +374,7 @@ export const isValidTransactions = () => {
 /**
  * validate a balance as an object of currency: balance
  */
-export const isValidBalance = balance => {
+export const isValidBalance = (balance) => {
   if (!balance || typeof balance !== 'object' || Array.isArray(balance)) {
     return false
   }
@@ -397,7 +397,7 @@ const allowedInputTypes = ['text', 'date', 'color', 'email', 'url']
  *   required: false, // a boolean
  * }
  */
-export const isValidMetadataField = field => {
+export const isValidMetadataField = (field) => {
   const requiredKeys = ['name', 'type', 'required']
   const hasRequiredProperties = isValidObject(field, requiredKeys)
 
@@ -429,7 +429,7 @@ export const isValidMetadataField = field => {
   return true
 }
 
-export const isValidMetadataArray = fields => {
+export const isValidMetadataArray = (fields) => {
   if (!Array.isArray(fields)) {
     log('Paywall config metadata property is not an array.')
     return false

@@ -90,36 +90,36 @@ const DashboardButton = styled.button`
   > svg {
     margin: 5px;
     vertical-align: middle;
-    height: ${props => props.size || ' 24px'};
-    width: ${props => props.size || ' 24px'};
+    height: ${(props) => props.size || ' 24px'};
+    width: ${(props) => props.size || ' 24px'};
   }
 
-  color: ${props => props.textColor};
-  background-color: ${props => props.backgroundColor};
+  color: ${(props) => props.textColor};
+  background-color: ${(props) => props.backgroundColor};
   > svg {
-    fill: ${props => props.textColor};
+    fill: ${(props) => props.textColor};
   }
 
   &:hover {
-    color: ${props => props.backgroundColor};
-    background-color: ${props => props.textColor};
+    color: ${(props) => props.backgroundColor};
+    background-color: ${(props) => props.textColor};
     > svg {
-      fill: ${props => props.backgroundColor};
+      fill: ${(props) => props.backgroundColor};
     }
   }
 
   ${Media.phone`
-    color: ${props => props.backgroundColor};
-    background-color: ${props => props.textColor};
+    color: ${(props) => props.backgroundColor};
+    background-color: ${(props) => props.textColor};
     > svg {
-      fill: ${props => props.backgroundColor};
+      fill: ${(props) => props.backgroundColor};
     }
 
     &:hover {
-      color: ${props => props.textColor};
-      background-color: ${props => props.backgroundColor};
+      color: ${(props) => props.textColor};
+      background-color: ${(props) => props.backgroundColor};
       > svg {
-        fill: ${props => props.textColor};
+        fill: ${(props) => props.textColor};
       }
     }
   `};
@@ -135,17 +135,17 @@ const TermsBox = styled.div`
   font-family: IBM Plex Mono;
   font-size: 11px;
 
-  color: ${props => props.textColor};
+  color: ${(props) => props.textColor};
   a {
-    color: ${props => props.textColor};
+    color: ${(props) => props.textColor};
     text-decoration: underline;
     margin: 0px;
   }
 
   ${Media.phone`
-  color: ${props => props.backgroundColor};
+  color: ${(props) => props.backgroundColor};
   a {
-    color: ${props => props.backgroundColor};
+    color: ${(props) => props.backgroundColor};
   }
 
   `}

@@ -5,7 +5,7 @@ import React from 'react'
  * the user's language
  */
 
-const genericError = message => (
+const genericError = (message) => (
   <p>
     There was an error ({message}). Please retry and report if it happens again.
   </p>
@@ -46,7 +46,7 @@ const defaultMessages = {
  * or an unknown string.
  * If we have a mapping we use the mapping. Otherwise, we wrap
  */
-const ErrorMessage = error => {
+const ErrorMessage = (error) => {
   if (defaultMessages[error]) {
     return defaultMessages[error]
   }

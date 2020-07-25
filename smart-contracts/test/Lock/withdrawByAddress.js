@@ -11,7 +11,7 @@ let unlock
 let lock
 let token
 
-contract('Lock / withdrawByAddress', accounts => {
+contract('Lock / withdrawByAddress', (accounts) => {
   let owner = accounts[0]
 
   before(async () => {

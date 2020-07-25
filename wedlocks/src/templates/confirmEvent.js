@@ -3,8 +3,8 @@ const ethWaterlooMessage = `
 After you check in to ETHWaterloo we'll refund your stake in DAI. If you are an Unlock account user, you'll be able to access those funds once you eject your Unlock account into a crypto wallet. We'll provide more details on that process soon! Note that this event ticket is non-transferable.`
 
 export default {
-  subject: params => `You've got your ticket for ${params.eventName}!`,
-  text: params =>
+  subject: (params) => `You've got your ticket for ${params.eventName}!`,
+  text: (params) =>
     `Hello,
 
 This is just a reminder that you are attending the event ${

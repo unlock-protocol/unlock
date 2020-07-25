@@ -91,11 +91,8 @@ export function Icon({ lock }) {
   if (lock && lock.address) {
     address = lock.address
     const mainColor = address.substring(2, 8).toUpperCase()
-    scheme
-      .from_hex(mainColor)
-      .scheme('triade')
-      .variation('pastel')
-    colors = scheme.colors().map(c => `#${c}`)
+    scheme.from_hex(mainColor).scheme('triade').variation('pastel')
+    colors = scheme.colors().map((c) => `#${c}`)
   }
   const innerCircles = circles(address)
   return (

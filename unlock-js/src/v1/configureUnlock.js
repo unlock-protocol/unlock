@@ -5,7 +5,7 @@
  * @param {PropTypes.string} globalBaseTokenURI
  * @param {function} callback invoked with the transaction hash
  */
-export default async function(
+export default async function (
   publicLockTemplateAddress,
   globalTokenSymbol,
   globalBaseTokenURI,

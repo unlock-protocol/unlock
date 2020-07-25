@@ -1,6 +1,6 @@
 export default {
   subject: () => 'Welcome to Unlock! Please, read this email carefuly',
-  text: params =>
+  text: (params) =>
     `Welcome to Unlock! We're excited to have you with us!
 
 Unlock is designed to make sure we can never access your data: it's encrypted with your password. Because of that, we can't reset your password like other services that you're used to.

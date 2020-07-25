@@ -57,7 +57,7 @@ const mockKeyHoldersByLock = {
 }
 
 jest.mock('../../../src/utils/lockData', () => {
-  return function() {
+  return function () {
     return mockOnChainLockOwnership
   }
 })

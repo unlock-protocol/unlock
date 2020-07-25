@@ -73,7 +73,7 @@ export default class Dispatcher {
       provider: this.host,
     })
 
-    const txHashPromise = new Promise(resolve => {
+    const txHashPromise = new Promise((resolve) => {
       // TODO: do not rely on 'transaction.new' event (as future versions of unlockjs may not be an event emitter anymore, but on the optional callback to purchaseKey. Unfortunately, that callback only includes the transaction hash for now. We will need unlock-js to yield the sender, recipient and data too)
       walletService.on(
         'transaction.new',

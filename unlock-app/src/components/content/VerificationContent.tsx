@@ -17,7 +17,7 @@ interface VerificationData {
 interface VerificationContentProps {
   account: AccountType
   network: Network
-  data?: VerificationData
+  data?: VerificationData | null
   hexData?: string
   sig?: string
 }
@@ -43,6 +43,12 @@ export const VerificationContent = ({
       />
     </Layout>
   )
+}
+
+VerificationContent.defaultProps = {
+  data: null,
+  hexData: '',
+  sig: '',
 }
 
 interface ReduxState {

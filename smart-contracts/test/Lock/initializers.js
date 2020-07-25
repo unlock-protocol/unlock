@@ -9,7 +9,7 @@ const deployLocks = require('../helpers/deployLocks')
 let unlock
 let lock
 
-contract('Lock / initializers', accounts => {
+contract('Lock / initializers', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
@@ -17,7 +17,7 @@ contract('Lock / initializers', accounts => {
   })
 
   it('There are exactly 2 public initializers in PublicLock', async () => {
-    const count = publicLockContract.abi.filter(x =>
+    const count = publicLockContract.abi.filter((x) =>
       (x.name || '').toLowerCase().includes('initialize')
     ).length
     assert.equal(count, 2)

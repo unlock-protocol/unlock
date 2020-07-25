@@ -65,7 +65,7 @@ export const buildMembersWithMetadata = (lock, storedMetadata) => {
       [key.userAddress.toLowerCase()]: key.data.userMetadata,
     }
   }, {})
-  lock.keys.forEach(key => {
+  lock.keys.forEach((key) => {
     const keyOwner = key.owner.address.toLowerCase()
     const index = `${lock.address}-${keyOwner}`
     let member = members[index]
@@ -133,7 +133,7 @@ export const useMembers = (lockAddresses, viewer, filter) => {
       return
     }
     setLoading(true)
-    const membersForLocksPromise = keyHolders.locks.map(async lock => {
+    const membersForLocksPromise = keyHolders.locks.map(async (lock) => {
       // If the viewer is not the lock owner, just show the members from chain
       const isLockManager = await web3Service.isLockManager(
         lock.address,

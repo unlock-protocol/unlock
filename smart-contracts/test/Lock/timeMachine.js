@@ -7,7 +7,7 @@ const getProxy = require('../helpers/proxy')
 
 let unlock
 
-contract('Lock / timeMachine', accounts => {
+contract('Lock / timeMachine', (accounts) => {
   let lock
   const lockOwner = accounts[1]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))

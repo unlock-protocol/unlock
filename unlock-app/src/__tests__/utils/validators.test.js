@@ -294,7 +294,7 @@ describe('Form field validators', () => {
           'submitted',
           'pending',
           'failed',
-        ])('should accept "%s" as a valid status', status => {
+        ])('should accept "%s" as a valid status', (status) => {
           expect.assertions(1)
 
           expect(

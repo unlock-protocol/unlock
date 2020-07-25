@@ -20,7 +20,7 @@ export const isUnlocked = async (
 ): Promise<boolean> => {
   const lockAddresses = Object.keys(paywallConfig.locks)
   const timeStamps = await Promise.all(
-    lockAddresses.map(lockAddress => {
+    lockAddresses.map((lockAddress) => {
       return keyExpirationTimestampFor(
         readOnlyProvider,
         lockAddress,
@@ -30,7 +30,7 @@ export const isUnlocked = async (
   )
 
   // If any key is valid, we unlock the page
-  if (timeStamps.some(val => val > new Date().getTime() / 1000)) {
+  if (timeStamps.some((val) => val > new Date().getTime() / 1000)) {
     return true
   }
 

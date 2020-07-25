@@ -31,7 +31,7 @@ async function signMessage(messageHex, signer) {
   return { v, r, s }
 }
 
-contract('Lock / cancelAndRefundFor', accounts => {
+contract('Lock / cancelAndRefundFor', (accounts) => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const txSender = accounts[9]
@@ -44,7 +44,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
     locks = await deployLocks(unlock, accounts[0])
 
     lock = locks.SECOND
-    const purchases = keyOwners.map(account => {
+    const purchases = keyOwners.map((account) => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
@@ -98,7 +98,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
     })
 
     it('the amount of refund should be greater than 0', async () => {
-      truffleAssert.eventEmitted(txObj, 'CancelKey', e => {
+      truffleAssert.eventEmitted(txObj, 'CancelKey', (e) => {
         const refund = new BigNumber(e.refund)
         return refund.gt(0) && refund.toFixed() === withdrawAmount.toFixed()
       })
@@ -126,15 +126,12 @@ contract('Lock / cancelAndRefundFor', accounts => {
       )
       assert(
         finalTxSenderBalance.toFixed(),
-        initialTxSenderBalance
-          .plus(withdrawAmount)
-          .minus(txFee)
-          .toFixed()
+        initialTxSenderBalance.plus(withdrawAmount).minus(txFee).toFixed()
       )
     })
 
     it('emits NonceChanged', async () => {
-      const e = txObj.receipt.logs.find(e => e.event === 'NonceChanged')
+      const e = txObj.receipt.logs.find((e) => e.event === 'NonceChanged')
       assert.equal(e.args.keyManager, keyOwners[0])
       assert.equal(e.args.nextAvailableNonce, '1')
     })

@@ -1,7 +1,7 @@
-const UserOperations = require('../../../src/operations/userOperations')
-
 import models = require('../../../src/models')
 import app = require('../../../src/app')
+
+const UserOperations = require('../../../src/operations/userOperations')
 
 beforeAll(() => {
   jest.unmock('../../../src/operations/userOperations')

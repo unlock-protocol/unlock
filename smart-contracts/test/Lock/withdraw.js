@@ -11,7 +11,7 @@ let lock
 let tokenAddress
 const price = web3.utils.toWei('0.01', 'ether')
 
-contract('Lock / withdraw', accounts => {
+contract('Lock / withdraw', (accounts) => {
   let owner = accounts[0]
 
   before(async () => {
@@ -57,10 +57,7 @@ contract('Lock / withdraw', accounts => {
       const txFee = gasPrice.times(gasUsed)
       assert.equal(
         balance.toString(),
-        ownerBalance
-          .plus(contractBalance)
-          .minus(txFee)
-          .toString()
+        ownerBalance.plus(contractBalance).minus(txFee).toString()
       )
     })
 
@@ -104,10 +101,7 @@ contract('Lock / withdraw', accounts => {
       const txFee = gasPrice.times(gasUsed)
       assert.equal(
         balance.toString(),
-        ownerBalance
-          .plus(42)
-          .minus(txFee)
-          .toString()
+        ownerBalance.plus(42).minus(txFee).toString()
       )
     })
 
@@ -162,7 +156,7 @@ contract('Lock / withdraw', accounts => {
 })
 
 async function purchaseKeys(accounts) {
-  const purchases = [accounts[1], accounts[2]].map(account => {
+  const purchases = [accounts[1], accounts[2]].map((account) => {
     return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
       value: price,
       from: account,

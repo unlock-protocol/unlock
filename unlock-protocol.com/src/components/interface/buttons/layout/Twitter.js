@@ -2,7 +2,7 @@ import React from 'react'
 import Svg from '../../svg'
 import LayoutButton from '../LayoutButton'
 
-const Twitter = props => (
+const Twitter = (props) => (
   <LayoutButton
     href="https://twitter.com/UnlockProtocol"
     label="Twitter"

@@ -86,7 +86,7 @@ namespace SignatureValidationMiddleware {
     payload: any,
     configuration: SignatureValidationConfiguration
   ): Boolean => {
-    const result = configuration.required.every(element => {
+    const result = configuration.required.every((element) => {
       return !(payload[element] == null)
     })
 

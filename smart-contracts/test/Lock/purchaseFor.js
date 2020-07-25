@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Lock / purchaseFor', accounts => {
+contract('Lock / purchaseFor', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
@@ -69,7 +69,7 @@ contract('Lock / purchaseFor', accounts => {
       assert.equal(tx.logs[0].args.from, 0)
       assert.equal(tx.logs[0].args.to, accounts[2])
       // Verify that RenewKeyPurchase does not emit on a first key purchase
-      const includes = tx.logs.filter(l => l.event === 'RenewKeyPurchase')
+      const includes = tx.logs.filter((l) => l.event === 'RenewKeyPurchase')
       assert.equal(includes.length, 0)
     })
 
@@ -163,7 +163,7 @@ contract('Lock / purchaseFor', accounts => {
           )
         )
         // Verify that Transfer does not emit on a key renewal
-        const included = tx2.logs.filter(l => l.event === 'Transfer')
+        const included = tx2.logs.filter((l) => l.event === 'Transfer')
         assert.equal(included.length, 0)
       })
     })
@@ -304,7 +304,7 @@ contract('Lock / purchaseFor', accounts => {
           )
         )
         // Verify that Transfer does not emit on an expired key re-purchase
-        const included = tx.logs.filter(l => l.event === 'Transfer')
+        const included = tx.logs.filter((l) => l.event === 'Transfer')
         assert.equal(included.length, 0)
       })
     })
@@ -312,5 +312,5 @@ contract('Lock / purchaseFor', accounts => {
 })
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }

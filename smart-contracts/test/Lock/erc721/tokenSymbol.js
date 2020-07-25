@@ -9,7 +9,7 @@ let lock
 let txObj
 let event
 
-contract('Lock / erc721 / tokenSymbol', accounts => {
+contract('Lock / erc721 / tokenSymbol', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
 

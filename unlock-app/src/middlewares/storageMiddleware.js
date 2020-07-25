@@ -30,7 +30,7 @@ import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
 
-const storageMiddleware = storageService => {
+const storageMiddleware = (storageService) => {
   return ({ getState, dispatch }) => {
     // NEW_TRANSACTION
     storageService.on(failure.storeTransaction, () => {
@@ -42,7 +42,7 @@ const storageMiddleware = storageService => {
     // SET_ACCOUNT
     storageService.on(success.getTransactionHashesSentBy, ({ hashes }) => {
       // Dispatch each lock. Greg probably wants to do a batch action?
-      hashes.forEach(hash => {
+      hashes.forEach((hash) => {
         if (hash.network === getState().network.name) {
           dispatch(addTransaction(hash))
         }
@@ -121,7 +121,7 @@ const storageMiddleware = storageService => {
       dispatch(setError(Storage.Warning('Could not add payment method.')))
     })
 
-    storageService.on(success.getCards, cards => {
+    storageService.on(success.getCards, (cards) => {
       if (cards.length > 0) {
         dispatch(
           updateAccount({
@@ -139,7 +139,7 @@ const storageMiddleware = storageService => {
       dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
     })
 
-    storageService.on(success.getKeyPrice, fees => {
+    storageService.on(success.getKeyPrice, (fees) => {
       dispatch(updatePrice(fees))
     })
 
@@ -162,7 +162,7 @@ const storageMiddleware = storageService => {
     })
 
     // Key metadata
-    storageService.on(failure.getBulkMetadataFor, error => {
+    storageService.on(failure.getBulkMetadataFor, (error) => {
       dispatch(
         setError(
           Storage.Diagnostic(`Could not get bulk metadata: ${error.message}`)
@@ -202,8 +202,8 @@ const storageMiddleware = storageService => {
       }
     }
 
-    return next => {
-      return action => {
+    return (next) => {
+      return (action) => {
         if (action.type === NEW_TRANSACTION) {
           // Storing a new transaction so that we can easily point to it later on
           storageService.storeTransaction(
@@ -269,7 +269,7 @@ const storageMiddleware = storageService => {
 
         if (action.type === LOGIN_CREDENTIALS) {
           const { emailAddress, password } = action
-          storageService.getUserPrivateKey(emailAddress).then(key => {
+          storageService.getUserPrivateKey(emailAddress).then((key) => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
             dispatch(setEncryptedPrivateKey(key, emailAddress))
           })

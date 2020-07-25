@@ -6,7 +6,7 @@ import { handler } from './handler'
 http
   .createServer((req, res) => {
     let body = ''
-    req.on('data', chunk => {
+    req.on('data', (chunk) => {
       body += chunk.toString() // convert Buffer to string
     })
     req.on('end', () => {

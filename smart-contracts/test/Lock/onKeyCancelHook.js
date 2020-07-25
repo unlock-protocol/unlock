@@ -11,7 +11,7 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onKeyCancelHook', accounts => {
+contract('Lock / onKeyCancelHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
   let keyPrice

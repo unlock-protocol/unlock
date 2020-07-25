@@ -24,7 +24,7 @@ describe('useGetTokenBalance', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    jest.spyOn(React, 'useContext').mockImplementation(context => {
+    jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === Web3ServiceContext) {
         return mockWeb3Service
       }

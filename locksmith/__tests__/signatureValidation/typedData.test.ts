@@ -34,7 +34,7 @@ beforeAll(() => {
 describe('Signature Validation Middleware', () => {
   describe('generateSignatureEvaluator', () => {
     describe('when the request has a token', () => {
-      it('returns the signee', done => {
+      it('returns the signee', (done) => {
         expect.assertions(1)
 
         const body = {
@@ -82,7 +82,7 @@ describe('Signature Validation Middleware', () => {
     })
 
     describe('when the request does not have a token', () => {
-      it('does not return a signee', done => {
+      it('does not return a signee', (done) => {
         expect.assertions(1)
 
         const request = httpMocks.createRequest({
@@ -99,7 +99,7 @@ describe('Signature Validation Middleware', () => {
 
   describe('when a valid signature is received', () => {
     describe('a signature for User creation', () => {
-      it('moves the request to the application', done => {
+      it('moves the request to the application', (done) => {
         expect.assertions(1)
         const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${validSig2}` },
@@ -149,7 +149,7 @@ describe('Signature Validation Middleware', () => {
     })
 
     describe('a signature for Lock metadata', () => {
-      it('moves the request to the application', done => {
+      it('moves the request to the application', (done) => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130835000)
         const request = httpMocks.createRequest({

@@ -1,4 +1,4 @@
-module.exports.getBalanceBehavior = options => {
+module.exports.getBalanceBehavior = (options) => {
   describe('Lock / behaviors / getBalance', () => {
     let accounts
     let lock

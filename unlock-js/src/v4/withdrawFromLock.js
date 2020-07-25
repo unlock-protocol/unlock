@@ -11,7 +11,7 @@ import TransactionTypes from '../transactionTypes'
  * TODO: get the decimal from the ERC20 contract
  * @param {function} callback invoked with the transaction hash
  */
-export default async function(
+export default async function (
   { lockAddress, amount = '0', decimals = 18 },
   callback
 ) {
@@ -35,11 +35,11 @@ export default async function(
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = lockContract.interface
   const withdrawalEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter(event => {
+    .filter((event) => {
       return event && event.name === 'Withdrawal'
     })[0]
   if (withdrawalEvent) {

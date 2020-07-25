@@ -10,10 +10,10 @@ interface Props {
 export const AccountInfo = ({ address, emailAddress }: Props) => (
   <Grid>
     <SectionHeader>Account</SectionHeader>
-    <Item title="Email" size="half">
+    <Item title="Email" count="half">
       <ItemValue>{emailAddress}</ItemValue>
     </Item>
-    <Item title="Wallet Address" size="half">
+    <Item title="Wallet Address" count="half">
       <ItemValue>{address}</ItemValue>
     </Item>
   </Grid>

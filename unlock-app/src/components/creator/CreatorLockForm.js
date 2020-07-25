@@ -41,7 +41,7 @@ import {
  * Converts the lock values into form values
  * @param {*} lockValues
  */
-export const lockToFormValues = lockValues => {
+export const lockToFormValues = (lockValues) => {
   const formValues = { ...lockValues }
 
   // In the form, duration is shown in days, vs seconds in the lock object
@@ -66,7 +66,7 @@ export const lockToFormValues = lockValues => {
  * Converts the form values into lock values
  * @param {*} lockValues
  */
-export const formValuesToLock = formValues => {
+export const formValuesToLock = (formValues) => {
   const lockValues = {}
   lockValues.keyPrice = formValues.keyPrice
   lockValues.maxNumberOfKeys = formValues.maxNumberOfKeys
@@ -223,7 +223,7 @@ export class CreatorLockForm extends React.Component {
       FORM_MAX_KEYS_INVALID,
       FORM_LOCK_NAME_MISSING,
     ]
-    allFormErrors.forEach(error => {
+    allFormErrors.forEach((error) => {
       if (errors.indexOf(error) >= 0) {
         setError(error)
       } else {
@@ -234,7 +234,7 @@ export class CreatorLockForm extends React.Component {
   }
 
   handleUnlimitedClick() {
-    this.setState(state => ({
+    this.setState((state) => ({
       ...state,
       unlimitedKeys: true,
       maxNumberOfKeys: INFINITY,
@@ -243,14 +243,14 @@ export class CreatorLockForm extends React.Component {
   }
 
   toggleCurrency() {
-    this.setState(state => ({
+    this.setState((state) => ({
       ...state,
       currency: !state.currency ? this.ERC20Contract.address : null,
     }))
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState(state => ({
+    this.setState((state) => ({
       unlimitedKeys:
         name === 'maxNumberOfKeys' ? value === INFINITY : state.unlimitedKeys,
       [name]: value,
@@ -259,7 +259,7 @@ export class CreatorLockForm extends React.Component {
   }
 
   handleSubmit() {
-    this.setState(state => {
+    this.setState((state) => {
       const { valid, errors } = this.sendErrorsToRedux(state)
       if (!valid.formValid) return { valid, errors }
       return this.saveLock(state, valid, errors)
@@ -387,7 +387,7 @@ CreatorLockForm.defaultProps = {
   lock: {},
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     account: state.account,
   }
@@ -511,8 +511,8 @@ const FormBalanceWithUnit = styled(BalanceWithUnit)`
 const Button = styled.button`
   cursor: pointer;
   font: inherit;
-  font-size: ${props => (props.cancel ? '10px' : '13px')};
-  align-self: ${props => (props.cancel ? 'center' : 'end')};
+  font-size: ${(props) => (props.cancel ? '10px' : '13px')};
+  align-self: ${(props) => (props.cancel ? 'center' : 'end')};
   background: none;
   color: var(--white);
   border: none;

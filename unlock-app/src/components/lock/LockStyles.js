@@ -12,7 +12,7 @@ export const LockWrapper = styled.li`
   grid-gap: 0px;
   background-clip: padding-box;
   grid-template-rows: 40px 140px;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `
 
 export const LockHeader = styled.header`
@@ -60,7 +60,7 @@ export const LockBody = styled.div`
 
 export const LockDetail = styled.div`
   white-space: nowrap;
-  font-weight: ${props => (props.bold == true ? 'bold' : null)};
+  font-weight: ${(props) => (props.bold == true ? 'bold' : null)};
   align-content: center;
   align-items: center;
   align-self: center;

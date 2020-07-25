@@ -16,7 +16,7 @@ export const usePaywallLocks = (
   async function getLocks() {
     setLoading(true)
 
-    const lockPromises = lockAddresses.map(async address => {
+    const lockPromises = lockAddresses.map(async (address) => {
       return web3Service.getLock(address)
     })
 

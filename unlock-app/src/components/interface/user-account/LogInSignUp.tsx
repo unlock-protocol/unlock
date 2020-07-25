@@ -25,7 +25,7 @@ export default class LogInSignUp extends React.Component<Props, State> {
   }
 
   toggleSignup = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       signup: !prevState.signup,
     }))

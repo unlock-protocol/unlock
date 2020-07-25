@@ -90,7 +90,7 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
 
   handleReset = () => {
     const { errors, close } = this.props
-    errors.forEach(e => close(e))
+    errors.forEach((e) => close(e))
   }
 
   timeRemaining = () => {
@@ -106,10 +106,10 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
       <KeyPurchaseWrapper>
         <Indent>
           <Heading>Confirm Purchase</Heading>
-          <Item title="Account" size="full">
+          <Item title="Account" count="full">
             <Value>{emailAddress}</Value>
           </Item>
-          <Item title="Credit Card" size="full">
+          <Item title="Credit Card" count="full">
             <Value>{card}</Value>
           </Item>
           <LockInfo
@@ -171,7 +171,7 @@ export const mapStateToProps = (state: ReduxState) => {
   } = state
 
   const storageErrors = errors.filter(
-    e => isWarningError(e) && e.kind === 'Storage'
+    (e) => isWarningError(e) && e.kind === 'Storage'
   )
 
   let priceBreakdown = {}

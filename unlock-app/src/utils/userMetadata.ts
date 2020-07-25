@@ -4,7 +4,7 @@ export function getPublicInputs(
   inputs: MetadataInput[]
 ): { [name: string]: boolean } {
   const result: { [key: string]: boolean } = {}
-  inputs.forEach(input => (result[input.name] = input.public || false))
+  inputs.forEach((input) => (result[input.name] = input.public || false))
   return result
 }
 
@@ -18,7 +18,7 @@ export function formResultToMetadata(
   }
 
   const publicInputs = getPublicInputs(inputs)
-  Object.keys(formResult).forEach(name => {
+  Object.keys(formResult).forEach((name) => {
     if (publicInputs[name]) {
       result.publicData![name] = formResult[name]
     } else {

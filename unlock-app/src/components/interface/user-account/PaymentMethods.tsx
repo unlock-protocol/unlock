@@ -12,7 +12,7 @@ export const PaymentMethods = ({ cards, deleteCard }: PaymentMethodProps) => (
   <Grid>
     <SectionHeader>Payment Options</SectionHeader>
     {cards.map(({ id, brand, last4, exp_month, exp_year }) => (
-      <Item key={id} size="full" title={`${brand} Card`}>
+      <Item key={id} count="full" title={`${brand} Card`}>
         <ItemValue>
           Ending in {last4} that expires on {exp_month}/{exp_year}.{' '}
           <button type="button" onClick={deleteCard}>

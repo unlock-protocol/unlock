@@ -14,7 +14,7 @@ export const useKeyOwnershipStatus = (
   const getKeyStatuses = async () => {
     setLoading(true)
     const keyResults = await Promise.all(
-      lockAddresses.map(lockAddress => {
+      lockAddresses.map((lockAddress) => {
         return web3Service.getKeyByLockForOwner(lockAddress, accountAddress)
       })
     )

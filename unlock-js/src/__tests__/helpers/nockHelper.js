@@ -81,9 +81,9 @@ export class NockHelper {
   getUnusedNocks() {
     if (nock.isDone()) return []
     const unused = Object.values(this.nockScope.keyedInterceptors).map(
-      interceptors =>
+      (interceptors) =>
         interceptors
-          .map(interceptor => {
+          .map((interceptor) => {
             return (
               interceptor.interceptionCounter === 0 && {
                 api: interceptor._requestBody,
@@ -91,7 +91,7 @@ export class NockHelper {
               }
             )
           })
-          .filter(a => a)
+          .filter((a) => a)
     )
     unused.sort((a, b) => {
       return a.api.id < b.api.id ? -1 : 1
@@ -102,7 +102,7 @@ export class NockHelper {
   displayUnusedNocks() {
     const unused = this.getUnusedNocks()
     console.log(`${unused.length} Unused nocks:`)
-    unused.forEach(info => {
+    unused.forEach((info) => {
       console.log('API call', info.api)
       console.log('return', info.reply)
     })
@@ -127,7 +127,7 @@ export class NockHelper {
     this.anyRequestSetUp = true // detect http calls made before any mocks setup
     const cb = (...args) => this.logNock(args)
     return this.nockScope
-      .post('/', body => {
+      .post('/', (body) => {
         // This is a matcher function, the nock scope is limited only to calls
         // that have this jsonrpc version and the exact method being called.
         return body.jsonrpc === '2.0' && body.method === method

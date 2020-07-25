@@ -36,7 +36,7 @@ const columnSpans = {
 
 type ColumnSize = 'full' | 'half' | 'third' | 'quarter' | 'threeQuarter'
 interface ColumnProps {
-  size: ColumnSize
+  count: ColumnSize
 }
 
 export const Column = styled.div`
@@ -47,7 +47,7 @@ export const Column = styled.div`
     margin-top: auto;
   }
   @media (min-width: 500px) {
-    grid-column: span ${(props: ColumnProps) => columnSpans[props.size]};
+    grid-column: span ${(props: ColumnProps) => columnSpans[props.count]};
   }
 `
 
@@ -127,7 +127,7 @@ export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
 }: LoadingButtonProps) => {
   return (
     <SubmitButton
-      backgroundColor={backgroundColor || 'var(--blue)'}
+      backgroundColor={backgroundColor}
       roundBottomOnly={!!roundBottomOnly}
     >
       <LoadingTextWrapper>
@@ -136,6 +136,12 @@ export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
       </LoadingTextWrapper>
     </SubmitButton>
   )
+}
+
+LoadingButton.defaultProps = {
+  children: [],
+  backgroundColor: 'var(--blue)',
+  roundBottomOnly: false,
 }
 
 const LoadingTextWrapper = styled.div`
@@ -198,12 +204,14 @@ export const DisabledButton = styled(SubmitButton)`
 interface ItemProps {
   title: string
   children: React.ReactNode
-  size?: ColumnSize
+  count: ColumnSize
 }
-export const Item = ({ title, children, size }: ItemProps) => {
-  size = size || 'half'
+export const Item = ({ title, children, count }: ItemProps) => {
+  if (!count) {
+    count = 'half'
+  }
   return (
-    <Column size={size}>
+    <Column count={count}>
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
@@ -338,8 +346,8 @@ export const StyledCheckbox = styled.div<StyledCheckboxProps>`
   display: inline-block;
   width: 32px;
   height: 32px;
-  background: ${p => (p.checked ? 'var(--white)' : 'var(--lightgrey)')};
-  border: thin ${p => (p.checked ? 'var(--red)' : 'var(--lightgrey)')} solid;
+  background: ${(p) => (p.checked ? 'var(--white)' : 'var(--lightgrey)')};
+  border: thin ${(p) => (p.checked ? 'var(--red)' : 'var(--lightgrey)')} solid;
   border-radius: 3px;
   margin-right: 16px;
   transition: all 100ms;
@@ -347,7 +355,7 @@ export const StyledCheckbox = styled.div<StyledCheckboxProps>`
     box-shadow: 0 0 0 3px var(--blue);
   }
   ${Checkmark} {
-    visibility: ${p => (p.checked ? 'visible' : 'hidden')};
+    visibility: ${(p) => (p.checked ? 'visible' : 'hidden')};
   }
 `
 

@@ -8,7 +8,7 @@ let unlock
 let lock
 let ID
 
-contract('Lock / erc721 / approveForAll', accounts => {
+contract('Lock / erc721 / approveForAll', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])

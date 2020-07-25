@@ -5,9 +5,11 @@ contract('Unlock / interface', () => {
   it('The interface includes all public functions', async () => {
     // log any missing entries
     unlockContract.abi
-      .filter(x => x.type === 'function')
-      .forEach(entry => {
-        if (unlockInterface.abi.filter(x => x.name === entry.name).length > 0) {
+      .filter((x) => x.type === 'function')
+      .forEach((entry) => {
+        if (
+          unlockInterface.abi.filter((x) => x.name === entry.name).length > 0
+        ) {
           return
         }
         // eslint-disable-next-line no-console
@@ -15,8 +17,9 @@ contract('Unlock / interface', () => {
       })
 
     // and assert the count matches
-    const count = unlockInterface.abi.filter(x => x.type === 'function').length
-    const expected = unlockContract.abi.filter(x => x.type === 'function')
+    const count = unlockInterface.abi.filter((x) => x.type === 'function')
+      .length
+    const expected = unlockContract.abi.filter((x) => x.type === 'function')
       .length
     assert.notEqual(count, 0)
     assert.equal(count, expected)

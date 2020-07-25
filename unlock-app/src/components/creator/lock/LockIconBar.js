@@ -102,7 +102,7 @@ LockIconBar.defaultProps = {
 export const mapStateToProps = ({ transactions }, { lock }) => {
   // Get all pending transactions as they will impact how we display the lock
   const lockTransactions = Object.values(transactions)
-    .filter(transaction => {
+    .filter((transaction) => {
       return (
         [transaction.lock, transaction.to].indexOf(lock.address) > -1 &&
         (!transaction.confirmations ||
@@ -124,7 +124,7 @@ export const mapStateToProps = ({ transactions }, { lock }) => {
     })
 
   // Get latest lock withdrawal transacion
-  const withdrawalTransaction = lockTransactions.find(transaction => {
+  const withdrawalTransaction = lockTransactions.find((transaction) => {
     return transaction.type === TransactionType.WITHDRAWAL
   })
 

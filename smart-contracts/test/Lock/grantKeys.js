@@ -11,7 +11,7 @@ let lock
 let locks
 let tx
 
-contract('Lock / grantKeys', accounts => {
+contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
   const keyOwner = accounts[2]
   let validExpirationTimestamp

@@ -8,7 +8,7 @@ let unlock
 let lockTemplate
 let unlockOwner
 
-contract('Lock / setLockTemplate', accounts => {
+contract('Lock / setLockTemplate', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     lockTemplate = await PublicLock.new()

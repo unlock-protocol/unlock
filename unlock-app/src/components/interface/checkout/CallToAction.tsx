@@ -40,6 +40,10 @@ export const CallToAction = ({ state, callToAction }: CallToActionProps) => {
   return <Message>{message}</Message>
 }
 
+CallToAction.defaultProps = {
+  callToAction: {},
+}
+
 const Message = styled.p`
   width: 100%;
 `

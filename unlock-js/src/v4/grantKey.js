@@ -1,6 +1,6 @@
 import TransactionTypes from '../transactionTypes'
 
-export default async function(
+export default async function (
   { lockAddress, recipient, expiration },
   callback
 ) {
@@ -34,11 +34,11 @@ export default async function(
   const parser = lockContract.interface
 
   const transferEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter(event => {
+    .filter((event) => {
       return event && event.name === 'Transfer'
     })[0]
 

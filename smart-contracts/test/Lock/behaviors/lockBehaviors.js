@@ -8,7 +8,7 @@ const { getBalanceBehavior } = require('./getBalance.behavior')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
-contract('Lock / lockBehaviors', accounts => {
+contract('Lock / lockBehaviors', (accounts) => {
   beforeEach(async () => {
     this.accounts = accounts
 
@@ -28,7 +28,7 @@ contract('Lock / lockBehaviors', accounts => {
     )
   })
 
-  lockTypes.forEach(lockType => {
+  lockTypes.forEach((lockType) => {
     describe(`Test lock fixture: '${lockType}'`, () => {
       beforeEach(async () => {
         this.lock = this.locks[lockType]

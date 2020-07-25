@@ -11,7 +11,7 @@ const store = createUnlockStore({})
 const config = configure()
 
 storiesOf('Header', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('the header without a title', () => {
     const ConfigProvider = ConfigContext.Provider
     return (

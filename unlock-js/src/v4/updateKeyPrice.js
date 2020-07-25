@@ -12,7 +12,7 @@ import { getErc20Decimals } from '../erc20'
  * - {string} erc20Address : Optional address of ERC20, to retrieve decimals (read from contract if unset)
  * @param {function} callback invoked with the transaction hash
  */
-export default async function(
+export default async function (
   { lockAddress, keyPrice, decimals, erc20Address },
   callback
 ) {
@@ -52,10 +52,10 @@ export default async function(
   const parser = lockContract.interface
 
   const priceChangedEvent = receipt.logs
-    .map(log => {
+    .map((log) => {
       return parser.parseLog(log)
     })
-    .filter(event => {
+    .filter((event) => {
       return event.name === 'PriceChanged'
     })[0]
   if (priceChangedEvent) {

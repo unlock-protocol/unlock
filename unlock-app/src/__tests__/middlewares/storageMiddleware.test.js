@@ -46,7 +46,7 @@ const create = () => {
   }
   const next = jest.fn()
   const handler = storageMiddleware(mockStorageService)(store)
-  const invoke = action => handler(next)(action)
+  const invoke = (action) => handler(next)(action)
   return { next, invoke, store }
 }
 
@@ -449,7 +449,7 @@ describe('Storage middleware', () => {
       }
 
       mockStorageService.getUserPrivateKey = jest.fn(() => ({
-        then: fn => fn(key),
+        then: (fn) => fn(key),
       }))
 
       invoke(action)

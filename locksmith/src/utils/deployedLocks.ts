@@ -47,7 +47,7 @@ async function persistLocks(logs: any[], lastBlock: number) {
   const etherInterface = new ethers.utils.Interface(abi)
   const lockAddress: any = []
 
-  logs.forEach(log => {
+  logs.forEach((log) => {
     const parsedLog = etherInterface.parseLog(log)
     if (
       parsedLog &&

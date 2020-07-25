@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const Errors = ({ errors, close }: Props) => {
-  const content = errors.map(error => (
+  const content = errors.map((error) => (
     <ErrorWrapper key={error.message}>
       <Message>{ErrorMessage(error.message)}</Message>
       <Buttons.Close as="button" onClick={() => close(error)} size="16px">

@@ -20,7 +20,7 @@ const metadataInputs = [
 ]
 
 storiesOf('Checkout Metadata Form', module)
-  .addDecorator(getStory => {
+  .addDecorator((getStory) => {
     return (
       <CheckoutContainer close={doNothing}>
         <CheckoutWrapper hideCheckout={doNothing} allowClose>
@@ -46,7 +46,7 @@ storiesOf('Checkout Metadata Form', module)
     return (
       <MetadataForm
         fields={metadataInputsWithDefault}
-        onSubmit={args => {
+        onSubmit={(args) => {
           console.log('---')
           console.log(args)
         }}

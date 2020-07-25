@@ -15,7 +15,7 @@ export default function withWeb3Service(Component) {
   function componentWithWeb3Service(props) {
     return (
       <Web3ServiceContext.Consumer>
-        {web3Service => <Component {...props} web3Service={web3Service} />}
+        {(web3Service) => <Component {...props} web3Service={web3Service} />}
       </Web3ServiceContext.Consumer>
     )
   }

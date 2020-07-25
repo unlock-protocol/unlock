@@ -6,7 +6,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let unlockOwner
 
-contract('Lock / configUnlock', accounts => {
+contract('Lock / configUnlock', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     unlockOwner = accounts[0]
