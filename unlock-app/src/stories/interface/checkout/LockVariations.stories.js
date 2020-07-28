@@ -8,6 +8,7 @@ import {
   InsufficientBalanceLock,
   ProcessingLock,
   ConfirmedLock,
+  CreditCardNotAvailableLock,
 } from '../../../components/interface/checkout/LockVariations'
 
 const makeProps = (name) => ({
@@ -25,6 +26,7 @@ const components = {
   Purchaseable: PurchaseableLock,
   Processing: ProcessingLock,
   Confirmed: ConfirmedLock,
+  'Credit Card Not Available': CreditCardNotAvailableLock,
 }
 
 storiesOf('Lock Variations', module).add('All variations', () => {
