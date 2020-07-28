@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FiatLock } from './FiatLock'
-import { DisabledLock, LoadingLock } from './LockVariations'
+import { CreditCardNotAvailableLock, LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useFiatKeyPrices } from '../../../hooks/useFiatKeyPrices'
 import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
@@ -100,7 +100,7 @@ export const FiatLocks = ({
         }
 
         return (
-          <DisabledLock
+          <CreditCardNotAvailableLock
             address={lock.address}
             key={lock.address}
             name={lock.name}
