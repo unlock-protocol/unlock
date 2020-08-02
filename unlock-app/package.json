@@ -54,7 +54,7 @@
     "jest-fetch-mock": "3.0.3",
     "jest-mock-axios": "4.2.0",
     "jest-styled-components": "7.0.2",
-    "js-base64": "2.6.2",
+    "js-base64": "3.4.2",
     "netlify-cli": "2.57.0",
     "next": "9.4.4",
     "node-forge": "0.9.1",
