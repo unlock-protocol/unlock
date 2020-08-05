@@ -24,7 +24,7 @@
     "babel-jest": "26.2.2",
     "cross-fetch": "3.0.5",
     "eslint": "7.6.0",
-    "ethers": "4.0.47",
+    "ethers": "5.0.8",
     "jest": "25.5.4",
     "lint-staged": "10.2.11",
     "prettier": "2.0.5",

@@ -68,7 +68,7 @@
     "eslint": "7.1.0",
     "eth-sig-util": "2.5.2",
     "ethereumjs-util": "6.2.0",
-    "ethers": "4.0.47",
+    "ethers": "5.0.8",
     "express": "4.17.1",
     "express-jwt": "6.0.0",
     "graphql": "15.0.0",
