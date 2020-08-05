@@ -7,26 +7,26 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "3.5.0",
-    "@typescript-eslint/parser": "3.5.0",
+    "@typescript-eslint/eslint-plugin": "3.8.0",
+    "@typescript-eslint/parser": "3.8.0",
     "babel-eslint": "10.1.0",
-    "eslint": "7.3.1",
+    "eslint": "7.6.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-config-standard": "14.1.1",
-    "eslint-import-resolver-typescript": "2.0.0",
+    "eslint-import-resolver-typescript": "2.2.0",
     "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-jest": "23.17.1",
+    "eslint-plugin-jest": "23.20.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-mocha": "7.0.1",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.20.3",
-    "eslint-plugin-react-hooks": "4.0.5",
+    "eslint-plugin-react": "7.20.5",
+    "eslint-plugin-react-hooks": "4.0.8",
     "eslint-plugin-standard": "4.0.1",
     "prettier": "2.0.5",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "engines": {
     "node": "^10"
