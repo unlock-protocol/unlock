@@ -13,27 +13,27 @@
     "ci": "yarn test && yarn lint"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "5.11.0",
-    "@testing-library/react": "10.4.3",
-    "@testing-library/react-hooks": "3.3.0",
-    "@types/node": "13.13.12",
+    "@testing-library/jest-dom": "5.11.2",
+    "@testing-library/react": "10.4.8",
+    "@testing-library/react-hooks": "3.4.1",
+    "@types/node": "13.13.15",
     "@zeit/next-css": "1.0.1",
     "axios": "0.19.2",
-    "babel-jest": "26.1.0",
+    "babel-jest": "26.2.2",
     "dotenv": "8.2.0",
-    "eslint": "7.3.1",
+    "eslint": "7.6.0",
     "jest": "25.5.4",
     "jest-date-mock": "1.0.8",
-    "netlify-cli": "2.57.0",
-    "next": "9.4.4",
+    "netlify-cli": "2.59.0",
+    "next": "9.5.1",
     "prettier": "2.0.5",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-test-renderer": "16.13.1",
     "styled-components": "5.1.1",
-    "ts-jest": "26.1.1",
-    "typescript": "3.9.6"
+    "ts-jest": "26.1.4",
+    "typescript": "3.9.7"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
