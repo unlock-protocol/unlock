@@ -3,7 +3,6 @@ import http from 'http'
 import NockHelper from './helpers/nockHelper'
 
 import v4 from '../v4'
-import v5 from '../v5'
 import v6 from '../v6'
 import v7 from '../v7'
 
@@ -11,7 +10,7 @@ import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
-const supportedVersions = [v4, v5, v6, v7]
+const supportedVersions = [v4, v6, v7]
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)

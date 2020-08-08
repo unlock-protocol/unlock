@@ -8,11 +8,10 @@ import erc20 from '../erc20'
 import erc20Abi from '../erc20abi'
 
 import v4 from '../v4'
-import v5 from '../v5'
 import v6 from '../v6'
 import v7 from '../v7'
 
-const supportedVersions = [v4, v5, v6, v7]
+const supportedVersions = [v4, v6, v7]
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const readOnlyProvider = 'http://127.0.0.1:8545'
@@ -170,34 +169,6 @@ describe('Web3Service', () => {
   })
 
   describe('generateLockAddress', () => {
-    describe('when deployed a v5 lock', () => {
-      it('generates the correct address from the template contract', async () => {
-        expect.assertions(1)
-        await nockBeforeEach({})
-
-        const owner = '0x123'
-        web3Service.unlockContractAbiVersion = jest.fn(() => {
-          return {
-            version: 'v5',
-          }
-        })
-        const unlockContact = {
-          publicLockAddress: jest.fn(() => {
-            return Promise.resolve('0xFA7001A0310B5E69B7b95B72aeBaA66C72E084bf')
-          }),
-        }
-        web3Service.getUnlockContract = jest.fn(() => {
-          return Promise.resolve(unlockContact)
-        })
-
-        expect(
-          await web3Service.generateLockAddress(owner, {
-            name: 'My create2 Lock',
-          })
-        ).toBe('0xC37f72615fb8DAD1ecB055c5DEb2c7d786D8f1f5')
-      })
-    })
-
     describe('_create2Address', () => {
       it('should compute the correct address', async () => {
         expect.assertions(1)
