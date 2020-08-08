@@ -21,6 +21,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@unlock-protocol/unlock-abi-8": "1.0.0",
     "babel-jest": "26.2.2",
     "cross-fetch": "3.0.5",
     "eslint": "7.6.0",
