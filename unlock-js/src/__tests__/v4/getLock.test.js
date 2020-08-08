@@ -49,7 +49,7 @@ describe('v4', () => {
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
         lockAddress,
-        resultEncoder.encode(['uint256'], [3])
+        resultEncoder.encode(['uint256'], [4])
       )
 
       // retrieve the bytecode and compare to v1

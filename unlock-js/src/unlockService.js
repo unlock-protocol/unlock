@@ -1,12 +1,7 @@
 import EventEmitter from 'events'
 import { ethers } from 'ethers'
 
-import v0 from './v0'
-import v1 from './v1'
-import v2 from './v2'
-import v3 from './v3'
 import v4 from './v4'
-import v5 from './v5'
 import v6 from './v6'
 import v7 from './v7'
 
@@ -59,24 +54,8 @@ export default class UnlockService extends EventEmitter {
       this.versionForAddress[contractAddress] = version
     }
 
-    if (version === 1) {
-      return v1
-    }
-
-    if (version === 2) {
-      return v2
-    }
-
-    if (version === 3) {
-      return v3
-    }
-
     if (version === 4) {
       return v4
-    }
-
-    if (version === 5) {
-      return v5
     }
 
     if (version === 6) {
@@ -86,9 +65,6 @@ export default class UnlockService extends EventEmitter {
     if (version === 7) {
       return v7
     }
-
-    // Defaults to v0
-    return v0
   }
 
   async unlockContractAbiVersion() {
@@ -120,15 +96,6 @@ export default class UnlockService extends EventEmitter {
     try {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
-      if (version === 1) {
-        // v2 returns 1 as publicLockVersion
-        const code = await this.provider.getCode(address)
-
-        // if the deployed bytecode is v2, we have a match
-        if (v2.PublicLock.bytecodeHash === ethers.utils.sha256(code)) {
-          return 2
-        }
-      }
     } catch (error) {
       // This is an older version of Unlock which did not support publicLockVersion
     }
