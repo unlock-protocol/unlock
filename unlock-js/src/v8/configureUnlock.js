@@ -6,14 +6,21 @@
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  publicLockTemplateAddress,
-  globalTokenSymbol,
-  globalBaseTokenURI,
+  {
+    publicLockTemplateAddress,
+    globalTokenSymbol,
+    globalBaseTokenURI,
+    unlockDiscountToken,
+    wrappedEth,
+    estimatedGasForPurchase,
+  },
   callback
 ) {
   const unlockContract = await this.getUnlockContract()
-
   const configTransaction = await unlockContract.configUnlock(
+    unlockDiscountToken,
+    wrappedEth,
+    estimatedGasForPurchase,
     globalTokenSymbol,
     globalBaseTokenURI
   )
