@@ -1,7 +1,8 @@
 # Changes
 
-# Next Minor
+# 0.13.0
 
+- Introduced support for v8
 - Removed v0, v1, v2, v3, v5.
 
 # 0.12.2
