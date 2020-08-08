@@ -2,7 +2,6 @@ import EventEmitter from 'events'
 import { ethers } from 'ethers'
 
 import v4 from './v4'
-import v5 from './v5'
 import v6 from './v6'
 import v7 from './v7'
 
@@ -57,10 +56,6 @@ export default class UnlockService extends EventEmitter {
 
     if (version === 4) {
       return v4
-    }
-
-    if (version === 5) {
-      return v5
     }
 
     if (version === 6) {
