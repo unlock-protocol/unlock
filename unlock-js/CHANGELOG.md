@@ -1,5 +1,9 @@
 # Changes
 
+# Next Minor
+
+- Removed v0, v1, v2, v3, v5.
+
 # 0.12.2
 
 - Small fix to make sure inputs are defined

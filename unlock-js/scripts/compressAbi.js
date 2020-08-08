@@ -11,23 +11,13 @@ const fs = require('fs')
 const path = require('path')
 
 /* eslint-disable import/no-extraneous-dependencies */
-const v0 = require('@unlock-protocol/unlock-abi-0')
-const v1 = require('@unlock-protocol/unlock-abi-1')
-const v2 = require('@unlock-protocol/unlock-abi-2')
-const v3 = require('@unlock-protocol/unlock-abi-3')
 const v4 = require('@unlock-protocol/unlock-abi-4')
-const v5 = require('@unlock-protocol/unlock-abi-5')
 const v6 = require('@unlock-protocol/unlock-abi-6')
 const v7 = require('@unlock-protocol/unlock-abi-7')
 /* eslint-enable import/no-extraneous-dependencies */
 
 const toCompress = {
-  v0,
-  v1,
-  v2,
-  v3,
   v4,
-  v5,
   v6,
   v7,
 }
@@ -35,13 +25,13 @@ const output = {}
 
 function formatTypes(types) {
   return types
-    .map(type => `${type.type}${type.name ? ` ${type.name}` : ''}`)
+    .map((type) => `${type.type}${type.name ? ` ${type.name}` : ''}`)
     .join(',')
 }
 
 function formatEventTypes(types) {
   return types
-    .map(type => `${type.type}${type.indexed ? ' indexed' : ''} ${type.name}`)
+    .map((type) => `${type.type}${type.indexed ? ' indexed' : ''} ${type.name}`)
     .join(',')
 }
 
@@ -59,16 +49,16 @@ function formatSignature(sig) {
   return ret
 }
 
-Object.keys(toCompress).forEach(version => {
-  const PublicLockAbi = toCompress[version].PublicLock.abi.filter(f =>
+Object.keys(toCompress).forEach((version) => {
+  const PublicLockAbi = toCompress[version].PublicLock.abi.filter((f) =>
     ['function', 'event'].includes(f.type)
   )
-  const UnlockAbi = toCompress[version].Unlock.abi.filter(f =>
+  const UnlockAbi = toCompress[version].Unlock.abi.filter((f) =>
     ['function', 'event'].includes(f.type)
   )
   output[version] = {
-    PublicLock: PublicLockAbi.map(formatSignature).filter(f => f),
-    Unlock: UnlockAbi.map(formatSignature).filter(f => f),
+    PublicLock: PublicLockAbi.map(formatSignature).filter((f) => f),
+    Unlock: UnlockAbi.map(formatSignature).filter((f) => f),
   }
 })
 
@@ -77,7 +67,7 @@ function formatBytecode() {
 // do not modify directly!
 
 const bytecode = {
-${Object.keys(output).map(version => {
+${Object.keys(output).map((version) => {
   return `  ${version}: {
     PublicLock:
       '${toCompress[version].PublicLock.deployedBytecode}',
@@ -98,7 +88,7 @@ function formatDeployableBytecode() {
 // do not modify directly!
 
 const bytecode = {
-${Object.keys(output).map(version => {
+${Object.keys(output).map((version) => {
   return `  ${version}: {
     PublicLock:
       '${toCompress[version].PublicLock.bytecode}',
@@ -118,7 +108,7 @@ function formatSource() {
 // do not modify directly!
 
 const abis = {
-${Object.keys(output).map(version => {
+${Object.keys(output).map((version) => {
   return `  ${version}: {
     PublicLock: {
       contractName: 'PublicLock',

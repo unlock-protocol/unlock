@@ -7,16 +7,11 @@ import utils from '../utils'
 import erc20 from '../erc20'
 import erc20Abi from '../erc20abi'
 
-import v0 from '../v0'
-import v1 from '../v1'
-import v2 from '../v2'
-import v3 from '../v3'
 import v4 from '../v4'
-import v5 from '../v5'
 import v6 from '../v6'
 import v7 from '../v7'
 
-const supportedVersions = [v0, v1, v2, v3, v4, v5, v6, v7]
+const supportedVersions = [v4, v6, v7]
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const readOnlyProvider = 'http://127.0.0.1:8545'
@@ -174,34 +169,6 @@ describe('Web3Service', () => {
   })
 
   describe('generateLockAddress', () => {
-    describe('when deployed a v5 lock', () => {
-      it('generates the correct address from the template contract', async () => {
-        expect.assertions(1)
-        await nockBeforeEach({})
-
-        const owner = '0x123'
-        web3Service.unlockContractAbiVersion = jest.fn(() => {
-          return {
-            version: 'v5',
-          }
-        })
-        const unlockContact = {
-          publicLockAddress: jest.fn(() => {
-            return Promise.resolve('0xFA7001A0310B5E69B7b95B72aeBaA66C72E084bf')
-          }),
-        }
-        web3Service.getUnlockContract = jest.fn(() => {
-          return Promise.resolve(unlockContact)
-        })
-
-        expect(
-          await web3Service.generateLockAddress(owner, {
-            name: 'My create2 Lock',
-          })
-        ).toBe('0xC37f72615fb8DAD1ecB055c5DEb2c7d786D8f1f5')
-      })
-    })
-
     describe('_create2Address', () => {
       it('should compute the correct address', async () => {
         expect.assertions(1)
@@ -357,45 +324,6 @@ describe('Web3Service', () => {
       )
       expect(expiration).toEqual(0)
       expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
-    })
-  })
-
-  describe('getKeyByLockForOwner', () => {
-    it('should trigger an event with the key', async () => {
-      expect.assertions(4)
-      await nockBeforeEach({})
-      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
-      web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise((resolve) => {
-          return resolve(100)
-        })
-      })
-
-      web3Service.on('key.updated', (keyId, update) => {
-        expect(keyId).toBe([lockAddress, account].join('-'))
-        expect(update.expiration).toBe(100)
-        expect(update.lock).toBe(lockAddress)
-        expect(update.owner).toBe(account)
-      })
-      await web3Service.getKeyByLockForOwner(lockAddress, account)
-    })
-
-    it("should return the lock's details", async () => {
-      expect.assertions(1)
-      await nockBeforeEach({})
-      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
-      web3Service._getKeyByLockForOwner = jest.fn(() => {
-        return new Promise((resolve) => {
-          return resolve(100)
-        })
-      })
-
-      const lock = await web3Service.getKeyByLockForOwner(lockAddress, account)
-      expect(lock).toEqual({
-        expiration: 100,
-        lock: '0x5ED6a5BB0fDA25eaC3B5D03fa875cB60A4639d8E',
-        owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
-      })
     })
   })
 
