@@ -6,9 +6,7 @@
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  publicLockTemplateAddress,
-  globalTokenSymbol,
-  globalBaseTokenURI,
+  { publicLockTemplateAddress, globalTokenSymbol, globalBaseTokenURI },
   callback
 ) {
   const unlockContract = await this.getUnlockContract()

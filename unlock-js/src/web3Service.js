@@ -165,7 +165,7 @@ export default class Web3Service extends UnlockService {
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (['v6', 'v7'].indexOf(version.version) > -1) {
+    if (['v6', 'v7', 'v8'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
       // Compute the hash identically to v5 (TODO: extract this?)

@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import v4 from './v4'
 import v6 from './v6'
 import v7 from './v7'
+import v8 from './v8'
 
 // mute warnings from overloaded smart contract methods (https://github.com/ethers-io/ethers.js/issues/499)
 ethers.errors.setLogLevel('error')
@@ -64,6 +65,10 @@ export default class UnlockService extends EventEmitter {
 
     if (version === 7) {
       return v7
+    }
+
+    if (version === 8) {
+      return v8
     }
   }
 

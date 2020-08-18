@@ -3,6 +3,7 @@ import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import 'cross-fetch/polyfill'
+import { ZERO } from '../../constants'
 
 let host
 const port = 8545
@@ -30,7 +31,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v4', 'v6', 'v7']
+  const versions = ['v4', 'v6', 'v7', 'v8']
   describe.each(versions)('%s', (versionName) => {
     let walletService
     let web3Service
@@ -84,9 +85,15 @@ describe('Wallet Service Integration', () => {
           expect.assertions(2)
           let transactionHash
           const receipt = await walletService.configureUnlock(
-            publicLockTemplateAddress,
-            'TESTK',
-            'https://locksmith.unlock-protocol.com/api/key/',
+            {
+              publicLockTemplateAddress,
+              globalTokenSymbol: 'TESTK',
+              globalBaseTokenURI:
+                'https://locksmith.unlock-protocol.com/api/key/',
+              unlockDiscountToken: ZERO,
+              wrappedEth: ZERO,
+              estimatedGasForPurchase: 0,
+            },
             (error, hash) => {
               transactionHash = hash
             }
