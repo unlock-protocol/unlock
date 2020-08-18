@@ -1510,35 +1510,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unlock-protocol/unlock-abi-0@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-0/-/unlock-abi-0-1.0.4.tgz#be50963fee782021e2379818d7da8d16ecae01c3"
-  integrity sha512-zouPPrUDT5Opvj35V6afGUw63LNv4huBtc7yxaOzFfdGWnZU7IC/DrI58C0r5lXWWlafZPwoeqM1UpLSvmLbbQ==
-
-"@unlock-protocol/unlock-abi-1@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-1/-/unlock-abi-1-1.0.0.tgz#c3e9b8b65fb5735bb65ebe378144c959a628a4ed"
-  integrity sha512-bD6SauDmn01mJT2VfbOzUpexg2MveBafzDO2XLEG1srpOeNUqR3ikfBmxG8Vx7e6wT7jdOF5/ex3dOJvlUVrOA==
-
-"@unlock-protocol/unlock-abi-2@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-2/-/unlock-abi-2-1.0.0.tgz#73ecfaee7abee6d184d3e6267bf3b21c2d779a2f"
-  integrity sha512-Ry0l65zZN1VzPaN+peRRXsNQcV84M0KZvoZPNLkfnHbQfwyx3EMjCIvK3AWRc3teRk7XLu3VR/sKzRh7AYxUIg==
-
-"@unlock-protocol/unlock-abi-3@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-3/-/unlock-abi-3-1.0.0.tgz#02d956263ec3f3ede9f24f9b6b3bbc606f80dda7"
-  integrity sha512-81WFdcvBXuCOEOOTjMPTdaMBA68seL5ziQMuiTLvsr2L0O1WUiKtQeHmoN4U/6z4/XjLEvBrufXw90zsM9b4cg==
-
 "@unlock-protocol/unlock-abi-4@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-4/-/unlock-abi-4-1.1.1.tgz#d7ead90d9d238b1ef4b0cfefa1d2ba24c571662c"
   integrity sha512-3bZlrRLpuUQNLCDmtMWqiWz5F8SBNgTiZ1iYdzKoE5Nyc6iV+MY7e96/E2QsGDS+Au2Pj23Jk3eUx3in77BkpA==
-
-"@unlock-protocol/unlock-abi-5@1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-5/-/unlock-abi-5-1.0.4.tgz#92b29ee3e7cefef182422d051e2664242959b586"
-  integrity sha512-zb4QUlsaUwdvtk9614JiNKBWxlBHYb3thXP1p5PQ+7a4aNpA0yxoYiaIY5yIyxe9w0OSthIIMeLi7MCUg3Z1JQ==
 
 "@unlock-protocol/unlock-abi-6@1.0.2":
   version "1.0.2"
@@ -1549,6 +1524,11 @@
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-7/-/unlock-abi-7-1.0.3.tgz#aac869185f363e7fc26b8956142019545867c2d1"
   integrity sha512-YLG2ir0+tL/oFVAo8TiN+7khbZgGniG0Zxnk0f/YYmeEEOLcxvt6rSahgWjBYzLWh4y2x3zBz7yMyn3dl0yhAg==
+
+"@unlock-protocol/unlock-abi-8@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-8/-/unlock-abi-8-1.0.0.tgz#c25216751fe89c3335a44b073b141c48cf7e58e7"
+  integrity sha512-M3vk7w5bfut1KVI0wT6a7nYvaKFwKv3Lv3CvkDsLu0rmpjxY811TUwNlJZ/NF2vDJBU4aEhmDDx7LyYMA7dqsQ==
 
 abab@^2.0.0:
   version "2.0.3"

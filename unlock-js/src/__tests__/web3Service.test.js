@@ -10,8 +10,9 @@ import erc20Abi from '../erc20abi'
 import v4 from '../v4'
 import v6 from '../v6'
 import v7 from '../v7'
+import v8 from '../v8'
 
-const supportedVersions = [v4, v6, v7]
+const supportedVersions = [v4, v6, v7, v8]
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const readOnlyProvider = 'http://127.0.0.1:8545'
