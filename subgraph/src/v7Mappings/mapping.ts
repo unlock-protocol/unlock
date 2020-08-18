@@ -48,17 +48,8 @@ export function expirationChanged(event: ExpirationChanged): void {
   let keyID = genKeyID(event.address, event.params._tokenId.toString())
   let key = Key.load(keyID)
   let lockContract = PublicLock.bind(event.address)
-  let lockOwner = lockContract.ownerOf(event.params._tokenId)
-  let currentExpiration = lockContract.keyExpirationTimestampFor(lockOwner)
-
-  let timeDelta = event.params._amount
-
-  if (event.params._timeAdded) {
-    key.expiration = currentExpiration.plus(timeDelta)
-  } else {
-    key.expiration = currentExpiration.minus(timeDelta)
-  }
-
+  let keyOwnwer = lockContract.ownerOf(event.params._tokenId)
+  key.expiration = lockContract.keyExpirationTimestampFor(keyOwnwer)
   key.save()
 }
 
