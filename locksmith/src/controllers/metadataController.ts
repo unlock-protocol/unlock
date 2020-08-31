@@ -190,7 +190,8 @@ namespace MetadataController {
         payload.message.LockMetaData.address
       )
       const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
-        lockAddress
+        lockAddress,
+        payload.message.LockMetaData.page || 0
       )
 
       if ((await evaluateLockOwnership(lockAddress, req.signee)) === false) {
