@@ -239,6 +239,8 @@ describe('useMembers', () => {
         variables: {
           addresses: [lock.address],
           expiresAfter: expect.any(Number),
+          first: 100,
+          skip: 0,
         },
       })
     })
@@ -255,6 +257,8 @@ describe('useMembers', () => {
         variables: {
           addresses: [lock.address],
           expiresAfter: 0,
+          first: 100,
+          skip: 0,
         },
       })
     })
@@ -312,6 +316,7 @@ describe('useMembers', () => {
         expect(initialResult).toEqual({
           loading: true,
           error: false,
+          hasNextPage: false,
           columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
           list: [],
         })
@@ -320,6 +325,7 @@ describe('useMembers', () => {
         expect(loadedResult).toEqual({
           loading: false,
           error: false,
+          hasNextPage: false,
           columns: [
             'lockName',
             'token',
@@ -354,6 +360,7 @@ describe('useMembers', () => {
         useQuery.mockImplementation(() => ({
           loading: false,
           error: false,
+          hasNextPage: false,
           data: {
             locks: [lock],
           },
@@ -365,6 +372,7 @@ describe('useMembers', () => {
         expect(initialResult).toEqual({
           loading: true,
           error: false,
+          hasNextPage: false,
           columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
           list: [],
         })
@@ -374,6 +382,7 @@ describe('useMembers', () => {
         expect(loadedResult).toEqual({
           loading: false,
           error: false,
+          hasNextPage: false,
           columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
           list: [
             {

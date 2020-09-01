@@ -105,11 +105,12 @@ export const buildMembersWithMetadata = (lock, storedMetadata) => {
  * This hooks yields the members for a lock, along with the metadata when applicable
  * @param {*} address
  */
-export const useMembers = (lockAddresses, viewer, filter) => {
+export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
   const walletService = useContext(WalletServiceContext)
   const web3Service = useContext(Web3ServiceContext)
   const storageService = useContext(StorageServiceContext)
   const dispatch = useDispatch()
+  const [hasNextPage, setHasNextPage] = useState(false)
   const [members, setMembers] = useState({})
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -117,6 +118,9 @@ export const useMembers = (lockAddresses, viewer, filter) => {
   if (filter === MemberFilters.ALL) {
     expiresAfter = 0
   }
+  const first = 100
+  const skip = page * first
+
   const {
     loading: membersLoading,
     error: membersError,
@@ -125,6 +129,8 @@ export const useMembers = (lockAddresses, viewer, filter) => {
     variables: {
       addresses: lockAddresses,
       expiresAfter,
+      first,
+      skip,
     },
   })
 
@@ -157,8 +163,10 @@ export const useMembers = (lockAddresses, viewer, filter) => {
       }
     })
     const membersForLocks = await Promise.all(membersForLocksPromise)
+    const members = Object.assign(...membersForLocks)
     if (membersForLocks.length > 0) {
-      setMembers(Object.assign(...membersForLocks))
+      setMembers(members)
+      setHasNextPage(Object.keys(members).length === first)
     }
     setLoading(false)
   }
@@ -186,7 +194,7 @@ export const useMembers = (lockAddresses, viewer, filter) => {
 
   const list = Object.values(members)
   const columns = generateColumns(list)
-  return { loading, error, list, columns }
+  return { loading, error, list, columns, hasNextPage }
 }
 
 export default useMembers
