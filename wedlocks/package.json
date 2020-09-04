@@ -29,7 +29,7 @@
     "nodemon": "2.0.4",
     "prettier": "2.1.1",
     "ts-jest": "26.3.0",
-    "typescript": "3.9.7",
+    "typescript": "4.0.2",
     "webpack": "4.44.1",
     "webpack-cli": "3.3.12",
     "winston": "3.3.3"
