@@ -33,7 +33,7 @@
     "react-test-renderer": "16.13.1",
     "styled-components": "5.1.1",
     "ts-jest": "26.3.0",
-    "typescript": "3.9.7"
+    "typescript": "4.0.2"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
