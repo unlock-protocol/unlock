@@ -50,5 +50,4 @@ const Well = styled.div`
       position: absolute;
     }
   }
-
 `
