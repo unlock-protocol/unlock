@@ -21,6 +21,20 @@ interface LockPriceLock {
   keyPrice: string
 }
 
+export const numberOfAvailableKeys = ({
+  unlimitedKeys,
+  maxNumberOfKeys,
+  outstandingKeys,
+}: LockKeysAvailableLock) => {
+  if (unlimitedKeys) {
+    return Infinity
+  }
+
+  // maxNumberOfKeys and outstandingKeys are assumed to be defined
+  // if they are ever not, a runtime error can occur
+  return maxNumberOfKeys! - outstandingKeys!
+}
+
 export const lockKeysAvailable = ({
   unlimitedKeys,
   maxNumberOfKeys,
