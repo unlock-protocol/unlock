@@ -4,6 +4,7 @@ import { RawLock, Balances } from '../../../unlockTypes'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import {
   lockKeysAvailable,
+  numberOfAvailableKeys,
   lockTickerSymbol,
   userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
@@ -74,6 +75,13 @@ export const Lock = ({
   const canAfford = userCanAffordKey(lock, balances)
 
   const keyForThisLock = activeKeys.find((key) => key.lock === lock.address)
+
+  const isSoldOut = numberOfAvailableKeys(lock) === 0
+
+  // Lock is sold out
+  if (isSoldOut) {
+    return <LockVariations.SoldOutLock {...props} />
+  }
 
   // This lock is being/has been purchased
   if (state.purchasingLockAddress === lock.address || keyForThisLock) {
