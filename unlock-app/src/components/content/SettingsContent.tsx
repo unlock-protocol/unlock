@@ -13,11 +13,11 @@ import { useCards } from '../../hooks/useCards'
 import { Account } from '../../unlockTypes'
 import Loading from '../interface/Loading'
 
-interface PaymentSettings {
+interface PaymentSettingsProps {
   address: string
 }
 
-export const PaymentSettings = ({ address }: PaymentSettings) => {
+export const PaymentSettings = ({ address }: PaymentSettingsProps) => {
   const { cards, loading, saveCard, deleteCard } = useCards(address)
   if (loading) {
     return <Loading />

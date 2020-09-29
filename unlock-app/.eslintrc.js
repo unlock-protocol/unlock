@@ -26,6 +26,7 @@ const rulesToIgnore = [
   'no-restricted-syntax',
   'guard-for-in',
   'no-async-promise-executor',
+  '@typescript-eslint/no-unused-vars',
 ]
 
 module.exports = {
