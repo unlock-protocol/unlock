@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { PaywallConfig } from './unlockTypes'
 
 // window sub-types
