@@ -4,7 +4,7 @@ import { route } from '../route'
 jest.mock('../route')
 
 describe('handler', () => {
-  it('should render 204 if the method is OPTIONS', done => {
+  it('should render 204 if the method is OPTIONS', (done) => {
     expect.assertions(1)
     handler(
       {
@@ -18,7 +18,7 @@ describe('handler', () => {
     )
   })
 
-  it('should render 405 if the method is not a POST', done => {
+  it('should render 405 if the method is not a POST', (done) => {
     expect.assertions(2)
     handler(
       {
@@ -33,7 +33,7 @@ describe('handler', () => {
     )
   })
 
-  it('should render 415 if there are no headers', done => {
+  it('should render 415 if there are no headers', (done) => {
     expect.assertions(2)
     handler(
       {
@@ -48,7 +48,7 @@ describe('handler', () => {
     )
   })
 
-  it('should render 415 if the content type is not json', done => {
+  it('should render 415 if the content type is not json', (done) => {
     expect.assertions(2)
     handler(
       {
@@ -66,7 +66,7 @@ describe('handler', () => {
     )
   })
 
-  it('should render 422 if the body is malformed JSON', done => {
+  it('should render 422 if the body is malformed JSON', (done) => {
     expect.assertions(2)
     handler(
       {
@@ -85,7 +85,7 @@ describe('handler', () => {
     )
   })
 
-  it('should route the request and yields its response', done => {
+  it('should route the request and yields its response', (done) => {
     expect.assertions(4)
     const body = {
       hello: 'world',
@@ -121,7 +121,7 @@ describe('handler', () => {
     )
   })
 
-  it('should route the request and yields its response when it is an error', done => {
+  it('should route the request and yields its response when it is an error', (done) => {
     expect.assertions(3)
     const body = {
       hello: 'world',
@@ -151,7 +151,7 @@ describe('handler', () => {
     )
   })
 
-  it('should route the request and catch errors in response processing', done => {
+  it('should route the request and catch errors in response processing', (done) => {
     expect.assertions(3)
     const body = {
       hello: 'world',
@@ -159,7 +159,7 @@ describe('handler', () => {
 
     const error = new Error('Processing error')
 
-    route.mockImplementationOnce(_body => {
+    route.mockImplementationOnce((_body) => {
       expect(_body).toEqual(body)
       throw error
     })

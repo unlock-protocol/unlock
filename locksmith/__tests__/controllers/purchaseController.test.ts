@@ -21,10 +21,7 @@ const mockPaymentProcessor = {
 }
 
 const keyPricer = {
-  keyPriceUSD: jest
-    .fn()
-    .mockReturnValueOnce(250)
-    .mockReturnValueOnce(1000000),
+  keyPriceUSD: jest.fn().mockReturnValueOnce(250).mockReturnValueOnce(1000000),
 }
 
 function generateTypedData(message: any) {

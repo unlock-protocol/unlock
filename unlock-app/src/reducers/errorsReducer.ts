@@ -22,7 +22,7 @@ const errorsReducer = (state = initialState, action: Action) => {
 
   if (action.type === SET_ERROR) {
     const thisError: UnlockError = action.error
-    if (state.map(error => error.message).includes(thisError.message))
+    if (state.map((error) => error.message).includes(thisError.message))
       return state
     return [...state, thisError]
   }
@@ -31,10 +31,11 @@ const errorsReducer = (state = initialState, action: Action) => {
     const thisError: UnlockError = action.error
 
     // If the error to be reset is not in the list, nothing changes
-    if (!state.find(error => thisError.message === error.message)) return state
+    if (!state.find((error) => thisError.message === error.message))
+      return state
 
     // Otherwise, only push to new state the all the other errors
-    return state.filter(error => error.message !== thisError.message)
+    return state.filter((error) => error.message !== thisError.message)
   }
 
   return state

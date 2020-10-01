@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FiatLock } from './FiatLock'
-import { DisabledLock, LoadingLock } from './LockVariations'
+import { CreditCardNotAvailableLock, LoadingLock } from './LockVariations'
 import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
 import { useFiatKeyPrices } from '../../../hooks/useFiatKeyPrices'
 import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
@@ -53,12 +53,12 @@ export const FiatLocks = ({
   const needToCollectPaymentDetails = cards.length === 0
 
   const now = new Date().getTime() / 1000
-  const activeKeys = keys.filter(key => key.expiration > now)
+  const activeKeys = keys.filter((key) => key.expiration > now)
 
   if (loading || cardsLoading) {
     return (
       <div>
-        {lockAddresses.map(address => (
+        {lockAddresses.map((address) => (
           <LoadingLock address={address} key={address} />
         ))}
       </div>
@@ -68,7 +68,7 @@ export const FiatLocks = ({
   if (showingPaymentForm.visible) {
     return (
       <PaymentDetails
-        saveCard={token => saveCard(token)}
+        saveCard={(token) => saveCard(token)}
         setShowingPaymentForm={setShowingPaymentForm}
         invokePurchase={showingPaymentForm.invokePurchase!}
       />
@@ -77,7 +77,7 @@ export const FiatLocks = ({
 
   return (
     <div>
-      {locks.map(lock => {
+      {locks.map((lock) => {
         if (fiatKeyPrices[lock.address]) {
           // prices returned from locksmith are in cents
           const basePrice = parseInt(fiatKeyPrices[lock.address].usd)
@@ -100,7 +100,7 @@ export const FiatLocks = ({
         }
 
         return (
-          <DisabledLock
+          <CreditCardNotAvailableLock
             address={lock.address}
             key={lock.address}
             name={lock.name}

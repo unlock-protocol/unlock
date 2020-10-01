@@ -53,7 +53,7 @@ describe('usePurchaseKey', () => {
     dispatch = jest.fn()
     emitTransactionInfo = jest.fn()
 
-    jest.spyOn(React, 'useContext').mockImplementation(context => {
+    jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === WalletServiceContext) {
         return mockWalletService
       }

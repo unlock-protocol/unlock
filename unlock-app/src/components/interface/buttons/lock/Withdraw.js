@@ -50,8 +50,8 @@ Withdraw.defaultProps = {
   withdraw: () => {},
 }
 
-const mapDispatchToProps = dispatch => ({
-  withdraw: lock => dispatch(withdrawFromLock(lock)),
+const mapDispatchToProps = (dispatch) => ({
+  withdraw: (lock) => dispatch(withdrawFromLock(lock)),
 })
 
 export default connect(null, mapDispatchToProps)(Withdraw)

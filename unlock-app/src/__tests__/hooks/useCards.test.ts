@@ -38,7 +38,7 @@ describe('UseCards', () => {
     fetch.resetMocks()
     jest.clearAllMocks()
 
-    jest.spyOn(React, 'useContext').mockImplementation(context => {
+    jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === WalletServiceContext) {
         return mockWalletService
       }

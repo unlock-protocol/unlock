@@ -139,7 +139,7 @@ export const HomeContent = () => {
             lock on the dashboard and get started or check out some of the apps.
           </Paragraph>
           <Integrations>
-            {integrations.map(integration => (
+            {integrations.map((integration) => (
               <Integration
                 key={integration.name}
                 target="_blank"

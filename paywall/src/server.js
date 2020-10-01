@@ -8,6 +8,6 @@ return server(port, dev)
   .then(() => {
     console.log(`> Ready on http://localhost:${port}`)
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error)
   })

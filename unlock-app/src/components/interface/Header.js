@@ -22,7 +22,7 @@ const accountTypes = {
   crypto: 'account/crypto',
 }
 
-export const typeOfAccount = account => {
+export const typeOfAccount = (account) => {
   if (!account) {
     // this case mostly seems to happen in component tests that include the
     // header but haven't had an account set.
@@ -73,10 +73,11 @@ export const mapStateToProps = ({
 /**
  * Helper function which returns the path on the button if the current pathname matches it
  */
-export const isOnAppPage = pathname => {
+export const isOnAppPage = (pathname) => {
   return (
-    appButtons.map(button => button.page).find(page => pathname.match(page)) ||
-    false
+    appButtons
+      .map((button) => button.page)
+      .find((page) => pathname.match(page)) || false
   )
 }
 
@@ -88,7 +89,7 @@ export class Header extends React.PureComponent {
   }
 
   toggleMenu() {
-    this.setState(prevState => ({ menu: !prevState.menu }))
+    this.setState((prevState) => ({ menu: !prevState.menu }))
   }
 
   render() {
@@ -139,7 +140,7 @@ export class Header extends React.PureComponent {
         </MobileToggle>
         <MobilePopover visibilityToggle={!!menu}>
           {menu
-            ? navigationButtons.map(NavButton => (
+            ? navigationButtons.map((NavButton) => (
                 <NavButton
                   key={NavButton}
                   size="48px"
@@ -180,7 +181,7 @@ const TopHeader = styled.header`
 
   ${Media.phone`
     grid-template-columns: [first] 1fr [second] 48px;
-    grid-template-rows: ${props =>
+    grid-template-rows: ${(props) =>
       props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
   `};
@@ -233,11 +234,13 @@ const MobileToggle = styled.div`
     pointer-events: visible;
     align-self: center;
 
-    ${props => (props.visibilityToggle ? '&:nth-child(2)' : '&:nth-child(1)')} {
+    ${(props) =>
+      props.visibilityToggle ? '&:nth-child(2)' : '&:nth-child(1)'} {
       pointer-events: none;
     }
 
-    ${props => (props.visibilityToggle ? '&:nth-child(1)' : '&:nth-child(2)')} {
+    ${(props) =>
+      props.visibilityToggle ? '&:nth-child(1)' : '&:nth-child(2)'} {
       pointer-events: none;
       display: none;
     }
@@ -264,7 +267,7 @@ const MobileToggle = styled.div`
 const MobilePopover = styled.div`
   background-color: var(--white);
   width: 100%;
-  height: ${props => (props.visibilityToggle ? '0' : 'auto')};
+  height: ${(props) => (props.visibilityToggle ? '0' : 'auto')};
   z-index: var(--foreground);
   padding-bottom: 30px;
 
@@ -278,7 +281,7 @@ const MobilePopover = styled.div`
   justify-content: center;
 
   transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  ${props =>
+  ${(props) =>
     props.visibilityToggle
       ? 'height: 100%; pointer-events: visible; top: 70px;'
       : 'height: 0%; pointer-events: none; top: 50px;'} ${ButtonLink} {

@@ -23,7 +23,7 @@ import useMembers from '../../hooks/useMembers'
 interface FilterProps {
   value: string
   current: string
-  setFilter: (string) => any
+  setFilter: (filter: string) => any
 }
 
 const Filter = ({ value, current, setFilter }: FilterProps) => {
@@ -34,13 +34,56 @@ const Filter = ({ value, current, setFilter }: FilterProps) => {
   )
 }
 
+interface PaginationProps {
+  currentPage: number
+  hasNextPage: boolean
+  setCurrentPage: (page: number) => any
+}
+
+const Pagination = ({
+  currentPage,
+  setCurrentPage,
+  hasNextPage,
+}: PaginationProps) => {
+  if (currentPage === 0 && !hasNextPage) {
+    return null
+  }
+  const previousPageButton = (
+    <StyledFilter
+      active={currentPage === 0}
+      onClick={() => setCurrentPage(currentPage - 1)}
+    >
+      Previous
+    </StyledFilter>
+  )
+  const nextPageButton = (
+    <StyledFilter
+      active={!hasNextPage}
+      onClick={() => setCurrentPage(currentPage + 1)}
+    >
+      Next
+    </StyledFilter>
+  )
+  return (
+    <Filters>
+      Page: {currentPage} {previousPageButton} {nextPageButton}
+    </Filters>
+  )
+}
+
 interface Props {
   account: AccountType
   network: Network
   lockAddresses: string[]
+  page: number
 }
 
-export const MembersContent = ({ account, network, lockAddresses }: Props) => {
+export const MembersContent = ({
+  account,
+  network,
+  lockAddresses,
+  page,
+}: Props) => {
   const [filter, setFilter] = useState(MemberFilters.ACTIVE)
 
   return (
@@ -57,15 +100,16 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
               <Filter
                 value={MemberFilters.ACTIVE}
                 current={filter}
-                setFilter={value => setFilter(value)}
+                setFilter={(value) => setFilter(value)}
               />
               <Filter
                 value={MemberFilters.ALL}
                 current={filter}
-                setFilter={value => setFilter(value)}
+                setFilter={(value) => setFilter(value)}
               />
             </Filters>
             <MetadataTableWrapper
+              page={page}
               lockAddresses={lockAddresses}
               accountAddress={account.address}
               filter={filter}
@@ -80,6 +124,8 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
 interface MetadataTableWrapperProps {
   lockAddresses: string[]
   accountAddress: string
+  filter: string
+  page: number
 }
 /**
  * This just wraps the metadataTable component, providing the data
@@ -90,11 +136,14 @@ const MetadataTableWrapper = ({
   lockAddresses,
   accountAddress,
   filter,
+  page,
 }: MetadataTableWrapperProps) => {
-  const { loading, error, list, columns } = useMembers(
+  const [currentPage, setCurrentPage] = useState(page)
+  const { loading, error, list, columns, hasNextPage } = useMembers(
     lockAddresses,
     accountAddress,
-    filter
+    filter,
+    currentPage
   )
 
   if (loading) {
@@ -113,8 +162,19 @@ const MetadataTableWrapper = ({
   }
 
   // TODO: rename metadata into members inside of MetadataTable
-  return <MetadataTable columns={columns} metadata={list} />
+  return (
+    <>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        hasNextPage={hasNextPage}
+      />
+      <MetadataTable columns={columns} metadata={list} />
+    </>
+  )
 }
+
+MetadataTableWrapper.defaultProps = {}
 
 interface ReduxState {
   account: AccountType
@@ -137,7 +197,12 @@ export const mapStateToProps = ({ account, network, router }: ReduxState) => {
       lockAddresses = search.locks as any
     }
   }
+  let page = 0
+  if (search.page && typeof search.page === 'string') {
+    page = parseInt(search.page)
+  }
   return {
+    page,
     account,
     network,
     lockAddresses,
@@ -148,7 +213,7 @@ const Message = styled.p`
   color: var(--grey);
 `
 
-const Filters = styled.nav`
+export const Filters = styled.nav`
   color: var(--grey);
   font-size: 13px;
 `
@@ -161,8 +226,8 @@ const StyledFilter = styled.li`
     props.active ? 'not-allowed' : 'pointer'};
   display: inline-block;
   margin: 5px;
-  color: ${props => (props.active ? 'var(--darkgrey)' : 'var(--blue)')};
-  font-weight: ${props => (props.active ? '700' : '300')};
+  color: ${(props) => (props.active ? 'var(--darkgrey)' : 'var(--blue)')};
+  font-weight: ${(props) => (props.active ? '700' : '300')};
 `
 
 export default connect(mapStateToProps)(MembersContent)

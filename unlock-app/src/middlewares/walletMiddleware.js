@@ -38,14 +38,14 @@ const walletMiddleware = (config, walletService, getProvider) => {
      * before calling it or dispatches an error
      * @param {*} callback
      */
-    const ensureReadyBefore = callback => {
+    const ensureReadyBefore = (callback) => {
       if (!walletService.ready) {
         return dispatch(setError(Application.Fatal(FATAL_NO_USER_ACCOUNT)))
       }
       return callback()
     }
 
-    walletService.on('account.updated', update => {
+    walletService.on('account.updated', (update) => {
       if (!getState().account) return
 
       const currentAccount = getState().account
@@ -68,7 +68,7 @@ const walletMiddleware = (config, walletService, getProvider) => {
      * When an account was changed, we dispatch the corresponding action
      * The setAccount action will reset other relevant redux state
      */
-    walletService.on('account.changed', account => {
+    walletService.on('account.changed', (account) => {
       if (config.isServer) return
       // Let's poll to detect account changes
       setTimeout(
@@ -147,7 +147,7 @@ const walletMiddleware = (config, walletService, getProvider) => {
      * When the network has changed, we need to ensure Unlock has been deployed there and
      * get a new account as well as reset all the reducers
      */
-    walletService.on('network.changed', networkId => {
+    walletService.on('network.changed', (networkId) => {
       // Set the new network, which should also clean up all reducers
       dispatch(setNetwork(networkId))
 
@@ -181,8 +181,8 @@ const walletMiddleware = (config, walletService, getProvider) => {
       })
     })
 
-    return function(next) {
-      return function(action) {
+    return function (next) {
+      return function (action) {
         if (action.type === PROVIDER_READY) {
           walletService.connect(getProvider())
         } else if (action.type === CREATE_LOCK && action.lock.address) {

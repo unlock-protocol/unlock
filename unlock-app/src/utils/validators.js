@@ -2,37 +2,37 @@ import isDecimal from 'validator/lib/isDecimal'
 import { ACCOUNT_REGEXP } from '../constants'
 
 // tests whether a field's value was not entered by the user
-export const isNotEmpty = val => val || val === 0
+export const isNotEmpty = (val) => val || val === 0
 
 // tests whether a number is positive and not a decimal number
-export const isPositiveInteger = val => {
+export const isPositiveInteger = (val) => {
   const parsedInt = parseInt(val)
   return !isNaN(parsedInt) && val == parsedInt && +val > 0
 }
 // tests whether a number is positive and not a decimal number
-export const isPositiveIntegerOrZero = val => {
+export const isPositiveIntegerOrZero = (val) => {
   const parsedInt = parseInt(val)
   return !isNaN(parsedInt) && val == parsedInt && +val >= 0
 }
 
-export const isLTE = limit => {
-  return val => {
+export const isLTE = (limit) => {
+  return (val) => {
     const parsedInt = parseInt(val)
     return parsedInt <= limit
   }
 }
 
 // tests whether a number is a non-negative real number (decimals allowed)
-export const isPositiveNumber = val => {
+export const isPositiveNumber = (val) => {
   const parsedFloat = parseFloat(val)
   return !isNaN(parsedFloat) && +parsedFloat >= 0
 }
 
-export const isAccount = val => {
+export const isAccount = (val) => {
   return val && typeof val === 'string' && val.match(ACCOUNT_REGEXP)
 }
 
-export const isAccountOrNull = val => {
+export const isAccountOrNull = (val) => {
   return val === null || isAccount(val)
 }
 
@@ -47,7 +47,7 @@ function isValidObject(obj, validKeys) {
   const keys = Object.keys(obj)
 
   if (keys.length < validKeys.length) return false
-  if (validKeys.filter(key => !keys.includes(key)).length) return false
+  if (validKeys.filter((key) => !keys.includes(key)).length) return false
   return true
 }
 
@@ -68,7 +68,7 @@ function isValidKeyStatus(status) {
 /**
  * validate a single key. This should match the type in unlockTypes.ts
  */
-export const isValidKey = key => {
+export const isValidKey = (key) => {
   if (
     !isValidObject(key, [
       'expiration',
@@ -116,7 +116,7 @@ export const isValidKey = key => {
 /**
  * validate a single lock. This should match the type in unlockTypes.ts
  */
-export const isValidLock = lock => {
+export const isValidLock = (lock) => {
   if (
     !isValidObject(lock, ['address', 'keyPrice', 'expirationDuration', 'key'])
   ) {
@@ -147,11 +147,11 @@ export const isValidLock = lock => {
 /**
  * validate the list of locks returned from the data iframe
  */
-export const isValidLocks = locks => {
+export const isValidLocks = (locks) => {
   if (!locks || typeof locks !== 'object' || Array.isArray(locks)) return false
   const keys = Object.keys(locks)
-  if (keys.filter(key => !isAccount(key)).length) return false
+  if (keys.filter((key) => !isAccount(key)).length) return false
   const lockValues = Object.values(locks)
-  if (lockValues.filter(lock => !isValidLock(lock)).length) return false
+  if (lockValues.filter((lock) => !isValidLock(lock)).length) return false
   return true
 }

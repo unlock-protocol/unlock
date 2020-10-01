@@ -98,29 +98,22 @@ module.exports = {
     rinkeby: {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
-      gas: 6400000,
-      gasPrice: 5000000000, // 5GWEI
     },
     ropsten: {
       provider: ropstenProvider,
       network_id: '3', // Network Id for Ropsten
-      gas: 5000000,
-      gasPrice: 5000000000, // 5GWEI
     },
     kovan: {
       provider: kovanProvider,
       network_id: '42', // Network Id for Kovan
-      gas: 10000000,
-      gasPrice: 5000000000, // 5GWEI
     },
     mainnet: {
       provider: mainnetProvider,
       network_id: 1, // Network Id for Mainnet
-      gas: 6400000,
-      gasPrice: 5000000000, // 5GWEI
     },
   },
   compilers: {
+    // When changing the following settings, update .openzeppelin/project.json to match
     solc: {
       version: '0.5.17',
       settings: {
@@ -128,6 +121,8 @@ module.exports = {
           enabled: true,
           runs: 200,
         },
+        // evmVersion is optional here but must be manually specified in .openzeppelin/project.json
+        evmVersion: 'istanbul',
       },
     },
   },

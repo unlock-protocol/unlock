@@ -2,18 +2,18 @@ import styled from 'styled-components'
 import Media from '../../../theme/media'
 
 export const ActionButton = styled.button`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : 'var(--green)'};
   border: none;
   font-size: 16px;
   color: var(--white);
   font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
-  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
+  cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
   outline: none;
   transition: background-color 200ms ease;
   & :hover {
-    background-color: ${props =>
+    background-color: ${(props) =>
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
   }
 `
@@ -53,7 +53,7 @@ export const LoadingButton = styled.button`
   color: var(--white);
   font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
-  cursor: ${props => (props.disabled ? 'auto' : 'pointer')};
+  cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
   outline: none;
   height: 60px;
   width: 100%;

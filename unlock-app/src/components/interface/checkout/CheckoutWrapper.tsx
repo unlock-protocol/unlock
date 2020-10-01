@@ -22,7 +22,7 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   return (
     <Wrapper
       bgColor="var(--offwhite)"
-      onClick={e => {
+      onClick={(e) => {
         e.stopPropagation()
         e.nativeEvent.stopImmediatePropagation()
       }}

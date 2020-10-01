@@ -8,7 +8,7 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-contract('Unlock / lockTotalSales', accounts => {
+contract('Unlock / lockTotalSales', (accounts) => {
   const price = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   let lock
 

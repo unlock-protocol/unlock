@@ -20,3 +20,8 @@ export const CheckoutLoginSignup = ({ login, signup }: Props) => {
 
   return <CheckoutLogin toggleSignup={toggleSignup} />
 }
+
+CheckoutLoginSignup.defaultProps = {
+  login: true,
+  signup: false,
+}

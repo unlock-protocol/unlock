@@ -32,10 +32,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
       const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
       assert.equal(
         maxNumberOfKeys.toFixed(),
-        new BigNumber(2)
-          .pow(256)
-          .minus(1)
-          .toFixed()
+        new BigNumber(2).pow(256).minus(1).toFixed()
       )
     })
   })

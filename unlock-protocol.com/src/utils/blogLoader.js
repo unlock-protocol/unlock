@@ -21,7 +21,7 @@ export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
   if (index.items) {
     totalPages = Math.ceil(index.items.length / maxPosts)
     totalPosts = index.items.length
-    index.items.forEach(item => {
+    index.items.forEach((item) => {
       if (Date.parse(item.publishDate) <= Date.now()) {
         posts.push(item)
       }
@@ -41,7 +41,7 @@ export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
  * @param slug
  * @returns {Promise<{}>}
  */
-export const loadBlogPost = async slug => {
+export const loadBlogPost = async (slug) => {
   try {
     const fileContents = await require(`../../blog/${slug}.md`) // eslint-disable-line import/no-dynamic-require
     return yamlFront.loadFront(fileContents.default)
@@ -55,7 +55,7 @@ export const loadBlogPost = async slug => {
  * @param slug
  * @returns {Promise<{slug: string, post: {}}>}
  */
-export const preparePostProps = async slug => {
+export const preparePostProps = async (slug) => {
   const post = await loadBlogPost(slug)
 
   return { slug, post }

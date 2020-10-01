@@ -26,7 +26,7 @@ function stringShifter(str) {
   return lowercaseAddress
 }
 
-contract('Lock / erc721 / tokenURI', accounts => {
+contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
 
@@ -42,6 +42,9 @@ contract('Lock / erc721 / tokenURI', accounts => {
     describe('set global base URI', () => {
       beforeEach(async () => {
         txObj = await unlock.configUnlock(
+          await unlock.udt(),
+          await unlock.weth(),
+          0,
           await unlock.globalTokenSymbol(),
           'https://globalBaseTokenURI.com/api/key/',
           {
@@ -73,6 +76,9 @@ contract('Lock / erc721 / tokenURI', accounts => {
     it('should fail if someone other than the owner tries to set the URI', async () => {
       await reverts(
         unlock.configUnlock(
+          await unlock.udt(),
+          await unlock.weth(),
+          0,
           await unlock.globalTokenSymbol(),
           'https://fakeGlobalURI.com',
           {
