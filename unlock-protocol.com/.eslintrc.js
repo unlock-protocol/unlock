@@ -6,6 +6,7 @@ module.exports = {
     },
   },
   rules: {
+    'no-use-before-define': 0,
     'no-underscore-dangle': 0,
     'react/forbid-prop-types': 2,
     'jsx-a11y/anchor-is-valid': [

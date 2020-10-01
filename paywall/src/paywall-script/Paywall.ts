@@ -62,7 +62,7 @@ export class Paywall {
 
   iframe?: Element
 
-  setConfig?: (config: any) => void
+  setConfig?: (_config: any) => void
 
   lockStatus?: string
 
