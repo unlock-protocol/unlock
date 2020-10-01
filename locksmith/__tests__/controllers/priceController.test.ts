@@ -57,7 +57,7 @@ describe('Price Controller', () => {
       nockDone()
     })
 
-    it('return a price in usd which includes all fees for a lock which has been approved', async () => {
+    it.skip('return a price in usd which includes all fees for a lock which has been approved', async () => {
       expect.assertions(2)
       const { nockDone } = await nockBack('fetch_fiat_price_cc.json')
 
