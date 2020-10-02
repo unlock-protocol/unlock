@@ -30,7 +30,7 @@
     "ethers": "4.0.48",
     "graphql": "15.3.0",
     "graphql-tag": "2.11.0",
-    "isomorphic-fetch": "2.2.1",
+    "isomorphic-fetch": "3.0.0",
     "jest": "25.5.4",
     "pg": "8.3.3",
     "reflect-metadata": "0.1.13",

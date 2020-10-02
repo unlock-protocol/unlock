@@ -73,7 +73,7 @@
     "express-jwt": "6.0.0",
     "graphql": "15.0.0",
     "graphql-tag": "2.10.3",
-    "isomorphic-fetch": "2.2.1",
+    "isomorphic-fetch": "3.0.0",
     "jest": "25.5.4",
     "lodash.isequal": "4.5.0",
     "multer": "1.4.2",
