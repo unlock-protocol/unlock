@@ -63,7 +63,7 @@ export const setupUnlockProtocolVariable = (properties: {
     Object.assign({}, ...immutableProperties)
   )
 
-  const freeze: (obj: any) => void = Object.freeze || Object
+  const freeze: (_obj: any) => void = Object.freeze || Object
 
   // if freeze is available, prevents adding or
   // removing the object prototype properties

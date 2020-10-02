@@ -2,7 +2,7 @@ import styled, { css, FlattenSimpleInterpolation } from 'styled-components'
 import { MAX_DEVICE_WIDTHS, MIN_DEVICE_WIDTHS } from '../constants'
 
 interface styledComponentCallback {
-  (template: TemplateStringsArray, ...args: any[]): FlattenSimpleInterpolation
+  (_template: TemplateStringsArray, ..._args: any[]): FlattenSimpleInterpolation
 }
 
 interface MediaType {

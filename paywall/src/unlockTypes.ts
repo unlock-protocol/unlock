@@ -55,7 +55,7 @@ export interface Network {
 }
 
 export interface ChainExplorerURLBuilders {
-  [site: string]: (address: string) => string
+  [site: string]: (_address: string) => string
 }
 
 export interface PaywallCallToAction {
