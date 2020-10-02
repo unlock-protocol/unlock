@@ -3,6 +3,7 @@ import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import 'cross-fetch/polyfill'
+import { ZERO } from '../../constants'
 
 let host
 const port = 8545
@@ -30,8 +31,8 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7']
-  describe.each(versions)('%s', versionName => {
+  const versions = ['v4', 'v6', 'v7', 'v8']
+  describe.each(versions)('%s', (versionName) => {
     let walletService
     let web3Service
 
@@ -50,7 +51,7 @@ describe('Wallet Service Integration', () => {
       accounts = await walletService.provider.listAccounts()
     })
 
-    it('should yield true to isUnlockContractDeployed', done => {
+    it('should yield true to isUnlockContractDeployed', (done) => {
       expect.assertions(2)
       walletService.isUnlockContractDeployed((error, deployed) => {
         expect(error).toBeNull()
@@ -65,7 +66,7 @@ describe('Wallet Service Integration', () => {
       expect(abiVersion.version).toEqual(versionName)
     })
 
-    if (['v0', 'v1', 'v2', 'v3', 'v4'].indexOf(versionName) === -1) {
+    if (['v4'].indexOf(versionName) === -1) {
       let publicLockTemplateAddress
 
       describe('Configuration', () => {
@@ -84,9 +85,15 @@ describe('Wallet Service Integration', () => {
           expect.assertions(2)
           let transactionHash
           const receipt = await walletService.configureUnlock(
-            publicLockTemplateAddress,
-            'TESTK',
-            'https://locksmith.unlock-protocol.com/api/key/',
+            {
+              publicLockTemplateAddress,
+              globalTokenSymbol: 'TESTK',
+              globalBaseTokenURI:
+                'https://locksmith.unlock-protocol.com/api/key/',
+              unlockDiscountToken: ZERO,
+              wrappedEth: ZERO,
+              estimatedGasForPurchase: 0,
+            },
             (error, hash) => {
               transactionHash = hash
             }

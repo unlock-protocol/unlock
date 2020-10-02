@@ -24,7 +24,7 @@ describe('SwitchPayment', () => {
       />
     )
 
-    paymentOptions.forEach(option => {
+    paymentOptions.forEach((option) => {
       getByText(option)
     })
   })

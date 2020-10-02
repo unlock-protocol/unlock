@@ -55,7 +55,7 @@ describe('v6', () => {
         'name()': jest.fn(() => Promise.resolve('My Lock')),
         'tokenAddress()': jest.fn(() => Promise.resolve(ZERO)),
         'publicLockVersion()': jest.fn(() =>
-          Promise.resolve('0x00000000000000000004')
+          Promise.resolve('0x00000000000000000006')
         ),
         'totalSupply()': jest.fn(() => Promise.resolve(17)),
       }
@@ -76,7 +76,7 @@ describe('v6', () => {
           outstandingKeys: 17,
           asOf: 1337,
           currencyContractAddress: null,
-          publicLockVersion: 4,
+          publicLockVersion: 6,
         })
       })
 
@@ -116,7 +116,7 @@ describe('v6', () => {
           outstandingKeys: 17,
           asOf: 1337,
           currencyContractAddress: erc20ContractAddress,
-          publicLockVersion: 4,
+          publicLockVersion: 6,
         })
       })
 

@@ -34,7 +34,7 @@ describe('Sign Up Page', () => {
     it('should map the dispatch to the props', () => {
       expect.assertions(2)
       const emailAddress = 'send@mem.es'
-      const dispatch = jest.fn(event => {
+      const dispatch = jest.fn((event) => {
         expect(event.type).toBe(SIGNUP_EMAIL)
         expect(event.emailAddress).toBe(emailAddress)
       })

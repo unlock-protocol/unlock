@@ -75,7 +75,7 @@ export class ChangePassword extends React.Component<
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const newState = {
         ...prevState,
         [name]: value,
@@ -111,8 +111,8 @@ export class ChangePassword extends React.Component<
     return (
       <Grid>
         <SectionHeader>Change Password</SectionHeader>
-        <Column size="half">
-          <Item title="Old Password">
+        <Column count="full">
+          <Item count="half" title="Old Password">
             <Input
               name="currentPassword"
               id="currentPassword"
@@ -121,7 +121,7 @@ export class ChangePassword extends React.Component<
               onChange={this.handleInputChange}
             />
           </Item>
-          <Item title="New Password">
+          <Item count="half" title="New Password">
             <Input
               name="newPassword"
               id="newPassword"
@@ -130,7 +130,7 @@ export class ChangePassword extends React.Component<
               onChange={this.handleInputChange}
             />
           </Item>
-          <Item title="Confirm New Password">
+          <Item count="half" title="Confirm New Password">
             <Input
               name="confirmNewPassword"
               id="confirmNewPassword"
@@ -140,7 +140,7 @@ export class ChangePassword extends React.Component<
             />
           </Item>
         </Column>
-        <Column size="half">
+        <Column count="full">
           <Error>{errors.length ? errors[0] : ''}</Error>
           {!submitted && (
             <Submit onClick={this.handleClick}>Update Password</Submit>

@@ -17,7 +17,7 @@ const requiredConfigVariables = {
   paywallUrl: process.env.PAYWALL_URL,
 }
 
-Object.keys(requiredConfigVariables).forEach(configVariableName => {
+Object.keys(requiredConfigVariables).forEach((configVariableName) => {
   if (!requiredConfigVariables[configVariableName]) {
     if (['dev', 'test'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
       console.error(

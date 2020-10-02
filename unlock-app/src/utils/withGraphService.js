@@ -15,7 +15,7 @@ export default function withGraphService(Component) {
   function componentWithGraphService(props) {
     return (
       <GraphServiceContext.Consumer>
-        {walletService => (
+        {(walletService) => (
           <Component {...props} walletService={walletService} />
         )}
       </GraphServiceContext.Consumer>

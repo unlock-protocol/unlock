@@ -12,7 +12,7 @@ describe('BalanceProvider Component', () => {
     renderIt({
       amount: null,
       conversion: {},
-      render: ethValue => {
+      render: (ethValue) => {
         expect(ethValue).toEqual(' - ')
       },
     })
@@ -23,7 +23,7 @@ describe('BalanceProvider Component', () => {
     renderIt({
       amount: undefined,
       conversion: {},
-      render: ethValue => {
+      render: (ethValue) => {
         expect(ethValue).toEqual(' - ')
       },
     })
@@ -34,7 +34,7 @@ describe('BalanceProvider Component', () => {
       expect.assertions(1)
       renderIt({
         amount: '0',
-        render: ethValue => {
+        render: (ethValue) => {
           expect(ethValue).toEqual('0')
         },
       })
@@ -48,7 +48,7 @@ describe('BalanceProvider Component', () => {
       expect.assertions(1)
       renderIt({
         amount,
-        render: ethValue => {
+        render: (ethValue) => {
           expect(ethValue).toEqual('< 0.0001')
         },
       })
@@ -62,7 +62,7 @@ describe('BalanceProvider Component', () => {
       expect.assertions(1)
       renderIt({
         amount,
-        render: ethValue => {
+        render: (ethValue) => {
           expect(ethValue).toEqual('0.0002')
         },
       })
@@ -76,7 +76,7 @@ describe('BalanceProvider Component', () => {
       expect.assertions(1)
       renderIt({
         amount,
-        render: ethValue => {
+        render: (ethValue) => {
           expect(ethValue).toEqual('2.00')
         },
       })
@@ -90,7 +90,7 @@ describe('BalanceProvider Component', () => {
       expect.assertions(1)
       renderIt({
         amount,
-        render: ethValue => {
+        render: (ethValue) => {
           expect(ethValue).toEqual('2.00')
         },
       })

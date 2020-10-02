@@ -73,18 +73,18 @@ export const MetadataTable = ({ columns, metadata, filter }: Props) => {
       <Table>
         <thead>
           <tr>
-            {columns.map(col => {
+            {columns.map((col) => {
               return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
           </tr>
         </thead>
         <Tbody>
-          {metadata.map(datum => {
+          {metadata.map((datum) => {
             return (
               <tr
                 key={datum.lockName + datum.expiration + datum.keyholderAddress}
               >
-                {columns.map(col => {
+                {columns.map((col) => {
                   return (
                     <Td key={col}>
                       <Cell kind={col} value={datum[col]} />
@@ -105,6 +105,10 @@ export const MetadataTable = ({ columns, metadata, filter }: Props) => {
       </DownloadButton>
     </Wrapper>
   )
+}
+
+MetadataTable.defaultProps = {
+  filter: '',
 }
 
 const Wrapper = styled.section`

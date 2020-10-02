@@ -21,7 +21,7 @@ const provider = {}
 const loading = false
 
 storiesOf('Authenticate', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('when the provider is loading', () => {
     return (
       <Authenticate

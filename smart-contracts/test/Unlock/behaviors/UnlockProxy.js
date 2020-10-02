@@ -9,7 +9,7 @@ ZWeb3.initialize(web3.currentProvider)
 const Unlock = Contracts.getFromLocal('Unlock')
 const PublicLock = artifacts.require('PublicLock')
 
-contract('Unlock / UnlockProxy', accounts => {
+contract('Unlock / UnlockProxy', (accounts) => {
   const proxyAdmin = accounts[1]
 
   beforeEach(async () => {

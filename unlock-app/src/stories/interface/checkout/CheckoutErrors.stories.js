@@ -34,7 +34,7 @@ const wrongNetworkError = {
 }
 
 storiesOf('Checkout Errors', module)
-  .addDecorator(getStory => {
+  .addDecorator((getStory) => {
     return (
       <CheckoutContainer close={doNothing}>
         <CheckoutWrapper hideCheckout={doNothing} allowClose>

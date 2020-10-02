@@ -139,7 +139,7 @@ export const AboutContent = ({ posts }) => (
         </Link>
       </Headline>
       <Columns>
-        {People.map(person => {
+        {People.map((person) => {
           return <Person {...person} key={person.name} />
         })}
       </Columns>
@@ -147,7 +147,7 @@ export const AboutContent = ({ posts }) => (
     <Section>
       <Title>News</Title>
       <News>
-        {posts.map(story => {
+        {posts.map((story) => {
           return <Post {...story} key={story.slug} />
         })}
       </News>

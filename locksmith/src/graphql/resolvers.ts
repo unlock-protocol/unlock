@@ -9,7 +9,10 @@ export const resolvers = {
       if (args.where.owner) {
         return new LocksByOwner().get(args.where.owner)
       }
-      return new KeyHoldersByLock().getKeyHolders(args.where.address_in)
+      return new KeyHoldersByLock().getKeyHolders(
+        args.where.address_in,
+        args.where.page
+      )
     },
     keyPurchases: () => new KeyPurchase().getKeyPurchases(),
     // eslint-disable-next-line no-unused-vars

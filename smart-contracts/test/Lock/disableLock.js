@@ -12,7 +12,7 @@ let ID
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-contract('Lock / disableLock', accounts => {
+contract('Lock / disableLock', (accounts) => {
   let lock
   let keyOwner = accounts[1]
   let keyOwner2 = accounts[2]

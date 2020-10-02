@@ -53,7 +53,7 @@ describe('Checkout Lock', () => {
         .spyOn(CheckoutStoreModule, 'useCheckoutStore')
         .mockImplementation(() => ({ state, dispatch }))
 
-      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
+      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation((_) => ({
         purchaseKey,
         initiatedPurchase: false,
         error: null,
@@ -221,7 +221,7 @@ describe('Checkout Lock', () => {
       state.purchasingLockAddress = '0xlockaddress'
       state.transactionHash = '0xhash'
 
-      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation(_ => ({
+      jest.spyOn(usePurchaseKey, 'usePurchaseKey').mockImplementation((_) => ({
         purchaseKey,
         error: null,
       }))

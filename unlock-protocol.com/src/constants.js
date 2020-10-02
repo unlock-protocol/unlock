@@ -5,7 +5,7 @@
  * @param title
  * @returns {string}
  */
-export const pageTitle = title => {
+export const pageTitle = (title) => {
   let baseTitle = ''
   if (title) baseTitle += `${title} | `
   return `${baseTitle}Unlock: The Web's new business model`

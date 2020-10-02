@@ -5,11 +5,11 @@ contract('Lock / interface', () => {
   it('The interface includes all public functions', async () => {
     // log any missing entries
     lockContract.abi
-      .filter(x => x.type === 'function')
-      .forEach(entry => {
+      .filter((x) => x.type === 'function')
+      .forEach((entry) => {
         if (
-          lockInterface.abi.filter(x => x.name === entry.name).length ===
-          lockContract.abi.filter(x => x.name === entry.name).length
+          lockInterface.abi.filter((x) => x.name === entry.name).length ===
+          lockContract.abi.filter((x) => x.name === entry.name).length
         ) {
           return
         }
@@ -18,8 +18,9 @@ contract('Lock / interface', () => {
       })
 
     // and assert the count matches
-    const count = lockInterface.abi.filter(x => x.type === 'function').length
-    const expected = lockContract.abi.filter(x => x.type === 'function').length
+    const count = lockInterface.abi.filter((x) => x.type === 'function').length
+    const expected = lockContract.abi.filter((x) => x.type === 'function')
+      .length
     assert.notEqual(count, 0)
     assert.equal(count, expected)
   })

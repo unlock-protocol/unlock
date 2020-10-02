@@ -9,14 +9,14 @@ const Rss = require('rss')
  * @param baseDir
  * @returns {Array}
  */
-const generateBlogFeed = basedir => {
+const generateBlogFeed = (basedir) => {
   // Find blog posts to export and render them as static pages (*.md files in the /blog folder)
   const blogDir = join(basedir, 'blog')
   const posts = fs.readdirSync(blogDir)
   const postFeed = [] // We will use this to populate the homepage and (later) an RSS feed
 
   // Establish a page route for each valid blog post
-  posts.forEach(postFile => {
+  posts.forEach((postFile) => {
     if (postFile.substr(-3) === '.md') {
       const slug = postFile.substr(0, postFile.length - 3)
 
@@ -30,7 +30,7 @@ const generateBlogFeed = basedir => {
   })
 
   // Ensure posts are sorted in reverse chronological order for the index
-  postFeed.sort(function(a, b) {
+  postFeed.sort(function (a, b) {
     return Date.parse(b.publishDate) - Date.parse(a.publishDate)
   })
 
@@ -42,10 +42,10 @@ const generateBlogFeed = basedir => {
  * @param postFeed
  * @returns {Array}
  */
-const generatePostPages = postFeed => {
+const generatePostPages = (postFeed) => {
   const pages = {}
 
-  postFeed.forEach(postFile => {
+  postFeed.forEach((postFile) => {
     pages[`/blog/${postFile.slug}`] = {
       page: '/post',
       query: { slug: postFile.slug },
@@ -104,7 +104,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
     generator: 'Unlock Blog Engine',
   })
 
-  postFeed.forEach(post => {
+  postFeed.forEach((post) => {
     if (Date.parse(post.publishDate) < now) {
       rssFeed.item({
         title: post.title,

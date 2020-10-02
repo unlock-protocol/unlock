@@ -47,10 +47,10 @@ class MockWalletService extends EventEmitter {
 const mockWalletService = new MockWalletService()
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function() {
+  Web3Service: function () {
     return mockWeb3Service
   },
-  WalletService: function() {
+  WalletService: function () {
     return mockWalletService
   },
 }))

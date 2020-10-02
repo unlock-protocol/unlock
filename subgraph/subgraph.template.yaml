@@ -70,20 +70,20 @@ templates:
   - kind: ethereum/contract
     name: PublicLock7
     network: {{network}}
-    source: 
+    source:
       abi: PublicLock
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
-        - PublicLock7 
+        - PublicLock7
       abis:
         - name: PublicLock
           file: ./abis/PublicLock7.json
       eventHandlers:
         - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
-          handler: cancelKey      
+          handler: cancelKey
         - event: ExpirationChanged(indexed uint256,uint256,bool)
           handler: expirationChanged
         - event: ExpireKey(indexed uint256)
@@ -96,6 +96,9 @@ templates:
           handler: pricingChanged
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: transfer
+        - event: RenewKeyPurchase(indexed address,uint256)
+          handler: renewKeyPurchase
+
 
       file: ./src/v7Mappings/mapping.ts
-    
+

@@ -148,7 +148,7 @@ export default class Web3Service extends UnlockService {
     const byteCodeHash = utils.sha3(byteCode)
 
     const seed = ['ff', unlockAddress, saltHex, byteCodeHash]
-      .map(x => x.replace(/0x/, ''))
+      .map((x) => x.replace(/0x/, ''))
       .join('')
 
     const address = utils.sha3(`0x${seed}`).slice(-40)
@@ -165,7 +165,7 @@ export default class Web3Service extends UnlockService {
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (['v5', 'v6', 'v7'].indexOf(version.version) > -1) {
+    if (['v6', 'v7', 'v8'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
       // Compute the hash identically to v5 (TODO: extract this?)
@@ -193,7 +193,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} account
    */
   refreshAccountBalance(account) {
-    return this.getAddressBalance(account.address).then(balance => {
+    return this.getAddressBalance(account.address).then((balance) => {
       this.emit('account.updated', account, {
         balance,
       })
@@ -292,7 +292,7 @@ export default class Web3Service extends UnlockService {
   ) {
     const parser = new ethers.utils.Interface(contract.abi)
 
-    transactionReceipt.logs.forEach(log => {
+    transactionReceipt.logs.forEach((log) => {
       // ignore events not from our contract
       if (log.address !== contractAddress) return
       // For each log, let's find which event it is
@@ -539,16 +539,18 @@ export default class Web3Service extends UnlockService {
    */
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)
-    return this._getKeyByLockForOwner(lockContract, owner).then(expiration => {
-      const keyPayload = {
-        lock,
-        owner,
-        expiration,
-      }
+    return this._getKeyByLockForOwner(lockContract, owner).then(
+      (expiration) => {
+        const keyPayload = {
+          lock,
+          owner,
+          expiration,
+        }
 
-      this.emit('key.updated', KEY_ID(lock, owner), keyPayload)
-      return keyPayload
-    })
+        this.emit('key.updated', KEY_ID(lock, owner), keyPayload)
+        return keyPayload
+      }
+    )
   }
 
   /**
