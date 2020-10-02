@@ -3,11 +3,11 @@ import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 import Normalizer from '../../utils/normalizer'
 
 export class KeyHoldersByLock extends UnlockGraphQLDataSource {
-  async getKeyHolders(addresses: [string]): Promise<any[]> {
+  async getKeyHolders(addresses: [string], page: number): Promise<any[]> {
     const genKeyHolderQuery = gql`
-      query Lock($addresses: [String!]) {
+      query Lock($addresses: [String!], $first: Int!, $skip: Int!) {
         locks(where: { address_in: $addresses }) {
-          keys {
+          keys(first: $first, skip: $skip) {
             owner {
               address
             }
@@ -20,9 +20,13 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
       }
     `
 
+    // Pagination starts at 0
+    const first = 100 // 100 by page
+    const skip = (page * first).toFixed()
+
     try {
       const response = await this.query(genKeyHolderQuery, {
-        variables: { addresses },
+        variables: { addresses, first, skip },
       })
 
       return response.data.locks
@@ -32,8 +36,8 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
   }
 
   /* Utilized in the members page */
-  async getKeyHoldingAddresses(lockAddress: string) {
-    const queryResults = await this.getKeyHolders([lockAddress])
+  async getKeyHoldingAddresses(lockAddress: string, page: number) {
+    const queryResults = await this.getKeyHolders([lockAddress], page)
 
     try {
       if (queryResults.length === 0) {

@@ -29,12 +29,12 @@ export const optimisticUnlocking = async (
     locks
   )
 
-  const recentTransactions = userTransactions.filter(tx =>
+  const recentTransactions = userTransactions.filter((tx) =>
     withinLast24Hours(tx.createdAt)
   )
 
   const unlocked = await Promise.all(
-    recentTransactions.map(transaction => {
+    recentTransactions.map((transaction) => {
       return willUnlock(
         provider,
         user,

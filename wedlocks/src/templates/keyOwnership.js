@@ -1,6 +1,6 @@
 export default {
-  subject: params => `Your proof of key ownership for "${params.lockName}"`,
-  text: params =>
+  subject: (params) => `Your proof of key ownership for "${params.lockName}"`,
+  text: (params) =>
     `Hello,
 
 The QR code attached to this email proves that you own a key for ${params.lockName}.

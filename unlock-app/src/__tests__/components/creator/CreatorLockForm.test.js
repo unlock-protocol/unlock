@@ -148,12 +148,14 @@ describe('CreatorLockForm', () => {
       allFormErrors.length - errorList.length
     )
     expect(actions.setError).toHaveBeenCalledTimes(errorList.length)
-    errorList.forEach(error =>
+    errorList.forEach((error) =>
       expect(actions.setError).toHaveBeenCalledWith(error)
     )
     allFormErrors
-      .filter(error => !errorList.includes(error))
-      .forEach(error => expect(actions.resetError).toHaveBeenCalledWith(error))
+      .filter((error) => !errorList.includes(error))
+      .forEach((error) =>
+        expect(actions.resetError).toHaveBeenCalledWith(error)
+      )
   }
 
   describe('things that should not fail', () => {

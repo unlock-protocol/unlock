@@ -13,8 +13,8 @@ let testToken
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 const tip = new BigNumber(keyPrice).plus(web3.utils.toWei('1', 'ether'))
 
-contract('Lock / purchaseTip', accounts => {
-  scenarios.forEach(isErc20 => {
+contract('Lock / purchaseTip', (accounts) => {
+  scenarios.forEach((isErc20) => {
     let lock
     let tokenAddress
 

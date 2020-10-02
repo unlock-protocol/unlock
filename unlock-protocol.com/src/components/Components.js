@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Section = styled.section.attrs(props => ({
+export const Section = styled.section.attrs((props) => ({
   id: props.anchor,
 }))`
   margin-top: 50px;

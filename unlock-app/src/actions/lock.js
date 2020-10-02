@@ -5,17 +5,17 @@ export const UPDATE_LOCK = 'lock/UPDATE_LOCK'
 export const UPDATE_LOCK_KEY_PRICE = 'lock/UPDATE_LOCK_KEY_PRICE'
 export const WITHDRAW_FROM_LOCK = 'lock/WITHDRAW_FROM_LOCK'
 
-export const createLock = lock => ({
+export const createLock = (lock) => ({
   type: CREATE_LOCK,
   lock,
 })
 
-export const deleteLock = address => ({
+export const deleteLock = (address) => ({
   type: DELETE_LOCK,
   address,
 })
 
-export const getLock = address => ({
+export const getLock = (address) => ({
   type: GET_LOCK,
   address,
 })
@@ -26,7 +26,7 @@ export const updateLock = (address, update) => ({
   update,
 })
 
-export const withdrawFromLock = lock => ({
+export const withdrawFromLock = (lock) => ({
   type: WITHDRAW_FROM_LOCK,
   lock,
 })

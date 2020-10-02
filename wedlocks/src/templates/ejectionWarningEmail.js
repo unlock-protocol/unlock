@@ -1,6 +1,6 @@
 export default {
   subject: () => 'Please withdraw your funds',
-  text: params =>
+  text: (params) =>
     `Hi there!
 
 We've noticed that you're carrying a total balance of ${params.balance} ETH on your locks at Unlock. You should consider withdrawing your funds to a safe wallet on another service.

@@ -1,7 +1,8 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import PriceConversion from './priceConversion'
+import { getPrice } from './ethPrice'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
@@ -40,15 +41,23 @@ export default class KeyPricer {
   }
 
   // Fee denominated in cents
-  gasFee(): number {
-    // For the time being gas fees are covered by the unlockServiceFee
-    return 0
+  async gasFee(): Promise<number> {
+    // eslint-disable-next-line new-cap
+    const provider = ethers.getDefaultProvider('mainnet')
+    const keyPurchaseGas = 200000 // harcoded : TODO get estimate
+    const gasPrice: any = await provider.getGasPrice()
+    const costInGwei = gasPrice * keyPurchaseGas
+    const ethCost = parseFloat(
+      ethers.utils.formatEther(
+        ethers.utils.parseUnits(costInGwei.toString(), 'wei')
+      )
+    )
+    const ethPrice = await getPrice()
+    return ethCost * ethPrice
   }
 
   // Fee denominated in cents
-  creditCardProcessingFee(keyPrice: number): number {
-    const subtotal = keyPrice + this.gasFee() + this.unlockServiceFee()
-
+  creditCardProcessingFee(subtotal: number): number {
     // This is rounded up to an integer number of cents.
     const percentageFee = Math.ceil(subtotal * stripePercentage)
 
@@ -57,16 +66,20 @@ export default class KeyPricer {
 
   // Fee denominated in cents
   unlockServiceFee(): number {
-    return 100 // gas prices are high!
+    return 50
   }
 
   async generate(lockAddress: string): Promise<ItemizedKeyPrice> {
     const keyPrice = await this.keyPrice(lockAddress)
+    const gasFee = await this.gasFee()
+    const unlockServiceFee = this.unlockServiceFee()
     return {
       keyPrice,
-      gasFee: this.gasFee(),
-      creditCardProcessing: this.creditCardProcessingFee(keyPrice),
-      unlockServiceFee: this.unlockServiceFee(),
+      gasFee,
+      unlockServiceFee,
+      creditCardProcessing: this.creditCardProcessingFee(
+        keyPrice + gasFee + unlockServiceFee
+      ),
     }
   }
 }

@@ -68,7 +68,7 @@ export const Form = ({
       <CardElement options={cardElementOptions} />
       <Label>Country</Label>
       <Select name="address_country" defaultValue="United States">
-        {countries.map(country => (
+        {countries.map((country) => (
           <option key={country} value={country}>
             {country}
           </option>

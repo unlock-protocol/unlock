@@ -16,12 +16,12 @@ export default function withConfig(Component) {
   function componentWithConfig(props) {
     return (
       <ConfigContext.Consumer>
-        {config => <Component {...props} config={config} />}
+        {(config) => <Component {...props} config={config} />}
       </ConfigContext.Consumer>
     )
   }
 
-  componentWithConfig.getInitialProps = async context => {
+  componentWithConfig.getInitialProps = async (context) => {
     return {
       ...(Component.getInitialProps
         ? await Component.getInitialProps(context)

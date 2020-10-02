@@ -10,7 +10,7 @@ import erc20 from '../../erc20'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 
-const UnlockVersion = abis.v2
+const UnlockVersion = abis.v4
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -172,7 +172,7 @@ describe('v4', () => {
           setupSuccess()
 
           walletService._handleMethodCall = jest.fn(
-            async sendTransactionPromise => {
+            async (sendTransactionPromise) => {
               const result = await sendTransactionPromise
               await result.wait()
               return Promise.resolve(transaction.hash)
@@ -211,7 +211,7 @@ describe('v4', () => {
           setupSuccess()
 
           walletService._handleMethodCall = jest.fn(
-            async sendTransactionPromise => {
+            async (sendTransactionPromise) => {
               const result = await sendTransactionPromise
               await result.wait()
               return Promise.resolve(transaction.hash)
@@ -248,7 +248,7 @@ describe('v4', () => {
           setupSuccess()
 
           walletService._handleMethodCall = jest.fn(
-            async sendTransactionPromise => {
+            async (sendTransactionPromise) => {
               const result = await sendTransactionPromise
               await result.wait()
               return Promise.resolve(transaction.hash)
@@ -274,7 +274,7 @@ describe('v4', () => {
           setupSuccess()
 
           walletService._handleMethodCall = jest.fn(
-            async sendTransactionPromise => {
+            async (sendTransactionPromise) => {
               const result = await sendTransactionPromise
               await result.wait()
               return Promise.resolve(transaction.hash)
@@ -309,7 +309,7 @@ describe('v4', () => {
       // We should have great coverage for `_handleMethodCall` and then confidently
       // mock its behavior inside of each function which actually calls it
       walletService._handleMethodCall = jest.fn(
-        async sendTransactionPromise => {
+        async (sendTransactionPromise) => {
           const result = await sendTransactionPromise
           await result.wait()
           return Promise.resolve(transaction.hash)

@@ -11,7 +11,7 @@ let unlock
 let locks
 let token
 
-contract('Lock / cancelAndRefund', accounts => {
+contract('Lock / cancelAndRefund', (accounts) => {
   const denominator = 10000
 
   before(async () => {
@@ -36,7 +36,7 @@ contract('Lock / cancelAndRefund', accounts => {
 
   before(async () => {
     lock = locks.SECOND
-    const purchases = keyOwners.map(account => {
+    const purchases = keyOwners.map((account) => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
@@ -147,10 +147,7 @@ contract('Lock / cancelAndRefund', accounts => {
       )
       assert(
         finalOwnerBalance.toFixed(),
-        initialKeyOwnerBalance
-          .plus(withdrawalAmount)
-          .minus(txFee)
-          .toFixed()
+        initialKeyOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed()
       )
     })
   })
@@ -196,7 +193,7 @@ contract('Lock / cancelAndRefund', accounts => {
     })
 
     it('should trigger an event', async () => {
-      const event = tx.logs.find(log => {
+      const event = tx.logs.find((log) => {
         return log.event === 'RefundPenaltyChanged'
       })
       assert.equal(

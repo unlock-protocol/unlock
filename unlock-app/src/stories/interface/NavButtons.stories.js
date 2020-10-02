@@ -8,7 +8,7 @@ import createUnlockStore from '../../createUnlockStore'
 const store = createUnlockStore({})
 
 storiesOf('Buttons/Nav Buttons', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('Dashboard', () => {
     return <NavButtons.Dashboard activePath="/" />
   })

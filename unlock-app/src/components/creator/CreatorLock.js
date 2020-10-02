@@ -60,7 +60,7 @@ export const CreatorLock = ({ lock: lockFromProps }) => {
   const [editing, setEditing] = useState(false)
   const { lock, updateKeyPrice } = useLock(lockFromProps)
 
-  const updateLock = newLock => {
+  const updateLock = (newLock) => {
     // If the price has changed
     if (lock.keyPrice !== newLock.keyPrice) {
       updateKeyPrice(newLock.keyPrice, () => {

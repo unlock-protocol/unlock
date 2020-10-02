@@ -17,7 +17,7 @@ let token
 let lockCreator
 let invalidTokenAddress
 
-contract('Lock / updateKeyPricing', accounts => {
+contract('Lock / updateKeyPricing', (accounts) => {
   invalidTokenAddress = accounts[9]
   lockCreator = accounts[0]
 
@@ -50,7 +50,7 @@ contract('Lock / updateKeyPricing', accounts => {
   })
 
   it('should trigger an event', () => {
-    const event = transaction.logs.find(log => {
+    const event = transaction.logs.find((log) => {
       return log.event === 'PricingChanged'
     })
     assert(event)

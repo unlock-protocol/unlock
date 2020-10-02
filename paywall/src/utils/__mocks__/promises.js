@@ -8,5 +8,5 @@
  * This is the only solution that works
  */
 export const delayPromise = jest.fn(function delayPromise(ms) {
-  return new Promise(resolve => setTimeout(resolve.bind(null, ms), ms))
+  return new Promise((resolve) => setTimeout(resolve.bind(null, ms), ms))
 })

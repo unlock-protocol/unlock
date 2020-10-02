@@ -2,20 +2,16 @@ import { ethers } from 'ethers'
 import http from 'http'
 import NockHelper from './helpers/nockHelper'
 
-import v0 from '../v0'
-import v1 from '../v1'
-import v2 from '../v2'
-import v3 from '../v3'
 import v4 from '../v4'
-import v5 from '../v5'
 import v6 from '../v6'
 import v7 from '../v7'
+import v8 from '../v8'
 
 import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
-const supportedVersions = [v0, v1, v2, v3, v4, v5, v6, v7]
+const supportedVersions = [v4, v6, v7, v8]
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -84,10 +80,10 @@ describe('WalletService (ethers)', () => {
               'Content-Length': data.length,
             },
           }
-          const req = http.request(options, res => {
+          const req = http.request(options, (res) => {
             let responseString = ''
 
-            res.on('data', data => {
+            res.on('data', (data) => {
               responseString += data
               // save all the data from response
             })
@@ -144,7 +140,7 @@ describe('WalletService (ethers)', () => {
     })
 
     describe('isUnlockContractDeployed', () => {
-      it('should yield true if the opCode is not 0x', async done => {
+      it('should yield true if the opCode is not 0x', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
         nock.ethGetCodeAndYield(unlockAddress, '0xdeadbeef')
@@ -156,7 +152,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('should yield false if the opCode is 0x', async done => {
+      it('should yield false if the opCode is 0x', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
         nock.ethGetCodeAndYield(unlockAddress, '0x')
@@ -168,7 +164,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('should yield an error if we could not retrieve the opCode', async done => {
+      it('should yield an error if we could not retrieve the opCode', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
         const err = new Error('getCode failed')
@@ -184,7 +180,7 @@ describe('WalletService (ethers)', () => {
 
     describe('getAccount', () => {
       describe('when the node has an unlocked account', () => {
-        it('should load a local account and emit the ready event', async done => {
+        it('should load a local account and emit the ready event', async (done) => {
           expect.assertions(2)
           await resetTestsAndConnect()
           const unlockAccountsOnNode = [
@@ -198,7 +194,7 @@ describe('WalletService (ethers)', () => {
             done()
           })
 
-          walletService.on('account.changed', address => {
+          walletService.on('account.changed', (address) => {
             expect(address).toEqual(
               '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' // checksum-ed address
             )
@@ -247,7 +243,7 @@ describe('WalletService (ethers)', () => {
         expect.assertions(1)
 
         await resetTestsAndConnect()
-        walletService.on('transaction.pending', transactionType => {
+        walletService.on('transaction.pending', (transactionType) => {
           expect(transactionType).toBe('transactionType')
         })
 
@@ -262,7 +258,7 @@ describe('WalletService (ethers)', () => {
 
         await resetTestsAndConnect()
         let myResolve
-        const myPromise = new Promise(resolve => {
+        const myPromise = new Promise((resolve) => {
           myResolve = jest.fn(resolve)
           myResolve(inBetweenTransaction)
         })
@@ -321,7 +317,7 @@ describe('WalletService (ethers)', () => {
         metamask.sendAsync = (stuffToSend, cb) => {
           return ethers.utils
             .fetchJson(metamask.connection, JSON.stringify(stuffToSend))
-            .then(thing => {
+            .then((thing) => {
               cb(null, thing)
               return thing
             })
@@ -329,7 +325,7 @@ describe('WalletService (ethers)', () => {
         await nock.resolveWhenAllNocksUsed()
       }
 
-      it('should use unformattedSignTypedData', async done => {
+      it('should use unformattedSignTypedData', async (done) => {
         expect.assertions(3)
         const hash =
           '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
@@ -360,7 +356,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('should use eth_signTypedData and stringify the data for non-MetaMask wallets', async done => {
+      it('should use eth_signTypedData and stringify the data for non-MetaMask wallets', async (done) => {
         expect.assertions(2)
         const hash =
           '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
@@ -377,7 +373,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('should yield an error if there was a network error', async done => {
+      it('should yield an error if there was a network error', async (done) => {
         expect.assertions(1)
         const hash =
           '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
@@ -387,7 +383,7 @@ describe('WalletService (ethers)', () => {
         data = []
         nock.ethSignTypedDataAndYield(unlockAddress, data, hash, error)
 
-        await walletService.signData(unlockAddress, data, error => {
+        await walletService.signData(unlockAddress, data, (error) => {
           expect(error).toBeInstanceOf(Error)
           done()
         })
@@ -395,7 +391,7 @@ describe('WalletService (ethers)', () => {
     })
 
     describe('signDataPersonal', () => {
-      it('dispatches the request to personally sign the data for non-http providers', async done => {
+      it('dispatches the request to personally sign the data for non-http providers', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
         const data = 'data to be signed'
@@ -414,7 +410,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('dispatches the request to personally sign the data for the unlock-provider', async done => {
+      it('dispatches the request to personally sign the data for the unlock-provider', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
         const data = 'data to be signed'
@@ -433,7 +429,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('calls eth_sign for http providers', async done => {
+      it('calls eth_sign for http providers', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
         const data = 'data to be signed'
@@ -451,7 +447,7 @@ describe('WalletService (ethers)', () => {
         })
       })
 
-      it('calls the callback with any error', async done => {
+      it('calls the callback with any error', async (done) => {
         expect.assertions(2)
         await resetTestsAndConnect()
 
@@ -478,7 +474,7 @@ describe('WalletService (ethers)', () => {
         expect.assertions(2)
         const signature = 'signature'
         walletService.provider = {
-          send: jest.fn(method => {
+          send: jest.fn((method) => {
             if (method === 'eth_signTypedData') {
               return Promise.reject(new Error())
             }
@@ -551,7 +547,7 @@ describe('WalletService (ethers)', () => {
       locksmithHost: 'https://locksmith',
     }
 
-    it('sends the request to the correct URL', async done => {
+    it('sends the request to the correct URL', async (done) => {
       expect.assertions(3)
 
       const callback = (error, value) => {
@@ -575,11 +571,11 @@ describe('WalletService (ethers)', () => {
       )
     })
 
-    it('calls back with an error if something goes wrong', async done => {
+    it('calls back with an error if something goes wrong', async (done) => {
       expect.assertions(0)
 
       window.fetch = jest.fn().mockResolvedValue({ status: 503 })
-      const callback = error => {
+      const callback = (error) => {
         if (error) {
           done()
         }
@@ -616,7 +612,7 @@ describe('WalletService (ethers)', () => {
       locksmithHost: 'https://locksmith',
     }
 
-    it('sends the request to the correct URL', async done => {
+    it('sends the request to the correct URL', async (done) => {
       expect.assertions(3)
 
       const callback = (error, value) => {
@@ -640,11 +636,11 @@ describe('WalletService (ethers)', () => {
       )
     })
 
-    it('calls back with an error if something goes wrong', async done => {
+    it('calls back with an error if something goes wrong', async (done) => {
       expect.assertions(0)
 
       window.fetch = jest.fn().mockResolvedValue({ status: 503 })
-      const callback = error => {
+      const callback = (error) => {
         if (error) {
           done()
         }
@@ -681,7 +677,7 @@ describe('WalletService (ethers)', () => {
 
     const expectedUrl = `${options.locksmithHost}/api/key/${options.lockAddress}/${options.keyId}`
 
-    it('should callback with the json in the response on success', done => {
+    it('should callback with the json in the response on success', (done) => {
       expect.assertions(2)
 
       const callback = (error, value) => {
@@ -693,7 +689,7 @@ describe('WalletService (ethers)', () => {
       walletService.getKeyMetadata(options, callback)
     })
 
-    it('should callback with an error on error', done => {
+    it('should callback with an error on error', (done) => {
       expect.assertions(2)
 
       window.fetch = jest.fn().mockRejectedValue('fail')
@@ -707,7 +703,7 @@ describe('WalletService (ethers)', () => {
       walletService.getKeyMetadata(options, callback)
     })
 
-    it('should not pass along a signature if getProtectedData is not specified', done => {
+    it('should not pass along a signature if getProtectedData is not specified', (done) => {
       expect.assertions(1)
 
       const callback = () => {
@@ -721,7 +717,7 @@ describe('WalletService (ethers)', () => {
       walletService.getKeyMetadata(options, callback)
     })
 
-    it('should pass along the signature if getProtectedData is specified', done => {
+    it('should pass along the signature if getProtectedData is specified', (done) => {
       expect.assertions(1)
 
       const callback = () => {
@@ -748,7 +744,7 @@ describe('WalletService (ethers)', () => {
 
     it.each(versionSpecificUnlockMethods)(
       'should invoke the implementation of the corresponding version of %s',
-      async method => {
+      async (method) => {
         await resetTestsAndConnect()
         const args = []
         const result = {}
@@ -774,7 +770,7 @@ describe('WalletService (ethers)', () => {
 
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
-      async method => {
+      async (method) => {
         const args = [
           {
             lockAddress: '0x123',
@@ -798,11 +794,11 @@ describe('WalletService (ethers)', () => {
     // for each supported version, let's make sure it implements all methods
     it.each(supportedVersions)(
       'should implement all the required methods',
-      version => {
-        versionSpecificUnlockMethods.forEach(method => {
+      (version) => {
+        versionSpecificUnlockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
-        versionSpecificLockMethods.forEach(method => {
+        versionSpecificLockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
       }

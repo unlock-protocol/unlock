@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import styled from 'styled-components'
 import Close from '../buttons/layout/Close'
 

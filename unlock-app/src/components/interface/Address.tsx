@@ -4,7 +4,7 @@ import useEns from '../../hooks/useEns'
 
 interface Props {
   address: string
-  className: string
+  className?: string
   id?: string
 }
 
@@ -19,6 +19,7 @@ const Address = ({ id, className, address }: Props) => {
 
 Address.defaultProps = {
   className: '',
+  id: '',
 }
 
 const Abbrevation = styled.abbr`

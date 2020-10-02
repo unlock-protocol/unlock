@@ -78,7 +78,7 @@ Blog.propTypes = {
   totalPages: PropTypes.number.isRequired,
 }
 
-Blog.getInitialProps = async context => {
+Blog.getInitialProps = async (context) => {
   const { slug } = context.query // The slug is the page number
   return prepareBlogProps(10, parseInt(slug, 10))
 }

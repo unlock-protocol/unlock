@@ -256,19 +256,32 @@ export default class WalletService extends UnlockService {
    * @param {*} publicLockTemplateAddress
    * @param {*} globalTokenSymbol
    * @param {*} globalBaseTokenURI
+   * @param {*} unlockDiscountToken
+   * @param {*} wrappedEth
+   * @param {*} estimatedGasForPurchase
    * @param {*} callback
    */
   async configureUnlock(
-    publicLockTemplateAddress,
-    globalTokenSymbol,
-    globalBaseTokenURI,
+    {
+      publicLockTemplateAddress,
+      globalTokenSymbol,
+      globalBaseTokenURI,
+      unlockDiscountToken,
+      wrappedEth,
+      estimatedGasForPurchase,
+    },
     callback
   ) {
     const version = await this.unlockContractAbiVersion()
     return version.configureUnlock.bind(this)(
-      publicLockTemplateAddress,
-      globalTokenSymbol,
-      globalBaseTokenURI,
+      {
+        publicLockTemplateAddress,
+        globalTokenSymbol,
+        globalBaseTokenURI,
+        unlockDiscountToken,
+        wrappedEth,
+        estimatedGasForPurchase,
+      },
       callback
     )
   }
@@ -340,15 +353,15 @@ export default class WalletService extends UnlockService {
   async unformattedSignTypedData(account, data) {
     // Tries multiple methods because support for 'eth_signTypedData' is still fairly bad.
     const methods = {
-      eth_signTypedData: data => data,
-      eth_signTypedData_v3: data => JSON.stringify(data),
-      eth_signTypedData_v4: data => JSON.stringify(data),
+      eth_signTypedData: (data) => data,
+      eth_signTypedData_v3: (data) => JSON.stringify(data),
+      eth_signTypedData_v4: (data) => JSON.stringify(data),
     }
     const toTry = Object.keys(methods)
 
     return new Promise((resolve, reject) => {
       // Try each
-      const tryNext = async tries => {
+      const tryNext = async (tries) => {
         const method = tries.shift()
         if (!method) {
           // They all failed

@@ -17,21 +17,21 @@ export default function configure(runtimeConfig = nextConfig) {
   const requiredNetworkId = 1984
 
   if (env === 'test') {
-    isRequiredNetwork = networkId => networkId === 1984
+    isRequiredNetwork = (networkId) => networkId === 1984
   }
 
   if (env === 'dev') {
     // we start ganache locally with a block time of 3
-    isRequiredNetwork = networkId => networkId === 1984
+    isRequiredNetwork = (networkId) => networkId === 1984
   }
 
   if (env === 'staging') {
-    isRequiredNetwork = networkId => networkId === 4
+    isRequiredNetwork = (networkId) => networkId === 4
   }
 
   if (env === 'prod') {
     // In prod, the network can only be mainnet
-    isRequiredNetwork = networkId => networkId === 1
+    isRequiredNetwork = (networkId) => networkId === 1
   }
 
   if (env === 'prod' || env === 'staging') {

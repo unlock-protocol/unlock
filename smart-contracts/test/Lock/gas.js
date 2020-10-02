@@ -8,7 +8,7 @@ const WalletService = require('../helpers/walletServiceMock.js')
 let unlock
 let lock
 
-contract('Lock / gas', accounts => {
+contract('Lock / gas', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])

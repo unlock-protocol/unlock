@@ -3,7 +3,8 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
 
-const utf8ToHex = str => utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)
+const utf8ToHex = (str) =>
+  utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
@@ -147,14 +148,14 @@ describe('Unlock Provider', () => {
         ).toEqual(publicKey.toLowerCase())
       })
 
-      it('should be compatible with walletService', async done => {
+      it('should be compatible with walletService', async (done) => {
         expect.assertions(1)
 
         const ws = new WalletService({
           unlockAddress: '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93',
         })
         await ws.connect(provider)
-        ws.signDataPersonal('account', 'this is my data', error => {
+        ws.signDataPersonal('account', 'this is my data', (error) => {
           expect(error).toBeNull()
           done()
         })

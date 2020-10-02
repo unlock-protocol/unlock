@@ -9,7 +9,7 @@ export default {
   hexlify: ethers.utils.hexlify,
   hexStripZeros: ethers.utils.hexStripZeros,
   bigNumberify: ethers.utils.bigNumberify,
-  hexToNumberString: num =>
+  hexToNumberString: (num) =>
     ethers.utils
       .formatUnits(ethers.utils.bigNumberify(num), 'wei')
       .replace('.0', ''),
@@ -25,20 +25,20 @@ export default {
       .formatUnits(ethers.utils.bigNumberify(num), decimals)
       .replace(/\.0$/, '')
   },
-  isInfiniteKeys: value => {
+  isInfiniteKeys: (value) => {
     return ethers.utils.bigNumberify(value).eq(ethers.constants.MaxUint256)
   },
-  toNumber: value => {
+  toNumber: (value) => {
     return ethers.utils.bigNumberify(value).toNumber()
   },
-  toRpcResultNumber: number => {
+  toRpcResultNumber: (number) => {
     const num = ethers.utils.hexlify(ethers.utils.bigNumberify(number))
     return ethers.utils.hexZeroPad(num, 32)
   },
-  toRpcResultString: string => {
+  toRpcResultString: (string) => {
     return string
   },
-  utf8ToHex: str =>
+  utf8ToHex: (str) =>
     ethers.utils.hexlify(str.length ? ethers.utils.toUtf8Bytes(str) : 0),
   sha3: ethers.utils.keccak256,
   verifyMessage: ethers.utils.verifyMessage,

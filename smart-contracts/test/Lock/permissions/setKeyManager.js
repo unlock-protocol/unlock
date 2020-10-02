@@ -11,7 +11,7 @@ let locks
 let lock
 let lockCreator
 
-contract('Permissions / KeyManager', accounts => {
+contract('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))

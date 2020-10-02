@@ -18,7 +18,7 @@ describe('fullScreenModalsReducer', () => {
   }
   it.each([SET_ACCOUNT, SET_PROVIDER, SET_NETWORK, DISMISS_MODAL])(
     'should return initialState when receiving %s',
-    actionType => {
+    (actionType) => {
       expect.assertions(1)
       const action = { type: actionType }
       expect(reducer(walletModal, action)).toEqual(initialState)
