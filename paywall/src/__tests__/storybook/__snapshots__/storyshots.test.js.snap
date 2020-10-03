@@ -47,10 +47,10 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-1cn8ycr-0 irNPfW"
+      class="sc-1cn8ycr-0 dgslUl"
     >
       <span
-        class="sc-1cn8ycr-1 kBdgZm"
+        class="sc-1cn8ycr-1 kQjAFt"
       >
         Made with passion in Brooklyn, NY
       </span>
@@ -185,13 +185,13 @@ Object {
       rel="stylesheet"
     />
     <h1
-      class="sc-12d5f0e-1 cflYlg"
+      class="sc-12d5f0e-1 bWvDyf"
     >
       <a
-        class="sc-12d5f0e-0 gvqQWt"
+        class="sc-12d5f0e-0 gDUpiu"
       >
         <svg
-          class="sth0f3-0 cgijOJ"
+          class="sth0f3-0 gonCaK"
           height="28px"
           name="Unlock"
           viewBox="0 0 1200 256"
@@ -202,7 +202,7 @@ Object {
         </svg>
       </a>
       <span
-        class="sc-12d5f0e-2 dRUirR"
+        class="sc-12d5f0e-2 jcGphm"
       >
         Roses are red
       </span>
@@ -381,14 +381,6 @@ Object {
 }
 
 .c12 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
   border-top: solid 3px var(--silver);
   width: 88px;
 }
@@ -572,7 +564,7 @@ Object {
           </div>
           <section>
             <h1
-              class="c12"
+              class="c8 c12"
             >
               FAQ
             </h1>
@@ -609,7 +601,7 @@ Object {
           </section>
           <section>
             <h1
-              class="c12"
+              class="c8 c12"
             />
             <div
               class="c15"
@@ -660,25 +652,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 hbgbWt"
+      class="gmrrpf-0 fkhlOK"
     >
       <div
-        class="gmrrpf-1 binyRI"
+        class="gmrrpf-1 OVggr"
       />
       <div
-        class="gmrrpf-3 ekHkMC"
+        class="gmrrpf-3 hSKXCJ"
       >
         <header
-          class="sc-4839jp-0 dPFMYI"
+          class="sc-4839jp-0 llBIof"
         >
           <h1
-            class="sc-12d5f0e-1 cflYlg"
+            class="sc-12d5f0e-1 bWvDyf"
           >
             <a
-              class="sc-12d5f0e-0 gvqQWt"
+              class="sc-12d5f0e-0 gDUpiu"
             >
               <svg
-                class="sth0f3-0 cgijOJ"
+                class="sth0f3-0 gonCaK"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -689,7 +681,7 @@ Object {
               </svg>
             </a>
             <span
-              class="sc-12d5f0e-2 dRUirR"
+              class="sc-12d5f0e-2 jcGphm"
             >
               Paywall
             </span>
@@ -697,21 +689,21 @@ Object {
         </header>
         <section>
           <h1
-            class="sc-1m7p3zh-0 fzPVon"
+            class="sc-1m7p3zh-0 bjavas"
           >
             Pay for Content Seamlessly
           </h1>
           <h2
-            class="sc-1m7p3zh-1 dPNLJg"
+            class="sc-1m7p3zh-1 dQDNcT"
           >
             Unlock enables anyone with a crypto wallet to seamlessly buy and manage access to any kind of content.
           </h2>
         </section>
         <div
-          class="sc-1m7p3zh-2 QzFwO"
+          class="sc-1m7p3zh-2 HRFVl"
         >
           <svg
-            class="sc-1m7p3zh-3 Vizll"
+            class="sc-1m7p3zh-3 fVUPIO"
             fill="none"
             height="245px"
             viewBox="0 0 201 245"
@@ -747,47 +739,47 @@ Object {
         </div>
         <section>
           <h1
-            class="sc-1m7p3zh-0 sc-1m7p3zh-4 cuJBbn"
+            class="sc-1m7p3zh-0 sc-1m7p3zh-4 bjavas ihsvIv"
           >
             FAQ
           </h1>
           <dl
-            class="sc-1m7p3zh-5 clbhdw"
+            class="sc-1m7p3zh-5 cekLwT"
           >
             How do I get a wallet?
           </dl>
           <dt
-            class="sc-1m7p3zh-6 ALPtp"
+            class="sc-1m7p3zh-6 gIlcHy"
           >
             You need a web3 enabled wallet such as MetaMask for Chrome or Opera for Android.
           </dt>
           <dl
-            class="sc-1m7p3zh-5 clbhdw"
+            class="sc-1m7p3zh-5 cekLwT"
           >
             What does it cost to use Unlock?
           </dl>
           <dt
-            class="sc-1m7p3zh-6 ALPtp"
+            class="sc-1m7p3zh-6 gIlcHy"
           >
             Unlock is free to use though you will have to pay a small transaction fee when purchasing your content. It’s usually just a few cents on top of your purchase.
           </dt>
           <dl
-            class="sc-1m7p3zh-5 clbhdw"
+            class="sc-1m7p3zh-5 cekLwT"
           >
             What about privacy?
           </dl>
           <dt
-            class="sc-1m7p3zh-6 ALPtp"
+            class="sc-1m7p3zh-6 gIlcHy"
           >
             Unlock does not collect any personal information. Like all transactions on the the Ethereum blockchain, details about Unlock transactions are captured in its ledger in an anonymous form.
           </dt>
         </section>
         <section>
           <h1
-            class="sc-1m7p3zh-0 sc-1m7p3zh-4 cuJBbn"
+            class="sc-1m7p3zh-0 sc-1m7p3zh-4 bjavas ihsvIv"
           />
           <div
-            class="sc-1m7p3zh-7 fmIDAi"
+            class="sc-1m7p3zh-7 gkLWZB"
           >
             Check out our open source code on
              
@@ -814,17 +806,17 @@ Object {
           </div>
         </section>
         <footer
-          class="sc-1cn8ycr-0 irNPfW"
+          class="sc-1cn8ycr-0 dgslUl"
         >
           <span
-            class="sc-1cn8ycr-1 kBdgZm"
+            class="sc-1cn8ycr-1 kQjAFt"
           >
             Made with passion in Brooklyn, NY
           </span>
         </footer>
       </div>
       <div
-        class="gmrrpf-2 ddRLJf"
+        class="gmrrpf-2 fjoqCw"
       />
     </div>
   </div>,
@@ -1069,25 +1061,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 hbgbWt"
+      class="gmrrpf-0 fkhlOK"
     >
       <div
-        class="gmrrpf-1 binyRI"
+        class="gmrrpf-1 OVggr"
       />
       <div
-        class="gmrrpf-3 ekHkMC"
+        class="gmrrpf-3 hSKXCJ"
       >
         <header
-          class="sc-4839jp-0 dPFMYI"
+          class="sc-4839jp-0 llBIof"
         >
           <h1
-            class="sc-12d5f0e-1 cflYlg"
+            class="sc-12d5f0e-1 bWvDyf"
           >
             <a
-              class="sc-12d5f0e-0 gvqQWt"
+              class="sc-12d5f0e-0 gDUpiu"
             >
               <svg
-                class="sth0f3-0 cgijOJ"
+                class="sth0f3-0 gonCaK"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -1098,24 +1090,24 @@ Object {
               </svg>
             </a>
             <span
-              class="sc-12d5f0e-2 dRUirR"
+              class="sc-12d5f0e-2 jcGphm"
             >
               Paywall
             </span>
           </h1>
         </header>
         <footer
-          class="sc-1cn8ycr-0 irNPfW"
+          class="sc-1cn8ycr-0 dgslUl"
         >
           <span
-            class="sc-1cn8ycr-1 kBdgZm"
+            class="sc-1cn8ycr-1 kQjAFt"
           >
             Made with passion in Brooklyn, NY
           </span>
         </footer>
       </div>
       <div
-        class="gmrrpf-2 ddRLJf"
+        class="gmrrpf-2 fjoqCw"
       />
     </div>
   </div>,
@@ -1360,25 +1352,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 hbgbWt"
+      class="gmrrpf-0 fkhlOK"
     >
       <div
-        class="gmrrpf-1 binyRI"
+        class="gmrrpf-1 OVggr"
       />
       <div
-        class="gmrrpf-3 ekHkMC"
+        class="gmrrpf-3 hSKXCJ"
       >
         <header
-          class="sc-4839jp-0 dPFMYI"
+          class="sc-4839jp-0 llBIof"
         >
           <h1
-            class="sc-12d5f0e-1 cflYlg"
+            class="sc-12d5f0e-1 bWvDyf"
           >
             <a
-              class="sc-12d5f0e-0 gvqQWt"
+              class="sc-12d5f0e-0 gDUpiu"
             >
               <svg
-                class="sth0f3-0 cgijOJ"
+                class="sth0f3-0 gonCaK"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -1389,24 +1381,24 @@ Object {
               </svg>
             </a>
             <span
-              class="sc-12d5f0e-2 dRUirR"
+              class="sc-12d5f0e-2 jcGphm"
             >
               Paywall
             </span>
           </h1>
         </header>
         <footer
-          class="sc-1cn8ycr-0 irNPfW"
+          class="sc-1cn8ycr-0 dgslUl"
         >
           <span
-            class="sc-1cn8ycr-1 kBdgZm"
+            class="sc-1cn8ycr-1 kQjAFt"
           >
             Made with passion in Brooklyn, NY
           </span>
         </footer>
       </div>
       <div
-        class="gmrrpf-2 ddRLJf"
+        class="gmrrpf-2 fjoqCw"
       />
     </div>
   </div>,
@@ -1563,16 +1555,16 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-4839jp-0 dPFMYI"
+      class="sc-4839jp-0 llBIof"
     >
       <h1
-        class="sc-12d5f0e-1 cflYlg"
+        class="sc-12d5f0e-1 bWvDyf"
       >
         <a
-          class="sc-12d5f0e-0 gvqQWt"
+          class="sc-12d5f0e-0 gDUpiu"
         >
           <svg
-            class="sth0f3-0 cgijOJ"
+            class="sth0f3-0 gonCaK"
             height="28px"
             name="Unlock"
             viewBox="0 0 1200 256"
@@ -1583,7 +1575,7 @@ Object {
           </svg>
         </a>
         <span
-          class="sc-12d5f0e-2 dRUirR"
+          class="sc-12d5f0e-2 jcGphm"
         >
           Roses are red
         </span>
@@ -1764,14 +1756,6 @@ Object {
 }
 
 .c12 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
   border-top: solid 3px var(--silver);
   width: 88px;
 }
@@ -1954,7 +1938,7 @@ Object {
           </div>
           <section>
             <h1
-              class="c12"
+              class="c8 c12"
             >
               FAQ
             </h1>
@@ -1991,7 +1975,7 @@ Object {
           </section>
           <section>
             <h1
-              class="c12"
+              class="c8 c12"
             />
             <div
               class="c15"
@@ -2042,25 +2026,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="gmrrpf-0 hbgbWt"
+      class="gmrrpf-0 fkhlOK"
     >
       <div
-        class="gmrrpf-1 binyRI"
+        class="gmrrpf-1 OVggr"
       />
       <div
-        class="gmrrpf-3 ekHkMC"
+        class="gmrrpf-3 hSKXCJ"
       >
         <header
-          class="sc-4839jp-0 dPFMYI"
+          class="sc-4839jp-0 llBIof"
         >
           <h1
-            class="sc-12d5f0e-1 cflYlg"
+            class="sc-12d5f0e-1 bWvDyf"
           >
             <a
-              class="sc-12d5f0e-0 gvqQWt"
+              class="sc-12d5f0e-0 gDUpiu"
             >
               <svg
-                class="sth0f3-0 cgijOJ"
+                class="sth0f3-0 gonCaK"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -2071,7 +2055,7 @@ Object {
               </svg>
             </a>
             <span
-              class="sc-12d5f0e-2 dRUirR"
+              class="sc-12d5f0e-2 jcGphm"
             >
               Paywall
             </span>
@@ -2079,21 +2063,21 @@ Object {
         </header>
         <section>
           <h1
-            class="sc-1m7p3zh-0 fzPVon"
+            class="sc-1m7p3zh-0 bjavas"
           >
             Pay for Content Seamlessly
           </h1>
           <h2
-            class="sc-1m7p3zh-1 dPNLJg"
+            class="sc-1m7p3zh-1 dQDNcT"
           >
             Unlock enables anyone with a crypto wallet to seamlessly buy and manage access to any kind of content.
           </h2>
         </section>
         <div
-          class="sc-1m7p3zh-2 QzFwO"
+          class="sc-1m7p3zh-2 HRFVl"
         >
           <svg
-            class="sc-1m7p3zh-3 Vizll"
+            class="sc-1m7p3zh-3 fVUPIO"
             fill="none"
             height="245px"
             viewBox="0 0 201 245"
@@ -2129,47 +2113,47 @@ Object {
         </div>
         <section>
           <h1
-            class="sc-1m7p3zh-0 sc-1m7p3zh-4 cuJBbn"
+            class="sc-1m7p3zh-0 sc-1m7p3zh-4 bjavas ihsvIv"
           >
             FAQ
           </h1>
           <dl
-            class="sc-1m7p3zh-5 clbhdw"
+            class="sc-1m7p3zh-5 cekLwT"
           >
             How do I get a wallet?
           </dl>
           <dt
-            class="sc-1m7p3zh-6 ALPtp"
+            class="sc-1m7p3zh-6 gIlcHy"
           >
             You need a web3 enabled wallet such as MetaMask for Chrome or Opera for Android.
           </dt>
           <dl
-            class="sc-1m7p3zh-5 clbhdw"
+            class="sc-1m7p3zh-5 cekLwT"
           >
             What does it cost to use Unlock?
           </dl>
           <dt
-            class="sc-1m7p3zh-6 ALPtp"
+            class="sc-1m7p3zh-6 gIlcHy"
           >
             Unlock is free to use though you will have to pay a small transaction fee when purchasing your content. It’s usually just a few cents on top of your purchase.
           </dt>
           <dl
-            class="sc-1m7p3zh-5 clbhdw"
+            class="sc-1m7p3zh-5 cekLwT"
           >
             What about privacy?
           </dl>
           <dt
-            class="sc-1m7p3zh-6 ALPtp"
+            class="sc-1m7p3zh-6 gIlcHy"
           >
             Unlock does not collect any personal information. Like all transactions on the the Ethereum blockchain, details about Unlock transactions are captured in its ledger in an anonymous form.
           </dt>
         </section>
         <section>
           <h1
-            class="sc-1m7p3zh-0 sc-1m7p3zh-4 cuJBbn"
+            class="sc-1m7p3zh-0 sc-1m7p3zh-4 bjavas ihsvIv"
           />
           <div
-            class="sc-1m7p3zh-7 fmIDAi"
+            class="sc-1m7p3zh-7 gkLWZB"
           >
             Check out our open source code on
              
@@ -2196,17 +2180,17 @@ Object {
           </div>
         </section>
         <footer
-          class="sc-1cn8ycr-0 irNPfW"
+          class="sc-1cn8ycr-0 dgslUl"
         >
           <span
-            class="sc-1cn8ycr-1 kBdgZm"
+            class="sc-1cn8ycr-1 kQjAFt"
           >
             Made with passion in Brooklyn, NY
           </span>
         </footer>
       </div>
       <div
-        class="gmrrpf-2 ddRLJf"
+        class="gmrrpf-2 fjoqCw"
       />
     </div>
   </div>,
