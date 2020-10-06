@@ -30,7 +30,7 @@
     "ethers": "4.0.48",
     "graphql": "15.3.0",
     "graphql-tag": "2.11.0",
-    "isomorphic-fetch": "2.2.1",
+    "isomorphic-fetch": "3.0.0",
     "jest": "25.5.4",
     "pg": "8.3.3",
     "reflect-metadata": "0.1.13",
@@ -39,8 +39,8 @@
     "sequelize": "5.22.3",
     "sequelize-cli": "6.2.0",
     "sequelize-typescript": "1.1.0",
-    "ts-jest": "26.3.0",
-    "typescript": "4.0.2"
+    "ts-jest": "26.4.1",
+    "typescript": "4.0.3"
   },
   "devDependencies": {}
 }
