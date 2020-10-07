@@ -29,7 +29,7 @@ describe('blockGet', () => {
     })
   })
 
-  describe('when no chain id is provided', () => {
+  describe.skip('when no chain id is provided', () => {
     it('assumes the main net', async () => {
       expect.assertions(2)
       await nock.back('no_chain.json')
