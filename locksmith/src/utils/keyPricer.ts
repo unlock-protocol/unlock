@@ -53,7 +53,7 @@ export default class KeyPricer {
       )
     )
     const ethPrice = await getPrice()
-    return ethCost * ethPrice
+    return Math.ceil(ethCost * ethPrice * 100)
   }
 
   // Fee denominated in cents
