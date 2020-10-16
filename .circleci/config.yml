@@ -459,7 +459,7 @@ workflows:
             branches:
               only: production
           requires:
-            - integration-tests
+            - promote-unlock-images
       - promote-unlock-images:
           filters:
             branches:
@@ -471,7 +471,7 @@ workflows:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-images
       - deploy-wedlocks-netlify:
           filters:
             branches:
