@@ -393,7 +393,7 @@ jobs:
           name: Deploy Staging to Beanstalk
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
 
-  promote-unlock-images:
+  promote-unlock-app-image:
     machine:
       image: ubuntu-1604:202004-01
     environment:
@@ -403,17 +403,115 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build Core Image
-          command: UNLOCK_ENV=test docker build . -f docker/unlock-core.dockerfile -t unlockprotocol/unlock-core:master
+          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
       - run:
-          name: Push Core Image
-          command: scripts/push-images.sh unlock-core
+          name: promote image
+          command: scripts/promote-image.sh unlock-app
+
+  promote-unlock-protocol-com-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
       - run:
-          name: Build Images
-          command: UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build --parallel
+          command: scripts/monorepo.sh unlock-protocol-com $CIRCLE_BRANCH
       - run:
-          name: Push Images
-          command: scripts/push-images.sh unlock-core paywall smart-contracts unlock-app locksmith integration-tests wedlocks unlock-protocol-com unlock-js newsletter nudge smart-contract-extensions
+          name: promote image
+          command: scripts/promote-image.sh unlock-protocol-com
+
+  promote-locksmith-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh locksmith
+
+  promote-paywall-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh paywall
+
+  promote-nudge-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh nudge
+
+  promote-wedlocks-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh wedlocks
+
+  promote-smart-contracts-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh smart-contracts
+
+  promote-integration-tests-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh integration-tests $CIRCLE_BRANCH
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh integration-tests
 
 workflows:
   version: 2
@@ -454,24 +552,66 @@ workflows:
       - deploy-unlock-protocol-com-netlify:
           requires:
             - integration-tests
-      - deploy-locksmith-beanstalk-production:
-          filters:
-            branches:
-              only: production
-          requires:
-            - promote-unlock-images
-      - promote-unlock-images:
+      - promote-unlock-app-image:
           filters:
             branches:
               only: master
           requires:
             - integration-tests
+      - promote-unlock-protocol-com-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
+      - promote-locksmith-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
+      - promote-paywall-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
+      - promote-nudge-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
+      - promote-wedlocks-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
+      - promote-smart-contracts-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - smart-contracts-tests
+      - promote-integration-tests-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
+      - deploy-locksmith-beanstalk-production:
+          filters:
+            branches:
+              only: production
+          requires:
+            - promote-locksmith-image
       - deploy-locksmith-beanstalk-staging:
           filters:
             branches:
               only: master
           requires:
-            - promote-unlock-images
+            - promote-locksmith-image
       - deploy-wedlocks-netlify:
           filters:
             branches:
