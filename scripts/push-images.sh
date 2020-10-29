@@ -2,12 +2,12 @@
 #!/usr/bin/env bash
 
 # This script saves previously built images to docker hub or AWS.
-# This should only run on master merges
+# This should only run on $CIRCLE_BRANCH merges
 
 IMAGES=( $@ )
 TIMESTAMP=`date +%s`
 
-IMAGE_TAG_LIST=( master latest $TIMESTAMP)
+IMAGE_TAG_LIST=( $CIRCLE_BRANCH latest $TIMESTAMP)
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
