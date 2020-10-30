@@ -567,7 +567,9 @@ workflows:
       - promote-locksmith-image:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - production
           requires:
             - integration-tests
       - promote-paywall-image:
