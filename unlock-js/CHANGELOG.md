@@ -1,5 +1,9 @@
 # Changes
 
+# Next minor
+
+- Adding referrer for v6, v7 and v8
+
 # 0.13.0
 
 - Introduced support for v8

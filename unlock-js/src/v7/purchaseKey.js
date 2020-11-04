@@ -14,13 +14,17 @@ import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, owner, keyPrice, erc20Address, decimals },
+  { lockAddress, owner, keyPrice, erc20Address, decimals, referrer },
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!owner) {
     owner = await this.signer.getAddress()
+  }
+
+  if (!referrer) {
+    referrer = ZERO
   }
 
   // If erc20Address was not provided, get it
@@ -71,7 +75,7 @@ export default async function (
   const transactionPromise = lockContract.purchase(
     actualAmount,
     owner,
-    ZERO /* _referrer */,
+    referrer,
     [] /* array of bytes for _data */,
     purchaseForOptions
   )
