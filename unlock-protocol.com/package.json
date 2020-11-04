@@ -38,7 +38,7 @@
     "jest-styled-components": "7.0.3",
     "lint-staged": "10.4.0",
     "netlify-cli": "2.64.1",
-    "next": "9.5.3",
+    "next": "9.5.4",
     "path-match": "1.2.4",
     "prettier": "2.1.2",
     "prop-types": "15.7.2",
