@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 const { WalletService, latest } = require('@unlock-protocol/unlock-js')
+const { AddressZero } = require('ethers/constants')
 const serverIsUp = require('./utils/serverIsUp')
 const Erc1820 = require('./deploy-erc1820')
 const Erc20 = require('./deploy-erc20')
@@ -87,12 +88,18 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     const unlockContract = walletService.unlockContractAddress
     log(`UNLOCK ${versionName} DEPLOYED AT ${unlockContract}`)
 
+    // TODO: deploy ERC20 for unlock!
+    // TODO: deploy Wrapped Eth for unlock!
+
     // Configure Unlock
-    await walletService.configureUnlock(
+    await walletService.configureUnlock({
       publicLockTemplateAddress,
-      'KEY',
-      `http://${locksmithHost}:${locksmithPort}/api/key/`
-    )
+      globalTokenSymbol: 'UDT',
+      globalBaseTokenURI: `http://${locksmithHost}:${locksmithPort}/api/key/`,
+      unlockDiscountToken: AddressZero,
+      wrappedEth: AddressZero,
+      estimatedGasForPurchase: 0,
+    })
     log('UNLOCK CONFIGURED')
 
     // Finally, deploy locks and for each of them, if it's an ERC20, approve it for locksmith purchases
