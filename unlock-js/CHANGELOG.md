@@ -1,8 +1,9 @@
 # Changes
 
-# Next minor
+# 0.13.1
 
 - Adding referrer for v6, v7 and v8
+- Adding data for v6, v7 and v8
 
 # 0.13.0
 
