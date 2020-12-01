@@ -45,7 +45,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "9.1.2",
     "cross-env": "7.0.2",
-    "css-loader": "4.3.0",
+    "css-loader": "5.0.1",
     "dotenv": "8.2.0",
     "eslint": "7.10.0",
     "jest": "25.5.4",
