@@ -21,15 +21,15 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "babel-jest": "26.3.0",
+    "babel-jest": "26.6.3",
     "cross-fetch": "3.0.6",
-    "eslint": "7.10.0",
+    "eslint": "7.14.0",
     "ethers": "4.0.48",
     "jest": "25.5.4",
-    "lint-staged": "10.4.0",
-    "prettier": "2.1.2",
-    "ts-jest": "26.4.1",
-    "typescript": "4.0.3"
+    "lint-staged": "10.5.2",
+    "prettier": "2.2.1",
+    "ts-jest": "26.4.4",
+    "typescript": "4.1.2"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -41,16 +41,16 @@
     "node": "^10"
   },
   "devDependencies": {
-    "@babel/cli": "7.11.6",
-    "@babel/core": "7.11.6",
-    "@babel/preset-env": "7.11.5",
+    "@babel/cli": "7.12.8",
+    "@babel/core": "7.12.9",
+    "@babel/preset-env": "7.12.7",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@unlock-protocol/unlock-abi-8": "1.0.0",
-    "babel-jest": "26.3.0",
+    "babel-jest": "26.6.3",
     "erc1820": "0.0.2",
-    "ganache-cli": "6.11.0",
+    "ganache-cli": "6.12.1",
     "jest": "25.5.4",
     "nock": "12.0.3"
   }
