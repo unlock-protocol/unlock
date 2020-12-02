@@ -1,4 +1,4 @@
-FROM node:10.17.0-alpine
+FROM node:12.20.0-alpine
 LABEL Graph Protocol Subgraph <ops@unlock-protocol.com>
 LABEL maintainer="ops@unlock-protocol.com"
 

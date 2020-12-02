@@ -59,7 +59,7 @@
     "nodemon": "2.0.4"
   },
   "engines": {
-    "node": "^10"
+    "node": "^12"
   },
   "engineStrict": true,
   "workspaces": [

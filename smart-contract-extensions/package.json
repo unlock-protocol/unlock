@@ -19,7 +19,7 @@
     "index.js"
   ],
   "engines": {
-    "node": "^10"
+    "node": "^12"
   },
   "repository": {
     "type": "git",

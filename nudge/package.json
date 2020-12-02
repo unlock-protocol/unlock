@@ -10,7 +10,7 @@
     "start": "node ./build/src/index.js"
   },
   "engines": {
-    "node": "^10"
+    "node": "^12"
   },
   "license": "MIT",
   "dependencies": {

@@ -80,7 +80,7 @@
     "npm-check": "5.9.2"
   },
   "engines": {
-    "node": "^10"
+    "node": "^12"
   },
   "engineStrict": true,
   "scripts": {

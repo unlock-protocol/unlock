@@ -1,7 +1,5 @@
-FROM node:10.17.0-alpine
+FROM node:12.20.0-alpine
 LABEL Unlock <ops@unlock-protocol.com>
-
-RUN npm install -g npm@6.4.1 yarn
 
 RUN mkdir /home/unlock
 RUN mkdir /home/unlock/scripts
