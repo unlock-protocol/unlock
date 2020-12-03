@@ -6,7 +6,7 @@ const pathMatch = require('path-match')
 
 function _server(port, dev) {
   return new Promise((resolve, reject) => {
-    const app = next({ dir: `${__dirname}/`, dev, quiet: true })
+    const app = next({ dir: __dirname, dev, quiet: true })
     const route = pathMatch()
 
     app.prepare().then(() => {
