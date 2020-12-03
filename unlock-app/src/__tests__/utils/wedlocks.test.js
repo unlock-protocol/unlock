@@ -13,6 +13,9 @@ jest.setTimeout(15000)
 describe('verifyEmailSignature', () => {
   beforeAll((done) => {
     forge.rsa.generateKeyPair({ bits: 2048, workers: 2 }, (err, keypair) => {
+      if (err) {
+        throw err
+      }
       const privateKeyPem = forge.pki.privateKeyToPem(keypair.privateKey)
       const publicKey = forge.pki.publicKeyToPem(keypair.publicKey)
       base64PublicKey = Base64.encode(publicKey)

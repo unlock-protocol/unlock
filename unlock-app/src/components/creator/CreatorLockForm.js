@@ -128,6 +128,37 @@ export class CreatorLockForm extends React.Component {
     this.state.errors = errors
   }
 
+  handleCancel() {
+    const { hideAction } = this.props
+    if (hideAction) hideAction()
+  }
+
+  handleChange({ target: { name, value } }) {
+    this.setState((state) => ({
+      unlimitedKeys:
+        name === 'maxNumberOfKeys' ? value === INFINITY : state.unlimitedKeys,
+      [name]: value,
+      valid: this.formValidity({ ...state.valid, [name]: value }),
+    }))
+  }
+
+  handleSubmit() {
+    this.setState((state) => {
+      const { valid, errors } = this.sendErrorsToRedux(state)
+      if (!valid.formValid) return { valid, errors }
+      return this.saveLock(state, valid, errors)
+    })
+  }
+
+  handleUnlimitedClick() {
+    this.setState((state) => ({
+      ...state,
+      unlimitedKeys: true,
+      maxNumberOfKeys: INFINITY,
+      valid: this.formValidity({ ...state, [name]: INFINITY }),
+    }))
+  }
+
   /**
    * Traverses each form field and verifies its validity.
    * returns a hash of fields to error message and all errors triggered.
@@ -233,42 +264,11 @@ export class CreatorLockForm extends React.Component {
     return { valid, errors }
   }
 
-  handleUnlimitedClick() {
-    this.setState((state) => ({
-      ...state,
-      unlimitedKeys: true,
-      maxNumberOfKeys: INFINITY,
-      valid: this.formValidity({ ...state, [name]: INFINITY }),
-    }))
-  }
-
   toggleCurrency() {
     this.setState((state) => ({
       ...state,
       currency: !state.currency ? this.ERC20Contract.address : null,
     }))
-  }
-
-  handleChange({ target: { name, value } }) {
-    this.setState((state) => ({
-      unlimitedKeys:
-        name === 'maxNumberOfKeys' ? value === INFINITY : state.unlimitedKeys,
-      [name]: value,
-      valid: this.formValidity({ ...state.valid, [name]: value }),
-    }))
-  }
-
-  handleSubmit() {
-    this.setState((state) => {
-      const { valid, errors } = this.sendErrorsToRedux(state)
-      if (!valid.formValid) return { valid, errors }
-      return this.saveLock(state, valid, errors)
-    })
-  }
-
-  handleCancel() {
-    const { hideAction } = this.props
-    if (hideAction) hideAction()
   }
 
   render() {
