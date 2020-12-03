@@ -70,6 +70,9 @@ export const updateKeyPriceOnLock = (
       keyPrice: newKeyPrice,
     },
     async (error, transactionHash) => {
+      if (error) {
+        throw error
+      }
       lock.keyPrice = newKeyPrice
       lock.priceUpdateTransaction = {
         confirmations: 0,
