@@ -8345,10 +8345,10 @@ configstore@^5.0.1:
     write-file-atomic "^3.0.0"
     xdg-basedir "^4.0.0"
 
-connected-next-router@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/connected-next-router/-/connected-next-router-3.1.0.tgz#c4a3d3c1328832d21f561577318d5a8d0a4fb079"
-  integrity sha512-CUx6MPzkMACBQipKxPUuFcnzvOUBc+O5cizsiV5mAsq/OBpmvxphDnJrMkxTR5VT3k4pAbZxHwVYEvyFThnDSw==
+connected-next-router@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/connected-next-router/-/connected-next-router-4.0.1.tgz#50f9a2a1763cb2e19864e3b92a491cf98ced94fd"
+  integrity sha512-Jggb3edu2rijGvYnYO+agiyggpoTFlmgL6Hp9OLEGT7OYWGtnGrHR+c13TYG9eARHpo7FLoRDcCdhtdEhMeSog==
 
 console-browserify@^1.1.0:
   version "1.2.0"
