@@ -114,6 +114,9 @@ describe('v8', () => {
           keyPrice,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
           expect(hash).toEqual(keyPurchaseCreationTransaction.hash)
         }
       )

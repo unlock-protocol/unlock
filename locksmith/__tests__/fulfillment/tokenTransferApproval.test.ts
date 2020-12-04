@@ -1,9 +1,10 @@
 import { BigNumber } from 'ethers/utils'
+import path from 'path'
 import TokenTransferApproval from '../../src/fulfillment/tokenTransferApproval'
 
 const nock = require('nock')
 
-nock.back.fixtures = `${__dirname}/fixtures/paymentProcessor`
+nock.back.fixtures = path.join(__dirname, 'fixtures', 'paymentProcessor')
 nock.back.setMode('lockdown')
 nock.disableNetConnect()
 

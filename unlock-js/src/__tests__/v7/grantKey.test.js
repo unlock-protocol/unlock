@@ -104,6 +104,10 @@ describe('v7', () => {
           keyManager,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
+
           expect(hash).toEqual(grantKeyTransaction.hash)
         }
       )
@@ -133,6 +137,10 @@ describe('v7', () => {
           keyManager,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
+
           expect(hash).toEqual(grantKeyTransaction.hash)
         }
       )
@@ -162,6 +170,10 @@ describe('v7', () => {
           expiration,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
+
           expect(hash).toEqual(grantKeyTransaction.hash)
         }
       )
