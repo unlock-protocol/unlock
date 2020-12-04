@@ -12,6 +12,9 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        if (error) {
+          throw error
+        }
         expect(response.statusCode).toBe(204)
         done()
       }
@@ -26,6 +29,9 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        if (error) {
+          throw error
+        }
         expect(response.statusCode).toBe(405)
         expect(response.body).toBe('Unsupported Method')
         done()
@@ -41,6 +47,9 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        if (error) {
+          throw error
+        }
         expect(response.statusCode).toBe(415)
         expect(response.body).toBe('Unsupported Media Type')
         done()
@@ -59,6 +68,9 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        if (error) {
+          throw error
+        }
         expect(response.statusCode).toBe(415)
         expect(response.body).toBe('Unsupported Media Type')
         done()
@@ -78,6 +90,9 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        if (error) {
+          throw error
+        }
         expect(response.statusCode).toBe(422)
         expect(response.body).toBe('Malformed Body')
         done()
@@ -108,6 +123,9 @@ describe('handler', () => {
       },
       {},
       (error, response) => {
+        if (error) {
+          throw error
+        }
         expect(response.headers).toEqual(
           expect.objectContaining({
             'Access-Control-Allow-Headers': 'Content-Type',

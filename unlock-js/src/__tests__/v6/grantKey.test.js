@@ -102,6 +102,9 @@ describe('v6', () => {
           expiration,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
           expect(hash).toEqual(grantKeyTransaction.hash)
         }
       )
@@ -129,6 +132,10 @@ describe('v6', () => {
           recipient,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
+
           expect(hash).toEqual(grantKeyTransaction.hash)
         }
       )

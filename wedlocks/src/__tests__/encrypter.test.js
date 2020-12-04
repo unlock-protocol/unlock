@@ -9,14 +9,17 @@ jest.setTimeout(15000)
 
 describe('encrypter', () => {
   beforeEach((done) => {
-    forge.rsa.generateKeyPair({ bits: 2048, workers: 2 }, function (
-      err,
-      keypair
-    ) {
-      privateKey = forge.pki.privateKeyToPem(keypair.privateKey)
-      publicKey = forge.pki.publicKeyToPem(keypair.publicKey)
-      done()
-    })
+    forge.rsa.generateKeyPair(
+      { bits: 2048, workers: 2 },
+      function (err, keypair) {
+        if (err) {
+          throw err
+        }
+        privateKey = forge.pki.privateKeyToPem(keypair.privateKey)
+        publicKey = forge.pki.publicKeyToPem(keypair.publicKey)
+        done()
+      }
+    )
   })
 
   describe('signParam', () => {

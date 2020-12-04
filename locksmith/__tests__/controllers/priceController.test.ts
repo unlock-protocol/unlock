@@ -1,3 +1,4 @@
+import path from 'path'
 import request from 'supertest'
 
 const nockBack = require('nock').back
@@ -8,7 +9,7 @@ const { AuthorizedLock } = models
 
 describe('Price Controller', () => {
   beforeAll(async () => {
-    nockBack.fixtures = `${__dirname}/fixtures/priceController`
+    nockBack.fixtures = path.join(__dirname, 'fixtures', 'priceController')
     nockBack.setMode('dryrun')
   })
 

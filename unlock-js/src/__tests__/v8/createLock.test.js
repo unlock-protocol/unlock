@@ -181,6 +181,9 @@ describe('v8', () => {
       expect.assertions(1)
 
       await walletService.createLock(lock, (error, hash) => {
+        if (error) {
+          throw error
+        }
         expect(hash).toEqual(lockCreationTransaction.hash)
         done()
       })

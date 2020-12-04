@@ -1,10 +1,11 @@
+import path = require('path')
 import nock = require('nock')
 import app = require('../../src/app')
 
 const request = require('supertest')
 const { Block } = require('../../src/models')
 
-nock.back.fixtures = `${__dirname}/fixtures/blockController`
+nock.back.fixtures = path.join(__dirname, 'fixtures', 'blockController')
 nock.disableNetConnect()
 
 beforeAll(async () => {

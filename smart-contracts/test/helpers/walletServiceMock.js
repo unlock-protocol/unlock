@@ -4,7 +4,7 @@
  * The values here should manually be kept in sync with unlock-app/src/services/walletService.js
  * until we can create a shared dependancy.
  */
-module.exports = class WalletService {
+class WalletService {
   static gasAmountConstants() {
     return {
       createLock: 4500000,
@@ -16,3 +16,5 @@ module.exports = class WalletService {
     }
   }
 }
+
+module.exports = WalletService

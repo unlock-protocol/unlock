@@ -75,6 +75,9 @@ describe('Wallet Service Integration', () => {
           publicLockTemplateAddress = await walletService.deployTemplate(
             versionName,
             (error, hash) => {
+              if (error) {
+                throw error
+              }
               expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
             }
           )
@@ -95,6 +98,9 @@ describe('Wallet Service Integration', () => {
               estimatedGasForPurchase: 0,
             },
             (error, hash) => {
+              if (error) {
+                throw error
+              }
               transactionHash = hash
             }
           )
@@ -130,6 +136,9 @@ describe('Wallet Service Integration', () => {
           lockAddress = await walletService.createLock(
             lockParams,
             (error, hash) => {
+              if (error) {
+                throw error
+              }
               lockCreationHash = hash
             }
           )
@@ -207,6 +216,9 @@ describe('Wallet Service Integration', () => {
                 keyPrice: (parseFloat(oldKeyPrice) * 2).toString(),
               },
               (error, hash) => {
+                if (error) {
+                  throw error
+                }
                 transactionHash = hash
               }
             )
@@ -240,6 +252,9 @@ describe('Wallet Service Integration', () => {
                   recipient: keyGrantee,
                 },
                 (error, hash) => {
+                  if (error) {
+                    throw error
+                  }
                   transactionHash = hash
                 }
               )
@@ -332,6 +347,9 @@ describe('Wallet Service Integration', () => {
                 keyPrice: lock.keyPrice,
               },
               (error, hash) => {
+                if (error) {
+                  throw error
+                }
                 transactionHash = hash
               }
             )
@@ -447,6 +465,9 @@ describe('Wallet Service Integration', () => {
                 lockAddress,
               },
               (error, hash) => {
+                if (error) {
+                  throw error
+                }
                 transactionHash = hash
               }
             )
