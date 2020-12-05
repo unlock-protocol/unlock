@@ -1,5 +1,7 @@
 # Changes
+# 0.13.2
 
+- Bumping default gas prices for key purchases
 # 0.13.1
 
 - Adding referrer for v6, v7 and v8

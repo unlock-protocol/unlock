@@ -187,7 +187,7 @@ describe('v7', () => {
             ZERO,
             [],
             {
-              gasLimit: 300000,
+              gasLimit: 500000,
             }
           )
         })
