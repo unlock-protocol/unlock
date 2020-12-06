@@ -6,7 +6,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -20,7 +19,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -34,7 +32,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -52,7 +49,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -66,7 +62,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -80,7 +75,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
       DB_NAME: locksmith_test
@@ -98,7 +92,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -112,7 +105,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -126,7 +118,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -140,7 +131,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -154,7 +144,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -172,7 +161,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -192,7 +180,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -209,7 +196,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -229,7 +215,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -249,7 +234,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -269,7 +253,6 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -286,7 +269,6 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -314,7 +296,6 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -342,7 +323,6 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -370,7 +350,6 @@ jobs:
       - image: circleci/python:3.8.2
     environment:
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -399,7 +378,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -414,7 +392,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -429,7 +406,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -444,7 +420,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -459,7 +434,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -474,7 +448,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -489,7 +462,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
@@ -504,7 +476,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
-      COMPOSE_DOCKER_CLI_BUILD: 1
     steps:
       - checkout
       - run:
