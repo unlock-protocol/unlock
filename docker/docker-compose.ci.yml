@@ -22,7 +22,7 @@ services:
     env_file:
       - ./${UNLOCK_ENV}.env
     restart: always
-    image: ganache-integratio
+    image: ganache-integration
     build:
       context: ./development
       dockerfile: ganache.dockerfile

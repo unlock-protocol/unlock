@@ -16,4 +16,4 @@ export UNLOCK_ENV=test
 UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build $SERVICE
 
 # Push image
-scripts/push-images.sh $SERVICE
+scripts/push-images.sh unlock-core $SERVICE
