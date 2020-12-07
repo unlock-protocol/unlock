@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core:master
+FROM unlock-core
 
 # Dependencies for paywall
 RUN mkdir /home/unlock/paywall

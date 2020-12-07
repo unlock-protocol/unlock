@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core:master
+FROM unlock-core
 
 # Dependencies for smart-contract-extensions
 RUN mkdir /home/unlock/smart-contract-extensions

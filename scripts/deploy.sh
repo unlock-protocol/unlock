@@ -47,4 +47,10 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
+# We cannot rely on docker compose to build the images since we have a base :(
+# First we need to build the base
+docker build --build-arg BUILDKIT_INLINE_CACHE=1  -t unlock-core -f docker/unlock-core.dockerfile --cache-from unlockprotocol/unlock-core:master .
+docker build --build-arg BUILDKIT_INLINE_CACHE=1  -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
+
+# Run deploy code!
 docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS -e UNLOCK_ENV=prod $SERVICE $NPM_SCRIPT -- $OPTS
