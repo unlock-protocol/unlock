@@ -24,13 +24,20 @@ export const usePurchaseKey = (
   const { dispatch } = useCheckoutStore()
 
   const purchaseKey = (lock: RawLock, accountAddress: string) => {
+    // If the paywall specifies a referrer, we use this as the recipient of UDT
+    // Otherwise, we default to the recipient of the key
+    const referrer =
+      paywallConfig && paywallConfig.referrer
+        ? paywallConfig.referrer
+        : accountAddress
+
     walletService.purchaseKey(
       {
         lockAddress: lock.address,
         owner: accountAddress,
         keyPrice: lock.keyPrice,
         erc20Address: lock.currencyContractAddress,
-        referrer: paywallConfig.referrer || accountAddress,
+        referrer,
       },
       (error: any, hash: string | null, transaction: any) => {
         if (error) {
