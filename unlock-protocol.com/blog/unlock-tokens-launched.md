@@ -11,8 +11,6 @@ Unlock is a protocol. Like any other protocol, it should not belong to anyone bu
 
 Don't forget to check the [step-by-step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
 
-![Decentralizing Unlock](/static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
-
 # How does UDT work?
 
 The Unlock Discount Token (UDT) is an **optional** ERC20 token that exists to add incentives to actors who are willing to grow and use the Unlock Protocol and network as well as progressively give them control of future upgrades. The smart contract which mints UDT has been deployed to the Ethereum main network and can be found at [`0x90de74265...`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517).
