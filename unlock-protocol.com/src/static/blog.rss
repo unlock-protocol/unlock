@@ -4,7 +4,11 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
+<<<<<<< HEAD
         <lastBuildDate>Wed, 16 Dec 2020 03:16:26 GMT</lastBuildDate>
+=======
+        <lastBuildDate>Fri, 11 Dec 2020 01:09:56 GMT</lastBuildDate>
+>>>>>>> 631fbf88e (adding post about UDT)
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
             <title><![CDATA[Launching Unlock Discount Tokens]]></title>
@@ -12,7 +16,11 @@
             <link>https://unlock-protocol.com/blog/unlock-tokens-launched</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-tokens-launched</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+<<<<<<< HEAD
             <pubDate>Tue, 15 Dec 2020 05:00:00 GMT</pubDate>
+=======
+            <pubDate>Wed, 09 Dec 2020 05:00:00 GMT</pubDate>
+>>>>>>> 631fbf88e (adding post about UDT)
         </item>
         <item>
             <title><![CDATA[Recurring Memberships]]></title>
