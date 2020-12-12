@@ -94,7 +94,6 @@ const generateBlogPages = (numberOfPosts, postsPerPage) => {
  */
 const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
   // Build list of items that don't have future publish dates
-  const now = Date.now()
 
   const rssFeed = new Rss({
     title: 'Unlock Blog',
@@ -105,7 +104,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
   })
 
   postFeed.forEach((post) => {
-    if (Date.parse(post.publishDate) < now) {
+    if (!post.draft) {
       rssFeed.item({
         title: post.title,
         description: post.description,
