@@ -2,6 +2,8 @@ import { gql } from 'apollo-server-express'
 import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 import Normalizer from '../../utils/normalizer'
 
+const logger = require('../../logger')
+
 export class KeyHoldersByLock extends UnlockGraphQLDataSource {
   async getKeyHolders(addresses: [string], page: number): Promise<any[]> {
     const genKeyHolderQuery = gql`
@@ -22,7 +24,7 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
 
     // Pagination starts at 0
     const first = 100 // 100 by page
-    const skip = (page * first).toFixed()
+    const skip = page * first
 
     try {
       const response = await this.query(genKeyHolderQuery, {
@@ -31,6 +33,7 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
 
       return response.data.locks
     } catch (error) {
+      logger.error('getKeyHolders failed', error)
       return []
     }
   }
@@ -46,7 +49,8 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
       return queryResults[0].keys.map((key: any) =>
         Normalizer.ethereumAddress(key.owner.address)
       )
-    } catch {
+    } catch (error) {
+      logger.error('getKeyHoldingAddresses failed', error)
       return []
     }
   }

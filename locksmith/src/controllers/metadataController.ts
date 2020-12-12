@@ -12,18 +12,31 @@ import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
 
 const config = require('../../config/config')
+const logger = require('../logger')
 
 namespace MetadataController {
   const evaluateLockOwnership = async (
     lockAddress: string,
     signeeAddress: string
   ) => {
-    const web3Service = new Web3Service({
-      readOnlyProvider: config.web3ProviderHost,
-      unlockAddress: config.unlockContractAddress,
-    })
-
-    return web3Service.isLockManager(lockAddress, signeeAddress)
+    try {
+      const web3Service = new Web3Service({
+        readOnlyProvider: config.web3ProviderHost,
+        unlockAddress: config.unlockContractAddress,
+      })
+      if (!lockAddress || !signeeAddress) {
+        logger.error(
+          'Missing lockAddress or signeeAddress',
+          signeeAddress,
+          lockAddress
+        )
+        return false
+      }
+      return web3Service.isLockManager(lockAddress, signeeAddress)
+    } catch (error) {
+      logger.error('evaluateLockOwnership failed', { error })
+      return false
+    }
   }
 
   const evaluateKeyOwnership = async (
@@ -193,8 +206,8 @@ namespace MetadataController {
         lockAddress,
         payload.message.LockMetaData.page || 0
       )
-
-      if ((await evaluateLockOwnership(lockAddress, req.signee)) === false) {
+      const isAuthorized = await evaluateLockOwnership(lockAddress, req.signee)
+      if (!isAuthorized) {
         res.sendStatus(401)
       } else {
         res.json(

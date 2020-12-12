@@ -2,7 +2,9 @@ import * as sigUtil from 'eth-sig-util'
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
-import { SignatureValidationConfiguration } from '../types' // eslint-disable-line no-unused-vars
+import { SignatureValidationConfiguration } from '../types'
+
+const logger = require('../logger') // eslint-disable-line no-unused-vars
 
 namespace SignatureValidationMiddleware {
   const extractQueryParameterPayload = (payload: string) => {
@@ -17,7 +19,8 @@ namespace SignatureValidationMiddleware {
         data: body,
         sig: decodedSignature,
       })
-    } catch {
+    } catch (error) {
+      logger.error('Failed to extractTypeDataSignee', error)
       return null
     }
   }
@@ -30,7 +33,8 @@ namespace SignatureValidationMiddleware {
         data: JSON.stringify(body),
         sig: decodedSignature,
       })
-    } catch {
+    } catch (error) {
+      logger.error('Failed to extractPersonalSignSignee', error)
       return null
     }
   }
@@ -49,14 +53,16 @@ namespace SignatureValidationMiddleware {
     ) {
       const header = req.headers.authorization.split(' ')[1]
       return extractTypeDataSignee(header, source)
-    }
-    if (
+    } else if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer-Simple'
     ) {
       const header = req.headers.authorization.split(' ')[1]
       return extractPersonalSignSignee(header, source)
+    } else {
+      logger.error('Missing Authorization header. ')
     }
+
     return null
   }
 
@@ -71,7 +77,8 @@ namespace SignatureValidationMiddleware {
     try {
       const data = extractQueryParameterPayload(source)
       return extractSigneeFromSource(req, data)
-    } catch {
+    } catch (error) {
+      logger.error('Failed to extractSigneeFromQueryParameter', error)
       return null
     }
   }
@@ -110,7 +117,8 @@ namespace SignatureValidationMiddleware {
         return Normalizer.ethereumAddress(signee)
       }
       return null
-    } catch (e) {
+    } catch (error) {
+      logger.error('Failed to handleSignaturePresent', error)
       return null
     }
   }
@@ -147,7 +155,10 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, _res: Response, next: any) => {
-      const signature = extractSigneeFromQueryParameter(req, req.query.data)
+      let signature = null
+      if (req.query.data) {
+        signature = extractSigneeFromQueryParameter(req, req.query.data)
+      }
 
       if (signature === null) {
         next()
