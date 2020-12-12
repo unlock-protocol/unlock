@@ -7,7 +7,7 @@ description: As an open protocol for memberships, we want Unlock to belong to it
 image: /static/images/blog/unlocking-smart-contracts/code.jpeg
 ---
 
-Unlock is a protocol. Like another protocol it should not belong to anyone but its community of users and adopters. Today, we're very excited to introduce the Unlock Discount Tokens and start the journey toward a fully decentralized protocol, where users co-own the protocol, as well as earn rewards for their use!
+Unlock is a protocol. Like any other protocol, it should not belong to anyone but its community of users and adopters. Today, we're very excited to introduce Unlock Discount Tokens and start the journey toward a fully decentralized protocol, where users co-own the protocol, as well as earn rewards for their use!
 
 Don't forget to check the step by [step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
 
