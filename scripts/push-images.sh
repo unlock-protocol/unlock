@@ -1,6 +1,8 @@
 
 #!/usr/bin/env bash
 
+set -e
+
 # This script saves previously built images to docker hub or AWS.
 # This should only run on $CIRCLE_BRANCH merges
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # First this script will deploy from an instance of unlock:latest
 REPO_ROOT=`dirname "$0"`/..

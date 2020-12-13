@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # this script runs the test in the service provided as first argument
 
