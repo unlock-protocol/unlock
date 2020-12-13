@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script invokes the deployment script for the service (first arg), to the target (second arg).
-
+set -e
 
 ENV_TARGET=${1:-staging} # defaults to staging
 SERVICE=$2
