@@ -1,4 +1,8 @@
 # Changes
+
+# 0.13.3
+
+- Updating types for key purchase function
 # 0.13.2
 
 - Bumping default gas prices for key purchases

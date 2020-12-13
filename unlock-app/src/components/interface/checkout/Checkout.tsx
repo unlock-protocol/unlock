@@ -30,6 +30,7 @@ import {
 import { useSetUserMetadata } from '../../../hooks/useSetUserMetadata'
 import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
 import { useProvider } from '../../../hooks/useProvider'
+import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 
 interface CheckoutProps {
   account: AccountType
@@ -107,69 +108,74 @@ export const Checkout = ({
   }
 
   return (
-    <CheckoutContainer close={emitCloseModal}>
-      <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
-        <Head>
-          <title>{pageTitle('Checkout')}</title>
-        </Head>
-        {paywallConfig && paywallConfig.icon && (
-          <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
-        )}
-        {paywallConfig && (
-          <CallToAction
-            state={current.value}
-            callToAction={paywallConfig.callToAction}
-          />
-        )}
-        <CheckoutErrors
-          errors={checkoutError}
-          resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
-        />
-        {current.matches(CheckoutState.loading) && <Loading />}
-        {current.matches(CheckoutState.notLoggedIn) && (
-          <NotLoggedIn config={paywallConfig!} lockAddresses={lockAddresses} />
-        )}
-        {current.matches(CheckoutState.locks) && (
-          <Locks
-            accountAddress={account.address}
-            lockAddresses={lockAddresses}
-            emitTransactionInfo={emitTransactionInfo}
-            metadataRequired={metadataRequired}
-            showMetadataForm={() => send('collectMetadata')}
-            config={paywallConfig!}
-          />
-        )}
-        {current.matches(CheckoutState.fiatLocks) && (
-          <FiatLocks
-            accountAddress={account.address}
-            lockAddresses={lockAddresses}
-            emitTransactionInfo={emitTransactionInfo}
-            metadataRequired={metadataRequired}
-            showMetadataForm={() => send('collectMetadata')}
-            config={paywallConfig!}
-          />
-        )}
-        {(current.matches(CheckoutState.fiatLocks) ||
-          current.matches(CheckoutState.locks)) &&
-          !account.emailAddress &&
-          !!paywallConfig!.unlockUserAccounts && (
-            <SwitchPayment
-              paymentOptions={['Credit Card']}
-              activePayment={activePayment}
-              setActivePayment={(option: string | null) => {
-                setActivePayment(option)
-                send('changeCurrency')
-              }}
+    <PaywallConfigContext.Provider value={paywallConfig}>
+      <CheckoutContainer close={emitCloseModal}>
+        <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
+          <Head>
+            <title>{pageTitle('Checkout')}</title>
+          </Head>
+          {paywallConfig && paywallConfig.icon && (
+            <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
+          )}
+          {paywallConfig && (
+            <CallToAction
+              state={current.value}
+              callToAction={paywallConfig.callToAction}
             />
           )}
-        {current.matches(CheckoutState.metadataForm) && (
-          <MetadataForm
-            fields={paywallConfig!.metadataInputs!}
-            onSubmit={onMetadataSubmit}
+          <CheckoutErrors
+            errors={checkoutError}
+            resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
           />
-        )}
-      </CheckoutWrapper>
-    </CheckoutContainer>
+          {current.matches(CheckoutState.loading) && <Loading />}
+          {current.matches(CheckoutState.notLoggedIn) && (
+            <NotLoggedIn
+              config={paywallConfig!}
+              lockAddresses={lockAddresses}
+            />
+          )}
+          {current.matches(CheckoutState.locks) && (
+            <Locks
+              accountAddress={account.address}
+              lockAddresses={lockAddresses}
+              emitTransactionInfo={emitTransactionInfo}
+              metadataRequired={metadataRequired}
+              showMetadataForm={() => send('collectMetadata')}
+              config={paywallConfig!}
+            />
+          )}
+          {current.matches(CheckoutState.fiatLocks) && (
+            <FiatLocks
+              accountAddress={account.address}
+              lockAddresses={lockAddresses}
+              emitTransactionInfo={emitTransactionInfo}
+              metadataRequired={metadataRequired}
+              showMetadataForm={() => send('collectMetadata')}
+              config={paywallConfig!}
+            />
+          )}
+          {(current.matches(CheckoutState.fiatLocks) ||
+            current.matches(CheckoutState.locks)) &&
+            !account.emailAddress &&
+            !!paywallConfig!.unlockUserAccounts && (
+              <SwitchPayment
+                paymentOptions={['Credit Card']}
+                activePayment={activePayment}
+                setActivePayment={(option: string | null) => {
+                  setActivePayment(option)
+                  send('changeCurrency')
+                }}
+              />
+            )}
+          {current.matches(CheckoutState.metadataForm) && (
+            <MetadataForm
+              fields={paywallConfig!.metadataInputs!}
+              onSubmit={onMetadataSubmit}
+            />
+          )}
+        </CheckoutWrapper>
+      </CheckoutContainer>
+    </PaywallConfigContext.Provider>
   )
 }
 
