@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core:master
+FROM unlock-core
 
 # Dependencies for newsletter
 RUN mkdir /home/unlock/newsletter

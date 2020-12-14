@@ -30,7 +30,7 @@ function check_if_locksmith_changed()
     LATEST_COMMIT=$(git rev-parse HEAD)
     # latest commit where path/to/folder1 was changed
     LAST_LOCKSMITH_COMMIT=$(git log -1 --format=format:%H --full-diff ./locksmith)
-    
+
     if [ $LAST_LOCKSMITH_COMMIT != $LATEST_COMMIT ];then
         echo "No changes to Locksmith, no need to deploy"
         exit 0
@@ -47,14 +47,13 @@ function deploy()
     else
         eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env},STRIPE_SECRET=${stripe_secret},PURCHASER_CREDENTIALS=${purchaser_credentials},WEB3_PROVIDER_HOST=${web3_provider_host},UNLOCK_CONTRACT_ADDRESS=${unlock_contract_address},GRAPHQL_BASE_URL=${graphql_base_url},METADATA_HOST=${metadata_host} --elb-type classic
     fi
-    
+
 }
 
 check_is_forked_pr
-check_if_locksmith_changed
 
 cd locksmith
 
 eb init ${application} -p docker --region us-east-1
 
-deploy ${environment} 
+deploy ${environment}

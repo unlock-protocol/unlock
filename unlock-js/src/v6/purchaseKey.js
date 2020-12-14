@@ -11,16 +11,26 @@ import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
  * - {string} keyPrice
  * - {PropTypes.address} erc20Address
  * - {number} decimals
+ * - {PropTypes.address} referrer (address which will receive UDT - if applicable)
+ * - {PropTypes.array[bytes]} data (array of bytes, not used in transaction but can be used by hooks)
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, owner, keyPrice, erc20Address, decimals },
+  { lockAddress, owner, keyPrice, erc20Address, decimals, referrer, data },
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!owner) {
     owner = await this.signer.getAddress()
+  }
+
+  if (!referrer) {
+    referrer = ZERO
+  }
+
+  if (!data) {
+    data = []
   }
 
   // If erc20Address was not provided, get it
@@ -61,18 +71,17 @@ export default async function (
         this.signer
       )
       // Since we sent the approval transaction, we cannot rely on Ethers to do an estimate, because the computation would fail (since the approval might not have been mined yet)
-      purchaseForOptions.gasLimit = 300000
+      purchaseForOptions.gasLimit = 500000
     }
   } else {
     purchaseForOptions.value = actualAmount
   }
 
-  // TODO: add support for _referrer and _data
   const transactionPromise = lockContract.purchase(
     actualAmount,
     owner,
-    ZERO /* _referrer */,
-    [] /* array of bytes for _data */,
+    referrer,
+    data,
     purchaseForOptions
   )
 

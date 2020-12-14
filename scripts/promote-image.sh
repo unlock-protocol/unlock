@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # this script runs the test in the service provided as first argument
 
@@ -12,8 +13,11 @@ COMMAND="yarn run ci"
 # Setting the right env var
 export UNLOCK_ENV=test
 
-# Build image
-UNLOCK_ENV=test docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.ci.yml build $SERVICE
+# Build the core
+docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t unlock-core -f docker/unlock-core.dockerfile --cache-from unlockprotocol/unlock-core:master .
 
-# Push image
+# Build the image
+docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
+
+# Push images
 scripts/push-images.sh $SERVICE

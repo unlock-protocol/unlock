@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
+const path = require('path')
 const ethers = require('ethers')
 let fs = require('fs')
 
 let testErc20Token = JSON.parse(
-  fs.readFileSync(`${__dirname}/TestErc20Token.json`, 'utf8')
+  fs.readFileSync(path.join(__dirname, 'TestErc20Token.json'), 'utf8')
 )
 const decimals = 18
 

@@ -30,9 +30,10 @@ interface Config {
 
 export const useProvider = (providerAdapter?: any) => {
   const config: Config = React.useContext(ConfigContext)
-  const { getWeb3Provider, setWeb3Provider } = React.useContext<
-    Web3ProviderContextType
-  >(Web3ProviderContext)
+  const {
+    getWeb3Provider,
+    setWeb3Provider,
+  } = React.useContext<Web3ProviderContextType>(Web3ProviderContext)
 
   const dispatch = useDispatch()
 

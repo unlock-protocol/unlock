@@ -22,7 +22,7 @@ function check_if_changed()
 {
     LATEST_COMMIT=$(git rev-parse HEAD)
     LAST_PROJECT_COMMIT=$(git log -1 --format=format:%H --full-diff ./nudge)
-    
+
     if [ $LAST_PROJECT_COMMIT != $LATEST_COMMIT ];then
         echo "No changes to project, no need to deploy"
         exit 0
@@ -32,18 +32,17 @@ function check_if_changed()
 function deploy()
 {
     environment_name=$1
-    
+
     if eb status ${environment_name}; then
         eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} WEB3_PROVIDER_HOST=${web3_provider_host} GRAPHQL_BASE_URL=${graphql_base_url} WEDLOCKS_URI=${wedlocks_uri}
         eb deploy ${environment_name} --label nudge-${build_id} --timeout 10
     else
         eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},WEB3_PROVIDER_HOST=${web3_provider_host},GRAPHQL_BASE_URL=${graphql_base_url},WEDLOCKS_URI=${wedlocks_uri} --elb-type classic
     fi
-    
+
 }
 
 check_is_forked_pr
-check_if_changed
 
 cd nudge
 

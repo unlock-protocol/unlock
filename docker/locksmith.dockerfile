@@ -1,4 +1,4 @@
-FROM unlockprotocol/unlock-core:master
+FROM unlock-core
 
 # Dependencies for locksmith
 RUN mkdir /home/unlock/locksmith

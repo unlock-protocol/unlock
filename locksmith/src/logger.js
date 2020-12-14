@@ -24,12 +24,10 @@ const logger = winston.createLogger({
   ],
 })
 
-if (process.env.NODE_ENV == 'development') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  )
-}
+logger.add(
+  new winston.transports.Console({
+    format: winston.format.simple(),
+  })
+)
 
 module.exports = logger
