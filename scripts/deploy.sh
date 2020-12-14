@@ -53,4 +53,4 @@ docker build --build-arg BUILDKIT_INLINE_CACHE=1  -t unlock-core -f docker/unloc
 docker build --build-arg BUILDKIT_INLINE_CACHE=1  -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
 
 # Run deploy code!
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS -e UNLOCK_ENV=prod $SERVICE $NPM_SCRIPT -- $OPTS
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS -e UNLOCK_ENV=prod $SERVICE $NPM_SCRIPT $OPTS

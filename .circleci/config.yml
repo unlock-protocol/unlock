@@ -5,7 +5,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0 # disable buildkit until I can figure what is going on!
     steps:
       - checkout
       - run:
@@ -18,7 +18,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -31,7 +31,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -48,7 +48,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -61,7 +61,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -74,7 +74,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
       DB_NAME: locksmith_test
@@ -91,7 +91,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -104,7 +104,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -117,7 +117,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -130,7 +130,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -143,7 +143,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -160,7 +160,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -179,7 +179,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -195,7 +195,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -214,7 +214,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -233,7 +233,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -252,7 +252,7 @@ jobs:
     machine:
       image: ubuntu-1604:202004-01
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -268,7 +268,7 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -295,7 +295,7 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -322,7 +322,7 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -349,7 +349,7 @@ jobs:
     docker:
       - image: circleci/python:3.8.2
     environment:
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -372,12 +372,24 @@ jobs:
           name: Deploy Staging to Beanstalk
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI"
 
+  promote-unlock-core-image:
+    machine:
+      image: ubuntu-1604:202004-01
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 0
+    steps:
+      - checkout
+      - run:
+          name: promote image
+          command: scripts/promote-image.sh unlock-core
+
   promote-unlock-app-image:
     machine:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -391,7 +403,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -405,7 +417,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -419,7 +431,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -433,7 +445,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -447,7 +459,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -461,7 +473,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -475,7 +487,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
+      DOCKER_BUILDKIT: 0
     steps:
       - checkout
       - run:
@@ -523,18 +535,24 @@ workflows:
       - deploy-unlock-protocol-com-netlify:
           requires:
             - integration-tests
+      - promote-unlock-core-image:
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
       - promote-unlock-app-image:
           filters:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - promote-unlock-protocol-com-image:
           filters:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - promote-locksmith-image:
           filters:
             branches:
@@ -542,37 +560,38 @@ workflows:
                 - master
                 - production
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - promote-paywall-image:
           filters:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - promote-nudge-image:
           filters:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - promote-wedlocks-image:
           filters:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - promote-smart-contracts-image:
           filters:
             branches:
               only: master
           requires:
             - smart-contracts-tests
+            - promote-unlock-core-image
       - promote-integration-tests-image:
           filters:
             branches:
               only: master
           requires:
-            - integration-tests
+            - promote-unlock-core-image
       - deploy-locksmith-beanstalk-production:
           filters:
             branches:

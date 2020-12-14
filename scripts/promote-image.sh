@@ -20,4 +20,4 @@ docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t unlock-core -f docker/unlock
 docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
 
 # Push images
-scripts/push-images.sh unlock-core $SERVICE
+scripts/push-images.sh $SERVICE
