@@ -47,9 +47,10 @@ export const FiatLocks = ({
 
   const fiatKeyPrices = useFiatKeyPrices(lockAddresses)
   const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
-  const [showingPaymentForm, setShowingPaymentForm] = useState<
-    PaymentFormState
-  >({ visible: false })
+  const [
+    showingPaymentForm,
+    setShowingPaymentForm,
+  ] = useState<PaymentFormState>({ visible: false })
   const needToCollectPaymentDetails = cards.length === 0
 
   const now = new Date().getTime() / 1000

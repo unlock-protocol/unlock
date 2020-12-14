@@ -13,6 +13,7 @@ export interface PurchaseKeyParams {
   owner: string
   keyPrice: string
   erc20Address: string | null
+  referrer: string | null
 }
 
 export interface TransactionDefaults {

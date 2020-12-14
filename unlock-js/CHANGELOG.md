@@ -1,5 +1,16 @@
 # Changes
 
+# 0.13.3
+
+- Updating types for key purchase function
+# 0.13.2
+
+- Bumping default gas prices for key purchases
+# 0.13.1
+
+- Adding referrer for v6, v7 and v8
+- Adding data for v6, v7 and v8
+
 # 0.13.0
 
 - Introduced support for v8

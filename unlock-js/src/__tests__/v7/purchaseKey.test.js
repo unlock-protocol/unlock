@@ -114,6 +114,9 @@ describe('v7', () => {
           keyPrice,
         },
         (error, hash) => {
+          if (error) {
+            throw error
+          }
           expect(hash).toEqual(keyPurchaseCreationTransaction.hash)
         }
       )
@@ -184,7 +187,7 @@ describe('v7', () => {
             ZERO,
             [],
             {
-              gasLimit: 300000,
+              gasLimit: 500000,
             }
           )
         })

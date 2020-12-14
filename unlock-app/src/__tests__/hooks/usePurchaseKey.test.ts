@@ -88,6 +88,7 @@ describe('usePurchaseKey', () => {
         keyPrice: lock.keyPrice,
         lockAddress: lock.address,
         owner: accountAddress,
+        referrer: accountAddress,
       },
       expect.any(Function)
     )
