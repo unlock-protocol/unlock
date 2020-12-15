@@ -9,7 +9,7 @@ image: /static/images/blog/launching-unlock-discount-tokens/decentralized-unlock
 
 Unlock is a protocol. Like any other protocol, it should not belong to anyone but its community of users and adopters. Today, we're very excited to introduce Unlock Discount Tokens and start the journey toward a fully decentralized protocol, where users co-own the protocol, as well as earn rewards for their use!
 
-Don't forget to check the step by [step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
+Don't forget to check the [step-by-step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
 
 ![Decentralizing Unlock](/static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
 # How does UDT work?
@@ -22,13 +22,13 @@ We pre-mined 1,000,000 tokens and we'll distribute some of them to early investo
 
 As of now, the Unlock and UDT contracts are upgradable using OpenZeppelin and "owned" by a Gnosis multisig wallets whose signers are Unlock employees. Our goal is to soon decentralize that mechanism so that upgrades can only be triggered by UDT holders, after a voting process through a DAO, where votes are weighted by UDT ownership!
 
-Additionaly, the first upgrade that we will then submit will add a mechnism which lets UDT holders claim discounts on their key purchases!
+**Additionally, the first upgrade that we will then submit will add a mechanism that lets UDT holders claim discounts on their key purchases!**
 
 Our [wiki provides a long description](https://github.com/unlock-protocol/unlock/wiki/The-Unlock-Discount-Tokens) of how UDT works.
 
 # How can I earn UDT?
 
-From now on, there is only a single way to create (and earn) news tokens: making key purchases. The number of tokens minted is based on the value of the purchase relative to the size of the overall network. This means that when the network is small, the number of tokens minted will be relatively larger than when the network is getting large. **This rewards early adopters more**!
+From now on, there is only a single way to create (and earn) new tokens: making key purchases. The number of tokens minted is based on the value of the purchase relative to the size of the overall network. This means that when the network is small, the number of tokens minted will be relatively larger than when the network is getting large. **This rewards early adopters more**!
 
 The number of tokens minted is also capped to the gas spent by the transaction, so that it is always cheaper to purchase UDT from an exchange [such as Uniswap](https://app.uniswap.org/#/add/ETH/0x90DE74265a416e1393A450752175AED98fe11517) than it would be to purchase keys for yourself and earn tokens doing it.
 
