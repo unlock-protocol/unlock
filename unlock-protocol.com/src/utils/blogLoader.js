@@ -22,7 +22,7 @@ export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
     totalPages = Math.ceil(index.items.length / maxPosts)
     totalPosts = index.items.length
     index.items.forEach((item) => {
-      if (Date.parse(item.publishDate) <= Date.now()) {
+      if (!item.draft) {
         posts.push(item)
       }
     })
