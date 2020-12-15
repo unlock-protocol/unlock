@@ -2,15 +2,16 @@
 title: Launching Unlock Discount Tokens
 subTitle: Starting the decentralization of Unlock!
 authorName: Julien Genestoux
-publishDate: December 9, 2020
+publishDate: December 8, 2020
 description: As an open protocol for memberships, we want Unlock to belong to its users. Today we are introducing the protocol's native token.
-image: /static/images/blog/unlocking-smart-contracts/code.jpeg
+image: /static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
 ---
 
 Unlock is a protocol. Like any other protocol, it should not belong to anyone but its community of users and adopters. Today, we're very excited to introduce Unlock Discount Tokens and start the journey toward a fully decentralized protocol, where users co-own the protocol, as well as earn rewards for their use!
 
 Don't forget to check the step by [step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
 
+![Decentralizing Unlock](/static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
 # How does UDT work?
 
 The Unlock Discount Token (UDT) is an **optional** ERC20 token that exists to add incentives to actors who are willing to grow and use the Unlock Protocol and network as well as progressively give them control of future upgrades. The smart contract which mints UDT has been deployed to the Ethereum main network and can be found at [`0x90de74265...`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517).
@@ -34,8 +35,7 @@ The number of tokens minted is also capped to the gas spent by the transaction, 
 It's important to note that even though the supply of tokens will grow forever as the network grows, the growth of the supply will slow down forever as well, which means that it is much easier to accumulate tokens in the early days of the network than once it will be larger.
 
 # What is next?
-
-The next toward a fully deecntralized Unlock Protocol is to start working on moving away from our multisignature based upgrades to upgrades driven by a Decentralized Autonomous Organization. This will be our focus in the next few months.
+The next step toward a fully decentralized Unlock Protocol is to start working on moving away from our multisignature based upgrades to upgrades driven by a Decentralized Autonomous Organization. This will be our focus in the next few months.
 
 We will also work on allowing token holders to claim discounts on their purchases as we think it is important to add financial rewards to stakeholders.
 
