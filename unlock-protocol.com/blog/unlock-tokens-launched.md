@@ -11,6 +11,7 @@ Unlock is a protocol. Like any other protocol, it should not belong to anyone bu
 
 Don't forget to check the [step-by-step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
 
+![Decentralizing Unlock](/static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
 # How does UDT work?
 
 The Unlock Discount Token (UDT) is an **optional** ERC20 token that exists to add incentives to actors who are willing to grow and use the Unlock Protocol and network as well as progressively give them control of future upgrades. The smart contract which mints UDT has been deployed to the Ethereum main network and can be found at [`0x90de74265...`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517).
@@ -27,7 +28,7 @@ Our [wiki provides a long description](https://github.com/unlock-protocol/unlock
 
 # How can I earn UDT?
 
-From now on, there is only a single way to create (and earn) news tokens: making key purchases. The number of tokens minted is based on the value of the purchase relative to the size of the overall network. This means that when the network is small, the number of tokens minted will be relatively larger than when the network is getting large. **This rewards early adopters more**!
+From now on, there is only a single way to create (and earn) new tokens: making key purchases. The number of tokens minted is based on the value of the purchase relative to the size of the overall network. This means that when the network is small, the number of tokens minted will be relatively larger than when the network is getting large. **This rewards early adopters more**!
 
 The number of tokens minted is also capped to the gas spent by the transaction, so that it is always cheaper to purchase UDT from an exchange [such as Uniswap](https://app.uniswap.org/#/add/ETH/0x90DE74265a416e1393A450752175AED98fe11517) than it would be to purchase keys for yourself and earn tokens doing it.
 
