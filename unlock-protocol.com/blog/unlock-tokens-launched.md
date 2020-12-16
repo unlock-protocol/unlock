@@ -2,7 +2,7 @@
 title: Launching Unlock Discount Tokens
 subTitle: Starting the decentralization of Unlock!
 authorName: Julien Genestoux
-publishDate: December 8, 2020
+publishDate: December 15, 2020
 description: As an open protocol for memberships, we want Unlock to belong to its users. Today we are introducing the protocol's native token.
 image: /static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
 ---
