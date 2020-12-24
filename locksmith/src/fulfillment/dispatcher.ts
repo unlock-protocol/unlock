@@ -105,6 +105,7 @@ export default class Dispatcher {
     walletService.purchaseKey({
       lockAddress,
       owner: recipient,
+      referrer: recipient, // We grant UDT to the recipient of the key!
       keyPrice: lock.keyPrice,
     })
     return txHashPromise

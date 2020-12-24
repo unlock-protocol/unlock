@@ -62,7 +62,7 @@ export default async function (
       this.provider,
       this.signer
     )
-    if (approvedAmount < actualAmount) {
+    if (!approvedAmount || approvedAmount.lt(actualAmount)) {
       await approveTransfer(
         erc20Address,
         lockAddress,

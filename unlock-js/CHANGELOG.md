@@ -1,5 +1,8 @@
 # Changes
 
+# 0.14.0
+
+- fixing approvals for ERC20 key purchases
 # 0.13.3
 
 - Updating types for key purchase function
