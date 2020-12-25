@@ -112,13 +112,13 @@ Here is some markdown
     expect(posts.length).toEqual(0)
   })
 
-  it('ignores future posts', async () => {
+  it('ignores draft posts', async () => {
     expect.assertions(3)
 
     jest.mock('../../../blog/blog.index', () => {
       return {
         default:
-          '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","publishDate":"Jan 7, 2037","slug":"future"}]}',
+          '{"items":[{"title":"This is a second sample post","subTitle":"And some sample metadata","publishDate":"Jan 7, 1979","slug":"test2"},{"title":"This is a sample post","subTitle":"And some sample metadata","publishDate":"Dec 31, 1978","slug":"test1"},{"title":"This is a FUTURE POST","subTitle":"IT IS FROM THE FUTURE","draft":true,"slug":"future"}]}',
       }
     })
     const { posts } = await loadBlogIndexFile(10)
