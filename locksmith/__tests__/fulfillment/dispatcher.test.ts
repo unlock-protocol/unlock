@@ -97,6 +97,7 @@ describe('Dispatcher', () => {
           lockAddress,
           keyPrice: '0.01',
           owner: recipient,
+          referrer: recipient,
         })
         expect(result).toEqual('a transaction hash')
       })

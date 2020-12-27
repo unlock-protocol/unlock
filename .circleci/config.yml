@@ -510,14 +510,12 @@ workflows:
       - wedlocks-tests
       - unlock-app-tests
       - unlock-js-tests
-      - nudge-tests
       - integration-tests:
           requires:
             - unlock-protocol-com-tests
             - unlock-app-tests
             - locksmith-tests
             - paywall-tests
-            - nudge-tests
             - wedlocks-tests
             - newsletter-tests
       - deploy-unlock-app-netlify:
@@ -567,12 +565,6 @@ workflows:
               only: master
           requires:
             - promote-unlock-core-image
-      - promote-nudge-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - promote-unlock-core-image
       - promote-wedlocks-image:
           filters:
             branches:
@@ -610,15 +602,3 @@ workflows:
               only: master
           requires:
             - integration-tests
-      - deploy-nudge-beanstalk-staging:
-          filters:
-            branches:
-              only: master
-          requires:
-            - integration-tests
-      - deploy-nudge-beanstalk-production:
-          filters:
-            branches:
-              only: master
-          requires:
-            - deploy-nudge-beanstalk-staging
