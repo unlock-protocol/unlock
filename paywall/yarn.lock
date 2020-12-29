@@ -5359,10 +5359,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/from-entries/-/from-entries-0.2.1.tgz#7e86196b8b2e99d73106a8f25c2a068326346354"
   integrity sha512-CAqefTFAfnUPwYqsWHXpOxHaq1Zo5UQ3m9Zm2p09LggGe57rqHoBn3c++xcoomzXKynAUuiBMDUCQvKMnXjUpA==
 
-"@unlock-protocol/unlock-js@0.13.3":
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.13.3.tgz#ef61981cec21acb82a0c1f60d21b0913b567470f"
-  integrity sha512-YbKwLNFTip9OD2NgvteRQICGtL0P7SYu1eBl9xZm7Jbo1Kushh3Qiwank6d2CBAS4aHJJ3KxNeSnkRUf5Gn/UQ==
+"@unlock-protocol/unlock-js@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.14.0.tgz#bcde6c53efee3df48047440547c461a03fa218d6"
+  integrity sha512-QjuS9FJrXJbnsene5XMpG0jzxSdnjyai+cKtoQ6YJidveeDRij6ZRLEcA7CoNWVbOPObaK4IkaqqQ+k3zXO0RA==
   dependencies:
     babel-jest "26.6.3"
     cross-fetch "3.0.6"
