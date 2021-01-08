@@ -30,7 +30,7 @@
     "@unlock-protocol/unlock-js": "0.14.0",
     "@xstate/react": "1.0.3",
     "apollo-boost": "0.4.9",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
     "babel-loader": "8.2.2",
