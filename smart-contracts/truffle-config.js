@@ -41,6 +41,18 @@ if (kovanProviderUrl) {
 }
 
 /**
+ * Used for xdai deployments
+ */
+const xdaiProviderUrl = process.env.XDAI_PROVIDER_URL
+let xdaiMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (xdaiProviderUrl) {
+  xdaiMnemonic = require('./mnemonic.xdai') // eslint-disable-line import/no-unresolved
+}
+
+/**
  * Used for mainnet deployments
  */
 const mainnetProviderUrl = process.env.MAINNET_PROVIDER_URL
@@ -87,6 +99,14 @@ function kovanProvider() {
   )
 }
 
+function xdaiProvider() {
+  return new HDWalletProvider(
+    xdaiMnemonic.seed,
+    xdaiProviderUrl,
+    xdaiMnemonic.accountIndex
+  )
+}
+
 module.exports = {
   networks: {
     development: {
@@ -110,6 +130,10 @@ module.exports = {
     mainnet: {
       provider: mainnetProvider,
       network_id: 1, // Network Id for Mainnet
+    },
+    xdai: {
+      provider: xdaiProvider,
+      network_id: 100, // Network Id for xdai
     },
   },
   compilers: {
