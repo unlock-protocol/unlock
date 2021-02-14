@@ -30,6 +30,11 @@ const networkMap = {
       graphNode: 'http://localhost:8020/',
       ipfs: 'http://localhost:5001',
     },
+    ropsten: {
+      subgraph: 'unlock-protocol/unlock-ropsten',
+      graphNode: 'http://localhost:8020/',
+      ipfs: 'http://localhost:5001',
+    },
   },
   production: {
     kovan: {
@@ -44,6 +49,11 @@ const networkMap = {
     },
     rinkeby: {
       subgraph: 'unlock-protocol/unlock-rinkeby',
+      graphNode: 'https://api.thegraph.com/deploy/',
+      ipfs: 'https://api.thegraph.com/ipfs/',
+    },
+    ropsten: {
+      subgraph: 'unlock-protocol/unlock-ropsten',
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',
     },
