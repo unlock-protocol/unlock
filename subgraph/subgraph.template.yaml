@@ -11,6 +11,7 @@ dataSources:
     source:
       address: "{{unlockContractAddress}}"
       abi: Contract
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
