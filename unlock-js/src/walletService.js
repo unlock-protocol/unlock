@@ -18,8 +18,8 @@ const abis = require('./abis').default
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends UnlockService {
-  constructor({ unlockAddress }) {
-    super({ unlockAddress, writable: true })
+  constructor() {
+    super({ writable: true })
     this.ready = false
 
     this.on('ready', () => {
@@ -75,6 +75,7 @@ export default class WalletService extends UnlockService {
       this.networkId = networkId
       this.emit('network.changed', networkId)
     }
+    return networkId
   }
 
   /**
@@ -112,6 +113,7 @@ export default class WalletService extends UnlockService {
         emailAddress: this.provider.emailAddress,
       })
     }
+
     this.emit('ready')
     return address
   }

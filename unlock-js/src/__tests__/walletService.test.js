@@ -22,16 +22,13 @@ const unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 describe('WalletService (ethers)', () => {
   function resetTests() {
     nock.cleanAll()
-    walletService = new WalletService({
-      unlockAddress,
-    })
+    walletService = new WalletService()
+    walletService.setUnlockAddress(unlockAddress)
   }
   const netVersion = Math.floor(Math.random() * 100000)
   async function resetTestsAndConnect(provider = endpoint) {
     nock.cleanAll()
-    walletService = new WalletService({
-      unlockAddress,
-    })
+    walletService = new WalletService()
     nock.netVersionAndYield(netVersion)
 
     await walletService.connect(provider)

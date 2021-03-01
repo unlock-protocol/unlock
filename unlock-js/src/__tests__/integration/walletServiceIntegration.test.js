@@ -37,7 +37,7 @@ describe('Wallet Service Integration', () => {
     let web3Service
 
     beforeAll(async () => {
-      walletService = new WalletService({})
+      walletService = new WalletService()
 
       await walletService.connect(provider)
 
