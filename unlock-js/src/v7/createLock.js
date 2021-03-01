@@ -1,7 +1,7 @@
 import ethersUtils from '../utils'
-import { ETHERS_MAX_UINT } from '../constants'
+import { ETHERS_MAX_UINT, UNLIMITED_KEYS_COUNT, ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
-import { UNLIMITED_KEYS_COUNT, ZERO } from '../../lib/constants'
+
 import { getErc20Decimals } from '../erc20'
 
 /**
