@@ -86,8 +86,10 @@ export default class WalletService extends UnlockService {
   async isUnlockContractDeployed(callback) {
     let opCode = '0x' // Default
     try {
+      console.log(this.unlockContractAddress)
       opCode = await this.provider.getCode(this.unlockContractAddress)
     } catch (error) {
+      console.log(error)
       return callback(error)
     }
     return callback(null, opCode !== '0x')
