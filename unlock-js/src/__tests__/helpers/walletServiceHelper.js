@@ -24,10 +24,8 @@ export const prepWalletService = async (
   isUnlock = false // true for Unlock, false for PublicLock
 ) => {
   nock.cleanAll()
-  const walletService = new WalletService({
-    unlockAddress: checksumContractAddress,
-  })
-
+  const walletService = new WalletService()
+  walletService.setUnlockAddress(checksumContractAddress)
   const netVersion = 1984
 
   let unlockVersion

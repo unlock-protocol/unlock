@@ -27,9 +27,8 @@ const provider = require('../provider.js')
 const unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
 
 async function run() {
-  const walletService = new WalletService({
-    unlockAddress,
-  })
+  const walletService = new WalletService()
+  walletService.setUnlockAddress(unlockAddress)
 
   // Connects
   await walletService.connect(provider)
@@ -37,6 +36,9 @@ async function run() {
   const templateAddress = await walletService.deployTemplate(
     'v8',
     (error, hash) => {
+      if (error) {
+        console.error('Failed to deploy')
+      }
       console.log('Template Transaction:')
       console.log({ hash })
     }
@@ -46,6 +48,9 @@ async function run() {
   console.log(templateAddress)
 
   await walletService.initializeTemplate({ templateAddress }, (error, hash) => {
+    if (error) {
+      console.error('Failed to deploy')
+    }
     console.log('Initialization Transaction:')
     console.log({ hash })
   })

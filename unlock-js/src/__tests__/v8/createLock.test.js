@@ -10,11 +10,7 @@ import utils from '../../utils'
 import { getTestProvider } from '../helpers/provider'
 import { getTestUnlockContract } from '../helpers/contracts'
 
-import {
-  UNLIMITED_KEYS_COUNT,
-  ETHERS_MAX_UINT,
-  ZERO,
-} from '../../../lib/constants'
+import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT, ZERO } from '../../constants'
 import erc20 from '../../erc20'
 
 const UnlockVersion = abis.v8
@@ -58,9 +54,8 @@ const lockCreationTransaction = {
 describe('v8', () => {
   beforeEach(() => {
     // Mock all the methods
-    walletService = new WalletService({
-      unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
-    })
+    walletService = new WalletService()
+    walletService.setUnlockAddress('0x559247Ec8A8771E8C97cDd39b96b9255651E39C5')
     walletService.provider = provider
     walletService.unlockContractAbiVersion = jest.fn(() => Promise.resolve(v8))
     walletService.getUnlockContract = jest.fn(() => {

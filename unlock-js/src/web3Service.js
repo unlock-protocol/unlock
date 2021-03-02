@@ -18,7 +18,7 @@ export default class Web3Service extends UnlockService {
   constructor({ readOnlyProvider, unlockAddress, network }) {
     super({ unlockAddress })
 
-    this.setup(readOnlyProvider, network)
+    this.reset(readOnlyProvider, network, unlockAddress)
 
     // Transactions create events which we use here to build the state.
     // TODO we should ensure that the contracts triggering the events are the right ones
@@ -121,14 +121,17 @@ export default class Web3Service extends UnlockService {
    * we remove web3
    * TODO: ^ assess this?
    */
-  setup(readOnlyProvider, network) {
+  reset(readOnlyProvider, network, unlockAddress) {
     if (typeof readOnlyProvider === 'string') {
       this.provider = new FetchJsonProvider({
         endpoint: readOnlyProvider,
         network,
       })
-    } else if (readOnlyProvider.send) {
+    } else if (readOnlyProvider && readOnlyProvider.send) {
       this.provider = new ethers.providers.Web3Provider(readOnlyProvider)
+    }
+    if (unlockAddress) {
+      this.setUnlockAddress(unlockAddress)
     }
   }
 
