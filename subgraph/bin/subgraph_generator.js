@@ -8,7 +8,7 @@ const fs = require('fs-extra')
 const templateValues = (network) => {
   let address
   let networkName
-  let startBlock=0
+  let startBlock = 0
   switch (network.toLowerCase()) {
     case 'winston':
       address = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
@@ -25,11 +25,15 @@ const templateValues = (network) => {
     case 'ropsten':
       address = '0x37855dcf04d3dd44bc7da63da7a25f9b006364e5'
       networkName = 'ropsten'
-      startBlock  = 8366421
+      startBlock = 8366421
       break
     case 'mainnet':
       address = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
       networkName = 'mainnet'
+      break
+    case 'xdai':
+      address = '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863'
+      networkName = 'xdai'
       break
     default:
       console.error(
