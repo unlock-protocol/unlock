@@ -35,6 +35,11 @@ const networkMap = {
       graphNode: 'http://localhost:8020/',
       ipfs: 'http://localhost:5001',
     },
+    xdai: {
+      subgraph: 'unlock-protocol/xdai',
+      graphNode: 'http://localhost:8020/',
+      ipfs: 'http://localhost:5001',
+    },
   },
   production: {
     kovan: {
@@ -54,6 +59,11 @@ const networkMap = {
     },
     ropsten: {
       subgraph: 'unlock-protocol/unlock-ropsten',
+      graphNode: 'https://api.thegraph.com/deploy/',
+      ipfs: 'https://api.thegraph.com/ipfs/',
+    },
+    xdai: {
+      subgraph: 'unlock-protocol/xdai',
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',
     },
