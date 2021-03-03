@@ -1,75 +1,40 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import queryString from 'query-string'
-import { UnlockError } from '../../utils/Error'
 import { Checkout } from '../interface/checkout/Checkout'
-import {
-  Account as AccountType,
-  Router,
-  PaywallConfig,
-} from '../../unlockTypes'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import { CheckoutStoreProvider } from '../../hooks/useCheckoutStore'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
+import { PaywallConfigContext } from '../../contexts/PaywallConfigContext'
+import Loading from '../interface/Loading'
 
 interface CheckoutContentProps {
-  account: AccountType
-  configFromSearch?: PaywallConfig
-  errors: UnlockError[]
+  query: any
 }
 
-export const CheckoutContent = ({
-  account,
-  configFromSearch,
-  errors,
-}: CheckoutContentProps) => {
+export const CheckoutContent = ({ query }: CheckoutContentProps) => {
   const checkoutCommunication = useCheckoutCommunication()
+  const configFromSearch = getConfigFromSearch(query)
 
   // We need to delay render until we have a config at least, and
   // further if we haven't yet set up the adapter for delegated web3
   // calls
-  const noConfig =
-    checkoutCommunication.insideIframe && !checkoutCommunication.config
   const noProviderAdapter =
-    checkoutCommunication.config &&
-    checkoutCommunication.config.useDelegatedProvider &&
+    checkoutCommunication.paywallConfig &&
+    checkoutCommunication.paywallConfig.useDelegatedProvider &&
     !checkoutCommunication.providerAdapter
 
-  if (noConfig || noProviderAdapter) {
-    return <></>
+  const paywallConfig = checkoutCommunication.paywallConfig || configFromSearch
+
+  if (!paywallConfig || noProviderAdapter) {
+    return <Loading />
   }
 
   return (
-    <CheckoutStoreProvider>
-      <Checkout
-        account={account}
-        configFromSearch={configFromSearch}
-        errors={errors}
-        {...checkoutCommunication}
-      />
-    </CheckoutStoreProvider>
+    <PaywallConfigContext.Provider value={paywallConfig}>
+      <CheckoutStoreProvider>
+        <Checkout {...checkoutCommunication} />
+      </CheckoutStoreProvider>
+    </PaywallConfigContext.Provider>
   )
 }
 
-CheckoutContent.defaultProps = {
-  configFromSearch: null,
-}
-
-interface ReduxState {
-  account: AccountType
-  router: Router
-  errors: UnlockError[]
-}
-
-export const mapStateToProps = ({ account, router, errors }: ReduxState) => {
-  const search = queryString.parse(router.location.search)
-  const configFromSearch = getConfigFromSearch(search)
-
-  return {
-    account,
-    configFromSearch,
-    errors,
-  }
-}
-
-export default connect(mapStateToProps)(CheckoutContent)
+export default CheckoutContent

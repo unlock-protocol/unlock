@@ -39,15 +39,14 @@ export default function configure(
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
-  let unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
-  const ERC20Contract = {
-    name: runtimeConfig.erc20ContractSymbol || 'DEV',
-    address:
-      runtimeConfig.erc20ContractAddress ||
-      '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
-  }
   const services = {}
-  let supportedProviders = []
+  services.storage = {
+    host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+  }
+  services.wedlocks = {
+    host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
+  }
+
   const { base64WedlocksPublicKey } = runtimeConfig
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let paywallScriptUrl =
@@ -64,25 +63,13 @@ export default function configure(
   // developing.
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
-  const subgraphURI =
-    runtimeConfig.subgraphURI ||
-    'http://localhost:8000/subgraphs/name/unlock-protocol/unlock'
 
-  services.currencyPriceLookup =
-    'https://api.coinbase.com/v2/prices/ETH-USD/buy'
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
     blockTime = 1000 // in mseconds.
-    supportedProviders = ['HTTP']
-    services.storage = {
-      host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
-    }
-    services.wedlocks = {
-      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
-    }
     isRequiredNetwork = (networkId) => networkId === 1984
   }
 
@@ -90,27 +77,12 @@ export default function configure(
   // when no provider has been injected so we can test unlock accounts.
   if (env === 'unlock-provider-integration') {
     blockTime = 1000 // in mseconds.
-    services.storage = {
-      host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
-    }
-    services.wedlocks = {
-      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
-    }
     isRequiredNetwork = (networkId) => networkId === 1984
   }
 
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    services.storage = {
-      host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
-    }
-    services.wedlocks = {
-      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
-    }
-
-    supportedProviders = ['HTTP']
-
     // In dev, we only require 6 confirmation because we only mine when there are pending transactions
     requiredConfirmations = 6
 
@@ -134,14 +106,12 @@ export default function configure(
       `https://rinkeby.etherscan.io${path}`
     requiredNetworkId = 4
     paywallUrl = 'https://'
-    supportedProviders = ['Metamask', 'Opera']
     services.storage = { host: runtimeConfig.locksmithHost }
     services.wedlocks = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
     // Address for the Unlock smart contract
-    unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
@@ -154,14 +124,12 @@ export default function configure(
       `https://kovan.etherscan.io${path}`
     requiredNetworkId = 42
     paywallUrl = 'https://'
-    supportedProviders = ['Metamask', 'Opera']
     services.storage = { host: runtimeConfig.locksmithHost }
     services.wedlocks = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
     // Address for the Unlock smart contract on Kovan
-    unlockAddress = '0x0B9fe963b789151E53b8bd601590Ea32F9f2453D'
 
     // Kovan average block time
     blockTime = 4000
@@ -173,14 +141,12 @@ export default function configure(
     chainExplorerUrlBuilders.etherscan = (path) => `https://etherscan.io${path}`
     requiredNetworkId = 1
 
-    supportedProviders = ['Metamask', 'Opera']
     services.storage = { host: runtimeConfig.locksmithHost }
     services.wedlocks = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
     // Address for the Unlock smart contract
-    unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
@@ -195,10 +161,105 @@ export default function configure(
     readOnlyProvider = readOnlyProviderUrl
   }
 
+  const networks = {}
+
+  networks[1984] = {
+    httpProvider: runtimeConfig.httpProvider || '127.0.0.1',
+    readOnlyProvider: `http://${httpProvider}:8545`,
+    unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
+    id: 1984,
+    name: 'Dev',
+    requiredConfirmations: 6,
+    blockTime: 3000,
+    subgraphURI: 'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
+    explorer: () => {},
+    erc20: {
+      symbol: 'DEV',
+      address: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
+    },
+    stripeApiKey: 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
+    locksmith: 'http://127.0.0.1:8080', // TODO: not network specific, API calls should be network specific though
+  }
+
+  networks[1] = {
+    httpProvider: null, // we use the injected provider!
+    readOnlyProvider:
+      'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
+    unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
+    id: 1,
+    name: 'Ethereum',
+    blockTime: 8000,
+    subgraphURI:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+    explorer: (path) => `https://etherscan.io${path}`,
+    erc20: {
+      symbol: 'DAI',
+      address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    },
+    locksmith: 'https://locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+  }
+
+  networks[4] = {
+    httpProvider,
+    readOnlyProvider:
+      'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
+    unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
+    id: 4,
+    name: 'Rinkeby',
+    blockTime: 8000,
+    subgraphURI:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+    explorer: (path) => `https://rinkeby.etherscan.io${path}`,
+    erc20: {
+      symbol: 'WEE',
+      address: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
+    },
+    locksmith: 'https://rinkeby.locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+  }
+
+  networks[3] = {
+    httpProvider,
+    readOnlyProvider,
+    unlockAddress: '',
+    id: 3,
+    name: 'Ropsten',
+    blockTime: 4000,
+    subgraphURI:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-ropsten',
+    explorer: () => {},
+    erc20: {},
+    locksmith: '', // TODO: not network specific, API calls should be network specific though
+  }
+
+  networks[42] = {
+    httpProvider,
+    readOnlyProvider,
+    unlockAddress: '',
+    id: 42,
+    name: 'Kovan',
+    blockTime: 4000,
+    subgraphURI: '',
+    explorer: () => {},
+    erc20: {},
+    locksmith: '', // TODO: not network specific, API calls should be network specific though
+  }
+
+  networks[100] = {
+    httpProvider,
+    readOnlyProvider,
+    unlockAddress: '',
+    id: 100,
+    name: 'xDai',
+    blockTime,
+    subgraphURI: '',
+    explorer: () => {},
+    erc20: {},
+    locksmith: '', // TODO: not network specific, API calls should be network specific though
+  }
+
   return {
     base64WedlocksPublicKey,
     blockTime,
-    ERC20Contract,
     isServer,
     isInIframe,
     env,
@@ -208,18 +269,17 @@ export default function configure(
     requiredNetworkId,
     requiredNetwork,
     requiredConfirmations,
-    unlockAddress,
+    readOnlyProviderUrl, // Used for Unlock accounts
     services,
     paywallUrl,
     paywallScriptUrl,
-    supportedProviders,
     unlockStaticUrl,
     chainExplorerUrlBuilders,
     stripeApiKey,
-    subgraphURI,
     googleClientId,
     googleApiKey,
     googleDiscoveryDocs,
     googleScopes,
+    networks,
   }
 }

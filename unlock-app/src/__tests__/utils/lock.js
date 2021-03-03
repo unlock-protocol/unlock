@@ -19,7 +19,7 @@ describe('currencySymbol', () => {
     const lock = {
       currencyContractAddress: defaultERC20.address,
     }
-    expect(currencySymbol(lock, defaultERC20)).toBe('TOKEN')
+    expect(currencySymbol(lock, defaultERC20)).toBe('ERC20')
   })
 
   it('should return ERC20 if the lock is for another currency', () => {

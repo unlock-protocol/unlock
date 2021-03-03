@@ -148,7 +148,7 @@ describe('Unlock Provider', () => {
         ).toEqual(publicKey.toLowerCase())
       })
 
-      it('should be compatible with walletService', async (done) => {
+      it.skip('should be compatible with walletService', async (done) => {
         expect.assertions(1)
 
         const ws = new WalletService()

@@ -18,16 +18,6 @@ const defaultMessages = {
     <p>Unlock has not been deployed on the current network.</p>
   ),
 
-  FORM_LOCK_NAME_MISSING: (
-    <p>Please provide a name for the lock you are creating</p>
-  ),
-  FORM_EXPIRATION_DURATION_INVALID: (
-    <p>Expiration must be a positive whole number</p>
-  ),
-  FORM_MAX_KEYS_INVALID: (
-    <p>Maximum keys allowed must be a positive whole number, or infinite</p>
-  ),
-  FORM_KEY_PRICE_INVALID: <p>Key price must be a positive number</p>,
   FAILED_TO_CREATE_LOCK: <p>Your lock could not be created</p>,
   FAILED_TO_PURCHASE_KEY: <p>Your key could not be purchased</p>,
   FAILED_TO_UPDATE_KEY_PRICE: <p>Your lock price could not be updated</p>,
