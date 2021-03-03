@@ -34,7 +34,8 @@ const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 const graphService = new GraphService(config.subgraphURI)
 
-const walletService = new WalletService(config)
+const walletService = new WalletService()
+
 const {
   readOnlyProvider,
   unlockAddress,
@@ -42,6 +43,7 @@ const {
   requiredConfirmations,
   requiredNetworkId,
 } = config
+walletService.setUnlockAddress(unlockAddress)
 const web3Service = new Web3Service({
   readOnlyProvider,
   unlockAddress,
