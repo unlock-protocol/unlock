@@ -26,7 +26,7 @@ const serverIsUp = (delay, maxAttempts) =>
         return socket.end() // clean-up
       })
 
-      socket.on('error', error => {
+      socket.on('error', (error) => {
         if (error.code === 'ECONNREFUSED') {
           if (attempts < maxAttempts) {
             attempts += 1
@@ -43,13 +43,11 @@ const serverIsUp = (delay, maxAttempts) =>
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
     const versionName = latest
-    return deploy(host, port, versionName, newContractInstance => {
+    return deploy(host, port, versionName, (newContractInstance) => {
       console.log(`UNLOCK DEPLOYED AT ${newContractInstance.address}`)
       // We need to configure it!
-      const wallet = new WalletService({
-        unlockAddress: newContractInstance.address,
-      })
-
+      const wallet = new WalletService()
+      wallet.setUnlockAddress(newContractInstance.address)
       wallet.on('account.changed', async () => {
         // Deploy the template contract
         const publicLockTemplateAddress = await wallet.deployTemplate(
@@ -69,7 +67,7 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       })
     })
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error)
     process.exit(1)
   })
