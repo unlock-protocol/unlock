@@ -1,5 +1,9 @@
 # Changes
 
+# 0.15.1
+
+- Typescript definition fix
+
 # 0.15.0
 
 - various API changes
