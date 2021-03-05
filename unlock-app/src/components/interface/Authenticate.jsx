@@ -93,7 +93,7 @@ export const AuthenticateWithProvider = ({
   }
 
   // Sometimes, we need a specific network (verifying an NFT for example!)
-  if (requiredNetwork && network !== requiredNetwork) {
+  if (requiredNetwork && parseInt(network) !== parseInt(requiredNetwork)) {
     return <WrongNetwork network={requiredNetwork} />
   }
 
