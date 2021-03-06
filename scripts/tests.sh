@@ -24,4 +24,5 @@ docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t unlock-core -f docker/unlock
 docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
 
 # Run tests
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $SERVICE $COMMAND
+# docker
+# docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $SERVICE $COMMAND
