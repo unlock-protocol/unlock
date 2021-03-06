@@ -72,14 +72,6 @@ export default function configure(
     blockTime = 1000 // in mseconds.
     isRequiredNetwork = (networkId) => networkId === 1984
   }
-
-  // The `unlock-provider-integration` environment is only used in integration tests
-  // when no provider has been injected so we can test unlock accounts.
-  if (env === 'unlock-provider-integration') {
-    blockTime = 1000 // in mseconds.
-    isRequiredNetwork = (networkId) => networkId === 1984
-  }
-
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.

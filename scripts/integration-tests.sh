@@ -37,7 +37,6 @@ docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t unlock-protocol-com -f docke
 
 # start unlock-app to make sure it's built by the time the tests run
 docker-compose $COMPOSE_CONFIG up --detach unlock-app
-docker-compose $COMPOSE_CONFIG up --detach unlock-provider-unlock-app
 docker-compose $COMPOSE_CONFIG up --detach paywall
 
 # Deploy the subgraph
