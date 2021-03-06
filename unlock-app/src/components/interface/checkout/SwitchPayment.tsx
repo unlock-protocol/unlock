@@ -4,7 +4,7 @@ import styled from 'styled-components'
 interface SwitchPaymentProps {
   paymentOptions: string[]
   activePayment: string | null
-  setActivePayment: (option: string | null) => void
+  setActivePayment: (option: string) => void
 }
 
 export const SwitchPayment = ({
@@ -16,7 +16,7 @@ export const SwitchPayment = ({
     <Container>
       <HeaderRow>
         <Header>Switch payment to</Header>
-        <ResetText onClick={() => setActivePayment(null)}>Reset</ResetText>
+        <ResetText onClick={() => setActivePayment('Default')}>reset</ResetText>
       </HeaderRow>
       {paymentOptions.map((option) => {
         if (option === activePayment) {
@@ -37,7 +37,7 @@ export const SwitchPayment = ({
 }
 
 const Container = styled.div`
-  width: 100%;
+  width: 240px;
 `
 
 const HeaderRow = styled.div`

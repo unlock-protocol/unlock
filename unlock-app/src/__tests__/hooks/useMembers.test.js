@@ -1,6 +1,5 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import { useDispatch } from 'react-redux'
 import { useQuery } from '@apollo/react-hooks'
 import keyHolderQuery from '../../queries/keyholdersByLock'
 import { WalletServiceContext } from '../../utils/withWalletService'
@@ -12,15 +11,10 @@ import useMembers, {
   getAllKeysMetadataForLock,
   buildMembersWithMetadata,
 } from '../../hooks/useMembers'
-import {
-  waitForWallet,
-  dismissWalletCheck,
-} from '../../actions/fullScreenModals'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
 
 jest.mock('../../structured_data/keyMetadataTypedData')
 jest.mock('@apollo/react-hooks')
-jest.mock('react-redux')
 
 const signature = 'signature'
 const viewer = '0xlockOwner'
@@ -79,13 +73,8 @@ const web3Service = {
 const storageService = {
   getBulkMetadataFor: jest.fn(() => Promise.resolve(storedMetata)),
 }
-const dispatch = jest.fn(() => {})
 const typedData = {}
 generateKeyTypedData.mockImplementation(() => typedData)
-
-const mockDispatch = jest.fn(() => {})
-useDispatch.mockImplementation(() => mockDispatch)
-
 describe('useMembers', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -105,26 +94,13 @@ describe('useMembers', () => {
   })
 
   describe('getAllKeysMetadataForLock', () => {
-    it('should dispatch message to ask the user to check their wallet', async () => {
-      expect.assertions(1)
-      await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService,
-        dispatch
-      )
-      expect(dispatch).toHaveBeenCalledWith(waitForWallet())
-    })
-
     it('should generate the typed key data', async () => {
       expect.assertions(1)
       await getAllKeysMetadataForLock(
         lock,
         viewer,
         walletService,
-        storageService,
-        dispatch
+        storageService
       )
       expect(generateKeyTypedData).toHaveBeenCalledWith({
         LockMetaData: {
@@ -142,8 +118,7 @@ describe('useMembers', () => {
         lock,
         viewer,
         walletService,
-        storageService,
-        dispatch
+        storageService
       )
       expect(walletService.signData).toHaveBeenCalledWith(
         viewer,
@@ -159,8 +134,7 @@ describe('useMembers', () => {
         lock,
         viewer,
         walletService,
-        storageService,
-        dispatch
+        storageService
       )
       expect(storageService.getBulkMetadataFor).toHaveBeenCalledWith(
         lock.address,
@@ -168,18 +142,6 @@ describe('useMembers', () => {
         typedData
       )
       expect(metadataForLock).toEqual(storedMetata)
-    })
-
-    it('should dispatch message to dismiss the check your wallet message', async () => {
-      expect.assertions(1)
-      await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService,
-        dispatch
-      )
-      expect(dispatch).toHaveBeenCalledWith(dismissWalletCheck())
     })
   })
 

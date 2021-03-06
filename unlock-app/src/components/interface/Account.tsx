@@ -1,33 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 
-import * as UnlockTypes from '../../unlockTypes'
-import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import Address from './Address'
 import Media from '../../theme/media'
+import { AuthenticationContext } from './Authenticate'
+import { ConfigContext } from '../../utils/withConfig'
 
-interface Props {
-  account: UnlockTypes.Account
-  network: UnlockTypes.Network
-}
-
-export function Account({ account, network }: Props) {
-  const networkName = ETHEREUM_NETWORKS_NAMES[network.name]
-    ? ETHEREUM_NETWORKS_NAMES[network.name][0]
-    : 'Unknown Network'
+export function Account() {
+  const { networks } = useContext(ConfigContext)
+  const { account, network } = useContext(AuthenticationContext)
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
-  const iconSeed = parseInt(account.address.slice(2, 10), 16)
-
+  const iconSeed = parseInt((account || '').slice(2, 10), 16)
   return (
     <AccountWrapper>
       <AccountDetails>
         <DoubleHeightCell>
-          <Jazzicon diameter={40} seed={iconSeed} />
+          {account && <Jazzicon diameter={40} seed={iconSeed} />}
         </DoubleHeightCell>
         <Label>
-          Address
-          <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
+          <NetworkInfo>{networks[network].name}</NetworkInfo>
         </Label>
         <DoubleHeightCell />
         <DoubleHeightCell />
@@ -35,25 +27,22 @@ export function Account({ account, network }: Props) {
         <DoubleHeightCell />
         <DoubleHeightCell />
         <DoubleHeightCell />
-        <UserAddress id="UserAddress" address={account.address} />
+        {account && <UserAddress id="UserAddress" address={account} />}
       </AccountDetails>
     </AccountWrapper>
   )
 }
 
 export default Account
-
-const AccountWrapper = styled.section``
-
 const NetworkInfo = styled.span`
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   font-weight: 500;
   color: var(--red);
-  margin-left: 1em;
   text-transform: none;
 `
 
+const AccountWrapper = styled.section``
 const AccountDetails = styled.div`
   font-family: 'IBM Plex Mono', monospace;
   display: grid;

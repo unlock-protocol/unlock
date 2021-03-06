@@ -1,24 +1,11 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import styled from 'styled-components'
 import { LoadingButton } from './user-account/styles'
 
-export interface Credentials {
-  emailAddress: string
-  password: string
-}
-
 interface Props {
   buttonLabel: string
-  emailAddress: string
-  onSubmit: (credentials: Credentials) => any
-}
-
-interface State {
-  password: string
-  passwordConfirmation: string
-  errors: string[]
-  isValid: boolean
-  submitted: boolean
+  loading: boolean
+  onSubmit: (password: string) => any
 }
 
 export const passwordErrors = {
@@ -45,106 +32,114 @@ export const validatePassword = (
   // TODO: better calculation of best-case password complexity.
   // TODO: augment complexity calculation with calls to HaveIBeenPwned API.
 
-  if (password !== passwordConfirmation) {
+  if (passwordConfirmation && password !== passwordConfirmation) {
     errors.push(passwordErrors.NO_MATCH)
   }
 
   return errors
 }
 
-export class SetPassword extends React.Component<Props, State> {
-  /* eslint-disable react/static-property-placement */
-  static defaultProps = {
-    buttonLabel: 'Creating Account',
-  }
-  /* eslint-enable react/static-property-placement */
+interface ReducerState {
+  password: string
+  passwordConfirmation: string
+  errors: string[]
+}
 
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      password: '',
-      passwordConfirmation: '',
-      errors: [],
-      isValid: false,
-      submitted: false,
-    }
-  }
+interface ReducerActionChange {
+  name: string
+  value: string | string[]
+}
+interface ReducerAction {
+  change?: ReducerActionChange[]
+}
 
-  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+const reducer = (state: ReducerState, action: ReducerAction) => {
+  if (action.change) {
+    const newState = { ...state } as any
+    action.change.forEach((change: ReducerActionChange) => {
+      newState[change.name] = change.value
+    })
+    return newState
+  }
+  return { ...state }
+}
+
+const defaultState = {
+  password: '',
+  passwordConfirmation: '',
+  errors: [],
+}
+
+export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
+  const [state, dispatch] = useReducer(reducer, defaultState)
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target
+    const { password, passwordConfirmation } = state
 
-    this.setState((prevState) => {
-      const newState = {
-        ...prevState,
-        [name]: value,
-      }
-      const { password, passwordConfirmation } = newState
-      const errors = validatePassword(password, passwordConfirmation)
-
-      return {
-        ...newState,
-        errors,
-        isValid: !errors.length,
-      }
-    })
-  }
-
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const { emailAddress, onSubmit } = this.props
-    const { password, passwordConfirmation } = this.state
-    const errors = validatePassword(password, passwordConfirmation)
-
-    // Last sanity check to make sure nobody messed with the DOM attr
-    const isValid = !errors.length
-    if (isValid) {
-      onSubmit({ emailAddress, password })
+    let errors
+    if (name === 'passwordConfirmation') {
+      errors = validatePassword(password, value)
+    } else {
+      errors = validatePassword(value, passwordConfirmation)
     }
-
-    this.setState({
-      submitted: true,
+    dispatch({
+      change: [
+        { value, name },
+        { name: 'errors', value: errors },
+      ],
     })
   }
 
-  submitButton = () => {
-    const { buttonLabel } = this.props
-    const { submitted, isValid } = this.state
-    if (submitted) {
-      return <LoadingButton>{buttonLabel}...</LoadingButton>
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const { password } = state
+    onSubmit(password)
+  }
+
+  const submitButton = () => {
+    const { errors } = state
+    const isValid = errors.length === 0
+    if (loading) {
+      return (
+        <LoadingButton>{buttonLabel || 'Creating Account'}...</LoadingButton>
+      )
     }
 
     return <SubmitButton type="submit" value="Submit" disabled={!isValid} />
   }
 
-  render = () => {
-    const { errors } = this.state
+  const { errors } = state
 
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <Label htmlFor="passwordInput">Password</Label>
-        <Input
-          name="password"
-          type="password"
-          id="passwordInput"
-          placeholder="Password"
-          onChange={this.handleInputChange}
-        />
-        <br />
-        <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
-        <Input
-          name="passwordConfirmation"
-          type="password"
-          id="passwordConfirmationInput"
-          placeholder="Confirm Password"
-          onChange={this.handleInputChange}
-        />
-        <br />
-        <PasswordError>{errors.length ? errors[0] : ''}</PasswordError>
-        <br />
-        {this.submitButton()}
-      </Form>
-    )
-  }
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Label htmlFor="passwordInput">Password</Label>
+      <Input
+        required
+        name="password"
+        type="password"
+        id="passwordInput"
+        placeholder="Password"
+        onChange={handleInputChange}
+      />
+      <br />
+      <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
+      <Input
+        required
+        name="passwordConfirmation"
+        type="password"
+        id="passwordConfirmationInput"
+        placeholder="Confirm Password"
+        onChange={handleInputChange}
+      />
+      <br />
+      {errors.map((error: string) => (
+        <PasswordError key={error}>{error}</PasswordError>
+      ))}
+      <br />
+      {submitButton()}
+    </Form>
+  )
 }
 
 export default SetPassword
@@ -188,7 +183,8 @@ const Form = styled.form`
   max-width: 450px;
 `
 
-const PasswordError = styled.span`
-  height: 30px;
-  line-height: 30px;
+const PasswordError = styled.p`
+  color: var(--red);
+  margin-bottom: 5px;
+  margin-top: 5px;
 `

@@ -1,10 +1,8 @@
-import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import CreatorLock from '../../components/creator/CreatorLock'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionType } from '../../unlockTypes'
 import configure from '../../config'
@@ -30,42 +28,6 @@ const lockWith = (params) => {
 
 const withdrawalConfirmingAddress = '0xAAAAAAAAAAAAAAAAAAAAAAAAAA73289473298'
 const withdrawalSubmittedAddress = '0xbbbbbbbbbbbbbbbbbbbbbbbbbb73289473298'
-const store = createUnlockStore({
-  transactions: {
-    deployedid: {
-      status: 'mined',
-      confirmations: 24,
-      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
-    },
-    confirmingid: {
-      status: 'mined',
-      confirmations: 4,
-      type: TransactionType.LOCK_CREATION,
-      lock: '0x123456abc',
-    },
-    submittedid: {
-      status: 'submitted',
-      confirmations: 0,
-      type: TransactionType.LOCK_CREATION,
-      lock: '0xabcdef123',
-    },
-    withdrawalconfirmingid: {
-      status: 'mined',
-      confirmations: 2,
-      withdrawal: withdrawalConfirmingAddress,
-      lock: '0xfeedbabe',
-      type: TransactionType.WITHDRAWAL,
-    },
-    withdrawalsubmittedid: {
-      status: 'submitted',
-      confirmations: 0,
-      withdrawal: withdrawalSubmittedAddress,
-      lock: '0xdefcab445',
-      type: TransactionType.WITHDRAWAL,
-    },
-  },
-})
-
 const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
@@ -75,7 +37,6 @@ const web3Service = {
   off: () => {},
 }
 storiesOf('CreatorLock', module)
-  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .addDecorator((getStory) => (
     <Web3ServiceProvider value={web3Service}>{getStory()}</Web3ServiceProvider>
   ))

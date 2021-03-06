@@ -1,10 +1,8 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
-import { useProvider } from './useProvider'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { StorageService } from '../services/storageService'
-import { RawLock } from '../unlockTypes'
 import { TransactionInfo } from './useCheckoutCommunication'
 import { setTransactionHash } from '../utils/checkoutActions'
 import { useCheckoutStore } from './useCheckoutStore'
@@ -39,34 +37,28 @@ export const signKeyPurchaseRequestData = async (
 export const useFiatPurchaseKey = (
   emitTransactionInfo: (info: TransactionInfo) => void
 ) => {
-  const { provider } = useProvider()
   const storageService: StorageService = useContext(StorageServiceContext)
   const walletService: WalletService = useContext(WalletServiceContext)
   const { dispatch } = useCheckoutStore()
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (provider) {
-      setLoading(false)
-    }
-  }, [provider])
-
-  const purchaseKey = async (lock: RawLock, accountAddress: string) => {
+  const purchaseKey = async (lockAddress: string, accountAddress: string) => {
+    setLoading(true)
     const { data, sig } = await signKeyPurchaseRequestData(
       {
         recipient: accountAddress,
-        lock: lock.address,
+        lock: lockAddress,
       },
       walletService
     )
-
     const transactionHash = await storageService.purchaseKey(data, btoa(sig))
 
     dispatch(setTransactionHash(transactionHash))
     emitTransactionInfo({
       hash: transactionHash,
-      lock: lock.address,
+      lock: lockAddress,
     })
+    setLoading(false)
   }
 
   return { loading, purchaseKey }

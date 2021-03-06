@@ -1,11 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Provider } from 'react-redux'
 
 import { Authenticate } from '../../components/interface/Authenticate'
-import createUnlockStore from '../../createUnlockStore'
-
-const store = createUnlockStore({})
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -21,7 +17,6 @@ const provider = {}
 const loading = false
 
 storiesOf('Authenticate', module)
-  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('when the provider is loading', () => {
     return (
       <Authenticate

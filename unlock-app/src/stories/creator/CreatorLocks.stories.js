@@ -1,8 +1,6 @@
-import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { CreatorLocks } from '../../components/creator/CreatorLocks'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
@@ -33,12 +31,6 @@ const anotherLock = {
   address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
   transaction: 'anotherTransactionId',
 }
-
-const store = createUnlockStore({
-  account,
-  locks: [lock],
-})
-
 const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
@@ -52,7 +44,6 @@ const web3Service = {
 const walletService = {}
 
 storiesOf('CreatorLocks', module)
-  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .addDecorator((getStory) => (
     <Web3ServiceProvider value={web3Service}>{getStory()}</Web3ServiceProvider>
   ))

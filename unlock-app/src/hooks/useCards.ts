@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { Card } from '@stripe/stripe-js'
 import { WalletServiceContext } from '../utils/withWalletService'
@@ -211,12 +211,5 @@ export const useCards = (address: string) => {
     }
     setLoading(false)
   }
-
-  useEffect(() => {
-    if (address) {
-      getCards()
-    }
-  }, [address])
-
-  return { cards, error, loading, saveCard, deleteCard }
+  return { cards, error, loading, saveCard, deleteCard, getCards }
 }

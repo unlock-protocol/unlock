@@ -10,14 +10,14 @@ import { ValidKey, InvalidKey } from './verification/Key'
 import { Account as AccountType } from '../../unlockTypes'
 
 interface VerificationData {
-  accountAddress: string
+  account: string
   lockAddress: string
   timestamp: number
 }
 
 interface Props {
   account?: AccountType
-  data?: VerificationData | null
+  data?: VerificationData
   sig?: string
   hexData?: string
 }
@@ -26,7 +26,7 @@ interface Props {
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
+export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   if (!data || !sig || !hexData) {
     return (
       <DefaultError
@@ -40,26 +40,25 @@ export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
     )
   }
 
-  const { accountAddress, lockAddress, timestamp } = data
+  const { account, lockAddress, timestamp } = data
 
   // TODO: craft a better query to let us directly ask about the single
   // lock under consideration. This will remove the need to iterate over
   // all the user's keys to determine if they own a key to this lock.
   const { loading, error, data: keys } = useQuery(keyHolderQuery(), {
-    variables: { address: accountAddress },
+    variables: { address: account },
   })
 
   if (loading) {
     return <Loading />
   }
-
   if (error) {
     // We could not load the user keys...
     return <p>Key could not be loaded... Please try again</p>
   }
 
   // If the signature is not valid
-  if (!isSignatureValidForAddress(sig, hexData, accountAddress)) {
+  if (!isSignatureValidForAddress(sig, hexData, account)) {
     return <InvalidKey />
   }
 
@@ -77,8 +76,8 @@ export const VerificationStatus = ({ data, sig, hexData, account }: Props) => {
 
   return (
     <ValidKey
-      viewer={account && account.address}
-      owner={accountAddress}
+      viewer={undefined} /** TODO */
+      owner={account}
       signatureTimestamp={timestamp}
       ownedKey={matchingKey}
       signature={sig}

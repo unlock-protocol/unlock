@@ -167,7 +167,12 @@ export const ValidKey = ({
 
   if (getMetadataForError || markAsCheckedInError) {
     // TODO: Do better
-    return <p>There was an error.</p>
+    return (
+      <p>
+        There was an error:{' '}
+        {getMetadataForError.toString() || markAsCheckedInError.toString()}
+      </p>
+    )
   }
 
   return (

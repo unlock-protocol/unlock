@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from 'react'
-import { useDispatch } from 'react-redux'
 import { useQuery } from '@apollo/react-hooks'
 import { expirationAsDate } from '../utils/durations'
 import keyHolderQuery from '../queries/keyholdersByLock'
@@ -8,7 +7,6 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilters } from '../unlockTypes'
-import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 
 /**
@@ -17,14 +15,12 @@ import { Web3ServiceContext } from '../utils/withWeb3Service'
  * @param {string} viewer
  * @param {*} walletService
  * @param {*} storageService
- * @param {*} dispatch
  */
 export const getAllKeysMetadataForLock = async (
   lock,
   viewer,
   walletService,
-  storageService,
-  dispatch
+  storageService
 ) => {
   return new Promise((resolve, reject) => {
     // If the user is the owner, we can grab the metadata for each lock
@@ -36,9 +32,7 @@ export const getAllKeysMetadataForLock = async (
       },
     })
 
-    dispatch(waitForWallet())
     walletService.signData(viewer, typedData, async (error, signature) => {
-      dispatch(dismissWalletCheck())
       if (error) {
         reject('Could not sign typed data for metadata request.')
       }
@@ -109,7 +103,6 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
   const walletService = useContext(WalletServiceContext)
   const web3Service = useContext(Web3ServiceContext)
   const storageService = useContext(StorageServiceContext)
-  const dispatch = useDispatch()
   const [hasNextPage, setHasNextPage] = useState(false)
   const [members, setMembers] = useState({})
   const [error, setError] = useState(false)
@@ -153,8 +146,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
           lock,
           viewer,
           walletService,
-          storageService,
-          dispatch
+          storageService
         )
         return buildMembersWithMetadata(lock, storedMetadata)
       } catch (error) {

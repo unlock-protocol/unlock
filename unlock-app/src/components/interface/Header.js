@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import React from 'react'
+import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { RoundedLogo, WordMarkLogo } from './Logo'
@@ -17,59 +17,22 @@ const navigationButtons = [
   Buttons.Telegram,
 ]
 
-const accountTypes = {
-  managed: 'account/managed',
-  crypto: 'account/crypto',
-}
-
-export const typeOfAccount = (account) => {
-  if (!account) {
-    // this case mostly seems to happen in component tests that include the
-    // header but haven't had an account set.
-    return 'account/undefined'
-  }
-  const { address, emailAddress } = account
-  if (address && emailAddress) {
-    return accountTypes.managed
-  }
-  if (address) {
-    return accountTypes.crypto
-  }
-  // This final catch-all state is invalid. No app navigation will display for
-  // a user who doesn't match the above conditions. A user may be in an
-  // intermediate state (not all account updates have hit redux), which may
-  // cause a brief flicker of the icons. The return value here should indicate
-  // what pieces are missing for debugging purposes.
-  return `account/address={${address}}--emailAddress={${emailAddress}}`
-}
-
 // distinct from the above buttons are page nav buttons -- they are only visible
 // from within the app and not from the homepage or other static pages.
 const appButtons = [
   {
     Button: PageNavButtons.Dashboard,
     page: '/dashboard',
-    allowedUsers: [accountTypes.crypto],
   },
   {
     Button: PageNavButtons.Settings,
     page: '/settings',
-    allowedUsers: [accountTypes.managed, accountTypes.crypto],
   },
   {
     Button: PageNavButtons.Keychain,
     page: '/keychain',
-    allowedUsers: [accountTypes.crypto, accountTypes.managed],
   },
 ]
-
-export const mapStateToProps = ({
-  router: {
-    location: { pathname },
-  },
-  account,
-}) => ({ pathname, accountType: typeOfAccount(account) })
-
 /**
  * Helper function which returns the path on the button if the current pathname matches it
  */
@@ -81,94 +44,71 @@ export const isOnAppPage = (pathname) => {
   )
 }
 
-export class Header extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.toggleMenu = this.toggleMenu.bind(this)
-    this.state = { menu: false }
+const Header = ({ forContent, title }) => {
+  const { pathname } = useRouter()
+  const [menu, setMenu] = useState(false)
+
+  const toggleMenu = () => {
+    setMenu(!menu)
   }
 
-  toggleMenu() {
-    this.setState((prevState) => ({ menu: !prevState.menu }))
-  }
-
-  render() {
-    const { menu } = this.state
-    const { forContent, title, pathname, accountType } = this.props
-    const onAppPage = isOnAppPage(pathname)
-    const validAppButtons = appButtons.filter(({ allowedUsers }) => {
-      return allowedUsers.includes(accountType)
-    })
-    return (
-      <TopHeader>
-        {forContent ? (
-          <Link href="/">
-            <a>
-              <WordMarkLogo
-                viewBox="0 0 1200 256"
-                height="28px"
-                name="Unlock"
-              />
-            </a>
-          </Link>
-        ) : (
-          <Title>
-            <LogoContainer>
-              <Link href="/">
-                <a>
-                  <RoundedLogo size="30px" />
-                </a>
-              </Link>
-            </LogoContainer>
-            {title}
-          </Title>
-        )}
-        <AppButtons>
-          {onAppPage &&
-            validAppButtons.map(({ Button }) => (
-              <Button key={Button} activePath={onAppPage} />
-            ))}
-        </AppButtons>
-        <DesktopButtons>
-          {navigationButtons.map((NavButton, index) => (
-            <NavButton key={index.toString()} />
+  const onAppPage = isOnAppPage(pathname)
+  return (
+    <TopHeader>
+      {forContent ? (
+        <Link href="/">
+          <a>
+            <WordMarkLogo viewBox="0 0 1200 256" height="28px" name="Unlock" />
+          </a>
+        </Link>
+      ) : (
+        <Title>
+          <LogoContainer>
+            <Link href="/">
+              <a>
+                <RoundedLogo size="30px" />
+              </a>
+            </Link>
+          </LogoContainer>
+          {title}
+        </Title>
+      )}
+      <AppButtons>
+        {onAppPage &&
+          appButtons.map(({ Button }) => (
+            <Button key={Button} activePath={onAppPage} />
           ))}
-        </DesktopButtons>
-        <MobileToggle visibilityToggle={!!menu} onClick={this.toggleMenu}>
-          <Buttons.Bars size="48px" />
-          <Buttons.ChevronUp size="48px" />
-        </MobileToggle>
-        <MobilePopover visibilityToggle={!!menu}>
-          {menu
-            ? navigationButtons.map((NavButton) => (
-                <NavButton
-                  key={NavButton}
-                  size="48px"
-                  onClick={this.toggleMenu}
-                />
-              ))
-            : ''}
-        </MobilePopover>
-      </TopHeader>
-    )
-  }
+      </AppButtons>
+      <DesktopButtons>
+        {navigationButtons.map((NavButton, index) => (
+          <NavButton key={index.toString()} />
+        ))}
+      </DesktopButtons>
+      <MobileToggle visibilityToggle={!!menu} onClick={toggleMenu}>
+        <Buttons.Bars size="48px" />
+        <Buttons.ChevronUp size="48px" />
+      </MobileToggle>
+      <MobilePopover visibilityToggle={!!menu}>
+        {menu
+          ? navigationButtons.map((NavButton) => (
+              <NavButton key={NavButton} size="48px" onClick={toggleMenu} />
+            ))
+          : ''}
+      </MobilePopover>
+    </TopHeader>
+  )
 }
-
 Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
-  pathname: PropTypes.string,
-  accountType: PropTypes.string,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
-  pathname: '/',
-  accountType: 'account/undefined',
 }
 
-export default connect(mapStateToProps)(Header)
+export default Header
 
 const TopHeader = styled.header`
   display: grid;

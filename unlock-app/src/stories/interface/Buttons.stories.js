@@ -1,18 +1,12 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Provider } from 'react-redux'
 import Buttons from '../../components/interface/buttons/lock'
 
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 
 const config = configure()
-
-const store = createUnlockStore({})
-
 storiesOf('Buttons/Lock Buttons', module)
-  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('Withdraw, no balance', () => {
     const lock = {
       address: '0xabc',

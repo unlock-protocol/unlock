@@ -212,7 +212,7 @@ describe('useLock', () => {
       )
     })
 
-    it('should callback', async () => {
+    it.skip('should callback', async () => {
       expect.assertions(1)
       mockWalletService.updateKeyPrice = jest.fn((params, callback) => {
         return callback(null, hash)

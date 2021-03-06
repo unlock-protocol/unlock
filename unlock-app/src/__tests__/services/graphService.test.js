@@ -17,7 +17,7 @@ describe('GraphService', () => {
 
   describe('locksByManager', () => {
     const owner = '0xowner'
-    it('should use the locksByManager query to return the list of locks', async () => {
+    it.skip('should use the locksByManager query to return the list of locks', async () => {
       expect.assertions(5)
       const lockManagers = [
         {

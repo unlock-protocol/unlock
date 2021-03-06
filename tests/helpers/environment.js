@@ -9,11 +9,9 @@ const {
   unlockPort,
   locksmithPort,
   paywallPort,
-  unlockProviderAppPort,
   unlockHost,
   locksmithHost,
   paywallHost,
-  unlockProviderUnlockHost,
   theGraphHost,
   theGraphPort,
 } = require('./vars.js')
@@ -50,15 +48,7 @@ class UnlockEnvironment extends PuppeteerEnvironment {
       1000 /* every s */,
       60 * 2 /* up to 2m */
     )
-    console.log(
-      `Waiting for Unlock without an injected provider at ${unlockProviderUnlockHost}:${unlockProviderAppPort}`
-    )
-    await serverIsUp(
-      unlockProviderUnlockHost,
-      unlockProviderAppPort,
-      1000 /* every s */,
-      60 * 2 /* up to 2m */
-    )
+
     console.log('Waiting for ERC20 setup')
     await erc20IsUp({ delay: 100, maxAttempts: 600 })
 

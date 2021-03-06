@@ -1,7 +1,5 @@
-import { useDispatch } from 'react-redux'
-
-import { useEffect, useState } from 'react'
-import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
+import { useEffect, useState, useContext } from 'react'
+import { AuthenticationContext } from '../components/interface/Authenticate'
 
 /**
  * This hook retrieves metadata for a token
@@ -21,19 +19,19 @@ export const useGetMetadataFor = (
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const dispatch = useDispatch()
+  const { network } = useContext(AuthenticationContext)
 
   useEffect(() => {
     const getMetadata = async () => {
       setLoading(true)
       if (getProtectedData) {
-        dispatch(waitForWallet())
+        console.log('WAIT FOR WALLET')
       }
       walletService.getKeyMetadata(
         {
           lockAddress,
           keyId,
-          locksmithHost: config.services.storage.host,
+          locksmithHost: config.networks[network].locksmith,
           getProtectedData,
         },
         (error, json) => {
@@ -43,7 +41,7 @@ export const useGetMetadataFor = (
           } else {
             setMetadata(json)
           }
-          dispatch(dismissWalletCheck())
+          console.log('DONE WAIT FOR WALLET')
         }
       )
     }

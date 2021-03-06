@@ -1,43 +1,22 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useContext } from 'react'
 import { Item, SectionHeader, ItemValue, Grid } from './styles'
+import { AuthenticationContext } from '../Authenticate'
 
-interface Props {
-  address: string
-  emailAddress: string
+export const AccountInfo = () => {
+  const { account, email } = useContext(AuthenticationContext)
+
+  return (
+    <Grid>
+      <SectionHeader>Account</SectionHeader>
+      {email && (
+        <Item title="Email" count="half">
+          <ItemValue>{email}</ItemValue>
+        </Item>
+      )}
+      <Item title="Wallet Address" count="half">
+        <ItemValue>{account}</ItemValue>
+      </Item>
+    </Grid>
+  )
 }
-
-export const AccountInfo = ({ address, emailAddress }: Props) => (
-  <Grid>
-    <SectionHeader>Account</SectionHeader>
-    <Item title="Email" count="half">
-      <ItemValue>{emailAddress}</ItemValue>
-    </Item>
-    <Item title="Wallet Address" count="half">
-      <ItemValue>{address}</ItemValue>
-    </Item>
-  </Grid>
-)
-
-interface ReduxState {
-  account: {
-    address?: string
-    emailAddress?: string
-  }
-}
-
-export const mapStateToProps = ({ account }: ReduxState) => {
-  let address = ''
-  let emailAddress = ''
-  // Default values for server-side rendering
-  if (account) {
-    address = account.address || address
-    emailAddress = account.emailAddress || emailAddress
-  }
-  return {
-    address,
-    emailAddress,
-  }
-}
-
-export default connect(mapStateToProps)(AccountInfo)
+export default AccountInfo

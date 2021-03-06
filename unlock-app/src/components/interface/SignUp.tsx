@@ -1,193 +1,131 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import queryString from 'query-string'
-import { connect } from 'react-redux'
-import { signupEmail } from '../../actions/user'
+import { useRouter } from 'next/router'
 import InvalidLink from './InvalidLink'
-import SignupSuccess from './SignupSuccess'
-import { Router, Account } from '../../unlockTypes'
 import FinishSignUp from './FinishSignup'
 import { verifyEmailSignature } from '../../utils/wedlocks'
+import WedlockServiceContext from '../../contexts/WedlocksContext'
 
-interface Props {
-  signupEmail: (email: string) => any
-  toggleSignup: () => void
-  emailAddress?: string
-  isLinkValid?: boolean
-  account?: Account
+interface SignUpProps {
+  showLogin: () => void
   embedded?: boolean
 }
 
-interface State {
-  emailAddress: string
-  submitted: boolean // Used to handle intermediate state between submission and response
-}
+const SignUp = ({ showLogin, embedded }: SignUpProps) => {
+  const { query } = useRouter()
+  const wedlockService = useContext(WedlockServiceContext)
+  const [emailAddress, setEmailAddress] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
-export class SignUp extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      emailAddress: '', // eslint-disable-line react/no-unused-state
-      submitted: false, // eslint-disable-line react/no-unused-state
-    }
-  }
+  const verifiedEmail =
+    query.signedEmail && verifyEmailSignature(query.email, query.signedEmail)
 
-  handleSubmit = (event: any) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault()
-    const { signupEmail } = this.props
-    const { emailAddress } = this.state
-    signupEmail(emailAddress)
-    this.setState({
-      submitted: true, // eslint-disable-line react/no-unused-state
-    })
+    setSubmitted(true)
+    if (wedlockService) {
+      const { origin } = window.location
+      wedlockService.confirmEmail(emailAddress, `${origin}/signup`)
+    }
   }
 
-  handleInputChange = (event: any) => {
-    this.setState({
-      emailAddress: event.target.value, // eslint-disable-line react/no-unused-state
-    })
+  const handleInputChange = (event: any) => {
+    setEmailAddress(event.target.value)
+  }
+  const LogInLink = (callToAction: string) => (
+    <LinkButton onClick={showLogin}>{callToAction}</LinkButton>
+  )
+
+  if (verifiedEmail) {
+    const emailAddress = Array.isArray(query.email)
+      ? query.email[0]
+      : query.email
+    return <FinishSignUp emailAddress={emailAddress} />
   }
 
-  handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    const { toggleSignup } = this.props
-    e.preventDefault()
-    toggleSignup()
-  }
-
-  render() {
-    const { submitted } = this.state
-    const { emailAddress, isLinkValid, account, embedded } = this.props
-
-    if (account && account.address) {
-      return <SignupSuccess />
-    }
-
-    const LogInLink = (callToAction: string) => (
-      <LinkButton onClick={this.handleClick}>{callToAction}</LinkButton>
-    )
-
-    if (!emailAddress) {
-      return (
-        <Container>
-          {!embedded && (
-            <>
-              <Heading>Pay For Content Seamlessly</Heading>
-              <SubHeading>
-                Unlock enables anyone to seamlessly buy and manage access to
-                content using blockchain technology.
-              </SubHeading>
-              <Description>
-                At Unlock, we believe that the more accessible paid content is,
-                the better it will be. To do that we&#39;re making it easy for
-                readers like you to seamlessly pay for and manage your content.
-              </Description>
-              <Description>
-                If you want to know more about Unlock&#39;s decentralized
-                payment protocol, check out{' '}
-                <Link href="https://unlock-protocol.com/blog">
-                  <a target="_blank">
-                    <span>our blog</span>
-                  </a>
-                </Link>
-                .
-              </Description>
-            </>
-          )}
-          {!submitted && (
-            <>
-              <Form onSubmit={this.handleSubmit}>
-                <Label htmlFor="emailInput">Email Address</Label>
-                <Input
-                  name="emailAddress"
-                  id="emailInput"
-                  type="email"
-                  placeholder="Enter your email to get started"
-                  onChange={this.handleInputChange}
-                />
-                <SubmitButton type="submit" value="Sign Up" />
-
-                <br />
-                <div id="signin" />
-              </Form>
-              <Description>
-                Already have an account? {LogInLink('Log in')}.
-                <br />
-                Have an Ethereum Wallet?{' '}
-                <LinkButton
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
-                >
-                  Connect it
-                </LinkButton>
-                .
-              </Description>
-            </>
-          )}
-          {submitted && (
-            <Confirmation>
-              <div>Please check your email</div>
-              <div>We need to confirm your email before proceeding.</div>
-              <div>
-                Once you&#39;ve created your account you can{' '}
-                {LogInLink('log in here')}.
-              </div>
-            </Confirmation>
-          )}
-        </Container>
-      )
-    }
-
-    if (emailAddress && !!isLinkValid) {
-      return <FinishSignUp emailAddress={emailAddress} />
-    }
-
+  if (!verifiedEmail && query.email) {
     return <InvalidLink />
   }
+
+  return (
+    <Container>
+      {!embedded && (
+        <>
+          <Heading>Pay For Content Seamlessly</Heading>
+          <SubHeading>
+            Unlock enables anyone to seamlessly buy and manage access to content
+            using blockchain technology.
+          </SubHeading>
+          <Description>
+            At Unlock, we believe that the more accessible paid content is, the
+            better it will be. To do that we&#39;re making it easy for readers
+            like you to seamlessly pay for and manage your content.
+          </Description>
+          <Description>
+            If you want to know more about Unlock&#39;s decentralized payment
+            protocol, check out{' '}
+            <Link href="https://unlock-protocol.com/blog">
+              <a target="_blank">
+                <span>our blog</span>
+              </a>
+            </Link>
+            .
+          </Description>
+        </>
+      )}
+      {embedded && <Heading>Create Your Account</Heading>}
+      {!submitted && (
+        <>
+          <Form onSubmit={handleSubmit}>
+            <Label htmlFor="emailInput">Email Address</Label>
+            <Input
+              required
+              name="emailAddress"
+              id="emailInput"
+              type="email"
+              placeholder="Enter your email to get started"
+              onChange={handleInputChange}
+            />
+            <SubmitButton type="submit" value="Sign Up" />
+
+            <br />
+            <div id="signin" />
+          </Form>
+          <Description>
+            Already have an account? {LogInLink('Log in')}.
+            <br />
+            Have an Ethereum Wallet?{' '}
+            <LinkButton
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
+            >
+              Connect it
+            </LinkButton>
+            .
+          </Description>
+        </>
+      )}
+      {submitted && (
+        <Confirmation>
+          <div>Please check your email</div>
+          <div>We need to confirm your email before proceeding.</div>
+          <div>
+            Once you&#39;ve created your account you can{' '}
+            {LogInLink('log in here')}.
+          </div>
+        </Confirmation>
+      )}
+    </Container>
+  )
 }
 
-interface StoreState {
-  router: Router
-  account?: Account
+SignUp.defaultProps = {
+  embedded: false,
 }
 
-export const mapStateToProps = ({ router, account }: StoreState) => {
-  const query = queryString.parse(router.location.search)
-  let emailAddress
-  let signedEmail
-  if (query) {
-    if (query.email) {
-      if (typeof query.email === 'string') {
-        emailAddress = query.email
-      } else if (Array.isArray(query.email)) {
-        emailAddress = query.email[0]
-      }
-    }
-    if (query.signedEmail) {
-      if (typeof query.signedEmail === 'string') {
-        signedEmail = query.signedEmail
-      } else if (Array.isArray(query.signedEmail)) {
-        signedEmail = query.signedEmail[0]
-      }
-    }
-  }
-
-  const isLinkValid =
-    !!signedEmail && verifyEmailSignature(emailAddress, signedEmail)
-
-  return {
-    emailAddress,
-    isLinkValid,
-    account,
-  }
-}
-
-export const mapDispatchToProps = (dispatch: any) => ({
-  signupEmail: (email: string) => dispatch(signupEmail(email)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
+export default SignUp
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;

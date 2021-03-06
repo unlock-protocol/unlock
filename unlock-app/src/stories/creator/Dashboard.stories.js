@@ -1,11 +1,8 @@
-import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import { DashboardContent } from '../../components/content/DashboardContent'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
-import FullScreenModal from '../../components/interface/FullScreenModals'
 import configure from '../../config'
 import doNothing from '../../utils/doNothing'
 import { KindOfModal } from '../../unlockTypes'
@@ -84,26 +81,6 @@ const lockFormStatus = {
   visible: false,
 }
 
-const waitingStore = createUnlockStore({
-  account,
-  network,
-  router,
-  locks,
-  transactions,
-  fullScreenModalStatus: {
-    active: true,
-    kindOfModal: KindOfModal.WalletCheckOverlay,
-  },
-  lockFormStatus,
-})
-
-const noUserStore = createUnlockStore({
-  account: undefined,
-  network,
-  router,
-  lockFormStatus,
-})
-
 const ConfigProvider = ConfigContext.Provider
 
 const config = configure({
@@ -117,28 +94,23 @@ storiesOf('DashboardContent', module)
   ))
   .add('the dashboard, waiting for wallet', () => {
     return (
-      <Provider store={waitingStore}>
-        <FullScreenModal />
-        <DashboardContent
-          hideForm={doNothing}
-          showForm={doNothing}
-          network={network}
-          account={null}
-          formIsVisible={false}
-        />
-      </Provider>
+      <DashboardContent
+        hideForm={doNothing}
+        showForm={doNothing}
+        network={network}
+        account={null}
+        formIsVisible={false}
+      />
     )
   })
   .add('dashboard, no user account', () => {
     return (
-      <Provider store={noUserStore}>
-        <DashboardContent
-          hideForm={doNothing}
-          showForm={doNothing}
-          network={network}
-          account={null}
-          formIsVisible={false}
-        />
-      </Provider>
+      <DashboardContent
+        hideForm={doNothing}
+        showForm={doNothing}
+        network={network}
+        account={null}
+        formIsVisible={false}
+      />
     )
   })

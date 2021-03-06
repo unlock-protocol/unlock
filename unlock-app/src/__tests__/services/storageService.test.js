@@ -35,7 +35,7 @@ const user = UnlockUser.build({
   passwordEncryptedPrivateKey,
 })
 
-describe('StorageService', () => {
+describe.skip('StorageService', () => {
   const serviceHost = 'http://127.0.0.1:8080'
   let storageService
 

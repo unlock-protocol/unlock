@@ -18,7 +18,7 @@
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
     "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:unit": "CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
@@ -29,7 +29,6 @@
   "devDependencies": {
     "@svgr/cli": "5.5.0",
     "babel-eslint": "10.1.0",
-    "cross-env": "7.0.3",
     "eslint": "7.20.0",
     "eslint-config-prettier": "7.2.0",
     "eslint-config-standard": "16.0.2",

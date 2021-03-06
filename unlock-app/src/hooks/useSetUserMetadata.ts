@@ -3,6 +3,7 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
 import { UserMetadata } from '../unlockTypes'
+import { AuthenticationContext } from '../components/interface/Authenticate'
 
 interface Config {
   services: {
@@ -13,12 +14,12 @@ interface Config {
 }
 
 export const useSetUserMetadata = () => {
+  const { account } = useContext(AuthenticationContext)
   const walletService: WalletService = useContext(WalletServiceContext)
   const config: Config = useContext(ConfigContext)
 
   const setUserMetadata = (
     lockAddress: string,
-    userAddress: string,
     metadata: UserMetadata,
     callback: (error: Error, saved: boolean) => void
   ) => {
@@ -26,7 +27,7 @@ export const useSetUserMetadata = () => {
       walletService.setUserMetadata(
         {
           lockAddress,
-          userAddress,
+          userAddress: account,
           metadata,
           locksmithHost: config.services.storage.host,
         },

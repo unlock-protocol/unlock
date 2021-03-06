@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext, useReducer } from 'react'
-import { useSelector } from 'react-redux'
 import { TransactionType, TransactionStatus } from '../unlockTypes'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 import { StorageServiceContext } from '../utils/withStorageService'
@@ -8,6 +7,7 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
+import { AuthenticationContext } from '../components/interface/Authenticate'
 
 /**
  * Retrieves a lock object at the address
@@ -209,7 +209,7 @@ export const createLock = async (
  * @param {*} address
  */
 export const useLocks = (owner) => {
-  const network = useSelector((state) => state.network)
+  const { network } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const storageService = useContext(StorageServiceContext)
@@ -217,6 +217,8 @@ export const useLocks = (owner) => {
   const config = useContext(ConfigContext)
   const [error, setError] = useState(undefined)
   const [loading, setLoading] = useState(true)
+
+  graphService.connect(config.networks[network].subgraphURI)
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
@@ -14,20 +13,18 @@ import {
   CancelCreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
-import { showForm, hideForm } from '../../actions/lockFormVisibility'
 import { Phone } from '../../theme/media'
 import Authenticate from '../interface/Authenticate'
 
-export const DashboardContent = ({
-  account,
-  network,
-  formIsVisible,
-  showForm,
-  hideForm,
-}) => {
+export const DashboardContent = () => {
+  const [formIsVisible, setFormIsVisible] = useState(false)
   const toggleForm = () => {
-    formIsVisible ? hideForm() : showForm()
+    formIsVisible ? setFormIsVisible(false) : setFormIsVisible(true)
   }
+  const hideForm = () => {
+    setFormIsVisible(false)
+  }
+
   return (
     <Layout title="Creator Dashboard">
       <Head>
@@ -36,7 +33,7 @@ export const DashboardContent = ({
       <Authenticate>
         <BrowserOnly>
           <AccountWrapper>
-            <Account network={network} account={account} />
+            <Account />
             {formIsVisible && (
               <CancelCreateLockButton
                 id="CreateLockButton"
@@ -58,43 +55,14 @@ export const DashboardContent = ({
             </Warning>
           </Phone>
 
-          <CreatorLocks />
+          <CreatorLocks hideForm={hideForm} formIsVisible={formIsVisible} />
         </BrowserOnly>
       </Authenticate>
     </Layout>
   )
 }
 
-DashboardContent.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network.isRequired,
-  formIsVisible: PropTypes.bool.isRequired,
-  showForm: PropTypes.func.isRequired,
-  hideForm: PropTypes.func.isRequired,
-}
-
-DashboardContent.defaultProps = {
-  account: null,
-}
-
-export const mapStateToProps = ({
-  account,
-  network,
-  lockFormStatus: { visible },
-}) => {
-  return {
-    account,
-    network,
-    formIsVisible: visible,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-  showForm: () => dispatch(showForm()),
-  hideForm: () => dispatch(hideForm()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardContent)
+export default DashboardContent
 
 const Warning = styled.p`
   border: 1px solid var(--red);

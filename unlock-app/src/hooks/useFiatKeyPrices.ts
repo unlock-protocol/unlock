@@ -1,4 +1,4 @@
-import { useReducer, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { ConfigContext } from '../utils/withConfig'
 
 interface Config {
@@ -12,38 +12,10 @@ interface Config {
 interface KeyPrice {
   [currency: string]: string
 }
+export const useFiatKeyPrices = (address: string) => {
+  const [loading, setLoading] = useState(true)
+  const [fiatPrices, updatePrices] = useState({} as KeyPrice)
 
-export interface KeyPrices {
-  [lockAddress: string]: KeyPrice
-}
-
-interface KeyPriceUpdate {
-  lockAddress: string
-  prices: KeyPrice
-}
-
-export const keyPricesReducer = (prices: KeyPrices, update: KeyPriceUpdate) => {
-  if (Object.keys(update.prices).length === 0) {
-    // Locks that are not approved for credit card purchases will have
-    // an empty `prices` object. It's easier on the consumer side if
-    // those unapproved locks are simply not included in the return
-    // value.
-    return prices
-  }
-
-  return {
-    ...prices,
-    [update.lockAddress]: update.prices,
-  }
-}
-
-const defaultKeyPrices: KeyPrices = {}
-
-export const useFiatKeyPrices = (lockAddresses: string[]) => {
-  const [fiatKeyPrices, updatePrice] = useReducer(
-    keyPricesReducer,
-    defaultKeyPrices
-  )
   const config: Config = useContext(ConfigContext)
 
   async function getFiatKeyPriceFor(lockAddress: string) {
@@ -52,15 +24,14 @@ export const useFiatKeyPrices = (lockAddresses: string[]) => {
     )
     const prices: KeyPrice = await response.json()
 
-    updatePrice({
-      lockAddress,
-      prices,
-    })
+    updatePrices(prices as KeyPrice)
+    setLoading(false)
   }
 
   useEffect(() => {
-    lockAddresses.forEach((address) => getFiatKeyPriceFor(address))
-  }, [JSON.stringify(lockAddresses)])
+    setLoading(true)
+    getFiatKeyPriceFor(address)
+  }, [address])
 
-  return fiatKeyPrices
+  return { loading, fiatPrices }
 }

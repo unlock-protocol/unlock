@@ -1,12 +1,14 @@
 import React from 'react'
-import { dismissWalletCheck } from '../../../actions/fullScreenModals'
 import { MessageBox, Dismiss } from './styles'
-import { Dispatch } from '../../../unlockTypes' // eslint-disable-line
 
-const WalletCheck = ({ dispatch }: { dispatch: Dispatch }) => (
+interface WalletCheckProps {
+  onClose: () => void
+}
+
+const WalletCheck = ({ onClose }: WalletCheckProps) => (
   <MessageBox>
     <p>Please check your browser wallet.</p>
-    <Dismiss onClick={() => dispatch(dismissWalletCheck())}>Dismiss</Dismiss>
+    <Dismiss onClick={() => onClose()}>Dismiss</Dismiss>
   </MessageBox>
 )
 

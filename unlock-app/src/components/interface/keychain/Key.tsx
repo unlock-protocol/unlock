@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import Media from '../../../theme/media'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
+import { WalletServiceContext } from '../../../utils/withWalletService'
+import WedlockServiceContext from '../../../contexts/WedlocksContext'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -31,123 +33,98 @@ const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
 
 export interface Props {
   ownedKey: OwnedKey
-  accountAddress: string
-  signData: (data: any, id: any) => void
-  qrEmail: (recipient: string, lockName: string, keyQR: string) => void
-  signature: null | {
-    data: string
-    signature: string
-  }
+  account: string
+  network: string
 }
 
-export interface State {
-  showingQR: boolean
-}
+const Key = ({ ownedKey, account, network }: Props) => {
+  const { lock, expiration, tokenURI, keyId } = ownedKey
+  const walletService = useContext(WalletServiceContext)
+  const wedlockService = useContext(WedlockServiceContext)
 
-export class Key extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      showingQR: false,
-    }
-  }
-
-  componentDidUpdate = ({ signature: prevSignature }: Props) => {
-    const { signature } = this.props
-    // If we have just received a signature, we should immediately display the QR code.
-    if (prevSignature === null && signature) {
-      this.toggleShowingQR()
-    }
-  }
-
-  handleSignature = () => {
-    const {
-      accountAddress,
-      signData,
-      ownedKey: { lock },
-    } = this.props
+  const [error, setError] = useState<string | null>(null)
+  const [showingQR, setShowingQR] = useState(false)
+  const [signature, setSignature] = useState<any | null>(null)
+  const handleSignature = () => {
     const payload = JSON.stringify({
-      accountAddress,
+      network,
+      account,
       lockAddress: lock.address,
       timestamp: Date.now(),
     })
-    signData(payload, lock.address)
+    walletService.signDataPersonal(
+      '', // account address -- unused in walletService
+      payload,
+      (error: any, _signature: any) => {
+        if (error) {
+          setError('We could not confirm that you own this key.')
+        } else {
+          setError('')
+          setSignature({
+            payload,
+            signature: _signature,
+          })
+        }
+      }
+    )
   }
 
-  toggleShowingQR = () => {
-    this.setState(({ showingQR }) => ({
-      showingQR: !showingQR,
-    }))
+  const toggleShowingQR = () => {
+    setShowingQR(!showingQR)
   }
 
-  qrButton = () => {
-    const { signature } = this.props
+  const qrButton = () => {
     if (signature) {
       return (
-        <ButtonAction type="button" onClick={this.toggleShowingQR}>
+        <ButtonAction type="button" onClick={toggleShowingQR}>
           Display QR Code
         </ButtonAction>
       )
     }
     return (
-      <ButtonAction type="button" onClick={this.handleSignature}>
+      <ButtonAction type="button" onClick={handleSignature}>
         Confirm Ownership
       </ButtonAction>
     )
   }
 
-  sendEmail = (recipient: string, qrImage: string) => {
-    const {
-      ownedKey: { lock },
-      qrEmail,
-    } = this.props
-
-    // Some small number of early locks do not have names on-chain. We'll use
-    // the address to identify those.
-    const name = lock.name || lock.address
-    qrEmail(recipient, name, qrImage)
-  }
-
-  QRUrl = () => {
-    const { signature } = this.props
-    const url = new URL(`${window.location.origin}/verification`)
-    if (signature) {
-      const data = encodeURIComponent(signature.data)
-      const sig = encodeURIComponent(signature.signature)
-      url.searchParams.append('data', data)
-      url.searchParams.append('sig', sig)
+  const sendEmail = (recipient: string, qrImage: string) => {
+    if (wedlockService) {
+      try {
+        wedlockService.keychainQREmail(
+          recipient,
+          `${window.location.origin}/keychain`,
+          lock.name,
+          qrImage
+        )
+      } catch {
+        setError('We could not send the email. Please try again later')
+      }
+    } else {
+      setError('We could not send the email. Please try again later')
     }
-    return url.toString()
   }
-
-  render = () => {
-    const {
-      ownedKey: { lock, expiration, tokenURI, keyId },
-      signature,
-    } = this.props
-    const { showingQR } = this.state
-    return (
-      <Box>
-        {signature && (
-          <QRModal
-            active={showingQR}
-            dismiss={this.toggleShowingQR}
-            sendEmail={this.sendEmail}
-            value={this.QRUrl()}
-          />
-        )}
-        <KeyBox
-          lock={lock}
-          expiration={expiration}
-          tokenURI={tokenURI}
-          keyId={keyId}
+  return (
+    <Box>
+      {signature && (
+        <QRModal
+          active={showingQR}
+          dismiss={toggleShowingQR}
+          sendEmail={sendEmail}
+          signature={signature}
         />
-        {this.qrButton()}
-      </Box>
-    )
-  }
+      )}
+      <KeyBox
+        lock={lock}
+        expiration={expiration}
+        tokenURI={tokenURI}
+        keyId={keyId}
+      />
+      {error && <Error>{error}</Error>}
+      {qrButton()}
+    </Box>
+  )
 }
-
 export default Key
 
 const Box = styled.div`
@@ -237,4 +214,7 @@ const ButtonAction = styled.button`
     color: #333;
     transition: color 100ms ease;
   }
+`
+const Error = styled.p`
+  color: var(--red);
 `

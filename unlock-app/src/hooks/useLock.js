@@ -18,7 +18,6 @@ export const processTransaction = async (
   defaults
 ) => {
   const transaction = await web3Service.getTransaction(hash, defaults)
-
   transaction.type = transactionTypeMapping(transaction.type) // mapping
 
   let kind
@@ -26,6 +25,8 @@ export const processTransaction = async (
     kind = 'creationTransaction'
   } else if (transaction.type === TransactionType.UPDATE_KEY_PRICE) {
     kind = 'priceUpdateTransaction'
+  } else if (transaction.type === TransactionType.KEY_PURCHASE) {
+    kind = 'keyPurchaseTransaction'
   } else {
     // Unknown transaction!
     return
@@ -85,11 +86,90 @@ export const updateKeyPriceOnLock = (
         ...lock,
       })
       processTransaction(web3Service, config, lock, setLock, transactionHash)
-      return callback()
+      return callback(lock.priceUpdateTransaction)
     }
   )
 }
 
+/**
+ * Function called to updated the price of a lock
+ */
+export const withdrawFromLock = (
+  web3Service,
+  walletService,
+  config,
+  lock,
+  setLock,
+  callback
+) => {
+  walletService.withdrawFromLock(
+    {
+      lockAddress: lock.address,
+    },
+    async (error, transactionHash) => {
+      if (error) {
+        throw error
+      }
+      lock.balance = '0'
+      lock.withdrawalTransaction = {
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+        hash: transactionHash,
+        lock: lock.address,
+        type: TransactionType.WITHDRAWAL,
+      }
+      setLock({
+        ...lock,
+      })
+      processTransaction(web3Service, config, lock, setLock, transactionHash)
+      if (callback) {
+        return callback(lock.withdrawalTransaction)
+      }
+    }
+  )
+}
+/**
+ * Function called to updated the price of a lock
+ */
+export const purchaseKeyFromLock = (
+  web3Service,
+  walletService,
+  config,
+  lock,
+  recipient,
+  referrer,
+  setLock,
+  callback
+) => {
+  walletService.purchaseKey(
+    {
+      lockAddress: lock.address,
+      owner: recipient,
+      referrer,
+      keyPrice: lock.keyPrice,
+    },
+    async (error, transactionHash) => {
+      if (error) {
+        throw error
+      }
+      lock.balance = '0'
+      lock.keyPurchaseTransaction = {
+        confirmations: 0,
+        createdAt: new Date().getTime(),
+        hash: transactionHash,
+        lock: lock.address,
+        type: TransactionType.KEY_PURCHASE,
+      }
+      setLock({
+        ...lock,
+      })
+      processTransaction(web3Service, config, lock, setLock, transactionHash)
+      if (callback) {
+        return callback(lock.keyPurchaseTransaction)
+      }
+    }
+  )
+}
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  * @param {*} lock
@@ -112,7 +192,36 @@ export const useLock = (lockFromProps) => {
     )
   }
 
+  const withdraw = (callback) => {
+    withdrawFromLock(
+      web3Service,
+      walletService,
+      config,
+      lock,
+      setLock,
+      callback
+    )
+  }
+
+  const purchaseKey = (recipient, referrer, callback) => {
+    purchaseKeyFromLock(
+      web3Service,
+      walletService,
+      config,
+      lock,
+      recipient,
+      referrer,
+      setLock,
+      callback
+    )
+  }
+
+  const getKeyForAccount = (owner) => {
+    return web3Service.getKeyByLockForOwner(lock.address, owner)
+  }
+
   useEffect(() => {
+    // Looks at transactions
     if (lockFromProps.creationTransaction) {
       processTransaction(
         web3Service,
@@ -125,8 +234,16 @@ export const useLock = (lockFromProps) => {
     }
     return () => {}
   }, [lockFromProps.address])
-
-  return { lock, updateKeyPrice }
+  return {
+    lock: {
+      ...lockFromProps, // merge lock
+      ...lock,
+    },
+    updateKeyPrice,
+    withdraw,
+    purchaseKey,
+    getKeyForAccount,
+  }
 }
 
 export default useLock

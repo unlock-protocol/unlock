@@ -12,7 +12,7 @@ const render = () => {
       active
       dismiss={dismiss}
       sendEmail={sendEmail}
-      value="just some test data"
+      signature="signature"
     />
   )
 }

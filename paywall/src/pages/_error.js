@@ -1,9 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import UnlockPropTypes from '../propTypes'
-import withConfig from '../utils/withConfig'
-
 class Error extends React.Component {
   static getInitialProps({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null
@@ -11,12 +8,7 @@ class Error extends React.Component {
   }
 
   render() {
-    const { config, statusCode } = this.props
-
-    if (config.isServer) {
-      return null
-    }
-
+    const { statusCode } = this.props
     return (
       <p>
         {statusCode
@@ -29,7 +21,6 @@ class Error extends React.Component {
 
 Error.propTypes = {
   statusCode: PropTypes.number.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
-export default withConfig(Error)
+export default Error

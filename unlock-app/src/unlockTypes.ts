@@ -89,6 +89,8 @@ export interface PaywallCallToAction {
   confirmed: string
   noWallet: string
   metadata: string
+  card: string
+  [name: string]: string
 }
 
 export interface PaywallConfigLocks {
@@ -97,6 +99,7 @@ export interface PaywallConfigLocks {
 
 export interface PaywallConfigLock {
   name: string
+  metadataInputs?: MetadataInput[]
 }
 
 export enum KeyStatus {
@@ -187,6 +190,8 @@ export interface PaywallConfig {
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
+  network: string
+  referrer: string
 }
 
 export interface RawLock {

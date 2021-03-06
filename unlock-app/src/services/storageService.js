@@ -125,17 +125,13 @@ export class StorageService extends EventEmitter {
    */
   async createUser(user, emailAddress, password) {
     const opts = {}
-    try {
-      const response = await axios.post(`${this.host}/users/`, user, opts)
-      this.emit(success.createUser, {
-        passwordEncryptedPrivateKey:
-          user.message.user.passwordEncryptedPrivateKey,
-        emailAddress,
-        password,
-        recoveryPhrase: response.data.recoveryPhrase,
-      })
-    } catch (error) {
-      this.emit(failure.createUser, error)
+    const response = await axios.post(`${this.host}/users/`, user, opts)
+    return {
+      passwordEncryptedPrivateKey:
+        user.message.user.passwordEncryptedPrivateKey,
+      emailAddress,
+      password,
+      recoveryPhrase: response.data.recoveryPhrase,
     }
   }
 
@@ -241,9 +237,14 @@ export class StorageService extends EventEmitter {
           emailAddress,
           recoveryPhrase,
         })
+        return {
+          emailAddress,
+          recoveryPhrase,
+        }
       }
     } catch (error) {
       this.emit(failure.getUserRecoveryPhrase, { emailAddress, error })
+      return {}
     }
   }
 

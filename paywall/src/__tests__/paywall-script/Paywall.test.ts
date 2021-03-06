@@ -4,12 +4,8 @@ import * as isUnlockedUtil from '../../utils/isUnlocked'
 import * as paywallScriptUtils from '../../paywall-script/utils'
 import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 
-declare let __ENVIRONMENT_VARIABLES__: any
-// eslint-disable-next-line no-undef
-const moduleConfig = __ENVIRONMENT_VARIABLES__
-const { readOnlyProvider } = moduleConfig
-
 const paywallConfig = {
+  network: '1984', // test network
   callToAction: {
     default: 'default',
     expired: 'expired',
@@ -31,7 +27,7 @@ let paywall: Paywall
 describe('Paywall object', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    paywall = new Paywall(paywallConfig, moduleConfig)
+    paywall = new Paywall(paywallConfig)
     paywall.unlockPage = jest.fn()
     paywall.lockPage = jest.fn()
   })
@@ -154,7 +150,7 @@ describe('Paywall object', () => {
         lock: '0xlock',
       })
       expect(optimisticUnlockingUtils.willUnlock).toHaveBeenCalledWith(
-        readOnlyProvider,
+        'http://127.0.0.1:8545',
         '0xtheaddress',
         '0xlock',
         '0xhash',
@@ -189,7 +185,7 @@ describe('Paywall object', () => {
         ...paywallConfig,
         pessimistic: true,
       }
-      const paywall = new Paywall(pessimisticConfig, moduleConfig)
+      const paywall = new Paywall(pessimisticConfig)
 
       jest
         .spyOn(optimisticUnlockingUtils, 'willUnlock')

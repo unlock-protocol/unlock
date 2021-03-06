@@ -1,158 +1,142 @@
 // eslint-disable-next-line no-unused-vars
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useState, useReducer, useContext } from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
-import { Account } from '../../unlockTypes'
-import SignupSuccess from './SignupSuccess'
 // eslint-disable-next-line no-unused-vars
-import { loginCredentials, Credentials } from '../../actions/user'
 import { LoadingButton } from './user-account/styles'
-import { UnlockError, WarningError, isWarningError } from '../../utils/Error'
-import { resetError } from '../../actions/error'
+import UnlockProvider from '../../services/unlockProvider'
+import { StorageService } from '../../services/storageService'
+import { ConfigContext } from '../../utils/withConfig'
 
-interface Props {
-  toggleSignup: () => void
-  loginCredentials: (credentials: Credentials) => void
-  account?: Account
-  errors: WarningError[]
-  close: (e: WarningError) => void
-  embedded?: boolean
+interface LogInProps {
+  showSignup: () => void
+  onCancel?: () => void
+  onProvider: (provider: any) => void
 }
 
-interface State {
-  emailAddress: string
-  password: string
-  submitted: boolean
-}
-
-export class LogIn extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    /* eslint-disable react/no-unused-state */
-    this.state = {
+const LogIn = ({ showSignup, onProvider, onCancel }: LogInProps) => {
+  const config = useContext(ConfigContext)
+  const storageService = new StorageService(config.services.storage.host)
+  const [loginState, dispatch] = useReducer(
+    (state: any, action: any) => {
+      if (action.change) {
+        const newState = { ...state }
+        action.change.forEach((change: any) => {
+          newState[change.name] = change.value
+        })
+        return newState
+      }
+      if (action.add) {
+        const newState = { ...state }
+        action.add.forEach((add: any) => {
+          newState[add.name].push(add.value)
+        })
+      }
+      return { ...state }
+    },
+    {
+      error: '',
       emailAddress: '',
       password: '',
-      submitted: false,
+      account: null,
     }
-    /* eslint-enable react/no-unused-state */
-  }
+  )
+  const [submitted, setSubmitted] = useState(false)
 
-  handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    // TODO: Validation for empty fields, etc?
-    const { loginCredentials } = this.props
-    const { emailAddress, password } = this.state
-    e.preventDefault()
-    loginCredentials({
-      emailAddress,
-      password,
+  const { emailAddress, password, error } = loginState
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSubmitted(true)
+    dispatch({
+      change: [{ name: 'error', value: '' }],
     })
-    this.setState({
-      submitted: true, // eslint-disable-line react/no-unused-state
+    const key = await storageService.getUserPrivateKey(emailAddress)
+
+    // TODO: Allow users to change the provider's network from UI
+    // What network do we chose here?
+    const unlockProvider = new UnlockProvider(config.networks[4])
+
+    try {
+      await unlockProvider.connect({
+        key,
+        emailAddress,
+        password,
+      })
+      onProvider(unlockProvider)
+    } catch (e) {
+      // TODO: password isn't the only thing that can go wrong here...
+      console.error(e)
+      dispatch({
+        change: [
+          { name: 'error', value: 'Wrong password... Please try again' },
+        ],
+      })
+    }
+    setSubmitted(false)
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target
+    dispatch({
+      change: [{ name, value }],
     })
   }
-
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target
-
-    this.setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
-  }
-
-  handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    const { toggleSignup } = this.props
-    e.preventDefault()
-    toggleSignup()
-  }
-
-  handleReset = () => {
-    const { errors, close } = this.props
-    errors.forEach((e) => close(e))
-  }
-
-  submitButton = () => {
-    const { submitted } = this.state
-    const { errors } = this.props
-
+  const submitButton = () => {
     if (submitted) {
       return <LoadingButton>Logging In...</LoadingButton>
-    }
-    if (errors.length) {
-      return (
-        <ErrorButton type="submit" value="Retry" onClick={this.handleReset} />
-      )
     }
 
     return <SubmitButton type="submit" value="Submit" />
   }
 
-  render = () => {
-    const { account, embedded } = this.props
+  return (
+    <Container>
+      <Heading>Log In to Your Account</Heading>
+      <Form onSubmit={handleSubmit}>
+        <Label htmlFor="emailInput">Email Address</Label>
+        <Input
+          name="emailAddress"
+          id="emailInput"
+          type="email"
+          placeholder="Enter your email"
+          onChange={handleInputChange}
+        />
+        <br />
+        <Label htmlFor="passwordInput">Password</Label>
+        <Input
+          name="password"
+          id="passwordInput"
+          type="password"
+          placeholder="Enter your password"
+          onChange={handleInputChange}
+        />
+        <br />
+        {error && <LoginError>{error}</LoginError>}
 
-    if (account && account.address) {
-      return <SignupSuccess />
-    }
-
-    return (
-      <Container>
-        {!embedded && <Heading>Log In to Your Account</Heading>}
-        <Form onSubmit={this.handleSubmit}>
-          <Label htmlFor="emailInput">Email Address</Label>
-          <Input
-            name="emailAddress"
-            id="emailInput"
-            type="email"
-            placeholder="Enter your email"
-            onChange={this.handleInputChange}
-          />
-          <br />
-          <Label htmlFor="passwordInput">Password</Label>
-          <Input
-            name="password"
-            id="passwordInput"
-            type="password"
-            placeholder="Enter your password"
-            onChange={this.handleInputChange}
-          />
-          <br />
-          {this.submitButton()}
-        </Form>
-        <Description>
-          Don&#39;t have an account?{' '}
-          <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
-        </Description>
-      </Container>
-    )
-  }
-}
-
-const mapDispatchToProps = (dispatch: any) => ({
-  loginCredentials: ({ emailAddress, password }: Credentials) =>
-    dispatch(loginCredentials({ emailAddress, password })),
-  close: (e: WarningError) => {
-    dispatch(resetError(e))
-  },
-})
-
-interface ReduxState {
-  account?: Account
-  errors: UnlockError[]
-}
-
-const mapStateToProps = ({ account, errors }: ReduxState) => {
-  const logInWarnings = errors.filter(
-    (e) => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
+        {submitButton()}
+      </Form>
+      <Description>
+        Don&#39;t have an account?{' '}
+        <LinkButton onClick={showSignup}>Sign up here.</LinkButton>
+        <br />
+        {onCancel && <LinkButton onClick={onCancel}>Cancel.</LinkButton>}
+      </Description>
+    </Container>
   )
-
-  return {
-    account,
-    errors: logInWarnings as WarningError[],
-  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogIn)
+LogIn.defaultProps = {
+  onCancel: undefined,
+}
+
+export default LogIn
+
+export const LoginError = styled.p`
+  color: var(--red);
+  margin-bottom: 5px;
+  margin-top: 5px;
+`
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
@@ -189,10 +173,6 @@ const SubmitButton = styled.input`
   cursor: pointer;
   color: var(--white);
   margin-top: 25px;
-`
-
-const ErrorButton = styled(SubmitButton)`
-  background-color: var(--red);
 `
 
 const Form = styled.form`

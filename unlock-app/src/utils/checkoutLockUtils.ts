@@ -1,5 +1,3 @@
-import { Balances } from '../unlockTypes'
-
 // These interfaces patch over the sort of incomplete definition of
 // RawLock in unlockTypes. TODO: we should really tighten up our lock
 // type so that it at least includes as optional all possible
@@ -36,11 +34,10 @@ export const numberOfAvailableKeys = ({
 }
 
 export const lockKeysAvailable = ({
-  unlimitedKeys,
   maxNumberOfKeys,
   outstandingKeys,
 }: LockKeysAvailableLock) => {
-  if (unlimitedKeys) {
+  if (maxNumberOfKeys === -1) {
     return 'Unlimited'
   }
 
@@ -59,18 +56,17 @@ export const lockTickerSymbol = (lock: LockTickerSymbolLock) => {
 
 export const userCanAffordKey = (
   lock: LockPriceLock,
-  balances: Balances
+  balance: string
 ): boolean => {
   const currency = lock.currencyContractAddress || 'eth'
   const keyPrice = parseFloat(lock.keyPrice)
-  const balance = parseFloat(balances[currency])
-
+  const _balance = parseFloat(balance)
   // For eth need some gas so if the balance is exactly the same as key price
   // this would fail
   if (currency === 'eth') {
-    return keyPrice < balance
+    return keyPrice < _balance
   }
 
   // TODO: take balance of eth into account for gas (it's tricky!)
-  return keyPrice <= balance
+  return keyPrice <= _balance
 }

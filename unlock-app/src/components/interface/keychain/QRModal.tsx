@@ -6,11 +6,11 @@ import { Input, SubmitButton, DisabledButton } from '../user-account/styles'
 interface Props {
   active: boolean
   dismiss: () => void
-  value: string
   sendEmail: (recipient: string, qrImage: string) => void
+  signature: any
 }
 
-export const QRModal = ({ active, dismiss, value, sendEmail }: Props) => {
+export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
   const [recipient, setRecipient] = useState('')
   const [isValid, setIsValid] = useState(false)
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,9 +18,18 @@ export const QRModal = ({ active, dismiss, value, sendEmail }: Props) => {
     setIsValid(evt.currentTarget.validity.valid)
   }
 
+  const QRUrl = () => {
+    const url = new URL(`${window.location.origin}/verification`)
+    const data = encodeURIComponent(signature.payload)
+    const sig = encodeURIComponent(signature.signature)
+    url.searchParams.append('data', data)
+    url.searchParams.append('sig', sig)
+    return url.toString()
+  }
+
   return (
     <InlineModal active={active} dismiss={dismiss}>
-      <QRCode value={value} size={256} includeMargin />
+      <QRCode value={QRUrl()} size={256} includeMargin />
       <Input
         type="email"
         required

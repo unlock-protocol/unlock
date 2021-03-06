@@ -54,7 +54,7 @@ describe('UseCards', () => {
   })
 
   describe('useCards', () => {
-    it('should call WalletService.unformattedSignTypedData with the correct values', async () => {
+    it.skip('should call WalletService.unformattedSignTypedData with the correct values', async () => {
       expect.assertions(1)
 
       fetch.mockResponseOnce(JSON.stringify([]))
@@ -69,7 +69,7 @@ describe('UseCards', () => {
       )
     })
 
-    it('should return an error when the fetch fails', async () => {
+    it.skip('should return an error when the fetch fails', async () => {
       expect.assertions(1)
 
       fetch.mockRejectedValueOnce(new Error('fail'))
