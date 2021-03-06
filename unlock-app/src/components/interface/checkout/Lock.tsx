@@ -33,19 +33,25 @@ interface LockProps {
   setFocus: (address: string) => void
 }
 
-const getLockProps = (lock: any) => {
+const getLockProps = (lock: any, baseCurrencySymbol: string) => {
   return {
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(lock)}`,
+    formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(
+      lock,
+      baseCurrencySymbol
+    )}`,
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: lock.name, // TODO: take name override into account
     address: lock.address,
   }
 }
 
-export const LoggedOutLock = ({ lock, onClick }: any) => {
+export const LoggedOutLock = ({ lock, onClick, network }: any) => {
+  const config = useContext(ConfigContext)
+  const baseCurrencySymbol = config.networks[network].baseCurrencySymbol
+
   const lockProps = {
-    ...getLockProps(lock),
+    ...getLockProps(lock, baseCurrencySymbol),
     onClick,
   }
   return <LockVariations.PurchaseableLock {...lockProps} />
@@ -62,8 +68,7 @@ export const Lock = ({
 
   // Let's see if we can load the prices here!
   const paywallConfig = useContext(PaywallConfigContext)
-  const { account } = useContext(AuthenticationContext)
-
+  const { account, network } = useContext(AuthenticationContext)
   const { purchaseKey, getKeyForAccount } = useLock(lock)
   const [showMetadataForm, setShowMetadataForm] = useState(false)
   const [captureCreditCard, setCaptureCreditCard] = useState(false)
@@ -71,7 +76,7 @@ export const Lock = ({
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const { getTokenBalance } = useAccount(account)
-  const { fiatPrices } = useFiatKeyPrices(lock.address)
+  const { fiatPrices } = useFiatKeyPrices(lock.address, activePayment)
 
   const { purchaseKey: fiatPurchaseKey } = useFiatPurchaseKey(
     emitTransactionInfo
@@ -192,7 +197,7 @@ export const Lock = ({
   let disabled = false
   const lockProps: LockVariations.LockProps = {
     onClick,
-    ...getLockProps(lock),
+    ...getLockProps(lock, config.networks[network].baseCurrencySymbol),
   }
 
   if (activePayment === 'Credit Card') {

@@ -4,6 +4,8 @@ import * as isUnlockedUtil from '../../utils/isUnlocked'
 import * as paywallScriptUtils from '../../paywall-script/utils'
 import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 
+import { networkConfigs } from '../../paywall-script/networkConfigs'
+
 const paywallConfig = {
   network: '1984', // test network
   callToAction: {
@@ -27,7 +29,7 @@ let paywall: Paywall
 describe('Paywall object', () => {
   beforeEach(() => {
     jest.resetAllMocks()
-    paywall = new Paywall(paywallConfig)
+    paywall = new Paywall(paywallConfig, networkConfigs)
     paywall.unlockPage = jest.fn()
     paywall.lockPage = jest.fn()
   })
@@ -185,7 +187,7 @@ describe('Paywall object', () => {
         ...paywallConfig,
         pessimistic: true,
       }
-      const paywall = new Paywall(pessimisticConfig)
+      const paywall = new Paywall(pessimisticConfig, networkConfigs)
 
       jest
         .spyOn(optimisticUnlockingUtils, 'willUnlock')

@@ -1,5 +1,6 @@
 import { Paywall } from './Paywall'
 import { setupUnlockProtocolVariable } from './utils'
+import { networkConfigs } from './networkConfigs'
 
 const rawConfig = (window as any).unlockProtocolConfig
 if (!rawConfig) {
@@ -25,7 +26,7 @@ if (!rawConfig) {
     }
   }
 
-  const paywall = new Paywall(rawConfig)
+  const paywall = new Paywall(rawConfig, networkConfigs)
   const {
     getState,
     getUserAccountAddress,

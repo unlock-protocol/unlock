@@ -1,8 +1,36 @@
-import React from 'react'
+import React, { createContext } from 'react'
 import * as rtl from '@testing-library/react'
 import { TransactionType } from '../../../../unlockTypes'
 
 import { LockIconBar } from '../../../../components/creator/lock/LockIconBar'
+import { ConfigContext } from '../../../../utils/withConfig'
+import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+/**
+ * Helper to render with some contexts
+ * @param {*} component
+ * @returns
+ */
+export const renderWithContexts = (component) => {
+  const config = {
+    networks: {
+      1492: {
+        explorer: {
+          urls: {
+            address: () => '',
+          },
+        },
+      },
+    },
+  }
+  const authentication = { network: '1492' }
+  return rtl.render(
+    <ConfigContext.Provider value={config}>
+      <AuthenticationContext.Provider value={authentication}>
+        {component}
+      </AuthenticationContext.Provider>
+    </ConfigContext.Provider>
+  )
+}
 
 describe('LockIconBar', () => {
   let lock
@@ -25,19 +53,8 @@ describe('LockIconBar', () => {
     expect.assertions(2)
     const edit = jest.fn()
 
-    const config = {
-      requiredConfirmations: 10,
-      chainExplorerUrlBuilders: {
-        etherscan: (path) => path,
-      },
-    }
-    const wrapper = rtl.render(
-      <LockIconBar
-        lock={lock}
-        toggleCode={toggleCode}
-        config={config}
-        edit={edit}
-      />
+    const wrapper = renderWithContexts(
+      <LockIconBar lock={lock} toggleCode={toggleCode} edit={edit} />
     )
 
     rtl.fireEvent.click(wrapper.getByTitle('Edit'))

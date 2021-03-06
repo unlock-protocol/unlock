@@ -49,11 +49,6 @@ export interface Account {
 export interface Network {
   name: number // TODO: This is very misleading, change property name to id
 }
-
-export interface ChainExplorerURLBuilders {
-  [site: string]: (address: string) => string
-}
-
 export interface Loading {
   loading: number
 }
