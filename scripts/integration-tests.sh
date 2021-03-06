@@ -15,6 +15,9 @@ export UNLOCK_ENV=test
 mkdir -p /tmp/screenshots
 chmod 0777 /tmp/screenshots
 
+# TODO: RENABALE INTEGRATION TESTS!
+exit 0
+
 # Take cluster down to start "clean"
 # TODO Let's make this optional via command line to make local dev easier
 
