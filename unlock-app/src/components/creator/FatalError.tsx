@@ -1,9 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
-/* eslint-disable */
-import { FatalError, DataPayload } from '../../utils/Error'
-/* eslint-disable */
 
 const defaultError = (
   <p>
@@ -35,11 +32,11 @@ export const DefaultError = ({
 
 export const FallbackError = () => (
   <DefaultError
-  illustration="/static/images/illustrations/error.svg"
-  title="Fatal Error"
-  critical
+    illustration="/static/images/illustrations/error.svg"
+    title="Fatal Error"
+    critical
   >
-  {defaultError}
+    {defaultError}
   </DefaultError>
 )
 
@@ -47,7 +44,6 @@ const Container = styled.section`
   display: grid;
   row-gap: 16px;
   column-gap: 32px;
-  border: solid 1px var(--lightgrey);
   grid-template-columns: 72px;
   grid-auto-flow: column;
   border-radius: 4px;
@@ -86,30 +82,16 @@ const Message = styled.div`
   }
 `
 
-export const WrongNetwork = ({ currentNetwork, requiredNetworkId }: DataPayload) => (
-  <DefaultError
-    title="Network mismatch"
-    illustration="/static/images/illustrations/network.svg"
-    critical
-  >
-    <p>You’re currently on the {currentNetwork} network but you need to be on the {
-            ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-          } network. Please switch to {
-            ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-          }. <a target="_blank" rel="noopener noreferrer" href="https://docs.unlock-protocol.com/frequently-asked-questions#what-networks-are-supported">Learn more</a>.
-    </p>
-  </DefaultError>
-)
-
 export const MissingProvider = () => (
   <DefaultError
     title="Wallet missing"
     illustration="/static/images/illustrations/wallet.svg"
     critical
   >
+    <p>This section requires the use of your own crypto wallet. </p>
     <p>
       It looks like you’re using an incompatible browser or are missing a crypto
-      wallet. If you’re using Chrome or Firefox you can install{' '}
+      wallet. If you’re using Chrome or Firefox you should install{' '}
       <a href="https://metamask.io/">Metamask</a>.
     </p>
   </DefaultError>
@@ -138,6 +120,16 @@ export const ContractNotDeployed = () => (
   </DefaultError>
 )
 
+export const NetworkNotSupported = () => (
+  <DefaultError
+    title="Network not supported"
+    illustration="/static/images/illustrations/network.svg"
+    critical
+  >
+    <p>Unlock is currently not supported on this Ethereum network.</p>
+  </DefaultError>
+)
+
 export const NotEnabledInProvider = () => (
   <DefaultError
     title="Not enabled in provider"
@@ -148,41 +140,19 @@ export const NotEnabledInProvider = () => (
   </DefaultError>
 )
 
-type Template = () => JSX.Element
-
-interface Mapping {
-  [key: string]: Template
+interface WrongNetworkProps {
+  network: string
 }
-export const mapping: Mapping = {
-  FATAL_MISSING_PROVIDER: MissingProvider,
-  FATAL_NO_USER_ACCOUNT: MissingAccount,
-  FATAL_NON_DEPLOYED_CONTRACT: ContractNotDeployed,
-  FATAL_NOT_ENABLED_IN_PROVIDER: NotEnabledInProvider,
-  '*': FallbackError,
-}
-
-export function mapErrorToComponent(
-  error: FatalError,
-  overrideMapping: Mapping = {}
-) {
-  const { message } = error
-  if (message === 'FATAL_WRONG_NETWORK') {
-    if (error.data && error.data.currentNetwork && error.data.requiredNetworkId) {
-      const { currentNetwork, requiredNetworkId } = error.data
-      return <WrongNetwork currentNetwork={currentNetwork} requiredNetworkId={requiredNetworkId} />
-    }
-  }
-
-  const Error = overrideMapping[message] || mapping[message] || mapping['*']
-  return <Error />
-}
-
-export default {
-  DefaultError,
-  WrongNetwork,
-  MissingProvider,
-  MissingAccount,
-  ContractNotDeployed,
-  NotEnabledInProvider,
-  FallbackError,
-}
+export const WrongNetwork = ({ network }: WrongNetworkProps) => (
+  <DefaultError
+    title="Wrong network"
+    illustration="/static/images/illustrations/network.svg"
+    critical
+  >
+    <p>
+      You are on the wrong network. Please switch to{' '}
+      <strong>{ETHEREUM_NETWORKS_NAMES[parseInt(network, 10)][0]}</strong> in
+      your wallet of choice.
+    </p>
+  </DefaultError>
+)

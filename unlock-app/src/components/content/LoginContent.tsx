@@ -2,8 +2,8 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import LogInSignUp from '../interface/LogInSignUp'
-import Errors from '../interface/Errors'
+import Authenticate from '../interface/Authenticate'
+import SignupSuccess from '../interface/SignupSuccess'
 
 export const LoginContent = () => {
   return (
@@ -11,8 +11,9 @@ export const LoginContent = () => {
       <Head>
         <title>{pageTitle('Login')}</title>
       </Head>
-      <Errors />
-      <LogInSignUp login />
+      <Authenticate unlockUserAccount>
+        <SignupSuccess />
+      </Authenticate>
     </Layout>
   )
 }

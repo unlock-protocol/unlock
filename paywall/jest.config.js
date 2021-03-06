@@ -1,5 +1,3 @@
-const configVariables = require('./environment')
-
 module.exports = {
   setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
@@ -27,7 +25,6 @@ module.exports = {
   },
   globals: {
     __ENVIRONMENT_VARIABLES__: {
-      ...configVariables,
       locksmithUri: 'http://0.0.0.0:8080',
     },
   },

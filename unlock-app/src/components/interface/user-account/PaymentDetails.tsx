@@ -8,8 +8,13 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import styled from 'styled-components'
-import { Input, Label, Select, Button } from '../checkout/FormStyles'
-import { SectionHeader } from './styles'
+import {
+  Input,
+  Label,
+  Select,
+  Button,
+  NeutralButton,
+} from '../checkout/FormStyles'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
 
@@ -18,14 +23,19 @@ const stripePromise = loadStripe(stripeApiKey)
 
 interface PaymentDetailsProps {
   saveCard: (stripeToken: string) => any
+  onCancel?: () => any
 }
 
-export const PaymentDetails = ({ saveCard }: PaymentDetailsProps) => {
+export const PaymentDetails = ({ saveCard, onCancel }: PaymentDetailsProps) => {
   return (
     <Elements stripe={stripePromise}>
-      <Form saveCard={saveCard} />
+      <Form onCancel={onCancel} saveCard={saveCard} />
     </Elements>
   )
+}
+
+PaymentDetails.defaultProps = {
+  onCancel: null,
 }
 
 const cardElementOptions: StripeCardElementOptions = {
@@ -36,9 +46,10 @@ const cardElementOptions: StripeCardElementOptions = {
 
 interface FormProps {
   saveCard: (stripeToken: string) => any
+  onCancel?: () => any
 }
 
-export const Form = ({ saveCard }: FormProps) => {
+export const Form = ({ saveCard, onCancel }: FormProps) => {
   const { register, handleSubmit } = useForm()
   const stripe = useStripe()
   const elements = useElements()
@@ -56,29 +67,28 @@ export const Form = ({ saveCard }: FormProps) => {
   }
 
   return (
-    <>
-      <SectionHeader>Add a Payment Method</SectionHeader>
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <Label>Name</Label>
-        <Input name="name" ref={register({ required: true })} />
-        <Label>Credit Card Details</Label>
-        <CardElement options={cardElementOptions} />
-        <Label>Country</Label>
-        <Select name="address_country" defaultValue="United States">
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </Select>
-        <Button type="submit" disabled={!stripe}>
-          Submit
-        </Button>
-      </StyledForm>
-    </>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <Label>Name</Label>
+      <Input name="name" ref={register({ required: true })} />
+      <Label>Credit Card Details</Label>
+      <CardElement options={cardElementOptions} />
+      <Label>Country</Label>
+      <Select name="address_country" defaultValue="United States">
+        {countries.map((country) => (
+          <option key={country} value={country}>
+            {country}
+          </option>
+        ))}
+      </Select>
+      <Button type="submit" disabled={!stripe}>
+        Submit
+      </Button>
+      {onCancel && <NeutralButton onClick={onCancel}>Cancel</NeutralButton>}
+    </StyledForm>
   )
 }
 
-const StyledForm = styled.form`
-  max-width: 50%;
-`
+Form.defaultProps = {
+  onCancel: null,
+}
+const StyledForm = styled.form``

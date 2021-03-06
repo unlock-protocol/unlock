@@ -115,6 +115,7 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   text-align: -webkit-center; /* Safari fix  */
   justify-content: center;
   color: var(--white);
+  margin-top: 25px;
 `
 
 interface LoadingButtonProps {

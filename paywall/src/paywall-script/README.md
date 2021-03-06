@@ -19,12 +19,6 @@ import { Paywall } from '@unlock-protocol/paywall';
 // see https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
 const paywallConfig = {};
 
-const moduleConfig = {
-  unlockAppUrl: 'https://app.unlock-protocol.com',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
-  readOnlyProvider: '', // TODO: provide URL
-};
-
-new Paywall(paywallConfig, moduleConfig);
+new Paywall(paywallConfig);
 // from this point onward, it behaves exactly as if you had loaded the script in the <head> of your page.
 ```
