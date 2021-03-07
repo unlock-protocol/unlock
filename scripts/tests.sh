@@ -5,8 +5,6 @@ set -e
 
 SERVICE=$1
 REPO_ROOT=`dirname "$0"`/..
-BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
-DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 COMMAND="yarn run ci"
 
 # Setting the right env var
@@ -23,5 +21,4 @@ ENV_VARS=`env | grep $ENV_VARS_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e 
 docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t unlock-core -f docker/unlock-core.dockerfile --cache-from unlockprotocol/unlock-core:master .
 docker build --build-arg BUILDKIT_INLINE_CACHE=1 -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
 
-# Run tests
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $SERVICE $COMMAND
+docker run -t $SERVICE yarn run test
