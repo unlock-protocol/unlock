@@ -4,10 +4,12 @@ interface NetworkConfig {
   unlockAppUrl: string
 }
 
-interface NetworkConfigs {
+export interface NetworkConfigs {
   [networkId: string]: NetworkConfig
 }
 
+// TODO: allow customization of these values when running the script
+// This means probably adding to the unlockProtocolConfig object to include the provider, loksmith Uri and unlockAppUrl
 export const networkConfigs: NetworkConfigs = {
   '1': {
     readOnlyProvider:
@@ -39,6 +41,6 @@ export const networkConfigs: NetworkConfigs = {
   '1984': {
     readOnlyProvider: 'http://127.0.0.1:8545',
     locksmithUri: 'http://127.0.0.1:8080',
-    unlockAppUrl: 'http://0.0.0.0:3000',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
   },
 }

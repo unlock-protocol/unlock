@@ -33,7 +33,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: null,
       }
 
-      expect(lockTickerSymbol(lock)).toEqual('ETH')
+      expect(lockTickerSymbol(lock, 'ETH')).toEqual('ETH')
     })
 
     it('returns DAI when it is a DAI lock', () => {
@@ -43,7 +43,7 @@ describe('Checkout Lock Utils', () => {
         currencySymbol: 'DAI',
       }
 
-      expect(lockTickerSymbol(lock)).toEqual('DAI')
+      expect(lockTickerSymbol(lock, 'ETH')).toEqual('DAI')
     })
 
     it('returns ERC20 when it is an unknown ERC20 lock', () => {
@@ -52,7 +52,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0xDAI',
       }
 
-      expect(lockTickerSymbol(lock)).toEqual('ERC20')
+      expect(lockTickerSymbol(lock, 'ETH')).toEqual('ERC20')
     })
   })
 

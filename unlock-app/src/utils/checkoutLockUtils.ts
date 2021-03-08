@@ -46,24 +46,24 @@ export const lockKeysAvailable = ({
   return (maxNumberOfKeys! - outstandingKeys!).toLocaleString()
 }
 
-export const lockTickerSymbol = (lock: LockTickerSymbolLock) => {
+export const lockTickerSymbol = (
+  lock: LockTickerSymbolLock,
+  baseCurrencySymbol: string
+) => {
   if (lock.currencyContractAddress) {
-    // TODO: if there is no symbol, we probably need something better than "ERC20"
     return (lock as any).currencySymbol || 'ERC20'
   }
-  return 'ETH'
+  return baseCurrencySymbol
 }
 
 export const userCanAffordKey = (
   lock: LockPriceLock,
   balance: string
 ): boolean => {
-  const currency = lock.currencyContractAddress || 'eth'
   const keyPrice = parseFloat(lock.keyPrice)
   const _balance = parseFloat(balance)
-  // For eth need some gas so if the balance is exactly the same as key price
-  // this would fail
-  if (currency === 'eth') {
+  // For eth/base currency need some gas so if the balance is exactly the same as key price this would fail
+  if (!lock.currencyContractAddress) {
     return keyPrice < _balance
   }
 

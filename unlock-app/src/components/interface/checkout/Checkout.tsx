@@ -79,7 +79,11 @@ export const Checkout = ({
   const web3Service = new Web3Service(networkConfig)
 
   const showPaymentOptions =
-    !focus && authenticated && provider && !provider.isUnlock
+    !focus &&
+    authenticated &&
+    provider &&
+    !provider.isUnlock &&
+    paywallConfig.unlockUserAccounts == 'true'
 
   const content = (
     <>
@@ -94,6 +98,7 @@ export const Checkout = ({
       )}
 
       <Locks
+        network={requiredNetwork}
         authenticate={authenticate}
         authenticated={authenticated}
         setFocus={setFocus}
@@ -126,7 +131,7 @@ export const Checkout = ({
               embedded
               onCancel={() => setAuthenticated(false)}
               requiredNetwork={requiredNetwork}
-              unlockUserAccount
+              unlockUserAccount={paywallConfig.unlockUserAccounts == 'true'}
               onAuthenticated={onAuthenticated}
               providerAdapter={providerAdapter}
             >

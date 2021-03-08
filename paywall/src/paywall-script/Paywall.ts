@@ -11,7 +11,8 @@ import {
   Web3Window,
   enableInjectedProvider,
 } from '../utils/enableInjectedProvider'
-import { networkConfigs } from './networkConfigs'
+
+import { NetworkConfigs } from './networkConfigs'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
@@ -53,6 +54,8 @@ export interface MethodCallResult {
 export class Paywall {
   childCallBuffer: [string, any?][] = []
 
+  networkConfigs: NetworkConfigs
+
   paywallConfig!: PaywallConfig
 
   userAccountAddress?: string
@@ -67,11 +70,15 @@ export class Paywall {
 
   child?: Postmate.ParentAPI
 
-  constructor(paywallConfig: PaywallConfig, provider?: any) {
+  constructor(
+    paywallConfig: PaywallConfig,
+    networkConfigs: NetworkConfigs,
+    provider?: any
+  ) {
+    this.networkConfigs = networkConfigs
     // Use provider in parameter, fall back to injected provider in window (if any)
     this.provider = provider || getProvider(window as Web3Window)
     this.resetConfig(paywallConfig)
-
     // Always do this last!
     this.loadCache()
   }
@@ -119,7 +126,7 @@ export class Paywall {
 
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
-    const { readOnlyProvider, locksmithUri } = networkConfigs[
+    const { readOnlyProvider, locksmithUri } = this.networkConfigs[
       this.paywallConfig.network
     ]
     if (!this.userAccountAddress) {
@@ -138,7 +145,7 @@ export class Paywall {
   }
 
   shakeHands = async () => {
-    const { unlockAppUrl } = networkConfigs[this.paywallConfig.network]
+    const { unlockAppUrl } = this.networkConfigs[this.paywallConfig.network]
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
@@ -164,7 +171,7 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const { readOnlyProvider } = networkConfigs[this.paywallConfig.network]
+    const { readOnlyProvider } = this.networkConfigs[this.paywallConfig.network]
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
     if (!this.paywallConfig.pessimistic) {
       const optimistic = await willUnlock(

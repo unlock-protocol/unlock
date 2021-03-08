@@ -56,9 +56,6 @@ export default function configure(
     runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let blockTime = 8000 // in mseconds.
-  const chainExplorerUrlBuilders = {
-    etherscan: () => '',
-  }
   // Publishable key from Stripe dashboard, make sure to use the test key when
   // developing.
   const stripeApiKey =
@@ -94,8 +91,6 @@ export default function configure(
   if (env === 'staging') {
     // In staging, the network can only be rinkeby
     isRequiredNetwork = (networkId) => networkId === 4
-    chainExplorerUrlBuilders.etherscan = (path) =>
-      `https://rinkeby.etherscan.io${path}`
     requiredNetworkId = 4
     paywallUrl = 'https://'
     services.storage = { host: runtimeConfig.locksmithHost }
@@ -112,8 +107,6 @@ export default function configure(
   if (env === 'dev-kovan') {
     // In dev-kovan, the network can only be Kovan
     isRequiredNetwork = (networkId) => networkId === 42
-    chainExplorerUrlBuilders.etherscan = (path) =>
-      `https://kovan.etherscan.io${path}`
     requiredNetworkId = 42
     paywallUrl = 'https://'
     services.storage = { host: runtimeConfig.locksmithHost }
@@ -130,7 +123,6 @@ export default function configure(
   if (env === 'prod') {
     // In prod, the network can only be mainnet
     isRequiredNetwork = (networkId) => networkId === 1
-    chainExplorerUrlBuilders.etherscan = (path) => `https://etherscan.io${path}`
     requiredNetworkId = 1
 
     services.storage = { host: runtimeConfig.locksmithHost }
@@ -164,11 +156,12 @@ export default function configure(
     requiredConfirmations: 6,
     blockTime: 3000,
     subgraphURI: 'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
-    explorer: () => {},
+    explorer: null,
     erc20: {
       symbol: 'DEV',
       address: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
     },
+    baseCurrencySymbol: 'Eth',
     stripeApiKey: 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
     locksmith: 'http://127.0.0.1:8080', // TODO: not network specific, API calls should be network specific though
   }
@@ -183,11 +176,18 @@ export default function configure(
     blockTime: 8000,
     subgraphURI:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
-    explorer: (path) => `https://etherscan.io${path}`,
+    explorer: {
+      name: 'Etherscan',
+      urls: {
+        address: (address) => `https://etherscan.io/address/${address}`,
+        transaction: (hash) => `https://etherscan.io/tx/${hash}`,
+      },
+    },
     erc20: {
       symbol: 'DAI',
       address: '0x6b175474e89094c44da98b954eedeac495271d0f',
     },
+    baseCurrencySymbol: 'Eth',
     locksmith: 'https://locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
   }
 
@@ -201,52 +201,68 @@ export default function configure(
     blockTime: 8000,
     subgraphURI:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
-    explorer: (path) => `https://rinkeby.etherscan.io${path}`,
+    explorer: {
+      name: 'Etherscan',
+      urls: {
+        address: (address) =>
+          `https://rinkeby.rinetherscan.io/address/${address}`,
+        transaction: (hash) => `https://rinkeby.etherscan.io/tx/${hash}`,
+      },
+    },
     erc20: {
       symbol: 'WEE',
       address: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
     },
+    baseCurrencySymbol: 'Eth',
     locksmith: 'https://rinkeby.locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
   }
 
-  networks[3] = {
-    httpProvider,
-    readOnlyProvider,
-    unlockAddress: '',
-    id: 3,
-    name: 'Ropsten',
-    blockTime: 4000,
-    subgraphURI:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-ropsten',
-    explorer: () => {},
-    erc20: {},
-    locksmith: '', // TODO: not network specific, API calls should be network specific though
-  }
+  // networks[3] = {
+  //   httpProvider: null, // we use the injected provider!
+  //   readOnlyProvider: '',
+  //   unlockAddress: '',
+  //   id: 3,
+  //   name: 'Ropsten',
+  //   blockTime: 4000,
+  //   subgraphURI:
+  //     'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-ropsten',
+  //   explorer: () => {},
+  //   erc20: {},
+  //   locksmith: '', // TODO: not network specific, API calls should be network specific though
+  // }
 
-  networks[42] = {
-    httpProvider,
-    readOnlyProvider,
-    unlockAddress: '',
-    id: 42,
-    name: 'Kovan',
-    blockTime: 4000,
-    subgraphURI: '',
-    explorer: () => {},
-    erc20: {},
-    locksmith: '', // TODO: not network specific, API calls should be network specific though
-  }
+  // networks[42] = {
+  //   httpProvider,
+  //   readOnlyProvider,
+  //   unlockAddress: '',
+  //   id: 42,
+  //   name: 'Kovan',
+  //   blockTime: 4000,
+  //   subgraphURI: '',
+  //   explorer: () => {},
+  //   erc20: {},
+  //   locksmith: '', // TODO: not network specific, API calls should be network specific though
+  // }
 
   networks[100] = {
-    httpProvider,
-    readOnlyProvider,
-    unlockAddress: '',
+    httpProvider: null,
+    readOnlyProvider: 'https://rpc.xdaichain.com/',
+    unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
     id: 100,
     name: 'xDai',
-    blockTime,
-    subgraphURI: '',
-    explorer: () => {},
-    erc20: {},
-    locksmith: '', // TODO: not network specific, API calls should be network specific though
+    blockTime: 5000,
+    subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+    explorer: {
+      name: 'Blockscout',
+      urls: {
+        address: (address) =>
+          `https://blockscout.com/poa/xdai/address/${address}/transactions`,
+        transaction: (hash) => `https://blockscout.com/poa/xdai/tx/${hash}`,
+      },
+    },
+    erc20: null, // no default ERC20 on xdai for now
+    locksmith: 'https://locksmith.unlock-protocol.com', // need to fix locksmith to support multiple networks...
+    baseCurrencySymbol: 'xDai',
   }
 
   return {
@@ -266,7 +282,6 @@ export default function configure(
     paywallUrl,
     paywallScriptUrl,
     unlockStaticUrl,
-    chainExplorerUrlBuilders,
     stripeApiKey,
     googleClientId,
     googleApiKey,
