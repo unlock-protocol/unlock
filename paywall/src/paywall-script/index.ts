@@ -2,27 +2,30 @@ import { Paywall } from './Paywall'
 import { setupUnlockProtocolVariable } from './utils'
 import { networkConfigs } from './networkConfigs'
 
+declare var PAYWALL_URL: string
+
 const rawConfig = (window as any).unlockProtocolConfig
 if (!rawConfig) {
-  console.error('Missing window.unlockProtocolConfig.')
+  console.error(
+    'Missing window.unlockProtocolConfig. See docs on how to configure your locks: https://docs.unlock-protocol.com/'
+  )
 } else {
   // set network based on hostname if missing in rawConfig
   if (!rawConfig.network) {
-    if (window?.location?.hostname === 'paywall.unlock-protocol.com') {
-      rawConfig.network = '1'
-    } else if (
-      window?.location?.hostname === 'staging-paywall.unlock-protocol.com'
-    ) {
+    if (PAYWALL_URL.match('staging-paywall.unlock-protocol.com')) {
       rawConfig.network = '4'
-    } else if (
-      window?.location?.hostname === 'localhost' ||
-      window?.location?.hostname === '127.0.0.1' ||
-      window?.location?.hostname === '0.0.0.1' ||
-      !window?.location?.hostname
-    ) {
-      rawConfig.network = '1492'
+      console.error(
+        'Missing network in Unlock config. Assigned default to mainnet: 1. See https://docs.unlock-protocol.com/'
+      )
+    } else if (PAYWALL_URL.match('paywall.unlock-protocol.com')) {
+      rawConfig.network = '1'
+      console.error(
+        'Missing network in Unlock config. Assigned default to rinkeby 4. See https://docs.unlock-protocol.com/'
+      )
     } else {
-      console.error('Missing network in Unlock config')
+      console.error(
+        'Missing network in Unlock config. Please set one. See https://docs.unlock-protocol.com/'
+      )
     }
   }
 
