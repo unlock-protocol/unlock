@@ -18,8 +18,8 @@ const abis = require('./abis').default
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends UnlockService {
-  constructor({ unlockAddress }) {
-    super({ unlockAddress, writable: true })
+  constructor() {
+    super({ writable: true })
     this.ready = false
 
     this.on('ready', () => {
@@ -75,6 +75,7 @@ export default class WalletService extends UnlockService {
       this.networkId = networkId
       this.emit('network.changed', networkId)
     }
+    return networkId
   }
 
   /**
@@ -85,8 +86,10 @@ export default class WalletService extends UnlockService {
   async isUnlockContractDeployed(callback) {
     let opCode = '0x' // Default
     try {
+      console.log(this.unlockContractAddress)
       opCode = await this.provider.getCode(this.unlockContractAddress)
     } catch (error) {
+      console.log(error)
       return callback(error)
     }
     return callback(null, opCode !== '0x')
@@ -112,6 +115,7 @@ export default class WalletService extends UnlockService {
         emailAddress: this.provider.emailAddress,
       })
     }
+
     this.emit('ready')
     return address
   }

@@ -1,5 +1,4 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useContext } from 'react'
 import FileSaver from 'file-saver'
 import {
   Grid,
@@ -16,12 +15,13 @@ import {
   OrderedList,
 } from './styles'
 import { EncryptedPrivateKey } from '../../../unlockTypes'
+import { AuthenticationContext } from '../Authenticate'
 
-interface EjectAccountProps {
-  encryptedPrivateKey: EncryptedPrivateKey
-}
-
-export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
+export function EjectAccount() {
+  const { encryptedPrivateKey } = useContext(AuthenticationContext)
+  if (!encryptedPrivateKey) {
+    return null // Accounts for which we do not have the key cannot be ejected!
+  }
   return (
     <Grid>
       <SectionHeader>Export Account</SectionHeader>
@@ -33,8 +33,9 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
         <OrderedList>
           <li>
             A JSON file will be downloaded to your computer. This file includes
-            your private key, encrypted with your Unlock password. You should
-            then import it into a wallet like MetaMask.
+            your private key, encrypted with your{' '}
+            <strong>Unlock password</strong>. You should then import it into a
+            wallet like Metamask.
           </li>
           <li>
             Your Unlock account will be deleted permanently, including all
@@ -66,22 +67,7 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
     </Grid>
   )
 }
-
-interface ReduxState {
-  userDetails: {
-    key: EncryptedPrivateKey
-  }
-}
-
-export const mapStateToProps = ({
-  userDetails: { key },
-}: ReduxState): EjectAccountProps => {
-  return {
-    encryptedPrivateKey: key,
-  }
-}
-
-export default connect(mapStateToProps)(EjectAccount)
+export default EjectAccount
 
 interface EjectionFormProps {
   encryptedPrivateKey: EncryptedPrivateKey

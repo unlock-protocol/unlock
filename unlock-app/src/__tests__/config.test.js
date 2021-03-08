@@ -93,12 +93,6 @@ describe('config', () => {
       expect.assertions(1)
       expect(config.requiredNetwork).toEqual('Dev')
     })
-
-    it('should contain the right URLs for chain explorers', () => {
-      expect.assertions(2)
-      expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherscan('/0x0')).toEqual('')
-    })
   })
 
   describe('staging', () => {
@@ -119,14 +113,6 @@ describe('config', () => {
       expect.assertions(1)
       expect(config.requiredNetwork).toEqual('Rinkeby')
     })
-
-    it('should contain the right URLs for chain explorers', () => {
-      expect.assertions(2)
-      expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherscan('/0x0')).toEqual(
-        'https://rinkeby.etherscan.io/0x0'
-      )
-    })
   })
 
   describe('production', () => {
@@ -146,14 +132,6 @@ describe('config', () => {
     it('should have the right keys in production', () => {
       expect.assertions(1)
       expect(config.requiredNetwork).toEqual('Mainnet')
-    })
-
-    it('should contain the right URLs for chain explorers', () => {
-      expect.assertions(2)
-      expect(Object.keys(config.chainExplorerUrlBuilders)).toHaveLength(1)
-      expect(config.chainExplorerUrlBuilders.etherscan('/0x0')).toEqual(
-        'https://etherscan.io/0x0'
-      )
     })
   })
 })

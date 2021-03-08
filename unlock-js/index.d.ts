@@ -95,7 +95,7 @@ export class WalletService extends EventEmitter {
   constructor({ unlockAddress }: { unlockAddress: string })
   ready: boolean
   provider?: any
-  connect: (provider: Web3Provider) => Promise<void>
+  connect: (provider: Web3Provider) => Promise<string>
   getAccount: () => Promise<string | false>
   // callback is never called with an error and is always called with
   // a hash -- this may change in the future.

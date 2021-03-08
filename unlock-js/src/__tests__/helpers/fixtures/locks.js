@@ -1,4 +1,4 @@
-import { UNLIMITED_KEYS_COUNT } from '../../../../lib/constants'
+import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 // Locks to deploy for each version
 
 export default {

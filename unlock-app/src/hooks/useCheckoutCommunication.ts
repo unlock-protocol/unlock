@@ -142,7 +142,7 @@ export const useCheckoutCommunication = () => {
     emitCloseModal,
     emitTransactionInfo,
     emitMethodCall,
-    config,
+    paywallConfig: config,
     providerAdapter,
     insideIframe,
     // `ready` is primarily provided as an aid for testing the buffer

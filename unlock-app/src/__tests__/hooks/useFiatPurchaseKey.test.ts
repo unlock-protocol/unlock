@@ -89,7 +89,7 @@ describe('usePurchaseKey', () => {
 
     const { result } = renderHook(() => useFiatPurchaseKey(emitTransactionInfo))
 
-    await result.current.purchaseKey(lock, accountAddress)
+    await result.current.purchaseKey(lock.address, accountAddress)
 
     expect(mockStorageService.purchaseKey).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith(setTransactionHash('txhash'))

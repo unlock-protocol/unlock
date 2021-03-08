@@ -173,7 +173,7 @@ export interface LockProps {
   formattedKeyPrice: string
   formattedDuration: string
   formattedKeysAvailable: string
-  onClick: () => void
+  onClick?: () => void
 }
 
 export interface LoadingLockProps {
