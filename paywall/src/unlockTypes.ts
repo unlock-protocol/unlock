@@ -92,6 +92,7 @@ export interface PaywallConfig {
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
+  network: string
 }
 
 export enum KeyStatus {

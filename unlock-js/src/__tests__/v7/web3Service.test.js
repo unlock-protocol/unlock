@@ -4,8 +4,7 @@ import abis from '../../abis'
 
 import Web3Service from '../../web3Service'
 
-import { KEY_ID } from '../../constants'
-import { ZERO } from '../../../lib/constants'
+import { KEY_ID, ZERO } from '../../constants'
 
 const readOnlyProvider = 'http://127.0.0.1:8545'
 const unlockAddress = '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F'

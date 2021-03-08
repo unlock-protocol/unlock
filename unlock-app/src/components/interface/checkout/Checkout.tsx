@@ -1,190 +1,156 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState, useContext } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
-import { useMachine } from '@xstate/react'
+
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { ConfigContext } from '../../../utils/withConfig'
+import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import CheckoutWrapper from './CheckoutWrapper'
 import CheckoutContainer from './CheckoutContainer'
-import { CheckoutErrors } from './CheckoutErrors'
-import { NotLoggedIn } from './NotLoggedIn'
 import { Locks } from './Locks'
-import { FiatLocks } from './FiatLocks'
 import { CallToAction } from './CallToAction'
 import { SwitchPayment } from './SwitchPayment'
-import MetadataForm from './MetadataForm'
 import Loading from '../Loading'
 import { pageTitle } from '../../../constants'
-import {
-  Account as AccountType,
-  PaywallConfig,
-  UserMetadata,
-} from '../../../unlockTypes'
-import { UnlockError } from '../../../utils/Error'
-import { resetError } from '../../../actions/error'
 
-import { checkoutMachine, CheckoutState } from '../../../stateMachines/checkout'
 import {
   UserInfo,
   TransactionInfo,
 } from '../../../hooks/useCheckoutCommunication'
-import { useSetUserMetadata } from '../../../hooks/useSetUserMetadata'
-import { useCheckoutStore } from '../../../hooks/useCheckoutStore'
-import { useProvider } from '../../../hooks/useProvider'
 import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
+import Authenticate from '../Authenticate'
+import ProviderContext from '../../../contexts/ProviderContext'
 
 interface CheckoutProps {
-  account: AccountType
-  configFromSearch?: PaywallConfig
-  errors: UnlockError[]
   emitCloseModal: () => void
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
-  config?: PaywallConfig
   providerAdapter: any
 }
 
 export const Checkout = ({
-  errors,
-  configFromSearch,
-  account,
   emitCloseModal,
   emitTransactionInfo,
   emitUserInfo,
-  config,
-  providerAdapter,
+  providerAdapter, // provider passed from the website which implements the paywall so we can support any wallet!
 }: CheckoutProps) => {
-  // solely called for side effect of initializing with provider
-  useProvider(providerAdapter)
-  const reduxDispatch = useDispatch()
-  const [current, send] = useMachine(checkoutMachine)
-  const { setUserMetadata } = useSetUserMetadata()
-  const { state } = useCheckoutStore()
-  const [activePayment, setActivePayment] = useState<string | null>(null)
-  const [checkoutError, setCheckoutError] = useState(errors)
-  const paywallConfig = config || configFromSearch
+  const { provider } = useContext(ProviderContext)
 
-  useEffect(() => {
-    if (account) {
-      emitUserInfo({ address: account.address })
-    }
+  const paywallConfig = useContext(PaywallConfigContext)
+  const config = useContext(ConfigContext)
+  const [activePayment, setActivePayment] = useState<string>(
+    !provider || provider.isUnlock ? 'Credit Card' : 'Default'
+  )
+  const [focus, setFocus] = useState('')
+  const [authenticated, setAuthenticated] = useState(false)
+  const [account, setAccount] = useState('')
 
-    if (account && account.emailAddress && paywallConfig) {
-      send('gotConfigAndUserAccount')
-    } else if (account && paywallConfig) {
-      send('gotConfigAndAccount')
-    } else if (paywallConfig) {
-      setTimeout(() => send('gotConfig'), 500)
-    }
-  }, [JSON.stringify(account), JSON.stringify(paywallConfig)])
-
-  const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
-  const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
-  const metadataRequired = paywallConfig
-    ? !!paywallConfig.metadataInputs
-    : false
-
-  const onMetadataSubmit = (metadata: UserMetadata) => {
-    const { delayedPurchase } = state
-    setUserMetadata(
-      delayedPurchase!.lockAddress,
-      account!.address,
-      metadata,
-      (error: any, saved: boolean) => {
-        if (error || !saved) {
-          setCheckoutError([
-            {
-              level: 'Fatal',
-              kind: 'Storage',
-              message: 'Your info could not be saved.',
-            },
-          ])
-        }
-        if (saved) {
-          delayedPurchase!.purchaseKey()
-        }
-      }
-    )
-    send('metadataSubmitted')
+  if (!paywallConfig || !config) {
+    return <Loading />
   }
 
+  const requiredNetwork = paywallConfig.network || '1'
+  const networkConfig = config.networks[requiredNetwork] // Defaults to mainnet if network is missing from conf!
+  const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
+  const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
+
+  const changeActivePayment = (type: string) => {
+    setAuthenticated(true)
+    setActivePayment(type)
+  }
+
+  const handleTransactionInfo = (info: any) => {
+    emitTransactionInfo(info)
+  }
+
+  const authenticate = () => {
+    setAuthenticated(true)
+  }
+
+  const onAuthenticated = (address: string) => {
+    if (account !== address) {
+      setAccount(address)
+      emitUserInfo({
+        address,
+      })
+    }
+  }
+
+  const web3Service = new Web3Service(networkConfig)
+
+  const showPaymentOptions =
+    !focus &&
+    authenticated &&
+    provider &&
+    !provider.isUnlock &&
+    paywallConfig.unlockUserAccounts == 'true'
+
+  const content = (
+    <>
+      {paywallConfig && paywallConfig.icon && (
+        <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
+      )}
+      {!focus && (
+        <CallToAction
+          state="default"
+          callToAction={paywallConfig.callToAction}
+        />
+      )}
+
+      <Locks
+        network={requiredNetwork}
+        authenticate={authenticate}
+        authenticated={authenticated}
+        setFocus={setFocus}
+        focus={focus}
+        lockAddresses={lockAddresses}
+        activePayment={activePayment}
+        emitTransactionInfo={handleTransactionInfo}
+      />
+      {showPaymentOptions && (
+        <SwitchPayment
+          setActivePayment={changeActivePayment}
+          activePayment={activePayment}
+          paymentOptions={['Credit Card']}
+        />
+      )}
+      {!showPaymentOptions && <Spacer />}
+    </>
+  )
+
   return (
-    <PaywallConfigContext.Provider value={paywallConfig}>
+    <Web3ServiceContext.Provider value={web3Service}>
       <CheckoutContainer close={emitCloseModal}>
         <CheckoutWrapper allowClose={allowClose} hideCheckout={emitCloseModal}>
           <Head>
             <title>{pageTitle('Checkout')}</title>
           </Head>
-          {paywallConfig && paywallConfig.icon && (
-            <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
+
+          {authenticated && (
+            <Authenticate
+              embedded
+              onCancel={() => setAuthenticated(false)}
+              requiredNetwork={requiredNetwork}
+              unlockUserAccount={paywallConfig.unlockUserAccounts == 'true'}
+              onAuthenticated={onAuthenticated}
+              providerAdapter={providerAdapter}
+            >
+              {content}
+            </Authenticate>
           )}
-          {paywallConfig && (
-            <CallToAction
-              state={current.value}
-              callToAction={paywallConfig.callToAction}
-            />
-          )}
-          <CheckoutErrors
-            errors={checkoutError}
-            resetError={(e: UnlockError) => reduxDispatch(resetError(e))}
-          />
-          {current.matches(CheckoutState.loading) && <Loading />}
-          {current.matches(CheckoutState.notLoggedIn) && (
-            <NotLoggedIn
-              config={paywallConfig!}
-              lockAddresses={lockAddresses}
-            />
-          )}
-          {current.matches(CheckoutState.locks) && (
-            <Locks
-              accountAddress={account.address}
-              lockAddresses={lockAddresses}
-              emitTransactionInfo={emitTransactionInfo}
-              metadataRequired={metadataRequired}
-              showMetadataForm={() => send('collectMetadata')}
-              config={paywallConfig!}
-            />
-          )}
-          {current.matches(CheckoutState.fiatLocks) && (
-            <FiatLocks
-              accountAddress={account.address}
-              lockAddresses={lockAddresses}
-              emitTransactionInfo={emitTransactionInfo}
-              metadataRequired={metadataRequired}
-              showMetadataForm={() => send('collectMetadata')}
-              config={paywallConfig!}
-            />
-          )}
-          {(current.matches(CheckoutState.fiatLocks) ||
-            current.matches(CheckoutState.locks)) &&
-            !account.emailAddress &&
-            !!paywallConfig!.unlockUserAccounts && (
-              <SwitchPayment
-                paymentOptions={['Credit Card']}
-                activePayment={activePayment}
-                setActivePayment={(option: string | null) => {
-                  setActivePayment(option)
-                  send('changeCurrency')
-                }}
-              />
-            )}
-          {current.matches(CheckoutState.metadataForm) && (
-            <MetadataForm
-              fields={paywallConfig!.metadataInputs!}
-              onSubmit={onMetadataSubmit}
-            />
-          )}
+          {!authenticated && <>{content}</>}
         </CheckoutWrapper>
       </CheckoutContainer>
-    </PaywallConfigContext.Provider>
+    </Web3ServiceContext.Provider>
   )
 }
 
-Checkout.defaultProps = {
-  configFromSearch: null,
-  config: null,
-}
-
 const PaywallLogo = styled.img`
+  height: 100px;
   max-width: 200px;
   align-self: start;
+`
+
+const Spacer = styled.div`
+  height: 75px;
 `

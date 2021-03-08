@@ -1,17 +1,12 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import { Provider } from 'react-redux'
 import { TransactionType } from '../../unlockTypes'
 import LockIconBar from '../../components/creator/lock/LockIconBar'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 
 const config = {
   requiredConfirmations: 12,
-  chainExplorerUrlBuilders: {
-    etherscan: () => {},
-  },
 }
 
 const transactions = {
@@ -95,16 +90,12 @@ const transactions = {
     type: TransactionType.WITHDRAWAL,
   },
 }
-
-const store = createUnlockStore({ transactions })
-
 const ConfigProvider = ConfigContext.Provider
 
 storiesOf('LockIconBar', module)
   .addDecorator((getStory) => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
-  .addDecorator((getStory) => <Provider store={store}>{getStory()}</Provider>)
   .add('LockIconBar, no blocking transaction', () => {
     const lock = {
       address: '0xnoTransaction',

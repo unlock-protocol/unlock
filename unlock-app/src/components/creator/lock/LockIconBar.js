@@ -1,30 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
 import Buttons from '../../interface/buttons/lock'
 import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
-import withConfig from '../../../utils/withConfig'
+import withConfig, { ConfigContext } from '../../../utils/withConfig'
 import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
-import configure from '../../../config'
+import { AuthenticationContext } from '../../interface/Authenticate'
 
-const config = configure()
+export function LockIconBar({ lock, toggleCode, edit }) {
+  const config = useContext(ConfigContext)
+  const { network } = useContext(AuthenticationContext)
 
-export function LockIconBar({
-  lock,
-  toggleCode,
-  withdrawalTransaction,
-  config,
-  edit,
-}) {
   // If there is any blocking transaction, we show the lock as either submitted or confirming
   const blockingTransaction =
     lock.creationTransaction || lock.priceUpdateTransaction
-
   if (blockingTransaction) {
     if (blockingTransaction.status !== TransactionStatus.MINED) {
       return (
@@ -46,12 +39,9 @@ export function LockIconBar({
       )
     }
   }
-
-  const etherscanAddress = config.chainExplorerUrlBuilders.etherscan(
-    `/address/${lock.address}`
-  )
-
   const membersPage = `/members?locks=${lock.address}`
+
+  const withdrawalTransaction = lock.withdrawalTransaction
 
   // Otherwise, we just show the lock icon bar
   return (
@@ -67,7 +57,10 @@ export function LockIconBar({
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Members href={membersPage} />
           <Buttons.AppStore as="button" action={toggleCode} />
-          <Buttons.Etherscan target="_blank" href={etherscanAddress} />
+          <Buttons.Explorer
+            target="_blank"
+            href={config.networks[network].explorer.urls.address(lock.address)}
+          />
         </IconBar>
       </IconBarContainer>
       <SubStatus>
@@ -89,51 +82,13 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   edit: PropTypes.func, // this will be required when we wire it up, no-op for now
-  withdrawalTransaction: UnlockPropTypes.transaction,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 LockIconBar.defaultProps = {
-  withdrawalTransaction: null,
   edit: () => {},
 }
 
-// TODO: remove transactions from redux store when we have moved withdrawal to a hook
-export const mapStateToProps = ({ transactions }, { lock }) => {
-  // Get all pending transactions as they will impact how we display the lock
-  const lockTransactions = Object.values(transactions)
-    .filter((transaction) => {
-      return (
-        [transaction.lock, transaction.to].indexOf(lock.address) > -1 &&
-        (!transaction.confirmations ||
-          transaction.confirmations < config.requiredConfirmations)
-      )
-    })
-    .sort((t, u) => {
-      // We sort in reverse block order so we can get the "latest" transaction first
-      if (!t.blockNumber) {
-        return 1
-      }
-      if (!u.blockNumber) {
-        return -1
-      }
-      if (t.blockNumber > u.blockNumber) {
-        return -1
-      }
-      return 1
-    })
-
-  // Get latest lock withdrawal transacion
-  const withdrawalTransaction = lockTransactions.find((transaction) => {
-    return transaction.type === TransactionType.WITHDRAWAL
-  })
-
-  return {
-    withdrawalTransaction,
-  }
-}
-
-export default withConfig(connect(mapStateToProps)(LockIconBar))
+export default withConfig(LockIconBar)
 
 const IconBarContainer = styled.div`
   display: grid;

@@ -1,68 +1,108 @@
-import React from 'react'
-import { Lock } from './Lock'
+import React, { useContext, useState, useEffect } from 'react'
+import { Lock, LoggedOutLock } from './Lock'
 import { LoadingLock } from './LockVariations'
-import { usePaywallLocks } from '../../../hooks/usePaywallLocks'
-import { useGetTokenBalance } from '../../../hooks/useGetTokenBalance'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
-import { useKeyOwnershipStatus } from '../../../hooks/useKeyOwnershipStatus'
-import { PaywallConfig } from '../../../unlockTypes'
+import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 
-interface LocksProps {
-  accountAddress: string
-  lockAddresses: string[]
+interface LoadLockProps {
+  address: string
   emitTransactionInfo: (info: TransactionInfo) => void
-  metadataRequired?: boolean
-  showMetadataForm: () => void
-  config: PaywallConfig
+  authenticated: boolean
+  activePayment: string
+  setFocus: (address: string) => void
+  authenticate: () => void
+  network: string
 }
 
-export const Locks = ({
-  lockAddresses,
-  accountAddress,
+const LoadLock = ({
+  address,
+  setFocus,
   emitTransactionInfo,
-  metadataRequired,
-  showMetadataForm,
-  config,
-}: LocksProps) => {
-  const { getTokenBalance, balances } = useGetTokenBalance(accountAddress)
-  const { locks, loading } = usePaywallLocks(
-    lockAddresses,
-    getTokenBalance,
-    config
-  )
-  const { keys } = useKeyOwnershipStatus(lockAddresses, accountAddress)
+  authenticated,
+  authenticate,
+  activePayment,
+  network,
+}: LoadLockProps) => {
+  const web3Service = useContext(Web3ServiceContext)
+  const [loading, setLoading] = useState(true)
+  const [lock, setLock] = useState({})
 
-  const now = new Date().getTime() / 1000
-  const activeKeys = keys.filter((key) => key.expiration > now)
+  useEffect(() => {
+    const loadLock = async () => {
+      const lockDetails = await web3Service.getLock(address)
+      setLock({
+        address,
+        ...lockDetails,
+      })
+      setLoading(false)
+    }
+    if (web3Service) {
+      loadLock()
+    }
+  }, [address, web3Service])
 
-  if (loading) {
+  if (loading || !web3Service) {
+    return <LoadingLock address={address} />
+  }
+
+  if (!authenticated) {
     return (
-      <div>
-        {lockAddresses.map((address) => (
-          <LoadingLock address={address} key={address} />
-        ))}
-      </div>
+      <LoggedOutLock network={network} lock={lock} onClick={authenticate} />
     )
   }
 
   return (
+    <Lock
+      setFocus={setFocus}
+      lock={lock}
+      emitTransactionInfo={emitTransactionInfo}
+      authenticated={authenticated}
+      activePayment={activePayment}
+    />
+  )
+}
+
+interface LocksProps {
+  lockAddresses: string[]
+  emitTransactionInfo: (info: TransactionInfo) => void
+  activePayment: string
+  setFocus: (address: string) => void
+  focus: string
+  authenticated: boolean
+  authenticate: () => void
+  network: string
+}
+
+export const Locks = ({
+  network,
+  authenticate,
+  authenticated,
+  lockAddresses,
+  emitTransactionInfo,
+  activePayment,
+  setFocus,
+  focus,
+}: LocksProps) => {
+  return (
     <div>
-      {locks.map((lock) => (
-        <Lock
-          key={lock.address}
-          lock={lock}
-          emitTransactionInfo={emitTransactionInfo}
-          balances={balances}
-          activeKeys={activeKeys}
-          accountAddress={accountAddress}
-          metadataRequired={metadataRequired}
-          showMetadataForm={showMetadataForm}
-        />
-      ))}
+      {lockAddresses.map((address) => {
+        if (!focus || focus === address) {
+          return (
+            <LoadLock
+              network={network}
+              authenticate={authenticate}
+              authenticated={authenticated}
+              setFocus={setFocus}
+              key={address}
+              address={address}
+              emitTransactionInfo={emitTransactionInfo}
+              activePayment={activePayment}
+            />
+          )
+        }
+      })}
     </div>
   )
 }
 
-Locks.defaultProps = {
-  metadataRequired: false,
-}
+Locks.defaultProps = {}

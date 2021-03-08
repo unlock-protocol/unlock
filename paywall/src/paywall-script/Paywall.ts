@@ -1,4 +1,5 @@
 import Postmate from 'postmate'
+import { PaywallConfig } from 'src/unlockTypes'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from '../utils/localStorage'
@@ -11,11 +12,8 @@ import {
   enableInjectedProvider,
 } from '../utils/enableInjectedProvider'
 
-interface ModuleConfig {
-  unlockAppUrl: string
-  readOnlyProvider: string
-  locksmithUri: string
-}
+import { NetworkConfigs } from './networkConfigs'
+
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
@@ -56,7 +54,9 @@ export interface MethodCallResult {
 export class Paywall {
   childCallBuffer: [string, any?][] = []
 
-  paywallConfig: any
+  networkConfigs: NetworkConfigs
+
+  paywallConfig!: PaywallConfig
 
   userAccountAddress?: string
 
@@ -70,15 +70,15 @@ export class Paywall {
 
   child?: Postmate.ParentAPI
 
-  moduleConfig: ModuleConfig
-
-  constructor(paywallConfig: any, moduleConfig: ModuleConfig, provider?: any) {
-    this.moduleConfig = moduleConfig
+  constructor(
+    paywallConfig: PaywallConfig,
+    networkConfigs: NetworkConfigs,
+    provider?: any
+  ) {
+    this.networkConfigs = networkConfigs
     // Use provider in parameter, fall back to injected provider in window (if any)
     this.provider = provider || getProvider(window as Web3Window)
-
     this.resetConfig(paywallConfig)
-
     // Always do this last!
     this.loadCache()
   }
@@ -95,7 +95,7 @@ export class Paywall {
     return this.userAccountAddress
   }
 
-  resetConfig = (config: any) => {
+  resetConfig = (config: PaywallConfig) => {
     this.paywallConfig = injectProviderInfo(config, this.provider)
     this.checkKeysAndLock()
     if (this.setConfig) {
@@ -126,7 +126,9 @@ export class Paywall {
 
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
-    const { readOnlyProvider, locksmithUri } = this.moduleConfig
+    const { readOnlyProvider, locksmithUri } = this.networkConfigs[
+      this.paywallConfig.network
+    ]
     if (!this.userAccountAddress) {
       return
     }
@@ -143,7 +145,7 @@ export class Paywall {
   }
 
   shakeHands = async () => {
-    const { unlockAppUrl } = this.moduleConfig
+    const { unlockAppUrl } = this.networkConfigs[this.paywallConfig.network]
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
@@ -169,7 +171,7 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const { readOnlyProvider } = this.moduleConfig
+    const { readOnlyProvider } = this.networkConfigs[this.paywallConfig.network]
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
     if (!this.paywallConfig.pessimistic) {
       const optimistic = await willUnlock(

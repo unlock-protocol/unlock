@@ -3,8 +3,6 @@ const {
   unlockPort,
   paywallHost,
   paywallPort,
-  unlockProviderUnlockHost,
-  unlockProviderAppPort,
   httpProviderHost,
   httpProviderPort,
 } = require('./vars')
@@ -24,7 +22,5 @@ module.exports = {
   paywall: (path = '/') => `http://${paywallHost}:${paywallPort}${path}`,
   newdemo: lockAddress =>
     `http://${paywallHost}:${paywallPort}/newdemo?lock=${lockAddress}`,
-  unlockProviderApp: (path = '/') =>
-    `http://${unlockProviderUnlockHost}:${unlockProviderAppPort}${path}`,
   readOnlyProvider: () => `http://${httpProviderHost}:${httpProviderPort}`,
 }
