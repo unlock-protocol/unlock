@@ -19,6 +19,9 @@ import { Paywall } from '@unlock-protocol/paywall';
 // see https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
 const paywallConfig = {};
 
-new Paywall(paywallConfig);
+// See ./networkConfigs
+const networkConfigs = {}
+
+new Paywall(paywallConfig, networkConfigs);
 // from this point onward, it behaves exactly as if you had loaded the script in the <head> of your page.
 ```

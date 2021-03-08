@@ -6,8 +6,33 @@ import configure from '../../../config'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
+import { AuthenticationContext } from '../../../components/interface/Authenticate'
 
 const Web3ServiceProvider = Web3ServiceContext.Provider
+
+export const renderWithContexts = (component) => {
+  const config = {
+    networks: {
+      1492: {
+        explorer: {
+          urls: {
+            address: () => '',
+          },
+        },
+      },
+    },
+  }
+  const authentication = { network: '1492' }
+  return rtl.render(
+    <Web3ServiceProvider value={web3Service}>
+      <ConfigContext.Provider value={config}>
+        <AuthenticationContext.Provider value={authentication}>
+          {component}
+        </AuthenticationContext.Provider>
+      </ConfigContext.Provider>
+    </Web3ServiceProvider>
+  )
+}
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -55,13 +80,8 @@ const web3Service = {
 describe('CreatorLock', () => {
   it('should show integration tab when the button is clicked', () => {
     expect.assertions(2)
-    const config = configure()
-    const wrapper = rtl.render(
-      <Web3ServiceProvider value={web3Service}>
-        <ConfigProvider value={config}>
-          <CreatorLock lock={lock} updateLock={() => {}} />
-        </ConfigProvider>
-      </Web3ServiceProvider>
+    const wrapper = renderWithContexts(
+      <CreatorLock lock={lock} updateLock={() => {}} />
     )
 
     expect(
@@ -82,13 +102,8 @@ describe('CreatorLock', () => {
 
   it.skip('should open the edit form when the button is clicked', () => {
     expect.assertions(0)
-    const config = configure()
-    const wrapper = rtl.render(
-      <Web3ServiceProvider value={web3Service}>
-        <ConfigProvider value={config}>
-          <CreatorLock lock={lock} updateLock={() => {}} />
-        </ConfigProvider>
-      </Web3ServiceProvider>
+    const wrapper = renderWithContexts(
+      <CreatorLock lock={lock} updateLock={() => {}} />
     )
 
     const editButton = wrapper.getByTitle('Edit')
@@ -99,13 +114,8 @@ describe('CreatorLock', () => {
 
   it('should display the correct number of keys', () => {
     expect.assertions(1)
-    const config = configure()
-    const wrapper = rtl.render(
-      <Web3ServiceProvider value={web3Service}>
-        <ConfigProvider value={config}>
-          <CreatorLock lock={keylock} updateLock={() => {}} />
-        </ConfigProvider>
-      </Web3ServiceProvider>
+    const wrapper = renderWithContexts(
+      <CreatorLock lock={keylock} updateLock={() => {}} />
     )
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
@@ -113,13 +123,8 @@ describe('CreatorLock', () => {
 
   it('should display infinite keys correctly', () => {
     expect.assertions(1)
-    const config = configure()
-    const wrapper = rtl.render(
-      <Web3ServiceProvider value={web3Service}>
-        <ConfigProvider value={config}>
-          <CreatorLock lock={unlimitedlock} updateLock={() => {}} />
-        </ConfigProvider>
-      </Web3ServiceProvider>
+    const wrapper = renderWithContexts(
+      <CreatorLock lock={unlimitedlock} updateLock={() => {}} />
     )
 
     expect(wrapper.queryByText('1/∞')).not.toBeNull()

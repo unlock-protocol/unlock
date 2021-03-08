@@ -32,22 +32,11 @@ storiesOf('Buttons/Lock Buttons', module)
   .add('Edit', () => {
     return <Buttons.Edit />
   })
-  .add('Etherscan', () => {
-    return <Buttons.Etherscan />
+  .add('Explorer', () => {
+    return <Buttons.Explorer />
   })
   .add('Export', () => {
     return <Buttons.ExportLock />
-  })
-  .add('Preview', () => {
-    const lock = {
-      address: '0xabc',
-    }
-    const ConfigProvider = ConfigContext.Provider
-    return (
-      <ConfigProvider value={config}>
-        <Buttons.Preview lock={lock} />
-      </ConfigProvider>
-    )
   })
   .add('Upload', () => {
     return <Buttons.Upload />

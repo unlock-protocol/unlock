@@ -51,6 +51,7 @@ const usePaywall = () => {
       locks: {
         [url.searchParams.get('lock')]: {},
       },
+      network: url.searchParams.get('network'),
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
         expired:
@@ -69,7 +70,7 @@ const usePaywall = () => {
     localStorage.removeItem('userInfo')
 
     // Event handler
-    const handler = window.addEventListener('unlockProtocol', e => {
+    const handler = window.addEventListener('unlockProtocol', (e) => {
       if (e.detail === 'unlocked') {
         setLocked(false)
       } else {
@@ -252,7 +253,7 @@ const Article = styled.div`
 const CallToAction = styled.p`
   text-align: center;
   font-size: 1.2em;
-  display: ${props => (props.locked === true ? 'block' : 'none')};
+  display: ${(props) => (props.locked === true ? 'block' : 'none')};
 `
 
 const Button = styled.button`
@@ -270,13 +271,13 @@ const Button = styled.button`
 `
 
 const Locked = styled.p`
-  display: ${props =>
+  display: ${(props) =>
     props.locked === false || props.overlay ? 'block' : 'none'};
   position: relative; // Important to make the overlay work
 `
 
 const Overlay = styled.span`
-  display: ${props => (props.locked === false ? 'none' : 'block')};
+  display: ${(props) => (props.locked === false ? 'none' : 'block')};
   position: absolute;
   background: linear-gradient(rgb(253, 250, 247, 0), rgb(253, 250, 247, 1) 70%);
   top: 0;

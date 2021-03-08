@@ -12,7 +12,7 @@ interface Config {
 interface KeyPrice {
   [currency: string]: string
 }
-export const useFiatKeyPrices = (address: string) => {
+export const useFiatKeyPrices = (address: string, activePayment: string) => {
   const [loading, setLoading] = useState(true)
   const [fiatPrices, updatePrices] = useState({} as KeyPrice)
 
@@ -29,9 +29,11 @@ export const useFiatKeyPrices = (address: string) => {
   }
 
   useEffect(() => {
-    setLoading(true)
-    getFiatKeyPriceFor(address)
-  }, [address])
+    if (activePayment === 'Credit Card') {
+      setLoading(true)
+      getFiatKeyPriceFor(address)
+    }
+  }, [address, activePayment])
 
   return { loading, fiatPrices }
 }

@@ -5,9 +5,8 @@ import ExportLock from './ExportLock'
 import Code from './Code'
 import Download from './Download'
 import Upload from './Upload'
-import Etherscan from './Etherscan'
+import Explorer from './Explorer'
 import Members from './Members'
-import Preview from './Preview'
 import Copy from './Copy'
 
 export default {
@@ -18,8 +17,7 @@ export default {
   Code,
   Download,
   Upload,
-  Etherscan,
+  Explorer,
   Members,
-  Preview,
   Copy,
 }

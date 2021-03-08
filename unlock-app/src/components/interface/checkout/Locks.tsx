@@ -11,6 +11,7 @@ interface LoadLockProps {
   activePayment: string
   setFocus: (address: string) => void
   authenticate: () => void
+  network: string
 }
 
 const LoadLock = ({
@@ -20,6 +21,7 @@ const LoadLock = ({
   authenticated,
   authenticate,
   activePayment,
+  network,
 }: LoadLockProps) => {
   const web3Service = useContext(Web3ServiceContext)
   const [loading, setLoading] = useState(true)
@@ -44,7 +46,9 @@ const LoadLock = ({
   }
 
   if (!authenticated) {
-    return <LoggedOutLock lock={lock} onClick={authenticate} />
+    return (
+      <LoggedOutLock network={network} lock={lock} onClick={authenticate} />
+    )
   }
 
   return (
@@ -66,9 +70,11 @@ interface LocksProps {
   focus: string
   authenticated: boolean
   authenticate: () => void
+  network: string
 }
 
 export const Locks = ({
+  network,
   authenticate,
   authenticated,
   lockAddresses,
@@ -83,6 +89,7 @@ export const Locks = ({
         if (!focus || focus === address) {
           return (
             <LoadLock
+              network={network}
               authenticate={authenticate}
               authenticated={authenticated}
               setFocus={setFocus}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { AppStore } from '../../components/creator/lock/AppStore'
+import AppStore from '../../components/creator/lock/AppStore'
 
 const config = {}
 

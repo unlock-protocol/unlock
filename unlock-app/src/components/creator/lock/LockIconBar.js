@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -6,18 +6,18 @@ import Buttons from '../../interface/buttons/lock'
 import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
-import withConfig from '../../../utils/withConfig'
+import withConfig, { ConfigContext } from '../../../utils/withConfig'
 import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
-import configure from '../../../config'
+import { AuthenticationContext } from '../../interface/Authenticate'
 
-const config = configure()
+export function LockIconBar({ lock, toggleCode, edit }) {
+  const config = useContext(ConfigContext)
+  const { network } = useContext(AuthenticationContext)
 
-export function LockIconBar({ lock, toggleCode, config, edit }) {
   // If there is any blocking transaction, we show the lock as either submitted or confirming
   const blockingTransaction =
     lock.creationTransaction || lock.priceUpdateTransaction
-
   if (blockingTransaction) {
     if (blockingTransaction.status !== TransactionStatus.MINED) {
       return (
@@ -39,11 +39,6 @@ export function LockIconBar({ lock, toggleCode, config, edit }) {
       )
     }
   }
-
-  const etherscanAddress = config.chainExplorerUrlBuilders.etherscan(
-    `/address/${lock.address}`
-  )
-
   const membersPage = `/members?locks=${lock.address}`
 
   const withdrawalTransaction = lock.withdrawalTransaction
@@ -62,7 +57,10 @@ export function LockIconBar({ lock, toggleCode, config, edit }) {
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Members href={membersPage} />
           <Buttons.AppStore as="button" action={toggleCode} />
-          <Buttons.Etherscan target="_blank" href={etherscanAddress} />
+          <Buttons.Explorer
+            target="_blank"
+            href={config.networks[network].explorer.urls.address(lock.address)}
+          />
         </IconBar>
       </IconBarContainer>
       <SubStatus>
@@ -84,7 +82,6 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   edit: PropTypes.func, // this will be required when we wire it up, no-op for now
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 LockIconBar.defaultProps = {

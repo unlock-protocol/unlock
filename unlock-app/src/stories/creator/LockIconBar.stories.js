@@ -7,9 +7,6 @@ import { ConfigContext } from '../../utils/withConfig'
 
 const config = {
   requiredConfirmations: 12,
-  chainExplorerUrlBuilders: {
-    etherscan: () => {},
-  },
 }
 
 const transactions = {

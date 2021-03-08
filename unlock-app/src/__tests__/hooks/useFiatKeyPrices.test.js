@@ -34,7 +34,7 @@ describe('useFiatKeyPrices', () => {
     fetch.mockResponseOnce(JSON.stringify({ usd: '123.45' }))
 
     const { result, wait } = renderHook(() =>
-      useFiatKeyPrices(['0xlockaddress'])
+      useFiatKeyPrices(['0xlockaddress'], 'Credit Card')
     )
 
     await wait(() => {
@@ -52,7 +52,7 @@ describe('useFiatKeyPrices', () => {
     fetch.mockResponseOnce(JSON.stringify({ usd: '123.45' }))
 
     const { result, wait } = renderHook(() =>
-      useFiatKeyPrices(['0xlockaddress'])
+      useFiatKeyPrices(['0xlockaddress'], 'Credit Card')
     )
 
     await wait(() => {

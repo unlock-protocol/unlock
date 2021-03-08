@@ -6,7 +6,7 @@ import { ConfigContext } from '../../utils/withConfig'
 import { currencySymbol } from '../../utils/lock'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit, Eth, ERC20 } from '../helpers/Balance'
+import { BalanceWithUnit, ERC20 } from '../helpers/Balance'
 import {
   LockDetails,
   LockRow,
@@ -59,6 +59,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
 
   // Set up the ERC20 address, based on query string or defaults to config.
   const erc20 = config.networks[network].erc20
+  const baseCurrencySymbol = config.networks[network].baseCurrencySymbol
   const url = new window.URL(document.location)
   if (url.searchParams.get('erc20')) {
     erc20.address = url.searchParams.get('erc20')
@@ -188,7 +189,9 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
             )}
           </FormLockKeys>
           <FormBalanceWithUnit>
-            {!lockInForm.currencyContractAddress && <Eth />}
+            {!lockInForm.currencyContractAddress && (
+              <ERC20 name={baseCurrencySymbol} />
+            )}
             {!!lockInForm.currencyContractAddress && (
               <ERC20 name={lockInForm.currencySymbol} />
             )}
@@ -208,7 +211,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
             )}
             {isNew && erc20 && !!lockInForm.currencyContractAddress && (
               <LockLabelCurrency onClick={toggleCurrency}>
-                Use Ether
+                Use {baseCurrencySymbol}
               </LockLabelCurrency>
             )}
           </FormBalanceWithUnit>
