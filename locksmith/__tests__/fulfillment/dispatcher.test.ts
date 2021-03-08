@@ -42,6 +42,8 @@ class MockWalletService extends EventEmitter {
     )
   })
 
+  setUnlockAddress = jest.fn()
+
   grantKey = jest.fn()
 }
 const mockWalletService = new MockWalletService()

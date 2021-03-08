@@ -1,15 +1,9 @@
-interface PaywallModuleConfig {
-  readOnlyProvider: string
-  locksmithUri: string
-  unlockAppUrl: string
-}
 
 export function isUnlocked(
   userAccountAddress: string,
-  paywallConfig: string,
-  config: PaywallModuleConfig
+  paywallConfig: PaywallConfig,
 ): Promise<boolean>
 
 export class Paywall {
-  constructor(paywallConfig: any, moduleConfig: PaywallModuleConfig, provider?: any)
+  constructor(paywallConfig: PaywallConfig, networkConfigs: NetworkConfigs, provider?: any)
 }

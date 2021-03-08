@@ -45,6 +45,10 @@ export const Button = styled.button`
   margin-top: 16px;
 `
 
+export const NeutralButton = styled(Button)`
+  background-color: var(--grey);
+`
+
 export const ErrorButton = styled(Button)`
   background-color: var(--sharpred);
 `

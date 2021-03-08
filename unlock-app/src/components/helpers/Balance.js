@@ -1,6 +1,8 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
+import { ConfigContext } from '../../utils/withConfig'
+import { AuthenticationContext } from '../interface/Authenticate'
 
 import BalanceProvider from './BalanceProvider'
 
@@ -9,20 +11,26 @@ import BalanceProvider from './BalanceProvider'
  * use the BalanceProvider
  * @param {*} amount: the amount to convert to Eth
  */
-export const Balance = ({ amount, currency }) => (
-  <BalanceProvider
-    amount={amount}
-    render={(ethWithPresentation) => (
-      <BalanceWithConversion>
-        <Currency>
-          {!currency && <Eth />}
-          {!!currency && <ERC20 name={currency} />}
-          <BalanceWithUnit>{ethWithPresentation}</BalanceWithUnit>
-        </Currency>
-      </BalanceWithConversion>
-    )}
-  />
-)
+export const Balance = ({ amount, currency }) => {
+  const config = useContext(ConfigContext)
+  const { network } = useContext(AuthenticationContext)
+  const baseCurrencySymbol = config.networks[network].baseCurrencySymbol
+
+  return (
+    <BalanceProvider
+      amount={amount}
+      render={(ethWithPresentation) => (
+        <BalanceWithConversion>
+          <Currency>
+            {!currency && <ERC20 name={baseCurrencySymbol} />}
+            {!!currency && <ERC20 name={currency} />}
+            <BalanceWithUnit>{ethWithPresentation}</BalanceWithUnit>
+          </Currency>
+        </BalanceWithConversion>
+      )}
+    />
+  )
+}
 
 Balance.propTypes = {
   amount: PropTypes.string,

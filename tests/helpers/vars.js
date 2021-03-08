@@ -3,11 +3,8 @@ const ci = process.env.CI
 const unlockPort = process.env.UNLOCK_PORT || 3000
 const locksmithPort = process.env.LOCKSMITH_PORT || 8080
 const paywallPort = process.env.PAYWALL_PORT || 3001
-const unlockProviderAppPort = process.env.UNLOCK_PROVIDER_APP_PORT || 9000
 const theGraphPort = process.env.SUBGRAPH_PORT || 8020
 
-const unlockProviderUnlockHost =
-  process.env.UNLOCK_PROVIDER_APP_HOST || '127.0.0.1'
 const unlockHost = process.env.UNLOCK_HOST || '127.0.0.1'
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const paywallHost = process.env.PAYWALL_HOST || '127.0.0.1'
@@ -44,13 +41,11 @@ module.exports = {
   locksmithPort,
   paywallPort,
   theGraphPort,
-  unlockProviderAppPort,
   ci,
   unlockHost,
   locksmithHost,
   paywallHost,
   theGraphHost,
-  unlockProviderUnlockHost,
   erc20ContractAddress,
   testingAddress,
   httpProviderHost,

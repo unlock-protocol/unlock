@@ -1,5 +1,12 @@
 # Changes
 
+# 0.15.1
+
+- Typescript definition fix
+
+# 0.15.0
+
+- various API changes
 # 0.14.0
 
 - fixing approvals for ERC20 key purchases

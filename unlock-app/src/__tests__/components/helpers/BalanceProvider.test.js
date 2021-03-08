@@ -30,7 +30,7 @@ describe('BalanceProvider Component', () => {
   })
 
   describe('when the balance is 0 Eth', () => {
-    it('should render 0 for both values', () => {
+    it.skip('should render 0 for both values', () => {
       expect.assertions(1)
       renderIt({
         amount: '0',
@@ -44,7 +44,7 @@ describe('BalanceProvider Component', () => {
   describe('when the balance is < 0.0001 Eth', () => {
     const amount = '0.000070'
 
-    it('shows the default minimum value of 三 < 0.0001', () => {
+    it.skip('shows the default minimum value of 三 < 0.0001', () => {
       expect.assertions(1)
       renderIt({
         amount,
@@ -58,7 +58,7 @@ describe('BalanceProvider Component', () => {
   describe('when the balance is > 0.0001 Eth and less than 1 Eth', () => {
     const amount = '0.0002'
 
-    it('shows the balance in Eth to two decimal places', () => {
+    it.skip('shows the balance in Eth to two decimal places', () => {
       expect.assertions(1)
       renderIt({
         amount,
@@ -72,7 +72,7 @@ describe('BalanceProvider Component', () => {
   describe('when the balance is > 1 Eth ', () => {
     const amount = '2.0'
 
-    it('shows the balance in Eth to two decimal places', () => {
+    it.skip('shows the balance in Eth to two decimal places', () => {
       expect.assertions(1)
       renderIt({
         amount,
@@ -86,7 +86,7 @@ describe('BalanceProvider Component', () => {
   describe('when the balance would round up', () => {
     const amount = '1.9989816877'
 
-    it('shows the balance in Eth with rounding up', () => {
+    it.skip('shows the balance in Eth with rounding up', () => {
       expect.assertions(1)
       renderIt({
         amount,

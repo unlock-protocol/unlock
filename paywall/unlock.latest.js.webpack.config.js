@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
-var path = require('path')
 const webpack = require('webpack')
-const configVariables = require('./environment')
+var path = require('path')
 
 const mode = process.env.UNLOCK_ENV === 'prod' ? 'production' : 'development'
 
@@ -33,7 +32,7 @@ module.exports = () => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        __ENVIRONMENT_VARIABLES__: JSON.stringify(configVariables),
+        PAYWALL_URL: JSON.stringify(process.env.PAYWALL_URL),
       }),
     ],
   }

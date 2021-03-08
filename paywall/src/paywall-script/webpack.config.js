@@ -37,6 +37,7 @@ module.exports = () => {
     plugins: [
       new webpack.DefinePlugin({
         fetch: "require('node-fetch')",
+        PAYWALL_URL: JSON.stringify(process.env.PAYWALL_URL),
       }),
     ],
   }

@@ -33,7 +33,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: null,
       }
 
-      expect(lockTickerSymbol(lock)).toEqual('ETH')
+      expect(lockTickerSymbol(lock, 'ETH')).toEqual('ETH')
     })
 
     it('returns DAI when it is a DAI lock', () => {
@@ -43,7 +43,7 @@ describe('Checkout Lock Utils', () => {
         currencySymbol: 'DAI',
       }
 
-      expect(lockTickerSymbol(lock)).toEqual('DAI')
+      expect(lockTickerSymbol(lock, 'ETH')).toEqual('DAI')
     })
 
     it('returns ERC20 when it is an unknown ERC20 lock', () => {
@@ -52,7 +52,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0xDAI',
       }
 
-      expect(lockTickerSymbol(lock)).toEqual('ERC20')
+      expect(lockTickerSymbol(lock, 'ETH')).toEqual('ERC20')
     })
   })
 
@@ -70,7 +70,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: null,
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeTruthy()
+      expect(userCanAffordKey(lock, '50')).toBeTruthy()
     })
 
     it('returns true when the user has enough erc20', () => {
@@ -81,7 +81,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0x123abc',
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeTruthy()
+      expect(userCanAffordKey(lock, '50')).toBeTruthy()
     })
 
     it('returns true when the user has exactly the right amount of erc20', () => {
@@ -92,7 +92,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0x123abc',
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeTruthy()
+      expect(userCanAffordKey(lock, '50')).toBeTruthy()
     })
 
     it('returns false when the user has insufficient eth', () => {
@@ -103,7 +103,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: null,
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+      expect(userCanAffordKey(lock, '50')).toBeFalsy()
     })
 
     it('returns false when the user has exactly the right amount of eth', () => {
@@ -114,7 +114,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: null,
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+      expect(userCanAffordKey(lock, '50')).toBeFalsy()
     })
 
     it('returns false when the user has insufficient erc20', () => {
@@ -125,7 +125,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0x123abc',
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+      expect(userCanAffordKey(lock, '50')).toBeFalsy()
     })
 
     it('returns false when the key price cannot be parsed', () => {
@@ -136,7 +136,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0x123abc',
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+      expect(userCanAffordKey(lock, '50')).toBeFalsy()
     })
 
     it('returns false when the balance cannot be parsed', () => {
@@ -147,7 +147,7 @@ describe('Checkout Lock Utils', () => {
         currencyContractAddress: '0xnotintheobject',
       }
 
-      expect(userCanAffordKey(lock, balances)).toBeFalsy()
+      expect(userCanAffordKey(lock, '50')).toBeFalsy()
     })
   })
 })

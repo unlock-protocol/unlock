@@ -4,7 +4,7 @@ import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
-import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
+import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../constants'
 import erc20 from '../../erc20'
 
 const endpoint = 'http://127.0.0.1:8545'

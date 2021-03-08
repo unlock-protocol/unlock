@@ -1,9 +1,7 @@
-import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { MockedProvider } from '@apollo/react-testing'
 import KeychainContent from '../../components/content/KeychainContent'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 import keyHolderQuery from '../../queries/keyHolder'
@@ -31,37 +29,6 @@ const router = {
     hash: '',
   },
 }
-
-const store = createUnlockStore({
-  router,
-  network,
-  account,
-})
-
-const keyHolderStore = createUnlockStore({
-  account: keyHoldingAccount,
-  network,
-  router,
-})
-
-const keyHolderStoreSignatures = createUnlockStore({
-  account: keyHoldingAccount,
-  network,
-  router,
-  signature: {
-    '0x80bc6d2870bb72cb3e37b648c160da20733386f7': {
-      data: 'some data',
-      signature: 'a signature',
-    },
-  },
-})
-
-const manyKeyHolderStore = createUnlockStore({
-  account: manyKeyHoldingAccount,
-  network,
-  router,
-})
-
 const ConfigProvider = ConfigContext.Provider
 
 // generate `n' fake keys to use in mock
@@ -158,30 +125,14 @@ storiesOf('KeychainContent', module)
     </ConfigProvider>
   ))
   .add('the key chain, with keys', () => {
-    return (
-      <Provider store={keyHolderStore}>
-        <KeychainContent />
-      </Provider>
-    )
+    return <KeychainContent />
   })
   .add('the key chain, with keys and signatures', () => {
-    return (
-      <Provider store={keyHolderStoreSignatures}>
-        <KeychainContent />
-      </Provider>
-    )
+    return <KeychainContent />
   })
   .add('the key chain, with many keys', () => {
-    return (
-      <Provider store={manyKeyHolderStore}>
-        <KeychainContent />
-      </Provider>
-    )
+    return <KeychainContent />
   })
   .add('the key chain, no keys', () => {
-    return (
-      <Provider store={store}>
-        <KeychainContent />
-      </Provider>
-    )
+    return <KeychainContent />
   })
