@@ -28,10 +28,7 @@ const rulesToIgnore = [
 ]
 
 module.exports = {
-  extends: [
-    '../.eslintrc.js',
-    'plugin:react/recommended',
-  ],
+  extends: ['../.eslintrc.js', 'plugin:react/recommended'],
   plugins: ['react-hooks'],
   settings: {
     react: {

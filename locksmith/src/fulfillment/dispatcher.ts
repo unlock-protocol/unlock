@@ -47,9 +47,9 @@ export default class Dispatcher {
   }
 
   async grantKey(lockAddress: string, recipient: string) {
-    const walletService = new WalletService({
-      unlockAddress: this.unlockAddress,
-    })
+    const walletService = new WalletService()
+    walletService.setUnlockAddress(this.unlockAddress)
+
     return await walletService.grantKey({
       lockAddress,
       recipient,
@@ -57,10 +57,8 @@ export default class Dispatcher {
   }
 
   async purchase(lockAddress: string, recipient: string) {
-    const walletService = new WalletService({
-      unlockAddress: this.unlockAddress,
-    })
-
+    const walletService = new WalletService()
+    walletService.setUnlockAddress(this.unlockAddress)
     const lock = await this.retrieveLock(lockAddress)
 
     if (lock.outstandingKeys == lock.maxNumberOfKeys) {

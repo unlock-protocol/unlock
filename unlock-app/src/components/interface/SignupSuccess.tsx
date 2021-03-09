@@ -8,7 +8,9 @@ export const SignupSuccess = () => (
   <div>
     <Heading>Sign Up</Heading>
     <Description>
-      You are now signed in! Visit{' '}
+      You are now signed up! We sent you a{' '}
+      <strong>very important recorvery email</strong>, please do not delete it!
+      Visit{' '}
       <Link href="/settings">
         <a>your settings page</a>
       </Link>

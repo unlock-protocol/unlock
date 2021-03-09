@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useContext, useReducer } from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
-import withConfig from '../../utils/withConfig'
+import { ConfigContext } from '../../utils/withConfig'
 import { currencySymbol } from '../../utils/lock'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit, Eth, ERC20 } from '../helpers/Balance'
+import { BalanceWithUnit, ERC20 } from '../helpers/Balance'
 import {
   LockDetails,
   LockRow,
@@ -17,13 +16,6 @@ import {
   LockKeys,
 } from './LockStyles'
 import { LockStatus } from './lock/CreatorLockStatus'
-import { setError, resetError } from '../../actions/error'
-import {
-  FORM_LOCK_NAME_MISSING,
-  FORM_EXPIRATION_DURATION_INVALID,
-  FORM_MAX_KEYS_INVALID,
-  FORM_KEY_PRICE_INVALID,
-} from '../../errors'
 import {
   isNotEmpty,
   isPositiveInteger,
@@ -34,273 +26,132 @@ import {
 import {
   INFINITY,
   UNLIMITED_KEYS_COUNT,
-  ONE_HUNDRED_YEARS_IN_DAYS,
+  ONE_HUNDRED_YEARS_IN_SECONDS,
 } from '../../constants'
+import { AuthenticationContext } from '../interface/Authenticate'
 
-/**
- * Converts the lock values into form values
- * @param {*} lockValues
- */
-export const lockToFormValues = (lockValues) => {
-  const formValues = { ...lockValues }
+const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
+  const config = useContext(ConfigContext)
+  const { network } = useContext(AuthenticationContext)
 
-  // In the form, duration is shown in days, vs seconds in the lock object
-  formValues.expirationDuration =
-    lockValues.expirationDuration / lockValues.expirationDurationUnit
-
-  // Unlimited keys
-  if (lockValues.maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
-    formValues.unlimitedKeys = true
-    formValues.maxNumberOfKeys = INFINITY
+  const lockDefaults = {
+    expirationDuration: 30 * 86400, // 30 days in seconds
+    keyPrice: '0.01',
+    maxNumberOfKeys: 100,
+    currency: null,
+    address: null,
+    name: 'New Lock',
+    ...lock,
   }
 
-  // ERC20 Locks
-  if (lockValues.currencyContractAddress) {
-    formValues.currency = lockValues.currencyContractAddress
-  }
-
-  return formValues
-}
-
-/**
- * Converts the form values into lock values
- * @param {*} lockValues
- */
-export const formValuesToLock = (formValues) => {
-  const lockValues = {}
-  lockValues.keyPrice = formValues.keyPrice
-  lockValues.maxNumberOfKeys = formValues.maxNumberOfKeys
-  lockValues.name = formValues.name
-  lockValues.address = formValues.address
-  lockValues.currencyContractAddress = formValues.currency
-
-  // In the form, duration is shown in days, vs seconds in the lock object
-  lockValues.expirationDuration =
-    formValues.expirationDuration * formValues.expirationDurationUnit
-
-  // Unlimited keys
-  if (formValues.unlimitedKeys) {
-    lockValues.maxNumberOfKeys = UNLIMITED_KEYS_COUNT
-  }
-
-  return lockValues
-}
-
-export class CreatorLockForm extends React.Component {
-  /**
-   *
-   * @param {*} props
-   * @param {*} context
-   */
-  constructor(props, context) {
-    super(props, context)
-
-    // Set up the ERC20 address, based on query string or defaults to config.
-    const url = new window.URL(document.location)
-    this.ERC20Contract = props.config.ERC20Contract
-    if (url.searchParams.get('erc20')) {
-      this.ERC20Contract.address = url.searchParams.get('erc20')
-      this.ERC20Contract.name = url.searchParams.get('ticker') || 'ERC20'
+  const [lockInForm, dispatch] = useReducer((state, action) => {
+    if (action.change) {
+      const newState = { ...state }
+      action.change.forEach((change) => {
+        newState[change.name] = change.value
+      })
+      return newState
     }
+    return { ...state }
+  }, lockDefaults)
 
-    const newLockDefaults = {
-      expirationDuration: 30 * 86400, // 30 days in seconds
-      expirationDurationUnit: 86400, // days
-      keyPrice: '0.01',
-      maxNumberOfKeys: 10,
-      currency: this.ERC20Contract.address, // Defaults to ERC20
-      name: 'New Lock',
-      address: null,
-    }
+  const isNew = !lockInForm.address
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
-    this.saveLock = this.saveLock.bind(this)
-    this.toggleCurrency = this.toggleCurrency.bind(this)
-
-    // State represents the values in the form... and we may get a different format for them
-    this.state = lockToFormValues(Object.assign(newLockDefaults, props.lock))
-
-    const { validityState: valid, errors } = this.formValidity(this.state)
-    this.state.valid = valid
-    this.state.errors = errors
+  // Set up the ERC20 address, based on query string or defaults to config.
+  const erc20 = config.networks[network].erc20
+  const baseCurrencySymbol = config.networks[network].baseCurrencySymbol
+  const url = new window.URL(document.location)
+  if (url.searchParams.get('erc20')) {
+    erc20.address = url.searchParams.get('erc20')
+    erc20.symbol = url.searchParams.get('ticker') || 'ERC20'
   }
 
-  handleCancel() {
-    const { hideAction } = this.props
-    if (hideAction) hideAction()
+  const validateAndDispatch = (field, change) => {
+    const valid = change.reduce((valid, { name, value }) => {
+      return validate(name, value)
+    }, '')
+    field.setCustomValidity(valid)
+    dispatch({ change })
   }
 
-  handleChange({ target: { name, value } }) {
-    this.setState((state) => ({
-      unlimitedKeys:
-        name === 'maxNumberOfKeys' ? value === INFINITY : state.unlimitedKeys,
-      [name]: value,
-      valid: this.formValidity({ ...state.valid, [name]: value }),
-    }))
+  const handleChange = ({ target }) => {
+    const { name, value } = target
+    validateAndDispatch(target, [{ name, value }])
   }
 
-  handleSubmit() {
-    this.setState((state) => {
-      const { valid, errors } = this.sendErrorsToRedux(state)
-      if (!valid.formValid) return { valid, errors }
-      return this.saveLock(state, valid, errors)
+  const handleChangeExpirationDuration = ({ target }) => {
+    const { name, value } = target
+    validateAndDispatch(target, [{ name, value: value * (60 * 60 * 24) }])
+  }
+
+  const handleUnlimitedClick = () => {
+    dispatch({
+      change: [{ name: 'maxNumberOfKeys', value: UNLIMITED_KEYS_COUNT }],
     })
   }
 
-  handleUnlimitedClick() {
-    this.setState((state) => ({
-      ...state,
-      unlimitedKeys: true,
-      maxNumberOfKeys: INFINITY,
-      valid: this.formValidity({ ...state, [name]: INFINITY }),
-    }))
-  }
-
-  /**
-   * Traverses each form field and verifies its validity.
-   * returns a hash of fields to error message and all errors triggered.
-   * valid fields hash to the value false
-   * invalid fields hash to the error constant (a string) that represents the error condition
-   */
-  formValidity(state) {
-    const { lock } = this.props
-    const isNew = !lock || !lock.address
-
-    // the list of errors we will pass to setError
-    const errors = []
-    // for each field, retrieve the error triggered by current state
-    // and then make sure we set it as existing.
-    let fieldsToCheck = []
-    if (isNew) {
-      fieldsToCheck = [
-        'expirationDuration',
-        // 'expirationDurationUnit',
-        'keyPrice',
-        'maxNumberOfKeys',
-        'name',
-      ]
-    } else {
-      fieldsToCheck = ['keyPrice']
+  const toggleCurrency = () => {
+    if (lockInForm.currencyContractAddress) {
+      return dispatch({
+        change: [
+          { name: 'currencyContractAddress', value: null },
+          { name: 'currencySymbol', value: null },
+        ],
+      })
     }
-    const validityState = fieldsToCheck.reduce((fieldValidity, field) => {
-      // invalidError will either be the error name or false
-      const invalidError = this.validate(field, state[field])
-      fieldValidity[field] = !invalidError
-      if (!invalidError) {
-        return fieldValidity
-      }
-      errors.push(invalidError)
-      return fieldValidity
-    }, {})
-
-    // the form can be submitted if and only if there are no errors triggered by any field
-    validityState.formValid = errors.length === 0
-    return { validityState, errors }
+    dispatch({
+      change: [
+        { name: 'currencyContractAddress', value: erc20.address },
+        { name: 'currencySymbol', value: erc20.symbol },
+      ],
+    })
   }
 
-  /**
-   * validate an individual form field
-   */
-  validate(name, value) {
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    saveLock(lockInForm)
+  }
+
+  const validate = (name, value) => {
     switch (name) {
       case 'name':
         if (!isNotEmpty(value)) {
-          return FORM_LOCK_NAME_MISSING
+          return 'Make sure your lock has a name!'
         }
         break
       case 'expirationDuration':
         if (
           !isPositiveInteger(value) ||
-          !isLTE(ONE_HUNDRED_YEARS_IN_DAYS)(value)
+          !isLTE(ONE_HUNDRED_YEARS_IN_SECONDS)(value)
         ) {
-          return FORM_EXPIRATION_DURATION_INVALID
+          return 'The expiration duration for each key must be greater than 0 and less than 100 years'
         }
         break
       case 'maxNumberOfKeys':
-        if (value !== INFINITY && !isPositiveInteger(value)) {
-          return FORM_MAX_KEYS_INVALID
+        if (value !== UNLIMITED_KEYS_COUNT && !isPositiveInteger(value)) {
+          return 'The number of keys needs to be greater than 0'
         }
         break
       case 'keyPrice':
         if (!isPositiveNumber(value)) {
-          return FORM_KEY_PRICE_INVALID
+          return 'The price needs to be greater than 0'
         }
         break
     }
-    return false
+    return ''
   }
 
-  saveLock() {
-    const { account, saveLock } = this.props
-    const newLock = formValuesToLock(this.state)
-    saveLock({
-      ...newLock,
-      owner: account.address,
-    })
-  }
-
-  /**
-   * calculate form errors, and propagate them to redux
-   */
-  sendErrorsToRedux(state) {
-    const { validityState: valid, errors } = this.formValidity(state)
-    const { setError, resetError } = this.props
-    const allFormErrors = [
-      FORM_EXPIRATION_DURATION_INVALID,
-      FORM_KEY_PRICE_INVALID,
-      FORM_MAX_KEYS_INVALID,
-      FORM_LOCK_NAME_MISSING,
-    ]
-    allFormErrors.forEach((error) => {
-      if (errors.indexOf(error) >= 0) {
-        setError(error)
-      } else {
-        resetError(error)
-      }
-    })
-    return { valid, errors }
-  }
-
-  toggleCurrency() {
-    this.setState((state) => ({
-      ...state,
-      currency: !state.currency ? this.ERC20Contract.address : null,
-    }))
-  }
-
-  render() {
-    const { lock } = this.props
-    const isNew = !lock || !lock.address
-    const {
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      currency,
-      name,
-      unlimitedKeys,
-      valid,
-    } = this.state
-    const lockAddress = lock ? lock.address : ''
-    // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
-
-    const symbol = !isNew
-      ? currencySymbol(lock, this.ERC20Contract)
-      : this.ERC20Contract.name
-
-    return (
+  return (
+    <form method="post" onSubmit={handleSubmit}>
       <FormLockRow>
-        <FormLockDetails className="lockForm" data-address={lockAddress}>
+        <FormLockDetails className="lockForm" data-address={lockInForm.address}>
           <Icon />
           <FormLockName>
             <input
               type="text"
               name="name"
-              onChange={this.handleChange}
-              defaultValue={name}
-              data-valid={valid.name}
+              onChange={handleChange}
+              defaultValue={lockInForm.name}
               required={isNew}
               disabled={!isNew}
             />
@@ -311,9 +162,8 @@ export class CreatorLockForm extends React.Component {
               step="1"
               inputMode="numeric"
               name="expirationDuration"
-              onChange={this.handleChange}
-              defaultValue={expirationDuration}
-              data-valid={valid.expirationDuration}
+              onChange={handleChangeExpirationDuration}
+              defaultValue={lockInForm.expirationDuration / (60 * 60 * 24)}
               required={isNew}
               disabled={!isNew}
             />{' '}
@@ -323,83 +173,76 @@ export class CreatorLockForm extends React.Component {
             <input
               type="text"
               name="maxNumberOfKeys"
-              onChange={this.handleChange}
-              value={maxNumberOfKeys}
-              data-valid={valid.maxNumberOfKeys}
+              onChange={handleChange}
+              value={
+                lockInForm.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+                  ? INFINITY
+                  : lockInForm.maxNumberOfKeys
+              }
               required={isNew}
               disabled={!isNew}
             />
-            {isNew && !unlimitedKeys && (
-              <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
+            {isNew && lockInForm.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
+              <LockLabelUnlimited onClick={handleUnlimitedClick}>
                 Unlimited
               </LockLabelUnlimited>
             )}
           </FormLockKeys>
           <FormBalanceWithUnit>
-            {!currency && <Eth />}
-            {!!currency && <ERC20 name={symbol} />}
+            {!lockInForm.currencyContractAddress && (
+              <ERC20 name={baseCurrencySymbol} />
+            )}
+            {!!lockInForm.currencyContractAddress && (
+              <ERC20 name={lockInForm.currencySymbol} />
+            )}
             <input
               type="number"
               step="0.00001"
               inputMode="numeric"
               name="keyPrice"
-              onChange={this.handleChange}
-              defaultValue={keyPrice}
-              data-valid={valid.keyPrice}
+              onChange={handleChange}
+              defaultValue={lockInForm.keyPrice}
               required
             />
-            {isNew && !currency && (
-              <LockLabelCurrency onClick={this.toggleCurrency}>
-                {`Use ${this.ERC20Contract.name}`}
+            {isNew && erc20 && !lockInForm.currencyContractAddress && (
+              <LockLabelCurrency onClick={toggleCurrency}>
+                Use {erc20.symbol}
               </LockLabelCurrency>
             )}
-            {isNew && !!currency && (
-              <LockLabelCurrency onClick={this.toggleCurrency}>
-                Use Ether
+            {isNew && erc20 && !!lockInForm.currencyContractAddress && (
+              <LockLabelCurrency onClick={toggleCurrency}>
+                Use {baseCurrencySymbol}
               </LockLabelCurrency>
             )}
           </FormBalanceWithUnit>
 
           <div>-</div>
           <Status>
-            <Button onClick={this.handleSubmit}>Submit</Button>
-            <Button cancel onClick={this.handleCancel}>
+            <Button type="submit">Submit</Button>
+            <Button cancel onClick={hideAction}>
               Cancel
             </Button>
           </Status>
         </FormLockDetails>
       </FormLockRow>
-    )
-  }
+    </form>
+  )
 }
 
 CreatorLockForm.propTypes = {
-  account: UnlockPropTypes.account.isRequired,
   hideAction: PropTypes.func.isRequired,
   saveLock: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
-  resetError: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreatorLockForm.defaultProps = {
   lock: {},
 }
 
-const mapStateToProps = (state) => {
-  return {
-    account: state.account,
-  }
-}
-
-const mapDispatchToProps = { setError, resetError }
-
-export default withConfig(
-  connect(mapStateToProps, mapDispatchToProps)(CreatorLockForm)
-)
+export default CreatorLockForm
 
 const LockLabelUnlimited = styled(LockLabel)`
+  cursor: pointer;
   font-size: 11px;
   width: 100%;
   padding: 5px;

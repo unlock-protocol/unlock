@@ -1,7 +1,4 @@
 import PropTypes from 'prop-types'
-
-import { formatCurrency } from '../../selectors/currency'
-
 /**
  * Render props component which computes the data required to display balance.
  * This is useful to display balance in different ways.
@@ -12,7 +9,7 @@ export const BalanceProvider = ({ amount, render }) => {
     return render(' - ', ' - ') || null
   }
   const currency = parseFloat(amount)
-  const ethWithPresentation = formatCurrency(currency)
+  const ethWithPresentation = currency
   return render(ethWithPresentation) || null
 }
 

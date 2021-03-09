@@ -5,7 +5,7 @@ import locksByManager from '../queries/locksByManager'
 export class GraphService {
   public client: any
 
-  constructor(uri: string) {
+  connect(uri: string) {
     this.client = new ApolloClient({
       uri,
     })

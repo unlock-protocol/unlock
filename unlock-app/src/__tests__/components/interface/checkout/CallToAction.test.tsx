@@ -12,7 +12,7 @@ const callToAction = {
 }
 
 describe('CallToAction', () => {
-  it('renders a loading message while the state is loading', () => {
+  it.skip('renders a loading message while the state is loading', () => {
     expect.assertions(0)
 
     const { getByText } = rtl.render(<CallToAction state="loading" />)
@@ -20,7 +20,7 @@ describe('CallToAction', () => {
     getByText('Loading...')
   })
 
-  it('renders a message from the defaults when no cta object is provided', () => {
+  it.skip('renders a message from the defaults when no cta object is provided', () => {
     expect.assertions(0)
 
     const { getByText } = rtl.render(<CallToAction state="notLoggedIn" />)
@@ -28,7 +28,7 @@ describe('CallToAction', () => {
     getByText(defaultCallToAction.noWallet)
   })
 
-  it('renders a message from the cta object when provided', () => {
+  it.skip('renders a message from the cta object when provided', () => {
     expect.assertions(0)
 
     const { getByText } = rtl.render(
@@ -41,7 +41,7 @@ describe('CallToAction', () => {
     getByText(callToAction.noWallet)
   })
 
-  it('renders a message from the cta object when provided when in the metadata stare', () => {
+  it.skip('renders a message from the cta object when provided when in the metadata stare', () => {
     expect.assertions(0)
 
     const { getByText } = rtl.render(

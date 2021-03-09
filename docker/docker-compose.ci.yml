@@ -68,21 +68,6 @@ services:
     expose:
       - 3000
 
-  unlock-provider-unlock-app: # Container for the dashboard with unlock accounts ready
-    env_file:
-      - ./${UNLOCK_ENV}.env
-      - integration-unlock-provider.env
-    image: unlock-app
-    build:
-      context: ../
-      dockerfile: ./docker/unlock-app.dockerfile
-      cache_from:
-        - unlock-app
-        - unlockprotocol/unlock-app:master
-    ports:
-      - 9000:9000
-    expose:
-      - 9000
 
   unlock-protocol-com: # Container for the static site
     env_file:
@@ -172,7 +157,6 @@ services:
     depends_on:
       - ganache-integration
       - unlock-app
-      - unlock-provider-unlock-app
       - paywall
       - locksmith
       - unlock-protocol-com
