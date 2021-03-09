@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 16 Dec 2020 03:21:27 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 07 Mar 2021 20:01:26 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[XDAI]]></title>
+            <description><![CDATA[Over the last few weeks, we heard many Unlock users who are complaining about very high gas prices on the Ethereum mainnet. Many of them have asked for xDAI support!]]></description>
+            <link>https://unlock-protocol.com/blog/xdai</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/xdai</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Mon, 08 Mar 2021 05:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Launching Unlock Discount Tokens]]></title>
             <description><![CDATA[As an open protocol for memberships, we want Unlock to belong to its users. Today we are introducing the protocol's native token.]]></description>
