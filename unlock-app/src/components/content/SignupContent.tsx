@@ -4,7 +4,6 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import Authenticate from '../interface/Authenticate'
 import LogInSignUp from '../interface/LogInSignUp'
 
 export const SignupContent = () => {
@@ -13,14 +12,13 @@ export const SignupContent = () => {
       <Head>
         <title>{pageTitle('Signup')}</title>
       </Head>
-      <Authenticate requiredNetwork="1" optional>
-        <LogInSignUp
-          embedded={false}
-          signup
-          onProvider={() => {}}
-          onCancel={() => {}}
-        />
-      </Authenticate>
+      <LogInSignUp
+        network={1} // TODO: figure out what/if network is really needed.
+        embedded={false}
+        signup
+        onProvider={() => {}}
+        onCancel={() => {}}
+      />
     </Layout>
   )
 }

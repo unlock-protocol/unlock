@@ -10,9 +10,9 @@ describe('useFiatKeyPrices', () => {
     jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === ConfigContext) {
         return {
-          services: {
-            storage: {
-              host: 'https://locksmith',
+          networks: {
+            1: {
+              locksmith: 'https://locksmith',
             },
           },
         }
@@ -20,12 +20,15 @@ describe('useFiatKeyPrices', () => {
     })
   })
 
-  it.skip('should return an empty object by default', () => {
+  it('should return an empty object by default', () => {
     expect.assertions(1)
 
-    const { result } = renderHook(() => useFiatKeyPrices([]))
+    const { result } = renderHook(() => useFiatKeyPrices(''))
 
-    expect(result.current).toEqual({})
+    expect(result.current).toEqual({
+      fiatPrices: {},
+      loading: true,
+    })
   })
 
   it('should fetch fiat prices from locksmith', async () => {
@@ -34,7 +37,7 @@ describe('useFiatKeyPrices', () => {
     fetch.mockResponseOnce(JSON.stringify({ usd: '123.45' }))
 
     const { result, wait } = renderHook(() =>
-      useFiatKeyPrices(['0xlockaddress'], 'Credit Card')
+      useFiatKeyPrices('0xlockaddress', 1)
     )
 
     await wait(() => {
@@ -52,7 +55,7 @@ describe('useFiatKeyPrices', () => {
     fetch.mockResponseOnce(JSON.stringify({ usd: '123.45' }))
 
     const { result, wait } = renderHook(() =>
-      useFiatKeyPrices(['0xlockaddress'], 'Credit Card')
+      useFiatKeyPrices('0xlockaddress', 1)
     )
 
     await wait(() => {
@@ -63,7 +66,7 @@ describe('useFiatKeyPrices', () => {
       fiatPrices: {
         usd: '123.45',
       },
-      loading: true,
+      loading: false,
     })
   })
 })

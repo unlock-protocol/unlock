@@ -11,9 +11,6 @@ storiesOf('FatalError', module)
       <FatalError.WrongNetwork currentNetwork="Mainnet" requiredNetworkId={4} />
     )
   })
-  .add('Wallet missing', () => {
-    return <FatalError.MissingProvider />
-  })
   .add('Account missing', () => {
     return <FatalError.MissingAccount />
   })

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 
 export interface EthereumWindow extends Window {
@@ -10,11 +10,9 @@ export interface EthereumWindow extends Window {
  * Initializes a provider passed
  * @param providerAdapter
  */
-export const useProvider = (
-  providerAdapter: any,
-  walletService: WalletService
-) => {
-  const [loading, setLoading] = useState(true)
+export const useProvider = (config: any) => {
+  const [loading, setLoading] = useState(false)
+  const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
   const [account, setAccount] = useState<string | undefined>(undefined)
   const [email, setEmail] = useState<string | undefined>(undefined)
@@ -22,7 +20,8 @@ export const useProvider = (
     any | undefined
   >(undefined)
 
-  const initializeProvider = async (provider: any) => {
+  const connectProvider = async (provider: any, callback: any) => {
+    setLoading(true)
     if (provider.enable) {
       try {
         await provider.enable()
@@ -31,16 +30,25 @@ export const useProvider = (
       }
     }
 
-    setNetwork((await walletService.connect(provider)) || undefined)
-    setAccount((await walletService.getAccount()) || undefined)
+    // We need the network!!
+    const _walletService = new WalletService(config)
+
+    setWalletService(_walletService)
+    const _network = await _walletService.connect(provider)
+    setNetwork(_network || undefined)
+    const networkConfig = config.networks[_network]
+    _walletService.setUnlockAddress(networkConfig.unlockAddress)
+    const _account = await _walletService.getAccount()
+    setAccount(_account || undefined)
+    setEmail(provider.emailAddress)
     setEmail(provider.emailAddress)
     setEncryptedPrivateKey(provider.passwordEncryptedPrivateKey)
+    if (callback) {
+      callback(_account)
+    }
     setLoading(false)
   }
 
-  useEffect(() => {
-    initializeProvider(providerAdapter)
-  }, [])
   return {
     loading,
     network,
@@ -48,5 +56,6 @@ export const useProvider = (
     email,
     encryptedPrivateKey,
     walletService,
+    connectProvider,
   }
 }

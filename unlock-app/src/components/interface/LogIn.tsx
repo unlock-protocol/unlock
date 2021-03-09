@@ -12,11 +12,12 @@ interface LogInProps {
   showSignup: () => void
   onCancel?: () => void
   onProvider: (provider: any) => void
+  network: number
 }
 
-const LogIn = ({ showSignup, onProvider, onCancel }: LogInProps) => {
+const LogIn = ({ showSignup, onProvider, onCancel, network }: LogInProps) => {
   const config = useContext(ConfigContext)
-  const storageService = new StorageService(config.services.storage.host)
+  const storageService = new StorageService(config.networks[network].locksmith)
   const [loginState, dispatch] = useReducer(
     (state: any, action: any) => {
       if (action.change) {
@@ -55,7 +56,7 @@ const LogIn = ({ showSignup, onProvider, onCancel }: LogInProps) => {
 
     // TODO: Allow users to change the provider's network from UI
     // What network do we chose here?
-    const unlockProvider = new UnlockProvider(config.networks[4])
+    const unlockProvider = new UnlockProvider(config.networks[network])
 
     try {
       await unlockProvider.connect({
@@ -66,7 +67,6 @@ const LogIn = ({ showSignup, onProvider, onCancel }: LogInProps) => {
       onProvider(unlockProvider)
     } catch (e) {
       // TODO: password isn't the only thing that can go wrong here...
-      console.error(e)
       dispatch({
         change: [
           { name: 'error', value: 'Wrong password... Please try again' },

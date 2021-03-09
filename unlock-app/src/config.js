@@ -1,5 +1,4 @@
 import getConfig from 'next/config'
-import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // cribbed from https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
 export function inIframe(window) {
@@ -32,10 +31,6 @@ export default function configure(
   let googleDiscoveryDocs
   let googleScopes
 
-  let isRequiredNetwork = () => false
-  let requiredNetwork = 'Dev'
-  let requiredNetworkId = 1984
-  let requiredConfirmations = 12
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
@@ -63,35 +58,8 @@ export default function configure(
 
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
-
-  if (env === 'test') {
-    // In test, we fake the HTTP provider
-    blockTime = 1000 // in mseconds.
-    isRequiredNetwork = (networkId) => networkId === 1984
-  }
-  if (env === 'dev') {
-    // In dev, we assume there is a running local ethereum node with unlocked accounts
-    // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    // In dev, we only require 6 confirmation because we only mine when there are pending transactions
-    requiredConfirmations = 6
-
-    // we start ganache locally with a block time of 3
-    blockTime = 3000
-    isRequiredNetwork = (networkId) => networkId === 1984
-
-    googleClientId = null
-    googleApiKey = null
-    googleDiscoveryDocs = [
-      'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
-    ]
-    googleScopes =
-      'profile email https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.metadata.readonly'
-  }
-
   if (env === 'staging') {
     // In staging, the network can only be rinkeby
-    isRequiredNetwork = (networkId) => networkId === 4
-    requiredNetworkId = 4
     paywallUrl = 'https://'
     services.storage = { host: runtimeConfig.locksmithHost }
     services.wedlocks = { host: runtimeConfig.wedlocksUri }
@@ -106,8 +74,6 @@ export default function configure(
 
   if (env === 'dev-kovan') {
     // In dev-kovan, the network can only be Kovan
-    isRequiredNetwork = (networkId) => networkId === 42
-    requiredNetworkId = 42
     paywallUrl = 'https://'
     services.storage = { host: runtimeConfig.locksmithHost }
     services.wedlocks = { host: runtimeConfig.wedlocksUri }
@@ -122,8 +88,6 @@ export default function configure(
 
   if (env === 'prod') {
     // In prod, the network can only be mainnet
-    isRequiredNetwork = (networkId) => networkId === 1
-    requiredNetworkId = 1
 
     services.storage = { host: runtimeConfig.locksmithHost }
     services.wedlocks = { host: runtimeConfig.wedlocksUri }
@@ -135,11 +99,6 @@ export default function configure(
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
   }
-
-  if (env === 'prod' || env === 'staging') {
-    requiredNetwork = ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-  }
-
   let readOnlyProvider
   if (readOnlyProviderUrl) {
     readOnlyProvider = readOnlyProviderUrl
@@ -187,6 +146,7 @@ export default function configure(
       symbol: 'DAI',
       address: '0x6b175474e89094c44da98b954eedeac495271d0f',
     },
+    requiredConfirmations: 12,
     baseCurrencySymbol: 'Eth',
     locksmith: 'https://locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
   }
@@ -209,6 +169,7 @@ export default function configure(
         transaction: (hash) => `https://rinkeby.etherscan.io/tx/${hash}`,
       },
     },
+    requiredConfirmations: 12,
     erc20: {
       symbol: 'WEE',
       address: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
@@ -251,6 +212,7 @@ export default function configure(
     id: 100,
     name: 'xDai',
     blockTime: 5000,
+    requiredConfirmations: 12,
     subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
     explorer: {
       name: 'Blockscout',
@@ -266,17 +228,14 @@ export default function configure(
   }
 
   return {
+    requiredConfirmations: 12,
     base64WedlocksPublicKey,
     blockTime,
     isServer,
     isInIframe,
     env,
     httpProvider,
-    isRequiredNetwork,
     readOnlyProvider,
-    requiredNetworkId,
-    requiredNetwork,
-    requiredConfirmations,
     readOnlyProviderUrl, // Used for Unlock accounts
     services,
     paywallUrl,
