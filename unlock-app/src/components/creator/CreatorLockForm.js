@@ -58,7 +58,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
   const isNew = !lockInForm.address
 
   // Set up the ERC20 address, based on query string or defaults to config.
-  const erc20 = config.networks[network].erc20
+  const erc20 = config.networks[network].erc20 || {}
   const baseCurrencySymbol = config.networks[network].baseCurrencySymbol
   const url = new window.URL(document.location)
   if (url.searchParams.get('erc20')) {

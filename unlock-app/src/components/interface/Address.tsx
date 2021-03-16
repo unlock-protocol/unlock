@@ -3,13 +3,13 @@ import React from 'react'
 import useEns from '../../hooks/useEns'
 
 interface Props {
-  address: string
+  address?: string
   className?: string
   id?: string
 }
 
 const Address = ({ id, className, address }: Props) => {
-  const name = useEns({ address })
+  const name = useEns(address)
   return (
     <Abbrevation id={id} className={className} title={address}>
       {name}
@@ -20,6 +20,7 @@ const Address = ({ id, className, address }: Props) => {
 Address.defaultProps = {
   className: '',
   id: '',
+  address: '0x0000000000000000000000000000000000000000',
 }
 
 const Abbrevation = styled.abbr`

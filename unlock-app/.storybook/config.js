@@ -7,7 +7,7 @@ import { setConfig } from 'next/config'
 
 setConfig({
   publicRuntimeConfig: {
-    unlockEnv: 'test',
+    unlockEnv: 'dev',
   },
 })
 

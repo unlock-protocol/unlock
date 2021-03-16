@@ -28,7 +28,7 @@ const account = {
   balance: '200',
 }
 
-ETHEREUM_NETWORKS_NAMES[network.name] = ['A Name']
+ETHEREUM_NETWORKS_NAMES[network.name] = 'A Name'
 
 const ConfigProvider = ConfigContext.Provider
 

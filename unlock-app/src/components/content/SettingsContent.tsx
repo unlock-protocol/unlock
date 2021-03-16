@@ -6,10 +6,11 @@ import AccountInfo from '../interface/user-account/AccountInfo'
 import { PaymentDetails } from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import Authenticate, { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../interface/Authenticate'
 import { useCards } from '../../hooks/useCards'
 
 import Loading from '../interface/Loading'
+import LoginPrompt from '../interface/LoginPrompt'
 
 export const PaymentSettings = () => {
   const { account } = useContext(AuthenticationContext)
@@ -29,17 +30,23 @@ export const PaymentSettings = () => {
   }
   return <PaymentDetails saveCard={(token: string) => saveCard(token)} />
 }
+
 export const SettingsContent = () => {
+  const { account } = useContext(AuthenticationContext)
+
   return (
     <Layout title="Account Settings">
       <Head>
         <title>{pageTitle('Account Settings')}</title>
       </Head>
-      <Authenticate unlockUserAccount>
-        <AccountInfo />
-        <PaymentSettings />
-        <EjectAccount />
-      </Authenticate>
+      {!account && <LoginPrompt unlockUserAccount />}
+      {account && (
+        <>
+          <AccountInfo />
+          <PaymentSettings />
+          <EjectAccount />
+        </>
+      )}
     </Layout>
   )
 }

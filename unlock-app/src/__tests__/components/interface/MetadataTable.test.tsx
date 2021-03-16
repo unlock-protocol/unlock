@@ -2,6 +2,8 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { MetadataTable } from '../../../components/interface/MetadataTable'
 import { MemberFilters } from '../../../unlockTypes'
+import { ConfigContext } from '../../../utils/withConfig'
+import { AuthenticationContext } from '../../../components/interface/Authenticate'
 
 const metadata = [
   {
@@ -30,12 +32,30 @@ const metadata = [
   },
 ]
 
+const render = (component: any) => {
+  return rtl.render(
+    <AuthenticationContext.Provider value={{ network: 1 }}>
+      <ConfigContext.Provider
+        value={{
+          networks: {
+            1: {
+              readOnlyProvider: 'http://provider',
+            },
+          },
+        }}
+      >
+        {component}
+      </ConfigContext.Provider>
+    </AuthenticationContext.Provider>
+  )
+}
+
 describe('MetadataTable', () => {
   describe('MetadataTable component', () => {
     it('renders the headings correctly', () => {
       expect.assertions(4)
 
-      const { container } = rtl.render(
+      const { container } = render(
         <MetadataTable
           columns={[
             'lockName',
@@ -64,7 +84,7 @@ describe('MetadataTable', () => {
     it('Aligns matching values and headers', () => {
       expect.assertions(4)
 
-      const { container } = rtl.render(
+      const { container } = render(
         <MetadataTable
           columns={[
             'lockName',
@@ -94,7 +114,7 @@ describe('MetadataTable', () => {
       it('should show a message when there is no match on when showing all keys', () => {
         expect.assertions(1)
 
-        const wrapper = rtl.render(
+        const wrapper = render(
           <MetadataTable
             columns={[]}
             metadata={[]}
@@ -111,7 +131,7 @@ describe('MetadataTable', () => {
       it('should show a message when there is no match on when showing only active keys', () => {
         expect.assertions(1)
 
-        const wrapper = rtl.render(
+        const wrapper = render(
           <MetadataTable
             columns={[]}
             metadata={[]}

@@ -51,7 +51,7 @@ const usePaywall = () => {
       locks: {
         [url.searchParams.get('lock')]: {},
       },
-      network: url.searchParams.get('network'),
+      network: parseInt(url.searchParams.get('network'), 10),
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
         expired:

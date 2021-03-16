@@ -54,7 +54,7 @@ describe.skip('useSetUserMetadata', () => {
 
     const { result } = renderHook(() => useSetUserMetadata())
 
-    result.current.setUserMetadata(lockAddress, metadata, callback)
+    result.current.setUserMetadata(lockAddress, 1, metadata, callback)
 
     expect(mockWalletService.setUserMetadata).toHaveBeenCalledWith(
       {
@@ -74,7 +74,7 @@ describe.skip('useSetUserMetadata', () => {
 
     expect(callback).not.toHaveBeenCalled()
 
-    result.current.setUserMetadata(lockAddress, metadata, callback)
+    result.current.setUserMetadata(lockAddress, 1, metadata, callback)
 
     expect(callback).toHaveBeenCalled()
   })
@@ -89,7 +89,7 @@ describe.skip('useSetUserMetadata', () => {
     mockWalletService.setUserMetadata = jest.fn(() => {
       throw new Error()
     })
-    result.current.setUserMetadata(lockAddress, metadata, callback)
+    result.current.setUserMetadata(lockAddress, 1, metadata, callback)
 
     expect(callback).toHaveBeenCalled()
   })

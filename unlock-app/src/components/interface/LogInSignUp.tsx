@@ -8,7 +8,8 @@ interface LogInSignUpProps {
   signup?: boolean
   embedded?: boolean
   onProvider: (provider: any) => void
-  onCancel: () => void
+  onCancel?: () => void
+  network: number
 }
 
 export const LogInSignUp = ({
@@ -17,6 +18,7 @@ export const LogInSignUp = ({
   embedded,
   onProvider,
   onCancel,
+  network,
 }: LogInSignUpProps) => {
   const [isSignup, setIsSignup] = useState(signup || !login)
 
@@ -24,6 +26,7 @@ export const LogInSignUp = ({
     <BrowserOnly>
       {!isSignup && (
         <LogIn
+          network={network}
           onCancel={onCancel}
           showSignup={() => setIsSignup(true)}
           onProvider={onProvider}
@@ -40,6 +43,7 @@ LogInSignUp.defaultProps = {
   signup: false,
   login: true,
   embedded: false,
+  onCancel: null,
 }
 
 export default LogInSignUp

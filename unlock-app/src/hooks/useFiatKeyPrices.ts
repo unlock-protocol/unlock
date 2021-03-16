@@ -1,26 +1,18 @@
 import { useState, useContext, useEffect } from 'react'
 import { ConfigContext } from '../utils/withConfig'
 
-interface Config {
-  services: {
-    storage: {
-      host: string
-    }
-  }
-}
-
 interface KeyPrice {
   [currency: string]: string
 }
-export const useFiatKeyPrices = (address: string, activePayment: string) => {
+export const useFiatKeyPrices = (address: string, network: number) => {
   const [loading, setLoading] = useState(true)
   const [fiatPrices, updatePrices] = useState({} as KeyPrice)
 
-  const config: Config = useContext(ConfigContext)
+  const config: any = useContext(ConfigContext)
 
   async function getFiatKeyPriceFor(lockAddress: string) {
     const response = await fetch(
-      `${config.services.storage.host}/price/fiat/${lockAddress}`
+      `${config.networks[network].locksmith}/price/fiat/${lockAddress}`
     )
     const prices: KeyPrice = await response.json()
 
@@ -29,11 +21,9 @@ export const useFiatKeyPrices = (address: string, activePayment: string) => {
   }
 
   useEffect(() => {
-    if (activePayment === 'Credit Card') {
-      setLoading(true)
-      getFiatKeyPriceFor(address)
-    }
-  }, [address, activePayment])
+    setLoading(true)
+    getFiatKeyPriceFor(address)
+  }, [address])
 
   return { loading, fiatPrices }
 }

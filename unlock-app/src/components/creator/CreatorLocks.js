@@ -20,24 +20,11 @@ import { useLocks } from '../../hooks/useLocks'
  */
 export const CreatorLocksFromHook = ({ formIsVisible, hideForm }) => {
   const { account } = useContext(AuthenticationContext)
-  const { loading, locks: lockFeed, addLock, error } = useLocks(account)
-
-  if (error) {
-    // Show the error
-    return (
-      <DefaultError title={error} critical={false}>
-        {error}
-      </DefaultError>
-    )
-  }
-
   return (
     <CreatorLocks
-      createLock={addLock}
+      account={account}
       formIsVisible={formIsVisible}
       hideForm={hideForm}
-      loading={loading}
-      lockFeed={lockFeed}
     />
   )
 }
@@ -46,8 +33,8 @@ CreatorLocksFromHook.propTypes = {
   hideForm: PropTypes.func.isRequired,
 }
 
-export const CreatorLocks = (props) => {
-  const { createLock, lockFeed, loading, formIsVisible, hideForm } = props
+export const CreatorLocks = ({ account, formIsVisible, hideForm }) => {
+  const { loading, locks, addLock, error } = useLocks(account)
 
   return (
     <Locks>
@@ -67,16 +54,16 @@ export const CreatorLocks = (props) => {
         <CreatorLockForm
           hideAction={hideForm}
           saveLock={async (lock) => {
-            await createLock(lock, hideForm)
+            await addLock(lock, hideForm)
           }}
           pending
         />
       )}
-      {lockFeed.length > 0 &&
-        lockFeed.map((lock) => {
+      {locks.length > 0 &&
+        locks.map((lock) => {
           return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
         })}
-      {lockFeed.length === 0 && !loading && !formIsVisible && (
+      {locks.length === 0 && !loading && !formIsVisible && (
         <DefaultError
           title="Create a lock to get started"
           illustration="/static/images/illustrations/lock.svg"
@@ -92,16 +79,9 @@ export const CreatorLocks = (props) => {
 }
 
 CreatorLocks.propTypes = {
-  lockFeed: PropTypes.arrayOf(UnlockPropTypes.lock),
-  createLock: PropTypes.func.isRequired,
+  account: PropTypes.string.isRequired,
   formIsVisible: PropTypes.bool.isRequired,
-  loading: PropTypes.bool,
   hideForm: PropTypes.func.isRequired,
-}
-
-CreatorLocks.defaultProps = {
-  loading: false,
-  lockFeed: [],
 }
 export default CreatorLocksFromHook
 

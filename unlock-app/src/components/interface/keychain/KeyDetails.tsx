@@ -8,12 +8,17 @@ import { DefaultError } from '../../creator/FatalError'
 import Loading from '../Loading'
 import { OwnedKey } from './KeychainTypes'
 import Key from './Key'
+import LoginPrompt from '../LoginPrompt'
 
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { address: account },
   })
+
+  if (!account) {
+    return <LoginPrompt />
+  }
 
   if (loading) return <Loading />
   if (error) {

@@ -12,13 +12,13 @@ import { ConfigContext } from '../../utils/withConfig'
 import UnlockProvider from '../../services/unlockProvider'
 import ProviderContext from '../../contexts/ProviderContext'
 
-import { AuthenticateWithoutProvider } from '../interface/Authenticate'
+import {} from '../interface/Authenticate'
 
 interface RestoreAccountProps {
   config: any
   email: string
   recoveryKey: any
-  network: string
+  network: number
 }
 
 export const RestoreAccount = ({
@@ -158,7 +158,7 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
   }
 
   let content
-  const defaultNetwork = '1' // This is no-op for recoveries (we do not query the chain)
+  const defaultNetwork = 1 // This is no-op for recoveries (we do not query the chain)
 
   if (!email || !recoveryKey) {
     content = (
@@ -171,17 +171,12 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
     )
   } else {
     content = (
-      <AuthenticateWithoutProvider
+      <RestoreAccount
         network={defaultNetwork} // Default to mainnet
         config={config}
-      >
-        <RestoreAccount
-          network={defaultNetwork} // Default to mainnet
-          config={config}
-          email={email}
-          recoveryKey={recoveryKey}
-        />
-      </AuthenticateWithoutProvider>
+        email={email}
+        recoveryKey={recoveryKey}
+      />
     )
   }
   return (

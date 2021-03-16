@@ -9,34 +9,16 @@ import { ConfigContext } from '../utils/withConfig'
 import { WedlockServiceContext } from '../contexts/WedlocksContext'
 import WedlockService from '../services/wedlockService'
 import ProviderContext from '../contexts/ProviderContext'
+import Authenticate from '../components/interface/Authenticate'
 
 const config = configure()
 const wedlockService = new WedlockService(config.services.wedlocks.host)
-
-const selectProvider = (config) => {
-  let provider
-  if (config.isServer) {
-    return null
-  }
-  if (config.env === 'test') {
-    // We set the provider to be the provider by the local ganache
-    provider = `http://${config.httpProvider}:8545`
-  } else if (window && window.ethereum) {
-    provider = window.ethereum
-  } else if (window.web3) {
-    // Legacy web3 wallet/browser (should we keep supporting?)
-    provider = window.web3.currentProvider
-  } else {
-    // TODO: Let's let the user pick one up from the UI (including the unlock provider!)
-  }
-  return provider
-}
 
 class UnlockApp extends App {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      provider: selectProvider(config),
+      provider: null,
     }
 
     if (!config.isServer) {
@@ -83,9 +65,11 @@ The Unlock team
           <ProviderContext.Provider
             value={{ provider, setProvider: this.setProvider }}
           >
-            <WedlockServiceContext.Provider value={wedlockService}>
-              <Component {...pageProps} />
-            </WedlockServiceContext.Provider>
+            <Authenticate>
+              <WedlockServiceContext.Provider value={wedlockService}>
+                <Component {...pageProps} />
+              </WedlockServiceContext.Provider>
+            </Authenticate>
           </ProviderContext.Provider>
         </ConfigContext.Provider>
       </>

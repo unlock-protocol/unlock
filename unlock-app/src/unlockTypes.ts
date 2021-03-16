@@ -93,7 +93,7 @@ export interface PaywallConfigLocks {
 }
 
 export interface PaywallConfigLock {
-  name: string
+  name?: string
   metadataInputs?: MetadataInput[]
 }
 
@@ -180,13 +180,13 @@ export interface MetadataInput {
 export interface PaywallConfig {
   icon?: string
   unlockUserAccounts?: true | 'true' | false
-  callToAction: PaywallCallToAction
+  callToAction?: PaywallCallToAction
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
-  network: string
-  referrer: string
+  network: number
+  referrer?: string
 }
 
 export interface RawLock {

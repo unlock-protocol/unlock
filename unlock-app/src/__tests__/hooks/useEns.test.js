@@ -1,6 +1,9 @@
+import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import useEns from '../../hooks/useEns'
+import { ConfigContext } from '../../utils/withConfig'
+import { AuthenticationContext } from '../../components/interface/Authenticate'
 
 jest.mock('ethers')
 
@@ -17,11 +20,27 @@ describe('useEns', () => {
 
   it('should yield the name if there one', async () => {
     expect.assertions(2)
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useEns({ address: '0xabc' })
+    const wrapper = ({ children }) => (
+      <AuthenticationContext.Provider value={{ network: 1 }}>
+        <ConfigContext.Provider
+          value={{
+            networks: {
+              1: {
+                readOnlyProvider: 'http://provider',
+              },
+            },
+          }}
+        >
+          {children}
+        </ConfigContext.Provider>
+      </AuthenticationContext.Provider>
+    )
+    const { result, waitForNextUpdate } = renderHook(
+      () => useEns({ address: '0xabc' }),
+      { wrapper }
     )
 
-    expect(result.current).toBe('0xabc')
+    expect(result.current.address).toBe('0xabc')
     await waitForNextUpdate()
     expect(result.current).toBe('julien.unlock-protocol.eth')
   })
