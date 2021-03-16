@@ -22,7 +22,7 @@ export const renderWithContexts = (component) => {
       },
     },
   }
-  const authentication = { network: '1492' }
+  const authentication = { network: 1492 }
   return rtl.render(
     <ConfigContext.Provider value={config}>
       <AuthenticationContext.Provider value={authentication}>

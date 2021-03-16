@@ -10,7 +10,7 @@ describe.skip('LogIn', () => {
     const toggleSignup = jest.fn()
 
     const { getByText } = rtl.render(
-      <LogIn onProvider={doNothing} showSignup={toggleSignup} />
+      <LogIn network={1} onProvider={doNothing} showSignup={toggleSignup} />
     )
 
     const signUp = getByText('Sign up here.')
@@ -25,7 +25,7 @@ describe.skip('LogIn', () => {
     const password = 'guest'
 
     const { getByDisplayValue, getByLabelText } = rtl.render(
-      <LogIn onProvider={doNothing} showSignup={() => {}} />
+      <LogIn network={1} onProvider={doNothing} showSignup={() => {}} />
     )
 
     const emailInput = getByLabelText('Email Address')
@@ -43,7 +43,7 @@ describe.skip('LogIn', () => {
     const toggleSignup = jest.fn()
 
     const { getByText } = rtl.render(
-      <LogIn onProvider={doNothing} showSignup={toggleSignup} />
+      <LogIn network={1} onProvider={doNothing} showSignup={toggleSignup} />
     )
 
     getByText('Sign Up')

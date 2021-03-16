@@ -46,10 +46,7 @@ storiesOf('Checkout Metadata Form', module)
     return (
       <MetadataForm
         fields={metadataInputsWithDefault}
-        onSubmit={(args) => {
-          console.log('---')
-          console.log(args)
-        }}
+        onSubmit={(args) => {}}
       />
     )
   })

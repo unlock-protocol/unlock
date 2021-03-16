@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Lock, LoggedOutLock } from './Lock'
+import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
@@ -7,21 +7,21 @@ import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 interface LoadLockProps {
   address: string
   emitTransactionInfo: (info: TransactionInfo) => void
-  authenticated: boolean
   activePayment: string
   setFocus: (address: string) => void
-  authenticate: () => void
-  network: string
+  network: number
+  handleFiatAvailable: () => void
+  setHasMembership: (state: boolean) => void
 }
 
 const LoadLock = ({
   address,
   setFocus,
   emitTransactionInfo,
-  authenticated,
-  authenticate,
   activePayment,
   network,
+  handleFiatAvailable,
+  setHasMembership,
 }: LoadLockProps) => {
   const web3Service = useContext(Web3ServiceContext)
   const [loading, setLoading] = useState(true)
@@ -44,20 +44,15 @@ const LoadLock = ({
   if (loading || !web3Service) {
     return <LoadingLock address={address} />
   }
-
-  if (!authenticated) {
-    return (
-      <LoggedOutLock network={network} lock={lock} onClick={authenticate} />
-    )
-  }
-
   return (
     <Lock
+      network={network}
+      handleFiatAvailable={handleFiatAvailable}
       setFocus={setFocus}
       lock={lock}
       emitTransactionInfo={emitTransactionInfo}
-      authenticated={authenticated}
       activePayment={activePayment}
+      setHasMembership={setHasMembership}
     />
   )
 }
@@ -68,20 +63,20 @@ interface LocksProps {
   activePayment: string
   setFocus: (address: string) => void
   focus: string
-  authenticated: boolean
-  authenticate: () => void
-  network: string
+  network: number
+  handleFiatAvailable: () => void
+  setHasMembership: (state: boolean) => void
 }
 
 export const Locks = ({
   network,
-  authenticate,
-  authenticated,
   lockAddresses,
   emitTransactionInfo,
   activePayment,
   setFocus,
   focus,
+  handleFiatAvailable,
+  setHasMembership,
 }: LocksProps) => {
   return (
     <div>
@@ -89,9 +84,9 @@ export const Locks = ({
         if (!focus || focus === address) {
           return (
             <LoadLock
+              handleFiatAvailable={handleFiatAvailable}
+              setHasMembership={setHasMembership}
               network={network}
-              authenticate={authenticate}
-              authenticated={authenticated}
               setFocus={setFocus}
               key={address}
               address={address}

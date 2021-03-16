@@ -13,6 +13,7 @@ import { formResultToMetadata } from '../../../utils/userMetadata'
 import { useSetUserMetadata } from '../../../hooks/useSetUserMetadata'
 
 interface Props {
+  network: number
   lock: any
   fields: MetadataInput[]
   onSubmit: (metadata: UserMetadata) => void
@@ -23,7 +24,13 @@ interface DefautltValues {
   [key: string]: string
 }
 
-export const MetadataForm = ({ lock, fields, onSubmit, onCancel }: Props) => {
+export const MetadataForm = ({
+  network,
+  lock,
+  fields,
+  onSubmit,
+  onCancel,
+}: Props) => {
   const [error, setError] = useState('')
   const { setUserMetadata } = useSetUserMetadata()
 
@@ -50,17 +57,22 @@ export const MetadataForm = ({ lock, fields, onSubmit, onCancel }: Props) => {
     const metadata = formResultToMetadata(formResult, fields)
     setSubmittedForm(true)
     setError('')
-    setUserMetadata(lock.address, metadata, (error: any, saved: boolean) => {
-      if (error || !saved) {
-        setError(
-          error?.message || 'We could not save your info, please try again.'
-        )
-        setSubmittedForm(false)
+    setUserMetadata(
+      lock.address,
+      network,
+      metadata,
+      (error: any, saved: boolean) => {
+        if (error || !saved) {
+          setError(
+            error?.message || 'We could not save your info, please try again.'
+          )
+          setSubmittedForm(false)
+        }
+        if (saved) {
+          onSubmit(metadata)
+        }
       }
-      if (saved) {
-        onSubmit(metadata)
-      }
-    })
+    )
   }
 
   return (

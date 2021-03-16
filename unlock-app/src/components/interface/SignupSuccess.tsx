@@ -21,7 +21,7 @@ export const SignupSuccess = () => (
 
 export default SignupSuccess
 
-const Heading = styled.h1`
+export const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 36px;
   line-height: 47px;
@@ -29,7 +29,7 @@ const Heading = styled.h1`
   color: var(--darkgrey);
 `
 
-const Description = styled.p`
+export const Description = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 20px;

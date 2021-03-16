@@ -1,19 +1,34 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import Authenticate from '../interface/Authenticate'
-import SignupSuccess from '../interface/SignupSuccess'
+import { Heading, Description } from '../interface/SignupSuccess'
+import LoginPrompt from '../interface/LoginPrompt'
+import { AuthenticationContext } from '../interface/Authenticate'
 
 export const LoginContent = () => {
+  const { account } = useContext(AuthenticationContext)
+
   return (
     <Layout title="Login">
       <Head>
         <title>{pageTitle('Login')}</title>
       </Head>
-      <Authenticate unlockUserAccount>
-        <SignupSuccess />
-      </Authenticate>
+      {!account && <LoginPrompt unlockUserAccount />}
+      {account && (
+        <>
+          <Heading>Login</Heading>
+
+          <Description>
+            You are now logged in! Visit{' '}
+            <Link href="/settings">
+              <a>your settings page</a>
+            </Link>
+            .
+          </Description>
+        </>
+      )}
     </Layout>
   )
 }

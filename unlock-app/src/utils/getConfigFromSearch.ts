@@ -5,30 +5,35 @@ import { isValidPaywallConfig } from './checkoutValidators'
 export default function getConfigFromSearch(
   search: any
 ): PaywallConfig | undefined {
-  if (typeof search.paywallConfig !== 'string') {
-    return undefined
-  }
+  if (typeof search.paywallConfig === 'string') {
+    const rawConfig = search.paywallConfig
+    const decodedConfig = decodeURIComponent(rawConfig)
 
-  const rawConfig = search.paywallConfig
-  const decodedConfig = decodeURIComponent(rawConfig)
+    let parsedConfig: any
 
-  let parsedConfig: any
+    try {
+      parsedConfig = JSON.parse(decodedConfig)
+    } catch (e) {
+      console.error(
+        'paywall config in URL not valid JSON, continuing with undefined'
+      )
+      return undefined
+    }
 
-  try {
-    parsedConfig = JSON.parse(decodedConfig)
-  } catch (e) {
+    if (isValidPaywallConfig(parsedConfig)) {
+      return parsedConfig as PaywallConfig
+    }
     console.error(
-      'paywall config in URL not valid JSON, continuing with undefined'
+      'paywall config in URL does not pass validation, continuing with undefined'
     )
     return undefined
   }
-
-  if (isValidPaywallConfig(parsedConfig)) {
-    return parsedConfig as PaywallConfig
+  if (typeof search.network === 'string' && typeof search.lock === 'string') {
+    return {
+      network: search.network,
+      locks: {
+        [search.lock]: {},
+      },
+    }
   }
-
-  console.error(
-    'paywall config in URL does not pass validation, continuing with undefined'
-  )
-  return undefined
 }

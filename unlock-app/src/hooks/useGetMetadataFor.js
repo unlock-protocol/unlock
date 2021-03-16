@@ -24,9 +24,6 @@ export const useGetMetadataFor = (
   useEffect(() => {
     const getMetadata = async () => {
       setLoading(true)
-      if (getProtectedData) {
-        console.log('WAIT FOR WALLET')
-      }
       walletService.getKeyMetadata(
         {
           lockAddress,
@@ -41,7 +38,6 @@ export const useGetMetadataFor = (
           } else {
             setMetadata(json)
           }
-          console.log('DONE WAIT FOR WALLET')
         }
       )
     }

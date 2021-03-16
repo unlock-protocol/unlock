@@ -34,7 +34,7 @@ const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
 export interface Props {
   ownedKey: OwnedKey
   account: string
-  network: string
+  network: number
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {

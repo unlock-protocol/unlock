@@ -1,20 +1,45 @@
 import styled from 'styled-components'
 import Media from '../../../theme/media'
 
-export const ActionButton = styled.button`
-  background-color: ${(props) =>
-    props.disabled ? 'var(--grey)' : 'var(--green)'};
-  border: none;
+interface ActionButtonProps {
+  fontColor?: string
+  fontActiveColor?: string
+  activeColor?: string
+}
+
+export const ActionButton = styled.button<ActionButtonProps>`
+  height: 60px;
+  padding-left: 15px;
+  padding-right: 15px;
   font-size: 16px;
-  color: var(--white);
+
+  color: ${(props) =>
+    props.disabled ? 'var(--white)' : props.fontColor || 'var(--white)'};
+
   font-family: 'IBM Plex Sans', sans-serif;
   border-radius: 4px;
   cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
   outline: none;
   transition: background-color 200ms ease;
+  border: 1px solid;
+
+  border-color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--green)')};
+
+  background-color: ${(props) =>
+    props.disabled ? 'var(--grey)' : props.color || 'var(--green)'};
   & :hover {
-    background-color: ${(props) =>
+    color: ${(props) =>
+      props.disabled
+        ? 'var(--white)'
+        : props.fontActiveColor || 'var(--activegreen)'};
+
+    border-color: ${(props) =>
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+
+    background-color: ${(props) =>
+      props.disabled
+        ? 'var(--grey)'
+        : props.activeColor || 'var(--activegreen)'};
   }
 `
 

@@ -1,22 +1,59 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+
 import Head from 'next/head'
 import PropTypes from 'prop-types'
+import { AuthenticationContext } from '../interface/Authenticate'
 import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import CreatorLocks from '../creator/CreatorLocks'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
+import LoginPrompt from '../interface/LoginPrompt'
+
 import {
   CreateLockButton,
   CancelCreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
-import Authenticate from '../interface/Authenticate'
+
+const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
+  const { account } = useContext(AuthenticationContext)
+
+  return (
+    <>
+      {formIsVisible && (
+        <CancelCreateLockButton id="CreateLockButton" onClick={toggleForm}>
+          Cancel Lock
+        </CancelCreateLockButton>
+      )}
+      {!formIsVisible && (
+        <CreateLockButton
+          disabled={!account}
+          id="CreateLockButton"
+          onClick={toggleForm}
+        >
+          Create Lock
+        </CreateLockButton>
+      )}
+    </>
+  )
+}
+
+ButtonToCreateLock.propTypes = {
+  formIsVisible: PropTypes.bool,
+  toggleForm: PropTypes.func.isRequired,
+}
+
+ButtonToCreateLock.defaultProps = {
+  formIsVisible: false,
+}
 
 export const DashboardContent = () => {
+  const { account } = useContext(AuthenticationContext)
+
   const [formIsVisible, setFormIsVisible] = useState(false)
   const toggleForm = () => {
     formIsVisible ? setFormIsVisible(false) : setFormIsVisible(true)
@@ -30,23 +67,17 @@ export const DashboardContent = () => {
       <Head>
         <title>{pageTitle('Dashboard')}</title>
       </Head>
-      <Authenticate>
+      {!account && (
+        <LoginPrompt details="In order to deploy locks, we require the use of your own crypto wallet." />
+      )}
+      {account && (
         <BrowserOnly>
           <AccountWrapper>
             <Account />
-            {formIsVisible && (
-              <CancelCreateLockButton
-                id="CreateLockButton"
-                onClick={toggleForm}
-              >
-                Cancel Lock
-              </CancelCreateLockButton>
-            )}
-            {!formIsVisible && (
-              <CreateLockButton id="CreateLockButton" onClick={toggleForm}>
-                Create Lock
-              </CreateLockButton>
-            )}
+            <ButtonToCreateLock
+              toggleForm={toggleForm}
+              formIsVisible={formIsVisible}
+            />
           </AccountWrapper>
           <Phone>
             <Warning>
@@ -57,7 +88,7 @@ export const DashboardContent = () => {
 
           <CreatorLocks hideForm={hideForm} formIsVisible={formIsVisible} />
         </BrowserOnly>
-      </Authenticate>
+      )}
     </Layout>
   )
 }
