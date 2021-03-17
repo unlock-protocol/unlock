@@ -14,12 +14,12 @@ if (!rawConfig) {
   // set network based on hostname if missing in rawConfig
   if (!rawConfig.network) {
     if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
-      rawConfig.network = '4'
+      rawConfig.network = 4
       console.error(
         'Missing network in Unlock config. Assigned default to mainnet: 1. See https://docs.unlock-protocol.com/'
       )
     } else if (baseUrl.match('paywall.unlock-protocol.com')) {
-      rawConfig.network = '1'
+      rawConfig.network = 1
       console.error(
         'Missing network in Unlock config. Assigned default to rinkeby 4. See https://docs.unlock-protocol.com/'
       )
