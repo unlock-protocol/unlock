@@ -11,15 +11,17 @@ export function Account() {
   const { networks } = useContext(ConfigContext)
   const { account, network } = useContext(AuthenticationContext)
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
-  const iconSeed = parseInt((account || '').slice(2, 10), 16)
+  const iconSeed = parseInt((account || '0x0000').slice(2, 10), 16)
   return (
     <AccountWrapper>
       <AccountDetails>
-        <DoubleHeightCell>
-          {account && <Jazzicon diameter={40} seed={iconSeed} />}
+        <DoubleHeightCell disabled={!account}>
+          <UserIcon seed={iconSeed} />
         </DoubleHeightCell>
         <Label>
-          <NetworkInfo>{networks[network].name}</NetworkInfo>
+          <NetworkInfo>
+            {network ? networks[network].name : 'Not connected'}
+          </NetworkInfo>
         </Label>
         <DoubleHeightCell />
         <DoubleHeightCell />
@@ -27,11 +29,15 @@ export function Account() {
         <DoubleHeightCell />
         <DoubleHeightCell />
         <DoubleHeightCell />
-        {account && <UserAddress id="UserAddress" address={account} />}
+        <UserAddress id="UserAddress" address={account} />
       </AccountDetails>
     </AccountWrapper>
   )
 }
+
+const UserIcon = styled(Jazzicon).attrs({
+  diameter: 40,
+})``
 
 export default Account
 const NetworkInfo = styled.span`
@@ -55,7 +61,11 @@ const AccountDetails = styled.div`
   `};
 `
 
-const DoubleHeightCell = styled.div`
+interface DoubleHeightCellProps {
+  disabled?: boolean
+}
+
+const DoubleHeightCell = styled.div<DoubleHeightCellProps>`
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -65,6 +75,7 @@ const DoubleHeightCell = styled.div`
   ${Media.phone`
     height: 0px;
   `};
+  ${({ disabled }) => disabled && 'filter: grayscale(1); opacity: 0.3'}
 `
 
 const Label = styled.div`

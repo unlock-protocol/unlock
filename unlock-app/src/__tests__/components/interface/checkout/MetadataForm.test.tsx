@@ -45,6 +45,7 @@ describe.skip('Metadata Form', () => {
       onCancel = jest.fn()
       const { getByText, getByLabelText } = rtl.render(
         <MetadataForm
+          network={1}
           lock={lock}
           onCancel={onCancel}
           fields={fieldsNoRequired}
@@ -103,6 +104,7 @@ describe.skip('Metadata Form', () => {
       onCancel = jest.fn()
       const { getByText, getByLabelText } = rtl.render(
         <MetadataForm
+          network={1}
           fields={fieldsWithRequired}
           onSubmit={onSubmit}
           lock={lock}
@@ -166,6 +168,7 @@ describe.skip('Metadata Form', () => {
       onSubmit = jest.fn()
       const { getByText, getByLabelText } = rtl.render(
         <MetadataForm
+          network={1}
           fields={fieldsWithRequired}
           onSubmit={onSubmit}
           lock={lock}
