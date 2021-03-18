@@ -12,6 +12,8 @@ import useMembers, {
   buildMembersWithMetadata,
 } from '../../hooks/useMembers'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
+import { AuthenticationContext } from '../../components/interface/Authenticate'
+import { ConfigContext } from '../../utils/withConfig'
 
 jest.mock('../../structured_data/keyMetadataTypedData')
 jest.mock('@apollo/react-hooks')
@@ -74,6 +76,29 @@ const storageService = {
   getBulkMetadataFor: jest.fn(() => Promise.resolve(storedMetata)),
 }
 const typedData = {}
+
+const wrapper = ({ children }) => (
+  <AuthenticationContext.Provider value={{ network: 1 }}>
+    <ConfigContext.Provider
+      value={{
+        networks: {
+          1: {
+            readOnlyProvider: 'http://provider',
+          },
+        },
+      }}
+    >
+      <StorageServiceContext.Provider value={storageService}>
+        <WalletServiceContext.Provider value={walletService}>
+          <Web3ServiceContext.Provider value={web3Service}>
+            {children}
+          </Web3ServiceContext.Provider>
+        </WalletServiceContext.Provider>
+      </StorageServiceContext.Provider>
+    </ConfigContext.Provider>
+  </AuthenticationContext.Provider>
+)
+
 generateKeyTypedData.mockImplementation(() => typedData)
 describe('useMembers', () => {
   beforeEach(() => {
@@ -184,183 +209,6 @@ describe('useMembers', () => {
           lockName: 'my lock',
           token: '2',
         },
-      })
-    })
-  })
-
-  describe('useMembers', () => {
-    it('should use the keyHolderQuery to get list of non expired key holders', () => {
-      expect.assertions(1)
-      useQuery.mockImplementation(() => ({
-        loading: false,
-        error: false,
-        data: [],
-      }))
-      renderHook(() => useMembers([lock.address]))
-      expect(useQuery).toHaveBeenCalledWith(keyHolderQuery(), {
-        variables: {
-          addresses: [lock.address],
-          expiresAfter: expect.any(Number),
-          first: 100,
-          skip: 0,
-        },
-      })
-    })
-
-    it('should use the keyHolderQuery to get list of all key holders', () => {
-      expect.assertions(1)
-      useQuery.mockImplementation(() => ({
-        loading: false,
-        error: false,
-        data: [],
-      }))
-      renderHook(() => useMembers([lock.address], null, MemberFilters.ALL))
-      expect(useQuery).toHaveBeenCalledWith(keyHolderQuery(), {
-        variables: {
-          addresses: [lock.address],
-          expiresAfter: 0,
-          first: 100,
-          skip: 0,
-        },
-      })
-    })
-
-    it('should set loading to true if useQuery is loading', () => {
-      expect.assertions(1)
-      useQuery.mockImplementation(() => ({
-        loading: true,
-        error: false,
-        data: [],
-      }))
-      const { result } = renderHook(() => useMembers([lock.address]))
-      expect(result.current.loading).toBe(true)
-    })
-
-    it('should set error to true if useQuery yieded an error', () => {
-      expect.assertions(1)
-      useQuery.mockImplementation(() => ({
-        loading: false,
-        error: true,
-        data: [],
-      }))
-      const { result } = renderHook(() => useMembers([lock.address]))
-      expect(result.current.error).toBe(true)
-    })
-
-    describe('when the viewer is the lock owner', () => {
-      it('should yield the metadata with keys', async () => {
-        expect.assertions(2)
-
-        // https://react-hooks-testing-library.com/usage/advanced-hooks#context
-        // eslint-disable-next-line react/prop-types
-        const wrapper = ({ children }) => (
-          <StorageServiceContext.Provider value={storageService}>
-            <WalletServiceContext.Provider value={walletService}>
-              <Web3ServiceContext.Provider value={web3Service}>
-                {children}
-              </Web3ServiceContext.Provider>
-            </WalletServiceContext.Provider>
-          </StorageServiceContext.Provider>
-        )
-
-        useQuery.mockImplementation(() => ({
-          loading: false,
-          error: false,
-          data: {
-            locks: [lock],
-          },
-        }))
-        const { result, waitForNextUpdate } = renderHook(
-          () => useMembers([lock.address], lock.owner),
-          { wrapper }
-        )
-        const initialResult = result.current
-        expect(initialResult).toEqual({
-          loading: true,
-          error: false,
-          hasNextPage: false,
-          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
-          list: [],
-        })
-        await waitForNextUpdate()
-        const loadedResult = result.current
-        expect(loadedResult).toEqual({
-          loading: false,
-          error: false,
-          hasNextPage: false,
-          columns: [
-            'lockName',
-            'token',
-            'keyholderAddress',
-            'expiration',
-            'email',
-          ],
-          list: [
-            {
-              expiration: 'Expired',
-              email: 'julien@unlock-protocol.com',
-              keyholderAddress: '0x126',
-              lockName: 'my lock',
-              token: '1',
-            },
-            {
-              expiration: 'Expired',
-              email: 'chris@unlock-protocol.com',
-              keyholderAddress: '0x252',
-              lockName: 'my lock',
-              token: '2',
-            },
-          ],
-        })
-      })
-    })
-
-    describe('when the viewer is not a lock owner', () => {
-      it('should render the list of members without metadata', async () => {
-        expect.assertions(2)
-        web3Service.isLockManager = jest.fn(() => false)
-        useQuery.mockImplementation(() => ({
-          loading: false,
-          error: false,
-          hasNextPage: false,
-          data: {
-            locks: [lock],
-          },
-        }))
-        const { result, waitForNextUpdate } = renderHook(() =>
-          useMembers([lock.address], 'not lock.owner')
-        )
-        const initialResult = result.current
-        expect(initialResult).toEqual({
-          loading: true,
-          error: false,
-          hasNextPage: false,
-          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
-          list: [],
-        })
-        await waitForNextUpdate()
-
-        const loadedResult = result.current
-        expect(loadedResult).toEqual({
-          loading: false,
-          error: false,
-          hasNextPage: false,
-          columns: ['lockName', 'token', 'keyholderAddress', 'expiration'],
-          list: [
-            {
-              expiration: 'Expired',
-              keyholderAddress: '0x126',
-              lockName: 'my lock',
-              token: '1',
-            },
-            {
-              expiration: 'Expired',
-              keyholderAddress: '0x252',
-              lockName: 'my lock',
-              token: '2',
-            },
-          ],
-        })
       })
     })
   })

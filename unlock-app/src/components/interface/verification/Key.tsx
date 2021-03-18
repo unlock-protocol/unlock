@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { WalletService } from '@unlock-protocol/unlock-js'
-import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
+// import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
 import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
 import { pingPoap } from '../../../utils/poap'
 import { OwnedKey } from '../keychain/KeychainTypes'
@@ -137,14 +137,18 @@ export const ValidKey = ({
     ownedKey.lock.address,
     viewer
   )
+  const loading = false
+  const metadata = {}
+  const getMetadataForError = ''
 
-  const { loading, metadata, error: getMetadataForError } = useGetMetadataFor(
-    walletService,
-    config,
-    ownedKey.lock.address,
-    ownedKey.keyId,
-    isLockManager
-  )
+  // TODO add back metadata when the logged in user is lock manager!
+  // const { loading, metadata, error: getMetadataForError } = useGetMetadataFor(
+  //   walletService,
+  //   config,
+  //   ownedKey.lock.address,
+  //   ownedKey.keyId,
+  //   isLockManager
+  // )
 
   const {
     markAsCheckedIn,

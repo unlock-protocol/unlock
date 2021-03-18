@@ -12,6 +12,7 @@ import { MemberFilters } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import Loading from '../interface/Loading'
 import useMembers from '../../hooks/useMembers'
+import LoginPrompt from '../interface/LoginPrompt'
 
 interface FilterProps {
   value: string
@@ -69,6 +70,7 @@ interface MembersContentProps {
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
   const [filter, setFilter] = useState<string>(MemberFilters.ACTIVE)
+  const { account } = useContext(AuthenticationContext)
 
   let lockAddresses: string[] = []
   if (query.locks) {
@@ -91,25 +93,30 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         <title>{pageTitle('Members')}</title>
       </Head>
       <BrowserOnly>
-        <Account />
-        <Filters>
-          Show{' '}
-          <Filter
-            value={MemberFilters.ACTIVE}
-            current={filter}
-            setFilter={setFilter}
-          />
-          <Filter
-            value={MemberFilters.ALL}
-            current={filter}
-            setFilter={setFilter}
-          />
-        </Filters>
-        <MetadataTableWrapper
-          page={page}
-          lockAddresses={lockAddresses}
-          filter={filter}
-        />
+        {!account && <LoginPrompt />}
+        {account && (
+          <>
+            <Account />
+            <Filters>
+              Show{' '}
+              <Filter
+                value={MemberFilters.ACTIVE}
+                current={filter}
+                setFilter={setFilter}
+              />
+              <Filter
+                value={MemberFilters.ALL}
+                current={filter}
+                setFilter={setFilter}
+              />
+            </Filters>
+            <MetadataTableWrapper
+              page={page}
+              lockAddresses={lockAddresses}
+              filter={filter}
+            />
+          </>
+        )}
       </BrowserOnly>
     </Layout>
   )
