@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
-
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { RoundedLogo } from '../Logo'
+
 import { ConfigContext } from '../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import CheckoutWrapper from './CheckoutWrapper'
@@ -18,44 +19,44 @@ import {
   TransactionInfo,
 } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
-import Authenticate from '../Authenticate'
-import ProviderContext from '../../../contexts/ProviderContext'
+import AuthenticateButton from '../buttons/AuthenticateButton'
+import { AuthenticationContext } from '../Authenticate'
+import LogInSignUp from '../LogInSignUp'
+import { WrongNetwork } from '../../creator/FatalError'
 
 interface CheckoutProps {
   emitCloseModal: () => void
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
-  providerAdapter: any
+  web3Provider: any
 }
 
 export const Checkout = ({
   emitCloseModal,
   emitTransactionInfo,
   emitUserInfo,
-  providerAdapter, // provider passed from the website which implements the paywall so we can support any wallet!
+  web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
 }: CheckoutProps) => {
-  const { provider } = useContext(ProviderContext)
+  const { authenticate, account, network } = useContext(AuthenticationContext)
 
   const paywallConfig = useContext(PaywallConfigContext)
   const config = useContext(ConfigContext)
-  const [activePayment, setActivePayment] = useState<string>(
-    !provider || provider.isUnlock ? 'Credit Card' : 'Default'
-  )
+  const [loginShown, showLogin] = useState(false)
+  const [activePayment, setActivePayment] = useState<string>('Default')
+  const [fiatAvailable, setFiatAvailable] = useState(false)
+  const [hasMembership, setHasMembership] = useState(false)
   const [focus, setFocus] = useState('')
-  const [authenticated, setAuthenticated] = useState(false)
-  const [account, setAccount] = useState('')
 
   if (!paywallConfig || !config) {
     return <Loading />
   }
 
-  const requiredNetwork = paywallConfig.network || '1'
-  const networkConfig = config.networks[requiredNetwork] // Defaults to mainnet if network is missing from conf!
+  const requiredNetwork = paywallConfig.network
+  const networkConfig = config.networks[requiredNetwork]
   const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
   const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
 
   const changeActivePayment = (type: string) => {
-    setAuthenticated(true)
     setActivePayment(type)
   }
 
@@ -63,60 +64,97 @@ export const Checkout = ({
     emitTransactionInfo(info)
   }
 
-  const authenticate = () => {
-    setAuthenticated(true)
-  }
-
-  const onAuthenticated = (address: string) => {
-    if (account !== address) {
-      setAccount(address)
+  const onProvider = (provider: any) => {
+    authenticate(provider, (address: string) => {
       emitUserInfo({
         address,
       })
-    }
+    })
+    showLogin(false)
+  }
+
+  const handleFiatAvailable = () => {
+    setFiatAvailable(true)
   }
 
   const web3Service = new Web3Service(networkConfig)
 
-  const showPaymentOptions =
-    !focus &&
-    authenticated &&
-    provider &&
-    !provider.isUnlock &&
-    paywallConfig.unlockUserAccounts == 'true'
+  const showPaymentOptions = !focus && account && fiatAvailable
 
-  const content = (
-    <>
-      {paywallConfig && paywallConfig.icon && (
-        <PaywallLogo alt="Publisher Icon" src={paywallConfig.icon} />
-      )}
-      {!focus && (
-        <CallToAction
-          state="default"
-          callToAction={paywallConfig.callToAction}
-        />
-      )}
+  let content
 
-      <Locks
-        network={requiredNetwork}
-        authenticate={authenticate}
-        authenticated={authenticated}
-        setFocus={setFocus}
-        focus={focus}
-        lockAddresses={lockAddresses}
-        activePayment={activePayment}
-        emitTransactionInfo={handleTransactionInfo}
-      />
-      {showPaymentOptions && (
-        <SwitchPayment
-          setActivePayment={changeActivePayment}
+  if (!loginShown) {
+    content = (
+      <>
+        <PaywallLogoWrapper>
+          {paywallConfig.icon ? (
+            <img alt="Publisher Icon" src={paywallConfig.icon} />
+          ) : (
+            <RoundedLogo size="56px" />
+          )}
+        </PaywallLogoWrapper>
+
+        {!focus && (
+          <CallToAction
+            state="default"
+            callToAction={paywallConfig.callToAction}
+          />
+        )}
+        <Locks
+          handleFiatAvailable={handleFiatAvailable}
+          network={requiredNetwork}
+          setFocus={setFocus}
+          focus={focus}
+          lockAddresses={lockAddresses}
           activePayment={activePayment}
-          paymentOptions={['Credit Card']}
+          emitTransactionInfo={handleTransactionInfo}
+          setHasMembership={setHasMembership}
         />
-      )}
-      {!showPaymentOptions && <Spacer />}
-    </>
-  )
+        {showPaymentOptions && (
+          <SwitchPayment
+            setActivePayment={changeActivePayment}
+            activePayment={activePayment}
+            paymentOptions={['Credit Card']}
+          />
+        )}
+        {!showPaymentOptions && <Spacer />}
+        {!account && (
+          <AuthenticateButton
+            web3Provider={web3Provider}
+            showAccount={fiatAvailable}
+            onProvider={onProvider}
+            login={showLogin}
+          />
+        )}
+        {hasMembership && (
+          <p>
+            Thank you for your trust.{' '}
+            <button type="button" onClick={emitCloseModal}>
+              Close
+            </button>
+            .
+          </p>
+        )}
+      </>
+    )
+  }
+
+  if (loginShown) {
+    content = (
+      <LogInSignUp
+        network={requiredNetwork}
+        embedded
+        onCancel={() => showLogin(false)}
+        login
+        onProvider={onProvider}
+      />
+    )
+  }
+
+  // != on purpose to stay flexible
+  if (network && network != requiredNetwork) {
+    content = <WrongNetwork network={requiredNetwork} />
+  }
 
   return (
     <Web3ServiceContext.Provider value={web3Service}>
@@ -126,31 +164,19 @@ export const Checkout = ({
             <title>{pageTitle('Checkout')}</title>
           </Head>
 
-          {authenticated && (
-            <Authenticate
-              embedded
-              onCancel={() => setAuthenticated(false)}
-              requiredNetwork={requiredNetwork}
-              unlockUserAccount={paywallConfig.unlockUserAccounts == 'true'}
-              onAuthenticated={onAuthenticated}
-              providerAdapter={providerAdapter}
-            >
-              {content}
-            </Authenticate>
-          )}
-          {!authenticated && <>{content}</>}
+          {content}
         </CheckoutWrapper>
       </CheckoutContainer>
     </Web3ServiceContext.Provider>
   )
 }
 
-const PaywallLogo = styled.img`
-  height: 100px;
+const PaywallLogoWrapper = styled.div`
+  max-height: 100px;
   max-width: 200px;
-  align-self: start;
+  margin-bottom: 20px;
 `
 
 const Spacer = styled.div`
-  height: 75px;
+  height: 25px;
 `

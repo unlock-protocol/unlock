@@ -2,3 +2,5 @@
 // packages available. Defining them here will unblock us, though doing that the
 // most convenient way will not buy us any type safety.
 declare module 'react-jazzicon'
+
+declare module '@unlock-protocol/unlock-assets'

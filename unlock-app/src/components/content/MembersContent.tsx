@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import Link from 'next/link'
-import Authenticate, { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../interface/Authenticate'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
@@ -12,6 +12,7 @@ import { MemberFilters } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import Loading from '../interface/Loading'
 import useMembers from '../../hooks/useMembers'
+import LoginPrompt from '../interface/LoginPrompt'
 
 interface FilterProps {
   value: string
@@ -69,6 +70,7 @@ interface MembersContentProps {
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
   const [filter, setFilter] = useState<string>(MemberFilters.ACTIVE)
+  const { account } = useContext(AuthenticationContext)
 
   let lockAddresses: string[] = []
   if (query.locks) {
@@ -90,29 +92,32 @@ export const MembersContent = ({ query }: MembersContentProps) => {
       <Head>
         <title>{pageTitle('Members')}</title>
       </Head>
-      <Authenticate>
-        <BrowserOnly>
-          <Account />
-          <Filters>
-            Show{' '}
-            <Filter
-              value={MemberFilters.ACTIVE}
-              current={filter}
-              setFilter={setFilter}
+      <BrowserOnly>
+        {!account && <LoginPrompt />}
+        {account && (
+          <>
+            <Account />
+            <Filters>
+              Show{' '}
+              <Filter
+                value={MemberFilters.ACTIVE}
+                current={filter}
+                setFilter={setFilter}
+              />
+              <Filter
+                value={MemberFilters.ALL}
+                current={filter}
+                setFilter={setFilter}
+              />
+            </Filters>
+            <MetadataTableWrapper
+              page={page}
+              lockAddresses={lockAddresses}
+              filter={filter}
             />
-            <Filter
-              value={MemberFilters.ALL}
-              current={filter}
-              setFilter={setFilter}
-            />
-          </Filters>
-          <MetadataTableWrapper
-            page={page}
-            lockAddresses={lockAddresses}
-            filter={filter}
-          />
-        </BrowserOnly>
-      </Authenticate>
+          </>
+        )}
+      </BrowserOnly>
     </Layout>
   )
 }
