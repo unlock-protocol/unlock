@@ -98,7 +98,7 @@ const TermsModal = styled(MessageBox)`
 `
 
 const TermsButton = styled(ActionButton)`
-  padding: 10px;
+  height: 45px;
 `
 
 const Left = styled.div`

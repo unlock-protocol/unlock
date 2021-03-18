@@ -14,7 +14,6 @@ import ProviderContext from '../../contexts/ProviderContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
 import {
-  MissingProvider,
   NotEnabledInProvider,
   NetworkNotSupported,
   WrongNetwork,
@@ -31,142 +30,47 @@ const Web3ServiceProvider = Web3ServiceContext.Provider
 
 export const AuthenticationContext = createContext()
 
-const Providers = ({
-  networkConfig,
-  network,
-  account,
-  email,
-  encryptedPrivateKey,
-  children,
-}) => {
-  const apolloClient = new ApolloClient({
-    uri: networkConfig.subgraphURI,
-  })
-  const graphService = new GraphService(networkConfig.subgraphURI)
-  const storageService = new StorageService(networkConfig.locksmith)
+/**
+ * Utility providers set to retrieve content based on network settings
+ * @param {*} param0
+ * @returns
+ */
+const Providers = ({ networkConfig, children }) => {
+  const apolloClient = useMemo(
+    () =>
+      new ApolloClient({
+        uri: networkConfig.subgraphURI,
+      }),
+    [networkConfig]
+  )
 
-  const web3Service = new Web3Service({
-    ...networkConfig,
-    network,
-  })
+  const graphService = useMemo(
+    () => new GraphService(networkConfig.subgraphURI),
+    [networkConfig]
+  )
+
+  const storageService = useMemo(
+    () => new StorageService(networkConfig.locksmith),
+    [networkConfig]
+  )
+
+  const web3Service = useMemo(() => {
+    return new Web3Service({
+      ...networkConfig,
+    })
+  }, [networkConfig])
 
   return (
-    <AuthenticationContext.Provider
-      value={{ account, network, email, encryptedPrivateKey }}
-    >
-      <ApolloProvider client={apolloClient}>
-        <StorageServiceProvider value={storageService}>
-          <Web3ServiceProvider value={web3Service}>
-            <GraphServiceProvider value={graphService}>
-              {children}
-            </GraphServiceProvider>
-          </Web3ServiceProvider>
-        </StorageServiceProvider>
-      </ApolloProvider>
-    </AuthenticationContext.Provider>
+    <ApolloProvider client={apolloClient}>
+      <StorageServiceProvider value={storageService}>
+        <Web3ServiceProvider value={web3Service}>
+          <GraphServiceProvider value={graphService}>
+            {children}
+          </GraphServiceProvider>
+        </Web3ServiceProvider>
+      </StorageServiceProvider>
+    </ApolloProvider>
   )
-}
-
-export const AuthenticateWithProvider = ({
-  children,
-  config,
-  provider,
-  requiredNetwork,
-  onAuthenticated,
-}) => {
-  const walletService = useMemo(() => new WalletService(config), [])
-  const { loading, network, account, email, encryptedPrivateKey } = useProvider(
-    provider,
-    walletService
-  )
-
-  // Loading the provider
-  if (loading || !network) {
-    return <Loading />
-  }
-
-  // No account
-  if (!account) {
-    // No account, but we have a provider.
-    // Let's ask the user to check their wallet!
-    return <NotEnabledInProvider />
-  }
-
-  // Sometimes, we need a specific network (verifying an NFT for example!)
-  if (requiredNetwork && parseInt(network) !== parseInt(requiredNetwork)) {
-    return <WrongNetwork network={requiredNetwork} />
-  }
-
-  const networkConfig = config.networks[network]
-  if (!networkConfig) {
-    return <NetworkNotSupported />
-  }
-
-  onAuthenticated(account)
-  walletService.setUnlockAddress(networkConfig.unlockAddress)
-
-  return (
-    <WalletServiceContext.Provider value={walletService}>
-      <Providers
-        networkConfig={networkConfig}
-        network={network}
-        account={account}
-        email={email}
-        encryptedPrivateKey={encryptedPrivateKey}
-      >
-        {children}
-      </Providers>
-    </WalletServiceContext.Provider>
-  )
-}
-
-AuthenticateWithProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  provider: PropTypes.object,
-  requiredNetwork: PropTypes.string,
-  onAuthenticated: PropTypes.func,
-}
-
-AuthenticateWithProvider.defaultProps = {
-  provider: null,
-  requiredNetwork: null,
-  onAuthenticated: () => {},
-}
-
-export const AuthenticateWithoutProvider = ({
-  onAuthenticated,
-  network,
-  config,
-  children,
-}) => {
-  const walletService = useMemo(() => new WalletService(config), [])
-
-  const networkConfig = config.networks[network]
-  if (!networkConfig) {
-    return <NetworkNotSupported />
-  }
-  walletService.setUnlockAddress(networkConfig.unlockAddress)
-
-  return (
-    <WalletServiceContext.Provider value={walletService}>
-      <Providers networkConfig={networkConfig} network={network}>
-        {children}
-      </Providers>
-    </WalletServiceContext.Provider>
-  )
-}
-
-AuthenticateWithoutProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
-  network: PropTypes.string.isRequired,
-  onAuthenticated: PropTypes.func,
-}
-
-AuthenticateWithoutProvider.defaultProps = {
-  onAuthenticated: () => {},
 }
 
 export const Authenticate = ({
@@ -180,53 +84,49 @@ export const Authenticate = ({
   providerAdapter,
 }) => {
   const config = useContext(ConfigContext)
-  const { provider, setProvider } = useContext(ProviderContext)
+  const { setProvider } = useContext(ProviderContext)
 
-  if (!provider) {
-    if (providerAdapter) {
-      setProvider(providerAdapter)
-      return null // ProviderContext will re-render
+  const {
+    loading,
+    network,
+    account,
+    email,
+    encryptedPrivateKey,
+    walletService,
+    connectProvider,
+  } = useProvider(config)
+
+  const authenticate = (provider, callback) => {
+    if (!provider) {
+      if (providerAdapter) {
+        setProvider(providerAdapter)
+        connectProvider(providerAdapter, callback)
+        return
+      }
     }
-    if (optional) {
-      return (
-        <AuthenticateWithoutProvider
-          onAuthenticated={onAuthenticated}
-          network={requiredNetwork}
-          config={config}
+    connectProvider(provider, callback)
+  }
+
+  const networkConfig = {
+    ...(config.networks[requiredNetwork || network] || {}),
+    network,
+  }
+
+  return (
+    <AuthenticationContext.Provider
+      value={{ account, network, email, encryptedPrivateKey, authenticate }}
+    >
+      <WalletServiceContext.Provider value={walletService}>
+        <Providers
+          networkConfig={networkConfig}
+          account={account}
+          email={email}
+          encryptedPrivateKey={encryptedPrivateKey}
         >
           {children}
-        </AuthenticateWithoutProvider>
-      )
-    }
-    if (!unlockUserAccount) {
-      return <MissingProvider />
-    }
-    return (
-      <LogInSignUp
-        embedded={embedded}
-        onCancel={onCancel}
-        login
-        onProvider={setProvider}
-      />
-    )
-  }
-
-  if (provider.isUnlock && !unlockUserAccount) {
-    return <MissingProvider />
-  }
-
-  // Continue with provider!
-  return (
-    <ProviderContext.Provider value={provider}>
-      <AuthenticateWithProvider
-        requiredNetwork={requiredNetwork}
-        config={config}
-        provider={provider}
-        onAuthenticated={onAuthenticated}
-      >
-        {children}
-      </AuthenticateWithProvider>
-    </ProviderContext.Provider>
+        </Providers>
+      </WalletServiceContext.Provider>
+    </AuthenticationContext.Provider>
   )
 }
 

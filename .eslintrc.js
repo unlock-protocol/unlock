@@ -61,7 +61,6 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'error',
     'jest/prefer-expect-assertions': 'error',
-    'jest/prefer-expect-assertions': 'error',
     'react/jsx-props-no-spreading': 0, // TODO: consider changing to error to tighten things up
     'import/prefer-default-export': 'off',
     semi: ['error', 'never'],

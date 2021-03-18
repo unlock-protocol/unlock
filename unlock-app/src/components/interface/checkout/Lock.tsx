@@ -28,9 +28,11 @@ import { PaymentDetails } from '../user-account/PaymentDetails'
 interface LockProps {
   lock: any
   emitTransactionInfo: (info: TransactionInfo) => void
-  authenticated: boolean
   activePayment: string
   setFocus: (address: string) => void
+  handleFiatAvailable: () => void
+  setHasMembership: (state: boolean) => void
+  network: number
 }
 
 const getLockProps = (lock: any, baseCurrencySymbol: string) => {
@@ -45,30 +47,20 @@ const getLockProps = (lock: any, baseCurrencySymbol: string) => {
     address: lock.address,
   }
 }
-
-export const LoggedOutLock = ({ lock, onClick, network }: any) => {
-  const config = useContext(ConfigContext)
-  const baseCurrencySymbol = config.networks[network].baseCurrencySymbol
-
-  const lockProps = {
-    ...getLockProps(lock, baseCurrencySymbol),
-    onClick,
-  }
-  return <LockVariations.PurchaseableLock {...lockProps} />
-}
-
 export const Lock = ({
+  network,
   lock,
   emitTransactionInfo,
   activePayment,
   setFocus,
+  handleFiatAvailable,
+  setHasMembership,
 }: LockProps) => {
   const config = useContext(ConfigContext)
   const walletService: WalletService = useContext(WalletServiceContext)
 
-  // Let's see if we can load the prices here!
   const paywallConfig = useContext(PaywallConfigContext)
-  const { account, network } = useContext(AuthenticationContext)
+  const { account } = useContext(AuthenticationContext)
   const { purchaseKey, getKeyForAccount } = useLock(lock)
   const [showMetadataForm, setShowMetadataForm] = useState(false)
   const [captureCreditCard, setCaptureCreditCard] = useState(false)
@@ -76,25 +68,41 @@ export const Lock = ({
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const { getTokenBalance } = useAccount(account)
-  const { fiatPrices } = useFiatKeyPrices(lock.address, activePayment)
+  const { fiatPrices } = useFiatKeyPrices(lock.address, network)
 
   const { purchaseKey: fiatPurchaseKey } = useFiatPurchaseKey(
     emitTransactionInfo
   )
+
+  useEffect(() => {
+    if (fiatPrices.usd) {
+      handleFiatAvailable()
+    }
+  }, [fiatPrices.usd])
+
+  const alreadyHasKey = () => {
+    setHasKey(true)
+    setHasMembership(true)
+  }
+
   // TODO: combine all of these into a single call so that we can show the loading state?
   useEffect(() => {
-    const getKey = async () => {
-      const key = await getKeyForAccount(account)
-      const now = new Date().getTime() / 1000
-      setHasKey(key && key.expiration > now)
-    }
-    getKey()
+    if (account) {
+      const getKey = async () => {
+        const key = await getKeyForAccount(account)
+        const now = new Date().getTime() / 1000
+        if (key && key.expiration > now) {
+          alreadyHasKey()
+        }
+      }
+      getKey()
 
-    const getBalance = async () => {
-      const balance = await getTokenBalance(lock.currencyContractAddress)
-      setCanAfford(userCanAffordKey(lock, balance))
+      const getBalance = async () => {
+        const balance = await getTokenBalance(lock.currencyContractAddress)
+        setCanAfford(userCanAffordKey(lock, balance))
+      }
+      getBalance()
     }
-    getBalance()
   }, [account, lock.address, lock.keyPrice])
 
   // Actual purchase
@@ -110,7 +118,7 @@ export const Lock = ({
           // Here we would want to make sure the user agreed by showing the confirmation screen?
           setPurchasePending(true)
           await fiatPurchaseKey(lock.address, account)
-          setHasKey(true) // optimistic Unlocking!
+          alreadyHasKey() // optimistic Unlocking!
         }
       } else {
         const referrer =
@@ -119,7 +127,7 @@ export const Lock = ({
             : account
         setPurchasePending(true)
         purchaseKey(account, referrer, (transaction: any) => {
-          setHasKey(true) // optimistic Unlocking!
+          alreadyHasKey() // optimistic Unlocking!
           emitTransactionInfo(transaction)
         })
       }
@@ -164,6 +172,7 @@ export const Lock = ({
         />
 
         <MetadataForm
+          network={network}
           lock={lock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={handleMetadataSubmitted}
@@ -194,12 +203,12 @@ export const Lock = ({
     )
   }
 
-  let disabled = false
+  let disabled = !account
+
   const lockProps: LockVariations.LockProps = {
     onClick,
     ...getLockProps(lock, config.networks[network].baseCurrencySymbol),
   }
-
   if (activePayment === 'Credit Card') {
     if (fiatPrices.usd) {
       const basePrice = parseInt(fiatPrices.usd)
@@ -209,11 +218,12 @@ export const Lock = ({
       disabled = true
     }
   }
-
-  const isSoldOut = numberOfAvailableKeys(lock) === 0
   if (disabled) {
     return <LockVariations.DisabledLock {...lockProps} />
   }
+
+  const isSoldOut = numberOfAvailableKeys(lock) === 0
+
   // Lock is sold out
   if (isSoldOut) {
     return <LockVariations.SoldOutLock {...lockProps} />
@@ -233,7 +243,7 @@ export const Lock = ({
   // }
 
   // No lock is being/has been purchased
-  if (canAfford) {
+  if (canAfford || activePayment === 'Credit Card') {
     return <LockVariations.PurchaseableLock {...lockProps} />
   }
 
