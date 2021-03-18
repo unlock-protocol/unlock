@@ -176,13 +176,6 @@ describe('Unlock Provider', () => {
   })
 
   describe('implemented JSON-RPC calls', () => {
-    it('should respond to eth_accounts with an array containing only `this.wallet.address` after being initialized', async () => {
-      expect.assertions(2)
-      const accounts = await provider.send('eth_accounts')
-      expect(accounts).toHaveLength(1)
-      expect(accounts[0]).toEqual(publicKey)
-    })
-
     it('should respond to personal_sign by calling the defined method', async () => {
       expect.assertions(1)
       provider.personal_sign = jest.fn()
