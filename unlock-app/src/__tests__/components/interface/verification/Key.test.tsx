@@ -86,30 +86,6 @@ describe('ValidKey component', () => {
     )
     expect(wrapper.queryByText('Valid Key')).not.toBeNull()
   })
-
-  it('should useGetMetadataFor if the viewer is the lock owner', () => {
-    expect.assertions(1)
-
-    useGetMetadataForResult.metadata.userMetadata = {
-      protected: {
-        email: 'julien@unlock-protocol.com',
-      },
-      public: {
-        name: 'Genestoux',
-      },
-    }
-    const wrapper = rtl.render(
-      <ValidKey
-        signature="signature"
-        ownedKey={ownedKey}
-        signatureTimestamp={signatureTimestamp}
-        owner={owner}
-        viewer={ownerViewer}
-      />
-    )
-    expect(wrapper.queryByText('julien@unlock-protocol.com')).not.toBeNull()
-  })
-
   it('should not useGetMetadataFor if the viewer is not the lock owner', () => {
     expect.assertions(1)
     const wrapper = rtl.render(

@@ -151,7 +151,8 @@ export const Checkout = ({
     )
   }
 
-  if (network && network !== requiredNetwork) {
+  // != on purpose to stay flexible
+  if (network && network != requiredNetwork) {
     content = <WrongNetwork network={requiredNetwork} />
   }
 
