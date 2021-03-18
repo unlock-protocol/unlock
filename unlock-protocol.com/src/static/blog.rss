@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 09 Mar 2021 03:17:37 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 17 Mar 2021 17:28:05 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Support for WalletConnect]]></title>
+            <description><![CDATA[We have added Wallet Connect to all Unlock dapps! You can now connect to your dashboard or unlock memberships in your favorite applications from any web browser!]]></description>
+            <link>https://unlock-protocol.com/blog/wallet-connect-support</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/wallet-connect-support</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 17 Mar 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[XDAI]]></title>
             <description><![CDATA[Over the last few weeks, we heard many Unlock users who are complaining about very high gas prices on the Ethereum mainnet. Many of them have asked for xDAI support!]]></description>
@@ -215,19 +223,19 @@
             <pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Ejecting an Unlock Account]]></title>
-            <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
-            <link>https://unlock-protocol.com/blog/ejecting-account</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
-            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Unlock Hackathon Ideas]]></title>
             <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
             <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Ejecting an Unlock Account]]></title>
+            <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
+            <link>https://unlock-protocol.com/blog/ejecting-account</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
             <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
