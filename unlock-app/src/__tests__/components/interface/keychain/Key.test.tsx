@@ -37,7 +37,7 @@ const render = ({ ownedKey }: RenderProps) => {
   signData = jest.fn()
   qrEmail = jest.fn()
   return rtl.render(
-    <Key network="1" account={accountAddress} ownedKey={ownedKey || aKey} />
+    <Key network={1} account={accountAddress} ownedKey={ownedKey || aKey} />
   )
 }
 
@@ -87,12 +87,12 @@ describe.skip('keychain -- Key', () => {
     expect.assertions(2)
 
     const { container, rerender } = rtl.render(
-      <Key network="1" account={accountAddress} ownedKey={aKey} />
+      <Key network={1} account={accountAddress} ownedKey={aKey} />
     )
 
     expect(container.querySelector('canvas')).toBeNull()
 
-    rerender(<Key network="1" account={accountAddress} ownedKey={aKey} />)
+    rerender(<Key network={1} account={accountAddress} ownedKey={aKey} />)
 
     expect(container.querySelector('canvas')).not.toBeNull()
   })

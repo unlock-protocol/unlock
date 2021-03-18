@@ -44,18 +44,11 @@ const Container = styled.section`
   display: grid;
   row-gap: 16px;
   column-gap: 32px;
-  grid-template-columns: 72px;
-  grid-auto-flow: column;
   border-radius: 4px;
   align-items: center;
   padding: 32px;
   padding-bottom: 40px;
-
-  @media (max-width: 500px) {
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-    padding: 16px;
-  }
+  grid-template-columns: 50px repeat(auto-fill, minmax(1fr));
 `
 
 const Image = styled.img`
@@ -81,21 +74,6 @@ const Message = styled.div`
     color: var(--dimgrey);
   }
 `
-
-export const MissingProvider = () => (
-  <DefaultError
-    title="Wallet missing"
-    illustration="/static/images/illustrations/wallet.svg"
-    critical
-  >
-    <p>This section requires the use of your own crypto wallet. </p>
-    <p>
-      It looks like you’re using an incompatible browser or are missing a crypto
-      wallet. If you’re using Chrome or Firefox you should install{' '}
-      <a href="https://metamask.io/">Metamask</a>.
-    </p>
-  </DefaultError>
-)
 
 export const MissingAccount = () => (
   <DefaultError
@@ -141,18 +119,20 @@ export const NotEnabledInProvider = () => (
 )
 
 interface WrongNetworkProps {
-  network: string
+  network: number
 }
-export const WrongNetwork = ({ network }: WrongNetworkProps) => (
-  <DefaultError
-    title="Wrong network"
-    illustration="/static/images/illustrations/network.svg"
-    critical
-  >
-    <p>
-      You are on the wrong network. Please switch to{' '}
-      <strong>{ETHEREUM_NETWORKS_NAMES[parseInt(network, 10)][0]}</strong> in
-      your wallet of choice.
-    </p>
-  </DefaultError>
-)
+export const WrongNetwork = ({ network }: WrongNetworkProps) => {
+  return (
+    <DefaultError
+      title="Wrong network"
+      illustration="/static/images/illustrations/network.svg"
+      critical
+    >
+      <p>
+        You are on the wrong network. Please switch to{' '}
+        <strong>{ETHEREUM_NETWORKS_NAMES[network]}</strong> in your wallet of
+        choice.
+      </p>
+    </DefaultError>
+  )
+}
