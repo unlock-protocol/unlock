@@ -7,6 +7,7 @@ module.exports = {
   stripeSecret: process.env.STRIPE_SECRET,
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
   unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
+  defaultNetwork: process.env.DEFAULT_NETWORK,
   purchaserAddress: process.env.PURCHASER_ADDRESS,
   purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,

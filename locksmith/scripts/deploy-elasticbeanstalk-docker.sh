@@ -14,6 +14,7 @@ web3_provider_host=${13}
 unlock_contract_address=${14}
 graphql_base_url=${15}
 metadata_host=${16}
+default_network=${17}
 
 
 function check_is_forked_pr()
@@ -42,10 +43,10 @@ function deploy()
     environment_name=$1
 
     if eb status ${environment_name}; then
-        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} NODE_ENV=${node_env} STRIPE_SECRET=${stripe_secret} PURCHASER_CREDENTIALS=${purchaser_credentials} WEB3_PROVIDER_HOST=${web3_provider_host} UNLOCK_CONTRACT_ADDRESS=${unlock_contract_address} GRAPHQL_BASE_URL=${graphql_base_url} METADATA_HOST=${metadata_host}
+        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} NODE_ENV=${node_env} STRIPE_SECRET=${stripe_secret} PURCHASER_CREDENTIALS=${purchaser_credentials} WEB3_PROVIDER_HOST=${web3_provider_host} UNLOCK_CONTRACT_ADDRESS=${unlock_contract_address} GRAPHQL_BASE_URL=${graphql_base_url} METADATA_HOST=${metadata_host} DEFAULT_NETWORK=${default_network}
         eb deploy ${environment_name} --label locksmith-${build_id} --message "${message:0:199}" --timeout 10
     else
-        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env},STRIPE_SECRET=${stripe_secret},PURCHASER_CREDENTIALS=${purchaser_credentials},WEB3_PROVIDER_HOST=${web3_provider_host},UNLOCK_CONTRACT_ADDRESS=${unlock_contract_address},GRAPHQL_BASE_URL=${graphql_base_url},METADATA_HOST=${metadata_host} --elb-type classic
+        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env},STRIPE_SECRET=${stripe_secret},PURCHASER_CREDENTIALS=${purchaser_credentials},WEB3_PROVIDER_HOST=${web3_provider_host},UNLOCK_CONTRACT_ADDRESS=${unlock_contract_address},GRAPHQL_BASE_URL=${graphql_base_url},METADATA_HOST=${metadata_host},DEFAULT_NETWORK=${default_network} --elb-type classic
     fi
 
 }
