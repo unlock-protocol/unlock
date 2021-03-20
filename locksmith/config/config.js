@@ -4,7 +4,6 @@ module.exports = {
   database: process.env.DB_NAME,
   host: process.env.DB_HOSTNAME,
   dialect: 'postgres',
-  operatorsAliases: false,
   stripeSecret: process.env.STRIPE_SECRET,
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
   unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,

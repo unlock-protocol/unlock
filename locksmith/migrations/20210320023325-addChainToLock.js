@@ -1,5 +1,7 @@
 'use strict';
 
+const table = 'Locks'
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn(table, 'chain', {
@@ -8,6 +10,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn(table, 'chain'
+    await queryInterface.removeColumn(table, 'chain')
   }
 };
