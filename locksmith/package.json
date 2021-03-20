@@ -12,6 +12,7 @@
     "test": "jest --forceExit --runInBand",
     "lint": "eslint --ext .ts,.js src/ __tests__/",
     "db:migrate": "sequelize --config ./config/sequelize.config.js db:migrate",
+    "sequelize": "sequelize",
     "preci": "yarn lint",
     "ci": "yarn test",
     "build": "tsc",
