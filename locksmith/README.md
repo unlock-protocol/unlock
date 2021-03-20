@@ -48,7 +48,7 @@ You can configure your connection details in a few ways. Here are the suggested 
    ```
 
 2. If your configuration needs are more demanding than this, further configuration
-   can be established by modifying the storage configuration file `config\config.js`.
+   can be established by modifying the storage configuration file `config/config.js`.
 
 Once configured, you will be able to start the application. `yarn dev` or `yarn start`
 will suffice depending on your needs for running Locksmith.

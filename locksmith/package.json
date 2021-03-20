@@ -33,9 +33,6 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@opencensus/core": "0.0.22",
-    "@opencensus/exporter-jaeger": "0.0.22",
-    "@opencensus/nodejs": "0.0.22",
     "@types/cors": "2.8.10",
     "@types/eth-sig-util": "2.1.0",
     "@types/ethereumjs-util": "5.2.0",
