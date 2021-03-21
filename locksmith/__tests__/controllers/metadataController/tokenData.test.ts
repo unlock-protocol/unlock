@@ -123,6 +123,7 @@ describe('Requesting Token Data', () => {
     })
 
     await addMetadata({
+      chain,
       tokenAddress: lockAddress,
       userAddress: '0xaBCD',
       data: {

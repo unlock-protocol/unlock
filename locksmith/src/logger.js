@@ -9,12 +9,11 @@ const logger = winston.createLogger({
 })
 
 // No output in tests
-if (process.env?.NODE_ENV !== 'test') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  )
-}
+logger.add(
+  new winston.transports.Console({
+    silent: process.env?.NODE_ENV === 'test',
+    format: winston.format.simple(),
+  })
+)
 
 module.exports = logger

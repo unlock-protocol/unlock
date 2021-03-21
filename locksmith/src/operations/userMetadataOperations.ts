@@ -8,6 +8,7 @@ const { UserTokenMetadata } = models
 export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
     {
+      chain: metadata.chain,
       tokenAddress: Normalizer.ethereumAddress(metadata.tokenAddress),
       userAddress: Normalizer.ethereumAddress(metadata.userAddress),
       data: {

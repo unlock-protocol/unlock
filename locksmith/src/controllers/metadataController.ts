@@ -14,6 +14,8 @@ import * as metadataOperations from '../operations/metadataOperations'
 const config = require('../../config/config')
 const logger = require('../logger')
 
+const chain = 1984
+
 namespace MetadataController {
   const evaluateLockOwnership = async (
     lockAddress: string,
@@ -127,11 +129,13 @@ namespace MetadataController {
     const address: string = Normalizer.ethereumAddress(req.params.address)
     const metadata = req.body.message.KeyMetaData
     const id = req.params.keyId.toLowerCase()
+    const { chain } = req
 
     if ((await evaluateLockOwnership(address, owner)) === false) {
       res.sendStatus(401)
     } else {
       const successfulUpdate = metadataOperations.updateKeyMetadata({
+        chain,
         address,
         id,
         data: metadata,
@@ -157,6 +161,7 @@ namespace MetadataController {
 
     if (req.owner === userAddress) {
       await addMetadata({
+        chain,
         userAddress,
         tokenAddress,
         data,
