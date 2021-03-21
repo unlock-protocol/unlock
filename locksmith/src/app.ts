@@ -4,10 +4,33 @@ import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import expressWinston from 'express-winston'
 import winston from 'winston'
+import * as Sentry from '@sentry/node'
+import * as Tracing from '@sentry/tracing'
 import { typeDefs } from './graphql/typeDefinitions'
 import { resolvers } from './graphql/resolvers'
 
 const app = express()
+
+Sentry.init({
+  dsn:
+    'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({ app }),
+  ],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+})
+// RequestHandler creates a separate execution context using domains, so that every
+// transaction/span/breadcrumb is attached to its own Hub instance
+app.use(Sentry.Handlers.requestHandler())
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler())
 
 // Request logging
 app.use(
@@ -39,6 +62,9 @@ const router = require('./routes')
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/', router)
+
+// The error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler())
 
 // Error logging
 app.use(
