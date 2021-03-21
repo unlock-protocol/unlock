@@ -12,6 +12,7 @@ const { Lock, UserTokenMetadata } = models
  */
 export async function createLock(lock: any) {
   return Lock.create({
+    chain: lock.chain,
     address: ethJsUtil.toChecksumAddress(lock.address),
     owner: ethJsUtil.toChecksumAddress(lock.owner),
   })

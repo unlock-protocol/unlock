@@ -7,6 +7,8 @@ const models = require('../../src/models')
 
 const { AuthorizedLock } = models
 
+const chain = 1984
+
 describe('Price Controller', () => {
   beforeAll(async () => {
     nockBack.fixtures = path.join(__dirname, 'fixtures', 'priceController')
@@ -66,6 +68,7 @@ describe('Price Controller', () => {
 
       // Approve the lock!
       await AuthorizedLock.create({
+        chain,
         address: lockAddress,
       })
 

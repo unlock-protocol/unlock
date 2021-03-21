@@ -40,6 +40,8 @@ const keyHolderStructuredData = lockTypedData({
   },
 })
 
+const chain = 1984
+
 const keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
   data: keyHolderStructuredData,
 })
@@ -102,6 +104,7 @@ jest.mock('../../../src/utils/keyData', () => {
 describe('Requesting Token Data', () => {
   beforeAll(async () => {
     await LockMetadata.create({
+      chain,
       address: lockAddress,
       data: {
         description: 'A Description for Persisted Lock Metadata',
@@ -111,6 +114,7 @@ describe('Requesting Token Data', () => {
     })
 
     await KeyMetadata.create({
+      chain,
       address: weekInEthereumLockAddress,
       id: '6',
       data: {
