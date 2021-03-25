@@ -10,4 +10,7 @@ export class KeyMetadata extends Model<KeyMetadata> {
 
   @Column
   address!: string
+
+  @Column
+  chain!: number
 }

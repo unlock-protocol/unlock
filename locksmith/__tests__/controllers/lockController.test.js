@@ -4,8 +4,10 @@ const { Lock } = require('../../src/models')
 
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const validLockAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
+const chain = 1984
 
 const testLockDetails = {
+  chain,
   name: 'Test Lock',
   address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83E',
   owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
@@ -13,11 +15,13 @@ const testLockDetails = {
 
 const ownedLocks = [
   {
+    chain,
     name: 'a mighty fine lock',
     address: 'jqfqod74',
     owner: '0x423893453',
   },
   {
+    chain,
     name: 'A random other lock',
     address: 'jqfqod75',
     owner: '0x423893453',

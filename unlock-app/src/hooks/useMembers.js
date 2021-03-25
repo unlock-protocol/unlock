@@ -151,9 +151,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
         return []
       }
     })
-    const membersForLocks = await Promise.all(membersForLocksPromise)
-    const members = Object.assign(...membersForLocks)
-    if (membersForLocks.length > 0) {
+    const members = await Promise.all(membersForLocksPromise)
+    if (members.length > 0) {
       setMembers(members)
       setHasNextPage(Object.keys(members).length === first)
     }

@@ -43,6 +43,7 @@ export interface SignedRequest extends Request {
 }
 
 export interface UserTokenMetadataInput {
+  chain: number
   tokenAddress: string
   userAddress: string
   data: any

@@ -10,4 +10,7 @@ export class Lock extends Model<Lock> {
 
   @Column
   owner!: string
+
+  @Column
+  chain!: number
 }

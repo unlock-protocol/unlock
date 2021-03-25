@@ -16,6 +16,8 @@ const mockWeb3Service: { getLock: any } = {
   }),
 }
 
+const chain = 1984
+
 function getMockWeb3Service() {
   return mockWeb3Service
 }
@@ -28,11 +30,13 @@ describe('Lock Ownership', () => {
   const host = 'http://localhost:8545'
   const ownedLocks = [
     {
+      chain,
       name: 'a mighty fine lock',
       address: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
       owner: '0x423893453',
     },
     {
+      chain,
       name: 'A random other lock',
       address: '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f',
       owner: '0x423893453',
@@ -50,9 +54,11 @@ describe('Lock Ownership', () => {
   describe('when the locks are found', () => {
     it('persists the current state of ownership for the requested Locks', async () => {
       expect.assertions(1)
-      await LockOwnership.update(host, [
-        '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
-      ])
+      await LockOwnership.update(
+        host,
+        ['0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'],
+        chain
+      )
 
       const lock = await Lock.findOne({
         where: {

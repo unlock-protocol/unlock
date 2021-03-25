@@ -24,6 +24,8 @@ const keyPricer = {
   keyPriceUSD: jest.fn().mockReturnValueOnce(250).mockReturnValueOnce(1000000),
 }
 
+const chain = 1984
+
 function generateTypedData(message: any) {
   return {
     types: {
@@ -65,6 +67,7 @@ jest.mock('../../src/utils/keyPricer', () => {
 describe('Purchase Controller', () => {
   beforeAll(async () => {
     await AuthorizedLock.create({
+      chain,
       address: participatingLock,
     })
   })

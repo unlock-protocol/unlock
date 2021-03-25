@@ -7,6 +7,8 @@ const models = require('../../src/models')
 
 const { UserTokenMetadata } = models
 
+const chain = 1984
+
 describe('userMetadataOperations', () => {
   beforeAll(async () => {
     await UserTokenMetadata.truncate()
@@ -16,6 +18,7 @@ describe('userMetadataOperations', () => {
       it('should persist the changes', async () => {
         expect.assertions(1)
         const metadataUpdate = addMetadata({
+          chain,
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           data: {
@@ -51,6 +54,7 @@ describe('userMetadataOperations', () => {
       it('should persist the changes', async () => {
         expect.assertions(1)
         const metadataUpdate = addMetadata({
+          chain,
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           data: {

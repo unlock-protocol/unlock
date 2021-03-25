@@ -7,6 +7,8 @@ import { addMetadata } from '../../../src/operations/userMetadataOperations'
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 
+const chain = 1984
+
 const keyHolder = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
   '0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c',
@@ -32,6 +34,7 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
 describe('reading address holder metadata', () => {
   beforeAll(async () => {
     await addMetadata({
+      chain,
       tokenAddress: lockAddress,
       userAddress: keyHolder[0],
       data: {

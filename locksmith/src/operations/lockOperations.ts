@@ -12,6 +12,7 @@ const { Lock, UserTokenMetadata } = models
  */
 export async function createLock(lock: any) {
   return Lock.create({
+    chain: lock.chain,
     address: ethJsUtil.toChecksumAddress(lock.address),
     owner: ethJsUtil.toChecksumAddress(lock.owner),
   })
@@ -48,9 +49,14 @@ export async function getLockAddresses() {
   return lockAddresses.map((lockAddress: any) => lockAddress.address)
 }
 
-export async function updateLockOwnership(address: string, owner: string) {
+export async function updateLockOwnership(
+  address: string,
+  owner: string,
+  chain: number
+) {
   return Lock.upsert(
     {
+      chain,
       address: ethJsUtil.toChecksumAddress(address),
       owner: ethJsUtil.toChecksumAddress(owner),
     },

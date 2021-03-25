@@ -7,4 +7,7 @@ export class LockMetadata extends Model<LockMetadata> {
 
   @Column({ primaryKey: true })
   address!: string
+
+  @Column
+  chain!: number
 }

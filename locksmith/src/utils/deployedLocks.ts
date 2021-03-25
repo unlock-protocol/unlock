@@ -10,7 +10,7 @@ export async function deployedLocks(
   network: string
 ) {
   const lastBlockFetched = await ParsedBlockForLockCreation.findByPk(1)
-  /* 
+  /*
   3530009 is the block holding the deployment of unlock on Rinkeby,its heavy handed for production but
   it works as bootstrap.
    */
@@ -35,14 +35,14 @@ export async function fetchLocksExternally(
     toBlock: 'latest',
   })
 
-  return await persistLocks(logs, lastBlock)
+  return await persistLocks(logs, lastBlock, parseInt(network))
 }
 
 async function fetchPersistedLocks() {
   return await lockOperations.getLockAddresses()
 }
 
-async function persistLocks(logs: any[], lastBlock: number) {
+async function persistLocks(logs: any[], lastBlock: number, chain: number) {
   const { abi } = Unlock.Unlock
   const etherInterface = new ethers.utils.Interface(abi)
   const lockAddress: any = []
@@ -56,6 +56,7 @@ async function persistLocks(logs: any[], lastBlock: number) {
     ) {
       lockAddress.push(parsedLog.values.newLockAddress)
       lockOperations.createLock({
+        chain,
         address: parsedLog.values.newLockAddress,
         owner: parsedLog.values.lockOwner,
       })
