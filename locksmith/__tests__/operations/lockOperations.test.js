@@ -16,6 +16,8 @@ beforeEach(() => {
   Lock = models.Lock // resetting Lock for before each test
 })
 
+const chain = 1984
+
 describe('lockOperations', () => {
   describe('createLock', () => {
     it('should invoke Lock.create, with the checksummed adresses', async () => {
@@ -24,10 +26,12 @@ describe('lockOperations', () => {
       const owner = '0xca750f9232c1c38e34d27e77534e1631526ec99e'
       Lock.create = jest.fn(() => {})
       await createLock({
+        chain,
         address,
         owner,
       })
       expect(Lock.create).toHaveBeenCalledWith({
+        chain,
         address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
         owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
       })
