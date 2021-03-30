@@ -2,7 +2,7 @@
 title: Introducing Swordy Bot
 subTitle: Manage your community auto-magically!
 authorName: Patrick Gallagher
-publishDate: March 31, 2020
+publishDate: March 29, 2021
 description: Thanks to the Unlock developer community, you can now use Unlock in Discord.
 image: /static/images/blog/swordy-bot-intro/thumbnail.png
 ---
@@ -11,15 +11,15 @@ image: /static/images/blog/swordy-bot-intro/thumbnail.png
 
 Discord and Telegram are the best places for tech-savvy communities to communicate. And with any new communication platform, we need a way to isolate the signal from the noise.
 
-To solve this, we built Swordy Bot. The bot is integrated with Unlock Protocol, so you can limit access to only community members who hold a specific Lock token. Best of all, its completely automated!
+To solve this, we built Swordy Bot. The bot is integrated with Unlock Protocol, so you can limit access to only community members who hold a specific Lock token (NFT). Best of all, its completely automated!
 
 ![A few discord channels with locks](/static/images/blog/swordy-bot-intro/channels.png)
 
-If the user doesn't have the necessary Lock token in their wallet, they are directed to Unlock Protocol app, where they can purchase one.
+If the user doesn't have the necessary Lock token in their wallet, they are directed to the Unlock Protocol app, where they can purchase one.
 
 ## How it works
 
-It uses complicate machine learning... just kidding! It's actually pretty simple. The bot checks the user's wallet for the appropriate Lock. If they have it, then the user earns the appropriate roles.
+It uses complicate machine learning... just kidding! It's actually pretty simple. The bot checks the user's wallet for the appropriate key to the Lock. If they have it, then the user earns the appropriate roles.
 
 The basic steps for setting up the bot are:
 
