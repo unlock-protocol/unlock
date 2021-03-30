@@ -4,7 +4,7 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 17 Mar 2021 17:28:05 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 30 Mar 2021 04:23:23 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
             <title><![CDATA[Support for WalletConnect]]></title>
@@ -181,6 +181,14 @@
             <guid isPermaLink="true">https://unlock-protocol.com/blog/forbes-in-the-news</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
             <pubDate>Mon, 06 Jan 2020 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlocking an ads-free Forbes]]></title>
+            <description><![CDATA[Forbes introduced their very first membership today and it lets anyone with an ethereum wallet unlock an ads free experience]]></description>
+            <link>https://unlock-protocol.com/blog/swordy-bot-intro</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/swordy-bot-intro</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 17 Dec 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Unlocking an ads-free Forbes]]></title>
@@ -367,19 +375,19 @@
             <pubDate>Wed, 10 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Digital Cash. Big Deal.]]></title>
-            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
-            <link>https://unlock-protocol.com/blog/digital-cash</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
-            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Integrating Unlock with Known]]></title>
             <description><![CDATA[The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.]]></description>
             <link>https://unlock-protocol.com/blog/integrating-unlock-with-known</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/integrating-unlock-with-known</guid>
             <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Digital Cash. Big Deal.]]></title>
+            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
+            <link>https://unlock-protocol.com/blog/digital-cash</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
             <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
