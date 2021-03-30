@@ -3,13 +3,19 @@ title: Introducing Swordy Bot
 subTitle: Manage your community auto-magically!
 authorName: Patrick Gallagher
 publishDate: March 31, 2020
-description: Thanks to community efforts, a new Discord bot was created for gating access to community channels via Locks
+description: Thanks to the Unlock developer community, you can now use Unlock in Discord.
 image: /static/images/blog/swordy-bot-intro/thumbnail.png
 ---
 
 > Guest written by Community builder Patrick Gallagher
 
+Discord and Telegram are the best places for tech-savvy communities to communicate. And with any new communication platform, we need a way to isolate the signal from the noise.
+
+To solve this, we built Swordy Bot. The bot is integrated with Unlock Protocol, so you can limit access to only community members who hold a specific Lock token. Best of all, its completely automated!
+
 ![A few discord channels with locks](/static/images/blog/swordy-bot-intro/channels.png)
+
+If the user doesn't have the necessary Lock token in their wallet, they are directed to Unlock Protocol app, where they can purchase one.
 
 ## How it works
 
@@ -21,10 +27,30 @@ Step 1. Add the bot to your server at [swordybot.com](https://swordybot.com)
 
 Step 2. Add the requirements for a role using `!add-lock`
 
+<img src="/static/images/blog/swordy-bot-intro/add-lock.png" alt="A admin invoking the !add-lock command" height="100px"/>
+
+Step 3. Users can get access using the `!unlock` command
+
 <img src="/static/images/blog/swordy-bot-intro/invoke.png" alt="A user invoking the !unlock command" height="100px"/>
 
-Step 3. Get a role using the `!unlock` command
+If successful you'll see a message like this:
 
 <img src="/static/images/blog/swordy-bot-intro/knighted.png" alt="A message from the bot that the user has been assigned roles" height="200px"/>
 
-:pray: App
+## How I built it
+
+Integrating the bot with Unlock was extremely simple. The magic all happens in this one line of code where I call the `getHasValidKey` function on the contract.
+
+```js
+const hasValidKey = await lockContract.getHasValidKey(userAddress)
+```
+
+If you're interested in building your own bot, or building with Unlock, most of the code for Swordy Bot is available [here](https://github.com/pi0neerpat/unlock-protocol-bot/blob/e448d1f81a49c4b0b021d09bb623991ae87c55f5/api/src/lib/unlockProtocol/unlockProtocol.js#L26).
+
+## What's next
+
+We are super excited to continue building. Let us know what you want to see and give us feedback in our [Discord](https://discord.gg/Nw3y4GtBSh)
+
+If you like where we are headed, consider following us on twitter:
+
+<a href="https://twitter.com/swordybot?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @swordybot</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
