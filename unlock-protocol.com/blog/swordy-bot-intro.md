@@ -9,13 +9,15 @@ image: /static/images/blog/swordy-bot-intro/thumbnail.png
 
 > Guest written by Community builder Patrick Gallagher
 
-Discord and Telegram are the best places for tech-savvy communities to communicate. And with any new communication platform, we need a way to isolate the signal from the noise.
+Discord and Telegram are the best places for tech-savvy teams or communities to chat. And with any new communication platform, we need a way to isolate the signal from the noise.
 
 To solve this, we built Swordy Bot. The bot is integrated with Unlock Protocol, so you can limit access to only community members who hold a specific Lock token (NFT). Best of all, its completely automated!
 
 ![A few discord channels with locks](/static/images/blog/swordy-bot-intro/channels.png)
 
 If the user doesn't have the necessary Lock token in their wallet, they are directed to the Unlock Protocol app, where they can purchase one.
+
+Big thank you to the Unlock Protocol for sponsoring this bounty. Working with the team has been a breeze, and its really cool that they support people who want to build with their protocol. If you're a developer, I definitely would recommend looking at their other bounties.
 
 ## How it works
 
@@ -33,13 +35,13 @@ Step 3. Users can get access using the `!unlock` command
 
 <img src="/static/images/blog/swordy-bot-intro/invoke.png" alt="A user invoking the !unlock command" height="100px"/>
 
-If successful you'll see a message like this:
+If successful you'll see a message like this, giving you some new roles:
 
 <img src="/static/images/blog/swordy-bot-intro/knighted.png" alt="A message from the bot that the user has been assigned roles" height="200px"/>
 
 ## How I built it
 
-Integrating the bot with Unlock was extremely simple. The magic all happens in this one line of code where I call the `getHasValidKey` function on the contract.
+Integrating with Unlock Protocol was extremely simple. The magic all happens in this one line of code where I call the `getHasValidKey` function on the appropriate contract.
 
 ```js
 const hasValidKey = await lockContract.getHasValidKey(userAddress)
