@@ -3927,9 +3927,9 @@
     yargs "^15.3.0"
 
 "@netlify/config@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@netlify/config/-/config-5.0.0.tgz#428611d4cc038d7c532b7fdecb40605ffbe36434"
-  integrity sha512-aHBPeBW7fyQQLTQV/uwW10TGLb2MvSP5r9v8mBFduh/y6gCgzU5iKOdUx7UYofWD2LWqJmlwXTUR/n1TAy+7iw==
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@netlify/config/-/config-5.1.0.tgz#c43e09b66b4e7e2a6b8cd6a9ee8a5958e2b3517d"
+  integrity sha512-HScoMDm58zS5qOemD4ad0M+3GTt8hJbpLj/YVGGH1XTCMbIiL5L+w1sx6YDjBgf4J7Y1VKwMHSHgQhFPixrsIA==
   dependencies:
     "@ungap/from-entries" "^0.2.1"
     array-flat-polyfill "^1.0.1"
@@ -4018,9 +4018,9 @@
     typescript "^4.1.5"
 
 "@netlify/plugins-list@^2.5.0", "@netlify/plugins-list@^2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@netlify/plugins-list/-/plugins-list-2.5.1.tgz#30c57eea4487efd330ab704acf5bf0681e67a394"
-  integrity sha512-OaYiOuK5YBEHLMvcG63He5bENbqOfUcVWJ7XjnACXC7uEc4VamE3lTkBPmo8YRydcA5MDtE9Sr2gZs9KQ/EarQ==
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@netlify/plugins-list/-/plugins-list-2.6.0.tgz#3629dd0e3fd017d99f77e1c32397449ed0f965cc"
+  integrity sha512-XtBrsd4M0OW3RT9O7omqBhWevPoxVfkEX9BJ2Hv5J3gpujTN6IZEYmyprxhQ+Y98r4VvZVUX8dPzR99aF15YcQ==
 
 "@netlify/run-utils@^1.0.6":
   version "1.0.7"
@@ -4446,9 +4446,9 @@
   integrity sha512-ZpKr+WTb8zsajqgDkvCEWgp6d5eJT6Q63Ng2neTbzBO76Lbe91vX/iVIW9dikq+Fs3yEo+ls4cxeXABD2LtcbQ==
 
 "@popperjs/core@^2.6.0":
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
-  integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
+  integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
 
 "@reach/router@^1.3.4":
   version "1.3.4"
@@ -18310,10 +18310,10 @@ query-string@6.13.5:
     split-on-first "^1.0.0"
     strict-uri-encode "^2.0.0"
 
-query-string@6.14.1:
-  version "6.14.1"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.14.1.tgz#7ac2dca46da7f309449ba0f86b1fd28255b0c86a"
-  integrity sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==
+query-string@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-7.0.0.tgz#aaad2c8d5c6a6d0c6afada877fecbd56af79e609"
+  integrity sha512-Iy7moLybliR5ZgrK/1R3vjrXq03S13Vz4Rbm5Jg3EFq1LUmQppto0qtXz4vqZ386MSRjZgnTSZ9QC+NZOSd/XA==
   dependencies:
     decode-uri-component "^0.2.0"
     filter-obj "^1.1.0"
