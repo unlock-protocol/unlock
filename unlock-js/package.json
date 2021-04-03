@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-jest": "26.6.3",
-    "cross-fetch": "3.1.3",
+    "cross-fetch": "3.1.4",
     "eslint": "7.23.0",
     "ethers": "4.0.48",
     "jest": "26.6.3",
