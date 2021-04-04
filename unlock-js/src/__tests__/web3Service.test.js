@@ -334,6 +334,7 @@ describe('Web3Service', () => {
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
+        expect.assertions(3)
         await nockBeforeEach({})
         const args = []
         const result = {}
@@ -355,6 +356,7 @@ describe('Web3Service', () => {
     it.each(supportedVersions)(
       'should implement all the required methods',
       (version) => {
+        expect.assertions(1)
         versionSpecificLockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
