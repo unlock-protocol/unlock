@@ -743,6 +743,7 @@ describe('WalletService (ethers)', () => {
     it.each(versionSpecificUnlockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
+        expect.assertions(3)
         await resetTestsAndConnect()
         const args = []
         const result = {}
@@ -769,6 +770,7 @@ describe('WalletService (ethers)', () => {
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
+        expect.assertions(3)
         const args = [
           {
             lockAddress: '0x123',
@@ -793,6 +795,7 @@ describe('WalletService (ethers)', () => {
     it.each(supportedVersions)(
       'should implement all the required methods',
       (version) => {
+        expect.assertions(4)
         versionSpecificUnlockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
