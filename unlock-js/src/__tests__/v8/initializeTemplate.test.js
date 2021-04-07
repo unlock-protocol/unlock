@@ -25,7 +25,6 @@ const provider = {
 describe('v8', () => {
   beforeEach(() => {
     walletService = new WalletService()
-    walletService.setUnlockAddress('0x559247Ec8A8771E8C97cDd39b96b9255651E39C5')
     walletService.provider = provider
     walletService.signer = signer
     walletService.lockContractAbiVersion = jest.fn(() => {

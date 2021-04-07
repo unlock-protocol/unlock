@@ -296,7 +296,7 @@ describe('v4', () => {
       })
     })
 
-    it('should not call approveTransfer when the lock is not an ERC20 lock', async () => {
+    it.only('should not call approveTransfer when the lock is not an ERC20 lock', async () => {
       expect.assertions(1)
 
       await nockBeforeEach({ value: keyPrice })

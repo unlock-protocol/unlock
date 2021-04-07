@@ -1,12 +1,11 @@
 import { ethers } from 'ethers'
 import UnlockService from './unlockService'
-import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
+import FastJsonRpcSigner from './FastJsonRpcSigner'
 import utils from './utils'
 import { generateKeyMetadataPayload } from './typedData/keyMetadata'
 import { generateKeyHolderMetadataPayload } from './typedData/keyHolderMetadata'
 import 'cross-fetch/polyfill'
-import FastJsonRpcSigner from './FastJsonRpcSigner'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -18,15 +17,6 @@ const abis = require('./abis').default
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends UnlockService {
-  constructor() {
-    super({ writable: true })
-    this.ready = false
-
-    this.on('ready', () => {
-      this.ready = true
-    })
-  }
-
   /**
    * Exposes gas amount constants to be utilzed when sending relevant transactions
    * for the platform.
@@ -36,38 +26,11 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Temporary function that allows us to use ethers functionality
-   * without interfering with web3
+   * This needs to be called with a ethers.providers which includes a signer.
    */
-  async connect(provider, signer) {
-    // Reset the connection
-    this.ready = false
-
-    if (typeof provider === 'string') {
-      // This is when using a local provider with unlocked accounts
-      this.provider = new FetchJsonProvider({
-        endpoint: provider,
-      })
-      this.web3Provider = false
-      this.signer = this.provider.getSigner()
-    } else if (provider.isUnlock) {
-      // TODO: This is very temporary! Immediate priority is to refactor away
-      // various special cases for provider instantiation, since having 3
-      // distinct kinds of provider isn't the Right Thing.
-      this.provider = provider
-      this.web3Provider = false
-      this.signer = signer || this.provider.getSigner()
-    } else if (!signer) {
-      // Assume this is a web3Provider?
-      this.provider = new ethers.providers.Web3Provider(provider)
-      this.web3Provider = provider
-      // TODO: replace this when v5 of ethers is out
-      // see https://github.com/ethers-io/ethers.js/issues/511
-      this.signer = new FastJsonRpcSigner(this.provider.getSigner())
-    } else {
-      this.provider = provider
-      this.signer = signer
-    }
+  async connect(provider) {
+    this.provider = provider
+    this.signer = new FastJsonRpcSigner(this.provider.getSigner())
 
     const { chainId: networkId } = await this.provider.getNetwork()
 
@@ -79,21 +42,6 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Checks if the contract has been deployed at the address.
-   * Invokes the callback with the result.
-   * Addresses which do not have a contract attached will return 0x
-   */
-  async isUnlockContractDeployed(callback) {
-    let opCode = '0x' // Default
-    try {
-      opCode = await this.provider.getCode(this.unlockContractAddress)
-    } catch (error) {
-      return callback(error)
-    }
-    return callback(null, opCode !== '0x')
-  }
-
-  /**
    * Function which yields the address of the account on the provider
    */
   async getAccount() {
@@ -101,7 +49,6 @@ export default class WalletService extends UnlockService {
 
     if (!accounts.length) {
       // We do not have an account, can't do anything until we have one.
-      this.ready = false
       return null
     }
 
