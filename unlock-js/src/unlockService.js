@@ -1,4 +1,3 @@
-import EventEmitter from 'events'
 import { ethers } from 'ethers'
 
 import v4 from './v4'
@@ -17,11 +16,20 @@ export const Errors = {
  * UnlockService is class which implements shared behavior between web3Service and walletService.
  * It is not meant to be instantiated (only subclasses should)
  */
-export default class UnlockService extends EventEmitter {
+export default class UnlockService {
   constructor(networks) {
-    super()
     this.networks = networks
     this.versionForAddress = {}
+  }
+
+  providerForNetwork(networkId) {
+    if (!this.networks[networkId]) {
+      throw new Error(`Missing config for ${networkId}`)
+    }
+    return new ethers.providers.JsonRpcProvider(
+      this.networks[networkId].provider,
+      networkId
+    )
   }
 
   /**
@@ -29,14 +37,15 @@ export default class UnlockService extends EventEmitter {
    * Invokes the callback with the result.
    * Addresses which do not have a contract attached will return 0x
    */
-  async isUnlockContractDeployed(network, callback) {
-    let opCode = '0x' // Default
-    try {
-      opCode = await this.provider.getCode(this.unlockContractAddress)
-    } catch (error) {
-      return callback(error)
+  async isUnlockContractDeployed(network) {
+    if (!this.networks[network]) {
+      throw new Error(`Missing config for ${network}`)
     }
-    return callback(null, opCode !== '0x')
+
+    let opCode = await this.providerForNetwork(network).getCode(
+      this.networks[network].unlockAddress
+    )
+    return opCode !== '0x'
   }
 
   /**
@@ -72,13 +81,9 @@ export default class UnlockService extends EventEmitter {
     }
   }
 
-  async unlockContractAbiVersion(provider) {
+  async unlockContractAbiVersion(address, provider) {
     // Get the contract address from the provider's netwrk?
-    return this.contractAbiVersion(
-      this.unlockContractAddress,
-      '_getVersionFromContract',
-      provider
-    )
+    return this.contractAbiVersion(address, '_getVersionFromContract', provider)
   }
 
   /**
@@ -151,12 +156,8 @@ export default class UnlockService extends EventEmitter {
     return this.getContract(lockAddress, version.PublicLock, provider)
   }
 
-  async getUnlockContract(provider) {
-    const version = await this.unlockContractAbiVersion(provider)
-    return this.getContract(
-      this.unlockContractAddress,
-      version.Unlock,
-      provider
-    )
+  async getUnlockContract(unlockAddress, provider) {
+    const version = await this.unlockContractAbiVersion(unlockAddress, provider)
+    return this.getContract(unlockAddress, version.Unlock, provider)
   }
 }

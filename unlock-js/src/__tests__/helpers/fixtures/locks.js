@@ -3,20 +3,20 @@ import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 
 export default {
   v4: [
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: 100,
-      name: 'My Lock',
-      currencyContractAddress: null,
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      name: 'Unlimited Keys lock',
-      currencyContractAddress: null,
-    },
+    // {
+    //   expirationDuration: 60 * 60 * 24 * 30,
+    //   keyPrice: '0.1',
+    //   maxNumberOfKeys: 100,
+    //   name: 'My Lock',
+    //   currencyContractAddress: null,
+    // },
+    // {
+    //   expirationDuration: 60 * 60 * 24 * 30,
+    //   keyPrice: '0.1',
+    //   maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+    //   name: 'Unlimited Keys lock',
+    //   currencyContractAddress: null,
+    // },
     {
       expirationDuration: 60 * 60 * 24 * 10,
       keyPrice: '1',

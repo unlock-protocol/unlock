@@ -60,28 +60,23 @@ export default class Web3Service extends UnlockService {
    * For now, losely inspired by
    * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
    */
-  async generateLockAddress(owner, lock) {
-    const unlockContact = await this.getUnlockContract()
-    const templateAddress = await unlockContact.publicLockAddress()
-    // Compute the hash identically to v5 (TODO: extract this?)
-    const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
-    return this._create2Address(
-      this.unlockContractAddress,
-      templateAddress,
-      owner,
-      lockSalt
+  async generateLockAddress(owner, lock, network) {
+    const unlockContact = await this.getUnlockContract(
+      this.networks[network].unlockAddress,
+      this.providerForNetwork(network)
     )
-  }
-
-  providerForNetwork(networkId) {
-    // Create the provider for the network based on config
-    if (!this.networks[networkId]) {
-      throw new Error(`Missing config for ${networkId}`)
+    if (unlockContact.publicLockAddress) {
+      const templateAddress = await unlockContact.publicLockAddress()
+      // Compute the hash identically to v5 (TODO: extract this?)
+      const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
+      return this._create2Address(
+        this.unlockContractAddress,
+        templateAddress,
+        owner,
+        lockSalt
+      )
     }
-    return new ethers.providers.JsonRpcProvider(
-      this.networks[networkId].provider,
-      networkId
-    )
+    return ethers.constants.AddressZero
   }
 
   /**

@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import UnlockService from './unlockService'
 import { GAS_AMOUNTS } from './constants'
-import FastJsonRpcSigner from './FastJsonRpcSigner'
 import utils from './utils'
 import { generateKeyMetadataPayload } from './typedData/keyMetadata'
 import { generateKeyHolderMetadataPayload } from './typedData/keyHolderMetadata'
@@ -28,15 +27,15 @@ export default class WalletService extends UnlockService {
   /**
    * This needs to be called with a ethers.providers which includes a signer.
    */
-  async connect(provider) {
+  async connect(provider, unlockContractAddress) {
+    this.unlockContractAddress = unlockContractAddress
     this.provider = provider
-    this.signer = new FastJsonRpcSigner(this.provider.getSigner())
+    this.signer = this.provider.getSigner(0)
 
     const { chainId: networkId } = await this.provider.getNetwork()
 
     if (this.networkId !== networkId) {
       this.networkId = networkId
-      this.emit('network.changed', networkId)
     }
     return networkId
   }
@@ -54,14 +53,6 @@ export default class WalletService extends UnlockService {
 
     const address = accounts[0]
 
-    this.emit('account.changed', address)
-    if (this.provider.emailAddress) {
-      this.emit('account.updated', {
-        emailAddress: this.provider.emailAddress,
-      })
-    }
-
-    this.emit('ready')
     return address
   }
 
@@ -77,18 +68,8 @@ export default class WalletService extends UnlockService {
    * @param {Function} a standard node callback that accepts the transaction hash
    */
   // eslint-disable-next-line no-underscore-dangle
-  async _handleMethodCall(methodCall, transactionType) {
-    this.emit('transaction.pending', transactionType)
+  async _handleMethodCall(methodCall) {
     const transaction = await methodCall
-    this.emit(
-      'transaction.new',
-      transaction.hash,
-      transaction.from,
-      transaction.to,
-      transaction.data,
-      transactionType,
-      'submitted'
-    )
     if (transaction.hash) {
       return transaction.hash
     }
@@ -122,6 +103,21 @@ export default class WalletService extends UnlockService {
   async createLock(lock, callback) {
     const version = await this.unlockContractAbiVersion()
     return version.createLock.bind(this)(lock, callback)
+  }
+
+  async unlockContractAbiVersion() {
+    return super.unlockContractAbiVersion(
+      this.unlockContractAddress,
+      this.provider
+    )
+  }
+
+  async getUnlockContract() {
+    const contract = await super.getUnlockContract(
+      this.unlockContractAddress,
+      this.provider
+    )
+    return contract.connect(this.signer)
   }
 
   /**
@@ -168,6 +164,7 @@ export default class WalletService extends UnlockService {
    */
   async deployUnlock(version, callback) {
     // First, deploy the contract
+
     const factory = new ethers.ContractFactory(
       abis[version].Unlock.abi,
       bytecode[version].Unlock,
@@ -183,9 +180,6 @@ export default class WalletService extends UnlockService {
 
     await unlockContract.deployed()
 
-    // sets unlockContractAddress
-    this.unlockContractAddress = unlockContract.address
-
     // Let's now run the initialization
     const address = await this.signer.getAddress()
     const writableUnlockContract = unlockContract.connect(this.signer)
@@ -197,7 +191,8 @@ export default class WalletService extends UnlockService {
       callback(null, transaction.hash)
     }
     await this.provider.waitForTransaction(transaction.hash)
-    // TODO: return unlockContractAddress
+    this.unlockContractAddress = unlockContract.address
+    return unlockContract.address
   }
 
   /**

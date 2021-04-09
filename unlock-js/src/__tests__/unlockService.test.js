@@ -9,7 +9,7 @@ const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 
 // This unlock address smart contract is fake
-const unlockAddress = '0x885ef47c3439ade0cb9b33a4d3c534c99964db93'
+const unlockAddress = '0x'
 let unlockService
 
 describe('UnlockService', () => {
