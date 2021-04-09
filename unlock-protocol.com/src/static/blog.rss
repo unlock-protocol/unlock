@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 30 Mar 2021 15:57:17 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 09 Apr 2021 21:34:41 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[r0se]]></title>
+            <description><![CDATA[Artist uses XDAI blockchain and Unlock Protocol to explore new, inclusive ways of distributing their art to a global audience.]]></description>
+            <link>https://unlock-protocol.com/blog/new-art-project-nft</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/new-art-project-nft</guid>
+            <dc:creator><![CDATA[Patrick Gerard]]></dc:creator>
+            <pubDate>Fri, 09 Apr 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Introducing Swordy Bot]]></title>
             <description><![CDATA[Thanks to the Unlock developer community, you can now use Unlock in Discord.]]></description>
@@ -28,7 +36,7 @@
             <link>https://unlock-protocol.com/blog/xdai</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/xdai</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Mon, 08 Mar 2021 04:00:00 GMT</pubDate>
+            <pubDate>Mon, 08 Mar 2021 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Launching Unlock Discount Tokens]]></title>
@@ -36,7 +44,7 @@
             <link>https://unlock-protocol.com/blog/unlock-tokens-launched</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-tokens-launched</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 15 Dec 2020 04:00:00 GMT</pubDate>
+            <pubDate>Tue, 15 Dec 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Recurring Memberships]]></title>
@@ -124,7 +132,7 @@
             <link>https://unlock-protocol.com/blog/how-we-use-openzeppelin</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/how-we-use-openzeppelin</guid>
             <dc:creator><![CDATA[Nick Furfaro]]></dc:creator>
-            <pubDate>Mon, 24 Feb 2020 04:00:00 GMT</pubDate>
+            <pubDate>Mon, 24 Feb 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[What I’m Excited About: Portability]]></title>
@@ -132,7 +140,7 @@
             <link>https://unlock-protocol.com/blog/portability</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/portability</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Wed, 19 Feb 2020 04:00:00 GMT</pubDate>
+            <pubDate>Wed, 19 Feb 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Collecting Metadata for a Purchase]]></title>
@@ -140,7 +148,7 @@
             <link>https://unlock-protocol.com/blog/metadata-collection</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/metadata-collection</guid>
             <dc:creator><![CDATA[Christopher Nascone]]></dc:creator>
-            <pubDate>Fri, 14 Feb 2020 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 14 Feb 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Checking Keys In]]></title>
@@ -148,7 +156,7 @@
             <link>https://unlock-protocol.com/blog/checking-key-in</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/checking-key-in</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Thu, 06 Feb 2020 04:00:00 GMT</pubDate>
+            <pubDate>Thu, 06 Feb 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Swap and Call]]></title>
@@ -156,7 +164,7 @@
             <link>https://unlock-protocol.com/blog/swap-and-call</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/swap-and-call</guid>
             <dc:creator><![CDATA[Nick Mancuso]]></dc:creator>
-            <pubDate>Fri, 31 Jan 2020 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 31 Jan 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Drupal Plugin]]></title>
@@ -164,7 +172,7 @@
             <link>https://unlock-protocol.com/blog/drupal-plugin</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/drupal-plugin</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Fri, 24 Jan 2020 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 24 Jan 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Emergency Upgrade]]></title>
@@ -172,7 +180,7 @@
             <link>https://unlock-protocol.com/blog/emergency-upgrade-1-3</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/emergency-upgrade-1-3</guid>
             <dc:creator><![CDATA[Nick Mancuso]]></dc:creator>
-            <pubDate>Fri, 17 Jan 2020 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 17 Jan 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Smart Contract Upgrade: Version 1.2]]></title>
@@ -180,7 +188,7 @@
             <link>https://unlock-protocol.com/blog/version-1-2</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/version-1-2</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Fri, 10 Jan 2020 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 10 Jan 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Forbes Ad Free Experience in the News]]></title>
@@ -188,7 +196,7 @@
             <link>https://unlock-protocol.com/blog/forbes-in-the-news</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/forbes-in-the-news</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Mon, 06 Jan 2020 04:00:00 GMT</pubDate>
+            <pubDate>Mon, 06 Jan 2020 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Unlocking an ads-free Forbes]]></title>
@@ -196,7 +204,7 @@
             <link>https://unlock-protocol.com/blog/forbes-ads-free</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/forbes-ads-free</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 17 Dec 2019 04:00:00 GMT</pubDate>
+            <pubDate>Tue, 17 Dec 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Newsletters]]></title>
@@ -204,7 +212,7 @@
             <link>https://unlock-protocol.com/blog/introducing-newsletter</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/introducing-newsletter</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Thu, 12 Dec 2019 04:00:00 GMT</pubDate>
+            <pubDate>Thu, 12 Dec 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[EthCC Tickets]]></title>
@@ -212,7 +220,7 @@
             <link>https://unlock-protocol.com/blog/ethcc-tickets</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/ethcc-tickets</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Fri, 06 Dec 2019 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 06 Dec 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Shipping Documentation]]></title>
@@ -220,7 +228,7 @@
             <link>https://unlock-protocol.com/blog/user-facing-documentation</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/user-facing-documentation</guid>
             <dc:creator><![CDATA[Akeem Adeniji]]></dc:creator>
-            <pubDate>Fri, 15 Nov 2019 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 15 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Member Wall]]></title>
@@ -228,15 +236,7 @@
             <link>https://unlock-protocol.com/blog/member-wall</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/member-wall</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 12 Nov 2019 04:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Unlock Hackathon Ideas]]></title>
-            <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
-            <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
-            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Tue, 05 Nov 2019 04:00:00 GMT</pubDate>
+            <pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Ejecting an Unlock Account]]></title>
@@ -244,7 +244,15 @@
             <link>https://unlock-protocol.com/blog/ejecting-account</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 05 Nov 2019 04:00:00 GMT</pubDate>
+            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlock Hackathon Ideas]]></title>
+            <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
+            <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Unlocking Smart Contracts]]></title>
@@ -468,7 +476,7 @@
             <link>https://unlock-protocol.com/blog/what-is-unlock</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/what-is-unlock</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 26 Feb 2019 04:00:00 GMT</pubDate>
+            <pubDate>Tue, 26 Feb 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Announcing Unlock Version Zero]]></title>
@@ -476,7 +484,7 @@
             <link>https://unlock-protocol.com/blog/announcing-v0</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/announcing-v0</guid>
             <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
-            <pubDate>Fri, 25 Jan 2019 04:00:00 GMT</pubDate>
+            <pubDate>Fri, 25 Jan 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[The End of the Ad-Supported Web]]></title>
@@ -484,7 +492,7 @@
             <link>https://unlock-protocol.com/blog/ad-supported-web</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/ad-supported-web</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Thu, 13 Dec 2018 04:00:00 GMT</pubDate>
+            <pubDate>Thu, 13 Dec 2018 05:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[To Save Freedom of Speech, We Must Decentralize the Web]]></title>
