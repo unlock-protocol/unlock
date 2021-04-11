@@ -112,11 +112,20 @@ export default class WalletService extends UnlockService {
     )
   }
 
+  async lockContractAbiVersion(address) {
+    return super.lockContractAbiVersion(address, this.provider)
+  }
+
   async getUnlockContract() {
     const contract = await super.getUnlockContract(
       this.unlockContractAddress,
       this.provider
     )
+    return contract.connect(this.signer)
+  }
+
+  async getLockContract(address) {
+    const contract = await super.getLockContract(address, this.provider)
     return contract.connect(this.signer)
   }
 
