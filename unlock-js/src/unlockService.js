@@ -1,4 +1,3 @@
-import EventEmitter from 'events'
 import { ethers } from 'ethers'
 
 import v4 from './v4'
@@ -11,51 +10,57 @@ ethers.errors.setLogLevel('error')
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
-  NON_DEPLOYED_CONTRACT: 'NON_DEPLOYED_CONTRACT',
-  UNKNOWN_CONTRACT: 'UNKNOWN_CONTRACT',
 }
 
 /**
  * UnlockService is class which implements shared behavior between web3Service and walletService.
  * It is not meant to be instantiated (only subclasses should)
  */
-export default class UnlockService extends EventEmitter {
-  constructor({ unlockAddress, writable = false }) {
-    super()
-    this.writable = writable
-    this.setUnlockAddress(unlockAddress)
-    this.web3 = null
-    this.provider = null
-    // Used to cache
+export default class UnlockService {
+  constructor(networks) {
+    this.networks = networks
     this.versionForAddress = {}
-    this.unlockContract = null
-    // this will populate on-demand as locks are accessed
-    this.lockContracts = {}
   }
 
-  setUnlockAddress(address) {
-    if (address) {
-      this.unlockContractAddress = ethers.utils.getAddress(address) // normalized!
+  providerForNetwork(networkId) {
+    if (!this.networks[networkId]) {
+      throw new Error(`Missing config for ${networkId}`)
     }
+    return new ethers.providers.JsonRpcProvider(
+      this.networks[networkId].provider,
+      networkId
+    )
+  }
+
+  /**
+   * Checks if the contract has been deployed at the address.
+   * Invokes the callback with the result.
+   * Addresses which do not have a contract attached will return 0x
+   */
+  async isUnlockContractDeployed(network) {
+    if (!this.networks[network]) {
+      throw new Error(`Missing config for ${network}`)
+    }
+
+    let opCode = await this.providerForNetwork(network).getCode(
+      this.networks[network].unlockAddress
+    )
+    return opCode !== '0x'
   }
 
   /**
    * @param {string} address contract address
    * @param {string} versionRetrievalMethodName the method to call to retrieve the contract version
    */
-  async contractAbiVersion(address, versionRetrievalMethodName) {
-    if (!this.provider) {
-      throw new Error(Errors.MISSING_WEB3)
-    }
-
-    // ethereum has 2 kinds of addresses, this ensures we don't
-    // accidentally store the same contract twice
-    // see https://docs.ethers.io/ethers.js/html/notes.html#checksum-address
+  async contractAbiVersion(address, versionRetrievalMethodName, provider) {
     const contractAddress = address.toLowerCase()
     let version = this.versionForAddress[contractAddress]
     if (version === undefined) {
       // This was not memo-ized
-      version = await this[versionRetrievalMethodName](contractAddress)
+      version = await this[versionRetrievalMethodName](
+        contractAddress,
+        provider
+      )
       this.versionForAddress[contractAddress] = version
     }
 
@@ -76,30 +81,32 @@ export default class UnlockService extends EventEmitter {
     }
   }
 
-  async unlockContractAbiVersion() {
-    return this.contractAbiVersion(
-      this.unlockContractAddress,
-      '_getVersionFromContract'
-    )
+  async unlockContractAbiVersion(address, provider) {
+    // Get the contract address from the provider's netwrk?
+    return this.contractAbiVersion(address, '_getVersionFromContract', provider)
   }
 
   /**
    * Returns the ABI for the Lock contract deployed at the provided address
    * @param {*} address
    */
-  async lockContractAbiVersion(address) {
-    return this.contractAbiVersion(address, '_getPublicLockVersionFromContract')
+  async lockContractAbiVersion(address, provider) {
+    return this.contractAbiVersion(
+      address,
+      '_getPublicLockVersionFromContract',
+      provider
+    )
   }
 
   /**
    * Private method, which given an address will query the lock and return the version of the lock
    * @param {*} address
    */
-  async _getPublicLockVersionFromContract(address) {
+  async _getPublicLockVersionFromContract(address, provider) {
     const contract = new ethers.Contract(
       address,
       ['function publicLockVersion() view returns (uint8)'],
-      this.provider
+      provider
     )
     let version = 0
     try {
@@ -115,11 +122,11 @@ export default class UnlockService extends EventEmitter {
    * Private method, which given an address will query the unlock contract to get its version
    * @param {*} address
    */
-  async _getVersionFromContract(address) {
+  async _getVersionFromContract(address, provider) {
     const contract = new ethers.Contract(
       address,
       ['function unlockVersion() view returns (uint8)'],
-      this.provider
+      provider
     )
     let version = 0
     try {
@@ -128,7 +135,7 @@ export default class UnlockService extends EventEmitter {
     } catch (error) {
       // This is an older version of Unlock which did not support unlockVersion
       // It can be either v0 or v1. To distinguish let's use their opcode!
-      const opCode = await this.provider.getCode(address)
+      const opCode = await provider.getCode(address)
       const hash = ethers.utils.sha256(opCode)
       if (
         hash ===
@@ -140,38 +147,17 @@ export default class UnlockService extends EventEmitter {
     return version
   }
 
-  getContract(address, contract) {
-    if (this.writable) return this.getWritableContract(address, contract)
-    return new ethers.Contract(address, contract.abi, this.provider)
+  getContract(address, contract, provider) {
+    return new ethers.Contract(address, contract.abi, provider)
   }
 
-  async getWritableContract(address, contract) {
-    return new ethers.Contract(address, contract.abi, this.signer)
+  async getLockContract(lockAddress, provider) {
+    const version = await this.lockContractAbiVersion(lockAddress, provider)
+    return this.getContract(lockAddress, version.PublicLock, provider)
   }
 
-  async getLockContract(lockAddress) {
-    if (this.lockContracts[lockAddress]) {
-      return this.lockContracts[lockAddress]
-    }
-    const version = await this.lockContractAbiVersion(lockAddress)
-    this.lockContracts[lockAddress] = this.getContract(
-      lockAddress,
-      version.PublicLock,
-      this.provider
-    )
-    return this.lockContracts[lockAddress]
-  }
-
-  async getUnlockContract() {
-    if (this.unlockContract) {
-      return this.unlockContract
-    }
-    const version = await this.unlockContractAbiVersion()
-    this.unlockContract = this.getContract(
-      this.unlockContractAddress,
-      version.Unlock,
-      this.provider
-    )
-    return this.unlockContract
+  async getUnlockContract(unlockAddress, provider) {
+    const version = await this.unlockContractAbiVersion(unlockAddress, provider)
+    return this.getContract(unlockAddress, version.Unlock, provider)
   }
 }

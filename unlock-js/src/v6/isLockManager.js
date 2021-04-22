@@ -4,10 +4,9 @@
  * @param {string} lockAddres address of the lock
  * @param {string} userAddress address of the user
  */
-export default async function (lockAddres, userAddress) {
-  const lockContract = await this.getLockContract(lockAddres)
 
+export default async function (lockAddres, userAddress, provider) {
+  const lockContract = await this.getLockContract(lockAddres, provider)
   const owner = await lockContract.owner()
-
   return owner.toLowerCase() === userAddress.toLowerCase()
 }

@@ -10,7 +10,6 @@ export default async function (
   callback
 ) {
   const unlockContract = await this.getUnlockContract()
-
   const transaction = await unlockContract.configUnlock(
     publicLockTemplateAddress,
     globalTokenSymbol,

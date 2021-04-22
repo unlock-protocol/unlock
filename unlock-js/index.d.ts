@@ -47,7 +47,6 @@ type Web3Provider = string | providers.Web3Provider
 
 export class Web3Service extends EventEmitter {
   constructor(params: Web3ServiceParams)
-  refreshAccountBalance: ({ address }: { address: string }) => Promise<string>
   getTransaction: (
     transactionHash: string,
     defaults?: TransactionDefaults

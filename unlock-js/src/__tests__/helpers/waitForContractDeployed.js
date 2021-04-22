@@ -11,6 +11,8 @@ export const waitForContractDeployed = async (provider, address) => {
       try {
         opCode = await provider.getCode(address)
       } catch (e) {
+        console.error('Error while waiting for contract to be deployed')
+        console.error(e)
         // Is Ganache down?
       }
 
@@ -21,7 +23,6 @@ export const waitForContractDeployed = async (provider, address) => {
         pollHasContractDeployed(address, delay, tries + 1)
       }, delay)
     }
-
-    pollHasContractDeployed(address, 100, 0)
+    pollHasContractDeployed(address, 500, 0)
   })
 }

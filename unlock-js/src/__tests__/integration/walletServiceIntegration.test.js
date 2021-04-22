@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
@@ -14,7 +15,6 @@ if (process.env.CI) {
 }
 
 const provider = `http://${host}:${port}`
-
 // This test suite will do the following:
 // For each version of the Unlock contract
 // 1. Deploy it
@@ -29,6 +29,12 @@ jest.setTimeout(300000)
 
 let accounts
 
+const networks = {
+  1984: {
+    provider,
+  },
+}
+
 // Tests
 describe('Wallet Service Integration', () => {
   const versions = ['v4', 'v6', 'v7', 'v8']
@@ -37,27 +43,22 @@ describe('Wallet Service Integration', () => {
     let web3Service
 
     beforeAll(async () => {
-      walletService = new WalletService()
+      walletService = new WalletService(networks)
 
-      await walletService.connect(provider)
+      let signer = new ethers.providers.JsonRpcProvider(provider, 1984)
+      await walletService.connect(signer)
 
-      await walletService.deployUnlock(versionName)
+      const unlockAddress = await walletService.deployUnlock(versionName)
+      networks[1984].unlockAddress = unlockAddress
 
-      web3Service = new Web3Service({
-        readOnlyProvider: provider,
-        unlockAddress: walletService.unlockContractAddress,
-      })
+      web3Service = new Web3Service(networks)
 
       accounts = await walletService.provider.listAccounts()
     })
 
-    it('should yield true to isUnlockContractDeployed', (done) => {
-      expect.assertions(2)
-      walletService.isUnlockContractDeployed((error, deployed) => {
-        expect(error).toBeNull()
-        expect(deployed).toBe(true)
-        done()
-      })
+    it('should yield true to isUnlockContractDeployed', async () => {
+      expect.assertions(1)
+      expect(await walletService.isUnlockContractDeployed(1984)).toBe(true)
     })
 
     it('should return the right version for unlockContractAbiVersion', async () => {
@@ -123,14 +124,15 @@ describe('Wallet Service Integration', () => {
           if (lockParams.currencyContractAddress) {
             // Let's wait for erc20Address to be deployed
             await waitForContractDeployed(
-              web3Service.provider,
+              walletService.provider,
               lockParams.currencyContractAddress
             )
           }
 
           expectedLockAddress = await web3Service.generateLockAddress(
             accounts[0],
-            lockParams
+            lockParams,
+            1984
           )
 
           lockAddress = await walletService.createLock(
@@ -142,7 +144,7 @@ describe('Wallet Service Integration', () => {
               lockCreationHash = hash
             }
           )
-          lock = await web3Service.getLock(lockAddress)
+          lock = await web3Service.getLock(lockAddress, 1984)
         })
 
         it('should have yielded a transaction hash', () => {
@@ -150,10 +152,12 @@ describe('Wallet Service Integration', () => {
           expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
         })
 
-        it('should have deployed a lock at the expected address', async () => {
-          expect.assertions(1)
-          expect(lockAddress).toEqual(expectedLockAddress)
-        })
+        if (['v4'].indexOf(versionName) === -1) {
+          it('should have deployed a lock at the expected address', async () => {
+            expect.assertions(1)
+            expect(lockAddress).toEqual(expectedLockAddress)
+          })
+        }
 
         it('should have deployed the right lock version', async () => {
           expect.assertions(1)
@@ -194,7 +198,8 @@ describe('Wallet Service Integration', () => {
           expect.assertions(1)
           const isLockManager = await web3Service.isLockManager(
             lockAddress,
-            accounts[0]
+            accounts[0],
+            1984
           )
           expect(isLockManager).toBe(true)
         })
@@ -222,7 +227,7 @@ describe('Wallet Service Integration', () => {
                 transactionHash = hash
               }
             )
-            lock = await web3Service.getLock(lockAddress)
+            lock = await web3Service.getLock(lockAddress, 1984)
           })
 
           it('should have yielded a transaction hash', () => {
@@ -237,66 +242,63 @@ describe('Wallet Service Integration', () => {
           })
         })
 
-        if (['v0'].indexOf(versionName) === -1) {
-          describe('grantKey', () => {
-            let tokenId
-            let key
-            let keyGrantee
-            let transactionHash
-            beforeAll(async () => {
-              keyGrantee = accounts[7]
+        describe('grantKey', () => {
+          let tokenId
+          let key
+          let keyGrantee
+          let transactionHash
+          beforeAll(async () => {
+            keyGrantee = accounts[7]
 
-              tokenId = await walletService.grantKey(
-                {
-                  lockAddress,
-                  recipient: keyGrantee,
-                },
-                (error, hash) => {
-                  if (error) {
-                    throw error
-                  }
-                  transactionHash = hash
-                }
-              )
-              key = await web3Service.getKeyByLockForOwner(
+            tokenId = await walletService.grantKey(
+              {
                 lockAddress,
-                keyGrantee
-              )
-            })
-
-            it('should have yielded a transaction hash', () => {
-              expect.assertions(1)
-              expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-            })
-
-            it('should yield the tokenId', () => {
-              expect.assertions(1)
-              expect(tokenId).not.toBe(null) // We don't know very much beyond the fact that it is not null
-            })
-
-            it('should have assigned the key to the right user', async () => {
-              expect.assertions(1)
-              expect(key.owner).toEqual(keyGrantee)
-            })
-
-            it('should have assigned the key to the right lock', async () => {
-              expect.assertions(1)
-              expect(key.lock).toEqual(lockAddress)
-            })
-
-            it('should have set the right duration on the key', () => {
-              expect.assertions(1)
-              // the actual expiration depends on mining time (which we do not control)
-              // We round to the minute!
-              expect(
-                parseInt(key.expiration) -
-                  parseInt(
-                    lock.expirationDuration + new Date().getTime() / 1000
-                  )
-              ).toBeLessThan(60)
-            })
+                recipient: keyGrantee,
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+            key = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyGrantee,
+              1984
+            )
           })
-        }
+
+          it('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          it('should yield the tokenId', () => {
+            expect.assertions(1)
+            expect(tokenId).not.toBe(null) // We don't know very much beyond the fact that it is not null
+          })
+
+          it('should have assigned the key to the right user', async () => {
+            expect.assertions(1)
+            expect(key.owner).toEqual(keyGrantee)
+          })
+
+          it('should have assigned the key to the right lock', async () => {
+            expect.assertions(1)
+            expect(key.lock).toEqual(lockAddress)
+          })
+
+          it('should have set the right duration on the key', () => {
+            expect.assertions(1)
+            // the actual expiration depends on mining time (which we do not control)
+            // We round to the minute!
+            expect(
+              parseInt(key.expiration) -
+                parseInt(lock.expirationDuration + new Date().getTime() / 1000)
+            ).toBeLessThan(60)
+          })
+        })
 
         describe('purchaseKey', () => {
           let tokenId
@@ -313,22 +315,26 @@ describe('Wallet Service Integration', () => {
             if (lock.currencyContractAddress === null) {
               // Get the ether balance of the lock before the purchase
               lockBalanceBefore = await web3Service.getAddressBalance(
-                lockAddress
+                lockAddress,
+                1984
               )
               // Get the ether balance of the user before the purchase
               userBalanceBefore = await web3Service.getAddressBalance(
-                keyPurchaser
+                keyPurchaser,
+                1984
               )
             } else {
               // Get the erc20 balance of the lock before the purchase
               lockBalanceBefore = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lockAddress
+                lockAddress,
+                1984
               )
               // Get the erc20 balance of the user before the purchase
               userBalanceBefore = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                keyPurchaser
+                keyPurchaser,
+                1984
               )
             }
 
@@ -353,7 +359,11 @@ describe('Wallet Service Integration', () => {
                 transactionHash = hash
               }
             )
-            key = await web3Service.getKeyByLockForOwner(lockAddress, keyOwner)
+            key = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyOwner,
+              1984
+            )
           })
 
           it('should have yielded a transaction hash', () => {
@@ -370,11 +380,15 @@ describe('Wallet Service Integration', () => {
             expect.assertions(1)
             let newBalance
             if (lock.currencyContractAddress === null) {
-              newBalance = await web3Service.getAddressBalance(lockAddress)
+              newBalance = await web3Service.getAddressBalance(
+                lockAddress,
+                1984
+              )
             } else {
               newBalance = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lockAddress
+                lockAddress,
+                1984
               )
             }
             expect(parseFloat(newBalance)).toEqual(
@@ -386,12 +400,15 @@ describe('Wallet Service Integration', () => {
             expect.assertions(1)
             let newBalance
             if (lock.currencyContractAddress === null) {
-              newBalance = await web3Service.getAddressBalance(keyPurchaser)
+              newBalance = await web3Service.getAddressBalance(
+                keyPurchaser,
+                1984
+              )
             } else {
               newBalance = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
                 keyPurchaser,
-                web3Service.provider
+                1984
               )
             }
 
@@ -441,22 +458,26 @@ describe('Wallet Service Integration', () => {
             if (lock.currencyContractAddress === null) {
               // Get the ether balance of the lock before the withdrawal
               lockBalanceBefore = await web3Service.getAddressBalance(
-                lockAddress
+                lockAddress,
+                1984
               )
               // Get the ether balance of the beneficiary before the withdrawal
               userBalanceBefore = await web3Service.getAddressBalance(
-                lock.beneficiary
+                lock.beneficiary,
+                1984
               )
             } else {
               // Get the erc20 balance of the lock before the purchase
               lockBalanceBefore = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lockAddress
+                lockAddress,
+                1984
               )
               // Get the erc20 balance of the user before the purchase
               userBalanceBefore = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lock.beneficiary
+                lock.beneficiary,
+                1984
               )
             }
 
@@ -489,13 +510,15 @@ describe('Wallet Service Integration', () => {
             if (lock.currencyContractAddress === null) {
               // Get the ether balance of the lock before the withdrawal
               lockBalanceAfter = await web3Service.getAddressBalance(
-                lockAddress
+                lockAddress,
+                1984
               )
             } else {
               // Get the erc20 balance of the lock before the purchase
               lockBalanceAfter = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lockAddress
+                lockAddress,
+                1984
               )
             }
             expect(parseFloat(lockBalanceAfter)).toEqual(
@@ -509,7 +532,8 @@ describe('Wallet Service Integration', () => {
             if (lock.currencyContractAddress === null) {
               // Get the ether balance of the beneficiary before the withdrawal
               beneficiaryBalanceAfter = await web3Service.getAddressBalance(
-                lock.beneficiary
+                lock.beneficiary,
+                1984
               )
               // We should take gas paid into account... so the amount is larger than before
               // but smaller than the sum of the previous balance and the amount in the lock
@@ -520,7 +544,8 @@ describe('Wallet Service Integration', () => {
               // Get the erc20 balance of the user before the purchase
               beneficiaryBalanceAfter = await web3Service.getTokenBalance(
                 lock.currencyContractAddress,
-                lock.beneficiary
+                lock.beneficiary,
+                1984
               )
               expect(parseFloat(beneficiaryBalanceAfter)).toEqual(
                 parseFloat(userBalanceBefore) + parseFloat(withdrawnAmount)
