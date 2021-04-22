@@ -1,5 +1,8 @@
 # Changes
 
+# 0.16
+
+- Breaking change: support for multichains.
 # 0.15.2
 
 - Typescript definition fix
