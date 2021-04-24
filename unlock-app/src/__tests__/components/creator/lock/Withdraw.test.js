@@ -49,33 +49,4 @@ describe('Withdraw', () => {
     const withdrawButton = wrapper.queryByTitle('Withdraw')
     expect(withdrawButton).toBeNull()
   })
-
-  it.skip('should disable the button when a withdrawal is in process', () => {
-    expect.assertions(1)
-    const keylock = {
-      id: 'lockid',
-      address: '0x1234567890',
-      transaction: 'transactionid',
-      keyPrice: '1',
-      balance: '1',
-      outstandingKeys: 1,
-      maxNumberOfKeys: 10,
-      expirationDuration: 100,
-    }
-    const withdrawalTransaction = {
-      status: 'submitted',
-    }
-    const withdrawFromLock = jest.fn()
-
-    const wrapper = rtl.render(
-      <Withdraw
-        lock={keylock}
-        withdraw={withdrawFromLock}
-        withdrawalTransaction={withdrawalTransaction}
-      />
-    )
-
-    const withdrawButton = wrapper.queryByTitle('Withdraw')
-    expect(withdrawButton).toBeNull()
-  })
 })

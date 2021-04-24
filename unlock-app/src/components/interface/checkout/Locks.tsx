@@ -30,7 +30,7 @@ const LoadLock = ({
 
   useEffect(() => {
     const loadLock = async () => {
-      const lockDetails = await web3Service.getLock(address)
+      const lockDetails = await web3Service.getLock(address, network)
       setLock({
         address,
         ...lockDetails,

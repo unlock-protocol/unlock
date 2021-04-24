@@ -163,7 +163,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, pending price change transaction', () => {
     const lock = {
       address: '0xpendingPriceChangeLock',
-      priceUpdateTransaction: transactions['0xpendingPriceChange'],
     }
     return (
       <LockIconBar
@@ -176,7 +175,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, submitted price change transaction', () => {
     const lock = {
       address: '0xsubmittedPriceChangeLock',
-      priceUpdateTransaction: transactions['0xsubmittedPriceChange'],
     }
     return (
       <LockIconBar
@@ -189,7 +187,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, confirming price change transaction', () => {
     const lock = {
       address: '0xconfirmingPriceChangeLock',
-      priceUpdateTransaction: transactions['0xconfirmingPriceChange'],
     }
     return (
       <LockIconBar
@@ -202,7 +199,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, mined price change transaction', () => {
     const lock = {
       address: '0xmined',
-      priceUpdateTransaction: transactions['0xminedPriceChange'],
     }
     return (
       <LockIconBar

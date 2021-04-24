@@ -108,7 +108,6 @@ describe('useLock', () => {
       )
       expect(setLock).toHaveBeenCalledWith({
         address: '0xLock',
-        priceUpdateTransaction: null,
         name: 'My Lock',
       })
     })
@@ -128,9 +127,6 @@ describe('useLock', () => {
       expect(setTimeout).toHaveBeenCalledTimes(1)
       expect(setLock).toHaveBeenCalledWith({
         address: '0xLock',
-        priceUpdateTransaction: {
-          ...transaction,
-        },
         name: 'My Lock',
       })
       jest.runAllTimers()
@@ -167,30 +163,6 @@ describe('useLock', () => {
         },
         expect.any(Function)
       )
-    })
-    it('should set priceUpdateTransaction on the lock', async () => {
-      expect.assertions(1)
-      mockWalletService.updateKeyPrice = jest.fn((params, callback) => {
-        return callback(null, hash)
-      })
-      await updateKeyPriceOnLock(
-        mockWeb3Service,
-        mockWalletService,
-        config,
-        lock,
-        newKeyPrice,
-        setLock,
-        callback
-      )
-      expect(setLock).toHaveBeenCalledWith({
-        ...lock,
-        priceUpdateTransaction: expect.objectContaining({
-          hash,
-          lock: lock.address,
-          type: TransactionType.UPDATE_KEY_PRICE,
-          confirmations: 0,
-        }),
-      })
     })
     it('should process the transaction to start polling it', async () => {
       expect.assertions(1)
