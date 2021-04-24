@@ -23,6 +23,7 @@ import AuthenticateButton from '../buttons/AuthenticateButton'
 import { AuthenticationContext } from '../Authenticate'
 import LogInSignUp from '../LogInSignUp'
 import { WrongNetwork } from '../../creator/FatalError'
+import { ActionButton } from '../buttons/ActionButton'
 
 interface CheckoutProps {
   emitCloseModal: () => void
@@ -88,7 +89,7 @@ export const Checkout = ({
       <>
         <PaywallLogoWrapper>
           {paywallConfig.icon ? (
-            <img alt="Publisher Icon" src={paywallConfig.icon} />
+            <PublisherLogo alt="Publisher Icon" src={paywallConfig.icon} />
           ) : (
             <RoundedLogo size="56px" />
           )}
@@ -98,6 +99,21 @@ export const Checkout = ({
           <CallToAction
             state="default"
             callToAction={paywallConfig.callToAction}
+          />
+        )}
+
+        {!account && <Prompt>Select your authentication method</Prompt>}
+
+        {account && !hasMembership && <Prompt>Ready to make payment</Prompt>}
+
+        {account && hasMembership && <Prompt>Thank you for your trust!</Prompt>}
+
+        {!account && (
+          <AuthenticateButton
+            web3Provider={web3Provider}
+            showAccount={fiatAvailable}
+            onProvider={onProvider}
+            login={showLogin}
           />
         )}
         <Locks
@@ -118,23 +134,7 @@ export const Checkout = ({
           />
         )}
         {!showPaymentOptions && <Spacer />}
-        {!account && (
-          <AuthenticateButton
-            web3Provider={web3Provider}
-            showAccount={fiatAvailable}
-            onProvider={onProvider}
-            login={showLogin}
-          />
-        )}
-        {hasMembership && (
-          <p>
-            Thank you for your trust.{' '}
-            <button type="button" onClick={emitCloseModal}>
-              Close
-            </button>
-            .
-          </p>
-        )}
+        {hasMembership && <BackToSiteButton>Back to the site</BackToSiteButton>}
       </>
     )
   }
@@ -172,14 +172,29 @@ export const Checkout = ({
 }
 
 const PaywallLogoWrapper = styled.div`
-  margin-bottom: 20px;
+  width: 100%;
 
   > img {
-    max-height: 100px;
+    height: 50px;
     max-width: 200px;
   }
 `
 
 const Spacer = styled.div`
   height: 25px;
+`
+
+const Prompt = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+`
+
+const PublisherLogo = styled.img``
+
+const BackToSiteButton = styled(ActionButton).attrs({
+  fontColor: 'var(--green)',
+  color: 'none',
+})`
+  width: 240px;
+  height: 48px;
 `
