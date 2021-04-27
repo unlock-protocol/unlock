@@ -54,5 +54,4 @@ module.exports = {
     return config
   },
   exportPathMap: exportPaths,
-  experimental: { granularChunks: true }, // attempts at reducing memory consumption
 }

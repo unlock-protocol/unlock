@@ -26,52 +26,28 @@ const AuthenticateButton = ({
   }
 
   return (
-    <>
-      <p>First, select your authentication method:</p>
-      <Container>
-        <Button disabled={!web3Provider} onClick={authenticateWithProvider}>
-          Crypto Wallet
-        </Button>
-        <QrButton onClick={authenticateWithWalletConnect}>
-          <svg
+    <Container>
+      <Button disabled={!web3Provider} onClick={authenticateWithProvider}>
+        Wallet
+      </Button>
+      <WalletConnectButton onClick={authenticateWithWalletConnect}>
+        <svg
+          width="27"
+          height="16"
+          viewBox="0 0 27 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.82274 3.12612C10.0628 -1.04204 16.9372 -1.04204 21.1773 3.12612L21.6876 3.62777C21.8996 3.83617 21.8996 4.17407 21.6876 4.38248L19.942 6.09851C19.836 6.20271 19.6641 6.20271 19.5581 6.09851L18.8559 5.40818C15.8979 2.50037 11.1021 2.50037 8.14416 5.40818L7.39213 6.14746C7.28613 6.25166 7.11426 6.25166 7.00826 6.14746L5.26264 4.43143C5.05064 4.22303 5.05064 3.88513 5.26264 3.67672L5.82274 3.12612ZM24.7874 6.67505L26.341 8.20232C26.553 8.41073 26.553 8.74862 26.341 8.95703L19.3357 15.8437C19.1237 16.0521 18.78 16.0521 18.568 15.8437C18.568 15.8437 18.568 15.8437 18.568 15.8437L13.596 10.956C13.543 10.9039 13.4571 10.9039 13.4041 10.956C13.4041 10.956 13.4041 10.956 13.4041 10.956L8.43224 15.8437C8.22024 16.0521 7.87652 16.0521 7.66451 15.8437C7.66451 15.8437 7.66451 15.8437 7.66451 15.8437L0.659001 8.95694C0.447 8.74853 0.447 8.41064 0.659001 8.20223L2.21261 6.67496C2.42461 6.46655 2.76833 6.46655 2.98034 6.67496L7.95235 11.5627C8.00535 11.6148 8.09129 11.6148 8.14429 11.5627C8.14429 11.5627 8.14429 11.5627 8.14429 11.5627L13.1161 6.67496C13.3281 6.46655 13.6718 6.46654 13.8838 6.67494C13.8838 6.67494 13.8838 6.67495 13.8838 6.67495L18.8558 11.5627C18.9088 11.6148 18.9947 11.6148 19.0477 11.5627L24.0197 6.67505C24.2317 6.46664 24.5754 6.46664 24.7874 6.67505Z"
             fill="white"
-            width="24"
-            height="24"
-            viewBox="0 0 60 60"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M16.3636 10.9091H10.9091V16.3636H16.3636V10.9091Z" />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M0 4C0 1.79086 1.79086 0 4 0H27.2727V27.2727H0V4ZM5.45455 5.45455H21.8182V21.8182H5.45455V5.45455Z"
-            />
-            <path d="M10.9091 43.6364H16.3636V49.0909H10.9091V43.6364Z" />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M0 32.7273H27.2727V60H4C1.79086 60 0 58.2091 0 56V32.7273ZM5.45455 38.1818H21.8182V54.5455H5.45455V38.1818Z"
-            />
-            <path d="M43.6364 10.9091H49.0909V16.3636H43.6364V10.9091Z" />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M32.7273 0V27.2727H60V4C60 1.79086 58.2091 0 56 0H32.7273ZM54.5455 5.45455H38.1818V21.8182H54.5455V5.45455Z"
-            />
-            <path d="M49.0909 32.7273H32.7273V38.1818H43.6364V43.6364H49.0909V32.7273Z" />
-            <path d="M43.6364 54.5455V60H32.7273V54.5455H43.6364Z" />
-            <path d="M49.0909 54.5455H43.6364V49.0909H49.0909V54.5455Z" />
-            <path d="M49.0909 54.5455H60V56C60 58.2091 58.2091 60 56 60H49.0909V54.5455Z" />
-            <path d="M54.5455 32.7273H60V38.1818H54.5455V32.7273Z" />
-            <path d="M54.5455 43.6364H60V49.0909H54.5455V43.6364Z" />
-            <path d="M38.1818 43.6364H32.7273V49.0909H38.1818V43.6364Z" />
-          </svg>
-        </QrButton>
-        <Button disabled={!showAccount || web3Provider} onClick={login}>
-          Sign-in
-        </Button>
-      </Container>
-    </>
+          />
+        </svg>
+      </WalletConnectButton>
+      <Button disabled={!showAccount || web3Provider} onClick={login}>
+        Sign-in
+      </Button>
+    </Container>
   )
 }
 
@@ -92,12 +68,11 @@ const Button = styled(ActionButton)`
   height: 40px;
 `
 
-const QrButton = styled(Button)`
+const WalletConnectButton = styled(Button)`
   display: grid;
   padding-left: 5px;
   padding-right: 5px;
   align-items: center;
   justify-items: center;
 `
-
 export default AuthenticateButton

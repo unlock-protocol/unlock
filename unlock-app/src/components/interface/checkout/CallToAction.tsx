@@ -28,6 +28,7 @@ CallToAction.defaultProps = {
 }
 
 const Message = styled.p`
-  text-align: center;
+  text-align: left;
+  font-size: 13px;
   width: 100%;
 `

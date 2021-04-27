@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Media from '../../../theme/media'
 
 interface Props {
   close: () => void
@@ -17,11 +18,13 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   left: 0;
-  top: 0;
+  top: 15%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  ${Media.phone`
+    top: 0;
+  `}
 `
 
 export default CheckoutContainer
