@@ -37,7 +37,7 @@ const web3ServiceLock = {
   name: 'My Lock',
 }
 
-const networkName = 1984
+const network = 1984
 
 const transaction = {}
 
@@ -131,7 +131,7 @@ describe('useLocks', () => {
       mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
       const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1984)
       expect(lock).toEqual(web3ServiceLock)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress, network)
     })
 
     it('should unlimited keys', async () => {
@@ -157,7 +157,8 @@ describe('useLocks', () => {
         mockGraphService,
         ownerAddress,
         addToLocks,
-        setLoading
+        setLoading,
+        network
       )
       expect(setLoading).toHaveBeenCalledWith(false)
     })
@@ -181,11 +182,20 @@ describe('useLocks', () => {
         mockGraphService,
         ownerAddress,
         addToLocks,
-        setLoading
+        setLoading,
+        network
       )
       expect(mockWeb3Service.getLock).toHaveBeenCalledTimes(2)
-      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(1, '0xlock1')
-      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(2, '0xlock2')
+      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(
+        1,
+        '0xlock1',
+        network
+      )
+      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(
+        2,
+        '0xlock2',
+        network
+      )
       expect(addToLocks).toHaveBeenCalledTimes(2)
       expect(setLoading).toHaveBeenCalledWith(false)
     })
@@ -199,9 +209,6 @@ describe('useLocks', () => {
       expirationDuration: 60 * 60 * 5,
       keyPrice: '1',
       maxNumberOfKeys: 100,
-    }
-    const network = {
-      name: networkName,
     }
     let addToLocks
     let setError
@@ -229,12 +236,16 @@ describe('useLocks', () => {
         setError,
         () => {}
       )
-      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(owner, {
-        address: lockAddress,
-        balance: '0',
-        outstandingKeys: 0,
-        ...lock,
-      })
+      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(
+        owner,
+        {
+          address: lockAddress,
+          balance: '0',
+          outstandingKeys: 0,
+          ...lock,
+        },
+        network
+      )
     })
 
     it('should call createLock on walletService', async () => {
@@ -311,12 +322,6 @@ describe('useLocks', () => {
         address: lockAddress,
         ...lock,
         creationBlock: '9007199254740991',
-        creationTransaction: expect.objectContaining({
-          confirmations: 0,
-          hash: transaction.hash,
-          lock: '0xlockAddress',
-          type: 'Lock Creation',
-        }),
       })
     })
   })

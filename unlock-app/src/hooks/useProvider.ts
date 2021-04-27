@@ -41,8 +41,7 @@ export const useProvider = (config: any) => {
       new ethers.providers.Web3Provider(provider)
     )
     setNetwork(_network || undefined)
-    const networkConfig = config.networks[_network]
-    _walletService.unlockContractAddress = networkConfig.unlockAddress
+
     const _account = await _walletService.getAccount()
     setAccount(_account || undefined)
     setEmail(provider.emailAddress)

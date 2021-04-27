@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { WalletService } from '@unlock-protocol/unlock-js'
-import { AuthenticationContext } from './Authenticate'
+import { AuthenticationContext } from '../Authenticate'
 // import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
 import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
 import { pingPoap } from '../../../utils/poap'
@@ -113,7 +113,6 @@ export const ValidKeyWithMetadata = ({
 }
 
 interface ValidKeyProps {
-  network: number
   ownedKey: OwnedKey
   viewer?: string | null
   signatureTimestamp: number

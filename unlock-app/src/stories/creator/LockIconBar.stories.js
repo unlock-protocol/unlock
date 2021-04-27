@@ -111,7 +111,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, pending lock creation transaction', () => {
     const lock = {
       address: '0xpendingLock',
-      creationTransaction: transactions['0xpending'],
     }
     return (
       <LockIconBar
@@ -124,7 +123,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, submitted transaction', () => {
     const lock = {
       address: '0xsubmittedLock',
-      creationTransaction: transactions['0xsubmitted'],
     }
     return (
       <LockIconBar
@@ -137,7 +135,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, confirming transaction', () => {
     const lock = {
       address: '0xconfirmingLock',
-      creationTransaction: transactions['0xconfirming'],
     }
     return (
       <LockIconBar
@@ -150,7 +147,6 @@ storiesOf('LockIconBar', module)
   .add('LockIconBar, mined transaction', () => {
     const lock = {
       address: '0xmined',
-      creationTransaction: transactions['0xmined'],
     }
     return (
       <LockIconBar

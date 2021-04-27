@@ -3611,10 +3611,10 @@
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.1.0.tgz#e7e98ca86b4a894411dd544ab236ad5233dcb953"
   integrity sha512-oM3FDOXXgn6MqAg7ne2/eJ1Ie3Kbjm5jFpvvd5cZO7JyxmcY2yImdWRKwyrw8neufX6FMYsJM+zOqhwnm2qJvA==
 
-"@unlock-protocol/unlock-js@0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.16.0.tgz#bd5c6ede5be6c28be8a483e6e4950fbc9f1ab818"
-  integrity sha512-qkjeYUSd4UK7INOnfxVL8aIjhs44KKFsrT/lJAN130edfGGmIbmxsVx0TMPD4clLNM2smf4zuEORW/RcKag5qQ==
+"@unlock-protocol/unlock-js@0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.16.1.tgz#ed1b1f1c763f37f39f18e368ce87cf016262c05c"
+  integrity sha512-Tws3H3o3+ybDjsgJj3rXdQ8cWW8HPojGUZ1aWnAf16kFuHlH3gle2skk6fGn/Zv48C68/Lk97fNUdNqcD8zNFA==
   dependencies:
     cross-fetch "3.1.4"
     ethers "4.0.48"
