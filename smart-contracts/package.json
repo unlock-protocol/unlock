@@ -36,7 +36,6 @@
     "hardlydifficult-ethereum-contracts": "0.11.1",
     "jest": "26.6.3",
     "lint-staged": "10.3.0",
-    "netlify-cli": "3.13.6",
     "prettier": "2.1.1",
     "solium": "1.2.5",
     "truffle": "5.1.43",
