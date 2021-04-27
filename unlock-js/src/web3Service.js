@@ -84,6 +84,16 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Returns details about a transaction
+   * @param {*} hash
+   * @param {*} network
+   * @returns
+   */
+  async getTransaction(hash, network) {
+    return await this.providerForNetwork(network).getTransaction(hash)
+  }
+
+  /**
    * This retrieves the balance of an address (contract or account)
    * and formats it to a string of ether.
    * Returns a promise with the balance
