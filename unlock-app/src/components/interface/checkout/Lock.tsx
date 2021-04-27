@@ -35,7 +35,11 @@ interface LockProps {
   network: number
 }
 
-const getLockProps = (lock: any, baseCurrencySymbol: string) => {
+const getLockProps = (
+  lock: any,
+  network: number,
+  baseCurrencySymbol: string
+) => {
   return {
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
     formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(
@@ -45,6 +49,7 @@ const getLockProps = (lock: any, baseCurrencySymbol: string) => {
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: lock.name, // TODO: take name override into account
     address: lock.address,
+    network,
   }
 }
 export const Lock = ({
@@ -207,7 +212,7 @@ export const Lock = ({
 
   const lockProps: LockVariations.LockProps = {
     onClick,
-    ...getLockProps(lock, config.networks[network].baseCurrencySymbol),
+    ...getLockProps(lock, network, config.networks[network].baseCurrencySymbol),
   }
   if (activePayment === 'Credit Card') {
     if (fiatPrices.usd) {

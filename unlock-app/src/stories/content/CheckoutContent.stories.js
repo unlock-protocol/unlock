@@ -40,6 +40,20 @@ storiesOf('Checkout', module)
       },
     })
   })
+  .add('with a lock with a logo', () => {
+    return render({
+      icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
+      callToAction: {},
+      network: 4,
+      locks: {
+        '0xa80C0013305206593C57330905f0809c0C3994FA': {},
+      },
+      callToAction: {
+        default:
+          'Get full access to our content for as little as $2 a week. Pay with your crypto wallet or credit card with a few clicks.',
+      },
+    })
+  })
   .add('with multiple rinkeby locks', () => {
     return render({
       callToAction: {},
