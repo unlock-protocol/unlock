@@ -27,7 +27,7 @@ RUN mkdir /home/unlock/tests
 COPY tests/yarn.lock /home/unlock/tests/.
 COPY tests/package.json /home/unlock/tests/.
 WORKDIR /home/unlock/tests
-RUN yarn --production
+RUN yarn
 
 # Copy the rest of test files
 COPY tests/ /home/unlock/tests/.

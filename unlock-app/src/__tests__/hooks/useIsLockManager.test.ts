@@ -30,7 +30,7 @@ describe('useIsLockManager', () => {
   it('should default to false, then populate true after call resolves', async () => {
     expect.assertions(4)
     const { result, wait } = renderHook(() =>
-      useIsLockManager('0xlock', '0xuser')
+      useIsLockManager('0xlock', 1, '0xuser')
     )
 
     expect(result.current.isLockManager).toEqual(false)

@@ -133,7 +133,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
       // If the viewer is not the lock owner, just show the members from chain
       const isLockManager = await web3Service.isLockManager(
         lockWithKeys.address,
-        viewer
+        viewer,
+        network
       )
       if (!isLockManager) {
         return buildMembersWithMetadata(lockWithKeys, [])
@@ -151,7 +152,16 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
         return []
       }
     })
-    const members = await Promise.all(membersForLocksPromise)
+    const membersByLock = await Promise.all(membersForLocksPromise)
+    const members = Object.values(
+      membersByLock.reduce((acc, array) => {
+        return {
+          ...acc,
+          ...array,
+        }
+      }, {})
+    )
+
     if (members.length > 0) {
       setMembers(members)
       setHasNextPage(Object.keys(members).length === first)

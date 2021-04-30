@@ -65,14 +65,14 @@ export const Lock = ({
   const walletService: WalletService = useContext(WalletServiceContext)
 
   const paywallConfig = useContext(PaywallConfigContext)
-  const { account } = useContext(AuthenticationContext)
-  const { purchaseKey, getKeyForAccount } = useLock(lock)
+  const { account, network: walletNetwork } = useContext(AuthenticationContext)
+  const { purchaseKey, getKeyForAccount } = useLock(lock, network)
   const [showMetadataForm, setShowMetadataForm] = useState(false)
   const [captureCreditCard, setCaptureCreditCard] = useState(false)
   const [hasKey, setHasKey] = useState(false)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
-  const { getTokenBalance } = useAccount(account)
+  const { getTokenBalance } = useAccount(account, network)
   const { fiatPrices } = useFiatKeyPrices(lock.address, network)
 
   const { purchaseKey: fiatPurchaseKey } = useFiatPurchaseKey(
@@ -131,9 +131,12 @@ export const Lock = ({
             ? paywallConfig.referrer
             : account
         setPurchasePending(true)
-        purchaseKey(account, referrer, (transaction: any) => {
+        purchaseKey(account, referrer, (hash: string) => {
           alreadyHasKey() // optimistic Unlocking!
-          emitTransactionInfo(transaction)
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
         })
       }
     } catch (error) {
@@ -228,6 +231,18 @@ export const Lock = ({
   }
 
   const isSoldOut = numberOfAvailableKeys(lock) === 0
+
+  const userIsOnWrongNetwork = walletNetwork !== network
+
+  // Lock is sold out
+  if (userIsOnWrongNetwork) {
+    return (
+      <LockVariations.WrongNetworkLock
+        walletNetwork={walletNetwork}
+        {...lockProps}
+      />
+    )
+  }
 
   // Lock is sold out
   if (isSoldOut) {

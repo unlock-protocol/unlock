@@ -108,7 +108,7 @@ export default function configure(
 
   networks[1984] = {
     httpProvider: runtimeConfig.httpProvider || '127.0.0.1',
-    readOnlyProvider: `http://${httpProvider}:8545`,
+    provider: `http://${httpProvider}:8545`,
     unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
     id: 1984,
     name: 'Dev',
@@ -127,7 +127,7 @@ export default function configure(
 
   networks[1] = {
     httpProvider: null, // we use the injected provider!
-    readOnlyProvider:
+    provider:
       'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
     unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
     id: 1,
@@ -153,7 +153,7 @@ export default function configure(
 
   networks[4] = {
     httpProvider,
-    readOnlyProvider:
+    provider:
       'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
     unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
     id: 4,
@@ -164,8 +164,7 @@ export default function configure(
     explorer: {
       name: 'Etherscan',
       urls: {
-        address: (address) =>
-          `https://rinkeby.rinetherscan.io/address/${address}`,
+        address: (address) => `https://rinkeby.etherscan.io/address/${address}`,
         transaction: (hash) => `https://rinkeby.etherscan.io/tx/${hash}`,
       },
     },
@@ -180,7 +179,7 @@ export default function configure(
 
   // networks[3] = {
   //   httpProvider: null, // we use the injected provider!
-  //   readOnlyProvider: '',
+  //   provider: '',
   //   unlockAddress: '',
   //   id: 3,
   //   name: 'Ropsten',
@@ -207,7 +206,7 @@ export default function configure(
 
   networks[100] = {
     httpProvider: null,
-    readOnlyProvider: 'https://rpc.xdaichain.com/',
+    provider: 'https://rpc.xdaichain.com/',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
     id: 100,
     name: 'xDai',

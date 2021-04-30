@@ -19,12 +19,13 @@ import { useLocks } from '../../hooks/useLocks'
  * @param {*} param0
  */
 export const CreatorLocksFromHook = ({ formIsVisible, hideForm }) => {
-  const { account } = useContext(AuthenticationContext)
+  const { account, network } = useContext(AuthenticationContext)
   return (
     <CreatorLocks
       account={account}
       formIsVisible={formIsVisible}
       hideForm={hideForm}
+      network={network}
     />
   )
 }
@@ -33,7 +34,7 @@ CreatorLocksFromHook.propTypes = {
   hideForm: PropTypes.func.isRequired,
 }
 
-export const CreatorLocks = ({ account, formIsVisible, hideForm }) => {
+export const CreatorLocks = ({ account, network, formIsVisible, hideForm }) => {
   const { loading, locks, addLock, error } = useLocks(account)
 
   return (
@@ -61,7 +62,9 @@ export const CreatorLocks = ({ account, formIsVisible, hideForm }) => {
       )}
       {locks.length > 0 &&
         locks.map((lock) => {
-          return <CreatorLock key={JSON.stringify(lock)} lock={lock} />
+          return (
+            <CreatorLock key={lock.address} lock={lock} network={network} />
+          )
         })}
       {locks.length === 0 && !loading && !formIsVisible && (
         <DefaultError
@@ -80,6 +83,7 @@ export const CreatorLocks = ({ account, formIsVisible, hideForm }) => {
 
 CreatorLocks.propTypes = {
   account: PropTypes.string.isRequired,
+  network: PropTypes.number.isRequired,
   formIsVisible: PropTypes.bool.isRequired,
   hideForm: PropTypes.func.isRequired,
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { useLock } from '../../../../hooks/useLock'
 
@@ -6,21 +6,14 @@ import Svg from '../../svg'
 import Button from '../Button'
 import DisabledButton from '../DisabledButton'
 import UnlockPropTypes from '../../../../propTypes'
+import { AuthenticationContext } from '../../Authenticate'
 
-export const Withdraw = ({ lock, ...props }) => {
-  const { withdraw } = useLock(lock)
+export const Withdraw = ({ withdraw, lock, ...props }) => {
+  const { network } = useContext(AuthenticationContext)
 
   if (lock.balance > 0) {
     return (
-      <Button
-        label="Withdraw"
-        action={() => {
-          if (lock.balance > 0) {
-            withdraw()
-          }
-        }}
-        {...props}
-      >
+      <Button label="Withdraw" action={withdraw} {...props}>
         <Svg.Withdraw name="Withdraw" />
       </Button>
     )
@@ -34,6 +27,7 @@ export const Withdraw = ({ lock, ...props }) => {
 
 Withdraw.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  withdraw: PropTypes.func.isRequired,
 }
 
 export default Withdraw
