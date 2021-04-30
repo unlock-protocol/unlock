@@ -11,8 +11,6 @@ import { TransactionStatus } from '../../unlockTypes'
 import useLocks, {
   getLockAtAddress,
   retrieveLocks,
-  processLockCreationTransaction,
-  retrieveLockCreationTransactions,
   createLock,
 } from '../../hooks/useLocks'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
@@ -39,7 +37,7 @@ const web3ServiceLock = {
   name: 'My Lock',
 }
 
-const networkName = 1984
+const network = 1984
 
 const transaction = {}
 
@@ -131,9 +129,9 @@ describe('useLocks', () => {
     it('should retrieve the lock using web3Service', async () => {
       expect.assertions(2)
       mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
-      const lock = await getLockAtAddress(mockWeb3Service, lockAddress)
+      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1984)
       expect(lock).toEqual(web3ServiceLock)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress)
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress, network)
     })
 
     it('should unlimited keys', async () => {
@@ -142,7 +140,7 @@ describe('useLocks', () => {
         maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       }
       mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
-      const lock = await getLockAtAddress(mockWeb3Service, lockAddress)
+      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1984)
       expect(lock.unlimitedKeys).toBe(true)
     })
   })
@@ -159,7 +157,8 @@ describe('useLocks', () => {
         mockGraphService,
         ownerAddress,
         addToLocks,
-        setLoading
+        setLoading,
+        network
       )
       expect(setLoading).toHaveBeenCalledWith(false)
     })
@@ -183,158 +182,22 @@ describe('useLocks', () => {
         mockGraphService,
         ownerAddress,
         addToLocks,
-        setLoading
+        setLoading,
+        network
       )
       expect(mockWeb3Service.getLock).toHaveBeenCalledTimes(2)
-      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(1, '0xlock1')
-      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(2, '0xlock2')
+      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(
+        1,
+        '0xlock1',
+        network
+      )
+      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(
+        2,
+        '0xlock2',
+        network
+      )
       expect(addToLocks).toHaveBeenCalledTimes(2)
       expect(setLoading).toHaveBeenCalledWith(false)
-    })
-  })
-
-  describe('processLockCreationTransaction', () => {
-    let addToLocks
-    const transactionHash = '0xtransaction'
-    const defaults = {}
-    const transaction = {
-      hash: transactionHash,
-    }
-
-    beforeEach(() => {
-      addToLocks = jest.fn(() => {})
-    })
-
-    it('should getTransaction from web3Service', async () => {
-      expect.assertions(1)
-      mockWeb3Service.getTransaction = jest.fn(() =>
-        Promise.resolve(transaction)
-      )
-      await processLockCreationTransaction(
-        mockWeb3Service,
-        mockConfig,
-        addToLocks,
-        transactionHash,
-        defaults
-      )
-      expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        transactionHash,
-        defaults
-      )
-    })
-
-    it('should not yield any lock when the transaction is not a lock creation', async () => {
-      expect.assertions(2)
-      mockWeb3Service.getTransaction = jest.fn(() =>
-        Promise.resolve({
-          ...transaction,
-          type: 'not a lock creation',
-        })
-      )
-      await processLockCreationTransaction(
-        mockWeb3Service,
-        mockConfig,
-        addToLocks,
-        transactionHash,
-        defaults
-      )
-      expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        transactionHash,
-        defaults
-      )
-      expect(addToLocks).not.toHaveBeenCalled()
-    })
-
-    describe('when the transaction is a lock creation', () => {
-      beforeEach(() => {
-        transaction.type = 'LOCK_CREATION'
-        transaction.lock = lockAddress
-        transaction.blockNumber = 1337
-      })
-
-      it('should yield an existing lock if the transaction was mined', async () => {
-        expect.assertions(2)
-        transaction.status = TransactionStatus.MINED
-        mockWeb3Service.getTransaction = jest.fn(() =>
-          Promise.resolve(transaction)
-        )
-
-        await processLockCreationTransaction(
-          mockWeb3Service,
-          mockConfig,
-          addToLocks,
-          transactionHash,
-          defaults
-        )
-
-        expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress)
-        expect(addToLocks).toHaveBeenCalledWith({
-          ...web3ServiceLock,
-          address: lockAddress,
-          creationBlock: transaction.blockNumber,
-          creationTransaction: transaction,
-          unlimitedKeys: false,
-        })
-      })
-
-      it('should yield a "temporary" lock if the transaction was not mined', async () => {
-        expect.assertions(2)
-        transaction.status = TransactionStatus.PENDING
-        mockWeb3Service.getTransaction = jest.fn(() =>
-          Promise.resolve(transaction)
-        )
-
-        await processLockCreationTransaction(
-          mockWeb3Service,
-          mockConfig,
-          addToLocks,
-          transactionHash,
-          defaults
-        )
-
-        expect(mockWeb3Service.getLock).not.toHaveBeenCalledWith()
-        expect(addToLocks).toHaveBeenCalledWith({
-          address: lockAddress,
-          creationBlock: Number.MAX_SAFE_INTEGER.toString(),
-          creationTransaction: transaction,
-        })
-      })
-    })
-  })
-
-  describe('retrieveLockCreationTransactions', () => {
-    it('should retrieve all the transactions for the owner', async () => {
-      expect.assertions(2)
-      const addToLocks = jest.fn()
-      const owner = '0xowner'
-      const transaction = {
-        hash: '0x123',
-        input: '0xinput',
-      }
-      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn(() => {
-        return {
-          hashes: [transaction],
-        }
-      })
-
-      mockWeb3Service.getTransaction = jest.fn(() =>
-        Promise.resolve(transaction)
-      )
-
-      await retrieveLockCreationTransactions(
-        mockWeb3Service,
-        mockStorageService,
-        mockConfig,
-        addToLocks,
-        owner
-      )
-      expect(
-        mockStorageService.getRecentTransactionsHashesSentBy
-      ).toHaveBeenCalledWith(owner)
-      expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        transaction.hash,
-        transaction
-      )
     })
   })
 
@@ -346,9 +209,6 @@ describe('useLocks', () => {
       expirationDuration: 60 * 60 * 5,
       keyPrice: '1',
       maxNumberOfKeys: 100,
-    }
-    const network = {
-      name: networkName,
     }
     let addToLocks
     let setError
@@ -376,12 +236,16 @@ describe('useLocks', () => {
         setError,
         () => {}
       )
-      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(owner, {
-        address: lockAddress,
-        balance: '0',
-        outstandingKeys: 0,
-        ...lock,
-      })
+      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(
+        owner,
+        {
+          address: lockAddress,
+          balance: '0',
+          outstandingKeys: 0,
+          ...lock,
+        },
+        network
+      )
     })
 
     it('should call createLock on walletService', async () => {
@@ -458,12 +322,6 @@ describe('useLocks', () => {
         address: lockAddress,
         ...lock,
         creationBlock: '9007199254740991',
-        creationTransaction: expect.objectContaining({
-          confirmations: 0,
-          hash: transaction.hash,
-          lock: '0xlockAddress',
-          type: 'Lock Creation',
-        }),
       })
     })
   })

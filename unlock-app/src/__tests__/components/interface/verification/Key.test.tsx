@@ -3,6 +3,10 @@ import * as rtl from '@testing-library/react'
 import { ValidKey } from '../../../../components/interface/verification/Key'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import { pingPoap } from '../../../../utils/poap'
+import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+
+const network = 1984
+const authentication = { network }
 
 let useGetMetadataForResult = {
   metadata: {
@@ -55,6 +59,14 @@ const signatureTimestamp = 12312412
 const owner = '0xkeyOwner'
 const viewer = '0xviewer'
 
+const render = (Component: any) => {
+  return rtl.render(
+    <AuthenticationContext.Provider value={authentication}>
+      {Component}
+    </AuthenticationContext.Provider>
+  )
+}
+
 describe('ValidKey component', () => {
   beforeEach(() => {
     useGetMetadataForResult = {
@@ -75,7 +87,7 @@ describe('ValidKey component', () => {
       loading: false,
       error: false,
     }
-    const wrapper = rtl.render(
+    const wrapper = render(
       <ValidKey
         signature="signature"
         ownedKey={ownedKey}
@@ -88,7 +100,7 @@ describe('ValidKey component', () => {
   })
   it('should not useGetMetadataFor if the viewer is not the lock owner', () => {
     expect.assertions(1)
-    const wrapper = rtl.render(
+    const wrapper = render(
       <ValidKey
         signature="signature"
         ownedKey={ownedKey}
@@ -110,7 +122,7 @@ describe('ValidKey component', () => {
       error: false,
     }
     const signature = 'signature'
-    const wrapper = rtl.render(
+    const wrapper = render(
       <ValidKey
         signature={signature}
         ownedKey={ownedKey}

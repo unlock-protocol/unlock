@@ -11,8 +11,8 @@ import EjectionRequest from '../structured_data/ejectionRequest'
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
 export default class UnlockProvider extends providers.JsonRpcProvider {
-  constructor({ readOnlyProvider, id }) {
-    super(readOnlyProvider, id)
+  constructor({ provider, id }) {
+    super(provider, id)
     this.wallet = null
 
     // These properties are retained so that we can use them when generating

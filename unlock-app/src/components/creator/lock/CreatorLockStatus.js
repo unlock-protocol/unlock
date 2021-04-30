@@ -6,9 +6,13 @@ import withConfig, { ConfigContext } from '../../../utils/withConfig'
 
 import { AuthenticationContext } from '../../interface/Authenticate'
 
-export function CreatorLockStatus({ hash, status, confirmations }) {
+export function CreatorLockStatus({ hash, confirmations }) {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
+  let status = 'Submitted'
+  if (confirmations > 0) {
+    status = 'Confirming'
+  }
 
   return (
     <LockStatus
@@ -18,20 +22,17 @@ export function CreatorLockStatus({ hash, status, confirmations }) {
     >
       <Status>{status}</Status>
       <Confirmations>
-        {status === 'Confirming' &&
-          confirmations >= 0 &&
-          config.requiredConfirmations >= confirmations && (
-            <>
-              {confirmations} / {config.requiredConfirmations}
-            </>
-          )}
+        {confirmations > 0 && config.requiredConfirmations >= confirmations && (
+          <>
+            {confirmations} / {config.requiredConfirmations}
+          </>
+        )}
       </Confirmations>
     </LockStatus>
   )
 }
 
 CreatorLockStatus.propTypes = {
-  status: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
   confirmations: PropTypes.number,
 }

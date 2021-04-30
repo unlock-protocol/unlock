@@ -4,6 +4,7 @@ import { Web3ServiceContext } from '../utils/withWeb3Service'
 
 export const useIsLockManager = (
   lockAddress: string,
+  network: number,
   accountAddress?: string | null
 ) => {
   const web3Service: Web3Service = useContext(Web3ServiceContext)
@@ -15,7 +16,8 @@ export const useIsLockManager = (
     if (accountAddress) {
       const isLockManager = await web3Service.isLockManager(
         lockAddress,
-        accountAddress
+        accountAddress,
+        network
       )
       setIsLockManager(isLockManager)
     } else {

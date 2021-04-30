@@ -45,7 +45,9 @@ const LockKeysNumbers = ({ lock }) => (
     typeof lock.outstandingKeys !== 'undefined' &&
     typeof lock.maxNumberOfKeys !== 'undefined'
       ? `${lock.outstandingKeys}/${
-          lock.unlimitedKeys ? INFINITY : lock.maxNumberOfKeys
+          lock.unlimitedKeys || lock.maxNumberOfKeys === -1
+            ? INFINITY
+            : lock.maxNumberOfKeys
         }`
       : ' - '}
   </LockKeys>
@@ -55,18 +57,15 @@ LockKeysNumbers.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export const CreatorLock = ({ lock: lockFromProps }) => {
+export const CreatorLock = ({ lock: lockFromProps, network }) => {
   const [showEmbedCode, setShowEmbedCode] = useState(false)
   const [editing, setEditing] = useState(false)
-  const { lock, updateKeyPrice } = useLock(lockFromProps)
+  const { lock, updateKeyPrice, withdraw } = useLock(lockFromProps, network)
 
   const updateLock = (newLock) => {
-    // If the price has changed
-    if (lock.keyPrice !== newLock.keyPrice) {
-      updateKeyPrice(newLock.keyPrice, () => {
-        setEditing(false)
-      })
-    }
+    updateKeyPrice(newLock.keyPrice, () => {
+      setEditing(false)
+    })
     // TODO: support other changes?
   }
 
@@ -135,6 +134,7 @@ export const CreatorLock = ({ lock: lockFromProps }) => {
           lock={lock}
           toggleCode={() => setShowEmbedCode(!showEmbedCode)}
           edit={edit}
+          withdraw={withdraw}
         />
         {showEmbedCode && (
           <LockPanel>
@@ -149,6 +149,7 @@ export const CreatorLock = ({ lock: lockFromProps }) => {
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  network: PropTypes.number.isRequired,
 }
 
 export default CreatorLock

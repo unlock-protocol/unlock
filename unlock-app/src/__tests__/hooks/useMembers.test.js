@@ -83,7 +83,7 @@ const wrapper = ({ children }) => (
       value={{
         networks: {
           1: {
-            readOnlyProvider: 'http://provider',
+            provider: 'http://provider',
           },
         },
       }}

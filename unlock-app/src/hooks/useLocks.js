@@ -8,14 +8,14 @@ import { GraphServiceContext } from '../utils/withGraphService'
 import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
 import { AuthenticationContext } from '../components/interface/Authenticate'
-
+import { processTransaction } from './useLock'
 /**
  * Retrieves a lock object at the address
  */
-export const getLockAtAddress = async (web3Service, address) => {
+export const getLockAtAddress = async (web3Service, address, network) => {
   let lock
   try {
-    lock = await web3Service.getLock(address)
+    lock = await web3Service.getLock(address, network)
     lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
     lock.address = address
   } catch (error) {
@@ -33,7 +33,8 @@ export const retrieveLocks = async (
   graphService,
   owner,
   addToLocks,
-  setLoading
+  setLoading,
+  network
 ) => {
   // The locks from the subgraph miss some important things, such as balance,
   // ERC20 info.. etc so we need to retrieve them from unlock-js too.
@@ -50,7 +51,11 @@ export const retrieveLocks = async (
     if (!lock) {
       return done()
     }
-    const lockFromChain = await getLockAtAddress(web3Service, lock.address)
+    const lockFromChain = await getLockAtAddress(
+      web3Service,
+      lock.address,
+      network
+    )
     if (lockFromChain) {
       // Merge the data from subgraph and data from chain to have the most complete object
       addToLocks({
@@ -71,77 +76,6 @@ export const retrieveLocks = async (
     })
   })
 }
-
-/**
- * Processes a transaction
- */
-export const processLockCreationTransaction = async (
-  web3Service,
-  config,
-  addToLocks,
-  transactionHash,
-  defaults
-) => {
-  const transaction = await web3Service.getTransaction(
-    transactionHash,
-    defaults
-  )
-  transaction.type = transactionTypeMapping(transaction.type)
-  if (transaction.lock && transaction.type === TransactionType.LOCK_CREATION) {
-    let lock
-    if (transaction.status === TransactionStatus.MINED) {
-      lock = await getLockAtAddress(web3Service, transaction.lock)
-      if (lock) {
-        lock.creationTransaction = transaction
-        lock.creationBlock = transaction.blockNumber
-      }
-    } else {
-      // The might not yet been created...we need to show it, but as pending!
-      // TODO: show its params if we can get them from the transaction?
-      lock = {
-        address: transaction.lock,
-        creationTransaction: transaction,
-        creationBlock: Number.MAX_SAFE_INTEGER.toString(),
-      }
-    }
-    addToLocks(lock)
-  }
-}
-
-/**
- * Let's also retrieve past transactions for this user which locksmith keeps
- * track of just in case one of them is a lock creation!
- */
-export const retrieveLockCreationTransactions = async (
-  web3Service,
-  storageService,
-  config,
-  addToLocks,
-  owner
-) => {
-  const {
-    hashes: userTransactions,
-  } = await storageService.getRecentTransactionsHashesSentBy(owner)
-
-  // For each of the hashes, let's retrieve the transaction
-  userTransactions.forEach(async (transaction) => {
-    try {
-      processLockCreationTransaction(
-        web3Service,
-        config,
-        addToLocks,
-        transaction.hash,
-        transaction
-      )
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(
-        `Could not get transaction at ${transaction.hash}: ${error.message}`
-      )
-    }
-  })
-}
-
 /**
  * Function to create a lock to be added to the list of locks
  */
@@ -161,7 +95,7 @@ export const createLock = async (
   lock.outstandingKeys = 0
   lock.balance = '0'
   // First get the address
-  const address = await web3Service.generateLockAddress(owner, lock)
+  const address = await web3Service.generateLockAddress(owner, lock, network)
   lock.address = address
   // Second, create the lock
   return walletService.createLock(
@@ -178,14 +112,16 @@ export const createLock = async (
         setError(createLockError)
         callback(createLockError)
       } else {
-        // Third, set it!
-        lock.creationTransaction = {
-          confirmations: 0,
-          createdAt: new Date().getTime(),
-          hash: transactionHash,
-          lock: lock.address,
-          type: TransactionType.LOCK_CREATION,
-        }
+        processTransaction(
+          'createLock',
+          web3Service,
+          config,
+          lock,
+          addToLocks,
+          transactionHash,
+          walletService.networkId
+        )
+
         lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
 
         // Store the hash!
@@ -264,13 +200,13 @@ export const useLocks = (owner) => {
    * Retrieves the locks when initialized both from the graph and from pending transactions
    */
   useEffect(() => {
-    retrieveLocks(web3Service, graphService, owner, addToLocks, setLoading)
-    retrieveLockCreationTransactions(
+    retrieveLocks(
       web3Service,
-      storageService,
-      config,
+      graphService,
+      owner,
       addToLocks,
-      owner
+      setLoading,
+      network
     )
   }, [owner])
 

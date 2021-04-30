@@ -136,6 +136,10 @@ const SoldOut = styled(KeysAvailable)`
   color: var(--red);
 `
 
+const WrongNetwork = styled(NetworkName)`
+  color: var(--red);
+`
+
 const Processing = styled(KeysAvailable)`
   color: var(--link);
 `
@@ -185,6 +189,7 @@ export interface LockProps {
   formattedKeysAvailable: string
   onClick?: () => void
   network: number
+  walletNetwork?: number
 }
 
 export interface LoadingLockProps {
@@ -201,6 +206,38 @@ export const LoadingLock = ({ address, network }: LoadingLockProps) => {
   )
 }
 
+export const WrongNetworkLock = ({
+  walletNetwork,
+  network,
+  address,
+  name,
+  formattedDuration,
+  formattedKeyPrice,
+  formattedKeysAvailable,
+}: LockProps) => {
+  return (
+    <DisabledLockContainer
+      data-address={address}
+      data-testid="WrongNetworkLock"
+    >
+      <InfoWrapper>
+        <LockName>{name}</LockName>
+        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
+      </InfoWrapper>
+      <DisabledLockBody>
+        <LockPrice>{formattedKeyPrice}</LockPrice>
+        <ValidityDuration>
+          <span>Valid for</span>
+          <span>{formattedDuration}</span>
+        </ValidityDuration>
+        <Arrow />
+      </DisabledLockBody>
+      <WrongNetwork>
+        Connect your wallet to {ETHEREUM_NETWORKS_NAMES[network]}
+      </WrongNetwork>
+    </DisabledLockContainer>
+  )
+}
 export const SoldOutLock = ({
   network,
   address,

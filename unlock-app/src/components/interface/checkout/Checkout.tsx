@@ -22,7 +22,6 @@ import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import AuthenticateButton from '../buttons/AuthenticateButton'
 import { AuthenticationContext } from '../Authenticate'
 import LogInSignUp from '../LogInSignUp'
-import { WrongNetwork } from '../../creator/FatalError'
 import { ActionButton } from '../buttons/ActionButton'
 
 interface CheckoutProps {
@@ -38,7 +37,7 @@ export const Checkout = ({
   emitUserInfo,
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
 }: CheckoutProps) => {
-  const { authenticate, account, network } = useContext(AuthenticationContext)
+  const { authenticate, account } = useContext(AuthenticationContext)
 
   const paywallConfig = useContext(PaywallConfigContext)
   const config = useContext(ConfigContext)
@@ -53,7 +52,6 @@ export const Checkout = ({
   }
 
   const requiredNetwork = paywallConfig.network
-  const networkConfig = config.networks[requiredNetwork]
   const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
   const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
 
@@ -78,7 +76,7 @@ export const Checkout = ({
     setFiatAvailable(true)
   }
 
-  const web3Service = new Web3Service(networkConfig)
+  const web3Service = new Web3Service(config.networks)
 
   const showPaymentOptions = !focus && account && fiatAvailable
 
@@ -133,8 +131,11 @@ export const Checkout = ({
             paymentOptions={['Credit Card']}
           />
         )}
-        {!showPaymentOptions && <Spacer />}
-        {hasMembership && <BackToSiteButton>Back to the site</BackToSiteButton>}
+        {hasMembership && (
+          <BackToSiteButton onClick={emitCloseModal}>
+            Back to the site
+          </BackToSiteButton>
+        )}
       </>
     )
   }
@@ -149,11 +150,6 @@ export const Checkout = ({
         onProvider={onProvider}
       />
     )
-  }
-
-  // != on purpose to stay flexible
-  if (network && network != requiredNetwork) {
-    content = <WrongNetwork network={requiredNetwork} />
   }
 
   return (

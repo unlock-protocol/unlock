@@ -35,12 +35,12 @@ const emailAddress = 'geoff@bitconnect.gov'
 describe('Unlock Provider', () => {
   let provider
   beforeAll(async () => {
-    const readOnlyProvider = process.env.CI
+    const providerUrl = process.env.CI
       ? 'http://ganache-integration::8545'
       : 'http://127.0.0.1:8545'
     const requiredNetworkId = 1492
 
-    provider = new UnlockProvider({ readOnlyProvider, requiredNetworkId })
+    provider = new UnlockProvider({ provider: providerUrl, requiredNetworkId })
     await provider.connect({ key, password, emailAddress })
   })
 

@@ -11,48 +11,30 @@ import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 import { AuthenticationContext } from '../../interface/Authenticate'
 
-export function LockIconBar({ lock, toggleCode, edit }) {
+export function LockIconBar({ lock, toggleCode, edit, withdraw }) {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
   // If there is any blocking transaction, we show the lock as either submitted or confirming
-  const blockingTransaction =
-    lock.creationTransaction || lock.priceUpdateTransaction
-  if (blockingTransaction) {
-    if (blockingTransaction.status !== TransactionStatus.MINED) {
-      return (
-        <CreatorLockStatus
-          hash={blockingTransaction.hash}
-          lock={lock}
-          status="Submitted"
-        />
-      )
-    }
-    if (blockingTransaction.confirmations < config.requiredConfirmations) {
-      return (
-        <CreatorLockStatus
-          lock={lock}
-          hash={blockingTransaction.hash}
-          status="Confirming"
-          confirmations={blockingTransaction.confirmations}
-        />
-      )
-    }
+  if (lock.transactions && Object.keys(lock.transactions) > 0) {
+    // Only take the first one (TODO: support for multiple?)
+    const transactionHash = Object.keys(lock.transactions)[0]
+    const transaction = lock.transactions[transactionHash]
+    return (
+      <CreatorLockStatus
+        confirmations={transaction.confirmations}
+        hash={transactionHash}
+        lock={lock}
+      />
+    )
   }
   const membersPage = `/members?locks=${lock.address}`
-
-  const withdrawalTransaction = lock.withdrawalTransaction
-
   // Otherwise, we just show the lock icon bar
   return (
     <StatusBlock>
       <IconBarContainer>
         <IconBar>
-          <Buttons.Withdraw
-            as="button"
-            lock={lock}
-            withdrawalTransaction={withdrawalTransaction}
-          />
+          <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
           <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
           <Buttons.Members href={membersPage} />
@@ -63,17 +45,6 @@ export function LockIconBar({ lock, toggleCode, edit }) {
           />
         </IconBar>
       </IconBarContainer>
-      <SubStatus>
-        {withdrawalTransaction && !withdrawalTransaction.confirmations && (
-          <>Submitted to Network...</>
-        )}
-        {withdrawalTransaction && !!withdrawalTransaction.confirmations && (
-          <>
-            Confirming Withdrawal {withdrawalTransaction.confirmations}/
-            {config.requiredConfirmations}
-          </>
-        )}
-      </SubStatus>
     </StatusBlock>
   )
 }
@@ -81,13 +52,9 @@ export function LockIconBar({ lock, toggleCode, edit }) {
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
-  edit: PropTypes.func, // this will be required when we wire it up, no-op for now
+  edit: PropTypes.func.isRequired,
+  withdraw: PropTypes.func.isRequired,
 }
-
-LockIconBar.defaultProps = {
-  edit: () => {},
-}
-
 export default withConfig(LockIconBar)
 
 const IconBarContainer = styled.div`
@@ -106,13 +73,3 @@ const IconBar = styled.div`
 `
 
 const StatusBlock = styled.div``
-
-const SubStatus = styled.div`
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-`

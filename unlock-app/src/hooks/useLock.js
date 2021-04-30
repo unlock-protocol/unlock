@@ -4,51 +4,60 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
 import { TransactionType } from '../unlockTypes'
 import { transactionTypeMapping } from '../utils/types'
+import { AuthenticationContext } from '../components/interface/Authenticate'
+import { FATAL_WRONG_NETWORK } from '../errors'
+
 /**
  * Event handler
  * @param {*} hash
  * @param {*} update
  */
 export const processTransaction = async (
+  type,
   web3Service,
   config,
   lock,
   setLock,
   hash,
-  defaults
+  network
 ) => {
-  const transaction = await web3Service.getTransaction(hash, defaults)
-  transaction.type = transactionTypeMapping(transaction.type) // mapping
-
-  let kind
-  if (transaction.type === TransactionType.LOCK_CREATION) {
-    kind = 'creationTransaction'
-  } else if (transaction.type === TransactionType.UPDATE_KEY_PRICE) {
-    kind = 'priceUpdateTransaction'
-  } else if (transaction.type === TransactionType.KEY_PURCHASE) {
-    kind = 'keyPurchaseTransaction'
-  } else {
-    // Unknown transaction!
-    return
-  }
-
-  if (transaction.confirmations <= config.requiredConfirmations) {
+  const transaction = await web3Service.getTransaction(hash, network)
+  if (
+    !transaction ||
+    transaction.confirmations <= config.requiredConfirmations
+  ) {
     // Polling if the transaction is not confirmed
     setTimeout(async () => {
-      processTransaction(web3Service, config, lock, setLock, hash, defaults)
+      processTransaction(
+        type,
+        web3Service,
+        config,
+        lock,
+        setLock,
+        hash,
+        network
+      )
     }, config.blockTime / 2)
+
     setLock({
       ...lock,
-      [kind]: {
-        ...lock[kind],
-        ...transaction,
+      transactions: {
+        ...lock.transactions,
+        [hash]: {
+          type,
+          confirmations: transaction?.confirmations || 0,
+        },
       },
     })
   } else {
     // discarding the transaction once it's confirmed
+    const remainingTransactions = lock.transactions || {}
+    if (remainingTransactions[hash]) {
+      delete remainingTransactions[hash]
+    }
     setLock({
       ...lock,
-      [kind]: null,
+      transactions: remainingTransactions,
     })
   }
 }
@@ -75,18 +84,16 @@ export const updateKeyPriceOnLock = (
         throw error
       }
       lock.keyPrice = newKeyPrice
-      lock.priceUpdateTransaction = {
-        confirmations: 0,
-        createdAt: new Date().getTime(),
-        hash: transactionHash,
-        lock: lock.address,
-        type: TransactionType.UPDATE_KEY_PRICE,
-      }
-      setLock({
-        ...lock,
-      })
-      processTransaction(web3Service, config, lock, setLock, transactionHash)
-      return callback(lock.priceUpdateTransaction)
+      processTransaction(
+        'updateKeyPrice',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
+      return callback(transactionHash)
     }
   )
 }
@@ -111,19 +118,17 @@ export const withdrawFromLock = (
         throw error
       }
       lock.balance = '0'
-      lock.withdrawalTransaction = {
-        confirmations: 0,
-        createdAt: new Date().getTime(),
-        hash: transactionHash,
-        lock: lock.address,
-        type: TransactionType.WITHDRAWAL,
-      }
-      setLock({
-        ...lock,
-      })
-      processTransaction(web3Service, config, lock, setLock, transactionHash)
+      processTransaction(
+        'withdraw',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
       if (callback) {
-        return callback(lock.withdrawalTransaction)
+        return callback(transactionHash)
       }
     }
   )
@@ -139,6 +144,7 @@ export const purchaseKeyFromLock = (
   recipient,
   referrer,
   setLock,
+  network,
   callback
 ) => {
   walletService.purchaseKey(
@@ -152,20 +158,17 @@ export const purchaseKeyFromLock = (
       if (error) {
         throw error
       }
-      lock.balance = '0'
-      lock.keyPurchaseTransaction = {
-        confirmations: 0,
-        createdAt: new Date().getTime(),
-        hash: transactionHash,
-        lock: lock.address,
-        type: TransactionType.KEY_PURCHASE,
-      }
-      setLock({
-        ...lock,
-      })
-      processTransaction(web3Service, config, lock, setLock, transactionHash)
+      processTransaction(
+        'keyPurchase',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
       if (callback) {
-        return callback(lock.keyPurchaseTransaction)
+        return callback(transactionHash)
       }
     }
   )
@@ -173,67 +176,69 @@ export const purchaseKeyFromLock = (
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  * @param {*} lock
+ * @param {*} network // network on which the lock is
  */
-export const useLock = (lockFromProps) => {
+export const useLock = (lockFromProps, network) => {
   const [lock, setLock] = useState(lockFromProps)
+  const { network: walletNetwork } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
+  const [error, setError] = useState(null)
 
   const updateKeyPrice = (newKeyPrice, callback) => {
-    updateKeyPriceOnLock(
-      web3Service,
-      walletService,
-      config,
-      lock,
-      newKeyPrice,
-      setLock,
-      callback
-    )
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      updateKeyPriceOnLock(
+        web3Service,
+        walletService,
+        config,
+        lock,
+        newKeyPrice,
+        setLock,
+        callback
+      )
+    }
   }
 
   const withdraw = (callback) => {
-    withdrawFromLock(
-      web3Service,
-      walletService,
-      config,
-      lock,
-      setLock,
-      callback
-    )
-  }
-
-  const purchaseKey = (recipient, referrer, callback) => {
-    purchaseKeyFromLock(
-      web3Service,
-      walletService,
-      config,
-      lock,
-      recipient,
-      referrer,
-      setLock,
-      callback
-    )
-  }
-
-  const getKeyForAccount = (owner) => {
-    return web3Service.getKeyByLockForOwner(lock.address, owner)
-  }
-
-  useEffect(() => {
-    // Looks at transactions
-    if (lockFromProps.creationTransaction) {
-      processTransaction(
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      withdrawFromLock(
         web3Service,
+        walletService,
         config,
         lock,
         setLock,
-        lockFromProps.creationTransaction.hash,
-        lockFromProps.creationTransaction
+        callback
       )
     }
-    return () => {}
-  }, [lockFromProps.address])
+  }
+
+  const purchaseKey = (recipient, referrer, callback) => {
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      purchaseKeyFromLock(
+        web3Service,
+        walletService,
+        config,
+        lock,
+        recipient,
+        referrer,
+        setLock,
+        network,
+        callback
+      )
+    }
+  }
+
+  const getKeyForAccount = (owner) => {
+    return web3Service.getKeyByLockForOwner(lock.address, owner, network)
+  }
+
   return {
     lock: {
       ...lockFromProps, // merge lock
@@ -243,6 +248,7 @@ export const useLock = (lockFromProps) => {
     withdraw,
     purchaseKey,
     getKeyForAccount,
+    error,
   }
 }
 

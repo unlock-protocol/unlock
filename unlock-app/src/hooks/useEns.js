@@ -14,7 +14,7 @@ export const useEns = (address) => {
   const getNameForAddress = async (_address) => {
     if (config.networks[network]) {
       const provider = new ethers.providers.JsonRpcProvider(
-        config.networks[network].readOnlyProvider
+        config.networks[network].provider
       )
       try {
         const result = await provider.lookupAddress(_address)

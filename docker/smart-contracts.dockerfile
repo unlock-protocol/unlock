@@ -12,7 +12,7 @@ RUN apk add --no-cache --virtual .build-deps-2 \
     git \
     python \
     build-base \
-    && yarn --production \
+    && yarn \
     && apk del .build-deps-2
 
 USER node

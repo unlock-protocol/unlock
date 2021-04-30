@@ -29,7 +29,7 @@ RUN apk add --no-cache --virtual .build-deps \
     py-pip \
     build-base \
     && pip install --no-cache-dir virtualenv \
-    && SKIP_SERVICES=true yarn --production \
+    && SKIP_SERVICES=true yarn \
     && apk del .build-deps \
     && apk add bash
 
