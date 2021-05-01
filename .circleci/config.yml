@@ -266,7 +266,7 @@ jobs:
 
   deploy-locksmith-beanstalk-production:
     docker:
-      - image: circleci/python:3.9.3
+      - image: circleci/python:3.9.4
     environment:
       DOCKER_BUILDKIT: 0
     steps:
@@ -293,7 +293,7 @@ jobs:
 
   deploy-locksmith-beanstalk-staging:
     docker:
-      - image: circleci/python:3.9.3
+      - image: circleci/python:3.9.4
     environment:
       DOCKER_BUILDKIT: 0
     steps:
@@ -320,7 +320,7 @@ jobs:
 
   deploy-nudge-beanstalk-staging:
     docker:
-      - image: circleci/python:3.9.3
+      - image: circleci/python:3.9.4
     environment:
       DOCKER_BUILDKIT: 0
     steps:
@@ -347,7 +347,7 @@ jobs:
 
   deploy-nudge-beanstalk-production:
     docker:
-      - image: circleci/python:3.9.3
+      - image: circleci/python:3.9.4
     environment:
       DOCKER_BUILDKIT: 0
     steps:
