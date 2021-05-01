@@ -15,7 +15,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "5.11.10",
     "@testing-library/react": "11.2.6",
-    "@testing-library/react-hooks": "3.7.0",
+    "@testing-library/react-hooks": "5.1.2",
     "@types/node": "13.13.48",
     "@zeit/next-css": "1.0.1",
     "axios": "0.21.1",
