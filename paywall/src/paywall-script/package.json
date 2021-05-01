@@ -11,7 +11,7 @@
   "devDependencies": {
     "node-fetch": "2.6.1",
     "style-loader": "2.0.0",
-    "webpack": "5.30.0",
+    "webpack": "5.36.2",
     "webpack-cli": "4.6.0"
   },
   "dependencies": {
