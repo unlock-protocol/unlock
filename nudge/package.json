@@ -29,7 +29,7 @@
     "ethereumjs-util": "6.2.1",
     "ethers": "4.0.48",
     "graphql": "15.5.0",
-    "graphql-tag": "2.11.0",
+    "graphql-tag": "2.12.4",
     "isomorphic-fetch": "3.0.0",
     "jest": "26.6.3",
     "pg": "8.5.1",
