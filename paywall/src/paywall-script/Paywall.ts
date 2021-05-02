@@ -144,7 +144,7 @@ export class Paywall {
         readOnlyProvider,
         locksmithUri,
       });
-      console.log('getUnlockedLocks locks', locks);
+
       return this.unlockPage(locks)
     }
     return this.lockPage()
