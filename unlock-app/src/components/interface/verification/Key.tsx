@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { WalletService } from '@unlock-protocol/unlock-js'
+import { AuthenticationContext } from '../Authenticate'
 // import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
 import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
 import { pingPoap } from '../../../utils/poap'
@@ -132,9 +133,11 @@ export const ValidKey = ({
 }: ValidKeyProps) => {
   const walletService: WalletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
+  const { network } = useContext(AuthenticationContext)
 
   const { isLockManager, loading: isLockManagerLoading } = useIsLockManager(
     ownedKey.lock.address,
+    network,
     viewer
   )
   const loading = false

@@ -1,22 +1,30 @@
-import path from 'path'
 import request from 'supertest'
 
-const nockBack = require('nock').back
 const app = require('../../src/app')
 const models = require('../../src/models')
 
 const { AuthorizedLock } = models
 
-describe('Price Controller', () => {
-  beforeAll(async () => {
-    nockBack.fixtures = path.join(__dirname, 'fixtures', 'priceController')
-    nockBack.setMode('dryrun')
-  })
+const chain = 1984
 
+const mockWeb3Service = {
+  getLock: jest.fn(() =>
+    Promise.resolve({
+      keyPrice: 100,
+    })
+  ),
+}
+
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+}))
+
+describe('Price Controller', () => {
   describe('price', () => {
     it('return the price from our stub', async () => {
       expect.assertions(2)
-      const { nockDone } = await nockBack('fetch_price.json')
 
       const response = await request(app)
         .get('/price/0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc')
@@ -31,7 +39,6 @@ describe('Price Controller', () => {
           unlockServiceFee: expect.any(Number),
         })
       )
-      nockDone()
     })
   })
 
@@ -47,7 +54,6 @@ describe('Price Controller', () => {
 
     it('return null price for usd if the lock has not been enabled for credit card purchases', async () => {
       expect.assertions(2)
-      const { nockDone } = await nockBack('fetch_fiat_price_no_cc.json')
 
       const response = await request(app)
         .get('/price/fiat/0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc')
@@ -55,17 +61,16 @@ describe('Price Controller', () => {
 
       expect(response.status).toBe(200)
       expect(response.body).toEqual({})
-      nockDone()
     })
 
-    it.skip('return a price in usd which includes all fees for a lock which has been approved', async () => {
+    it('return a price in usd which includes all fees for a lock which has been approved', async () => {
       expect.assertions(2)
-      const { nockDone } = await nockBack('fetch_fiat_price_cc.json')
 
       const lockAddress = '0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc'
 
       // Approve the lock!
       await AuthorizedLock.create({
+        chain,
         address: lockAddress,
       })
 
@@ -78,8 +83,7 @@ describe('Price Controller', () => {
       // "gasFee": 0,
       // "creditCardProcessing": 35,
       // "unlockServiceFee": 100
-      expect(response.body).toEqual({ usd: 236 })
-      nockDone()
+      expect(response.body.usd).toBeGreaterThan(154)
     })
   })
 })

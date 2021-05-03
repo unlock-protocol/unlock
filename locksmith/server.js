@@ -1,6 +1,8 @@
 /* eslint no-console: 0 */
 
+const args = require('yargs').argv
 const net = require('net')
+const listEndpoints = require('express-list-endpoints')
 const app = require('./src/app')
 
 const config = require('./config/config')
@@ -20,7 +22,7 @@ const serverIsUp = (host, port, delay, maxAttempts, callback) => {
       return socket.end() // clean-up
     })
 
-    socket.on('error', error => {
+    socket.on('error', (error) => {
       if (error.code === 'ECONNREFUSED') {
         if (attempts < maxAttempts) {
           attempts += 1
@@ -40,15 +42,16 @@ const serverIsUp = (host, port, delay, maxAttempts, callback) => {
  */
 
 const environmentEvaluation = () => {
-  let errors = []
-  let requiredEnvironmentVariables = [
+  const errors = []
+  const requiredEnvironmentVariables = [
     'DB_USERNAME',
     'DB_PASSWORD',
     'DB_NAME',
     'DB_HOSTNAME',
+    'DEFAULT_NETWORK',
   ]
 
-  requiredEnvironmentVariables.forEach(environmentVariable => {
+  requiredEnvironmentVariables.forEach((environmentVariable) => {
     if (!process.env[environmentVariable]) {
       errors.push(
         `${environmentVariable} is required to operate in this context`
@@ -57,7 +60,7 @@ const environmentEvaluation = () => {
   })
 
   if (errors.length != 0) {
-    errors.forEach(error => {
+    errors.forEach((error) => {
       console.error(error)
     })
     console.log('Halting execution.')
@@ -65,16 +68,26 @@ const environmentEvaluation = () => {
   }
 }
 
-if (process.env.NODE_ENV != 'development') {
-  environmentEvaluation()
-}
-
 if (!config.host || process.env.NODE_ENV === 'production') {
   return app.listen(port)
 }
+if (args.routes) {
+  console.log('Routes:')
+  listEndpoints(app).forEach((endpoint) => {
+    endpoint.methods.forEach((method) => {
+      console.log(
+        `${method.padStart(6)} ${endpoint.path.padEnd(56)} => ${
+          endpoint.middleware
+        }`
+      )
+    })
+  })
+
+  return
+}
 
 // We wait for the db server to be up before starting the app
-serverIsUp(config.host, databasePort, 100, 120, error => {
+serverIsUp(config.host, databasePort, 100, 120, (error) => {
   if (error) {
     console.error(error)
     return process.exit(1)

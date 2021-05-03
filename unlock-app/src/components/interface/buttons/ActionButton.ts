@@ -21,17 +21,18 @@ export const ActionButton = styled.button<ActionButtonProps>`
   cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
   outline: none;
   transition: background-color 200ms ease;
-  border: 1px solid;
+  border: 2px solid;
 
   border-color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--green)')};
 
   background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : props.color || 'var(--green)'};
+
   & :hover {
     color: ${(props) =>
       props.disabled
         ? 'var(--white)'
-        : props.fontActiveColor || 'var(--activegreen)'};
+        : props.fontActiveColor || 'var(--white)'};
 
     border-color: ${(props) =>
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};

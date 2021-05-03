@@ -62,19 +62,6 @@ export default async function (lock, callback) {
     callback(null, hash, await transactionPromise)
   }
 
-  // Let's update the lock to reflect that it is linked to this
-  // This is an exception because, until we are able to determine the lock address
-  // before the transaction is mined, we need to link the lock and transaction.
-  this.emit('lock.updated', lock.address, {
-    expirationDuration: lock.expirationDuration,
-    keyPrice: lock.keyPrice, // Must be expressed in Eth!
-    maxNumberOfKeys: lock.maxNumberOfKeys,
-    outstandingKeys: 0,
-    balance: '0',
-    transaction: hash,
-    name: lockName,
-    currencyContractAddress: lock.currencyContractAddress,
-  })
   // Let's now wait for the lock to be deployed before we return its address
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = unlockContract.interface

@@ -2,7 +2,13 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgCoinbaseWallet = ({ title, titleId, ...props }) => (
-  <svg viewBox="0 0 120 120" fill="none" aria-labelledby={titleId} {...props}>
+  <svg
+    viewBox="0 0 120 120"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={titleId}
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       d="M60 108.75c26.924 0 48.75-21.826 48.75-48.75S86.924 11.25 60 11.25 11.25 33.076 11.25 60 33.076 108.75 60 108.75z"

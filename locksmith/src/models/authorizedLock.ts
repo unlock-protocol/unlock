@@ -11,4 +11,7 @@ export class AuthorizedLock extends Model<AuthorizedLock> {
 
   @Column
   stripe_account_id!: string
+
+  @Column
+  chain!: number
 }

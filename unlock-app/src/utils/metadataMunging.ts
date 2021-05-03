@@ -13,7 +13,6 @@ export const generateColumns = (
   const columns = startingColumns.slice()
 
   const columnSet: { [key: string]: boolean } = {}
-
   metadata.forEach((datum) => {
     Object.keys(datum).forEach((key) => {
       // Don't want to include the pre-ordered starting columns
