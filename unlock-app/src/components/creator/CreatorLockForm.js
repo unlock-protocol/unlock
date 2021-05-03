@@ -204,12 +204,12 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               defaultValue={lockInForm.keyPrice}
               required
             />
-            {isNew && erc20 && !lockInForm.currencyContractAddress && (
+            {isNew && erc20.symbol && !lockInForm.currencyContractAddress && (
               <LockLabelCurrency onClick={toggleCurrency}>
                 Use {erc20.symbol}
               </LockLabelCurrency>
             )}
-            {isNew && erc20 && !!lockInForm.currencyContractAddress && (
+            {isNew && erc20.symbol && !!lockInForm.currencyContractAddress && (
               <LockLabelCurrency onClick={toggleCurrency}>
                 Use {baseCurrencySymbol}
               </LockLabelCurrency>

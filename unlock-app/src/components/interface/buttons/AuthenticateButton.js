@@ -26,8 +26,6 @@ const AuthenticateButton = ({
     onProvider(walletConnectProvider)
   }
 
-  console.log(Svg)
-
   return (
     <Container>
       <Button disabled={!web3Provider} onClick={authenticateWithProvider}>
