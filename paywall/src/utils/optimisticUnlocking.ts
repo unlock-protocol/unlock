@@ -56,7 +56,7 @@ export const optimisticUnlocking = async (
  * @param locks
  * @param user
  */
- export const optimisticLocks = async (
+export const optimisticLocks = async (
   provider: string,
   locksmithUri: string,
   locks: string[],
@@ -72,7 +72,7 @@ export const optimisticUnlocking = async (
     withinLast24Hours(tx.createdAt)
   )
 
-  const unlocked: string[] = [];
+  const unlocked: string[] = []
   recentTransactions.map((transaction) => {
     const lockIsOptimistc = willUnlock(
       provider,
@@ -82,7 +82,7 @@ export const optimisticUnlocking = async (
       false // Pessimistic if missing
     )
 
-    if(lockIsOptimistc) {
+    if (lockIsOptimistc) {
       unlocked.push(transaction.recipient)
     }
   })

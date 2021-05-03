@@ -140,10 +140,14 @@ export class Paywall {
         locksmithUri,
       })
     ) {
-      const locks = await getUnlockedLocks(this.userAccountAddress, this.paywallConfig, {
-        readOnlyProvider,
-        locksmithUri,
-      });
+      const locks = await getUnlockedLocks(
+        this.userAccountAddress,
+        this.paywallConfig,
+        {
+          readOnlyProvider,
+          locksmithUri,
+        }
+      )
 
       return this.unlockPage(locks)
     }

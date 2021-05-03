@@ -19,7 +19,7 @@ export const getUnlockedLocks = async (
   { readOnlyProvider, locksmithUri }: ModuleConfig
 ): Promise<string[]> => {
   const lockAddresses = Object.keys(paywallConfig.locks)
-  const timeStampsByLock: Record<string, number> = {};
+  const timeStampsByLock: Record<string, number> = {}
   lockAddresses.map(async (lockAddress) => {
     timeStampsByLock[lockAddress] = await keyExpirationTimestampFor(
       readOnlyProvider,
@@ -28,24 +28,27 @@ export const getUnlockedLocks = async (
     )
   })
 
-  const unlockedLocks = Object.keys(timeStampsByLock)
-    .filter((lockAddress) => timeStampsByLock[lockAddress] > new Date().getTime() / 1000)
+  const unlockedLocks = Object.keys(timeStampsByLock).filter(
+    (lockAddress) => timeStampsByLock[lockAddress] > new Date().getTime() / 1000
+  )
 
   if (!paywallConfig.pessimistic) {
     // Add optimistically unlocked lock addresses
     const additionalLocks = await optimisticLocks(
       readOnlyProvider,
       locksmithUri,
-      lockAddresses.filter((lockAddress) => unlockedLocks.indexOf(lockAddress) < 0),
+      lockAddresses.filter(
+        (lockAddress) => unlockedLocks.indexOf(lockAddress) < 0
+      ),
       userAccountAddress!
     )
 
     if (additionalLocks.length > 0) {
-      unlockedLocks.push(...additionalLocks);
+      unlockedLocks.push(...additionalLocks)
     }
   }
 
-  return unlockedLocks;
+  return unlockedLocks
 }
 export default {
   getUnlockedLocks,

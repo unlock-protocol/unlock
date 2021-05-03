@@ -25,8 +25,8 @@ const paywallConfig = {
   icon: 'http://com.com/image.tiff',
 }
 
-const testLock = Object.keys(paywallConfig.locks)[0];
-const now = new Date().toDateString();
+const testLock = Object.keys(paywallConfig.locks)[0]
+const now = new Date().toDateString()
 const savedTransactions = [
   {
     recipient: testLock,
@@ -230,11 +230,11 @@ describe('Paywall unlockPage', () => {
   it('should dispatch an event for lock status', async () => {
     expect.assertions(1)
     jest.spyOn(paywallScriptUtils, 'dispatchEvent')
-    paywall.unlockPage([ testLock ])
+    paywall.unlockPage([testLock])
     expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
       paywallScriptUtils.unlockEvents.status,
       {
-        locks: [ testLock ],
+        locks: [testLock],
         state: 'unlocked',
       }
     )
