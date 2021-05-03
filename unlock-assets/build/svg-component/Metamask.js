@@ -2,7 +2,13 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgMetamask = ({ title, titleId, ...props }) => (
-  <svg viewBox="0 0 122 113" fill="none" aria-labelledby={titleId} {...props}>
+  <svg
+    viewBox="0 0 122 113"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={titleId}
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       d="M115.024 1L68.2 35.776 76.86 15.26 115.024 1z"

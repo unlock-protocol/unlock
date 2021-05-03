@@ -3725,10 +3725,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/from-entries/-/from-entries-0.2.1.tgz#7e86196b8b2e99d73106a8f25c2a068326346354"
   integrity sha512-CAqefTFAfnUPwYqsWHXpOxHaq1Zo5UQ3m9Zm2p09LggGe57rqHoBn3c++xcoomzXKynAUuiBMDUCQvKMnXjUpA==
 
-"@unlock-protocol/unlock-assets@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.1.0.tgz#e7e98ca86b4a894411dd544ab236ad5233dcb953"
-  integrity sha512-oM3FDOXXgn6MqAg7ne2/eJ1Ie3Kbjm5jFpvvd5cZO7JyxmcY2yImdWRKwyrw8neufX6FMYsJM+zOqhwnm2qJvA==
+"@unlock-protocol/unlock-assets@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.3.0.tgz#082cb8fea869ef5c29659abbafe99739b8d3cc4f"
+  integrity sha512-noNjA8PGjaxmaJuMyPRRGVlf7FkzsQYqc8oa3S/6w15L2HBYEXL9QLcXnYOo9PyOQfvtu98hDW+e9POHIn6tEg==
 
 "@unlock-protocol/unlock-js@0.16.1":
   version "0.16.1"

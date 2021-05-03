@@ -2,7 +2,12 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgBlog = ({ title, titleId, ...props }) => (
-  <svg viewBox="0 0 24 24" aria-labelledby={titleId} {...props}>
+  <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={titleId}
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       clipRule="evenodd"
