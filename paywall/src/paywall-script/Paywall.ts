@@ -84,11 +84,12 @@ export class Paywall {
     this.loadCache()
   }
 
-  loadCheckoutModal = () => {
+  loadCheckoutModal = (config?: PaywallConfig) => {
     if (this.iframe) {
+      // What if we have a custome config?
       this.showIframe()
     } else {
-      this.shakeHands()
+      this.shakeHands(config)
     }
   }
 
@@ -154,8 +155,12 @@ export class Paywall {
     return this.lockPage()
   }
 
-  shakeHands = async () => {
-    const { unlockAppUrl } = this.networkConfigs[this.paywallConfig.network]
+  shakeHands = async (config?: PaywallConfig) => {
+    if (!config) {
+      config = this.paywallConfig
+    }
+
+    const { unlockAppUrl } = this.networkConfigs[config.network]
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
