@@ -2,7 +2,12 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgLiveDemo = ({ title, titleId, ...props }) => (
-  <svg viewBox="0 0 64 64" aria-labelledby={titleId} {...props}>
+  <svg
+    viewBox="0 0 64 64"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={titleId}
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
     <mask id="live-demo_svg__a" fill="#fff">
       <path

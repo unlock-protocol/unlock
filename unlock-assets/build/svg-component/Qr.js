@@ -2,7 +2,12 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgQr = ({ title, titleId, ...props }) => (
-  <svg viewBox="0 0 60 60" aria-labelledby={titleId} {...props}>
+  <svg
+    viewBox="0 0 60 60"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={titleId}
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
     <path d="M16.364 10.91h-5.455v5.454h5.455v-5.455z" />
     <path

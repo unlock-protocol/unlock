@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 const SvgLoadingDots = ({ title, titleId, ...props }) => (
   <svg
     id="loadingDots_svg__ep1opzeolwb1"
+    xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 32 32"
     shapeRendering="geometricPrecision"
     textRendering="geometricPrecision"
