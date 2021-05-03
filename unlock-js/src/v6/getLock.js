@@ -11,8 +11,8 @@ import {
  * We use the block version
  * @return Promise<Lock>
  */
-export default async function (address) {
-  const contract = await this.getLockContract(address)
+export default async function (address, provider) {
+  const contract = await this.getLockContract(address, provider)
   const attributes = {
     name: (x) => x,
     keyPrice: (x) => x,
@@ -31,7 +31,7 @@ export default async function (address) {
 
   // Let's load the current block to use to compare versions
   const getBlockNumber = async () => {
-    const blockNumber = await this.provider.getBlockNumber()
+    const blockNumber = await provider.getBlockNumber()
     update.asOf = blockNumber
   }
 
@@ -48,23 +48,18 @@ export default async function (address) {
   if (update.tokenAddress === ZERO) {
     // If ether, the price is stored as Wei.
     update.keyPrice = utils.fromWei(update.keyPrice, 'ether')
-    update.balance = await this.getAddressBalance(address)
+    const balance = await provider.getBalance(address)
+    update.balance = utils.fromWei(balance, 'ether')
   } else {
     // Otherwise need to get the erc20's decimal and convert from there, as well as the symbol
     // TODO : make these calls in parallel
-    const erc20Decimals = await getErc20Decimals(
-      update.tokenAddress,
-      this.provider
-    )
+    const erc20Decimals = await getErc20Decimals(update.tokenAddress, provider)
     const erc20Balance = await getErc20BalanceForAddress(
       update.tokenAddress,
       address,
-      this.provider
+      provider
     )
-    const erc20Symbol = await getErc20TokenSymbol(
-      update.tokenAddress,
-      this.provider
-    )
+    const erc20Symbol = await getErc20TokenSymbol(update.tokenAddress, provider)
 
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
@@ -85,6 +80,5 @@ export default async function (address) {
   delete update.tokenAddress
 
   // Once all lock attributes have been fetched
-  this.emit('lock.updated', address, update)
   return update
 }

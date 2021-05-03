@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgAdfree = ({ title, titleId, ...props }) => (
-  <svg aria-labelledby={titleId} {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" aria-labelledby={titleId} {...props}>
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       fillRule="evenodd"

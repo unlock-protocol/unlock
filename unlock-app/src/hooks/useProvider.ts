@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { useState } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 
@@ -31,13 +32,16 @@ export const useProvider = (config: any) => {
     }
 
     // We need the network!!
-    const _walletService = new WalletService(config)
+    const _walletService = new WalletService(config.networks)
 
     setWalletService(_walletService)
-    const _network = await _walletService.connect(provider)
+
+    // walletService wants an ethers provider
+    const _network = await _walletService.connect(
+      new ethers.providers.Web3Provider(provider)
+    )
     setNetwork(_network || undefined)
-    const networkConfig = config.networks[_network]
-    _walletService.setUnlockAddress(networkConfig.unlockAddress)
+
     const _account = await _walletService.getAccount()
     setAccount(_account || undefined)
     setEmail(provider.emailAddress)

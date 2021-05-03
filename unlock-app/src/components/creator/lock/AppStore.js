@@ -62,6 +62,16 @@ const AppStore = ({ lock }) => {
       icon: <Svg.Wordpress />,
       href: 'https://wordpress.org/plugins/unlock-protocol/',
     },
+    discord: {
+      name: 'Discord (with Swordy Bot)',
+      icon: <Svg.Discord />,
+      href: 'https://swordybot.com/',
+    },
+    cloudflare: {
+      name: 'Cloudflare',
+      icon: <Svg.Cloudflare />,
+      href: 'https://unlock-protocol.com/blog/cloudflare-worker',
+    },
   }
 
   return (

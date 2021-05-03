@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useMemo } from 'react'
 import ApolloClient from 'apollo-boost'
-import PropTypes from 'prop-types'
+import PropTypes, { number } from 'prop-types'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import { StorageServiceContext } from '../../utils/withStorageService'
@@ -32,32 +32,29 @@ export const AuthenticationContext = createContext()
 
 /**
  * Utility providers set to retrieve content based on network settings
- * @param {*} param0
  * @returns
  */
-const Providers = ({ networkConfig, children }) => {
+const Providers = ({ network, networkConfig, children }) => {
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
-        uri: networkConfig.subgraphURI,
+        uri: networkConfig[network].subgraphURI,
       }),
-    [networkConfig]
+    [networkConfig, network]
   )
 
   const graphService = useMemo(
-    () => new GraphService(networkConfig.subgraphURI),
-    [networkConfig]
+    () => new GraphService(networkConfig[network].subgraphURI),
+    [networkConfig, network]
   )
 
   const storageService = useMemo(
-    () => new StorageService(networkConfig.locksmith),
-    [networkConfig]
+    () => new StorageService(networkConfig[network].locksmith),
+    [networkConfig, network]
   )
 
   const web3Service = useMemo(() => {
-    return new Web3Service({
-      ...networkConfig,
-    })
+    return new Web3Service(networkConfig)
   }, [networkConfig])
 
   return (
@@ -71,6 +68,15 @@ const Providers = ({ networkConfig, children }) => {
       </StorageServiceProvider>
     </ApolloProvider>
   )
+}
+
+Providers.propTypes = {
+  network: number,
+  // networkConfig: object.isRequired,
+}
+
+Providers.defaultProps = {
+  network: 1, // defaults to mainnet (can we change this?)
 }
 
 export const Authenticate = ({
@@ -107,18 +113,14 @@ export const Authenticate = ({
     connectProvider(provider, callback)
   }
 
-  const networkConfig = {
-    ...(config.networks[requiredNetwork || network] || {}),
-    network,
-  }
-
   return (
     <AuthenticationContext.Provider
       value={{ account, network, email, encryptedPrivateKey, authenticate }}
     >
       <WalletServiceContext.Provider value={walletService}>
         <Providers
-          networkConfig={networkConfig}
+          network={requiredNetwork || network}
+          networkConfig={config.networks}
           account={account}
           email={email}
           encryptedPrivateKey={encryptedPrivateKey}
