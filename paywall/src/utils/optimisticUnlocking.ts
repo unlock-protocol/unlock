@@ -40,7 +40,7 @@ export const optimisticUnlocking = async (
         user,
         transaction.recipient,
         transaction.transactionHash,
-        false // Passimistic if missing
+        false // Pessimistic if missing
       )
     })
   )
@@ -49,6 +49,45 @@ export const optimisticUnlocking = async (
     currentValue || !!accumulator
 
   return unlocked.reduce(reducer, false)
+}
+
+/**
+ * Yields an array of optimistically unlocking locks
+ * @param locks
+ * @param user
+ */
+export const optimisticLocks = async (
+  provider: string,
+  locksmithUri: string,
+  locks: string[],
+  user: string
+) => {
+  const userTransactions = await getTransactionsForUserAndLocks(
+    locksmithUri,
+    user,
+    locks
+  )
+
+  const recentTransactions = userTransactions.filter((tx) =>
+    withinLast24Hours(tx.createdAt)
+  )
+
+  const unlocked: string[] = []
+  recentTransactions.map((transaction) => {
+    const lockIsOptimistc = willUnlock(
+      provider,
+      user,
+      transaction.recipient,
+      transaction.transactionHash,
+      false // Pessimistic if missing
+    )
+
+    if (lockIsOptimistc) {
+      unlocked.push(transaction.recipient)
+    }
+  })
+
+  return unlocked
 }
 
 /**

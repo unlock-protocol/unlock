@@ -5,6 +5,7 @@ import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from '../utils/localStorage'
 import { willUnlock } from '../utils/optimisticUnlocking'
 import { isUnlocked } from '../utils/isUnlocked'
+import { getUnlockedLocks } from '../utils/getUnlockedLocks'
 import {
   Enabler,
   getProvider,
@@ -139,7 +140,16 @@ export class Paywall {
         locksmithUri,
       })
     ) {
-      return this.unlockPage()
+      const locks = await getUnlockedLocks(
+        this.userAccountAddress,
+        this.paywallConfig,
+        {
+          readOnlyProvider,
+          locksmithUri,
+        }
+      )
+
+      return this.unlockPage(locks)
     }
     return this.lockPage()
   }
@@ -182,7 +192,7 @@ export class Paywall {
         true // Optimistic if missing
       )
       if (optimistic) {
-        this.unlockPage()
+        this.unlockPage([lock])
       }
     }
   }
@@ -219,9 +229,10 @@ export class Paywall {
     })
   }
 
-  unlockPage = () => {
+  unlockPage = (locks: string[] = []) => {
     this.lockStatus = 'unlocked'
     dispatchEvent(unlockEvents.status, {
+      locks,
       state: this.lockStatus,
     })
   }
