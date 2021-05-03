@@ -24,9 +24,10 @@ export default class MyDocument extends Document {
     const unlockConfigTag = {
       __html: `
       var unlockProtocolConfig = {
+        network: 1,
         locks: {
           '0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F': {
-            name: 'Unlock Blog Members',
+            name: 'Unlock Community Members',
           }
         },
         icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
