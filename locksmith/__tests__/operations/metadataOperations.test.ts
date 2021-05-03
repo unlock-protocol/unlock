@@ -1,12 +1,15 @@
 const metadataOperations = require('../../src/operations/metadataOperations')
 require('../../src/models')
 
+const chain = 1984
+
 describe('metadataOperations', () => {
   describe('updateKeyMetadata', () => {
     describe('when update is successful', () => {
       it('returns true', async () => {
         expect.assertions(1)
         const updateStatus = await metadataOperations.updateKeyMetadata({
+          chain,
           address: '0x2335',
           id: '2',
         })
@@ -27,6 +30,7 @@ describe('metadataOperations', () => {
         expect.assertions(1)
         const updateStatus = await metadataOperations.updateDefaultLockMetadata(
           {
+            chain,
             address: '0x2335',
             id: 2,
             data: {
@@ -42,6 +46,7 @@ describe('metadataOperations', () => {
         expect.assertions(1)
         const updateStatus = await metadataOperations.updateDefaultLockMetadata(
           {
+            chain,
             id: 2,
             data: {
               foo: 'bar',

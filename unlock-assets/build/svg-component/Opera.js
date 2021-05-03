@@ -2,7 +2,13 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgOpera = ({ title, titleId, ...props }) => (
-  <svg viewBox="0 0 120 120" fill="none" aria-labelledby={titleId} {...props}>
+  <svg
+    viewBox="0 0 120 120"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby={titleId}
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
     <mask
       id="opera_svg__a"

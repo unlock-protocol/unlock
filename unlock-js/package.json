@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.15.2",
+  "version": "0.16.1",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -21,15 +21,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "babel-jest": "26.6.3",
-    "cross-fetch": "3.0.6",
-    "eslint": "7.21.0",
-    "ethers": "4.0.48",
-    "jest": "25.5.4",
-    "lint-staged": "10.5.4",
-    "prettier": "2.2.1",
-    "ts-jest": "26.5.3",
-    "typescript": "4.2.3"
+    "cross-fetch": "3.1.4",
+    "ethers": "4.0.48"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -41,9 +34,14 @@
     "node": "^10"
   },
   "devDependencies": {
-    "@babel/cli": "7.13.0",
-    "@babel/core": "7.13.8",
-    "@babel/preset-env": "7.13.9",
+    "eslint": "7.25.0",
+    "prettier": "2.2.1",
+    "ts-jest": "26.5.5",
+    "typescript": "4.2.4",
+    "lint-staged": "10.5.4",
+    "@babel/cli": "7.13.16",
+    "@babel/core": "7.14.0",
+    "@babel/preset-env": "7.14.0",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
@@ -51,7 +49,6 @@
     "babel-jest": "26.6.3",
     "erc1820": "0.0.2",
     "ganache-cli": "6.12.2",
-    "jest": "25.5.4",
-    "nock": "12.0.3"
+    "jest": "26.6.3"
   }
 }
