@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgPreview = ({ title, titleId, ...props }) => (
-  <svg aria-labelledby={titleId} {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" aria-labelledby={titleId} {...props}>
     {title ? <title id={titleId}>{title}</title> : null}
     <path d="M13.91 12c0 1.036-.856 1.875-1.91 1.875-1.054 0-1.91-.84-1.91-1.875 0-1.036.856-1.875 1.91-1.875 1.054 0 1.91.84 1.91 1.875z" />
     <path
