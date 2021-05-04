@@ -27,8 +27,7 @@ export default class WalletService extends UnlockService {
   /**
    * This needs to be called with a ethers.providers which includes a signer.
    */
-  async connect(provider, unlockContractAddress) {
-    this.unlockContractAddress = unlockContractAddress
+  async connect(provider) {
     this.provider = provider
     this.signer = this.provider.getSigner(0)
 
@@ -36,6 +35,15 @@ export default class WalletService extends UnlockService {
 
     if (this.networkId !== networkId) {
       this.networkId = networkId
+    }
+
+    if (!this.networks[networkId]) {
+      throw new Error(`Missing config for ${networkId}`)
+    }
+    if (this.networks[networkId].unlockContractAddress) {
+      this.unlockContractAddress = this.networks[
+        networkId
+      ].unlockContractAddress
     }
     return networkId
   }
