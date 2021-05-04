@@ -1,5 +1,4 @@
 /* eslint-disable */
-import { EventEmitter } from 'events'
 import { providers, Wallet } from 'ethers'
 
 interface Web3ServiceParams {
@@ -45,20 +44,20 @@ export interface KeyResult {
 
 type Web3Provider = string | providers.Web3Provider
 
-export class Web3Service extends EventEmitter {
+export class Web3Service {
   constructor(params: Web3ServiceParams)
-  refreshAccountBalance: ({ address }: { address: string }) => Promise<string>
   getTransaction: (
     transactionHash: string,
-    defaults?: TransactionDefaults
+    network: number
   ) => Promise<void>
-  getLock: (address: string) => Promise<RawLock>
-  getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
+  getLock: (address: string, network: number) => Promise<RawLock>
+  getKeyByLockForOwner: (lock: string, owner: string, network: number) => Promise<KeyResult>
   getTokenBalance: (
     tokenAddress: string,
-    accountAddress: string
+    accountAddress: string,
+    network: number
   ) => Promise<string>
-  isLockManager: (lock: string, manager: string) => Promise<boolean>
+  isLockManager: (lock: string, manager: string, network: number) => Promise<boolean>
 }
 
 interface SetKeyMetadataParams {
@@ -91,7 +90,7 @@ interface GetKeyMetadataParams {
   getProtectedData?: boolean
 }
 
-export class WalletService extends EventEmitter {
+export class WalletService {
   constructor({ unlockAddress }: { unlockAddress: string })
   ready: boolean
   provider?: any

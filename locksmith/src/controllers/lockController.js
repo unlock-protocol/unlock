@@ -16,6 +16,7 @@ const lockSave = async (req, res) => {
 
   // If the lock does not exist
   if (!databaseLock) {
+    lock.chain = req.chain
     await createLock(lock)
     logger.logLockDetailsStored(lock.address)
     return res.sendStatus(200)

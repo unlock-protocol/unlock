@@ -22,7 +22,7 @@ import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import AuthenticateButton from '../buttons/AuthenticateButton'
 import { AuthenticationContext } from '../Authenticate'
 import LogInSignUp from '../LogInSignUp'
-import { WrongNetwork } from '../../creator/FatalError'
+import { ActionButton } from '../buttons/ActionButton'
 
 interface CheckoutProps {
   emitCloseModal: () => void
@@ -37,7 +37,7 @@ export const Checkout = ({
   emitUserInfo,
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
 }: CheckoutProps) => {
-  const { authenticate, account, network } = useContext(AuthenticationContext)
+  const { authenticate, account } = useContext(AuthenticationContext)
 
   const paywallConfig = useContext(PaywallConfigContext)
   const config = useContext(ConfigContext)
@@ -52,7 +52,6 @@ export const Checkout = ({
   }
 
   const requiredNetwork = paywallConfig.network
-  const networkConfig = config.networks[requiredNetwork]
   const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
   const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
 
@@ -77,7 +76,7 @@ export const Checkout = ({
     setFiatAvailable(true)
   }
 
-  const web3Service = new Web3Service(networkConfig)
+  const web3Service = new Web3Service(config.networks)
 
   const showPaymentOptions = !focus && account && fiatAvailable
 
@@ -88,7 +87,7 @@ export const Checkout = ({
       <>
         <PaywallLogoWrapper>
           {paywallConfig.icon ? (
-            <img alt="Publisher Icon" src={paywallConfig.icon} />
+            <PublisherLogo alt="Publisher Icon" src={paywallConfig.icon} />
           ) : (
             <RoundedLogo size="56px" />
           )}
@@ -98,6 +97,21 @@ export const Checkout = ({
           <CallToAction
             state="default"
             callToAction={paywallConfig.callToAction}
+          />
+        )}
+
+        {!account && <Prompt>Select your authentication method</Prompt>}
+
+        {account && !hasMembership && <Prompt>Ready to make payment</Prompt>}
+
+        {account && hasMembership && <Prompt>Thank you for your trust!</Prompt>}
+
+        {!account && (
+          <AuthenticateButton
+            web3Provider={web3Provider}
+            showAccount={fiatAvailable}
+            onProvider={onProvider}
+            login={showLogin}
           />
         )}
         <Locks
@@ -117,23 +131,10 @@ export const Checkout = ({
             paymentOptions={['Credit Card']}
           />
         )}
-        {!showPaymentOptions && <Spacer />}
-        {!account && (
-          <AuthenticateButton
-            web3Provider={web3Provider}
-            showAccount={fiatAvailable}
-            onProvider={onProvider}
-            login={showLogin}
-          />
-        )}
         {hasMembership && (
-          <p>
-            Thank you for your trust.{' '}
-            <button type="button" onClick={emitCloseModal}>
-              Close
-            </button>
-            .
-          </p>
+          <BackToSiteButton onClick={emitCloseModal}>
+            Back to the site
+          </BackToSiteButton>
         )}
       </>
     )
@@ -149,11 +150,6 @@ export const Checkout = ({
         onProvider={onProvider}
       />
     )
-  }
-
-  // != on purpose to stay flexible
-  if (network && network != requiredNetwork) {
-    content = <WrongNetwork network={requiredNetwork} />
   }
 
   return (
@@ -172,14 +168,29 @@ export const Checkout = ({
 }
 
 const PaywallLogoWrapper = styled.div`
-  margin-bottom: 20px;
+  width: 100%;
 
   > img {
-    max-height: 100px;
+    height: 50px;
     max-width: 200px;
   }
 `
 
 const Spacer = styled.div`
   height: 25px;
+`
+
+const Prompt = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+`
+
+const PublisherLogo = styled.img``
+
+const BackToSiteButton = styled(ActionButton).attrs({
+  fontColor: 'var(--green)',
+  color: 'none',
+})`
+  width: 240px;
+  height: 48px;
 `

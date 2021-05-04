@@ -5,7 +5,7 @@ RUN mkdir /home/unlock/paywall
 COPY --chown=node paywall/yarn.lock /home/unlock/paywall/.
 COPY --chown=node paywall/package.json /home/unlock/paywall/.
 WORKDIR /home/unlock/paywall
-RUN yarn --production
+RUN yarn
 
 
 COPY --chown=node paywall/ /home/unlock/paywall/.
@@ -14,4 +14,4 @@ COPY --chown=node paywall/ /home/unlock/paywall/.
 RUN mkdir out
 
 EXPOSE 3001
-CMD  ["yarn", "start"]
+CMD ["yarn", "start"]

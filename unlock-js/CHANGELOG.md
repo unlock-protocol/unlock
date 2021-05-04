@@ -1,5 +1,20 @@
 # Changes
 
+# 0.16.3
+
+- Fixing unlockAddress in walletService
+# 0.16.2
+
+- WalletService sets the unlock contract address based on connected network
+
+# 0.16.1
+
+- Breaking change: support for multichains.
+- Typescript definition fix
+
+# 0.16
+
+- Breaking change: support for multichains.
 # 0.15.2
 
 - Typescript definition fix
