@@ -31,10 +31,7 @@ export const useProvider = (config: any) => {
       }
     }
 
-    // We need the network!!
     const _walletService = new WalletService(config.networks)
-
-    setWalletService(_walletService)
 
     // walletService wants an ethers provider
     const _network = await _walletService.connect(
@@ -43,6 +40,7 @@ export const useProvider = (config: any) => {
     setNetwork(_network || undefined)
 
     const _account = await _walletService.getAccount()
+    setWalletService(_walletService)
     setAccount(_account || undefined)
     setEmail(provider.emailAddress)
     setEmail(provider.emailAddress)
