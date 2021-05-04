@@ -11,7 +11,7 @@ let walletService
 
 describe('WalletService (ethers)', () => {
   beforeEach(() => {
-    walletService = new WalletService()
+    walletService = new WalletService({})
   })
 
   describe('gasAmountConstants', () => {
