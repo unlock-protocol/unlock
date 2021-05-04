@@ -25,11 +25,15 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * This needs to be called with a ethers.providers which includes a signer.
+   * This needs to be called with a ethers.providers which includes a signer or with a signer
    */
-  async connect(provider) {
+  async connect(provider, signer) {
     this.provider = provider
-    this.signer = this.provider.getSigner(0)
+    if (signer) {
+      this.signer = signer
+    } else {
+      this.signer = this.provider.getSigner(0)
+    }
 
     const { chainId: networkId } = await this.provider.getNetwork()
 
@@ -40,10 +44,8 @@ export default class WalletService extends UnlockService {
     if (!this.networks[networkId]) {
       throw new Error(`Missing config for ${networkId}`)
     }
-    if (this.networks[networkId].unlockContractAddress) {
-      this.unlockContractAddress = this.networks[
-        networkId
-      ].unlockContractAddress
+    if (this.networks[networkId].unlockAddress) {
+      this.unlockAddress = this.networks[networkId].unlockAddress
     }
     return networkId
   }
@@ -114,10 +116,7 @@ export default class WalletService extends UnlockService {
   }
 
   async unlockContractAbiVersion() {
-    return super.unlockContractAbiVersion(
-      this.unlockContractAddress,
-      this.provider
-    )
+    return super.unlockContractAbiVersion(this.unlockAddress, this.provider)
   }
 
   async lockContractAbiVersion(address) {
@@ -126,7 +125,7 @@ export default class WalletService extends UnlockService {
 
   async getUnlockContract() {
     const contract = await super.getUnlockContract(
-      this.unlockContractAddress,
+      this.unlockAddress,
       this.provider
     )
     return contract.connect(this.signer)
@@ -208,7 +207,7 @@ export default class WalletService extends UnlockService {
       callback(null, transaction.hash)
     }
     await this.provider.waitForTransaction(transaction.hash)
-    this.unlockContractAddress = unlockContract.address
+    this.unlockAddress = unlockContract.address
     return unlockContract.address
   }
 
