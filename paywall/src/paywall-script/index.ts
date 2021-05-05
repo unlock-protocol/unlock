@@ -28,6 +28,8 @@ if (!rawConfig) {
         'Missing network in Unlock config. Please set one. See https://docs.unlock-protocol.com/'
       )
     }
+  } else {
+    rawConfig.network = parseInt(rawConfig.network)
   }
 
   const paywall = new Paywall(rawConfig, networkConfigs)
