@@ -242,23 +242,47 @@ contract Unlock is
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
-          // tokensToMint is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToMint = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
-          // or tokensToMint is capped by percent growth
-          uint maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
-          if(tokensToMint > maxTokens)
+          // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
+          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
+
+          // or tokensToDistribute is capped by network GDP growth
+          uint gdpGrowth = valueInETH / grossNetworkProduct;
+          uint maxTokens = 0;
+          if (block.chainid > 1)
           {
-            tokensToMint = maxTokens;
+            // non mainnet: we distribute tokens using asymptotic curve
+            uint rewardShare = 1 / (1-gdpGrowth) / 2;
+            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(rewardShare);
+          } else {
+            uint supplyGrowth = gdpGrowth / 2;
+            // Mainnet: we mint new token using log curve
+            maxTokens = IMintableERC20(udt).totalSupply().mul(supplyGrowth);
           }
 
-          if(tokensToMint > 0)
+          // cap to GDP growth!
+          if(tokensToDistribute > maxTokens)
+          {
+            tokensToDistribute = maxTokens;
+          }
+
+          if(tokensToDistribute > 0)
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            uint devReward = tokensToMint.mul(20) / 100;
-            IMintableERC20(udt).mint(_referrer, tokensToMint - devReward);
-            if(devReward > 0)
+            if (block.chainid > 1)
             {
-              IMintableERC20(udt).mint(owner(), devReward);
+              uint devReward = tokensToDistribute.mul(20) / 100;
+              IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);
+              if(devReward > 0)
+              {
+                IMintableERC20(udt).mint(owner(), devReward);
+              }
+            } else {
+              uint devReward = tokensToDistribute.mul(20) / 100;
+              IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);
+              if(devReward > 0)
+              {
+                IMintableERC20(udt).transfer(owner(), devReward);
+              }
             }
           }
         }
