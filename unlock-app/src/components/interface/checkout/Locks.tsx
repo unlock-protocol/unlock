@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
+import styled from 'styled-components'
 import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
@@ -29,7 +30,7 @@ const LoadLock = ({
 
   useEffect(() => {
     const loadLock = async () => {
-      const lockDetails = await web3Service.getLock(address)
+      const lockDetails = await web3Service.getLock(address, network)
       setLock({
         address,
         ...lockDetails,
@@ -42,7 +43,7 @@ const LoadLock = ({
   }, [address, web3Service])
 
   if (loading || !web3Service) {
-    return <LoadingLock address={address} />
+    return <LoadingLock address={address} network={network} />
   }
   return (
     <Lock
@@ -79,7 +80,7 @@ export const Locks = ({
   setHasMembership,
 }: LocksProps) => {
   return (
-    <div>
+    <Wrapper>
       {lockAddresses.map((address) => {
         if (!focus || focus === address) {
           return (
@@ -96,8 +97,12 @@ export const Locks = ({
           )
         }
       })}
-    </div>
+    </Wrapper>
   )
 }
 
 Locks.defaultProps = {}
+
+const Wrapper = styled.div`
+  margin-bottom: 24px;
+`

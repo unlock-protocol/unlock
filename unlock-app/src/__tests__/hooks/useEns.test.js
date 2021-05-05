@@ -26,7 +26,7 @@ describe('useEns', () => {
           value={{
             networks: {
               1: {
-                readOnlyProvider: 'http://provider',
+                provider: 'http://provider',
               },
             },
           }}

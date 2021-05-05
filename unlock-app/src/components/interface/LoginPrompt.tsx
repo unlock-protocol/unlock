@@ -46,7 +46,7 @@ interface RpcType {
 export const rpcForWalletConnect = (config: any) => {
   const rpc: RpcType = {}
   Object.keys(config.networks).forEach((key) => {
-    rpc[key] = config.networks[key].readOnlyProvider
+    rpc[key] = config.networks[key].provider
   })
   return rpc
 }

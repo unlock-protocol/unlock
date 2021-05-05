@@ -41,7 +41,10 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
     const emailAddress = Array.isArray(query.email)
       ? query.email[0]
       : query.email
-    return <FinishSignUp emailAddress={emailAddress} />
+    if (emailAddress) {
+      return <FinishSignUp emailAddress={emailAddress} />
+    }
+    return <InvalidLink />
   }
 
   if (!verifiedEmail && query.email) {

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-
+const ethers = require('ethers')
 const { WalletService } = require('../../../lib/index')
 const serverIsUp = require('./serverIsUp')
 const Erc1820 = require('./deploy-erc1820')
@@ -24,11 +24,16 @@ const log = (message) => {
 serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
   .then(async () => {
     // Instantiate the walletService
-    const walletService = new WalletService()
+    const walletService = new WalletService({
+      1984: {
+        provider: providerURL,
+      },
+    })
 
     // We connect to a local node and we expect the node to have unlocked accounts
     // which can be used to send transactions
-    await walletService.connect(providerURL)
+    const provider = new ethers.providers.JsonRpcProvider(providerURL)
+    await walletService.connect(provider)
 
     // Deploy ERC1820
     await Erc1820.deploy(

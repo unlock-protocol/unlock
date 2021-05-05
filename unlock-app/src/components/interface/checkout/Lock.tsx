@@ -35,7 +35,11 @@ interface LockProps {
   network: number
 }
 
-const getLockProps = (lock: any, baseCurrencySymbol: string) => {
+const getLockProps = (
+  lock: any,
+  network: number,
+  baseCurrencySymbol: string
+) => {
   return {
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
     formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(
@@ -45,6 +49,7 @@ const getLockProps = (lock: any, baseCurrencySymbol: string) => {
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: lock.name, // TODO: take name override into account
     address: lock.address,
+    network,
   }
 }
 export const Lock = ({
@@ -60,14 +65,14 @@ export const Lock = ({
   const walletService: WalletService = useContext(WalletServiceContext)
 
   const paywallConfig = useContext(PaywallConfigContext)
-  const { account } = useContext(AuthenticationContext)
-  const { purchaseKey, getKeyForAccount } = useLock(lock)
+  const { account, network: walletNetwork } = useContext(AuthenticationContext)
+  const { purchaseKey, getKeyForAccount } = useLock(lock, network)
   const [showMetadataForm, setShowMetadataForm] = useState(false)
   const [captureCreditCard, setCaptureCreditCard] = useState(false)
   const [hasKey, setHasKey] = useState(false)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
-  const { getTokenBalance } = useAccount(account)
+  const { getTokenBalance } = useAccount(account, network)
   const { fiatPrices } = useFiatKeyPrices(lock.address, network)
 
   const { purchaseKey: fiatPurchaseKey } = useFiatPurchaseKey(
@@ -126,9 +131,12 @@ export const Lock = ({
             ? paywallConfig.referrer
             : account
         setPurchasePending(true)
-        purchaseKey(account, referrer, (transaction: any) => {
+        purchaseKey(account, referrer, (hash: string) => {
           alreadyHasKey() // optimistic Unlocking!
-          emitTransactionInfo(transaction)
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
         })
       }
     } catch (error) {
@@ -207,7 +215,7 @@ export const Lock = ({
 
   const lockProps: LockVariations.LockProps = {
     onClick,
-    ...getLockProps(lock, config.networks[network].baseCurrencySymbol),
+    ...getLockProps(lock, network, config.networks[network].baseCurrencySymbol),
   }
   if (activePayment === 'Credit Card') {
     if (fiatPrices.usd) {
@@ -223,6 +231,18 @@ export const Lock = ({
   }
 
   const isSoldOut = numberOfAvailableKeys(lock) === 0
+
+  const userIsOnWrongNetwork = walletNetwork !== network
+
+  // Lock is sold out
+  if (userIsOnWrongNetwork) {
+    return (
+      <LockVariations.WrongNetworkLock
+        walletNetwork={walletNetwork}
+        {...lockProps}
+      />
+    )
+  }
 
   // Lock is sold out
   if (isSoldOut) {

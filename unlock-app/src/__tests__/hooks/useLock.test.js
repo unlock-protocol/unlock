@@ -10,9 +10,13 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionType } from '../../unlockTypes'
+import { AuthenticationContext } from '../../components/interface/Authenticate'
 
 const config = configure()
-const mockWeb3Service = {}
+const network = 1984
+const mockWeb3Service = {
+  getTransaction: jest.fn(),
+}
 const mockWalletService = {}
 const propsLock = {
   address: '0xLock',
@@ -25,6 +29,9 @@ describe('useLock', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(React, 'useContext').mockImplementation((context) => {
+      if (context === AuthenticationContext) {
+        return { network }
+      }
       if (context === Web3ServiceContext) {
         return mockWeb3Service
       }
@@ -42,99 +49,6 @@ describe('useLock', () => {
     const { result } = renderHook(() => useLock(propsLock))
     const { lock } = result.current
     expect(lock).toEqual(propsLock)
-  })
-
-  describe('processTransaction', () => {
-    const setLock = jest.fn(() => {})
-    const hash = '0xtransaction'
-    const defaults = {}
-    const transaction = {
-      hash,
-    }
-
-    beforeEach(() => {
-      mockWeb3Service.getTransaction = jest.fn(() =>
-        Promise.resolve(transaction)
-      )
-    })
-
-    it('should ignore transactions which are not lock creations or price updates', async () => {
-      expect.assertions(2)
-      await processTransaction(
-        mockWeb3Service,
-        config,
-        propsLock,
-        setLock,
-        hash,
-        defaults
-      )
-      expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        hash,
-        defaults
-      )
-      expect(setLock).not.toHaveBeenCalled()
-    })
-
-    it('should process lock creations', async () => {
-      expect.assertions(1)
-      transaction.type = 'LOCK_CREATION'
-      transaction.confirmations = config.requiredConfirmations + 1
-      await processTransaction(
-        mockWeb3Service,
-        config,
-        propsLock,
-        setLock,
-        hash,
-        defaults
-      )
-      expect(setLock).toHaveBeenCalledWith({
-        address: '0xLock',
-        creationTransaction: null,
-        name: 'My Lock',
-      })
-    })
-
-    it('should process price updates', async () => {
-      expect.assertions(1)
-      transaction.type = 'UPDATE_KEY_PRICE'
-      transaction.confirmations = config.requiredConfirmations + 1
-      await processTransaction(
-        mockWeb3Service,
-        config,
-        propsLock,
-        setLock,
-        hash,
-        defaults
-      )
-      expect(setLock).toHaveBeenCalledWith({
-        address: '0xLock',
-        priceUpdateTransaction: null,
-        name: 'My Lock',
-      })
-    })
-
-    it('should poll if the transaction is not fully confirmed', async () => {
-      expect.assertions(2)
-      transaction.type = 'UPDATE_KEY_PRICE'
-      transaction.confirmations = config.requiredConfirmations - 1
-      await processTransaction(
-        mockWeb3Service,
-        config,
-        propsLock,
-        setLock,
-        hash,
-        defaults
-      )
-      expect(setTimeout).toHaveBeenCalledTimes(1)
-      expect(setLock).toHaveBeenCalledWith({
-        address: '0xLock',
-        priceUpdateTransaction: {
-          ...transaction,
-        },
-        name: 'My Lock',
-      })
-      jest.runAllTimers()
-    })
   })
 
   describe('updateKeyPriceOnLock', () => {
@@ -167,30 +81,6 @@ describe('useLock', () => {
         },
         expect.any(Function)
       )
-    })
-    it('should set priceUpdateTransaction on the lock', async () => {
-      expect.assertions(1)
-      mockWalletService.updateKeyPrice = jest.fn((params, callback) => {
-        return callback(null, hash)
-      })
-      await updateKeyPriceOnLock(
-        mockWeb3Service,
-        mockWalletService,
-        config,
-        lock,
-        newKeyPrice,
-        setLock,
-        callback
-      )
-      expect(setLock).toHaveBeenCalledWith({
-        ...lock,
-        priceUpdateTransaction: expect.objectContaining({
-          hash,
-          lock: lock.address,
-          type: TransactionType.UPDATE_KEY_PRICE,
-          confirmations: 0,
-        }),
-      })
     })
     it('should process the transaction to start polling it', async () => {
       expect.assertions(1)

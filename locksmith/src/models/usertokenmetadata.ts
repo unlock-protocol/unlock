@@ -11,4 +11,7 @@ export class UserTokenMetadata extends Model<UserTokenMetadata> {
 
   @Column(DataType.JSON)
   data!: any
+
+  @Column
+  chain!: number
 }
