@@ -13,11 +13,11 @@ describe('usePostmateParent', () => {
   it('returns undefined at first, then a Postmate ChildApi once the handshake completes', async () => {
     expect.assertions(2)
 
-    const { result, wait } = renderHook(() => usePostmateParent())
+    const { result, waitFor } = renderHook(() => usePostmateParent())
 
     expect(result.current).toBeUndefined()
 
-    await wait(() => {
+    await waitFor(() => {
       return !!result.current
     })
 

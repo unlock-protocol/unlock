@@ -36,11 +36,11 @@ describe('useFiatKeyPrices', () => {
 
     fetch.mockResponseOnce(JSON.stringify({ usd: '123.45' }))
 
-    const { result, wait } = renderHook(() =>
+    const { result, waitFor } = renderHook(() =>
       useFiatKeyPrices('0xlockaddress', 1)
     )
 
-    await wait(() => {
+    await waitFor(() => {
       return Object.keys(result.current).length > 0
     })
 
@@ -54,11 +54,11 @@ describe('useFiatKeyPrices', () => {
 
     fetch.mockResponseOnce(JSON.stringify({ usd: '123.45' }))
 
-    const { result, wait } = renderHook(() =>
+    const { result, waitFor } = renderHook(() =>
       useFiatKeyPrices('0xlockaddress', 1)
     )
 
-    await wait(() => {
+    await waitFor(() => {
       return Object.keys(result.current).length > 0
     })
 

@@ -18,9 +18,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a userInfo event when emitUserInfo is called', async () => {
     expect.assertions(1)
 
-    const { result, wait } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
-    await wait(() => result.current.ready)
+    await waitFor(() => result.current.ready)
 
     const userInfo = { address: '0xmyaddress' }
     result.current.emitUserInfo(userInfo)
@@ -31,9 +31,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a closeModal event when emitCloseModal is called', async () => {
     expect.assertions(1)
 
-    const { result, wait } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
-    await wait(() => result.current.ready)
+    await waitFor(() => result.current.ready)
 
     result.current.emitCloseModal()
 
@@ -47,9 +47,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a transactionInfo event when emitTransactionInfo is called', async () => {
     expect.assertions(1)
 
-    const { result, wait } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
-    await wait(() => result.current.ready)
+    await waitFor(() => result.current.ready)
 
     const transactionInfo = { hash: '0xmyhash', lock: '0xmylock' }
     result.current.emitTransactionInfo(transactionInfo)
@@ -63,9 +63,9 @@ describe('useCheckoutCommunication', () => {
   it('emits a methodCall event when emitMethodCall is called', async () => {
     expect.assertions(1)
 
-    const { result, wait } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
-    await wait(() => result.current.ready)
+    await waitFor(() => result.current.ready)
 
     const methodCall = { method: 'net_version', id: 42, params: [] }
     result.current.emitMethodCall(methodCall)
@@ -76,7 +76,7 @@ describe('useCheckoutCommunication', () => {
   it('buffers an arbitrary number of events before the emitter is ready', async () => {
     expect.assertions(4)
 
-    const { result, wait } = renderHook(() => useCheckoutCommunication())
+    const { result, waitFor } = renderHook(() => useCheckoutCommunication())
 
     const userInfo = { address: '0xmyaddress' }
     act(() => result.current.emitUserInfo(userInfo))
@@ -89,7 +89,7 @@ describe('useCheckoutCommunication', () => {
     // events have gone into the buffer, but have not been emitted
     expect(emit).not.toHaveBeenCalled()
 
-    await wait(() => result.current.ready)
+    await waitFor(() => result.current.ready)
 
     // Once the emitter is ready, the buffer is flushed in the order events were received
     expect(emit).toHaveBeenNthCalledWith(1, CheckoutEvents.userInfo, userInfo)

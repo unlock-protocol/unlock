@@ -59,9 +59,11 @@ describe('UseCards', () => {
 
       fetch.mockResponseOnce(JSON.stringify([]))
 
-      const { result, wait } = renderHook(() => UseCards.useCards(userAddress))
+      const { result, waitFor } = renderHook(() =>
+        UseCards.useCards(userAddress)
+      )
 
-      await wait(() => !!result.current.cards)
+      await waitFor(() => !!result.current.cards)
 
       expect(mockWalletService.unformattedSignTypedData).toHaveBeenCalledWith(
         userAddress,
@@ -74,9 +76,11 @@ describe('UseCards', () => {
 
       fetch.mockRejectedValueOnce(new Error('fail'))
 
-      const { result, wait } = renderHook(() => UseCards.useCards(userAddress))
+      const { result, waitFor } = renderHook(() =>
+        UseCards.useCards(userAddress)
+      )
 
-      await wait(() => !!result.current.error)
+      await waitFor(() => !!result.current.error)
 
       expect(result.current.error!.message).toEqual('fail')
     })
