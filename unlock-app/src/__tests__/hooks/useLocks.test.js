@@ -115,8 +115,8 @@ describe('useLocks', () => {
       },
     ]
 
-    const { result, wait } = renderHook(() => useLocks(ownerAddress))
-    await wait(() => {
+    const { result, waitFor } = renderHook(() => useLocks(ownerAddress))
+    await waitFor(() => {
       return result.current.loading === false
     })
     const { loading, locks } = result.current
