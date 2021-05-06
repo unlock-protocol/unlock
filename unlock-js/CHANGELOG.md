@@ -1,5 +1,12 @@
 # Changes
 
+# 0.16.3
+
+- Fixing unlockAddress in walletService
+# 0.16.2
+
+- WalletService sets the unlock contract address based on connected network
+
 # 0.16.1
 
 - Breaking change: support for multichains.

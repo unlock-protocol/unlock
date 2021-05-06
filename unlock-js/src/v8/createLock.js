@@ -54,6 +54,7 @@ export default async function (lock, callback) {
     lockName,
     salt
   )
+
   const hash = await this._handleMethodCall(
     transactionPromise,
     TransactionTypes.LOCK_CREATION

@@ -1,3 +1,4 @@
+import 'jest-fetch-mock'
 import { Enabler } from '../../utils/enableInjectedProvider'
 import { Paywall } from '../../paywall-script/Paywall'
 import * as isUnlockedUtil from '../../utils/isUnlocked'
@@ -23,6 +24,21 @@ const paywallConfig = {
   },
   icon: 'http://com.com/image.tiff',
 }
+
+const testLock = Object.keys(paywallConfig.locks)[0]
+const now = new Date().toDateString()
+const savedTransactions = [
+  {
+    recipient: testLock,
+    transactionHash: '0xtransaction',
+    createdAt: now,
+    updatedAt: now,
+    chain: 0,
+    sender: '0xuser',
+    for: '0xfor',
+    data: '0xdata',
+  },
+]
 
 let paywall: Paywall
 
@@ -119,10 +135,12 @@ describe('Paywall object', () => {
     it('should call isUnlocked and unlockPage the page if it yields true', async () => {
       expect.assertions(2)
       jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce(true)
-      paywall.userAccountAddress = '0xUser'
+      jest
+        .spyOn(optimisticUnlockingUtils, 'getTransactionsForUserAndLocks')
+        .mockImplementationOnce(() => Promise.resolve(savedTransactions))
 
       await paywall.checkKeysAndLock()
-      expect(paywall.unlockPage).toHaveBeenCalled()
+      expect(paywall.unlockPage).toHaveBeenCalledWith([testLock])
       expect(paywall.lockPage).not.toHaveBeenCalled()
     })
 
@@ -201,5 +219,24 @@ describe('Paywall object', () => {
       })
       expect(optimisticUnlockingUtils.willUnlock).not.toHaveBeenCalled()
     })
+  })
+})
+
+describe('Paywall unlockPage', () => {
+  beforeEach(() => {
+    paywall = new Paywall(paywallConfig, networkConfigs)
+  })
+
+  it('should dispatch an event for lock status', async () => {
+    expect.assertions(1)
+    jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+    paywall.unlockPage([testLock])
+    expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
+      paywallScriptUtils.unlockEvents.status,
+      {
+        locks: [testLock],
+        state: 'unlocked',
+      }
+    )
   })
 })

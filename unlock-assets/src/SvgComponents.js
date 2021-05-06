@@ -10,6 +10,7 @@ import Carret from '../build/svg-component/Carret'
 import Blog from '../build/svg-component/Blog'
 import Checkmark from '../build/svg-component/Checkmark'
 import Close from '../build/svg-component/Close'
+import Cloudflare from '../build/svg-component/Cloudflare'
 import Code from '../build/svg-component/Code'
 import CoinbaseWallet from '../build/svg-component/CoinbaseWallet'
 import Cog from '../build/svg-component/Cog'
@@ -22,6 +23,7 @@ import Eth from '../build/svg-component/Eth'
 import Etherscan from '../build/svg-component/Etherscan'
 import EthSub from '../build/svg-component/EthSub'
 import Export from '../build/svg-component/Export'
+import Discord from '../build/svg-component/Discord'
 import Github from '../build/svg-component/Github'
 import Heart from '../build/svg-component/Heart'
 import Key from '../build/svg-component/Key'
@@ -48,6 +50,7 @@ import Bars from '../build/svg-component/Bars'
 import ChevronUp from '../build/svg-component/ChevronUp'
 import Home from '../build/svg-component/Home'
 import Qr from '../build/svg-component/Qr'
+import WalletConnect from '../build/svg-component/WalletConnect'
 import Wordpress from '../build/svg-component/Wordpress'
 
 function wrapViewBox(WrappedComponent, viewBox) {
@@ -65,10 +68,12 @@ export default {
   Carret: wrapViewBox(Carret, '-6 -8 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
+  Cloudflare: wrapViewBox(Cloudflare, '-4 -4 32 32'),
   Code: wrapViewBox(Code, '0 0 24 24'),
   CoinbaseWallet,
   Cog,
   Copy: wrapViewBox(Copy, '0 0 24 24'),
+  Discord: wrapViewBox(Discord, '-4 -4 32 32'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
   Docs: wrapViewBox(Docs, '-6 -5 24 24'),
   Download: wrapViewBox(Download, '0 0 24 24'),
@@ -103,5 +108,6 @@ export default {
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
   Home,
   Qr: wrapViewBox(Qr, '0 0 60 60'),
-  Wordpress: wrapViewBox(Wordpress, '0 0 340 340')
+  WalletConnect: wrapViewBox(WalletConnect, '-3 -6 32 32'),
+  Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
 }
