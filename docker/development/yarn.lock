@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@unlock-protocol/unlock-js@0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.16.0.tgz#bd5c6ede5be6c28be8a483e6e4950fbc9f1ab818"
-  integrity sha512-qkjeYUSd4UK7INOnfxVL8aIjhs44KKFsrT/lJAN130edfGGmIbmxsVx0TMPD4clLNM2smf4zuEORW/RcKag5qQ==
+"@unlock-protocol/unlock-js@0.16.3":
+  version "0.16.3"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.16.3.tgz#f881a6a66ce5c813261906c3ac1d525e1d14eef6"
+  integrity sha512-HNQEnhBDVr7X+NM0/HdDSwxx3gN2YDpQB+puxLSkZdVPRZDc2eRDct+ykepi3WBxwT9380kwiO6khIGIUSdLoQ==
   dependencies:
     cross-fetch "3.1.4"
     ethers "4.0.48"
