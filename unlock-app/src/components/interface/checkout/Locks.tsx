@@ -13,6 +13,7 @@ interface LoadLockProps {
   network: number
   handleFiatAvailable: () => void
   setHasMembership: (state: boolean) => void
+  name: string
 }
 
 const LoadLock = ({
@@ -23,6 +24,7 @@ const LoadLock = ({
   network,
   handleFiatAvailable,
   setHasMembership,
+  name,
 }: LoadLockProps) => {
   const web3Service = useContext(Web3ServiceContext)
   const [loading, setLoading] = useState(true)
@@ -51,6 +53,7 @@ const LoadLock = ({
       handleFiatAvailable={handleFiatAvailable}
       setFocus={setFocus}
       lock={lock}
+      name={name}
       emitTransactionInfo={emitTransactionInfo}
       activePayment={activePayment}
       setHasMembership={setHasMembership}
@@ -59,7 +62,7 @@ const LoadLock = ({
 }
 
 interface LocksProps {
-  lockAddresses: string[]
+  locks: Object[]
   emitTransactionInfo: (info: TransactionInfo) => void
   activePayment: string
   setFocus: (address: string) => void
@@ -69,9 +72,14 @@ interface LocksProps {
   setHasMembership: (state: boolean) => void
 }
 
+interface LockProps {
+  network?: number
+  name?: string
+}
+
 export const Locks = ({
   network,
-  lockAddresses,
+  locks,
   emitTransactionInfo,
   activePayment,
   setFocus,
@@ -81,16 +89,17 @@ export const Locks = ({
 }: LocksProps) => {
   return (
     <Wrapper>
-      {lockAddresses.map((address) => {
+      {Object.entries(locks).map(([address, props]: [string, LockProps]) => {
         if (!focus || focus === address) {
           return (
             <LoadLock
               handleFiatAvailable={handleFiatAvailable}
               setHasMembership={setHasMembership}
-              network={network}
+              network={props?.network || network}
               setFocus={setFocus}
               key={address}
               address={address}
+              name={props?.name}
               emitTransactionInfo={emitTransactionInfo}
               activePayment={activePayment}
             />
