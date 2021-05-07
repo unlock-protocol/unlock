@@ -63,8 +63,6 @@ export class Paywall {
 
   iframe?: Element
 
-  setConfig?: (_config: any) => void
-
   lockStatus?: string
 
   provider?: Enabler
@@ -86,11 +84,11 @@ export class Paywall {
 
   loadCheckoutModal = (config?: PaywallConfig) => {
     if (this.iframe) {
-      // What if we have a custome config?
       this.showIframe()
     } else {
-      this.shakeHands(config)
+      this.shakeHands()
     }
+    this.sendOrBuffer('setConfig', config || this.paywallConfig)
   }
 
   getUserAccountAddress = () => {
@@ -100,11 +98,7 @@ export class Paywall {
   resetConfig = (config: PaywallConfig) => {
     this.paywallConfig = injectProviderInfo(config, this.provider)
     this.checkKeysAndLock()
-    if (this.setConfig) {
-      this.setConfig(this.paywallConfig)
-    } else {
-      this.childCallBuffer.push(['setConfig', this.paywallConfig])
-    }
+    this.sendOrBuffer('setConfig', config || this.paywallConfig)
   }
 
   getState = () => {
@@ -179,9 +173,13 @@ export class Paywall {
 
     // flush the buffer of child calls from before the iframe was ready
     this.childCallBuffer.forEach((bufferedCall) => child.call(...bufferedCall))
+  }
 
-    this.setConfig = (config: any) => {
-      child.call('setConfig', config)
+  sendOrBuffer = (method: string, args: any) => {
+    if (this.child) {
+      this.child.call(method, args)
+    } else {
+      this.childCallBuffer.push([method, args])
     }
   }
 
