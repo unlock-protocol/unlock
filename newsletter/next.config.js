@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
 const dotenv = require('dotenv')
 const path = require('path')
-const withCSS = require('@zeit/next-css')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 
@@ -31,7 +30,7 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
   }
 })
 
-module.exports = withCSS({
+module.exports = {
   publicRuntimeConfig: {
     ...requiredConfigVariables,
   },
@@ -40,4 +39,4 @@ module.exports = withCSS({
       '/': { page: '/' },
     }
   },
-})
+}

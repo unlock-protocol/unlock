@@ -4,8 +4,6 @@ module.exports = {
     'airbnb',
     'eslint:recommended',
     'prettier',
-    'prettier/standard',
-    'prettier/react',
     'plugin:prettier/recommended',
   ],
   env: {
