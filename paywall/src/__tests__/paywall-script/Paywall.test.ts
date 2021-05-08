@@ -23,6 +23,7 @@ const paywallConfig = {
     },
   },
   icon: 'http://com.com/image.tiff',
+  useDelegatedProvider: false,
 }
 
 const testLock = Object.keys(paywallConfig.locks)[0]

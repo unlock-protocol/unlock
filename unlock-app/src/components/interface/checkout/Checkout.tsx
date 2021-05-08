@@ -53,7 +53,6 @@ export const Checkout = ({
 
   const requiredNetwork = paywallConfig.network
   const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
-  const lockAddresses = paywallConfig ? Object.keys(paywallConfig.locks) : []
 
   const changeActivePayment = (type: string) => {
     setActivePayment(type)
@@ -119,7 +118,7 @@ export const Checkout = ({
           network={requiredNetwork}
           setFocus={setFocus}
           focus={focus}
-          lockAddresses={lockAddresses}
+          locks={paywallConfig.locks}
           activePayment={activePayment}
           emitTransactionInfo={handleTransactionInfo}
           setHasMembership={setHasMembership}

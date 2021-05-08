@@ -33,12 +33,14 @@ interface LockProps {
   handleFiatAvailable: () => void
   setHasMembership: (state: boolean) => void
   network: number
+  name: string
 }
 
 const getLockProps = (
   lock: any,
   network: number,
-  baseCurrencySymbol: string
+  baseCurrencySymbol: string,
+  name: string
 ) => {
   return {
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
@@ -47,7 +49,7 @@ const getLockProps = (
       baseCurrencySymbol
     )}`,
     formattedKeysAvailable: lockKeysAvailable(lock),
-    name: lock.name, // TODO: take name override into account
+    name: name || lock.name,
     address: lock.address,
     network,
   }
@@ -60,6 +62,7 @@ export const Lock = ({
   setFocus,
   handleFiatAvailable,
   setHasMembership,
+  name,
 }: LockProps) => {
   const config = useContext(ConfigContext)
   const walletService: WalletService = useContext(WalletServiceContext)
@@ -215,7 +218,12 @@ export const Lock = ({
 
   const lockProps: LockVariations.LockProps = {
     onClick,
-    ...getLockProps(lock, network, config.networks[network].baseCurrencySymbol),
+    ...getLockProps(
+      lock,
+      network,
+      config.networks[network].baseCurrencySymbol,
+      name
+    ),
   }
   if (activePayment === 'Credit Card') {
     if (fiatPrices.usd) {
