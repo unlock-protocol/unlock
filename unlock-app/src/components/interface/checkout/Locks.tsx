@@ -89,23 +89,25 @@ export const Locks = ({
 }: LocksProps) => {
   return (
     <Wrapper>
-      {Object.entries(locks).map(([address, props]: [string, LockProps]) => {
-        if (!focus || focus === address) {
-          return (
-            <LoadLock
-              handleFiatAvailable={handleFiatAvailable}
-              setHasMembership={setHasMembership}
-              network={props?.network || network}
-              setFocus={setFocus}
-              key={address}
-              address={address}
-              name={props?.name}
-              emitTransactionInfo={emitTransactionInfo}
-              activePayment={activePayment}
-            />
-          )
+      {Object.entries(locks).map(
+        ([address, lockProps]: [string, LockProps]) => {
+          if (!focus || focus === address) {
+            return (
+              <LoadLock
+                handleFiatAvailable={handleFiatAvailable}
+                setHasMembership={setHasMembership}
+                network={lockProps?.network || network}
+                setFocus={setFocus}
+                key={address}
+                address={address}
+                name={lockProps?.name || ''}
+                emitTransactionInfo={emitTransactionInfo}
+                activePayment={activePayment}
+              />
+            )
+          }
         }
-      })}
+      )}
     </Wrapper>
   )
 }
