@@ -63,8 +63,6 @@ export class Paywall {
 
   iframe?: Element
 
-  setConfig?: (_config: any) => void
-
   lockStatus?: string
 
   provider?: Enabler
@@ -84,12 +82,13 @@ export class Paywall {
     this.loadCache()
   }
 
-  loadCheckoutModal = () => {
+  loadCheckoutModal = (config?: PaywallConfig) => {
     if (this.iframe) {
       this.showIframe()
     } else {
       this.shakeHands()
     }
+    this.sendOrBuffer('setConfig', config || this.paywallConfig)
   }
 
   getUserAccountAddress = () => {
@@ -99,11 +98,7 @@ export class Paywall {
   resetConfig = (config: PaywallConfig) => {
     this.paywallConfig = injectProviderInfo(config, this.provider)
     this.checkKeysAndLock()
-    if (this.setConfig) {
-      this.setConfig(this.paywallConfig)
-    } else {
-      this.childCallBuffer.push(['setConfig', this.paywallConfig])
-    }
+    this.sendOrBuffer('setConfig', config || this.paywallConfig)
   }
 
   getState = () => {
@@ -154,8 +149,12 @@ export class Paywall {
     return this.lockPage()
   }
 
-  shakeHands = async () => {
-    const { unlockAppUrl } = this.networkConfigs[this.paywallConfig.network]
+  shakeHands = async (config?: PaywallConfig) => {
+    if (!config) {
+      config = this.paywallConfig
+    }
+
+    const { unlockAppUrl } = this.networkConfigs[config.network]
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
@@ -174,9 +173,13 @@ export class Paywall {
 
     // flush the buffer of child calls from before the iframe was ready
     this.childCallBuffer.forEach((bufferedCall) => child.call(...bufferedCall))
+  }
 
-    this.setConfig = (config: any) => {
-      child.call('setConfig', config)
+  sendOrBuffer = (method: string, args: any) => {
+    if (this.child) {
+      this.child.call(method, args)
+    } else {
+      this.childCallBuffer.push([method, args])
     }
   }
 
