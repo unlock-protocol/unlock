@@ -41,7 +41,7 @@ fi
 # For example: UNLOCK_APP_NETLIFY_STAGING_SITE_ID will be passed as SITE_ID
 UPCASE_SERVICE="${SERVICE^^}"
 TARGET_PREFIX="${UPCASE_SERVICE//-/_}_${TARGET^^}_$ENV_PREFIX"
-ENV_VARS=`env | grep $TARGET_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
+ENV_VARS=`env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
 
 NPM_SCRIPT="yarn deploy"
 

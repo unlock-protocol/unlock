@@ -16,7 +16,7 @@ export UNLOCK_ENV=test
 # UNLOCK_APP_X will be passed to the container for tests in unlock_app as X.
 UPCASE_SERVICE="${SERVICE^^}"
 ENV_VARS_PREFIX="${UPCASE_SERVICE//-/_}_"
-ENV_VARS=`env | grep $ENV_VARS_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g"`
+ENV_VARS=`env | grep "^$ENV_VARS_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g"`
 
 # We cannot rely on docker compose to build the images since we have a base :(
 # First we need to build the base
