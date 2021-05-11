@@ -5,7 +5,6 @@ const fs = require('fs')
 const { join, resolve } = require('path')
 const { promisify } = require('util')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
-const paywallConfig = require('./src/paywallConfig')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -75,20 +74,8 @@ module.exports = {
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
       '/blog': { page: '/blog' },
-      '/members': { page: '/members' },
     }
 
     return addBlogPagesToPageObject(resolve(dir, '..'), pages)
-  },
-  async redirects() {
-    return [
-      {
-        source: '/members',
-        destination: `https://app.unlock-protocol.com/checkout?paywallConfig=${JSON.stringify(
-          paywallConfig
-        )}`,
-        permanent: true,
-      },
-    ]
   },
 }

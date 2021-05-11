@@ -4,22 +4,26 @@ import styled from 'styled-components'
 
 export const MembershipUnlocked = () => (
   <MembersBar>
-    Thanks for being a member! Did you know? Your key
-{' '}
+    Thanks for being a member! Did you know? Your key{' '}
     <span role="img" aria-label="click">
       🔑
-    </span>
-{' '}
-    is an Ethereum non fungible token!
-{' '}
+    </span>{' '}
+    is an Ethereum{' '}
+    <a
+      href="https://app.unlock-protocol.com/keychain"
+      target="_blank"
+      rel="noreferrer"
+    >
+      non fungible token
+    </a>
+    !{' '}
   </MembersBar>
 )
 
 export const MembershipLocked = ({ becomeMember }) => (
   <MembersBar>
     <Button onClick={becomeMember}>
-      Try Unlock, become a member!
-{' '}
+      Try Unlock, become a member!{' '}
       <span role="img" aria-label="click">
         ↗️
       </span>

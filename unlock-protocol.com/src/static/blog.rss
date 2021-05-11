@@ -4,11 +4,11 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 11 May 2021 22:10:06 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 13 May 2021 19:10:33 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
             <title><![CDATA[Multichain support in paywall]]></title>
-            <description><![CDATA[You can now embed locks from multiple chain in the same application!]]></description>
+            <description><![CDATA[You can now embed locks from multiple chain in the same application! Also, you can customize the configuration for the checkout modal, independently of the paywall configuration!]]></description>
             <link>https://unlock-protocol.com/blog/multichain-support</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/multichain-support</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>

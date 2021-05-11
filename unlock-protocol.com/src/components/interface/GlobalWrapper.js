@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import ReactGA from 'react-ga'
 import Intercom from 'react-intercom'
 import getConfig from 'next/config'
@@ -31,8 +32,6 @@ export const GlobalWrapper = ({ children }) => {
       document.body.appendChild(script)
 
       window.addEventListener('unlockProtocol.status', (event) => {
-        console.log(event)
-
         if (event?.detail?.state === 'locked') {
           setIsMember('no')
         } else if (event?.detail?.state === 'unlocked') {
@@ -94,4 +93,8 @@ The Unlock team
       <Intercom appID={config.intercomAppId} />
     </MembershipContext.Provider>
   )
+}
+
+GlobalWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
 }

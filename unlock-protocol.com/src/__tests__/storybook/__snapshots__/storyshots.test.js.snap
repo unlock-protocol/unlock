@@ -4,6 +4,7 @@ exports[`Storyshots Blog pages Blog index page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
     .c4 {
   fill: var(--brand);
 }
@@ -988,6 +989,51 @@ Look at us! We're posting on our very own blog! How exciting!
         />
       </div>
     </div>
+    @media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+<script />
   </body>,
   "container": <div>
     <link
@@ -2484,6 +2530,7 @@ are intentionally not generated from this file date, in case we want to override
         />
       </div>
     </div>
+    <script />
   </body>,
   "container": <div>
     <link
@@ -3005,6 +3052,8 @@ exports[`Storyshots BlogIndex Blog index with multiple posts 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c8 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
@@ -3500,6 +3549,8 @@ exports[`Storyshots BlogIndex Blog index with no posts 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c0 {
   margin: auto;
   width: 100%;
@@ -3604,6 +3655,8 @@ exports[`Storyshots BlogIndex Blog index with one post 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c8 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
@@ -3899,6 +3952,8 @@ exports[`Storyshots BlogPost Blog post from markdown with author and subtitle 1`
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c7 {
   margin-top: 50px;
   border: none;
@@ -4529,6 +4584,8 @@ exports[`Storyshots BlogPost Blog post from markdown with author but no subtitle
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c6 {
   margin-top: 50px;
   border: none;
@@ -5142,6 +5199,8 @@ exports[`Storyshots BlogPost Blog post from markdown with no subtitle or author 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c6 {
   margin-top: 50px;
   border: none;
@@ -5755,6 +5814,8 @@ exports[`Storyshots BlogPost Blog post from markdown with scripts 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c7 {
   margin-top: 50px;
   border: none;
@@ -6389,6 +6450,8 @@ exports[`Storyshots BlogPost Blog post from markdown with subtitle but no author
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c7 {
   margin-top: 50px;
   border: none;
@@ -7019,6 +7082,10 @@ exports[`Storyshots Buttons/Layout Buttons About 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -7185,6 +7252,10 @@ exports[`Storyshots Buttons/Layout Buttons Bars 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--grey);
   cursor: pointer;
@@ -7316,6 +7387,10 @@ exports[`Storyshots Buttons/Layout Buttons Blog 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -7492,6 +7567,10 @@ exports[`Storyshots Buttons/Layout Buttons ChevronUp 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--grey);
   cursor: pointer;
@@ -7627,6 +7706,10 @@ exports[`Storyshots Buttons/Layout Buttons Close Large 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--grey);
   cursor: pointer;
@@ -7762,6 +7845,10 @@ exports[`Storyshots Buttons/Layout Buttons Close Small 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--grey);
   cursor: pointer;
@@ -7897,6 +7984,10 @@ exports[`Storyshots Buttons/Layout Buttons Github 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -8055,6 +8146,10 @@ exports[`Storyshots Buttons/Layout Buttons Jobs 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -8217,6 +8312,10 @@ exports[`Storyshots Buttons/Layout Buttons Newsletter 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -8379,6 +8478,10 @@ exports[`Storyshots Buttons/Layout Buttons Telegram 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -8541,6 +8644,10 @@ exports[`Storyshots Buttons/Layout Buttons Twitter 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c1 {
   background-color: var(--grey);
   cursor: pointer;
@@ -8703,6 +8810,9 @@ exports[`Storyshots Footer the footer 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c2 {
   background-color: var(--grey);
   cursor: pointer;
@@ -9128,6 +9238,9 @@ exports[`Storyshots Header the header for a content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c1 {
   fill: var(--brand);
 }
@@ -9813,6 +9926,9 @@ exports[`Storyshots Header the header with a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c3 {
   background-color: var(--brand);
   height: 30px;
@@ -10547,6 +10663,9 @@ exports[`Storyshots Header the header without a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c3 {
   background-color: var(--brand);
   height: 30px;
@@ -11281,6 +11400,9 @@ exports[`Storyshots HomeContent Demo loading 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c2 {
   width: 50%;
 }
@@ -11725,7 +11847,18 @@ exports[`Storyshots HomeContent Demo locked 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    <script />
+    <script />
+    <script />
+    .c2 {
+  width: 50%;
+}
+
+.c2 svg {
+  fill: var(--silver);
+}
+
+.c0 {
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
@@ -11749,39 +11882,7 @@ Object {
   justify-items: center;
 }
 
-.c2 {
-  margin: 10px;
-  border: 2px solid var(--green);
-  border-radius: 4px;
-  width: 180px;
-  cursor: pointer;
-}
-
 .c3 {
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 39px;
-  margin: 10px;
-  color: var(--slate);
-}
-
-.c4 {
-  font-size: 20px;
-  line-height: 26px;
-  font-weight: 300;
-  color: var(--grey);
-  margin: 7px;
-}
-
-.c5 {
-  background: var(--green);
-  color: var(--white);
-  font-size: 20px;
-  line-height: 26px;
-  padding: 5px;
-}
-
-.c6 {
   padding: 20px;
   font-weight: 300;
   font-size: 20px;
@@ -11808,25 +11909,157 @@ Object {
           <div
             class="c2"
           >
-            <div
-              class="c3"
+            <svg
+              viewBox="0 0 32 32"
             >
-              $0.00
-            </div>
-            <div
-              class="c4"
-            >
-              1 Month
-            </div>
-            <div
-              class="c5"
-            >
-              Purchase
-            </div>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
           </div>
         </div>
         <div
-          class="c6"
+          class="c3"
         >
           Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
         </div>
@@ -11845,23 +12078,155 @@ Object {
         class="sc-1tn4840-3 iWAvks"
       >
         <div
-          class="sc-1tn4840-4 bsRgqN"
+          class="sc-1tn4840-0 UJGrO"
         >
-          <div
-            class="sc-1tn4840-5 gSqLcA"
+          <svg
+            viewBox="0 0 32 32"
           >
-            $0.00
-          </div>
-          <div
-            class="sc-1tn4840-6 jjbFoW"
-          >
-            1 Month
-          </div>
-          <div
-            class="sc-1tn4840-7 lnIRLY"
-          >
-            Purchase
-          </div>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+            >
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
         </div>
       </div>
       <div
@@ -11929,15 +12294,15 @@ exports[`Storyshots HomeContent Demo unlocked 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c2 {
-  background-color: var(--green);
-  width: 88px;
-  height: 88px;
-  border-radius: 44px;
+  width: 50%;
 }
 
 .c2 svg {
-  fill: white;
+  fill: var(--silver);
 }
 
 .c0 {
@@ -11992,20 +12357,158 @@ Object {
             class="c2"
           >
             <svg
-              viewBox="0 0 24 24"
+              viewBox="0 0 32 32"
             >
-              <path
-                clip-rule="evenodd"
-                d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
-                fill-rule="evenodd"
-              />
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
             </svg>
           </div>
         </div>
         <div
           class="c3"
         >
-          Thanks for being an Unlock Member! Your wallet now includes your unique Unlock key!
+          Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
         </div>
       </section>
     </div>
@@ -12022,23 +12525,161 @@ Object {
         class="sc-1tn4840-3 iWAvks"
       >
         <div
-          class="sc-1tn4840-1 fergEV"
+          class="sc-1tn4840-0 UJGrO"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 32 32"
           >
-            <path
-              clip-rule="evenodd"
-              d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
-              fill-rule="evenodd"
-            />
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+            >
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
           </svg>
         </div>
       </div>
       <div
         class="sc-1tn4840-8 fsPScR"
       >
-        Thanks for being an Unlock Member! Your wallet now includes your unique Unlock key!
+        Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
       </div>
     </section>
   </div>,
@@ -12100,6 +12741,8 @@ exports[`Storyshots HomeContent Homepage content 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
     .c4 {
   fill: var(--brand);
 }
@@ -13563,6 +14206,115 @@ Object {
         />
       </div>
     </div>
+    @media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+<script />
   </body>,
   "container": <div>
     <link
@@ -14457,6 +15209,9 @@ exports[`Storyshots HomepageButton Accepted terms 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c2 {
   display: inline-block;
   width: 120px;
@@ -14703,6 +15458,9 @@ exports[`Storyshots HomepageButton Default state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c0 {
   display: inline-block;
   width: 120px;
@@ -14850,6 +15608,9 @@ exports[`Storyshots Layout the layout for the content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
     .c4 {
   fill: var(--brand);
 }
@@ -15499,6 +16260,43 @@ Object {
         />
       </div>
     </div>
+    @media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+<script />
   </body>,
   "container": <div>
     <link
@@ -15914,6 +16712,10 @@ exports[`Storyshots Logo default size 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--brand);
   height: 56px;
@@ -16018,6 +16820,10 @@ exports[`Storyshots Logo large size 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--brand);
   height: 120px;
@@ -16122,6 +16928,10 @@ exports[`Storyshots Logo small size 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   background-color: var(--brand);
   height: 28px;
@@ -16226,6 +17036,10 @@ exports[`Storyshots Membership locked state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -16352,6 +17166,10 @@ exports[`Storyshots Membership unknown state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -16423,6 +17241,10 @@ exports[`Storyshots Membership unlocked state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -16458,7 +17280,16 @@ Object {
           🔑
         </span>
          
-        is an Ethereum non fungible token!
+        is an Ethereum
+         
+        <a
+          href="https://app.unlock-protocol.com/keychain"
+          rel="noreferrer"
+          target="_blank"
+        >
+          non fungible token
+        </a>
+        !
          
       </div>
     </div>
@@ -16480,7 +17311,16 @@ Object {
         🔑
       </span>
        
-      is an Ethereum non fungible token!
+      is an Ethereum
+       
+      <a
+        href="https://app.unlock-protocol.com/keychain"
+        rel="noreferrer"
+        target="_blank"
+      >
+        non fungible token
+      </a>
+      !
        
     </div>
   </div>,
@@ -16542,6 +17382,10 @@ exports[`Storyshots SVG Icons 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
+    <script />
+    <script />
+    <script />
+    <script />
     .c0 {
   display: grid;
   grid-template-columns: repeat(auto-fit,200px);
