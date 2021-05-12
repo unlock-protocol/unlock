@@ -1,12 +1,4 @@
-interface NetworkConfig {
-  readOnlyProvider: string
-  locksmithUri: string
-  unlockAppUrl: string
-}
-
-export interface NetworkConfigs {
-  [networkId: string]: NetworkConfig
-}
+import { NetworkConfigs } from '../unlockTypes'
 
 declare var PAYWALL_URL: string
 
