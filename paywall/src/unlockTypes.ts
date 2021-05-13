@@ -23,6 +23,15 @@ export enum TransactionStatus {
 }
 /* eslint-enable no-unused-vars */
 
+interface NetworkConfig {
+  readOnlyProvider: string
+  locksmithUri: string
+  unlockAppUrl: string
+}
+export interface NetworkConfigs {
+  [networkId: string]: NetworkConfig
+}
+
 export interface Transaction {
   status: TransactionStatus
   confirmations: number
@@ -72,7 +81,8 @@ export interface PaywallConfigLocks {
 }
 
 export interface PaywallConfigLock {
-  name: string
+  name?: string
+  network?: number
 }
 
 export interface MetadataInput {
@@ -92,7 +102,7 @@ export interface PaywallConfig {
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
-  network: string
+  network: number
 }
 
 export enum KeyStatus {

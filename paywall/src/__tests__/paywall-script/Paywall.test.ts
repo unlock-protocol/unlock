@@ -8,7 +8,7 @@ import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 import { networkConfigs } from '../../paywall-script/networkConfigs'
 
 const paywallConfig = {
-  network: '1984', // test network
+  network: 1984, // test network
   callToAction: {
     default: 'default',
     expired: 'expired',
@@ -133,9 +133,9 @@ describe('Paywall object', () => {
       expect(paywall.lockPage).not.toHaveBeenCalled()
     })
 
-    it('should call isUnlocked and unlockPage the page if it yields true', async () => {
+    it('should call isUnlocked and unlockPage the page if it yields a lock address', async () => {
       expect.assertions(2)
-      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce(true)
+      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([testLock])
       jest
         .spyOn(optimisticUnlockingUtils, 'getTransactionsForUserAndLocks')
         .mockImplementationOnce(() => Promise.resolve(savedTransactions))
@@ -145,9 +145,9 @@ describe('Paywall object', () => {
       expect(paywall.lockPage).not.toHaveBeenCalled()
     })
 
-    it('should call isUnlocked and lockPage the page if it yields false', async () => {
+    it('should call isUnlocked and lockPage the page if it yields no lock address', async () => {
       expect.assertions(2)
-      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce(false)
+      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([])
       paywall.userAccountAddress = '0xUser'
 
       await paywall.checkKeysAndLock()

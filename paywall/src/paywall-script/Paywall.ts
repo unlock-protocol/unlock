@@ -1,19 +1,16 @@
 import Postmate from 'postmate'
-import { PaywallConfig } from 'src/unlockTypes'
+import { PaywallConfig, NetworkConfigs } from 'src/unlockTypes'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from '../utils/localStorage'
 import { willUnlock } from '../utils/optimisticUnlocking'
 import { isUnlocked } from '../utils/isUnlocked'
-import { getUnlockedLocks } from '../utils/getUnlockedLocks'
 import {
   Enabler,
   getProvider,
   Web3Window,
   enableInjectedProvider,
 } from '../utils/enableInjectedProvider'
-
-import { NetworkConfigs } from './networkConfigs'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
@@ -122,29 +119,19 @@ export class Paywall {
 
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
-    const { readOnlyProvider, locksmithUri } = this.networkConfigs[
-      this.paywallConfig.network
-    ]
+    // For each lock.
     if (!this.userAccountAddress) {
       return
     }
     this.lockStatus = undefined
-    if (
-      await isUnlocked(this.userAccountAddress, this.paywallConfig, {
-        readOnlyProvider,
-        locksmithUri,
-      })
-    ) {
-      const locks = await getUnlockedLocks(
-        this.userAccountAddress,
-        this.paywallConfig,
-        {
-          readOnlyProvider,
-          locksmithUri,
-        }
-      )
+    const unlockedLocks = await isUnlocked(
+      this.userAccountAddress,
+      this.paywallConfig,
+      this.networkConfigs
+    )
 
-      return this.unlockPage(locks)
+    if (unlockedLocks.length) {
+      return this.unlockPage(unlockedLocks)
     }
     return this.lockPage()
   }
