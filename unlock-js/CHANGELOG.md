@@ -1,5 +1,14 @@
 # Changes
 
+# 0.17.0
+
+- Adding ability to grant key granter status
+- Adding abiility to grant keys
+- Adding ability to cancel key by key owner
+- Adding ability to cancel key by lock owner
+- Adding ability to transfer key by key owner
+- Adding ability to retrieve key mananger for key
+
 # 0.16.3
 
 - Fixing unlockAddress in walletService
