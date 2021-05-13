@@ -19,8 +19,6 @@ We didn't want to create parallel ecosystems of "haves" and "have-nots" on our p
 
 The signup process is quite simple. You can sign up from a supported checkout page, or on our main site. After entering your email, you will receive a confirmation email from us with a link to finish setting up the account with a password. After that, you can set up a payment method through Stripe so that you can make your key purchases!
 
-Try it out from this [dummy publisher page](https://paywall.unlock-protocol.com/newdemo/?lock=0xa4DAF4712EC7D37B15E2b8ad090710fa4dFb8977&unlockUserAccounts=true), but make sure you do so from a web browser which does not have a web3 wallet already ;)
-
 ## In The Longer Term
 
 We're not fans of lock-in, so don't think that this is an attempt to get hooks into naive users. When a user account is ready to "graduate," the account holder can eject the account and take control of it themselves, retaining all their keys and transaction history.

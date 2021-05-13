@@ -1,10 +1,11 @@
 /* eslint react/no-danger: 0 */
 
 import React from 'react'
-import Document, { Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import Fonts from '../theme/fonts'
 import { globalStyle } from '../theme/globalStyle'
+import paywallConfig from '../paywallConfig'
 
 export default class MyDocument extends Document {
   static getInitialProps({ renderPage }) {
@@ -23,28 +24,15 @@ export default class MyDocument extends Document {
     }
     const unlockConfigTag = {
       __html: `
-      var unlockProtocolConfig = {
-        network: 1,
-        locks: {
-          '0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F': {
-            name: 'Unlock Community Members',
-          }
-        },
-        icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
-        callToAction: {
-          default:
-            'Unlock lets you easily offer paid memberships to your website or application. On this website, members can leave comments and participate in discussion. It is free to try! Just click "purchase" below.',
-        },
-      }`,
+      var unlockProtocolConfig = ${JSON.stringify(paywallConfig)}`,
     }
     return { ...page, styleTags, unlockTag, unlockConfigTag }
   }
 
   render() {
     return (
-      <html lang="en">
+      <Html lang="en">
         <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Fonts />
           {/* TODO remove line below when https://github.com/styled-components/styled-components/issues/2962 has been fixed */}
           <style>{globalStyle}</style>
@@ -58,7 +46,7 @@ export default class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     )
   }
 }

@@ -30,7 +30,7 @@ const generateBlogFeed = (basedir) => {
   })
 
   // Ensure posts are sorted in reverse chronological order for the index
-  postFeed.sort(function (a, b) {
+  postFeed.sort((a, b) => {
     return Date.parse(b.publishDate) - Date.parse(a.publishDate)
   })
 

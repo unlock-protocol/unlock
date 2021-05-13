@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
-import React from 'react'
+import React, { useContext } from 'react'
 import Svg from './svg'
 
 import Media from '../../theme/media'
+import { MembershipContext } from '../../membershipContext'
 
 const Pending = () => (
   <Lock>
@@ -36,7 +37,9 @@ const AMember = () => (
   </Lock>
 )
 
-export const Demo = ({ becomeMember, isMember }) => {
+export const Demo = () => {
+  const { isMember, becomeMember } = useContext(MembershipContext)
+
   let details =
     'Become an Unlock member, experience the power of Unlock and enjoy some special member only features.'
   if (isMember === 'yes') {
@@ -54,10 +57,7 @@ export const Demo = ({ becomeMember, isMember }) => {
   )
 }
 
-Demo.propTypes = {
-  becomeMember: PropTypes.func.isRequired,
-  isMember: PropTypes.string.isRequired,
-}
+Demo.propTypes = {}
 
 export default Demo
 

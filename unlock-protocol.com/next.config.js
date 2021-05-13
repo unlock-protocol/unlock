@@ -40,7 +40,6 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
     )
   }
 })
-
 module.exports = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {

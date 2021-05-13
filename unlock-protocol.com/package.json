@@ -80,6 +80,7 @@
   "scripts": {
     "predev": "yarn build && yarn build-blog",
     "dev": "next dev -p 3002 src",
+    "next": "next",
     "build": "next build src",
     "build-blog": "node scripts/build-blog.js",
     "predeploy": "yarn build && yarn build-blog",
