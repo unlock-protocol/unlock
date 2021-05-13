@@ -1,7 +1,7 @@
-{  
+{
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "unlockprotocol/locksmith:latest"
+      "Name": "unlockprotocol/locksmith:master"
     },
     "Ports": [
       {

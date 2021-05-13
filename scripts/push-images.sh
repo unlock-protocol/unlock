@@ -7,16 +7,15 @@ set -e
 # This should only run on $CIRCLE_BRANCH merges
 
 IMAGES=( $@ )
-TIMESTAMP=`date +%s`
+TIMESTAMP=`date +%s` # TODO: remove? Do we need this?
 
-IMAGE_TAG_LIST=( $CIRCLE_BRANCH latest $TIMESTAMP)
+IMAGE_TAG_LIST=( $CIRCLE_BRANCH latest $TIMESTAMP $CIRCLE_SHA1)
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 
 for IMAGE_NAME in "${IMAGES[@]}"
 do
-
 
   for IMAGE_TAG in "${IMAGE_TAG_LIST[@]}"
   do

@@ -7,8 +7,16 @@ const {
   locksmithUri,
 } = __ENVIRONMENT_VARIABLES__ /* eslint no-undef: 0 */
 
+const networkConfigs = {
+  1984: {
+    readOnlyProvider,
+    locksmithUri,
+  },
+}
+
 const userAccountAddress = '0xUser'
 const paywallConfig = {
+  network: 1984,
   callToAction: {
     default: 'default',
     expired: 'expired',
@@ -29,17 +37,20 @@ const paywallConfig = {
 describe('isUnlocked', () => {
   describe('when the user has a valid key to any of the locks', () => {
     it('should check each locks', async () => {
-      expect.assertions(4)
+      expect.assertions(6)
       const futureTime = new Date().getTime() / 1000 + 50000
       const spy = jest
         .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
         .mockResolvedValue(futureTime)
 
-      const unlocked = await isUnlocked(userAccountAddress, paywallConfig, {
-        readOnlyProvider,
-        locksmithUri,
-      })
-      expect(unlocked).toBe(true)
+      const unlocked = await isUnlocked(
+        userAccountAddress,
+        paywallConfig,
+        networkConfigs
+      )
+      expect(unlocked.length).toBe(2)
+      expect(unlocked[0]).toBe('0x1234567890123456789012345678901234567890')
+      expect(unlocked[1]).toBe('0x7C5af12cFcbAAd7893351B41a6DF251d67fD310D')
 
       expect(spy).toHaveBeenCalledTimes(2)
       expect(spy).toHaveBeenNthCalledWith(
@@ -66,7 +77,7 @@ describe('isUnlocked', () => {
     })
 
     describe('when the config is pessimistic', () => {
-      it('should return false even if the user has a pending transaction', async () => {
+      it('should return an empty even if the user has a pending transaction', async () => {
         expect.assertions(2)
         const spy = jest
           .spyOn(optimisticUtil, 'optimisticUnlocking')
@@ -80,52 +91,66 @@ describe('isUnlocked', () => {
         const unlocked = await isUnlocked(
           userAccountAddress,
           pesimisticConfig,
-          {
-            readOnlyProvider,
-            locksmithUri,
-          }
+          networkConfigs
         )
-        expect(unlocked).toBe(false)
+        expect(unlocked.length).toBe(0)
         expect(spy).not.toHaveBeenCalled()
       })
     })
 
     describe('when the user has a pending transaction for which we should be optimistic', () => {
       it('should return true', async () => {
-        expect.assertions(2)
+        expect.assertions(5)
         const spy = jest
           .spyOn(optimisticUtil, 'optimisticUnlocking')
           .mockResolvedValue(true)
 
-        const unlocked = await isUnlocked(userAccountAddress, paywallConfig, {
-          readOnlyProvider,
-          locksmithUri,
-        })
-        expect(unlocked).toBe(true)
+        const unlocked = await isUnlocked(
+          userAccountAddress,
+          paywallConfig,
+          networkConfigs
+        )
+        expect(unlocked.length).toBe(2)
+        expect(unlocked[0]).toBe('0x1234567890123456789012345678901234567890')
+        expect(unlocked[1]).toBe('0x7C5af12cFcbAAd7893351B41a6DF251d67fD310D')
+
         expect(spy).toHaveBeenCalledWith(
           readOnlyProvider,
           locksmithUri,
-          Object.keys(paywallConfig.locks),
+          ['0x1234567890123456789012345678901234567890'],
+          userAccountAddress
+        )
+        expect(spy).toHaveBeenCalledWith(
+          readOnlyProvider,
+          locksmithUri,
+          ['0x7C5af12cFcbAAd7893351B41a6DF251d67fD310D'],
           userAccountAddress
         )
       })
     })
     describe('when the user does not have an optimistic pending transaction', () => {
-      it('should return false', async () => {
-        expect.assertions(2)
+      it('should return an empty array', async () => {
+        expect.assertions(3)
         const spy = jest
           .spyOn(optimisticUtil, 'optimisticUnlocking')
           .mockResolvedValue(false)
 
-        const unlocked = await isUnlocked(userAccountAddress, paywallConfig, {
-          readOnlyProvider,
-          locksmithUri,
-        })
-        expect(unlocked).toBe(false)
+        const unlocked = await isUnlocked(
+          userAccountAddress,
+          paywallConfig,
+          networkConfigs
+        )
+        expect(unlocked.length).toBe(0)
         expect(spy).toHaveBeenCalledWith(
           readOnlyProvider,
           locksmithUri,
-          Object.keys(paywallConfig.locks),
+          ['0x1234567890123456789012345678901234567890'],
+          userAccountAddress
+        )
+        expect(spy).toHaveBeenCalledWith(
+          readOnlyProvider,
+          locksmithUri,
+          ['0x7C5af12cFcbAAd7893351B41a6DF251d67fD310D'],
           userAccountAddress
         )
       })

@@ -264,7 +264,7 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
-  deploy-locksmith-beanstalk-production:
+  deploy-locksmith-beanstalk:
     docker:
       - image: circleci/python:3.9.4
     environment:
@@ -277,32 +277,8 @@ jobs:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
-          name: Installing deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python-pip python3-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-      - run:
-          name: Set GIT_COMMIT_DESC
-          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
-      - run:
-          name: Deploy Production to Beanstalk
-          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC" "$STRIPE_SECRET" "$PURCHASER_CREDENTIALS" "$WEB3_PROVIDER_HOST" "$UNLOCK_CONTRACT_ADDRESS" "$GRAPHQL_BASE_URL" "$METADATA_HOST" 1
-
-  deploy-locksmith-beanstalk-staging:
-    docker:
-      - image: circleci/python:3.9.4
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
       - run:
           name: Installing deployment dependencies
           working_directory: /
@@ -315,8 +291,8 @@ jobs:
           name: Set GIT_COMMIT_DESC
           command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
       - run:
-          name: Deploy Staging to Beanstalk
-          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$LOCKSMITH_STAGING_ENVIRONMENT" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC" "$LOCKSMITH_STAGING_STRIPE_SECRET" "$LOCKSMITH_STAGING_PURCHASER_CREDENTIALS" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_UNLOCK_CONTRACT_ADDRESS" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$LOCKSMITH_STAGING_METADATA_HOST" 4
+          name: Deploy Locksmith to Beanstalk
+          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh
 
   deploy-nudge-beanstalk-staging:
     docker:
@@ -584,16 +560,11 @@ workflows:
               only: master
           requires:
             - promote-unlock-core-image
-      - deploy-locksmith-beanstalk-production:
+      - deploy-locksmith-beanstalk:
           filters:
             branches:
               only: production
-          requires:
-            - promote-locksmith-image
-      - deploy-locksmith-beanstalk-staging:
-          filters:
-            branches:
-              only: master
+                - production
           requires:
             - promote-locksmith-image
       - deploy-wedlocks-netlify:
