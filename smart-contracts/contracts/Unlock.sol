@@ -257,7 +257,7 @@ contract Unlock is
             maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(1 / (1 - (valueInETH / grossNetworkProduct)) / 2);
           } else {
             // Mainnet: we mint new token using log curve
-            maxTokens = IMintableERC20(udt).totalSupply().mul((valueInETH / grossNetworkProduct) / 2);
+            maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
           }
 
           // cap to GDP growth!
@@ -269,7 +269,7 @@ contract Unlock is
           if(tokensToDistribute > 0)
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            if (block.chainid > 1)
+            if (chainId > 1)
             {
               uint devReward = tokensToDistribute.mul(20) / 100;
               IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);
