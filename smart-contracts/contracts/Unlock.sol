@@ -250,17 +250,14 @@ contract Unlock is
           uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
-          uint gdpGrowth = valueInETH / grossNetworkProduct;
           uint maxTokens = 0;
           if (chainId > 1)
           {
             // non mainnet: we distribute tokens using asymptotic curve
-            uint rewardShare = 1 / (1-gdpGrowth) / 2;
-            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(rewardShare);
+            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(1 / (1 - (valueInETH / grossNetworkProduct)) / 2);
           } else {
-            uint supplyGrowth = gdpGrowth / 2;
             // Mainnet: we mint new token using log curve
-            maxTokens = IMintableERC20(udt).totalSupply().mul(supplyGrowth);
+            maxTokens = IMintableERC20(udt).totalSupply().mul((valueInETH / grossNetworkProduct) / 2);
           }
 
           // cap to GDP growth!
