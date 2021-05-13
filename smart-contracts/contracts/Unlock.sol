@@ -96,6 +96,9 @@ contract Unlock is
   // The approx amount of gas required to purchase a key
   uint public estimatedGasForPurchase;
 
+  // Blockchain ID the network id on which this version of Unlock is operating
+  uint public chainId;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -107,7 +110,8 @@ contract Unlock is
     address weth,
     uint estimatedGasForPurchase,
     string globalTokenSymbol,
-    string globalTokenURI
+    string globalTokenURI,
+    uint chainId
   );
 
   event SetLockTemplate(
@@ -248,7 +252,7 @@ contract Unlock is
           // or tokensToDistribute is capped by network GDP growth
           uint gdpGrowth = valueInETH / grossNetworkProduct;
           uint maxTokens = 0;
-          if (block.chainid > 1)
+          if (chainId > 1)
           {
             // non mainnet: we distribute tokens using asymptotic curve
             uint rewardShare = 1 / (1-gdpGrowth) / 2;
@@ -324,7 +328,8 @@ contract Unlock is
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
-    string calldata _URI
+    string calldata _URI,
+    uint _chainId
   ) external
     onlyOwner
   {
@@ -335,7 +340,9 @@ contract Unlock is
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
 
-    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI);
+    chainId = _chainId;
+
+    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI, _chainId);
   }
 
   /**
