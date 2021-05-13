@@ -52,7 +52,7 @@ ButtonToCreateLock.defaultProps = {
 }
 
 export const DashboardContent = () => {
-  const { account } = useContext(AuthenticationContext)
+  const { account, network } = useContext(AuthenticationContext)
 
   const [formIsVisible, setFormIsVisible] = useState(false)
   const toggleForm = () => {
@@ -85,6 +85,21 @@ export const DashboardContent = () => {
               To create locks, please use a desktop computer.
             </Warning>
           </Phone>
+
+          {network === 1 && (
+            <Warning>
+              Gas prices are high on Ethereum&apos;s main network. Consider
+              deploying your lock to any of{' '}
+              <a
+                target="_blank"
+                href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-networks-are-supported"
+                rel="noreferrer"
+              >
+                Unlock&apos;s supported networks
+              </a>
+              , such as xDAI.
+            </Warning>
+          )}
 
           <CreatorLocks hideForm={hideForm} formIsVisible={formIsVisible} />
         </BrowserOnly>
