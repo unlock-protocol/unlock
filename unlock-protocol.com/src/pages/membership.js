@@ -18,7 +18,7 @@ const MembershipLoader = () => {
   return <p />
 }
 
-const Members = () => {
+const Membership = () => {
   return (
     <GlobalWrapper>
       <MembershipLoader />
@@ -26,8 +26,8 @@ const Members = () => {
   )
 }
 
-Members.getInitialProps = async () => {
+Membership.getInitialProps = async () => {
   return {}
 }
 
-export default Members
+export default Membership
