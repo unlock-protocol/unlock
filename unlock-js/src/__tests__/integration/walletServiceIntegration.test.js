@@ -554,6 +554,40 @@ describe('Wallet Service Integration', () => {
           })
         })
 
+        describe('cancelAndRefund', () => {
+          let key
+          let keyOwner
+
+          beforeAll(async (done) => {
+            keyOwner = accounts[0]
+            await walletService.purchaseKey({
+              lockAddress,
+            })
+            setTimeout(async () => {
+              key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                1984
+              )
+              done()
+            }, 5000)
+          })
+
+          it('should have a key and allow the member to cancel it and get a refund', async () => {
+            expect.assertions(2)
+            expect(key.expiration > new Date().getTime() / 1000).toBe(true)
+            await walletService.cancelAndRefund({
+              lockAddress,
+            })
+            const afterCancellation = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyOwner,
+              1984
+            )
+            expect(afterCancellation.expiration < key.expiration).toBe(true)
+          })
+        })
+
         if (['v7', 'v8'].indexOf(versionName) > -1) {
           const keyGranter = '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0'
           describe('keyGranter', () => {

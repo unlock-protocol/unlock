@@ -11,6 +11,7 @@ import isLockManager from './isLockManager'
 import isKeyGranter from './isKeyGranter'
 import addKeyGranter from './addKeyGranter'
 import expireAndRefundFor from './expireAndRefundFor'
+import cancelAndRefund from './cancelAndRefund'
 
 export default {
   version: 'v8',
@@ -28,4 +29,5 @@ export default {
   isKeyGranter,
   addKeyGranter,
   expireAndRefundFor,
+  cancelAndRefund,
 }

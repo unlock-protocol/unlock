@@ -281,7 +281,7 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Grants permission to grant keys to address
+   * Expire and refunds (optional) a key by lock manager
    * @param {*} params
    * @param {*} callback
    */
@@ -293,6 +293,20 @@ export default class WalletService extends UnlockService {
       throw new Error('Lock version not supported')
     }
     return version.expireAndRefundFor.bind(this)(params, callback)
+  }
+
+  /**
+   * Cancels a membership and receive a refund (called by key manager)
+   * @param {*} params
+   * @param {*} callback
+   */
+  async cancelAndRefund(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.cancelAndRefund) {
+      throw new Error('Lock version not supported')
+    }
+    return version.cancelAndRefund.bind(this)(params, callback)
   }
 
   /**

@@ -7,7 +7,7 @@
 - Adding ability to cancel key by key owner
 - Adding ability to cancel key by lock owner
 - Adding ability to transfer key by key owner
-- Adding ability to retrieve key mananger for key
+- Adding ability to retrieve key manager for key
 
 # 0.16.3
 

@@ -143,16 +143,19 @@ export default class Web3Service extends UnlockService {
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
-   * TODO: return the tokenId here because this is probably useful in some context
-   * TODO: add a method to retrieve a token by its id
    */
   async getKeyByLockForOwner(lock, owner, network) {
     const lockContract = await this.getLockContract(
       lock,
       this.providerForNetwork(network)
     )
-    const expiration = await this._getKeyByLockForOwner(lockContract, owner)
+    const expiration = await this.getKeyExpirationByLockForOwner(
+      lockContract,
+      owner
+    )
+    const tokenId = await this.getTokenIdForOwner(lockContract, owner)
     const keyPayload = {
+      tokenId,
       lock,
       owner,
       expiration,
@@ -161,13 +164,13 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * Returns the key to the lock by the account.
+   * Returns the key expiration to the lock by the account.
    * @private
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  async _getKeyByLockForOwner(lockContract, owner) {
+  async getKeyExpirationByLockForOwner(lockContract, owner) {
     try {
       const expiration = await lockContract.keyExpirationTimestampFor(owner)
       if (
@@ -179,6 +182,22 @@ export default class Web3Service extends UnlockService {
         return 0
       }
       return parseInt(expiration, 10)
+    } catch (error) {
+      return 0
+    }
+  }
+
+  /**
+   * Returns the key expiration to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   * @return Promise<>
+   */
+  async getTokenIdForOwner(lockContract, owner) {
+    try {
+      const tokenId = await lockContract.getTokenIdFor(owner)
+      return parseInt(tokenId, 10)
     } catch (error) {
       return 0
     }
