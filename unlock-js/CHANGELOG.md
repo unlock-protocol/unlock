@@ -3,7 +3,7 @@
 # 0.17.0
 
 - Adding ability to grant key granter status
-- Adding abiility to grant keys
+- Adding ability to check if address is key granter
 - Adding ability to cancel key by key owner
 - Adding ability to cancel key by lock owner
 - Adding ability to transfer key by key owner

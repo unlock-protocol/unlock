@@ -1,6 +1,6 @@
-export default async function ({ lockAddress, account }, callback) {
+export default async function ({ lockAddress, keyGranter }, callback) {
   const lockContract = await this.getLockContract(lockAddress)
-  const transactionPromise = lockContract.addKeyGranter(account)
+  const transactionPromise = lockContract.addKeyGranter(keyGranter)
 
   const hash = await this._handleMethodCall(transactionPromise)
 

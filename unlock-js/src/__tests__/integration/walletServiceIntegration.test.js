@@ -553,6 +553,74 @@ describe('Wallet Service Integration', () => {
             }
           })
         })
+
+        if (['v7', 'v8'].indexOf(versionName) > -1) {
+          const keyGranter = '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0'
+          describe('keyGranter', () => {
+            it('should not have key granter role for random address', async () => {
+              expect.assertions(1)
+              const isKeyManager = await web3Service.isKeyGranter(
+                lockAddress,
+                keyGranter,
+                1984
+              )
+              expect(isKeyManager).toBe(false)
+            })
+            it('should be able to grant the keyManager role', async () => {
+              expect.assertions(2)
+              const hasGrantedKeyGranter = await walletService.addKeyGranter({
+                lockAddress,
+                keyGranter,
+              })
+              expect(hasGrantedKeyGranter).toBe(true)
+              const isKeyManager = await web3Service.isKeyGranter(
+                lockAddress,
+                keyGranter,
+                1984
+              )
+              expect(isKeyManager).toBe(true)
+            })
+          })
+
+          describe('expireAndRefundFor', () => {
+            let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
+            let expiration
+            beforeAll(async () => {
+              // First let's get a user to buy a membership
+              await walletService.purchaseKey({
+                lockAddress,
+                owner: keyOwner,
+              })
+            })
+
+            it('should have set an expiration for this member in the future', async () => {
+              expect.assertions(1)
+              const key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                1984
+              )
+              expiration = key.expiration
+
+              expect(expiration > new Date().getTime() / 1000).toBe(true) // in the future!
+            })
+
+            it('should expire the membership', async () => {
+              expect.assertions(1)
+              await walletService.expireAndRefundFor({
+                lockAddress,
+                keyOwner,
+              })
+              const key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                1984
+              )
+
+              expect(key.expiration < expiration).toBe(true)
+            })
+          })
+        }
       })
     }
   })

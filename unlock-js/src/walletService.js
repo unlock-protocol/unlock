@@ -272,12 +272,27 @@ export default class WalletService extends UnlockService {
    */
   async addKeyGranter(params = {}, callback) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
-    if (!params.account) throw new Error('Missing account')
-    const version = await this.addKeyGranter(params.lockAddress)
+    if (!params.keyGranter) throw new Error('Missing account')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
     if (!version.addKeyGranter) {
       throw new Error('Lock version not supported')
     }
     return version.addKeyGranter.bind(this)(params, callback)
+  }
+
+  /**
+   * Grants permission to grant keys to address
+   * @param {*} params
+   * @param {*} callback
+   */
+  async expireAndRefundFor(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.keyOwner) throw new Error('Missing keyOwner')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.expireAndRefundFor) {
+      throw new Error('Lock version not supported')
+    }
+    return version.expireAndRefundFor.bind(this)(params, callback)
   }
 
   /**

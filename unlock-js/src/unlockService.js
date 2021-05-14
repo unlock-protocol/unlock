@@ -79,7 +79,9 @@ export default class UnlockService {
       return v8
     }
 
-    throw new Error('Contract not deployed, or unknown version')
+    throw new Error(
+      `Contract ${address} not deployed, or unknown version ${version}`
+    )
   }
 
   async unlockContractAbiVersion(address, provider) {

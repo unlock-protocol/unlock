@@ -225,4 +225,19 @@ export default class Web3Service extends UnlockService {
     )
     return utils.fromDecimal(balance, decimals)
   }
+
+  /**
+   * Yields true if an address is key granter on a lock
+   */
+  async isKeyGranter(lockAddress, address, network) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return version.isKeyGranter.bind(this)(
+      lockAddress,
+      address,
+      this.providerForNetwork(network)
+    )
+  }
 }
