@@ -78,6 +78,7 @@ export default class WalletService extends UnlockService {
    * @param {Function} a standard node callback that accepts the transaction hash
    */
   // eslint-disable-next-line no-underscore-dangle
+  // TODO: Do we need this???
   async _handleMethodCall(methodCall) {
     const transaction = await methodCall
     if (transaction.hash) {
@@ -262,6 +263,21 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKey.bind(this)(params, callback)
+  }
+
+  /**
+   * Grants permission to grant keys to address
+   * @param {*} params
+   * @param {*} callback
+   */
+  async addKeyGranter(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.account) throw new Error('Missing account')
+    const version = await this.addKeyGranter(params.lockAddress)
+    if (!version.addKeyGranter) {
+      throw new Error('Lock version not supported')
+    }
+    return version.addKeyGranter.bind(this)(params, callback)
   }
 
   /**
