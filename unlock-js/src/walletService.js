@@ -310,6 +310,21 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Shares a key by transfering time from key to another key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async shareKey(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.recipient) throw new Error('Missing recipient')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.shareKey) {
+      throw new Error('Lock version not supported')
+    }
+    return version.shareKey.bind(this)(params, callback)
+  }
+
+  /**
    * Grants a key to an address
    * @param {function} callback : callback invoked with the transaction hash
    */

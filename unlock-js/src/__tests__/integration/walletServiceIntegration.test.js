@@ -636,7 +636,7 @@ describe('Wallet Service Integration', () => {
               )
               expiration = key.expiration
 
-              expect(expiration > new Date().getTime() / 1000).toBe(true) // in the future!
+              expect(expiration).toBeGreaterThan(new Date().getTime() / 1000)
             })
 
             it('should expire the membership', async () => {
@@ -651,7 +651,60 @@ describe('Wallet Service Integration', () => {
                 1984
               )
 
-              expect(key.expiration < expiration).toBe(true)
+              expect(expiration).toBeGreaterThan(key.expiration)
+            })
+          })
+        }
+
+        if (['v6', 'v7', 'v8'].indexOf(versionName) > -1) {
+          describe('shareKey', () => {
+            it('should allow a member to share their key with another one', async () => {
+              expect.assertions(4)
+              const tokenId = await walletService.purchaseKey({
+                lockAddress,
+              })
+
+              // Let's now get the duration for that key!
+              const { expiration } = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                accounts[0],
+                1984
+              )
+              const now = parseInt(new Date().getTime() / 1000)
+              expect(expiration).toBeGreaterThan(now)
+
+              const recipient = '0x6524dbb97462ac3919866b8fbb22bf181d1d4113'
+              const recipientDurationBefore = await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                recipient,
+                1984
+              )
+
+              expect(recipientDurationBefore).toBe(0)
+
+              // Let's now share the key
+              await walletService.shareKey({
+                lockAddress,
+                tokenId,
+                recipient,
+                duration: expiration - now, // share all of the time!
+              })
+
+              const newExpiration = await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                accounts[0],
+                1984
+              )
+
+              expect(newExpiration).toBeLessThan(expiration)
+
+              expect(
+                await web3Service.getKeyExpirationByLockForOwner(
+                  lockAddress,
+                  recipient,
+                  1984
+                )
+              ).toBeGreaterThan(recipientDurationBefore)
             })
           })
         }

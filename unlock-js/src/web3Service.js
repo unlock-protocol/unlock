@@ -145,15 +145,12 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    */
   async getKeyByLockForOwner(lock, owner, network) {
-    const lockContract = await this.getLockContract(
-      lock,
-      this.providerForNetwork(network)
-    )
     const expiration = await this.getKeyExpirationByLockForOwner(
-      lockContract,
-      owner
+      lock,
+      owner,
+      network
     )
-    const tokenId = await this.getTokenIdForOwner(lockContract, owner)
+    const tokenId = await this.getTokenIdForOwner(lock, owner, network)
     const keyPayload = {
       tokenId,
       lock,
@@ -170,7 +167,12 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  async getKeyExpirationByLockForOwner(lockContract, owner) {
+  async getKeyExpirationByLockForOwner(lock, owner, network) {
+    const lockContract = await this.getLockContract(
+      lock,
+      this.providerForNetwork(network)
+    )
+
     try {
       const expiration = await lockContract.keyExpirationTimestampFor(owner)
       if (
@@ -194,7 +196,12 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  async getTokenIdForOwner(lockContract, owner) {
+  async getTokenIdForOwner(lock, owner, network) {
+    const lockContract = await this.getLockContract(
+      lock,
+      this.providerForNetwork(network)
+    )
+
     try {
       const tokenId = await lockContract.getTokenIdFor(owner)
       return parseInt(tokenId, 10)

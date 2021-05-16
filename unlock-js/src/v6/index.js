@@ -9,6 +9,7 @@ import initializeTemplate from './initializeTemplate'
 import configureUnlock from './configureUnlock'
 import isLockManager from './isLockManager'
 import cancelAndRefund from './cancelAndRefund'
+import shareKey from './shareKey'
 
 export default {
   version: 'v6',
@@ -24,4 +25,5 @@ export default {
   configureUnlock,
   isLockManager,
   cancelAndRefund,
+  shareKey,
 }
