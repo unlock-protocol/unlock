@@ -51,7 +51,7 @@ storiesOf('Checkout', module)
       },
     })
   })
-  .add('with a lock with a logo', () => {
+  .add('with a lock with a logo and a default CTA', () => {
     return render({
       icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
       callToAction: {},
@@ -116,6 +116,16 @@ storiesOf('Checkout', module)
         },
         '0x93169480cE4871691547d3e774aae41E4335e082': {
           network: 100,
+        },
+      },
+    })
+  })
+  .add('with a membershi for which the user never had a membership', () => {
+    return render({
+      callToAction: {},
+      locks: {
+        '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0': {
+          network: 4,
         },
       },
     })
