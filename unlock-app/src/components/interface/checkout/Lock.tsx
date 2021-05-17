@@ -31,7 +31,7 @@ interface LockProps {
   activePayment: string
   setFocus: (address: string) => void
   handleFiatAvailable: () => void
-  setHasMembership: (state: boolean) => void
+  setHasKey: (state: boolean) => void
   network: number
   name: string
 }
@@ -61,7 +61,7 @@ export const Lock = ({
   activePayment,
   setFocus,
   handleFiatAvailable,
-  setHasMembership,
+  setHasKey,
   name,
 }: LockProps) => {
   const config = useContext(ConfigContext)
@@ -72,7 +72,7 @@ export const Lock = ({
   const { purchaseKey, getKeyForAccount } = useLock(lock, network)
   const [showMetadataForm, setShowMetadataForm] = useState(false)
   const [captureCreditCard, setCaptureCreditCard] = useState(false)
-  const [hasKey, setHasKey] = useState(false)
+  const [hasValidKey, setHasValidKey] = useState(false)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const { getTokenBalance } = useAccount(account, network)
@@ -88,9 +88,12 @@ export const Lock = ({
     }
   }, [fiatPrices.usd])
 
-  const alreadyHasKey = () => {
-    setHasKey(true)
-    setHasMembership(true)
+  const alreadyHasKey = (key: any) => {
+    const now = new Date().getTime() / 1000
+    if (key && key.expiration > now) {
+      setHasValidKey(true)
+    }
+    setHasKey(key)
   }
 
   // TODO: combine all of these into a single call so that we can show the loading state?
@@ -98,9 +101,8 @@ export const Lock = ({
     if (account) {
       const getKey = async () => {
         const key = await getKeyForAccount(account)
-        const now = new Date().getTime() / 1000
-        if (key && key.expiration > now) {
-          alreadyHasKey()
+        if (key) {
+          alreadyHasKey(key)
         }
       }
       getKey()
@@ -126,7 +128,11 @@ export const Lock = ({
           // Here we would want to make sure the user agreed by showing the confirmation screen?
           setPurchasePending(true)
           await fiatPurchaseKey(lock.address, account)
-          alreadyHasKey() // optimistic Unlocking!
+          alreadyHasKey({
+            lock: lock.address,
+            owner: account,
+            expiration: Infinity, // Hum. What do we do?
+          }) // optimistic Unlocking!
         }
       } else {
         const referrer =
@@ -135,7 +141,11 @@ export const Lock = ({
             : account
         setPurchasePending(true)
         purchaseKey(account, referrer, (hash: string) => {
-          alreadyHasKey() // optimistic Unlocking!
+          alreadyHasKey({
+            lock: lock.address,
+            owner: account,
+            expiration: Infinity, // Hum. What do we do?
+          }) // optimistic Unlocking!
           emitTransactionInfo({
             lock: lock.address,
             hash,
@@ -257,7 +267,7 @@ export const Lock = ({
     return <LockVariations.SoldOutLock {...lockProps} />
   }
 
-  if (hasKey) {
+  if (hasValidKey) {
     return <LockVariations.ConfirmedLock {...lockProps} />
   }
 
