@@ -132,6 +132,9 @@ export default class Web3Service extends UnlockService {
       lock,
       this.providerForNetwork(network)
     )
+    if (!version.isLockManager) {
+      throw new Error('Lock version not supported')
+    }
     return version.isLockManager.bind(this)(
       lock,
       manager,
@@ -260,9 +263,34 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+    if (!version.isKeyGranter) {
+      throw new Error('Lock version not supported')
+    }
+
     return version.isKeyGranter.bind(this)(
       lockAddress,
       address,
+      this.providerForNetwork(network)
+    )
+  }
+
+  /**
+   * Retrieves the key manager for a key
+   * @param {*} lockAddress
+   * @param {*} tokenId
+   * @param {*} network
+   */
+  async keyManagerOf(lockAddress, tokenId, network) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if (!version.keyManagerOf) {
+      throw new Error('Lock version not supported')
+    }
+    return version.keyManagerOf.bind(this)(
+      lockAddress,
+      tokenId,
       this.providerForNetwork(network)
     )
   }

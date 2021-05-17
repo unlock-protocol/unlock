@@ -18,21 +18,27 @@ export default async function (
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
+  if (!owner) {
+    owner = await this.signer.getAddress()
+  }
   if (!erc20Address || erc20Address !== ZERO) {
     erc20Address = await lockContract.tokenAddress()
   }
+  let actualAmount
 
   // decimals could be 0!
-  if (decimals == null) {
+  if (!keyPrice) {
+    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+    actualAmount = await lockContract.keyPrice()
+  } else if (decimals == null) {
     // get the decimals from the ERC20 contract or default to 18
     if (erc20Address && erc20Address !== ZERO) {
       decimals = await getErc20Decimals(erc20Address, this.provider)
     } else {
       decimals = 18
     }
+    actualAmount = utils.toDecimal(keyPrice, decimals)
   }
-
-  const actualAmount = utils.toDecimal(keyPrice, decimals)
 
   const purchaseForOptions = {
     gasLimit: GAS_AMOUNTS.purchaseFor,

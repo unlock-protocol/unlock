@@ -298,6 +298,18 @@ describe('Wallet Service Integration', () => {
                 parseInt(lock.expirationDuration + new Date().getTime() / 1000)
             ).toBeLessThan(60)
           })
+
+          if (['v4', 'v6'].indexOf(versionName) == -1) {
+            it('should have set the right keyManager', async () => {
+              expect.assertions(1)
+              const keyManager = await web3Service.keyManagerOf(
+                lockAddress,
+                key.tokenId,
+                1984
+              )
+              expect(keyManager).toBe(accounts[0])
+            })
+          }
         })
 
         describe('purchaseKey', () => {
@@ -588,7 +600,7 @@ describe('Wallet Service Integration', () => {
           })
         })
 
-        if (['v7', 'v8'].indexOf(versionName) > -1) {
+        if (['v4', 'v6'].indexOf(versionName) === -1) {
           const keyGranter = '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0'
           describe('keyGranter', () => {
             it('should not have key granter role for random address', async () => {
@@ -600,6 +612,7 @@ describe('Wallet Service Integration', () => {
               )
               expect(isKeyManager).toBe(false)
             })
+
             it('should be able to grant the keyManager role', async () => {
               expect.assertions(2)
               const hasGrantedKeyGranter = await walletService.addKeyGranter({
@@ -656,7 +669,7 @@ describe('Wallet Service Integration', () => {
           })
         }
 
-        if (['v6', 'v7', 'v8'].indexOf(versionName) > -1) {
+        if (['v4'].indexOf(versionName) == -1) {
           describe('shareKey', () => {
             it('should allow a member to share their key with another one', async () => {
               expect.assertions(4)

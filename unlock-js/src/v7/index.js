@@ -13,6 +13,7 @@ import addKeyGranter from './addKeyGranter'
 import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
+import keyManagerOf from './keyManagerOf'
 
 export default {
   version: 'v7',
@@ -32,4 +33,5 @@ export default {
   expireAndRefundFor,
   cancelAndRefund,
   shareKey,
+  keyManagerOf,
 }
