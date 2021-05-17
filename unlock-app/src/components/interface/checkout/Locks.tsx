@@ -12,7 +12,7 @@ interface LoadLockProps {
   setFocus: (address: string) => void
   network: number
   handleFiatAvailable: () => void
-  setHasMembership: (state: boolean) => void
+  setHasKey: (key: any) => void
   name: string
 }
 
@@ -23,7 +23,7 @@ const LoadLock = ({
   activePayment,
   network,
   handleFiatAvailable,
-  setHasMembership,
+  setHasKey,
   name,
 }: LoadLockProps) => {
   const web3Service = useContext(Web3ServiceContext)
@@ -56,7 +56,7 @@ const LoadLock = ({
       name={name}
       emitTransactionInfo={emitTransactionInfo}
       activePayment={activePayment}
-      setHasMembership={setHasMembership}
+      setHasKey={setHasKey}
     />
   )
 }
@@ -69,7 +69,7 @@ interface LocksProps {
   focus: string
   network: number
   handleFiatAvailable: () => void
-  setHasMembership: (state: boolean) => void
+  setHasKey: (key: any) => void
 }
 
 interface LockProps {
@@ -85,7 +85,7 @@ export const Locks = ({
   setFocus,
   focus,
   handleFiatAvailable,
-  setHasMembership,
+  setHasKey,
 }: LocksProps) => {
   return (
     <Wrapper>
@@ -95,7 +95,7 @@ export const Locks = ({
             return (
               <LoadLock
                 handleFiatAvailable={handleFiatAvailable}
-                setHasMembership={setHasMembership}
+                setHasKey={setHasKey}
                 network={lockProps?.network || network}
                 setFocus={setFocus}
                 key={address}
