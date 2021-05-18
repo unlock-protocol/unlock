@@ -67,7 +67,7 @@ describe('Dispatcher', () => {
       it('returns the Lock details', async () => {
         expect.assertions(1)
 
-        const lockInformation = await dispatcher.retrieveLock(lockAddress)
+        const lockInformation = await dispatcher.retrieveLock(lockAddress, 1984)
         expect(lockInformation).toEqual(expect.objectContaining(standardLock))
       })
     })
@@ -78,7 +78,7 @@ describe('Dispatcher', () => {
         mockWeb3Service.getLock = jest.fn().mockRejectedValue('foo')
 
         try {
-          await dispatcher.retrieveLock('0x222')
+          await dispatcher.retrieveLock('0x222', 1984)
         } catch (error) {
           expect(error).toEqual(
             new Error('Unable to retrieve Lock information')
@@ -94,7 +94,7 @@ describe('Dispatcher', () => {
         expect.assertions(2)
         dispatcher.retrieveLock = jest.fn().mockResolvedValue(standardLock)
 
-        const result = await dispatcher.purchase(lockAddress, recipient)
+        const result = await dispatcher.purchase(lockAddress, recipient, 1984)
         expect(mockWalletService.purchaseKey).toHaveBeenCalledWith({
           lockAddress,
           keyPrice: '0.01',
@@ -117,9 +117,9 @@ describe('Dispatcher', () => {
           outstandingKeys: 10,
           owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         })
-        expect(dispatcher.purchase(lockAddress, recipient)).rejects.toThrow(
-          'No Available Keys.'
-        )
+        expect(
+          dispatcher.purchase(lockAddress, recipient, 1984)
+        ).rejects.toThrow('No Available Keys.')
       })
     })
   })
@@ -128,7 +128,7 @@ describe('Dispatcher', () => {
     it('should call grant keys on the key granter', async () => {
       expect.assertions(1)
 
-      dispatcher.grantKey(lockAddress, recipient)
+      await dispatcher.grantKey(lockAddress, recipient, 1984)
       expect(mockWalletService.grantKey).toBeCalledWith({
         lockAddress: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
         recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',

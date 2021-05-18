@@ -3,7 +3,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import PriceConversion from './priceConversion'
 import { getPrice } from './ethPrice'
-
+import networks from '../networks'
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
 const stripePercentage = 0.029
@@ -12,24 +12,25 @@ const ZERO = ethers.constants.AddressZero
 export default class KeyPricer {
   readOnlyEthereumService: any
 
-  constructor(providerURL: string, unlockContractAddress: string) {
-    this.readOnlyEthereumService = new Web3Service({
-      readOnlyProvider: providerURL,
-      unlockAddress: unlockContractAddress,
-      blockTime: 0,
-      requiredConfirmations: 0,
-    })
+  constructor() {
+    this.readOnlyEthereumService = new Web3Service(networks)
   }
 
-  async keyPrice(lockAddress: string): Promise<number> {
-    const lock = await this.readOnlyEthereumService.getLock(lockAddress)
+  async keyPrice(lockAddress: string, network: number): Promise<number> {
+    const lock = await this.readOnlyEthereumService.getLock(
+      lockAddress,
+      network
+    )
     return Math.round(Number(lock.keyPrice) * 100)
   }
 
-  async keyPriceUSD(lockAddress: string): Promise<number> {
+  async keyPriceUSD(lockAddress: string, network: number): Promise<number> {
     let symbol: string
 
-    const lock = await this.readOnlyEthereumService.getLock(lockAddress)
+    const lock = await this.readOnlyEthereumService.getLock(
+      lockAddress,
+      network
+    )
     if (lock.tokenAddress == ZERO) {
       symbol = 'ETH'
     } else {
@@ -69,8 +70,11 @@ export default class KeyPricer {
     return 50
   }
 
-  async generate(lockAddress: string): Promise<ItemizedKeyPrice> {
-    const keyPrice = await this.keyPrice(lockAddress)
+  async generate(
+    lockAddress: string,
+    network: number
+  ): Promise<ItemizedKeyPrice> {
+    const keyPrice = await this.keyPrice(lockAddress, network)
     const gasFee = await this.gasFee()
     const unlockServiceFee = this.unlockServiceFee()
     return {

@@ -15,7 +15,6 @@ namespace PurchaseController {
     const { expiry } = req.body.message.purchaseRequest
     const { lock } = req.body.message.purchaseRequest
     const purchaser = req.body.message.purchaseRequest.recipient
-
     if (expired(expiry)) {
       return res.sendStatus(412)
     }
@@ -27,7 +26,8 @@ namespace PurchaseController {
       lock,
       config.purchaserCredentails,
       config.web3ProviderHost,
-      purchaser
+      purchaser,
+      req.chain
     )
 
     return res.send({
@@ -48,7 +48,7 @@ namespace PurchaseController {
       return res.sendStatus(412)
     }
 
-    const currentPrice = await keyPricer().keyPriceUSD(lock)
+    const currentPrice = await keyPricer().keyPriceUSD(lock, req.chain)
     const validRequestPrice = PriceRange.within({
       requestPrice: requestedPurchaseAmount,
       currentPrice,
@@ -61,7 +61,8 @@ namespace PurchaseController {
         config.purchaserCredentails,
         config.web3ProviderHost,
         purchaser,
-        'connectedStripeAccount' // TODO: replace with value coming from lock metadata, saved by one of the lock managers
+        'connectedStripeAccount', // TODO: replace with value coming from lock metadata, saved by one of the lock managers
+        req.chain
       )
 
       return res.send({
@@ -73,15 +74,11 @@ namespace PurchaseController {
   }
 
   const keyPricer = (): KeyPricer => {
-    return new KeyPricer(config.web3ProviderHost, config.unlockContractAddress)
+    return new KeyPricer()
   }
 
   const processor = (): PaymentProcessor => {
-    return new PaymentProcessor(
-      config.stripeSecret,
-      config.web3ProviderHost,
-      config.unlockContractAddress
-    )
+    return new PaymentProcessor(config.stripeSecret)
   }
 
   const expired = (expiry: number): Boolean => {

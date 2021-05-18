@@ -23,13 +23,9 @@ export class PaymentProcessor {
 
   keyPricer: KeyPricer
 
-  constructor(
-    apiKey: string,
-    providerURL: string,
-    unlockContractAddress: string
-  ) {
+  constructor(apiKey: string) {
     this.stripe = new Stripe(apiKey)
-    this.keyPricer = new KeyPricer(providerURL, unlockContractAddress)
+    this.keyPricer = new KeyPricer()
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -85,14 +81,18 @@ export class PaymentProcessor {
    * @param publicKey
    * @param purchaseDetails
    */
-  async chargeUser(publicKey: ethereumAddress, lock: ethereumAddress) {
+  async chargeUser(
+    publicKey: ethereumAddress,
+    lock: ethereumAddress,
+    network: number
+  ) {
     // eslint-disable-next-line no-useless-catch
     try {
       const stripeCustomerId = await getStripeCustomerIdForAddress(publicKey)
 
       if (stripeCustomerId) {
         const charge = await this.stripe.charges.create({
-          amount: await this.price(lock), // we should be careful here and charge at most 35
+          amount: await this.price(lock, network), // we should be careful here and charge at most 35
           currency: 'USD',
           customer: stripeCustomerId,
           metadata: { lock, publicKey },
@@ -115,7 +115,8 @@ export class PaymentProcessor {
     publicKey: ethereumAddress,
     lock: ethereumAddress,
     // eslint-disable-next-line no-unused-vars
-    connectedStripeId: string
+    connectedStripeId: string,
+    network: number
   ) {
     // eslint-disable-next-line no-useless-catch
     try {
@@ -123,7 +124,7 @@ export class PaymentProcessor {
 
       if (stripeCustomerId) {
         const keyPriceUSD: number =
-          Math.ceil(await this.keyPricer.keyPriceUSD(lock)) * 100
+          Math.ceil(await this.keyPricer.keyPriceUSD(lock, network)) * 100
         const applicationFee = Math.ceil(
           keyPriceUSD * APPPLICATION_FEE_PERCENTAGE
         )
@@ -147,13 +148,13 @@ export class PaymentProcessor {
     }
   }
 
-  async price(lock: ethereumAddress): Promise<number> {
-    const itemizedPrice = await this.keyPricer.generate(lock)
+  async price(lock: ethereumAddress, network: number): Promise<number> {
+    const itemizedPrice = await this.keyPricer.generate(lock, network)
     return Object.values(itemizedPrice).reduce((a, b) => a + b)
   }
 
-  async isKeyFree(lock: ethereumAddress): Promise<boolean> {
-    const keyPrice = await this.keyPricer.keyPrice(lock)
+  async isKeyFree(lock: ethereumAddress, network: number): Promise<boolean> {
+    const keyPrice = await this.keyPricer.keyPrice(lock, network)
     return keyPrice === 0
   }
 
@@ -162,7 +163,8 @@ export class PaymentProcessor {
     lock: ethereumAddress,
     credentials: string,
     providerHost: string,
-    buyer: ethereumAddress
+    buyer: ethereumAddress,
+    network: number
   ) {
     const fulfillmentDispatcher = new Dispatcher(
       config.unlockContractAddress,
@@ -171,12 +173,12 @@ export class PaymentProcessor {
       buyer
     )
 
-    if (await this.isKeyFree(lock)) {
-      return fulfillmentDispatcher.purchase(lock, recipient)
+    if (await this.isKeyFree(lock, network)) {
+      return fulfillmentDispatcher.purchase(lock, recipient, network)
     }
-    const successfulCharge = await this.chargeUser(recipient, lock)
+    const successfulCharge = await this.chargeUser(recipient, lock, network)
     if (successfulCharge) {
-      return fulfillmentDispatcher.purchase(lock, recipient)
+      return fulfillmentDispatcher.purchase(lock, recipient, network)
     }
     return null
   }
@@ -187,7 +189,8 @@ export class PaymentProcessor {
     credentials: string,
     providerHost: string,
     buyer: ethereumAddress,
-    connectedStripeAccount: string
+    connectedStripeAccount: string,
+    network: number
   ) {
     const fulfillmentDispatcher = new Dispatcher(
       config.unlockContractAddress,
@@ -196,16 +199,17 @@ export class PaymentProcessor {
       buyer
     )
 
-    if (await this.isKeyFree(lock)) {
-      return fulfillmentDispatcher.purchase(lock, recipient)
+    if (await this.isKeyFree(lock, network)) {
+      return fulfillmentDispatcher.purchase(lock, recipient, network)
     } else {
       const successfulCharge = await this.chargeUserForConnectedAccount(
         recipient,
         lock,
-        connectedStripeAccount
+        connectedStripeAccount,
+        network
       )
       if (successfulCharge) {
-        return fulfillmentDispatcher.grantKey(lock, recipient)
+        return fulfillmentDispatcher.grantKey(lock, recipient, network)
       }
       return null
     }

@@ -5,8 +5,6 @@ const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
 const { getBaseTokenData } = require('../operations/metadataOperations')
 
-const config = require('../../config/config')
-
 const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 
 const lockSave = async (req, res) => {
@@ -41,7 +39,7 @@ const lockOwnerGet = async (req, res) => {
 
 const lockOwnershipCheck = async (req, res) => {
   const { lockAddress } = req.params
-  LockOwnership.update(config.web3ProviderHost, [lockAddress])
+  LockOwnership.update([lockAddress], req.chain)
   return res.sendStatus(200)
 }
 

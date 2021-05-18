@@ -8,9 +8,7 @@ const nockBack = require('nock').back
 const models = require('../../src/models')
 
 const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
-const unlockContractAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
 const stripeToken = 'sk_test_token'
-const web3HostURL = 'http://0.0.0.0:8545'
 const mockVisaToken = 'tok_visa'
 
 const { User } = models
@@ -69,11 +67,7 @@ describe('PaymentProcessor', () => {
     nockBack.setMode('lockdown')
 
     const { nockDone } = await nockBack('setup.json')
-    paymentProcessor = new PaymentProcessor(
-      stripeToken,
-      web3HostURL,
-      unlockContractAddress
-    )
+    paymentProcessor = new PaymentProcessor(stripeToken)
 
     await User.truncate({ cascade: true })
     await UserReference.create(
@@ -173,7 +167,8 @@ describe('PaymentProcessor', () => {
         await expect(
           paymentProcessor.chargeUser(
             '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-            lockAddress
+            lockAddress,
+            1984
           )
         ).rejects.toEqual(new Error('Customer lacks purchasing details'))
       })
@@ -185,7 +180,8 @@ describe('PaymentProcessor', () => {
             const { nockDone } = await nockBack('charged_user.json')
             const charge = await paymentProcessor.chargeUser(
               '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-              lockAddress
+              lockAddress,
+              1984
             )
             expect(charge).not.toBeNull()
             nockDone()
@@ -199,7 +195,8 @@ describe('PaymentProcessor', () => {
             await expect(
               paymentProcessor.chargeUser(
                 '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-                lockAddress
+                lockAddress,
+                1984
               )
             ).rejects.toEqual('An error in purchase')
             nockDone()
@@ -224,7 +221,7 @@ describe('PaymentProcessor', () => {
        * total:            185
        */
       const expectedKeyPrice = 185
-      expect(await paymentProcessor.price(lockAddress)).toEqual(
+      expect(await paymentProcessor.price(lockAddress, 1984)).toEqual(
         expectedKeyPrice
       )
       nockDone()
@@ -242,7 +239,8 @@ describe('PaymentProcessor', () => {
           paymentProcessor.chargeUserForConnectedAccount(
             '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
             lockAddress,
-            accountId
+            accountId,
+            1984
           )
         ).rejects.toEqual(new Error('Customer lacks purchasing details'))
       })
@@ -257,7 +255,8 @@ describe('PaymentProcessor', () => {
             const charge = await paymentProcessor.chargeUserForConnectedAccount(
               '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
               lockAddress,
-              accountId
+              accountId,
+              1984
             )
 
             expect(charge).not.toBeNull()
@@ -275,7 +274,8 @@ describe('PaymentProcessor', () => {
               paymentProcessor.chargeUserForConnectedAccount(
                 '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b9',
                 lockAddress,
-                accountId
+                accountId,
+                1984
               )
             ).rejects.toMatchObject(
               new Error('Customer lacks purchasing details')
@@ -302,16 +302,18 @@ describe('PaymentProcessor', () => {
     describe('when a key is free', () => {
       it('returns true', async () => {
         expect.assertions(1)
-        expect(await paymentProcessor.isKeyFree('freeLockAddress')).toBe(true)
+        expect(await paymentProcessor.isKeyFree('freeLockAddress', 1984)).toBe(
+          true
+        )
       })
     })
 
     describe('when a key is not free', () => {
       it('returns false', async () => {
         expect.assertions(1)
-        expect(await paymentProcessor.isKeyFree('nonFreeLockAddress')).toBe(
-          false
-        )
+        expect(
+          await paymentProcessor.isKeyFree('nonFreeLockAddress', 1984)
+        ).toBe(false)
       })
     })
   })
@@ -342,7 +344,8 @@ describe('PaymentProcessor', () => {
           'lock',
           'credentials',
           'providerHost',
-          'buyer'
+          'buyer',
+          1984
         )
 
         expect(paymentProcessor.chargeUser).not.toBeCalled()
@@ -358,12 +361,14 @@ describe('PaymentProcessor', () => {
             'lock',
             'credentials',
             'providerHost',
-            'buyer'
+            'buyer',
+            1984
           )
 
           expect(mockDispatcher.purchase).toHaveBeenCalledWith(
             'lock',
-            'recipient'
+            'recipient',
+            1984
           )
         })
       })
@@ -376,7 +381,8 @@ describe('PaymentProcessor', () => {
             'lock',
             'credentials',
             'providerHost',
-            'buyer'
+            'buyer',
+            1984
           )
 
           expect(mockDispatcher.purchase).not.toHaveBeenCalled()

@@ -2,6 +2,7 @@ import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 
 const { ethers } = require('ethers')
 const logger = require('../logger')
+const { networks } = require('../networks')
 
 const {
   findOrCreateTransaction,
@@ -33,22 +34,24 @@ export default class Dispatcher {
     this.buyer = buyer
   }
 
-  async retrieveLock(lockAddress: string) {
+  async retrieveLock(lockAddress: string, network: number) {
     try {
-      const w3s = new Web3Service({
-        readOnlyProvider: this.host,
-        unlockAddress: this.unlockAddress,
-      })
+      const w3s = new Web3Service(networks)
 
-      return await w3s.getLock(lockAddress)
+      return await w3s.getLock(lockAddress, network)
     } catch (error) {
       throw new Error('Unable to retrieve Lock information')
     }
   }
 
-  async grantKey(lockAddress: string, recipient: string) {
-    const walletService = new WalletService()
-    walletService.setUnlockAddress(this.unlockAddress)
+  async grantKey(lockAddress: string, recipient: string, network: number) {
+    const walletService = new WalletService(networks)
+
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].readOnlyProvider
+    )
+    const walletWithProvider = new ethers.Wallet(this.credentials, provider)
+    await walletService.connect(provider, walletWithProvider)
 
     return await walletService.grantKey({
       lockAddress,
@@ -56,10 +59,10 @@ export default class Dispatcher {
     })
   }
 
-  async purchase(lockAddress: string, recipient: string) {
-    const walletService = new WalletService()
-    walletService.setUnlockAddress(this.unlockAddress)
-    const lock = await this.retrieveLock(lockAddress)
+  async purchase(lockAddress: string, recipient: string, network: number) {
+    const walletService = new WalletService(networks)
+
+    const lock = await this.retrieveLock(lockAddress, network)
 
     if (lock.outstandingKeys == lock.maxNumberOfKeys) {
       throw new Error('No Available Keys.')
@@ -94,8 +97,9 @@ export default class Dispatcher {
         }
       )
     })
-
-    const provider = new ethers.providers.JsonRpcProvider(this.host)
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].readOnlyProvider
+    )
     const walletWithProvider = new ethers.Wallet(this.credentials, provider)
     await walletService.connect(provider, walletWithProvider)
 

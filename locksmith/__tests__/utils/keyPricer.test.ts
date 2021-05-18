@@ -46,7 +46,7 @@ jest.mock('../../src/utils/ethPrice', () => ({
   getPrice: jest.fn(() => Promise.resolve(101.18)),
 }))
 
-const keyPricer = new KeyPricer('provider url', 'unlock contract address')
+const keyPricer = new KeyPricer()
 const spy = jest.spyOn(PriceConversion.prototype, 'convertToUSD')
 
 // jest.spyOn(ethers, 'getDefaultProvider').mockReturnValue(({
@@ -58,7 +58,7 @@ describe('KeyPricer', () => {
     describe('when the lock currency has an exchange rate on coinbase', () => {
       it('returns the key price in USD', async () => {
         expect.assertions(1)
-        await keyPricer.keyPriceUSD('an address')
+        await keyPricer.keyPriceUSD('an address', 1984)
         expect(spy).toBeCalledWith('ETH', '0.01')
       })
     })
@@ -66,7 +66,7 @@ describe('KeyPricer', () => {
       it('throws an error', async () => {
         expect.assertions(1)
         try {
-          await keyPricer.keyPriceUSD('zzz address')
+          await keyPricer.keyPriceUSD('zzz address', 1984)
         } catch {
           expect(spy).toBeCalledWith('ZZZ', '0.01')
         }
@@ -95,7 +95,7 @@ describe('KeyPricer', () => {
       expect.assertions(1)
 
       // This lock address isn't important because we mock the return value
-      const price = await keyPricer.keyPrice('an address')
+      const price = await keyPricer.keyPrice('an address', 1984)
 
       expect(price).toBe(1)
     })

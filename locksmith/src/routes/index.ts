@@ -16,7 +16,9 @@ const router = express.Router()
 router.use((request, _, next) => {
   const match = request.path.match(/^\/([1-9]*)\/.*/)
   // @ts-expect-error
-  request.chain = match ? parseInt(match[1]) : parseInt(config.defaultNetwork)
+  request.chain = match
+    ? parseInt(match[1])
+    : parseInt(config.defaultNetwork || 1984)
   next()
 })
 router.use('/', prefixedRouter(transactionRouter))

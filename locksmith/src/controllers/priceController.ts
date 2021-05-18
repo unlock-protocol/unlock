@@ -1,33 +1,29 @@
-import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import KeyPricer from '../utils/keyPricer'
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
-
-const config = require('../../config/config')
+import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 
 namespace PriceController {
   // eslint-disable-next-line import/prefer-default-export
   // DEPRECATED
-  export const price = async (req: Request, res: Response): Promise<any> => {
+  export const price = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
     const { lockAddress } = req.params
-    const keyPricer = new KeyPricer(
-      config.web3ProviderHost,
-      config.unlockContractAddress
-    )
+    const keyPricer = new KeyPricer()
 
-    const pricing = await keyPricer.generate(lockAddress)
+    const pricing = await keyPricer.generate(lockAddress, req.chain)
     return res.json(pricing)
   }
 
   // This method will return the key price in USD by default, but can eventually be used to return prices in a different curreny (via query string)
   export const fiatPrice = async (
-    req: Request,
+    req: SignedRequest,
     res: Response
   ): Promise<any> => {
     const { lockAddress } = req.params
-    const keyPricer = new KeyPricer(
-      config.web3ProviderHost,
-      config.unlockContractAddress
-    )
+    const keyPricer = new KeyPricer()
 
     // First, let's see if the lock was authorized for credit card payments
     const isAuthorizedForCreditCard = await AuthorizedLockOperations.hasAuthorization(
@@ -40,7 +36,7 @@ namespace PriceController {
     }
 
     // Otherwise get the pricing.
-    const pricing = await keyPricer.generate(lockAddress)
+    const pricing = await keyPricer.generate(lockAddress, req.chain)
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
 
     // TODO: convert from the currency.
