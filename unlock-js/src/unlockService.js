@@ -63,7 +63,6 @@ export default class UnlockService {
       )
       this.versionForAddress[contractAddress] = version
     }
-
     if (version === 4) {
       return v4
     }
@@ -79,6 +78,10 @@ export default class UnlockService {
     if (version === 8) {
       return v8
     }
+
+    throw new Error(
+      `Contract ${address} not deployed, or unknown version ${version}`
+    )
   }
 
   async unlockContractAbiVersion(address, provider) {

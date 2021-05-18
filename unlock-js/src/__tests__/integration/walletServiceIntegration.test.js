@@ -298,6 +298,18 @@ describe('Wallet Service Integration', () => {
                 parseInt(lock.expirationDuration + new Date().getTime() / 1000)
             ).toBeLessThan(60)
           })
+
+          if (['v4', 'v6'].indexOf(versionName) == -1) {
+            it('should have set the right keyManager', async () => {
+              expect.assertions(1)
+              const keyManager = await web3Service.keyManagerOf(
+                lockAddress,
+                key.tokenId,
+                1984
+              )
+              expect(keyManager).toBe(accounts[0])
+            })
+          }
         })
 
         describe('purchaseKey', () => {
@@ -553,6 +565,162 @@ describe('Wallet Service Integration', () => {
             }
           })
         })
+
+        describe('cancelAndRefund', () => {
+          let key
+          let keyOwner
+
+          beforeAll(async (done) => {
+            keyOwner = accounts[0]
+            await walletService.purchaseKey({
+              lockAddress,
+            })
+            setTimeout(async () => {
+              key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                1984
+              )
+              done()
+            }, 5000)
+          })
+
+          it('should have a key and allow the member to cancel it and get a refund', async () => {
+            expect.assertions(2)
+            expect(key.expiration > new Date().getTime() / 1000).toBe(true)
+            await walletService.cancelAndRefund({
+              lockAddress,
+            })
+            const afterCancellation = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyOwner,
+              1984
+            )
+            expect(afterCancellation.expiration < key.expiration).toBe(true)
+          })
+        })
+
+        if (['v4', 'v6'].indexOf(versionName) === -1) {
+          const keyGranter = '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0'
+          describe('keyGranter', () => {
+            it('should not have key granter role for random address', async () => {
+              expect.assertions(1)
+              const isKeyManager = await web3Service.isKeyGranter(
+                lockAddress,
+                keyGranter,
+                1984
+              )
+              expect(isKeyManager).toBe(false)
+            })
+
+            it('should be able to grant the keyManager role', async () => {
+              expect.assertions(2)
+              const hasGrantedKeyGranter = await walletService.addKeyGranter({
+                lockAddress,
+                keyGranter,
+              })
+              expect(hasGrantedKeyGranter).toBe(true)
+              const isKeyManager = await web3Service.isKeyGranter(
+                lockAddress,
+                keyGranter,
+                1984
+              )
+              expect(isKeyManager).toBe(true)
+            })
+          })
+
+          describe('expireAndRefundFor', () => {
+            let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
+            let expiration
+            beforeAll(async () => {
+              // First let's get a user to buy a membership
+              await walletService.purchaseKey({
+                lockAddress,
+                owner: keyOwner,
+              })
+            })
+
+            it('should have set an expiration for this member in the future', async () => {
+              expect.assertions(1)
+              const key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                1984
+              )
+              expiration = key.expiration
+
+              expect(expiration).toBeGreaterThan(new Date().getTime() / 1000)
+            })
+
+            it('should expire the membership', async () => {
+              expect.assertions(1)
+              await walletService.expireAndRefundFor({
+                lockAddress,
+                keyOwner,
+              })
+              const key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                1984
+              )
+
+              expect(expiration).toBeGreaterThan(key.expiration)
+            })
+          })
+        }
+
+        if (['v4'].indexOf(versionName) == -1) {
+          describe('shareKey', () => {
+            it('should allow a member to share their key with another one', async () => {
+              expect.assertions(4)
+              const tokenId = await walletService.purchaseKey({
+                lockAddress,
+              })
+
+              // Let's now get the duration for that key!
+              const { expiration } = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                accounts[0],
+                1984
+              )
+              const now = parseInt(new Date().getTime() / 1000)
+              expect(expiration).toBeGreaterThan(now)
+
+              const recipient = '0x6524dbb97462ac3919866b8fbb22bf181d1d4113'
+              const recipientDurationBefore = await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                recipient,
+                1984
+              )
+
+              expect(recipientDurationBefore).toBe(0)
+
+              // Let's now share the key
+              await walletService.shareKey({
+                lockAddress,
+                tokenId,
+                recipient,
+                duration: expiration - now, // share all of the time!
+              })
+
+              const newExpiration = await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                accounts[0],
+                1984
+              )
+
+              expect(newExpiration).toBeLessThan(expiration)
+
+              expect(
+                await web3Service.getKeyExpirationByLockForOwner(
+                  lockAddress,
+                  recipient,
+                  1984
+                )
+              ).toBeGreaterThan(recipientDurationBefore)
+            })
+          })
+        }
       })
     }
   })

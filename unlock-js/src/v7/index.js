@@ -8,6 +8,12 @@ import withdrawFromLock from './withdrawFromLock'
 import initializeTemplate from './initializeTemplate'
 import configureUnlock from './configureUnlock'
 import isLockManager from './isLockManager'
+import isKeyGranter from './isKeyGranter'
+import addKeyGranter from './addKeyGranter'
+import expireAndRefundFor from './expireAndRefundFor'
+import cancelAndRefund from './cancelAndRefund'
+import shareKey from './shareKey'
+import keyManagerOf from './keyManagerOf'
 
 export default {
   version: 'v7',
@@ -22,4 +28,10 @@ export default {
   withdrawFromLock,
   configureUnlock,
   isLockManager,
+  isKeyGranter,
+  addKeyGranter,
+  expireAndRefundFor,
+  cancelAndRefund,
+  shareKey,
+  keyManagerOf,
 }

@@ -4,25 +4,34 @@ Unlock-js is a npm module which provides a wrapper around the Unlock smart contr
 
 It can used both on server side (node.js) applications and front end applications.
 
-The module provides 2 different classes: web3Service and walletService.
+The module provides 2 classes: web3Service and walletService.
+
+It covers some of the data type conversions so that API calls are more user friendly (strings instead of BigInts), as well as manages the multiple versions of the smart contracts.
+
+The `/examples` folder includes some examples of how to use the library.
 
 ## web3Service
 
 web3Service provides a "read only" API which lets app developers query Unlock's smart contracts (both Unlock and Locks).
 
+Functionalities:
+* Generating new lock address
+* Retrieving transaction from hash
+* Getting balance of an address (both Eth and tokens)
+* Retrieving lock info
+* Retrieves lock manager status for an address
+* Retrieves key for a lock and address
+
 ## walletService
 
 walletService provides a mechanism to send transactions and sign messages for a user. walletService requires the use of a web3 provider which encapsulating the user's wallet information.
 
-## HOW TO
+Functionnalities:
+* create a lock
+* update the key price on a lock
+* withdraw funds
+* purchase a key
 
-The code is written using es6 and exported after it's been transpiled to older versions of JS using babel.
-You can run test using `yarn test` and you need to run `yarn build` in order to generate the new transpiled code.
-
-## TODO
-
-- rename components and hide the complexity
-- Typescript-ify for robustness
 
 ## Updating unlock-js to support a new smart contract version
 
