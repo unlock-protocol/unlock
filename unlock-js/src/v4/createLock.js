@@ -5,7 +5,6 @@ import {
   UNLIMITED_KEYS_COUNT,
   ZERO,
 } from '../constants'
-import TransactionTypes from '../transactionTypes'
 
 import { getErc20Decimals } from '../erc20'
 
@@ -58,10 +57,7 @@ export default async function (lock, callback) {
       gasLimit: GAS_AMOUNTS.createLock,
     }
   )
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.LOCK_CREATION
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)

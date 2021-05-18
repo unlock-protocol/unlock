@@ -1,6 +1,5 @@
 import utils from '../utils'
 import { ZERO } from '../constants'
-import TransactionTypes from '../transactionTypes'
 import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
 
 /**
@@ -86,10 +85,7 @@ export default async function (
     purchaseForOptions
   )
 
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.KEY_PURCHASE
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)

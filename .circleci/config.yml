@@ -39,6 +39,7 @@ jobs:
       - run:
           name: unlock-js tests
           command: scripts/tests.sh unlock-js
+          no_output_timeout: 30m
       - run:
           name: Log failing tests
           command: ./scripts/docker-compose-log.sh

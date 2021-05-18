@@ -1,6 +1,5 @@
 import utils from '../utils'
 import { GAS_AMOUNTS, ZERO } from '../constants'
-import TransactionTypes from '../transactionTypes'
 import { getErc20Decimals } from '../erc20'
 
 /**
@@ -38,10 +37,7 @@ export default async function (
       gasLimit: GAS_AMOUNTS.updateKeyPrice,
     }
   )
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.UPDATE_KEY_PRICE
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)

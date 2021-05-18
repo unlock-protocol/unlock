@@ -1,6 +1,5 @@
 import utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
-import TransactionTypes from '../transactionTypes'
 
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
@@ -22,10 +21,7 @@ export default async function (
   const transactionPromise = lockContract['withdraw(uint256)'](actualAmount, {
     gasLimit: GAS_AMOUNTS.withdraw,
   })
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.WITHDRAWAL
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)

@@ -1,6 +1,5 @@
 import utils from '../utils'
 import { ZERO } from '../constants'
-import TransactionTypes from '../transactionTypes'
 import { getErc20Decimals } from '../erc20'
 
 /**
@@ -35,10 +34,7 @@ export default async function (
   const actualAmount = utils.toDecimal(amount, decimals)
 
   const transactionPromise = lockContract.withdraw(erc20Address, actualAmount)
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.WITHDRAWAL
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)

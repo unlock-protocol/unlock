@@ -7,6 +7,7 @@ import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
 import configureUnlock from './configureUnlock'
 import isLockManager from './isLockManager'
+import cancelAndRefund from './cancelAndRefund'
 
 export default {
   createLock,
@@ -20,4 +21,5 @@ export default {
   version: 'v4',
   Unlock: abis.v4.Unlock,
   PublicLock: abis.v4.PublicLock,
+  cancelAndRefund,
 }

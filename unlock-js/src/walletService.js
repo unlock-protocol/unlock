@@ -78,6 +78,7 @@ export default class WalletService extends UnlockService {
    * @param {Function} a standard node callback that accepts the transaction hash
    */
   // eslint-disable-next-line no-underscore-dangle
+  // TODO: Do we need this???
   async _handleMethodCall(methodCall) {
     const transaction = await methodCall
     if (transaction.hash) {
@@ -262,6 +263,65 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKey.bind(this)(params, callback)
+  }
+
+  /**
+   * Grants permission to grant keys to address
+   * @param {*} params
+   * @param {*} callback
+   */
+  async addKeyGranter(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.keyGranter) throw new Error('Missing account')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addKeyGranter) {
+      throw new Error('Lock version not supported')
+    }
+    return version.addKeyGranter.bind(this)(params, callback)
+  }
+
+  /**
+   * Expire and refunds (optional) a key by lock manager
+   * @param {*} params
+   * @param {*} callback
+   */
+  async expireAndRefundFor(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.keyOwner) throw new Error('Missing keyOwner')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.expireAndRefundFor) {
+      throw new Error('Lock version not supported')
+    }
+    return version.expireAndRefundFor.bind(this)(params, callback)
+  }
+
+  /**
+   * Cancels a membership and receive a refund (called by key manager)
+   * @param {*} params
+   * @param {*} callback
+   */
+  async cancelAndRefund(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.cancelAndRefund) {
+      throw new Error('Lock version not supported')
+    }
+    return version.cancelAndRefund.bind(this)(params, callback)
+  }
+
+  /**
+   * Shares a key by transfering time from key to another key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async shareKey(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.recipient) throw new Error('Missing recipient')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.shareKey) {
+      throw new Error('Lock version not supported')
+    }
+    return version.shareKey.bind(this)(params, callback)
   }
 
   /**

@@ -132,6 +132,9 @@ export default class Web3Service extends UnlockService {
       lock,
       this.providerForNetwork(network)
     )
+    if (!version.isLockManager) {
+      throw new Error('Lock version not supported')
+    }
     return version.isLockManager.bind(this)(
       lock,
       manager,
@@ -143,16 +146,16 @@ export default class Web3Service extends UnlockService {
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
-   * TODO: return the tokenId here because this is probably useful in some context
-   * TODO: add a method to retrieve a token by its id
    */
   async getKeyByLockForOwner(lock, owner, network) {
-    const lockContract = await this.getLockContract(
+    const expiration = await this.getKeyExpirationByLockForOwner(
       lock,
-      this.providerForNetwork(network)
+      owner,
+      network
     )
-    const expiration = await this._getKeyByLockForOwner(lockContract, owner)
+    const tokenId = await this.getTokenIdForOwner(lock, owner, network)
     const keyPayload = {
+      tokenId,
       lock,
       owner,
       expiration,
@@ -161,13 +164,18 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * Returns the key to the lock by the account.
+   * Returns the key expiration to the lock by the account.
    * @private
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  async _getKeyByLockForOwner(lockContract, owner) {
+  async getKeyExpirationByLockForOwner(lock, owner, network) {
+    const lockContract = await this.getLockContract(
+      lock,
+      this.providerForNetwork(network)
+    )
+
     try {
       const expiration = await lockContract.keyExpirationTimestampFor(owner)
       if (
@@ -179,6 +187,27 @@ export default class Web3Service extends UnlockService {
         return 0
       }
       return parseInt(expiration, 10)
+    } catch (error) {
+      return 0
+    }
+  }
+
+  /**
+   * Returns the key expiration to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} owner
+   * @return Promise<>
+   */
+  async getTokenIdForOwner(lock, owner, network) {
+    const lockContract = await this.getLockContract(
+      lock,
+      this.providerForNetwork(network)
+    )
+
+    try {
+      const tokenId = await lockContract.getTokenIdFor(owner)
+      return parseInt(tokenId, 10)
     } catch (error) {
       return 0
     }
@@ -224,5 +253,45 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     return utils.fromDecimal(balance, decimals)
+  }
+
+  /**
+   * Yields true if an address is key granter on a lock
+   */
+  async isKeyGranter(lockAddress, address, network) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if (!version.isKeyGranter) {
+      throw new Error('Lock version not supported')
+    }
+
+    return version.isKeyGranter.bind(this)(
+      lockAddress,
+      address,
+      this.providerForNetwork(network)
+    )
+  }
+
+  /**
+   * Retrieves the key manager for a key
+   * @param {*} lockAddress
+   * @param {*} tokenId
+   * @param {*} network
+   */
+  async keyManagerOf(lockAddress, tokenId, network) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if (!version.keyManagerOf) {
+      throw new Error('Lock version not supported')
+    }
+    return version.keyManagerOf.bind(this)(
+      lockAddress,
+      tokenId,
+      this.providerForNetwork(network)
+    )
   }
 }
