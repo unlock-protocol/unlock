@@ -1,24 +1,27 @@
-import Sequelize from 'sequelize'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import * as Normalizer from '../utils/normalizer'
 
-const models = require('../models')
+const { ethers } = require('ethers')
 
-const { AuthorizedLock } = models
+const { networks } = require('../networks')
 
-const { Op } = Sequelize
+const config = require('../../config/config')
 
 namespace AuthorizedLockOperations {
   // eslint-disable-next-line import/prefer-default-export
-  export const hasAuthorization = async (address: string): Promise<boolean> => {
-    const authorizedLockCount = await AuthorizedLock.count({
-      where: {
-        address: {
-          [Op.eq]: Normalizer.ethereumAddress(address),
-        },
-      },
-    })
+  export const hasAuthorization = async (
+    address: string,
+    network: number
+  ): Promise<boolean> => {
+    const lockAddress = Normalizer.ethereumAddress(address)
+    const web3Service = new Web3Service(networks)
+    const keyGranterWallet = new ethers.Wallet(config.purchaserCredentials)
 
-    return authorizedLockCount > 0
+    return await web3Service.isKeyGranter(
+      lockAddress,
+      keyGranterWallet.address,
+      network
+    )
   }
 }
 

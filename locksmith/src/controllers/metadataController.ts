@@ -13,19 +13,18 @@ import * as metadataOperations from '../operations/metadataOperations'
 
 const config = require('../../config/config')
 const logger = require('../logger')
+const { networks } = require('../networks')
 
 const chain = 1984
 
 namespace MetadataController {
   const evaluateLockOwnership = async (
     lockAddress: string,
-    signeeAddress: string
+    signeeAddress: string,
+    network: number
   ) => {
     try {
-      const web3Service = new Web3Service({
-        readOnlyProvider: config.web3ProviderHost,
-        unlockAddress: config.unlockContractAddress,
-      })
+      const web3Service = new Web3Service(networks)
       if (!lockAddress || !signeeAddress) {
         logger.error(
           'Missing lockAddress or signeeAddress',
@@ -34,7 +33,7 @@ namespace MetadataController {
         )
         return false
       }
-      return web3Service.isLockManager(lockAddress, signeeAddress)
+      return web3Service.isLockManager(lockAddress, signeeAddress, network)
     } catch (error) {
       logger.error('evaluateLockOwnership failed', { error })
       return false
@@ -66,7 +65,7 @@ namespace MetadataController {
 
         return (
           !expiredSignature(signatureTime) &&
-          ((await evaluateLockOwnership(address, req.signee)) ||
+          ((await evaluateLockOwnership(address, req.signee, req.chain)) ||
             (await evaluateKeyOwnership(address, tokenId, req.signee)))
         )
       }
@@ -103,7 +102,7 @@ namespace MetadataController {
     const address: string = Normalizer.ethereumAddress(req.params.address)
     const metadata = req.body.message.LockMetaData
 
-    if ((await evaluateLockOwnership(address, owner)) === false) {
+    if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
       res.sendStatus(401)
     } else {
       const successfulUpdate = metadataOperations.updateDefaultLockMetadata({
@@ -131,7 +130,7 @@ namespace MetadataController {
     const id = req.params.keyId.toLowerCase()
     const { chain } = req
 
-    if ((await evaluateLockOwnership(address, owner)) === false) {
+    if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
       res.sendStatus(401)
     } else {
       const successfulUpdate = metadataOperations.updateKeyMetadata({
@@ -211,7 +210,11 @@ namespace MetadataController {
         lockAddress,
         payload.message.LockMetaData.page || 0
       )
-      const isAuthorized = await evaluateLockOwnership(lockAddress, req.signee)
+      const isAuthorized = await evaluateLockOwnership(
+        lockAddress,
+        req.signee,
+        req.chain
+      )
       if (!isAuthorized) {
         res.sendStatus(401)
       } else {

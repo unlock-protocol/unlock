@@ -1,11 +1,8 @@
 import LockOwnership from '../data/lockOwnership'
 
-const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
 const { getBaseTokenData } = require('../operations/metadataOperations')
-
-const config = require('../../config/config')
 
 const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 
@@ -18,13 +15,11 @@ const lockSave = async (req, res) => {
   if (!databaseLock) {
     lock.chain = req.chain
     await createLock(lock)
-    logger.logLockDetailsStored(lock.address)
     return res.sendStatus(200)
   }
 }
 
 const lockGet = async (req, res) => {
-  logger.logLockDetailsRequest(req.params.lockAddress)
   // Serve lock metadata!
   const baseTokenData = await getBaseTokenData(
     req.params.lockAddress,
@@ -41,7 +36,7 @@ const lockOwnerGet = async (req, res) => {
 
 const lockOwnershipCheck = async (req, res) => {
   const { lockAddress } = req.params
-  LockOwnership.update(config.web3ProviderHost, [lockAddress])
+  LockOwnership.update([lockAddress], req.chain)
   return res.sendStatus(200)
 }
 

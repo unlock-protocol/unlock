@@ -1,10 +1,10 @@
 import express from 'express'
 
-module.exports = (transactionRouter: any) => {
+module.exports = (customRouter: any) => {
   const router = express.Router()
 
-  router.use('/', transactionRouter)
-  router.use('/:chain', transactionRouter)
+  router.use('/', customRouter)
+  router.use('/:chain/', customRouter)
 
   return router
 }

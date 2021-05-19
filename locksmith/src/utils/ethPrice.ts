@@ -1,5 +1,6 @@
 const https = require('https')
 
+// DEPRECATED!
 export const getPrice = async (): Promise<number> => {
   return new Promise((resolve, reject) => {
     https
