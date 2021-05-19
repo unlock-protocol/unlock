@@ -1,4 +1,8 @@
+import React from 'react'
 import styled from 'styled-components'
+import Svg from '../svg'
+
+export const Form = styled.form``
 
 export const Input = styled.input`
   height: 48px;
@@ -35,35 +39,50 @@ export const Select = styled.select`
 `
 
 export const Button = styled.button`
-  width: 100%;
   height: 48px;
-  background-color: var(--green);
+  width: 100%;
   border: none;
+  background-color: var(--green);
   border-radius: 4px;
-  font-size: 20px;
-  color: var(--white);
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &[disabled] {
+    background-color: var(--grey);
+    cursor: not-allowed;
+    color: white;
+  }
   margin-top: 16px;
+
+  & svg {
+    margin-left: 16px;
+    height: 24px;
+    fill: var(--white);
+  }
+
+  &:hover {
+    background-color: ${(props) =>
+      props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+  }
 `
 
 export const NeutralButton = styled(Button)`
   background-color: var(--grey);
 `
 
-export const ErrorButton = styled(Button)`
-  background-color: var(--sharpred);
-`
+interface LoadingButtonProps {
+  children: React.ReactNode
+}
 
-export const LoadingButton = styled(Button)`
-  background-color: var(--blue);
-  & > span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40%;
-    text-align: center;
-    margin: 0 auto;
-  }
-`
+export const LoadingButton = ({ children, ...props }: LoadingButtonProps) => (
+  <Button {...props} disabled>
+    {children}
+    <Svg.Loading title="loading" alt="loading" />
+  </Button>
+)
 
 export const LinkButton = styled.a`
   cursor: pointer;
