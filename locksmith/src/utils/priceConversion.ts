@@ -29,6 +29,6 @@ export default class PriceConversion {
   async convertToUSD(currency: string, amount: number) {
     const rates: any = await this.conversionRates(currency)
     const usdRate = rates.USD
-    return parseFloat(usdRate) * amount
+    return Math.ceil(parseFloat(usdRate) * amount * 100)
   }
 }

@@ -8,8 +8,9 @@ const config = {
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
   unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
   defaultNetwork: process.env.DEFAULT_NETWORK,
-  purchaserAddress: process.env.PURCHASER_ADDRESS,
-  purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+  purchaserCredentials:
+    process.env.PURCHASER_CREDENTIALS ||
+    '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
   logging: false,

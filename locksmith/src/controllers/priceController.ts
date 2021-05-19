@@ -1,20 +1,26 @@
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import KeyPricer from '../utils/keyPricer'
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
+import { SignedRequest } from '../types'
+
+const logger = require('../logger')
 
 namespace PriceController {
   // eslint-disable-next-line import/prefer-default-export
-  // DEPRECATED
+  // DEPRECATED (only used for debugging?)
   export const price = async (
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
     const { lockAddress } = req.params
     const keyPricer = new KeyPricer()
-
-    const pricing = await keyPricer.generate(lockAddress, req.chain)
-    return res.json(pricing)
+    try {
+      const pricing = await keyPricer.generate(lockAddress, req.chain)
+      return res.json(pricing)
+    } catch (error) {
+      logger.error('PriceController.price', error)
+      return res.json({})
+    }
   }
 
   // This method will return the key price in USD by default, but can eventually be used to return prices in a different curreny (via query string)
@@ -23,28 +29,31 @@ namespace PriceController {
     res: Response
   ): Promise<any> => {
     const { lockAddress } = req.params
-    const keyPricer = new KeyPricer()
 
-    // First, let's see if the lock was authorized for credit card payments
-    const isAuthorizedForCreditCard = await AuthorizedLockOperations.hasAuthorization(
-      lockAddress
-    )
+    try {
+      // First, let's see if the lock was authorized for credit card payments
+      const isAuthorizedForCreditCard = await AuthorizedLockOperations.hasAuthorization(
+        lockAddress,
+        req.chain
+      )
 
-    if (!isAuthorizedForCreditCard) {
-      // We not not return any price in any currency
+      // TODO: check that the purchaser has enough funds to pay for gas?
+
+      if (!isAuthorizedForCreditCard) {
+        // We not not return any price in any currency
+        return res.json({})
+      }
+
+      // Otherwise get the pricing to continue
+      const pricing = await new KeyPricer().generate(lockAddress, req.chain)
+
+      return res.json({
+        usd: pricing,
+      })
+    } catch (error) {
+      logger.error('PriceController.fiatPrice', error)
       return res.json({})
     }
-
-    // Otherwise get the pricing.
-    const pricing = await keyPricer.generate(lockAddress, req.chain)
-    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
-
-    // TODO: convert from the currency.
-    // For now we assume only stable coin priced locks have been approved so conversion is 1 => 1
-
-    return res.json({
-      usd: totalPriceInCents,
-    })
   }
 }
 

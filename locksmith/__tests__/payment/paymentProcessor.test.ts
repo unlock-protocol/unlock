@@ -159,234 +159,24 @@ describe('PaymentProcessor', () => {
       })
     })
   })
-
-  describe('chargeUser', () => {
-    describe("when the user lack's payment details", () => {
-      it('raises an error', async () => {
-        expect.assertions(1)
-        await expect(
-          paymentProcessor.chargeUser(
-            '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-            lockAddress,
-            1984
-          )
-        ).rejects.toEqual(new Error('Customer lacks purchasing details'))
-      })
-
-      describe('when the user has payment details', () => {
-        describe('when the user can be charged', () => {
-          it('returns a charge', async () => {
-            expect.assertions(1)
-            const { nockDone } = await nockBack('charged_user.json')
-            const charge = await paymentProcessor.chargeUser(
-              '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-              lockAddress,
-              1984
-            )
-            expect(charge).not.toBeNull()
-            nockDone()
-          })
-        })
-
-        describe('when the user cant be charged', () => {
-          it('returns an error', async () => {
-            expect.assertions(1)
-            const { nockDone } = await nockBack('non_charged_user.json')
-            await expect(
-              paymentProcessor.chargeUser(
-                '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-                lockAddress,
-                1984
-              )
-            ).rejects.toEqual('An error in purchase')
-            nockDone()
-          })
-        })
-      })
-    })
-  })
-
-  describe('price', () => {
-    it('returns the total price of the key purchase for the provided lock', async () => {
-      expect.assertions(1)
-      const { nockDone } = await nockBack('price.json')
-
-      /**
-       * key price:        100
-       * gas fee:            0
-       * unlockServiceFee:  50
-       * stripe percentage:  5 (150 * 0.029, rounded up)
-       * stripe flat fee:    30
-       *                   ---
-       * total:            185
-       */
-      const expectedKeyPrice = 185
-      expect(await paymentProcessor.price(lockAddress, 1984)).toEqual(
-        expectedKeyPrice
-      )
-      nockDone()
-    })
-  })
-
-  // // https://dashboard.stripe.com/test/connect/accounts/overview
-
   describe('chargeUserForConnectedAccount', () => {
     const accountId = 'acct_1GXsNrL9eCzn3mEi'
-    describe("when the user lack's payment details", () => {
-      it('raises an error', async () => {
+    describe('when the user can be charged', () => {
+      it('returns a charge', async () => {
         expect.assertions(1)
-        await expect(
-          paymentProcessor.chargeUserForConnectedAccount(
-            '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-            lockAddress,
-            accountId,
-            1984
-          )
-        ).rejects.toEqual(new Error('Customer lacks purchasing details'))
-      })
-
-      describe('when the user has payment details', () => {
-        describe('when the user can be charged', () => {
-          it('returns a charge', async () => {
-            expect.assertions(1)
-            const { nockDone } = await nockBack(
-              'connected_account_charged_user.json'
-            )
-            const charge = await paymentProcessor.chargeUserForConnectedAccount(
-              '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
-              lockAddress,
-              accountId,
-              1984
-            )
-
-            expect(charge).not.toBeNull()
-            nockDone()
-          })
-        })
-
-        describe('when the user cant be charged', () => {
-          it('returns an error', async () => {
-            expect.assertions(1)
-            const { nockDone } = await nockBack(
-              'connected_account_non_charged_user.json'
-            )
-            await expect(
-              paymentProcessor.chargeUserForConnectedAccount(
-                '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b9',
-                lockAddress,
-                accountId,
-                1984
-              )
-            ).rejects.toMatchObject(
-              new Error('Customer lacks purchasing details')
-            )
-            nockDone()
-          })
-        })
-      })
-    })
-  })
-
-  describe('isKeyFree', () => {
-    beforeAll(() => {
-      paymentProcessor.keyPricer.keyPrice = jest
-        .fn()
-        .mockResolvedValueOnce(0)
-        .mockResolvedValueOnce(2)
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    describe('when a key is free', () => {
-      it('returns true', async () => {
-        expect.assertions(1)
-        expect(await paymentProcessor.isKeyFree('freeLockAddress', 1984)).toBe(
-          true
+        const { nockDone } = await nockBack(
+          'connected_account_charged_user.json'
         )
-      })
-    })
-
-    describe('when a key is not free', () => {
-      it('returns false', async () => {
-        expect.assertions(1)
-        expect(
-          await paymentProcessor.isKeyFree('nonFreeLockAddress', 1984)
-        ).toBe(false)
-      })
-    })
-  })
-
-  describe('initiatePurchase', () => {
-    beforeAll(() => {
-      paymentProcessor.chargeUser = jest
-        .fn()
-        .mockResolvedValueOnce({})
-        .mockResolvedValueOnce(null)
-
-      paymentProcessor.isKeyFree = jest
-        .fn()
-        .mockResolvedValueOnce(true)
-        .mockResolvedValueOnce(false)
-        .mockResolvedValueOnce(false)
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    describe('when the keys of the lock are free', () => {
-      it('does not charge the user', async () => {
-        expect.assertions(1)
-        await paymentProcessor.initiatePurchase(
-          'recipient',
-          'lock',
-          'credentials',
-          'providerHost',
-          'buyer',
+        const charge = await paymentProcessor.chargeUserForConnectedAccount(
+          '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
+          accountId,
+          lockAddress,
+          accountId,
           1984
         )
 
-        expect(paymentProcessor.chargeUser).not.toBeCalled()
-      })
-    })
-
-    describe("when the keys of the lock aren't free", () => {
-      describe('when the user was successfully charged', () => {
-        it('dispatches the purchase', async () => {
-          expect.assertions(1)
-          await paymentProcessor.initiatePurchase(
-            'recipient',
-            'lock',
-            'credentials',
-            'providerHost',
-            'buyer',
-            1984
-          )
-
-          expect(mockDispatcher.purchase).toHaveBeenCalledWith(
-            'lock',
-            'recipient',
-            1984
-          )
-        })
-      })
-
-      describe('when the user was unsuccessfully charged', () => {
-        it('does not dispatch the purchase', async () => {
-          expect.assertions(1)
-          await paymentProcessor.initiatePurchase(
-            'recipient',
-            'lock',
-            'credentials',
-            'providerHost',
-            'buyer',
-            1984
-          )
-
-          expect(mockDispatcher.purchase).not.toHaveBeenCalled()
-        })
+        expect(charge).not.toBeNull()
+        nockDone()
       })
     })
   })

@@ -11,7 +11,8 @@ const standardLock = {
   maxNumberOfKeys: 10,
   outstandingKeys: 1,
   owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-  tokenAddress: '0x0000000000000000000000000000000000000000',
+  currencyContractAddress: '0x0000000000000000000000000000000000000000',
+  currencySymbol: null,
 }
 
 const zzzLock = {
@@ -21,17 +22,13 @@ const zzzLock = {
   keyPrice: '0.01',
   maxNumberOfKeys: 10,
   outstandingKeys: 1,
-  erc20Symbol: 'ZZZ',
   owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-  tokenAddress: '0x0100000000000000000000000000000000000001',
+  currencyContractAddress: '0x0100000000000000000000000000000000000001',
+  currencySymbol: 'ZZZ',
 }
 
 const mockWeb3Service: { getLock: any } = {
-  getLock: jest
-    .fn()
-    .mockResolvedValueOnce(standardLock)
-    .mockResolvedValueOnce(zzzLock)
-    .mockResolvedValue(standardLock),
+  getLock: jest.fn(),
 }
 
 function getMockWeb3Service() {
@@ -48,25 +45,22 @@ jest.mock('../../src/utils/ethPrice', () => ({
 
 const keyPricer = new KeyPricer()
 const spy = jest.spyOn(PriceConversion.prototype, 'convertToUSD')
-
-// jest.spyOn(ethers, 'getDefaultProvider').mockReturnValue(({
-//   getGasPrice: jest.fn(() => Promise.resolve(new BigNumber(100)))
-// }))
-
 describe('KeyPricer', () => {
   describe('keyPriceUSD', () => {
     describe('when the lock currency has an exchange rate on coinbase', () => {
       it('returns the key price in USD', async () => {
         expect.assertions(1)
-        await keyPricer.keyPriceUSD('an address', 1984)
+        mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
+        await keyPricer.keyPriceUSD('an address', 1) // default to Eth
         expect(spy).toBeCalledWith('ETH', '0.01')
       })
     })
     describe('when the lock currency does not have an exchange rate on coinbase', () => {
       it('throws an error', async () => {
         expect.assertions(1)
+        mockWeb3Service.getLock.mockResolvedValueOnce(zzzLock)
         try {
-          await keyPricer.keyPriceUSD('zzz address', 1984)
+          await keyPricer.keyPriceUSD('zzz address', 1)
         } catch {
           expect(spy).toBeCalledWith('ZZZ', '0.01')
         }
@@ -74,30 +68,11 @@ describe('KeyPricer', () => {
     })
   })
 
-  describe('gasFee', () => {
-    it.skip('should return zero cents because gas is covered by the service fee', async () => {
-      expect.assertions(1)
-      const price = await keyPricer.gasFee()
-      expect(price).toBe(1.09284518)
-    })
-  })
-
   describe('unlockServiceFee', () => {
     it('should return our vig', () => {
       expect.assertions(1)
 
-      expect(keyPricer.unlockServiceFee()).toBe(50)
-    })
-  })
-
-  describe('keyPrice', () => {
-    it('should retrieve the price for a key on the lock', async () => {
-      expect.assertions(1)
-
-      // This lock address isn't important because we mock the return value
-      const price = await keyPricer.keyPrice('an address', 1984)
-
-      expect(price).toBe(1)
+      expect(keyPricer.unlockServiceFee(1000)).toBe(100)
     })
   })
 
