@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "cross-fetch": "3.1.4",
-    "ethers": "4.0.48"
+    "ethers": "5.2.0"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -34,11 +34,6 @@
     "node": "^10"
   },
   "devDependencies": {
-    "eslint": "7.25.0",
-    "prettier": "2.2.1",
-    "ts-jest": "26.5.5",
-    "typescript": "4.2.4",
-    "lint-staged": "10.5.4",
     "@babel/cli": "7.13.16",
     "@babel/core": "7.14.0",
     "@babel/preset-env": "7.14.1",
@@ -48,7 +43,12 @@
     "@unlock-protocol/unlock-abi-8": "1.0.0",
     "babel-jest": "26.6.3",
     "erc1820": "0.0.2",
+    "eslint": "7.25.0",
     "ganache-cli": "6.12.2",
-    "jest": "26.6.3"
+    "jest": "26.6.3",
+    "lint-staged": "10.5.4",
+    "prettier": "2.2.1",
+    "ts-jest": "26.5.5",
+    "typescript": "4.2.4"
   }
 }
