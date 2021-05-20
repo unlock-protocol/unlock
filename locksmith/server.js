@@ -49,6 +49,7 @@ const environmentEvaluation = () => {
     'DB_NAME',
     'DB_HOSTNAME',
     'DEFAULT_NETWORK',
+    'PURCHASER_CREDENTIALS',
   ]
 
   requiredEnvironmentVariables.forEach((environmentVariable) => {

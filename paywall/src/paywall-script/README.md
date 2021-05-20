@@ -16,11 +16,21 @@ Usage is simple:
 ```javascript
 import { Paywall } from '@unlock-protocol/paywall';
 
-// see https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
+// See https://docs.unlock-protocol.com/getting-started/locking-page#configure-the-paywall
 const paywallConfig = {};
 
-// See ./networkConfigs
-const networkConfigs = {}
+// Configure networks to use
+const networkConfigs = {
+  1: {
+    readOnlyProvider: 'HTTP PROVIDER',
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com'
+  },
+  100: {
+    // configuration for xdai... etc
+  },
+  // etc
+}
 
 new Paywall(paywallConfig, networkConfigs);
 // from this point onward, it behaves exactly as if you had loaded the script in the <head> of your page.

@@ -8,7 +8,15 @@ export const MembershipUnlocked = () => (
     <span role="img" aria-label="click">
       🔑
     </span>{' '}
-    is an Ethereum non fungible token!{' '}
+    is an Ethereum{' '}
+    <a
+      href="https://app.unlock-protocol.com/keychain"
+      target="_blank"
+      rel="noreferrer"
+    >
+      non fungible token
+    </a>
+    !{' '}
   </MembersBar>
 )
 

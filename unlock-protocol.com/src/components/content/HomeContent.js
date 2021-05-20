@@ -1,9 +1,8 @@
 import styled from 'styled-components'
-import React, { useContext } from 'react'
+import React from 'react'
 
 import Head from 'next/head'
 import getConfig from 'next/config'
-import { MembershipContext } from '../../membershipContext'
 import Layout from '../interface/Layout'
 import Signature from '../interface/Signature'
 import { Section } from '../Components'
@@ -46,7 +45,6 @@ const integrations = [
   },
 ]
 export const HomeContent = () => {
-  const { isMember, becomeMember } = useContext(MembershipContext)
   return (
     <Layout forContent>
       <Head>
@@ -93,7 +91,7 @@ export const HomeContent = () => {
           </Keychain>
         </Buttons>
         <DemoWrapper>
-          <Demo isMember={isMember} becomeMember={becomeMember} />
+          <Demo />
         </DemoWrapper>
         <Features>
           <Feature>

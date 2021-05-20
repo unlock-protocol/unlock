@@ -47,7 +47,7 @@ describe('PriceConversion', () => {
       it('return the requested price in USD', async () => {
         expect.assertions(1)
         const rate = await pc.convertToUSD('ETH', 0.5)
-        expect(rate).toEqual(50)
+        expect(rate).toEqual(5000) // price in cents!
       })
     })
 

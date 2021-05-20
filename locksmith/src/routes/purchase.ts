@@ -21,7 +21,6 @@ router.post(
     signee: 'recipient',
   })
 )
-router.post('/', purchaseController.purchase)
 router.post('/USD', purchaseController.purchaseUSD)
 
 module.exports = router
