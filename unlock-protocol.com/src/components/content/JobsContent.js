@@ -88,7 +88,7 @@ export const JobsContent = () => (
         <OrderedList>
           <ListItem>
             Initial chat conversation with our founder Julien (find him in our{' '}
-            <a href="https://t.me/unlockprotocol">Telegram group</a>
+            <a href="https://discord.gg/Ah6ZEJyTDp">Discord</a>
             !).
           </ListItem>
           <ListItem>
@@ -235,7 +235,7 @@ export const JobsContent = () => (
             julien@unlock-protocol.com
           </a>
           , and reach out to Julien in our{' '}
-          <a href="https://t.me/unlockprotocol">Telegram group</a>
+          <a href="https://discord.gg/Ah6ZEJyTDp">Discord group</a>
           !).
         </Paragraph>
       </Section>
