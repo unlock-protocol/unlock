@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useReducer } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -31,6 +31,37 @@ interface CheckoutProps {
   web3Provider: any
 }
 
+const keysReducer = (state: any, key: any) => {
+  // Keeps track of all the keys, by lock
+  return {
+    ...state,
+    [key.lock]: key,
+  }
+}
+
+const hasValidMembership = (keys: Array<any>) => {
+  const now = new Date().getTime() / 1000
+  return !!(
+    Object.values(keys).filter(({ expiration }) => expiration > now).length > 0
+  )
+}
+
+const hasPendingMembership = (keys: Array<any>) => {
+  return !!(
+    Object.values(keys).filter(({ expiration }) => expiration == Infinity)
+      .length > 0
+  )
+}
+
+const hasExpiredMembership = (keys: Array<any>) => {
+  const now = new Date().getTime() / 1000
+  return !!(
+    Object.values(keys).filter(
+      ({ expiration }) => expiration > 0 && expiration < now
+    ).length > 0
+  )
+}
+
 export const Checkout = ({
   emitCloseModal,
   emitTransactionInfo,
@@ -44,7 +75,7 @@ export const Checkout = ({
   const [loginShown, showLogin] = useState(false)
   const [activePayment, setActivePayment] = useState<string>('Default')
   const [fiatAvailable, setFiatAvailable] = useState(false)
-  const [hasMembership, setHasMembership] = useState(false)
+  const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [focus, setFocus] = useState('')
 
   if (!paywallConfig || !config) {
@@ -80,6 +111,14 @@ export const Checkout = ({
   const showPaymentOptions = !focus && account && fiatAvailable
 
   let content
+  let paywallCta = 'default'
+  if (hasPendingMembership(existingKeys)) {
+    paywallCta = 'pending'
+  } else if (hasValidMembership(existingKeys)) {
+    paywallCta = 'confirmed'
+  } else if (hasExpiredMembership(existingKeys)) {
+    paywallCta = 'expired'
+  }
 
   if (!loginShown) {
     content = (
@@ -94,16 +133,20 @@ export const Checkout = ({
 
         {!focus && (
           <CallToAction
-            state="default"
+            state={paywallCta}
             callToAction={paywallConfig.callToAction}
           />
         )}
 
         {!account && <Prompt>Select your authentication method</Prompt>}
 
-        {account && !hasMembership && <Prompt>Ready to make payment</Prompt>}
+        {account && !hasValidMembership(existingKeys) && (
+          <Prompt>Ready to make payment</Prompt>
+        )}
 
-        {account && hasMembership && <Prompt>Thank you for your trust!</Prompt>}
+        {account && hasValidMembership(existingKeys) && (
+          <Prompt>Thank you for your trust!</Prompt>
+        )}
 
         {!account && (
           <AuthenticateButton
@@ -121,7 +164,7 @@ export const Checkout = ({
           locks={paywallConfig.locks}
           activePayment={activePayment}
           emitTransactionInfo={handleTransactionInfo}
-          setHasMembership={setHasMembership}
+          setHasKey={setHasKey}
         />
         {showPaymentOptions && (
           <SwitchPayment
@@ -130,7 +173,7 @@ export const Checkout = ({
             paymentOptions={['Credit Card']}
           />
         )}
-        {hasMembership && (
+        {hasValidMembership(existingKeys) && (
           <BackToSiteButton onClick={emitCloseModal}>
             Back to the site
           </BackToSiteButton>

@@ -40,7 +40,6 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
     )
   }
 })
-
 module.exports = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
@@ -75,6 +74,7 @@ module.exports = {
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
       '/blog': { page: '/blog' },
+      '/membership': { page: '/membership' },
     }
 
     return addBlogPagesToPageObject(resolve(dir, '..'), pages)

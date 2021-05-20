@@ -7,31 +7,34 @@ import Header from './Header'
 import Footer from './Footer'
 import { RoundedLogo } from './Logo'
 import Media from '../../theme/media'
+import { GlobalWrapper } from './GlobalWrapper'
 
 export default function Layout({ forContent, title, children }) {
   // Register pageview with Google Analytics on the client side only
   if (process.browser) {
     ReactGA.pageview(window.location.pathname + window.location.search)
   }
-
+  // Load unlock script!
   return (
-    <Container>
-      <Left>
-        {!forContent && (
-          <Link href="/">
-            <a>
-              <RoundedLogo />
-            </a>
-          </Link>
-        )}
-      </Left>
-      <Content>
-        <Header forContent={forContent} title={title} />
-        {children}
-        {forContent && <Footer />}
-      </Content>
-      <Right />
-    </Container>
+    <GlobalWrapper>
+      <Container>
+        <Left>
+          {!forContent && (
+            <Link href="/">
+              <a>
+                <RoundedLogo />
+              </a>
+            </Link>
+          )}
+        </Left>
+        <Content>
+          <Header forContent={forContent} title={title} />
+          {children}
+          {forContent && <Footer />}
+        </Content>
+        <Right />
+      </Container>
+    </GlobalWrapper>
   )
 }
 

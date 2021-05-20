@@ -19,7 +19,7 @@ export function Account() {
           <UserIcon seed={iconSeed} />
         </DoubleHeightCell>
         <Label>
-          <NetworkInfo>
+          <NetworkInfo title="To change network, switch in your wallet of choice and refresh the page">
             {network ? networks[network].name : 'Not connected'}
           </NetworkInfo>
         </Label>

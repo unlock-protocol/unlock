@@ -14,9 +14,16 @@ const router = express.Router()
 
 // Set the chain!
 router.use((request, _, next) => {
-  const match = request.path.match(/^\/([1-9]*)\/.*/)
+  const match = request.path.match(/^\/([0-9]*)\/.*/)
+  let chain = parseInt(config.defaultNetwork || 1984)
+  if (match) {
+    chain = parseInt(match[1])
+  } else if (request.query?.chain) {
+    // @ts-expect-error
+    chain = parseInt(request.query.chain)
+  }
   // @ts-expect-error
-  request.chain = match ? parseInt(match[1]) : parseInt(config.defaultNetwork)
+  request.chain = chain
   next()
 })
 router.use('/', prefixedRouter(transactionRouter))
@@ -30,5 +37,4 @@ router.use('/health', healthCheckRouter)
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
 })
-
 module.exports = router

@@ -27,7 +27,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
 }))
 
 describe('Lock Ownership', () => {
-  const host = 'http://localhost:8545'
   const ownedLocks = [
     {
       chain,
@@ -55,7 +54,6 @@ describe('Lock Ownership', () => {
     it('persists the current state of ownership for the requested Locks', async () => {
       expect.assertions(1)
       await LockOwnership.update(
-        host,
         ['0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'],
         chain
       )

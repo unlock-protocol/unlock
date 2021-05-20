@@ -40,6 +40,7 @@ export interface ItemizedKeyPrice {
 export interface SignedRequest extends Request {
   owner: string
   signee: string
+  chain: number
 }
 
 export interface UserTokenMetadataInput {

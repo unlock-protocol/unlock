@@ -1,5 +1,3 @@
-import TransactionTypes from '../transactionTypes'
-
 export default async function (
   { lockAddress, recipient, expiration },
   callback
@@ -20,10 +18,7 @@ export default async function (
     grantKeysOptions
   )
 
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.GRANT_KEY
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)

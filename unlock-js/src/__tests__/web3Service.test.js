@@ -48,58 +48,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('_getKeyByLockForOwner (non-version specific tests)', () => {
-    it('should yield the expiration date for the user key on the lock', async () => {
-      expect.assertions(2)
-      const contract = {
-        keyExpirationTimestampFor: jest.fn(() => {
-          return Promise.resolve('123')
-        }),
-      }
-      const account = '0xabc'
-      const expiration = await web3Service._getKeyByLockForOwner(
-        contract,
-        account
-      )
-      expect(expiration).toEqual(123)
-      expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
-    })
-
-    it('should return 0 if the value returned by the contract is 3963877391197344453575983046348115674221700746820753546331534351508065746944', async () => {
-      expect.assertions(2)
-      const contract = {
-        keyExpirationTimestampFor: jest.fn(() => {
-          return Promise.resolve(
-            '3963877391197344453575983046348115674221700746820753546331534351508065746944'
-          )
-        }),
-      }
-      const account = '0xabc'
-      const expiration = await web3Service._getKeyByLockForOwner(
-        contract,
-        account
-      )
-      expect(expiration).toEqual(0)
-      expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
-    })
-
-    it('should return 0 if there was an exception', async () => {
-      expect.assertions(2)
-      const contract = {
-        keyExpirationTimestampFor: jest.fn(() => {
-          return Promise.reject('Error')
-        }),
-      }
-      const account = '0xabc'
-      const expiration = await web3Service._getKeyByLockForOwner(
-        contract,
-        account
-      )
-      expect(expiration).toEqual(0)
-      expect(contract.keyExpirationTimestampFor).toHaveBeenCalledWith(account)
-    })
-  })
-
   describe('versions', () => {
     const versionSpecificLockMethods = ['getLock']
 

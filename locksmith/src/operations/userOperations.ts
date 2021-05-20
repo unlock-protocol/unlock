@@ -135,11 +135,7 @@ namespace UserOperations {
     token: string,
     publicKey: string
   ): Promise<boolean> => {
-    const paymentProcessor = new PaymentProcessor(
-      config.stripeSecret,
-      config.web3ProviderHost,
-      config.unlockContractAddress
-    )
+    const paymentProcessor = new PaymentProcessor(config.stripeSecret)
     return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
   }
 

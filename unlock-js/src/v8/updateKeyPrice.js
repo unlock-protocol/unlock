@@ -1,6 +1,5 @@
 import utils from '../utils'
 import { ZERO } from '../constants'
-import TransactionTypes from '../transactionTypes'
 import { getErc20Decimals } from '../erc20'
 
 /**
@@ -37,10 +36,7 @@ export default async function (
     actualAmount,
     erc20Address || ZERO
   )
-  const hash = await this._handleMethodCall(
-    transactionPromise,
-    TransactionTypes.UPDATE_KEY_PRICE
-  )
+  const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {
     callback(null, hash, await transactionPromise)
