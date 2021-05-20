@@ -13,7 +13,7 @@ const navigationButtons = [
   Buttons.Blog,
   Buttons.Github,
   Buttons.Docs,
-  Buttons.Telegram,
+  Buttons.Discord,
   Buttons.Twitter,
 ]
 

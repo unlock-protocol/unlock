@@ -39,4 +39,4 @@ The next step toward a fully decentralized Unlock Protocol is to start working o
 
 We will also work on allowing token holders to claim discounts on their purchases as we think it is important to add financial rewards to stakeholders.
 
-Do you want to learn more? Are you interested in joining us? [Reach out on Telegram](https://t.me/unlockprotocol)!
+Do you want to learn more? Are you interested in joining us? [Reach out on Discord](https://discord.gg/Ah6ZEJyTDp)!

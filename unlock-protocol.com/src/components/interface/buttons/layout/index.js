@@ -6,7 +6,7 @@ import Github from './Github'
 import Jobs from './Jobs'
 import Twitter from './Twitter'
 import Newsletter from './Newsletter'
-import Telegram from './Telegram'
+import Discord from './Discord'
 import Bars from './Bars'
 import ChevronUp from './ChevronUp'
 
@@ -19,7 +19,7 @@ export default {
   Jobs,
   Twitter,
   Newsletter,
-  Telegram,
+  Discord,
   Bars,
   ChevronUp,
 }
