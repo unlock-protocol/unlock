@@ -28,6 +28,10 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
       1984: {
         provider: providerURL,
       },
+      1337: {
+        // Ganache return 1337...
+        provider: providerURL,
+      },
     })
 
     // We connect to a local node and we expect the node to have unlocked accounts
