@@ -31,7 +31,7 @@ describe('TokenTransferApproval', () => {
       )
       expect(transaction).toEqual(
         expect.objectContaining({
-          chainId: 1984,
+          chainId: 1337,
           data:
             '0x095ea7b30000000000000000000000005cd3fc283c42b4d5083dba4a6be5ac58fc0f026700000000000000000000000000000000000000000000000000000000000000c8',
           from: '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8',

@@ -55,13 +55,13 @@ describe.skip('StorageService', () => {
               transactionHash: '0x123',
               sender: '0xabc',
               recipient: '0xcde',
-              chain: 1984,
+              chain: 1337,
             },
             {
               transactionHash: '0x456',
               sender: '0xabc',
               recipient: '0xfgh',
-              chain: 1984,
+              chain: 1337,
             },
           ],
         },
@@ -78,13 +78,13 @@ describe.skip('StorageService', () => {
               hash: '0x123',
               from: '0xabc',
               to: '0xcde',
-              network: 1984,
+              network: 1337,
             },
             {
               hash: '0x456',
               from: '0xabc',
               to: '0xfgh',
-              network: 1984,
+              network: 1337,
             },
           ])
           done()
@@ -121,13 +121,13 @@ describe.skip('StorageService', () => {
               transactionHash: '0x123',
               sender: '0xabc',
               recipient: '0xcde',
-              chain: 1984,
+              chain: 1337,
             },
             {
               transactionHash: '0x456',
               sender: '0xabc',
               recipient: '0xfgh',
-              chain: 1984,
+              chain: 1337,
             },
           ],
         },
@@ -143,13 +143,13 @@ describe.skip('StorageService', () => {
           hash: '0x123',
           from: '0xabc',
           to: '0xcde',
-          network: 1984,
+          network: 1337,
         },
         {
           hash: '0x456',
           from: '0xabc',
           to: '0xfgh',
-          network: 1984,
+          network: 1337,
         },
       ])
     })

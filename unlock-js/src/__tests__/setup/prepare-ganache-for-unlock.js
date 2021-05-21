@@ -25,11 +25,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
   .then(async () => {
     // Instantiate the walletService
     const walletService = new WalletService({
-      1984: {
-        provider: providerURL,
-      },
       1337: {
-        // Ganache return 1337...
         provider: providerURL,
       },
     })

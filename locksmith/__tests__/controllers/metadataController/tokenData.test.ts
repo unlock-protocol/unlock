@@ -40,7 +40,7 @@ const keyHolderStructuredData = lockTypedData({
   },
 })
 
-const chain = 1984
+const chain = 1337
 
 const keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
   data: keyHolderStructuredData,
