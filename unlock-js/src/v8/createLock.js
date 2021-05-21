@@ -69,7 +69,7 @@ export default async function (lock, callback) {
     .filter((event) => event.name === 'NewLock')[0]
 
   if (newLockEvent) {
-    return newLockEvent.values.newLockAddress
+    return newLockEvent.args.newLockAddress
   }
   // There was no NewEvent log (transaction failed?)
   return null

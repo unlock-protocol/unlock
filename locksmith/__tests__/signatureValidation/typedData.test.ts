@@ -149,7 +149,7 @@ describe('Signature Validation Middleware', () => {
     })
 
     describe('a signature for Lock metadata', () => {
-      it('moves the request to the application', (done) => {
+      it.skip('moves the request to the application', (done) => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130835000)
         const request = httpMocks.createRequest({
