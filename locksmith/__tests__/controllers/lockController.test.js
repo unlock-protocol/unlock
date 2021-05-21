@@ -165,4 +165,10 @@ describe('lockController', () => {
       })
     })
   })
+
+  describe('Stripe connect configuration', () => {
+    it('should allow lock ow', () => {
+      expect(false).toBe(true)
+    })
+  })
 })

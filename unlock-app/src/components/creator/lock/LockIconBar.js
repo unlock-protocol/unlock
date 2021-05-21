@@ -11,7 +11,13 @@ import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 import { AuthenticationContext } from '../../interface/Authenticate'
 
-export function LockIconBar({ lock, toggleCode, edit, withdraw }) {
+export function LockIconBar({
+  lock,
+  toggleCode,
+  edit,
+  withdraw,
+  toggleCreditCard,
+}) {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
@@ -34,6 +40,11 @@ export function LockIconBar({ lock, toggleCode, edit, withdraw }) {
     <StatusBlock>
       <IconBarContainer>
         <IconBar>
+          <Buttons.CreditCard
+            as="button"
+            lock={lock}
+            action={toggleCreditCard}
+          />
           <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
           <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
@@ -52,6 +63,7 @@ export function LockIconBar({ lock, toggleCode, edit, withdraw }) {
 LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
+  toggleCreditCard: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
 }
@@ -69,7 +81,7 @@ const IconBarContainer = styled.div`
 const IconBar = styled.div`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(5, 24px);
+  grid-template-columns: repeat(6, 24px);
 `
 
 const StatusBlock = styled.div``

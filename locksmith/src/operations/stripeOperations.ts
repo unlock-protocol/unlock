@@ -1,3 +1,6 @@
+import Stripe from 'stripe'
+
+import { StripeConnectLock } from '../models/stripeConnectLock'
 import { ethereumAddress } from '../types' // eslint-disable-line import/named, no-unused-vars
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
@@ -7,6 +10,7 @@ import { StripeCustomer } from '../models/stripeCustomer'
 const Sequelize = require('sequelize')
 
 const { Op } = Sequelize
+const config = require('../../config/config')
 
 /**
  * Method, which, given a publicKey, returns the stripe token id
@@ -86,8 +90,52 @@ export const deletePaymentDetailsForAddress = async (
   return deletedStripeCustomer > 0 || updatedUserReference > 0
 }
 
+/**
+ * Connects a Stripe account to a lock
+ * Do we want to store this?
+ */
+export const connectStripe = async (lockManager: string, lock: string) => {
+  const stripe = new Stripe(config.stripeSecret)
+
+  const stripeConnectLockDetails = await StripeConnectLock.findOne({
+    where: { lock },
+  })
+  let account
+  if (!stripeConnectLockDetails) {
+    // This is a new one
+    account = await stripe.accounts.create({
+      // @ts-expect-error
+      type: 'standard',
+      metadata: {
+        lock,
+        manager: lockManager,
+      },
+    })
+
+    await StripeConnectLock.create({
+      lock,
+      manager: lockManager,
+      stripeAccount: account.id,
+    })
+  } else {
+    // Retrieve it from Stripe!
+    account = await stripe.accounts.retrieve(
+      stripeConnectLockDetails.stripeAccount
+    )
+  }
+
+  // @ts-expect-error
+  return await stripe.accountLinks.create({
+    account: account.id,
+    refresh_url: `https://app.unlock-protocol.com/stripe-connect?lock=${lock}&completed=0`,
+    return_url: `https://app.unlock-protocol.com/stripe-connect?lock=${lock}&completed=1`,
+    type: 'account_onboarding',
+  })
+}
+
 export default {
   deletePaymentDetailsForAddress,
   getStripeCustomerIdForAddress,
   saveStripeCustomerIdForAddress,
+  connectStripe,
 }

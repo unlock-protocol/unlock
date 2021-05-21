@@ -1,4 +1,6 @@
+import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
+import MetadataController from './metadataController'
 
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
@@ -40,6 +42,23 @@ const lockOwnershipCheck = async (req, res) => {
   return res.sendStatus(200)
 }
 
+const connectStripe = async (req, res) => {
+  const { lockAddress } = req.params
+  const { lockManager } = req.query
+
+  // TODO: check that signer is lockManager!!
+
+  if (!lockAddress || !lockManager) {
+    return res.sendStatus(401)
+  }
+  const links = await stripeOperations.connectStripe(
+    lockManager,
+    lockAddress,
+    req.chain
+  )
+  return res.json(links)
+}
+
 /**
  * Yiels the SVG icon for the lock
  * @param {*} req
@@ -58,4 +77,5 @@ module.exports = {
   lockSave,
   lockOwnershipCheck,
   lockIcon,
+  connectStripe,
 }

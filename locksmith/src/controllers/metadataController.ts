@@ -18,7 +18,7 @@ const { networks } = require('../networks')
 const chain = 1984
 
 namespace MetadataController {
-  const evaluateLockOwnership = async (
+  export const evaluateLockOwnership = async (
     lockAddress: string,
     signeeAddress: string,
     network: number
@@ -40,7 +40,7 @@ namespace MetadataController {
     }
   }
 
-  const evaluateKeyOwnership = async (
+  export const evaluateKeyOwnership = async (
     lockAddress: string,
     tokenId: number,
     signeeAddress: string
