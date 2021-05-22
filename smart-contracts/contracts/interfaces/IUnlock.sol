@@ -103,7 +103,8 @@ interface IUnlock
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
-    string calldata _URI
+    string calldata _URI,
+    uint _chainId
   )
     external;
 

@@ -314,7 +314,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 8;
+    return 9;
   }
 
   /**
