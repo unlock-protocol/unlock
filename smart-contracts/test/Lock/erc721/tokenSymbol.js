@@ -30,6 +30,7 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
           0,
           'KEY',
           await unlock.globalBaseTokenURI(),
+          1, // mainnet
           {
             from: accounts[0],
           }
@@ -61,6 +62,7 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
           0,
           'BTC',
           await unlock.globalBaseTokenURI(),
+          '1', // mainnet
           {
             from: accounts[1],
           }

@@ -79,6 +79,7 @@ contract('UnlockDiscountToken / mintingTokens', (accounts) => {
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
+      1, // mainnet
       { from: protocolOwner }
     )
     await unlock.setOracle(udt.address, uniswapOracle.address, {

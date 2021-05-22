@@ -80,7 +80,8 @@ contract('Unlock / uniswapValue', (accounts) => {
         weth.address,
         await unlock.estimatedGasForPurchase(),
         await unlock.globalTokenSymbol(),
-        await unlock.globalBaseTokenURI()
+        await unlock.globalBaseTokenURI(),
+        1 // mainnet
       )
       await unlock.setOracle(token.address, uniswapOracle.address)
 
