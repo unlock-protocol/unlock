@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers/utils'
+import { BigNumber } from 'ethers'
 import path from 'path'
 import TokenTransferApproval from '../../src/fulfillment/tokenTransferApproval'
 
@@ -20,7 +20,7 @@ describe('TokenTransferApproval', () => {
   const erc20ContractAddress = '0x591ad9066603f5499d12ff4bc207e2f577448c46'
 
   describe('approve', () => {
-    it.skip('returns a transaction hash for the approval request', async () => {
+    it('returns a transaction hash for the approval request', async () => {
       expect.assertions(1)
       const { nockDone } = await nock.back('approve_token_transfer.json')
       const transferApprover = new TokenTransferApproval(provider, credentials)
