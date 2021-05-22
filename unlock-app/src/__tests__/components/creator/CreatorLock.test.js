@@ -1,6 +1,5 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-
 import { CreatorLock } from '../../../components/creator/CreatorLock'
 import configure from '../../../config'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
@@ -9,6 +8,16 @@ import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { AuthenticationContext } from '../../../components/interface/Authenticate'
 
 const Web3ServiceProvider = Web3ServiceContext.Provider
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      route: '/',
+      pathname: '',
+      query: '',
+      asPath: '',
+    }
+  },
+}))
 
 export const renderWithContexts = (component) => {
   const config = {

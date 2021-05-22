@@ -1,10 +1,23 @@
 import React, { createContext } from 'react'
 import * as rtl from '@testing-library/react'
+
 import { TransactionType } from '../../../../unlockTypes'
 
 import { LockIconBar } from '../../../../components/creator/lock/LockIconBar'
 import { ConfigContext } from '../../../../utils/withConfig'
 import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      route: '/',
+      pathname: '',
+      query: '',
+      asPath: '',
+    }
+  },
+}))
+
 /**
  * Helper to render with some contexts
  * @param {*} component
@@ -23,6 +36,7 @@ export const renderWithContexts = (component) => {
     },
   }
   const authentication = { network: 1492 }
+
   return rtl.render(
     <ConfigContext.Provider value={config}>
       <AuthenticationContext.Provider value={authentication}>

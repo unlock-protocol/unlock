@@ -18,29 +18,29 @@ const { networks } = require('../networks')
 const chain = 1984
 
 namespace MetadataController {
-  const evaluateLockOwnership = async (
+  export const evaluateLockOwnership = async (
     lockAddress: string,
-    signeeAddress: string,
+    lockManager: string,
     network: number
   ) => {
     try {
       const web3Service = new Web3Service(networks)
-      if (!lockAddress || !signeeAddress) {
+      if (!lockAddress || !lockManager) {
         logger.error(
-          'Missing lockAddress or signeeAddress',
-          signeeAddress,
+          'Missing lockAddress or lockManager',
+          lockManager,
           lockAddress
         )
         return false
       }
-      return web3Service.isLockManager(lockAddress, signeeAddress, network)
+      return web3Service.isLockManager(lockAddress, lockManager, network)
     } catch (error) {
       logger.error('evaluateLockOwnership failed', { error })
       return false
     }
   }
 
-  const evaluateKeyOwnership = async (
+  export const evaluateKeyOwnership = async (
     lockAddress: string,
     tokenId: number,
     signeeAddress: string

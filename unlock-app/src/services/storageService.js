@@ -410,4 +410,29 @@ export class StorageService extends EventEmitter {
       this.emit(failure.getBulkMetadataFor, error)
     }
   }
+
+  /**
+   * Given a lock address and a typed data signature, get the metadata
+   * (public and protected) associated with each key on that lock.
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async getStripeConnect(lockAddress, signature, data) {
+    const opts = {
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
+      params: {
+        data: JSON.stringify(data),
+        signature,
+      },
+    }
+    const result = await axios.get(
+      `${this.host}/lock/${lockAddress}/stripe`,
+      opts
+    )
+
+    return result?.data
+  }
 }

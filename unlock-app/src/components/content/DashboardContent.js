@@ -68,7 +68,18 @@ export const DashboardContent = () => {
         <title>{pageTitle('Dashboard')}</title>
       </Head>
       {!account && (
-        <LoginPrompt details="In order to deploy locks, we require the use of your own crypto wallet." />
+        <LoginPrompt>
+          In order to deploy locks, we require the use of your own Ethereum
+          wallet.{' '}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://ethereum.org/en/wallets/"
+          >
+            Learn more about wallets
+          </a>
+          .{' '}
+        </LoginPrompt>
       )}
       {account && (
         <BrowserOnly>
