@@ -7,6 +7,9 @@ export class StripeConnectLock extends Model<StripeConnectLock> {
   lock!: string
 
   @Column
+  chain!: number
+
+  @Column
   manager!: string
 
   @Column

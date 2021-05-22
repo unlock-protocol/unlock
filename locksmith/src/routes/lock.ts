@@ -5,9 +5,9 @@ const router = express.Router()
 const lockController = require('../controllers/lockController')
 
 const connectStripeConfiguration = {
-  name: 'UserMetaData',
-  required: ['owner', 'timestamp'],
-  signee: 'owner',
+  name: 'Connect Stripe',
+  required: ['lockAddress', 'chain', 'lockManager', 'baseUrl'],
+  signee: 'lockManager',
 }
 
 router.post('/lock', lockController.lockSave)

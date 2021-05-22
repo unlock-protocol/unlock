@@ -1,6 +1,7 @@
+import { logger } from 'express-winston'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
-import MetadataController from './metadataController'
+import { evaluateLockOwnership } from './metadataController'
 
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
@@ -43,20 +44,31 @@ const lockOwnershipCheck = async (req, res) => {
 }
 
 const connectStripe = async (req, res) => {
-  const { lockAddress } = req.params
-  const { lockManager } = req.query
+  try {
+    const { message } = JSON.parse(decodeURIComponent(req.query.data))
+    // A previous middleware will have evaluated everything and assign a signee
+    const { lockAddress, chain, baseUrl } = message['Connect Stripe']
 
-  // TODO: check that signer is lockManager!!
-
-  if (!lockAddress || !lockManager) {
-    return res.sendStatus(401)
+    const isAuthorized = await evaluateLockOwnership(
+      lockAddress,
+      req.signee,
+      chain
+    )
+    if (!isAuthorized) {
+      res.sendStatus(401)
+    } else {
+      const links = await stripeOperations.connectStripe(
+        req.signee,
+        lockAddress,
+        chain,
+        baseUrl
+      )
+      return res.json(links)
+    }
+  } catch (error) {
+    logger.error('There was an error', error)
+    res.sendStatus(401)
   }
-  const links = await stripeOperations.connectStripe(
-    lockManager,
-    lockAddress,
-    req.chain
-  )
-  return res.json(links)
 }
 
 /**

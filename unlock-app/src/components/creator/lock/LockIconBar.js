@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
+import { useRouter } from 'next/router'
 import Buttons from '../../interface/buttons/lock'
 import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
@@ -18,6 +19,7 @@ export function LockIconBar({
   withdraw,
   toggleCreditCard,
 }) {
+  const { query } = useRouter()
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
@@ -40,11 +42,13 @@ export function LockIconBar({
     <StatusBlock>
       <IconBarContainer>
         <IconBar>
-          <Buttons.CreditCard
-            as="button"
-            lock={lock}
-            action={toggleCreditCard}
-          />
+          {query.showCard === 'true' && (
+            <Buttons.CreditCard
+              as="button"
+              lock={lock}
+              action={toggleCreditCard}
+            />
+          )}
           <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
           <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}

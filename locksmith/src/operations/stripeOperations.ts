@@ -94,7 +94,12 @@ export const deletePaymentDetailsForAddress = async (
  * Connects a Stripe account to a lock
  * Do we want to store this?
  */
-export const connectStripe = async (lockManager: string, lock: string) => {
+export const connectStripe = async (
+  lockManager: string,
+  lock: string,
+  chain: number,
+  baseUrl: string
+) => {
   const stripe = new Stripe(config.stripeSecret)
 
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
@@ -109,6 +114,7 @@ export const connectStripe = async (lockManager: string, lock: string) => {
       metadata: {
         lock,
         manager: lockManager,
+        chain,
       },
     })
 
@@ -116,6 +122,7 @@ export const connectStripe = async (lockManager: string, lock: string) => {
       lock,
       manager: lockManager,
       stripeAccount: account.id,
+      chain,
     })
   } else {
     // Retrieve it from Stripe!
@@ -127,8 +134,8 @@ export const connectStripe = async (lockManager: string, lock: string) => {
   // @ts-expect-error
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `https://app.unlock-protocol.com/stripe-connect?lock=${lock}&completed=0`,
-    return_url: `https://app.unlock-protocol.com/stripe-connect?lock=${lock}&completed=1`,
+    refresh_url: `${baseUrl}/stripeconnect?lock=${lock}&network=${chain}&completed=0`,
+    return_url: `${baseUrl}/stripeconnect?lock=${lock}&network=${chain}&completed=1`,
     type: 'account_onboarding',
   })
 }

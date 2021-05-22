@@ -14,6 +14,9 @@ module.exports = {
       manager: {
         type: Sequelize.STRING
       },
+      chain: {
+        type: Sequelize.INTEGER
+      },
       stripeAccount: {
         type: Sequelize.STRING
       },

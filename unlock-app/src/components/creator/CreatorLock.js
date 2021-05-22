@@ -86,7 +86,7 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
   const lockVersion = lock.publicLockVersion || '1'
 
   const edit = () => {
-    setShowEmbedCode(false)
+    showDrawer('')
     setEditing(!editing)
   }
 
@@ -147,7 +147,7 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
         {showDrawer === 'credit-card' && (
           <LockPanel>
             <LockDivider />
-            <CreditCardSettings lock={lock} />
+            <CreditCardSettings network={network} lock={lock} />
           </LockPanel>
         )}
       </LockDetails>
