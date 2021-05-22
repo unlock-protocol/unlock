@@ -8,6 +8,7 @@ import Upload from './Upload'
 import Explorer from './Explorer'
 import Members from './Members'
 import Copy from './Copy'
+import CreditCard from './CreditCard'
 
 export default {
   AppStore,
@@ -20,4 +21,5 @@ export default {
   Explorer,
   Members,
   Copy,
+  CreditCard,
 }

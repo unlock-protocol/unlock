@@ -55,6 +55,7 @@ export default function configure(
   // developing.
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
+  const keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
 
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -246,5 +247,6 @@ export default function configure(
     googleDiscoveryDocs,
     googleScopes,
     networks,
+    keyGranter,
   }
 }

@@ -5,6 +5,7 @@ import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
 import AppStore from './lock/AppStore'
+import CreditCardSettings from './lock/CreditCardSettings'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import CreatorLockForm from './CreatorLockForm'
@@ -58,7 +59,7 @@ LockKeysNumbers.propTypes = {
 }
 
 export const CreatorLock = ({ lock: lockFromProps, network }) => {
-  const [showEmbedCode, setShowEmbedCode] = useState(false)
+  const [showDrawer, setShowDrawer] = useState('')
   const [editing, setEditing] = useState(false)
   const { lock, updateKeyPrice, withdraw } = useLock(lockFromProps, network)
 
@@ -85,7 +86,7 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
   const lockVersion = lock.publicLockVersion || '1'
 
   const edit = () => {
-    setShowEmbedCode(false)
+    showDrawer('')
     setEditing(!editing)
   }
 
@@ -132,14 +133,21 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
         </BalanceContainer>
         <LockIconBar
           lock={lock}
-          toggleCode={() => setShowEmbedCode(!showEmbedCode)}
+          toggleCreditCard={() => setShowDrawer('credit-card')}
+          toggleCode={() => setShowDrawer('embed-coded')}
           edit={edit}
           withdraw={withdraw}
         />
-        {showEmbedCode && (
+        {showDrawer === 'embed-coded' && (
           <LockPanel>
             <LockDivider />
             <AppStore lock={lock} />
+          </LockPanel>
+        )}
+        {showDrawer === 'credit-card' && (
+          <LockPanel>
+            <LockDivider />
+            <CreditCardSettings network={network} lock={lock} />
           </LockPanel>
         )}
       </LockDetails>

@@ -108,7 +108,6 @@ namespace SignatureValidationMiddleware {
     try {
       const potentialSignee: string =
         body.message[configuration.name][configuration.signee]
-
       if (
         body.message &&
         validateSignee(potentialSignee, signee) &&
