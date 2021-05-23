@@ -32,8 +32,6 @@ const PublicLockAbis = [
   require('@unlock-protocol/unlock-abi-6/PublicLock'),
   // eslint-disable-next-line global-require
   require('@unlock-protocol/unlock-abi-7/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-8/PublicLock'),
 ]
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
