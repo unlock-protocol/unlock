@@ -5,32 +5,35 @@ const { constants } = require('hardlydifficult-ethereum-contracts')
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockAbis = [
-  Contracts.getFromNodeModules('unlock-abi-0', '../../Unlock'), // 0
-  Contracts.getFromNodeModules('unlock-abi-0-1', '../../Unlock'), // 1
-  Contracts.getFromNodeModules('unlock-abi-0-2', '../../Unlock'), // 2
-  Contracts.getFromNodeModules('unlock-abi-1-0', '../../Unlock'), // 3
-  Contracts.getFromNodeModules('unlock-abi-1-1', '../../Unlock'), // 4
-  Contracts.getFromNodeModules('unlock-abi-1-2', '../../Unlock'), // 5
-  Contracts.getFromNodeModules('unlock-abi-1-3', '../../Unlock'), // 6
-  Contracts.getFromNodeModules('unlock-abi-7', '../../Unlock'), // 7
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-0', '../../Unlock'), // 0
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-1', '../../Unlock'), // 1
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-2', '../../Unlock'), // 2
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-3', '../../Unlock'), // 3
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-4', '../../Unlock'), // 4
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-5', '../../Unlock'), // 5
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-6', '../../Unlock'), // 6
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-7', '../../Unlock'), // 7
+  Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-8', '../../Unlock'), // 8
 ]
 const PublicLockAbis = [
   // eslint-disable-next-line global-require
-  require('unlock-abi-0/PublicLock'), // 0
+  require('@unlock-protocol/unlock-abi-0/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-0-1/PublicLock'), // 1
+  require('@unlock-protocol/unlock-abi-1/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-0-2/PublicLock'), // 2
+  require('@unlock-protocol/unlock-abi-2/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-1-0/PublicLock'), // 3
+  require('@unlock-protocol/unlock-abi-3/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-1-1/PublicLock'), // 4
+  require('@unlock-protocol/unlock-abi-4/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-1-2/PublicLock'), // 5
+  require('@unlock-protocol/unlock-abi-5/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-1-3/PublicLock'), // 6
+  require('@unlock-protocol/unlock-abi-6/PublicLock'),
   // eslint-disable-next-line global-require
-  require('unlock-abi-7/PublicLock'), // 7
+  require('@unlock-protocol/unlock-abi-7/PublicLock'),
+  // eslint-disable-next-line global-require
+  require('@unlock-protocol/unlock-abi-8/PublicLock'),
 ]
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
