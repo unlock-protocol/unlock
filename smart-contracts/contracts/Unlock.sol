@@ -269,21 +269,14 @@ contract Unlock is
           if(tokensToDistribute > 0)
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
+            uint devReward = tokensToDistribute.mul(20) / 100;
             if (chainId > 1)
             {
-              uint devReward = tokensToDistribute.mul(20) / 100;
               IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);
-              if(devReward > 0)
-              {
-                IMintableERC20(udt).mint(owner(), devReward);
-              }
+              IMintableERC20(udt).mint(owner(), devReward);
             } else {
-              uint devReward = tokensToDistribute.mul(20) / 100;
               IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);
-              if(devReward > 0)
-              {
-                IMintableERC20(udt).transfer(owner(), devReward);
-              }
+              IMintableERC20(udt).transfer(owner(), devReward);
             }
           }
         }
