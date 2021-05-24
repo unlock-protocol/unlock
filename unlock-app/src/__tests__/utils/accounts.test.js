@@ -43,13 +43,7 @@ describe('account helpers', () => {
 
       expect(decryptedAddress).toEqual(
         expect.objectContaining({
-          signingKey: expect.objectContaining({
-            address,
-            privateKey: expect.any(String),
-            publicKey: expect.any(String),
-            signDigest: expect.any(Function),
-            computeSharedSecret: expect.any(Function),
-          }),
+          address,
         })
       )
     })
@@ -90,7 +84,7 @@ describe('account helpers', () => {
         newPassword
       )
 
-      const newKeyAddress = wallet.signingKey.address
+      const newKeyAddress = wallet.address
       // This means we successfully decrypted the new payload with the new
       // password, and we got the same account back out of it.
       expect(newKeyAddress).toEqual(address)

@@ -4197,7 +4197,7 @@
     "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
   },
   "networks": {
-    "1984": {
+    "1337": {
       "links": {},
       "events": {},
       "address": "0x8de3f95e2efd3b9704ccb0d0925ec951bc78cb8b",

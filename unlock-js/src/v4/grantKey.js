@@ -11,8 +11,7 @@ export default async function (
   }
 
   const grantKeysOptions = {}
-
-  const transactionPromise = lockContract.grantKeys(
+  const transactionPromise = lockContract['grantKeys(address[],uint256[])'](
     [recipient],
     [expiration],
     grantKeysOptions
@@ -38,7 +37,7 @@ export default async function (
     })[0]
 
   if (transferEvent) {
-    return transferEvent.values._tokenId.toString()
+    return transferEvent.args._tokenId.toString()
   }
   // There was no Transfer log (transaction failed?)
   return null
