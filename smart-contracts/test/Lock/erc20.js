@@ -47,12 +47,13 @@ contract('Lock / erc20', (accounts) => {
         from: accounts[0],
       })
 
-      // Approve the lock to make transfers
-      await token.approve(lock.address, -1, { from: keyOwner })
-      await token.approve(lock.address, -1, { from: keyOwner2 })
-      await token.approve(lock.address, -1, { from: keyOwner3 })
-
       keyPrice = new BigNumber(await lock.keyPrice.call())
+
+      // Approve the lock to make transfers
+      await token.approve(lock.address, keyPrice, { from: keyOwner })
+      await token.approve(lock.address, keyPrice, { from: keyOwner2 })
+      await token.approve(lock.address, keyPrice, { from: keyOwner3 })
+
       refundAmount = keyPrice.toFixed()
     })
 
@@ -178,7 +179,7 @@ contract('Lock / erc20', (accounts) => {
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
       const account = accounts[4]
-      await token.approve(lock.address, -1, { from: account })
+      await token.approve(lock.address, keyPrice, { from: account })
       await token.mint(account, keyPrice.minus(1), {
         from: accounts[0],
       })
