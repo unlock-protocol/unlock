@@ -35,7 +35,7 @@ contract('Lock / lockBehaviors', (accounts) => {
 
         // approve spending (ignored if the test pass does not use ERC-20)
         for (let i = 0; i < accounts.length; i++) {
-          await this.testToken.approve(this.lock.address, '-1', {
+          await this.testToken.approve(this.lock.address, -1, {
             from: accounts[i],
           })
         }
