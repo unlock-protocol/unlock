@@ -5,7 +5,7 @@ import { OwnedKey } from '../../../../components/interface/keychain/KeychainType
 import { pingPoap } from '../../../../utils/poap'
 import { AuthenticationContext } from '../../../../components/interface/Authenticate'
 
-const network = 1984
+const network = 1337
 const authentication = { network }
 
 let useGetMetadataForResult = {

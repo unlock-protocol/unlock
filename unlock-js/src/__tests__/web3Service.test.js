@@ -8,7 +8,7 @@ import v8 from '../v8'
 const supportedVersions = [v4, v6, v7, v8]
 
 const networks = {
-  1984: {
+  1337: {
     provider: 'http://127.0.0.1:8545',
     unlockAddress: '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F',
   },
@@ -55,7 +55,7 @@ describe('Web3Service', () => {
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
         expect.assertions(3)
-        const args = ['0xlock', 1984]
+        const args = ['0xlock', 1337]
         const result = {}
         const version = {
           [method](_args) {

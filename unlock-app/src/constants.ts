@@ -12,7 +12,7 @@ export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {
   4: 'Rinkeby',
   42: 'Kovan',
   100: 'xdai',
-  1984: 'Winston',
+  1337: 'Winston',
 }
 
 /**

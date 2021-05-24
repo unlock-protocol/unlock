@@ -10,7 +10,7 @@ const account = {
 }
 
 const network = {
-  name: 1984,
+  name: 1337,
 }
 
 const mockProvider = { loading: false, provider: {} }

@@ -37,7 +37,7 @@ const web3ServiceLock = {
   name: 'My Lock',
 }
 
-const network = 1984
+const network = 1337
 
 const transaction = {}
 
@@ -129,7 +129,7 @@ describe('useLocks', () => {
     it('should retrieve the lock using web3Service', async () => {
       expect.assertions(2)
       mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
-      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1984)
+      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1337)
       expect(lock).toEqual(web3ServiceLock)
       expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress, network)
     })
@@ -140,7 +140,7 @@ describe('useLocks', () => {
         maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       }
       mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
-      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1984)
+      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1337)
       expect(lock.unlimitedKeys).toBe(true)
     })
   })

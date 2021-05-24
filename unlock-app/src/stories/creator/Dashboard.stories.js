@@ -12,7 +12,7 @@ const account = {
   balance: '5',
 }
 const network = {
-  name: 1984,
+  name: 1337,
 }
 const transactions = {
   '0x1234': {

@@ -5,7 +5,7 @@ services:
     image: trufflesuite/ganache-cli:v6.12.2
     expose:
       - 8545
-    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-e 1000000']
+    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1337', '-e 1000000']
 
   ganache-standup: # Sets up the ganache instance with the required smart contracts and balances
     image: ganache-standup

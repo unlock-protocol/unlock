@@ -39,7 +39,7 @@ export default async function (address, provider) {
 
   const constantPromises = Object.keys(attributes).map(async (attribute) => {
     const result = await contract.functions[`${attribute}()`]()
-    update[attribute] = attributes[attribute](result) // We cast the value
+    update[attribute] = attributes[attribute](result[0]) // We cast the value
   })
   constantPromises.push(getBlockNumber())
 

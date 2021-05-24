@@ -8,7 +8,7 @@ import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
 import { networkConfigs } from '../../paywall-script/networkConfigs'
 
 const paywallConfig = {
-  network: 1984, // test network
+  network: 1337, // test network
   callToAction: {
     default: 'default',
     expired: 'expired',

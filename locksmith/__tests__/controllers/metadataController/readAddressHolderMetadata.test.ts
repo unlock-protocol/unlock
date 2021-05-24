@@ -7,7 +7,7 @@ import { addMetadata } from '../../../src/operations/userMetadataOperations'
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 
-const chain = 1984
+const chain = 1337
 
 const keyHolder = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',

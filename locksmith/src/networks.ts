@@ -29,7 +29,7 @@ export const networks: NetworkConfigs = {
     unlockAppUrl: 'https://app.unlock-protocol.com',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
   },
-  1984: {
+  1337: {
     provider: 'http://127.0.0.1:8545',
     locksmithUri: 'http://127.0.0.1:8080',
     unlockAppUrl: 'http://0.0.0.0:3000',

@@ -14,15 +14,15 @@ export default function configure(runtimeConfig = nextConfig) {
   const paywallUrl = runtimeConfig.paywallUrl || 'http://0.0.0.0:3001'
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
-  const requiredNetworkId = 1984
+  const requiredNetworkId = 1337
 
   if (env === 'test') {
-    isRequiredNetwork = (networkId) => networkId === 1984
+    isRequiredNetwork = (networkId) => networkId === 1337
   }
 
   if (env === 'dev') {
     // we start ganache locally with a block time of 3
-    isRequiredNetwork = (networkId) => networkId === 1984
+    isRequiredNetwork = (networkId) => networkId === 1337
   }
 
   if (env === 'staging') {

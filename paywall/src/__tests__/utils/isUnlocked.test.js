@@ -8,7 +8,7 @@ const {
 } = __ENVIRONMENT_VARIABLES__ /* eslint no-undef: 0 */
 
 const networkConfigs = {
-  1984: {
+  1337: {
     readOnlyProvider,
     locksmithUri,
   },
@@ -16,7 +16,7 @@ const networkConfigs = {
 
 const userAccountAddress = '0xUser'
 const paywallConfig = {
-  network: 1984,
+  network: 1337,
   callToAction: {
     default: 'default',
     expired: 'expired',

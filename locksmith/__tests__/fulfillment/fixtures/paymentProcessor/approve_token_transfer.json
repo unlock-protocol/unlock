@@ -13,7 +13,7 @@
     "response": {
       "id": 42,
       "jsonrpc": "2.0",
-      "result": "1984"
+      "result": "1337"
     },
     "rawHeaders": [
       "Content-Type",

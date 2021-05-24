@@ -52,10 +52,10 @@ export default async function (
       return parser.parseLog(log)
     })
     .filter((event) => {
-      return event.name === 'PriceChanged'
+      return event.signature === 'PriceChanged(uint256,uint256)'
     })[0]
   if (priceChangedEvent) {
-    return utils.fromDecimal(priceChangedEvent.values.keyPrice, decimals)
+    return utils.fromDecimal(priceChangedEvent.args.keyPrice, decimals)
   }
   // There was no NewEvent log (transaction failed?)
   return null

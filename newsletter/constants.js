@@ -10,7 +10,7 @@ export const ETHEREUM_NETWORKS_NAMES = {
   2: ['Morden', 'staging'],
   3: ['Ropsten', 'staging'],
   4: ['Rinkeby', 'staging'],
-  1984: ['Winston', 'test'],
+  1337: ['Winston', 'test'],
 }
 
 /**

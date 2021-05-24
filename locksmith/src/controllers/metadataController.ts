@@ -15,7 +15,7 @@ const config = require('../../config/config')
 const logger = require('../logger')
 const { networks } = require('../networks')
 
-const chain = 1984
+const chain = 1337
 
 namespace MetadataController {
   export const evaluateLockOwnership = async (

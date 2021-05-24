@@ -22,7 +22,7 @@ jest.mock('../../../hooks/useProvider.ts', () => {
 
 const config = {
   stripeApiKey: 'pk_not_a_real_key',
-  requiredNetworkId: 1984,
+  requiredNetworkId: 1337,
 }
 describe('SettingsContent', () => {
   beforeEach(() => {

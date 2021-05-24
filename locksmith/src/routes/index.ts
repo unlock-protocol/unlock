@@ -15,7 +15,7 @@ const router = express.Router()
 // Set the chain!
 router.use((request, _, next) => {
   const match = request.path.match(/^\/([0-9]*)\/.*/)
-  let chain = parseInt(config.defaultNetwork || 1984)
+  let chain = parseInt(config.defaultNetwork || 1337)
   if (match) {
     chain = parseInt(match[1])
   } else if (request.query?.chain) {

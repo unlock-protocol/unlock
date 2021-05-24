@@ -64,15 +64,16 @@ export default async function (lock, callback) {
   }
   // Let's now wait for the lock to be deployed before we return its address
   const receipt = await this.provider.waitForTransaction(hash)
+
   const parser = unlockContract.interface
   const newLockEvent = receipt.logs
     .map((log) => {
       return parser.parseLog(log)
     })
-    .filter((event) => event.name === 'NewLock')[0]
+    .filter((event) => event.signature === 'NewLock(address,address)')[0]
 
   if (newLockEvent) {
-    return newLockEvent.values.newLockAddress
+    return newLockEvent.args.newLockAddress
   }
   // There was no NewEvent log (transaction failed?)
   return null

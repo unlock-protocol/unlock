@@ -1,5 +1,9 @@
 # Changes
 
+# 0.18.0
+
+Now using Ethers 5!
+
 # 0.17.0
 
 - Adding ability to grant key granter status

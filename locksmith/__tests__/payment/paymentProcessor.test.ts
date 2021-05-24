@@ -172,7 +172,7 @@ describe('PaymentProcessor', () => {
           accountId,
           lockAddress,
           accountId,
-          1984
+          1337
         )
 
         expect(charge).not.toBeNull()
