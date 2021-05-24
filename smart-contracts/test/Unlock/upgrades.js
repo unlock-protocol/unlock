@@ -394,7 +394,7 @@ contract('Unlock / upgrades', (accounts) => {
                   const publicLockVersion = await lockLatest.methods
                     .publicLockVersion()
                     .call()
-                  assert.equal(publicLockVersion, UnlockAbis.length)
+                  assert.equal(publicLockVersion, PublicLockAbis.length)
                 })
               })
             })
