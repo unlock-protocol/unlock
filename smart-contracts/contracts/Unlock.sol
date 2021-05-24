@@ -272,11 +272,16 @@ contract Unlock is
             uint devReward = tokensToDistribute.mul(20) / 100;
             if (chainId > 1)
             {
+              uint balance = IMintableERC20(udt).balanceOf(address(this));
+              if (balance > tokensToDistribute) {
+                // Only distribute if there are enough tokens
+                IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);
+                IMintableERC20(udt).transfer(owner(), devReward);
+              }
+            } else {
+              // No distribnution
               IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);
               IMintableERC20(udt).mint(owner(), devReward);
-            } else {
-              IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);
-              IMintableERC20(udt).transfer(owner(), devReward);
             }
           }
         }
