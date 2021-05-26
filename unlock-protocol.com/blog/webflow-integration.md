@@ -3,7 +3,7 @@ title: Webflow Integration
 subTitle: Why its awesome and how to integrate with Webflow
 authorName: Sascha Mombartz
 publishDate: May 26, 2021
-description: A brief 
+description: A brief
 image: /static/images/blog/hellooptimisticunlocking/hero.jpg
 ---
 ![Webflow](/static/images/blog/webflow-integration/webflow-home-hero.png)
@@ -55,26 +55,98 @@ This is for members only and needs to be unlocked, hence it has the `unlocked` c
 The link and button that bring up the Unlock paywall are also special and they both embed elements with custom code.
 
 **Button**
-<script width="100px" src="https://gist.github.com/smombartz/c36a6a479e188dbee13b9150aad1d6db.js"></script>
+
+```html
+<button
+  class="unlock-content locked"
+  onclick="window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()">
+  Unlock!
+</button>
+```
 
 **Link**
-<script src="https://gist.github.com/smombartz/4c3fb7027189366ba5e916591d836431.js"></script>
-
+```html
+<a
+  class="link"
+  onclick="window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()">
+    Become a member
+</a> to read and submit comments.
+```
 ## 3. Paywall Integration
 
 You need to add the Paywall Script, Paywall Configuration, Event Handler and Unlock CSS to the Head Code in the Custom Code section of your site which you can access from the the the head section of your website. You can find all of the code that needs to go into the head here.
 
 **Paywall Script**
-<script src="https://gist.github.com/smombartz/a50e9907b5b0ef6fe45b415608c710f5.js"></script>
+
+```javascript
+<!-- Unlock Paywall Application Script -->
+<script>
+  (function(d, s) {
+    var js = d.createElement(s),
+      sc = d.getElementsByTagName(s)[0];
+    js.src = "https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
+    sc.parentNode.insertBefore(js, sc);
+  }(document, "script"));
+</script>
+```
 
 **Paywall Configuration**
-<script src="https://gist.github.com/smombartz/1f6f6a3665712f0451fc01f460c9a73c.js"></script>
+```js
+<!-- Unlock Paywall Application Configuration -->
+<script>
+  var unlockProtocolConfig = {
+    network: "100", // Network ID (1 is for mainnet, 4 for rinkeby... etc)
+    locks: {
+        "0xef6389F33ac557405C961030Efcc3b1CE3e6bc17": {
+          "name": "Webflow Integration"
+        }
+      },
+    icon: "https://uploads-ssl.webflow.com/607ded735b3ba1e212f1c708/607f1f8d698e5aceeb6c98a9_Unlock-WordMark.png",
+      "callToAction": {
+        "default": "Please unlock this demo!"
+      }
+	}
+</script>
+```
 
 **Events Handling**
-<script src="https://gist.github.com/smombartz/7ad643db152a48391e5c1f9f667febb8.js"></script>
+```js
+<!-- Unlock Event Handler -->
+<script>
+window.addEventListener('unlockProtocol.status', function(event) {
+  // We hide all .unlock-content elements
+  document.querySelector('.unlock-content').style.display = "none"
+  // We show only the relevant element
+  document.querySelectorAll(`.unlock-content.${event.detail.state}`).forEach((element) => {
+  	element.style.display = "block"
+  })
+})
+
+window.addEventListener('unlockProtocol.authenticated', function(event) {
+	// event.detail.addresss includes the address of the current user, when known
+})
+
+window.addEventListener('unlockProtocol.transactionSent', function(event) {
+	// event.detail.hash includes the hash of the transaction sent
+})
+<script>
+```
 
 **CSS**
-<script src="https://gist.github.com/smombartz/a3744bb52e2ba31e11f1bd068b47ebda.js"></script>
+```js
+<!-- Styling the Unlock content to be initially hidden till the handler loads to prevent flickering -->
+<style>
+  .unlock-content {
+    display: none;
+  }
+  .unlock-content .locked {
+    display: none;
+  }
+  .unlock-content .unlocked {
+    display: none;
+  }
+</style>
+```
 
 ## Done
 
