@@ -36,6 +36,10 @@ export default class MyDocument extends Document {
           <Fonts />
           {/* TODO remove line below when https://github.com/styled-components/styled-components/issues/2962 has been fixed */}
           <style>{globalStyle}</style>
+          <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.2/build/styles/default.min.css"
+          />
 
           <link rel="shortcut icon" href="/static/favicon.ico" />
           {this.props.styleTags}
