@@ -4,11 +4,11 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 26 May 2021 02:04:49 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 26 May 2021 14:15:33 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
         <item>
             <title><![CDATA[Webflow Integration]]></title>
-            <description><![CDATA[A brief]]></description>
+            <description><![CDATA[A suprisingly easy and powerful tutorial on how to integrate Unlock into Weblfow and monetize your content.]]></description>
             <link>https://unlock-protocol.com/blog/webflow-integration</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/webflow-integration</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
