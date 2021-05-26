@@ -209,6 +209,7 @@ export class Paywall {
   }
 
   hideIframe = () => {
+    dispatchEvent(unlockEvents.closeModal, {})
     this.iframe!.classList.remove('show')
   }
 

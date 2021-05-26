@@ -36,6 +36,7 @@ export const unlockEvents = {
   status: 'unlockProtocol.status',
   authenticated: 'unlockProtocol.authenticated',
   transactionSent: 'unlockProtocol.transactionSent',
+  closeModal: 'unlockProtocol.closeModal',
 }
 
 export const setupUnlockProtocolVariable = (properties: {
