@@ -7,7 +7,7 @@ export default async function (
   if (!expiration) {
     // Let's get the expiration from the duration (+/- given that the transaction can take time to be mined!)
     const duration = await lockContract.expirationDuration()
-    expiration = parseInt(new Date().getTime() / 1000 + duration)
+    expiration = Math.floor(new Date().getTime() / 1000 + duration.toNumber())
   }
 
   const grantKeysOptions = {}
