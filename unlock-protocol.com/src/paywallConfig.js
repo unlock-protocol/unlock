@@ -10,10 +10,11 @@ const paywallConfig = {
       network: 100,
     },
   },
-  icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
+  icon:
+    'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/brand/1808-Unlock-Identity_Unlock-WordMark.svg',
   callToAction: {
     default:
-      'Unlock lets you easily offer paid memberships to your website or application. On this website, members can leave comments and participate in discussion. It is free to try! Just click "purchase" below.',
+      'Get the Unlock membership to get you access to our Discord, blog comments and more!',
   },
 }
 
