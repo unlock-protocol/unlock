@@ -3,7 +3,7 @@ title: Webflow Integration
 subTitle: Why its awesome and how to integrate with Webflow
 authorName: Sascha Mombartz
 publishDate: May 26, 2021
-description: A brief 
+description: A suprisingly easy and powerful tutorial on how to integrate Unlock into Weblfow and monetize your content.
 image: /static/images/blog/hellooptimisticunlocking/hero.jpg
 ---
 ![Webflow](/static/images/blog/webflow-integration/webflow-home-hero.png)
