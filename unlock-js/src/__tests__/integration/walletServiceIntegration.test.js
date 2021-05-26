@@ -245,11 +245,17 @@ describe('Wallet Service Integration', () => {
         describe('grantKey', () => {
           let tokenId
           let key
+          let keyBefore
           let keyGrantee
           let transactionHash
           beforeAll(async () => {
             keyGrantee = accounts[7]
 
+            keyBefore = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyGrantee,
+              1337
+            )
             tokenId = await walletService.grantKey(
               {
                 lockAddress,
@@ -267,6 +273,12 @@ describe('Wallet Service Integration', () => {
               keyGrantee,
               1337
             )
+          })
+
+          it('should not have a valid key before the transaction', () => {
+            expect.assertions(2)
+            expect(keyBefore.owner).toEqual(keyGrantee)
+            expect(keyBefore.expiration).toEqual(0)
           })
 
           it('should have yielded a transaction hash', () => {
@@ -294,8 +306,10 @@ describe('Wallet Service Integration', () => {
             // the actual expiration depends on mining time (which we do not control)
             // We round to the minute!
             expect(
-              parseInt(key.expiration) -
-                parseInt(lock.expirationDuration + new Date().getTime() / 1000)
+              Math.floor(key.expiration) -
+                Math.floor(
+                  lock.expirationDuration + new Date().getTime() / 1000
+                )
             ).toBeLessThan(60)
           })
 
@@ -452,8 +466,10 @@ describe('Wallet Service Integration', () => {
             // the actual expiration depends on mining time (which we do not control)
             // We round to the minute!
             expect(
-              parseInt(key.expiration) -
-                parseInt(lock.expirationDuration + new Date().getTime() / 1000)
+              Math.floor(key.expiration) -
+                Math.floor(
+                  lock.expirationDuration + new Date().getTime() / 1000
+                )
             ).toBeLessThan(60)
           })
         })
@@ -683,7 +699,7 @@ describe('Wallet Service Integration', () => {
                 accounts[0],
                 1337
               )
-              const now = parseInt(new Date().getTime() / 1000)
+              const now = Math.floor(new Date().getTime() / 1000)
               expect(expiration).toBeGreaterThan(now)
 
               const recipient = '0x6524dbb97462ac3919866b8fbb22bf181d1d4113'

@@ -1,5 +1,8 @@
 # Changes
 
+# 0.18.1
+
+Fixed grantKey when timestamp was not supplied.
 # 0.18.0
 
 Now using Ethers 5!

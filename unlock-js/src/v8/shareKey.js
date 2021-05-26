@@ -12,7 +12,7 @@ export default async function (
   if (!duration) {
     const keyOwner = await lockContract.ownerOf(tokenId)
     const expiration = await lockContract.keyExpirationTimestampFor(keyOwner)
-    duration = parseInt(new Date().getTime() / 1000) - expiration
+    duration = Math.floor(new Date().getTime() / 1000) - expiration.toNumber()
   }
 
   const transactionOptions = {}
