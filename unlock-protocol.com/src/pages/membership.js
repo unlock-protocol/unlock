@@ -8,8 +8,14 @@ const MembershipLoader = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (isMember) {
-      window.location = router.query.redirect || 'https://unlock-protocol.com'
+    if (isMember === 'yes') {
+      setInterval(() => {
+        const iframe = document.querySelector('iframe.unlock-protocol-checkout')
+        if (!iframe.classList.contains('show')) {
+          window.location =
+            router.query.redirect || 'https://unlock-protocol.com'
+        }
+      }, 200)
     } else {
       becomeMember()
     }
