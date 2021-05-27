@@ -13,7 +13,7 @@ let lock
 
 const estimateGas = 252166
 
-contract('UnlockDiscountToken / mintingTokens', (accounts) => {
+contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
