@@ -87,6 +87,12 @@ interface IUnlock
     view
     returns(string memory);
 
+  // Function to read the chainId field.
+  function chainId()
+    external
+    view
+    returns(uint memory);
+
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
