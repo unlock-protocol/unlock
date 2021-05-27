@@ -91,7 +91,7 @@ interface IUnlock
   function chainId()
     external
     view
-    returns(uint memory);
+    returns(uint);
 
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
