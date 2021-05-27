@@ -100,7 +100,9 @@ export const connectStripe = async (
   chain: number,
   baseUrl: string
 ) => {
-  const stripe = new Stripe(config.stripeSecret)
+  const stripe = new Stripe(config.stripeSecret, {
+    apiVersion: '2020-08-27',
+  })
 
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock },
@@ -109,7 +111,6 @@ export const connectStripe = async (
   if (!stripeConnectLockDetails) {
     // This is a new one
     account = await stripe.accounts.create({
-      // @ts-expect-error
       type: 'standard',
       metadata: {
         lock,
@@ -131,7 +132,6 @@ export const connectStripe = async (
     )
   }
 
-  // @ts-expect-error
   return await stripe.accountLinks.create({
     account: account.id,
     refresh_url: `${baseUrl}/stripeconnect?lock=${lock}&network=${chain}&completed=0`,
