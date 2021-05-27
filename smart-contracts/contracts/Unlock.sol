@@ -253,8 +253,9 @@ contract Unlock is
           uint maxTokens = 0;
           if (chainId > 1)
           {
-            // non mainnet: we distribute tokens using asymptotic curve
-            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(1 / (1 - (valueInETH / grossNetworkProduct)) / 2);
+            // non mainnet: we distribute tokens using asymptotic curve between 0 and 0.5
+            // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));
+            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(valueInETH) / (2 + 2 * valueInETH / grossNetworkProduct) / grossNetworkProduct;
           } else {
             // Mainnet: we mint new token using log curve
             maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
