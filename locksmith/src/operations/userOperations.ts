@@ -172,7 +172,9 @@ namespace UserOperations {
   export const getCardDetailsFromStripe = async (
     customer_id: any
   ): Promise<any[]> => {
-    const stripe = new Stripe(config.stripeSecret)
+    const stripe = new Stripe(config.stripeSecret, {
+      apiVersion: '2020-08-27',
+    })
 
     try {
       const cardsResponse = await stripe.customers.listSources(customer_id, {
