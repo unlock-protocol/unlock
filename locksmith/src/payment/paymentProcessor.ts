@@ -19,7 +19,9 @@ export class PaymentProcessor {
   keyPricer: KeyPricer
 
   constructor(apiKey: string) {
-    this.stripe = new Stripe(apiKey)
+    this.stripe = new Stripe(apiKey, {
+      apiVersion: '2020-08-27',
+    })
     this.keyPricer = new KeyPricer()
   }
 
