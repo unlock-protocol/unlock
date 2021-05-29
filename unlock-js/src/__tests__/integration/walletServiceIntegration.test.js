@@ -452,8 +452,10 @@ describe('Wallet Service Integration', () => {
           })
 
           it('should have assigned the key to the right user', async () => {
-            expect.assertions(1)
+            expect.assertions(2)
             expect(key.owner).toEqual(keyOwner)
+            const owner = await web3Service.ownerOf(key.lock, tokenId, 1337)
+            expect(owner).toEqual(keyOwner)
           })
 
           it('should have assigned the key to the right lock', async () => {
