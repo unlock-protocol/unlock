@@ -340,10 +340,10 @@
     "@ethersproject/properties" "^5.2.0"
     "@ethersproject/strings" "^5.2.0"
 
-"@unlock-protocol/unlock-js@0.18.1":
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.18.1.tgz#6a6da5eff9f2174b49717bbe3207e2c974a77d2f"
-  integrity sha512-8nwE0vI1Qnr1SWHYIOny8ubqgjYTDRwms1BxwZt39pJNdc9rgJ/uD9jYm7GDs40q8Gfa8MIOtZd5MK6IeOI6wQ==
+"@unlock-protocol/unlock-js@0.18.2":
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.18.2.tgz#8ceb47e9f527c188a0bf8310e8b5e366081faea5"
+  integrity sha512-mxPCewLILS+HZfUlSfiMNb1pAS/kpxL2eF9fgNgxNFQvc1CfWCkiyTgtjMPi/Z979DrJWippJqmAKKXtl+eQyA==
   dependencies:
     cross-fetch "3.1.4"
     ethers "5.2.0"
