@@ -80,12 +80,13 @@ namespace MetadataController {
     const keyId = req.params.keyId.toLowerCase()
     const base = `${req.protocol}://${req.headers.host}`
     const lockOwner = await presentProtectedData(req, Number(keyId), address)
+
     const keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,
       lockOwner,
       base,
-      req.chain
+      parseInt(req.params.chain || req.chain)
     )
 
     if (Object.keys(keyMetadata).length === 0) {
@@ -131,7 +132,7 @@ namespace MetadataController {
     const id = req.params.keyId.toLowerCase()
     const { chain } = req
 
-    if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
+    if ((await evaluateLockOwnership(address, owner, chain)) === false) {
       res.sendStatus(401)
     } else {
       const successfulUpdate = metadataOperations.updateKeyMetadata({

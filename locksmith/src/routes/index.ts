@@ -9,19 +9,15 @@ const metadataRouter = require('./metadata')
 const healthCheckRouter = require('./health')
 const config = require('../../config/config')
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 // Set the chain!
 router.use((request, _, next) => {
   const match = request.path.match(/^\/([0-9]*)\/.*/)
   let chain = parseInt(config.defaultNetwork || 1337)
-
   if (match) {
     // When the route starts with the chain (deprecated?)
     chain = parseInt(match[1])
-  } else if (request.params.chain) {
-    // When the chain is explicit in the URL
-    chain = parseInt(request.params.chain)
   } else if (request.query?.chain) {
     // @ts-expect-error
     chain = parseInt(request.query.chain)
@@ -35,8 +31,8 @@ router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
 router.use('/price', priceRouter)
+router.use('/api/key/:chain([0-9]{1,6})/', metadataRouter)
 router.use('/api/key', metadataRouter)
-router.use('/api/key/:chain', metadataRouter)
 router.use('/health', healthCheckRouter)
 
 router.use('/', (_, res) => {

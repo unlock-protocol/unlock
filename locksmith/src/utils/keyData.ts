@@ -19,7 +19,7 @@ export default class KeyData {
       )
       return {
         owner,
-        expiration: expiration.toNumber(),
+        expiration,
       }
     } catch (error) {
       logger.error(
@@ -31,17 +31,14 @@ export default class KeyData {
   }
 
   openSeaPresentation(data: any) {
-    if (data.expiration) {
-      return {
-        attributes: [
-          {
-            trait_type: 'Expiration',
-            value: data.expiration,
-            display_type: 'date',
-          },
-        ],
-      }
+    return {
+      attributes: [
+        {
+          trait_type: 'Expiration',
+          value: data.expiration || 0,
+          display_type: 'date',
+        },
+      ],
     }
-    return data
   }
 }

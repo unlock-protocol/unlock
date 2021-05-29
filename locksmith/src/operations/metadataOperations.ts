@@ -4,7 +4,6 @@ import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'
 
-const config = require('../../config/config')
 const Asset = require('../utils/assets')
 
 const baseURIFragement = 'https://assets.unlock-protocol.com'
@@ -108,7 +107,10 @@ const fetchChainData = async (
 ): Promise<any> => {
   const kd = new KeyData()
   const data = await kd.get(address, keyId, network)
-  return kd.openSeaPresentation(data)
+  return {
+    ...kd.openSeaPresentation(data),
+    ...data,
+  }
 }
 
 const defaultMappings = (address: string, host: string) => {

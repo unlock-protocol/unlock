@@ -1,7 +1,7 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 const lockController = require('../controllers/lockController')
 
 const connectStripeConfiguration = {
