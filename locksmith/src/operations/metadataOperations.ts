@@ -4,7 +4,6 @@ import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'
 
-const config = require('../../config/config')
 const Asset = require('../utils/assets')
 
 const baseURIFragement = 'https://assets.unlock-protocol.com'
@@ -31,17 +30,16 @@ export const generateKeyMetadata = async (
   address: string,
   keyId: string,
   isLockOwner: boolean,
-  host: string
+  host: string,
+  network: number
 ) => {
-  const onChainKeyMetadata = await fetchChainData(address, keyId)
+  const onChainKeyMetadata = await fetchChainData(address, keyId, network)
   if (Object.keys(onChainKeyMetadata).length == 0) {
     return {}
   }
 
-  const kd = new KeyData(config.web3ProviderHost)
-  const data = await kd.get(address, keyId)
-  const userMetadata = data.owner
-    ? await getMetadata(address, data.owner, isLockOwner)
+  const userMetadata = onChainKeyMetadata.owner
+    ? await getMetadata(address, onChainKeyMetadata.owner, isLockOwner)
     : {}
 
   const keyCentricData = await getKeyCentricData(address, keyId)
@@ -102,10 +100,17 @@ const getKeyCentricData = async (
   return result
 }
 
-const fetchChainData = async (address: string, keyId: string): Promise<any> => {
-  const kd = new KeyData(config.web3ProviderHost)
-  const data = await kd.get(address, keyId)
-  return kd.openSeaPresentation(data)
+const fetchChainData = async (
+  address: string,
+  keyId: string,
+  network: number
+): Promise<any> => {
+  const kd = new KeyData()
+  const data = await kd.get(address, keyId, network)
+  return {
+    ...kd.openSeaPresentation(data),
+    ...data,
+  }
 }
 
 const defaultMappings = (address: string, host: string) => {
