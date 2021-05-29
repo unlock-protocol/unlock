@@ -564,8 +564,8 @@ workflows:
       - deploy-locksmith-beanstalk:
           filters:
             branches:
-              only: production
-                - production
+              only:
+                - master
                 - production
           requires:
             - promote-locksmith-image
