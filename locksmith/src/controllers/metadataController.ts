@@ -84,7 +84,8 @@ namespace MetadataController {
       address,
       keyId,
       lockOwner,
-      base
+      base,
+      req.chain
     )
 
     if (Object.keys(keyMetadata).length === 0) {
