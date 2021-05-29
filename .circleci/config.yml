@@ -566,6 +566,7 @@ workflows:
             branches:
               only: production
                 - production
+                - production
           requires:
             - promote-locksmith-image
       - deploy-wedlocks-netlify:
