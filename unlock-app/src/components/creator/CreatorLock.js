@@ -86,7 +86,7 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
   const lockVersion = lock.publicLockVersion || '1'
 
   const edit = () => {
-    showDrawer('')
+    setShowDrawer('')
     setEditing(!editing)
   }
 
