@@ -5,8 +5,8 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@unlock-protocol/unlock-js": "0.16.3",
+    "@unlock-protocol/unlock-js": "0.18.2",
     "erc1820": "0.0.2",
-    "ethers": "4.0.48"
+    "ethers": "5.2.0"
   }
 }

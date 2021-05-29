@@ -33,7 +33,7 @@ export const networkConfigs: NetworkConfigs = {
     locksmithUri: 'https://locksmith.unlock-protocol.com',
     unlockAppUrl,
   },
-  1984: {
+  1337: {
     readOnlyProvider: 'http://127.0.0.1:8545',
     locksmithUri: 'http://127.0.0.1:8080',
     unlockAppUrl,

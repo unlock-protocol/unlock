@@ -55,6 +55,7 @@ export default function configure(
   // developing.
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
+  const keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
 
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -106,11 +107,11 @@ export default function configure(
 
   const networks = {}
 
-  networks[1984] = {
+  networks[1337] = {
     httpProvider: runtimeConfig.httpProvider || '127.0.0.1',
     provider: `http://${httpProvider}:8545`,
     unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
-    id: 1984,
+    id: 1337,
     name: 'Dev',
     requiredConfirmations: 6,
     blockTime: 3000,
@@ -246,5 +247,6 @@ export default function configure(
     googleDiscoveryDocs,
     googleScopes,
     networks,
+    keyGranter,
   }
 }

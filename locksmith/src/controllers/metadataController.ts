@@ -15,32 +15,32 @@ const config = require('../../config/config')
 const logger = require('../logger')
 const { networks } = require('../networks')
 
-const chain = 1984
+const chain = 1337
 
 namespace MetadataController {
-  const evaluateLockOwnership = async (
+  export const evaluateLockOwnership = async (
     lockAddress: string,
-    signeeAddress: string,
+    lockManager: string,
     network: number
   ) => {
     try {
       const web3Service = new Web3Service(networks)
-      if (!lockAddress || !signeeAddress) {
+      if (!lockAddress || !lockManager) {
         logger.error(
-          'Missing lockAddress or signeeAddress',
-          signeeAddress,
+          'Missing lockAddress or lockManager',
+          lockManager,
           lockAddress
         )
         return false
       }
-      return web3Service.isLockManager(lockAddress, signeeAddress, network)
+      return web3Service.isLockManager(lockAddress, lockManager, network)
     } catch (error) {
       logger.error('evaluateLockOwnership failed', { error })
       return false
     }
   }
 
-  const evaluateKeyOwnership = async (
+  export const evaluateKeyOwnership = async (
     lockAddress: string,
     tokenId: number,
     signeeAddress: string
@@ -80,11 +80,13 @@ namespace MetadataController {
     const keyId = req.params.keyId.toLowerCase()
     const base = `${req.protocol}://${req.headers.host}`
     const lockOwner = await presentProtectedData(req, Number(keyId), address)
+
     const keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,
       lockOwner,
-      base
+      base,
+      parseInt(req.params.chain || req.chain)
     )
 
     if (Object.keys(keyMetadata).length === 0) {
@@ -130,7 +132,7 @@ namespace MetadataController {
     const id = req.params.keyId.toLowerCase()
     const { chain } = req
 
-    if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
+    if ((await evaluateLockOwnership(address, owner, chain)) === false) {
       res.sendStatus(401)
     } else {
       const successfulUpdate = metadataOperations.updateKeyMetadata({

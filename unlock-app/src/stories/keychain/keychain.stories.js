@@ -19,7 +19,7 @@ const manyKeyHoldingAccount = {
 }
 
 const network = {
-  name: 1984,
+  name: 1337,
 }
 
 const router = {

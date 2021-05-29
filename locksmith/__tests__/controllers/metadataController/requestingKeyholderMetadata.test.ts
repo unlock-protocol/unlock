@@ -13,7 +13,7 @@ const privateKey = ethJsUtil.toBuffer(
 
 const lockOwningAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const lockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
-const chain = 1984
+const chain = 1337
 
 function generateTypedData(message: any) {
   return {

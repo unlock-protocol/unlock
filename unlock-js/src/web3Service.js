@@ -294,4 +294,30 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
   }
+
+  /**
+   * Returns the owner of a key
+   * @param {*} lockAddress
+   * @param {*} tokenId
+   * @param {*} network
+   */
+  async ownerOf(lockAddress, tokenId, network) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.ownerOf(tokenId)
+  }
+
+  /**
+   * Returns the Ethers contract 'connected' (should be used with care)
+   * @param {*} lockAddress
+   * @param {*} network
+   */
+  async lockContract(lockAddress, network) {
+    return await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+  }
 }

@@ -132,4 +132,4 @@ On click, I check that `window.unlockProtocol` exists (i.e., the library has bee
 
 And that's all I need to do. The Unlock API manages the purchase process and all of the access control. It's as lightweight as it can be.
 
-Have you integrated Unlock into your application? We'd love to hear from you. You can email us at [hello@unlock-protocol.com](mailto:hello@unlock-protocol.com) or come say hi on [our Telegram group](https://t.me/unlockprotocol).
+Have you integrated Unlock into your application? We'd love to hear from you. You can email us at [hello@unlock-protocol.com](mailto:hello@unlock-protocol.com) or come say hi on [our Discord](https://discord.gg/Ah6ZEJyTDp).
