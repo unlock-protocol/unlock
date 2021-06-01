@@ -31,7 +31,7 @@
     "ganache-cli": "6.10.2",
     "hardlydifficult-eth": "1.1.2",
     "hardlydifficult-ethereum-contracts": "0.11.1",
-    "lint-staged": "10.3.0",
+    "lint-staged": "11.0.0",
     "prettier": "2.1.1",
     "solium": "1.2.5",
     "truffle": "5.1.43",
