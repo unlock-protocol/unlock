@@ -41,7 +41,7 @@
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@unlock-protocol/unlock-abi-8": "1.0.0",
-    "babel-jest": "26.6.3",
+    "babel-jest": "27.0.2",
     "erc1820": "0.0.2",
     "eslint": "7.25.0",
     "ganache-cli": "6.12.2",
