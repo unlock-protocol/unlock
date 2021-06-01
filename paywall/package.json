@@ -29,7 +29,7 @@
     "@types/styled-components": "5.1.9",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
-    "dotenv": "8.2.0",
+    "dotenv": "10.0.0",
     "lint-staged": "11.0.0",
     "netlify-cli": "3.24.4",
     "next": "10.2.3",
