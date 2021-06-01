@@ -27,7 +27,7 @@
     "eslint-import-resolver-typescript": "2.3.0",
     "eslint-plugin-mocha": "8.1.0",
     "eth-gas-reporter": "0.2.17",
-    "eth-sig-util": "2.5.3",
+    "eth-sig-util": "2.5.4",
     "ganache-cli": "6.10.2",
     "hardlydifficult-eth": "1.1.2",
     "hardlydifficult-ethereum-contracts": "0.11.1",
