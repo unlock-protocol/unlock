@@ -1304,6 +1304,15 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
+"@types/express-serve-static-core@4.17.20":
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.20.tgz#44caee029f2c26c46711da5e845cdc12167ad72d"
+  integrity sha512-8qqFN4W53IEWa9bdmuVrUcVkFemQWnt5DKPQ/oa8xKDYgtjCr2OO6NX5TIK49NLFr3mPYU2cLh92DQquC3oWWQ==
+  dependencies:
+    "@types/node" "*"
+    "@types/qs" "*"
+    "@types/range-parser" "*"
+
 "@types/express@*":
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.2.tgz#a0fb7a23d8855bac31bc01d5a58cadd9b2173e6c"
