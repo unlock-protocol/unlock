@@ -40,7 +40,7 @@
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
-    "@vue/cli": "4.5.4",
+    "@vue/cli": "4.5.13",
     "babel-eslint": "10.1.0",
     "bignumber.js": "9.0.1",
     "chai": "4.2.0",
