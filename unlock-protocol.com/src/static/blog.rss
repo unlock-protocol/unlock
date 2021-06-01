@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 26 May 2021 22:14:11 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 01 Jun 2021 20:31:31 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Unlock Protocol Winning Teams from Web3Weekend]]></title>
+            <description><![CDATA[On May 28-30th, 2021, Unlock participated in Web3Weekend, in partnership with Protocol Labs and EthGlobal. We added UDT Tokens to the $50K+prize bounty shared by all of the sponsors and community.]]></description>
+            <link>https://unlock-protocol.com/blog/web3-weekend-hackathon</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/web3-weekend-hackathon</guid>
+            <dc:creator><![CDATA[Amber Case]]></dc:creator>
+            <pubDate>Tue, 01 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Webflow Integration]]></title>
             <description><![CDATA[A surprisingly easy and powerful tutorial on how to integrate Unlock into Weblfow and monetize your content.]]></description>
@@ -399,19 +407,19 @@
             <pubDate>Wed, 10 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Integrating Unlock with Known]]></title>
-            <description><![CDATA[The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.]]></description>
-            <link>https://unlock-protocol.com/blog/integrating-unlock-with-known</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/integrating-unlock-with-known</guid>
-            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
-            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Digital Cash. Big Deal.]]></title>
             <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
             <link>https://unlock-protocol.com/blog/digital-cash</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Integrating Unlock with Known]]></title>
+            <description><![CDATA[The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.]]></description>
+            <link>https://unlock-protocol.com/blog/integrating-unlock-with-known</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/integrating-unlock-with-known</guid>
+            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
             <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
