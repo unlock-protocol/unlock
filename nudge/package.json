@@ -25,7 +25,7 @@
     "apollo-link-http": "1.5.17",
     "blake2": "4.0.2",
     "cron": "1.8.2",
-    "dotenv": "8.6.0",
+    "dotenv": "10.0.0",
     "ethereumjs-util": "6.2.1",
     "ethers": "5.2.0",
     "graphql": "15.5.0",
