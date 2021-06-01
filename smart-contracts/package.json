@@ -21,7 +21,7 @@
     "bignumber.js": "9.0.0",
     "erc1820": "0.0.2",
     "eslint": "7.8.1",
-    "eslint-config-airbnb": "18.2.0",
+    "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.2",
     "eslint-import-resolver-typescript": "2.3.0",
