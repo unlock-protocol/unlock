@@ -42,7 +42,7 @@
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@vue/cli": "4.5.4",
     "babel-eslint": "10.1.0",
-    "bignumber.js": "9.0.0",
+    "bignumber.js": "9.0.1",
     "chai": "4.2.0",
     "coveralls": "3.1.0",
     "erc1820": "0.0.2",
