@@ -25,7 +25,7 @@
     "@types/node": "12.20.13",
     "@types/postmate": "1.5.1",
     "@types/react": "17.0.8",
-    "@types/react-dom": "17.0.5",
+    "@types/react-dom": "17.0.6",
     "@types/styled-components": "5.1.9",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
