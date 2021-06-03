@@ -13,7 +13,7 @@ let lock
 
 const estimateGas = 252166
 
-contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
+contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
@@ -25,9 +25,6 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     udt = await UnlockDiscountToken.new()
     await udt.initialize(minter)
     lock = (await deployLocks(unlock, lockOwner)).FIRST
-
-    // Grant Unlock minting permissions
-    await udt.addMinter(unlock.address, { from: minter })
 
     // Deploy the exchange
     const weth = await tokens.weth.deploy(web3, protocolOwner)
@@ -79,7 +76,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
-      1, // mainnet
+      100, // xdai
       { from: protocolOwner }
     )
     await unlock.setOracle(udt.address, uniswapOracle.address, {
@@ -103,6 +100,11 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       web3.utils.toWei('1', 'ether'),
       weth.address
     )
+
+    // Mint another 1000000
+    await udt.mint(unlock.address, web3.utils.toWei('1000000', 'ether'), {
+      from: minter,
+    })
   })
 
   it('exchange rate is > 0', async () => {
@@ -123,10 +125,23 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     )
   })
 
-  describe('mint by gas price', () => {
+  it('unlock has some 0 UDT', async () => {
+    assert.equal(
+      new BigNumber(await udt.balanceOf(await unlock.address))
+        .shiftedBy(-18)
+        .toFixed(5),
+      '1000000.00000'
+    )
+  })
+
+  describe('grant by gas price', () => {
     let gasSpent
 
     beforeEach(async () => {
+      // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
+      await unlock.resetTrackedValue(web3.utils.toWei('1', 'wei'), 0, {
+        from: protocolOwner,
+      })
       const tx = await lock.purchase(0, keyBuyer, referrer, [], {
         from: keyBuyer,
         value: await lock.keyPrice(),
@@ -141,8 +156,8 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       assert.notEqual(actual.toString(), 0)
     })
 
-    it('amount minted for referrer ~= gas spent', async () => {
-      // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
+    it('amount granted for referrer ~= gas spent', async () => {
+      // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
       assert.equal(
         new BigNumber(await udt.balanceOf(referrer))
           .shiftedBy(-18) // shift UDT balance
@@ -153,7 +168,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       )
     })
 
-    it('amount minted for dev ~= gas spent * 20%', async () => {
+    it('amount granted for dev ~= gas spent * 20%', async () => {
       assert.equal(
         new BigNumber(await udt.balanceOf(await unlock.owner()))
           .shiftedBy(-18) // shift UDT balance
@@ -165,13 +180,17 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     })
   })
 
-  describe('mint capped by % growth', () => {
+  describe('grant capped by % growth', () => {
     beforeEach(async () => {
-      // 1,000,000 UDT minted thus far
-      // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
-      // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
-      const initialGdp = new BigNumber(await lock.keyPrice()).times(40000)
-      await unlock.resetTrackedValue(initialGdp.toFixed(0), 0, {
+      // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
+      // With 1,000,000 to distribute, that is 0.00001% supply
+      // which translates in a gdp growth of 0.002%
+      // So we need a GDP of 500 eth
+      // Example: ETH = 2000 USD
+      // Total value exchanged = 1M USD
+      // Key purchase 0.01 ETH = 20 USD
+      // user earns 10UDT or
+      await unlock.resetTrackedValue(web3.utils.toWei('500', 'ether'), 0, {
         from: protocolOwner,
       })
 
@@ -186,14 +205,14 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       assert.notEqual(actual.toString(), 0)
     })
 
-    it('amount minted for referrer ~= 10 UDT', async () => {
+    it('amount granted for referrer ~= 8 UDT', async () => {
       assert.equal(
         new BigNumber(await udt.balanceOf(referrer)).shiftedBy(-18).toFixed(0),
-        '10'
+        '8'
       )
     })
 
-    it('amount minted for dev ~= 2 UDT', async () => {
+    it('amount granted for dev ~= 2 UDT', async () => {
       assert.equal(
         new BigNumber(await udt.balanceOf(await unlock.owner()))
           .shiftedBy(-18)

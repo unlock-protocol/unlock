@@ -1,5 +1,6 @@
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { constants } = require('hardlydifficult-eth')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
@@ -48,9 +49,9 @@ contract('Lock / erc20', (accounts) => {
       })
 
       // Approve the lock to make transfers
-      await token.approve(lock.address, -1, { from: keyOwner })
-      await token.approve(lock.address, -1, { from: keyOwner2 })
-      await token.approve(lock.address, -1, { from: keyOwner3 })
+      await token.approve(lock.address, constants.MAX_UINT, { from: keyOwner })
+      await token.approve(lock.address, constants.MAX_UINT, { from: keyOwner2 })
+      await token.approve(lock.address, constants.MAX_UINT, { from: keyOwner3 })
 
       keyPrice = new BigNumber(await lock.keyPrice.call())
       refundAmount = keyPrice.toFixed()
@@ -178,7 +179,7 @@ contract('Lock / erc20', (accounts) => {
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
       const account = accounts[4]
-      await token.approve(lock.address, -1, { from: account })
+      await token.approve(lock.address, constants.MAX_UINT, { from: account })
       await token.mint(account, keyPrice.minus(1), {
         from: accounts[0],
       })

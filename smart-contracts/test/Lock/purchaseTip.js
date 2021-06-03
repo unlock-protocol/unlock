@@ -33,7 +33,7 @@ contract('Lock / purchaseTip', (accounts) => {
         lock = locks.FIRST
 
         // Approve spending
-        await testToken.approve(lock.address, -1, {
+        await testToken.approve(lock.address, tip, {
           from: accounts[2],
         })
       })

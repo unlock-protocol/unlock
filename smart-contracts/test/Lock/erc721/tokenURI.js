@@ -47,6 +47,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
           0,
           await unlock.globalTokenSymbol(),
           'https://globalBaseTokenURI.com/api/key/',
+          1, // mainnet
           {
             from: accounts[0],
           }
@@ -81,6 +82,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
           0,
           await unlock.globalTokenSymbol(),
           'https://fakeGlobalURI.com',
+          1, // mainnet
           {
             from: accounts[1],
           }

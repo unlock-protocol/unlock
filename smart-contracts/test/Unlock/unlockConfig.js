@@ -20,6 +20,7 @@ contract('Lock / configUnlock', (accounts) => {
         0,
         '',
         '',
+        1, // mainnet
         {
           from: unlockOwner,
         }
@@ -34,6 +35,7 @@ contract('Lock / configUnlock', (accounts) => {
           0,
           '',
           '',
+          1, // mainnet
           {
             from: accounts[7],
           }
