@@ -1,5 +1,10 @@
 # Changes
 
+# 0.18.2
+
+- Adding way to get the contract in web3Service (`lockContract(lockAddress, network)`)
+- Adding `ownerOf(lockAddress, tokenId, network)` to retrieve the owner of a token
+
 # 0.18.1
 
 Fixed grantKey when timestamp was not supplied.
