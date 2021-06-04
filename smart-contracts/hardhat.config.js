@@ -1,18 +1,17 @@
 // hardhat.config.js
 
+require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
 
 // erc1820 deployment
 require('hardhat-erc1820')
 
 // for upgrades
-require('@nomiclabs/hardhat-ethers')
 require('@openzeppelin/hardhat-upgrades')
 
 const { task } = require('hardhat/config')
 
 // const { deploy } = require('./scripts/deploy')
-
 const { getHardhatNetwork } = require('./helpers/network')
 
 const settings = {
@@ -65,10 +64,10 @@ module.exports = {
     compilers: [
       { version: '0.4.24', settings },
       { version: '0.4.25', settings },
+      { version: '0.5.17', settings },
+      { version: '0.5.14', settings },
       { version: '0.5.7', settings },
       { version: '0.5.9', settings },
-      { version: '0.5.14', settings },
-      { version: '0.5.17', settings },
       { version: '0.6.12', settings },
       { version: '0.7.6', settings },
       { version: '0.8.4', settings },
