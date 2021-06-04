@@ -10,17 +10,28 @@ task("accounts", "Prints the list of accounts", async () => {
   }
 });
 
+
+const settings = {
+  optimizer: {
+    enabled: true,
+    runs: 200,
+  },
+};
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "hardhat",
-  networks: {
-    hardhat: {
-      chainId: 4,
-    }
-  },
+  // defaultNetwork: "hardhat",
+  // networks: {
+  //   hardhat: {
+  //     chainId: 4,
+  //   }
+  // },
   solidity: {
-    version: "0.5.17"
+    compilers: [
+      { version: '0.5.17', settings },
+      { version: '0.8',  settings }
+    ]
   }
 };
