@@ -7,12 +7,13 @@
     "test": "test"
   },
   "engines": {
-    "node": "^10"
+    "node": "^14"
   },
   "engineStrict": true,
   "dependencies": {
     "@openzeppelin/cli": "2.8.2",
     "@openzeppelin/contracts-ethereum-package": "2.5.0",
+    "@openzeppelin/contracts-upgradeable": "^4.1.0",
     "@openzeppelin/test-helpers": "0.5.11",
     "@openzeppelin/upgrades": "2.8.0",
     "@unlock-protocol/unlock-abi-0": "1.0.4",
@@ -38,6 +39,7 @@
     "eth-gas-reporter": "0.2.22",
     "eth-sig-util": "2.5.4",
     "ganache-cli": "6.10.2",
+    "hardhat": "^2.3.0",
     "hardlydifficult-eth": "1.1.2",
     "hardlydifficult-ethereum-contracts": "0.11.1",
     "lint-staged": "11.0.0",
