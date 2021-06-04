@@ -5,3 +5,6 @@
 mnemonic.*
 .openzeppelin/.session
 .openzeppelin/dev-1337.json
+
+# OpenZeppelin
+.openzeppelin/unknown-*.json

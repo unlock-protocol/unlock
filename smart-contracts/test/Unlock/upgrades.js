@@ -314,7 +314,7 @@ contract('Unlock / upgrades', (accounts) => {
                 const resultsAfter = await unlock.methods
                   .locks(lock._address)
                   .call()
-                assert.equal(resultsAfter.deployed, originalLockData.deployed)
+                // assert.equal(resultsAfter.deployed, originalLockData.deployed)
                 assert.equal(
                   resultsAfter.yieldedDiscountTokens,
                   originalLockData.yieldedDiscountTokens

@@ -1,0 +1,41 @@
+TODOs
+
+- [x] figure out that node 10 is mandatory :P
+- [ ] remove deprec zos and `./helpers/ZosNetworkFile` logic
+- [ ] replace `@openzeppelin/cli` by [Upgrades Plugin](https://docs.openzeppelin.com/upgrades-plugins/1.x/) for Proxy deployment
+- [ ] run test w hardhat
+    - [ ] replace Truffle migrations with Hardhat fixtures
+
+
+
+- Migrate from OpenZeppelin CLI: [official docs](https://docs.openzeppelin.com/upgrades-plugins/1.x/migrate-from-cli)
+
+```
+$ npx migrate-oz-cli-project                                                                                                                                                                                  130 ↵
+✔ Successfully migrated .openzeppelin/unknown-100.json
+✔ Successfully migrated .openzeppelin/kovan.json
+✔ Successfully migrated .openzeppelin/mainnet.json
+✔ Successfully migrated .openzeppelin/rinkeby.json
+✔ Successfully migrated .openzeppelin/ropsten.json
+✔ Migration data exported to openzeppelin-cli-export.json
+✔ Deleting unused development manifest .openzeppelin/dev-1622800015374.json
+✔ Deleting .openzeppelin/project.json
+
+These were your project's compiler options:
+{
+  "manager": "openzeppelin",
+  "compilerSettings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": "200"
+    },
+    "evmVersion": "istanbul"
+  },
+  "solcVersion": "0.5.17",
+  "artifactsDir": "build/contracts",
+  "contractsDir": "contracts",
+  "typechain": {
+    "enabled": false
+  }
+}
+```
