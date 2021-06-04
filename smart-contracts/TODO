@@ -6,9 +6,23 @@ TODOs
 - [ ] run test w hardhat
     - [ ] replace Truffle migrations with Hardhat fixtures
 
+- Make token contract Upgradable https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
 
 
-- Migrate from OpenZeppelin CLI: [official docs](https://docs.openzeppelin.com/upgrades-plugins/1.x/migrate-from-cli)
+- redeploy existing usung hardhat
+
+```
+# first terminal
+npx hardhat node
+
+# in a second terminal
+npx hardhat run --network localhost scripts/initProxy.js
+npx hardhat run --network localhost scripts/deployUnlock.js
+```
+
+## Done 
+
+Migrated from OpenZeppelin CLI: [official docs](https://docs.openzeppelin.com/upgrades-plugins/1.x/migrate-from-cli)
 
 ```
 $ npx migrate-oz-cli-project                                                                                                                                                                                  130 ↵
