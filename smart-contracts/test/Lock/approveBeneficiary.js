@@ -15,10 +15,10 @@ contract('Lock / approveBeneficiary', (accounts) => {
 
   before(async () => {
     unlock = await getProxy(unlockContract)    
+    console.log(unlock);
     
     // const Unlock = await ethers.getContractFactory("Unlock");
     // unlock = await upgrades.deployProxy(unlockContract, [42]);
-    console.log(unlock);
   })
 
   describe('ETH', () => {

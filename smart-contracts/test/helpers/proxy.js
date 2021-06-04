@@ -1,11 +1,15 @@
-const getNetworkFile = require('../../helpers/ZosNetworkFile.js')
-
+const getProxiesbyNetwork = require('../../helpers/getProxiesbyNetwork.js')
 module.exports = async function getProxy(contractArtifact) {
-  const networkFile = await getNetworkFile(web3)
-  const proxies = networkFile.getProxies({
-    contract: contractArtifact.contractName,
-  })
-  const mostRecentProxy = proxies.length - 1
-  const proxyAddress = proxies[mostRecentProxy].address
+  
+  console.log("yooo");
+  
+  const proxies = await getProxiesbyNetwork(web3)
+  
+  const contractName = `unlock-protocol/${contractArtifact.contractName}`
+  console.log(proxies);
+  console.log(proxies[contractName]);
+  console.log(proxies[contractName].address);
+
+  const proxyAddress = proxies[contractName].address
   return await contractArtifact.at(proxyAddress)
 }
