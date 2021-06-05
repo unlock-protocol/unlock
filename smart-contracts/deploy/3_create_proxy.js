@@ -35,3 +35,5 @@ module.exports = async ({
     lockTemplate.address // args
   );
 };
+
+module.exports.tags = ['initalizeUnlock'];

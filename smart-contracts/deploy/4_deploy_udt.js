@@ -7,9 +7,15 @@ module.exports = async ({
 
 
     // Register Unlock in the zos.json
-    await deploy('UnlockDiscountToken', {
+    const udt = await deploy('UnlockDiscountToken', {
         from: proxyAdmin,
-        log: true
+        log: true,
+        proxy: {
+            owner: proxyAdmin,
+            // AdminUpgradeabilityProxy was renamed to TransparentUpgradeableProxy 
+            // see https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e3661abe84596c8343962fdb35ce612d4bd96480/CHANGELOG.md
+            proxyContract: 'OpenZeppelinTransparentProxy',
+        }
     });
 
     await execute(
@@ -22,3 +28,5 @@ module.exports = async ({
         minter // args
     );
 }
+
+module.exports.tags = ['UDT'];
