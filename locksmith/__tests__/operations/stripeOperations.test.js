@@ -31,39 +31,10 @@ describe('lockOperations', () => {
       const result = await getStripeCustomerIdForAddress(publicKey)
       expect(StripeCustomer.findOne).toHaveBeenCalledWith({
         where: {
-          publicKey: { [Op.eq]: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
+          publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         },
       })
       expect(result).toEqual(stripeCustomerId)
-    })
-
-    it('should get the data from the userReference table if the StripeCustomer record does not exist', async () => {
-      expect.assertions(3)
-      const stripeCustomerId = 'cus_customerId'
-      StripeCustomer.findOne = jest.fn(() => Promise.resolve(null))
-      UserReference.findOne = jest.fn(() =>
-        Promise.resolve({ stripe_customer_id: stripeCustomerId })
-      )
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-      const result = await getStripeCustomerIdForAddress(publicKey)
-      expect(StripeCustomer.findOne).toHaveBeenCalled()
-      expect(UserReference.findOne).toHaveBeenCalledWith({
-        where: {
-          publicKey: { [Op.eq]: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
-        },
-      })
-      expect(result).toEqual(stripeCustomerId)
-    })
-
-    it('should return null if the customer id does not exist in any of StripeCustomer and UserReference', async () => {
-      expect.assertions(3)
-      StripeCustomer.findOne = jest.fn(() => Promise.resolve(null))
-      UserReference.findOne = jest.fn(() => Promise.resolve(null))
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-      const result = await getStripeCustomerIdForAddress(publicKey)
-      expect(StripeCustomer.findOne).toHaveBeenCalled()
-      expect(UserReference.findOne).toHaveBeenCalled()
-      expect(result).toEqual(null)
     })
   })
 

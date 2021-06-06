@@ -54,9 +54,6 @@ const message = {
 }
 
 const typedData = generatePurchasePayload(message)
-console.log(typedData)
-
-
 async function postPurchaseRequest(
   privateKey: string,
   metadata: any,

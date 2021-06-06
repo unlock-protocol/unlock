@@ -26,8 +26,6 @@ export default class Dispatcher {
     )
     await walletService.connect(provider, walletWithProvider)
 
-    // TODO: consider result of this transaction!
-    // and store hash
     return await walletService.grantKey(
       {
         lockAddress,

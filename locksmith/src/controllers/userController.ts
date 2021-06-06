@@ -6,6 +6,8 @@ import * as Normalizer from '../utils/normalizer'
 
 import UserOperations = require('../operations/userOperations')
 
+const logger = require('../logger')
+
 namespace UserController {
   export const createUser = async (
     req: Request,
@@ -27,8 +29,13 @@ namespace UserController {
         return res.status(creationStatus.status).json({ recoveryPhrase })
       }
       return res.sendStatus(400)
-    } catch (e) {
-      return res.sendStatus(400)
+    } catch (error) {
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        return res.status(400).json(error.errors)
+      } else {
+        logger.error('Failed to create user', error)
+        return res.sendStatus(400)
+      }
     }
   }
 
@@ -166,6 +173,10 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     const { ethereumAddress } = req.params
+    let data = {}
+    if (req?.query?.data) {
+      data = JSON.parse(req.query.data as string)
+    }
 
     if (!ethereumAddress || !req.signee) {
       return res.sendStatus(401)
@@ -177,7 +188,9 @@ namespace UserController {
     }
 
     const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
-      ethereumAddress
+      ethereumAddress,
+      // @ts-expect-error
+      data?.message?.stripeApiKey || ''
     )
     if (!stripeCustomerId) {
       return res.json([])

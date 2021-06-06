@@ -20,9 +20,9 @@ export default class KeyPricer {
   async keyPriceUSD(lockAddress: string, network: number): Promise<number> {
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
-      network
+      network,
+      { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
-
     let symbol = 'ETH'
     if (!lock.currencyContractAddress || lock.currencyContractAddress == ZERO) {
       if (network === 100) {
@@ -86,12 +86,12 @@ export default class KeyPricer {
 
     const gasFee = await this.gasFee(network)
     const unlockServiceFee = this.unlockServiceFee(usdKeyPrice + gasFee)
+
     return {
       keyPrice: usdKeyPrice,
-      gasFee,
       unlockServiceFee,
       creditCardProcessing: this.creditCardProcessingFee(
-        usdKeyPrice + gasFee + unlockServiceFee
+        usdKeyPrice + unlockServiceFee
       ),
     }
   }
