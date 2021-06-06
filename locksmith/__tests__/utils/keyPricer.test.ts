@@ -14,19 +14,6 @@ const standardLock = {
   currencyContractAddress: '0x0000000000000000000000000000000000000000',
   currencySymbol: null,
 }
-
-const zzzLock = {
-  asOf: 227,
-  balance: '0.01',
-  expirationDuration: 2592000,
-  keyPrice: '0.01',
-  maxNumberOfKeys: 10,
-  outstandingKeys: 1,
-  owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-  currencyContractAddress: '0x0100000000000000000000000000000000000001',
-  currencySymbol: 'ZZZ',
-}
-
 const mockWeb3Service: { getLock: any } = {
   getLock: jest.fn(),
 }
@@ -53,17 +40,6 @@ describe('KeyPricer', () => {
         mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
         await keyPricer.keyPriceUSD('an address', 1) // default to Eth
         expect(spy).toBeCalledWith('ETH', '0.01')
-      })
-    })
-    describe('when the lock currency does not have an exchange rate on coinbase', () => {
-      it('throws an error', async () => {
-        expect.assertions(1)
-        mockWeb3Service.getLock.mockResolvedValueOnce(zzzLock)
-        try {
-          await keyPricer.keyPriceUSD('zzz address', 1)
-        } catch {
-          expect(spy).toBeCalledWith('ZZZ', '0.01')
-        }
       })
     })
   })

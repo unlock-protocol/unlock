@@ -7,20 +7,10 @@ const purchaseController = require('../controllers/purchaseController')
 router.post(
   '/',
   signatureValidationMiddleware.generateProcessor({
-    name: 'purchaseRequest',
-    required: ['recipient', 'lock', 'expiry'],
-    signee: 'recipient',
+    name: 'Charge Card',
+    required: ['publicKey', 'lock', 'publicKey'],
+    signee: 'publicKey',
   })
 )
-
-router.post(
-  '/USD',
-  signatureValidationMiddleware.generateProcessor({
-    name: 'purchaseRequest',
-    required: ['recipient', 'lock', 'expiry', 'USDAmount'],
-    signee: 'recipient',
-  })
-)
-router.post('/USD', purchaseController.purchaseUSD)
-
+router.post('/', purchaseController.purchase)
 module.exports = router
