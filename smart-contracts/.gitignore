@@ -6,6 +6,7 @@ mnemonic.*
 .openzeppelin/.session
 .openzeppelin/dev-1337.json
 .openzeppelin/unknown-31337.json
+.openzeppelin/unknown-*.json
 
 artifacts/
 cache/
