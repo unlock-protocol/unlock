@@ -14,7 +14,7 @@
     "@openzeppelin/cli": "2.8.2",
     "@openzeppelin/contracts-ethereum-package": "2.5.0",
     "@openzeppelin/contracts-upgradeable": "^4.1.0",
-    "@openzeppelin/test-helpers": "0.5.11",
+    "@openzeppelin/test-helpers": "^0.5.11",
     "@openzeppelin/upgrades": "2.8.0",
     "@unlock-protocol/unlock-abi-0": "1.0.4",
     "@unlock-protocol/unlock-abi-1": "1.0.0",
@@ -59,6 +59,7 @@
     "hardhat": "^2.3.0",
     "hardhat-deploy": "^0.7.10",
     "hardhat-deploy-ethers": "^0.3.0-beta.8",
+    "hardhat-tracer": "^1.0.0-alpha.6",
     "truffle-flattener": "1.4.4",
     "truffle-security": "1.7.3",
     "web3": "^1.3.6"

@@ -2,8 +2,6 @@ const { reverts } = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-eth')
 const deployLocks = require('../helpers/deployLocks')
 
-const { deployProxy, upgradeProxy } = require('@openzeppelin/truffle-upgrades');
-
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
@@ -14,11 +12,7 @@ contract('Lock / approveBeneficiary', (accounts) => {
   const [daiOwner, beneficiary, keyOwner, spender, other] = accounts
 
   before(async () => {
-    unlock = await getProxy(unlockContract)    
-    console.log(unlock);
-    
-    // const Unlock = await ethers.getContractFactory("Unlock");
-    // unlock = await upgrades.deployProxy(unlockContract, [42]);
+    unlock = await getProxy(unlockContract)
   })
 
   describe('ETH', () => {

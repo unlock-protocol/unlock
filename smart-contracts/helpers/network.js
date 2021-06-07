@@ -20,7 +20,7 @@ const getProxyAddress = async function (web3, contractName) {
 
   // hardhat dev/test env
   if (network === 'dev-31337') {
-    const Contract = await deployments.get(`${contractName}_Proxy`)
+    const Contract = await deployments.get(`${contractName}`)
     return Contract.address
   }
   

@@ -35,3 +35,9 @@ npx hardhat deploy
 ```
 npx hardhat test
 ```
+
+To see all emitted events
+
+```
+npx hardhat test --logs
+```

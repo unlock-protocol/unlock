@@ -2,7 +2,11 @@
 require('hardhat-deploy');
 require('hardhat-deploy-ethers');
 
+// for logging
+require("hardhat-tracer");
+
 require("@nomiclabs/hardhat-truffle5");
+require("@nomiclabs/hardhat-web3");
 require('@nomiclabs/hardhat-ethers');
 require('@openzeppelin/hardhat-upgrades');
 
@@ -30,6 +34,14 @@ module.exports = {
     unlockOwner: 0,
     minter: 1,
     proxyAdmin: 9
+  },
+  external: {
+    contracts: [
+      {
+        artifacts: "published-npm-modules/V8/artifacts"
+        // deploy: "migrations"
+      }
+    ]
   },
   solidity: {
     compilers: [

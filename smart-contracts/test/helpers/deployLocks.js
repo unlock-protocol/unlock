@@ -23,8 +23,8 @@ module.exports = async function deployLocks(
         { from }
       )
       const evt = tx.logs.find((v) => v.event === 'NewLock')
-      const address = await PublicLock.at(evt.args.newLockAddress)
-      locks[name] = address
+      const lock = await PublicLock.at(evt.args.newLockAddress)
+      locks[name] = lock
       locks[name].params = Locks[name]
     })
   )

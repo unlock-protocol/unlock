@@ -6,22 +6,26 @@ module.exports = async ({
   const { unlockOwner, proxyAdmin } = await getNamedAccounts();
 
   // the following will only deploy if the contract was never deployed or if the code changed since last deployment
-  await deploy('Unlock', {
+  const unlock = await deploy('Unlock', {
+    contract: 'Unlock',
     from: unlockOwner,
     // gasLimit: 4000000,
-    args: [],
+    // args: [],
     log: true,
     proxy : {
       owner: proxyAdmin,
       // AdminUpgradeabilityProxy was renamed to TransparentUpgradeableProxy 
       // see https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e3661abe84596c8343962fdb35ce612d4bd96480/CHANGELOG.md
       proxyContract: 'OpenZeppelinTransparentProxy',
+      // viaAdminContract: 'AdminUpgradeabilityProxy'
     }
   });
-  
+
+  console.log('Unlock proxy deployed at', unlock.address);
 
   // TODO: make sure this needs to be added there (not in original truffle migration) ?
-  await deploy('PublicLock', {
+  const publicLock = await deploy('PublicLock', {
+    contract: 'PublicLock',
     from: unlockOwner,
     // gasLimit: 4000000,
     args: [],
@@ -31,8 +35,12 @@ module.exports = async ({
       // AdminUpgradeabilityProxy was renamed to TransparentUpgradeableProxy 
       // see https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e3661abe84596c8343962fdb35ce612d4bd96480/CHANGELOG.md
       proxyContract: 'OpenZeppelinTransparentProxy',
+      // viaAdminContract: 'AdminUpgradeabilityProxy'
     }
   });
+
+  console.log('PublicLock proxy deployed at', publicLock.address);
+
 };
 
 module.exports.tags = ['Unlock', 'PublicLock'];
