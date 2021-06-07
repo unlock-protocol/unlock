@@ -1,15 +1,6 @@
-const getProxiesbyNetwork = require('../../helpers/getProxiesbyNetwork.js')
-module.exports = async function getProxy(contractArtifact) {
-  
-  console.log("yooo");
-  
-  const proxies = await getProxiesbyNetwork(web3)
-  
-  const contractName = `unlock-protocol/${contractArtifact.contractName}`
-  console.log(proxies);
-  console.log(proxies[contractName]);
-  console.log(proxies[contractName].address);
+const { getProxyAddress } = require('../../helpers/network.js')
 
-  const proxyAddress = proxies[contractName].address
+module.exports = async function getProxy(contractArtifact) {
+  const proxyAddress = await getProxyAddress(web3, contractArtifact.contractName)
   return await contractArtifact.at(proxyAddress)
 }
