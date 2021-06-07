@@ -1,7 +1,8 @@
 const BigNumber = require('bignumber.js')
-const { TestHelper } = require('@openzeppelin/cli')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 const { constants } = require('hardlydifficult-ethereum-contracts')
+const { deploy, execute, getArtifact, get } = deployments;
+
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockAbis = [
@@ -15,6 +16,7 @@ const UnlockAbis = [
   Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-7', '../../Unlock'), // 7
   Contracts.getFromNodeModules('@unlock-protocol/unlock-abi-8', '../../Unlock'), // 8
 ]
+
 const PublicLockAbis = [
   // eslint-disable-next-line global-require
   require('@unlock-protocol/unlock-abi-0/PublicLock'),
@@ -34,8 +36,6 @@ const PublicLockAbis = [
   require('@unlock-protocol/unlock-abi-7/PublicLock'),
 ]
 
-const UnlockLatest = Contracts.getFromLocal('Unlock')
-const PublicLockLatest = Contracts.getFromLocal('PublicLock')
 
 let project
 let proxy
@@ -47,6 +47,7 @@ contract('Unlock / upgrades', (accounts) => {
   const keyOwner = accounts[2]
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
+
   for (
     let versionNumber = 0;
     versionNumber < UnlockAbis.length;
@@ -56,18 +57,44 @@ contract('Unlock / upgrades', (accounts) => {
       let unlockAbi
       let originalLockData
 
-      beforeEach(async () => {
-        project = await TestHelper({ from: unlockOwner })
+      const abi = require(`@unlock-protocol/unlock-abi-${versionNumber}/Unlock`)
 
+      beforeEach(async () => {
+        
         // Deploy the Unlock proxy
         unlockAbi = UnlockAbis[versionNumber]
-        // A unique name is required for the OZ test helper to work
-        unlockAbi.schema.contractName = `UnlockV${versionNumber}`
-        proxy = await project.createProxy(unlockAbi, {
-          initMethod: 'initialize',
-          initArgs: [unlockOwner],
-        })
+
+        
+        // Unique name 
+        const contractName = `UnlockV${versionNumber}-${(new Date()).getTime()}`
+        
+        // create a temp proxy that deploys ABI
+        proxy = await deploy(contractName, {
+          contract: abi,
+          from: unlockOwner,
+          log: true,
+          proxy: {
+            owner: unlockOwner,
+            proxyContract: 'OpenZeppelinTransparentProxy'
+          }
+        });
+        console.log(`${contractName} proxy deployed at: ${proxy.address}`)
+
+        // const unlockInstance = await get(`${contractName}_Implementation`)
+        // console.log(Object.keys(unlock));
         unlock = await unlockAbi.at(proxy.address)
+
+        // initialize Unlock
+        await execute(
+          contractName,
+          {
+            from: unlockOwner,
+            gasLimit: constants.MAX_GAS,
+            log: true
+          },
+          'initialize', // methodName
+          unlockOwner // args
+        );
       })
 
       it('Unlock version is set', async () => {
@@ -79,7 +106,9 @@ contract('Unlock / upgrades', (accounts) => {
       })
 
       it('this version and latest version have different Unlock bytecode', async () => {
-        assert.notEqual(UnlockLatest.schema.bytecode, unlockAbi.schema.bytecode)
+        const UnlockLatest = await getArtifact('Unlock')
+        // const PublicLockLatest = await getArtifact('PublicLock')
+        assert.notEqual(UnlockLatest.bytecode, unlockAbi.bytecode)
       })
 
       it('Unlock has an owner', async () => {
