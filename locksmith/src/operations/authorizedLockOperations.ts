@@ -18,11 +18,18 @@ namespace AuthorizedLockOperations {
     const web3Service = new Web3Service(networks)
     const keyGranterWallet = new ethers.Wallet(config.purchaserCredentials)
     try {
-      return await web3Service.isKeyGranter(
+      const isKeyGranter = await web3Service.isKeyGranter(
         lockAddress,
         keyGranterWallet.address,
         network
       )
+      if (!isKeyGranter) {
+        logger.error(
+          'AuthorizedLockOperations.hasAuthorization',
+          `${keyGranterWallet.address} is not a key granter for ${lockAddress}`
+        )
+      }
+      return isKeyGranter
     } catch (error) {
       logger.error(
         `Could not check if lock ${lockAddress} authorized ${keyGranterWallet.address} to grant keys. ${error.message}`
