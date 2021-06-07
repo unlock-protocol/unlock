@@ -5,6 +5,8 @@
 mnemonic.*
 .openzeppelin/.session
 .openzeppelin/dev-1337.json
+.openzeppelin/unknown-31337.json
 
-# OpenZeppelin
-.openzeppelin/unknown-*.json
+artifacts/
+cache/
+*.generated.sol
