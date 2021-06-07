@@ -42,8 +42,8 @@ storiesOf('Buttons/Layout Buttons', module)
   .add('Newsletter', () => {
     return <LayoutButtons.Newsletter />
   })
-  .add('Telegram', () => {
-    return <LayoutButtons.Telegram />
+  .add('Discord', () => {
+    return <LayoutButtons.Discord />
   })
   .add('Twitter', () => {
     return <LayoutButtons.Twitter />

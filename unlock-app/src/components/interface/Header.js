@@ -14,7 +14,7 @@ const navigationButtons = [
   Buttons.About,
   Buttons.Jobs,
   Buttons.Github,
-  Buttons.Telegram,
+  Buttons.Discord,
 ]
 
 // distinct from the above buttons are page nav buttons -- they are only visible
