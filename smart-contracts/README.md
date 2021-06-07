@@ -15,3 +15,23 @@ and then in a second console:
 yarn build
 yarn test
 ```
+
+## Run with Hardhat
+
+```
+npx hardhat node
+```
+
+This will run all contracts deployment/migrations at start
+
+If you want to run them separately
+
+```
+npx hardhat deploy
+```
+
+#### Run the tests
+
+```
+npx hardhat test
+```

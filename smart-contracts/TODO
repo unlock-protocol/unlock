@@ -9,6 +9,13 @@ TODOs
 - Make token contract Upgradable https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
 
 
+To generate `contract/UnlockDiscountTokenV2.generated.sol`
+
+```
+bash genV2/run.sh
+``` 
+
+
 - redeploy existing usung hardhat
 
 ```
@@ -53,3 +60,4 @@ These were your project's compiler options:
   }
 }
 ```
+
