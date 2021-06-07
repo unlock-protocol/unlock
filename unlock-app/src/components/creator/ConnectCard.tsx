@@ -39,7 +39,7 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
     window.location.href = redirectUrl
   }
 
-  const [isConnected, setIsConnected] = useState(false)
+  const [isConnected, setIsConnected] = useState(-1)
   const [hasRole, setHasRole] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -62,6 +62,7 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
 
   const checkIsConnected = async () => {
     const isConnected = await isStripeConnected()
+    console.log({ isConnected })
     setIsConnected(isConnected)
   }
 
@@ -83,19 +84,28 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
       {!loading && (
         <Steps>
           <Step>
-            {isConnected && (
-              <Button done disabled={isConnected}>
+            {isConnected === 1 && (
+              <Button done>
                 <SvgComponents.Checkmark /> Stripe Connected
               </Button>
             )}
-            {!isConnected && (
-              <Button
-                done={false}
-                disabled={isConnected}
-                onClick={connectStripe}
-              >
+            {isConnected === -1 && (
+              <Button done={false} onClick={connectStripe}>
                 <SvgComponents.Arrow /> Connect Stripe
               </Button>
+            )}
+
+            {isConnected === 0 && (
+              <>
+                <Button color="var(--red)" done={false} onClick={connectStripe}>
+                  <SvgComponents.Arrow /> Connect Stripe
+                </Button>
+                <Warning>
+                  You have started connecting your Stripe account, but you are
+                  not approved for charges yet. Please complete the application
+                  with Stripe or try again in a few hours.
+                </Warning>
+              </>
             )}
 
             <Text>
@@ -139,21 +149,25 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
 
 interface ButtonProps {
   done: boolean
+  color?: string
 }
 
 const Button = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   border: 1px solid;
-  border-color: ${(props) => (props.done ? 'var(--green)' : 'var(--blue)')};
-  color: ${(props) => (props.done ? 'var(--green)' : 'var(--blue)')};
+  border-color: ${(props) =>
+    props.done ? 'var(--green)' : props.color || 'var(--blue)'};
+  color: ${(props) =>
+    props.done ? 'var(--green)' : props.color || 'var(--blue)'};
   cursor: ${(props) => (props.done ? 'auto' : 'pointer')};
   border-radius: 3px;
   background-color: transparent;
   padding-right: 10px;
   svg {
     height: 32px;
-    fill: ${(props) => (props.done ? 'var(--green)' : 'var(--blue)')};
+    fill: ${(props) =>
+      props.done ? 'var(--green)' : props.color || 'var(--blue)'};
   }
 `
 
@@ -172,4 +186,9 @@ const Text = styled.p`
 const Error = styled(Text)`
   color: var(--red);
 `
+
+const Warning = styled(Text)`
+  color: var(--red);
+`
+
 export default ConnectCard

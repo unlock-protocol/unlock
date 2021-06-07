@@ -29,7 +29,7 @@ namespace PurchaseController {
       network
     )
 
-    if (!stripeConnectApiKey) {
+    if (stripeConnectApiKey == 0 || stripeConnectApiKey == -1) {
       return res
         .status(400)
         .send({ error: 'Missing Stripe Connect integration' })

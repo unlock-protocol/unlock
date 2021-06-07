@@ -38,24 +38,18 @@ export function LockIconBar({
   // Otherwise, we just show the lock icon bar
   return (
     <StatusBlock>
-      <IconBarContainer>
-        <IconBar>
-          <Buttons.CreditCard
-            as="button"
-            lock={lock}
-            action={toggleCreditCard}
-          />
-          <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
-          <Buttons.Edit as="button" action={() => edit(lock.address)} />
-          {/* Reinstate when we're ready <Buttons.ExportLock /> */}
-          <Buttons.Members href={membersPage} />
-          <Buttons.AppStore as="button" action={toggleCode} />
-          <Buttons.Explorer
-            target="_blank"
-            href={config.networks[network].explorer.urls.address(lock.address)}
-          />
-        </IconBar>
-      </IconBarContainer>
+      <IconBar>
+        <Buttons.CreditCard as="button" lock={lock} action={toggleCreditCard} />
+        <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
+        <Buttons.Edit as="button" action={() => edit(lock.address)} />
+        {/* Reinstate when we're ready <Buttons.ExportLock /> */}
+        <Buttons.Members href={membersPage} />
+        <Buttons.AppStore as="button" action={toggleCode} />
+        <Buttons.Explorer
+          target="_blank"
+          href={config.networks[network].explorer.urls.address(lock.address)}
+        />
+      </IconBar>
     </StatusBlock>
   )
 }
@@ -69,19 +63,13 @@ LockIconBar.propTypes = {
 }
 export default withConfig(LockIconBar)
 
-const IconBarContainer = styled.div`
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
+const IconBar = styled.div`
+  display: flex;
+  justify-content: space-around;
   ${Media.phone`
     display: none;
   `};
+  flex-wrap: wrap;
+  max-width: 250px;
 `
-
-const IconBar = styled.div`
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(6, 24px);
-`
-
 const StatusBlock = styled.div``

@@ -32,7 +32,11 @@ namespace PriceController {
       const pricer = new KeyPricer()
       const pricing = await pricer.generate(lockAddress, req.chain)
 
-      if (!isAuthorizedForCreditCard || !stripeConnected) {
+      if (
+        !isAuthorizedForCreditCard ||
+        stripeConnected == 0 ||
+        stripeConnected == -1
+      ) {
         return res.json({
           usd: pricing,
           creditCardEnabled: false,

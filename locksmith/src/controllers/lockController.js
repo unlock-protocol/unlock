@@ -80,7 +80,10 @@ const stripeConnected = async (req, res) => {
       req.chain
     )
 
-    return res.json({ connected: !!stripeConnected })
+    if (stripeConnected !== -1 && stripeConnected !== 0) {
+      return res.json({ connected: 1 })
+    }
+    return res.json({ connected: stripeConnected })
   } catch (error) {
     logger.error('There was an error', error)
     res.sendStatus(500)
