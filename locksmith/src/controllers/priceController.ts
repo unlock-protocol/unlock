@@ -3,6 +3,7 @@ import KeyPricer from '../utils/keyPricer'
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import { SignedRequest } from '../types'
 import { getStripeConnectForLock } from '../operations/stripeOperations'
+import * as Normalizer from '../utils/normalizer'
 
 const logger = require('../logger')
 
@@ -12,7 +13,7 @@ namespace PriceController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const { lockAddress } = req.params
+    const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
     try {
       // check that we have a Stripe key for this lock!
       const stripeConnected = await getStripeConnectForLock(
