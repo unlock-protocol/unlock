@@ -64,7 +64,7 @@ export const globalStyle = `
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 2rem;
-    height: 60px;
+    height: 48px;
     font-size: 16px;
   }
 

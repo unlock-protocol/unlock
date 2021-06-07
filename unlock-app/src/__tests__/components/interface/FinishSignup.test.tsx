@@ -16,7 +16,7 @@ describe('FinishSignup', () => {
     const password = 'password1'
 
     const { getByLabelText, getByDisplayValue, getByText } = rtl.render(
-      <FinishSignup emailAddress={emailAddress} />
+      <FinishSignup onSuccess={jest.fn()} emailAddress={emailAddress} />
     )
 
     const inputs = [

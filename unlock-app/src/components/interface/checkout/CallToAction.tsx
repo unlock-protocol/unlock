@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { PaywallCallToAction } from '../../../unlockTypes'
 
 export const defaultCallToAction: PaywallCallToAction = {
-  default: 'Purchase your NFT membership now!',
+  default:
+    'Purchase your NFT membership now! Once completed you will receive a NFT to unlock content on this application.',
   expired: 'Your access has expired. Please purchase a new key to continue',
   pending: 'Purchase pending...',
   metadata: 'We need to collect some additional information for your purchase.',
@@ -29,6 +30,5 @@ CallToAction.defaultProps = {
 
 const Message = styled.p`
   text-align: left;
-  font-size: 13px;
-  width: 100%;
+  min-height: 30px; // This avoids jankiness
 `

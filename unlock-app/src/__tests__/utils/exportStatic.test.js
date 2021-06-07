@@ -51,7 +51,6 @@ describe('exportStatic', () => {
       '/verification': { page: '/verification' },
       '/members': { page: '/members' },
       '/checkout': { page: '/checkout' },
-      '/stripeConnect': { page: '/stripeConnect' },
     })
   })
 })

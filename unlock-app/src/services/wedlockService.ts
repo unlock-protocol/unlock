@@ -21,25 +21,29 @@ export default class WedlockService {
     this.uri = uri
   }
 
-  sendEmail = (
+  sendEmail = async (
     template: emailTemplate,
     recipient: string,
     params: Params = {},
     attachments: Attachment[] = []
   ) => {
-    const payload = {
-      template,
-      recipient,
-      params,
-      attachments,
-    }
-    const result = axios.post(this.uri, payload, {
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
+    try {
+      const payload = {
+        template,
+        recipient,
+        params,
+        attachments,
+      }
+      const result = await axios.post(this.uri, payload, {
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
 
-    return result
+      return result
+    } catch (error) {
+      console.error('Failed to send email', error)
+    }
   }
 
   confirmEmail = (recipient: string, confirmLink: string) => {

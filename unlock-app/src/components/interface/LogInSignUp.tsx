@@ -25,12 +25,14 @@ export const LogInSignUp = ({
   return (
     <BrowserOnly>
       {!isSignup && (
-        <LogIn
-          network={network}
-          onCancel={onCancel}
-          showSignup={() => setIsSignup(true)}
-          onProvider={onProvider}
-        />
+        <>
+          <h1>Login to your Unlock Account</h1>
+          <LogIn
+            network={network}
+            onCancel={onCancel}
+            onProvider={onProvider}
+          />
+        </>
       )}
       {isSignup && (
         <SignUp showLogin={() => setIsSignup(false)} embedded={embedded} />

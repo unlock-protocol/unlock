@@ -36,18 +36,15 @@ const lock = {}
 describe.skip('Metadata Form', () => {
   describe('no required fields', () => {
     let onSubmit: jest.Mock<any, any>
-    let onCancel: jest.Mock<any, any>
     let submitButton: any
     let firstNameInput: any
 
     beforeEach(() => {
       onSubmit = jest.fn()
-      onCancel = jest.fn()
       const { getByText, getByLabelText } = rtl.render(
         <MetadataForm
           network={1}
           lock={lock}
-          onCancel={onCancel}
           fields={fieldsNoRequired}
           onSubmit={onSubmit}
         />
@@ -94,21 +91,18 @@ describe.skip('Metadata Form', () => {
 
   describe('with required fields', () => {
     let onSubmit: jest.Mock<any, any>
-    let onCancel: jest.Mock<any, any>
     let submitButton: any
     let firstNameInput: any
     let lastNameInput: any
 
     beforeEach(() => {
       onSubmit = jest.fn()
-      onCancel = jest.fn()
       const { getByText, getByLabelText } = rtl.render(
         <MetadataForm
           network={1}
           fields={fieldsWithRequired}
           onSubmit={onSubmit}
           lock={lock}
-          onCancel={onCancel}
         />
       )
       submitButton = getByText('Continue')
@@ -159,7 +153,6 @@ describe.skip('Metadata Form', () => {
 
   describe('with default values', () => {
     let onSubmit: jest.Mock<any, any>
-    let onCancel: jest.Mock<any, any>
     let submitButton: any
     let firstNameInput: any
     let lastNameInput: any
@@ -172,7 +165,6 @@ describe.skip('Metadata Form', () => {
           fields={fieldsWithRequired}
           onSubmit={onSubmit}
           lock={lock}
-          onCancel={onCancel}
         />
       )
       submitButton = getByText('Continue')

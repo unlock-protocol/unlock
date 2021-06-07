@@ -62,15 +62,15 @@ The Unlock team
       <>
         <GlobalStyle />
         <ConfigContext.Provider value={config}>
-          <ProviderContext.Provider
-            value={{ provider, setProvider: this.setProvider }}
-          >
-            <Authenticate>
-              <WedlockServiceContext.Provider value={wedlockService}>
+          <WedlockServiceContext.Provider value={wedlockService}>
+            <ProviderContext.Provider
+              value={{ provider, setProvider: this.setProvider }}
+            >
+              <Authenticate>
                 <Component {...pageProps} />
-              </WedlockServiceContext.Provider>
-            </Authenticate>
-          </ProviderContext.Provider>
+              </Authenticate>
+            </ProviderContext.Provider>
+          </WedlockServiceContext.Provider>
         </ConfigContext.Provider>
       </>
     )

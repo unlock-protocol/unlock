@@ -2,13 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
-import {
-  Button,
-  LoadingButton,
-  Input,
-  Label,
-  NeutralButton,
-} from './FormStyles'
+import { Button, LoadingButton, Input, Label } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
 import { useSetUserMetadata } from '../../../hooks/useSetUserMetadata'
 
@@ -17,20 +11,13 @@ interface Props {
   lock: any
   fields: MetadataInput[]
   onSubmit: (metadata: UserMetadata) => void
-  onCancel: () => void
 }
 
 interface DefautltValues {
   [key: string]: string
 }
 
-export const MetadataForm = ({
-  network,
-  lock,
-  fields,
-  onSubmit,
-  onCancel,
-}: Props) => {
+export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   const [error, setError] = useState('')
   const { setUserMetadata } = useSetUserMetadata()
 
@@ -77,6 +64,10 @@ export const MetadataForm = ({
 
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
+      <Message>
+        The creator of this lock requires some additional information. Please
+        complete the form below.
+      </Message>
       {error && <Error>{error}</Error>}
 
       {fields.map(({ name, type, required }) => (
@@ -86,12 +77,9 @@ export const MetadataForm = ({
         </StyledLabel>
       ))}
 
-      {submittedForm && (
-        <LoadingButton type="button">Submitting Metadata...</LoadingButton>
-      )}
+      {submittedForm && <LoadingButton>Saving</LoadingButton>}
 
-      {!submittedForm && <Button type="submit">Continue</Button>}
-      <NeutralButton onClick={onCancel}>Cancel</NeutralButton>
+      {!submittedForm && <Button type="submit">Save and Continue</Button>}
     </form>
   )
 }
@@ -108,6 +96,8 @@ const StyledLabel = styled(Label)<LabelProps>`
     content: ${(props: LabelProps) => (props.required ? '" *"' : '')};
   }
 `
+const Message = styled.p``
+
 const Error = styled.p`
   width: 100%;
   border-radius: 4px;

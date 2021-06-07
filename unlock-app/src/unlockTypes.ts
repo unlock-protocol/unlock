@@ -94,6 +94,7 @@ export interface PaywallConfigLocks {
 
 export interface PaywallConfigLock {
   name?: string
+  network?: number
   metadataInputs?: MetadataInput[]
 }
 

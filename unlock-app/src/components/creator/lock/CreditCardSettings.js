@@ -7,47 +7,23 @@ import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
 import { useAccount } from '../../../hooks/useAccount'
+import ConnectCard from '../ConnectCard'
 
 const CreditCardSettings = ({ lock, network }) => {
   // TODO: only allow for lock versions which support this
-  // TODO: show indication that everything is set
-  // TODO: add button to perform keyGranting transaction here as well
-  const { account } = useContext(AuthenticationContext)
-  const [error, setError] = useState('')
-
-  const { connectStripeToLock } = useAccount(account, network)
-
-  const connectStripe = async () => {
-    setError('')
-    const redirectUrl = await connectStripeToLock(
-      lock.address,
-      network,
-      window.location.origin
-    )
-    if (!redirectUrl) {
-      return setError(
-        'We could not connect your lock to a Stripe account. Please try again later.'
-      )
-    }
-    window.location.href = redirectUrl
-  }
 
   return (
     <Wrapper>
       <Details>
         <DetailTitle>Credit Card</DetailTitle>
         <DetailBlock>
-          <p>
-            You can enable credit card payments for your lock by connecting it
-            to a Stripe API key. This will enable users without crypto wallets,
-            as well as users with wallets to pay using their credit cards!
-          </p>
-          <p>
-            <button type="button" onClick={connectStripe}>
-              Connect Stripe
-            </button>
-            {error && <Error>{error}</Error>}
-          </p>
+          <Text>
+            We are using Stripe to enable credit card payments on your lock. The
+            funds are directly accessible for you on Stripe and do not transit
+            through Unlock. We do not have any other administrative right on
+            your lock (we cannot access your funds).
+          </Text>
+          <ConnectCard lockAddress={lock.address} lockNetwork={network} />
         </DetailBlock>
       </Details>
     </Wrapper>
@@ -80,13 +56,15 @@ const DetailTitle = styled.h3`
 
 const DetailBlock = styled.div`
   display: flex;
-
-  p {
-    max-width: 400px;
-    margin-right: 10px;
-    margin-top: 8px;
-  }
 `
+
+const Text = styled.p`
+  font-size: 16px;
+  max-width: 400px;
+  margin-right: 10px;
+  margin-top: 8px;
+`
+
 const Error = styled.p`
   color: var(--sharpred);
 `

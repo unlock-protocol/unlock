@@ -4,20 +4,6 @@ import LogIn from '../../../components/interface/LogIn'
 import doNothing from '../../../utils/doNothing'
 
 describe.skip('LogIn', () => {
-  it('should call toggleSignup when the link is clicked', () => {
-    expect.assertions(1)
-
-    const toggleSignup = jest.fn()
-
-    const { getByText } = rtl.render(
-      <LogIn network={1} onProvider={doNothing} showSignup={toggleSignup} />
-    )
-
-    const signUp = getByText('Sign up here.')
-    rtl.fireEvent.click(signUp)
-    expect(toggleSignup).toHaveBeenCalled()
-  })
-
   it('should call loginCredentials when the form is submitted', () => {
     expect.assertions(1)
 
@@ -25,7 +11,7 @@ describe.skip('LogIn', () => {
     const password = 'guest'
 
     const { getByDisplayValue, getByLabelText } = rtl.render(
-      <LogIn network={1} onProvider={doNothing} showSignup={() => {}} />
+      <LogIn network={1} onProvider={doNothing} />
     )
 
     const emailInput = getByLabelText('Email Address')
@@ -39,11 +25,8 @@ describe.skip('LogIn', () => {
 
   it('should show SignupSuccess when there is an account in state', () => {
     expect.assertions(0)
-
-    const toggleSignup = jest.fn()
-
     const { getByText } = rtl.render(
-      <LogIn network={1} onProvider={doNothing} showSignup={toggleSignup} />
+      <LogIn network={1} onProvider={doNothing} />
     )
 
     getByText('Sign Up')

@@ -14,27 +14,8 @@ import { DefaultError } from './FatalError'
 import Loading from '../interface/Loading'
 import { useLocks } from '../../hooks/useLocks'
 
-/**
- * A wrapper to get the locks via a hook
- * @param {*} param0
- */
-export const CreatorLocksFromHook = ({ formIsVisible, hideForm }) => {
+export const CreatorLocks = ({ formIsVisible, hideForm }) => {
   const { account, network } = useContext(AuthenticationContext)
-  return (
-    <CreatorLocks
-      account={account}
-      formIsVisible={formIsVisible}
-      hideForm={hideForm}
-      network={network}
-    />
-  )
-}
-CreatorLocksFromHook.propTypes = {
-  formIsVisible: PropTypes.bool.isRequired,
-  hideForm: PropTypes.func.isRequired,
-}
-
-export const CreatorLocks = ({ account, network, formIsVisible, hideForm }) => {
   const { loading, locks, addLock, error } = useLocks(account)
 
   return (
@@ -82,12 +63,10 @@ export const CreatorLocks = ({ account, network, formIsVisible, hideForm }) => {
 }
 
 CreatorLocks.propTypes = {
-  account: PropTypes.string.isRequired,
-  network: PropTypes.number.isRequired,
   formIsVisible: PropTypes.bool.isRequired,
   hideForm: PropTypes.func.isRequired,
 }
-export default CreatorLocksFromHook
+export default CreatorLocks
 
 const Locks = styled.section`
   display: grid;

@@ -154,7 +154,7 @@ const Label = styled.label`
 `
 
 const Input = styled.input`
-  height: 60px;
+  height: 48px;
   width: 100%;
   border: none;
   background-color: var(--lightgrey);
@@ -164,7 +164,7 @@ const Input = styled.input`
 `
 
 const SubmitButton = styled.input`
-  height: 60px;
+  height: 48px;
   width: 100%;
   border: none;
   background-color: var(--green);
