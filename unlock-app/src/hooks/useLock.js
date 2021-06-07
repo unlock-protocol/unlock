@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useReducer } from 'react'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
@@ -6,6 +6,7 @@ import { TransactionType } from '../unlockTypes'
 import { transactionTypeMapping } from '../utils/types'
 import { AuthenticationContext } from '../components/interface/Authenticate'
 import { FATAL_WRONG_NETWORK } from '../errors'
+import { getFiatPricing, getCardConnected } from './useCards'
 
 /**
  * Event handler
@@ -179,12 +180,30 @@ export const purchaseKeyFromLock = (
  * @param {*} network // network on which the lock is
  */
 export const useLock = (lockFromProps, network) => {
-  const [lock, setLock] = useState(lockFromProps)
+  const [lock, setLock] = useReducer(
+    (oldLock, newLock) => {
+      return { ...oldLock, ...newLock }
+    },
+    {
+      ...lockFromProps,
+      network,
+    }
+  )
   const { network: walletNetwork } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
   const [error, setError] = useState(null)
+
+  const getLock = async () => {
+    const lockDetails = await web3Service.getLock(lock.address, network)
+    const mergedLock = {
+      ...lock,
+      ...lockDetails,
+    }
+    setLock(mergedLock)
+    return mergedLock
+  }
 
   const updateKeyPrice = (newKeyPrice, callback) => {
     if (walletNetwork !== network) {
@@ -239,16 +258,53 @@ export const useLock = (lockFromProps, network) => {
     return web3Service.getKeyByLockForOwner(lock.address, owner, network)
   }
 
+  const getCreditCardPricing = async () => {
+    try {
+      const fiatPricing = await getFiatPricing(config, lock.address, network)
+      const mergedLock = {
+        ...lock,
+        fiatPricing,
+      }
+      setLock(mergedLock)
+      return mergedLock
+    } catch (error) {
+      console.error(
+        `Could not get card pricing for ${lock.address}: ${error.message}`
+      )
+    }
+  }
+
+  const isStripeConnected = async () => {
+    try {
+      const response = await getCardConnected(config, lock.address, network)
+
+      return !!response.connected
+    } catch (error) {
+      console.error(
+        `Could not get Stripe status for ${lock.address}: ${error.message}`
+      )
+      return false
+    }
+  }
+
+  // const getUsdPricing = async () => {
+  //   const fullPrice = await getUsdPrice(config, lock.address, network)
+  //   if (!fullPrice.keyPrice) {
+  //     return '' // No price
+  //   }
+  //   return `~ $${parseFloat(fullPrice.keyPrice) / 100}`
+  // }
+
   return {
-    lock: {
-      ...lockFromProps, // merge lock
-      ...lock,
-    },
+    getLock,
+    lock,
     updateKeyPrice,
     withdraw,
     purchaseKey,
     getKeyForAccount,
     error,
+    getCreditCardPricing,
+    isStripeConnected,
   }
 }
 

@@ -36,7 +36,7 @@ export default function configure(
   // migration script runs in the same order.
   const services = {}
   services.storage = {
-    host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+    host: runtimeConfig.locksmithHost || 'http://0.0.0.0:8080',
   }
   services.wedlocks = {
     host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
@@ -55,7 +55,7 @@ export default function configure(
   // developing.
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
-  const keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
+  const keyGranter = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
 
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -124,6 +124,11 @@ export default function configure(
     baseCurrencySymbol: 'Eth',
     stripeApiKey: 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
     locksmith: 'http://127.0.0.1:8080', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'Eth',
+      decimals: 18,
+    },
   }
 
   networks[1] = {
@@ -150,6 +155,11 @@ export default function configure(
     requiredConfirmations: 12,
     baseCurrencySymbol: 'Eth',
     locksmith: 'https://locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'Eth',
+      decimals: 18,
+    },
   }
 
   networks[4] = {
@@ -176,6 +186,11 @@ export default function configure(
     },
     baseCurrencySymbol: 'Eth',
     locksmith: 'https://rinkeby.locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Rinkeby Eth',
+      symbol: 'Eth',
+      decimals: 18,
+    },
   }
 
   // networks[3] = {
@@ -225,6 +240,11 @@ export default function configure(
     erc20: null, // no default ERC20 on xdai for now
     locksmith: 'https://locksmith.unlock-protocol.com', // need to fix locksmith to support multiple networks...
     baseCurrencySymbol: 'xDai',
+    nativeCurrency: {
+      name: 'xDAI',
+      symbol: 'xDai',
+      decimals: 18,
+    },
   }
 
   return {
