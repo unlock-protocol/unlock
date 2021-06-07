@@ -274,11 +274,14 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
+  // Returns 1 if connected
+  // -1 if no stripe account exsist
+  // 0 if a stripe account exists but is not ready
   const isStripeConnected = async () => {
     try {
       const response = await getCardConnected(config, lock.address, network)
 
-      return !!response.connected
+      return response.connected
     } catch (error) {
       console.error(
         `Could not get Stripe status for ${lock.address}: ${error.message}`
