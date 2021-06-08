@@ -229,9 +229,9 @@ export const Checkout = ({
       <NewAccountCheckout
         showLogin={() => setCheckoutState('login')}
         network={lockProps?.network || requiredNetwork}
-        onAccountCreated={(unlockProvider, { card, token }) => {
+        onAccountCreated={async (unlockProvider, { card, token }) => {
           setCardDetails({ card, token })
-          onProvider(unlockProvider)
+          await onProvider(unlockProvider)
           setCheckoutState('confirm-card-purchase')
         }}
       />
