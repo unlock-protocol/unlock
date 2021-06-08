@@ -1,5 +1,11 @@
 # Changes
 
+# Next minor
+- Support v9
+- better inheritance pattern
+- removed dev dependencies
+# 0.18.3
+- Removed limitation in node version
 # 0.18.2
 
 - Adding way to get the contract in web3Service (`lockContract(lockAddress, network)`)

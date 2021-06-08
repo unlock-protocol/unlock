@@ -3,7 +3,6 @@ import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
-import 'cross-fetch/polyfill'
 import { ZERO } from '../../constants'
 
 let host

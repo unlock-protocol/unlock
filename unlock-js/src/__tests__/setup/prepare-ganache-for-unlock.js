@@ -2,7 +2,6 @@
 const ethers = require('ethers')
 const { WalletService } = require('../../../lib/index')
 const serverIsUp = require('./serverIsUp')
-const Erc1820 = require('./deploy-erc1820')
 const Erc20 = require('./deploy-erc20')
 const Ether = require('./transfer')
 

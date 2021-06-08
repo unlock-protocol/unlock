@@ -1,11 +1,14 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "index.d.ts",
-  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git"
+  },
   "scripts": {
     "pretest": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
     "test": "jest",
@@ -18,9 +21,9 @@
     "prepublishOnly": "yarn build",
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -b 1"
   },
-  "author": "",
+  "author": "Unlock Inc",
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "cross-fetch": "3.1.4",
     "ethers": "5.3.0"
   },
@@ -29,9 +32,6 @@
     "*.{js,ts}": [
       "eslint --fix"
     ]
-  },
-  "engines": {
-    "node": "^10"
   },
   "devDependencies": {
     "@babel/cli": "7.14.3",
@@ -42,9 +42,7 @@
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@unlock-protocol/unlock-abi-8": "1.0.0",
     "babel-jest": "27.0.2",
-    "erc1820": "0.0.2",
     "eslint": "7.28.0",
-    "ganache-cli": "6.12.2",
     "jest": "26.6.3",
     "lint-staged": "11.0.0",
     "prettier": "2.3.0",
