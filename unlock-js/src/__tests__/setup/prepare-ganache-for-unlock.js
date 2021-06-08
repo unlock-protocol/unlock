@@ -34,12 +34,6 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     const provider = new ethers.providers.JsonRpcProvider(providerURL)
     await walletService.connect(provider)
 
-    // Deploy ERC1820
-    await Erc1820.deploy(
-      walletService.provider,
-      await walletService.provider.getSigner(2)
-    )
-    log('ERC1820 CONTRACT DEPLOYED')
     // Deploy an ERC20
     const erc20Address = await Erc20.deploy(
       walletService.provider,
