@@ -19,7 +19,7 @@ describe('TwitterTags', () => {
     ).toBe(PAGE_DESCRIPTION)
     expect(
       tags.container.querySelector("meta[name='twitter:image']").content
-    ).toBe(PAGE_DEFAULT_IMAGE)
+    ).toBe('https://unlock-protocol.com/static/images/pages/png/simple.png')
   })
 
   it('should render twitter tags based on custom values', () => {
@@ -38,6 +38,6 @@ describe('TwitterTags', () => {
     ).toBe(description)
     expect(
       tags.container.querySelector("meta[name='twitter:image']").content
-    ).toBe(image)
+    ).toBe('https://unlock-protocol.com/some/image.png')
   })
 })

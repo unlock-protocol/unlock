@@ -19,13 +19,13 @@ describe('OpenGraphTags', () => {
     ).toBe(PAGE_DESCRIPTION)
     expect(
       tags.container.querySelector("meta[property='og:image']").content
-    ).toBe(PAGE_DEFAULT_IMAGE)
+    ).toBe('https://unlock-protocol.com/static/images/pages/png/simple.png')
     expect(
       tags.container.querySelector("meta[property='og:type']").content
     ).toBe('website')
     expect(
       tags.container.querySelector("meta[property='og:url']").content
-    ).toBe('/')
+    ).toBe('https://unlock-protocol.com/')
   })
 
   it('should render open graph tags based on custom values', () => {
@@ -50,12 +50,12 @@ describe('OpenGraphTags', () => {
     ).toBe(description)
     expect(
       tags.container.querySelector("meta[property='og:image']").content
-    ).toBe(image)
+    ).toBe('https://unlock-protocol.com/some/image.png')
     expect(
       tags.container.querySelector("meta[property='og:type']").content
     ).toBe('website')
     expect(
       tags.container.querySelector("meta[property='og:url']").content
-    ).toBe(path)
+    ).toBe('https://unlock-protocol.com/lemon')
   })
 })
