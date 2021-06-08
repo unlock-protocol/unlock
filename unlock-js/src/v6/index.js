@@ -12,6 +12,7 @@ import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
 
 export default {
+  previousVersion: 'v4',
   version: 'v6',
   Unlock: abis.v6.Unlock,
   PublicLock: abis.v6.PublicLock,
