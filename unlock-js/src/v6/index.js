@@ -8,11 +8,13 @@ import withdrawFromLock from './withdrawFromLock'
 import initializeTemplate from './initializeTemplate'
 import configureUnlock from './configureUnlock'
 import isLockManager from './isLockManager'
-import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
 
+import v4 from '../v4'
+
+const { cancelAndRefund } = v4
+
 export default {
-  previousVersion: 'v4',
   version: 'v6',
   Unlock: abis.v6.Unlock,
   PublicLock: abis.v6.PublicLock,
