@@ -6,6 +6,7 @@ exports.shouldCreateLock = (options) => {
   describe('Unlock / behaviors / createLock', () => {
     let unlock
     let accounts
+    let evt
 
     beforeEach(async () => {
       ;({ unlock, accounts } = options)
@@ -14,45 +15,44 @@ exports.shouldCreateLock = (options) => {
     describe('lock created successfully', () => {
       let transaction
       beforeEach(async () => {
-        transaction = await unlock.methods
-          .createLock(
+        transaction = await unlock.createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             web3.utils.padLeft(0, 40),
             web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'New Lock',
             '0x000000000000000000000000'
+            ,
+            {
+              from: accounts[0],
+              gas: 6000000
+            }
           )
-          .send({
-            from: accounts[0],
-            gas: 6000000,
-          })
+        evt = transaction.logs.find((v) => v.event === 'NewLock')
       })
 
       it('should have kept track of the Lock inside Unlock with the right balances', async () => {
-        let publicLock = await PublicLock.at(
-          transaction.events.NewLock.returnValues.newLockAddress
-        )
+        let publicLock = await PublicLock.at(evt.args.newLockAddress)
         // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
-        let results = await unlock.methods.locks(publicLock.address).call()
+        let results = await unlock.locks(publicLock.address)
         // assert.equal(results.deployed, true)
         assert.equal(results.totalSales, 0)
         assert.equal(results.yieldedDiscountTokens, 0)
       })
 
       it('should trigger the NewLock event', () => {
-        const event = transaction.events.NewLock
+        const event = transaction.logs.find((v) => v.event === 'NewLock')
         assert(event)
         assert.equal(
-          web3.utils.toChecksumAddress(event.returnValues.lockOwner),
+          web3.utils.toChecksumAddress(event.args.lockOwner),
           web3.utils.toChecksumAddress(accounts[0])
         )
-        assert(event.returnValues.newLockAddress)
+        assert(event.args.newLockAddress)
       })
 
       it('should have created the lock with the right address for unlock', async () => {
         let publicLock = await PublicLock.at(
-          transaction.events.NewLock.returnValues.newLockAddress
+          evt.args.newLockAddress
         )
         let unlockProtocol = await publicLock.unlockProtocol.call()
         assert.equal(
@@ -65,19 +65,19 @@ exports.shouldCreateLock = (options) => {
     describe('lock creation fails', () => {
       it('should fail if expirationDuration is too large', async () => {
         await reverts(
-          unlock.methods
-            .createLock(
-              60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-              web3.utils.padLeft(0, 40),
-              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-              100, // maxNumberOfKeys
-              'Too Big Expiration Lock',
-              '0x000000000000000000000000'
-            )
-            .send({
+          unlock.createLock(
+            60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
+            web3.utils.padLeft(0, 40),
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+            100, // maxNumberOfKeys
+            'Too Big Expiration Lock',
+            '0x000000000000000000000000'
+            ,
+            {
               from: accounts[0],
               gas: 4000000,
-            })
+            }
+          )
         )
       })
     })

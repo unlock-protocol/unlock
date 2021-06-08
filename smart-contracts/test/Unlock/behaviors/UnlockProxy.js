@@ -1,33 +1,34 @@
-const Zos = require('@openzeppelin/cli')
-const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 const { constants } = require('hardlydifficult-ethereum-contracts')
+const { deploy, getArtifact, execute,  get } = deployments;
 
-const TestHelper = Zos.TestHelper
 const shared = require('./shared')
 
-ZWeb3.initialize(web3.currentProvider)
-const Unlock = Contracts.getFromLocal('Unlock')
+const Unlock = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
 
-contract('Unlock / UnlockProxy', (accounts) => {
-  const proxyAdmin = accounts[1]
-
+contract('Unlock / UnlockProxy', () => {
+  
   beforeEach(async () => {
-    this.accounts = accounts
-    this.unlockOwner = accounts[2]
-    // TestHelper retrieves project structure from the zos.json file and deploys everything to the current test network.
-    this.project = await TestHelper({ from: proxyAdmin })
-    this.proxy = await this.project.createProxy(Unlock, {
-      Unlock,
-      initMethod: 'initialize',
-      initArgs: [this.unlockOwner],
-    })
+
+    // setup accounts
+    const { unlockOwner, proxyAdmin } = await getNamedAccounts()
+    this.unlockOwner = unlockOwner
+    this.proxyAdmin = proxyAdmin
+    this.accounts = await getUnnamedAccounts()
+
+    // get proxy from hardhat deployment
+    this.proxy = await get('Unlock')
+
+    // use with truffle 
     this.unlock = await Unlock.at(this.proxy.address)
     const lock = await PublicLock.new()
-    await this.unlock.methods.setLockTemplate(lock.address).send({
+    PublicLock.setAsDeployed(lock) 
+
+    await this.unlock.setLockTemplate(lock.address, {
       from: this.unlockOwner,
       gas: constants.MAX_GAS,
     })
+
   })
 
   describe('should function as a proxy', () => {

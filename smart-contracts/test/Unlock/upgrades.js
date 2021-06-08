@@ -64,7 +64,6 @@ contract('Unlock / upgrades', (accounts) => {
         // Deploy the Unlock proxy
         unlockAbi = UnlockAbis[versionNumber]
 
-        
         // Unique name 
         const contractName = `UnlockV${versionNumber}-${(new Date()).getTime()}`
         
@@ -78,10 +77,8 @@ contract('Unlock / upgrades', (accounts) => {
             proxyContract: 'OpenZeppelinTransparentProxy'
           }
         });
-        console.log(`${contractName} proxy deployed at: ${proxy.address}`)
-
-        // const unlockInstance = await get(`${contractName}_Implementation`)
-        // console.log(Object.keys(unlock));
+        
+        // pass contract deployed w hardat to truffle
         unlock = await unlockAbi.at(proxy.address)
 
         // initialize Unlock
@@ -107,7 +104,6 @@ contract('Unlock / upgrades', (accounts) => {
 
       it('this version and latest version have different Unlock bytecode', async () => {
         const UnlockLatest = await getArtifact('Unlock')
-        // const PublicLockLatest = await getArtifact('PublicLock')
         assert.notEqual(UnlockLatest.bytecode, unlockAbi.bytecode)
       })
 
