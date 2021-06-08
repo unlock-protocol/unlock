@@ -1,10 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import {
-  pageTitle,
-  PAGE_DESCRIPTION,
-  PAGE_DEFAULT_IMAGE,
-} from '../../../constants'
+import { pageTitle, PAGE_DESCRIPTION } from '../../../constants'
 import OpenGraphTags from '../../../components/page/OpenGraphTags'
 
 describe('OpenGraphTags', () => {
