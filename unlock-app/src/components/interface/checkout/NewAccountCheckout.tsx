@@ -59,6 +59,7 @@ export const NewAccountCheckout = ({
   return (
     <PaymentDetails
       saveCard={saveCard}
+      buttonLabel="Save and go to payment"
       renderError={() => {
         if (!error) {
           return null
@@ -87,7 +88,7 @@ export const NewAccountCheckout = ({
               name="email"
               ref={register({ required: true })}
             />
-            <Label>Password</Label>
+            <Label>Set a password</Label>
             <Input
               autoComplete="new-password"
               name="password"

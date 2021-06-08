@@ -75,15 +75,15 @@ const LoginPrompt = ({
         alert('PLEASE ENABLE PROVIDER!')
       }
     }
-    authenticate(injectedProvider)
+    await authenticate(injectedProvider)
   }
 
-  const handleUnlockProvider = (provider: any) => {
-    authenticate(provider)
+  const handleUnlockProvider = async (provider: any) => {
+    await authenticate(provider)
   }
 
   const handleWalletConnectProvider = async () => {
-    authenticate(walletConnectProvider)
+    await authenticate(walletConnectProvider)
   }
 
   return (

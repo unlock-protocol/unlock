@@ -5,7 +5,7 @@ import UnlockPropTypes from '../../../../propTypes'
 import DisabledButton from '../DisabledButton'
 
 const CreditCard = ({ lock, ...props }) => {
-  if (lock.publicLockVersion < 7) {
+  if (lock?.publicLockVersion < 7) {
     return (
       <DisabledButton {...props}>
         <Svg.CreditCard name="Credit card" />
