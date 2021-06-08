@@ -13,21 +13,21 @@ import SvgComponents from '../interface/svg'
 
 interface ConnectCardProps {
   lockNetwork: number
-  lockAddress: string
+  lock: any
 }
 
-export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
+export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const { network: walletNetwork, account } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
 
-  const { isStripeConnected } = useLock({ address: lockAddress }, lockNetwork)
+  const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
   const { connectStripeToLock } = useAccount(account, walletNetwork)
 
   const connectStripe = async () => {
     const redirectUrl = await connectStripeToLock(
-      lockAddress,
+      lock.address,
       lockNetwork,
       window.location.origin
     )
@@ -45,7 +45,7 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
 
   const grantKeyGrantorRole = async () => {
     await walletService.addKeyGranter({
-      lockAddress,
+      lockAddress: lock.address,
       keyGranter: config.keyGranter,
     })
     setHasRole(true)
@@ -53,7 +53,7 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
 
   const checkIsKeyGranter = async () => {
     const hasRole = await web3Service.isKeyGranter(
-      lockAddress,
+      lock.address,
       config.keyGranter,
       lockNetwork
     )
@@ -62,7 +62,6 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
 
   const checkIsConnected = async () => {
     const isConnected = await isStripeConnected()
-    console.log({ isConnected })
     setIsConnected(isConnected)
   }
 
@@ -74,7 +73,7 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
       setLoading(false)
     }
     checkState()
-  }, [lockAddress, lockNetwork, isConnected])
+  }, [lock.address, lockNetwork, isConnected])
 
   const wrongNetwork = walletNetwork !== lockNetwork
 
@@ -109,9 +108,8 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
             )}
 
             <Text>
-              You will be prompted to sign a message to start connecting your
-              lock to a Stripe account. You will then be redirect to Stripe to
-              complete your application.
+              You will be prompted to sign a message to connect your lock to a
+              Stripe account.
             </Text>
           </Step>
           <Step>
@@ -136,9 +134,8 @@ export const ConnectCard = ({ lockNetwork, lockAddress }: ConnectCardProps) => {
               </Error>
             )}
             <Text>
-              Once a member has paid for their membership with their card, we
-              will grant them a key (NFT) to your lock. For this, we need you to
-              grant us the role of key granter on your lock.
+              We need you to grant us the role of key granter on your lock so we
+              can grant an NFT to anyone who pays with a card.
             </Text>
           </Step>
         </Steps>

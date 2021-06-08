@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 
 import styled from 'styled-components'
 import { AuthenticationContext } from '../../interface/Authenticate'
@@ -8,10 +8,15 @@ import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
 import { useAccount } from '../../../hooks/useAccount'
 import ConnectCard from '../ConnectCard'
+import useLock from '../../../hooks/useLock'
 
-const CreditCardSettings = ({ lock, network }) => {
-  // TODO: only allow for lock versions which support this
+const CreditCardSettings = ({ lock: lockFromProps, network }) => {
+  const { lock, getCreditCardPricing } = useLock(lockFromProps, network)
+  const [fiatPricing, setFiatPricing] = useState(null)
 
+  useEffect(async () => {
+    setFiatPricing(await getCreditCardPricing())
+  }, [lock.address])
   return (
     <Wrapper>
       <Details>
@@ -20,10 +25,16 @@ const CreditCardSettings = ({ lock, network }) => {
           <Text>
             We are using Stripe to enable credit card payments on your lock. The
             funds are directly accessible for you on Stripe and do not transit
-            through Unlock. We do not have any other administrative right on
-            your lock (we cannot access your funds).
+            through Unlock.
+            {fiatPricing?.usd?.keyPrice < 50 && (
+              <Error>
+                <br />
+                Your current price is too low for us to process credit cards. It
+                needs to be at least $0.50.
+              </Error>
+            )}
           </Text>
-          <ConnectCard lockAddress={lock.address} lockNetwork={network} />
+          <ConnectCard lock={lock} lockNetwork={network} />
         </DetailBlock>
       </Details>
     </Wrapper>
@@ -65,6 +76,6 @@ const Text = styled.p`
   margin-top: 8px;
 `
 
-const Error = styled.p`
+const Error = styled.span`
   color: var(--sharpred);
 `

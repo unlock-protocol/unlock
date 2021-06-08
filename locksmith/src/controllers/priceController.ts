@@ -32,10 +32,14 @@ namespace PriceController {
       const pricer = new KeyPricer()
       const pricing = await pricer.generate(lockAddress, req.chain)
 
+      // Let's check tthat the price is larger than 50cts
+      const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+
       if (
         !isAuthorizedForCreditCard ||
         stripeConnected == 0 ||
-        stripeConnected == -1
+        stripeConnected == -1 ||
+        totalPriceInCents < 50
       ) {
         return res.json({
           usd: pricing,
