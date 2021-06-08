@@ -21,7 +21,7 @@ dotenv.config({
 const requiredConfigVariables = {
   unlockEnv,
   googleAnalyticsId,
-  urlBase: process.env.URL_BASE,
+  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
   unlockApp: process.env.UNLOCK_APP,
   intercomAppId: 'f99d98d3', // Hardcoded for now
 }
