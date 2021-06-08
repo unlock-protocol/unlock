@@ -266,7 +266,7 @@ export const useLock = (lockFromProps, network) => {
         fiatPricing,
       }
       setLock(mergedLock)
-      return mergedLock
+      return fiatPricing
     } catch (error) {
       console.error(
         `Could not get card pricing for ${lock.address}: ${error.message}`
@@ -286,7 +286,7 @@ export const useLock = (lockFromProps, network) => {
       console.error(
         `Could not get Stripe status for ${lock.address}: ${error.message}`
       )
-      return false
+      return -1
     }
   }
 
