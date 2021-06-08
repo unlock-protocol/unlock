@@ -52,6 +52,13 @@ export const useProvider = (config: any) => {
       setIsUnlockAccount(provider.isUnlock)
       setEmail(provider.emailAddress)
       setEncryptedPrivateKey(provider.passwordEncryptedPrivateKey)
+      return {
+        network: _network,
+        account: _account,
+        isUnlock: provider.isUnlock,
+        email: provider.emailAddress,
+        passwordEncryptedPrivateKey: provider.passwordEncryptedPrivateKey,
+      }
     } catch (error) {
       if (error.message.startsWith('Missing config')) {
         setError(
@@ -62,6 +69,7 @@ export const useProvider = (config: any) => {
       }
       setProvider(null)
       console.error(error)
+      return {}
     }
   }
 
@@ -76,8 +84,9 @@ export const useProvider = (config: any) => {
       resetProvider(provider)
     })
 
-    await resetProvider(provider)
+    const auth = await resetProvider(provider)
     setLoading(false)
+    return auth
   }
 
   const disconnectProvider = async () => {

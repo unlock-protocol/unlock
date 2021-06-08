@@ -108,6 +108,7 @@ export const CryptoCheckout = ({
             {isCreditCardEnabled && (
               <CheckoutButton>
                 <Buttons.CreditCard
+                  lock={lock}
                   backgroundColor="var(--blue)"
                   fillColor="var(--white)"
                   showLabel

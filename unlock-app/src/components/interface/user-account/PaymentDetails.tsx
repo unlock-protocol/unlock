@@ -24,6 +24,7 @@ interface PaymentDetailsProps {
   onCancel?: () => any
   renderChildren?: (props: any) => React.ReactNode
   renderError?: (props: any) => React.ReactNode
+  buttonLabel?: string
 }
 
 export const PaymentDetails = ({
@@ -31,6 +32,7 @@ export const PaymentDetails = ({
   onCancel,
   renderChildren,
   renderError,
+  buttonLabel,
 }: PaymentDetailsProps) => {
   const { stripeApiKey } = configure()
   const stripePromise = loadStripe(stripeApiKey, {})
@@ -42,6 +44,7 @@ export const PaymentDetails = ({
         saveCard={saveCard}
         renderChildren={renderChildren}
         renderError={renderError}
+        buttonLabel={buttonLabel}
       />
     </Elements>
   )
@@ -51,6 +54,7 @@ PaymentDetails.defaultProps = {
   onCancel: null,
   renderChildren: null,
   renderError: null,
+  buttonLabel: 'submit',
 }
 
 const cardElementOptions: StripeCardElementOptions = {
@@ -64,6 +68,7 @@ interface FormProps {
   onCancel?: () => any
   renderChildren?: (props: any) => React.ReactNode
   renderError?: (props: any) => React.ReactNode
+  buttonLabel?: string
 }
 
 export const Form = ({
@@ -71,6 +76,7 @@ export const Form = ({
   onCancel,
   renderChildren,
   renderError,
+  buttonLabel,
 }: FormProps) => {
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm()
@@ -108,7 +114,7 @@ export const Form = ({
       {loading && <LoadingButton>Saving</LoadingButton>}
       {!loading && (
         <Button type="submit" disabled={!stripe}>
-          Submit
+          {buttonLabel}
         </Button>
       )}
       {renderError && <ErrorMessage>{renderError({})}</ErrorMessage>}
@@ -121,6 +127,7 @@ Form.defaultProps = {
   onCancel: null,
   renderChildren: null,
   renderError: null,
+  buttonLabel: 'submit',
 }
 
 const StyledForm = styled.form``

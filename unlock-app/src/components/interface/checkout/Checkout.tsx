@@ -77,7 +77,6 @@ export const Checkout = ({
   const { authenticate, account, isUnlockAccount } = useContext(
     AuthenticationContext
   )
-
   const paywallConfig = useContext(PaywallConfigContext)
   const config = useContext(ConfigContext)
   const [state, setState] = useState('')
@@ -106,11 +105,10 @@ export const Checkout = ({
     setState(state)
   }
 
-  const onProvider = (provider: any) => {
-    authenticate(provider, (address: string) => {
-      emitUserInfo({
-        address,
-      })
+  const onProvider = async (provider: any) => {
+    const { account } = await authenticate(provider)
+    emitUserInfo({
+      address: account,
     })
     if (selectedLock) {
       if (!provider.isUnlock) {
