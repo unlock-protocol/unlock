@@ -104,14 +104,13 @@ export const Authenticate = ({
     changeNetwork,
   } = useProvider(config)
 
-  const authenticate = (provider) => {
+  const authenticate = async (provider, callback) => {
     if (!provider) {
       if (providerAdapter) {
-        connectProvider(providerAdapter)
-        return
+        return connectProvider(providerAdapter)
       }
     }
-    connectProvider(provider)
+    return connectProvider(provider)
   }
 
   const deAuthenticate = (callback) => {
