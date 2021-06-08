@@ -36,7 +36,7 @@ const networks = {
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v4', 'v6', 'v7', 'v8']
+  const versions = ['v4', 'v6', 'v7', 'v8', 'v9']
   describe.each(versions)('%s', (versionName) => {
     let walletService
     let web3Service
@@ -96,6 +96,7 @@ describe('Wallet Service Integration', () => {
               unlockDiscountToken: ZERO,
               wrappedEth: ZERO,
               estimatedGasForPurchase: 0,
+              chainId: 1337,
             },
             (error, hash) => {
               if (error) {

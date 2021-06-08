@@ -1,10 +1,10 @@
 # Changes
 
-# Next minor
+# 0.19.0
+
 - Support v9
 - better inheritance pattern
 - removed dev dependencies
-# 0.18.3
 - Removed limitation in node version
 # 0.18.2
 

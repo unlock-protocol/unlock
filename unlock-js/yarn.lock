@@ -1650,6 +1650,11 @@
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-8/-/unlock-abi-8-1.0.0.tgz#c25216751fe89c3335a44b073b141c48cf7e58e7"
   integrity sha512-M3vk7w5bfut1KVI0wT6a7nYvaKFwKv3Lv3CvkDsLu0rmpjxY811TUwNlJZ/NF2vDJBU4aEhmDDx7LyYMA7dqsQ==
 
+"@unlock-protocol/unlock-abi-9@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-9/-/unlock-abi-9-1.0.0.tgz#632a12f9603067b99c3e20aac5708ad0c7da772f"
+  integrity sha512-kXWnuKNeLhsrK2FnZHv3ltJkeqB16dpi7RacVb/BRJddJMLAkrblNfppyDVuLUrUK5IsTr7/+WXOSdBCrDiB0Q==
+
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.5.tgz#c0b678fb32d60fc1219c784d6a826fe385aeb79a"
@@ -2462,9 +2467,9 @@ domexception@^2.0.1:
     webidl-conversions "^5.0.0"
 
 electron-to-chromium@^1.3.723:
-  version "1.3.749"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.749.tgz#0ecebc529ceb49dd2a7c838ae425236644c3439a"
-  integrity sha512-F+v2zxZgw/fMwPz/VUGIggG4ZndDsYy0vlpthi3tjmDZlcfbhN5mYW0evXUsBr2sUtuDANFtle410A9u/sd/4A==
+  version "1.3.750"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.750.tgz#7e5ef6f478316b0bd656af5942fe502610e97eaf"
+  integrity sha512-Eqy9eHNepZxJXT+Pc5++zvEi5nQ6AGikwFYDCYwXUFBr+ynJ6pDG7MzZmwGYCIuXShLJM0n4bq+aoKDmvSGJ8A==
 
 elliptic@6.5.4:
   version "6.5.4"

@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.18.3",
+  "version": "0.19.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -41,6 +41,7 @@
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@unlock-protocol/unlock-abi-8": "1.0.0",
+    "@unlock-protocol/unlock-abi-9": "1.0.0",
     "babel-jest": "27.0.2",
     "cross-fetch": "3.1.4",
     "eslint": "7.28.0",
