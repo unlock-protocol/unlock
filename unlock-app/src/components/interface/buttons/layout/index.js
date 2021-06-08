@@ -4,18 +4,18 @@ import Github from './Github'
 import Jobs from './Jobs'
 import Twitter from './Twitter'
 import Newsletter from './Newsletter'
-import Telegram from './Telegram'
+import Discord from './Discord'
 import Bars from './Bars'
 import ChevronUp from './ChevronUp'
 
 export default {
   About,
-  Close,
-  Github,
-  Jobs,
-  Twitter,
-  Newsletter,
-  Telegram,
   Bars,
   ChevronUp,
+  Close,
+  Discord,
+  Github,
+  Jobs,
+  Newsletter,
+  Twitter,
 }

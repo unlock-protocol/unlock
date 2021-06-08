@@ -146,6 +146,9 @@ export const connectStripe = async (
 
 /**
  * Get stripe connect account to lock
+ * Returns -1 if no Stripe is connected
+ * Return 0 if a Stripe account is connected, but not ready to process charges
+ * Returns the stripeAccount if all fully enabled
  */
 export const getStripeConnectForLock = async (lock: string, chain: number) => {
   const stripe = new Stripe(config.stripeSecret, {
@@ -156,17 +159,18 @@ export const getStripeConnectForLock = async (lock: string, chain: number) => {
   })
 
   if (!stripeConnectLockDetails?.stripeAccount) {
-    return false
+    return -1
   }
 
   const account = await stripe.accounts.retrieve(
     stripeConnectLockDetails.stripeAccount
   )
+
   if (account.charges_enabled) {
     return stripeConnectLockDetails.stripeAccount
   }
 
-  return false
+  return 0
 }
 
 export default {

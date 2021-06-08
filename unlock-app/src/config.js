@@ -55,7 +55,7 @@ export default function configure(
   // developing.
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
-  const keyGranter = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
+  let keyGranter = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
 
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -67,24 +67,10 @@ export default function configure(
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
-    // Address for the Unlock smart contract
-
+    // Address for the Unlock credit card purchaser
+    keyGranter = '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9'
     // rinkeby block time is roughly same as main net
     blockTime = 8000
-  }
-
-  if (env === 'dev-kovan') {
-    // In dev-kovan, the network can only be Kovan
-    paywallUrl = 'https://'
-    services.storage = { host: runtimeConfig.locksmithHost }
-    services.wedlocks = { host: runtimeConfig.wedlocksUri }
-    paywallUrl = runtimeConfig.paywallUrl
-    paywallScriptUrl = runtimeConfig.paywallScriptUrl
-
-    // Address for the Unlock smart contract on Kovan
-
-    // Kovan average block time
-    blockTime = 4000
   }
 
   if (env === 'prod') {
@@ -95,10 +81,12 @@ export default function configure(
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
-    // Address for the Unlock smart contract
+    // Address for the Unlock credit card purchaser
+    keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
+    keyGranter = ''
   }
   let readOnlyProvider
   if (readOnlyProviderUrl) {
