@@ -1,10 +1,6 @@
 import abis from '../abis'
+import v8 from '../v8'
 import configureUnlock from './configureUnlock'
-import createLock from './createLock'
-import keyManagerOf from './keyManagerOf'
-import purchaseKey from './purchaseKey'
-
-import v7 from '../v7'
 
 const {
   getLock,
@@ -18,12 +14,15 @@ const {
   expireAndRefundFor,
   cancelAndRefund,
   shareKey,
-} = v7
+  createLock,
+  purchaseKey,
+  keyManagerOf,
+} = v8
 
 export default {
-  version: 'v8',
-  Unlock: abis.v8.Unlock,
-  PublicLock: abis.v8.PublicLock,
+  version: 'v9',
+  Unlock: abis.v9.Unlock,
+  PublicLock: abis.v9.PublicLock,
   createLock,
   getLock,
   initializeTemplate,
