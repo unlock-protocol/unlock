@@ -94,4 +94,7 @@ export default {
       currencyContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9', // ERC20 deployed in docker container
     },
   ],
+  v9: [
+    // v9 is not available for publicLock yet
+  ],
 }

@@ -213,38 +213,12 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Configures the Unlock contract by setting the following values:
-   * @param {*} publicLockTemplateAddress
-   * @param {*} globalTokenSymbol
-   * @param {*} globalBaseTokenURI
-   * @param {*} unlockDiscountToken
-   * @param {*} wrappedEth
-   * @param {*} estimatedGasForPurchase
+   * Configures the Unlock contract by setting its params:
    * @param {*} callback
    */
-  async configureUnlock(
-    {
-      publicLockTemplateAddress,
-      globalTokenSymbol,
-      globalBaseTokenURI,
-      unlockDiscountToken,
-      wrappedEth,
-      estimatedGasForPurchase,
-    },
-    callback
-  ) {
+  async configureUnlock(params, callback) {
     const version = await this.unlockContractAbiVersion()
-    return version.configureUnlock.bind(this)(
-      {
-        publicLockTemplateAddress,
-        globalTokenSymbol,
-        globalBaseTokenURI,
-        unlockDiscountToken,
-        wrappedEth,
-        estimatedGasForPurchase,
-      },
-      callback
-    )
+    return version.configureUnlock.bind(this)(params, callback)
   }
 
   /**

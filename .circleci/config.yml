@@ -32,6 +32,7 @@ jobs:
       image: ubuntu-1604:202004-01
     environment:
       DOCKER_BUILDKIT: 0
+      BLOCKTIME: 0
     steps:
       - checkout
       - run:
