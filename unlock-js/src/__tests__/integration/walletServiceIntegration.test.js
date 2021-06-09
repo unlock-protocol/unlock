@@ -4,6 +4,7 @@ import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import { ZERO } from '../../constants'
+import Erc1820 from '../helpers/deploy-erc1820'
 
 let host
 const port = 8545
@@ -45,6 +46,8 @@ describe.each(versions)('%s', (versionName) => {
 
     let signer = new ethers.providers.JsonRpcProvider(provider, 1337)
     await walletService.connect(signer)
+
+    Erc1820.deploy(signer, signer.getSigner(0)) // Needed for v6
 
     const unlockAddress = await walletService.deployUnlock(versionName)
     networks[1337].unlockAddress = unlockAddress
