@@ -8,11 +8,8 @@ import withdrawFromLock from './withdrawFromLock'
 import initializeTemplate from './initializeTemplate'
 import configureUnlock from './configureUnlock'
 import isLockManager from './isLockManager'
+import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
-
-import v4 from '../v4'
-
-const { cancelAndRefund } = v4
 
 export default {
   version: 'v6',
