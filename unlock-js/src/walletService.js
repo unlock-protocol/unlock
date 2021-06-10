@@ -413,10 +413,14 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async setKeyMetadata(
-    { lockAddress, keyId, metadata, locksmithHost },
+    { lockAddress, keyId, metadata, locksmithHost, network },
     callback
   ) {
-    const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    let url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
     try {
       const currentAddress = await this.getAccount()
       const payload = generateKeyMetadataPayload(currentAddress, metadata)
@@ -466,10 +470,14 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async setUserMetadata(
-    { lockAddress, userAddress, metadata, locksmithHost },
+    { lockAddress, userAddress, metadata, locksmithHost, network },
     callback
   ) {
-    const url = `${locksmithHost}/api/key/${lockAddress}/user/${userAddress}`
+    let url = `${locksmithHost}/api/key/${lockAddress}/user/${userAddress}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
     try {
       const currentAddress = await this.getAccount()
       const payload = generateKeyHolderMetadataPayload(currentAddress, metadata)
@@ -511,10 +519,13 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async getKeyMetadata(
-    { lockAddress, keyId, locksmithHost, getProtectedData },
+    { lockAddress, keyId, locksmithHost, getProtectedData, network },
     callback
   ) {
-    const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    let url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
     try {
       let options = {
         method: 'GET',

@@ -1,5 +1,8 @@
 # Changes
 
+# 0.19.2
+- Updated API calls to locksmith to add chain
+
 # 0.19.1
 - removed erc1820 to remove scrypt so we ccan support newer node versions
 
