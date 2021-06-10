@@ -15,6 +15,7 @@ const v4 = require('@unlock-protocol/unlock-abi-4')
 const v6 = require('@unlock-protocol/unlock-abi-6')
 const v7 = require('@unlock-protocol/unlock-abi-7')
 const v8 = require('@unlock-protocol/unlock-abi-8')
+const v9 = require('@unlock-protocol/unlock-abi-9')
 /* eslint-enable import/no-extraneous-dependencies */
 
 const toCompress = {
@@ -22,6 +23,7 @@ const toCompress = {
   v6,
   v7,
   v8,
+  v9,
 }
 const output = {}
 

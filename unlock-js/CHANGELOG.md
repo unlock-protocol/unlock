@@ -1,5 +1,14 @@
 # Changes
 
+# 0.19.1
+- removed erc1820 to remove scrypt so we ccan support newer node versions
+
+# 0.19.0
+
+- Support v9
+- better inheritance pattern
+- removed dev dependencies
+- Removed limitation in node version
 # 0.18.2
 
 - Adding way to get the contract in web3Service (`lockContract(lockAddress, network)`)

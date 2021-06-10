@@ -25,6 +25,7 @@ export const selectProvider = (config: any) => {
     return null
   }
   const ethereumWindow: EthereumWindow = window
+
   if (config?.env === 'test') {
     // We set the provider to be the provider by the local ganache
     provider = `http://${config.httpProvider}:8545`
@@ -66,16 +67,23 @@ const LoginPrompt = ({
     rpc: rpcForWalletConnect(config),
   })
 
-  const handleInjectProvider = () => {
-    authenticate(injectedProvider)
+  const handleInjectProvider = async () => {
+    if (injectedProvider.enable) {
+      try {
+        await injectedProvider.enable()
+      } catch {
+        alert('PLEASE ENABLE PROVIDER!')
+      }
+    }
+    await authenticate(injectedProvider)
   }
 
-  const handleUnlockProvider = (provider: any) => {
-    authenticate(provider)
+  const handleUnlockProvider = async (provider: any) => {
+    await authenticate(provider)
   }
 
   const handleWalletConnectProvider = async () => {
-    authenticate(walletConnectProvider)
+    await authenticate(walletConnectProvider)
   }
 
   return (

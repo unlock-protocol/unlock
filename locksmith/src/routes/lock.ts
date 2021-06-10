@@ -22,7 +22,10 @@ router.get(
   )
 )
 router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
-
+router.get(
+  '/lock/:lockAddress/stripe-connected',
+  lockController.stripeConnected
+)
 router.get('/:owner/locks', lockController.lockOwnerGet)
 
 module.exports = router

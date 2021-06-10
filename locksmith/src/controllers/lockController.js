@@ -1,7 +1,9 @@
-import { logger } from 'express-winston'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
+import * as Normalizer from '../utils/normalizer'
+
+const logger = require('../logger')
 
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
@@ -58,8 +60,8 @@ const connectStripe = async (req, res) => {
       res.sendStatus(401)
     } else {
       const links = await stripeOperations.connectStripe(
-        req.signee,
-        lockAddress,
+        Normalizer.ethereumAddress(req.signee),
+        Normalizer.ethereumAddress(lockAddress),
         chain,
         baseUrl
       )
@@ -68,6 +70,23 @@ const connectStripe = async (req, res) => {
   } catch (error) {
     logger.error('There was an error', error)
     res.sendStatus(401)
+  }
+}
+
+const stripeConnected = async (req, res) => {
+  try {
+    const stripeConnected = await stripeOperations.getStripeConnectForLock(
+      Normalizer.ethereumAddress(req.params.lockAddress),
+      req.chain
+    )
+
+    if (stripeConnected !== -1 && stripeConnected !== 0) {
+      return res.json({ connected: 1 })
+    }
+    return res.json({ connected: stripeConnected })
+  } catch (error) {
+    logger.error('There was an error', error)
+    res.sendStatus(500)
   }
 }
 
@@ -90,4 +109,5 @@ module.exports = {
   lockOwnershipCheck,
   lockIcon,
   connectStripe,
+  stripeConnected,
 }

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
@@ -59,9 +60,24 @@ LockKeysNumbers.propTypes = {
 }
 
 export const CreatorLock = ({ lock: lockFromProps, network }) => {
+  const { query } = useRouter()
   const [showDrawer, setShowDrawer] = useState('')
   const [editing, setEditing] = useState(false)
   const { lock, updateKeyPrice, withdraw } = useLock(lockFromProps, network)
+
+  useEffect(() => {
+    if (query.stripe && lock.address == query.lock) {
+      setShowDrawer('credit-card')
+    }
+  }, [query])
+
+  const toggleDrawer = (state) => {
+    if (state === showDrawer) {
+      setShowDrawer('')
+    } else {
+      setShowDrawer(state)
+    }
+  }
 
   const updateLock = (newLock) => {
     updateKeyPrice(newLock.keyPrice, () => {
@@ -133,8 +149,8 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
         </BalanceContainer>
         <LockIconBar
           lock={lock}
-          toggleCreditCard={() => setShowDrawer('credit-card')}
-          toggleCode={() => setShowDrawer('embed-coded')}
+          toggleCreditCard={() => toggleDrawer('credit-card')}
+          toggleCode={() => toggleDrawer('embed-coded')}
           edit={edit}
           withdraw={withdraw}
         />

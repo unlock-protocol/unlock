@@ -34,7 +34,7 @@ async function run() {
   await walletService.connect(provider)
 
   const templateAddress = await walletService.deployTemplate(
-    'v8',
+    'v9',
     (error, hash) => {
       if (error) {
         console.error('Failed to deploy')

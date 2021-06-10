@@ -36,7 +36,7 @@ export default function configure(
   // migration script runs in the same order.
   const services = {}
   services.storage = {
-    host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+    host: runtimeConfig.locksmithHost || 'http://0.0.0.0:8080',
   }
   services.wedlocks = {
     host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
@@ -55,7 +55,7 @@ export default function configure(
   // developing.
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
-  const keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
+  let keyGranter = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
 
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -67,24 +67,10 @@ export default function configure(
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
-    // Address for the Unlock smart contract
-
+    // Address for the Unlock credit card purchaser
+    keyGranter = '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9'
     // rinkeby block time is roughly same as main net
     blockTime = 8000
-  }
-
-  if (env === 'dev-kovan') {
-    // In dev-kovan, the network can only be Kovan
-    paywallUrl = 'https://'
-    services.storage = { host: runtimeConfig.locksmithHost }
-    services.wedlocks = { host: runtimeConfig.wedlocksUri }
-    paywallUrl = runtimeConfig.paywallUrl
-    paywallScriptUrl = runtimeConfig.paywallScriptUrl
-
-    // Address for the Unlock smart contract on Kovan
-
-    // Kovan average block time
-    blockTime = 4000
   }
 
   if (env === 'prod') {
@@ -95,10 +81,12 @@ export default function configure(
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
-    // Address for the Unlock smart contract
+    // Address for the Unlock credit card purchaser
+    keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
+    keyGranter = ''
   }
   let readOnlyProvider
   if (readOnlyProviderUrl) {
@@ -124,6 +112,11 @@ export default function configure(
     baseCurrencySymbol: 'Eth',
     stripeApiKey: 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
     locksmith: 'http://127.0.0.1:8080', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'Eth',
+      decimals: 18,
+    },
   }
 
   networks[1] = {
@@ -150,6 +143,11 @@ export default function configure(
     requiredConfirmations: 12,
     baseCurrencySymbol: 'Eth',
     locksmith: 'https://locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'Eth',
+      decimals: 18,
+    },
   }
 
   networks[4] = {
@@ -176,6 +174,11 @@ export default function configure(
     },
     baseCurrencySymbol: 'Eth',
     locksmith: 'https://rinkeby.locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Rinkeby Eth',
+      symbol: 'Eth',
+      decimals: 18,
+    },
   }
 
   // networks[3] = {
@@ -225,6 +228,11 @@ export default function configure(
     erc20: null, // no default ERC20 on xdai for now
     locksmith: 'https://locksmith.unlock-protocol.com', // need to fix locksmith to support multiple networks...
     baseCurrencySymbol: 'xDai',
+    nativeCurrency: {
+      name: 'xDAI',
+      symbol: 'xDai',
+      decimals: 18,
+    },
   }
 
   return {

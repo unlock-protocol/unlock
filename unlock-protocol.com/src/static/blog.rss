@@ -4,8 +4,24 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 01 Jun 2021 20:31:31 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 09 Jun 2021 16:02:13 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[The First Class of Unlock Token Grantees!]]></title>
+            <description><![CDATA[We’re excited to announce our pioneering set of Unlock Token Grantees!  We’re looking forward to seeing how they apply Unlock in new ways.]]></description>
+            <link>https://unlock-protocol.com/blog/udt-grantee-class-1</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/udt-grantee-class-1</guid>
+            <dc:creator><![CDATA[Amber Case]]></dc:creator>
+            <pubDate>Wed, 09 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Announcing our Token Grant Program!]]></title>
+            <description><![CDATA[Welcome to Unlock’s very first Token Grant Announcement!]]></description>
+            <link>https://unlock-protocol.com/blog/token-grant-program</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/token-grant-program</guid>
+            <dc:creator><![CDATA[Amber Case]]></dc:creator>
+            <pubDate>Mon, 07 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Unlock Protocol Winning Teams from Web3Weekend]]></title>
             <description><![CDATA[On May 28-30th, 2021, Unlock participated in Web3Weekend, in partnership with Protocol Labs and EthGlobal. We added UDT Tokens to the $50K+prize bounty shared by all of the sponsors and community.]]></description>
@@ -16,7 +32,7 @@
         </item>
         <item>
             <title><![CDATA[Webflow Integration]]></title>
-            <description><![CDATA[A surprisingly easy and powerful tutorial on how to integrate Unlock into Weblfow and monetize your content.]]></description>
+            <description><![CDATA[A surprisingly easy and powerful tutorial on how to integrate Unlock into Webflow and monetize your content.]]></description>
             <link>https://unlock-protocol.com/blog/webflow-integration</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/webflow-integration</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
@@ -263,19 +279,19 @@
             <pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Unlock Hackathon Ideas]]></title>
-            <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
-            <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
-            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Ejecting an Unlock Account]]></title>
             <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
             <link>https://unlock-protocol.com/blog/ejecting-account</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlock Hackathon Ideas]]></title>
+            <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
+            <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
             <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>

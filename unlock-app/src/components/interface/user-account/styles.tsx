@@ -75,7 +75,7 @@ export const ItemValue = styled.span`
 `
 
 export const Input = styled.input`
-  height: 60px;
+  height: 48px;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -86,7 +86,7 @@ export const Input = styled.input`
 `
 
 export const Error = styled.span`
-  height: 60px;
+  height: 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -99,7 +99,7 @@ interface SubmitButtonProps {
   backgroundColor?: string
 }
 export const SubmitButton = styled.button.attrs({ type: 'button' })`
-  height: 60px;
+  height: 48px;
   width: 100%;
   border: none;
   background-color: ${(props: SubmitButtonProps) =>

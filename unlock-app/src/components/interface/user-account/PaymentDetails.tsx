@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { loadStripe, StripeCardElementOptions } from '@stripe/stripe-js'
 import {
@@ -12,30 +12,49 @@ import {
   Input,
   Label,
   Select,
-  Button,
+  LoadingButton,
   NeutralButton,
+  Button,
 } from '../checkout/FormStyles'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
 
-const { stripeApiKey } = configure()
-const stripePromise = loadStripe(stripeApiKey)
-
 interface PaymentDetailsProps {
-  saveCard: (stripeToken: string) => any
+  saveCard: (stripeToken: string, card: any, data: any) => any
   onCancel?: () => any
+  renderChildren?: (props: any) => React.ReactNode
+  renderError?: (props: any) => React.ReactNode
+  buttonLabel?: string
 }
 
-export const PaymentDetails = ({ saveCard, onCancel }: PaymentDetailsProps) => {
+export const PaymentDetails = ({
+  saveCard,
+  onCancel,
+  renderChildren,
+  renderError,
+  buttonLabel,
+}: PaymentDetailsProps) => {
+  const { stripeApiKey } = configure()
+  const stripePromise = loadStripe(stripeApiKey, {})
+
   return (
     <Elements stripe={stripePromise}>
-      <Form onCancel={onCancel} saveCard={saveCard} />
+      <Form
+        onCancel={onCancel}
+        saveCard={saveCard}
+        renderChildren={renderChildren}
+        renderError={renderError}
+        buttonLabel={buttonLabel}
+      />
     </Elements>
   )
 }
 
 PaymentDetails.defaultProps = {
   onCancel: null,
+  renderChildren: null,
+  renderError: null,
+  buttonLabel: 'submit',
 }
 
 const cardElementOptions: StripeCardElementOptions = {
@@ -45,25 +64,36 @@ const cardElementOptions: StripeCardElementOptions = {
 }
 
 interface FormProps {
-  saveCard: (stripeToken: string) => any
+  saveCard: (stripeToken: string, card: any, data: any) => any
   onCancel?: () => any
+  renderChildren?: (props: any) => React.ReactNode
+  renderError?: (props: any) => React.ReactNode
+  buttonLabel?: string
 }
 
-export const Form = ({ saveCard, onCancel }: FormProps) => {
+export const Form = ({
+  saveCard,
+  onCancel,
+  renderChildren,
+  renderError,
+  buttonLabel,
+}: FormProps) => {
+  const [loading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm()
   const stripe = useStripe()
   const elements = useElements()
 
   const onSubmit = async (data: Record<string, any>) => {
+    setLoading(true)
     const cardElement = elements!.getElement(CardElement)
     const result = await stripe!.createToken(cardElement!, {
       address_country: data.address_country,
       name: data.name,
     })
-
     if (result.token) {
-      saveCard(result.token.id)
+      await saveCard(result.token.id, result.token.card, data)
     }
+    setLoading(false)
   }
 
   return (
@@ -80,9 +110,14 @@ export const Form = ({ saveCard, onCancel }: FormProps) => {
           </option>
         ))}
       </Select>
-      <Button type="submit" disabled={!stripe}>
-        Submit
-      </Button>
+      {renderChildren && renderChildren({ register })}
+      {loading && <LoadingButton>Saving</LoadingButton>}
+      {!loading && (
+        <Button type="submit" disabled={!stripe}>
+          {buttonLabel}
+        </Button>
+      )}
+      {renderError && <ErrorMessage>{renderError({})}</ErrorMessage>}
       {onCancel && <NeutralButton onClick={onCancel}>Cancel</NeutralButton>}
     </StyledForm>
   )
@@ -90,5 +125,13 @@ export const Form = ({ saveCard, onCancel }: FormProps) => {
 
 Form.defaultProps = {
   onCancel: null,
+  renderChildren: null,
+  renderError: null,
+  buttonLabel: 'submit',
 }
+
 const StyledForm = styled.form``
+
+const ErrorMessage = styled.p`
+  color: var(--red);
+`

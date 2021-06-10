@@ -5,6 +5,8 @@ interface ActionButtonProps {
   fontColor?: string
   fontActiveColor?: string
   activeColor?: string
+  borderColor?: string
+  activeBorderColor?: string
 }
 
 export const ActionButton = styled.button<ActionButtonProps>`
@@ -23,7 +25,8 @@ export const ActionButton = styled.button<ActionButtonProps>`
   transition: background-color 200ms ease;
   border: 2px solid;
 
-  border-color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--green)')};
+  border-color: ${(props) =>
+    props.disabled ? 'var(--grey)' : props.borderColor || 'var(--green)'};
 
   background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : props.color || 'var(--green)'};
@@ -35,7 +38,9 @@ export const ActionButton = styled.button<ActionButtonProps>`
         : props.fontActiveColor || 'var(--white)'};
 
     border-color: ${(props) =>
-      props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+      props.disabled
+        ? 'var(--grey)'
+        : props.activeBorderColor || 'var(--activegreen)'};
 
     background-color: ${(props) =>
       props.disabled
@@ -81,6 +86,5 @@ export const LoadingButton = styled.button`
   border-radius: 4px;
   cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
   outline: none;
-  height: 60px;
   width: 100%;
 `
