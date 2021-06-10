@@ -11,6 +11,8 @@ let lock
 let locks
 let unlock
 
+const TRUFFLE_VM_ERROR = "VM Exception while processing transaction: invalid opcode"
+
 contract('Lock / owners', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
@@ -63,7 +65,7 @@ contract('Lock / owners', (accounts) => {
   })
 
   it('should fail to access to an individual key owner when out of bounds', async () => {
-    await truffleAssert.fails(lock.owners.call(6), 'revert')
+    await truffleAssert.fails(lock.owners.call(6), TRUFFLE_VM_ERROR)
   })
 
   describe('after a transfer to a new address', () => {
