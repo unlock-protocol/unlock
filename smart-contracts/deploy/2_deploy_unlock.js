@@ -21,25 +21,16 @@ module.exports = async ({
     }
   });
 
-  console.log('Unlock proxy deployed at', unlock.address);
+  console.log('Unlock (proxy) deployed at', unlock.address);
 
-  // TODO: make sure this needs to be added there (not in original truffle migration) ?
+  // deploy without proxy
   const publicLock = await deploy('PublicLock', {
     contract: 'PublicLock',
     from: unlockOwner,
-    // gasLimit: 4000000,
-    args: [],
-    log: true,
-    proxy: {
-      owner: proxyAdmin,
-      // AdminUpgradeabilityProxy was renamed to TransparentUpgradeableProxy 
-      // see https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e3661abe84596c8343962fdb35ce612d4bd96480/CHANGELOG.md
-      proxyContract: 'OpenZeppelinTransparentProxy',
-      // viaAdminContract: 'AdminUpgradeabilityProxy'
-    }
+    log: true
   });
 
-  console.log('PublicLock proxy deployed at', publicLock.address);
+  console.log('PublicLock deployed at', publicLock.address);
 
 };
 

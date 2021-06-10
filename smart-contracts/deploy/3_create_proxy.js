@@ -20,9 +20,7 @@ module.exports = async ({
   );
 
   // get PublicLock instance
-  // const PublicLock = await getArtifact('PublicLock')
-  // console.log(PublicLock);
-  const lockTemplate = await get('PublicLock_Implementation')
+  const lockTemplate = await get('PublicLock')
 
   console.log('setLockTemplate with PublicLock at', lockTemplate.address);
 

@@ -2,14 +2,13 @@ module.exports = async ({
     getNamedAccounts,
     deployments
 }) => {
-    const { minter, proxyAdmin } = await getNamedAccounts();
+    const { unlockOwner, minter, proxyAdmin } = await getNamedAccounts();
     const { deploy, execute } = deployments;
 
-
-    // Register Unlock in the zos.json
     const udt = await deploy('UnlockDiscountToken', {
-        from: proxyAdmin,
+        from: unlockOwner,
         log: true,
+        args: minter,
         proxy: {
             owner: proxyAdmin,
             // AdminUpgradeabilityProxy was renamed to TransparentUpgradeableProxy 
@@ -18,15 +17,7 @@ module.exports = async ({
         }
     });
 
-    await execute(
-        'UnlockDiscountToken',
-        {
-            from: proxyAdmin,
-            log: true
-        },
-        'initialize', // methodName
-        minter // args
-    );
+    console.log(`UDT initialized at: ${udt.address}`)
 }
 
 module.exports.tags = ['UDT'];
