@@ -3990,10 +3990,10 @@
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.4.3.tgz#5b9f46c8ab3b454dd1fd0270cd544dc299a3529f"
   integrity sha512-zP1TLEt8MYUHlQ++k/MM0x/+Wl8MCmgCBd7EtddS0DLYEqD/WngmV8il+9PqVwRHZ2C/4xVYMPwf69k/8q8X4g==
 
-"@unlock-protocol/unlock-js@0.19.1":
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.19.1.tgz#31a9f170fbc6e679b2d6fb47763718c1dc28bb05"
-  integrity sha512-0uPSZTfmnBdGjZtBjkBUPuisTblSD6SqdbhEM9Tl1qmsNFy5y7n656ScTEj5Z1v8wSH4iNlWYsS74ht39SJthw==
+"@unlock-protocol/unlock-js@0.19.2":
+  version "0.19.2"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.19.2.tgz#14b9c7d97fa3ea85a762d4fc677b48784bdcf990"
+  integrity sha512-37pthyd6pF9YlYGUtFAZh94dWbjx7rO0wdGGqB8MC7rFGWuEKbyx8a0MOLmvOu3U4W+FrdoK/CYPhiU/GDdWWg==
 
 "@walletconnect/browser-utils@^1.4.1":
   version "1.4.1"
