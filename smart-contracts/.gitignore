@@ -11,3 +11,6 @@ mnemonic.*
 artifacts/
 cache/
 *.generated.sol
+
+deployments/hardhat
+contracts/proxy
