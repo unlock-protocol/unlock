@@ -13,4 +13,5 @@ cache/
 *.generated.sol
 
 deployments/hardhat
+deployments/localhost
 contracts/proxy
