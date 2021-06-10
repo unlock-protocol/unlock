@@ -1,5 +1,8 @@
 # Changes
 
+# 0.19.1
+- removed erc1820 to remove scrypt so we ccan support newer node versions
+
 # 0.19.0
 
 - Support v9
