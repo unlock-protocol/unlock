@@ -6,10 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "engines": {
-    "node": "^10"
-  },
-  "engineStrict": true,
   "dependencies": {
     "@openzeppelin/cli": "2.8.2",
     "@openzeppelin/contracts-ethereum-package": "2.5.0",

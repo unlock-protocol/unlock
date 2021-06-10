@@ -18,9 +18,6 @@
     "src",
     "index.js"
   ],
-  "engines": {
-    "node": "^10"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/unlock-protocol/unlock.git"
