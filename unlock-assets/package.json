@@ -7,9 +7,6 @@
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
-  "engines": {
-    "node": ">=10"
-  },
   "scripts": {
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
     "build": "microbundle-crl --no-compress --format modern,cjs",

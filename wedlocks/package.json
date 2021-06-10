@@ -39,9 +39,6 @@
       "eslint --fix"
     ]
   },
-  "engines": {
-    "node": "^10"
-  },
   "devDependencies": {},
   "scripts": {
     "build": "webpack",
