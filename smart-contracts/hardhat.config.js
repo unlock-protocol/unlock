@@ -5,11 +5,13 @@ require('hardhat-deploy-ethers');
 // for logging
 require("hardhat-tracer");
 
+// erc1820 deployment
+require("hardhat-erc1820");
+
 require("@nomiclabs/hardhat-truffle5");
 require("@nomiclabs/hardhat-web3");
 require('@nomiclabs/hardhat-ethers');
 require('@openzeppelin/hardhat-upgrades');
-
 
 task("accounts", "Prints the list of accounts", async () => {
   const accounts = await ethers.getSigners();
