@@ -41,3 +41,9 @@ To see all emitted events
 ```
 npx hardhat test --logs
 ```
+
+### Upgrade UDT to be Openzeppelin 4.0 compatible0
+
+```
+genV2/run.sh 
+```

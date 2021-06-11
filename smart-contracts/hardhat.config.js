@@ -13,6 +13,8 @@ require("@nomiclabs/hardhat-web3");
 require('@nomiclabs/hardhat-ethers');
 require('@openzeppelin/hardhat-upgrades');
 
+
+
 const { 
   supportedNetworks,
   getProviderUrl, 
@@ -55,7 +57,26 @@ supportedNetworks.forEach(net => {
     // console.log(`skipped.`)
   } 
 })
-console.log(networks);
+
+
+task("accounts", "Prints the list of accounts", async () => {
+  const accounts = await ethers.getSigners();
+
+  accounts.forEach( (account, i) => {
+    console.log(`[${i}]: ${account.address}`)
+  })
+    
+});
+
+task("balance", "Prints an account's balance")
+  .addParam("account", "The account's address")
+  .setAction(async taskArgs => {
+    const account = web3.utils.toChecksumAddress(taskArgs.account);
+    const balance = await web3.eth.getBalance(account);
+
+    console.log(web3.utils.fromWei(balance, "ether"), "ETH");
+  });
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -64,13 +85,15 @@ module.exports = {
   namedAccounts: {
     unlockOwner: {
       default: 0, // hardhat
-      //4 : 0x..., // rinkeby
+      4 : 0, // rinkeby
     },
     minter: {
-      default: 1
+      default: 1,
+      4: 1, // rinkeby
     },
     proxyAdmin: {
-      default: 9
+      default: 9,
+      4: 9, // rinkeby
     }
   },
   solidity: {

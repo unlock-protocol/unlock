@@ -1,0 +1,914 @@
+{
+  "address": "0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "udt",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "weth",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "estimatedGasForPurchase",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "globalTokenSymbol",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "globalTokenURI",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "chainId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ConfigUnlock",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "lockOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newLockAddress",
+          "type": "address"
+        }
+      ],
+      "name": "NewLock",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "grossNetworkProduct",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "totalDiscountGranted",
+          "type": "uint256"
+        }
+      ],
+      "name": "ResetTrackedValue",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "publicLockAddress",
+          "type": "address"
+        }
+      ],
+      "name": "SetLockTemplate",
+      "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "chainId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "computeAvailableDiscountFor",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "discount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokens",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_udt",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_weth",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_estimatedGasForPurchase",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_symbol",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_URI",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_chainId",
+          "type": "uint256"
+        }
+      ],
+      "name": "configUnlock",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_expirationDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_keyPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_maxNumberOfKeys",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_lockName",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes12",
+          "name": "_salt",
+          "type": "bytes12"
+        }
+      ],
+      "name": "createLock",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "estimatedGasForPurchase",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGlobalBaseTokenURI",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGlobalTokenSymbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "globalBaseTokenURI",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "globalTokenSymbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "grossNetworkProduct",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_unlockOwner",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "locks",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "deployed",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalSales",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "yieldedDiscountTokens",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "publicLockAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_discount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "recordConsumedDiscount",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_referrer",
+          "type": "address"
+        }
+      ],
+      "name": "recordKeyPurchase",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_grossNetworkProduct",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_totalDiscountGranted",
+          "type": "uint256"
+        }
+      ],
+      "name": "resetTrackedValue",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "_publicLockAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setLockTemplate",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_oracleAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setOracle",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalDiscountGranted",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "udt",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "uniswapOracles",
+      "outputs": [
+        {
+          "internalType": "contract IUniswapOracle",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "unlockVersion",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "weth",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x71f7cb67337c88f93f304d95b547d73628747975f098eb3235eef520bcfe8f00",
+  "receipt": {
+    "to": null,
+    "from": "0x246A13358Fb27523642D86367a51C2aEB137Ac6C",
+    "contractAddress": "0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7",
+    "transactionIndex": 12,
+    "gasUsed": "1670300",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x65447d86a12fc7bc0a41a40885769a648a5bbef7b5b95c44e994b0000539913b",
+    "transactionHash": "0x71f7cb67337c88f93f304d95b547d73628747975f098eb3235eef520bcfe8f00",
+    "logs": [],
+    "blockNumber": 8745051,
+    "cumulativeGasUsed": "2598089",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "solcInputHash": "00305447f442cac2b71a435b16d81c5b",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.17+commit.d19bba13\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"udt\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"weth\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"estimatedGasForPurchase\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"globalTokenSymbol\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"globalTokenURI\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"chainId\",\"type\":\"uint256\"}],\"name\":\"ConfigUnlock\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"lockOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newLockAddress\",\"type\":\"address\"}],\"name\":\"NewLock\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"grossNetworkProduct\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"totalDiscountGranted\",\"type\":\"uint256\"}],\"name\":\"ResetTrackedValue\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"publicLockAddress\",\"type\":\"address\"}],\"name\":\"SetLockTemplate\",\"type\":\"event\"},{\"constant\":true,\"inputs\":[],\"name\":\"chainId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"computeAvailableDiscountFor\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"discount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"tokens\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_udt\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_weth\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_estimatedGasForPurchase\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_URI\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_chainId\",\"type\":\"uint256\"}],\"name\":\"configUnlock\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_expirationDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_tokenAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_keyPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_maxNumberOfKeys\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_lockName\",\"type\":\"string\"},{\"internalType\":\"bytes12\",\"name\":\"_salt\",\"type\":\"bytes12\"}],\"name\":\"createLock\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"estimatedGasForPurchase\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getGlobalBaseTokenURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getGlobalTokenSymbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"globalBaseTokenURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"globalTokenSymbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"grossNetworkProduct\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_unlockOwner\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOwner\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"locks\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"deployed\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"totalSales\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"yieldedDiscountTokens\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"publicLockAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_discount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"recordConsumedDiscount\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_referrer\",\"type\":\"address\"}],\"name\":\"recordKeyPurchase\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_grossNetworkProduct\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_totalDiscountGranted\",\"type\":\"uint256\"}],\"name\":\"resetTrackedValue\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address payable\",\"name\":\"_publicLockAddress\",\"type\":\"address\"}],\"name\":\"setLockTemplate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_oracleAddress\",\"type\":\"address\"}],\"name\":\"setOracle\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalDiscountGranted\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"udt\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"uniswapOracles\",\"outputs\":[{\"internalType\":\"contract IUniswapOracle\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"unlockVersion\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"payable\":false,\"stateMutability\":\"pure\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"weth\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Must list the direct base contracts in the order from \\u201cmost base-like\\u201d to \\u201cmost derived\\u201d. https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization\",\"methods\":{\"createLock(uint256,address,uint256,uint256,string,bytes12)\":{\"details\":\"Create lock This deploys a lock for a creator. It also keeps track of the deployed lock.\",\"params\":{\"_salt\":\"an identifier for the Lock, which is unique for the user. This may be implemented as a sequence ID or with RNG. It's used with `create2` to know the lock's address before the transaction is mined.\",\"_tokenAddress\":\"set to the ERC20 token address, or 0 for ETH.\"}},\"getGlobalBaseTokenURI()\":{\"details\":\"Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.\"},\"getGlobalTokenSymbol()\":{\"details\":\"Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.\"},\"isOwner()\":{\"details\":\"Returns true if the caller is the current owner.\"},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner.     * > Note: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"setLockTemplate(address)\":{\"details\":\"This will initialize the template and revokeOwnership.\"},\"setOracle(address,address)\":{\"details\":\"This will also call update to ensure at least one datapoint has been recorded.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}}},\"userdoc\":{\"methods\":{\"computeAvailableDiscountFor(address,uint256)\":{\"notice\":\"This function returns the discount available for a user, when purchasing a a key from a lock. This does not modify the state. It returns both the discount and the number of tokens consumed to grant that discount. TODO: actually implement this.\"},\"configUnlock(address,address,uint256,string,string,uint256)\":{\"notice\":\"Allows the owner to update configuration variables\"},\"recordConsumedDiscount(uint256,uint256)\":{\"notice\":\"This function will keep track of consumed discounts by a given user. It will also grant discount tokens to the creator who is granting the discount based on the amount of discount and compensation rate. This function is invoked by a previously deployed lock only.\"},\"recordKeyPurchase(uint256,address)\":{\"notice\":\"This function keeps track of the added GDP, as well as grants of discount tokens to the referrer, if applicable. The number of discount tokens granted is based on the value of the referal, the current growth rate and the lock's discount token distribution rate This function is invoked by a previously deployed lock only. TODO: actually implement\"},\"setLockTemplate(address)\":{\"notice\":\"Upgrade the PublicLock template used for future calls to `createLock`.\"},\"setOracle(address,address)\":{\"notice\":\"allows the owner to set the oracle address to use for value conversions setting the _oracleAddress to address(0) removes support for the token\"}}}},\"settings\":{\"compilationTarget\":{\"contracts/Unlock.sol\":\"Unlock\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol\":{\"content\":\"pragma solidity ^0.5.0;\\n\\nimport \\\"@openzeppelin/upgrades/contracts/Initializable.sol\\\";\\n\\n/*\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with GSN meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\ncontract Context is Initializable {\\n    // Empty internal constructor, to prevent people from mistakenly deploying\\n    // an instance of this contract, which should be used via inheritance.\\n    constructor () internal { }\\n    // solhint-disable-previous-line no-empty-blocks\\n\\n    function _msgSender() internal view returns (address payable) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view returns (bytes memory) {\\n        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691\\n        return msg.data;\\n    }\\n}\\n\",\"keccak256\":\"0x3491510fa4862af1a43f6c860d9cf7392240196540cd3c0eea79d374d419c5a1\"},\"@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol\":{\"content\":\"pragma solidity ^0.5.0;\\n\\n/**\\n * @dev Wrappers over Solidity's arithmetic operations with added overflow\\n * checks.\\n *\\n * Arithmetic operations in Solidity wrap on overflow. This can easily result\\n * in bugs, because programmers usually assume that an overflow raises an\\n * error, which is the standard behavior in high level programming languages.\\n * `SafeMath` restores this intuition by reverting the transaction when an\\n * operation overflows.\\n *\\n * Using this library instead of the unchecked operations eliminates an entire\\n * class of bugs, so it's recommended to use it always.\\n */\\nlibrary SafeMath {\\n    /**\\n     * @dev Returns the addition of two unsigned integers, reverting on\\n     * overflow.\\n     *\\n     * Counterpart to Solidity's `+` operator.\\n     *\\n     * Requirements:\\n     * - Addition cannot overflow.\\n     */\\n    function add(uint256 a, uint256 b) internal pure returns (uint256) {\\n        uint256 c = a + b;\\n        require(c >= a, \\\"SafeMath: addition overflow\\\");\\n\\n        return c;\\n    }\\n\\n    /**\\n     * @dev Returns the subtraction of two unsigned integers, reverting on\\n     * overflow (when the result is negative).\\n     *\\n     * Counterpart to Solidity's `-` operator.\\n     *\\n     * Requirements:\\n     * - Subtraction cannot overflow.\\n     */\\n    function sub(uint256 a, uint256 b) internal pure returns (uint256) {\\n        return sub(a, b, \\\"SafeMath: subtraction overflow\\\");\\n    }\\n\\n    /**\\n     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on\\n     * overflow (when the result is negative).\\n     *\\n     * Counterpart to Solidity's `-` operator.\\n     *\\n     * Requirements:\\n     * - Subtraction cannot overflow.\\n     *\\n     * _Available since v2.4.0._\\n     */\\n    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {\\n        require(b <= a, errorMessage);\\n        uint256 c = a - b;\\n\\n        return c;\\n    }\\n\\n    /**\\n     * @dev Returns the multiplication of two unsigned integers, reverting on\\n     * overflow.\\n     *\\n     * Counterpart to Solidity's `*` operator.\\n     *\\n     * Requirements:\\n     * - Multiplication cannot overflow.\\n     */\\n    function mul(uint256 a, uint256 b) internal pure returns (uint256) {\\n        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the\\n        // benefit is lost if 'b' is also tested.\\n        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522\\n        if (a == 0) {\\n            return 0;\\n        }\\n\\n        uint256 c = a * b;\\n        require(c / a == b, \\\"SafeMath: multiplication overflow\\\");\\n\\n        return c;\\n    }\\n\\n    /**\\n     * @dev Returns the integer division of two unsigned integers. Reverts on\\n     * division by zero. The result is rounded towards zero.\\n     *\\n     * Counterpart to Solidity's `/` operator. Note: this function uses a\\n     * `revert` opcode (which leaves remaining gas untouched) while Solidity\\n     * uses an invalid opcode to revert (consuming all remaining gas).\\n     *\\n     * Requirements:\\n     * - The divisor cannot be zero.\\n     */\\n    function div(uint256 a, uint256 b) internal pure returns (uint256) {\\n        return div(a, b, \\\"SafeMath: division by zero\\\");\\n    }\\n\\n    /**\\n     * @dev Returns the integer division of two unsigned integers. Reverts with custom message on\\n     * division by zero. The result is rounded towards zero.\\n     *\\n     * Counterpart to Solidity's `/` operator. Note: this function uses a\\n     * `revert` opcode (which leaves remaining gas untouched) while Solidity\\n     * uses an invalid opcode to revert (consuming all remaining gas).\\n     *\\n     * Requirements:\\n     * - The divisor cannot be zero.\\n     *\\n     * _Available since v2.4.0._\\n     */\\n    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {\\n        // Solidity only automatically asserts when dividing by 0\\n        require(b > 0, errorMessage);\\n        uint256 c = a / b;\\n        // assert(a == b * c + a % b); // There is no case in which this doesn't hold\\n\\n        return c;\\n    }\\n\\n    /**\\n     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),\\n     * Reverts when dividing by zero.\\n     *\\n     * Counterpart to Solidity's `%` operator. This function uses a `revert`\\n     * opcode (which leaves remaining gas untouched) while Solidity uses an\\n     * invalid opcode to revert (consuming all remaining gas).\\n     *\\n     * Requirements:\\n     * - The divisor cannot be zero.\\n     */\\n    function mod(uint256 a, uint256 b) internal pure returns (uint256) {\\n        return mod(a, b, \\\"SafeMath: modulo by zero\\\");\\n    }\\n\\n    /**\\n     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),\\n     * Reverts with custom message when dividing by zero.\\n     *\\n     * Counterpart to Solidity's `%` operator. This function uses a `revert`\\n     * opcode (which leaves remaining gas untouched) while Solidity uses an\\n     * invalid opcode to revert (consuming all remaining gas).\\n     *\\n     * Requirements:\\n     * - The divisor cannot be zero.\\n     *\\n     * _Available since v2.4.0._\\n     */\\n    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {\\n        require(b != 0, errorMessage);\\n        return a % b;\\n    }\\n}\\n\",\"keccak256\":\"0x640b6dee7a4b830bdfd52b5031a07fc2b12209f5b2e29e5d364a7d37f69d8076\"},\"@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol\":{\"content\":\"pragma solidity ^0.5.0;\\n\\nimport \\\"@openzeppelin/upgrades/contracts/Initializable.sol\\\";\\n\\nimport \\\"../GSN/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be aplied to your functions to restrict their use to\\n * the owner.\\n */\\ncontract Ownable is Initializable, Context {\\n    address private _owner;\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the deployer as the initial owner.\\n     */\\n    function initialize(address sender) public initializer {\\n        _owner = sender;\\n        emit OwnershipTransferred(address(0), _owner);\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        require(isOwner(), \\\"Ownable: caller is not the owner\\\");\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns true if the caller is the current owner.\\n     */\\n    function isOwner() public view returns (bool) {\\n        return _msgSender() == _owner;\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\\n     *\\n     * > Note: Renouncing ownership will leave the contract without an owner,\\n     * thereby removing any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public onlyOwner {\\n        emit OwnershipTransferred(_owner, address(0));\\n        _owner = address(0);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public onlyOwner {\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     */\\n    function _transferOwnership(address newOwner) internal {\\n        require(newOwner != address(0), \\\"Ownable: new owner is the zero address\\\");\\n        emit OwnershipTransferred(_owner, newOwner);\\n        _owner = newOwner;\\n    }\\n\\n    uint256[50] private ______gap;\\n}\\n\",\"keccak256\":\"0xd7e8ab76fa35c4d8d35a06a6ed538cadab8b75a1aa00594ced1568b2c0cadde3\"},\"@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol\":{\"content\":\"pragma solidity ^0.5.5;\\n\\n/**\\n * @dev Collection of functions related to the address type\\n */\\nlibrary Address {\\n    /**\\n     * @dev Returns true if `account` is a contract.\\n     *\\n     * [IMPORTANT]\\n     * ====\\n     * It is unsafe to assume that an address for which this function returns\\n     * false is an externally-owned account (EOA) and not a contract.\\n     *\\n     * Among others, `isContract` will return false for the following \\n     * types of addresses:\\n     *\\n     *  - an externally-owned account\\n     *  - a contract in construction\\n     *  - an address where a contract will be created\\n     *  - an address where a contract lived, but was destroyed\\n     * ====\\n     */\\n    function isContract(address account) internal view returns (bool) {\\n        // According to EIP-1052, 0x0 is the value returned for not-yet created accounts\\n        // and 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470 is returned\\n        // for accounts without code, i.e. `keccak256('')`\\n        bytes32 codehash;\\n        bytes32 accountHash = 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470;\\n        // solhint-disable-next-line no-inline-assembly\\n        assembly { codehash := extcodehash(account) }\\n        return (codehash != accountHash && codehash != 0x0);\\n    }\\n\\n    /**\\n     * @dev Converts an `address` into `address payable`. Note that this is\\n     * simply a type cast: the actual underlying value is not changed.\\n     *\\n     * _Available since v2.4.0._\\n     */\\n    function toPayable(address account) internal pure returns (address payable) {\\n        return address(uint160(account));\\n    }\\n\\n    /**\\n     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to\\n     * `recipient`, forwarding all available gas and reverting on errors.\\n     *\\n     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost\\n     * of certain opcodes, possibly making contracts go over the 2300 gas limit\\n     * imposed by `transfer`, making them unable to receive funds via\\n     * `transfer`. {sendValue} removes this limitation.\\n     *\\n     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].\\n     *\\n     * IMPORTANT: because control is transferred to `recipient`, care must be\\n     * taken to not create reentrancy vulnerabilities. Consider using\\n     * {ReentrancyGuard} or the\\n     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].\\n     *\\n     * _Available since v2.4.0._\\n     */\\n    function sendValue(address payable recipient, uint256 amount) internal {\\n        require(address(this).balance >= amount, \\\"Address: insufficient balance\\\");\\n\\n        // solhint-disable-next-line avoid-call-value\\n        (bool success, ) = recipient.call.value(amount)(\\\"\\\");\\n        require(success, \\\"Address: unable to send value, recipient may have reverted\\\");\\n    }\\n}\\n\",\"keccak256\":\"0x1a8e5072509c5ea7365eb1d48030b9be865140c8fb779968da0a459a0e174a11\"},\"@openzeppelin/upgrades/contracts/Initializable.sol\":{\"content\":\"pragma solidity >=0.4.24 <0.7.0;\\n\\n\\n/**\\n * @title Initializable\\n *\\n * @dev Helper contract to support initializer functions. To use it, replace\\n * the constructor with a function that has the `initializer` modifier.\\n * WARNING: Unlike constructors, initializer functions must be manually\\n * invoked. This applies both to deploying an Initializable contract, as well\\n * as extending an Initializable contract via inheritance.\\n * WARNING: When used with inheritance, manual care must be taken to not invoke\\n * a parent initializer twice, or ensure that all initializers are idempotent,\\n * because this is not dealt with automatically as with constructors.\\n */\\ncontract Initializable {\\n\\n  /**\\n   * @dev Indicates that the contract has been initialized.\\n   */\\n  bool private initialized;\\n\\n  /**\\n   * @dev Indicates that the contract is in the process of being initialized.\\n   */\\n  bool private initializing;\\n\\n  /**\\n   * @dev Modifier to use in the initializer function of a contract.\\n   */\\n  modifier initializer() {\\n    require(initializing || isConstructor() || !initialized, \\\"Contract instance has already been initialized\\\");\\n\\n    bool isTopLevelCall = !initializing;\\n    if (isTopLevelCall) {\\n      initializing = true;\\n      initialized = true;\\n    }\\n\\n    _;\\n\\n    if (isTopLevelCall) {\\n      initializing = false;\\n    }\\n  }\\n\\n  /// @dev Returns true if and only if the function is running in the constructor\\n  function isConstructor() private view returns (bool) {\\n    // extcodesize checks the size of the code stored in an address, and\\n    // address returns the current address. Since the code is still not\\n    // deployed when running a constructor, any checks on its code size will\\n    // yield zero, making it an effective way to detect if a contract is\\n    // under construction or not.\\n    address self = address(this);\\n    uint256 cs;\\n    assembly { cs := extcodesize(self) }\\n    return cs == 0;\\n  }\\n\\n  // Reserved storage space to allow for layout changes in the future.\\n  uint256[50] private ______gap;\\n}\\n\",\"keccak256\":\"0x9bfec92e36234ecc99b5d37230acb6cd1f99560233753162204104a4897e8721\"},\"contracts/Unlock.sol\":{\"content\":\"pragma solidity 0.5.17;\\n\\n/**\\n * @title The Unlock contract\\n * @author Julien Genestoux (unlock-protocol.com)\\n * This smart contract has 3 main roles:\\n *  1. Distribute discounts to discount token holders\\n *  2. Grant dicount tokens to users making referrals and/or publishers granting discounts.\\n *  3. Create & deploy Public Lock contracts.\\n * In order to achieve these 3 elements, it keeps track of several things such as\\n *  a. Deployed locks addresses and balances of discount tokens granted by each lock.\\n *  b. The total network product (sum of all key sales, net of discounts)\\n *  c. Total of discounts granted\\n *  d. Balances of discount tokens, including 'frozen' tokens (which have been used to claim\\n * discounts and cannot be used/transferred for a given period)\\n *  e. Growth rate of Network Product\\n *  f. Growth rate of Discount tokens supply\\n * The smart contract has an owner who only can perform the following\\n *  - Upgrades\\n *  - Change in golden rules (20% of GDP available in discounts, and supply growth rate is at most\\n * 50% of GNP growth rate)\\n * NOTE: This smart contract is partially implemented for now until enough Locks are deployed and\\n * in the wild.\\n * The partial implementation includes the following features:\\n *  a. Keeping track of deployed locks\\n *  b. Keeping track of GNP\\n */\\n\\nimport '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';\\nimport '@openzeppelin/upgrades/contracts/Initializable.sol';\\nimport 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';\\nimport './interfaces/IPublicLock.sol';\\nimport './interfaces/IUnlock.sol';\\nimport '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';\\nimport 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';\\nimport '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';\\nimport './interfaces/IMintableERC20.sol';\\n\\n/// @dev Must list the direct base contracts in the order from \\u201cmost base-like\\u201d to \\u201cmost derived\\u201d.\\n/// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization\\ncontract Unlock is\\n  IUnlock,\\n  Initializable,\\n  Ownable\\n{\\n  using Address for address;\\n  using Clone2Factory for address;\\n  using SafeMath for uint;\\n\\n  /**\\n   * The struct for a lock\\n   * We use deployed to keep track of deployments.\\n   * This is required because both totalSales and yieldedDiscountTokens are 0 when initialized,\\n   * which would be the same values when the lock is not set.\\n   */\\n  struct LockBalances\\n  {\\n    bool deployed;\\n    uint totalSales; // This is in wei\\n    uint yieldedDiscountTokens;\\n  }\\n\\n  modifier onlyFromDeployedLock() {\\n    require(locks[msg.sender].deployed, 'ONLY_LOCKS');\\n    _;\\n  }\\n\\n  uint public grossNetworkProduct;\\n\\n  uint public totalDiscountGranted;\\n\\n  // We keep track of deployed locks to ensure that callers are all deployed locks.\\n  mapping (address => LockBalances) public locks;\\n\\n  // global base token URI\\n  // Used by locks where the owner has not set a custom base URI.\\n  string public globalBaseTokenURI;\\n\\n  // global base token symbol\\n  // Used by locks where the owner has not set a custom symbol\\n  string public globalTokenSymbol;\\n\\n  // The address of the public lock template, used when `createLock` is called\\n  address public publicLockAddress;\\n\\n  // Map token address to oracle contract address if the token is supported\\n  // Used for GDP calculations\\n  mapping (address => IUniswapOracle) public uniswapOracles;\\n\\n  // The WETH token address, used for value calculations\\n  address public weth;\\n\\n  // The UDT token address, used to mint tokens on referral\\n  address public udt;\\n\\n  // The approx amount of gas required to purchase a key\\n  uint public estimatedGasForPurchase;\\n\\n  // Blockchain ID the network id on which this version of Unlock is operating\\n  uint public chainId;\\n\\n  // Events\\n  event NewLock(\\n    address indexed lockOwner,\\n    address indexed newLockAddress\\n  );\\n\\n  event ConfigUnlock(\\n    address udt,\\n    address weth,\\n    uint estimatedGasForPurchase,\\n    string globalTokenSymbol,\\n    string globalTokenURI,\\n    uint chainId\\n  );\\n\\n  event SetLockTemplate(\\n    address publicLockAddress\\n  );\\n\\n  event ResetTrackedValue(\\n    uint grossNetworkProduct,\\n    uint totalDiscountGranted\\n  );\\n\\n  // Use initialize instead of a constructor to support proxies (for upgradeability via zos).\\n  function initialize(\\n    address _unlockOwner\\n  )\\n    public\\n    initializer()\\n  {\\n    // We must manually initialize Ownable.sol\\n    Ownable.initialize(_unlockOwner);\\n  }\\n\\n  /**\\n  * @dev Create lock\\n  * This deploys a lock for a creator. It also keeps track of the deployed lock.\\n  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.\\n  * @param _salt an identifier for the Lock, which is unique for the user.\\n  * This may be implemented as a sequence ID or with RNG. It's used with `create2`\\n  * to know the lock's address before the transaction is mined.\\n  */\\n  function createLock(\\n    uint _expirationDuration,\\n    address _tokenAddress,\\n    uint _keyPrice,\\n    uint _maxNumberOfKeys,\\n    string memory _lockName,\\n    bytes12 _salt\\n  ) public\\n  {\\n    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');\\n\\n    // create lock\\n    bytes32 salt;\\n    // solium-disable-next-line\\n    assembly\\n    {\\n      let pointer := mload(0x40)\\n      // The salt is the msg.sender\\n      mstore(pointer, shl(96, caller))\\n      // followed by the _salt provided\\n      mstore(add(pointer, 0x14), _salt)\\n      salt := mload(pointer)\\n    }\\n    address payable newLock = address(uint160(publicLockAddress.createClone2(salt)));\\n    IPublicLock(newLock).initialize(\\n      msg.sender,\\n      _expirationDuration,\\n      _tokenAddress,\\n      _keyPrice,\\n      _maxNumberOfKeys,\\n      _lockName\\n    );\\n\\n    // Assign the new Lock\\n    locks[newLock] = LockBalances({\\n      deployed: true, totalSales: 0, yieldedDiscountTokens: 0\\n    });\\n\\n    // trigger event\\n    emit NewLock(msg.sender, newLock);\\n  }\\n\\n  /**\\n   * This function returns the discount available for a user, when purchasing a\\n   * a key from a lock.\\n   * This does not modify the state. It returns both the discount and the number of tokens\\n   * consumed to grant that discount.\\n   * TODO: actually implement this.\\n   */\\n  function computeAvailableDiscountFor(\\n    address /* _purchaser */,\\n    uint /* _keyPrice */\\n  )\\n    public\\n    view\\n    returns (uint discount, uint tokens)\\n  {\\n    // TODO: implement me\\n    return (0, 0);\\n  }\\n\\n  /**\\n   * This function keeps track of the added GDP, as well as grants of discount tokens\\n   * to the referrer, if applicable.\\n   * The number of discount tokens granted is based on the value of the referal,\\n   * the current growth rate and the lock's discount token distribution rate\\n   * This function is invoked by a previously deployed lock only.\\n   * TODO: actually implement\\n   */\\n  function recordKeyPurchase(\\n    uint _value,\\n    address _referrer\\n  )\\n    public\\n    onlyFromDeployedLock()\\n  {\\n    if(_value > 0) {\\n      uint valueInETH;\\n      address tokenAddress = IPublicLock(msg.sender).tokenAddress();\\n      if(tokenAddress != address(0) && tokenAddress != weth) {\\n        // If priced in an ERC-20 token, find the supported uniswap oracle\\n        IUniswapOracle oracle = uniswapOracles[tokenAddress];\\n        if(address(oracle) != address(0)) {\\n          valueInETH = oracle.updateAndConsult(tokenAddress, _value, weth);\\n        }\\n      }\\n      else {\\n        // If priced in ETH (or value is 0), no conversion is required\\n        valueInETH = _value;\\n      }\\n\\n      grossNetworkProduct = grossNetworkProduct.add(valueInETH);\\n      // If GNP does not overflow, the lock totalSales should be safe\\n      locks[msg.sender].totalSales += valueInETH;\\n\\n      // Mint UDT\\n      if(_referrer != address(0))\\n      {\\n        IUniswapOracle udtOracle = uniswapOracles[udt];\\n        if(address(udtOracle) != address(0))\\n        {\\n          // Get the value of 1 UDT (w/ 18 decimals) in ETH\\n          uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);\\n\\n          // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut\\n          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;\\n\\n          // or tokensToDistribute is capped by network GDP growth\\n          uint maxTokens = 0;\\n          if (chainId > 1)\\n          {\\n            // non mainnet: we distribute tokens using asymptotic curve between 0 and 0.5\\n            // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));\\n            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(valueInETH) / (2 + 2 * valueInETH / grossNetworkProduct) / grossNetworkProduct;\\n          } else {\\n            // Mainnet: we mint new token using log curve\\n            maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;\\n          }\\n\\n          // cap to GDP growth!\\n          if(tokensToDistribute > maxTokens)\\n          {\\n            tokensToDistribute = maxTokens;\\n          }\\n\\n          if(tokensToDistribute > 0)\\n          {\\n            // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer\\n            uint devReward = tokensToDistribute.mul(20) / 100;\\n            if (chainId > 1)\\n            {\\n              uint balance = IMintableERC20(udt).balanceOf(address(this));\\n              if (balance > tokensToDistribute) {\\n                // Only distribute if there are enough tokens\\n                IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);\\n                IMintableERC20(udt).transfer(owner(), devReward);\\n              }\\n            } else {\\n              // No distribnution\\n              IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);\\n              IMintableERC20(udt).mint(owner(), devReward);\\n            }\\n          }\\n        }\\n      }\\n    }\\n  }\\n\\n  /**\\n   * This function will keep track of consumed discounts by a given user.\\n   * It will also grant discount tokens to the creator who is granting the discount based on the\\n   * amount of discount and compensation rate.\\n   * This function is invoked by a previously deployed lock only.\\n   */\\n  function recordConsumedDiscount(\\n    uint _discount,\\n    uint /* _tokens */\\n  )\\n    public\\n    onlyFromDeployedLock()\\n  {\\n    // TODO: implement me\\n    totalDiscountGranted += _discount;\\n    return;\\n  }\\n\\n  // The version number of the current Unlock implementation on this network\\n  function unlockVersion(\\n  ) external pure\\n    returns (uint16)\\n  {\\n    return 9;\\n  }\\n\\n  /**\\n   * @notice Allows the owner to update configuration variables\\n   */\\n  function configUnlock(\\n    address _udt,\\n    address _weth,\\n    uint _estimatedGasForPurchase,\\n    string calldata _symbol,\\n    string calldata _URI,\\n    uint _chainId\\n  ) external\\n    onlyOwner\\n  {\\n    udt = _udt;\\n    weth = _weth;\\n    estimatedGasForPurchase = _estimatedGasForPurchase;\\n\\n    globalTokenSymbol = _symbol;\\n    globalBaseTokenURI = _URI;\\n\\n    chainId = _chainId;\\n\\n    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI, _chainId);\\n  }\\n\\n  /**\\n   * @notice Upgrade the PublicLock template used for future calls to `createLock`.\\n   * @dev This will initialize the template and revokeOwnership.\\n   */\\n  function setLockTemplate(\\n    address payable _publicLockAddress\\n  ) external\\n    onlyOwner\\n  {\\n    // First claim the template so that no-one else could\\n    // this will revert if the template was already initialized.\\n    IPublicLock(_publicLockAddress).initialize(\\n      address(this), 0, address(0), 0, 0, ''\\n    );\\n    IPublicLock(_publicLockAddress).renounceLockManager();\\n\\n    publicLockAddress = _publicLockAddress;\\n\\n    emit SetLockTemplate(_publicLockAddress);\\n  }\\n\\n  /**\\n   * @notice allows the owner to set the oracle address to use for value conversions\\n   * setting the _oracleAddress to address(0) removes support for the token\\n   * @dev This will also call update to ensure at least one datapoint has been recorded.\\n   */\\n  function setOracle(\\n    address _tokenAddress,\\n    address _oracleAddress\\n  ) external\\n    onlyOwner\\n  {\\n    uniswapOracles[_tokenAddress] = IUniswapOracle(_oracleAddress);\\n    if(_oracleAddress != address(0)) {\\n      IUniswapOracle(_oracleAddress).update(_tokenAddress, weth);\\n    }\\n  }\\n\\n  // Allows the owner to change the value tracking variables as needed.\\n  function resetTrackedValue(\\n    uint _grossNetworkProduct,\\n    uint _totalDiscountGranted\\n  ) external\\n    onlyOwner\\n  {\\n    grossNetworkProduct = _grossNetworkProduct;\\n    totalDiscountGranted = _totalDiscountGranted;\\n\\n    emit ResetTrackedValue(_grossNetworkProduct, _totalDiscountGranted);\\n  }\\n\\n  /**\\n   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.\\n   */\\n  function getGlobalBaseTokenURI()\\n    external\\n    view\\n    returns (string memory)\\n  {\\n    return globalBaseTokenURI;\\n  }\\n\\n  /**\\n   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.\\n   */\\n  function getGlobalTokenSymbol()\\n    external\\n    view\\n    returns (string memory)\\n  {\\n    return globalTokenSymbol;\\n  }\\n}\\n\",\"keccak256\":\"0xec8fcd19e91f641d8230ec2d312a2e48b54a64557e4e9f2641961f3f7b4022f4\"},\"contracts/interfaces/IMintableERC20.sol\":{\"content\":\"pragma solidity 0.5.17;\\n\\ninterface IMintableERC20\\n{\\n  function mint(address account, uint256 amount) external returns (bool);\\n  function transfer(address recipient, uint256 amount) external returns (bool);\\n  function totalSupply() external returns (uint);\\n  function balanceOf(address account) external returns (uint256);\\n}\",\"keccak256\":\"0x6e1e9cd57a00d6dc4c5da8c721212ad071b2185f17ea298a8918ceb05ee69b72\"},\"contracts/interfaces/IPublicLock.sol\":{\"content\":\"pragma solidity 0.5.17;\\n\\n/**\\n* @title The PublicLock Interface\\n* @author Nick Furfaro (unlock-protocol.com)\\n */\\n\\n\\ncontract IPublicLock\\n{\\n\\n// See indentationissue description here:\\n// https://github.com/duaraghav8/Ethlint/issues/268\\n// solium-disable indentation\\n\\n  /// Functions\\n\\n  function initialize(\\n    address _lockCreator,\\n    uint _expirationDuration,\\n    address _tokenAddress,\\n    uint _keyPrice,\\n    uint _maxNumberOfKeys,\\n    string calldata _lockName\\n  ) external;\\n\\n  /**\\n   * @notice Allow the contract to accept tips in ETH sent directly to the contract.\\n   * @dev This is okay to use even if the lock is priced in ERC-20 tokens\\n   */\\n  function() external payable;\\n\\n  /**\\n   * @dev Never used directly\\n   */\\n  function initialize() external;\\n\\n  /**\\n  * @notice The version number of the current implementation on this network.\\n  * @return The current version number.\\n  */\\n  function publicLockVersion() public pure returns (uint);\\n\\n  /**\\n  * @notice Gets the current balance of the account provided.\\n  * @param _tokenAddress The token type to retrieve the balance of.\\n  * @param _account The account to get the balance of.\\n  * @return The number of tokens of the given type for the given address, possibly 0.\\n  */\\n  function getBalance(\\n    address _tokenAddress,\\n    address _account\\n  ) external view\\n    returns (uint);\\n\\n  /**\\n  * @notice Used to disable lock before migrating keys and/or destroying contract.\\n  * @dev Throws if called by other than a lock manager.\\n  * @dev Throws if lock contract has already been disabled.\\n  */\\n  function disableLock() external;\\n\\n  /**\\n   * @dev Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.\\n   * @dev Throws if called by other than a lock manager or beneficiary\\n   * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually\\n   * the same as `tokenAddress` in MixinFunds.\\n   * @param _amount specifies the max amount to withdraw, which may be reduced when\\n   * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.\\n   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`\\n   * use cases.\\n   */\\n  function withdraw(\\n    address _tokenAddress,\\n    uint _amount\\n  ) external;\\n\\n  /**\\n   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.\\n   */\\n  function approveBeneficiary(\\n    address _spender,\\n    uint _amount\\n  ) external\\n    returns (bool);\\n\\n  /**\\n   * A function which lets a Lock manager of the lock to change the price for future purchases.\\n   * @dev Throws if called by other than a Lock manager\\n   * @dev Throws if lock has been disabled\\n   * @dev Throws if _tokenAddress is not a valid token\\n   * @param _keyPrice The new price to set for keys\\n   * @param _tokenAddress The address of the erc20 token to use for pricing the keys,\\n   * or 0 to use ETH\\n   */\\n  function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;\\n\\n  /**\\n   * A function which lets a Lock manager update the beneficiary account,\\n   * which receives funds on withdrawal.\\n   * @dev Throws if called by other than a Lock manager or beneficiary\\n   * @dev Throws if _beneficiary is address(0)\\n   * @param _beneficiary The new address to set as the beneficiary\\n   */\\n  function updateBeneficiary( address _beneficiary ) external;\\n\\n    /**\\n   * Checks if the user has a non-expired key.\\n   * @param _user The address of the key owner\\n   */\\n  function getHasValidKey(\\n    address _user\\n  ) external view returns (bool);\\n\\n  /**\\n   * @notice Find the tokenId for a given user\\n   * @return The tokenId of the NFT, else returns 0\\n   * @param _account The address of the key owner\\n  */\\n  function getTokenIdFor(\\n    address _account\\n  ) external view returns (uint);\\n\\n  /**\\n  * A function which returns a subset of the keys for this Lock as an array\\n  * @param _page the page of key owners requested when faceted by page size\\n  * @param _pageSize the number of Key Owners requested per page\\n  * @dev Throws if there are no key owners yet\\n  */\\n  function getOwnersByPage(\\n    uint _page,\\n    uint _pageSize\\n  ) external view returns (address[] memory);\\n\\n  /**\\n   * Checks if the given address owns the given tokenId.\\n   * @param _tokenId The tokenId of the key to check\\n   * @param _keyOwner The potential key owners address\\n   */\\n  function isKeyOwner(\\n    uint _tokenId,\\n    address _keyOwner\\n  ) external view returns (bool);\\n\\n  /**\\n  * @dev Returns the key's ExpirationTimestamp field for a given owner.\\n  * @param _keyOwner address of the user for whom we search the key\\n  * @dev Returns 0 if the owner has never owned a key for this lock\\n  */\\n  function keyExpirationTimestampFor(\\n    address _keyOwner\\n  ) external view returns (uint timestamp);\\n\\n  /**\\n   * Public function which returns the total number of unique owners (both expired\\n   * and valid).  This may be larger than totalSupply.\\n   */\\n  function numberOfOwners() external view returns (uint);\\n\\n  /**\\n   * Allows a Lock manager to assign a descriptive name for this Lock.\\n   * @param _lockName The new name for the lock\\n   * @dev Throws if called by other than a Lock manager\\n   */\\n  function updateLockName(\\n    string calldata _lockName\\n  ) external;\\n\\n  /**\\n   * Allows a Lock manager to assign a Symbol for this Lock.\\n   * @param _lockSymbol The new Symbol for the lock\\n   * @dev Throws if called by other than a Lock manager\\n   */\\n  function updateLockSymbol(\\n    string calldata _lockSymbol\\n  ) external;\\n\\n  /**\\n    * @dev Gets the token symbol\\n    * @return string representing the token symbol\\n    */\\n  function symbol()\\n    external view\\n    returns(string memory);\\n\\n    /**\\n   * Allows a Lock manager to update the baseTokenURI for this Lock.\\n   * @dev Throws if called by other than a Lock manager\\n   * @param _baseTokenURI String representing the base of the URI for this lock.\\n   */\\n  function setBaseTokenURI(\\n    string calldata _baseTokenURI\\n  ) external;\\n\\n  /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.\\n   * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC\\n   *  3986. The URI may point to a JSON file that conforms to the \\\"ERC721\\n   *  Metadata JSON Schema\\\".\\n   * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md\\n   * @param _tokenId The tokenID we're inquiring about\\n   * @return String representing the URI for the requested token\\n   */\\n  function tokenURI(\\n    uint256 _tokenId\\n  ) external view returns(string memory);\\n\\n  /**\\n   * @notice Allows a Lock manager to add or remove an event hook\\n   */\\n  function setEventHooks(\\n    address _onKeyPurchaseHook,\\n    address _onKeyCancelHook\\n  ) external;\\n\\n  /**\\n   * Allows a Lock manager to give a collection of users a key with no charge.\\n   * Each key may be assigned a different expiration date.\\n   * @dev Throws if called by other than a Lock manager\\n   * @param _recipients An array of receiving addresses\\n   * @param _expirationTimestamps An array of expiration Timestamps for the keys being granted\\n   */\\n  function grantKeys(\\n    address[] calldata _recipients,\\n    uint[] calldata _expirationTimestamps,\\n    address[] calldata _keyManagers\\n  ) external;\\n\\n  /**\\n  * @dev Purchase function\\n  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount\\n  * (_value is ignored when using ETH)\\n  * @param _recipient address of the recipient of the purchased key\\n  * @param _referrer address of the user making the referral\\n  * @param _data arbitrary data populated by the front-end which initiated the sale\\n  * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).\\n  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the\\n  * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more\\n  * than keyPrice is approved for spending).\\n  */\\n  function purchase(\\n    uint256 _value,\\n    address _recipient,\\n    address _referrer,\\n    bytes calldata _data\\n  ) external payable;\\n\\n  /**\\n   * @notice returns the minimum price paid for a purchase with these params.\\n   * @dev this considers any discount from Unlock or the OnKeyPurchase hook.\\n   */\\n  function purchasePriceFor(\\n    address _recipient,\\n    address _referrer,\\n    bytes calldata _data\\n  ) external view\\n    returns (uint);\\n\\n  /**\\n   * Allow a Lock manager to change the transfer fee.\\n   * @dev Throws if called by other than a Lock manager\\n   * @param _transferFeeBasisPoints The new transfer fee in basis-points(bps).\\n   * Ex: 200 bps = 2%\\n   */\\n  function updateTransferFee(\\n    uint _transferFeeBasisPoints\\n  ) external;\\n\\n  /**\\n   * Determines how much of a fee a key owner would need to pay in order to\\n   * transfer the key to another account.  This is pro-rated so the fee goes down\\n   * overtime.\\n   * @dev Throws if _keyOwner does not have a valid key\\n   * @param _keyOwner The owner of the key check the transfer fee for.\\n   * @param _time The amount of time to calculate the fee for.\\n   * @return The transfer fee in seconds.\\n   */\\n  function getTransferFee(\\n    address _keyOwner,\\n    uint _time\\n  ) external view returns (uint);\\n\\n  /**\\n   * @dev Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key\\n   * @param _keyOwner The key owner to whom we wish to send a refund to\\n   * @param amount The amount to refund the key-owner\\n   * @dev Throws if called by other than a Lock manager\\n   * @dev Throws if _keyOwner does not have a valid key\\n   */\\n  function expireAndRefundFor(\\n    address _keyOwner,\\n    uint amount\\n  ) external;\\n\\n   /**\\n   * @dev allows the key manager to expire a given tokenId\\n   * and send a refund to the keyOwner based on the amount of time remaining.\\n   * @param _tokenId The id of the key to cancel.\\n   */\\n  function cancelAndRefund(uint _tokenId) external;\\n\\n  /**\\n   * @dev Cancels a key managed by a different user and sends the funds to the keyOwner.\\n   * @param _keyManager the key managed by this user will be canceled\\n   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyManager\\n   * @param _tokenId The key to cancel\\n   */\\n  function cancelAndRefundFor(\\n    address _keyManager,\\n    uint8 _v,\\n    bytes32 _r,\\n    bytes32 _s,\\n    uint _tokenId\\n  ) external;\\n\\n  /**\\n   * @notice Sets the minimum nonce for a valid off-chain approval message from the\\n   * senders account.\\n   * @dev This can be used to invalidate a previously signed message.\\n   */\\n  function invalidateOffchainApproval(\\n    uint _nextAvailableNonce\\n  ) external;\\n\\n  /**\\n   * Allow a Lock manager to change the refund penalty.\\n   * @dev Throws if called by other than a Lock manager\\n   * @param _freeTrialLength The new duration of free trials for this lock\\n   * @param _refundPenaltyBasisPoints The new refund penaly in basis-points(bps)\\n   */\\n  function updateRefundPenalty(\\n    uint _freeTrialLength,\\n    uint _refundPenaltyBasisPoints\\n  ) external;\\n\\n  /**\\n   * @dev Determines how much of a refund a key owner would receive if they issued\\n   * @param _keyOwner The key owner to get the refund value for.\\n   * a cancelAndRefund block.timestamp.\\n   * Note that due to the time required to mine a tx, the actual refund amount will be lower\\n   * than what the user reads from this call.\\n   */\\n  function getCancelAndRefundValueFor(\\n    address _keyOwner\\n  ) external view returns (uint refund);\\n\\n  function keyManagerToNonce(address ) external view returns (uint256 );\\n\\n  /**\\n   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.\\n   * @dev this can be computed in JS instead of read from the contract.\\n   * @param _keyManager The key manager's address (also the message signer)\\n   * @param _txSender The address cancelling cancel on behalf of the keyOwner\\n   * @return approvalHash The hash to sign\\n   */\\n  function getCancelAndRefundApprovalHash(\\n    address _keyManager,\\n    address _txSender\\n  ) external view returns (bytes32 approvalHash);\\n\\n  function addKeyGranter(address account) external;\\n\\n  function addLockManager(address account) external;\\n\\n  function isKeyGranter(address account) external view returns (bool);\\n\\n  function isLockManager(address account) external view returns (bool);\\n\\n  function onKeyPurchaseHook() external view returns(address);\\n\\n  function onKeyCancelHook() external view returns(address);\\n\\n  function revokeKeyGranter(address _granter) external;\\n\\n  function renounceLockManager() external;\\n\\n  ///===================================================================\\n  /// Auto-generated getter functions from public state variables\\n\\n  function beneficiary() external view returns (address );\\n\\n  function expirationDuration() external view returns (uint256 );\\n\\n  function freeTrialLength() external view returns (uint256 );\\n\\n  function isAlive() external view returns (bool );\\n\\n  function keyPrice() external view returns (uint256 );\\n\\n  function maxNumberOfKeys() external view returns (uint256 );\\n\\n  function owners(uint256 ) external view returns (address );\\n\\n  function refundPenaltyBasisPoints() external view returns (uint256 );\\n\\n  function tokenAddress() external view returns (address );\\n\\n  function transferFeeBasisPoints() external view returns (uint256 );\\n\\n  function unlockProtocol() external view returns (address );\\n\\n  function keyManagerOf(uint) external view returns (address );\\n\\n  ///===================================================================\\n\\n  /**\\n  * @notice Allows the key owner to safely share their key (parent key) by\\n  * transferring a portion of the remaining time to a new key (child key).\\n  * @dev Throws if key is not valid.\\n  * @dev Throws if `_to` is the zero address\\n  * @param _to The recipient of the shared key\\n  * @param _tokenId the key to share\\n  * @param _timeShared The amount of time shared\\n  * checks if `_to` is a smart contract (code size > 0). If so, it calls\\n  * `onERC721Received` on `_to` and throws if the return value is not\\n  * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.\\n  * @dev Emit Transfer event\\n  */\\n  function shareKey(\\n    address _to,\\n    uint _tokenId,\\n    uint _timeShared\\n  ) external;\\n\\n  /**\\n  * @notice Update transfer and cancel rights for a given key\\n  * @param _tokenId The id of the key to assign rights for\\n  * @param _keyManager The address to assign the rights to for the given key\\n  */\\n  function setKeyManagerOf(\\n    uint _tokenId,\\n    address _keyManager\\n  ) external;\\n\\n  /// @notice A descriptive name for a collection of NFTs in this contract\\n  function name() external view returns (string memory _name);\\n  ///===================================================================\\n\\n  /// From ERC165.sol\\n  function supportsInterface(bytes4 interfaceId) external view returns (bool );\\n  ///===================================================================\\n\\n  /// From ERC-721\\n  /**\\n     * @dev Returns the number of NFTs in `owner`'s account.\\n     */\\n    function balanceOf(address _owner) public view returns (uint256 balance);\\n\\n    /**\\n     * @dev Returns the owner of the NFT specified by `tokenId`.\\n     */\\n    function ownerOf(uint256 tokenId) public view returns (address _owner);\\n\\n    /**\\n     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to\\n     * another (`to`).\\n     *\\n     *\\n     *\\n     * Requirements:\\n     * - `from`, `to` cannot be zero.\\n     * - `tokenId` must be owned by `from`.\\n     * - If the caller is not `from`, it must be have been allowed to move this\\n     * NFT by either {approve} or {setApprovalForAll}.\\n     */\\n    function safeTransferFrom(address from, address to, uint256 tokenId) public;\\n    /**\\n     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to\\n     * another (`to`).\\n     *\\n     * Requirements:\\n     * - If the caller is not `from`, it must be approved to move this NFT by\\n     * either {approve} or {setApprovalForAll}.\\n     */\\n    function transferFrom(address from, address to, uint256 tokenId) public;\\n    function approve(address to, uint256 tokenId) public;\\n\\n    /**\\n    * @notice Get the approved address for a single NFT\\n    * @dev Throws if `_tokenId` is not a valid NFT.\\n    * @param _tokenId The NFT to find the approved address for\\n    * @return The approved address for this NFT, or the zero address if there is none\\n    */\\n    function getApproved(uint256 _tokenId) public view returns (address operator);\\n\\n    function setApprovalForAll(address operator, bool _approved) public;\\n    function isApprovedForAll(address _owner, address operator) public view returns (bool);\\n\\n    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;\\n\\n    function totalSupply() public view returns (uint256);\\n    function tokenOfOwnerByIndex(address _owner, uint256 index) public view returns (uint256 tokenId);\\n\\n    function tokenByIndex(uint256 index) public view returns (uint256);\\n\\n\\n\\n    /**\\n     * @notice An ERC-20 style transfer.\\n     * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).\\n     * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user\\n     * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.\\n     */\\n    function transfer(\\n      address _to,\\n      uint _value\\n    ) external\\n      returns (bool success);\\n}\\n\",\"keccak256\":\"0x27faded87991ac7b46d22ac887d46674d219fdf1ac4c6661dc1cacdcfb5707db\"},\"contracts/interfaces/IUnlock.sol\":{\"content\":\"pragma solidity 0.5.17;\\n\\n\\n/**\\n * @title The Unlock Interface\\n * @author Nick Furfaro (unlock-protocol.com)\\n**/\\n\\ninterface IUnlock\\n{\\n  // Use initialize instead of a constructor to support proxies(for upgradeability via zos).\\n  function initialize(address _unlockOwner) external;\\n\\n  /**\\n  * @dev Create lock\\n  * This deploys a lock for a creator. It also keeps track of the deployed lock.\\n  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.\\n  * @param _salt an identifier for the Lock, which is unique for the user.\\n  * This may be implemented as a sequence ID or with RNG. It's used with `create2`\\n  * to know the lock's address before the transaction is mined.\\n  */\\n  function createLock(\\n    uint _expirationDuration,\\n    address _tokenAddress,\\n    uint _keyPrice,\\n    uint _maxNumberOfKeys,\\n    string calldata _lockName,\\n    bytes12 _salt\\n  ) external;\\n\\n    /**\\n   * This function keeps track of the added GDP, as well as grants of discount tokens\\n   * to the referrer, if applicable.\\n   * The number of discount tokens granted is based on the value of the referal,\\n   * the current growth rate and the lock's discount token distribution rate\\n   * This function is invoked by a previously deployed lock only.\\n   */\\n  function recordKeyPurchase(\\n    uint _value,\\n    address _referrer // solhint-disable-line no-unused-vars\\n  )\\n    external;\\n\\n    /**\\n   * This function will keep track of consumed discounts by a given user.\\n   * It will also grant discount tokens to the creator who is granting the discount based on the\\n   * amount of discount and compensation rate.\\n   * This function is invoked by a previously deployed lock only.\\n   */\\n  function recordConsumedDiscount(\\n    uint _discount,\\n    uint _tokens // solhint-disable-line no-unused-vars\\n  )\\n    external;\\n\\n    /**\\n   * This function returns the discount available for a user, when purchasing a\\n   * a key from a lock.\\n   * This does not modify the state. It returns both the discount and the number of tokens\\n   * consumed to grant that discount.\\n   */\\n  function computeAvailableDiscountFor(\\n    address _purchaser, // solhint-disable-line no-unused-vars\\n    uint _keyPrice // solhint-disable-line no-unused-vars\\n  )\\n    external\\n    view\\n    returns(uint discount, uint tokens);\\n\\n  // Function to read the globalTokenURI field.\\n  function globalBaseTokenURI()\\n    external\\n    view\\n    returns(string memory);\\n\\n  /**\\n   * @dev Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks.\\n   */\\n  function getGlobalBaseTokenURI()\\n    external\\n    view\\n    returns (string memory);\\n\\n  // Function to read the globalTokenSymbol field.\\n  function globalTokenSymbol()\\n    external\\n    view\\n    returns(string memory);\\n\\n  // Function to read the chainId field.\\n  function chainId()\\n    external\\n    view\\n    returns(uint);\\n\\n  /**\\n   * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.\\n   */\\n  function getGlobalTokenSymbol()\\n    external\\n    view\\n    returns (string memory);\\n\\n  /**\\n   * @notice Allows the owner to update configuration variables\\n   */\\n  function configUnlock(\\n    address _udt,\\n    address _weth,\\n    uint _estimatedGasForPurchase,\\n    string calldata _symbol,\\n    string calldata _URI,\\n    uint _chainId\\n  )\\n    external;\\n\\n  /**\\n   * @notice Upgrade the PublicLock template used for future calls to `createLock`.\\n   * @dev This will initialize the template and revokeOwnership.\\n   */\\n  function setLockTemplate(\\n    address payable _publicLockAddress\\n  ) external;\\n\\n  // Allows the owner to change the value tracking variables as needed.\\n  function resetTrackedValue(\\n    uint _grossNetworkProduct,\\n    uint _totalDiscountGranted\\n  ) external;\\n\\n  function grossNetworkProduct() external view returns(uint);\\n\\n  function totalDiscountGranted() external view returns(uint);\\n\\n  function locks(address) external view returns(bool deployed, uint totalSales, uint yieldedDiscountTokens);\\n\\n  // The address of the public lock template, used when `createLock` is called\\n  function publicLockAddress() external view returns(address);\\n\\n  // Map token address to exchange contract address if the token is supported\\n  // Used for GDP calculations\\n  function uniswapOracles(address) external view returns(address);\\n\\n  // The WETH token address, used for value calculations\\n  function weth() external view returns(address);\\n\\n  // The UDT token address, used to mint tokens on referral\\n  function udt() external view returns(address);\\n\\n  // The approx amount of gas required to purchase a key\\n  function estimatedGasForPurchase() external view returns(uint);\\n\\n  // The version number of the current Unlock implementation on this network\\n  function unlockVersion() external pure returns(uint16);\\n\\n  /**\\n   * @notice allows the owner to set the oracle address to use for value conversions\\n   * setting the _oracleAddress to address(0) removes support for the token\\n   * @dev This will also call update to ensure at least one datapoint has been recorded.\\n   */\\n  function setOracle(\\n    address _tokenAddress,\\n    address _oracleAddress\\n  ) external;\\n\\n  /**\\n   * @dev Returns true if the caller is the current owner.\\n   */\\n  function isOwner() external view returns(bool);\\n\\n  /**\\n   * @dev Returns the address of the current owner.\\n   */\\n  function owner() external view returns(address);\\n\\n  /**\\n   * @dev Leaves the contract without owner. It will not be possible to call\\n   * `onlyOwner` functions anymore. Can only be called by the current owner.\\n   *\\n   * NOTE: Renouncing ownership will leave the contract without an owner,\\n   * thereby removing any functionality that is only available to the owner.\\n   */\\n  function renounceOwnership() external;\\n\\n  /**\\n   * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n   * Can only be called by the current owner.\\n   */\\n  function transferOwnership(address newOwner) external;\\n}\\n\",\"keccak256\":\"0x0b0bb27895b734937c4c0fd855d0f5eadf2cd8113a3ead736173a1a71c1e5e30\"},\"hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol\":{\"content\":\"\\n// SPDX-License-Identifier: MIT\\npragma solidity >=0.5.0;\\n\\ninterface IUniswapOracle\\n{\\n    function PERIOD() external returns (uint);\\n    function factory() external returns (address);\\n    function update(\\n      address _tokenIn,\\n      address _tokenOut\\n    ) external;\\n    function consult(\\n      address _tokenIn,\\n      uint _amountIn,\\n      address _tokenOut\\n    ) external view\\n      returns (uint _amountOut);\\n    function updateAndConsult(\\n      address _tokenIn,\\n      uint _amountIn,\\n      address _tokenOut\\n    ) external\\n      returns (uint _amountOut);\\n}\",\"keccak256\":\"0x05b6d798d77c056327991f472b01b7cba705b0136da35e6ab7253029f08d147a\"},\"hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol\":{\"content\":\"pragma solidity ^0.5.0;\\n\\n\\n// From https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol\\n// Updated to support Solidity 5, switch to `create2` and revert on fail\\nlibrary Clone2Factory\\n{\\n  /**\\n   * @notice Uses create2 to deploy a clone to a pre-determined address.\\n   * @param target the address of the template contract, containing the logic for this contract.\\n   * @param salt a salt used to determine the contract address before the transaction is mined,\\n   * may be random or sequential.\\n   * The salt to use with the create2 call can be `msg.sender+salt` in order to\\n   * prevent an attacker from front-running another user's deployment.\\n   * @return proxyAddress the address of the newly deployed contract.\\n   * @dev Using `bytes12` for the salt saves 6 gas over using `uint96` (requires another shift).\\n   * Will revert on fail.\\n   */\\n  function createClone2(\\n    address target,\\n    bytes32 salt\\n  ) internal\\n    returns (address proxyAddress)\\n  {\\n    // solium-disable-next-line\\n    assembly\\n    {\\n      let pointer := mload(0x40)\\n\\n      // Create the bytecode for deployment based on the Minimal Proxy Standard (EIP-1167)\\n      // bytecode: 0x0\\n      mstore(pointer, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)\\n      mstore(add(pointer, 0x14), shl(96, target))\\n      mstore(add(pointer, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)\\n\\n      // `create2` consumes all available gas if called with a salt that's already been consumed\\n      // we check if the address is available first so that doesn't happen\\n      // Costs ~958 gas\\n\\n      // Calculate the hash\\n      let contractCodeHash := keccak256(pointer, 0x37)\\n\\n      // salt: 0x100\\n      mstore(add(pointer, 0x100), salt)\\n\\n      // addressSeed: 0x40\\n      // 0xff\\n      mstore(add(pointer, 0x40), 0xff00000000000000000000000000000000000000000000000000000000000000)\\n      // this\\n      mstore(add(pointer, 0x41), shl(96, address))\\n      // salt\\n      mstore(add(pointer, 0x55), mload(add(pointer, 0x100)))\\n      // hash\\n      mstore(add(pointer, 0x75), contractCodeHash)\\n\\n      proxyAddress := keccak256(add(pointer, 0x40), 0x55)\\n\\n      switch extcodesize(proxyAddress)\\n      case 0 {\\n        // Deploy the contract, returning the address or 0 on fail\\n        proxyAddress := create2(0, pointer, 0x37, mload(add(pointer, 0x100)))\\n      }\\n      default {\\n        proxyAddress := 0\\n      }\\n    }\\n\\n    // Revert if the deployment fails (possible if salt was already used)\\n    require(proxyAddress != address(0), 'PROXY_DEPLOY_FAILED');\\n  }\\n}\\n\",\"keccak256\":\"0x20ad3c3465defae97e35187a1f74bbdfcfa5ef493d79cca00e5692fed6feeec1\"}},\"version\":1}",
+  "bytecode": "0x6080604052611d43806100136000396000f3fe608060405234801561001057600080fd5b50600436106101a95760003560e01c80637ff94bb2116100f9578063a998e9fb11610097578063d6e9e80311610071578063d6e9e80314610612578063ef67fde61461061a578063f2fde38b14610640578063f832899114610666576101a9565b8063a998e9fb146105dc578063c4d66de8146105e4578063cec410521461060a576101a9565b8063939d9f1f116100d3578063939d9f1f1461057d578063963a9478146105a95780639a8a0592146105cc578063a082eb0e146105d4576101a9565b80637ff94bb2146105515780638da5cb5b146105595780638f32d59b14610561576101a9565b806342d92106116101665780636bced5a2116101405780636bced5a214610427578063715018a61461044d578063743bbc2f146104555780637d8fb6411461046f576101a9565b806342d92106146102e05780635c38eb3a146103b35780635de9a137146103e1576101a9565b80630cb175e3146101ae578063262d0a85146101f357806335a750de1461021757806336524663146102945780633fc8cef3146102b95780634220bd46146102c1575b600080fd5b6101da600480360360408110156101c457600080fd5b506001600160a01b03813516906020013561066e565b6040805192835260208301919091528051918290030190f35b6101fb610677565b604080516001600160a01b039092168252519081900360200190f35b61021f610686565b6040805160208082528351818301528351919283929083019185019080838360005b83811015610259578181015183820152602001610241565b50505050905090810190601f1680156102865780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6102b7600480360360408110156102aa57600080fd5b508035906020013561071d565b005b6101fb61077b565b6102c961078a565b6040805161ffff9092168252519081900360200190f35b6102b7600480360360c08110156102f657600080fd5b8135916001600160a01b036020820135169160408201359160608101359181019060a08101608082013564010000000081111561033257600080fd5b82018360208201111561034457600080fd5b8035906020019184600183028401116401000000008311171561036657600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550505090356001600160a01b031916915061078f9050565b6102b7600480360360408110156103c957600080fd5b506001600160a01b03813581169160200135166109ab565b610407600480360360208110156103f757600080fd5b50356001600160a01b0316610a96565b604080519315158452602084019290925282820152519081900360600190f35b6101fb6004803603602081101561043d57600080fd5b50356001600160a01b0316610abb565b6102b7610ad6565b61045d610b67565b60408051918252519081900360200190f35b6102b7600480360360c081101561048557600080fd5b6001600160a01b038235811692602081013590911691604082013591908101906080810160608201356401000000008111156104c057600080fd5b8201836020820111156104d257600080fd5b803590602001918460018302840111640100000000831117156104f457600080fd5b91939092909160208101903564010000000081111561051257600080fd5b82018360208201111561052457600080fd5b8035906020019184600183028401116401000000008311171561054657600080fd5b919350915035610b6d565b61021f610ce4565b6101fb610d45565b610569610d54565b604080519115158252519081900360200190f35b6102b76004803603604081101561059357600080fd5b50803590602001356001600160a01b0316610d7a565b6102b7600480360360408110156105bf57600080fd5b5080359060200135611484565b61045d611514565b61045d61151a565b61021f611520565b6102b7600480360360208110156105fa57600080fd5b50356001600160a01b03166115ae565b61021f611659565b61045d6116b4565b6102b76004803603602081101561063057600080fd5b50356001600160a01b03166116ba565b6102b76004803603602081101561065657600080fd5b50356001600160a01b0316611831565b6101fb611884565b50600091829150565b606e546001600160a01b031681565b606a8054604080516020601f60026000196101006001881615020190951694909404938401819004810282018101909252828152606093909290918301828280156107125780601f106106e757610100808354040283529160200191610712565b820191906000526020600020905b8154815290600101906020018083116106f557829003601f168201915b505050505090505b90565b3360009081526068602052604090205460ff1661076e576040805162461bcd60e51b815260206004820152600a6024820152694f4e4c595f4c4f434b5360b01b604482015290519081900360640190fd5b60678054830190555b5050565b606d546001600160a01b031681565b600990565b606b546001600160a01b03166107e4576040805162461bcd60e51b81526020600482015260156024820152744d495353494e475f4c4f434b5f54454d504c41544560581b604482015290519081900360640190fd5b6040513360601b81526014810182905251606b54600090610814906001600160a01b03168363ffffffff61189316565b9050806001600160a01b0316636eadde43338a8a8a8a8a6040518763ffffffff1660e01b815260040180876001600160a01b03166001600160a01b03168152602001868152602001856001600160a01b03166001600160a01b0316815260200184815260200183815260200180602001828103825283818151815260200191508051906020019080838360005b838110156108b95781810151838201526020016108a1565b50505050905090810190601f1680156108e65780820380516001836020036101000a031916815260200191505b50975050505050505050600060405180830381600087803b15801561090a57600080fd5b505af115801561091e573d6000803e3d6000fd5b5050604080516060810182526001808252600060208084018281528486018381526001600160a01b038a1680855260689093528684209551865460ff1916901515178655905193850193909355915160029093019290925591519193503392507f01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be791a35050505050505050565b6109b3610d54565b6109f2576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b6001600160a01b038281166000908152606c6020526040902080546001600160a01b03191691831691821790551561077757606d546040805163c640752d60e01b81526001600160a01b038581166004830152928316602482015290519183169163c640752d9160448082019260009290919082900301818387803b158015610a7a57600080fd5b505af1158015610a8e573d6000803e3d6000fd5b505050505050565b60686020526000908152604090208054600182015460029092015460ff909116919083565b606c602052600090815260409020546001600160a01b031681565b610ade610d54565b610b1d576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b6033546040516000916001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3603380546001600160a01b0319169055565b606f5481565b610b75610d54565b610bb4576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b606e80546001600160a01b03808b166001600160a01b031992831617909255606d8054928a1692909116919091179055606f869055610bf5606a8686611be1565b50610c0260698484611be1565b50806070819055507fa14230a1687e9bb8cdc0f3931d27c3a806e88c1c2235ba7756d6911feb35be67888888888888888860405180896001600160a01b03166001600160a01b03168152602001886001600160a01b03166001600160a01b0316815260200187815260200180602001806020018481526020018381038352888882818152602001925080828437600083820152601f01601f191690910184810383528681526020019050868680828437600083820152604051601f909101601f19169092018290039c50909a5050505050505050505050a15050505050505050565b60698054604080516020601f60026000196101006001881615020190951694909404938401819004810282018101909252828152606093909290918301828280156107125780601f106106e757610100808354040283529160200191610712565b6033546001600160a01b031690565b6033546000906001600160a01b0316610d6b61198b565b6001600160a01b031614905090565b3360009081526068602052604090205460ff16610dcb576040805162461bcd60e51b815260206004820152600a6024820152694f4e4c595f4c4f434b5360b01b604482015290519081900360640190fd5b811561077757600080336001600160a01b0316639d76ea586040518163ffffffff1660e01b815260040160206040518083038186803b158015610e0d57600080fd5b505afa158015610e21573d6000803e3d6000fd5b505050506040513d6020811015610e3757600080fd5b505190506001600160a01b03811615801590610e615750606d546001600160a01b03828116911614155b15610f1a576001600160a01b038082166000908152606c6020526040902054168015610f1457606d546040805163c1e553e760e01b81526001600160a01b03858116600483015260248201899052928316604482015290519183169163c1e553e7916064808201926020929091908290030181600087803b158015610ee557600080fd5b505af1158015610ef9573d6000803e3d6000fd5b505050506040513d6020811015610f0f57600080fd5b505192505b50610f1e565b8391505b606654610f31908363ffffffff61198f16565b6066553360009081526068602052604090206001018054830190556001600160a01b0383161561147e57606e546001600160a01b039081166000908152606c602052604090205416801561147c57606e54606d546040805163c1e553e760e01b81526001600160a01b039384166004820152670de0b6b3a7640000602482015291831660448301525160009284169163c1e553e791606480830192602092919082900301818787803b158015610fe657600080fd5b505af1158015610ffa573d6000803e3d6000fd5b505050506040513d602081101561101057600080fd5b5051606f54909150600090829060649061103b903a026806c6b935b8bbd4000063ffffffff6119f016565b8161104257fe5b048161104a57fe5b0490506000809050600160705411156111145760665480600288028161106c57fe5b606e54604080516370a0823160e01b8152306004820152905193909204600201926110fd928b926001600160a01b0316916370a08231916024808201926020929091908290030181600087803b1580156110c557600080fd5b505af11580156110d9573d6000803e3d6000fd5b505050506040513d60208110156110ef57600080fd5b50519063ffffffff6119f016565b8161110457fe5b048161110c57fe5b049050611180565b606654600261116d88606e60009054906101000a90046001600160a01b03166001600160a01b03166318160ddd6040518163ffffffff1660e01b8152600401602060405180830381600087803b1580156110c557600080fd5b8161117457fe5b048161117c57fe5b0490505b8082111561118c578091505b811561147857600060646111a784601463ffffffff6119f016565b816111ae57fe5b0490506001607054111561135d57606e54604080516370a0823160e01b815230600482015290516000926001600160a01b0316916370a0823191602480830192602092919082900301818787803b15801561120857600080fd5b505af115801561121c573d6000803e3d6000fd5b505050506040513d602081101561123257600080fd5b505190508381111561135757606e546040805163a9059cbb60e01b81526001600160a01b038c8116600483015285880360248301529151919092169163a9059cbb9160448083019260209291908290030181600087803b15801561129557600080fd5b505af11580156112a9573d6000803e3d6000fd5b505050506040513d60208110156112bf57600080fd5b5050606e546001600160a01b031663a9059cbb6112da610d45565b846040518363ffffffff1660e01b815260040180836001600160a01b03166001600160a01b0316815260200182815260200192505050602060405180830381600087803b15801561132a57600080fd5b505af115801561133e573d6000803e3d6000fd5b505050506040513d602081101561135457600080fd5b50505b50611476565b606e54604080516340c10f1960e01b81526001600160a01b038b811660048301528487036024830152915191909216916340c10f199160448083019260209291908290030181600087803b1580156113b457600080fd5b505af11580156113c8573d6000803e3d6000fd5b505050506040513d60208110156113de57600080fd5b5050606e546001600160a01b03166340c10f196113f9610d45565b836040518363ffffffff1660e01b815260040180836001600160a01b03166001600160a01b0316815260200182815260200192505050602060405180830381600087803b15801561144957600080fd5b505af115801561145d573d6000803e3d6000fd5b505050506040513d602081101561147357600080fd5b50505b505b5050505b505b50505050565b61148c610d54565b6114cb576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b60668290556067819055604080518381526020810183905281517f7b2ce3c83b45f79993ff2cbf5651caff2dfe04010b4846e03066b84e3e4059bb929181900390910190a15050565b60705481565b60675481565b6069805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156115a65780601f1061157b576101008083540402835291602001916115a6565b820191906000526020600020905b81548152906001019060200180831161158957829003601f168201915b505050505081565b600054610100900460ff16806115c757506115c7611a49565b806115d5575060005460ff16155b6116105760405162461bcd60e51b815260040180806020018281038252602e815260200180611ce1602e913960400191505060405180910390fd5b600054610100900460ff1615801561163b576000805460ff1961ff0019909116610100171660011790555b61164482611a4f565b8015610777576000805461ff00191690555050565b606a805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156115a65780601f1061157b576101008083540402835291602001916115a6565b60665481565b6116c2610d54565b611701576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b60408051636eadde4360e01b815230600482015260006024820181905260448201819052606482018190526084820181905260c060a483015260c4820181905291516001600160a01b03841692636eadde4392610104808201939182900301818387803b15801561177157600080fd5b505af1158015611785573d6000803e3d6000fd5b50505050806001600160a01b031663f0ba60406040518163ffffffff1660e01b8152600401600060405180830381600087803b1580156117c457600080fd5b505af11580156117d8573d6000803e3d6000fd5b5050606b80546001600160a01b0385166001600160a01b0319909116811790915560408051918252517f4fa58418e580e78539e8d3d8d17d94dbaca0927533953c8248f313e6f8927c219350908190036020019150a150565b611839610d54565b611878576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b61188181611b40565b50565b606b546001600160a01b031681565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528360601b60148201526e5af43d82803e903d91602b57fd5bf360881b602882015260378120836101008301526001600160f81b031960408301523060601b60418301526101008201516055830152806075830152605560408301209250823b600081146119225760009350611931565b6101008301516037846000f593505b5050506001600160a01b038116611985576040805162461bcd60e51b8152602060048201526013602482015272141493d61657d111541313d657d19052531151606a1b604482015290519081900360640190fd5b92915050565b3390565b6000828201838110156119e9576040805162461bcd60e51b815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b6000826119ff57506000611985565b82820282848281611a0c57fe5b04146119e95760405162461bcd60e51b8152600401808060200182810382526021815260200180611ca06021913960400191505060405180910390fd5b303b1590565b600054610100900460ff1680611a685750611a68611a49565b80611a76575060005460ff16155b611ab15760405162461bcd60e51b815260040180806020018281038252602e815260200180611ce1602e913960400191505060405180910390fd5b600054610100900460ff16158015611adc576000805460ff1961ff0019909116610100171660011790555b603380546001600160a01b0319166001600160a01b0384811691909117918290556040519116906000907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a38015610777576000805461ff00191690555050565b6001600160a01b038116611b855760405162461bcd60e51b8152600401808060200182810382526026815260200180611c7a6026913960400191505060405180910390fd5b6033546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3603380546001600160a01b0319166001600160a01b0392909216919091179055565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10611c225782800160ff19823516178555611c4f565b82800160010185558215611c4f579182015b82811115611c4f578235825591602001919060010190611c34565b50611c5b929150611c5f565b5090565b61071a91905b80821115611c5b5760008155600101611c6556fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f774f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572436f6e747261637420696e7374616e63652068617320616c7265616479206265656e20696e697469616c697a6564a265627a7a723158205c2cca1957e09e81bb275e046bea735b05007df4c9c2f461a6ec0c1660937aa264736f6c63430005110032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101a95760003560e01c80637ff94bb2116100f9578063a998e9fb11610097578063d6e9e80311610071578063d6e9e80314610612578063ef67fde61461061a578063f2fde38b14610640578063f832899114610666576101a9565b8063a998e9fb146105dc578063c4d66de8146105e4578063cec410521461060a576101a9565b8063939d9f1f116100d3578063939d9f1f1461057d578063963a9478146105a95780639a8a0592146105cc578063a082eb0e146105d4576101a9565b80637ff94bb2146105515780638da5cb5b146105595780638f32d59b14610561576101a9565b806342d92106116101665780636bced5a2116101405780636bced5a214610427578063715018a61461044d578063743bbc2f146104555780637d8fb6411461046f576101a9565b806342d92106146102e05780635c38eb3a146103b35780635de9a137146103e1576101a9565b80630cb175e3146101ae578063262d0a85146101f357806335a750de1461021757806336524663146102945780633fc8cef3146102b95780634220bd46146102c1575b600080fd5b6101da600480360360408110156101c457600080fd5b506001600160a01b03813516906020013561066e565b6040805192835260208301919091528051918290030190f35b6101fb610677565b604080516001600160a01b039092168252519081900360200190f35b61021f610686565b6040805160208082528351818301528351919283929083019185019080838360005b83811015610259578181015183820152602001610241565b50505050905090810190601f1680156102865780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6102b7600480360360408110156102aa57600080fd5b508035906020013561071d565b005b6101fb61077b565b6102c961078a565b6040805161ffff9092168252519081900360200190f35b6102b7600480360360c08110156102f657600080fd5b8135916001600160a01b036020820135169160408201359160608101359181019060a08101608082013564010000000081111561033257600080fd5b82018360208201111561034457600080fd5b8035906020019184600183028401116401000000008311171561036657600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550505090356001600160a01b031916915061078f9050565b6102b7600480360360408110156103c957600080fd5b506001600160a01b03813581169160200135166109ab565b610407600480360360208110156103f757600080fd5b50356001600160a01b0316610a96565b604080519315158452602084019290925282820152519081900360600190f35b6101fb6004803603602081101561043d57600080fd5b50356001600160a01b0316610abb565b6102b7610ad6565b61045d610b67565b60408051918252519081900360200190f35b6102b7600480360360c081101561048557600080fd5b6001600160a01b038235811692602081013590911691604082013591908101906080810160608201356401000000008111156104c057600080fd5b8201836020820111156104d257600080fd5b803590602001918460018302840111640100000000831117156104f457600080fd5b91939092909160208101903564010000000081111561051257600080fd5b82018360208201111561052457600080fd5b8035906020019184600183028401116401000000008311171561054657600080fd5b919350915035610b6d565b61021f610ce4565b6101fb610d45565b610569610d54565b604080519115158252519081900360200190f35b6102b76004803603604081101561059357600080fd5b50803590602001356001600160a01b0316610d7a565b6102b7600480360360408110156105bf57600080fd5b5080359060200135611484565b61045d611514565b61045d61151a565b61021f611520565b6102b7600480360360208110156105fa57600080fd5b50356001600160a01b03166115ae565b61021f611659565b61045d6116b4565b6102b76004803603602081101561063057600080fd5b50356001600160a01b03166116ba565b6102b76004803603602081101561065657600080fd5b50356001600160a01b0316611831565b6101fb611884565b50600091829150565b606e546001600160a01b031681565b606a8054604080516020601f60026000196101006001881615020190951694909404938401819004810282018101909252828152606093909290918301828280156107125780601f106106e757610100808354040283529160200191610712565b820191906000526020600020905b8154815290600101906020018083116106f557829003601f168201915b505050505090505b90565b3360009081526068602052604090205460ff1661076e576040805162461bcd60e51b815260206004820152600a6024820152694f4e4c595f4c4f434b5360b01b604482015290519081900360640190fd5b60678054830190555b5050565b606d546001600160a01b031681565b600990565b606b546001600160a01b03166107e4576040805162461bcd60e51b81526020600482015260156024820152744d495353494e475f4c4f434b5f54454d504c41544560581b604482015290519081900360640190fd5b6040513360601b81526014810182905251606b54600090610814906001600160a01b03168363ffffffff61189316565b9050806001600160a01b0316636eadde43338a8a8a8a8a6040518763ffffffff1660e01b815260040180876001600160a01b03166001600160a01b03168152602001868152602001856001600160a01b03166001600160a01b0316815260200184815260200183815260200180602001828103825283818151815260200191508051906020019080838360005b838110156108b95781810151838201526020016108a1565b50505050905090810190601f1680156108e65780820380516001836020036101000a031916815260200191505b50975050505050505050600060405180830381600087803b15801561090a57600080fd5b505af115801561091e573d6000803e3d6000fd5b5050604080516060810182526001808252600060208084018281528486018381526001600160a01b038a1680855260689093528684209551865460ff1916901515178655905193850193909355915160029093019290925591519193503392507f01017ed19df0c7f8acc436147b234b09664a9fb4797b4fa3fb9e599c2eb67be791a35050505050505050565b6109b3610d54565b6109f2576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b6001600160a01b038281166000908152606c6020526040902080546001600160a01b03191691831691821790551561077757606d546040805163c640752d60e01b81526001600160a01b038581166004830152928316602482015290519183169163c640752d9160448082019260009290919082900301818387803b158015610a7a57600080fd5b505af1158015610a8e573d6000803e3d6000fd5b505050505050565b60686020526000908152604090208054600182015460029092015460ff909116919083565b606c602052600090815260409020546001600160a01b031681565b610ade610d54565b610b1d576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b6033546040516000916001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3603380546001600160a01b0319169055565b606f5481565b610b75610d54565b610bb4576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b606e80546001600160a01b03808b166001600160a01b031992831617909255606d8054928a1692909116919091179055606f869055610bf5606a8686611be1565b50610c0260698484611be1565b50806070819055507fa14230a1687e9bb8cdc0f3931d27c3a806e88c1c2235ba7756d6911feb35be67888888888888888860405180896001600160a01b03166001600160a01b03168152602001886001600160a01b03166001600160a01b0316815260200187815260200180602001806020018481526020018381038352888882818152602001925080828437600083820152601f01601f191690910184810383528681526020019050868680828437600083820152604051601f909101601f19169092018290039c50909a5050505050505050505050a15050505050505050565b60698054604080516020601f60026000196101006001881615020190951694909404938401819004810282018101909252828152606093909290918301828280156107125780601f106106e757610100808354040283529160200191610712565b6033546001600160a01b031690565b6033546000906001600160a01b0316610d6b61198b565b6001600160a01b031614905090565b3360009081526068602052604090205460ff16610dcb576040805162461bcd60e51b815260206004820152600a6024820152694f4e4c595f4c4f434b5360b01b604482015290519081900360640190fd5b811561077757600080336001600160a01b0316639d76ea586040518163ffffffff1660e01b815260040160206040518083038186803b158015610e0d57600080fd5b505afa158015610e21573d6000803e3d6000fd5b505050506040513d6020811015610e3757600080fd5b505190506001600160a01b03811615801590610e615750606d546001600160a01b03828116911614155b15610f1a576001600160a01b038082166000908152606c6020526040902054168015610f1457606d546040805163c1e553e760e01b81526001600160a01b03858116600483015260248201899052928316604482015290519183169163c1e553e7916064808201926020929091908290030181600087803b158015610ee557600080fd5b505af1158015610ef9573d6000803e3d6000fd5b505050506040513d6020811015610f0f57600080fd5b505192505b50610f1e565b8391505b606654610f31908363ffffffff61198f16565b6066553360009081526068602052604090206001018054830190556001600160a01b0383161561147e57606e546001600160a01b039081166000908152606c602052604090205416801561147c57606e54606d546040805163c1e553e760e01b81526001600160a01b039384166004820152670de0b6b3a7640000602482015291831660448301525160009284169163c1e553e791606480830192602092919082900301818787803b158015610fe657600080fd5b505af1158015610ffa573d6000803e3d6000fd5b505050506040513d602081101561101057600080fd5b5051606f54909150600090829060649061103b903a026806c6b935b8bbd4000063ffffffff6119f016565b8161104257fe5b048161104a57fe5b0490506000809050600160705411156111145760665480600288028161106c57fe5b606e54604080516370a0823160e01b8152306004820152905193909204600201926110fd928b926001600160a01b0316916370a08231916024808201926020929091908290030181600087803b1580156110c557600080fd5b505af11580156110d9573d6000803e3d6000fd5b505050506040513d60208110156110ef57600080fd5b50519063ffffffff6119f016565b8161110457fe5b048161110c57fe5b049050611180565b606654600261116d88606e60009054906101000a90046001600160a01b03166001600160a01b03166318160ddd6040518163ffffffff1660e01b8152600401602060405180830381600087803b1580156110c557600080fd5b8161117457fe5b048161117c57fe5b0490505b8082111561118c578091505b811561147857600060646111a784601463ffffffff6119f016565b816111ae57fe5b0490506001607054111561135d57606e54604080516370a0823160e01b815230600482015290516000926001600160a01b0316916370a0823191602480830192602092919082900301818787803b15801561120857600080fd5b505af115801561121c573d6000803e3d6000fd5b505050506040513d602081101561123257600080fd5b505190508381111561135757606e546040805163a9059cbb60e01b81526001600160a01b038c8116600483015285880360248301529151919092169163a9059cbb9160448083019260209291908290030181600087803b15801561129557600080fd5b505af11580156112a9573d6000803e3d6000fd5b505050506040513d60208110156112bf57600080fd5b5050606e546001600160a01b031663a9059cbb6112da610d45565b846040518363ffffffff1660e01b815260040180836001600160a01b03166001600160a01b0316815260200182815260200192505050602060405180830381600087803b15801561132a57600080fd5b505af115801561133e573d6000803e3d6000fd5b505050506040513d602081101561135457600080fd5b50505b50611476565b606e54604080516340c10f1960e01b81526001600160a01b038b811660048301528487036024830152915191909216916340c10f199160448083019260209291908290030181600087803b1580156113b457600080fd5b505af11580156113c8573d6000803e3d6000fd5b505050506040513d60208110156113de57600080fd5b5050606e546001600160a01b03166340c10f196113f9610d45565b836040518363ffffffff1660e01b815260040180836001600160a01b03166001600160a01b0316815260200182815260200192505050602060405180830381600087803b15801561144957600080fd5b505af115801561145d573d6000803e3d6000fd5b505050506040513d602081101561147357600080fd5b50505b505b5050505b505b50505050565b61148c610d54565b6114cb576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b60668290556067819055604080518381526020810183905281517f7b2ce3c83b45f79993ff2cbf5651caff2dfe04010b4846e03066b84e3e4059bb929181900390910190a15050565b60705481565b60675481565b6069805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156115a65780601f1061157b576101008083540402835291602001916115a6565b820191906000526020600020905b81548152906001019060200180831161158957829003601f168201915b505050505081565b600054610100900460ff16806115c757506115c7611a49565b806115d5575060005460ff16155b6116105760405162461bcd60e51b815260040180806020018281038252602e815260200180611ce1602e913960400191505060405180910390fd5b600054610100900460ff1615801561163b576000805460ff1961ff0019909116610100171660011790555b61164482611a4f565b8015610777576000805461ff00191690555050565b606a805460408051602060026001851615610100026000190190941693909304601f810184900484028201840190925281815292918301828280156115a65780601f1061157b576101008083540402835291602001916115a6565b60665481565b6116c2610d54565b611701576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b60408051636eadde4360e01b815230600482015260006024820181905260448201819052606482018190526084820181905260c060a483015260c4820181905291516001600160a01b03841692636eadde4392610104808201939182900301818387803b15801561177157600080fd5b505af1158015611785573d6000803e3d6000fd5b50505050806001600160a01b031663f0ba60406040518163ffffffff1660e01b8152600401600060405180830381600087803b1580156117c457600080fd5b505af11580156117d8573d6000803e3d6000fd5b5050606b80546001600160a01b0385166001600160a01b0319909116811790915560408051918252517f4fa58418e580e78539e8d3d8d17d94dbaca0927533953c8248f313e6f8927c219350908190036020019150a150565b611839610d54565b611878576040805162461bcd60e51b81526020600482018190526024820152600080516020611cc1833981519152604482015290519081900360640190fd5b61188181611b40565b50565b606b546001600160a01b031681565b6000604051733d602d80600a3d3981f3363d3d373d3d3d363d7360601b81528360601b60148201526e5af43d82803e903d91602b57fd5bf360881b602882015260378120836101008301526001600160f81b031960408301523060601b60418301526101008201516055830152806075830152605560408301209250823b600081146119225760009350611931565b6101008301516037846000f593505b5050506001600160a01b038116611985576040805162461bcd60e51b8152602060048201526013602482015272141493d61657d111541313d657d19052531151606a1b604482015290519081900360640190fd5b92915050565b3390565b6000828201838110156119e9576040805162461bcd60e51b815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b6000826119ff57506000611985565b82820282848281611a0c57fe5b04146119e95760405162461bcd60e51b8152600401808060200182810382526021815260200180611ca06021913960400191505060405180910390fd5b303b1590565b600054610100900460ff1680611a685750611a68611a49565b80611a76575060005460ff16155b611ab15760405162461bcd60e51b815260040180806020018281038252602e815260200180611ce1602e913960400191505060405180910390fd5b600054610100900460ff16158015611adc576000805460ff1961ff0019909116610100171660011790555b603380546001600160a01b0319166001600160a01b0384811691909117918290556040519116906000907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a38015610777576000805461ff00191690555050565b6001600160a01b038116611b855760405162461bcd60e51b8152600401808060200182810382526026815260200180611c7a6026913960400191505060405180910390fd5b6033546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3603380546001600160a01b0319166001600160a01b0392909216919091179055565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10611c225782800160ff19823516178555611c4f565b82800160010185558215611c4f579182015b82811115611c4f578235825591602001919060010190611c34565b50611c5b929150611c5f565b5090565b61071a91905b80821115611c5b5760008155600101611c6556fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f774f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572436f6e747261637420696e7374616e63652068617320616c7265616479206265656e20696e697469616c697a6564a265627a7a723158205c2cca1957e09e81bb275e046bea735b05007df4c9c2f461a6ec0c1660937aa264736f6c63430005110032",
+  "devdoc": {
+    "details": "Must list the direct base contracts in the order from “most base-like” to “most derived”. https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization",
+    "methods": {
+      "createLock(uint256,address,uint256,uint256,string,bytes12)": {
+        "details": "Create lock This deploys a lock for a creator. It also keeps track of the deployed lock.",
+        "params": {
+          "_salt": "an identifier for the Lock, which is unique for the user. This may be implemented as a sequence ID or with RNG. It's used with `create2` to know the lock's address before the transaction is mined.",
+          "_tokenAddress": "set to the ERC20 token address, or 0 for ETH."
+        }
+      },
+      "getGlobalBaseTokenURI()": {
+        "details": "Redundant with globalBaseTokenURI() for backwards compatibility with v3 & v4 locks."
+      },
+      "getGlobalTokenSymbol()": {
+        "details": "Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks."
+      },
+      "isOwner()": {
+        "details": "Returns true if the caller is the current owner."
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner.     * > Note: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "setLockTemplate(address)": {
+        "details": "This will initialize the template and revokeOwnership."
+      },
+      "setOracle(address,address)": {
+        "details": "This will also call update to ensure at least one datapoint has been recorded."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "computeAvailableDiscountFor(address,uint256)": {
+        "notice": "This function returns the discount available for a user, when purchasing a a key from a lock. This does not modify the state. It returns both the discount and the number of tokens consumed to grant that discount. TODO: actually implement this."
+      },
+      "configUnlock(address,address,uint256,string,string,uint256)": {
+        "notice": "Allows the owner to update configuration variables"
+      },
+      "recordConsumedDiscount(uint256,uint256)": {
+        "notice": "This function will keep track of consumed discounts by a given user. It will also grant discount tokens to the creator who is granting the discount based on the amount of discount and compensation rate. This function is invoked by a previously deployed lock only."
+      },
+      "recordKeyPurchase(uint256,address)": {
+        "notice": "This function keeps track of the added GDP, as well as grants of discount tokens to the referrer, if applicable. The number of discount tokens granted is based on the value of the referal, the current growth rate and the lock's discount token distribution rate This function is invoked by a previously deployed lock only. TODO: actually implement"
+      },
+      "setLockTemplate(address)": {
+        "notice": "Upgrade the PublicLock template used for future calls to `createLock`."
+      },
+      "setOracle(address,address)": {
+        "notice": "allows the owner to set the oracle address to use for value conversions setting the _oracleAddress to address(0) removes support for the token"
+      }
+    }
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 2095,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "initialized",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 2097,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "initializing",
+        "offset": 1,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 2159,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "______gap",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_array(t_uint256)50_storage"
+      },
+      {
+        "astId": 810,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "51",
+        "type": "t_address"
+      },
+      {
+        "astId": 923,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "______gap",
+        "offset": 0,
+        "slot": "52",
+        "type": "t_array(t_uint256)50_storage"
+      },
+      {
+        "astId": 2333,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "grossNetworkProduct",
+        "offset": 0,
+        "slot": "102",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 2335,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "totalDiscountGranted",
+        "offset": 0,
+        "slot": "103",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 2339,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "locks",
+        "offset": 0,
+        "slot": "104",
+        "type": "t_mapping(t_address,t_struct(LockBalances)2318_storage)"
+      },
+      {
+        "astId": 2341,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "globalBaseTokenURI",
+        "offset": 0,
+        "slot": "105",
+        "type": "t_string_storage"
+      },
+      {
+        "astId": 2343,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "globalTokenSymbol",
+        "offset": 0,
+        "slot": "106",
+        "type": "t_string_storage"
+      },
+      {
+        "astId": 2345,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "publicLockAddress",
+        "offset": 0,
+        "slot": "107",
+        "type": "t_address"
+      },
+      {
+        "astId": 2349,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "uniswapOracles",
+        "offset": 0,
+        "slot": "108",
+        "type": "t_mapping(t_address,t_contract(IUniswapOracle)7449)"
+      },
+      {
+        "astId": 2351,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "weth",
+        "offset": 0,
+        "slot": "109",
+        "type": "t_address"
+      },
+      {
+        "astId": 2353,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "udt",
+        "offset": 0,
+        "slot": "110",
+        "type": "t_address"
+      },
+      {
+        "astId": 2355,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "estimatedGasForPurchase",
+        "offset": 0,
+        "slot": "111",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 2357,
+        "contract": "contracts/Unlock.sol:Unlock",
+        "label": "chainId",
+        "offset": 0,
+        "slot": "112",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint256)50_storage": {
+        "base": "t_uint256",
+        "encoding": "inplace",
+        "label": "uint256[50]",
+        "numberOfBytes": "1600"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_contract(IUniswapOracle)7449": {
+        "encoding": "inplace",
+        "label": "contract IUniswapOracle",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_contract(IUniswapOracle)7449)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => contract IUniswapOracle)",
+        "numberOfBytes": "32",
+        "value": "t_contract(IUniswapOracle)7449"
+      },
+      "t_mapping(t_address,t_struct(LockBalances)2318_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct Unlock.LockBalances)",
+        "numberOfBytes": "32",
+        "value": "t_struct(LockBalances)2318_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(LockBalances)2318_storage": {
+        "encoding": "inplace",
+        "label": "struct Unlock.LockBalances",
+        "members": [
+          {
+            "astId": 2313,
+            "contract": "contracts/Unlock.sol:Unlock",
+            "label": "deployed",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool"
+          },
+          {
+            "astId": 2315,
+            "contract": "contracts/Unlock.sol:Unlock",
+            "label": "totalSales",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 2317,
+            "contract": "contracts/Unlock.sol:Unlock",
+            "label": "yieldedDiscountTokens",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}

@@ -57,7 +57,7 @@
     "@openzeppelin/hardhat-upgrades": "^1.8.2",
     "@openzeppelin/truffle-upgrades": "^1.7.0",
     "hardhat": "^2.3.0",
-    "hardhat-deploy": "^0.7.10",
+    "hardhat-deploy": "^0.7.11",
     "hardhat-deploy-ethers": "^0.3.0-beta.8",
     "hardhat-tracer": "^1.0.0-alpha.6",
     "truffle-flattener": "1.4.4",
