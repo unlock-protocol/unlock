@@ -13,13 +13,11 @@ require("@nomiclabs/hardhat-web3");
 require('@nomiclabs/hardhat-ethers');
 require('@openzeppelin/hardhat-upgrades');
 
-task("accounts", "Prints the list of accounts", async () => {
-  const accounts = await ethers.getSigners();
-
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
+const { 
+  supportedNetworks,
+  getProviderUrl, 
+  getAccounts
+} = require('./helpers/network');
 
 const settings = {
   optimizer: {
@@ -28,22 +26,52 @@ const settings = {
   },
 }
 
+
+const networks = {
+  localhost: {
+    url: "http://127.0.0.1:8545"
+  },
+  hardhat: {}
+}
+
+// parse additional networks and accounts
+supportedNetworks.forEach(net => {  
+  try {
+    const url = getProviderUrl(net)
+    const accounts = getAccounts(net)
+
+    if (accounts && url) {
+      networks[net] = { 
+        url, 
+        accounts: {
+          'mnemonic': accounts
+        }
+      }
+
+      console.log(`Added config for ${net}.`)
+    }
+  } catch (error) { 
+    // console.error(error.message)
+    // console.log(`skipped.`)
+  } 
+})
+console.log(networks);
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  networks,
   namedAccounts: {
-    unlockOwner: 0,
-    minter: 1,
-    proxyAdmin: 9
-  },
-  external: {
-    contracts: [
-      {
-        artifacts: "published-npm-modules/V8/artifacts"
-        // deploy: "migrations"
-      }
-    ]
+    unlockOwner: {
+      default: 0, // hardhat
+      //4 : 0x..., // rinkeby
+    },
+    minter: {
+      default: 1
+    },
+    proxyAdmin: {
+      default: 9
+    }
   },
   solidity: {
     compilers: [
