@@ -83,6 +83,7 @@ const LoginPrompt = ({
   }
 
   const handleWalletConnectProvider = async () => {
+    await walletConnectProvider.enable()
     await authenticate(walletConnectProvider)
   }
 

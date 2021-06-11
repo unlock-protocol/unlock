@@ -70,6 +70,7 @@ const WalletPicker = ({ onProvider }: WalletPickerProps) => {
   }
 
   const handleWalletConnectProvider = async () => {
+    await walletConnectProvider.enable()
     onProvider(new ethers.providers.Web3Provider(walletConnectProvider))
   }
 
