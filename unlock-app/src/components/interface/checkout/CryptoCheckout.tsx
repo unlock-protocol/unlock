@@ -9,6 +9,8 @@ import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
 import { userCanAffordKey } from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
+import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
+import { ConfigContext } from '../../../utils/withConfig'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -29,7 +31,10 @@ export const CryptoCheckout = ({
   emitCloseModal,
   setCardPurchase,
 }: CryptoCheckoutProps) => {
-  const { network: walletNetwork, account } = useContext(AuthenticationContext)
+  const { networks } = useContext(ConfigContext)
+  const { network: walletNetwork, account, changeNetwork } = useContext(
+    AuthenticationContext
+  )
   const { purchaseKey } = useLock(lock, network)
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
@@ -46,6 +51,10 @@ export const CryptoCheckout = ({
   const isCreditCardEnabled = lock.fiatPricing?.creditCardEnabled
   const handleHasKey = (key: any) => {
     setKeyExpiration(key.expiration)
+  }
+
+  const connectToNetwork = () => {
+    changeNetwork(networks[network])
   }
 
   const cryptoPurchase = () => {
@@ -77,7 +86,7 @@ export const CryptoCheckout = ({
       }
     }
     getBalance()
-  }, [account, lock.address])
+  }, [account, lock.address, walletNetwork])
 
   return (
     <>
@@ -99,7 +108,13 @@ export const CryptoCheckout = ({
             <CheckoutButton disabled={cryptoDisabled}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {userIsOnWrongNetwork && !hasValidkey && (
-                <Warning>Crypto wallet on wrong network</Warning>
+                <Warning>
+                  Crypto wallet on wrong network.{' '}
+                  <LinkButton onClick={connectToNetwork}>
+                    Connect to {ETHEREUM_NETWORKS_NAMES[network]}{' '}
+                  </LinkButton>
+                  .
+                </Warning>
               )}
               {!userIsOnWrongNetwork && !hasValidkey && !canAfford && (
                 <Warning>Crypto balance too low</Warning>
@@ -158,6 +173,10 @@ export const CheckoutButton = styled.div`
     display: inline-block;
     color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--blue)')};
   }
+`
+
+const LinkButton = styled.a`
+  cursor: pointer;
 `
 
 const Message = styled.p`
