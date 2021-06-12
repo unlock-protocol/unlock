@@ -23,7 +23,6 @@ const AuthenticateButton = ({
     const walletConnectProvider = new WalletConnectProvider({
       rpc: rpcForWalletConnect(config),
     })
-    await walletConnectProvider.enable()
     onProvider(walletConnectProvider)
   }
 

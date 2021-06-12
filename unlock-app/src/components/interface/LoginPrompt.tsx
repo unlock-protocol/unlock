@@ -68,13 +68,6 @@ const LoginPrompt = ({
   })
 
   const handleInjectProvider = async () => {
-    if (injectedProvider.enable) {
-      try {
-        await injectedProvider.enable()
-      } catch {
-        alert('PLEASE ENABLE PROVIDER!')
-      }
-    }
     await authenticate(injectedProvider)
   }
 
@@ -83,7 +76,6 @@ const LoginPrompt = ({
   }
 
   const handleWalletConnectProvider = async () => {
-    await walletConnectProvider.enable()
     await authenticate(walletConnectProvider)
   }
 

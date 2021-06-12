@@ -58,20 +58,11 @@ const WalletPicker = ({ onProvider }: WalletPickerProps) => {
   })
 
   const handleInjectProvider = async () => {
-    if (injectedProvider.enable) {
-      try {
-        await injectedProvider.enable()
-      } catch {
-        alert('PLEASE ENABLE PROVIDER!')
-      }
-    }
-
-    onProvider(new ethers.providers.Web3Provider(injectedProvider))
+    onProvider(injectedProvider)
   }
 
   const handleWalletConnectProvider = async () => {
-    await walletConnectProvider.enable()
-    onProvider(new ethers.providers.Web3Provider(walletConnectProvider))
+    onProvider(walletConnectProvider)
   }
 
   return (

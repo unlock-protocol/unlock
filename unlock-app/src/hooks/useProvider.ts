@@ -27,36 +27,41 @@ export const useProvider = (config: any) => {
     any | undefined
   >(undefined)
 
-  const resetProvider = async (provider: any) => {
+  const resetProvider = async (provider: ethers.providers.Provider) => {
     setError('')
     try {
       const _walletService = new WalletService(config.networks)
 
-      let _network
-      if (provider instanceof ethers.providers.Provider) {
-        setProvider(provider)
-        // @ts-expect-error
-        _network = await _walletService.connect(provider)
-      } else {
-        // walletService wants an ethers provider!
-        provider = new ethers.providers.Web3Provider(provider)
-        setProvider(provider)
-        _network = await _walletService.connect(provider)
-      }
+      setProvider(provider)
+      // @ts-expect-error TODO fix walletService signature
+      const _network = await _walletService.connect(provider)
       setNetwork(_network || undefined)
 
       const _account = await _walletService.getAccount()
 
       setWalletService(_walletService)
       setAccount(_account || undefined)
+      // @ts-expect-error
+      if (!provider.isUnlock) {
+        return {
+          network: _network,
+          account: _account,
+        }
+      }
+      // @ts-expect-error
       setIsUnlockAccount(provider.isUnlock)
+      // @ts-expect-error
       setEmail(provider.emailAddress)
+      // @ts-expect-error
       setEncryptedPrivateKey(provider.passwordEncryptedPrivateKey)
       return {
         network: _network,
         account: _account,
+        // @ts-expect-error
         isUnlock: provider.isUnlock,
+        // @ts-expect-error
         email: provider.emailAddress,
+        // @ts-expect-error
         passwordEncryptedPrivateKey: provider.passwordEncryptedPrivateKey,
       }
     } catch (error) {
@@ -76,15 +81,31 @@ export const useProvider = (config: any) => {
   const connectProvider = async (provider: any) => {
     setLoading(true)
 
-    provider.on('accountsChanged', () => {
-      resetProvider(provider)
-    })
+    let auth
+    if (provider instanceof ethers.providers.Provider) {
+      auth = await resetProvider(provider)
+    } else {
+      if (provider.enable) {
+        try {
+          await provider.enable()
+        } catch {
+          alert('Please, check your wallet and try again to connect.')
+          return
+        }
+      }
 
-    provider.on('chainChanged', () => {
-      resetProvider(provider)
-    })
+      const ethersProvider = new ethers.providers.Web3Provider(provider)
 
-    const auth = await resetProvider(provider)
+      provider.on('accountsChanged', () => {
+        resetProvider(new ethers.providers.Web3Provider(provider))
+      })
+
+      provider.on('chainChanged', () => {
+        resetProvider(new ethers.providers.Web3Provider(provider))
+      })
+      auth = await resetProvider(ethersProvider)
+    }
+
     setLoading(false)
     return auth
   }
