@@ -55,14 +55,14 @@ if (xdaiProviderUrl) {
 /**
  * Used for polygon deployments
  */
- const polygonProviderUrl = process.env.POLYGON_PROVIDER_URL
- let polygonMnemonic = {
-   seed: '',
-   accountIndex: 0,
- }
- if (polygonProviderUrl) {
-   polygonMnemonic = require('./mnemonic.polygon') // eslint-disable-line import/no-unresolved
- }
+const polygonProviderUrl = process.env.POLYGON_PROVIDER_URL
+let polygonMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (polygonProviderUrl) {
+  polygonMnemonic = require('./mnemonic.polygon') // eslint-disable-line import/no-unresolved
+}
 
 /**
  * Used for mainnet deployments
