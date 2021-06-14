@@ -87,7 +87,7 @@ contract('Unlock / upgrades', (accounts) => {
         assert.equal(owner, unlockOwner)
       })
 
-      if (PublicLockAbis.abi) {
+      if (PublicLockAbis) {
         describe('Complete PublicLock configuration if require', () => {
           let publicLockAbi
 
