@@ -180,6 +180,33 @@ export default function configure(
     },
   }
 
+  networks[137] = {
+    httpProvider: null,
+    provider: 'https://rpc-mainnet.matic.network',
+    unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863', // TBD
+    id: 137,
+    name: 'Polygon',
+    blockTime: 1000,
+    subgraphURI:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby', // TBD
+    explorer: {
+      name: 'Polygonscan',
+      urls: {
+        address: (address) => `https://polygonscan.com/address/${address}`,
+        transaction: (hash) => `https://polygonscan.com/tx/${hash}`,
+      },
+    },
+    requiredConfirmations: 12,
+    erc20: {},
+    baseCurrencySymbol: 'Matic',
+    locksmith: 'https://locksmith.unlock-protocol.com', // TODO: not network specific, API calls should be network specific though
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+  }
+
   // networks[3] = {
   //   httpProvider: null, // we use the injected provider!
   //   provider: '',
