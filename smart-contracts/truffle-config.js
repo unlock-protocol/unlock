@@ -2,7 +2,7 @@
 // See <http://truffleframework.com/docs/advanced/configuration>
 // to customize your Truffle configuration!
 
-const HDWalletProvider = require('truffle-hdwallet-provider')
+const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 /**
  * Used for rinkeby deployments
@@ -51,6 +51,18 @@ let xdaiMnemonic = {
 if (xdaiProviderUrl) {
   xdaiMnemonic = require('./mnemonic.xdai') // eslint-disable-line import/no-unresolved
 }
+
+/**
+ * Used for polygon deployments
+ */
+ const polygonProviderUrl = process.env.POLYGON_PROVIDER_URL
+ let polygonMnemonic = {
+   seed: '',
+   accountIndex: 0,
+ }
+ if (polygonProviderUrl) {
+   polygonMnemonic = require('./mnemonic.polygon') // eslint-disable-line import/no-unresolved
+ }
 
 /**
  * Used for mainnet deployments
@@ -107,6 +119,14 @@ function xdaiProvider() {
   )
 }
 
+function polygonProvider() {
+  return new HDWalletProvider(
+    polygonMnemonic.seed,
+    polygonProviderUrl,
+    polygonMnemonic.accountIndex
+  )
+}
+
 module.exports = {
   networks: {
     development: {
@@ -134,6 +154,10 @@ module.exports = {
     xdai: {
       provider: xdaiProvider,
       network_id: 100, // Network Id for xdai
+    },
+    polygon: {
+      provider: polygonProvider,
+      network_id: 137, // Network Id for Polygon
     },
   },
   compilers: {
