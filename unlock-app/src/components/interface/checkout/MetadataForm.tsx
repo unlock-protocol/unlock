@@ -73,7 +73,7 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
       {fields.map(({ name, type, required }) => (
         <StyledLabel required={required} key={name}>
           <span>{name}</span>
-          <Input type={type} name={name} ref={register({ required })} />
+          <Input type={type} {...register(name, { required })} />
         </StyledLabel>
       ))}
 

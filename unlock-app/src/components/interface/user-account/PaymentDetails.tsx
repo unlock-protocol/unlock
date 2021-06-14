@@ -99,7 +99,7 @@ export const Form = ({
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <Label>Name</Label>
-      <Input name="name" ref={register({ required: true })} />
+      <Input {...register('name', { required: true })} />
       <Label>Credit Card Details</Label>
       <CardElement options={cardElementOptions} />
       <Label>Country</Label>
