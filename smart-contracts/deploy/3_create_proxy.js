@@ -1,28 +1,26 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
 
-module.exports = async ({
-  getNamedAccounts,
-  deployments
-}) => {
-  const { get, execute } = deployments;
-  const { unlockOwner, proxyAdmin } = await getNamedAccounts();
+module.exports = async ({ getNamedAccounts, deployments }) => {
+  const { get, execute } = deployments
+  const { unlockOwner, proxyAdmin } = await getNamedAccounts()
 
   // initialize Unlock
   await execute(
-    'Unlock', 
+    'Unlock',
     {
       from: proxyAdmin,
       gasLimit: constants.MAX_GAS,
-      log: true
+      log: true,
     },
     'initialize', // methodName
     unlockOwner // args
-  );
+  )
 
   // get PublicLock instance
   const lockTemplate = await get('PublicLock')
 
-  console.log('setLockTemplate with PublicLock at', lockTemplate.address);
+  // eslint-disable-next-line no-console
+  console.log('setLockTemplate with PublicLock at', lockTemplate.address)
 
   // const lockTemplate = await PublicLock.new()
   await execute(
@@ -30,11 +28,11 @@ module.exports = async ({
     {
       from: unlockOwner,
       gasLimit: constants.MAX_GAS,
-      log: true
+      log: true,
     },
     'setLockTemplate', // methodName
     lockTemplate.address // args
-  );
-};
+  )
+}
 
-module.exports.tags = ['initalizeUnlock'];
+module.exports.tags = ['initalizeUnlock']

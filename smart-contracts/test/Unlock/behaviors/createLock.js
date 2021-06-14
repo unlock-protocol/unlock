@@ -16,18 +16,17 @@ exports.shouldCreateLock = (options) => {
       let transaction
       beforeEach(async () => {
         transaction = await unlock.createLock(
-            60 * 60 * 24 * 30, // expirationDuration: 30 days
-            web3.utils.padLeft(0, 40),
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-            100, // maxNumberOfKeys
-            'New Lock',
-            '0x000000000000000000000000'
-            ,
-            {
-              from: accounts[0],
-              gas: 6000000
-            }
-          )
+          60 * 60 * 24 * 30, // expirationDuration: 30 days
+          web3.utils.padLeft(0, 40),
+          web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+          100, // maxNumberOfKeys
+          'New Lock',
+          '0x000000000000000000000000',
+          {
+            from: accounts[0],
+            gas: 6000000,
+          }
+        )
         evt = transaction.logs.find((v) => v.event === 'NewLock')
       })
 
@@ -51,9 +50,7 @@ exports.shouldCreateLock = (options) => {
       })
 
       it('should have created the lock with the right address for unlock', async () => {
-        let publicLock = await PublicLock.at(
-          evt.args.newLockAddress
-        )
+        let publicLock = await PublicLock.at(evt.args.newLockAddress)
         let unlockProtocol = await publicLock.unlockProtocol.call()
         assert.equal(
           web3.utils.toChecksumAddress(unlockProtocol),
@@ -71,8 +68,7 @@ exports.shouldCreateLock = (options) => {
             web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Too Big Expiration Lock',
-            '0x000000000000000000000000'
-            ,
+            '0x000000000000000000000000',
             {
               from: accounts[0],
               gas: 4000000,

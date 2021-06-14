@@ -24,7 +24,7 @@ contract('Lock / initializers', (accounts) => {
     ).length
     assert.equal(count, 2)
   })
-  
+
   it('initialize() may not be called again', async () => {
     await reverts(
       lock.initialize(),

@@ -1,4 +1,4 @@
-const { ethers, upgrades } = require('hardhat');
+const { ethers, upgrades } = require('hardhat')
 
 it('test upgrade', async () => {
   const UnlockDiscountToken = await ethers.getContractFactory(

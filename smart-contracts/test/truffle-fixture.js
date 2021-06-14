@@ -1,5 +1,5 @@
-const { deployments } = require('hardhat');
+const { deployments } = require('hardhat')
 
 module.exports = async () => {
-    await deployments.fixture()
+  await deployments.fixture()
 }

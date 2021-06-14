@@ -7,7 +7,8 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 
-const TRUFFLE_VM_ERROR = `Transaction reverted and Hardhat couldn't infer the reason. Please report this to help us improve Hardhat.`
+const TRUFFLE_VM_ERROR =
+  "Transaction reverted and Hardhat couldn't infer the reason. Please report this to help us improve Hardhat."
 
 contract('Lock / getOwnersByPage', (accounts) => {
   before(async () => {

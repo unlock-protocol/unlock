@@ -1,8 +1,9 @@
 const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 const { constants } = require('hardlydifficult-ethereum-contracts')
-const { deploy, execute, getArtifact, get } = deployments;
+const { deployments } = require('hardhat')
 
+const { deploy, execute, getArtifact } = deployments
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockAbis = [
@@ -36,7 +37,6 @@ const PublicLockAbis = [
   require('@unlock-protocol/unlock-abi-7/PublicLock'),
 ]
 
-
 let project
 let proxy
 let unlock
@@ -47,7 +47,6 @@ contract('Unlock / upgrades', (accounts) => {
   const keyOwner = accounts[2]
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-
   for (
     let versionNumber = 0;
     versionNumber < UnlockAbis.length;
@@ -57,16 +56,16 @@ contract('Unlock / upgrades', (accounts) => {
       let unlockAbi
       let originalLockData
 
+      // eslint-disable-next-line
       const abi = require(`@unlock-protocol/unlock-abi-${versionNumber}/Unlock`)
 
       beforeEach(async () => {
-        
         // Deploy the Unlock proxy
         unlockAbi = UnlockAbis[versionNumber]
 
-        // Unique name 
-        const contractName = `UnlockV${versionNumber}-${(new Date()).getTime()}`
-        
+        // Unique name
+        const contractName = `UnlockV${versionNumber}-${new Date().getTime()}`
+
         // create a temp proxy that deploys ABI
         proxy = await deploy(contractName, {
           contract: abi,
@@ -74,10 +73,10 @@ contract('Unlock / upgrades', (accounts) => {
           log: true,
           proxy: {
             owner: unlockOwner,
-            proxyContract: 'OpenZeppelinTransparentProxy'
-          }
-        });
-        
+            proxyContract: 'OpenZeppelinTransparentProxy',
+          },
+        })
+
         // pass contract deployed w hardat to truffle
         unlock = await unlockAbi.at(proxy.address)
 
@@ -87,11 +86,11 @@ contract('Unlock / upgrades', (accounts) => {
           {
             from: unlockOwner,
             gasLimit: constants.MAX_GAS,
-            log: true
+            log: true,
           },
           'initialize', // methodName
           unlockOwner // args
-        );
+        )
       })
 
       it('Unlock version is set', async () => {

@@ -11,7 +11,8 @@ let lock
 let locks
 let tx
 
-const TRUFFLE_VM_ERROR = "VM Exception while processing transaction: invalid opcode"
+const TRUFFLE_VM_ERROR =
+  'VM Exception while processing transaction: invalid opcode'
 
 contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]

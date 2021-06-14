@@ -11,7 +11,8 @@ let lock
 let locks
 let unlock
 
-const TRUFFLE_VM_ERROR = "VM Exception while processing transaction: invalid opcode"
+const TRUFFLE_VM_ERROR =
+  'VM Exception while processing transaction: invalid opcode'
 
 contract('Lock / owners', (accounts) => {
   before(async () => {

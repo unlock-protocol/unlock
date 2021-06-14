@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const erc1820 = require('erc1820')
 
 module.exports = async function deploy1820(deployer, network) {
