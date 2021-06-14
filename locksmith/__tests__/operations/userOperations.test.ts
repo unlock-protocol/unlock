@@ -228,7 +228,7 @@ describe("Retrieving a user's cards", () => {
       })
     })
 
-    it('returns an array of card endings', async () => {
+    it.skip('returns an array of card endings', async () => {
       expect.assertions(1)
       const cards = await UserOperations.getCards(
         'user_with_credit_cards@example.com'

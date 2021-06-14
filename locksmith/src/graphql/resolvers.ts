@@ -26,6 +26,6 @@ export const resolvers = {
   Key: {
     // eslint-disable-next-line no-unused-vars
     metadata: async (root: any, _args: any, _context: any, _info: any) =>
-      generateMetadata(root.lock.address, root.keyId),
+      generateMetadata(root.lock.address, root.keyId, 1 /** TODO: FIX ME? */),
   },
 }

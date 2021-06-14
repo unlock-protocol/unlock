@@ -3,12 +3,9 @@ import { storiesOf } from '@storybook/react'
 import {
   LoadingLock,
   PurchaseableLock,
-  DisabledLock,
   SoldOutLock,
-  InsufficientBalanceLock,
   ProcessingLock,
   ConfirmedLock,
-  CreditCardNotAvailableLock,
 } from '../../../components/interface/checkout/LockVariations'
 
 const makeProps = (name) => ({
@@ -20,13 +17,10 @@ const makeProps = (name) => ({
 
 const components = {
   Loading: LoadingLock,
-  Disabled: DisabledLock,
   'Sold Out': SoldOutLock,
-  'Insufficient Balance': InsufficientBalanceLock,
   Purchaseable: PurchaseableLock,
   Processing: ProcessingLock,
   Confirmed: ConfirmedLock,
-  'Credit Card Not Available': CreditCardNotAvailableLock,
 }
 
 storiesOf('Lock Variations', module).add('All variations', () => {

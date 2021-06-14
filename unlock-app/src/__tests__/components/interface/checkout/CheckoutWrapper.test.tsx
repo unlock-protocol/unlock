@@ -10,7 +10,12 @@ describe('CheckoutWrapper', () => {
     const allowClose = false
 
     const { container } = rtl.render(
-      <CheckoutWrapper hideCheckout={hideCheckout} allowClose={allowClose} />
+      <CheckoutWrapper
+        back={jest.fn()}
+        showBack={false}
+        hideCheckout={hideCheckout}
+        allowClose={allowClose}
+      />
     )
 
     // the close button is also an a tag, but it doesn't render when allowClose is false
@@ -24,7 +29,12 @@ describe('CheckoutWrapper', () => {
     const allowClose = false
 
     const { queryByTitle } = rtl.render(
-      <CheckoutWrapper hideCheckout={hideCheckout} allowClose={allowClose} />
+      <CheckoutWrapper
+        back={jest.fn()}
+        showBack={false}
+        hideCheckout={hideCheckout}
+        allowClose={allowClose}
+      />
     )
 
     expect(queryByTitle('Close')).toBeNull()
@@ -37,7 +47,12 @@ describe('CheckoutWrapper', () => {
     const allowClose = true
 
     const { getByTitle } = rtl.render(
-      <CheckoutWrapper hideCheckout={hideCheckout} allowClose={allowClose} />
+      <CheckoutWrapper
+        back={jest.fn()}
+        showBack={false}
+        hideCheckout={hideCheckout}
+        allowClose={allowClose}
+      />
     )
 
     const button = getByTitle('Close')

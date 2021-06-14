@@ -6,9 +6,11 @@ import About from '../build/svg-component/About'
 import AppStore from '../build/svg-component/AppStore'
 import Arrow from '../build/svg-component/Arrow'
 import Attention from '../build/svg-component/Attention'
-import Carret from '../build/svg-component/Carret'
 import Blog from '../build/svg-component/Blog'
+import Carret from '../build/svg-component/Carret'
+import Cart from '../build/svg-component/Cart'
 import Checkmark from '../build/svg-component/Checkmark'
+import CreditCard from '../build/svg-component/CreditCard'
 import Close from '../build/svg-component/Close'
 import Cloudflare from '../build/svg-component/Cloudflare'
 import Code from '../build/svg-component/Code'
@@ -27,6 +29,7 @@ import Discord from '../build/svg-component/Discord'
 import Github from '../build/svg-component/Github'
 import Heart from '../build/svg-component/Heart'
 import Key from '../build/svg-component/Key'
+import Info from '../build/svg-component/Info'
 import Lemniscate from '../build/svg-component/Lemniscate'
 import LiveDemo from '../build/svg-component/LiveDemo'
 import Loading from '../build/svg-component/Loading'
@@ -35,6 +38,7 @@ import LockClosed from '../build/svg-component/LockClosed'
 import Log from '../build/svg-component/Log'
 import Jobs from '../build/svg-component/Jobs'
 import Preview from '../build/svg-component/Preview'
+import Person from '../build/svg-component/Person'
 import Unlock from '../build/svg-component/Unlock'
 import UnlockWordMark from '../build/svg-component/UnlockWordMark'
 import Upload from '../build/svg-component/Upload'
@@ -50,7 +54,9 @@ import Bars from '../build/svg-component/Bars'
 import ChevronUp from '../build/svg-component/ChevronUp'
 import Home from '../build/svg-component/Home'
 import Qr from '../build/svg-component/Qr'
+import Wallet from '../build/svg-component/Wallet'
 import WalletConnect from '../build/svg-component/WalletConnect'
+import Webflow from '../build/svg-component/Webflow'
 import Wordpress from '../build/svg-component/Wordpress'
 
 function wrapViewBox(WrappedComponent, viewBox) {
@@ -66,6 +72,7 @@ export default {
   Attention: wrapViewBox(Attention, '0 0 96 96'),
   Blog,
   Carret: wrapViewBox(Carret, '-6 -8 24 24'),
+  Cart: wrapViewBox(Cart, '-3 -3 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Cloudflare: wrapViewBox(Cloudflare, '-4 -4 32 32'),
@@ -73,6 +80,7 @@ export default {
   CoinbaseWallet,
   Cog,
   Copy: wrapViewBox(Copy, '0 0 24 24'),
+  CreditCard: wrapViewBox(CreditCard, '-12 -16 48 48'),
   Discord: wrapViewBox(Discord, '-4 -4 32 32'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
   Docs: wrapViewBox(Docs, '-6 -5 24 24'),
@@ -85,6 +93,7 @@ export default {
   Github: wrapViewBox(Github, '0 0 24 24'),
   Heart: wrapViewBox(Heart, '-6 -6 36 36'),
   Key,
+  Info,
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   LiveDemo: wrapViewBox(LiveDemo, '0 0 64 64'),
   Loading: wrapViewBox(Loading, '0 0 32 32'),
@@ -101,6 +110,7 @@ export default {
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
   Newsletter: wrapViewBox(Newsletter, '0 0 24 24'),
   Members: wrapViewBox(Members, '-4 -4 24 24'),
+  Person: wrapViewBox(Person, '-6.5 -5 32 32'),
   Telegram: wrapViewBox(Telegram, '0 0 24 24'),
   Ticket: wrapViewBox(Ticket, '-8 -6 40 40'),
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
@@ -109,5 +119,7 @@ export default {
   Home,
   Qr: wrapViewBox(Qr, '0 0 60 60'),
   WalletConnect: wrapViewBox(WalletConnect, '-3 -6 32 32'),
+  Wallet: wrapViewBox(Wallet, '-8 -8 32 32'),
+  Webflow: wrapViewBox(Webflow, '-4 -8 32 32'),
   Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
 }

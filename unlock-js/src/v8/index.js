@@ -1,19 +1,24 @@
 import abis from '../abis'
-import createLock from './createLock'
-import getLock from './getLock'
-import purchaseKey from './purchaseKey'
-import grantKey from './grantKey'
-import updateKeyPrice from './updateKeyPrice'
-import withdrawFromLock from './withdrawFromLock'
-import initializeTemplate from './initializeTemplate'
 import configureUnlock from './configureUnlock'
-import isLockManager from './isLockManager'
-import isKeyGranter from './isKeyGranter'
-import addKeyGranter from './addKeyGranter'
-import expireAndRefundFor from './expireAndRefundFor'
-import cancelAndRefund from './cancelAndRefund'
-import shareKey from './shareKey'
+import createLock from './createLock'
 import keyManagerOf from './keyManagerOf'
+import purchaseKey from './purchaseKey'
+
+import v7 from '../v7'
+
+const {
+  getLock,
+  grantKey,
+  updateKeyPrice,
+  withdrawFromLock,
+  initializeTemplate,
+  isLockManager,
+  isKeyGranter,
+  addKeyGranter,
+  expireAndRefundFor,
+  cancelAndRefund,
+  shareKey,
+} = v7
 
 export default {
   version: 'v8',

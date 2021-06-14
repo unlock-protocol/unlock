@@ -1,34 +1,31 @@
-const coinbase = require('coinbase')
+import fetch from 'isomorphic-fetch'
+
+interface PricesCache {
+  [currency: string]: [timestamp: number, price: number]
+}
+
+const cache: PricesCache = {}
 
 export default class PriceConversion {
   client: any
 
-  constructor() {
-    this.client = new coinbase.Client({
-      apiKey: ' ',
-      apiSecret: ' ',
-      // https://stackoverflow.com/questions/60735849/unable-to-get-issuer-cert-locally-error-when-calling-the-coinbase-nodejs-api
-      strictSSL: false,
-    })
-  }
-
-  conversionRates(currency: string) {
-    return new Promise((resolve, reject) => {
-      this.client.getExchangeRates(
-        {
-          currency: currency,
-        },
-        (error: any, results: any) => {
-          if (error) return reject(error)
-          resolve(results.data.rates)
-        }
-      )
-    })
-  }
-
   async convertToUSD(currency: string, amount: number) {
-    const rates: any = await this.conversionRates(currency)
-    const usdRate = rates.USD
-    return Math.ceil(parseFloat(usdRate) * amount * 100)
+    const cached = cache[currency]
+
+    // Cache is valid for 5 minutes!
+    if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {
+      return Math.ceil(cached[1] * amount * 100)
+    }
+
+    const response = await fetch(
+      `https://api.coinbase.com/v2/prices/${currency}-USD/buy`
+    )
+
+    const { data } = await response.json()
+    if (!data?.amount) {
+      return 0
+    }
+    cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
+    return Math.ceil(parseFloat(data.amount) * amount * 100)
   }
 }

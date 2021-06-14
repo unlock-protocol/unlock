@@ -1,16 +1,18 @@
 import { Querier } from './querier'
 import { generateKeyMetadata } from '../../src/operations/metadataOperations'
 
+// DEPRECATED/STALE : DELETE ME
 export async function extractEmails(serviceEndpoint: string) {
-  let querier = new Querier(serviceEndpoint)
-  let results = await querier.query()
+  const querier = new Querier(serviceEndpoint)
+  const results = await querier.query()
 
-  let keysData = results.map(async (result: any) => {
-    let keyMetadata = await generateKeyMetadata(
+  const keysData = results.map(async (result: any) => {
+    const keyMetadata = await generateKeyMetadata(
       result.lockAddress,
       result.keyId,
       true,
-      ''
+      '',
+      1
     )
 
     return {

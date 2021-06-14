@@ -1,54 +1,44 @@
-import { ethers } from 'ethers'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+
+const logger = require('../logger')
+
+const { networks } = require('../networks')
 
 export default class KeyData {
-  provider: ethers.providers.JsonRpcProvider
-
-  constructor(provider: string) {
-    this.provider = new ethers.providers.JsonRpcProvider(provider)
-  }
-
-  async get(lockAddress: string, tokenId: string) {
-    const contract = this.genContract(lockAddress)
-
+  async get(lockAddress: string, tokenId: string, network: number) {
+    const web3Service = new Web3Service(networks)
     try {
-      const owner = await contract.ownerOf(parseInt(tokenId))
-
-      if (owner) {
-        const expiration = await contract.keyExpirationTimestampFor(owner)
-        return {
-          owner,
-          expiration: expiration.toNumber(),
-        }
+      const owner = await web3Service.ownerOf(lockAddress, tokenId, network)
+      if (!owner) {
+        return {}
       }
-      return {}
-    } catch (e) {
+      const expiration = await web3Service.getKeyExpirationByLockForOwner(
+        lockAddress,
+        owner,
+        network
+      )
+      return {
+        owner,
+        expiration,
+      }
+    } catch (error) {
+      logger.error(
+        `There was an error retrieving info for metadata ${lockAddress} ${tokenId} on ${network}`,
+        error
+      )
       return {}
     }
-  }
-
-  genContract(lockAddress: string) {
-    return new ethers.Contract(
-      lockAddress,
-      [
-        'function ownerOf(uint256 _tokenId) constant view returns (address)',
-        'function keyExpirationTimestampFor(address _owner) constant view returns (uint256 timestamp)',
-      ],
-      this.provider
-    )
   }
 
   openSeaPresentation(data: any) {
-    if (data.expiration) {
-      return {
-        attributes: [
-          {
-            trait_type: 'Expiration',
-            value: data.expiration,
-            display_type: 'date',
-          },
-        ],
-      }
+    return {
+      attributes: [
+        {
+          trait_type: 'Expiration',
+          value: data.expiration || 0,
+          display_type: 'date',
+        },
+      ],
     }
-    return data
   }
 }

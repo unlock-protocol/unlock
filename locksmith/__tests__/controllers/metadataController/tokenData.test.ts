@@ -40,7 +40,7 @@ const keyHolderStructuredData = lockTypedData({
   },
 })
 
-const chain = 1984
+const chain = 1337
 
 const keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
   data: keyHolderStructuredData,
@@ -59,7 +59,7 @@ const mockKeyHoldersByLock = {
 }
 
 jest.mock('../../../src/utils/lockData', () => {
-  return function () {
+  return function mock() {
     return mockOnChainLockOwnership
   }
 })

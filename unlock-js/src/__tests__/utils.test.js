@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
 import ethersUtils from '../utils'
 
 describe('ethers utils', () => {
@@ -6,11 +6,11 @@ describe('ethers utils', () => {
     expect.assertions(2)
 
     expect(ethersUtils.toWei('1000', 'ether')).toEqual(
-      utils.bigNumberify('1000000000000000000000')
+      ethers.BigNumber.from('1000000000000000000000')
     )
 
     expect(ethersUtils.toWei('1000000000000', 'gwei')).toEqual(
-      utils.bigNumberify('1000000000000000000000')
+      ethers.BigNumber.from('1000000000000000000000')
     )
   })
 
@@ -19,11 +19,11 @@ describe('ethers utils', () => {
       expect.assertions(2)
 
       expect(ethersUtils.toDecimal('1', 18)).toEqual(
-        utils.bigNumberify('1000000000000000000')
+        ethers.BigNumber.from('1000000000000000000')
       )
 
       expect(ethersUtils.toDecimal('100', 18)).toEqual(
-        utils.bigNumberify('100000000000000000000')
+        ethers.BigNumber.from('100000000000000000000')
       )
     })
 
@@ -31,11 +31,11 @@ describe('ethers utils', () => {
       expect.assertions(2)
 
       expect(ethersUtils.toDecimal('1000', 0)).toEqual(
-        utils.bigNumberify('1000')
+        ethers.BigNumber.from('1000')
       )
 
       expect(ethersUtils.toDecimal('1000000000000', 0)).toEqual(
-        utils.bigNumberify('1000000000000')
+        ethers.BigNumber.from('1000000000000')
       )
     })
   })
@@ -101,7 +101,7 @@ describe('ethers utils', () => {
 
     expect(ethersUtils.toNumber('0x12355')).toBe(74581)
     expect(ethersUtils.toNumber(74581)).toBe(74581)
-    expect(ethersUtils.toNumber(utils.bigNumberify('0x12355'))).toBe(74581)
+    expect(ethersUtils.toNumber(ethers.BigNumber.from('0x12355'))).toBe(74581)
   })
 
   it('rpcResultNumber', () => {
@@ -119,9 +119,9 @@ describe('ethers utils', () => {
       '0x0000000000000000000000000000000000000000000000000000000000012345'
     )
 
-    expect(ethersUtils.toRpcResultNumber(utils.bigNumberify('0x12345'))).toBe(
-      '0x0000000000000000000000000000000000000000000000000000000000012345'
-    )
+    expect(
+      ethersUtils.toRpcResultNumber(ethers.BigNumber.from('0x12345'))
+    ).toBe('0x0000000000000000000000000000000000000000000000000000000000012345')
   })
 
   it('utf8ToHex', () => {
