@@ -13,7 +13,7 @@ let lock
 
 const estimateGas = 252166
 
-contract('UnlockDiscountToken / mintingTokens', (accounts) => {
+contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
@@ -79,6 +79,7 @@ contract('UnlockDiscountToken / mintingTokens', (accounts) => {
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
+      1, // mainnet
       { from: protocolOwner }
     )
     await unlock.setOracle(udt.address, uniswapOracle.address, {

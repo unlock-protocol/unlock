@@ -3,5 +3,8 @@
 
 module.exports = {
   stories: ['../src/**/*.stories.@(js|mdx)'],
-  addons: ['@storybook/addon-essentials']
+  addons: ['@storybook/addon-essentials'],
+  typescript: {
+    reactDocgen: 'none',
+  }
 }

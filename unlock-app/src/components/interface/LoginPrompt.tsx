@@ -11,7 +11,7 @@ interface LoginPromptProps {
   unlockUserAccount?: boolean
   onCancel?: () => void
   embedded?: boolean
-  details?: string
+  children?: React.ReactNode
 }
 
 export interface EthereumWindow extends Window {
@@ -25,6 +25,7 @@ export const selectProvider = (config: any) => {
     return null
   }
   const ethereumWindow: EthereumWindow = window
+
   if (config?.env === 'test') {
     // We set the provider to be the provider by the local ganache
     provider = `http://${config.httpProvider}:8545`
@@ -52,7 +53,7 @@ export const rpcForWalletConnect = (config: any) => {
 }
 
 const LoginPrompt = ({
-  details,
+  children,
   unlockUserAccount,
   onCancel,
   embedded,
@@ -66,16 +67,16 @@ const LoginPrompt = ({
     rpc: rpcForWalletConnect(config),
   })
 
-  const handleInjectProvider = () => {
-    authenticate(injectedProvider)
+  const handleInjectProvider = async () => {
+    await authenticate(injectedProvider)
   }
 
-  const handleUnlockProvider = (provider: any) => {
-    authenticate(provider)
+  const handleUnlockProvider = async (provider: any) => {
+    await authenticate(provider)
   }
 
   const handleWalletConnectProvider = async () => {
-    authenticate(walletConnectProvider)
+    await authenticate(walletConnectProvider)
   }
 
   return (
@@ -83,19 +84,8 @@ const LoginPrompt = ({
       {!walletToShow && (
         <>
           <SubHeading>Connect a wallet</SubHeading>
-          <Description>
-            Unlock is a protocol built on Ethereum.{' '}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://ethereum.org/en/wallets/"
-            >
-              Learn more about wallets
-            </a>
-            .{' '}
-          </Description>
 
-          {details && <Description>{details}</Description>}
+          {children && <Description>{children}</Description>}
 
           <WalletButton
             disabled={!injectedProvider}
@@ -131,11 +121,6 @@ const LoginPrompt = ({
     </Container>
   )
 }
-
-LoginPrompt.defaultProps = {
-  details: '',
-}
-
 const SubHeading = styled.h2`
   margin-bottom: 10px;
   font-family: 'IBM Plex Serif', serif;
@@ -173,6 +158,7 @@ LoginPrompt.defaultProps = {
   unlockUserAccount: false,
   onCancel: null,
   embedded: false,
+  children: null,
 }
 
 export default LoginPrompt

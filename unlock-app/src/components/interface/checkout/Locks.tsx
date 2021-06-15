@@ -1,42 +1,33 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useLock } from '../../../hooks/useLock'
 import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
-import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 
 interface LoadLockProps {
   address: string
-  emitTransactionInfo: (info: TransactionInfo) => void
-  activePayment: string
-  setFocus: (address: string) => void
   network: number
-  handleFiatAvailable: () => void
   setHasKey: (key: any) => void
   name: string
+  onSelected: (lock: any) => void
 }
 
 const LoadLock = ({
   address,
-  setFocus,
-  emitTransactionInfo,
-  activePayment,
   network,
-  handleFiatAvailable,
   setHasKey,
   name,
+  onSelected,
 }: LoadLockProps) => {
   const web3Service = useContext(Web3ServiceContext)
   const [loading, setLoading] = useState(true)
-  const [lock, setLock] = useState({})
+  const { lock, getLock, getCreditCardPricing } = useLock({ address }, network)
 
   useEffect(() => {
     const loadLock = async () => {
-      const lockDetails = await web3Service.getLock(address, network)
-      setLock({
-        address,
-        ...lockDetails,
-      })
+      await getLock()
+      await getCreditCardPricing()
       setLoading(false)
     }
     if (web3Service) {
@@ -50,26 +41,18 @@ const LoadLock = ({
   return (
     <Lock
       network={network}
-      handleFiatAvailable={handleFiatAvailable}
-      setFocus={setFocus}
       lock={lock}
       name={name}
-      emitTransactionInfo={emitTransactionInfo}
-      activePayment={activePayment}
       setHasKey={setHasKey}
+      onSelected={onSelected}
     />
   )
 }
-
 interface LocksProps {
-  locks: Object[]
-  emitTransactionInfo: (info: TransactionInfo) => void
-  activePayment: string
-  setFocus: (address: string) => void
-  focus: string
+  locks: any
   network: number
-  handleFiatAvailable: () => void
   setHasKey: (key: any) => void
+  onSelected: (address: string) => void
 }
 
 interface LockProps {
@@ -80,32 +63,23 @@ interface LockProps {
 export const Locks = ({
   network,
   locks,
-  emitTransactionInfo,
-  activePayment,
-  setFocus,
-  focus,
-  handleFiatAvailable,
   setHasKey,
+  onSelected,
 }: LocksProps) => {
   return (
     <Wrapper>
       {Object.entries(locks).map(
         ([address, lockProps]: [string, LockProps]) => {
-          if (!focus || focus === address) {
-            return (
-              <LoadLock
-                handleFiatAvailable={handleFiatAvailable}
-                setHasKey={setHasKey}
-                network={lockProps?.network || network}
-                setFocus={setFocus}
-                key={address}
-                address={address}
-                name={lockProps?.name || ''}
-                emitTransactionInfo={emitTransactionInfo}
-                activePayment={activePayment}
-              />
-            )
-          }
+          return (
+            <LoadLock
+              setHasKey={setHasKey}
+              network={lockProps?.network || network}
+              key={address}
+              address={address}
+              name={lockProps?.name || ''}
+              onSelected={onSelected}
+            />
+          )
         }
       )}
     </Wrapper>
@@ -116,4 +90,7 @@ Locks.defaultProps = {}
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `

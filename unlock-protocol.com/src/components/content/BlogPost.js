@@ -2,6 +2,7 @@ import React from 'react'
 import { Markdown } from 'react-showdown'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import showdownHighlight from 'showdown-highlight'
 import { MembershipContext } from '../../membershipContext'
 
 export class BlogPost extends React.Component {
@@ -61,6 +62,7 @@ export class BlogPost extends React.Component {
       latestUpdateDate,
     } = this.props
 
+    const extensions = [showdownHighlight({ pre: true })[0]]
     return (
       <Post>
         <Title>{title}</Title>
@@ -70,7 +72,7 @@ export class BlogPost extends React.Component {
           <PublishDate>On {publishDate}</PublishDate>
         </Byline>
         <Body>
-          <Markdown tables="true" markup={body} />
+          <Markdown extensions={extensions} tables="true" markup={body} />
           {isMember === 'yes' && <Markdown markup={membersOnly} />}
           {isMember === 'no' && (
             <Button onClick={becomeMember}>
@@ -200,8 +202,6 @@ const Body = styled.div`
   }
 
   pre {
-    background-color: var(--lightgrey);
-    padding: 20px;
   }
 
   blockquote {

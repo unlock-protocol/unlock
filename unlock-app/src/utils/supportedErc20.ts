@@ -28,7 +28,7 @@ const table: { [key: number]: { [key: string]: string } } = {
   1: mainnet,
   4: rinkeby,
   42: kovan,
-  1984: localDev,
+  1337: localDev,
 }
 
 export const tokenAddressesForNetwork = (networkId: number) => {

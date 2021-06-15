@@ -19,7 +19,7 @@ const AuthenticateButton = ({
     onProvider(web3Provider)
   }
 
-  const authenticateWithWalletConnect = () => {
+  const authenticateWithWalletConnect = async () => {
     const walletConnectProvider = new WalletConnectProvider({
       rpc: rpcForWalletConnect(config),
     })
