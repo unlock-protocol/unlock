@@ -13,7 +13,7 @@ import { TransactionType } from '../../unlockTypes'
 import { AuthenticationContext } from '../../components/interface/Authenticate'
 
 const config = configure()
-const network = 1984
+const network = 1337
 const mockWeb3Service = {
   getTransaction: jest.fn(),
 }

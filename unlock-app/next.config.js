@@ -21,7 +21,6 @@ const requiredConfigVariables = {
   unlockStaticUrl: process.env.UNLOCK_STATIC_URL,
   base64WedlocksPublicKey: process.env.BASE64_WEDLOCKS_PUBLIC_KEY,
   stripeApiKey: process.env.STRIPE_KEY,
-  subgraphURI: process.env.SUBGRAPH_URI,
 }
 const optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
