@@ -4,8 +4,10 @@ import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
-// eslint-disable-line no-unused-vars
+
 import RecoveryPhrase = require('../utils/recoveryPhrase')
+
+// eslint-disable-line no-unused-vars
 
 const config = require('../../config/config')
 const models = require('../models')
@@ -19,11 +21,13 @@ namespace UserOperations {
     input: UserCreationInput
   ): Promise<String | undefined> => {
     const recoveryPhrase = RecoveryPhrase.generate()
+    const publicKey = Normalizer.ethereumAddress(input.publicKey)
     const userReference = await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress(input.emailAddress),
+        publicKey,
         User: {
-          publicKey: Normalizer.ethereumAddress(input.publicKey),
+          publicKey,
           recoveryPhrase,
           passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
         },
@@ -168,11 +172,12 @@ namespace UserOperations {
     }
     return []
   }
-
   export const getCardDetailsFromStripe = async (
     customer_id: any
   ): Promise<any[]> => {
-    const stripe = new Stripe(config.stripeSecret)
+    const stripe = new Stripe(config.stripeSecret, {
+      apiVersion: '2020-08-27',
+    })
 
     try {
       const cardsResponse = await stripe.customers.listSources(customer_id, {

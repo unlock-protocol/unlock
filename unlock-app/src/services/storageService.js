@@ -125,14 +125,14 @@ export class StorageService extends EventEmitter {
    */
   async createUser(user, emailAddress, password) {
     const opts = {}
-    const response = await axios.post(`${this.host}/users/`, user, opts)
-    return {
-      passwordEncryptedPrivateKey:
-        user.message.user.passwordEncryptedPrivateKey,
-      emailAddress,
-      password,
-      recoveryPhrase: response.data.recoveryPhrase,
-    }
+    return axios.post(`${this.host}/users/`, user, opts)
+    // return {
+    //   passwordEncryptedPrivateKey:
+    //     user.message.user.passwordEncryptedPrivateKey,
+    //   emailAddress,
+    //   password,
+    //   recoveryPhrase: response.data.recoveryPhrase,
+    // }
   }
 
   /**
@@ -409,5 +409,30 @@ export class StorageService extends EventEmitter {
     } catch (error) {
       this.emit(failure.getBulkMetadataFor, error)
     }
+  }
+
+  /**
+   * Given a lock address and a typed data signature, get the metadata
+   * (public and protected) associated with each key on that lock.
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async getStripeConnect(lockAddress, signature, data) {
+    const opts = {
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
+      params: {
+        data: JSON.stringify(data),
+        signature,
+      },
+    }
+    const result = await axios.get(
+      `${this.host}/lock/${lockAddress}/stripe`,
+      opts
+    )
+
+    return result?.data
   }
 }

@@ -1,66 +1,36 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { SetPassword } from './SetPassword'
 import SignupSuccess from './SignupSuccess'
-import UnlockUser from '../../structured_data/unlockUser'
-import WedlockServiceContext from '../../contexts/WedlocksContext'
-import { StorageService } from '../../services/storageService'
-import {
-  createAccountAndPasswordEncryptKey,
-  reEncryptPrivateKey,
-} from '../../utils/accounts'
-import { ConfigContext } from '../../utils/withConfig'
+
+import { useAccount } from '../../hooks/useAccount'
 
 interface Props {
   emailAddress: string
+  onSuccess: (
+    email: string,
+    password: string,
+    passwordEncryptedPrivateKey: any
+  ) => void
 }
 
-export const FinishSignup = ({ emailAddress }: Props) => {
-  const config = useContext(ConfigContext)
-  const wedlockService = useContext(WedlockServiceContext)
-
-  const storageService = new StorageService(config.services.storage.host)
-  const [error, setError] = useState('')
+export const FinishSignup = ({ emailAddress, onSuccess }: Props) => {
+  const { createUserAccount } = useAccount('', 1)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
 
   const signup = async (password: string) => {
     setLoading(true)
-    const {
-      address,
-      passwordEncryptedPrivateKey,
-    } = await createAccountAndPasswordEncryptKey(password)
     try {
-      const user = await storageService.createUser(
-        UnlockUser.build({
-          emailAddress,
-          publicKey: address,
-          passwordEncryptedPrivateKey,
-        }),
-        emailAddress,
-        password
-      )
-
-      const recoveryKey = await reEncryptPrivateKey(
-        passwordEncryptedPrivateKey,
-        password,
-        user.recoveryPhrase
-      )
-
-      const { origin } = window.location
-
-      if (wedlockService) {
-        wedlockService.welcomeEmail(
-          emailAddress,
-          `${origin}/recover/?email=${encodeURIComponent(
-            emailAddress
-          )}&recoveryKey=${encodeURIComponent(JSON.stringify(recoveryKey))}`
-        )
+      const account = await createUserAccount(emailAddress, password)
+      if (onSuccess) {
+        onSuccess(emailAddress, password, account)
+      } else {
+        setSuccess(true)
       }
-      setSuccess(true)
     } catch (error) {
-      setError('There was an error creating your account. Please try again.')
-      console.error(error)
+      setError('There was a problem creating your account')
     }
     setLoading(false)
   }
@@ -116,7 +86,7 @@ export const Label = styled.label`
 `
 
 export const Input = styled.input`
-  height: 60px;
+  height: 48px;
   width: 100%;
   max-width: 450px;
   border: none;

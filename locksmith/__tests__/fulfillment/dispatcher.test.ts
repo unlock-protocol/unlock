@@ -41,10 +41,10 @@ class MockWalletService extends EventEmitter {
 const mockWalletService = new MockWalletService()
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function () {
+  Web3Service: function Web3Service() {
     return mockWeb3Service
   },
-  WalletService: function () {
+  WalletService: function WalletService() {
     return mockWalletService
   },
 }))
@@ -55,7 +55,7 @@ describe('Dispatcher', () => {
       expect.assertions(1)
 
       const callback = jest.fn()
-      await new Dispatcher().grantKey(lockAddress, recipient, 1984, callback)
+      await new Dispatcher().grantKey(lockAddress, recipient, 1337, callback)
       expect(mockWalletService.grantKey).toBeCalledWith(
         {
           lockAddress: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',

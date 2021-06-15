@@ -1,7 +1,7 @@
 import KeyData from '../../src/utils/keyData'
 
 describe('KeyData', () => {
-  const keyData = new KeyData('http://someprovider')
+  const keyData = new KeyData()
 
   describe('openSeaPresentation', () => {
     describe('when the data has an expiration', () => {
@@ -22,7 +22,15 @@ describe('KeyData', () => {
     describe('when the data is missing an expiration', () => {
       it('passes the data through', () => {
         expect.assertions(1)
-        expect(keyData.openSeaPresentation({})).toEqual({})
+        expect(keyData.openSeaPresentation({})).toEqual({
+          attributes: [
+            {
+              trait_type: 'Expiration',
+              value: 0,
+              display_type: 'date',
+            },
+          ],
+        })
       })
     })
   })

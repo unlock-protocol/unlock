@@ -22,7 +22,7 @@ describe('lockOperations', () => {
         '0x7d6289db59c3434b6a034b4f211be52ca34f05e2aa856fc3e69b8af101355842'
       const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       const recipient = '0xca750f9232c1c38e34d27e77534e1631526ec99e'
-      const chain = 1984
+      const chain = 1337
       Transaction.findOrCreate = jest.fn((query) => {
         expect(query.where).toEqual({
           transactionHash,
@@ -35,7 +35,7 @@ describe('lockOperations', () => {
           '0xCA750f9232C1c38e34D27e77534e1631526eC99e'
         )
 
-        expect(query.defaults.chain).toEqual(1984)
+        expect(query.defaults.chain).toEqual(1337)
       })
       await findOrCreateTransaction({
         transactionHash,

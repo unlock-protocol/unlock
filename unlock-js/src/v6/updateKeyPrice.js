@@ -55,7 +55,7 @@ export default async function (
     })[0]
   if (priceChangedEvent) {
     // TODO: also return contract?
-    return utils.fromDecimal(priceChangedEvent.values.keyPrice, decimals)
+    return utils.fromDecimal(priceChangedEvent.args.keyPrice, decimals)
   }
   // There was no NewEvent log (transaction failed?)
   return null

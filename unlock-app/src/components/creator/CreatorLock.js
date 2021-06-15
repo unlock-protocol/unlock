@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
 import AppStore from './lock/AppStore'
+import CreditCardSettings from './lock/CreditCardSettings'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import CreatorLockForm from './CreatorLockForm'
@@ -58,9 +60,24 @@ LockKeysNumbers.propTypes = {
 }
 
 export const CreatorLock = ({ lock: lockFromProps, network }) => {
-  const [showEmbedCode, setShowEmbedCode] = useState(false)
+  const { query } = useRouter()
+  const [showDrawer, setShowDrawer] = useState('')
   const [editing, setEditing] = useState(false)
   const { lock, updateKeyPrice, withdraw } = useLock(lockFromProps, network)
+
+  useEffect(() => {
+    if (query.stripe && lock.address == query.lock) {
+      setShowDrawer('credit-card')
+    }
+  }, [query])
+
+  const toggleDrawer = (state) => {
+    if (state === showDrawer) {
+      setShowDrawer('')
+    } else {
+      setShowDrawer(state)
+    }
+  }
 
   const updateLock = (newLock) => {
     updateKeyPrice(newLock.keyPrice, () => {
@@ -85,7 +102,7 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
   const lockVersion = lock.publicLockVersion || '1'
 
   const edit = () => {
-    setShowEmbedCode(false)
+    setShowDrawer('')
     setEditing(!editing)
   }
 
@@ -132,14 +149,21 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
         </BalanceContainer>
         <LockIconBar
           lock={lock}
-          toggleCode={() => setShowEmbedCode(!showEmbedCode)}
+          toggleCreditCard={() => toggleDrawer('credit-card')}
+          toggleCode={() => toggleDrawer('embed-coded')}
           edit={edit}
           withdraw={withdraw}
         />
-        {showEmbedCode && (
+        {showDrawer === 'embed-coded' && (
           <LockPanel>
             <LockDivider />
             <AppStore lock={lock} />
+          </LockPanel>
+        )}
+        {showDrawer === 'credit-card' && (
+          <LockPanel>
+            <LockDivider />
+            <CreditCardSettings network={network} lock={lock} />
           </LockPanel>
         )}
       </LockDetails>

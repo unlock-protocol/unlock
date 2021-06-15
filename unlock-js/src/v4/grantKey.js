@@ -7,12 +7,11 @@ export default async function (
   if (!expiration) {
     // Let's get the expiration from the duration (+/- given that the transaction can take time to be mined!)
     const duration = await lockContract.expirationDuration()
-    expiration = parseInt(new Date().getTime() / 1000 + duration)
+    expiration = Math.floor(new Date().getTime() / 1000 + duration.toNumber())
   }
 
   const grantKeysOptions = {}
-
-  const transactionPromise = lockContract.grantKeys(
+  const transactionPromise = lockContract['grantKeys(address[],uint256[])'](
     [recipient],
     [expiration],
     grantKeysOptions
@@ -38,7 +37,7 @@ export default async function (
     })[0]
 
   if (transferEvent) {
-    return transferEvent.values._tokenId.toString()
+    return transferEvent.args._tokenId.toString()
   }
   // There was no Transfer log (transaction failed?)
   return null

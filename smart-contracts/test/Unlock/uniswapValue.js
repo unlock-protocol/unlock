@@ -80,7 +80,8 @@ contract('Unlock / uniswapValue', (accounts) => {
         weth.address,
         await unlock.estimatedGasForPurchase(),
         await unlock.globalTokenSymbol(),
-        await unlock.globalBaseTokenURI()
+        await unlock.globalBaseTokenURI(),
+        1 // mainnet
       )
       await unlock.setOracle(token.address, uniswapOracle.address)
 
@@ -94,7 +95,7 @@ contract('Unlock / uniswapValue', (accounts) => {
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await token.approve(lock.address, -1, { from: keyOwner })
+        await token.approve(lock.address, keyPrice, { from: keyOwner })
         await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
         })
@@ -132,7 +133,7 @@ contract('Unlock / uniswapValue', (accounts) => {
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await token.approve(lock.address, -1, { from: keyOwner })
+        await token.approve(lock.address, keyPrice, { from: keyOwner })
 
         await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
