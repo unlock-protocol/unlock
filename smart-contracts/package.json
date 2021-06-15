@@ -38,7 +38,7 @@
     "ganache-cli": "6.10.2",
     "hardhat": "^2.3.0",
     "hardhat-erc1820": "^0.1.0",
-    "hardhat-deploy": "^0.7.11",
+    "hardhat-deploy": "0.8.6",
     "hardhat-deploy-ethers": "^0.3.0-beta.8",
     "hardhat-tracer": "^1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.2",
