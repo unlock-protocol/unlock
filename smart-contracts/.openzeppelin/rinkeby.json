@@ -1,11 +1,11 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0x7e397095a1cE467554F02aEE36D5ff99D5e95dd2",
-      "constructorCode": "6080604052611ad9806100136000396000f3fe",
-      "bodyBytecodeHash": "c4c52efe39f521ecde8709191df1f6bee525060951b890d579d96bae32da0f60",
-      "localBytecodeHash": "1c787d15bfcc8f151c3ca1db0d4a919f7d282e76566f669fa0d4f1098b1e8a36",
-      "deployedBytecodeHash": "1c787d15bfcc8f151c3ca1db0d4a919f7d282e76566f669fa0d4f1098b1e8a36",
+      "address": "0x839b30AD296E0910ec83ACAd649eC09Ae6EfC63a",
+      "constructorCode": "6080604052611d43806100136000396000f3fe",
+      "bodyBytecodeHash": "0d0280ab339b7bebd72476ccd358b0fe16f0a89ff4aad898f9345806f889584c",
+      "localBytecodeHash": "1b20be2a6a26d7ebe9f2a843abc6386484f623da2b7df7fc896ac7cefb59adbf",
+      "deployedBytecodeHash": "1b20be2a6a26d7ebe9f2a843abc6386484f623da2b7df7fc896ac7cefb59adbf",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -38,19 +38,19 @@
               "label": "deployed",
               "astId": 2370,
               "type": "t_bool",
-              "src": "2588:13:23"
+              "src": "2531:13:23"
             },
             {
               "label": "totalSales",
               "astId": 2372,
               "type": "t_uint256",
-              "src": "2608:15:23"
+              "src": "2550:15:23"
             },
             {
               "label": "yieldedDiscountTokens",
               "astId": 2374,
               "type": "t_uint256",
-              "src": "2648:26:23"
+              "src": "2589:26:23"
             }
           ]
         },
@@ -119,7 +119,7 @@
           "label": "grossNetworkProduct",
           "astId": 2390,
           "type": "t_uint256",
-          "src": "2794:31:23"
+          "src": "2727:31:23"
         },
         {
           "contract": "Unlock",
@@ -127,7 +127,7 @@
           "label": "totalDiscountGranted",
           "astId": 2392,
           "type": "t_uint256",
-          "src": "2832:32:23"
+          "src": "2763:32:23"
         },
         {
           "contract": "Unlock",
@@ -135,7 +135,7 @@
           "label": "locks",
           "astId": 2396,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-          "src": "2956:46:23"
+          "src": "2884:46:23"
         },
         {
           "contract": "Unlock",
@@ -143,7 +143,7 @@
           "label": "globalBaseTokenURI",
           "astId": 2398,
           "type": "t_string",
-          "src": "3104:32:23"
+          "src": "3028:32:23"
         },
         {
           "contract": "Unlock",
@@ -151,7 +151,7 @@
           "label": "globalTokenSymbol",
           "astId": 2400,
           "type": "t_string",
-          "src": "3238:31:23"
+          "src": "3158:31:23"
         },
         {
           "contract": "Unlock",
@@ -159,7 +159,7 @@
           "label": "publicLockAddress",
           "astId": 2402,
           "type": "t_address",
-          "src": "3356:32:23"
+          "src": "3273:32:23"
         },
         {
           "contract": "Unlock",
@@ -167,7 +167,7 @@
           "label": "uniswapOracles",
           "astId": 2406,
           "type": "t_mapping<t_address>",
-          "src": "3504:57:23"
+          "src": "3417:57:23"
         },
         {
           "contract": "Unlock",
@@ -175,7 +175,7 @@
           "label": "weth",
           "astId": 2408,
           "type": "t_address",
-          "src": "3626:19:23"
+          "src": "3536:19:23"
         },
         {
           "contract": "Unlock",
@@ -183,7 +183,7 @@
           "label": "udt",
           "astId": 2410,
           "type": "t_address",
-          "src": "3713:18:23"
+          "src": "3620:18:23"
         },
         {
           "contract": "Unlock",
@@ -191,7 +191,15 @@
           "label": "estimatedGasForPurchase",
           "astId": 2412,
           "type": "t_uint256",
-          "src": "3796:35:23"
+          "src": "3700:35:23"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "chainId",
+          "astId": 2414,
+          "type": "t_uint256",
+          "src": "3819:19:23"
         }
       ],
       "warnings": {
@@ -207,65 +215,20 @@
             "label": "locks",
             "astId": 2396,
             "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-            "src": "2956:46:23"
+            "src": "2884:46:23"
           }
         ],
         "storageDiff": [
           {
-            "action": "rename",
-            "updated": {
-              "index": 11,
-              "contract": "Unlock",
-              "path": "contracts/Unlock.sol",
-              "label": "uniswapOracles",
-              "astId": 2406,
-              "type": "t_mapping<t_address>",
-              "src": "3504:57:23"
-            },
-            "original": {
-              "index": 11,
-              "contract": "Unlock",
-              "path": "contracts/Unlock.sol",
-              "label": "uniswapExchanges",
-              "astId": 2401,
-              "type": "t_mapping<t_address>",
-              "src": "3282:61:23"
-            }
-          },
-          {
             "action": "append",
             "updated": {
-              "index": 12,
+              "index": 15,
               "contract": "Unlock",
               "path": "contracts/Unlock.sol",
-              "label": "weth",
-              "astId": 2408,
-              "type": "t_address",
-              "src": "3626:19:23"
-            }
-          },
-          {
-            "action": "append",
-            "updated": {
-              "index": 13,
-              "contract": "Unlock",
-              "path": "contracts/Unlock.sol",
-              "label": "udt",
-              "astId": 2410,
-              "type": "t_address",
-              "src": "3713:18:23"
-            }
-          },
-          {
-            "action": "append",
-            "updated": {
-              "index": 14,
-              "contract": "Unlock",
-              "path": "contracts/Unlock.sol",
-              "label": "estimatedGasForPurchase",
-              "astId": 2412,
+              "label": "chainId",
+              "astId": 2414,
               "type": "t_uint256",
-              "src": "3796:35:23"
+              "src": "3819:19:23"
             }
           }
         ]
