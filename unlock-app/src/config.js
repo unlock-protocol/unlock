@@ -86,7 +86,6 @@ export default function configure(
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
-    keyGranter = ''
   }
   let readOnlyProvider
   if (readOnlyProviderUrl) {
