@@ -85,15 +85,13 @@ export const NewAccountCheckout = ({
             <Label>Email</Label>
             <Input
               autoComplete="username"
-              name="email"
-              ref={register('username', { required: true })}
+              {...register('email', { required: true })}
             />
             <Label>Set a password</Label>
             <Input
               autoComplete="new-password"
-              name="password"
               type="password"
-              ref={register('password', { required: true })}
+              {...register('password', { required: true })}
             />
           </>
         )
