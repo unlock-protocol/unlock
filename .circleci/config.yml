@@ -559,7 +559,9 @@ workflows:
       - promote-integration-tests-image:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - production
           requires:
             - promote-unlock-core-image
       - deploy-locksmith-beanstalk:
