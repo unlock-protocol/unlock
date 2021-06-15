@@ -6,6 +6,8 @@ description: We’re excited to announce that unlock now has ✨credit card✨ s
 image: /static/images/blog/unlock-credit-card/card-membership.png
 ---
 
+![Unlock with credit card](/static/images/blog/unlock-credit-card/card-membership.png)
+
 We’re excited to announce that unlock now has ✨credit card✨ support! This means that if your customers don’t use crypto, they can still buy memberships and products right from your website!
 
 We’ve made it really easy for you to set up. You can see the [full documentation for this here](https://docs.unlock-protocol.com/creators/enabling-credit-cards).
