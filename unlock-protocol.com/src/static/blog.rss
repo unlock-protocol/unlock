@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 09 Jun 2021 16:02:13 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 15 Jun 2021 13:02:34 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Credit Card Support]]></title>
+            <description><![CDATA[We’re excited to announce that unlock now has ✨credit card✨ support!]]></description>
+            <link>https://unlock-protocol.com/blog/credit-card-nft</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/credit-card-nft</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 15 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[The First Class of Unlock Token Grantees!]]></title>
             <description><![CDATA[We’re excited to announce our pioneering set of Unlock Token Grantees!  We’re looking forward to seeing how they apply Unlock in new ways.]]></description>
@@ -279,19 +287,19 @@
             <pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Ejecting an Unlock Account]]></title>
-            <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
-            <link>https://unlock-protocol.com/blog/ejecting-account</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
-            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Unlock Hackathon Ideas]]></title>
             <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
             <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Ejecting an Unlock Account]]></title>
+            <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
+            <link>https://unlock-protocol.com/blog/ejecting-account</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
             <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
@@ -423,19 +431,19 @@
             <pubDate>Wed, 10 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Digital Cash. Big Deal.]]></title>
-            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
-            <link>https://unlock-protocol.com/blog/digital-cash</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
-            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
-            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Integrating Unlock with Known]]></title>
             <description><![CDATA[The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.]]></description>
             <link>https://unlock-protocol.com/blog/integrating-unlock-with-known</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/integrating-unlock-with-known</guid>
             <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Digital Cash. Big Deal.]]></title>
+            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
+            <link>https://unlock-protocol.com/blog/digital-cash</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
             <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
