@@ -28,6 +28,7 @@ const usePaywall = () => {
     const unlockUserAccounts =
       url.searchParams.get('unlockUserAccounts') === 'true'
     const useMetadataInputs = url.searchParams.get('metadataInputs') === 'true'
+    const referrer = url.searchParams.get('referrer')
 
     window.unlockProtocolConfig = {
       persistentCheckout: false,
@@ -51,6 +52,7 @@ const usePaywall = () => {
       locks: {
         [url.searchParams.get('lock')]: {},
       },
+      referrer,
       network: parseInt(url.searchParams.get('network'), 10),
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
