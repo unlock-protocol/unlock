@@ -65,7 +65,7 @@ contract('Unlock / upgrades', (accounts) => {
       let unlockAbi
       let originalLockData
 
-      before(async () => {
+      beforeEach(async () => {
         // force to fetch contracts artifact from node_modules
         artifacts._artifactsPath = path.resolve(
           __dirname,
@@ -288,34 +288,25 @@ contract('Unlock / upgrades', (accounts) => {
                   unlock = await UnlockLatest.at(proxy.address)
                   UnlockLatest.setAsDeployed(unlock)
 
-                  // get template
-                  // const PublicLockABI = artifacts.require("PublicLock")
-                  // const templateProxy = await deployments.deploy('PublicLockProxied', {
-                  //   contract: PublicLockABI.toJSON(),
-                  //   from: unlockOwner,
-                  //   log: true
-                  // })
-
-                  // console.log(unlock.abi)
-                  // await execute(
-                  //   'UnlockProxied',
+                  // lockTemplate = await deployments.get('PublicLock')
+                  // await unlock.setLockTemplate(
+                  //   lockTemplate.address,
                   //   {
                   //     from: unlockOwner,
-                  //     // gasLimit: constants.MAX_GAS,
-                  //     log: true,
-                  //   },
-                  //   'setLockTemplate', // methodName
-                  //   templateProxy.address // args
-                  // )
+                  //     gas: constants.MAX_GAS,
+                  //   })
+
+
+
                 })
 
                 it('this version and latest version have different Unlock version numbers', async () => {
-                  const version = await unlock.methods.unlockVersion().call()
+                  const version = await unlock.unlockVersion()
                   assert.notEqual(version, versionNumber)
                 })
 
                 it('latest version number is correct', async () => {
-                  const version = await unlock.methods.unlockVersion().call()
+                  const version = await unlock.unlockVersion()
                   assert.equal(version, UnlockAbis.length)
                 })
 
@@ -358,7 +349,7 @@ contract('Unlock / upgrades', (accounts) => {
 
                 it('grossNetworkProduct remains', async () => {
                   const grossNetworkProduct = new BigNumber(
-                    await unlock.methods.grossNetworkProduct().call()
+                    await unlock.grossNetworkProduct()
                   )
                   assert.equal(
                     grossNetworkProduct.toFixed(),
@@ -367,9 +358,8 @@ contract('Unlock / upgrades', (accounts) => {
                 })
 
                 it('lock data should persist state between upgrades', async () => {
-                  const resultsAfter = await unlock.methods
-                    .locks(lock._address)
-                    .call()
+                  const resultsAfter = await unlock.locks(lock._address)
+                    
                   assert.equal(resultsAfter.deployed, originalLockData.deployed)
                   assert.equal(
                     resultsAfter.yieldedDiscountTokens,
@@ -389,23 +379,22 @@ contract('Unlock / upgrades', (accounts) => {
 
                   beforeEach(async () => {
                     // Create a new Lock
-                    const lockTx = await unlock.methods
+                    const lockTx = await unlock
                       .createLock(
                         60 * 60 * 24, // expirationDuration 1 day
                         web3.utils.padLeft(0, 40),
                         keyPrice,
                         5, // maxNumberOfKeys
                         'After-Upgrade Lock',
-                        web3.utils.randomHex(12)
-                      )
-                      .send({
-                        from: lockOwner,
-                        gas: constants.MAX_GAS,
-                      })
+                        web3.utils.randomHex(12),
+                        {
+                          from: lockOwner,
+                          gas: constants.MAX_GAS,
+                        })
 
-                    const evt = lockTx.events.NewLock
+                    const evt = lockTx.logs.find((v) => v.event === 'NewLock')
                     lockLatest = await PublicLockLatest.at(
-                      evt.returnValues.newLockAddress
+                      evt.args.newLockAddress
                     )
 
                     // Buy Key
