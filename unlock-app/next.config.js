@@ -14,8 +14,6 @@ dotenv.config({
 const requiredConfigVariables = {
   unlockEnv,
   paywallUrl: process.env.PAYWALL_URL,
-  paywallScriptUrl: process.env.PAYWALL_SCRIPT_URL,
-  readOnlyProvider: process.env.READ_ONLY_PROVIDER, // Used for Unlock Accounts
   locksmithHost: process.env.LOCKSMITH_URI,
   wedlocksUri: process.env.WEDLOCKS_URI,
   unlockStaticUrl: process.env.UNLOCK_STATIC_URL,

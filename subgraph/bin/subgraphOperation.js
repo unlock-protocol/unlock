@@ -67,6 +67,11 @@ const networkMap = {
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',
     },
+    matic: {
+      subgraph: 'unlock-protocol/polygon',
+      graphNode: 'https://api.thegraph.com/deploy/',
+      ipfs: 'https://api.thegraph.com/ipfs/',
+    },
     demorinkeby: {
       subgraph: 'unlock-protocol/demo-rinkeby',
       graphNode: 'https://api.thegraph.com/deploy/',

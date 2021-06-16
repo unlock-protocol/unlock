@@ -23,6 +23,7 @@ export const processTransaction = async (
   network
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
+  const blockTime = config.networks[network].blockTime
   if (
     !transaction ||
     transaction.confirmations <= config.requiredConfirmations
@@ -38,7 +39,7 @@ export const processTransaction = async (
         hash,
         network
       )
-    }, config.blockTime / 2)
+    }, blockTime / 2)
 
     setLock({
       ...lock,
