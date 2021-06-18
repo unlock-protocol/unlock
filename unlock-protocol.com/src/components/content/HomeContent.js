@@ -17,8 +17,7 @@ import Media from '../../theme/media'
 const integrations = [
   {
     name: 'Paywall',
-    link:
-      'https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site',
+    link: 'https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site',
     image: '/static/images/pages/svg/paywall.svg',
   },
   {
@@ -28,14 +27,12 @@ const integrations = [
   },
   {
     name: 'Tickets',
-    link:
-      'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
+    link: 'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
     image: '/static/images/pages/svg/tickets.svg',
   },
   {
     name: 'Donations',
-    link:
-      'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
+    link: 'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
     image: '/static/images/pages/svg/donations.svg',
   },
   {

@@ -45,7 +45,11 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   // TODO: craft a better query to let us directly ask about the single
   // lock under consideration. This will remove the need to iterate over
   // all the user's keys to determine if they own a key to this lock.
-  const { loading, error, data: keys } = useQuery(keyHolderQuery(), {
+  const {
+    loading,
+    error,
+    data: keys,
+  } = useQuery(keyHolderQuery(), {
     variables: { address: account },
   })
 

@@ -1,4 +1,5 @@
 import Postmate from 'postmate'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { PaywallConfig, NetworkConfigs } from 'src/unlockTypes'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'

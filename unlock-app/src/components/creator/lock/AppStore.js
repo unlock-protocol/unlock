@@ -42,20 +42,17 @@ const AppStore = ({ lock }) => {
     tickets: {
       name: 'Tickets',
       icon: <Svg.Ticket />,
-      href:
-        'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
+      href: 'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
     },
     donations: {
       name: 'Donations',
       icon: <Svg.Heart />,
-      href:
-        'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
+      href: 'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
     },
     newsletter: {
       name: 'Newsletter',
       icon: <Svg.Newsletter />,
-      href:
-        'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
+      href: 'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
     },
     wordpress: {
       name: 'Wordpress',

@@ -133,10 +133,8 @@ describe.skip('StorageService', () => {
         },
       })
 
-      const {
-        hashes,
-        senderAddress,
-      } = await storageService.getRecentTransactionsHashesSentBy(sender)
+      const { hashes, senderAddress } =
+        await storageService.getRecentTransactionsHashesSentBy(sender)
       expect(senderAddress).toEqual(sender)
       expect(hashes).toEqual([
         {

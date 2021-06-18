@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { PaywallConfig } from 'src/unlockTypes'
 import { Enabler } from 'src/utils/enableInjectedProvider'
 
