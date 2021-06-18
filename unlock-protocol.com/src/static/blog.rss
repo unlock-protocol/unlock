@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Thu, 17 Jun 2021 15:01:05 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 17 Jun 2021 23:07:41 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Polygon]]></title>
+            <description><![CDATA[Unlock has been deployed to Polygon!]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-on-polygon</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-on-polygon</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Fri, 18 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Credit Card Support]]></title>
             <description><![CDATA[We’re excited to announce that unlock now has ✨credit card✨ support, for all locks, on any network!]]></description>
