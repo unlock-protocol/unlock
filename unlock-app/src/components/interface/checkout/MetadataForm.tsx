@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
 import { Button, LoadingButton, Input, Label } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
-import { useSetUserMetadata } from '../../../hooks/useSetUserMetadata'
+import { AuthenticationContext } from '../Authenticate'
+import { useAccount } from '../../../hooks/useAccount'
 
 interface Props {
   network: number
@@ -18,8 +19,10 @@ interface DefautltValues {
 }
 
 export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
+  const { account } = useContext(AuthenticationContext)
+  const { setUserMetadataData } = useAccount(account, network)
+
   const [error, setError] = useState('')
-  const { setUserMetadata } = useSetUserMetadata()
 
   // We can also destructure the `errors` field here and use it for
   // validation -- we'll have to consider how to handle the different
@@ -40,26 +43,17 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed
   // data will be correct.
-  const wrappedOnSubmit = (formResult: { [key: string]: string }) => {
+  const wrappedOnSubmit = async (formResult: { [key: string]: string }) => {
     const metadata = formResultToMetadata(formResult, fields)
     setSubmittedForm(true)
     setError('')
-    setUserMetadata(
-      lock.address,
-      network,
-      metadata,
-      (error: any, saved: boolean) => {
-        if (error || !saved) {
-          setError(
-            error?.message || 'We could not save your info, please try again.'
-          )
-          setSubmittedForm(false)
-        }
-        if (saved) {
-          onSubmit(metadata)
-        }
-      }
-    )
+    try {
+      await setUserMetadataData(lock.address, metadata, network)
+      onSubmit(metadata)
+    } catch (error) {
+      setError('We could not save your info, please try again.')
+      setSubmittedForm(false)
+    }
   }
 
   return (

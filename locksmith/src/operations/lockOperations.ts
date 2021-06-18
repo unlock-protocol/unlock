@@ -68,11 +68,13 @@ export async function updateLockOwnership(
 
 export async function getKeyHolderMetadata(
   address: string,
-  keyHolders: [string]
+  keyHolders: [string],
+  network: number
 ) {
   return UserTokenMetadata.findAll({
     attributes: ['userAddress', 'data'],
     where: {
+      chain: network,
       tokenAddress: address,
       userAddress: {
         [Op.in]: keyHolders,

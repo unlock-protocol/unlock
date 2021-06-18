@@ -1,8 +1,9 @@
 import { gql } from 'apollo-server-express'
-import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
+import { GraphQLDataSource } from 'apollo-datasource-graphql'
 
-// eslint-disable-next-line import/prefer-default-export
-export class KeyPurchase extends UnlockGraphQLDataSource {
+const { networks } = require('../../networks')
+
+export class KeyPurchase extends GraphQLDataSource {
   PURCHASES = gql`
     {
       keyPurchases {
@@ -16,7 +17,9 @@ export class KeyPurchase extends UnlockGraphQLDataSource {
     }
   `
 
-  async getKeyPurchases() {
+  async getKeyPurchases(network: number) {
+    this.baseURL = networks[network].subgraphURI
+
     try {
       const response = await this.query(this.PURCHASES)
 
@@ -26,3 +29,4 @@ export class KeyPurchase extends UnlockGraphQLDataSource {
     }
   }
 }
+export default KeyPurchase

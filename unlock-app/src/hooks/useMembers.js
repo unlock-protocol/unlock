@@ -22,7 +22,8 @@ export const getAllKeysMetadataForLock = async (
   lock,
   viewer,
   walletService,
-  storageService
+  storageService,
+  network
 ) => {
   return new Promise((resolve, reject) => {
     // If the user is the owner, we can grab the metadata for each lock
@@ -41,7 +42,8 @@ export const getAllKeysMetadataForLock = async (
       const storedMetadata = await storageService.getBulkMetadataFor(
         lock.address,
         signature,
-        typedData
+        typedData,
+        network
       )
       resolve(storedMetadata)
     })
@@ -144,7 +146,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
           lockWithKeys,
           viewer,
           walletService,
-          storageService
+          storageService,
+          network
         )
         return buildMembersWithMetadata(lockWithKeys, storedMetadata)
       } catch (error) {
@@ -152,6 +155,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
         return []
       }
     })
+
     const membersByLock = await Promise.all(membersForLocksPromise)
     const members = Object.values(
       membersByLock.reduce((acc, array) => {
@@ -168,13 +172,12 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
     }
     setLoading(false)
   }
-
   /**
    * When the keyHolders object changes, load the metadata
    */
   useEffect(() => {
     loadMembers()
-  }, [lockAddresses, viewer, filter, page])
+  }, [JSON.stringify(lockAddresses), viewer, filter, page])
 
   const list = Object.values(members)
   const columns = generateColumns(list)

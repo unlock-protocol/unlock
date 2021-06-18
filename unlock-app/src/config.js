@@ -70,7 +70,7 @@ export default function configure(
     },
     baseCurrencySymbol: 'Eth',
     stripeApiKey: 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
-    locksmith: 'http://127.0.0.1:8080', // TODO: not network specific, API calls should be network specific though
+    locksmith: services.storage.host,
     nativeCurrency: {
       name: 'Ether',
       symbol: 'Eth',
@@ -102,7 +102,7 @@ export default function configure(
     },
     requiredConfirmations: 12,
     baseCurrencySymbol: 'Eth',
-    locksmith: 'https://locksmith.unlock-protocol.com',
+    locksmith: services.storage.host,
     nativeCurrency: {
       name: 'Ether',
       symbol: 'Eth',
@@ -133,7 +133,7 @@ export default function configure(
       address: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
     },
     baseCurrencySymbol: 'Eth',
-    locksmith: 'https://rinkeby.locksmith.unlock-protocol.com',
+    locksmith: services.storage.host,
     nativeCurrency: {
       name: 'Rinkeby Eth',
       symbol: 'Eth',
@@ -160,7 +160,7 @@ export default function configure(
     requiredConfirmations: 12,
     erc20: null,
     baseCurrencySymbol: 'Matic',
-    locksmith: 'https://locksmith.unlock-protocol.com',
+    locksmith: services.storage.host,
     nativeCurrency: {
       name: 'Matic',
       symbol: 'MATIC',
@@ -187,7 +187,7 @@ export default function configure(
       },
     },
     erc20: null, // no default ERC20 on xdai for now
-    locksmith: 'https://locksmith.unlock-protocol.com',
+    locksmith: services.storage.host,
     baseCurrencySymbol: 'xDai',
     nativeCurrency: {
       name: 'xDAI',

@@ -27,7 +27,9 @@ export default class KeyPricer {
     if (!lock.currencyContractAddress || lock.currencyContractAddress == ZERO) {
       if (network === 100) {
         symbol = 'DAI'
-      } // Add support for other "main currencies!" (MATIC... etc)
+      } else if (network === 137) {
+        symbol = 'MATIC'
+      }
     } else {
       symbol = lock.currencySymbol
     }
