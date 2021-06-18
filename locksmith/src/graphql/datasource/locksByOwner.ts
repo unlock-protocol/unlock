@@ -1,8 +1,12 @@
 import { gql } from 'apollo-server-express'
-import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
+import { GraphQLDataSource } from 'apollo-datasource-graphql'
 
-export class LocksByOwner extends UnlockGraphQLDataSource {
-  async get(owner: string) {
+const { networks } = require('../../networks')
+
+export class LocksByOwner extends GraphQLDataSource {
+  async get(owner: string, network: number) {
+    this.baseURL = networks[network].subgraphURI
+
     const locksByOwnerQuery = gql`
       query Locks($owner: String!) {
         locks(where: { owner: $owner }) {
