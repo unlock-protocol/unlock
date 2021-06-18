@@ -187,11 +187,12 @@ namespace UserController {
       return res.sendStatus(401)
     }
 
-    const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
-      ethereumAddress,
-      // @ts-expect-error
-      data?.message?.stripeApiKey || ''
-    )
+    const stripeCustomerId =
+      await StripeOperations.getStripeCustomerIdForAddress(
+        ethereumAddress,
+        // @ts-expect-error
+        data?.message?.stripeApiKey || ''
+      )
     if (!stripeCustomerId) {
       return res.json([])
     }

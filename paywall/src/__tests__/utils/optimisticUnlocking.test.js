@@ -66,11 +66,12 @@ describe('getTransactionsForUserAndLocks', () => {
         transactions: savedTransactions,
       })
     )
-    const transactions = await OptimisticUnlocking.getTransactionsForUserAndLocks(
-      locksmithUri,
-      user,
-      locks
-    )
+    const transactions =
+      await OptimisticUnlocking.getTransactionsForUserAndLocks(
+        locksmithUri,
+        user,
+        locks
+      )
     expect(transactions).toEqual(savedTransactions)
     expect(fetch.mock.calls.length).toEqual(1)
     expect(fetch.mock.calls[0][0]).toEqual(

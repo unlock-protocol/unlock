@@ -10,8 +10,7 @@ const paywallConfig = {
       network: 100,
     },
   },
-  icon:
-    'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/brand/1808-Unlock-Identity_Unlock-WordMark.svg',
+  icon: 'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/brand/1808-Unlock-Identity_Unlock-WordMark.svg',
   callToAction: {
     default:
       'Get the Unlock membership to get you access to our Discord, blog comments and more!',

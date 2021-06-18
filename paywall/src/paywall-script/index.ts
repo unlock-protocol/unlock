@@ -33,12 +33,8 @@ if (!rawConfig) {
   }
 
   const paywall = new Paywall(rawConfig, networkConfigs)
-  const {
-    getState,
-    getUserAccountAddress,
-    loadCheckoutModal,
-    resetConfig,
-  } = paywall
+  const { getState, getUserAccountAddress, loadCheckoutModal, resetConfig } =
+    paywall
 
   setupUnlockProtocolVariable({
     loadCheckoutModal,

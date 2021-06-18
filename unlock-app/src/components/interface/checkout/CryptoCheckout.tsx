@@ -32,9 +32,11 @@ export const CryptoCheckout = ({
   setCardPurchase,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
-  const { network: walletNetwork, account, changeNetwork } = useContext(
-    AuthenticationContext
-  )
+  const {
+    network: walletNetwork,
+    account,
+    changeNetwork,
+  } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)

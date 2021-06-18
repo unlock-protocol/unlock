@@ -15,13 +15,8 @@ namespace PurchaseController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const {
-      publicKey,
-      lock,
-      stripeTokenId,
-      pricing,
-      network,
-    } = req.body.message['Charge Card']
+    const { publicKey, lock, stripeTokenId, pricing, network } =
+      req.body.message['Charge Card']
 
     // First, get the locks stripe account
     const stripeConnectApiKey = await getStripeConnectForLock(
