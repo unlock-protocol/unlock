@@ -206,11 +206,12 @@ namespace MetadataController {
       const lockAddress = Normalizer.ethereumAddress(
         payload.message.LockMetaData.address
       )
-      const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
-        lockAddress,
-        payload.message.LockMetaData.page || 0,
-        req.chain
-      )
+      const keyHolderAddresses =
+        await new KeyHoldersByLock().getKeyHoldingAddresses(
+          lockAddress,
+          payload.message.LockMetaData.page || 0,
+          req.chain
+        )
       const isAuthorized = await evaluateLockOwnership(
         lockAddress,
         req.signee,

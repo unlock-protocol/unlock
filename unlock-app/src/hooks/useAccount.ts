@@ -76,10 +76,8 @@ export const useAccount = (address: string, network: number) => {
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
 
-    const {
-      address,
-      passwordEncryptedPrivateKey,
-    } = await createAccountAndPasswordEncryptKey(password)
+    const { address, passwordEncryptedPrivateKey } =
+      await createAccountAndPasswordEncryptKey(password)
 
     const { origin } = window.location
 
