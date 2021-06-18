@@ -15,8 +15,6 @@ const config = require('../../config/config')
 const logger = require('../logger')
 const { networks } = require('../networks')
 
-const chain = 1337
-
 namespace MetadataController {
   export const evaluateLockOwnership = async (
     lockAddress: string,
@@ -162,7 +160,7 @@ namespace MetadataController {
 
     if (req.owner === userAddress) {
       await addMetadata({
-        chain,
+        chain: req.chain,
         userAddress,
         tokenAddress,
         data,
@@ -210,7 +208,8 @@ namespace MetadataController {
       )
       const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
         lockAddress,
-        payload.message.LockMetaData.page || 0
+        payload.message.LockMetaData.page || 0,
+        req.chain
       )
       const isAuthorized = await evaluateLockOwnership(
         lockAddress,
@@ -223,7 +222,8 @@ namespace MetadataController {
         res.json(
           await lockOperations.getKeyHolderMetadata(
             lockAddress,
-            keyHolderAddresses
+            keyHolderAddresses,
+            req.chain
           )
         )
       }
