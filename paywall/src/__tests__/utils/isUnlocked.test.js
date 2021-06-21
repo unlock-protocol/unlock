@@ -2,10 +2,8 @@ import { isUnlocked } from '../../utils/isUnlocked'
 import * as optimisticUtil from '../../utils/optimisticUnlocking'
 import * as timeStampUtil from '../../utils/keyExpirationTimestampFor'
 
-const {
-  readOnlyProvider,
-  locksmithUri,
-} = __ENVIRONMENT_VARIABLES__ /* eslint no-undef: 0 */
+const { readOnlyProvider, locksmithUri } =
+  __ENVIRONMENT_VARIABLES__ /* eslint no-undef: 0 */
 
 const networkConfigs = {
   1337: {

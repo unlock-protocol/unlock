@@ -33,6 +33,11 @@ export const networkConfigs: NetworkConfigs = {
     locksmithUri: 'https://locksmith.unlock-protocol.com',
     unlockAppUrl,
   },
+  137: {
+    readOnlyProvider: 'https://rpc-mainnet.matic.network',
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
+    unlockAppUrl,
+  },
   1337: {
     readOnlyProvider: 'http://127.0.0.1:8545',
     locksmithUri: 'http://127.0.0.1:8080',

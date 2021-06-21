@@ -695,11 +695,12 @@ describe.each(versions)('%s', (versionName) => {
             expect(expiration).toBeGreaterThan(now)
 
             const recipient = '0x6524dbb97462ac3919866b8fbb22bf181d1d4113'
-            const recipientDurationBefore = await web3Service.getKeyExpirationByLockForOwner(
-              lockAddress,
-              recipient,
-              1337
-            )
+            const recipientDurationBefore =
+              await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                recipient,
+                1337
+              )
 
             expect(recipientDurationBefore).toBe(0)
 
@@ -711,11 +712,12 @@ describe.each(versions)('%s', (versionName) => {
               duration: expiration - now, // share all of the time!
             })
 
-            const newExpiration = await web3Service.getKeyExpirationByLockForOwner(
-              lockAddress,
-              accounts[0],
-              1337
-            )
+            const newExpiration =
+              await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                accounts[0],
+                1337
+              )
 
             expect(newExpiration).toBeLessThan(expiration)
 
