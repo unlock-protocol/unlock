@@ -22,10 +22,8 @@ namespace PriceController {
       )
 
       // let's see if the lock was authorized for credit card payments
-      const isAuthorizedForCreditCard = await AuthorizedLockOperations.hasAuthorization(
-        lockAddress,
-        req.chain
-      )
+      const isAuthorizedForCreditCard =
+        await AuthorizedLockOperations.hasAuthorization(lockAddress, req.chain)
 
       // TODO: check that the purchaser has enough funds to pay for gas?
 

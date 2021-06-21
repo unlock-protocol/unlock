@@ -164,7 +164,8 @@ describe('useMembers', () => {
       expect(storageService.getBulkMetadataFor).toHaveBeenCalledWith(
         lock.address,
         signature,
-        typedData
+        typedData,
+        undefined // network
       )
       expect(metadataForLock).toEqual(storedMetata)
     })

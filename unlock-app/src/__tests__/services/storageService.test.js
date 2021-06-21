@@ -133,10 +133,8 @@ describe.skip('StorageService', () => {
         },
       })
 
-      const {
-        hashes,
-        senderAddress,
-      } = await storageService.getRecentTransactionsHashesSentBy(sender)
+      const { hashes, senderAddress } =
+        await storageService.getRecentTransactionsHashesSentBy(sender)
       expect(senderAddress).toEqual(sender)
       expect(hashes).toEqual([
         {
@@ -513,50 +511,6 @@ describe.skip('StorageService', () => {
 
         storageService.on(failure.getCards, ({ error }) => {
           expect(error).toEqual('Could not fulfill request due to sunspots')
-          done()
-        })
-      })
-    })
-  })
-
-  describe('Retrieve a key price', () => {
-    describe('When a request succeeds', () => {
-      it('emits a success', (done) => {
-        expect.assertions(1)
-        const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
-        axios.get.mockReturnValue({
-          data: {
-            creditCardProcessing: 450,
-            gasFee: 30,
-            keyPrice: 100,
-            unlockServiceFee: 20,
-          },
-        })
-
-        storageService.getKeyPrice(lockAddress)
-
-        storageService.on(success.getKeyPrice, (data) => {
-          expect(data).toEqual({
-            creditCardProcessing: 450,
-            gasFee: 30,
-            keyPrice: 100,
-            unlockServiceFee: 20,
-          })
-          done()
-        })
-      })
-    })
-
-    describe('When a request fails', () => {
-      it('emits a failure', (done) => {
-        expect.assertions(1)
-        const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
-        axios.get.mockRejectedValue('could not communicate with server')
-
-        storageService.getKeyPrice(lockAddress)
-
-        storageService.on(failure.getKeyPrice, (error) => {
-          expect(error).toEqual('could not communicate with server')
           done()
         })
       })

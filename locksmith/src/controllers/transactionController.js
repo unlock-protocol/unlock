@@ -1,9 +1,7 @@
 const transactionOperations = require('../operations/transactionOperations')
 
-const {
-  findOrCreateTransaction,
-  getTransactionsByFilter,
-} = transactionOperations
+const { findOrCreateTransaction, getTransactionsByFilter } =
+  transactionOperations
 
 const transactionCreate = async (req, res) => {
   const transaction = req.body

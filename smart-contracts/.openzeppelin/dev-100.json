@@ -1,11 +1,11 @@
 {
   "contracts": {
     "unlock": {
-      "address": "0x7633dd082406861C384309c67576a4260C5775E0",
-      "constructorCode": "6080604052611ad9806100136000396000f3fe",
-      "bodyBytecodeHash": "c4c52efe39f521ecde8709191df1f6bee525060951b890d579d96bae32da0f60",
-      "localBytecodeHash": "1c787d15bfcc8f151c3ca1db0d4a919f7d282e76566f669fa0d4f1098b1e8a36",
-      "deployedBytecodeHash": "1c787d15bfcc8f151c3ca1db0d4a919f7d282e76566f669fa0d4f1098b1e8a36",
+      "address": "0x06de4215484E5A2B935a3124cC577336963fb56D",
+      "constructorCode": "6080604052611d43806100136000396000f3fe",
+      "bodyBytecodeHash": "0d0280ab339b7bebd72476ccd358b0fe16f0a89ff4aad898f9345806f889584c",
+      "localBytecodeHash": "1b20be2a6a26d7ebe9f2a843abc6386484f623da2b7df7fc896ac7cefb59adbf",
+      "deployedBytecodeHash": "1b20be2a6a26d7ebe9f2a843abc6386484f623da2b7df7fc896ac7cefb59adbf",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -192,6 +192,14 @@
           "astId": 2412,
           "type": "t_uint256",
           "src": "3700:35:23"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "chainId",
+          "astId": 2414,
+          "type": "t_uint256",
+          "src": "3819:19:23"
         }
       ],
       "warnings": {

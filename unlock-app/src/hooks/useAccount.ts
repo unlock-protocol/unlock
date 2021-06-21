@@ -5,6 +5,8 @@ import { ConfigContext } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
 import { WalletServiceContext } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
+import { generateKeyHolderMetadataPayload } from '../structured_data/keyHolderMetadata'
+
 import WedlockServiceContext from '../contexts/WedlocksContext'
 import {
   generateTypedData,
@@ -74,10 +76,8 @@ export const useAccount = (address: string, network: number) => {
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
 
-    const {
-      address,
-      passwordEncryptedPrivateKey,
-    } = await createAccountAndPasswordEncryptKey(password)
+    const { address, passwordEncryptedPrivateKey } =
+      await createAccountAndPasswordEncryptKey(password)
 
     const { origin } = window.location
 
@@ -159,7 +159,30 @@ export const useAccount = (address: string, network: number) => {
     return response.transactionHash
   }
 
+  const setUserMetadataData = async (
+    lockAddress: string,
+    metadata: any,
+    network: number
+  ) => {
+    const payload = generateKeyHolderMetadataPayload(address, metadata)
+    const signature = await walletService.unformattedSignTypedData(
+      address,
+      payload
+    )
+    const storageService = new StorageService(config.services.storage.host)
+
+    const response = await storageService.setUserMetadataData(
+      lockAddress,
+      address,
+      payload,
+      signature,
+      network
+    )
+    return response
+  }
+
   return {
+    setUserMetadataData,
     getTokenBalance,
     getCards,
     chargeCard,

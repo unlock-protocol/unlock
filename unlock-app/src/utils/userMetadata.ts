@@ -1,8 +1,8 @@
 import { UserMetadata, MetadataInput } from '../unlockTypes'
 
-export function getPublicInputs(
-  inputs: MetadataInput[]
-): { [name: string]: boolean } {
+export function getPublicInputs(inputs: MetadataInput[]): {
+  [name: string]: boolean
+} {
   const result: { [key: string]: boolean } = {}
   inputs.forEach((input) => (result[input.name] = input.public || false))
   return result
