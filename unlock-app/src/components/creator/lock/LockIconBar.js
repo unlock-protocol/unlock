@@ -11,13 +11,7 @@ import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 import { AuthenticationContext } from '../../interface/Authenticate'
 
-export function LockIconBar({
-  lock,
-  toggleCode,
-  edit,
-  withdraw,
-  toggleCreditCard,
-}) {
+export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
@@ -41,8 +35,11 @@ export function LockIconBar({
       <IconBar>
         <Buttons.CreditCard as="button" lock={lock} action={toggleCreditCard} />
         <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
-        <Buttons.Edit as="button" action={() => edit(lock.address)} />
-        {/* Reinstate when we're ready <Buttons.ExportLock /> */}
+        <Buttons.Demo
+          as="a"
+          href={`/demo?network=${network}&lock=${lock.address}`}
+          target="_blank"
+        />
         <Buttons.Members href={membersPage} />
         <Buttons.AppStore as="button" action={toggleCode} />
         <Buttons.Explorer
@@ -58,7 +55,6 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   toggleCreditCard: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
 }
 export default withConfig(LockIconBar)
