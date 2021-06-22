@@ -1,7 +1,7 @@
 // hardhat.config.js
 
-require("@nomiclabs/hardhat-truffle5");
-require("@nomiclabs/hardhat-waffle");
+require('@nomiclabs/hardhat-truffle5')
+require('@nomiclabs/hardhat-waffle')
 
 // erc1820 deployment
 require('hardhat-erc1820')
@@ -78,8 +78,6 @@ task('balance', "Prints an account's balance")
     // eslint-disable-next-line no-console
     console.log(web3.utils.fromWei(balance, 'ether'), 'ETH')
   })
-
-
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

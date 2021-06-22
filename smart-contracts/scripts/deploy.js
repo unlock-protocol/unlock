@@ -12,6 +12,7 @@ async function main() {
   const chainId = await unlockOwner.getChainId()
   const networkName = getNetworkName(chainId)
 
+  // eslint-disable-next-line no-console
   console.log(
     `Deploying contracts on ${networkName} with the account: ${unlockOwner.address}`
   )
@@ -23,7 +24,7 @@ async function main() {
     initializer: 'initialize(address)',
   })
   await unlock.deployed()
-  
+
   // eslint-disable-next-line no-console
   console.log('Unlock proxy deployed to:', unlock.address)
 
@@ -35,13 +36,13 @@ async function main() {
   // 2. deploying PublicLock
   const PublicLock = await ethers.getContractFactory('PublicLock')
   const publicLock = await PublicLock.deploy()
-  
+
   // eslint-disable-next-line no-console
   console.log('PublicLock deployed at', publicLock.address)
 
   // save deployment info
   const lockDeployment = await addDeployment('PublicLock', publicLock)
-  
+
   // eslint-disable-next-line no-console
   console.log(`Deployment info for ${lockDeployment.contractName} saved.`)
 

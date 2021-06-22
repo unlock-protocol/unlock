@@ -23,6 +23,7 @@ const getDeploymentsFilePath = (chainId, contractName) => {
 }
 
 async function getImplementationAddress(proxyAddress) {
+  // eslint-disable-next-line global-require
   const { ethers } = require('hardhat')
 
   const implHex = await ethers.provider.getStorageAt(
@@ -33,6 +34,7 @@ async function getImplementationAddress(proxyAddress) {
 }
 
 const parseDeploymentInfo = async (contractName, instance, isProxy) => {
+  // eslint-disable-next-line global-require
   const { artifacts } = require('hardhat')
   const artifact = await artifacts.readArtifact(contractName)
   const receipt = await instance.deployTransaction.wait()
@@ -70,7 +72,7 @@ const addDeployment = async (contractName, instance, isProxy) => {
 
   // save as JSON
   fs.outputJsonSync(deploymentFilePath, deployment, { spaces: 2 })
-  
+
   return { ...deployment, path: deploymentFilePath }
 }
 

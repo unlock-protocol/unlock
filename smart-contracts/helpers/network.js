@@ -13,7 +13,8 @@ const supportedNetworks = Object.keys(chains)
 const getNetworkName = (chainId) => {
   if (chainId === 31337) {
     return 'localhost'
-  } else if (chainId === 1337) {
+  }
+  if (chainId === 1337) {
     return 'ganache'
   }
   const networkName = Object.keys(chains).find((k) => chains[k] === chainId)

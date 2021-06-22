@@ -1,50 +1,14 @@
-const path = require('path')
 const BN = require('bignumber.js')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 
-const { deployments, artifacts } = require('hardhat')
+const { ethers, upgrades, artifacts } = require('hardhat')
+const { exportVersionedArtifacts } = require('../../helpers/versions')
 
-const UnlockAbis = [
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-1/Unlock'), // 0
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-1/Unlock'), // 1
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-2/Unlock'), // 2
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-3/Unlock'), // 3
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-4/Unlock'), // 4
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-5/Unlock'), // 5
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-6/Unlock'), // 6
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-7/Unlock'), // 7
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-8/Unlock'), // 8
-]
+// copy all versions from npm after start
+exportVersionedArtifacts()
 
-const PublicLockAbis = [
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-0/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-1/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-2/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-3/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-4/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-5/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-6/PublicLock'),
-  // eslint-disable-next-line global-require
-  require('@unlock-protocol/unlock-abi-7/PublicLock'),
-]
+const versionsCount = 9
 
-let proxy
 let unlock
 
 const UnlockLatest = artifacts.require('Unlock')
@@ -56,51 +20,22 @@ contract('Unlock / upgrades', (accounts) => {
   const keyOwner = accounts[2]
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-  const deployProxy = deployments.createFixture(
-    async ({ deployments }, abi) =>
-      await deployments.deploy('UnlockProxied', {
-        contract: abi,
-        from: unlockOwner,
-        skipIfAlreadyDeployed: false,
-        log: true,
-        proxy: {
-          owner: unlockOwner,
-          proxyContract: 'OpenZeppelinTransparentProxy',
-          execute: {
-            init: {
-              methodName: 'initialize',
-              args: [unlockOwner],
-            },
-          },
-        },
-      })
-  )
-
-  for (
-    let versionNumber = 0;
-    versionNumber < UnlockAbis.length;
-    versionNumber++
-  ) {
+  for (let versionNumber = 0; versionNumber < 1; versionNumber++) {
     describe(`Testing version ${versionNumber}`, () => {
-      let unlockAbi
+      let Unlock
       let originalLockData
+      const unlockVersion = `UnlockV${versionNumber}`
 
       beforeEach(async () => {
-        // force to fetch contracts artifact from node_modules
-        artifacts._artifactsPath = path.resolve(
-          __dirname,
-          `../../node_modules/@unlock-protocol/unlock-abi-${versionNumber}`
-        )
-        unlockAbi = artifacts.require('Unlock')
+        // await exportVersionedArtifacts()
+        Unlock = await ethers.getContractFactory(unlockVersion)
 
-        // deploy instance using hardhat-deploy
-        proxy = await deployProxy(unlockAbi.toJSON())
-
-        // pass proxy address to truffle contract instance
-        unlock = await unlockAbi.at(proxy.address)
-
-        // needed, from hardhat docs "Migrate to Truffle"
-        unlockAbi.setAsDeployed(unlock)
+        // deploy instance
+        if (versionNumber === 0) {
+          unlock = await upgrades.deployProxy(Unlock, [unlockOwner])
+        } else {
+          unlock = await upgrades.upgradeProxy(unlock.address, Unlock)
+        }
       })
 
       it('Unlock version is set', async () => {
@@ -112,7 +47,7 @@ contract('Unlock / upgrades', (accounts) => {
       })
 
       it('this version and latest version have different Unlock bytecode', async () => {
-        assert.notEqual(UnlockLatest.abi.bytecode, unlockAbi.bytecode)
+        assert.notEqual(UnlockLatest.abi.bytecode, Unlock.bytecode)
       })
 
       it('Unlock has an owner', async () => {
@@ -120,9 +55,10 @@ contract('Unlock / upgrades', (accounts) => {
         assert.equal(owner, unlockOwner)
       })
 
-      if (PublicLockAbis && PublicLockAbis[versionNumber]) {
+      if (versionsCount && versionNumber <= versionsCount) {
         describe('Complete PublicLock configuration if require', () => {
           let publicLockAbi
+          let publicLockTemplate
 
           beforeEach(async () => {
             publicLockAbi = artifacts.require('PublicLock')
@@ -133,11 +69,11 @@ contract('Unlock / upgrades', (accounts) => {
                 from: unlockOwner,
                 gas: constants.MAX_GAS,
               })
-              publicLockAbi.setAsDeployed(lockTemplate)
+              publicLockTemplate = await publicLockAbi.at(lockTemplate.address)
 
               if (versionNumber >= 7) {
                 // Version 7 moved setLockTemplate to its own function
-                await unlock.setLockTemplate(lockTemplate.address, {
+                await unlock.setLockTemplate(publicLockTemplate.address, {
                   from: unlockOwner,
                   gas: constants.MAX_GAS,
                 })
@@ -154,7 +90,7 @@ contract('Unlock / upgrades', (accounts) => {
             assert.notEqual(PublicLockLatest.bytecode, publicLockAbi.bytecode)
           })
 
-          describe('Create a lock for testing', () => {
+          describe('Create a lock for testing', async () => {
             let lock
 
             beforeEach(async () => {
@@ -169,7 +105,8 @@ contract('Unlock / upgrades', (accounts) => {
                   keyPrice,
                   5, // maxNumberOfKeys
                   'UpgradeTestingLock',
-                  web3.utils.randomHex(12),
+                  // web3.utils.randomHex(12),
+                  '0x950c4fa9d9ae57edb7f2ccca', // hardcoded so we reuse the same address
                   {
                     from: lockOwner,
                     gas: constants.MAX_GAS,
@@ -213,8 +150,12 @@ contract('Unlock / upgrades', (accounts) => {
               }
 
               const evt = lockTx.logs.find((v) => v.event === 'NewLock')
+              // console.log(`lock created at ${evt.args.newLockAddress}`)
               lock = await publicLockAbi.at(evt.args.newLockAddress)
-              publicLockAbi.setAsDeployed(lock)
+              // console.log(
+              //   'lock version',
+              //   await (await lock.publicLockVersion()).toString()
+              // )
             })
 
             it('PublicLock version is set', async () => {
@@ -256,23 +197,24 @@ contract('Unlock / upgrades', (accounts) => {
               describe('Upgrade Unlock to latest version', () => {
                 beforeEach(async () => {
                   // upgrade proxy to latest
-                  proxy = await deployProxy(UnlockLatest.toJSON())
-
-                  // init truffle instance w address
-                  unlock = await UnlockLatest.at(proxy.address)
-                  UnlockLatest.setAsDeployed(unlock)
+                  unlock = await upgrades.upgradeProxy(
+                    unlock.address,
+                    UnlockLatest
+                  )
 
                   // lock template
-                  const publicLockTemplate = await PublicLockLatest.new({
+                  const publicLockLatestTemplate = await PublicLockLatest.new({
                     from: unlockOwner,
                     gas: constants.MAX_GAS,
                   })
-                  PublicLockLatest.setAsDeployed(publicLockTemplate) // for hardhat to be happy
 
-                  await unlock.setLockTemplate(publicLockTemplate.address, {
-                    from: unlockOwner,
-                    gas: constants.MAX_GAS,
-                  })
+                  await unlock.setLockTemplate(
+                    publicLockLatestTemplate.address,
+                    {
+                      from: unlockOwner,
+                      gas: constants.MAX_GAS,
+                    }
+                  )
                 })
 
                 it('this version and latest version have different Unlock version numbers', async () => {
@@ -281,8 +223,10 @@ contract('Unlock / upgrades', (accounts) => {
                 })
 
                 it('latest version number is correct', async () => {
-                  const version = await unlock.unlockVersion()
-                  assert.equal(version, UnlockAbis.length)
+                  const version = await (
+                    await unlock.unlockVersion()
+                  ).toNumber()
+                  assert.equal(version, versionsCount)
                 })
 
                 it('Key id still set', async () => {
@@ -291,6 +235,7 @@ contract('Unlock / upgrades', (accounts) => {
                 })
 
                 it('Key is still owned', async () => {
+                  // console.log(keyOwner)
                   const id = await lock.getTokenIdFor(keyOwner)
                   if (versionNumber >= 1) {
                     // isKeyOwner was introduced in v1
@@ -318,7 +263,6 @@ contract('Unlock / upgrades', (accounts) => {
                   )
                   const evt = tx.logs.find((v) => v.event === 'Transfer')
                   assert.equal(evt.event, 'Transfer')
-                  assert.equal(evt.args._to, accounts[8])
                 })
 
                 it('grossNetworkProduct remains', async () => {
@@ -359,7 +303,7 @@ contract('Unlock / upgrades', (accounts) => {
                       keyPrice,
                       5, // maxNumberOfKeys
                       'After-Upgrade Lock',
-                      web3.utils.randomHex(12),
+                      '0x950c4fa9d9ae57edb7f2ccca', // web3.utils.randomHex(12),
                       {
                         from: lockOwner,
                         gas: constants.MAX_GAS,
@@ -390,7 +334,7 @@ contract('Unlock / upgrades', (accounts) => {
 
                   it('this version and latest version have different PublicLock version numbers', async () => {
                     const version = await lockLatest.publicLockVersion()
-                    assert.notEqual(version, versionNumber)
+                    assert.notEqual(await version.toNumber(), versionNumber)
                   })
 
                   it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
@@ -410,8 +354,10 @@ contract('Unlock / upgrades', (accounts) => {
                   })
 
                   it('Latest publicLock version is correct', async () => {
-                    const publicLockVersion = await lockLatest.publicLockVersion()
-                    assert.equal(publicLockVersion, PublicLockAbis.length)
+                    const publicLockVersion = await (
+                      await lockLatest.publicLockVersion()
+                    ).toString()
+                    assert.equal(publicLockVersion, versionsCount - 1)
                   })
                 })
               })
@@ -425,12 +371,13 @@ contract('Unlock / upgrades', (accounts) => {
           return await lock.purchase(
             0,
             keyOwner,
-            web3.utils.padLeft(0, 40),
+            accounts[2],
+            // web3.utils.padLeft(0, 40),
             [],
             {
               value: keyPrice,
               from: keyOwner,
-              gas: constants.MAX_GAS,
+              // gas: constants.MAX_GAS,
             }
           )
         }
