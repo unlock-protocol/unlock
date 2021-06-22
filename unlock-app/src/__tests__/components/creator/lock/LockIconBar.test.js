@@ -62,18 +62,4 @@ describe('LockIconBar', () => {
     }
     toggleCode = jest.fn()
   })
-
-  it('should trigger edit when clicked', () => {
-    expect.assertions(2)
-    const edit = jest.fn()
-
-    const wrapper = renderWithContexts(
-      <LockIconBar lock={lock} toggleCode={toggleCode} edit={edit} />
-    )
-
-    rtl.fireEvent.click(wrapper.getByTitle('Edit'))
-
-    expect(edit).toHaveBeenCalledTimes(1)
-    expect(edit).toHaveBeenCalledWith(lock.address)
-  })
 })
