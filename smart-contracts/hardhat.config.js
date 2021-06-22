@@ -1,15 +1,12 @@
 // hardhat.config.js
-require('hardhat-deploy')
-require('hardhat-deploy-ethers')
 
-// for logging
-require('hardhat-tracer')
+require("@nomiclabs/hardhat-truffle5");
+require("@nomiclabs/hardhat-waffle");
 
 // erc1820 deployment
 require('hardhat-erc1820')
 
-require('@nomiclabs/hardhat-truffle5')
-require('@nomiclabs/hardhat-web3')
+// for upgrades
 require('@nomiclabs/hardhat-ethers')
 require('@openzeppelin/hardhat-upgrades')
 
@@ -28,11 +25,17 @@ const settings = {
   },
 }
 
+// When running CI, we connect to the 'ganache' container
+const testHost = process.env.CI === 'true' ? 'ganache' : '127.0.0.1'
+
 const networks = {
-  localhost: {
-    url: 'http://127.0.0.1:8545',
+  ganache: {
+    url: `http://${testHost}:8545`,
+    chainId: 1337,
+    accounts: {
+      mnemonic: 'hello unlock save the web',
+    },
   },
-  hardhat: {},
 }
 
 // parse additional networks and accounts
@@ -76,25 +79,13 @@ task('balance', "Prints an account's balance")
     console.log(web3.utils.fromWei(balance, 'ether'), 'ETH')
   })
 
+
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
   networks,
-  namedAccounts: {
-    unlockOwner: {
-      default: 0, // hardhat
-      4: 0, // rinkeby
-    },
-    minter: {
-      default: 1,
-      4: 1, // rinkeby
-    },
-    proxyAdmin: {
-      default: 9,
-      4: 9, // rinkeby
-    },
-  },
   solidity: {
     compilers: [
       { version: '0.5.17', settings },
