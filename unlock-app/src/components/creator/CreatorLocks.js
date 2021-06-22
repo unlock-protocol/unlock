@@ -44,7 +44,12 @@ export const CreatorLocks = ({ formIsVisible, hideForm }) => {
       {locks.length > 0 &&
         locks.map((lock) => {
           return (
-            <CreatorLock key={lock.address} lock={lock} network={network} />
+            <CreatorLock
+              showIntegrations={locks.length == 1}
+              key={lock.address}
+              lock={lock}
+              network={network}
+            />
           )
         })}
       {locks.length === 0 && !loading && !formIsVisible && (

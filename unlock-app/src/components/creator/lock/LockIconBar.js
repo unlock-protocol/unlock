@@ -41,8 +41,11 @@ export function LockIconBar({
       <IconBar>
         <Buttons.CreditCard as="button" lock={lock} action={toggleCreditCard} />
         <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
-        <Buttons.Edit as="button" action={() => edit(lock.address)} />
-        {/* Reinstate when we're ready <Buttons.ExportLock /> */}
+        <Buttons.Demo
+          as="a"
+          href={`/demo?network=${network}&lock=${lock.address}`}
+          target="_blank"
+        />
         <Buttons.Members href={membersPage} />
         <Buttons.AppStore as="button" action={toggleCode} />
         <Buttons.Explorer

@@ -34,6 +34,34 @@ Integration.defaultProps = {
 const AppStore = ({ lock }) => {
   const { network } = useContext(AuthenticationContext)
   const integrations = {
+    wordpress: {
+      name: 'Wordpress',
+      icon: <Svg.Wordpress />,
+      href: 'https://wordpress.org/plugins/unlock-protocol/',
+    },
+    discord: {
+      name: 'Discord (with Swordy Bot)',
+      icon: <Svg.Discord />,
+      href: 'https://swordybot.com/',
+    },
+    cloudflare: {
+      name: 'Cloudflare',
+      icon: <Svg.Cloudflare />,
+      href: 'https://unlock-protocol.com/blog/cloudflare-worker',
+    },
+    webflow: {
+      name: 'Webflow',
+      icon: <Svg.Webflow />,
+      href: 'https://unlock-integration.webflow.io/instructions',
+    },
+    discourse: {
+      name: 'Discourse',
+      icon: <Svg.Discourse />,
+      href: 'https://unlock.community/',
+    },
+  }
+
+  const tutorials = {
     adfree: {
       name: 'Ad-Free Experience',
       icon: <Svg.Adfree />,
@@ -54,46 +82,53 @@ const AppStore = ({ lock }) => {
       icon: <Svg.Newsletter />,
       href: 'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
     },
-    wordpress: {
-      name: 'Wordpress',
-      icon: <Svg.Wordpress />,
-      href: 'https://wordpress.org/plugins/unlock-protocol/',
-    },
-    discord: {
-      name: 'Discord (with Swordy Bot)',
-      icon: <Svg.Discord />,
-      href: 'https://swordybot.com/',
-    },
-    cloudflare: {
-      name: 'Cloudflare',
-      icon: <Svg.Cloudflare />,
-      href: 'https://unlock-protocol.com/blog/cloudflare-worker',
-    },
   }
-
   return (
     <Wrapper>
-      <DetailTitle>Integrate</DetailTitle>
-      <Apps>
-        {Object.keys(integrations).map((index) => {
-          const integration = integrations[index]
-          return (
-            <Integration
-              key={index}
-              name={integration.name}
-              icon={integration.icon}
-              href={integration.href}
-            />
-          )
-        })}
-      </Apps>
+      <Details>
+        <DetailTitle>Integrate</DetailTitle>
+        <p>
+          Easily integrate the lock into existing application through the use of
+          plugins and bots.
+        </p>
+        <Apps>
+          {Object.keys(integrations).map((index) => {
+            const integration = integrations[index]
+            return (
+              <Integration
+                key={index}
+                name={integration.name}
+                icon={integration.icon}
+                href={integration.href}
+              />
+            )
+          })}
+        </Apps>
+      </Details>
+      <Details>
+        <DetailTitle>Tutorials</DetailTitle>
+        <p>Learn how to create specific experiences for your members.</p>
+        <Apps>
+          {Object.keys(tutorials).map((index) => {
+            const integration = tutorials[index]
+            return (
+              <Integration
+                key={index}
+                name={integration.name}
+                icon={integration.icon}
+                href={integration.href}
+              />
+            )
+          })}
+        </Apps>
+      </Details>
       <Details>
         <DetailTitle>Custom Integration</DetailTitle>
         <DetailBlock>
           <p>
-            Easily integrate Unlock into your application flow with a few lines
-            of code. We’ve structured it in a way to make it incredibly flexible
-            yet light weight.
+            Easily integrate Unlock into your web application flow with a few
+            lines of code. We’ve structured it in a way to make it incredibly
+            flexible yet light weight.
           </p>
           <ExtraLink>
             <Button
@@ -101,25 +136,12 @@ const AppStore = ({ lock }) => {
               borderRadius="3px"
               size="64px"
               fillColor="var(--grey)"
-              href="https://docs.unlock-protocol.com/"
+              href="https://docs.unlock-protocol.com/creators/locking-page"
               target="_blank"
             >
               <Svg.Documentation />
             </Button>
             <Label>Documentation</Label>
-          </ExtraLink>
-          <ExtraLink>
-            <Button
-              href={`/demo?network=${network}&lock=${lock.address}`}
-              target="_blank"
-              backgroundColor="white"
-              borderRadius="3px"
-              size="64px"
-              fillColor="var(--grey)"
-            >
-              <Svg.LiveDemo />
-            </Button>
-            <Label>Live Demo</Label>
           </ExtraLink>
         </DetailBlock>
       </Details>
@@ -158,7 +180,6 @@ const App = styled.li`
 const Details = styled.div`
   display: block;
   font-family: IBM Plex Sans;
-  border-top: 1px solid var(--lightgrey);
 `
 
 const DetailTitle = styled.h3`
