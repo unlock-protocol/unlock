@@ -59,7 +59,7 @@ const BalanceWarning = () => {
     // TODO: check whether they actually have DAI on mainnet first?
     callToAction = (
       <>
-        Transfer some Ethereum's DAI to the xDAI chain using{' '}
+        Transfer some Ethereum&apos;s DAI to the xDAI chain using{' '}
         <a
           href="https://omni.xdaichain.com/bridge"
           target="_blank"

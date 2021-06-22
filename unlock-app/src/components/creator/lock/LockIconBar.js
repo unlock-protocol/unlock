@@ -11,13 +11,7 @@ import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 import { AuthenticationContext } from '../../interface/Authenticate'
 
-export function LockIconBar({
-  lock,
-  toggleCode,
-  edit,
-  withdraw,
-  toggleCreditCard,
-}) {
+export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
@@ -61,7 +55,6 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   toggleCreditCard: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
 }
 export default withConfig(LockIconBar)
