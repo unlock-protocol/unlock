@@ -5818,10 +5818,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/from-entries/-/from-entries-0.2.1.tgz#7e86196b8b2e99d73106a8f25c2a068326346354"
   integrity sha512-CAqefTFAfnUPwYqsWHXpOxHaq1Zo5UQ3m9Zm2p09LggGe57rqHoBn3c++xcoomzXKynAUuiBMDUCQvKMnXjUpA==
 
-"@unlock-protocol/unlock-assets@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.4.3.tgz#5b9f46c8ab3b454dd1fd0270cd544dc299a3529f"
-  integrity sha512-zP1TLEt8MYUHlQ++k/MM0x/+Wl8MCmgCBd7EtddS0DLYEqD/WngmV8il+9PqVwRHZ2C/4xVYMPwf69k/8q8X4g==
+"@unlock-protocol/unlock-assets@1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-assets/-/unlock-assets-1.4.4.tgz#bc299fb9d18b649852f32894db61b489af2929b5"
+  integrity sha512-1SqvnjXuiDy3CUqbReHylHI0xLerJMQ0O7u2msXnC/ogD7d9bcpyf1VA52NHWrUxMXliRj7l6neblKs6N2Uk+A==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
