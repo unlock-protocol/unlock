@@ -17883,7 +17883,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Documentation';
+  content: 'Discourse';
   position: absolute;
 }
 
@@ -17899,7 +17899,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Docs';
+  content: 'Documentation';
   position: absolute;
 }
 
@@ -17915,7 +17915,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'Download';
+  content: 'Docs';
   position: absolute;
 }
 
@@ -17931,7 +17931,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'Edit';
+  content: 'Download';
   position: absolute;
 }
 
@@ -17947,7 +17947,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'Eth';
+  content: 'Edit';
   position: absolute;
 }
 
@@ -17963,7 +17963,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Etherscan';
+  content: 'Eth';
   position: absolute;
 }
 
@@ -17979,7 +17979,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'EthSub';
+  content: 'Etherscan';
   position: absolute;
 }
 
@@ -17995,7 +17995,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Export';
+  content: 'EthSub';
   position: absolute;
 }
 
@@ -18011,7 +18011,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Github';
+  content: 'Export';
   position: absolute;
 }
 
@@ -18027,7 +18027,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Heart';
+  content: 'Github';
   position: absolute;
 }
 
@@ -18043,7 +18043,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'Key';
+  content: 'Heart';
   position: absolute;
 }
 
@@ -18059,7 +18059,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'Info';
+  content: 'Key';
   position: absolute;
 }
 
@@ -18075,7 +18075,7 @@ Object {
 }
 
 .c30:hover:before {
-  content: 'Lemniscate';
+  content: 'Info';
   position: absolute;
 }
 
@@ -18091,7 +18091,7 @@ Object {
 }
 
 .c31:hover:before {
-  content: 'LiveDemo';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -18107,7 +18107,7 @@ Object {
 }
 
 .c32:hover:before {
-  content: 'Loading';
+  content: 'LiveDemo';
   position: absolute;
 }
 
@@ -18123,7 +18123,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'LoadingDots';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -18139,7 +18139,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'LockClosed';
+  content: 'LoadingDots';
   position: absolute;
 }
 
@@ -18155,7 +18155,7 @@ Object {
 }
 
 .c35:hover:before {
-  content: 'Log';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -18171,7 +18171,7 @@ Object {
 }
 
 .c36:hover:before {
-  content: 'Metamask';
+  content: 'Log';
   position: absolute;
 }
 
@@ -18187,7 +18187,7 @@ Object {
 }
 
 .c37:hover:before {
-  content: 'Opera';
+  content: 'Metamask';
   position: absolute;
 }
 
@@ -18203,7 +18203,7 @@ Object {
 }
 
 .c38:hover:before {
-  content: 'Preview';
+  content: 'Opera';
   position: absolute;
 }
 
@@ -18219,7 +18219,7 @@ Object {
 }
 
 .c39:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -18235,7 +18235,7 @@ Object {
 }
 
 .c40:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -18251,7 +18251,7 @@ Object {
 }
 
 .c41:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -18267,7 +18267,7 @@ Object {
 }
 
 .c42:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -18283,7 +18283,7 @@ Object {
 }
 
 .c43:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -18299,7 +18299,7 @@ Object {
 }
 
 .c44:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -18315,7 +18315,7 @@ Object {
 }
 
 .c45:hover:before {
-  content: 'Members';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -18331,7 +18331,7 @@ Object {
 }
 
 .c46:hover:before {
-  content: 'Person';
+  content: 'Members';
   position: absolute;
 }
 
@@ -18347,7 +18347,7 @@ Object {
 }
 
 .c47:hover:before {
-  content: 'Telegram';
+  content: 'Person';
   position: absolute;
 }
 
@@ -18363,7 +18363,7 @@ Object {
 }
 
 .c48:hover:before {
-  content: 'Ticket';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -18379,7 +18379,7 @@ Object {
 }
 
 .c49:hover:before {
-  content: 'Twitter';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -18395,7 +18395,7 @@ Object {
 }
 
 .c50:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -18411,7 +18411,7 @@ Object {
 }
 
 .c51:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -18427,7 +18427,7 @@ Object {
 }
 
 .c52:hover:before {
-  content: 'Home';
+  content: 'ChevronUp';
   position: absolute;
 }
 
@@ -18443,7 +18443,7 @@ Object {
 }
 
 .c53:hover:before {
-  content: 'Qr';
+  content: 'Home';
   position: absolute;
 }
 
@@ -18459,7 +18459,7 @@ Object {
 }
 
 .c54:hover:before {
-  content: 'WalletConnect';
+  content: 'Qr';
   position: absolute;
 }
 
@@ -18475,7 +18475,7 @@ Object {
 }
 
 .c55:hover:before {
-  content: 'Wallet';
+  content: 'WalletConnect';
   position: absolute;
 }
 
@@ -18491,7 +18491,7 @@ Object {
 }
 
 .c56:hover:before {
-  content: 'Webflow';
+  content: 'Wallet';
   position: absolute;
 }
 
@@ -18507,6 +18507,22 @@ Object {
 }
 
 .c57:hover:before {
+  content: 'Webflow';
+  position: absolute;
+}
+
+.c58 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c58:hover {
+  background-color: var(--offwhite);
+}
+
+.c58:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -18805,6 +18821,27 @@ Object {
           </div>
           <div
             class="c18"
+            name="Discourse"
+          >
+            <svg
+              viewBox="-5 -3 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M0 11.79C0 5.279 5.532 0 12.103 0 18.666 0 24 5.486 24 11.996c0 6.51-5.33 11.992-11.9 11.992L0 24V11.79zm11.848-7.972a7.405 7.405 0 014.82 2.214c.527.396 1.001.863 1.408 1.392l-.005-.005.02.025a7.258 7.258 0 01.814 9.675 7.381 7.381 0 01-4.444 2.778 7.431 7.431 0 01-5.182-.858l-4.876.57H4.4h.002-.002.002v-.002h-.002l.007-.024.872-4.343a7.256 7.256 0 01-1.213-5.186 7.293 7.293 0 012.66-4.626 7.421 7.421 0 015.121-1.61zM4.42 19.603l-.017.006v-.002l.017-.004z"
+                fill-rule="evenodd"
+              />
+              <path
+                d="M18.071 7.426a7.262 7.262 0 011.51 4.499 7.264 7.264 0 01-1.595 4.47 7.38 7.38 0 01-4.028 2.558 7.436 7.436 0 01-4.765-.43L4.401 19.61l4.878-.572a7.43 7.43 0 005.182.859 7.381 7.381 0 004.443-2.778 7.258 7.258 0 00-.833-9.693z"
+              />
+              <path
+                d="M5.735 15.353a7.25 7.25 0 01-.764-4.818 7.294 7.294 0 012.465-4.222 7.415 7.415 0 014.596-1.744 7.42 7.42 0 014.681 1.509 7.404 7.404 0 00-4.865-2.26 7.421 7.421 0 00-5.12 1.61 7.293 7.293 0 00-2.66 4.626A7.256 7.256 0 005.28 15.24l-.877 4.37 1.332-4.257z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c19"
             name="Documentation"
           >
             <svg
@@ -18819,7 +18856,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c20"
             name="Docs"
           >
             <svg
@@ -18834,7 +18871,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c21"
             name="Download"
           >
             <svg
@@ -18849,7 +18886,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c22"
             name="Edit"
           >
             <svg
@@ -18867,7 +18904,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c23"
             name="Eth"
           >
             <svg
@@ -18882,7 +18919,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c24"
             name="Etherscan"
           >
             <svg
@@ -18897,7 +18934,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="EthSub"
           >
             <svg
@@ -18911,7 +18948,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Export"
           >
             <svg
@@ -18926,7 +18963,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="Github"
           >
             <svg
@@ -18939,7 +18976,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="Heart"
           >
             <svg
@@ -18952,7 +18989,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="Key"
           >
             <svg
@@ -18968,7 +19005,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="Info"
           >
             <svg
@@ -18983,7 +19020,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c31"
             name="Lemniscate"
           >
             <svg
@@ -18999,7 +19036,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c31"
+            class="c32"
             name="LiveDemo"
           >
             <svg
@@ -19028,7 +19065,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c32"
+            class="c33"
             name="Loading"
           >
             <svg
@@ -19181,7 +19218,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c33"
+            class="c34"
             name="LoadingDots"
           >
             <svg
@@ -19227,7 +19264,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c35"
             name="LockClosed"
           >
             <svg
@@ -19242,7 +19279,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c36"
             name="Log"
           >
             <svg
@@ -19257,7 +19294,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c36"
+            class="c37"
             name="Metamask"
           >
             <svg
@@ -19352,7 +19389,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c37"
+            class="c38"
             name="Opera"
           >
             <svg
@@ -20672,7 +20709,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c38"
+            class="c39"
             name="Preview"
           >
             <svg
@@ -20693,7 +20730,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c39"
+            class="c40"
             name="Jobs"
           >
             <svg
@@ -20708,7 +20745,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c40"
+            class="c41"
             name="Unlock"
           >
             <svg
@@ -20721,7 +20758,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c41"
+            class="c42"
             name="UnlockWordMark"
           >
             <svg
@@ -20734,7 +20771,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c42"
+            class="c43"
             name="Upload"
           >
             <svg
@@ -20749,7 +20786,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c43"
+            class="c44"
             name="Withdraw"
           >
             <svg
@@ -20764,7 +20801,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c44"
+            class="c45"
             name="Newsletter"
           >
             <svg
@@ -20779,7 +20816,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c45"
+            class="c46"
             name="Members"
           >
             <svg
@@ -20794,7 +20831,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c46"
+            class="c47"
             name="Person"
           >
             <svg
@@ -20807,7 +20844,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c47"
+            class="c48"
             name="Telegram"
           >
             <svg
@@ -20822,7 +20859,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c48"
+            class="c49"
             name="Ticket"
           >
             <svg
@@ -20837,7 +20874,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c49"
+            class="c50"
             name="Twitter"
           >
             <svg
@@ -20852,7 +20889,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c50"
+            class="c51"
             name="Bars"
           >
             <svg
@@ -20865,7 +20902,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c51"
+            class="c52"
             name="ChevronUp"
           >
             <svg
@@ -20880,7 +20917,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c52"
+            class="c53"
             name="Home"
           >
             <svg
@@ -20893,7 +20930,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c53"
+            class="c54"
             name="Qr"
           >
             <svg
@@ -20930,7 +20967,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c54"
+            class="c55"
             name="WalletConnect"
           >
             <svg
@@ -20943,7 +20980,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c55"
+            class="c56"
             name="Wallet"
           >
             <svg
@@ -20956,7 +20993,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c56"
+            class="c57"
             name="Webflow"
           >
             <svg
@@ -20969,7 +21006,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c57"
+            class="c58"
             name="Wordpress"
           >
             <svg
@@ -21279,6 +21316,27 @@ Object {
               clip-rule="evenodd"
               d="M16.37 18.465c.617.761 1.357 1.646 1.357 1.646 4.306-.137 6.084-2.802 6.258-3.064l.015-.021c0-6.56-2.961-11.887-2.961-11.887C18.098 2.939 15.28 3 15.28 3l-.288.33c3.496 1.048 5.121 2.59 5.121 2.59a17.096 17.096 0 00-6.19-1.953 17.4 17.4 0 00-4.154.04c-.108 0-.2.017-.304.034l-.046.008c-.72.082-2.468.33-4.668 1.296-.761.329-1.214.575-1.214.575s1.687-1.624 5.388-2.673L8.72 3S5.923 2.938 2.96 5.14c0 0-2.961 5.327-2.961 11.887 0 0 1.728 2.961 6.272 3.105 0 0 .761-.905 1.378-1.686-2.611-.782-3.599-2.406-3.599-2.406s.206.144.576.35c.013 0 .026.007.043.018.011.007.024.015.04.023.03.02.061.035.092.05.03.016.062.032.093.052.514.288 1.028.514 1.5.7.844.35 1.852.658 3.024.884 1.542.288 3.352.39 5.326.02a14.747 14.747 0 002.982-.884c.72-.267 1.522-.658 2.366-1.213 0 0-1.029 1.665-3.723 2.426zm-2.797-5.614c0-1.254.926-2.262 2.098-2.262 1.152 0 2.098 1.008 2.098 2.262 0 1.255-.926 2.262-2.098 2.262-1.152 0-2.098-1.007-2.098-2.262zm-7.506 0c0-1.254.925-2.262 2.098-2.262 1.172 0 2.118 1.008 2.097 2.262 0 1.255-.925 2.262-2.097 2.262-1.152 0-2.098-1.007-2.098-2.262z"
               fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1slxt9r-1 uPKgo"
+          name="Discourse"
+        >
+          <svg
+            viewBox="-5 -3 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M0 11.79C0 5.279 5.532 0 12.103 0 18.666 0 24 5.486 24 11.996c0 6.51-5.33 11.992-11.9 11.992L0 24V11.79zm11.848-7.972a7.405 7.405 0 014.82 2.214c.527.396 1.001.863 1.408 1.392l-.005-.005.02.025a7.258 7.258 0 01.814 9.675 7.381 7.381 0 01-4.444 2.778 7.431 7.431 0 01-5.182-.858l-4.876.57H4.4h.002-.002.002v-.002h-.002l.007-.024.872-4.343a7.256 7.256 0 01-1.213-5.186 7.293 7.293 0 012.66-4.626 7.421 7.421 0 015.121-1.61zM4.42 19.603l-.017.006v-.002l.017-.004z"
+              fill-rule="evenodd"
+            />
+            <path
+              d="M18.071 7.426a7.262 7.262 0 011.51 4.499 7.264 7.264 0 01-1.595 4.47 7.38 7.38 0 01-4.028 2.558 7.436 7.436 0 01-4.765-.43L4.401 19.61l4.878-.572a7.43 7.43 0 005.182.859 7.381 7.381 0 004.443-2.778 7.258 7.258 0 00-.833-9.693z"
+            />
+            <path
+              d="M5.735 15.353a7.25 7.25 0 01-.764-4.818 7.294 7.294 0 012.465-4.222 7.415 7.415 0 014.596-1.744 7.42 7.42 0 014.681 1.509 7.404 7.404 0 00-4.865-2.26 7.421 7.421 0 00-5.12 1.61 7.293 7.293 0 00-2.66 4.626A7.256 7.256 0 005.28 15.24l-.877 4.37 1.332-4.257z"
             />
           </svg>
         </div>
