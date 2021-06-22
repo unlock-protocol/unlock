@@ -1,6 +1,7 @@
 import AppStore from './AppStore'
 import Withdraw from './Withdraw'
 import Edit from './Edit'
+import Demo from './Demo'
 import ExportLock from './ExportLock'
 import Code from './Code'
 import Download from './Download'
@@ -20,6 +21,7 @@ export default {
   Edit,
   ExportLock,
   Code,
+  Demo,
   Download,
   Upload,
   Explorer,

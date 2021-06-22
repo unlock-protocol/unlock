@@ -90,29 +90,35 @@ describe('CreatorLock', () => {
   it('should show integration tab when the button is clicked', () => {
     expect.assertions(2)
     const wrapper = renderWithContexts(
-      <CreatorLock lock={lock} updateLock={() => {}} />
+      <CreatorLock network={1337} lock={lock} updateLock={() => {}} />
     )
 
     expect(
-      wrapper.queryByText('Easily integrate Unlock into your application', {
-        exact: false,
-      })
+      wrapper.queryByText(
+        'Easily integrate the lock into existing application through the use of plugins and bots',
+        {
+          exact: false,
+        }
+      )
     ).toBeNull()
 
     const codeButton = wrapper.getByTitle('Integrations')
     rtl.fireEvent.click(codeButton)
 
     expect(
-      wrapper.queryByText('Easily integrate Unlock into your application', {
-        exact: false,
-      })
+      wrapper.queryByText(
+        'Easily integrate the lock into existing application through the use of plugins and bots',
+        {
+          exact: false,
+        }
+      )
     ).not.toBeNull()
   })
 
   it.skip('should open the edit form when the button is clicked', () => {
     expect.assertions(0)
     const wrapper = renderWithContexts(
-      <CreatorLock lock={lock} updateLock={() => {}} />
+      <CreatorLock network={1337} lock={lock} updateLock={() => {}} />
     )
 
     const editButton = wrapper.getByTitle('Edit')
@@ -124,7 +130,7 @@ describe('CreatorLock', () => {
   it('should display the correct number of keys', () => {
     expect.assertions(1)
     const wrapper = renderWithContexts(
-      <CreatorLock lock={keylock} updateLock={() => {}} />
+      <CreatorLock network={1337} lock={keylock} updateLock={() => {}} />
     )
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
@@ -133,7 +139,7 @@ describe('CreatorLock', () => {
   it('should display infinite keys correctly', () => {
     expect.assertions(1)
     const wrapper = renderWithContexts(
-      <CreatorLock lock={unlimitedlock} updateLock={() => {}} />
+      <CreatorLock network={1337} lock={unlimitedlock} updateLock={() => {}} />
     )
 
     expect(wrapper.queryByText('1/∞')).not.toBeNull()

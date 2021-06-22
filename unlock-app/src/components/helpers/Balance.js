@@ -56,18 +56,13 @@ export const Currency = styled.span.attrs({
 `
 
 export const CurrencySymbol = styled.span`
-  max-width: 40px; /* supports 4 characters */
-  text-align: left;
-  padding-right: 0.3em;
+  text-transform: uppercase;
+  width: 50px; /* supports 5 characters */
+  text-align: right;
+  margin-right: 3px;
   display: inline-block;
 `
 
-export const Eth = styled(CurrencySymbol)`
-  &:before {
-    content: 'Ξ';
-    font-family: 'Arial', sans-serif;
-  }
-`
 export const ERC20 = styled(CurrencySymbol)`
   &:before {
     content: '${(props) => props.name}';

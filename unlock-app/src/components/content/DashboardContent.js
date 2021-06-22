@@ -108,7 +108,7 @@ export const DashboardContent = () => {
               >
                 Unlock&apos;s supported networks
               </a>
-              , such as xDAI.
+              , such as xDAI or Polygon.
             </Warning>
           )}
 

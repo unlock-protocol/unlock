@@ -17,6 +17,7 @@ import Code from '../build/svg-component/Code'
 import CoinbaseWallet from '../build/svg-component/CoinbaseWallet'
 import Cog from '../build/svg-component/Cog'
 import Copy from '../build/svg-component/Copy'
+import Discourse from '../build/svg-component/Discourse'
 import Download from '../build/svg-component/Download'
 import Documentation from '../build/svg-component/Documentation'
 import Docs from '../build/svg-component/Docs'
@@ -82,6 +83,7 @@ export default {
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   CreditCard: wrapViewBox(CreditCard, '-12 -16 48 48'),
   Discord: wrapViewBox(Discord, '-4 -4 32 32'),
+  Discourse: wrapViewBox(Discourse, '-5 -3 32 32'),
   Documentation: wrapViewBox(Documentation, '-6 -6 76 76'),
   Docs: wrapViewBox(Docs, '-6 -5 24 24'),
   Download: wrapViewBox(Download, '0 0 24 24'),

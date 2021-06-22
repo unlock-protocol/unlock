@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-
+import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
@@ -13,6 +13,7 @@ import CreatorLockForm from './CreatorLockForm'
 import { NoPhone, Phone } from '../../theme/media'
 import withConfig from '../../utils/withConfig'
 import { useLock } from '../../hooks/useLock'
+import Svg from '../interface/svg'
 
 import {
   LockPanel,
@@ -59,9 +60,15 @@ LockKeysNumbers.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
 }
 
-export const CreatorLock = ({ lock: lockFromProps, network }) => {
+export const CreatorLock = ({
+  lock: lockFromProps,
+  network,
+  showIntegrations,
+}) => {
   const { query } = useRouter()
-  const [showDrawer, setShowDrawer] = useState('')
+  const [showDrawer, setShowDrawer] = useState(
+    showIntegrations ? 'embed-coded' : ''
+  )
   const [editing, setEditing] = useState(false)
   const { lock, updateKeyPrice, withdraw } = useLock(lockFromProps, network)
 
@@ -138,7 +145,12 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
         <LockKeysNumbers lock={lock} />
-        <BalanceOnLock lock={lock} attribute="keyPrice" />
+        <KeyPrice>
+          <BalanceOnLock lock={lock} attribute="keyPrice" />
+          <InlineButton type="button" onClick={() => edit(lock.address)}>
+            <Svg.Edit name="Edit" />
+          </InlineButton>
+        </KeyPrice>
         <BalanceContainer>
           <NoPhone>
             <BalanceOnLock lock={lock} attribute="balance" />
@@ -151,7 +163,6 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
           lock={lock}
           toggleCreditCard={() => toggleDrawer('credit-card')}
           toggleCode={() => toggleDrawer('embed-coded')}
-          edit={edit}
           withdraw={withdraw}
         />
         {showDrawer === 'embed-coded' && (
@@ -171,9 +182,33 @@ export const CreatorLock = ({ lock: lockFromProps, network }) => {
   )
 }
 
+const KeyPrice = styled.div`
+  display: flex;
+`
+
+const InlineButton = styled.button`
+  cursor: pointer;
+  border: none;
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+  background-color: transparent;
+  > svg {
+    fill: var(--darkgrey);
+    &:hover {
+      fill: var(--slate);
+    }
+  }
+`
+
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   network: PropTypes.number.isRequired,
+  showIntegrations: PropTypes.bool,
+}
+
+CreatorLock.defaultProps = {
+  showIntegrations: false,
 }
 
 export default CreatorLock
