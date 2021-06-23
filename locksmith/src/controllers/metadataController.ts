@@ -103,7 +103,9 @@ namespace MetadataController {
     const metadata = req.body.message.LockMetaData
 
     if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
-      res.sendStatus(401)
+      res
+        .status(401)
+        .send(`${owner} is not a lock manager for ${address} on ${req.chain}`)
     } else {
       const successfulUpdate = metadataOperations.updateDefaultLockMetadata({
         address,
@@ -115,7 +117,7 @@ namespace MetadataController {
       if (successfulUpdate) {
         res.sendStatus(202)
       } else {
-        res.sendStatus(400)
+        res.status(400).send('update failed')
       }
     }
   }
@@ -131,7 +133,9 @@ namespace MetadataController {
     const { chain } = req
 
     if ((await evaluateLockOwnership(address, owner, chain)) === false) {
-      res.sendStatus(401)
+      res
+        .status(401)
+        .send(`${owner} is not a lock manager for ${address} on ${chain}`)
     } else {
       const successfulUpdate = metadataOperations.updateKeyMetadata({
         chain,
@@ -143,7 +147,7 @@ namespace MetadataController {
       if (successfulUpdate) {
         res.sendStatus(202)
       } else {
-        res.sendStatus(400)
+        res.status(400).send('update failed')
       }
     }
   }
@@ -168,7 +172,7 @@ namespace MetadataController {
 
       res.sendStatus(202)
     } else {
-      res.sendStatus(401)
+      res.status(401).send(`${req.owner} is not ${userAddress}`)
     }
   }
 
@@ -190,8 +194,10 @@ namespace MetadataController {
       )
 
       res.json(userMetaData)
+    } else if (expiredSignature(signatureTime)) {
+      res.status(401).send('Signature expired')
     } else {
-      res.sendStatus(401)
+      res.status(401).send(`Signee ${req.signee} is not ${userAddress}`)
     }
   }
 
@@ -200,7 +206,7 @@ namespace MetadataController {
     res: Response
   ): Promise<any> => {
     if (!req.query.data) {
-      res.sendStatus(401)
+      res.status(400).send('missing data')
     } else {
       const payload = JSON.parse(decodeURIComponent(req.query.data))
       const lockAddress = Normalizer.ethereumAddress(
@@ -218,7 +224,11 @@ namespace MetadataController {
         req.chain
       )
       if (!isAuthorized) {
-        res.sendStatus(401)
+        res
+          .status(401)
+          .send(
+            `${req.signee} is not a lock manager for ${lockAddress} on ${req.chain}`
+          )
       } else {
         res.json(
           await lockOperations.getKeyHolderMetadata(

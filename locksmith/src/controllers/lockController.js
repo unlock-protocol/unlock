@@ -57,7 +57,11 @@ const connectStripe = async (req, res) => {
       chain
     )
     if (!isAuthorized) {
-      res.sendStatus(401)
+      res
+        .sendStatus(401)
+        .send(
+          `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
+        )
     } else {
       const links = await stripeOperations.connectStripe(
         Normalizer.ethereumAddress(req.signee),
@@ -69,7 +73,7 @@ const connectStripe = async (req, res) => {
     }
   } catch (error) {
     logger.error('There was an error', error)
-    res.sendStatus(401)
+    res.status(401).send(error)
   }
 }
 
@@ -86,7 +90,7 @@ const stripeConnected = async (req, res) => {
     return res.json({ connected: stripeConnected })
   } catch (error) {
     logger.error('There was an error', error)
-    res.sendStatus(500)
+    res.status(500).send(error)
   }
 }
 
