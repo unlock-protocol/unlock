@@ -22,10 +22,24 @@ jest.mock('../../../hooks/useLocks', () => {
 const renderWithContexts = (component) => {
   const account = '0x123'
   const network = 1337
+  const config = {
+    networks: {
+      1337: {
+        explorer: {
+          urls: {
+            address: () => '',
+          },
+        },
+      },
+    },
+  }
+
   return rtl.render(
-    <AuthenticationContext.Provider value={{ account, network }}>
-      {component}
-    </AuthenticationContext.Provider>
+    <ConfigContext.Provider value={config}>
+      <AuthenticationContext.Provider value={{ account, network }}>
+        {component}
+      </AuthenticationContext.Provider>
+    </ConfigContext.Provider>
   )
 }
 
