@@ -201,7 +201,7 @@ describe('Signature Validation Middleware', () => {
     describe('when a signature is not provided', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -214,7 +214,7 @@ describe('Signature Validation Middleware', () => {
           headers: { Authorization: `Bearer ${validSignature}` },
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -253,7 +253,7 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })

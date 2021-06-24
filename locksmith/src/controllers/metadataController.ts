@@ -21,8 +21,8 @@ namespace MetadataController {
     lockManager: string,
     network: number
   ) => {
+    const web3Service = new Web3Service(networks)
     try {
-      const web3Service = new Web3Service(networks)
       if (!lockAddress || !lockManager) {
         logger.error(
           'Missing lockAddress or lockManager',
@@ -31,9 +31,14 @@ namespace MetadataController {
         )
         return false
       }
-      return web3Service.isLockManager(lockAddress, lockManager, network)
+      return await web3Service.isLockManager(lockAddress, lockManager, network)
     } catch (error) {
-      logger.error('evaluateLockOwnership failed', { error })
+      logger.error('evaluateLockOwnership failed', {
+        error,
+        lockAddress,
+        lockManager,
+        network,
+      })
       return false
     }
   }

@@ -46,19 +46,18 @@ const lockOwnershipCheck = async (req, res) => {
 }
 
 const connectStripe = async (req, res) => {
+  const { message } = JSON.parse(decodeURIComponent(req.query.data))
+  // A previous middleware will have evaluated everything and assign a signee
+  const { lockAddress, chain, baseUrl } = message['Connect Stripe']
   try {
-    const { message } = JSON.parse(decodeURIComponent(req.query.data))
-    // A previous middleware will have evaluated everything and assign a signee
-    const { lockAddress, chain, baseUrl } = message['Connect Stripe']
-
     const isAuthorized = await evaluateLockOwnership(
       lockAddress,
       req.signee,
-      chain
+      parseInt(chain)
     )
     if (!isAuthorized) {
       res
-        .sendStatus(401)
+        .status(401)
         .send(
           `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
         )
@@ -72,8 +71,11 @@ const connectStripe = async (req, res) => {
       return res.json(links)
     }
   } catch (error) {
-    logger.error('There was an error', error)
-    res.status(401).send(error)
+    logger.error(
+      `Failed to connect Stripe: there was an error ${lockAddress}, ${chain}`,
+      error
+    )
+    res.status(401).send(`Cannot connect stripe: ${error.message}`)
   }
 }
 
@@ -89,7 +91,10 @@ const stripeConnected = async (req, res) => {
     }
     return res.json({ connected: stripeConnected })
   } catch (error) {
-    logger.error('There was an error', error)
+    logger.error(
+      'Cannot verified if Stripe is connected: there was an error',
+      error
+    )
     res.status(500).send(error)
   }
 }
