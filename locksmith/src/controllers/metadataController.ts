@@ -23,9 +23,9 @@ namespace MetadataController {
     network: number
   ) => {
     const web3Service = new Web3Service(networks)
-    logger.info(networks)
-    logger.info({ lockAddress, lockManager, network })
-    logger.info(networks[network])
+    logger.info(JSON.stringify(networks))
+    logger.info(JSON.stringify({ lockAddress, lockManager, network }))
+    logger.info(JSON.stringify(networks[network]))
     try {
       if (!lockAddress || !lockManager) {
         logger.error(
