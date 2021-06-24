@@ -160,6 +160,7 @@ export const Checkout = ({
   } else if (state === 'wallet-picker') {
     content = (
       <WalletPicker
+        injectedProvider={web3Provider}
         onProvider={(provider) => {
           if (selectedLock) {
             setCheckoutState('crypto-checkout')
