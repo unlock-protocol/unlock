@@ -8,6 +8,8 @@ import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, 
 import PaymentProcessor from '../payment/paymentProcessor'
 import * as Normalizer from '../utils/normalizer'
 
+import logger from '../logger'
+
 const config = require('../../config/config')
 
 namespace PurchaseController {
@@ -60,7 +62,7 @@ namespace PurchaseController {
         transactionHash: hash,
       })
     } catch (error) {
-      console.error(error)
+      logger.error(error)
       return res.status(400).send(error)
     }
   }

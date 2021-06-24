@@ -1,12 +1,12 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import * as Normalizer from '../utils/normalizer'
+import logger from '../logger'
 
 const { ethers } = require('ethers')
 
 const { networks } = require('../networks')
 
 const config = require('../../config/config')
-const logger = require('../logger')
 
 namespace AuthorizedLockOperations {
   // eslint-disable-next-line import/prefer-default-export
