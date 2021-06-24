@@ -3,12 +3,11 @@
 # all the commits  
 declare -a arr=( "d2a3cc65" "90d2192c" "32dd70fc" "9d7b1b98" "b7220ca3" "fb826f9" "31d7d1c" "3660575" "a4bbbfcef6c" "52ea34ab4")
 
+# setup 
+# nvm use 10
+
 # keep track of version number
 version=0
-
-# use node 10 
-nvm use 10
-npm i -g truffle-flattener
 
 ## now loop through the above array
 for commit in "${arr[@]}"
@@ -23,10 +22,16 @@ do
     mkdir -p $dst
     mkdir -p $dst/$version
 
+    # remove deprec deps that throw errors at install
+    jq 'del(.devDependencies | .remixd, .remix, .["remix-ide"])' package.json | jq 'del(.dependencies | .truffle, .zos, .["truffle-hdwallet-provider"])'> _p.json && mv _p.json package.json
+
     # update node_modules
     rm -rf node_modules
-    npm uninstall remix # throw errors on install
+    npm i  
+
+    # save hardhat locally to prevent HH12 error
     npm i -S hardhat
+    
 
     # create hardhat config
     echo """
@@ -59,10 +64,12 @@ module.exports = {
 """ >> hardhat.config.js
 
     # flatten contracts
-    hardhat flatten ./contracts/Unlock.sol > "$dst/$version/UnlockV$version.sol"
-    hardhat flatten ./contracts/PublicLock.sol > "$dst/$version/PublicLockV$version.sol"
+    npx hardhat flatten ./contracts/Unlock.sol > "$dst/$version/UnlockV$version.sol"
+    npx hardhat flatten ./contracts/PublicLock.sol > "$dst/$version/PublicLockV$version.sol"
 
-    rm package-lock.json
+    # prevent checkout conflicts
+    git checkout package.json package-lock.json
+    rm hardhat.config.js
     
     # next version 
     ((version=version+1))
@@ -74,13 +81,3 @@ done
 ## Error: There is a cycle in the dependency graph, can't compute topological ordering. Files:
 ## @poanet/solidity-flattener not working either
 
-# v2 
-# git checkout 90d2192c
-# rm -rf node_modules
-# remove remix from devDeps
-# yarn add hardhat
-# truffle-flattener contracts/Unlock.sol
-# ╰─$ npx hardhat flatten contracts/Unlock.sol
-# (node:47578) Warning: N-API is an experimental feature and could change at any time.
-# Error HH411: The library openzeppelin-eth, imported from unlock/smart-contracts/contracts/Unlock.sol, is not installed. Try installing it using npm.
-# yarn add openzeppelin-eth
