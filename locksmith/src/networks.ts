@@ -36,7 +36,7 @@ export const networks: NetworkConfigs = {
     subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
   },
   137: {
-    provider: 'https://rpc-mainnet.matic.network',
+    provider: 'https://rpc-mainnet.maticvigil.com',
     locksmithUri: 'https://locksmith.unlock-protocol.com',
     unlockAppUrl: 'https://app.unlock-protocol.com',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
