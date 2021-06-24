@@ -25,11 +25,42 @@ do
 
     # update node_modules
     rm -rf node_modules
-    npm i 
+    npm uninstall remix # throw errors on install
+    npm i -S hardhat
+
+    # create hardhat config
+    echo """
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
+
+const settings = {
+  optimizer: {
+    enabled: true,
+    runs: 200,
+  }
+}
+
+module.exports = {
+  solidity : {
+    compilers: [
+      { version: '0.4.24', settings },
+      { version: '0.4.25', settings },
+      { version: '0.5.7', settings },
+      { version: '0.5.9', settings },
+      { version: '0.5.14', settings },
+      { version: '0.5.17', settings },
+      { version: '0.6.12', settings },
+      { version: '0.7.6', settings },
+      { version: '0.8.4', settings },
+    ],
+  },
+};
+""" >> hardhat.config.js
 
     # flatten contracts
-    truffle-flattener ./contracts/Unlock.sol > $dst/$version/Unlock.sol
-    truffle-flattener ./contracts/PublicLock.sol > $dst/$version/PublicLock.sol
+    hardhat flatten ./contracts/Unlock.sol > $dst/$version/Unlock.sol
+    hardhat flatten ./contracts/PublicLock.sol > $dst/$version/PublicLock.sol
 
     rm package-lock.json
     
