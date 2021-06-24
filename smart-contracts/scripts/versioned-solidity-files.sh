@@ -59,8 +59,8 @@ module.exports = {
 """ >> hardhat.config.js
 
     # flatten contracts
-    hardhat flatten ./contracts/Unlock.sol > $dst/$version/Unlock.sol
-    hardhat flatten ./contracts/PublicLock.sol > $dst/$version/PublicLock.sol
+    hardhat flatten ./contracts/Unlock.sol > "$dst/$version/UnlockV$version.sol"
+    hardhat flatten ./contracts/PublicLock.sol > "$dst/$version/PublicLockV$version.sol"
 
     rm package-lock.json
     
