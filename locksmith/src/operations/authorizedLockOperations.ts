@@ -26,13 +26,13 @@ namespace AuthorizedLockOperations {
       if (!isKeyGranter) {
         logger.error(
           'AuthorizedLockOperations.hasAuthorization',
-          `${keyGranterWallet.address} is not a key granter for ${lockAddress}`
+          `${keyGranterWallet.address} is not a key granter for ${lockAddress} on ${network}`
         )
       }
       return isKeyGranter
     } catch (error) {
       logger.error(
-        `Could not check if lock ${lockAddress} authorized ${keyGranterWallet.address} to grant keys. ${error.message}`
+        `Could not check if lock ${lockAddress} authorized ${keyGranterWallet.address} to grant keys on ${network}. ${error.message}`
       )
       return false
     }
