@@ -6,7 +6,7 @@ import * as Normalizer from '../utils/normalizer'
 
 import UserOperations = require('../operations/userOperations')
 
-const logger = require('../logger')
+import logger from '../logger'
 
 namespace UserController {
   export const createUser = async (

@@ -4,7 +4,7 @@ import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types'
 
-const logger = require('../logger') // eslint-disable-line no-unused-vars
+import logger from '../logger'
 
 namespace SignatureValidationMiddleware {
   const extractQueryParameterPayload = (payload: string) => {
