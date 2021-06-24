@@ -3,7 +3,7 @@ import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
 
-const logger = require('../logger')
+import logger from '../logger'
 
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default

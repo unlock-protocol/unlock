@@ -10,9 +10,10 @@ import { addMetadata, getMetadata } from '../operations/userMetadataOperations'
 import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
 import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
+import logger from '../logger'
 
 const config = require('../../config/config')
-const logger = require('../logger')
+
 const { networks } = require('../networks')
 
 namespace MetadataController {
@@ -22,6 +23,9 @@ namespace MetadataController {
     network: number
   ) => {
     const web3Service = new Web3Service(networks)
+    logger.info(networks)
+    logger.info({ lockAddress, lockManager, network })
+    logger.info(networks[network])
     try {
       if (!lockAddress || !lockManager) {
         logger.error(
@@ -34,7 +38,7 @@ namespace MetadataController {
       return await web3Service.isLockManager(lockAddress, lockManager, network)
     } catch (error) {
       logger.error('evaluateLockOwnership failed', {
-        error,
+        error: error.message,
         lockAddress,
         lockManager,
         network,

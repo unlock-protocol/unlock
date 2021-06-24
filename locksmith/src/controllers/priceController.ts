@@ -5,7 +5,7 @@ import { SignedRequest } from '../types'
 import { getStripeConnectForLock } from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 
-const logger = require('../logger')
+import logger from '../logger'
 
 namespace PriceController {
   // This method will return the key price in USD by default, but can eventually be used to return prices in a different curreny (via query string)

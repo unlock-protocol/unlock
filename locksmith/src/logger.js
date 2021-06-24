@@ -1,12 +1,12 @@
 import Sentry from 'winston-sentry-log'
 
-const winston = require('winston')
+import winston from 'winston'
 
-const { combine } = winston.format
+const { combine, timestamp, json, simple } = winston.format
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: 'info',
-  format: combine(winston.format.timestamp(), winston.format.json()),
+  format: combine(timestamp(), json()),
   transports: [],
 })
 
@@ -14,7 +14,7 @@ const logger = winston.createLogger({
 logger.add(
   new winston.transports.Console({
     silent: process.env?.NODE_ENV === 'test',
-    format: winston.format.simple(),
+    format: simple(),
   })
 )
 
@@ -28,4 +28,4 @@ if (process.env?.NODE_ENV === 'production') {
   logger.add(new Sentry(options))
 }
 
-module.exports = logger
+export default logger

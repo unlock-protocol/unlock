@@ -1,6 +1,6 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 
-const logger = require('../logger')
+import logger from '../logger'
 
 const { networks } = require('../networks')
 
