@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { ethers } from 'ethers'
 import styled from 'styled-components'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -9,6 +8,7 @@ import SvgComponents from '../svg'
 
 interface WalletPickerProps {
   onProvider: (provider: any) => void
+  injectedProvider: any
 }
 
 export interface EthereumWindow extends Window {
@@ -49,9 +49,9 @@ export const rpcForWalletConnect = (config: any) => {
   return rpc
 }
 
-const WalletPicker = ({ onProvider }: WalletPickerProps) => {
+const WalletPicker = ({ injectedProvider, onProvider }: WalletPickerProps) => {
   const config = useContext(ConfigContext)
-  const injectedProvider = selectProvider(config)
+  const otherProvider = selectProvider(config)
 
   const walletConnectProvider = new WalletConnectProvider({
     rpc: rpcForWalletConnect(config),
@@ -61,6 +61,10 @@ const WalletPicker = ({ onProvider }: WalletPickerProps) => {
     onProvider(injectedProvider)
   }
 
+  const handleOtherProvider = async () => {
+    onProvider(otherProvider)
+  }
+
   const handleWalletConnectProvider = async () => {
     onProvider(walletConnectProvider)
   }
@@ -68,10 +72,19 @@ const WalletPicker = ({ onProvider }: WalletPickerProps) => {
   return (
     <Container>
       <p>Select your crypto wallet of choice</p>
-      <WalletButton disabled={!injectedProvider} onClick={handleInjectProvider}>
-        <SvgComponents.Metamask />
-        Metamask
-      </WalletButton>
+      {injectedProvider && (
+        <WalletButton onClick={handleInjectProvider}>
+          <SvgComponents.Metamask />
+          Injected Provider
+        </WalletButton>
+      )}
+
+      {otherProvider && !injectedProvider && (
+        <WalletButton disabled={!otherProvider} onClick={handleOtherProvider}>
+          <SvgComponents.Metamask />
+          Other Provider
+        </WalletButton>
+      )}
 
       <WalletButton onClick={handleWalletConnectProvider}>
         <SvgComponents.WalletConnect />

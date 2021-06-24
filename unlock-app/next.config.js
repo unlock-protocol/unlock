@@ -23,7 +23,6 @@ const requiredConfigVariables = {
 const optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
 }
-
 // If any env variable is missing, fail to run, except for dev which can set its own defaults
 Object.keys(requiredConfigVariables).forEach((configVariableName) => {
   if (!requiredConfigVariables[configVariableName]) {

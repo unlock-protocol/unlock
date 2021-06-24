@@ -14,10 +14,10 @@ export default function configure(
   // Services
   const services = {
     storage: {
-      host: runtimeConfig.locksmithHost || 'http://0.0.0.0:8080',
+      host: runtimeConfig.locksmithHost || 'http://localhost:8080',
     },
     wedlocks: {
-      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
+      host: runtimeConfig.wedlocksUri || 'http://localhost:1337',
     },
   }
 
@@ -32,7 +32,7 @@ export default function configure(
     runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
 
   // http provider (if there is any)
-  const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
+  const httpProvider = runtimeConfig.httpProvider || 'localhost'
 
   // Publishable key from Stripe dashboard, make sure to use the test key when developing.
   const stripeApiKey =
