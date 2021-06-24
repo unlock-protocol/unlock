@@ -1,41 +1,38 @@
-const BN = require('bignumber.js')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 
-const { ethers, upgrades, artifacts } = require('hardhat')
-const { exportVersionedArtifacts } = require('../../helpers/versions')
-
-// copy all versions from npm after start
-exportVersionedArtifacts()
+const { ethers, upgrades } = require('hardhat')
 
 const versionsCount = 9
-
 let unlock
 
-const UnlockLatest = artifacts.require('Unlock')
-const PublicLockLatest = artifacts.require('PublicLock')
-
-contract('Unlock / upgrades', (accounts) => {
-  const unlockOwner = accounts[9]
-  const lockOwner = accounts[1]
-  const keyOwner = accounts[2]
+contract('Unlock / upgrades', async (accounts) => {
+  const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners();
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-  for (let versionNumber = 0; versionNumber < 1; versionNumber++) {
+  for (
+    let versionNumber = 0; 
+    versionNumber < 4; 
+    versionNumber++
+    ) {
+
     describe(`Testing version ${versionNumber}`, () => {
       let Unlock
+      let UnlockLatest
+      let PublicLockLatest
+
       let originalLockData
-      const unlockVersion = `UnlockV${versionNumber}`
+      // const unlockVersion = `UnlockV${versionNumber}`
 
       beforeEach(async () => {
+
+        UnlockLatest = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
+        PublicLockLatest = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
+
         // await exportVersionedArtifacts()
-        Unlock = await ethers.getContractFactory(unlockVersion)
+        Unlock = await ethers.getContractFactory(`contracts/versions/${versionNumber}/UnlockV${versionNumber}.sol:Unlock`)
 
         // deploy instance
-        if (versionNumber === 0) {
-          unlock = await upgrades.deployProxy(Unlock, [unlockOwner])
-        } else {
-          unlock = await upgrades.upgradeProxy(unlock.address, Unlock)
-        }
+        unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address])
       })
 
       it('Unlock version is set', async () => {
@@ -47,22 +44,22 @@ contract('Unlock / upgrades', (accounts) => {
       })
 
       it('this version and latest version have different Unlock bytecode', async () => {
-        assert.notEqual(UnlockLatest.abi.bytecode, Unlock.bytecode)
+        assert.notEqual(UnlockLatest.bytecode, Unlock.bytecode)
       })
 
       it('Unlock has an owner', async () => {
         const owner = await unlock.owner()
-        assert.equal(owner, unlockOwner)
+        assert.equal(owner, unlockOwner.address)
       })
 
       if (versionsCount && versionNumber <= versionsCount) {
         describe('Complete PublicLock configuration if require', () => {
-          let publicLockAbi
+          let publicLock
           let publicLockTemplate
 
           beforeEach(async () => {
-            publicLockAbi = artifacts.require('PublicLock')
-
+            publicLock = await ethers.getContractFactory(`contracts/versions/${versionNumber}/PublicLockV${versionNumber}.sol:PublicLock`)
+            
             if (versionNumber >= 5) {
               // The lock minimal proxy was introduced with version 5
               const lockTemplate = await publicLockAbi.new({
@@ -79,7 +76,7 @@ contract('Unlock / upgrades', (accounts) => {
                 })
               } else {
                 await unlock.configUnlock(lockTemplate.address, '', '', {
-                  from: unlockOwner,
+                  from: unlockOwner.address,
                   gas: constants.MAX_GAS,
                 })
               }
@@ -87,7 +84,7 @@ contract('Unlock / upgrades', (accounts) => {
           })
 
           it('this version and latest version have different PublicLock bytecode', async () => {
-            assert.notEqual(PublicLockLatest.bytecode, publicLockAbi.bytecode)
+            assert.notEqual(PublicLockLatest.bytecode, publicLock.bytecode)
           })
 
           describe('Create a lock for testing', async () => {
@@ -99,63 +96,51 @@ contract('Unlock / upgrades', (accounts) => {
 
               if (versionNumber >= 5) {
                 // Version 5 introduced `create2`, requiring a salt
-                lockTx = await unlock.createLock(
-                  60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
-                  keyPrice,
-                  5, // maxNumberOfKeys
-                  'UpgradeTestingLock',
-                  // web3.utils.randomHex(12),
-                  '0x950c4fa9d9ae57edb7f2ccca', // hardcoded so we reuse the same address
-                  {
-                    from: lockOwner,
-                    gas: constants.MAX_GAS,
-                  }
-                )
+                lockTx = await unlock
+                  .connect(lockOwner)
+                  .createLock(
+                    60 * 60 * 24, // expirationDuration 1 day
+                    web3.utils.padLeft(0, 40), // token address
+                    keyPrice,
+                    5, // maxNumberOfKeys
+                    'UpgradeTestingLock',
+                    web3.utils.randomHex(12)
+                  )
               } else if (versionNumber >= 3) {
                 // Version 3 added a lock name
-                lockTx = await unlock.createLock(
-                  60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
-                  keyPrice,
-                  5, // maxNumberOfKeys
-                  'UpgradeTestingLock',
-                  {
-                    from: lockOwner,
-                    gas: constants.MAX_GAS,
-                  }
-                )
+                lockTx = await unlock
+                  .connect(lockOwner)
+                  .createLock(
+                    60 * 60 * 24, // expirationDuration 1 day
+                    web3.utils.padLeft(0, 40), // token address
+                    keyPrice,
+                    5, // maxNumberOfKeys
+                    'UpgradeTestingLock'
+                  )
               } else if (versionNumber >= 1) {
                 // Version 1 added ERC-20 support, requiring a tokenAddress
-                lockTx = await unlock.createLock(
-                  60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
-                  keyPrice,
-                  5, // maxNumberOfKeys
-                  {
-                    from: lockOwner,
-                    gas: constants.MAX_GAS,
-                  }
-                )
+                lockTx = await unlock
+                  .connect(lockOwner)
+                  .createLock(
+                    60 * 60 * 24, // expirationDuration 1 day
+                    web3.utils.padLeft(0, 40), // token address
+                    keyPrice,
+                    5 // maxNumberOfKeys
+                  )
               } else {
-                lockTx = await unlock.createLock(
-                  60 * 60 * 24, // expirationDuration 1 day
-                  keyPrice,
-                  5, // maxNumberOfKeys
-                  {
-                    from: lockOwner,
-                    gas: constants.MAX_GAS,
-                  }
-                )
+                lockTx = await unlock
+                  .connect(lockOwner)
+                  .createLock(
+                    60 * 60 * 24, // expirationDuration 1 day
+                    keyPrice,
+                    5, // maxNumberOfKeys  
+                  )
               }
 
-              const evt = lockTx.logs.find((v) => v.event === 'NewLock')
+              const { events } = await lockTx.wait();
+              const evt = events.find(({ event }) => event === 'NewLock')
               // console.log(`lock created at ${evt.args.newLockAddress}`)
-              lock = await publicLockAbi.at(evt.args.newLockAddress)
-              // console.log(
-              //   'lock version',
-              //   await (await lock.publicLockVersion()).toString()
-              // )
+              lock = await publicLock.attach(evt.args.newLockAddress)
             })
 
             it('PublicLock version is set', async () => {
@@ -173,6 +158,7 @@ contract('Unlock / upgrades', (accounts) => {
 
             describe('Purchase a key', () => {
               beforeEach(async () => {
+                
                 // Buy Key
                 await purchaseKey(lock)
 
@@ -181,15 +167,15 @@ contract('Unlock / upgrades', (accounts) => {
               })
 
               it('Key has an ID', async () => {
-                const id = await lock.getTokenIdFor(keyOwner)
+                const id = await lock.getTokenIdFor(keyOwner.address)
                 assert.notEqual(id, 0)
               })
 
               it('Key is owned', async () => {
                 if (versionNumber >= 1) {
                   // isKeyOwner was introduced in v1
-                  const id = await lock.getTokenIdFor(keyOwner)
-                  const isOwned = await lock.isKeyOwner(id, keyOwner)
+                  const id = await lock.getTokenIdFor(keyOwner.address)
+                  const isOwned = await lock.isKeyOwner(id, keyOwner.address)
                   assert.equal(isOwned, true)
                 }
               })
@@ -203,18 +189,10 @@ contract('Unlock / upgrades', (accounts) => {
                   )
 
                   // lock template
-                  const publicLockLatestTemplate = await PublicLockLatest.new({
-                    from: unlockOwner,
-                    gas: constants.MAX_GAS,
-                  })
+                  const publicLockLatestTemplate = await PublicLockLatest.deploy()
+                  await publicLockLatestTemplate.deployed();
 
-                  await unlock.setLockTemplate(
-                    publicLockLatestTemplate.address,
-                    {
-                      from: unlockOwner,
-                      gas: constants.MAX_GAS,
-                    }
-                  )
+                  await unlock.setLockTemplate(publicLockLatestTemplate.address)
                 })
 
                 it('this version and latest version have different Unlock version numbers', async () => {
@@ -223,23 +201,21 @@ contract('Unlock / upgrades', (accounts) => {
                 })
 
                 it('latest version number is correct', async () => {
-                  const version = await (
-                    await unlock.unlockVersion()
-                  ).toNumber()
+                  const version = await (await unlock.unlockVersion())
                   assert.equal(version, versionsCount)
                 })
 
                 it('Key id still set', async () => {
-                  const id = await lock.getTokenIdFor(keyOwner)
+                  const id = await lock.getTokenIdFor(keyOwner.address)
                   assert.notEqual(id, 0)
                 })
 
                 it('Key is still owned', async () => {
                   // console.log(keyOwner)
-                  const id = await lock.getTokenIdFor(keyOwner)
+                  const id = await lock.getTokenIdFor(keyOwner.address)
                   if (versionNumber >= 1) {
                     // isKeyOwner was introduced in v1
-                    const bool = await lock.isKeyOwner(id, keyOwner)
+                    const bool = await lock.isKeyOwner(id, keyOwner.address)
                     assert.equal(bool, true)
                   }
                 })
@@ -252,27 +228,21 @@ contract('Unlock / upgrades', (accounts) => {
                 })
 
                 it('Keys may still be transferred', async () => {
-                  const tx = await lock.transferFrom(
-                    keyOwner,
-                    accounts[8],
-                    await lock.getTokenIdFor(keyOwner),
-                    {
-                      from: keyOwner,
-                      gas: constants.MAX_GAS,
-                    }
-                  )
-                  const evt = tx.logs.find((v) => v.event === 'Transfer')
+                  const tx = await lock
+                    .connect(keyOwner)
+                    .transferFrom(
+                      keyOwner.address,
+                      accounts[8],
+                      await lock.getTokenIdFor(keyOwner.address)
+                    )
+                  const { events } = await tx.wait()
+                  const evt = events.find(({event}) => event === 'Transfer')
                   assert.equal(evt.event, 'Transfer')
                 })
 
                 it('grossNetworkProduct remains', async () => {
-                  const grossNetworkProduct = new BN(
-                    await unlock.grossNetworkProduct()
-                  )
-                  assert.equal(
-                    grossNetworkProduct.toString(),
-                    new BN(keyPrice).toString()
-                  )
+                  const grossNetworkProduct = await unlock.grossNetworkProduct()
+                  assert.equal( grossNetworkProduct, keyPrice )
                 })
 
                 it('lock data should persist state between upgrades', async () => {
@@ -303,32 +273,21 @@ contract('Unlock / upgrades', (accounts) => {
                       keyPrice,
                       5, // maxNumberOfKeys
                       'After-Upgrade Lock',
-                      '0x950c4fa9d9ae57edb7f2ccca', // web3.utils.randomHex(12),
-                      {
-                        from: lockOwner,
-                        gas: constants.MAX_GAS,
-                      }
+                      '0x950c4fa9d9ae57edb7f2ccca' // web3.utils.randomHex(12),
                     )
-
-                    const evt = lockLatestTx.logs.find(
-                      (v) => v.event === 'NewLock'
-                    )
-                    lockLatest = await PublicLockLatest.at(
-                      evt.args.newLockAddress
-                    )
-                    PublicLockLatest.setAsDeployed(lockLatest)
+                    
+                    const { events } = await lockLatestTx.wait()
+                    const evt = events.find(({ event }) => event === 'NewLock')
+                    
+                    lockLatest = await PublicLockLatest.attach(evt.args.newLockAddress)
 
                     // Buy Key
                     await lockLatest.purchase(
                       0,
-                      keyOwner,
+                      keyOwner.address,
                       web3.utils.padLeft(0, 40),
                       [],
-                      {
-                        value: keyPrice,
-                        from: keyOwner,
-                        gas: constants.MAX_GAS,
-                      }
+                      { value: keyPrice }
                     )
                   })
 
@@ -338,18 +297,18 @@ contract('Unlock / upgrades', (accounts) => {
                   })
 
                   it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
-                    const grossNetworkProduct = new BN(
-                      await unlock.grossNetworkProduct()
-                    )
+                    const grossNetworkProduct = await unlock.grossNetworkProduct()
                     assert.equal(
-                      grossNetworkProduct.toFixed(),
-                      new BN(keyPrice).times(2).toFixed()
+                      grossNetworkProduct.eq(
+                        ethers.BigNumber.from(keyPrice).mul(2)
+                      ),
+                      true
                     )
                   })
 
                   it('Latest Key is owned', async () => {
-                    const id = await lockLatest.getTokenIdFor(keyOwner)
-                    const isOwned = await lockLatest.isKeyOwner(id, keyOwner)
+                    const id = await lockLatest.getTokenIdFor(keyOwner.address)
+                    const isOwned = await lockLatest.isKeyOwner(id, keyOwner.address)
                     assert.equal(isOwned, true)
                   })
 
@@ -366,35 +325,39 @@ contract('Unlock / upgrades', (accounts) => {
         })
       }
       async function purchaseKey(lock) {
+
         if (versionNumber >= 5) {
           // Version 5 renamed to purchase, added keyPrice, referrer, and data
-          return await lock.purchase(
-            0,
-            keyOwner,
-            accounts[2],
-            // web3.utils.padLeft(0, 40),
-            [],
-            {
-              value: keyPrice,
-              from: keyOwner,
-              // gas: constants.MAX_GAS,
-            }
-          )
+          return await lock
+            .connect(lockOwner)
+            .purchase(
+              0,
+              keyOwner.address,
+              web3.utils.padLeft(0, 40),
+              [],
+              {
+                value: keyPrice
+              }
+            )
         }
         if (versionNumber >= 1) {
           // Version 1 removed the keyData field
-          return await lock.purchaseFor(keyOwner, {
-            value: keyPrice,
-            from: keyOwner,
-            gas: constants.MAX_GAS,
-          })
+          return await lock
+            .connect(lockOwner)
+            .purchaseFor(keyOwner.address, {
+              value: keyPrice
+            })
         }
-        // for v0
-        return await lock.purchaseFor(keyOwner, web3.utils.toHex('Julien'), {
-          value: keyPrice,
-          from: keyOwner,
-          gas: constants.MAX_GAS,
-        })
+                
+        return await lock
+          .connect(keyOwner)
+          .purchaseFor(
+              keyOwner.address, 
+              web3.utils.toHex('Julien'),
+              {
+                value: keyPrice
+              }
+            )
       }
     })
   }
