@@ -38,12 +38,11 @@ export default function HomeContent() {
   const title = urlParams.get('title')
   const description = urlParams.get('description')
   const lockAddresses = urlParams.getAll('locks')
-
   // Let's now add the snippet!
   const [lockState] = usePaywall(lockAddresses)
   const [checkWallet, setCheckWallet] = useState(false)
 
-  const onSubmit = async event => {
+  const onSubmit = async (event) => {
     event.preventDefault()
     window.unlockProtocol.loadCheckoutModal()
   }
