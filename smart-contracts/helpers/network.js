@@ -76,7 +76,6 @@ const getAccounts = (networkName) => {
   return mnemonic
 }
 
-
 // parse additional networks and accounts
 const getHardhatNetwork = (_networks) => {
   const networks = _networks || {}
@@ -108,5 +107,5 @@ module.exports = {
   getProviderUrl,
   getAccounts,
   getNetworkName,
-  getHardhatNetwork
+  getHardhatNetwork,
 }

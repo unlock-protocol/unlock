@@ -10,7 +10,6 @@ require('@nomiclabs/hardhat-ethers')
 require('@openzeppelin/hardhat-upgrades')
 
 const { task } = require('hardhat/config')
-const { getNetworkName } = require('./helpers/network')
 
 // const { deploy } = require('./scripts/deploy')
 
