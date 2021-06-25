@@ -50,15 +50,10 @@ export const CryptoCheckout = ({
   const cryptoDisabled =
     userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
   const cardDisabled = hasValidkey || hasOptimisticKey
-  const canClaimAirdrop =
-    lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled
-  const isCreditCardEnabled =
-    lock.fiatPricing?.creditCardEnabled && !canClaimAirdrop
+  const isCreditCardEnabled = lock.fiatPricing?.creditCardEnabled
   const handleHasKey = (key: any) => {
     setKeyExpiration(key.expiration)
   }
-
-  console.log(lock.keyPrice, lock.fiatPricing)
 
   const connectToNetwork = () => {
     changeNetwork(networks[network])
@@ -83,6 +78,7 @@ export const CryptoCheckout = ({
   }
 
   useEffect(() => {
+    // DD LOADING STATE
     const getBalance = async () => {
       try {
         const balance = await getTokenBalance(lock.currencyContractAddress)
@@ -93,8 +89,6 @@ export const CryptoCheckout = ({
     }
     getBalance()
   }, [account, lock.address, walletNetwork])
-
-  // Show airdrop button if the membership is free and the user has no token to pay for gas
 
   return (
     <>
@@ -110,7 +104,7 @@ export const CryptoCheckout = ({
 
       {keyExpiration < now && (
         <>
-          <Prompt>Get your membership with</Prompt>
+          <Prompt>Pay for your membership with </Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cryptoDisabled}>
@@ -125,7 +119,7 @@ export const CryptoCheckout = ({
                 </Warning>
               )}
               {!userIsOnWrongNetwork && !hasValidkey && !canAfford && (
-                <Warning>Your balance is too low</Warning>
+                <Warning>Crypto balance too low</Warning>
               )}
             </CheckoutButton>
             {isCreditCardEnabled && (
@@ -137,20 +131,6 @@ export const CryptoCheckout = ({
                   showLabel
                   size="36px"
                   disabled={cardDisabled}
-                  as="button"
-                  onClick={setCardPurchase}
-                />
-              </CheckoutButton>
-            )}
-
-            {canClaimAirdrop && (
-              <CheckoutButton>
-                <Buttons.AirDrop
-                  lock={lock}
-                  backgroundColor="var(--blue)"
-                  fillColor="var(--white)"
-                  showLabel
-                  size="36px"
                   as="button"
                   onClick={setCardPurchase}
                 />

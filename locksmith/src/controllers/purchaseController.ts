@@ -4,12 +4,9 @@ import {
   getStripeCustomerIdForAddress,
   createStripeCustomer,
 } from '../operations/stripeOperations'
-import KeyPricer from '../utils/keyPricer'
-
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import PaymentProcessor from '../payment/paymentProcessor'
 import * as Normalizer from '../utils/normalizer'
-import Dispatcher from '../fulfillment/dispatcher'
 
 import logger from '../logger'
 
@@ -64,45 +61,6 @@ namespace PurchaseController {
       return res.send({
         transactionHash: hash,
       })
-    } catch (error) {
-      logger.error(error)
-      return res.status(400).send(error)
-    }
-  }
-
-  // TODO: add captcha to avoid spamming!
-  // TODO: save claims?
-  export const claim = async (
-    req: SignedRequest,
-    res: Response
-  ): Promise<any> => {
-    const { publicKey, lock, network } = req.body.message['Claim Membership']
-
-    // First check that the lock is indeed free and that the gas costs is low enough!
-    const pricer = new KeyPricer()
-    const pricing = await pricer.generate(lock, network)
-
-    if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-      return res.status(500).send('Lock is not free')
-    }
-
-    const costToGrant = await pricer.gasFee(network, 1000)
-    if (costToGrant >= 300) {
-      return res.status(500).send('Gas fees too high!')
-    }
-
-    try {
-      const fulfillmentDispatcher = new Dispatcher()
-      fulfillmentDispatcher.purchaseKey(
-        Normalizer.ethereumAddress(lock),
-        Normalizer.ethereumAddress(publicKey),
-        network,
-        async (_: any, transactionHash: string) => {
-          return res.send({
-            transactionHash,
-          })
-        }
-      )
     } catch (error) {
       logger.error(error)
       return res.status(400).send(error)
