@@ -18,7 +18,6 @@ import CheckoutMethod from './CheckoutMethod'
 import CryptoCheckout from './CryptoCheckout'
 import CardCheckout from './CardCheckout'
 import CardConfirmationCheckout from './CardConfirmationCheckout'
-import ClaimMembershipCheckout from './ClaimMembershipCheckout'
 import NewAccountCheckout from './NewAccountCheckout'
 import { pageTitle } from '../../../constants'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
@@ -115,13 +114,12 @@ export const Checkout = ({
       if (!provider.isUnlock) {
         setCheckoutState('crypto-checkout')
       } else {
-        cardCheckoutOrClaim(selectedLock)
+        setCheckoutState('card-purchase')
       }
     } else {
       setCheckoutState('')
     }
   }
-
   const web3Service = new Web3Service(config.networks)
 
   let content
@@ -138,14 +136,6 @@ export const Checkout = ({
     setCheckoutState('wallet-picker')
   }
 
-  const cardCheckoutOrClaim = (lock: any) => {
-    if (lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled) {
-      setCheckoutState('claim-membership')
-    } else {
-      setCheckoutState('card-purchase')
-    }
-  }
-
   const onSelected = (lock: any) => {
     // Here we should set the state based on the account
     selectLock(lock)
@@ -155,7 +145,7 @@ export const Checkout = ({
     } else if (account && !isUnlockAccount) {
       setCheckoutState('crypto-checkout')
     } else {
-      cardCheckoutOrClaim(lock)
+      setCheckoutState('card-purchase')
     }
   }
   const lockProps = selectedLock && paywallConfig.locks[selectedLock.address]
@@ -199,7 +189,7 @@ export const Checkout = ({
           name={lockProps?.name || ''}
           lock={selectedLock}
           emitCloseModal={emitCloseModal}
-          setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
+          setCardPurchase={() => setCheckoutState('card-purchase')}
         />
       )
     }
@@ -213,28 +203,6 @@ export const Checkout = ({
         network={lockProps?.network || requiredNetwork}
       />
     )
-  } else if (state === 'claim-membership') {
-    if (paywallConfig.metadataInputs && !savedMetadata) {
-      content = (
-        <MetadataForm
-          network={lockProps?.network || requiredNetwork}
-          lock={selectedLock}
-          fields={paywallConfig!.metadataInputs!}
-          onSubmit={setSavedMetadata}
-        />
-      )
-    } else {
-      content = (
-        <ClaimMembershipCheckout
-          emitTransactionInfo={handleTransactionInfo}
-          lock={selectedLock}
-          network={lockProps?.network || requiredNetwork}
-          name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
-          {...cardDetails}
-        />
-      )
-    }
   } else if (state === 'confirm-card-purchase') {
     if (paywallConfig.metadataInputs && !savedMetadata) {
       content = (
@@ -257,10 +225,9 @@ export const Checkout = ({
         />
       )
     }
-  } else if (state === 'new-account-with-card') {
+  } else if (state === 'new-account') {
     content = (
       <NewAccountCheckout
-        askForCard
         showLogin={() => setCheckoutState('login')}
         network={lockProps?.network || requiredNetwork}
         onAccountCreated={async (unlockProvider, { card, token }) => {
@@ -270,27 +237,12 @@ export const Checkout = ({
         }}
       />
     )
-  } else if (state === 'new-account') {
-    content = (
-      <NewAccountCheckout
-        askForCard={false}
-        showLogin={() => setCheckoutState('login')}
-        network={lockProps?.network || requiredNetwork}
-        onAccountCreated={async (unlockProvider) => {
-          await onProvider(unlockProvider)
-          setCheckoutState('confirm-claim')
-        }}
-      />
-    )
   } else if (state === 'pick-method') {
     content = (
       <CheckoutMethod
         showLogin={() => setCheckoutState('login')}
         lock={selectedLock}
         onWalletSelected={() => setCheckoutState('wallet-picker')}
-        onNewAccountWithCardSelected={() =>
-          setCheckoutState('new-account-with-card')
-        }
         onNewAccountSelected={() => setCheckoutState('new-account')}
       />
     )
