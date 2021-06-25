@@ -28,9 +28,11 @@ contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-  before(async () => {
+  before(async function() {
     // eslint-disable-next-line no-console
     console.log('copy previoous contract versions over...')
+
+    this.timeout(200000);
 
     // make sure dir exists
     await fs.ensureDir(pastVersionsPath)
