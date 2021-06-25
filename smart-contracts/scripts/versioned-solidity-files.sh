@@ -13,6 +13,10 @@ version=0
 for commit in "${arr[@]}"
 do
    echo "version $version..."
+
+  # prevent checkout conflicts from unfinsihed tasks
+  git checkout package.json package-lock.json
+
    sh -c "git checkout ${commit}"
 
    # store in some far away path for now
@@ -22,20 +26,25 @@ do
     mkdir -p $dst
     mkdir -p $dst/$version
 
+    # cehck if file exist
+    if [[ ! -f "$dst/$version/UnlockV$version.sol" ]];then
+
     # remove deprec deps that throw errors at install
-    jq 'del(.devDependencies | .remixd, .remix, .["remix-ide"])' package.json | jq 'del(.dependencies | .truffle, .zos, .["truffle-hdwallet-provider"])'> _p.json && mv _p.json package.json
+    jq 'del(.devDependencies | .remixd, .remix, .["remix-ide"])' package.json | jq 'del(.dependencies | .truffle, .zos, .["truffle-hdwallet-provider"], .["web3-utils"])'> _p.json && mv _p.json package.json
 
     # update node_modules
     rm -rf node_modules
     npm i  
+
+    # remove that "pathological" websocket lib https://github.com/ChainSafe/web3.js/issues/1914
+    find node_modules -type d -name websocket -print0 |  xargs -0 rm -rf
 
     # save hardhat locally to prevent HH12 error
     npm i -S hardhat
     
 
     # create hardhat config
-    echo """
-/**
+    echo """/**
  * @type import('hardhat/config').HardhatUserConfig
  */
 
@@ -61,7 +70,7 @@ module.exports = {
     ],
   },
 };
-""" >> hardhat.config.js
+""" > hardhat.config.js
 
     # flatten contracts
     npx hardhat flatten ./contracts/Unlock.sol > "$dst/$version/UnlockV$version.sol"
@@ -70,14 +79,17 @@ module.exports = {
     # prevent checkout conflicts
     git checkout package.json package-lock.json
     rm hardhat.config.js
+
+    else
+      echo "files found... skipping"
+    fi
     
     # next version 
     ((version=version+1))
 done
 
-
-
 ## Full run gave two issues for v2 and v5 with
 ## Error: There is a cycle in the dependency graph, can't compute topological ordering. Files:
 ## @poanet/solidity-flattener not working either
 
+# same error with hardhat on v2 and v5
