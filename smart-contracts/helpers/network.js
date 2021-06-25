@@ -76,9 +76,37 @@ const getAccounts = (networkName) => {
   return mnemonic
 }
 
+
+// parse additional networks and accounts
+const getHardhatNetwork = (_networks) => {
+  const networks = _networks || {}
+  supportedNetworks.forEach((net) => {
+    try {
+      const url = getProviderUrl(net)
+      const accounts = getAccounts(net)
+
+      if (accounts && url) {
+        networks[net] = {
+          url,
+          accounts: {
+            mnemonic: accounts,
+          },
+        }
+        // eslint-disable-next-line no-console
+        console.log(`Added config for ${net}.`)
+      }
+    } catch (error) {
+      // console.error(error.message)
+      // console.log(`skipped.`)
+    }
+  })
+  return networks
+}
+
 module.exports = {
   supportedNetworks,
   getProviderUrl,
   getAccounts,
   getNetworkName,
+  getHardhatNetwork
 }

@@ -1,7 +1,6 @@
 // hardhat.config.js
 
 require('@nomiclabs/hardhat-truffle5')
-require('@nomiclabs/hardhat-waffle')
 
 // erc1820 deployment
 require('hardhat-erc1820')
@@ -11,12 +10,11 @@ require('@nomiclabs/hardhat-ethers')
 require('@openzeppelin/hardhat-upgrades')
 
 const { task } = require('hardhat/config')
+const { getNetworkName } = require('./helpers/network')
 
-const {
-  supportedNetworks,
-  getProviderUrl,
-  getAccounts,
-} = require('./helpers/network')
+// const { deploy } = require('./scripts/deploy')
+
+const { getHardhatNetwork } = require('./helpers/network')
 
 const settings = {
   optimizer: {
@@ -28,7 +26,7 @@ const settings = {
 // When running CI, we connect to the 'ganache' container
 const testHost = process.env.CI === 'true' ? 'ganache' : '127.0.0.1'
 
-const networks = {
+const defaultNetworks = {
   ganache: {
     url: `http://${testHost}:8545`,
     chainId: 1337,
@@ -38,27 +36,7 @@ const networks = {
   },
 }
 
-// parse additional networks and accounts
-supportedNetworks.forEach((net) => {
-  try {
-    const url = getProviderUrl(net)
-    const accounts = getAccounts(net)
-
-    if (accounts && url) {
-      networks[net] = {
-        url,
-        accounts: {
-          mnemonic: accounts,
-        },
-      }
-      // eslint-disable-next-line no-console
-      console.log(`Added config for ${net}.`)
-    }
-  } catch (error) {
-    // console.error(error.message)
-    // console.log(`skipped.`)
-  }
-})
+const networks = getHardhatNetwork(defaultNetworks)
 
 task('accounts', 'Prints the list of accounts', async () => {
   // eslint-disable-next-line no-undef
