@@ -35,6 +35,7 @@ export enum CheckoutEvents {
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
   methodCall = 'checkout.methodCall',
+  onEvent = 'checkout.onEvent',
 }
 
 export interface MethodCall {
@@ -155,6 +156,7 @@ export class Paywall {
     child.on(CheckoutEvents.closeModal, this.hideIframe)
     child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
     child.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
+    child.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
 
     // transactionInfo event also carries transaction hash.
     child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
@@ -203,6 +205,14 @@ export class Paywall {
         this.child!.call('resolveMethodCall', { id, error, response })
       }
     )
+  }
+
+  handleOnEventEvent = async (eventName: string) => {
+    await enableInjectedProvider(this.provider)
+    ;(this.provider! as any).on(eventName, () => {
+      console.log('IT HAPPENED !')
+      this.child!.call('resolveOnEvent', eventName)
+    })
   }
 
   showIframe = () => {
