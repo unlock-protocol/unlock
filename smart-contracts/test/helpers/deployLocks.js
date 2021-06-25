@@ -1,4 +1,4 @@
-const PublicLock = artifacts.require('./PublicLock.sol')
+const PublicLock = artifacts.require('PublicLock')
 
 const Locks = require('../fixtures/locks')
 

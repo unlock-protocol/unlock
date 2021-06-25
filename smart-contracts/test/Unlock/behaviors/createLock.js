@@ -1,6 +1,6 @@
 const { reverts } = require('truffle-assertions')
 
-const PublicLock = artifacts.require('PublicLock.sol')
+const PublicLock = artifacts.require('PublicLock')
 
 exports.shouldCreateLock = (options) => {
   describe('Unlock / behaviors / createLock', () => {

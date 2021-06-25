@@ -1,5 +1,5 @@
 const unlockContract = artifacts.require('Unlock.sol')
-const publicLockContract = artifacts.require('PublicLock.sol')
+const publicLockContract = artifacts.require('PublicLock')
 
 const { reverts } = require('truffle-assertions')
 const { constants } = require('hardlydifficult-ethereum-contracts')
