@@ -34,4 +34,31 @@ export default class Dispatcher {
       cb
     )
   }
+
+  async purchaseKey(
+    lockAddress: string,
+    owner: string,
+    network: number,
+    cb?: any
+  ) {
+    const walletService = new WalletService(networks)
+
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].provider
+    )
+
+    const walletWithProvider = new ethers.Wallet(
+      config.purchaserCredentials,
+      provider
+    )
+    await walletService.connect(provider, walletWithProvider)
+
+    return await walletService.purchaseKey(
+      {
+        lockAddress,
+        owner,
+      },
+      cb
+    )
+  }
 }

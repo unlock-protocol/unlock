@@ -11,11 +11,13 @@ import Members from './Members'
 import Copy from './Copy'
 
 import CreditCard from './CreditCard'
+import AirDrop from './AirDrop'
 import Wallet from './Wallet'
 import Account from './Account'
 
 export default {
   Account,
+  AirDrop,
   AppStore,
   Withdraw,
   Edit,

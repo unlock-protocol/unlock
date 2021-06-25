@@ -12,6 +12,7 @@ import {
   generateTypedData,
   getCardsForAddress,
   chargeAndSaveCard,
+  claimMembership,
 } from './useCards'
 import {
   createAccountAndPasswordEncryptKey,
@@ -159,6 +160,17 @@ export const useAccount = (address: string, network: number) => {
     return response.transactionHash
   }
 
+  const claimMembershipFromLock = async (lock: any, network: number) => {
+    const response = await claimMembership(
+      config,
+      walletService,
+      address,
+      network,
+      lock
+    )
+    return response.transactionHash
+  }
+
   const setUserMetadataData = async (
     lockAddress: string,
     metadata: any,
@@ -189,6 +201,7 @@ export const useAccount = (address: string, network: number) => {
     connectStripeToLock,
     createUserAccount,
     retrieveUserAccount,
+    claimMembershipFromLock,
   }
 }
 export default useAccount
