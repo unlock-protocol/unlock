@@ -86,6 +86,11 @@ module.exports = {
   networks,
   solidity: {
     compilers: [
+      { version: '0.4.24', settings },
+      { version: '0.4.25', settings },
+      { version: '0.5.7', settings },
+      { version: '0.5.9', settings },
+      { version: '0.5.14', settings },
       { version: '0.5.17', settings },
       { version: '0.6.12', settings },
       { version: '0.7.6', settings },

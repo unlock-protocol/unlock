@@ -10,10 +10,13 @@ contract('Unlock / upgrades', async (accounts) => {
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
   for (
-    let versionNumber = 0; 
-    versionNumber < 4; 
+    let versionNumber = 7; 
+    versionNumber < 8;
     versionNumber++
     ) {
+
+    // skip the missing contracts (with flattening problems to be solved)
+    if (versionNumber === 2 || versionNumber === 5) versionNumber++
 
     describe(`Testing version ${versionNumber}`, () => {
       let Unlock
@@ -21,7 +24,6 @@ contract('Unlock / upgrades', async (accounts) => {
       let PublicLockLatest
 
       let originalLockData
-      // const unlockVersion = `UnlockV${versionNumber}`
 
       beforeEach(async () => {
 
@@ -29,7 +31,7 @@ contract('Unlock / upgrades', async (accounts) => {
         PublicLockLatest = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
 
         // await exportVersionedArtifacts()
-        Unlock = await ethers.getContractFactory(`contracts/versions/${versionNumber}/UnlockV${versionNumber}.sol:Unlock`)
+        Unlock = await ethers.getContractFactory(`contracts/past-versions/${versionNumber}/UnlockV${versionNumber}.sol:Unlock`)
 
         // deploy instance
         unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address])
@@ -58,27 +60,17 @@ contract('Unlock / upgrades', async (accounts) => {
           let publicLockTemplate
 
           beforeEach(async () => {
-            publicLock = await ethers.getContractFactory(`contracts/versions/${versionNumber}/PublicLockV${versionNumber}.sol:PublicLock`)
+            publicLock = await ethers.getContractFactory(`contracts/past-versions/${versionNumber}/PublicLockV${versionNumber}.sol:PublicLock`)
             
             if (versionNumber >= 5) {
               // The lock minimal proxy was introduced with version 5
-              const lockTemplate = await publicLockAbi.new({
-                from: unlockOwner,
-                gas: constants.MAX_GAS,
-              })
-              publicLockTemplate = await publicLockAbi.at(lockTemplate.address)
+              publicLockTemplate = await publicLock.deploy()
 
               if (versionNumber >= 7) {
                 // Version 7 moved setLockTemplate to its own function
-                await unlock.setLockTemplate(publicLockTemplate.address, {
-                  from: unlockOwner,
-                  gas: constants.MAX_GAS,
-                })
+                await unlock.setLockTemplate(publicLockTemplate.address)
               } else {
-                await unlock.configUnlock(lockTemplate.address, '', '', {
-                  from: unlockOwner.address,
-                  gas: constants.MAX_GAS,
-                })
+                await unlock.configUnlock(publicLockTemplate.address, '', '')
               }
             }
           })
