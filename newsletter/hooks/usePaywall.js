@@ -7,10 +7,16 @@ export const usePaywall = (lockAddresses) => {
   const [lockState, setLockState] = useState('loading')
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+
     if (lockAddresses.length) {
+      // Each lock migth start with the network name!
       // Add the Unlock config!
       const unlockConfig = {
-        icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
+        network: 1, // Deprecated
+        icon:
+          urlParams.icon ||
+          'https://app.unlock-protocol.com/static/images/svg/default.svg',
         callToAction: {
           default:
             'Purchase access to the newsletter with crypto! You will need to send two transactions, one to approve the ERC20 transfer, and one for the actual purchase.',
@@ -21,8 +27,11 @@ export const usePaywall = (lockAddresses) => {
         },
       }
       unlockConfig.locks = lockAddresses.reduce((locks, lockAddress) => {
+        const [network, address] = lockAddress.split('0x')
         // eslint-disable-next-line no-param-reassign
-        locks[lockAddress] = {}
+        locks[`0x${address}`] = {
+          network: network ? parseInt(network, 10) : 1,
+        }
         return locks
       }, {})
 
