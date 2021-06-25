@@ -21,14 +21,24 @@ namespace PriceController {
         req.chain
       )
 
-      // let's see if the lock was authorized for credit card payments
-      const isAuthorizedForCreditCard =
-        await AuthorizedLockOperations.hasAuthorization(lockAddress, req.chain)
+      const pricer = new KeyPricer()
+      const pricing = await pricer.generate(lockAddress, req.chain)
 
       // TODO: check that the purchaser has enough funds to pay for gas?
 
-      const pricer = new KeyPricer()
-      const pricing = await pricer.generate(lockAddress, req.chain)
+      // If it is low enough we want to allow users to claim it for free
+      const costToGrant = await pricer.gasFee(req.chain, 1000)
+      if (costToGrant < 300) {
+        // If it costs less than a 1/3 of 1ct, then we can grant the key for free!
+        return res.json({
+          usd: pricing,
+          creditCardEnabled: true,
+        })
+      }
+
+      // let's see if the lock was authorized for credit card payments
+      const isAuthorizedForCreditCard =
+        await AuthorizedLockOperations.hasAuthorization(lockAddress, req.chain)
 
       // Let's check tthat the price is larger than 50cts
       const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)

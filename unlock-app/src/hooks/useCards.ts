@@ -81,6 +81,7 @@ export const chargeAndSaveCard = async (
       network,
     },
   })
+
   const signature = await getSignature(walletService, typedData, address)
   const token = Buffer.from(signature).toString('base64')
 
@@ -93,6 +94,41 @@ export const chargeAndSaveCard = async (
     body: JSON.stringify(typedData),
   }
   const response = await fetch(`${config.services.storage.host}/purchase`, opts)
+  return response.json()
+}
+
+/**
+ * returns the cards for a given address
+ * @param walletService
+ * @param address
+ */
+export const claimMembership = async (
+  config: any,
+  walletService: any,
+  address: string,
+  network: number,
+  lock: string
+) => {
+  const typedData = generateTypedData({
+    'Claim Membership': {
+      publicKey: address,
+      lock,
+      network,
+    },
+  })
+
+  const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      ...genAuthorizationHeader(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(`${config.services.storage.host}/claim`, opts)
   return response.json()
 }
 
