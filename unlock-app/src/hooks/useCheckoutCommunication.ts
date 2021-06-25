@@ -16,10 +16,9 @@ export enum CheckoutEvents {
   closeModal = 'checkout.closeModal',
   transactionInfo = 'checkout.transactionInfo',
   methodCall = 'checkout.methodCall',
-  onEvent = 'checkout.onEvent',
 }
 
-type Payload = UserInfo | TransactionInfo | MethodCall | string
+type Payload = UserInfo | TransactionInfo | MethodCall
 
 interface BufferedEvent {
   kind: CheckoutEvents
@@ -48,7 +47,6 @@ export type AsyncSendable = {
     callback: (error: any, response: any) => void
   ) => void
   send?: (request: any, callback: (error: any, response: any) => void) => void
-  on?: (name: string, callback: () => void) => void
 }
 
 // Callbacks from method calls that have been sent to the parent
@@ -56,11 +54,6 @@ export type AsyncSendable = {
 // it will trigger the callback and remove it from the table.
 export const waitingMethodCalls: {
   [id: number]: (error: any, response: any) => void
-} = {}
-
-// TODO: see if we can support multiple handlers for same event name
-export const eventHandlers: {
-  [name: string]: () => void
 } = {}
 
 export const resolveMethodCall = (result: MethodCallResult) => {
@@ -75,13 +68,6 @@ export const resolveMethodCall = (result: MethodCallResult) => {
   }
   delete waitingMethodCalls[result.id]
   callback(result.error, result.response)
-}
-
-export const resolveOnEvent = (name: string) => {
-  const callback = eventHandlers[name]
-  if (callback) {
-    callback()
-  }
 }
 
 // This is just a convenience hook that wraps the `emit` function
@@ -101,7 +87,6 @@ export const useCheckoutCommunication = () => {
       setConfig(config)
     },
     resolveMethodCall,
-    resolveOnEvent,
   })
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
@@ -138,9 +123,6 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.methodCall, call)
   }
 
-  const emitOnEvent = (eventName: string) => {
-    pushOrEmit(CheckoutEvents.onEvent, eventName)
-  }
   // If the page is not inside an iframe, window and window.top will be identical
   const insideIframe = window.top !== window
 
@@ -151,10 +133,6 @@ export const useCheckoutCommunication = () => {
           callback(error, response)
         }
         emitMethodCall(request)
-      },
-      on: (event: string, callback: any) => {
-        eventHandlers[event] = callback
-        emitOnEvent(event)
       },
     })
   }
