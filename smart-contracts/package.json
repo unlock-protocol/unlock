@@ -64,10 +64,7 @@
     ]
   },
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "hardhat run scripts/deploy.js",
-    "pretest": "hardhat run scripts/deploy.js --network ganache",
-    "test": "NODE_ENV=test node --max-old-space-size=4096 ./node_modules/truffle/build/cli.bundled.js test --compile-none --network development",
+    "test": "npx hardhat test",
     "lint": "solium -d ./contracts/ && eslint .",
     "lintFix": "solium -d ./contracts/ --fix && eslint . --fix",
     "dev": "yarn lint && yarn build && yarn test",
