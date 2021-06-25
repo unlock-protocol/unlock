@@ -3,8 +3,8 @@ import { durationsAsTextFromSeconds } from '../../../utils/durations'
 import {
   lockKeysAvailable,
   numberOfAvailableKeys,
-  lockTickerSymbol,
   convertedKeyPrice,
+  formattedKeyPrice,
 } from '../../../utils/checkoutLockUtils'
 import * as LockVariations from './LockVariations'
 import { useLock } from '../../../hooks/useLock'
@@ -29,10 +29,7 @@ const getLockProps = (
 ) => {
   return {
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(
-      lock,
-      baseCurrencySymbol
-    )}`,
+    formattedKeyPrice: formattedKeyPrice(lock, baseCurrencySymbol),
     convertedKeyPrice: convertedKeyPrice(lock),
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: name || lock.name,
