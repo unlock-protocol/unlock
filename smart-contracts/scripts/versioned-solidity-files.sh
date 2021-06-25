@@ -14,10 +14,7 @@ for commit in "${arr[@]}"
 do
    echo "version $version..."
 
-  # prevent checkout conflicts from unfinsihed tasks
-  git checkout package.json package-lock.json
-
-   sh -c "git checkout ${commit}"
+   sh -c "git checkout --force ${commit}"
 
    # store in some far away path for now
     dst=$(realpath ../../unlock-versions)
@@ -77,7 +74,6 @@ module.exports = {
     npx hardhat flatten ./contracts/PublicLock.sol > "$dst/$version/PublicLockV$version.sol"
 
     # prevent checkout conflicts
-    git checkout package.json package-lock.json
     rm hardhat.config.js
 
     else
