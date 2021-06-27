@@ -4,8 +4,9 @@ import configure from './config'
 const config = configure()
 
 export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {}
-Object.keys(config.networks).forEach((networkId: number) => {
-  ETHEREUM_NETWORKS_NAMES[networkId] = config.networks[networkId].name
+Object.keys(config.networks).forEach((networkId) => {
+  // @ts-expect-error
+  ETHEREUM_NETWORKS_NAMES[networkId as number] = config.networks[networkId].name
 })
 
 /**

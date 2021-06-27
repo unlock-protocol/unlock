@@ -75,7 +75,7 @@ const WalletPicker = ({ injectedProvider, onProvider }: WalletPickerProps) => {
       {injectedProvider && (
         <WalletButton onClick={handleInjectProvider}>
           <SvgComponents.Metamask />
-          Injected Provider
+          In browser wallet
         </WalletButton>
       )}
 

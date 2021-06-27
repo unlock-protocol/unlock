@@ -13,7 +13,7 @@ interface LockFiatPricing {
   [currency: string]: any
 }
 interface LockTickerSymbolLock {
-  keyPrice: string
+  keyPrice?: string
   currencyContractAddress: string | null
   currencySymbol?: string
   fiatPricing?: LockFiatPricing
