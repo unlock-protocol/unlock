@@ -36,7 +36,8 @@ export const networks: NetworkConfigs = {
     subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
   },
   137: {
-    provider: 'https://rpc-mainnet.matic.network',
+    provider:
+      'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
     locksmithUri: 'https://locksmith.unlock-protocol.com',
     unlockAppUrl: 'https://app.unlock-protocol.com',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',

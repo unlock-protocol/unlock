@@ -1,19 +1,13 @@
 /* eslint import/prefer-default-export: 0 */ // This file does not have a default export
+import configure from './config'
 
-/**
- * Pair of network name and 'class' (dev, test, staging, main)
- * Taken from https://ethereum.stackexchange.com/questions/17051/how-to-select-a-network-id-or-is-there-a-list-of-network-ids
- */
-export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {
-  0: 'Olympic',
-  1: 'Mainnet',
-  2: 'Morden',
-  3: 'Ropsten',
-  4: 'Rinkeby',
-  42: 'Kovan',
-  100: 'xdai',
-  1337: 'Winston',
-}
+const config = configure()
+
+export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {}
+Object.keys(config.networks).forEach((networkId) => {
+  // @ts-expect-error
+  ETHEREUM_NETWORKS_NAMES[networkId as number] = config.networks[networkId].name
+})
 
 /**
  * Returns a page title to be used within HTML <title> tags.

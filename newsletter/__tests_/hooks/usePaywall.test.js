@@ -20,8 +20,11 @@ describe('usePaywall', () => {
       },
       icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
       locks: {
-        '0xabc': {},
+        '0xabc': {
+          network: 1,
+        },
       },
+      network: 1,
       metadataInputs: [
         {
           name: 'Email Address',

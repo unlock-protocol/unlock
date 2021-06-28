@@ -514,7 +514,9 @@ workflows:
       - promote-unlock-core-image:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - production
           requires:
             - integration-tests
       - promote-unlock-app-image:

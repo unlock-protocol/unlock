@@ -9,6 +9,7 @@ const cache: PricesCache = {}
 export default class PriceConversion {
   client: any
 
+  // Returns the price in $
   async convertToUSD(currency: string, amount: number) {
     const cached = cache[currency]
 
