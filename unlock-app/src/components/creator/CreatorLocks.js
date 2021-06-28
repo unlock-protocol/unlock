@@ -21,7 +21,7 @@ const BalanceWarning = () => {
   const { account, network } = useContext(AuthenticationContext)
   const { getTokenBalance } = useAccount(account, network)
 
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState(-1) // default to negative balance so we do not show messages while loading
 
   useEffect(() => {
     const getBalance = async () => {

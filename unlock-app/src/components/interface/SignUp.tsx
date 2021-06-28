@@ -12,6 +12,7 @@ interface SignUpProps {
   embedded?: boolean
 }
 
+// DEPRECATED?
 const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   const { query } = useRouter()
   const wedlockService = useContext(WedlockServiceContext)

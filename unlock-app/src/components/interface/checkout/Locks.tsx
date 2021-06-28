@@ -33,7 +33,7 @@ const LoadLock = ({
     if (web3Service) {
       loadLock()
     }
-  }, [address, web3Service])
+  }, [address])
 
   if (loading || !web3Service) {
     return <LoadingLock address={address} network={network} />

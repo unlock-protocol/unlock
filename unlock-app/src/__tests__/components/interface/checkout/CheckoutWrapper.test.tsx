@@ -1,6 +1,17 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import CheckoutWrapper from '../../../../components/interface/checkout/CheckoutWrapper'
+import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+
+const renderWithContexts = (component: any) => {
+  const account = '0x123'
+  const network = 1337
+  return rtl.render(
+    <AuthenticationContext.Provider value={{ account, network }}>
+      {component}
+    </AuthenticationContext.Provider>
+  )
+}
 
 describe('CheckoutWrapper', () => {
   it('renders the footer', () => {
@@ -9,7 +20,7 @@ describe('CheckoutWrapper', () => {
     const hideCheckout = jest.fn()
     const allowClose = false
 
-    const { container } = rtl.render(
+    const { container } = renderWithContexts(
       <CheckoutWrapper
         back={jest.fn()}
         showBack={false}
@@ -28,7 +39,7 @@ describe('CheckoutWrapper', () => {
     const hideCheckout = jest.fn()
     const allowClose = false
 
-    const { queryByTitle } = rtl.render(
+    const { queryByTitle } = renderWithContexts(
       <CheckoutWrapper
         back={jest.fn()}
         showBack={false}
@@ -46,7 +57,7 @@ describe('CheckoutWrapper', () => {
     const hideCheckout = jest.fn()
     const allowClose = true
 
-    const { getByTitle } = rtl.render(
+    const { getByTitle } = renderWithContexts(
       <CheckoutWrapper
         back={jest.fn()}
         showBack={false}

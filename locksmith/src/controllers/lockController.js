@@ -3,7 +3,7 @@ import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
 
-const logger = require('../logger')
+import logger from '../logger'
 
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
@@ -46,18 +46,21 @@ const lockOwnershipCheck = async (req, res) => {
 }
 
 const connectStripe = async (req, res) => {
+  const { message } = JSON.parse(decodeURIComponent(req.query.data))
+  // A previous middleware will have evaluated everything and assign a signee
+  const { lockAddress, chain, baseUrl } = message['Connect Stripe']
   try {
-    const { message } = JSON.parse(decodeURIComponent(req.query.data))
-    // A previous middleware will have evaluated everything and assign a signee
-    const { lockAddress, chain, baseUrl } = message['Connect Stripe']
-
     const isAuthorized = await evaluateLockOwnership(
       lockAddress,
       req.signee,
-      chain
+      parseInt(chain)
     )
     if (!isAuthorized) {
-      res.sendStatus(401)
+      res
+        .status(401)
+        .send(
+          `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
+        )
     } else {
       const links = await stripeOperations.connectStripe(
         Normalizer.ethereumAddress(req.signee),
@@ -68,8 +71,11 @@ const connectStripe = async (req, res) => {
       return res.json(links)
     }
   } catch (error) {
-    logger.error('There was an error', error)
-    res.sendStatus(401)
+    logger.error(
+      `Failed to connect Stripe: there was an error ${lockAddress}, ${chain}`,
+      error
+    )
+    res.status(401).send(`Cannot connect stripe: ${error.message}`)
   }
 }
 
@@ -85,8 +91,11 @@ const stripeConnected = async (req, res) => {
     }
     return res.json({ connected: stripeConnected })
   } catch (error) {
-    logger.error('There was an error', error)
-    res.sendStatus(500)
+    logger.error(
+      'Cannot verified if Stripe is connected: there was an error',
+      error
+    )
+    res.status(500).send(error)
   }
 }
 

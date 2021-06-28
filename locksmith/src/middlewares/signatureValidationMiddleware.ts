@@ -4,7 +4,7 @@ import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types'
 
-const logger = require('../logger') // eslint-disable-line no-unused-vars
+import logger from '../logger'
 
 namespace SignatureValidationMiddleware {
   const extractQueryParameterPayload = (payload: string) => {
@@ -135,17 +135,17 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, res: Response, next: any) => {
-      const signature = extractSignee(req)
+      const signer = extractSignee(req)
 
-      if (signature === null) {
-        res.sendStatus(401)
+      if (signer === null) {
+        res.status(401).send('missing signer')
       } else {
-        const owner = handleSignaturePresent(req.body, signature, configuration)
+        const owner = handleSignaturePresent(req.body, signer, configuration)
         if (owner) {
           req.owner = owner
           next()
         } else {
-          res.sendStatus(401)
+          res.sendStatus(401).send('signature does not match')
         }
       }
     }
@@ -155,19 +155,17 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, _res: Response, next: any) => {
-      let signature = null
       if (req.query.data) {
-        signature = extractSigneeFromQueryParameter(req, req.query.data)
-      }
-
-      if (signature === null) {
+        const signer = extractSigneeFromQueryParameter(req, req.query.data)
+        if (signer) {
+          const payload = extractQueryParameterPayload(req.query.data)
+          const signee = handleSignaturePresent(payload, signer, configuration)
+          if (signee) {
+            req.signee = signee
+          }
+        }
         next()
       } else {
-        const payload = extractQueryParameterPayload(req.query.data)
-        const signee = handleSignaturePresent(payload, signature, configuration)
-        if (signee) {
-          req.signee = signee
-        }
         next()
       }
     }

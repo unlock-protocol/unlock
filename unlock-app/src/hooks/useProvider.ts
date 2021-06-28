@@ -96,13 +96,15 @@ export const useProvider = (config: any) => {
 
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
-      provider.on('accountsChanged', () => {
-        resetProvider(new ethers.providers.Web3Provider(provider))
-      })
+      if (provider.on) {
+        provider.on('accountsChanged', () => {
+          resetProvider(new ethers.providers.Web3Provider(provider))
+        })
 
-      provider.on('chainChanged', () => {
-        resetProvider(new ethers.providers.Web3Provider(provider))
-      })
+        provider.on('chainChanged', () => {
+          resetProvider(new ethers.providers.Web3Provider(provider))
+        })
+      }
       auth = await resetProvider(ethersProvider)
     }
 
