@@ -3,7 +3,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
 
-const TRUFFLE_VM_ERROR = 'VM Exception while processing transaction: revert'
+const TRUFFLE_VM_ERROR = 'VM Exception while processing transaction: reverted with reason string'
 
 let unlock
 
@@ -22,7 +22,7 @@ contract('Unlock / initializers', (accounts) => {
   it('initialize may not be called again', async () => {
     await reverts(
       unlock.initialize(accounts[0]),
-      `${TRUFFLE_VM_ERROR} Contract instance has already been initialized`
+      `${TRUFFLE_VM_ERROR} 'Contract instance has already been initialized'`
     )
   })
 })
