@@ -9,7 +9,8 @@ const deployLocks = require('../helpers/deployLocks')
 let unlock
 let lock
 
-const TRUFFLE_VM_ERROR = 'VM Exception while processing transaction: reverted with reason string'
+const TRUFFLE_VM_ERROR =
+  'VM Exception while processing transaction: reverted with reason string'
 
 contract('Lock / initializers', (accounts) => {
   beforeEach(async () => {

@@ -29,7 +29,6 @@ contract('Unlock / upgrades', async (accounts) => {
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
   for (let versionNumber = 0; versionNumber < versionsCount; versionNumber++) {
-    
     // skip the missing contracts (with flattening problems to be solved)
     if (versionNumber === 2 || versionNumber === 5) versionNumber++
 
@@ -64,7 +63,6 @@ contract('Unlock / upgrades', async (accounts) => {
       })
 
       beforeEach(async () => {
-
         UnlockLatest = await ethers.getContractFactory(
           'contracts/Unlock.sol:Unlock'
         )
