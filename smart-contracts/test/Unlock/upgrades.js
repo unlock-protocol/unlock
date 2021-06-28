@@ -28,30 +28,8 @@ contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-  before(async function () {
-    // eslint-disable-next-line no-console
-    console.log('copy previoous contract versions over...')
-
-    this.timeout(200000)
-
-    // make sure dir exists
-    await fs.ensureDir(pastVersionsPath)
-
-    // copy all versions over
-    await fs.copy(pastVersionsPath, contractsPath)
-
-    // re-compile contracts using hardhat
-    await run('compile')
-  })
-
-  after(async () => {
-    // eslint-disable-next-line no-console
-    console.log('Delete past versions files')
-    await fs.remove(contractsPath)
-    await fs.remove(artifactsPath)
-  })
-
-  for (let versionNumber = 0; versionNumber < 1; versionNumber++) {
+  for (let versionNumber = 0; versionNumber < versionsCount; versionNumber++) {
+    
     // skip the missing contracts (with flattening problems to be solved)
     if (versionNumber === 2 || versionNumber === 5) versionNumber++
 
@@ -62,7 +40,31 @@ contract('Unlock / upgrades', async (accounts) => {
 
       let originalLockData
 
+      const pastVersionPath = path.resolve(pastVersionsPath, `${versionNumber}`)
+      const contractPath = path.resolve(contractsPath, `${versionNumber}`)
+      const artifactPath = path.resolve(artifactsPath, `${versionNumber}`)
+
+      before(async function () {
+        // make sure mocha doesnt time out
+        this.timeout(200000)
+
+        // make sure contract file exists
+        await fs.ensureDir(pastVersionPath)
+
+        // copy all versions over
+        await fs.copy(pastVersionPath, contractPath)
+
+        // re-compile contract using hardhat
+        await run('compile')
+      })
+
+      after(async () => {
+        await fs.remove(contractPath)
+        await fs.remove(artifactPath)
+      })
+
       beforeEach(async () => {
+
         UnlockLatest = await ethers.getContractFactory(
           'contracts/Unlock.sol:Unlock'
         )
