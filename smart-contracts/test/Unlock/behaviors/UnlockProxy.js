@@ -1,5 +1,5 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
-const { getProxyAddress } = require('../../helpers/proxy.js')
+const { getProxyAddress } = require('../../../helpers/proxy.js')
 
 const shared = require('./shared')
 
@@ -8,15 +8,16 @@ const PublicLock = artifacts.require('PublicLock')
 
 contract('Unlock / UnlockProxy', (accounts) => {
   const [unlockOwner] = accounts
+  this.accounts = accounts
 
   beforeEach(async () => {
     this.unlockOwner = unlockOwner
 
     // get proxy from hardhat deployment
-    this.proxy = await getProxyAddress(web3, 'Unlock')
+    this.proxyAddress = await getProxyAddress(web3, 'Unlock')
 
     // use with truffle
-    this.unlock = await Unlock.at(this.proxy.address)
+    this.unlock = await Unlock.at(this.proxyAddress)
     const lock = await PublicLock.new()
 
     await this.unlock.setLockTemplate(lock.address, {
