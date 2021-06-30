@@ -212,7 +212,8 @@ contract('Unlock / upgrades', async (accounts) => {
                   // upgrade proxy to latest
                   unlock = await upgrades.upgradeProxy(
                     unlock.address,
-                    UnlockLatest
+                    UnlockLatest,
+                    { unsafeAllowRenames: true }
                   )
 
                   // lock template

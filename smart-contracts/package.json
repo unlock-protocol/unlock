@@ -14,7 +14,7 @@
     "@openzeppelin/cli": "2.8.2",
     "@openzeppelin/contracts-ethereum-package": "2.5.0",
     "@openzeppelin/contracts-upgradeable": "^4.1.0",
-    "@openzeppelin/hardhat-upgrades": "^1.8.2",
+    "@openzeppelin/hardhat-upgrades": "1.9.0",
     "@openzeppelin/test-helpers": "^0.5.11",
     "@openzeppelin/truffle-upgrades": "^1.7.1",
     "@openzeppelin/upgrades": "2.8.0",
