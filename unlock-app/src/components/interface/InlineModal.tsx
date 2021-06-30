@@ -12,11 +12,12 @@ export const InlineModal: React.FunctionComponent<Props> = ({
   children,
   active,
   dismiss,
+  ...props
 }) => {
   if (active) {
     return (
       <Greyout>
-        <MessageBox>
+        <MessageBox {...props}>
           <Quit onClick={dismiss} />
           {children}
         </MessageBox>

@@ -193,6 +193,37 @@ export const useAccount = (address: string, network: number) => {
     return response
   }
 
+  const updateLockIcon = async (
+    lockAddress: string,
+    network: number,
+    icon: string
+  ) => {
+    const storageService = new StorageService(config.services.storage.host)
+    const typedData = generateTypedData({
+      'Update Icon': {
+        lockAddress,
+        chain: network,
+        lockManager: address,
+      },
+    })
+
+    const signature = await walletService.unformattedSignTypedData(
+      address,
+      typedData
+    )
+
+    try {
+      return await storageService.updateLockIcon(
+        lockAddress,
+        signature,
+        typedData,
+        icon
+      )
+    } catch (error) {
+      return null
+    }
+  }
+
   return {
     setUserMetadataData,
     getTokenBalance,
@@ -202,6 +233,7 @@ export const useAccount = (address: string, network: number) => {
     createUserAccount,
     retrieveUserAccount,
     claimMembershipFromLock,
+    updateLockIcon,
   }
 }
 export default useAccount
