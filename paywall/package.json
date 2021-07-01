@@ -31,7 +31,7 @@
     "@zeit/next-source-maps": "0.0.3",
     "dotenv": "10.0.0",
     "lint-staged": "11.0.0",
-    "netlify-cli": "3.24.4",
+    "netlify-cli": "4.0.5",
     "next": "10.2.3",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
