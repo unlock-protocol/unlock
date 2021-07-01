@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.20.1",
-    "@graphprotocol/graph-ts": "0.20.0",
+    "@graphprotocol/graph-ts": "0.20.1",
     "eslint": "7.29.0",
     "fs-extra": "10.0.0",
     "handlebars": "4.7.7",
