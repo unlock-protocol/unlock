@@ -174,11 +174,12 @@ IconModal.propTypes = {
  * @param {UnlockPropTypes.lock} lock
  */
 export function Icon({ lock }) {
-  // We should make sure we set the image on locksmith side!
   const config = useContext(ConfigContext)
   const [modalShown, setModalShown] = useState(false)
   const [imageSrc, setImageSrc] = useState(
-    `${config.services.storage.host}/lock/${lock.address}/icon`
+    lock.address
+      ? `${config.services.storage.host}/lock/${lock.address}/icon`
+      : '/static/images/svg/default-lock-logo.svg'
   )
 
   const handleError = () => {
