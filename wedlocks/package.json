@@ -11,7 +11,7 @@
     "@typescript-eslint/parser": "4.26.0",
     "aws-sdk": "2.919.0",
     "babel-eslint": "10.1.0",
-    "babel-jest": "27.0.2",
+    "babel-jest": "27.0.6",
     "babel-loader": "8.2.2",
     "dotenv": "10.0.0",
     "eslint": "7.27.0",
