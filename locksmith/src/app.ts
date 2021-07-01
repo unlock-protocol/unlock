@@ -59,7 +59,7 @@ server.applyMiddleware({ app })
 const router = require('./routes')
 
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '5mb' }))
 app.use('/', router)
 
 // The error handler must be before any other error middleware and after all controllers

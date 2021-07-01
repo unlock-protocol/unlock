@@ -73,6 +73,13 @@ export const NeutralButton = styled(Button)`
   background-color: var(--grey);
 `
 
+export const FormError = styled.p`
+  font-size: 12px;
+  color: var(--red);
+  margin-bottom: 5px;
+  margin-top: 5px;
+`
+
 interface LoadingButtonProps {
   children: React.ReactNode
 }

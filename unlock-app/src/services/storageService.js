@@ -395,8 +395,7 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a lock address and a typed data signature, get the metadata
-   * (public and protected) associated with each key on that lock.
+   * Given a lock address and a typed data signature, connect to stripe
    * @param {string} lockAddress
    * @param {string} signature
    * @param {*} data
@@ -413,6 +412,22 @@ export class StorageService extends EventEmitter {
     }
     const result = await axios.get(
       `${this.host}/lock/${lockAddress}/stripe`,
+      opts
+    )
+
+    return result?.data
+  }
+
+  async updateLockIcon(lockAddress, signature, data, icon) {
+    const opts = {
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
+    }
+
+    const result = await axios.post(
+      `${this.host}/lock/${lockAddress}/icon`,
+      { ...data, icon },
       opts
     )
 

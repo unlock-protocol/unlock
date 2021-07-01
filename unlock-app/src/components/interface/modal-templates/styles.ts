@@ -39,10 +39,13 @@ export const Submit = styled(Dismiss)`
   }
 `
 
-export const MessageBox = styled.div`
+interface MessageBoxProps {
+  width?: number
+}
+
+export const MessageBox = styled.div<MessageBoxProps>`
   background: var(--white);
-  min-width: 50%;
-  max-width: 98%;
+  width: ${(props) => props.width || '300'}px;
   border-radius: 4px;
   padding: 24px;
   display: flex;

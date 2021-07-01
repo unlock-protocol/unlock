@@ -2,7 +2,14 @@
 import React, { FormEvent, useState, useReducer } from 'react'
 import styled from 'styled-components'
 import { useAccount } from '../../hooks/useAccount'
-import { Button, LoadingButton, Form } from './checkout/FormStyles'
+import {
+  Button,
+  LoadingButton,
+  Form,
+  Input,
+  Label,
+  FormError,
+} from './checkout/FormStyles'
 
 interface LogInProps {
   onCancel?: () => void
@@ -99,7 +106,7 @@ const LogIn = ({ onProvider, onCancel, network }: LogInProps) => {
             Login
           </Button>
         )}
-        {error && <LoginError>{error}</LoginError>}
+        {error && <FormError>{error}</FormError>}
       </Form>
       <Description>
         {onCancel && <LinkButton onClick={onCancel}>Cancel.</LinkButton>}
@@ -113,39 +120,12 @@ LogIn.defaultProps = {
 }
 
 export default LogIn
-
-export const LoginError = styled.p`
-  color: var(--red);
-  margin-bottom: 5px;
-  margin-top: 5px;
-`
-
 const Description = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 16px;
   color: var(--darkgrey);
 `
-
-const Input = styled.input`
-  height: 48px;
-  width: 100%;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-`
-
-const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
-
 const LinkButton = styled.a`
   cursor: pointer;
 `

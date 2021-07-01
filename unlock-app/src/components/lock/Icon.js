@@ -1,81 +1,170 @@
-import React from 'react'
-import ColorScheme from 'color-scheme'
-
+import React, { useContext, useState } from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
+import { ConfigContext } from '../../utils/withConfig'
+import { AuthenticationContext } from '../interface/Authenticate'
+import { useAccount } from '../../hooks/useAccount'
+import InlineModal from '../interface/InlineModal'
+import {
+  Button,
+  LoadingButton,
+  Form,
+  Input,
+  Label,
+  FormError,
+  NeutralButton,
+} from '../interface/checkout/FormStyles'
 
-const originalIcon = [
-  { x: 195.75, y: 114.75 },
-  { x: 33.75, y: 162 },
-  { x: 121.5, y: 0 },
-]
+const SvgCamera = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 24 24">
+    <path
+      d="m401.94 543.64c-.422-.413-.932-.619-1.528-.619h-1.892l-.431-1.122c-.107-.27-.303-.502-.587-.697-.284-.195-.576-.293-.874-.293h-4.324c-.298 0-.59.098-.874.293-.284.195-.48.428-.587.697l-.431 1.122h-1.892c-.597 0-1.106.206-1.529.619-.422.413-.633.911-.633 1.494v7.395c0 .583.211 1.081.633 1.494.422.413.932.619 1.529.619h11.89c.597 0 1.106-.206 1.528-.619.422-.413.633-.911.633-1.494v-7.395c0-.583-.211-1.081-.633-1.494m-4.801 7.804c-.74.724-1.631 1.085-2.673 1.085-1.042 0-1.932-.362-2.673-1.085-.74-.724-1.111-1.594-1.111-2.612 0-1.018.37-1.889 1.111-2.612.74-.724 1.631-1.085 2.673-1.085 1.042 0 1.932.362 2.673 1.085.74.724 1.111 1.594 1.111 2.612 0 1.018-.37 1.889-1.111 2.612m-2.673-4.989c-.67 0-1.243.232-1.719.697-.476.465-.714 1.025-.714 1.68 0 .655.238 1.215.714 1.68.476.465 1.049.697 1.719.697.67 0 1.243-.232 1.719-.697.476-.465.714-1.025.714-1.68 0-.655-.238-1.215-.714-1.68-.476-.465-1.049-.697-1.719-.697"
+      transform="matrix(.78637 0 0 .78395-302.25-421.36)"
+      fill="#4d4d4d"
+    />
+  </svg>
+)
 
-const stripedIcon = [
-  { x: 108, y: 108 },
-  { x: 146, y: 147 },
-  { x: 216, y: 216 },
-]
+const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
+  const [url, setUrl] = useState(current)
+  const [error, setError] = useState(null)
+  const { account } = useContext(AuthenticationContext)
+  const config = useContext(ConfigContext)
+  const { updateLockIcon } = useAccount(account, network)
 
-const chompIcon = [
-  { x: 108, y: 108 },
-  { x: 108, y: -64 },
-  { x: 108, y: 280 },
-]
+  const defaultIconUrl = `${config.services.storage.host}/lock/${lockAddress}/icon?original=1`
 
-const biteIcon = [
-  { x: 108, y: 108 },
-  { x: 108, y: 0 },
-  { x: 108, y: 216 },
-]
+  const setImageUrlIfValid = (url) => {
+    return new Promise((resolve, reject) => {
+      setError(null)
+      const image = new Image()
+      image.onload = () => {
+        if (image.width) {
+          setUrl(image.src)
+          resolve(true)
+        } else {
+          setError('This is not a valid image...')
+          resolve(false)
+        }
+      }
+      image.onerror = () => {
+        setUrl(null)
+        setError('This is not a valid image...')
+        resolve(false)
+      }
+      image.src = url
+    })
+  }
 
-const tailIcon = [
-  { x: 108, y: 108 },
-  { x: 64, y: 0 },
-  { x: 64, y: 216 },
-]
+  const imagePicked = async (event) => {
+    if (event.target.files[0]) {
+      const file = event.target.files[0]
+      // Max size is 2MB
+      if (file.size > 1024 * 1024 * 2) {
+        setError(
+          'This file is too large to be used. Please use a file that is at most 2GB, or use an external URL.'
+        )
+      } else {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = async () => {
+          const dataUrl = reader.result
+          const isValid = await setImageUrlIfValid(dataUrl)
+          if (isValid) {
+            setUrl(dataUrl)
+          }
+        }
+      }
+    }
+  }
 
-const triadIcon = [
-  { x: 108, y: 108 },
-  { x: 32, y: 0 },
-  { x: 32, y: 216 },
-]
+  const urlPicked = async (event) => {
+    await setImageUrlIfValid(event.target.value)
+  }
 
-/**
- * This selects a set of 3 circles (specified by position) to use to construct the lock icon.
- * @param {string} address
- * @returns {object}
- */
-function circles(address) {
-  const options = [
-    originalIcon,
-    stripedIcon,
-    chompIcon,
-    biteIcon,
-    tailIcon,
-    triadIcon,
-  ]
-  const n = parseInt(address) % options.length
-  return options[n]
+  const restoreDefault = () => {
+    setUrl(defaultIconUrl)
+  }
+
+  const save = async () => {
+    event.preventDefault()
+    await updateLockIcon(lockAddress, network, url)
+    dismiss(url)
+    return false
+  }
+
+  const hiddenFileInput = React.useRef(null)
+
+  const handleFileInputClick = (event) => {
+    event.preventDefault()
+    hiddenFileInput.current.click()
+    return null
+  }
+
+  const resetAndDismiss = () => {
+    setError('')
+    dismiss(current)
+  }
+
+  return (
+    <InlineModal width={350} active={active} dismiss={resetAndDismiss}>
+      <Title>Customize the NFT</Title>
+      <FullLockLogo alt="logo" src={url} />
+      {error && <FormError>{error}</FormError>}
+      <Form>
+        <Label htmlFor="inputFile">Choose a file</Label>
+        <Button
+          style={{ marginTop: '0px' }}
+          type="button"
+          id="inputFile"
+          onClick={handleFileInputClick}
+        >
+          Upload a file
+        </Button>
+        <input
+          accept="image/*"
+          type="file"
+          ref={hiddenFileInput}
+          onChange={imagePicked}
+          style={{ display: 'none' }}
+        />
+        <Label htmlFor="inputUrl">Or, enter a URL</Label>
+        <Input
+          style={{ marginBottom: '0px' }}
+          id="inputUrl"
+          type="text"
+          onChange={urlPicked}
+        />
+
+        <Label htmlFor="restoreDefaultButton">Or</Label>
+        <NeutralButton
+          style={{ marginTop: '0px' }}
+          id="restoreDefaultButton"
+          type="button"
+          onClick={restoreDefault}
+        >
+          Restore default
+        </NeutralButton>
+        <Button
+          disabled={error || !url}
+          style={{ marginTop: '32px' }}
+          type="submit"
+          onClick={save}
+        >
+          Save
+        </Button>
+      </Form>
+    </InlineModal>
+  )
 }
 
-/**
- * This computes how much rotation to apply to the lock glyph
- * @param {string} address
- * @returns {number}
- */
-function degreesOfRotation(address) {
-  const n = parseInt(address)
-  return (n % 36) * 10
-}
-
-/**
- * This returns either instructions to mirror the icon and then translate it back to
- * the origin, or do nothing depending on lock address.
- * @param {string} address
- * @returns {string}
- */
-function translateAndScale(address) {
-  const n = parseInt(address)
-  return n % 2 == 0 ? '' : 'tranlate(216, 0) scale(-1, 1)'
+IconModal.propTypes = {
+  active: PropTypes.bool.isRequired,
+  dismiss: PropTypes.func.isRequired,
+  current: PropTypes.string.isRequired,
+  lockAddress: PropTypes.string.isRequired,
+  network: PropTypes.number.isRequired,
 }
 
 /**
@@ -85,68 +174,33 @@ function translateAndScale(address) {
  * @param {UnlockPropTypes.lock} lock
  */
 export function Icon({ lock }) {
-  const scheme = new ColorScheme()
-  let colors = ['#8c8c8c', '#e8e8e8', '#c3c3c3']
-  let address = '0x000000'
-  if (lock && lock.address) {
-    address = lock.address
-    const mainColor = address.substring(2, 8).toUpperCase()
-    scheme.from_hex(mainColor).scheme('triade').variation('pastel')
-    colors = scheme.colors().map((c) => `#${c}`)
+  // We should make sure we set the image on locksmith side!
+  const config = useContext(ConfigContext)
+  const [modalShown, setModalShown] = useState(false)
+  const [imageSrc, setImageSrc] = useState(
+    `${config.services.storage.host}/lock/${lock.address}/icon`
+  )
+
+  const handleError = () => {
+    setImageSrc('/static/images/svg/default-lock-logo.svg')
   }
-  const innerCircles = circles(address)
   return (
-    <svg
-      viewBox="0 0 216 216"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="100%"
-    >
-      <defs>
-        <circle id="a" cx={108} cy={108} r={108} />
-        <circle id="c" cx={108} cy={108} r={60.75} />
-      </defs>
-      <g>
-        <mask id="b" fill="#fff">
-          <use xlinkHref="#a" />
-        </mask>
-        <g
-          transform={`rotate(${degreesOfRotation(
-            address
-          )}, 108, 108)${translateAndScale(address)}`}
-        >
-          <circle
-            fill={colors[0]}
-            mask="url(#b)"
-            cx={innerCircles[0].x}
-            cy={innerCircles[0].y}
-            r="114.75"
-          />
-          <circle
-            fill={colors[1]}
-            mask="url(#b)"
-            cx={innerCircles[1].x}
-            cy={innerCircles[1].y}
-            r="114.75"
-          />
-          <circle
-            fill={colors[2]}
-            mask="url(#b)"
-            cx={innerCircles[2].x}
-            cy={innerCircles[2].y}
-            r="114.75"
-          />
-        </g>
-        <mask id="d" fill="#fff">
-          <use xlinkHref="#c" />
-        </mask>
-        <use fill="#FFF" xlinkHref="#c" />
-        <path
-          d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-          fill={colors[0]}
-          mask="url(#d)"
-        />
-      </g>
-    </svg>
+    <Wrapper>
+      <Overlay onClick={() => setModalShown(true)}>
+        <SvgCamera />
+      </Overlay>
+      <IconModal
+        lockAddress={lock.address}
+        network={lock.network}
+        current={imageSrc}
+        active={modalShown}
+        dismiss={(image) => {
+          setModalShown(false)
+          setImageSrc(image)
+        }}
+      />
+      <LockLogo alt="logo" src={imageSrc} onError={handleError} />
+    </Wrapper>
   )
 }
 
@@ -157,5 +211,61 @@ Icon.propTypes = {
 Icon.defaultProps = {
   lock: null,
 }
+
+const Overlay = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  opacity: 0.8;
+  background-color: var(--grey);
+  justify-content: center;
+  align-items: center;
+`
+
+const ModalWrapper = styled.div`
+  width: 320px;
+  max-width: 320px;
+  max-width: 320px;
+`
+
+const FullLockLogo = styled.img`
+  max-height: 300px;
+  max-width: 300px;
+  width: 300px;
+`
+
+const LockLogo = styled.img`
+  max-width: 48px;
+`
+
+const Wrapper = styled.div`
+  border-radius: 50%;
+  position: relative;
+
+  overflow: hidden;
+
+  height: 48px;
+  width: 48px;
+
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    ${Overlay} {
+      display: flex;
+    }
+  }
+`
+
+const Title = styled.h1`
+  color: var(--grey);
+  font-family: IBM Plex Sans;
+`
 
 export default Icon

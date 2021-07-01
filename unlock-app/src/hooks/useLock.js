@@ -291,14 +291,6 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  // const getUsdPricing = async () => {
-  //   const fullPrice = await getUsdPrice(config, lock.address, network)
-  //   if (!fullPrice.keyPrice) {
-  //     return '' // No price
-  //   }
-  //   return `~ $${parseFloat(fullPrice.keyPrice) / 100}`
-  // }
-
   return {
     getLock,
     lock,

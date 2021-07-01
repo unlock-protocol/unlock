@@ -10,10 +10,22 @@ const connectStripeConfiguration = {
   signee: 'lockManager',
 }
 
+const changeLockIconConfiguration = {
+  name: 'Update Icon',
+  required: ['lockAddress', 'chain', 'lockManager'],
+  signee: 'lockManager',
+}
+
 router.post('/lock', lockController.lockSave)
 router.get('/lock/:lockAddress', lockController.lockGet)
 router.get('/lock/:lockAddress/cycle', lockController.lockOwnershipCheck)
 router.get('/lock/:lockAddress/icon', lockController.lockIcon)
+
+router.post(
+  '/lock/:lockAddress/icon',
+  signatureValidationMiddleware.generateProcessor(changeLockIconConfiguration)
+)
+router.post('/lock/:lockAddress/icon', lockController.changeLockIcon)
 
 router.get(
   '/lock/:lockAddress/stripe',
@@ -22,10 +34,12 @@ router.get(
   )
 )
 router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
+
 router.get(
   '/lock/:lockAddress/stripe-connected',
   lockController.stripeConnected
 )
+
 router.get('/:owner/locks', lockController.lockOwnerGet)
 
 module.exports = router
