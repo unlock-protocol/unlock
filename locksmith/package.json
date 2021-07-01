@@ -44,7 +44,7 @@
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "26.0.23",
     "@types/nock": "10.0.3",
-    "@types/node": "12.20.13",
+    "@types/node": "12.20.15",
     "@types/request-promise-native": "1.0.17",
     "@types/sequelize": "4.28.9",
     "@types/stripe": "8.0.416",
