@@ -1,6 +1,7 @@
 const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 const { constants } = require('hardlydifficult-ethereum-contracts')
+const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 
@@ -184,8 +185,12 @@ contract('Permissions / KeyManager', (accounts) => {
   })
 
   describe('Key Granting', () => {
-    let validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
+    let validExpirationTimestamp
     before(async () => {
+      const blockNumber = await ethers.provider.getBlockNumber()
+      const latestBlock = await ethers.provider.getBlock(blockNumber)
+      validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
+
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
@@ -216,7 +221,9 @@ contract('Permissions / KeyManager', (accounts) => {
     })
 
     it('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
-      const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
+      const blockNumber = await ethers.provider.getBlockNumber()
+      const latestBlock = await ethers.provider.getBlock(blockNumber)
+      const newTimestamp = Math.round(latestBlock.timestamp + 60 * 60 * 24 * 30)
       assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
       await lock.grantKeys([accounts[7]], [newTimestamp], [keyGranter], {
         from: keyGranter,
@@ -229,7 +236,9 @@ contract('Permissions / KeyManager', (accounts) => {
     it('should let KeyGranter set an arbitrary KM for expired keys', async () => {
       await lock.expireAndRefundFor(accounts[7], 0, { from: lockCreator })
       assert.equal(await lock.getHasValidKey.call(accounts[7]), false)
-      const newTimestamp = Math.round(Date.now() / 1000 + 60 * 60 * 24 * 30)
+      const blockNumber = await ethers.provider.getBlockNumber()
+      const latestBlock = await ethers.provider.getBlock(blockNumber)
+      const newTimestamp = Math.round(latestBlock.timestamp + 60 * 60 * 24 * 30)
       await lock.grantKeys(
         [accounts[7]],
         [newTimestamp],
