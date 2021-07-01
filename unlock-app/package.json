@@ -51,7 +51,7 @@
     "jest-mock-axios": "4.4.0",
     "jest-styled-components": "7.0.4",
     "js-base64": "3.6.1",
-    "netlify-cli": "3.32.6",
+    "netlify-cli": "4.0.5",
     "next": "10.2.3",
     "node-forge": "0.10.0",
     "postmate": "1.5.2",
