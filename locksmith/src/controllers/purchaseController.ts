@@ -87,7 +87,7 @@ namespace PurchaseController {
     }
 
     const costToGrant = await pricer.gasFee(network, 1000)
-    if (costToGrant >= 300) {
+    if (costToGrant >= 500) {
       return res.status(500).send('Gas fees too high!')
     }
 
