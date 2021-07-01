@@ -11,7 +11,7 @@
     "lint": "eslint --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.20.0",
+    "@graphprotocol/graph-cli": "0.20.1",
     "@graphprotocol/graph-ts": "0.20.0",
     "eslint": "7.27.0",
     "fs-extra": "10.0.0",
