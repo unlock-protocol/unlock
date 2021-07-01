@@ -24,7 +24,7 @@
     "@types/next": "8.0.7",
     "@types/node": "12.20.13",
     "@types/postmate": "1.5.1",
-    "@types/react": "17.0.11",
+    "@types/react": "17.0.13",
     "@types/react-dom": "17.0.6",
     "@types/styled-components": "5.1.9",
     "@zeit/next-css": "1.0.1",
