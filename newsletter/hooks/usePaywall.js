@@ -15,7 +15,7 @@ export const usePaywall = (lockAddresses) => {
       const unlockConfig = {
         network: 1, // Deprecated
         icon:
-          urlParams.icon ||
+          urlParams.get('icon') ||
           'https://app.unlock-protocol.com/static/images/svg/default.svg',
         callToAction: {
           default:
