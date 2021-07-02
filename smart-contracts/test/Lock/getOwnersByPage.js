@@ -7,10 +7,8 @@ const { errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_UNKNOWN } = errorMessages
 
-
 let unlock
 let locks
-
 
 contract('Lock / getOwnersByPage', (accounts) => {
   before(async () => {

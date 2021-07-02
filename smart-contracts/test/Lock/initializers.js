@@ -12,7 +12,6 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 let unlock
 let lock
 
-
 contract('Lock / initializers', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)

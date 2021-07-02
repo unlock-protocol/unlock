@@ -14,7 +14,6 @@ let lock
 let locks
 let unlock
 
-
 contract('Lock / owners', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)

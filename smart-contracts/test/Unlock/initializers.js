@@ -5,7 +5,6 @@ const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
-  
 
 let unlock
 
