@@ -101,7 +101,7 @@
     "yargs": "16.2.0"
   },
   "devDependencies": {
-    "nodemon": "2.0.7",
+    "nodemon": "2.0.9",
     "supertest": "6.1.3",
     "tsc-watch": "4.2.9"
   },
