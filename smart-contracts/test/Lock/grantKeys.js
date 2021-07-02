@@ -1,8 +1,11 @@
 const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
 const { constants } = require('hardlydifficult-ethereum-contracts')
+
 const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
+
+const { errorMessages } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -12,8 +15,7 @@ let lock
 let locks
 let tx
 
-const TRUFFLE_VM_ERROR =
-  'VM Exception while processing transaction: invalid opcode'
+const { VM_ERROR_INVALID_OPCODE } = errorMessages
 
 contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
@@ -102,7 +104,7 @@ contract('Lock / grantKeys', (accounts) => {
               from: lockCreator,
             }
           ),
-          TRUFFLE_VM_ERROR
+          VM_ERROR_INVALID_OPCODE
         )
       })
     })

@@ -3,12 +3,14 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { errorMessages } = require('../helpers/constants')
+
+const { VM_ERROR_REVERT_UNKNOWN } = errorMessages
+
 
 let unlock
 let locks
 
-const TRUFFLE_VM_ERROR =
-  "Transaction reverted and Hardhat couldn't infer the reason. Please report this to help us improve Hardhat."
 
 contract('Lock / getOwnersByPage', (accounts) => {
   before(async () => {
@@ -31,7 +33,7 @@ contract('Lock / getOwnersByPage', (accounts) => {
         locks.FIRST.getOwnersByPage.call(1, 1, {
           from: accounts[0],
         }),
-        TRUFFLE_VM_ERROR
+        VM_ERROR_REVERT_UNKNOWN
       )
     })
   })

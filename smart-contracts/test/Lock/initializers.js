@@ -5,12 +5,13 @@ const { reverts } = require('truffle-assertions')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const getProxy = require('../helpers/proxy')
 const deployLocks = require('../helpers/deployLocks')
+const { errorMessages } = require('../helpers/constants')
+
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 let unlock
 let lock
 
-const TRUFFLE_VM_ERROR =
-  'VM Exception while processing transaction: reverted with reason string'
 
 contract('Lock / initializers', (accounts) => {
   beforeEach(async () => {
@@ -29,14 +30,14 @@ contract('Lock / initializers', (accounts) => {
   it('initialize() may not be called again', async () => {
     await reverts(
       lock.initialize(),
-      `${TRUFFLE_VM_ERROR} 'Contract instance has already been initialized'`
+      `${VM_ERROR_REVERT_WITH_REASON} 'Contract instance has already been initialized'`
     )
   })
 
   it('initialize(lock settings..) may not be called again', async () => {
     await reverts(
       lock.initialize(accounts[0], 0, constants.ZERO_ADDRESS, 0, 0, ''),
-      `${TRUFFLE_VM_ERROR} 'Contract instance has already been initialized'`
+      `${VM_ERROR_REVERT_WITH_REASON} 'Contract instance has already been initialized'`
     )
   })
 })
