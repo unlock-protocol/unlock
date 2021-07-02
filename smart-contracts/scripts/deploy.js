@@ -5,10 +5,9 @@ const { getNetworkName } = require('../helpers/network')
 const { addDeployment } = require('../helpers/deployments')
 
 async function main() {
-  // setup accounts
   const [unlockOwner, minter] = await ethers.getSigners()
-  // const proxyAdmin = accounts[9]
-
+  
+  // fetch chain info
   const chainId = await unlockOwner.getChainId()
   const networkName = getNetworkName(chainId)
 

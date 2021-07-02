@@ -155,7 +155,6 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       let receiverKeyOriginalTimestamp
 
       before(async () => {
-        // 'from' purchase a lock
         await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
           value: web3.utils.toWei('0.01', 'ether'),
           from,
@@ -163,16 +162,14 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
         ID = await locks.FIRST.getTokenIdFor.call(from)
 
-        // get the current expiration for from's lock
         transferredKeyTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
-        // get the expiration for accountWithKey's lock
+        
         receiverKeyOriginalTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
         )
 
-        // transfer lock from 'from' to 'accountWithKey'
         const tx = await locks.FIRST.transferFrom(from, accountWithKey, ID, {
           from,
         })
@@ -184,7 +181,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       })
 
       it("should expand the key's validity", async () => {
-        // now get the new expiration after transfer
+
         const receiverKeyUpdatedTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
         )

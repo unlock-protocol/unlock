@@ -34,7 +34,6 @@ exports.shouldCreateLock = (options) => {
         let publicLock = await PublicLock.at(evt.args.newLockAddress)
         // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
         let results = await unlock.locks(publicLock.address)
-        // assert.equal(results.deployed, true)
         assert.equal(results.totalSales, 0)
         assert.equal(results.yieldedDiscountTokens, 0)
       })

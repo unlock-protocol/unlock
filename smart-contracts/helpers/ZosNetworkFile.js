@@ -13,6 +13,5 @@ module.exports = async function getNetworkFile(web3) {
     default:
       network = `dev-${_id}`
   }
-  // console.log(network);
   return new Zos.files.NetworkFile(new Zos.files.ProjectFile(), network)
 }

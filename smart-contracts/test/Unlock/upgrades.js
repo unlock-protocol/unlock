@@ -70,7 +70,6 @@ contract('Unlock / upgrades', async (accounts) => {
           'contracts/PublicLock.sol:PublicLock'
         )
 
-        // await exportVersionedArtifacts()
         Unlock = await ethers.getContractFactory(
           `contracts/past-versions/${versionNumber}/UnlockV${versionNumber}.sol:Unlock`
         )
