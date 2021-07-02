@@ -43,7 +43,7 @@ contract('Unlock / upgrades', async (accounts) => {
       const contractPath = path.resolve(contractsPath, `${versionNumber}`)
       const artifactPath = path.resolve(artifactsPath, `${versionNumber}`)
 
-      before(async function () {
+      before(async function copyAndBuildContract() {
         // make sure mocha doesnt time out
         this.timeout(200000)
 

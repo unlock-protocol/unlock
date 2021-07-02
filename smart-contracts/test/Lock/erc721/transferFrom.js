@@ -165,7 +165,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         transferredKeyTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
-        
+
         receiverKeyOriginalTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
         )
@@ -181,7 +181,6 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       })
 
       it("should expand the key's validity", async () => {
-
         const receiverKeyUpdatedTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
         )

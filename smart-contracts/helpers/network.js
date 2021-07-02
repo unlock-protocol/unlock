@@ -6,13 +6,14 @@ const chains = {
   kovan: 42,
   xdai: 100,
   mainnet: 1,
-  polygon: 137
+  polygon: 137,
 }
 
 const supportedNetworks = Object.keys(chains)
 
 const getNetworkName = (chainId) => {
-  if (chainId === 31337) { // for hardhat
+  if (chainId === 31337) {
+    // for hardhat
     return 'localhost'
   }
   if (chainId === 1337) {

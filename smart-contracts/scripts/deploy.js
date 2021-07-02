@@ -6,7 +6,7 @@ const { addDeployment } = require('../helpers/deployments')
 
 async function main() {
   const [unlockOwner, minter] = await ethers.getSigners()
-  
+
   // fetch chain info
   const chainId = await unlockOwner.getChainId()
   const networkName = getNetworkName(chainId)
