@@ -21,10 +21,8 @@ export const useFiatKeyPrices = (address: string, network: number) => {
   }
 
   useEffect(() => {
-    if (address) {
-      setLoading(true)
-      getFiatKeyPriceFor(address)
-    }
+    setLoading(true)
+    getFiatKeyPriceFor(address)
   }, [address])
 
   return { loading, fiatPrices }

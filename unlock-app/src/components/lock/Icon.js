@@ -185,11 +185,14 @@ export function Icon({ lock }) {
   const handleError = () => {
     setImageSrc('/static/images/svg/default-lock-logo.svg')
   }
+
   return (
     <Wrapper>
-      <Overlay onClick={() => setModalShown(true)}>
-        <SvgCamera />
-      </Overlay>
+      {lock.address && (
+        <Overlay onClick={() => setModalShown(true)}>
+          <SvgCamera />
+        </Overlay>
+      )}
       <IconModal
         lockAddress={lock.address}
         network={lock.network}

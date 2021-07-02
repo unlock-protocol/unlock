@@ -1,6 +1,5 @@
 import React from 'react'
-import { renderHook, act } from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import { useFiatKeyPrices } from '../../hooks/useFiatKeyPrices'
 import { ConfigContext } from '../../utils/withConfig'
 
@@ -21,14 +20,10 @@ describe('useFiatKeyPrices', () => {
     })
   })
 
-  it('should return an empty object by default', async () => {
+  it('should return an empty object by default', () => {
     expect.assertions(1)
 
-    const { result, waitFor } = renderHook(() => useFiatKeyPrices('', 1))
-
-    await waitFor(() => {
-      return Object.keys(result.current).length > 0
-    })
+    const { result } = renderHook(() => useFiatKeyPrices(''))
 
     expect(result.current).toEqual({
       fiatPrices: {},
@@ -46,7 +41,7 @@ describe('useFiatKeyPrices', () => {
     )
 
     await waitFor(() => {
-      return !result.current.loading
+      return Object.keys(result.current).length > 0
     })
 
     expect(fetch).toHaveBeenCalledWith(
@@ -64,7 +59,7 @@ describe('useFiatKeyPrices', () => {
     )
 
     await waitFor(() => {
-      return !result.current.loading
+      return Object.keys(result.current).length > 0
     })
 
     expect(result.current).toEqual({
