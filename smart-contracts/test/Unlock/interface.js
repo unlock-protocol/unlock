@@ -17,12 +17,10 @@ contract('Unlock / interface', () => {
       })
 
     // and assert the count matches
-    const count = unlockInterface.abi.filter(
-      (x) => x.type === 'function'
-    ).length
-    const expected = unlockContract.abi.filter(
-      (x) => x.type === 'function'
-    ).length
+    const count = unlockInterface.abi.filter((x) => x.type === 'function')
+      .length
+    const expected = unlockContract.abi.filter((x) => x.type === 'function')
+      .length
     assert.notEqual(count, 0)
     assert.equal(count, expected)
   })
