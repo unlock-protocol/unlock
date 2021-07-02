@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-testing": "4.0.0",
-    "@babel/core": "7.14.3",
+    "@babel/core": "7.14.6",
     "@storybook/addon-actions": "6.3.2",
     "@storybook/addon-knobs": "6.2.9",
     "@storybook/addon-viewport": "6.3.2",
