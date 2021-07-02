@@ -27,7 +27,7 @@
     "cron": "1.8.2",
     "dotenv": "10.0.0",
     "ethereumjs-util": "6.2.1",
-    "ethers": "5.3.1",
+    "ethers": "5.4.0",
     "graphql": "15.5.0",
     "graphql-tag": "2.12.5",
     "isomorphic-fetch": "3.0.0",
