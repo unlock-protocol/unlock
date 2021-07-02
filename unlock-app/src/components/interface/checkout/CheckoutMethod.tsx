@@ -8,6 +8,7 @@ interface CheckoutMethodProps {
   lock: any
   showLogin: () => void
   onNewAccountSelected: () => void
+  onNewAccountWithCardSelected: () => void
 }
 
 export const CheckoutMethod = ({
@@ -15,13 +16,40 @@ export const CheckoutMethod = ({
   onWalletSelected,
   showLogin,
   onNewAccountSelected,
+  onNewAccountWithCardSelected,
 }: CheckoutMethodProps) => {
   const isCreditCardEnabled = lock.fiatPricing?.creditCardEnabled
+
+  if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
+    // We can grant keys for free!
+    return (
+      <Wrapper>
+        <MainChoice onClick={onNewAccountSelected}>
+          <Icon>
+            <Svg.Person />
+          </Icon>
+          Create account to claim NFT
+        </MainChoice>
+        <SecondChoice onClick={onWalletSelected}>
+          <Icon>
+            <Svg.Wallet />
+          </Icon>
+          Connect your crypto Wallet
+        </SecondChoice>
+        <SecondChoice onClick={showLogin}>
+          <Icon>
+            <Svg.Person />
+          </Icon>
+          Already have an Unlock account?
+        </SecondChoice>
+      </Wrapper>
+    )
+  }
   return (
     <Wrapper>
       {isCreditCardEnabled && (
         <>
-          <MainChoice onClick={onNewAccountSelected}>
+          <MainChoice onClick={onNewAccountWithCardSelected}>
             <Icon>
               <Svg.CreditCard />
             </Icon>

@@ -4,8 +4,32 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Wed, 09 Jun 2021 16:02:13 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 23 Jun 2021 01:57:09 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Introducing Unlock.community on Discourse]]></title>
+            <description><![CDATA[Discourse is an open source Internet forum and mailing list management software application used by many communities around the web. You can now easily add locks to your Discourse forum!]]></description>
+            <link>https://unlock-protocol.com/blog/discourse-plugin</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/discourse-plugin</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 22 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Polygon]]></title>
+            <description><![CDATA[Unlock has been deployed to Polygon! You can now deploy your NFT memberships and earn UDT directly on one of the mosyt popular Ethereum sidechains.]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-on-polygon</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-on-polygon</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Mon, 21 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Credit Card Support]]></title>
+            <description><![CDATA[We’re excited to announce that unlock now has ✨credit card✨ support, for all locks, on any network!]]></description>
+            <link>https://unlock-protocol.com/blog/credit-card-nft</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/credit-card-nft</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 15 Jun 2021 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[The First Class of Unlock Token Grantees!]]></title>
             <description><![CDATA[We’re excited to announce our pioneering set of Unlock Token Grantees!  We’re looking forward to seeing how they apply Unlock in new ways.]]></description>
@@ -279,19 +303,19 @@
             <pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>
-            <title><![CDATA[Ejecting an Unlock Account]]></title>
-            <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
-            <link>https://unlock-protocol.com/blog/ejecting-account</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
-            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
-        </item>
-        <item>
             <title><![CDATA[Unlock Hackathon Ideas]]></title>
             <description><![CDATA[We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.]]></description>
             <link>https://unlock-protocol.com/blog/hackathon-ideas</link>
             <guid isPermaLink="true">https://unlock-protocol.com/blog/hackathon-ideas</guid>
             <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Ejecting an Unlock Account]]></title>
+            <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
+            <link>https://unlock-protocol.com/blog/ejecting-account</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ejecting-account</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
             <pubDate>Tue, 05 Nov 2019 05:00:00 GMT</pubDate>
         </item>
         <item>

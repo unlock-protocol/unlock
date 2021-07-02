@@ -17,7 +17,6 @@ export const success = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
   getCards: 'getCards.success',
   keyPurchase: 'keyPurchase.success',
-  getKeyPrice: 'getKeyPrice.success',
   ejectUser: 'ejectUser.success',
   getMetadataFor: 'getMetadataFor.success',
   getBulkMetadataFor: 'getBulkMetadataFor.success',
@@ -35,7 +34,6 @@ export const failure = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
   getCards: 'getCards.failure',
   keyPurchase: 'keyPurchase.failure',
-  getKeyPrice: 'getKeyPrice.failure',
   ejectUser: 'ejectUser.failure',
   getMetadataFor: 'getMetadataFor.failure',
   getBulkMetadataFor: 'getBulkMetadataFor.failure',
@@ -309,21 +307,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a lock address (ERC20), return the price of a key for that lock in dollars
-   * On success returns an object of { creditCardProcessing, gasFee, keyPrice, unlockServiceFee }
-   * all denominated in cents.
-   * @param {string} lockAddress
-   */
-  async getKeyPrice(lockAddress) {
-    try {
-      const result = await axios.get(`${this.host}/price/${lockAddress}`)
-      this.emit(success.getKeyPrice, result.data)
-    } catch (error) {
-      this.emit(failure.getKeyPrice, error)
-    }
-  }
-
-  /**
    * Ejects a user
    *
    * @param {*} publicKey
@@ -349,7 +332,7 @@ export class StorageService extends EventEmitter {
    * @param {*} signature
    * @param {*} data
    */
-  async getMetadataFor(lockAddress, keyId, signature, data) {
+  async getMetadataFor(lockAddress, keyId, signature, data, network) {
     const stringData = JSON.stringify(data)
     const opts = {
       headers: this.genAuthorizationHeader(signature),
@@ -362,7 +345,7 @@ export class StorageService extends EventEmitter {
     }
     try {
       const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/${keyId}`,
+        `${this.host}/api/key/${lockAddress}/${keyId}?chain=${network}`,
         opts
       )
       const payload = {
@@ -387,7 +370,7 @@ export class StorageService extends EventEmitter {
    * @param {string} signature
    * @param {*} data
    */
-  async getBulkMetadataFor(lockAddress, signature, data) {
+  async getBulkMetadataFor(lockAddress, signature, data, network) {
     const stringData = JSON.stringify(data)
     const opts = {
       headers: this.genAuthorizationHeader(signature),
@@ -400,7 +383,7 @@ export class StorageService extends EventEmitter {
     }
     try {
       const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata`,
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
         opts
       )
 
@@ -412,8 +395,7 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a lock address and a typed data signature, get the metadata
-   * (public and protected) associated with each key on that lock.
+   * Given a lock address and a typed data signature, connect to stripe
    * @param {string} lockAddress
    * @param {string} signature
    * @param {*} data
@@ -434,5 +416,52 @@ export class StorageService extends EventEmitter {
     )
 
     return result?.data
+  }
+
+  async updateLockIcon(lockAddress, signature, data, icon) {
+    const opts = {
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
+    }
+
+    const result = await axios.post(
+      `${this.host}/lock/${lockAddress}/icon`,
+      { ...data, icon },
+      opts
+    )
+
+    return result?.data
+  }
+
+  /**
+   * Saves a user metadata for a lock
+   * @param {*} lockAddress
+   * @param {*} userAddress
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async setUserMetadataData(
+    lockAddress,
+    userAddress,
+    payload,
+    signature,
+    network
+  ) {
+    let url = `${this.host}/api/key/${lockAddress}/user/${userAddress}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
   }
 }

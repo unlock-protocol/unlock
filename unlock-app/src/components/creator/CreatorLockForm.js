@@ -5,9 +5,8 @@ import UnlockPropTypes from '../../propTypes'
 import { ConfigContext } from '../../utils/withConfig'
 import { currencySymbol } from '../../utils/lock'
 
-import Icon from '../lock/Icon'
-import { BalanceWithUnit, ERC20 } from '../helpers/Balance'
 import {
+  DoubleHeightCell,
   LockDetails,
   LockRow,
   LockName,
@@ -15,6 +14,10 @@ import {
   LockDuration,
   LockKeys,
 } from './LockStyles'
+
+import Icon from '../lock/Icon'
+import { BalanceWithUnit, ERC20 } from '../helpers/Balance'
+
 import { LockStatus } from './lock/CreatorLockStatus'
 import {
   isNotEmpty,
@@ -145,7 +148,9 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     <form method="post" onSubmit={handleSubmit}>
       <FormLockRow>
         <FormLockDetails className="lockForm" data-address={lockInForm.address}>
-          <Icon />
+          <DoubleHeightCell>
+            <Icon lock={lockInForm} />
+          </DoubleHeightCell>
           <FormLockName>
             <input
               type="text"

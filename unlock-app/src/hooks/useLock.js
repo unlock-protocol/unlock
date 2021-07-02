@@ -23,6 +23,7 @@ export const processTransaction = async (
   network
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
+  const blockTime = config.networks[network].blockTime
   if (
     !transaction ||
     transaction.confirmations <= config.requiredConfirmations
@@ -38,7 +39,7 @@ export const processTransaction = async (
         hash,
         network
       )
-    }, config.blockTime / 2)
+    }, blockTime / 2)
 
     setLock({
       ...lock,
@@ -289,14 +290,6 @@ export const useLock = (lockFromProps, network) => {
       return -1
     }
   }
-
-  // const getUsdPricing = async () => {
-  //   const fullPrice = await getUsdPrice(config, lock.address, network)
-  //   if (!fullPrice.keyPrice) {
-  //     return '' // No price
-  //   }
-  //   return `~ $${parseFloat(fullPrice.keyPrice) / 100}`
-  // }
 
   return {
     getLock,

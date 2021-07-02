@@ -35,9 +35,13 @@ const templateValues = (network) => {
       address = '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863'
       networkName = 'xdai'
       break
+    case 'matic':
+      address = '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863'
+      networkName = 'matic'
+      break
     default:
       console.error(
-        'Please provide a network name [winston, kovan, rinkeby, mainnet]'
+        'Please provide a network name [winston, kovan, rinkeby, mainnet, xdai, matic]'
       )
   }
 

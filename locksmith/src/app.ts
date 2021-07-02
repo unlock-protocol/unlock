@@ -12,8 +12,7 @@ import { resolvers } from './graphql/resolvers'
 const app = express()
 
 Sentry.init({
-  dsn:
-    'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+  dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
   integrations: [
     // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
@@ -60,7 +59,7 @@ server.applyMiddleware({ app })
 const router = require('./routes')
 
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '5mb' }))
 app.use('/', router)
 
 // The error handler must be before any other error middleware and after all controllers

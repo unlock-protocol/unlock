@@ -6,7 +6,7 @@ import * as Normalizer from '../utils/normalizer'
 
 import UserOperations = require('../operations/userOperations')
 
-const logger = require('../logger')
+import logger from '../logger'
 
 namespace UserController {
   export const createUser = async (
@@ -187,11 +187,12 @@ namespace UserController {
       return res.sendStatus(401)
     }
 
-    const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
-      ethereumAddress,
-      // @ts-expect-error
-      data?.message?.stripeApiKey || ''
-    )
+    const stripeCustomerId =
+      await StripeOperations.getStripeCustomerIdForAddress(
+        ethereumAddress,
+        // @ts-expect-error
+        data?.message?.stripeApiKey || ''
+      )
     if (!stripeCustomerId) {
       return res.json([])
     }

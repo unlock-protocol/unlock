@@ -27,7 +27,9 @@ export default class KeyPricer {
     if (!lock.currencyContractAddress || lock.currencyContractAddress == ZERO) {
       if (network === 100) {
         symbol = 'DAI'
-      } // Add support for other "main currencies!" (MATIC... etc)
+      } else if (network === 137) {
+        symbol = 'MATIC'
+      }
     } else {
       symbol = lock.currencySymbol
     }
@@ -36,12 +38,14 @@ export default class KeyPricer {
     return priceConversion.convertToUSD(symbol, lock.keyPrice)
   }
 
-  // Fee denominated in cents
-  async gasFee(network: number): Promise<number> {
-    // eslint-disable-next-line new-cap
+  // Fee denominated in cents by default. multiply base to get more accurate
+  async gasFee(network: number, base?: number): Promise<number> {
+    if (!base) {
+      base = 1
+    }
     const providerUrl = networks[network].provider
     const provider = new ethers.providers.JsonRpcProvider(providerUrl)
-    const keyGrantingGas = 200000 // harcoded : TODO get better estimate
+    const keyGrantingGas = 200000 // harcoded : TODO get better estimate, based on actual execution
 
     // Price of gas
     const gasPrice: any = await provider.getGasPrice()
@@ -50,16 +54,22 @@ export default class KeyPricer {
     const costInGwei = gasPrice * keyGrantingGas
 
     // Cost in base currency
-    const gasCost = parseFloat(
-      ethers.utils.formatEther(
-        ethers.utils.parseUnits(costInGwei.toString(), 'wei')
-      )
-    )
+    const gasCost =
+      parseFloat(
+        ethers.utils.formatEther(
+          ethers.utils.parseUnits(costInGwei.toString(), 'wei')
+        )
+      ) * base
 
     let symbol = 'ETH'
     if (network === 100) {
       symbol = 'DAI'
-    } // Add support for other "main currencies!" (MATIC... etc)
+    }
+    if (network === 137) {
+      symbol = 'MATIC'
+    }
+    // TODO: support more "native" currencies
+
     const priceConversion = new PriceConversion()
     return priceConversion.convertToUSD(symbol, gasCost)
   }

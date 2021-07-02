@@ -5,9 +5,9 @@ module.exports = {
   collectCoverage: true,
   coverageThreshold: {
     global: {
-      branches: 68,
-      functions: 75,
-      lines: 80,
+      branches: 63,
+      functions: 73,
+      lines: 75,
     },
   },
   preset: 'ts-jest/presets/js-with-ts',

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { AuthenticationContext } from '../Authenticate'
 import { useAccount } from '../../../hooks/useAccount'
 import { PaymentDetails } from '../user-account/PaymentDetails'
+import { SignUp } from '../user-account/SignUp'
 import { Input, Label } from './FormStyles'
 import UnlockProvider from '../../../services/unlockProvider'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -16,6 +17,7 @@ interface userData {
 interface NewAccountCheckoutProps {
   network: number
   showLogin: () => void
+  askForCard: boolean
   onAccountCreated: (provider: any, paymentDetails: any) => void
 }
 
@@ -23,33 +25,41 @@ export const NewAccountCheckout = ({
   network,
   showLogin,
   onAccountCreated,
+  askForCard,
 }: NewAccountCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
   const { createUserAccount } = useAccount(account, network)
   const [error, setError] = useState('')
 
-  const saveCard = async (
+  const createAccount = async (email: string, password: string, data?: any) => {
+    const { passwordEncryptedPrivateKey } = await createUserAccount(
+      email,
+      password
+    )
+
+    const unlockProvider = new UnlockProvider(config.networks[network])
+
+    await unlockProvider.connect({
+      key: passwordEncryptedPrivateKey,
+      emailAddress: email,
+      password,
+    })
+    onAccountCreated(unlockProvider, data)
+  }
+
+  if (!askForCard) {
+    return <SignUp showLogin={showLogin} createAccount={createAccount} />
+  }
+
+  const onCardSaved = async (
     token: string,
     card: any,
     { email, password }: userData
   ) => {
     setError('')
     try {
-      const { passwordEncryptedPrivateKey } = await createUserAccount(
-        email,
-        password
-      )
-
-      const unlockProvider = new UnlockProvider(config.networks[network])
-
-      await unlockProvider.connect({
-        key: passwordEncryptedPrivateKey,
-        emailAddress: email,
-        password,
-      })
-
-      onAccountCreated(unlockProvider, { card, token })
+      await createAccount(email, password, { card, token })
     } catch (error) {
       console.error(error)
       setError(error.message)
@@ -58,7 +68,7 @@ export const NewAccountCheckout = ({
 
   return (
     <PaymentDetails
-      saveCard={saveCard}
+      saveCard={onCardSaved}
       buttonLabel="Save and go to payment"
       renderError={() => {
         if (!error) {
@@ -85,15 +95,13 @@ export const NewAccountCheckout = ({
             <Label>Email</Label>
             <Input
               autoComplete="username"
-              name="email"
-              ref={register({ required: true })}
+              {...register('email', { required: true })}
             />
             <Label>Set a password</Label>
             <Input
               autoComplete="new-password"
-              name="password"
               type="password"
-              ref={register({ required: true })}
+              {...register('password', { required: true })}
             />
           </>
         )

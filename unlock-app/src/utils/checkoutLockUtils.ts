@@ -13,6 +13,7 @@ interface LockFiatPricing {
   [currency: string]: any
 }
 interface LockTickerSymbolLock {
+  keyPrice?: string
   currencyContractAddress: string | null
   currencySymbol?: string
   fiatPricing?: LockFiatPricing
@@ -81,4 +82,14 @@ export const convertedKeyPrice = (lock: LockTickerSymbolLock) => {
     return ''
   }
   return `~$${parseInt(keyPrice) / 100}`
+}
+
+export const formattedKeyPrice = (
+  lock: LockTickerSymbolLock,
+  baseCurrencySymbol: string
+) => {
+  if (lock.keyPrice === '0') {
+    return 'FREE'
+  }
+  return `${lock.keyPrice} ${lockTickerSymbol(lock, baseCurrencySymbol)}`
 }
