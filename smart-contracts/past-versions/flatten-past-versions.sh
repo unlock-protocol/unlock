@@ -3,7 +3,7 @@
 # This script is used to flatten all the different versions of the Unlock and PublicLock contracts
 # using hardhat. The contract version are fetched from commit history.
 #
-# usage: sh ./versioned-solidity-files.sh
+# usage: sh ./flatten-past-versions.sh
 #
 
 # all the commits  
@@ -23,7 +23,7 @@ do
    sh -c "git checkout --force ${commit}"
 
    # store in some far away path for now
-    dst=$(realpath ../../unlock-versions)
+    dst=$(realpath ./past-versions)
 
     # create folders
     mkdir -p $dst

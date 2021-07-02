@@ -11,7 +11,7 @@ These files are used in `test/Lock/upgrades.js` to test upgrades from successive
 You can reproduce the steps by running the following script from the `./smart-contracts` folder.
 
 ```
-sh ./scripts/versioned-solidity-files.sh
+sh ./flatten-past-versions.sh
 ```
 
 
