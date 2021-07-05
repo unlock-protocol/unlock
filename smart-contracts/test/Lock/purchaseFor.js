@@ -1,6 +1,7 @@
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
+const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -86,8 +87,9 @@ contract('Lock / purchaseFor', (accounts) => {
         )
         // let's now expire the key
         await locks.SECOND.expireAndRefundFor(accounts[4], 0)
+
         // Purchase a new one
-        await locks.SECOND.purchase(
+        const newKeyTx = await locks.SECOND.purchase(
           0,
           accounts[4],
           web3.utils.padLeft(0, 40),
@@ -96,21 +98,19 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
+
+        const transferBlock = await ethers.provider.getBlock(
+          newKeyTx.receipt.blockNumber
+        )
+        const transferTs = transferBlock.timestamp
+
         // And check the expiration which shiuld be exactly now + keyDuration
         const expirationTimestamp = new BigNumber(
           await locks.SECOND.keyExpirationTimestampFor.call(accounts[4])
         )
-        const now = parseInt(new Date().getTime() / 1000)
-        // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
-        assert(
-          expirationTimestamp.gt(
-            locks.SECOND.params.expirationDuration.plus(now - 10)
-          )
-        )
-        assert(
-          expirationTimestamp.lt(
-            locks.SECOND.params.expirationDuration.plus(now + 10)
-          )
+        assert.equal(
+          expirationTimestamp.minus(transferTs).toNumber(),
+          locks.SECOND.params.expirationDuration.toNumber()
         )
       })
     })
@@ -268,21 +268,20 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
+
+        const transferBlock = await ethers.provider.getBlock(
+          tx.receipt.blockNumber
+        )
+        const transferTs = transferBlock.timestamp
+
         // And check the expiration which shiuld be exactly now + keyDuration
         const expirationTimestamp = new BigNumber(
           await locks.SHORT.keyExpirationTimestampFor.call(accounts[4])
         )
-        const now = parseInt(new Date().getTime() / 1000)
-        // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
-        assert(
-          expirationTimestamp.gt(
-            locks.SHORT.params.expirationDuration.plus(now - 10)
-          )
-        )
-        assert(
-          expirationTimestamp.lt(
-            locks.SHORT.params.expirationDuration.plus(now + 10)
-          )
+
+        assert.equal(
+          expirationTimestamp.minus(transferTs).toNumber(),
+          locks.SHORT.params.expirationDuration.toNumber()
         )
       })
 
@@ -290,19 +289,19 @@ contract('Lock / purchaseFor', (accounts) => {
         let duration = new BigNumber(
           await locks.SHORT.expirationDuration.call()
         )
-        const now = parseInt(new Date().getTime() / 1000)
+
         assert.equal(tx.logs[0].event, 'RenewKeyPurchase')
         assert.equal(tx.logs[0].args.owner, accounts[4])
-        assert(
-          new BigNumber(tx.logs[0].args.newExpiration).gt(
-            duration.plus(now - 10)
-          )
+
+        const transferBlock = await ethers.provider.getBlock(
+          tx.receipt.blockNumber
         )
-        assert(
-          new BigNumber(tx.logs[0].args.newExpiration).lt(
-            duration.plus(now + 10)
-          )
+        const transferTs = transferBlock.timestamp
+        assert.equal(
+          new BigNumber(tx.logs[0].args.newExpiration).toNumber(),
+          duration.plus(transferTs).toNumber()
         )
+
         // Verify that Transfer does not emit on an expired key re-purchase
         const included = tx.logs.filter((l) => l.event === 'Transfer')
         assert.equal(included.length, 0)

@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 // See <http://truffleframework.com/docs/advanced/configuration>
 // to customize your Truffle configuration!
-
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 /**
@@ -133,7 +132,7 @@ module.exports = {
       // used for local dev
       host: testHost,
       port: 8545,
-      network_id: '*', // Match any network id
+      network_id: '1337', // Match any network id
     },
     rinkeby: {
       provider: rinkebyProvider,

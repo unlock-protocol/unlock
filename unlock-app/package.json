@@ -71,10 +71,6 @@
   "devDependencies": {
     "npm-check": "5.9.2"
   },
-  "engines": {
-    "node": "^10"
-  },
-  "engineStrict": true,
   "scripts": {
     "dev": "next dev src",
     "build": "next build src",
