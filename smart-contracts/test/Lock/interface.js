@@ -1,5 +1,5 @@
-const lockContract = artifacts.require('PublicLock.sol')
-const lockInterface = artifacts.require('IPublicLock.sol')
+const lockContract = artifacts.require('PublicLock')
+const lockInterface = artifacts.require('IPublicLock')
 
 contract('Lock / interface', () => {
   it('The interface includes all public functions', async () => {

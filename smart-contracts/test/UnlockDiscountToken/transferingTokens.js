@@ -175,7 +175,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           .times(rate)
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
-        gasSpent.times(0.2).shiftedBy(-18).toFixed(3)
+        gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
       )
     })
   })

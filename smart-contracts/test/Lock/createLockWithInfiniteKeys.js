@@ -1,9 +1,10 @@
 const BigNumber = require('bignumber.js')
+const { constants } = require('hardlydifficult-eth')
 
-const PublicLock = artifacts.require('PublicLock.sol')
+const PublicLock = artifacts.require('PublicLock')
 const getProxy = require('../helpers/proxy')
 
-const unlockContract = artifacts.require('Unlock.sol')
+const unlockContract = artifacts.require('Unlock')
 
 let unlock
 
@@ -19,7 +20,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         web3.utils.padLeft(0, 40),
         web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-        -1, // maxNumberOfKeys
+        constants.MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock',
         '0x000000000000000000000000'
       )

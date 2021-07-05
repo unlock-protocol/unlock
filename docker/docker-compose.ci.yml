@@ -50,8 +50,6 @@ services:
       cache_from:
         - smart-contracts
         - unlockprotocol/smart-contracts:master
-    depends_on:
-      - ganache
 
   unlock-app: # Container for the dashboard
     env_file:

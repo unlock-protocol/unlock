@@ -28,9 +28,6 @@
       "eslint --fix"
     ]
   },
-  "engines": {
-    "node": "^10"
-  },
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {

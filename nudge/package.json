@@ -9,9 +9,6 @@
     "test": "jest",
     "start": "node ./build/src/index.js"
   },
-  "engines": {
-    "node": "^10"
-  },
   "license": "MIT",
   "dependencies": {
     "@types/cron": "1.7.2",
