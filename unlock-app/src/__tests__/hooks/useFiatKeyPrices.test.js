@@ -23,7 +23,7 @@ describe('useFiatKeyPrices', () => {
   it('should return an empty object by default', () => {
     expect.assertions(1)
 
-    const { result } = renderHook(() => useFiatKeyPrices(''))
+    const { result } = renderHook(() => useFiatKeyPrices('', 1))
 
     expect(result.current).toEqual({
       fiatPrices: {},
@@ -59,7 +59,7 @@ describe('useFiatKeyPrices', () => {
     )
 
     await waitFor(() => {
-      return Object.keys(result.current).length > 0
+      return result.current.loading === false
     })
 
     expect(result.current).toEqual({
