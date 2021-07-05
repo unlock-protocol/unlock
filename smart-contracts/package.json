@@ -34,7 +34,7 @@
     "bignumber.js": "9.0.1",
     "eslint": "7.8.1",
     "eslint-import-resolver-typescript": "2.3.0",
-    "eslint-plugin-mocha": "8.1.0",
+    "eslint-plugin-mocha": "9.0.0",
     "eth-gas-reporter": "0.2.22",
     "eth-sig-util": "2.5.4",
     "ethers": "^5.3.1",
