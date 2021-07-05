@@ -30,6 +30,11 @@ export const renderWithContexts = (component) => {
         },
       },
     },
+    services: {
+      storage: {
+        host: 'http://localhost:8080',
+      },
+    },
   }
   const authentication = { network: 1492 }
   return rtl.render(

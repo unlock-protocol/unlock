@@ -1267,10 +1267,10 @@
     glob "^7.1.2"
     web3-utils "1.2.1"
 
-"@truffle/hdwallet-provider@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@truffle/hdwallet-provider/-/hdwallet-provider-1.4.0.tgz#8b937d0688eebc049db4ab0e9ed895598b9b4d48"
-  integrity sha512-zCc4IWEtfAuKWWktZOaYFoHCvameQIz5Bk+S2ahCPxYMlWECWrbCMjoqqLojB1Hyz+IsvU1cspmr3E6PoO4ZmQ==
+"@truffle/hdwallet-provider@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@truffle/hdwallet-provider/-/hdwallet-provider-1.4.1.tgz#112fba16c703a32c03e1cf9fb9ebd458b66c28b0"
+  integrity sha512-mcImWO3oyFu+4Sxrvrer0ZghjiJyDpOzG+vWUYCeV6Nl1Q3sqxNDvJKyTFkXQzHeNOPTVCOenqxUAGWF8XwlCA==
   dependencies:
     "@trufflesuite/web3-provider-engine" "15.0.13-1"
     any-promise "^1.3.0"
