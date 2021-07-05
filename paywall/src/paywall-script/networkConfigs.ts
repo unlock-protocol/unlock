@@ -34,7 +34,8 @@ export const networkConfigs: NetworkConfigs = {
     unlockAppUrl,
   },
   137: {
-    readOnlyProvider: 'https://rpc-mainnet.matic.network',
+    readOnlyProvider:
+      'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
     locksmithUri: 'https://locksmith.unlock-protocol.com',
     unlockAppUrl,
   },
