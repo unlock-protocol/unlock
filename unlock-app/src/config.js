@@ -143,7 +143,8 @@ export default function configure(
 
   // Matic/Polygon network
   networks[137] = {
-    provider: 'https://rpc-mainnet.matic.network',
+    provider:
+      'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
     id: 137,
     name: 'Polygon',
