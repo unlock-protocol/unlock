@@ -216,7 +216,8 @@ contract('Unlock / upgrades', async (accounts) => {
                   )
 
                   // lock template
-                  const publicLockLatestTemplate = await PublicLockLatest.deploy()
+                  const publicLockLatestTemplate =
+                    await PublicLockLatest.deploy()
                   await publicLockLatestTemplate.deployed()
 
                   await unlock.setLockTemplate(publicLockLatestTemplate.address)
@@ -329,7 +330,8 @@ contract('Unlock / upgrades', async (accounts) => {
                   })
 
                   it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
-                    const grossNetworkProduct = await unlock.grossNetworkProduct()
+                    const grossNetworkProduct =
+                      await unlock.grossNetworkProduct()
                     assert.equal(
                       grossNetworkProduct.eq(
                         ethers.BigNumber.from(keyPrice).mul(2)
