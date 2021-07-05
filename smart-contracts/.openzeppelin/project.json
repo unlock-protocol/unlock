@@ -1,0 +1,27 @@
+{
+  "manifestVersion": "2.2",
+  "contracts": {
+    "Unlock": "Unlock",
+    "UnlockDiscountToken": "UnlockDiscountToken"
+  },
+  "dependencies": {},
+  "name": "unlock-protocol",
+  "version": "0.0.8",
+  "compiler": {
+    "manager": "openzeppelin",
+    "compilerSettings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": "200"
+      },
+      "evmVersion": "istanbul"
+    },
+    "solcVersion": "0.5.17",
+    "artifactsDir": "build/contracts",
+    "contractsDir": "contracts",
+    "typechain": {
+      "enabled": false
+    }
+  },
+  "telemetryOptIn": false
+}
