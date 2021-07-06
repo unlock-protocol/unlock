@@ -22,9 +22,6 @@
       "eslint --fix"
     ]
   },
-  "engines": {
-    "node": "^10"
-  },
   "license": "MIT",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "2.14.0",

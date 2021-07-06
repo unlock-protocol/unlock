@@ -1,7 +1,9 @@
+import parseDataUri from 'parse-data-uri'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
+import { LockIcons } from '../models/lockIcons'
 
 import logger from '../logger'
 
@@ -106,9 +108,68 @@ const stripeConnected = async (req, res) => {
  */
 const lockIcon = async (req, res) => {
   const { lockAddress } = req.params
-  const svg = lockIconUtils.lockIcon(lockAddress)
-  res.setHeader('Content-Type', 'image/svg+xml')
-  return res.send(svg)
+  const { original } = req.query
+  try {
+    if (original !== '1') {
+      const lockIcon = await LockIcons.findOne({
+        where: { lock: Normalizer.ethereumAddress(lockAddress) },
+      })
+
+      if (lockIcon) {
+        if (lockIcon.icon.startsWith('data:')) {
+          const parsedDataUri = parseDataUri(lockIcon.icon)
+          res.setHeader('Content-Type', parsedDataUri.mimeType)
+          return res.send(parsedDataUri.data)
+        } else {
+          // This is just a regular URL redirect
+          return res.redirect(lockIcon.icon)
+        }
+      }
+    }
+  } catch (e) {
+    console.error(`Could not serve icon for ${lockAddress}`)
+  } finally {
+    const svg = lockIconUtils.lockIcon(lockAddress)
+    res.setHeader('Content-Type', 'image/svg+xml')
+    res.send(svg)
+  }
+}
+
+const changeLockIcon = async (req, res) => {
+  const { message, icon } = req.body
+  const { lockAddress, chain, lockManager } = message['Update Icon']
+
+  const isAuthorized = await evaluateLockOwnership(
+    lockAddress,
+    lockManager,
+    parseInt(chain)
+  )
+  if (!isAuthorized) {
+    return res
+      .status(401)
+      .send(
+        `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
+      )
+  } else {
+    let lockIcon = await LockIcons.findOne({
+      where: {
+        chain,
+        lock: Normalizer.ethereumAddress(lockAddress),
+      },
+    })
+    if (lockIcon) {
+      lockIcon.icon = icon
+      await lockIcon.save()
+    } else {
+      lockIcon = await LockIcons.create({
+        chain,
+        lock: Normalizer.ethereumAddress(lockAddress),
+        icon: icon,
+      })
+    }
+  }
+
+  return res.status(200).send('OK')
 }
 
 module.exports = {
@@ -119,4 +180,5 @@ module.exports = {
   lockIcon,
   connectStripe,
   stripeConnected,
+  changeLockIcon,
 }

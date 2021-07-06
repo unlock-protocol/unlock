@@ -3,6 +3,9 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { errorMessages } = require('../helpers/constants')
+
+const { VM_ERROR_REVERT_UNKNOWN } = errorMessages
 
 let unlock
 let locks
@@ -28,7 +31,7 @@ contract('Lock / getOwnersByPage', (accounts) => {
         locks.FIRST.getOwnersByPage.call(1, 1, {
           from: accounts[0],
         }),
-        'VM Exception while processing transaction: revert'
+        VM_ERROR_REVERT_UNKNOWN
       )
     })
   })

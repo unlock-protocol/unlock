@@ -2,6 +2,7 @@ const BigNumber = require('bignumber.js')
 
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
+const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -150,45 +151,46 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
     describe('when the recipient already has a non expired key', () => {
       let transferredKeyTimestamp
-      let previousExpirationTimestamp
+      let transferTs
+      let receiverKeyOriginalTimestamp
 
       before(async () => {
         await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
           value: web3.utils.toWei('0.01', 'ether'),
           from,
         })
+
         ID = await locks.FIRST.getTokenIdFor.call(from)
-        // First let's get the current expiration
+
         transferredKeyTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
-        previousExpirationTimestamp = new BigNumber(
+
+        receiverKeyOriginalTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
         )
-        await locks.FIRST.transferFrom(from, accountWithKey, ID, {
+
+        const tx = await locks.FIRST.transferFrom(from, accountWithKey, ID, {
           from,
         })
+
+        const transferBlock = await ethers.provider.getBlock(
+          tx.receipt.blockNumber
+        )
+        transferTs = transferBlock.timestamp
       })
 
       it("should expand the key's validity", async () => {
-        const expirationTimestamp = new BigNumber(
+        const receiverKeyUpdatedTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(accountWithKey)
         )
-        const now = Math.floor(new Date().getTime() / 1000)
-        // Check +/- 10 seconds
-        assert(
-          expirationTimestamp.gt(
-            previousExpirationTimestamp
-              .plus(transferredKeyTimestamp)
-              .minus(now + 10)
-          )
-        )
-        assert(
-          expirationTimestamp.lt(
-            previousExpirationTimestamp
-              .plus(transferredKeyTimestamp)
-              .minus(now - 10)
-          )
+
+        assert.equal(
+          transferredKeyTimestamp
+            .plus(receiverKeyOriginalTimestamp)
+            .minus(transferTs)
+            .toNumber(),
+          receiverKeyUpdatedTimestamp.toNumber()
         )
       })
 

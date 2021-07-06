@@ -1,7 +1,11 @@
 const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
 const { constants } = require('hardlydifficult-ethereum-contracts')
+
+const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
+
+const { errorMessages } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -11,13 +15,17 @@ let lock
 let locks
 let tx
 
+const { VM_ERROR_INVALID_OPCODE } = errorMessages
+
 contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
   const keyOwner = accounts[2]
   let validExpirationTimestamp
 
   before(async () => {
-    validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
+    const blockNumber = await ethers.provider.getBlockNumber()
+    const latestBlock = await ethers.provider.getBlock(blockNumber)
+    validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
@@ -38,9 +46,10 @@ contract('Lock / grantKeys', (accounts) => {
       })
 
       it('should log Transfer event', async () => {
-        assert.equal(tx.logs[1].event, 'Transfer')
-        assert.equal(tx.logs[1].args.from, 0)
-        assert.equal(tx.logs[1].args.to, accounts[2])
+        const evt = tx.logs.find((v) => v.event === 'Transfer')
+        assert.equal(evt.event, 'Transfer')
+        assert.equal(evt.args.from, 0)
+        assert.equal(evt.args.to, accounts[2])
       })
 
       it('should acknowledge that user owns key', async () => {
@@ -95,7 +104,7 @@ contract('Lock / grantKeys', (accounts) => {
               from: lockCreator,
             }
           ),
-          'revert'
+          VM_ERROR_INVALID_OPCODE
         )
       })
     })
