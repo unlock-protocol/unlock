@@ -11,6 +11,7 @@ mnemonic.*
 artifacts/
 cache/
 *.generated.sol
+*.generated.sol*
 
 deployments/hardhat
 deployments/localhost
