@@ -21,7 +21,7 @@ export const updateDefaultLockMetadata = async (data: any) => {
   try {
     await LockMetadata.upsert(data, { returning: true })
     return true
-  } catch (e) {
+  } catch (error) {
     return false
   }
 }
