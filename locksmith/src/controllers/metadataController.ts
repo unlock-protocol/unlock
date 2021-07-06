@@ -110,19 +110,19 @@ namespace MetadataController {
     const owner = Normalizer.ethereumAddress(req.owner)
     const address: string = Normalizer.ethereumAddress(req.params.address)
     const metadata = req.body.message.LockMetaData
-
     if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
       res
         .status(401)
         .send(`${owner} is not a lock manager for ${address} on ${req.chain}`)
     } else {
-      const successfulUpdate = metadataOperations.updateDefaultLockMetadata({
-        address,
-        data: {
-          ...metadata,
-        },
-      })
-
+      const successfulUpdate =
+        await metadataOperations.updateDefaultLockMetadata({
+          address,
+          chain: req.chain,
+          data: {
+            ...metadata,
+          },
+        })
       if (successfulUpdate) {
         res.sendStatus(202)
       } else {
@@ -140,13 +140,12 @@ namespace MetadataController {
     const metadata = req.body.message.KeyMetaData
     const id = req.params.keyId.toLowerCase()
     const { chain } = req
-
     if ((await evaluateLockOwnership(address, owner, chain)) === false) {
       res
         .status(401)
         .send(`${owner} is not a lock manager for ${address} on ${chain}`)
     } else {
-      const successfulUpdate = metadataOperations.updateKeyMetadata({
+      const successfulUpdate = await metadataOperations.updateKeyMetadata({
         chain,
         address,
         id,

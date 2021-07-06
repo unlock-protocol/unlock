@@ -50,8 +50,6 @@ services:
       cache_from:
         - smart-contracts
         - unlockprotocol/smart-contracts:master
-    depends_on:
-      - ganache
 
   unlock-app: # Container for the dashboard
     env_file:
@@ -194,7 +192,7 @@ services:
       - ganache-integration
 
   ipfs: # Required for subgraph
-    image: ipfs/go-ipfs:v0.8.0
+    image: ipfs/go-ipfs:v0.9.0
     ports:
       - '5001:5001'
 

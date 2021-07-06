@@ -21,7 +21,7 @@ export const updateDefaultLockMetadata = async (data: any) => {
   try {
     await LockMetadata.upsert(data, { returning: true })
     return true
-  } catch (e) {
+  } catch (error) {
     return false
   }
 }
@@ -43,7 +43,7 @@ export const generateKeyMetadata = async (
     : {}
 
   const keyCentricData = await getKeyCentricData(address, keyId)
-  const baseTokenData = await getBaseTokenData(address, host)
+  const baseTokenData = await getBaseTokenData(address, host, keyId)
   return Object.assign(
     baseTokenData,
     keyCentricData,
@@ -52,8 +52,12 @@ export const generateKeyMetadata = async (
   )
 }
 
-export const getBaseTokenData = async (address: string, host: string) => {
-  const defaultResponse = defaultMappings(address, host)
+export const getBaseTokenData = async (
+  address: string,
+  host: string,
+  keyId: string
+) => {
+  const defaultResponse = defaultMappings(address, host, keyId)
   const persistedBasedMetadata = await LockMetadata.findOne({
     where: { address },
   })
@@ -113,11 +117,11 @@ const fetchChainData = async (
   }
 }
 
-const defaultMappings = (address: string, host: string) => {
+const defaultMappings = (address: string, host: string, keyId: string) => {
   const defaultResponse = {
     name: 'Unlock Key',
     description: 'A Key to an Unlock lock.',
-    image: `${host}/lock/${address}/icon`,
+    image: `${host}/lock/${address}/icon?id=${keyId}`,
   }
 
   // Custom mappings
