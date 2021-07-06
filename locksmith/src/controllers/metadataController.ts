@@ -116,12 +116,13 @@ namespace MetadataController {
         .status(401)
         .send(`${owner} is not a lock manager for ${address} on ${req.chain}`)
     } else {
-      const successfulUpdate = metadataOperations.updateDefaultLockMetadata({
-        address,
-        data: {
-          ...metadata,
-        },
-      })
+      const successfulUpdate =
+        await metadataOperations.updateDefaultLockMetadata({
+          address,
+          data: {
+            ...metadata,
+          },
+        })
 
       if (successfulUpdate) {
         res.sendStatus(202)
@@ -146,7 +147,7 @@ namespace MetadataController {
         .status(401)
         .send(`${owner} is not a lock manager for ${address} on ${chain}`)
     } else {
-      const successfulUpdate = metadataOperations.updateKeyMetadata({
+      const successfulUpdate = await metadataOperations.updateKeyMetadata({
         chain,
         address,
         id,
