@@ -17,3 +17,6 @@ sed -i'.bak' -e '/SPDX-License-Identifier/d' $UDT_V2_FLATTENED
 
 # patch ERC20 and Solidity version
 patch $UDT_V2_FLATTENED $UDT_V2_PATCH -o $UDT_V2_TARGET
+
+#cleanup
+rm $UDT_V2_FLATTENED
