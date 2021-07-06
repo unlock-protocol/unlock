@@ -95,7 +95,7 @@
     "unlock-abi-1-1": "1.1.1",
     "winston": "3.3.3",
     "winston-sentry-log": "1.0.22",
-    "yargs": "16.2.0"
+    "yargs": "17.0.1"
   },
   "devDependencies": {
     "nodemon": "2.0.9",
