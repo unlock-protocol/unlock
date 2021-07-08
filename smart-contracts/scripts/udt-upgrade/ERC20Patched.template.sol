@@ -1,8 +1,8 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
-
+// import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesCompUpgradeable.sol';
 
 contract MinterRoleUpgradeable is Initializable, ContextUpgradeable {
     using Roles for Roles.Role;
@@ -48,7 +48,7 @@ contract MinterRoleUpgradeable is Initializable, ContextUpgradeable {
     uint256[50] private ______gap;
 }
 
-abstract contract ERC20DetailedUpgradeable is Initializable, IERC20Upgradeable {
+abstract contract ERC20DetailedUpgradeable is Initializable, ERC20VotesUpgradeable {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
@@ -74,7 +74,7 @@ abstract contract ERC20DetailedUpgradeable is Initializable, IERC20Upgradeable {
     uint256[50] private ______gap;
 }
 
-abstract contract ERC20MintableUpgradeable is Initializable, ERC20Upgradeable, MinterRoleUpgradeable {
+abstract contract ERC20MintableUpgradeable is Initializable, ERC20VotesUpgradeable, MinterRoleUpgradeable {
     function initialize(address sender) public virtual override initializer {
         MinterRoleUpgradeable.initialize(sender);
     }
@@ -85,35 +85,4 @@ abstract contract ERC20MintableUpgradeable is Initializable, ERC20Upgradeable, M
     }
 
     uint256[50] private ______gap;
-}
-
-/**
-* @title The Unlock Discount Token
-* This smart contract implements the Unlock Discount Token
-*/
-contract UnlockDiscountTokenV2 is
-ERC20MintableUpgradeable,
-ERC20DetailedUpgradeable
-{
-    /**
-    * @notice A one-time call to configure the token.
-    * @param _minter A wallet with permissions to mint tokens and/or add other minters.
-    */
-    function initialize(address _minter) public override initializer()
-    {
-        ERC20MintableUpgradeable.initialize(_minter);
-        ERC20DetailedUpgradeable.initialize('Unlock Discount Token', 'UDT', 18);
-    }
-
-    function name() public view override(IERC20MetadataUpgradeable, ERC20DetailedUpgradeable) returns (string memory) {
-        return ERC20DetailedUpgradeable.name();
-    }
-
-    function symbol() public view override(IERC20MetadataUpgradeable, ERC20DetailedUpgradeable) returns (string memory) {
-        return ERC20DetailedUpgradeable.symbol();
-    }
-
-    function decimals() public view override(ERC20Upgradeable, ERC20DetailedUpgradeable) returns (uint8) {
-        return ERC20DetailedUpgradeable.decimals();
-    }
 }

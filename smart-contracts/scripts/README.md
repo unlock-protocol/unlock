@@ -15,7 +15,7 @@ The upgrade requires a few changes, namely
 
 ### How to solve it
 
-@Amxx (one of `@openzeppelin/upgrades` maintainer) provided a template to proceed with the upgrade consisting of:
+@Amxx provided a template (ba7da40868e861aac015cd95910cdbb6c28ac27f) to proceed with the upgrade consisting of:
 
 1. create `ERC20Patched.template.sol` with a new version of the contract that import the deprecated lib (i.e. `@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol`)  
 2. flatten `ERC20Patched.template.sol` into `contracts/ERC20Patched.generated.sol`

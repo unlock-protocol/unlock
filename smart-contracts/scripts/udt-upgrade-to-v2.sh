@@ -2,11 +2,11 @@
 
 here=$(pwd)
 
-UDT_V2_FLATTENED="contracts/UnlockDiscountTokenV2.generated.sol"
+UDT_V2_FLATTENED="contracts/ERC20Patched.generated.sol"
 
-UDT_V2_TEMPLATE="scripts/udt-upgrade/UnlockDiscountTokenV2.template.sol"
-UDT_V2_PATCH="scripts/udt-upgrade/UnlockDiscountTokenV2.patch"
-UDT_V2_TARGET="contracts/UnlockDiscountTokenV2.sol"
+UDT_V2_TEMPLATE="scripts/udt-upgrade/ERC20Patched.template.sol"
+UDT_V2_PATCH="scripts/udt-upgrade/ERC20Patched.patch"
+UDT_V2_TARGET="contracts/ERC20Patched.sol"
 
 
 # flatten using hardhat
@@ -16,7 +16,7 @@ npx hardhat flatten $UDT_V2_TEMPLATE > $UDT_V2_FLATTENED
 sed -i'.bak' -e '/SPDX-License-Identifier/d' $UDT_V2_FLATTENED
 
 # patch ERC20 and Solidity version
-patch $UDT_V2_FLATTENED $UDT_V2_PATCH -o $UDT_V2_TARGET
+patch -R $UDT_V2_FLATTENED $UDT_V2_PATCH -o $UDT_V2_TARGET
 
 #cleanup
-rm $UDT_V2_FLATTENED
+# rm $UDT_V2_FLATTENED
