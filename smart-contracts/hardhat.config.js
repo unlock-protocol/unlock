@@ -10,7 +10,7 @@ require('@nomiclabs/hardhat-ethers')
 require('@openzeppelin/hardhat-upgrades')
 
 // gas reporting for tests
-require("hardhat-gas-reporter");
+require('hardhat-gas-reporter')
 
 const { task } = require('hardhat/config')
 
@@ -64,7 +64,7 @@ task('balance', "Prints an account's balance")
  */
 module.exports = {
   networks,
-  gasReporter : {
+  gasReporter: {
     currency: 'USD',
     excludeContracts: ['Migrations', 'TestNoop'],
     gasPrice: 5,
