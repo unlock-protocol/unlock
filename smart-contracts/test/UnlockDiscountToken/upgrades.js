@@ -50,7 +50,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       // upgrade
       const updated = await upgradeContract(unlockDiscountToken.address)
-      
+
       const totalSupplyAfterUpdate = await updated.totalSupply()
       assert.equal(totalSupplyAfterUpdate.toNumber(), mintAmount)
     })
