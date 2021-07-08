@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 06 Jul 2021 13:18:23 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 08 Jul 2021 07:48:01 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Unlock Showcase]]></title>
+            <description><![CDATA[We're excited to announce that Kalidou Diagne (one of our latest Unlock Token Grantees) just released his project Unlock Showcase!]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-showcase</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-showcase</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 07 Jul 2021 22:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Customizing NFT]]></title>
             <description><![CDATA[Unlock memberships are NFT, just like CryptoPunks, CryptoKitties or, Beeple's art. As a creator, you can customize them!]]></description>
