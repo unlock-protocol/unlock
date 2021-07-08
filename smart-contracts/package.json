@@ -45,6 +45,7 @@
     "hardhat-deploy": "0.8.6",
     "hardhat-deploy-ethers": "^0.3.0-beta.8",
     "hardhat-erc1820": "^0.1.0",
+    "hardhat-gas-reporter": "^1.0.4",
     "hardhat-tracer": "^1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.2",
     "hardlydifficult-ethereum-contracts": "0.11.1",
