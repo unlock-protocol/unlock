@@ -1,27 +1,27 @@
-const { ethers, upgrades } = require('hardhat');
-const { reverts } = require('truffle-assertions')
-const BigNumber = require('bignumber.js')
+const { ethers, upgrades } = require('hardhat')
 
 // helper function
 const upgradeContract = async (contractAddress) => {
   const UnlockDiscountTokenV2 = await ethers.getContractFactory(
     'UnlockDiscountTokenV2'
   )
-  const updated = await upgrades.upgradeProxy(contractAddress, UnlockDiscountTokenV2, {})
+  const updated = await upgrades.upgradeProxy(
+    contractAddress,
+    UnlockDiscountTokenV2,
+    {}
+  )
   return updated
 }
 
 contract('UnlockDiscountToken upgrade', async () => {
-  
   let unlockDiscountToken
   const mintAmount = 1000
-  
-  beforeEach(async () => {
 
+  beforeEach(async () => {
     const UnlockDiscountToken = await ethers.getContractFactory(
       'UnlockDiscountToken'
     )
-    
+
     const [minter] = await ethers.getSigners()
 
     unlockDiscountToken = await upgrades
@@ -30,14 +30,12 @@ contract('UnlockDiscountToken upgrade', async () => {
         initializer: 'initialize(address)',
       })
       .then((f) => f.deployed())
-        
   })
 
   describe('Supply', () => {
-    
     it('Starting supply is 0', async () => {
       const totalSupply = await unlockDiscountToken.totalSupply()
-      assert.equal( totalSupply.toNumber(), 0, 'starting supply must be 0')
+      assert.equal(totalSupply.toNumber(), 0, 'starting supply must be 0')
     })
 
     it('Supply is preserved after upgrade', async () => {
@@ -52,13 +50,9 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       // upgrade
       const updated = await upgradeContract(unlockDiscountToken.address)
-      console.log(updated)
-
+      
       const totalSupplyAfterUpdate = await updated.totalSupply()
       assert.equal(totalSupplyAfterUpdate.toNumber(), mintAmount)
-
     })
-
   })
-
 })
