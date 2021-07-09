@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import React from 'react'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
-import Signature from '../interface/Signature'
 import {
   Section,
   Title,
@@ -343,8 +342,6 @@ export const JobsContent = () => (
         <SubTitle>Compensation : $110K – $140K, stock options</SubTitle>
       </Section>
     </ShortColumn>
-
-    <Signature />
   </Layout>
 )
 

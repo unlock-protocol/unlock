@@ -3,7 +3,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Layout from '../interface/Layout'
-import Signature from '../interface/Signature'
 import {
   Section,
   Title,
@@ -656,8 +655,6 @@ export const TermsContent = () => (
         <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>
       </Paragraph>
     </Section>
-
-    <Signature />
   </Layout>
 )
 

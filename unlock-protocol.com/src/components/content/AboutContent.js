@@ -1,18 +1,16 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
-import Link from 'next/link'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
-import Signature from '../interface/Signature'
+
 import {
   Section,
   Title,
   Headline,
-  SubTitle,
+  // SubTitle,
   Column,
   TwoColumns,
-  Columns,
 } from '../Components'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
@@ -38,57 +36,57 @@ Post.propTypes = {
   slug: PropTypes.string.isRequired,
 }
 
-const People = [
-  {
-    name: 'Julien Genestoux',
-    picture: '/static/images/illustrations/julien.jpg',
-    personalLink: 'https://www.ouvre-boite.com/',
-    linkedIn: 'https://www.linkedin.com/in/juliengenestoux/',
-    bio: `I am an entrepreneur and a software engineer. I am a vocal web
-            advocate who co-authored the W3C WebSub protocol. I sold my previous
-            company, Superfeedr, an RSS feed API, to Medium. Born in France, I
-            currently live in Brooklyn.`,
-  },
-  {
-    name: 'Sascha Mombartz',
-    picture: '/static/images/illustrations/sascha.jpg',
-    personalLink: 'http://mombartz.com/',
-    linkedIn: 'https://www.linkedin.com/in/smombartz/',
-    bio: `I am an artist and designer from no particular place. My work –
-            multidisciplinary, spanning digital to physical – deals with the
-            interaction between people and objects and questions our
-            relationship with progress.`,
-  },
-].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
+// const People = [
+//   {
+//     name: 'Julien Genestoux',
+//     picture: '/static/images/illustrations/julien.jpg',
+//     personalLink: 'https://www.ouvre-boite.com/',
+//     linkedIn: 'https://www.linkedin.com/in/juliengenestoux/',
+//     bio: `I am an entrepreneur and a software engineer. I am a vocal web
+//             advocate who co-authored the W3C WebSub protocol. I sold my previous
+//             company, Superfeedr, an RSS feed API, to Medium. Born in France, I
+//             currently live in Brooklyn.`,
+//   },
+//   {
+//     name: 'Sascha Mombartz',
+//     picture: '/static/images/illustrations/sascha.jpg',
+//     personalLink: 'http://mombartz.com/',
+//     linkedIn: 'https://www.linkedin.com/in/smombartz/',
+//     bio: `I am an artist and designer from no particular place. My work –
+//             multidisciplinary, spanning digital to physical – deals with the
+//             interaction between people and objects and questions our
+//             relationship with progress.`,
+//   },
+// ].sort((bonnie, clyde) => (bonnie.name < clyde.name ? -1 : 1))
 
-const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
-  <Column>
-    <SubTitle>{name}</SubTitle>
-    <Photo src={picture} />
-    <p>{bio}</p>
-    <small>
-      <a href={personalLink} target="_blank" rel="noopener noreferrer">
-        Personal site
-      </a>
-      {linkedIn && (
-        <span>
-          &nbsp;-&nbsp;
-          <a href={linkedIn} target="_blank" rel="noopener noreferrer">
-            LinkedIn
-          </a>
-        </span>
-      )}
-    </small>
-  </Column>
-)
+// const Person = ({ name, picture, personalLink, linkedIn, bio }) => (
+//   <Column>
+//     <SubTitle>{name}</SubTitle>
+//     <Photo src={picture} />
+//     <p>{bio}</p>
+//     <small>
+//       <a href={personalLink} target="_blank" rel="noopener noreferrer">
+//         Personal site
+//       </a>
+//       {linkedIn && (
+//         <span>
+//           &nbsp;-&nbsp;
+//           <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+//             LinkedIn
+//           </a>
+//         </span>
+//       )}
+//     </small>
+//   </Column>
+// )
 
-Person.propTypes = {
-  name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  personalLink: PropTypes.string.isRequired,
-  linkedIn: PropTypes.string.isRequired,
-  bio: PropTypes.string.isRequired,
-}
+// Person.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   picture: PropTypes.string.isRequired,
+//   personalLink: PropTypes.string.isRequired,
+//   linkedIn: PropTypes.string.isRequired,
+//   bio: PropTypes.string.isRequired,
+// }
 
 export const AboutContent = ({ posts }) => (
   <Layout forContent>
@@ -129,7 +127,7 @@ export const AboutContent = ({ posts }) => (
         </Column>
       </TwoColumns>
     </Section>
-    <Section>
+    {/* <Section>
       <Title>Team</Title>
       <Headline>
         Our work matters. We are building a healthier web ecosystem. If this is
@@ -143,7 +141,7 @@ export const AboutContent = ({ posts }) => (
           return <Person {...person} key={person.name} />
         })}
       </Columns>
-    </Section>
+    </Section> */}
     <Section>
       <Title>News</Title>
       <News>
@@ -152,7 +150,6 @@ export const AboutContent = ({ posts }) => (
         })}
       </News>
     </Section>
-    <Signature />
   </Layout>
 )
 
@@ -162,10 +159,10 @@ AboutContent.propTypes = {
 
 export default AboutContent
 
-const Photo = styled.img`
-  width: 160px;
-  border-radius: 4px;
-`
+// const Photo = styled.img`
+//   width: 160px;
+//   border-radius: 4px;
+// `
 
 const News = styled.div`
   display: grid;

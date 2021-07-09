@@ -3,45 +3,34 @@ import React from 'react'
 
 import Head from 'next/head'
 import getConfig from 'next/config'
+import Link from 'next/link'
+import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
-import Signature from '../interface/Signature'
-import { Section } from '../Components'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import Svg from '../interface/svg'
 import { OptInForm } from '../interface/OptInForm'
 import { Demo } from '../interface/Demo'
-import Media from '../../theme/media'
 
-const integrations = [
-  {
-    name: 'Paywall',
-    link: 'https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site',
-    image: '/static/images/pages/svg/paywall.svg',
-  },
-  {
-    name: 'WordPress',
-    link: 'https://wordpress.org/plugins/unlock-protocol/',
-    image: '/static/images/pages/svg/wordpress.svg',
-  },
-  {
-    name: 'Tickets',
-    link: 'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
-    image: '/static/images/pages/svg/tickets.svg',
-  },
-  {
-    name: 'Donations',
-    link: 'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
-    image: '/static/images/pages/svg/donations.svg',
-  },
-  {
-    name: 'Newsletters',
-    link: 'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
-    image: '/static/images/blog/introducing-newsletter/newsletter.jpg',
-  },
-]
-export const HomeContent = () => {
+import {
+  H1,
+  H2,
+  H3,
+  H4,
+  ActionButtons,
+  ActionButton,
+  Box,
+  Columns,
+  Column,
+  Icon,
+  BoxQuote,
+  Quote,
+  Avatar,
+  Byline,
+} from '../interface/LandingPageComponents'
+
+export const HomeContent = ({ posts }) => {
   return (
     <Layout forContent>
       <Head>
@@ -50,324 +39,466 @@ export const HomeContent = () => {
         <OpenGraphTags />
       </Head>
 
-      <Grid>
-        <Hero>Monetize the web through memberships</Hero>
-        <BannerKey
-          src="/static/images/illustrations/banner-key.png"
-          alt=""
-          width="192"
-        />
-        <SubTitle>
-          Unlock lets you easily lock and manage access to your content, apps,
-          community and even real life events and spaces.
-        </SubTitle>
-        <Buttons>
-          <Dashboard>
-            <Button
-              href={`${getConfig().publicRuntimeConfig.unlockApp}/dashboard`}
-            >
+      <Box hero color="var(--white)">
+        <Columns>
+          <Column>
+            <H1>Unlock the potential of memberships.</H1>
+
+            <H2>
+              Ownership of your community,
+              <br /> across all your platforms.
+            </H2>
+            <ActionButtons>
+              <ActionButton
+                href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
+                color="var(--link)"
+                contrastColor="var(--white)"
+              >
+                <Icon size="24">
+                  <Svg.Key />
+                </Icon>
+                Integrations
+              </ActionButton>
+              <ActionButton
+                href="https://docs.unlock-protocol.com/"
+                color="var(--brand)"
+                contrastColor="var(--white)"
+              >
+                <Icon size="24">
+                  <Svg.Docs />
+                </Icon>
+                Documentation
+              </ActionButton>
+            </ActionButtons>
+          </Column>
+          <Column
+            width="330px"
+            style={{ justifyContent: 'center', alignContent: 'center' }}
+          >
+            <Illustration
+              style={{ maxWidth: '330px' }}
+              src="/static/images/illustrations/banner-key.svg"
+            />{' '}
+          </Column>
+        </Columns>
+      </Box>
+
+      <Box color="var(--white)" fontFamily="'IBM Plex Serif', serif">
+        <H2>Create Locks or Manage Memberships</H2>
+        <p>
+          Create locks and place them anywhere you’d like to lock content. Users
+          can purchase memberships as NFT keys that grant access to content,
+          tickets and anything else you’d like to monetize.
+        </p>
+        <ActionButtons>
+          <ActionButton
+            href={`${getConfig().publicRuntimeConfig.unlockApp}/dashboard`}
+            color="var(--white)"
+            contrastColor="var(--link)"
+            borderColor="var(--link)"
+          >
+            <Icon size="24">
               <Svg.Home />
-              <span>Dashboard</span>
-            </Button>
-            <p>
-              Create and manage locks to monetize access to your content, events
-              and any other member perks.
-            </p>
-          </Dashboard>
-          <Keychain>
-            <Button
-              href={`${getConfig().publicRuntimeConfig.unlockApp}/keychain`}
-            >
+            </Icon>
+            Create & Manage Locks
+          </ActionButton>
+          <ActionButton
+            href="https://docs.unlock-protocol.com/"
+            color="var(--brand)"
+            contrastColor="var(--white)"
+          >
+            <Icon size="24">
               <Svg.Key />
-              <span>Keychain</span>
-            </Button>
-            <p>
-              Manage all your keys and memberships with or without a third party
-              crypto wallet.
+            </Icon>
+            Keys and Memberships
+          </ActionButton>
+        </ActionButtons>
+      </Box>
+
+      <Box
+        color="var(--link)"
+        contrastColor="var(--white)"
+        fontFamily="'IBM Plex Sans'"
+      >
+        <H2>Check out Unlock’s community-built integrations and plugins.</H2>
+        <Columns>
+          <Column>
+            <H3>Web</H3>
+            <Integration>
+              <Icon size="36">
+                <Svg.Wordpress />
+              </Icon>
+              WordPress
+            </Integration>
+            <Integration>
+              <Icon size="36">
+                <Svg.Webflow />
+              </Icon>
+              Webflow
+            </Integration>
+            <Integration>
+              <Icon size="36">
+                <Svg.Cloudflare />
+              </Icon>
+              Cloudflare
+            </Integration>
+          </Column>
+          <Column>
+            <H3>Community</H3>
+            <Integration>
+              <Icon size="36">
+                <Svg.Discord />
+              </Icon>
+              Discord
+            </Integration>
+
+            <Integration>
+              <Icon size="36">
+                <Svg.Discourse />
+              </Icon>
+              Discourse
+            </Integration>
+          </Column>
+          <Column>
+            <H3>More</H3>
+            <Integration>
+              <Icon size="36">
+                <Svg.Discourse />
+              </Icon>
+              Decentraland
+            </Integration>
+            <Integration>
+              <Icon size="36">
+                <Svg.Discourse />
+              </Icon>
+              Shopify
+            </Integration>
+          </Column>
+        </Columns>
+      </Box>
+
+      <Box color="transparent">
+        <H3>Why Unlock?</H3>
+        <Columns>
+          <Column>
+            <Illustration
+              style={{ maxHeight: '150px' }}
+              src="/static/images/illustrations/ecosystem.svg"
+            />
+            <H4>
+              Your Content
+              <br />
+              Your community
+            </H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Memberships are not tied to any platform, giving you the freedom
+              to take your members anywhere.
             </p>
-          </Keychain>
-        </Buttons>
-        <DemoWrapper>
-          <Demo />
-        </DemoWrapper>
-        <Features>
-          <Feature>
-            <SubHead>You are in Control</SubHead>
-            <Paragraph>
-              Unlock is an open source protocol. Integrate it in any and every
-              way you’d like. It’s also permissionless – there are no middlemen.
-            </Paragraph>
-            <Paragraph>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/unlock-protocol/unlock/"
-              >
-                Checkout our GitHub
-              </a>
-            </Paragraph>
-          </Feature>
-          <img alt="control" src="/static/images/pages/svg/control.svg" />
+            <p style={{ marginTop: 'auto' }}>
+              → {/* Replace with actual case studies links! */}
+              <Link href="https://docs.unlock-protocol.com/creators/tutorials-1">
+                <a>Case Studies</a>
+              </Link>
+            </p>
+          </Column>
+          <Column>
+            <Illustration
+              style={{ maxHeight: '150px' }}
+              src="/static/images/illustrations/cryptoccard.svg"
+            />
+            <H4>
+              Accept Credit Cards &
+              <br />
+              Crypto
+            </H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Both FIAT and Web3 friendly, allow your customers to pay in the
+              currency they’re most comfortable with.
+            </p>
 
-          <Feature>
-            <SubHead>A Web3 Future</SubHead>
-            <Paragraph>
-              Take advantage of the blockchain and smart contracts to create
-              customizable ways to access content and much more.
-            </Paragraph>
-            <Paragraph>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://docs.unlock-protocol.com"
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="http://docs.unlock-protocol.com/">
+                <a>Documentation</a>
+              </Link>
+            </p>
+          </Column>
+
+          <Column>
+            <Illustration
+              style={{ maxHeight: '150px' }}
+              src="/static/images/illustrations/governance.svg"
+            />
+            <H4>
+              Community
+              <br />
+              Owned & Governed
+            </H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Unlock is an open-source protocol. Developers and creators co-own
+              the protocol.
+            </p>
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="https://vote.unlock-protocol.com/#/unlock-protocol.eth/settings">
+                <a>Governance</a>
+              </Link>
+            </p>
+          </Column>
+        </Columns>
+      </Box>
+
+      <Box color="var(--white)" fontFamily="'IBM Plex Sans'">
+        <Columns>
+          <Column>
+            <H2>Try Unlock</H2>
+            <p style={{ textAlign: 'left' }}>
+              Click to become an Unlock Member. Get access to the comments in
+              our blog, discounts on our shop, our discord community.
+            </p>
+          </Column>
+          <Column>
+            <Column>
+              <Demo />
+            </Column>
+          </Column>
+        </Columns>
+      </Box>
+
+      <BoxQuote>
+        <h4>What the community is saying</h4>
+        <Quote>
+          “I always thought there were better opportunities to monetise web game
+          content. Unlock Protocol has enabled me to create quite advanced
+          functionality that I would otherwise not have been able to do.”
+        </Quote>
+        <Byline>
+          <Avatar
+            alt="Henry Hoffman"
+            width="24"
+            src="https://pbs.twimg.com/profile_images/928785269557428225/m-8odw-X_400x400.jpg"
+          />
+          Henry Hoffman, Co-Founder newfangled.games.{' '}
+          <img
+            style={{ display: 'inline-block', margin: '8px' }}
+            alt="twitter"
+            width="24"
+            src="/static/images/illustrations/twitter.svg"
+          />{' '}
+          @henryhoffman
+        </Byline>
+      </BoxQuote>
+
+      <Box color="#142A4A" contrastColor="var(--white)">
+        <H2>Unlock for Developers</H2>
+        <p>
+          Unlock’s open source, blockchain-based protocol allows you to
+          integrate and build any kind of membership application. Built-in
+          Stripe support allows you to accept crypto and credit cards.{' '}
+        </p>
+        <ActionButtons>
+          <ActionButton
+            href="https://docs.unlock-protocol.com/"
+            contrastColor="#142A4A"
+            color="var(--link)"
+          >
+            <Icon size="24">
+              <Svg.Docs />
+            </Icon>
+            Documentation
+          </ActionButton>
+          <ActionButton
+            href="https://github.com/unlock-protocol/unlock"
+            contrastColor="#142A4A"
+            color="var(--link)"
+          >
+            <Icon size="24">
+              <Svg.Github />
+            </Icon>
+            Github
+          </ActionButton>
+
+          <ActionButton
+            href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
+            contrastColor="#142A4A"
+            color="var(--link)"
+          >
+            <Icon size="24">
+              <Svg.AppStore />
+            </Icon>
+            Plugins & Integrations
+          </ActionButton>
+        </ActionButtons>
+      </Box>
+
+      <Box color="#F6C61B" contrastColor="var(--white)">
+        <Columns>
+          <Column>
+            <H2>Join our Developer Grant Program!</H2>
+            <p style={{ textAlign: 'left' }}>
+              Unlock Protocol is giving UDT token grants to developers who can
+              make the platform more accessible to wider communities.
+            </p>
+            <ActionButtons>
+              <ActionButton
+                href="https://docs.unlock-protocol.com/"
+                contrastColor="#ED663A"
+                color="var(--white)"
+                borderColor="#ED663A"
               >
-                Checkout our Docs
-              </a>
-            </Paragraph>
-          </Feature>
-          <img alt="code" src="/static/images/pages/svg/code.svg" />
-        </Features>
-        <UseCases>
-          <SubHead>Use Cases</SubHead>
-          <Paragraph>
-            We’ve built a few apps to showcase the power of Unlock. Create a
-            lock on the dashboard and get started or check out some of the apps.
-          </Paragraph>
-          <Integrations>
-            {integrations.map((integration) => (
-              <Integration
-                key={integration.name}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={integration.link}
+                <Icon size="24">
+                  <Svg.Unlock />
+                </Icon>
+                Learn About Our Grants
+              </ActionButton>
+            </ActionButtons>
+          </Column>
+          <Column
+            style={{
+              justifyContent: 'center',
+              alignContent: 'center',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Illustration
+              style={{ maxWidth: '330px' }}
+              src="/static/images/illustrations/grants.svg"
+            />
+          </Column>
+        </Columns>
+      </Box>
+
+      <Box color="var(--white)" style={{ textAlign: 'center' }}>
+        <H2>Join the community</H2>
+        <ActionButtons style={{ justifyContent: 'center', marginTop: '32px' }}>
+          <ActionButton color="#5865F2" contrastColor="var(--white)">
+            <Icon size="36">
+              <Svg.Discord />
+            </Icon>
+            Discord
+          </ActionButton>
+          <ActionButton color="#4A4A4A" contrastColor="var(--white)">
+            <Icon size="36">
+              <Svg.Discourse />
+            </Icon>
+            Forum
+          </ActionButton>
+          <ActionButton color="#1DA1F2" contrastColor="var(--white)">
+            <Icon size="36">
+              <Svg.Twitter />
+            </Icon>
+            Twitter
+          </ActionButton>
+          <ActionButton color="var(--brand)" contrastColor="var(--white)">
+            <Icon size="36">
+              <Svg.Key />
+            </Icon>
+            Governance
+          </ActionButton>
+        </ActionButtons>
+      </Box>
+
+      <Box color="transparent">
+        <H3>Latest News</H3>
+        <Columns>
+          {posts.map((story) => {
+            return (
+              <Column
+                key={story.slug}
+                style={{
+                  padding: '8px',
+                  cursor: 'pointer',
+                  backgroundColor: 'var(--white)',
+                  borderRadius: '4px',
+                }}
               >
-                <h3>{integration.name}</h3>
-                <Illustration>
-                  <img
-                    alt={integration.name}
-                    src={integration.image}
-                    width="136"
+                <div style={{ textAlign: 'center' }}>
+                  <Illustration
+                    style={{ maxHeight: '170px' }}
+                    src={story.image}
                   />
-                </Illustration>
-              </Integration>
-            ))}
-          </Integrations>
-        </UseCases>
+                </div>
+                <h4 style={{ marginBottom: '4px' }}>{story.title}</h4>
+                <p
+                  style={{
+                    marginTop: '4px',
+                    textAlign: 'left',
+                    fontSize: '16px',
+                    maxHeight: '100px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {story.description.slice(0, 160)}...{' '}
+                  <Link href={`/blog/${story.slug}`}>
+                    <a>Read more</a>
+                  </Link>
+                </p>
+              </Column>
+            )
+          })}
+        </Columns>
+      </Box>
 
-        <Newsletter>
-          <SubHead>Join the Community Newsletter</SubHead>
-          <Paragraph>
-            We will never share your information. Privacy and your trust are our
-            top priorities.
-          </Paragraph>
-          <OptInForm />
-        </Newsletter>
-      </Grid>
-
-      <Signature />
+      <Box color="var(--link)" contrastColor="var(--white)">
+        <H2>Sign Up for Updates</H2>
+        <p>
+          We&apos;ll send you fresh news about our platform, including new
+          features and opportunities for the community.
+        </p>
+        <OptInForm />
+      </Box>
     </Layout>
   )
 }
 
-HomeContent.propTypes = {}
+HomeContent.propTypes = {
+  posts: UnlockPropTypes.postFeed.isRequired,
+}
 
 export default HomeContent
-
-const Grid = styled.div`
-  display: grid;
-  ${Media.nophone`
-    grid-template-columns: repeat(10, 1fr);
-      padding-top: 50px;
-
-  `};
-  ${Media.phone`
-    grid-template-columns: 1fr;
-  `};
-
-  grid-gap: 0px;
-`
-
-const Hero = styled.h1`
-  ${Media.nophone`
-    grid-column: 2/8;
-  `};
-
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 40px;
-  line-height: 52px;
-`
-
-const DemoWrapper = styled.section`
-  margin-top: 64px;
-  ${Media.nophone`
-    grid-column: 3/9;
-  `}
-`
-
-const BannerKey = styled.img`
-  ${Media.nophone`
-    grid-column: 8/10;
-  `};
-  ${Media.phone`
-    grid-row: 1;
-  `};
-  margin: auto;
-`
-
-const UseCases = styled(Section)`
-  ${Media.nophone`
-  grid-column: 1/12;
-  `}
-`
-
-const Newsletter = styled(Section)`
-  ${Media.nophone`
-  grid-column: 1/12;
-  `}
-`
-
-const SubTitle = styled.h2`
-  ${Media.nophone`
-  grid-column: 1/12;
-  `};
-  font-family: IBM Plex Serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 32px;
-  line-height: 42px;
-  color: var(--darkgrey);
-`
-
-const Buttons = styled.section`
-  ${Media.nophone`
-    grid-column: 2/10;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 100px;
-  `}
-
-  ${Media.phone`
-    grid-gap: 30px;
-  `}
-  display: grid;
-
-  p {
-    font-size: 16px;
-    font-weight: normal;
-  }
-`
-
-const Dashboard = styled.div``
-const Keychain = styled.div``
-const Button = styled.a`
-  display: block;
-  border: 1px solid var(--link);
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 4px;
-
-  > span {
-    vertical-align: middle;
-  }
-
-  > svg {
-    margin: 16px;
-    vertical-align: middle;
-    height: 24px;
-    width: 24px;
-    fill: var(--white);
-    background-color: var(--link);
-    border-radius: 12px;
-  }
-  &:hover {
-    color: var(--white);
-    background-color: var(--link);
-    > svg {
-      fill: var(--link);
-      background-color: var(--white);
-    }
-  }
-`
-
-const Integrations = styled.section`
-  margin-top: 50px;
-  display: grid;
-
-  ${Media.nophone`
-    grid-auto-flow: column;
-  `};
-  ${Media.phone`
-    grid-template-columns: repeat(2, 1fr);
-  `};
-`
-
+const Illustration = styled.img``
 const Integration = styled.a`
-  text-align: center;
-  display: inline-block;
-`
-
-const Illustration = styled.div`
-  margin: auto;
-  width: 136px;
-  height: 136px;
-  display: grid;
-  justify-items: center;
+  display: flex;
   align-items: center;
-`
+  color: var(--white);
+  border: 1px solid var(--white);
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 400ms ease;
+  width: 230px;
+  margin-bottom: 32px;
+  padding: 16px;
+  font-family: IBM Plex Sans;
+  font-size: 24px;
+  font-weight: 300;
+  cursor: pointer;
 
-const Features = styled.section`
-  ${Media.nophone`
-  grid-column: 1/12;
-  `}
-  margin-top: 50px;
-  padding-left: 5%;
-  padding-right: 5%;
-  display: grid;
-
-  ${Media.nophone`
-    grid-template-columns: 1fr 300px;
-    grid-gap: 20px;
-  `};
-
-  ${Media.phone`
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-  `};
-
-  img {
-    max-width: 300px;
+  svg {
+    fill: var(--white);
   }
-`
 
-const Feature = styled.div`
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 28px;
-`
-
-const SubHead = styled.h2`
-  font-size: 36px;
-  margin-bottom: 0px;
-  color: var(--darkgrey);
-  font-weight: 700;
-`
-
-const Paragraph = styled.p`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 20px;
-`
-
-export const Headline = styled.p`
-  font-size: 32px;
-  line-height: 42px;
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 100;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding-left: 5%;
-  padding-right: 5%;
+  &:hover {
+    border: 1px solid #2768c8;
+    background-color: #2768c8;
+  }
 `

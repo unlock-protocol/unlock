@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
 import ReactGA from 'react-ga'
 import Header from './Header'
 import Footer from './Footer'
-import { RoundedLogo } from './Logo'
-import Media from '../../theme/media'
+
 import { GlobalWrapper } from './GlobalWrapper'
 
 export default function Layout({ forContent, title, children }) {
@@ -18,21 +16,11 @@ export default function Layout({ forContent, title, children }) {
   return (
     <GlobalWrapper>
       <Container>
-        <Left>
-          {!forContent && (
-            <Link href="/">
-              <a>
-                <RoundedLogo />
-              </a>
-            </Link>
-          )}
-        </Left>
-        <Content>
+        <Page>
           <Header forContent={forContent} title={title} />
-          {children}
+          <Content>{children}</Content>
           {forContent && <Footer />}
-        </Content>
-        <Right />
+        </Page>
       </Container>
     </GlobalWrapper>
   )
@@ -50,37 +38,20 @@ Layout.defaultProps = {
   forContent: false,
 }
 
+const Page = styled.div`
+  max-width: 1080px;
+  padding-top: 48px;
+  margin: 0 auto;
+`
+
 const Container = styled.div`
+  background-color: var(--offwhite);
   font-family: 'IBM Plex Sans', sans-serif;
-  display: grid;
+  justify-content: center;
+  padding: 0px;
   padding-bottom: 60px; /* Leaving room for the members bar */
-  grid-template-columns: 1fr 896px 1fr;
-  ${Media.phone`
-    display: flex;
-    padding-left: 6px;
-    padding-right: 6px;
-  `};
 `
-
-const Left = styled.div`
-  display: grid;
-  align-items: start;
-  height: 24px;
-
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-const Right = styled.div`
-  ${Media.phone`
-    display: none;
-  `};
-`
-
 const Content = styled.div`
   color: var(--darkgrey);
-  display: grid;
-  row-gap: 24px;
-  width: 100%;
+  flex-direction: column;
 `

@@ -11,10 +11,11 @@ import Media from '../../theme/media'
 const navigationButtons = [
   Buttons.About,
   Buttons.Blog,
+  Buttons.Integrations,
   Buttons.Github,
   Buttons.Docs,
   Buttons.Discord,
-  Buttons.Twitter,
+  Buttons.App,
 ]
 
 export class Header extends React.PureComponent {
@@ -35,7 +36,7 @@ export class Header extends React.PureComponent {
       <TopHeader>
         {forContent ? (
           <Link href="/">
-            <a>
+            <a style={{ display: 'flex', alignItems: 'center' }}>
               <WordMarkLogo
                 viewBox="0 0 1200 256"
                 height="28px"
@@ -93,38 +94,23 @@ Header.defaultProps = {
 export default Header
 
 const TopHeader = styled.header`
-  display: grid;
-  grid-gap: 0;
-  grid-template-columns: 256px auto;
-  column-gap: 16px;
-  grid-auto-flow: column;
-  align-items: center;
-  height: 70px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  height: 43px;
 
   ${Media.phone`
-    grid-template-columns: [first] 1fr [second] 48px;
-    grid-template-rows: ${(props) =>
-      props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
-    height: auto;
+    display: none;
   `};
 `
 
 const Title = styled.h1`
   color: var(--grey);
-  ${Media.phone`
-    display: grid;
-    grid-gap: 0;
-    grid-template-columns: 50px auto;
-  `};
 `
 
 const DesktopButtons = styled.div`
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(${() => navigationButtons.length}, 24px);
-  grid-auto-flow: column;
-  align-items: center;
-  justify-content: right;
+  display: flex;
+  justify-items: end;
   height: 100%;
 
   ${Media.phone`
@@ -135,7 +121,6 @@ const DesktopButtons = styled.div`
 const MobileToggle = styled.div`
   display: none;
   height: auto;
-  grid-column: second;
 
   ${ButtonLink} {
     background-color: var(--white);
@@ -166,9 +151,6 @@ const MobileToggle = styled.div`
     }
   }
 
-  ${Media.phone`
-    display: grid;
-  `};
   ${Media.nophone`
     display: none;
   `};
@@ -182,11 +164,6 @@ const MobilePopover = styled.div`
   padding-bottom: 30px;
 
   display: inline-block;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 0px;
-  grid-row: second;
-  grid-column-start: 1;
-  grid-column-end: 3;
   align-items: center;
   justify-content: center;
 
