@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import ActionButton from './ActionButton'
-import Media from '../../theme/media'
+import Svg from './svg'
 
 export const OptInForm = () => (
   <Form
@@ -18,20 +17,31 @@ export const OptInForm = () => (
       name="EMAIL"
       required
     />
-    <Subscribe>Subscribe</Subscribe>
+    <Subscribe>
+      <Icon size="24">
+        <Svg.Checkmark />
+      </Icon>
+      Submit
+    </Subscribe>
   </Form>
 )
 
 export default OptInForm
 
 const Form = styled.form`
-  display: grid;
-  ${Media.nophone`
-    grid-template-columns: minmax(180px, 364px) 212px;
-  `}
-  grid-gap: 16px;
-  margin: auto;
-  margin-top: 25px;
+  display: flex;
+`
+
+const Icon = styled.span`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  margin-right: 12px;
+  background-color: var(--white);
+  svg {
+    fill: var(--link);
+  }
 `
 
 const EmailInput = styled.input`
@@ -39,10 +49,36 @@ const EmailInput = styled.input`
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 16px;
   border: 0;
-  padding: 20px;
+  padding: 16px;
+  border-radius: 4px;
+  width: 400px;
+  margin-right: 16px;
 `
 
-const Subscribe = styled(ActionButton)`
+const Subscribe = styled.button`
+  display: flex;
+  background-color: ${(props) =>
+    props.disabled ? 'var(--grey)' : 'transparent'};
+  border: none;
+  font-size: 16px;
   color: var(--white);
-  padding: 20px 50px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  border: 1px solid var(--white);
+  cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
+  outline: none;
+  transition: background-color 200ms ease;
+  padding: 16px;
+
+  &:hover {
+    background-color: var(--white);
+    color: var(--link);
+
+    ${Icon} {
+      background-color: var(--link);
+    }
+    svg {
+      fill: var(--white);
+    }
+  }
 `
