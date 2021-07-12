@@ -24,6 +24,7 @@ export function Account() {
   const { account, network, deAuthenticate, changeNetwork } = useContext(
     AuthenticationContext
   )
+
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt((account || '0x0000').slice(2, 10), 16)
 
@@ -49,9 +50,11 @@ export function Account() {
                 })}
               </NetworkSelect>
             )}
-            <DisconnectButton type="button" onClick={deAuthenticate}>
-              Disconnect
-            </DisconnectButton>
+            {network && (
+              <DisconnectButton type="button" onClick={deAuthenticate}>
+                Disconnect
+              </DisconnectButton>
+            )}
           </NetworkInfo>
         </Label>
         <DoubleHeightCell />
