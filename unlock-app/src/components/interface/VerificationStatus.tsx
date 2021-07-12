@@ -1,16 +1,13 @@
-import React, { useState, useContext } from 'react'
-import styled from 'styled-components'
+import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { isSignatureValidForAddress } from '../../utils/signatures'
-
+import { DefaultError } from '../creator/FatalError'
 import { OwnedKey } from './keychain/KeychainTypes'
 import keyHolderQuery from '../../queries/keyHolder'
 import 'cross-fetch/polyfill'
 import Loading from './Loading'
 import { ValidKey, InvalidKey } from './verification/Key'
 import { Account as AccountType } from '../../unlockTypes'
-import { AuthenticationContext } from './Authenticate'
-import LoginPrompt from './LoginPrompt'
 
 interface VerificationData {
   account: string
@@ -30,6 +27,19 @@ interface Props {
  * and display the right status
  */
 export const VerificationStatus = ({ data, sig, hexData }: Props) => {
+  if (!data || !sig || !hexData) {
+    return (
+      <DefaultError
+        illustration="/static/images/illustrations/error.svg"
+        title="No Signature Data Found"
+        critical
+      >
+        We couldn&apos;t find a signature payload in the URL. Please check that
+        you scanned the correct QR code.
+      </DefaultError>
+    )
+  }
+
   const { account, lockAddress, timestamp } = data
 
   // TODO: craft a better query to let us directly ask about the single
@@ -42,8 +52,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   } = useQuery(keyHolderQuery(), {
     variables: { address: account },
   })
-  const [showLogin, setShowLogin] = useState(false)
-  const { account: viewer } = useContext(AuthenticationContext)
+
   if (loading) {
     return <Loading />
   }
@@ -69,23 +78,14 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     return <InvalidKey />
   }
 
-  if (showLogin && !viewer) {
-    return <LoginPrompt />
-  }
-
   return (
-    <Wrapper>
-      <ValidKey
-        viewer={viewer} /** TODO */
-        owner={account}
-        signatureTimestamp={timestamp}
-        ownedKey={matchingKey}
-        signature={sig}
-      />
-      {!viewer && (
-        <Button onClick={setShowLogin}>Connect to check user in</Button>
-      )}
-    </Wrapper>
+    <ValidKey
+      viewer={undefined} /** TODO */
+      owner={account}
+      signatureTimestamp={timestamp}
+      ownedKey={matchingKey}
+      signature={sig}
+    />
   )
 }
 
@@ -95,16 +95,5 @@ VerificationStatus.defaultProps = {
   sig: '',
   hexData: '',
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-items: center;
-  flex-direction: column;
-`
-const Button = styled.button`
-  width: 200px;
-  margin-top: 100px;
-  margin: auto;
-`
 
 export default VerificationStatus
