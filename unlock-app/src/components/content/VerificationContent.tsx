@@ -6,7 +6,7 @@ import Account from '../interface/Account'
 import VerificationStatus from '../interface/VerificationStatus'
 import { pageTitle } from '../../constants'
 import Authenticate from '../interface/Authenticate'
-import { DefaultError } from '../creator/FatalError'
+import Loading from '../interface/Loading'
 
 export const VerificationContent = () => {
   const { query } = useRouter()
@@ -24,16 +24,7 @@ export const VerificationContent = () => {
   }
 
   if (!data || !sig || !hexData) {
-    return (
-      <DefaultError
-        illustration="/static/images/illustrations/error.svg"
-        title="No Signature Data Found"
-        critical
-      >
-        We couldn&apos;t find a signature payload in the URL. Please check that
-        you scanned the correct QR code.
-      </DefaultError>
-    )
+    return <Loading />
   }
 
   return (
@@ -41,7 +32,7 @@ export const VerificationContent = () => {
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Authenticate optional requiredNetwork={data && data.network}>
+      <Authenticate optional>
         <Account />
         <VerificationStatus data={data} sig={sig} hexData={hexData} />
       </Authenticate>
