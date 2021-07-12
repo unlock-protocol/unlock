@@ -6,6 +6,7 @@ import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 import signatureUtils from '../../../utils/signatures'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import { ConfigContext } from '../../../utils/withConfig'
+import { AuthenticationContext } from '../../../components/interface/Authenticate'
 
 jest.mock('../../../utils/signatures', () => {
   return {
@@ -40,16 +41,19 @@ const ownedKey: OwnedKey = {
   keyId: 'a key id',
 }
 
+const renderWithContexts = (children: any) => {
+  const account = '0x123'
+  const network = 1337
+
+  return rtl.render(
+    <AuthenticationContext.Provider value={{ account, network }}>
+      {children}
+    </AuthenticationContext.Provider>
+  )
+}
+
 describe('VerificationStatus', () => {
   beforeEach(() => {})
-
-  it('should show an error if any required data is missing', () => {
-    expect.assertions(0)
-
-    const { getByText } = rtl.render(<VerificationStatus account={account} />)
-
-    getByText('No Signature Data Found')
-  })
 
   it('should show a loader when the key is loading', () => {
     expect.assertions(0)
@@ -61,9 +65,8 @@ describe('VerificationStatus', () => {
       data: {},
     } as any)
 
-    const { getByText } = rtl.render(
+    const { getByText } = renderWithContexts(
       <VerificationStatus
-        account={account}
         data={{
           account: account.address,
           lockAddress: '0x123abc',
@@ -89,9 +92,8 @@ describe('VerificationStatus', () => {
 
     signatureUtils.isSignatureValidForAddress = jest.fn(() => false)
 
-    const { getByText } = rtl.render(
+    const { getByText } = renderWithContexts(
       <VerificationStatus
-        account={account}
         data={{
           account: account.address,
           lockAddress: '0x123abc',
@@ -117,9 +119,8 @@ describe('VerificationStatus', () => {
 
     signatureUtils.isSignatureValidForAddress = jest.fn(() => true)
 
-    const { getByText } = rtl.render(
+    const { getByText } = renderWithContexts(
       <VerificationStatus
-        account={account}
         data={{
           account: account.address,
           lockAddress: '0x123abc',
@@ -169,11 +170,10 @@ describe('VerificationStatus', () => {
         })
       }),
     }
-    const { getByText } = rtl.render(
+    const { getByText } = renderWithContexts(
       <WalletServiceProvider value={walletService}>
         <ConfigProvider value={config}>
           <VerificationStatus
-            account={account}
             data={{
               account: account.address,
               lockAddress: '0x123abc',
@@ -226,11 +226,10 @@ describe('VerificationStatus', () => {
         })
       }),
     }
-    const { getByText } = rtl.render(
+    const { getByText } = renderWithContexts(
       <WalletServiceProvider value={walletService}>
         <ConfigProvider value={config}>
           <VerificationStatus
-            account={undefined}
             data={{
               account: account.address,
               lockAddress: '0x123abc',
