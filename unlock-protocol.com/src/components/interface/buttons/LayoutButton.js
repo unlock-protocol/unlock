@@ -27,8 +27,9 @@ LayoutButton.defaultProps = {
 }
 
 const BaseButton = styled.a`
-  background-color: var(--white);
-  color: var(--link);
+  background-color: ${(props) =>
+    props.bold ? ' var(--link)' : 'var(--white)'};
+  color: ${(props) => (props.bold ? 'white !important' : 'var(--link)')};
   border: none;
   font-size: 16px;
   font-family: 'IBM Plex Sans', sans-serif;
@@ -39,9 +40,16 @@ const BaseButton = styled.a`
   transition: background-color 200ms ease;
   cursor: pointer;
 
+  a {
+    color: ${(props) =>
+      props.bold ? 'var(--white)' : 'var(--link)'} !important;
+  }
+
   &:hover {
-    background-color: var(--link);
-    color: var(--white);
+    background-color: ${(props) =>
+      props.bold ? 'var(--white)' : 'var(--link)'};
+    color: ${(props) =>
+      props.bold ? 'var(--link) !important' : 'var(--white)'};
   }
 `
 
