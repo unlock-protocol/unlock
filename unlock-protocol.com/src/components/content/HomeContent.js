@@ -124,19 +124,19 @@ export const HomeContent = ({ posts }) => {
         <Columns>
           <Column>
             <H3>Web</H3>
-            <Integration>
+            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin">
               <Icon size="36">
                 <Svg.Wordpress />
               </Icon>
               WordPress
             </Integration>
-            <Integration>
+            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#webflow">
               <Icon size="36">
                 <Svg.Webflow />
               </Icon>
               Webflow
             </Integration>
-            <Integration>
+            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#cloudflare">
               <Icon size="36">
                 <Svg.Cloudflare />
               </Icon>
@@ -145,14 +145,14 @@ export const HomeContent = ({ posts }) => {
           </Column>
           <Column>
             <H3>Community</H3>
-            <Integration>
+            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord">
               <Icon size="36">
                 <Svg.Discord />
               </Icon>
               Discord
             </Integration>
 
-            <Integration>
+            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#discourse">
               <Icon size="36">
                 <Svg.Discourse />
               </Icon>
@@ -161,13 +161,13 @@ export const HomeContent = ({ posts }) => {
           </Column>
           <Column>
             <H3>More</H3>
-            <Integration>
+            <Integration href="https://www.youtube.com/watch?v=oVZi7m-UOtE">
               <Icon size="36">
                 <Svg.Discourse />
               </Icon>
               Decentraland
             </Integration>
-            <Integration>
+            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#shopify">
               <Icon size="36">
                 <Svg.Discourse />
               </Icon>
@@ -480,7 +480,7 @@ const Illustration = styled.img``
 const Integration = styled.a`
   display: flex;
   align-items: center;
-  color: var(--white);
+  color: var(--white) !important;
   border: 1px solid var(--white);
   padding: 12px;
   border-radius: 8px;
