@@ -230,7 +230,7 @@ export const HomeContent = ({ posts }) => {
 
             <p style={{ marginTop: 'auto' }}>
               →{' '}
-              <Link href="http://docs.unlock-protocol.com/">
+              <Link href="https://docs.unlock-protocol.com/creators/deploying-lock">
                 <a>Documentation</a>
               </Link>
             </p>
