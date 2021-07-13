@@ -396,25 +396,45 @@ export const HomeContent = ({ posts }) => {
       <Box color="var(--white)" style={{ textAlign: 'center' }}>
         <H2>Join the community</H2>
         <ActionButtons style={{ justifyContent: 'center', marginTop: '32px' }}>
-          <ActionButton color="#5865F2" contrastColor="var(--white)">
+          <ActionButton
+            target="_blank"
+            href="https://discord.gg/Ah6ZEJyTDp"
+            color="#5865F2"
+            contrastColor="var(--white)"
+          >
             <Icon size="36">
               <Svg.Discord />
             </Icon>
             Discord
           </ActionButton>
-          <ActionButton color="#4A4A4A" contrastColor="var(--white)">
+          <ActionButton
+            target="_blank"
+            href="https://unlock.community/"
+            color="#4A4A4A"
+            contrastColor="var(--white)"
+          >
             <Icon size="36">
               <Svg.Discourse />
             </Icon>
             Forum
           </ActionButton>
-          <ActionButton color="#1DA1F2" contrastColor="var(--white)">
+          <ActionButton
+            target="_blank"
+            href="https://twitter.com/unlockprotocol"
+            color="#1DA1F2"
+            contrastColor="var(--white)"
+          >
             <Icon size="36">
               <Svg.Twitter />
             </Icon>
             Twitter
           </ActionButton>
-          <ActionButton color="var(--brand)" contrastColor="var(--white)">
+          <ActionButton
+            target="_blank"
+            href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
+            color="var(--brand)"
+            contrastColor="var(--white)"
+          >
             <Icon size="36">
               <Svg.Key />
             </Icon>
