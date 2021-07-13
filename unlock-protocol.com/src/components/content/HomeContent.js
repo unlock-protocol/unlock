@@ -103,7 +103,7 @@ export const HomeContent = ({ posts }) => {
             Create & Manage Locks
           </ActionButton>
           <ActionButton
-            href="https://docs.unlock-protocol.com/"
+            href={`${getConfig().publicRuntimeConfig.unlockApp}/keychain`}
             color="var(--brand)"
             contrastColor="var(--white)"
           >
