@@ -4,6 +4,7 @@ import LayoutButton from '../LayoutButton'
 
 const App = (props) => (
   <LayoutButton
+    bold
     target="_blank"
     href={`${getConfig().publicRuntimeConfig.unlockApp}/dashboard`}
     label="App"
