@@ -1,21 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { WalletService } from '@unlock-protocol/unlock-js'
-import { AuthenticationContext } from '../Authenticate'
-// import useGetMetadataFor from '../../../hooks/useGetMetadataFor'
-import useMarkAsCheckedIn from '../../../hooks/useMarkAsCheckedIn'
-import { pingPoap } from '../../../utils/poap'
-import { OwnedKey } from '../keychain/KeychainTypes'
+import { useLock } from '../../../hooks/useLock'
 import Svg from '../svg'
 import {
   expirationAsDate,
   durationsAsTextFromSeconds,
 } from '../../../utils/durations'
 import { ActionButton } from '../buttons/ActionButton'
-import { ConfigContext } from '../../../utils/withConfig'
-import { WalletServiceContext } from '../../../utils/withWalletService'
 import Loading from '../Loading'
-import useIsLockManager from '../../../hooks/useIsLockManager'
 
 /**
  * Shows an invalid key. Since we cannot trust any of the data, we don't show any
@@ -33,10 +25,10 @@ export const InvalidKey = () => {
   )
 }
 interface ValidKeyWithMetadataProps {
-  ownedKey: OwnedKey
-  metadata: any
+  unlockKey: any
+  keyData: any
+  lock: any
   owner: string
-  expirationDate: string
   timeElapsedSinceSignature: string
   viewerIsLockOwner: boolean
   checkIn: () => any
@@ -47,15 +39,16 @@ interface ValidKeyWithMetadataProps {
  * Valid Key with metadata
  */
 export const ValidKeyWithMetadata = ({
-  ownedKey,
+  unlockKey,
   owner,
-  metadata,
-  expirationDate,
+  keyData,
   timeElapsedSinceSignature,
   viewerIsLockOwner,
   checkIn,
   checkedIn,
+  lock,
 }: ValidKeyWithMetadataProps) => {
+  const expirationDate = expirationAsDate(unlockKey.expiration)
   let box = (
     <Box color="--green">
       <Circle>
@@ -66,10 +59,11 @@ export const ValidKeyWithMetadata = ({
     </Box>
   )
 
-  if (metadata.checkedInAt) {
+  if (keyData?.metadata?.checkedInAt) {
     const checkedInAgo =
       Math.floor(
-        (new Date().getTime() - metadata.checkedInAt) / (60 * 1000) + 1
+        (new Date().getTime() - keyData?.metadata?.checkedInAt) / (60 * 1000) +
+          1
       ) * 60
     box = (
       <Box color="--yellow">
@@ -85,22 +79,22 @@ export const ValidKeyWithMetadata = ({
     )
   }
 
-  const alreadyCheckedIn = checkedIn || metadata.checkedInAt
+  const alreadyCheckedIn = checkedIn || keyData?.metadata?.checkedInAt
 
   return (
     <Wrapper>
       {box}
       <KeyInfo>
         <Label>Lock Name</Label>
-        <Value>{ownedKey.lock.name}</Value>
+        <Value>{lock.name}</Value>
         <Label>Token Id</Label>
-        <Value>{ownedKey.keyId}</Value>
+        <Value>{unlockKey.tokenId}</Value>
         <Label>Owner Address</Label>
         <Value>{owner}</Value>
         <Label>Time Since signed</Label>
         <Value>{timeElapsedSinceSignature}</Value>
-        {metadata.userMetadata && attributes(metadata.userMetadata.protected)}
-        {metadata.userMetadata && attributes(metadata.userMetadata.public)}
+        {keyData?.userMetadata && attributes(keyData?.userMetadata.protected)}
+        {keyData?.userMetadata && attributes(keyData?.userMetadata.public)}
         {viewerIsLockOwner && (
           <CheckInButton onClick={checkIn} disabled={alreadyCheckedIn}>
             {!alreadyCheckedIn && 'Mark as Checked-In'}
@@ -113,11 +107,12 @@ export const ValidKeyWithMetadata = ({
 }
 
 interface ValidKeyProps {
-  ownedKey: OwnedKey
+  unlockKey: any
+  lock: any
   viewer?: string | null
   signatureTimestamp: number
   owner: string
-  signature: string
+  network: number
 }
 
 /**
@@ -125,73 +120,68 @@ interface ValidKeyProps {
  * If the viewer is the lock owner, include the metadata
  */
 export const ValidKey = ({
-  ownedKey,
+  unlockKey,
+  lock,
   signatureTimestamp,
   owner,
   viewer,
-  signature,
+  network,
 }: ValidKeyProps) => {
-  const walletService: WalletService = useContext(WalletServiceContext)
-  const config = useContext(ConfigContext)
-  const { network } = useContext(AuthenticationContext)
+  const [checkedIn, setCheckedIn] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [viewerIsLockOwner, setViewerIsLockOwner] = useState(false)
+  const [keyData, setKeyData] = useState({})
+  const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
 
-  const { isLockManager, loading: isLockManagerLoading } = useIsLockManager(
-    ownedKey.lock.address,
-    network,
-    viewer
-  )
-  const loading = false
-  const metadata = {}
-  const getMetadataForError = ''
-
-  // TODO add back metadata when the logged in user is lock manager!
-  // const { loading, metadata, error: getMetadataForError } = useGetMetadataFor(
-  //   walletService,
-  //   config,
-  //   ownedKey.lock.address,
-  //   ownedKey.keyId,
-  //   isLockManager
-  // )
-
-  const {
-    markAsCheckedIn,
-    checkedIn,
-    error: markAsCheckedInError,
-  } = useMarkAsCheckedIn(walletService, config, ownedKey)
-
-  const checkIn = () => {
-    markAsCheckedIn()
-    pingPoap(ownedKey, owner, signature, signatureTimestamp)
+  const checkIn = async () => {
+    const success = await markAsCheckedIn(viewer, unlockKey.tokenId)
+    if (success) {
+      setCheckedIn(true)
+    } else {
+      setError('We could not mark this membership as checked in')
+    }
   }
 
   const secondsElapsedFromSignature = Math.floor(
     (Date.now() - signatureTimestamp) / 1000
   )
 
-  if (loading || isLockManagerLoading) {
+  useEffect(() => {
+    const onLoad = async () => {
+      const _isLockManager = await isLockManager(viewer)
+      if (_isLockManager) {
+        setViewerIsLockOwner(true)
+        const metadata = await getKeyData(unlockKey.tokenId, viewer)
+        setKeyData(metadata || {})
+      } else {
+        setViewerIsLockOwner(false)
+        const metadata = await getKeyData(unlockKey.tokenId)
+        setKeyData(metadata || {})
+      }
+      setLoading(false)
+    }
+    onLoad()
+  }, [lock.address, viewer])
+
+  if (loading) {
     return <Loading />
   }
 
-  if (getMetadataForError || markAsCheckedInError) {
-    // TODO: Do better
-    return (
-      <p>
-        There was an error:{' '}
-        {getMetadataForError.toString() || markAsCheckedInError.toString()}
-      </p>
-    )
+  if (error) {
+    return <Error>{error}</Error>
   }
 
   return (
     <ValidKeyWithMetadata
-      viewerIsLockOwner={isLockManager}
-      ownedKey={ownedKey}
+      viewerIsLockOwner={viewerIsLockOwner}
+      unlockKey={unlockKey}
       timeElapsedSinceSignature={durationsAsTextFromSeconds(
         secondsElapsedFromSignature
       )}
-      expirationDate={expirationAsDate(ownedKey.expiration)}
+      lock={lock}
       owner={owner}
-      metadata={metadata}
+      keyData={keyData}
       checkIn={checkIn}
       checkedIn={checkedIn}
     />
@@ -281,7 +271,6 @@ const KeyInfo = styled.div`
   margin-right: auto;
   display: grid;
 `
-
 const CheckInButton = styled(ActionButton)`
   max-width: 290px;
   margin-top: 20px;
@@ -311,4 +300,7 @@ const Value = styled.div`
   margin-bottom: 15px;
   text-overflow: ellipsis;
   overflow: hidden;
+`
+const Error = styled.p`
+  color: var(--red);
 `
