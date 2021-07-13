@@ -98,6 +98,7 @@ const TopHeader = styled.header`
   width: 100%;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 
   ${Media.phone`
     display: none;
