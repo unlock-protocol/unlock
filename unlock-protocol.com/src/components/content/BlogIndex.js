@@ -8,8 +8,9 @@ import Media, { NoPhone } from '../../theme/media'
 export const BlogIndex = ({ posts }) => (
   <Index>
     <Blurb>
-      We’re building the new business model for the web that will empower
-      creators and consumers.
+      We’re building the new business model for the web that empowers creators.
+      <br />
+      Unlock the potential of memberships
     </Blurb>
     {posts.map(
       ({ title, authorName, publishDate, slug, description, image }) => (
@@ -97,7 +98,7 @@ const Blurb = styled.div`
   font-size: 24px;
   margin-bottom: 66px;
   color: #59c245;
-  max-width: 424px;
+  max-width: 524px;
 `
 
 const Image = styled.img`
