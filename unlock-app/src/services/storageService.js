@@ -464,4 +464,58 @@ export class StorageService extends EventEmitter {
       body: JSON.stringify(payload),
     })
   }
+
+  /**
+   * Saves a key metadata for a lock
+   * @param {*} lockAddress
+   * @param {*} userAddress
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async setKeyMetadata(lockAddress, keyId, payload, signature, network) {
+    let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+
+  /**
+   *
+   * @param {*} lockAddress
+   * @param {*} keyId
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async getKeyMetadata(lockAddress, keyId, payload, signature, network) {
+    let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    if (signature) {
+      options.headers.Authorization = `Bearer ${Buffer.from(signature).toString(
+        'base64'
+      )}`
+    }
+
+    return axios.get(url, options)
+  }
 }

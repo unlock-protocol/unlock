@@ -40,7 +40,7 @@ export function Account() {
         </DoubleHeightCell>
         <Label>
           <NetworkInfo title="To change network, switch in your wallet of choice and refresh the page">
-            {!network && <p> Not connected</p>}
+            {!network && <p>Not connected</p>}
             {network && (
               <NetworkSelect onChange={networkSelected} value={network}>
                 {Object.keys(networks).map((networkId) => {
