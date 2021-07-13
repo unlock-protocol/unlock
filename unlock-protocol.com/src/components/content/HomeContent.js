@@ -303,7 +303,13 @@ export const HomeContent = ({ posts }) => {
             width="24"
             src="/static/images/illustrations/twitter.svg"
           />{' '}
-          @henryhoffman
+          <a
+            target="_blank"
+            href="https://twitter.com/henryhoffman"
+            rel="noreferrer"
+          >
+            @henryhoffman
+          </a>
         </Byline>
       </BoxQuote>
 
