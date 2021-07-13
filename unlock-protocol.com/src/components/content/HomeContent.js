@@ -365,7 +365,7 @@ export const HomeContent = ({ posts }) => {
             </p>
             <ActionButtons>
               <ActionButton
-                href="https://docs.unlock-protocol.com/"
+                href="https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22"
                 contrastColor="#ED663A"
                 color="var(--white)"
                 borderColor="#ED663A"
