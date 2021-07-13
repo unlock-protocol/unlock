@@ -324,7 +324,7 @@ export const HomeContent = ({ posts }) => {
           <ActionButton
             href="https://docs.unlock-protocol.com/"
             contrastColor="#142A4A"
-            color="var(--link)"
+            color="var(--white)"
           >
             <Icon size="24">
               <Svg.Docs />
@@ -334,7 +334,7 @@ export const HomeContent = ({ posts }) => {
           <ActionButton
             href="https://github.com/unlock-protocol/unlock"
             contrastColor="#142A4A"
-            color="var(--link)"
+            color="var(--white)"
           >
             <Icon size="24">
               <Svg.Github />
@@ -345,7 +345,7 @@ export const HomeContent = ({ posts }) => {
           <ActionButton
             href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
             contrastColor="#142A4A"
-            color="var(--link)"
+            color="var(--white)"
           >
             <Icon size="24">
               <Svg.AppStore />
@@ -355,10 +355,10 @@ export const HomeContent = ({ posts }) => {
         </ActionButtons>
       </Box>
 
-      <Box color="#F6C61B" contrastColor="var(--white)">
+      <Box color="#F6C61B" contrastColor="var(--darkgrey)">
         <Columns>
           <Column>
-            <H2>Join our Developer Grant Program!</H2>
+            <H2 color="">Join our Developer Grant Program!</H2>
             <p style={{ textAlign: 'left' }}>
               Unlock Protocol is giving UDT token grants to developers who can
               make the platform more accessible to wider communities.
