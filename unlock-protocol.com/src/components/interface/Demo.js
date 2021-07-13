@@ -37,7 +37,9 @@ const AMember = () => (
           src="/static/images/illustrations/members-channels.svg"
         />
       </div>
-      Join our members-only channels
+      <a href="https://discord.com/invite/Ah6ZEJyTDp">
+        Join our members-only channels
+      </a>
     </Column>
     <Column>
       <div style={{ width: '100%', padding: '8px' }}>
@@ -47,7 +49,7 @@ const AMember = () => (
           src="/static/images/illustrations/hoodie.png"
         />
       </div>
-      Merbers-only merchandise
+      <a href="https://shop.unlock-protocol.com/">Members-only merchandise</a>
     </Column>
     <Column>
       <div style={{ width: '100%', padding: '8px' }}>
@@ -57,7 +59,7 @@ const AMember = () => (
           src="/static/images/illustrations/blog-chatter.png"
         />
       </div>
-      Comment on our blog
+      <a href="https://unlock-protocol.com/blog">Comment on our blog</a>
     </Column>
   </Columns>
 )
