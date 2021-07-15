@@ -67,4 +67,24 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
     })
   })
+  
+  describe('minting tokens', () => {
+    beforeEach( async () => {
+      const tx = await lock.purchase(0, keyBuyer, referrer, [], {
+        from: keyBuyer,
+        value: await lock.keyPrice(),
+      })
+      const transaction = await web3.eth.getTransaction(tx.tx)
+    })
+
+    describe('mint by gas price', () => {
+
+    })
+    // it('starting supply is NOT 0', async () => {
+    //   const totalSupply = await unlockDiscountToken.totalSupply()
+    //   assert.equal(totalSupply.eq(0), false)
+    //   // more than initial pre-mined 1M
+    //   assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
+    // })
+  })
 })
