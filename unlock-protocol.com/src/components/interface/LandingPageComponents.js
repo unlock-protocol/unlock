@@ -126,7 +126,7 @@ export const Columns = styled.div`
   margin: 0 -16px;
 
   ${Media.phone`
-    margin: 0px;
+    margin: 16px 0px;
     flex-direction: column;
   `};
 `
