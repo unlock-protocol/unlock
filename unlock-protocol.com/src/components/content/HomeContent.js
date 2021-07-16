@@ -72,8 +72,11 @@ export const HomeContent = ({ posts }) => {
             </ActionButtons>
           </Column>
           <Column
-            width="330px"
-            style={{ justifyContent: 'center', alignContent: 'center' }}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: '1',
+            }}
           >
             <Illustration
               style={{ maxWidth: '330px' }}
@@ -502,7 +505,9 @@ HomeContent.propTypes = {
 }
 
 export default HomeContent
-const Illustration = styled.img``
+const Illustration = styled.img`
+  max-width: 100%;
+`
 const Integration = styled.a`
   display: flex;
   align-items: center;
