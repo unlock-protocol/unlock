@@ -4,10 +4,9 @@ import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import Fonts from '../theme/fonts'
-import { globalStyle } from '../theme/globalStyle'
 
 export default class MyDocument extends Document {
-  static getStaticProps({ renderPage }) {
+  static getInitialProps({ renderPage }) {
     const sheet = new ServerStyleSheet()
     const page = renderPage(
       (App) => (props) => sheet.collectStyles(<App {...props} />)
@@ -21,8 +20,6 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <Fonts />
-          {/* TODO remove line below when https://github.com/styled-components/styled-components/issues/2962 has been fixed */}
-          <style>{globalStyle}</style>
           <link
             rel="stylesheet"
             href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.2/build/styles/default.min.css"

@@ -35,7 +35,9 @@ const Footer = () => (
           <a href="https://unlock.community">Forum</a>
         </li>
         <li>
-          <a href="https://vote.unlock-protocol.com">Governance</a>
+          <a href="https://vote.unlock-protocol.com/#/unlock-protocol.eth">
+            Governance
+          </a>
         </li>
         <li>
           <a href="https://github.com/unlock-protocol/unlock">Github</a>

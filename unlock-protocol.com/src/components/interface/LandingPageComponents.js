@@ -113,6 +113,7 @@ export const Box = styled.div`
 
   ${Media.phone`
     margin-top: 24px;
+    padding: ${(props) => props.padding || 16}px;
   `}
 
   p {
