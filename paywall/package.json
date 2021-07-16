@@ -32,7 +32,7 @@
     "dotenv": "10.0.0",
     "lint-staged": "11.0.0",
     "netlify-cli": "4.0.5",
-    "next": "10.2.3",
+    "next": "11.0.1",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
     "prop-types": "15.7.2",
