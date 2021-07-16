@@ -28,7 +28,7 @@
     "graphql": "15.5.1",
     "graphql-tag": "2.12.5",
     "isomorphic-fetch": "3.0.0",
-    "jest": "26.6.3",
+    "jest": "27.0.6",
     "pg": "8.6.0",
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
