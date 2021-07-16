@@ -62,7 +62,7 @@
     "dotenv": "10.0.0",
     "eslint": "7.30.0",
     "eslint-config-standard": "16.0.3",
-    "eth-sig-util": "2.5.4",
+    "eth-sig-util": "3.0.1",
     "ethereumjs-util": "6.2.1",
     "ethers": "5.4.1",
     "express": "4.17.1",
