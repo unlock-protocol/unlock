@@ -48,7 +48,7 @@
     "eslint-plugin-markdown": "2.0.0",
     "eslint-plugin-prettier": "3.1.4",
     "eth-gas-reporter": "0.2.22",
-    "hardlydifficult-eth": "1.1.2",
+    "hardlydifficult-eth": "1.1.4",
     "prettier": "2.1.1",
     "solidity-coverage": "0.7.16",
     "solium": "1.2.5",
