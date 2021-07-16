@@ -111,6 +111,10 @@ export const Box = styled.div`
   font-family: ${(props) => props.fontFamily || 'IBM Plex Sans'};
   border-radius: 8px;
 
+  ${Media.phone`
+    margin-top: 24px;
+  `}
+
   p {
     max-width: 800px;
     font-weight: 300;
@@ -130,7 +134,6 @@ export const Box = styled.div`
 `
 export const Columns = styled.div`
   display: flex;
-  align-items: stretch;
   margin: 0px -16px;
 
   ${Media.phone`

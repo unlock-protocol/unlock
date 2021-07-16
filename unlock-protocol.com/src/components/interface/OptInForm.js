@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Svg from './svg'
+import Media from '../../theme/media'
 
 export const OptInForm = () => (
   <Form
@@ -30,6 +31,9 @@ export default OptInForm
 
 const Form = styled.form`
   display: flex;
+  ${Media.phone`
+  flex-direction: column;
+  `}
 `
 
 const Icon = styled.span`
@@ -53,6 +57,10 @@ const EmailInput = styled.input`
   border-radius: 4px;
   width: 400px;
   margin-right: 16px;
+  ${Media.phone`
+  margin-bottom: 16px;
+  width: 100%;
+  `}
 `
 
 const Subscribe = styled.button`
