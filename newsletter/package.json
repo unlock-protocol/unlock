@@ -38,5 +38,8 @@
     "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-next": "11.0.1"
   }
 }
