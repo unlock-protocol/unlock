@@ -12386,8 +12386,8 @@ Object {
 }
 
 .c14 span {
-  -webkit-animation: rotateWordsFirst 12s linear infinite 0s;
-  animation: rotateWordsFirst 12s linear infinite 0s;
+  -webkit-animation: rotateWordsFirst 10s linear infinite 0s;
+  animation: rotateWordsFirst 10s linear infinite 0s;
 }
 
 .c14 span:nth-child(1) {
@@ -12415,16 +12415,10 @@ Object {
   animation-delay: 8s;
 }
 
-.c14 span:nth-child(6) {
-  -webkit-animation-delay: 10s;
-  animation-delay: 10s;
-}
-
 .c15 {
   position: absolute;
   opacity: 0;
   overflow: hidden;
-  width: 100%;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -12783,18 +12777,12 @@ Object {
                   <h1
                     class="c13"
                   >
-                    Add memberships
+                    Add memberships 
                     <br />
                     to your
-                     
                     <div
                       class="c14"
                     >
-                      <span
-                        class="c15"
-                      >
-                        community
-                      </span>
                       <span
                         class="c15"
                       >
@@ -12803,7 +12791,7 @@ Object {
                       <span
                         class="c15"
                       >
-                        application
+                        app
                       </span>
                       <span
                         class="c15"
@@ -14231,40 +14219,34 @@ Object {
                 <h1
                   class="sc-1ns6l9f-0 cqTePR"
                 >
-                  Add memberships
+                  Add memberships 
                   <br />
                   to your
-                   
                   <div
-                    class="sc-190zb2g-2 cOsdPQ"
+                    class="sc-190zb2g-2 jCSGXp"
                   >
                     <span
-                      class="sc-190zb2g-3 kBmzew"
-                    >
-                      community
-                    </span>
-                    <span
-                      class="sc-190zb2g-3 kBmzew"
+                      class="sc-190zb2g-3 dfupAT"
                     >
                       website
                     </span>
                     <span
-                      class="sc-190zb2g-3 kBmzew"
+                      class="sc-190zb2g-3 dfupAT"
                     >
-                      application
+                      app
                     </span>
                     <span
-                      class="sc-190zb2g-3 kBmzew"
+                      class="sc-190zb2g-3 dfupAT"
                     >
                       game
                     </span>
                     <span
-                      class="sc-190zb2g-3 kBmzew"
+                      class="sc-190zb2g-3 dfupAT"
                     >
                       shop
                     </span>
                     <span
-                      class="sc-190zb2g-3 kBmzew"
+                      class="sc-190zb2g-3 dfupAT"
                     >
                       API
                     </span>
