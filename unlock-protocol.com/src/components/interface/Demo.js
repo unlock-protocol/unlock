@@ -18,7 +18,11 @@ const NotAMember = ({ becomeMember }) => (
       position: 'relative',
     }}
   >
-    <img alt="members-only" src="/static/images/illustrations/blurred.png" />
+    <img
+      style={{ width: '100%', padding: '8px' }}
+      alt="members-only"
+      src="/static/images/illustrations/blurred.png"
+    />
     <Button onClick={becomeMember}>Unlock!</Button>
   </div>
 )

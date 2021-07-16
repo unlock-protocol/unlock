@@ -43,13 +43,11 @@ export const HomeContent = ({ posts }) => {
         <Columns>
           <Column>
             <H1>
-              Add memberships
-              <br />
-              to your{' '}
+              Add memberships <br />
+              to your
               <RotatingWords>
-                <Word>community</Word>
                 <Word>website</Word>
-                <Word>application</Word>
+                <Word>app</Word>
                 <Word>game</Word>
                 <Word>shop</Word>
                 <Word>API</Word>
@@ -568,7 +566,7 @@ const RotatingWords = styled.div`
   }
 
   span {
-    animation: rotateWordsFirst 12s linear infinite 0s;
+    animation: rotateWordsFirst 10s linear infinite 0s;
   }
 
   span:nth-child(1) {
@@ -586,13 +584,10 @@ const RotatingWords = styled.div`
   span:nth-child(5) {
     animation-delay: 8s;
   }
-  span:nth-child(6) {
-    animation-delay: 10s;
-  }
 `
+
 const Word = styled.span`
   position: absolute;
   opacity: 0;
   overflow: hidden;
-  width: 100%;
 `
