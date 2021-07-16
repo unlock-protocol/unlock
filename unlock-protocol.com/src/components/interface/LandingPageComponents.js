@@ -118,8 +118,14 @@ export const Box = styled.div`
     margin-top: 4px;
   }
 
-  h2 {
+  ${H2} {
     color: ${(props) => props.contrastColor};
+    ${(props) =>
+      props.hero &&
+      `
+      margin-top: 16px;
+      margin-bottom: 32px;
+    `}
   }
 `
 export const Columns = styled.div`
