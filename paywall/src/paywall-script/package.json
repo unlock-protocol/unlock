@@ -11,8 +11,8 @@
   "devDependencies": {
     "node-fetch": "2.6.1",
     "style-loader": "3.0.0",
-    "webpack": "5.36.2",
-    "webpack-cli": "4.6.0"
+    "webpack": "5.42.1",
+    "webpack-cli": "4.7.2"
   },
   "dependencies": {
     "postmate": "1.5.2"
