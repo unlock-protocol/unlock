@@ -37,7 +37,7 @@
     "@types/eth-sig-util": "2.1.0",
     "@types/ethereumjs-util": "5.2.0",
     "@types/express": "4.17.12",
-    "@types/express-serve-static-core": "4.17.20",
+    "@types/express-serve-static-core": "4.17.24",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "26.0.23",
     "@types/nock": "10.0.3",
