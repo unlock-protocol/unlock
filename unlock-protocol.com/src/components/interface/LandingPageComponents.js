@@ -18,11 +18,12 @@ export const H2 = styled.h2`
 
 export const H3 = styled.h3`
   font-family: IBM Plex Sans;
-  font-size: 16px;
+  font-size: 20px;
   letter-spacing: 1px;
   font-weight: 300;
   text-transform: uppercase;
-  color var(--darkgrey);
+  color: var(--brand);
+  margin-bottom: 8px;
 `
 
 export const H4 = styled.h4`
@@ -100,7 +101,7 @@ export const ActionButton = styled.a`
 `
 
 export const Box = styled.div`
-  margin-top: 80px;
+  margin-top: 64px;
   background-color: ${(props) => props.color};
   color: ${(props) => props.contrastColor};
   padding: ${(props) => props.padding || 32}px;
@@ -114,6 +115,7 @@ export const Box = styled.div`
     max-width: 800px;
     font-weight: 300;
     font-size: 24px;
+    margin-top: 4px;
   }
 
   h2 {
@@ -123,7 +125,7 @@ export const Box = styled.div`
 export const Columns = styled.div`
   display: flex;
   align-items: stretch;
-  margin: 0 -16px;
+  margin: 0px -16px;
 
   ${Media.phone`
     margin: 16px 0px;
@@ -150,6 +152,11 @@ export const Column = styled.div`
     margin-bottom: 8px;
     margin-top: 8px;
   `};
+
+  ${H3} {
+    color: var(--darkgrey);
+    margin-bottom: 16px;
+  }
 
 `
 

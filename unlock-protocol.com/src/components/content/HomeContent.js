@@ -83,14 +83,14 @@ export const HomeContent = ({ posts }) => {
         </Columns>
       </Box>
 
-      <Box color="var(--white)" fontFamily="'IBM Plex Serif', serif">
-        <H2>Create Locks or Manage Memberships</H2>
+      <Box color="transparent" fontFamily="'IBM Plex Serif', serif">
+        <H3>What you can do with Unlock</H3>
         <p>
           Create locks and place them anywhere you’d like to lock content. Users
           can purchase memberships as NFT keys that grant access to content,
           tickets and anything else you’d like to monetize.
         </p>
-        <ActionButtons>
+        <ActionButtons style={{ justifyContent: 'center' }}>
           <ActionButton
             href={`${getConfig().publicRuntimeConfig.unlockApp}/dashboard`}
             color="var(--white)"
@@ -110,7 +110,7 @@ export const HomeContent = ({ posts }) => {
             <Icon size="24">
               <Svg.Key />
             </Icon>
-            Keys and Memberships
+            Manage Keys & Memberships
           </ActionButton>
         </ActionButtons>
       </Box>
@@ -284,7 +284,7 @@ export const HomeContent = ({ posts }) => {
       </Box>
 
       <BoxQuote>
-        <h4>What the community is saying</h4>
+        <H3>What the community is saying</H3>
         <Quote>
           “I always thought there were better opportunities to monetise web game
           content. Unlock Protocol has enabled me to create quite advanced
