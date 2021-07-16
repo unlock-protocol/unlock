@@ -24,9 +24,37 @@ Object {
   cursor: pointer;
 }
 
+.c5 a {
+  color: var(--link) !important;
+}
+
 .c5:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c6 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c6 a {
+  color: var(--white) !important;
+}
+
+.c6:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c2 {
@@ -40,6 +68,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c4 {
@@ -51,12 +80,12 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c7 {
   display: none;
   height: auto;
 }
 
-.c6 .sc-yj92th-0 {
+.c7 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -67,24 +96,24 @@ Object {
   align-self: center;
 }
 
-.c6 .sc-yj92th-0:nth-child(1) {
+.c7 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .sc-yj92th-0:nth-child(2) {
+.c7 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .sc-yj92th-0 > svg {
+.c7 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c6 .sc-yj92th-0:hover > svg {
+.c7 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c7 {
+.c8 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -106,11 +135,11 @@ Object {
   top: 50px;
 }
 
-.c7 .sc-yj92th-0 {
+.c8 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c7 .sc-yj92th-0 small {
+.c8 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -120,13 +149,13 @@ Object {
   line-height: 0;
 }
 
-.c26 {
+.c27 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c25 {
+.c26 {
   background-color: var(--white);
   border-radius: 4px;
   padding: 32px;
@@ -142,16 +171,17 @@ Object {
   flex-direction: column;
 }
 
-.c28 {
+.c29 {
   justify-self: end;
   font-size: 12px;
   font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
   text-align: right;
+  margin-top: 32px;
 }
 
-.c27 {
+.c28 {
   margin-top: 64px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -162,7 +192,7 @@ Object {
   flex-direction: column;
 }
 
-.c27 ul {
+.c28 ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
@@ -178,32 +208,32 @@ Object {
   flex-wrap: wrap;
 }
 
-.c27 ul li {
+.c28 ul li {
   font-weight: 500;
   margin-right: 16px;
 }
 
-.c27 ul a,
-.c27 ul span {
+.c28 ul a,
+.c28 ul span {
   display: inline-block;
   padding: 16px;
   border-radius: 4px;
   margin-bottom: 16px;
 }
 
-.c27 ul span {
+.c28 ul span {
   background-color: var(--lightgrey);
   color: var(--grey);
 }
 
-.c27 ul a {
+.c28 ul a {
   background-color: var(--link);
   color: var(--white);
   -webkit-transition: background-color 400ms ease;
   transition: background-color 400ms ease;
 }
 
-.c27 ul a:hover {
+.c28 ul a:hover {
   background-color: #2768c8;
 }
 
@@ -224,14 +254,14 @@ Object {
   padding-bottom: 60px;
 }
 
-.c8 {
+.c9 {
   color: var(--darkgrey);
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
 }
 
-.c18 {
+.c19 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
@@ -240,7 +270,7 @@ Object {
   margin-bottom: 35px;
 }
 
-.c20 {
+.c21 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
@@ -249,7 +279,7 @@ Object {
   display: inline;
 }
 
-.c21 {
+.c22 {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
@@ -257,7 +287,7 @@ Object {
   color: var(--grey);
 }
 
-.c14 {
+.c15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -272,30 +302,30 @@ Object {
   align-items: center;
 }
 
-.c10 {
+.c11 {
   margin: auto;
   width: 100%;
   max-with: 750px;
 }
 
-.c16 {
+.c17 {
   margin-bottom: 0;
 }
 
-.c16 a,
-.c16 a:visited {
+.c17 a,
+.c17 a:visited {
   color: var(--brand);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   font-size: 36px;
 }
 
-.c19 {
+.c20 {
   margin-top: 16px;
   margin-bottom: 0;
 }
 
-.c17 {
+.c18 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
@@ -303,25 +333,25 @@ Object {
   font-family: 'IBM Plex Serif';
 }
 
-.c12 {
+.c13 {
   margin-bottom: 20px;
   margin-bottom: 64px;
 }
 
-.c11 {
+.c12 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 24px;
   margin-bottom: 66px;
   color: #59c245;
-  max-width: 424px;
+  max-width: 524px;
 }
 
-.c15 {
+.c16 {
   max-width: 100%;
 }
 
-.c9 {
+.c10 {
   margin-bottom: 0;
   color: var(--darkgrey);
   font-weight: 700;
@@ -329,26 +359,26 @@ Object {
   font-size: 36px;
 }
 
-.c22 {
+.c23 {
   margin: 0px;
   padding: 0px;
 }
 
-.c22 li {
+.c23 li {
   display: inline-block;
   padding: 1px;
 }
 
-.c23 {
+.c24 {
   float: left;
 }
 
-.c24 {
+.c25 {
   float: right;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
+  .c14 {
     display: none;
   }
 }
@@ -366,19 +396,25 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c6 {
+  .c7 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c28 {
     display: none;
   }
 }
@@ -387,8 +423,20 @@ Object {
 
 }
 
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    padding-top: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    margin-top: 0px;
+  }
+}
+
 @media only screen and (min-width:736px) {
-  .c12 {
+  .c13 {
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-gap: 32px;
@@ -468,10 +516,10 @@ Object {
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
-                Commnunity
+                Community
               </a>
               <a
-                class="c5"
+                class="c6"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -480,7 +528,7 @@ Object {
               </a>
             </div>
             <div
-              class="c6"
+              class="c7"
             >
               <a
                 class="c5"
@@ -516,36 +564,38 @@ Object {
               </a>
             </div>
             <div
-              class="c7"
+              class="c8"
             />
           </header>
           <div
-            class="c8"
+            class="c9"
           >
             <h1
-              class="c9"
+              class="c10"
             >
               Unlock Blog
             </h1>
             <div
-              class="c10"
+              class="c11"
             >
-              <div
-                class="c11"
-              >
-                We’re building the new business model for the web that will empower creators and consumers.
-              </div>
               <div
                 class="c12"
               >
+                We’re building the new business model for the web that empowers creators.
+                <br />
+                Unlock the potential of memberships
+              </div>
+              <div
+                class="c13"
+              >
                 <div
-                  class="c13 c14"
+                  class="c14 c15"
                 >
                   <a
                     href="/blog/post3"
                   >
                     <img
-                      class="c15"
+                      class="c16"
                     />
                   </a>
                 </div>
@@ -553,7 +603,7 @@ Object {
                   class=""
                 >
                   <div
-                    class="c16"
+                    class="c17"
                   >
                     <a
                       href="/blog/post3"
@@ -562,23 +612,23 @@ Object {
                     </a>
                   </div>
                   <div
-                    class="c17"
+                    class="c18"
                   >
                     
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
                   </div>
                   <div
-                    class="c18 c19"
+                    class="c19 c20"
                   >
                     <h3
-                      class="c20"
+                      class="c21"
                     >
                       Unlock team
                     </h3>
                      
                     <span
-                      class="c21"
+                      class="c22"
                     >
                       on 
                       Tuesday, March 5, 2019
@@ -587,16 +637,16 @@ should pay great attention.
                 </div>
               </div>
               <div
-                class="c12"
+                class="c13"
               >
                 <div
-                  class="c13 c14"
+                  class="c14 c15"
                 >
                   <a
                     href="/blog/post2"
                   >
                     <img
-                      class="c15"
+                      class="c16"
                     />
                   </a>
                 </div>
@@ -604,7 +654,7 @@ should pay great attention.
                   class=""
                 >
                   <div
-                    class="c16"
+                    class="c17"
                   >
                     <a
                       href="/blog/post2"
@@ -613,22 +663,22 @@ should pay great attention.
                     </a>
                   </div>
                   <div
-                    class="c17"
+                    class="c18"
                   >
                     
 Short description.
                   </div>
                   <div
-                    class="c18 c19"
+                    class="c19 c20"
                   >
                     <h3
-                      class="c20"
+                      class="c21"
                     >
                       Julien Genestoux
                     </h3>
                      
                     <span
-                      class="c21"
+                      class="c22"
                     >
                       on 
                       Friday, March 1, 2019
@@ -637,16 +687,16 @@ Short description.
                 </div>
               </div>
               <div
-                class="c12"
+                class="c13"
               >
                 <div
-                  class="c13 c14"
+                  class="c14 c15"
                 >
                   <a
                     href="/blog/post1"
                   >
                     <img
-                      class="c15"
+                      class="c16"
                     />
                   </a>
                 </div>
@@ -654,7 +704,7 @@ Short description.
                   class=""
                 >
                   <div
-                    class="c16"
+                    class="c17"
                   >
                     <a
                       href="/blog/post1"
@@ -663,22 +713,22 @@ Short description.
                     </a>
                   </div>
                   <div
-                    class="c17"
+                    class="c18"
                   >
                     
 Look at us! We're posting on our very own blog! How exciting!
                   </div>
                   <div
-                    class="c18 c19"
+                    class="c19 c20"
                   >
                     <h3
-                      class="c20"
+                      class="c21"
                     >
                       Unlock team
                     </h3>
                      
                     <span
-                      class="c21"
+                      class="c22"
                     >
                       on 
                       Monday, August 20, 2018
@@ -688,10 +738,10 @@ Look at us! We're posting on our very own blog! How exciting!
               </div>
             </div>
             <ul
-              class="c22"
+              class="c23"
             >
               <li
-                class="c23"
+                class="c24"
               >
                 <a
                   href="/blog"
@@ -700,7 +750,7 @@ Look at us! We're posting on our very own blog! How exciting!
                 </a>
               </li>
               <li
-                class="c23"
+                class="c24"
               >
                 <a
                   href="/blog/4"
@@ -709,7 +759,7 @@ Look at us! We're posting on our very own blog! How exciting!
                 </a>
               </li>
               <li
-                class="c24"
+                class="c25"
               >
                 <a
                   href="/blog/9"
@@ -718,7 +768,7 @@ Look at us! We're posting on our very own blog! How exciting!
                 </a>
               </li>
               <li
-                class="c24"
+                class="c25"
               >
                 <a
                   href="/blog/6"
@@ -729,10 +779,10 @@ Look at us! We're posting on our very own blog! How exciting!
             </ul>
           </div>
           <footer
-            class="c25"
+            class="c26"
           >
             <div
-              class="c26"
+              class="c27"
             >
               Check out our open source code on
                
@@ -758,7 +808,7 @@ Look at us! We're posting on our very own blog! How exciting!
               .
             </div>
             <nav
-              class="c27"
+              class="c28"
             >
               <ul>
                 <li>
@@ -862,7 +912,7 @@ Look at us! We're posting on our very own blog! How exciting!
               </ul>
             </nav>
             <span
-              class="c28"
+              class="c29"
             >
               Made with passion for the web!
             </span>
@@ -898,6 +948,18 @@ Look at us! We're posting on our very own blog! How exciting!
 
 }
 
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
 @media only screen and (min-width:736px) {
 
 }
@@ -913,10 +975,10 @@ Look at us! We're posting on our very own blog! How exciting!
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 fOAgph"
+        class="sc-12f69w-0 inqBia"
       >
         <header
-          class="sc-g91yl6-0 ehYVGM"
+          class="sc-g91yl6-0 eJWZL"
         >
           <a
             href="/"
@@ -938,49 +1000,49 @@ Look at us! We're posting on our very own blog! How exciting!
             class="sc-g91yl6-2 bRPYpt"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/about"
               label="About"
             >
               About
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/blog"
               label="Blog"
             >
               Blog
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
               label="Integrations"
             >
               Integrations
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://github.com/unlock-protocol/unlock"
               label="Developers"
             >
               Developers
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com"
               label="Docs"
             >
               Docs
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://discord.gg/Ah6ZEJyTDp"
               label="Discord"
             >
-              Commnunity
+              Community
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 gZjWnH"
               href="undefined/dashboard"
               label="App"
               target="_blank"
@@ -992,7 +1054,7 @@ Look at us! We're posting on our very own blog! How exciting!
             class="sc-g91yl6-3 gvxMHE"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -1007,7 +1069,7 @@ Look at us! We're posting on our very own blog! How exciting!
               </svg>
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -1029,7 +1091,7 @@ Look at us! We're posting on our very own blog! How exciting!
           />
         </header>
         <div
-          class="sc-12f69w-2 dwuYsr"
+          class="sc-12f69w-2 kCCGHb"
         >
           <h1
             class="sc-1wo6lro-0 FpDHZ"
@@ -1040,9 +1102,11 @@ Look at us! We're posting on our very own blog! How exciting!
             class="sc-x4fzql-1 gvbGce"
           >
             <div
-              class="sc-x4fzql-6 byMyPt"
+              class="sc-x4fzql-6 bCnTTs"
             >
-              We’re building the new business model for the web that will empower creators and consumers.
+              We’re building the new business model for the web that empowers creators.
+              <br />
+              Unlock the potential of memberships
             </div>
             <div
               class="sc-x4fzql-5 jdrlG"
@@ -1267,7 +1331,7 @@ Look at us! We're posting on our very own blog! How exciting!
             .
           </div>
           <nav
-            class="sc-1tdzjo6-2 cyvwxz"
+            class="sc-1tdzjo6-2 bYMyCg"
           >
             <ul>
               <li>
@@ -1371,7 +1435,7 @@ Look at us! We're posting on our very own blog! How exciting!
             </ul>
           </nav>
           <span
-            class="sc-1tdzjo6-1 hOLmBl"
+            class="sc-1tdzjo6-1 fyDpzt"
           >
             Made with passion for the web!
           </span>
@@ -1455,9 +1519,37 @@ Object {
   cursor: pointer;
 }
 
+.c5 a {
+  color: var(--link) !important;
+}
+
 .c5:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c6 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c6 a {
+  color: var(--white) !important;
+}
+
+.c6:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c2 {
@@ -1471,6 +1563,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c4 {
@@ -1482,12 +1575,12 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c7 {
   display: none;
   height: auto;
 }
 
-.c6 .sc-yj92th-0 {
+.c7 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -1498,24 +1591,24 @@ Object {
   align-self: center;
 }
 
-.c6 .sc-yj92th-0:nth-child(1) {
+.c7 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .sc-yj92th-0:nth-child(2) {
+.c7 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .sc-yj92th-0 > svg {
+.c7 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c6 .sc-yj92th-0:hover > svg {
+.c7 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c7 {
+.c8 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -1537,11 +1630,11 @@ Object {
   top: 50px;
 }
 
-.c7 .sc-yj92th-0 {
+.c8 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c7 .sc-yj92th-0 small {
+.c8 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -1551,13 +1644,13 @@ Object {
   line-height: 0;
 }
 
-.c18 {
+.c19 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c17 {
+.c18 {
   background-color: var(--white);
   border-radius: 4px;
   padding: 32px;
@@ -1573,16 +1666,17 @@ Object {
   flex-direction: column;
 }
 
-.c20 {
+.c21 {
   justify-self: end;
   font-size: 12px;
   font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
   text-align: right;
+  margin-top: 32px;
 }
 
-.c19 {
+.c20 {
   margin-top: 64px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1593,7 +1687,7 @@ Object {
   flex-direction: column;
 }
 
-.c19 ul {
+.c20 ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
@@ -1609,32 +1703,32 @@ Object {
   flex-wrap: wrap;
 }
 
-.c19 ul li {
+.c20 ul li {
   font-weight: 500;
   margin-right: 16px;
 }
 
-.c19 ul a,
-.c19 ul span {
+.c20 ul a,
+.c20 ul span {
   display: inline-block;
   padding: 16px;
   border-radius: 4px;
   margin-bottom: 16px;
 }
 
-.c19 ul span {
+.c20 ul span {
   background-color: var(--lightgrey);
   color: var(--grey);
 }
 
-.c19 ul a {
+.c20 ul a {
   background-color: var(--link);
   color: var(--white);
   -webkit-transition: background-color 400ms ease;
   transition: background-color 400ms ease;
 }
 
-.c19 ul a:hover {
+.c20 ul a:hover {
   background-color: #2768c8;
 }
 
@@ -1655,28 +1749,28 @@ Object {
   padding-bottom: 60px;
 }
 
-.c8 {
+.c9 {
   color: var(--darkgrey);
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
 }
 
-.c16 {
+.c17 {
   margin-top: 50px;
   border: none;
   border-top: 1px solid var(--lightgrey);
   margin-bottom: 20px;
 }
 
-.c9 {
+.c10 {
   width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
-.c10 {
+.c11 {
   margin-bottom: 0;
   color: var(--darkgrey);
   font-weight: 700;
@@ -1684,7 +1778,7 @@ Object {
   font-size: 36px;
 }
 
-.c12 {
+.c13 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
@@ -1693,7 +1787,7 @@ Object {
   margin-bottom: 35px;
 }
 
-.c11 {
+.c12 {
   margin-top: 10px;
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -1702,22 +1796,22 @@ Object {
   color: var(--dimgrey);
 }
 
-.c15 {
+.c16 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c15 strong {
+.c16 strong {
   font-weight: 800;
 }
 
-.c15 p {
+.c16 p {
   margin-top: 0;
 }
 
-.c15 h2 {
+.c16 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -1725,17 +1819,17 @@ Object {
   font-size: 18px;
 }
 
-.c15 img {
+.c16 img {
   max-width: 100%;
 }
 
-.c15 pre,
-.c15 code {
+.c16 pre,
+.c16 code {
   max-width: 90vw;
   overflow-x: scroll;
 }
 
-.c15 blockquote {
+.c16 blockquote {
   font-style: italic;
   margin-left: 0px;
   padding-left: 20px;
@@ -1743,25 +1837,25 @@ Object {
   color: var(--slate);
 }
 
-.c15 img + em {
+.c16 img + em {
   display: block;
   font-size: 0.7em;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.c15 th,
-.c15 td {
+.c16 th,
+.c16 td {
   padding: 5px;
 }
 
-.c15 .twitter-tweet {
+.c16 .twitter-tweet {
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
 }
 
-.c13 {
+.c14 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
@@ -1770,7 +1864,7 @@ Object {
   display: inline;
 }
 
-.c14 {
+.c15 {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
@@ -1791,25 +1885,43 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c6 {
+  .c7 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
 
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    padding-top: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    margin-top: 0px;
+  }
 }
 
 <body>
@@ -1886,10 +1998,10 @@ Object {
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
-                Commnunity
+                Community
               </a>
               <a
-                class="c5"
+                class="c6"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -1898,7 +2010,7 @@ Object {
               </a>
             </div>
             <div
-              class="c6"
+              class="c7"
             >
               <a
                 class="c5"
@@ -1934,43 +2046,43 @@ Object {
               </a>
             </div>
             <div
-              class="c7"
+              class="c8"
             />
           </header>
           <div
-            class="c8"
+            class="c9"
           >
             <div
-              class="c9"
+              class="c10"
             >
               <h1
-                class="c10"
+                class="c11"
               >
                 Sample title
               </h1>
               <h2
-                class="c11"
+                class="c12"
               >
                 Some advice from the field
               </h2>
               <div
-                class="c12"
+                class="c13"
               >
                 <h3
-                  class="c13"
+                  class="c14"
                 >
                   Alice "Storybook" Bob
                 </h3>
                  
                 <span
-                  class="c14"
+                  class="c15"
                 >
                   On 
                   August 20, 2018
                 </span>
               </div>
               <div
-                class="c15"
+                class="c16"
               >
                 <div
                   tables="true"
@@ -2042,16 +2154,16 @@ are intentionally not generated from this file date, in case we want to override
                 
               </div>
               <hr
-                class="c16"
+                class="c17"
                 id="comments"
               />
             </div>
           </div>
           <footer
-            class="c17"
+            class="c18"
           >
             <div
-              class="c18"
+              class="c19"
             >
               Check out our open source code on
                
@@ -2077,7 +2189,7 @@ are intentionally not generated from this file date, in case we want to override
               .
             </div>
             <nav
-              class="c19"
+              class="c20"
             >
               <ul>
                 <li>
@@ -2181,7 +2293,7 @@ are intentionally not generated from this file date, in case we want to override
               </ul>
             </nav>
             <span
-              class="c20"
+              class="c21"
             >
               Made with passion for the web!
             </span>
@@ -2200,10 +2312,10 @@ are intentionally not generated from this file date, in case we want to override
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 fOAgph"
+        class="sc-12f69w-0 inqBia"
       >
         <header
-          class="sc-g91yl6-0 ehYVGM"
+          class="sc-g91yl6-0 eJWZL"
         >
           <a
             href="/"
@@ -2225,49 +2337,49 @@ are intentionally not generated from this file date, in case we want to override
             class="sc-g91yl6-2 bRPYpt"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/about"
               label="About"
             >
               About
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/blog"
               label="Blog"
             >
               Blog
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
               label="Integrations"
             >
               Integrations
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://github.com/unlock-protocol/unlock"
               label="Developers"
             >
               Developers
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com"
               label="Docs"
             >
               Docs
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://discord.gg/Ah6ZEJyTDp"
               label="Discord"
             >
-              Commnunity
+              Community
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 gZjWnH"
               href="undefined/dashboard"
               label="App"
               target="_blank"
@@ -2279,7 +2391,7 @@ are intentionally not generated from this file date, in case we want to override
             class="sc-g91yl6-3 gvxMHE"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -2294,7 +2406,7 @@ are intentionally not generated from this file date, in case we want to override
               </svg>
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -2316,7 +2428,7 @@ are intentionally not generated from this file date, in case we want to override
           />
         </header>
         <div
-          class="sc-12f69w-2 dwuYsr"
+          class="sc-12f69w-2 kCCGHb"
         >
           <div
             class="sc-8h5qi4-2 okEAJ"
@@ -2455,7 +2567,7 @@ are intentionally not generated from this file date, in case we want to override
             .
           </div>
           <nav
-            class="sc-1tdzjo6-2 cyvwxz"
+            class="sc-1tdzjo6-2 bYMyCg"
           >
             <ul>
               <li>
@@ -2559,7 +2671,7 @@ are intentionally not generated from this file date, in case we want to override
             </ul>
           </nav>
           <span
-            class="sc-1tdzjo6-1 hOLmBl"
+            class="sc-1tdzjo6-1 fyDpzt"
           >
             Made with passion for the web!
           </span>
@@ -2710,7 +2822,7 @@ Object {
   font-size: 24px;
   margin-bottom: 66px;
   color: #59c245;
-  max-width: 424px;
+  max-width: 524px;
 }
 
 .c5 {
@@ -2742,7 +2854,9 @@ Object {
         <div
           class="c1"
         >
-          We’re building the new business model for the web that will empower creators and consumers.
+          We’re building the new business model for the web that empowers creators.
+          <br />
+          Unlock the potential of memberships
         </div>
         <div
           class="c2"
@@ -2907,9 +3021,11 @@ Look at us! We're posting on our very own blog! How exciting!
       class="sc-x4fzql-1 gvbGce"
     >
       <div
-        class="sc-x4fzql-6 byMyPt"
+        class="sc-x4fzql-6 bCnTTs"
       >
-        We’re building the new business model for the web that will empower creators and consumers.
+        We’re building the new business model for the web that empowers creators.
+        <br />
+        Unlock the potential of memberships
       </div>
       <div
         class="sc-x4fzql-5 jdrlG"
@@ -3136,7 +3252,7 @@ Object {
   font-size: 24px;
   margin-bottom: 66px;
   color: #59c245;
-  max-width: 424px;
+  max-width: 524px;
 }
 
 <div>
@@ -3150,7 +3266,9 @@ Object {
         <div
           class="c1"
         >
-          We’re building the new business model for the web that will empower creators and consumers.
+          We’re building the new business model for the web that empowers creators.
+          <br />
+          Unlock the potential of memberships
         </div>
       </div>
     </div>
@@ -3164,9 +3282,11 @@ Object {
       class="sc-x4fzql-1 gvbGce"
     >
       <div
-        class="sc-x4fzql-6 byMyPt"
+        class="sc-x4fzql-6 bCnTTs"
       >
-        We’re building the new business model for the web that will empower creators and consumers.
+        We’re building the new business model for the web that empowers creators.
+        <br />
+        Unlock the potential of memberships
       </div>
     </div>
   </div>,
@@ -3313,7 +3433,7 @@ Object {
   font-size: 24px;
   margin-bottom: 66px;
   color: #59c245;
-  max-width: 424px;
+  max-width: 524px;
 }
 
 .c5 {
@@ -3345,7 +3465,9 @@ Object {
         <div
           class="c1"
         >
-          We’re building the new business model for the web that will empower creators and consumers.
+          We’re building the new business model for the web that empowers creators.
+          <br />
+          Unlock the potential of memberships
         </div>
         <div
           class="c2"
@@ -3410,9 +3532,11 @@ should pay great attention.
       class="sc-x4fzql-1 gvbGce"
     >
       <div
-        class="sc-x4fzql-6 byMyPt"
+        class="sc-x4fzql-6 bCnTTs"
       >
-        We’re building the new business model for the web that will empower creators and consumers.
+        We’re building the new business model for the web that empowers creators.
+        <br />
+        Unlock the potential of memberships
       </div>
       <div
         class="sc-x4fzql-5 jdrlG"
@@ -6649,6 +6773,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -6674,7 +6802,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="/about"
       label="About"
     >
@@ -6758,6 +6886,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -6791,7 +6923,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
     >
       <svg
         viewBox="0 0 56 42"
@@ -6883,6 +7015,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -6908,7 +7044,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="/blog"
       label="Blog"
     >
@@ -6992,6 +7128,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7027,7 +7167,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
     >
       <svg
         viewBox="0 0 58 32"
@@ -7121,6 +7261,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7156,7 +7300,7 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
     >
       <svg
         viewBox="0 0 24 24"
@@ -7250,6 +7394,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7285,7 +7433,7 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
     >
       <svg
         viewBox="0 0 24 24"
@@ -7379,6 +7527,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7394,7 +7546,7 @@ Object {
         href="https://discord.gg/Ah6ZEJyTDp"
         label="Discord"
       >
-        Commnunity
+        Community
       </a>
     </div>
   </body>,
@@ -7404,11 +7556,11 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="https://discord.gg/Ah6ZEJyTDp"
       label="Discord"
     >
-      Commnunity
+      Community
     </a>
   </div>,
   "debug": [Function],
@@ -7488,6 +7640,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7513,7 +7669,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="https://github.com/unlock-protocol/unlock"
       label="Developers"
     >
@@ -7597,6 +7753,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7632,7 +7792,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="/jobs"
       label="Join us"
     >
@@ -7726,6 +7886,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7761,7 +7925,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="/newsletter"
       label="Newsletter"
     >
@@ -7855,6 +8019,10 @@ Object {
   cursor: pointer;
 }
 
+.c0 a {
+  color: var(--link) !important;
+}
+
 .c0:hover {
   background-color: var(--link);
   color: var(--white);
@@ -7890,7 +8058,7 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-vjbnjq-0 fSOYNc"
+      class="sc-vjbnjq-0 grhlzI"
       href="https://twitter.com/UnlockProtocol"
       label="Twitter"
     >
@@ -7997,6 +8165,7 @@ Object {
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
   text-align: right;
+  margin-top: 32px;
 }
 
 .c2 {
@@ -8053,6 +8222,12 @@ Object {
 
 .c2 ul a:hover {
   background-color: #2768c8;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
+    display: none;
+  }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -8240,7 +8415,7 @@ Object {
         .
       </div>
       <nav
-        class="sc-1tdzjo6-2 cyvwxz"
+        class="sc-1tdzjo6-2 bYMyCg"
       >
         <ul>
           <li>
@@ -8344,7 +8519,7 @@ Object {
         </ul>
       </nav>
       <span
-        class="sc-1tdzjo6-1 hOLmBl"
+        class="sc-1tdzjo6-1 fyDpzt"
       >
         Made with passion for the web!
       </span>
@@ -8430,9 +8605,37 @@ Object {
   cursor: pointer;
 }
 
+.c3 a {
+  color: var(--link) !important;
+}
+
 .c3:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c4 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c4 a {
+  color: var(--white) !important;
+}
+
+.c4:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c0 {
@@ -8446,6 +8649,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c2 {
@@ -8457,12 +8661,12 @@ Object {
   height: 100%;
 }
 
-.c4 {
+.c5 {
   display: none;
   height: auto;
 }
 
-.c4 .sc-yj92th-0 {
+.c5 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -8473,24 +8677,24 @@ Object {
   align-self: center;
 }
 
-.c4 .sc-yj92th-0:nth-child(1) {
+.c5 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c4 .sc-yj92th-0:nth-child(2) {
+.c5 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c4 .sc-yj92th-0 > svg {
+.c5 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c4 .sc-yj92th-0:hover > svg {
+.c5 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c5 {
+.c6 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -8512,11 +8716,11 @@ Object {
   top: 50px;
 }
 
-.c5 .sc-yj92th-0 {
+.c6 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c5 .sc-yj92th-0 small {
+.c6 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -8539,19 +8743,19 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c4 {
+  .c5 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
+  .c6 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c5 {
+  .c6 {
     display: none;
   }
 }
@@ -8623,10 +8827,10 @@ Object {
             href="https://discord.gg/Ah6ZEJyTDp"
             label="Discord"
           >
-            Commnunity
+            Community
           </a>
           <a
-            class="c3"
+            class="c4"
             href="undefined/dashboard"
             label="App"
             target="_blank"
@@ -8635,7 +8839,7 @@ Object {
           </a>
         </div>
         <div
-          class="c4"
+          class="c5"
         >
           <a
             class="c3"
@@ -8671,7 +8875,7 @@ Object {
           </a>
         </div>
         <div
-          class="c5"
+          class="c6"
         />
       </header>
     </div>
@@ -8682,7 +8886,7 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-g91yl6-0 ehYVGM"
+      class="sc-g91yl6-0 eJWZL"
     >
       <a
         href="/"
@@ -8704,49 +8908,49 @@ Object {
         class="sc-g91yl6-2 bRPYpt"
       >
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="/about"
           label="About"
         >
           About
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="/blog"
           label="Blog"
         >
           Blog
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
           label="Integrations"
         >
           Integrations
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://github.com/unlock-protocol/unlock"
           label="Developers"
         >
           Developers
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://docs.unlock-protocol.com"
           label="Docs"
         >
           Docs
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://discord.gg/Ah6ZEJyTDp"
           label="Discord"
         >
-          Commnunity
+          Community
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 gZjWnH"
           href="undefined/dashboard"
           label="App"
           target="_blank"
@@ -8758,7 +8962,7 @@ Object {
         class="sc-g91yl6-3 gvxMHE"
       >
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
         >
           <svg
             viewBox="0 0 56 42"
@@ -8773,7 +8977,7 @@ Object {
           </svg>
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
         >
           <svg
             viewBox="0 0 58 32"
@@ -8882,9 +9086,37 @@ Object {
   cursor: pointer;
 }
 
+.c5 a {
+  color: var(--link) !important;
+}
+
 .c5:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c6 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c6 a {
+  color: var(--white) !important;
+}
+
+.c6:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c0 {
@@ -8898,6 +9130,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c1 {
@@ -8913,12 +9146,12 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c7 {
   display: none;
   height: auto;
 }
 
-.c6 .sc-yj92th-0 {
+.c7 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -8929,24 +9162,24 @@ Object {
   align-self: center;
 }
 
-.c6 .sc-yj92th-0:nth-child(1) {
+.c7 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .sc-yj92th-0:nth-child(2) {
+.c7 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .sc-yj92th-0 > svg {
+.c7 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c6 .sc-yj92th-0:hover > svg {
+.c7 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c7 {
+.c8 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -8968,11 +9201,11 @@ Object {
   top: 50px;
 }
 
-.c7 .sc-yj92th-0 {
+.c8 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c7 .sc-yj92th-0 small {
+.c8 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -8999,19 +9232,19 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c6 {
+  .c7 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
     display: none;
   }
 }
@@ -9098,10 +9331,10 @@ Object {
             href="https://discord.gg/Ah6ZEJyTDp"
             label="Discord"
           >
-            Commnunity
+            Community
           </a>
           <a
-            class="c5"
+            class="c6"
             href="undefined/dashboard"
             label="App"
             target="_blank"
@@ -9110,7 +9343,7 @@ Object {
           </a>
         </div>
         <div
-          class="c6"
+          class="c7"
         >
           <a
             class="c5"
@@ -9146,7 +9379,7 @@ Object {
           </a>
         </div>
         <div
-          class="c7"
+          class="c8"
         />
       </header>
     </div>
@@ -9157,7 +9390,7 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-g91yl6-0 ehYVGM"
+      class="sc-g91yl6-0 eJWZL"
     >
       <h1
         class="sc-g91yl6-1 eCBtYN"
@@ -9188,49 +9421,49 @@ Object {
         class="sc-g91yl6-2 bRPYpt"
       >
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="/about"
           label="About"
         >
           About
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="/blog"
           label="Blog"
         >
           Blog
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
           label="Integrations"
         >
           Integrations
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://github.com/unlock-protocol/unlock"
           label="Developers"
         >
           Developers
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://docs.unlock-protocol.com"
           label="Docs"
         >
           Docs
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://discord.gg/Ah6ZEJyTDp"
           label="Discord"
         >
-          Commnunity
+          Community
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 gZjWnH"
           href="undefined/dashboard"
           label="App"
           target="_blank"
@@ -9242,7 +9475,7 @@ Object {
         class="sc-g91yl6-3 gvxMHE"
       >
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
         >
           <svg
             viewBox="0 0 56 42"
@@ -9257,7 +9490,7 @@ Object {
           </svg>
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
         >
           <svg
             viewBox="0 0 58 32"
@@ -9366,9 +9599,37 @@ Object {
   cursor: pointer;
 }
 
+.c5 a {
+  color: var(--link) !important;
+}
+
 .c5:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c6 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c6 a {
+  color: var(--white) !important;
+}
+
+.c6:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c0 {
@@ -9382,6 +9643,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c1 {
@@ -9397,12 +9659,12 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c7 {
   display: none;
   height: auto;
 }
 
-.c6 .sc-yj92th-0 {
+.c7 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -9413,24 +9675,24 @@ Object {
   align-self: center;
 }
 
-.c6 .sc-yj92th-0:nth-child(1) {
+.c7 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .sc-yj92th-0:nth-child(2) {
+.c7 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .sc-yj92th-0 > svg {
+.c7 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c6 .sc-yj92th-0:hover > svg {
+.c7 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c7 {
+.c8 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -9452,11 +9714,11 @@ Object {
   top: 50px;
 }
 
-.c7 .sc-yj92th-0 {
+.c8 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c7 .sc-yj92th-0 small {
+.c8 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -9483,19 +9745,19 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c6 {
+  .c7 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
     display: none;
   }
 }
@@ -9582,10 +9844,10 @@ Object {
             href="https://discord.gg/Ah6ZEJyTDp"
             label="Discord"
           >
-            Commnunity
+            Community
           </a>
           <a
-            class="c5"
+            class="c6"
             href="undefined/dashboard"
             label="App"
             target="_blank"
@@ -9594,7 +9856,7 @@ Object {
           </a>
         </div>
         <div
-          class="c6"
+          class="c7"
         >
           <a
             class="c5"
@@ -9630,7 +9892,7 @@ Object {
           </a>
         </div>
         <div
-          class="c7"
+          class="c8"
         />
       </header>
     </div>
@@ -9641,7 +9903,7 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-g91yl6-0 ehYVGM"
+      class="sc-g91yl6-0 eJWZL"
     >
       <h1
         class="sc-g91yl6-1 eCBtYN"
@@ -9672,49 +9934,49 @@ Object {
         class="sc-g91yl6-2 bRPYpt"
       >
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="/about"
           label="About"
         >
           About
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="/blog"
           label="Blog"
         >
           Blog
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
           label="Integrations"
         >
           Integrations
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://github.com/unlock-protocol/unlock"
           label="Developers"
         >
           Developers
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://docs.unlock-protocol.com"
           label="Docs"
         >
           Docs
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
           href="https://discord.gg/Ah6ZEJyTDp"
           label="Discord"
         >
-          Commnunity
+          Community
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 gZjWnH"
           href="undefined/dashboard"
           label="App"
           target="_blank"
@@ -9726,7 +9988,7 @@ Object {
         class="sc-g91yl6-3 gvxMHE"
       >
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
         >
           <svg
             viewBox="0 0 56 42"
@@ -9741,7 +10003,7 @@ Object {
           </svg>
         </a>
         <a
-          class="sc-vjbnjq-0 fSOYNc"
+          class="sc-vjbnjq-0 grhlzI"
         >
           <svg
             viewBox="0 0 58 32"
@@ -11036,9 +11298,37 @@ Object {
   cursor: pointer;
 }
 
+.c5 a {
+  color: var(--link) !important;
+}
+
 .c5:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c6 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c6 a {
+  color: var(--white) !important;
+}
+
+.c6:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c2 {
@@ -11052,6 +11342,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c4 {
@@ -11063,12 +11354,12 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c7 {
   display: none;
   height: auto;
 }
 
-.c6 .sc-yj92th-0 {
+.c7 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -11079,24 +11370,24 @@ Object {
   align-self: center;
 }
 
-.c6 .sc-yj92th-0:nth-child(1) {
+.c7 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .sc-yj92th-0:nth-child(2) {
+.c7 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .sc-yj92th-0 > svg {
+.c7 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c6 .sc-yj92th-0:hover > svg {
+.c7 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c7 {
+.c8 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -11118,11 +11409,11 @@ Object {
   top: 50px;
 }
 
-.c7 .sc-yj92th-0 {
+.c8 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c7 .sc-yj92th-0 small {
+.c8 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -11132,13 +11423,13 @@ Object {
   line-height: 0;
 }
 
-.c50 {
+.c56 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c49 {
+.c55 {
   background-color: var(--white);
   border-radius: 4px;
   padding: 32px;
@@ -11154,16 +11445,17 @@ Object {
   flex-direction: column;
 }
 
-.c52 {
+.c58 {
   justify-self: end;
   font-size: 12px;
   font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
   text-align: right;
+  margin-top: 32px;
 }
 
-.c51 {
+.c57 {
   margin-top: 64px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -11174,7 +11466,7 @@ Object {
   flex-direction: column;
 }
 
-.c51 ul {
+.c57 ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
@@ -11190,32 +11482,32 @@ Object {
   flex-wrap: wrap;
 }
 
-.c51 ul li {
+.c57 ul li {
   font-weight: 500;
   margin-right: 16px;
 }
 
-.c51 ul a,
-.c51 ul span {
+.c57 ul a,
+.c57 ul span {
   display: inline-block;
   padding: 16px;
   border-radius: 4px;
   margin-bottom: 16px;
 }
 
-.c51 ul span {
+.c57 ul span {
   background-color: var(--lightgrey);
   color: var(--grey);
 }
 
-.c51 ul a {
+.c57 ul a {
   background-color: var(--link);
   color: var(--white);
   -webkit-transition: background-color 400ms ease;
   transition: background-color 400ms ease;
 }
 
-.c51 ul a:hover {
+.c57 ul a:hover {
   background-color: #2768c8;
 }
 
@@ -11236,21 +11528,21 @@ Object {
   padding-bottom: 60px;
 }
 
-.c8 {
+.c9 {
   color: var(--darkgrey);
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
 }
 
-.c44 {
+.c50 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c48 {
+.c54 {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -11259,11 +11551,11 @@ Object {
   background-color: var(--white);
 }
 
-.c48 svg {
+.c54 svg {
   fill: var(--link);
 }
 
-.c45 {
+.c51 {
   background: var(--lightgrey);
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
@@ -11274,7 +11566,7 @@ Object {
   margin-right: 16px;
 }
 
-.c46 {
+.c52 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11293,20 +11585,20 @@ Object {
   padding: 16px;
 }
 
-.c46:hover {
+.c52:hover {
   background-color: var(--white);
   color: var(--link);
 }
 
-.c46:hover .c47 {
+.c52:hover .c53 {
   background-color: var(--link);
 }
 
-.c46:hover svg {
+.c52:hover svg {
   fill: var(--white);
 }
 
-.c12 {
+.c13 {
   font-size: 48px;
   font-family: IBM Plex Serif;
   font-weight: 500;
@@ -11314,26 +11606,27 @@ Object {
   margin-bottom: 0px;
 }
 
-.c13 {
+.c17 {
   margin-top: 0px;
   font-size: 32px;
   margin-bottom: 0px;
   font-weight: 300;
 }
 
-.c23 {
+.c26 {
   font-family: IBM Plex Sans;
-  font-size: 16px;
+  font-size: 20px;
   -webkit-letter-spacing: 1px;
   -moz-letter-spacing: 1px;
   -ms-letter-spacing: 1px;
   letter-spacing: 1px;
   font-weight: 300;
   text-transform: uppercase;
-  color: var(--darkgrey);
+  color: var(--brand);
+  margin-bottom: 8px;
 }
 
-.c27 {
+.c32 {
   font-family: IBM Plex Sans;
   font-size: 24px;
   text-align: center;
@@ -11341,7 +11634,7 @@ Object {
   margin: 8px;
 }
 
-.c17 {
+.c21 {
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -11349,7 +11642,7 @@ Object {
   margin-right: 16px;
 }
 
-.c25 {
+.c30 {
   display: inline-block;
   width: 36px;
   height: 36px;
@@ -11357,7 +11650,7 @@ Object {
   margin-right: 16px;
 }
 
-.c14 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11366,7 +11659,7 @@ Object {
   margin-top: 32px;
 }
 
-.c15 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11387,28 +11680,28 @@ Object {
   cursor: pointer;
 }
 
-.c15 .c16 {
+.c19 .c20 {
   background-color: var(--link);
 }
 
-.c15 svg {
+.c19 svg {
   fill: var(--white);
 }
 
-.c15:hover {
+.c19:hover {
   color: var(--white) !important;
   background-color: var(--link);
 }
 
-.c15:hover .c16 {
+.c19:hover .c20 {
   background-color: var(--white);
 }
 
-.c15:hover svg {
+.c19:hover svg {
   fill: var(--link);
 }
 
-.c18 {
+.c22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11429,28 +11722,28 @@ Object {
   cursor: pointer;
 }
 
-.c18 .c16 {
+.c22 .c20 {
   background-color: var(--brand);
 }
 
-.c18 svg {
+.c22 svg {
   fill: var(--white);
 }
 
-.c18:hover {
+.c22:hover {
   color: var(--white) !important;
   background-color: var(--brand);
 }
 
-.c18:hover .c16 {
+.c22:hover .c20 {
   background-color: var(--white);
 }
 
-.c18:hover svg {
+.c22:hover svg {
   fill: var(--brand);
 }
 
-.c21 {
+.c27 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11471,28 +11764,28 @@ Object {
   cursor: pointer;
 }
 
-.c21 .c16 {
+.c27 .c20 {
   background-color: var(--white);
 }
 
-.c21 svg {
+.c27 svg {
   fill: var(--link);
 }
 
-.c21:hover {
+.c27:hover {
   color: var(--link) !important;
   background-color: var(--white);
 }
 
-.c21:hover .c16 {
+.c27:hover .c20 {
   background-color: var(--link);
 }
 
-.c21:hover svg {
+.c27:hover svg {
   fill: var(--white);
 }
 
-.c37 {
+.c42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11502,8 +11795,8 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   font-size: 24px;
-  color: var(--link) !important;
-  border: 1px solid var(--link);
+  color: var(--white) !important;
+  border: 1px solid var(--white);
   background-color: #142A4A;
   margin-right: 24px;
   padding: 12px;
@@ -11513,28 +11806,28 @@ Object {
   cursor: pointer;
 }
 
-.c37 .c16 {
-  background-color: var(--link);
+.c42 .c20 {
+  background-color: var(--white);
 }
 
-.c37 svg {
+.c42 svg {
   fill: #142A4A;
 }
 
-.c37:hover {
+.c42:hover {
   color: #142A4A !important;
-  background-color: var(--link);
+  background-color: var(--white);
 }
 
-.c37:hover .c16 {
+.c42:hover .c20 {
   background-color: #142A4A;
 }
 
-.c37:hover svg {
-  fill: var(--link);
+.c42:hover svg {
+  fill: var(--white);
 }
 
-.c39 {
+.c44 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11555,28 +11848,28 @@ Object {
   cursor: pointer;
 }
 
-.c39 .c16 {
+.c44 .c20 {
   background-color: var(--white);
 }
 
-.c39 svg {
+.c44 svg {
   fill: #ED663A;
 }
 
-.c39:hover {
+.c44:hover {
   color: #ED663A !important;
   background-color: var(--white);
 }
 
-.c39:hover .c16 {
+.c44:hover .c20 {
   background-color: #ED663A;
 }
 
-.c39:hover svg {
+.c44:hover svg {
   fill: var(--white);
 }
 
-.c40 {
+.c46 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11597,28 +11890,28 @@ Object {
   cursor: pointer;
 }
 
-.c40 .c16 {
+.c46 .c20 {
   background-color: #5865F2;
 }
 
-.c40 svg {
+.c46 svg {
   fill: var(--white);
 }
 
-.c40:hover {
+.c46:hover {
   color: var(--white) !important;
   background-color: #5865F2;
 }
 
-.c40:hover .c16 {
+.c46:hover .c20 {
   background-color: var(--white);
 }
 
-.c40:hover svg {
+.c46:hover svg {
   fill: #5865F2;
 }
 
-.c41 {
+.c47 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11639,28 +11932,28 @@ Object {
   cursor: pointer;
 }
 
-.c41 .c16 {
+.c47 .c20 {
   background-color: #4A4A4A;
 }
 
-.c41 svg {
+.c47 svg {
   fill: var(--white);
 }
 
-.c41:hover {
+.c47:hover {
   color: var(--white) !important;
   background-color: #4A4A4A;
 }
 
-.c41:hover .c16 {
+.c47:hover .c20 {
   background-color: var(--white);
 }
 
-.c41:hover svg {
+.c47:hover svg {
   fill: #4A4A4A;
 }
 
-.c42 {
+.c48 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11681,29 +11974,29 @@ Object {
   cursor: pointer;
 }
 
-.c42 .c16 {
+.c48 .c20 {
   background-color: #1DA1F2;
 }
 
-.c42 svg {
+.c48 svg {
   fill: var(--white);
 }
 
-.c42:hover {
+.c48:hover {
   color: var(--white) !important;
   background-color: #1DA1F2;
 }
 
-.c42:hover .c16 {
+.c48:hover .c20 {
   background-color: var(--white);
 }
 
-.c42:hover svg {
+.c48:hover svg {
   fill: #1DA1F2;
 }
 
-.c9 {
-  margin-top: 80px;
+.c10 {
+  margin-top: 64px;
   background-color: var(--white);
   padding: 32px;
   display: -webkit-box;
@@ -11718,15 +12011,21 @@ Object {
   border-radius: 8px;
 }
 
-.c9 p {
+.c10 p {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
+  margin-top: 4px;
 }
 
-.c20 {
-  margin-top: 80px;
-  background-color: var(--white);
+.c10 .c16 {
+  margin-top: 16px;
+  margin-bottom: 32px;
+}
+
+.c24 {
+  margin-top: 64px;
+  background-color: transparent;
   padding: 32px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -11740,64 +12039,17 @@ Object {
   border-radius: 8px;
 }
 
-.c20 p {
+.c24 p {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
-}
-
-.c22 {
-  margin-top: 80px;
-  background-color: var(--link);
-  color: var(--white);
-  padding: 32px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  font-family: 'IBM Plex Sans';
-  border-radius: 8px;
-}
-
-.c22 p {
-  max-width: 800px;
-  font-weight: 300;
-  font-size: 24px;
-}
-
-.c22 h2 {
-  color: var(--white);
-}
-
-.c26 {
-  margin-top: 80px;
-  background-color: transparent;
-  padding: 32px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  font-family: IBM Plex Sans;
-  border-radius: 8px;
-}
-
-.c26 p {
-  max-width: 800px;
-  font-weight: 300;
-  font-size: 24px;
+  margin-top: 4px;
 }
 
 .c28 {
-  margin-top: 80px;
-  background-color: var(--white);
+  margin-top: 64px;
+  background-color: var(--link);
+  color: var(--white);
   padding: 32px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -11815,10 +12067,16 @@ Object {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
+  margin-top: 4px;
+}
+
+.c28 .c16 {
+  color: var(--white);
 }
 
 .c31 {
-  margin-top: 80px;
+  margin-top: 64px;
+  background-color: transparent;
   padding: 32px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -11836,12 +12094,34 @@ Object {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
+  margin-top: 4px;
+}
+
+.c33 {
+  margin-top: 64px;
+  background-color: var(--white);
+  padding: 32px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  font-family: 'IBM Plex Sans';
+  border-radius: 8px;
+}
+
+.c33 p {
+  max-width: 800px;
+  font-weight: 300;
+  font-size: 24px;
+  margin-top: 4px;
 }
 
 .c36 {
-  margin-top: 80px;
-  background-color: #142A4A;
-  color: var(--white);
+  margin-top: 64px;
   padding: 32px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -11859,15 +12139,12 @@ Object {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
+  margin-top: 4px;
 }
 
-.c36 h2 {
-  color: var(--white);
-}
-
-.c38 {
-  margin-top: 80px;
-  background-color: #F6C61B;
+.c41 {
+  margin-top: 64px;
+  background-color: #142A4A;
   color: var(--white);
   padding: 32px;
   display: -webkit-box;
@@ -11882,20 +12159,21 @@ Object {
   border-radius: 8px;
 }
 
-.c38 p {
+.c41 p {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
+  margin-top: 4px;
 }
 
-.c38 h2 {
+.c41 .c16 {
   color: var(--white);
 }
 
 .c43 {
-  margin-top: 80px;
-  background-color: var(--link);
-  color: var(--white);
+  margin-top: 64px;
+  background-color: #F6C61B;
+  color: var(--darkgrey);
   padding: 32px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -11913,25 +12191,73 @@ Object {
   max-width: 800px;
   font-weight: 300;
   font-size: 24px;
+  margin-top: 4px;
 }
 
-.c43 h2 {
-  color: var(--white);
+.c43 .c16 {
+  color: var(--darkgrey);
 }
 
-.c10 {
+.c45 {
+  margin-top: 64px;
+  background-color: var(--white);
+  padding: 32px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  margin: 0 -16px;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  font-family: IBM Plex Sans;
+  border-radius: 8px;
+}
+
+.c45 p {
+  max-width: 800px;
+  font-weight: 300;
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+.c49 {
+  margin-top: 64px;
+  background-color: var(--link);
+  color: var(--white);
+  padding: 32px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  font-family: IBM Plex Sans;
+  border-radius: 8px;
+}
+
+.c49 p {
+  max-width: 800px;
+  font-weight: 300;
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+.c49 .c16 {
+  color: var(--white);
 }
 
 .c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0px -16px;
+}
+
+.c12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11943,7 +12269,7 @@ Object {
   margin: 16px;
 }
 
-.c11 p {
+.c12 p {
   font-family: IBM Plex Sans;
   font-weight: 300;
   font-size: 24px;
@@ -11951,34 +12277,19 @@ Object {
   color: var(--darkgrey);
 }
 
-.c19 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 330px;
-  margin: 16px;
-}
-
-.c19 p {
-  font-family: IBM Plex Sans;
-  font-weight: 300;
-  font-size: 24px;
-  text-align: center;
+.c12 .c25 {
   color: var(--darkgrey);
+  margin-bottom: 16px;
 }
 
-.c32 {
+.c37 {
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
   font-family: IBM Plex Sans;
 }
 
-.c32 h4 {
+.c37 h4 {
   font-size: 16px;
   font-weight: 500;
   -webkit-letter-spacing: 1px;
@@ -11989,7 +12300,7 @@ Object {
   color: var(--brand);
 }
 
-.c33 {
+.c38 {
   padding: 0px;
   margin: 0px;
   font-family: IBM Plex Serif;
@@ -11997,7 +12308,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c34 {
+.c39 {
   font-weight: 300;
   font-size: 24px;
   display: -webkit-box;
@@ -12012,7 +12323,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c35 {
+.c40 {
   width: 48px;
   height: 48px;
   object-fit: cover;
@@ -12020,19 +12331,23 @@ Object {
   margin-right: 16px;
 }
 
-.c30 {
+.c35 {
   width: 50%;
 }
 
-.c30 svg {
+.c35 svg {
   fill: var(--silver);
 }
 
-.c29 {
+.c34 {
   text-align: center;
 }
 
-.c24 {
+.c23 {
+  max-width: 100%;
+}
+
+.c29 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12041,7 +12356,7 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: var(--white);
+  color: var(--white) !important;
   border: 1px solid var(--white);
   padding: 12px;
   border-radius: 8px;
@@ -12056,13 +12371,60 @@ Object {
   cursor: pointer;
 }
 
-.c24 svg {
+.c29 svg {
   fill: var(--white);
 }
 
-.c24:hover {
+.c29:hover {
   border: 1px solid #2768c8;
   background-color: #2768c8;
+}
+
+.c14 {
+  display: inline;
+  text-indent: 10px;
+}
+
+.c14 span {
+  -webkit-animation: rotateWordsFirst 12s linear infinite 0s;
+  animation: rotateWordsFirst 12s linear infinite 0s;
+}
+
+.c14 span:nth-child(1) {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+.c14 span:nth-child(2) {
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+}
+
+.c14 span:nth-child(3) {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+}
+
+.c14 span:nth-child(4) {
+  -webkit-animation-delay: 6s;
+  animation-delay: 6s;
+}
+
+.c14 span:nth-child(5) {
+  -webkit-animation-delay: 8s;
+  animation-delay: 8s;
+}
+
+.c14 span:nth-child(6) {
+  -webkit-animation-delay: 10s;
+  animation-delay: 10s;
+}
+
+.c15 {
+  position: absolute;
+  opacity: 0;
+  overflow: hidden;
+  width: 100%;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -12078,19 +12440,25 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c6 {
+  .c7 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c57 {
     display: none;
   }
 }
@@ -12100,7 +12468,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c1 {
+    padding-top: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    margin-top: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c50 {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
@@ -12108,49 +12488,36 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c15 {
-    margin-right: 0px;
-    margin-bottom: 24px;
+  .c51 {
+    margin-bottom: 16px;
+    width: 100%;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c18 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c19 {
     margin-right: 0px;
     margin-bottom: 24px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c22 {
     margin-right: 0px;
     margin-bottom: 24px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c37 {
-    margin-right: 0px;
-    margin-bottom: 24px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c39 {
-    margin-right: 0px;
-    margin-bottom: 24px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c40 {
-    margin-right: 0px;
-    margin-bottom: 24px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c41 {
+  .c27 {
     margin-right: 0px;
     margin-bottom: 24px;
   }
@@ -12164,8 +12531,96 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
+  .c44 {
+    margin-right: 0px;
+    margin-bottom: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c46 {
+    margin-right: 0px;
+    margin-bottom: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c47 {
+    margin-right: 0px;
+    margin-bottom: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c48 {
+    margin-right: 0px;
+    margin-bottom: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c10 {
-    margin: 0px;
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c24 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c28 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c31 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c33 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c36 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c41 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c43 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c45 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c49 {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c11 {
+    margin: 16px 0px;
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
@@ -12173,7 +12628,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c11 {
+  .c12 {
     margin: 0px;
     margin-bottom: 8px;
     margin-top: 8px;
@@ -12181,15 +12636,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
-    margin: 0px;
-    margin-bottom: 8px;
-    margin-top: 8px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c34 {
+  .c39 {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
@@ -12269,10 +12716,10 @@ Object {
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
-                Commnunity
+                Community
               </a>
               <a
-                class="c5"
+                class="c6"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -12281,7 +12728,7 @@ Object {
               </a>
             </div>
             <div
-              class="c6"
+              class="c7"
             >
               <a
                 class="c5"
@@ -12317,44 +12764,79 @@ Object {
               </a>
             </div>
             <div
-              class="c7"
+              class="c8"
             />
           </header>
           <div
-            class="c8"
+            class="c9"
           >
             <div
-              class="c9"
+              class="c10"
               color="var(--white)"
             >
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <h1
-                    class="c12"
-                  >
-                    Unlock the potential of memberships.
-                  </h1>
-                  <h2
                     class="c13"
                   >
-                    Ownership of your community,
+                    Add memberships
                     <br />
-                     across all your platforms.
+                    to your
+                     
+                    <div
+                      class="c14"
+                    >
+                      <span
+                        class="c15"
+                      >
+                        community
+                      </span>
+                      <span
+                        class="c15"
+                      >
+                        website
+                      </span>
+                      <span
+                        class="c15"
+                      >
+                        application
+                      </span>
+                      <span
+                        class="c15"
+                      >
+                        game
+                      </span>
+                      <span
+                        class="c15"
+                      >
+                        shop
+                      </span>
+                      <span
+                        class="c15"
+                      >
+                        API
+                      </span>
+                    </div>
+                  </h1>
+                  <h2
+                    class="c16 c17"
+                  >
+                    Unlock ownership of your community, across all your platforms.
                   </h2>
                   <div
-                    class="c14"
+                    class="c18"
                   >
                     <a
-                      class="c15"
+                      class="c19"
                       color="var(--link)"
                       href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
                     >
                       <span
-                        class="c16 c17"
+                        class="c20 c21"
                         size="24"
                       >
                         <svg
@@ -12372,12 +12854,12 @@ Object {
                       Integrations
                     </a>
                     <a
-                      class="c18"
+                      class="c22"
                       color="var(--brand)"
                       href="https://docs.unlock-protocol.com/"
                     >
                       <span
-                        class="c16 c17"
+                        class="c20 c21"
                         size="24"
                       >
                         <svg
@@ -12396,12 +12878,11 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c19"
-                  style="justify-content: center; align-content: center;"
-                  width="330px"
+                  class="c160 c12"
+                  style="justify-content: center; align-items: center; flex: 1;"
                 >
                   <img
-                    class=""
+                    class="c23"
                     src="/static/images/illustrations/banner-key.svg"
                     style="max-width: 330px;"
                   />
@@ -12410,28 +12891,29 @@ Object {
               </div>
             </div>
             <div
-              class="c20"
-              color="var(--white)"
+              class="c24"
+              color="transparent"
               font-family="'IBM Plex Serif', serif"
             >
-              <h2
-                class="c13"
+              <h3
+                class="c25 c26"
               >
-                Create Locks or Manage Memberships
-              </h2>
+                What you can do with Unlock
+              </h3>
               <p>
                 Create locks and place them anywhere you’d like to lock content. Users can purchase memberships as NFT keys that grant access to content, tickets and anything else you’d like to monetize.
               </p>
               <div
-                class="c14"
+                class="c18"
+                style="justify-content: center;"
               >
                 <a
-                  class="c21"
+                  class="c27"
                   color="var(--white)"
                   href="undefined/dashboard"
                 >
                   <span
-                    class="c16 c17"
+                    class="c20 c21"
                     size="24"
                   >
                     <svg
@@ -12446,12 +12928,12 @@ Object {
                   Create & Manage Locks
                 </a>
                 <a
-                  class="c18"
+                  class="c22"
                   color="var(--brand)"
-                  href="https://docs.unlock-protocol.com/"
+                  href="undefined/keychain"
                 >
                   <span
-                    class="c16 c17"
+                    class="c20 c21"
                     size="24"
                   >
                     <svg
@@ -12466,36 +12948,37 @@ Object {
                       />
                     </svg>
                   </span>
-                  Keys and Memberships
+                  Manage Keys & Memberships
                 </a>
               </div>
             </div>
             <div
-              class="c22"
+              class="c28"
               color="var(--link)"
               font-family="'IBM Plex Sans'"
             >
               <h2
-                class="c13"
+                class="c16 c17"
               >
                 Check out Unlock’s community-built integrations and plugins.
               </h2>
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <h3
-                    class="c23"
+                    class="c25 c26"
                   >
                     Web
                   </h3>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12515,10 +12998,11 @@ Object {
                     WordPress
                   </a>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#webflow"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12533,10 +13017,11 @@ Object {
                     Webflow
                   </a>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#cloudflare"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12554,18 +13039,19 @@ Object {
                   </a>
                 </div>
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <h3
-                    class="c23"
+                    class="c25 c26"
                   >
                     Community
                   </h3>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12582,10 +13068,11 @@ Object {
                     Discord
                   </a>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#discourse"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12609,18 +13096,19 @@ Object {
                   </a>
                 </div>
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <h3
-                    class="c23"
+                    class="c25 c26"
                   >
                     More
                   </h3>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://www.youtube.com/watch?v=oVZi7m-UOtE"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12643,10 +13131,11 @@ Object {
                     Decentraland
                   </a>
                   <a
-                    class="c24"
+                    class="c29"
+                    href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#shopify"
                   >
                     <span
-                      class="c16 c25"
+                      class="c20 c30"
                       size="36"
                     >
                       <svg
@@ -12672,27 +13161,27 @@ Object {
               </div>
             </div>
             <div
-              class="c26"
+              class="c31"
               color="transparent"
             >
               <h3
-                class="c23"
+                class="c25 c26"
               >
                 Why Unlock?
               </h3>
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <img
-                    class=""
+                    class="c23"
                     src="/static/images/illustrations/ecosystem.svg"
                     style="max-height: 150px;"
                   />
                   <h4
-                    class="c27"
+                    class="c32"
                   >
                     Your Content
                     <br />
@@ -12715,15 +13204,15 @@ Object {
                   </p>
                 </div>
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <img
-                    class=""
+                    class="c23"
                     src="/static/images/illustrations/cryptoccard.svg"
                     style="max-height: 150px;"
                   />
                   <h4
-                    class="c27"
+                    class="c32"
                   >
                     Accept Credit Cards &
                     <br />
@@ -12740,22 +13229,22 @@ Object {
                     →
                      
                     <a
-                      href="http://docs.unlock-protocol.com/"
+                      href="https://docs.unlock-protocol.com/creators/deploying-lock"
                     >
                       Documentation
                     </a>
                   </p>
                 </div>
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <img
-                    class=""
+                    class="c23"
                     src="/static/images/illustrations/governance.svg"
                     style="max-height: 150px;"
                   />
                   <h4
-                    class="c27"
+                    class="c32"
                   >
                     Community
                     <br />
@@ -12781,18 +13270,18 @@ Object {
               </div>
             </div>
             <div
-              class="c28"
+              class="c33"
               color="var(--white)"
               font-family="'IBM Plex Sans'"
             >
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <h2
-                    class="c13"
+                    class="c16 c17"
                   >
                     Try Unlock
                   </h2>
@@ -12803,16 +13292,16 @@ Object {
                   </p>
                 </div>
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <div
-                    class="c11"
+                    class="c160 c12"
                   >
                     <section
-                      class="c29"
+                      class="c34"
                     >
                       <div
-                        class="c30"
+                        class="c35"
                       >
                         <svg
                           viewBox="0 0 32 32"
@@ -12969,22 +13458,24 @@ Object {
               </div>
             </div>
             <div
-              class="1 c31 c32"
+              class="c161 c36 c37"
             >
-              <h4>
+              <h3
+                class="c25 c26"
+              >
                 What the community is saying
-              </h4>
+              </h3>
               <blockquote
-                class="2 c33"
+                class="c162 c38"
               >
                 “I always thought there were better opportunities to monetise web game content. Unlock Protocol has enabled me to create quite advanced functionality that I would otherwise not have been able to do.”
               </blockquote>
               <p
-                class="3 c34"
+                class="c163 c39"
               >
                 <img
                   alt="Henry Hoffman"
-                  class="4 c35"
+                  class="c164 c40"
                   src="https://pbs.twimg.com/profile_images/928785269557428225/m-8odw-X_400x400.jpg"
                   width="24"
                 />
@@ -12997,15 +13488,21 @@ Object {
                   width="24"
                 />
                  
-                @henryhoffman
+                <a
+                  href="https://twitter.com/henryhoffman"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  @henryhoffman
+                </a>
               </p>
             </div>
             <div
-              class="c36"
+              class="c41"
               color="#142A4A"
             >
               <h2
-                class="c13"
+                class="c16 c17"
               >
                 Unlock for Developers
               </h2>
@@ -13014,15 +13511,15 @@ Object {
                  
               </p>
               <div
-                class="c14"
+                class="c18"
               >
                 <a
-                  class="c37"
-                  color="var(--link)"
+                  class="c42"
+                  color="var(--white)"
                   href="https://docs.unlock-protocol.com/"
                 >
                   <span
-                    class="c16 c17"
+                    class="c20 c21"
                     size="24"
                   >
                     <svg
@@ -13039,12 +13536,12 @@ Object {
                   Documentation
                 </a>
                 <a
-                  class="c37"
-                  color="var(--link)"
+                  class="c42"
+                  color="var(--white)"
                   href="https://github.com/unlock-protocol/unlock"
                 >
                   <span
-                    class="c16 c17"
+                    class="c20 c21"
                     size="24"
                   >
                     <svg
@@ -13059,12 +13556,12 @@ Object {
                   Github
                 </a>
                 <a
-                  class="c37"
-                  color="var(--link)"
+                  class="c42"
+                  color="var(--white)"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
                 >
                   <span
-                    class="c16 c17"
+                    class="c20 c21"
                     size="24"
                   >
                     <svg
@@ -13083,17 +13580,18 @@ Object {
               </div>
             </div>
             <div
-              class="c38"
+              class="c43"
               color="#F6C61B"
             >
               <div
-                class="c10"
+                class="c11"
               >
                 <div
-                  class="c11"
+                  class="c160 c12"
                 >
                   <h2
-                    class="c13"
+                    class="c16 c17"
+                    color=""
                   >
                     Join our Developer Grant Program!
                   </h2>
@@ -13103,15 +13601,15 @@ Object {
                     Unlock Protocol is giving UDT token grants to developers who can make the platform more accessible to wider communities.
                   </p>
                   <div
-                    class="c14"
+                    class="c18"
                   >
                     <a
-                      class="c39"
+                      class="c44"
                       color="var(--white)"
-                      href="https://docs.unlock-protocol.com/"
+                      href="https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22"
                     >
                       <span
-                        class="c16 c17"
+                        class="c20 c21"
                         size="24"
                       >
                         <svg
@@ -13128,11 +13626,11 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c11"
+                  class="c160 c12"
                   style="justify-content: center; align-content: center; display: flex; align-items: center;"
                 >
                   <img
-                    class=""
+                    class="c23"
                     src="/static/images/illustrations/grants.svg"
                     style="max-width: 330px;"
                   />
@@ -13140,25 +13638,27 @@ Object {
               </div>
             </div>
             <div
-              class="c9"
+              class="c45"
               color="var(--white)"
               style="text-align: center;"
             >
               <h2
-                class="c13"
+                class="c16 c17"
               >
                 Join the community
               </h2>
               <div
-                class="c14"
+                class="c18"
                 style="justify-content: center; margin-top: 32px;"
               >
                 <a
-                  class="c40"
+                  class="c46"
                   color="#5865F2"
+                  href="https://discord.gg/Ah6ZEJyTDp"
+                  target="_blank"
                 >
                   <span
-                    class="c16 c25"
+                    class="c20 c30"
                     size="36"
                   >
                     <svg
@@ -13175,11 +13675,13 @@ Object {
                   Discord
                 </a>
                 <a
-                  class="c41"
+                  class="c47"
                   color="#4A4A4A"
+                  href="https://unlock.community/"
+                  target="_blank"
                 >
                   <span
-                    class="c16 c25"
+                    class="c20 c30"
                     size="36"
                   >
                     <svg
@@ -13202,11 +13704,13 @@ Object {
                   Forum
                 </a>
                 <a
-                  class="c42"
+                  class="c48"
                   color="#1DA1F2"
+                  href="https://twitter.com/unlockprotocol"
+                  target="_blank"
                 >
                   <span
-                    class="c16 c25"
+                    class="c20 c30"
                     size="36"
                   >
                     <svg
@@ -13223,11 +13727,13 @@ Object {
                   Twitter
                 </a>
                 <a
-                  class="c18"
+                  class="c22"
                   color="var(--brand)"
+                  href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
+                  target="_blank"
                 >
                   <span
-                    class="c16 c25"
+                    class="c20 c30"
                     size="36"
                   >
                     <svg
@@ -13247,24 +13753,24 @@ Object {
               </div>
             </div>
             <div
-              class="c26"
+              class="c31"
               color="transparent"
             >
               <h3
-                class="c23"
+                class="c25 c26"
               >
                 Latest News
               </h3>
               <div
-                class="c10"
+                class="c11"
               />
             </div>
             <div
-              class="c43"
+              class="c49"
               color="var(--link)"
             >
               <h2
-                class="c13"
+                class="c16 c17"
               >
                 Sign Up for Updates
               </h2>
@@ -13273,13 +13779,13 @@ Object {
               </p>
               <form
                 action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-                class="c44 subscribe"
+                class="c50 subscribe"
                 method="post"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 <input
-                  class="c45"
+                  class="c51"
                   id="mce-EMAIL"
                   name="EMAIL"
                   placeholder="Your email here"
@@ -13287,10 +13793,10 @@ Object {
                   type="email"
                 />
                 <button
-                  class="c46"
+                  class="c52"
                 >
                   <span
-                    class="c47 c48"
+                    class="c53 c54"
                     size="24"
                   >
                     <svg
@@ -13310,10 +13816,10 @@ Object {
             </div>
           </div>
           <footer
-            class="c49"
+            class="c55"
           >
             <div
-              class="c50"
+              class="c56"
             >
               Check out our open source code on
                
@@ -13339,7 +13845,7 @@ Object {
               .
             </div>
             <nav
-              class="c51"
+              class="c57"
             >
               <ul>
                 <li>
@@ -13443,7 +13949,7 @@ Object {
               </ul>
             </nav>
             <span
-              class="c52"
+              class="c58"
             >
               Made with passion for the web!
             </span>
@@ -13527,6 +14033,62 @@ Object {
 
 }
 
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
 <script />
   </body>,
   "container": <div>
@@ -13538,10 +14100,10 @@ Object {
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 fOAgph"
+        class="sc-12f69w-0 inqBia"
       >
         <header
-          class="sc-g91yl6-0 ehYVGM"
+          class="sc-g91yl6-0 eJWZL"
         >
           <a
             href="/"
@@ -13563,49 +14125,49 @@ Object {
             class="sc-g91yl6-2 bRPYpt"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/about"
               label="About"
             >
               About
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/blog"
               label="Blog"
             >
               Blog
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
               label="Integrations"
             >
               Integrations
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://github.com/unlock-protocol/unlock"
               label="Developers"
             >
               Developers
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com"
               label="Docs"
             >
               Docs
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://discord.gg/Ah6ZEJyTDp"
               label="Discord"
             >
-              Commnunity
+              Community
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 gZjWnH"
               href="undefined/dashboard"
               label="App"
               target="_blank"
@@ -13617,7 +14179,7 @@ Object {
             class="sc-g91yl6-3 gvxMHE"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -13632,7 +14194,7 @@ Object {
               </svg>
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -13654,29 +14216,64 @@ Object {
           />
         </header>
         <div
-          class="sc-12f69w-2 dwuYsr"
+          class="sc-12f69w-2 kCCGHb"
         >
           <div
-            class="sc-1ns6l9f-8 icWxEK"
+            class="sc-1ns6l9f-8 gFFXUu"
             color="var(--white)"
           >
             <div
-              class="sc-1ns6l9f-9 knNbAj"
+              class="sc-1ns6l9f-9 eesdbk"
             >
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <h1
                   class="sc-1ns6l9f-0 cqTePR"
                 >
-                  Unlock the potential of memberships.
+                  Add memberships
+                  <br />
+                  to your
+                   
+                  <div
+                    class="sc-190zb2g-2 cOsdPQ"
+                  >
+                    <span
+                      class="sc-190zb2g-3 kBmzew"
+                    >
+                      community
+                    </span>
+                    <span
+                      class="sc-190zb2g-3 kBmzew"
+                    >
+                      website
+                    </span>
+                    <span
+                      class="sc-190zb2g-3 kBmzew"
+                    >
+                      application
+                    </span>
+                    <span
+                      class="sc-190zb2g-3 kBmzew"
+                    >
+                      game
+                    </span>
+                    <span
+                      class="sc-190zb2g-3 kBmzew"
+                    >
+                      shop
+                    </span>
+                    <span
+                      class="sc-190zb2g-3 kBmzew"
+                    >
+                      API
+                    </span>
+                  </div>
                 </h1>
                 <h2
                   class="sc-1ns6l9f-1 faiMlu"
                 >
-                  Ownership of your community,
-                  <br />
-                   across all your platforms.
+                  Unlock ownership of your community, across all your platforms.
                 </h2>
                 <div
                   class="sc-1ns6l9f-6 jwrRtY"
@@ -13729,12 +14326,11 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-1ns6l9f-10 dMztIs"
-                style="justify-content: center; align-content: center;"
-                width="330px"
+                class="sc-1ns6l9f-10 cIzCrf"
+                style="justify-content: center; align-items: center; flex: 1;"
               >
                 <img
-                  class="sc-190zb2g-0"
+                  class="sc-190zb2g-0 xOkBG"
                   src="/static/images/illustrations/banner-key.svg"
                   style="max-width: 330px;"
                 />
@@ -13743,20 +14339,21 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 cRDXNt"
-            color="var(--white)"
+            class="sc-1ns6l9f-8 gvsYSc"
+            color="transparent"
             font-family="'IBM Plex Serif', serif"
           >
-            <h2
-              class="sc-1ns6l9f-1 faiMlu"
+            <h3
+              class="sc-1ns6l9f-2 iAHDwY"
             >
-              Create Locks or Manage Memberships
-            </h2>
+              What you can do with Unlock
+            </h3>
             <p>
               Create locks and place them anywhere you’d like to lock content. Users can purchase memberships as NFT keys that grant access to content, tickets and anything else you’d like to monetize.
             </p>
             <div
               class="sc-1ns6l9f-6 jwrRtY"
+              style="justify-content: center;"
             >
               <a
                 class="sc-1ns6l9f-7 iGqixg"
@@ -13781,7 +14378,7 @@ Object {
               <a
                 class="sc-1ns6l9f-7 fhMEvL"
                 color="var(--brand)"
-                href="https://docs.unlock-protocol.com/"
+                href="undefined/keychain"
               >
                 <span
                   class="sc-1ns6l9f-5 jRouNP"
@@ -13799,12 +14396,12 @@ Object {
                     />
                   </svg>
                 </span>
-                Keys and Memberships
+                Manage Keys & Memberships
               </a>
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 fYTZqB"
+            class="sc-1ns6l9f-8 hcMUfV"
             color="var(--link)"
             font-family="'IBM Plex Sans'"
           >
@@ -13814,18 +14411,19 @@ Object {
               Check out Unlock’s community-built integrations and plugins.
             </h2>
             <div
-              class="sc-1ns6l9f-9 knNbAj"
+              class="sc-1ns6l9f-9 eesdbk"
             >
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <h3
-                  class="sc-1ns6l9f-2 leJpOw"
+                  class="sc-1ns6l9f-2 iAHDwY"
                 >
                   Web
                 </h3>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -13848,7 +14446,8 @@ Object {
                   WordPress
                 </a>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#webflow"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -13866,7 +14465,8 @@ Object {
                   Webflow
                 </a>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#cloudflare"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -13887,15 +14487,16 @@ Object {
                 </a>
               </div>
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <h3
-                  class="sc-1ns6l9f-2 leJpOw"
+                  class="sc-1ns6l9f-2 iAHDwY"
                 >
                   Community
                 </h3>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -13915,7 +14516,8 @@ Object {
                   Discord
                 </a>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#discourse"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -13942,15 +14544,16 @@ Object {
                 </a>
               </div>
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <h3
-                  class="sc-1ns6l9f-2 leJpOw"
+                  class="sc-1ns6l9f-2 iAHDwY"
                 >
                   More
                 </h3>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://www.youtube.com/watch?v=oVZi7m-UOtE"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -13976,7 +14579,8 @@ Object {
                   Decentraland
                 </a>
                 <a
-                  class="sc-190zb2g-1 cCdXko"
+                  class="sc-190zb2g-1 iBLMUP"
+                  href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#shopify"
                 >
                   <span
                     class="sc-1ns6l9f-5 lcnivr"
@@ -14005,22 +14609,22 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 bBvqYb"
+            class="sc-1ns6l9f-8 fuSZGb"
             color="transparent"
           >
             <h3
-              class="sc-1ns6l9f-2 leJpOw"
+              class="sc-1ns6l9f-2 iAHDwY"
             >
               Why Unlock?
             </h3>
             <div
-              class="sc-1ns6l9f-9 knNbAj"
+              class="sc-1ns6l9f-9 eesdbk"
             >
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <img
-                  class="sc-190zb2g-0"
+                  class="sc-190zb2g-0 xOkBG"
                   src="/static/images/illustrations/ecosystem.svg"
                   style="max-height: 150px;"
                 />
@@ -14048,10 +14652,10 @@ Object {
                 </p>
               </div>
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <img
-                  class="sc-190zb2g-0"
+                  class="sc-190zb2g-0 xOkBG"
                   src="/static/images/illustrations/cryptoccard.svg"
                   style="max-height: 150px;"
                 />
@@ -14073,17 +14677,17 @@ Object {
                   →
                    
                   <a
-                    href="http://docs.unlock-protocol.com/"
+                    href="https://docs.unlock-protocol.com/creators/deploying-lock"
                   >
                     Documentation
                   </a>
                 </p>
               </div>
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <img
-                  class="sc-190zb2g-0"
+                  class="sc-190zb2g-0 xOkBG"
                   src="/static/images/illustrations/governance.svg"
                   style="max-height: 150px;"
                 />
@@ -14114,15 +14718,15 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 bSpzO"
+            class="sc-1ns6l9f-8 iuoFTG"
             color="var(--white)"
             font-family="'IBM Plex Sans'"
           >
             <div
-              class="sc-1ns6l9f-9 knNbAj"
+              class="sc-1ns6l9f-9 eesdbk"
             >
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <h2
                   class="sc-1ns6l9f-1 faiMlu"
@@ -14136,10 +14740,10 @@ Object {
                 </p>
               </div>
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <div
-                  class="sc-1ns6l9f-10 igXY"
+                  class="sc-1ns6l9f-10 cIzCrf"
                 >
                   <section
                     class="sc-1tn4840-1 faWfQE"
@@ -14302,11 +14906,13 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 sc-1ns6l9f-11 hfApNZ jIFIYM"
+            class="sc-1ns6l9f-8 sc-1ns6l9f-11 cvwGFl jIFIYM"
           >
-            <h4>
+            <h3
+              class="sc-1ns6l9f-2 iAHDwY"
+            >
               What the community is saying
-            </h4>
+            </h3>
             <blockquote
               class="sc-1ns6l9f-12 Wpha-D"
             >
@@ -14330,11 +14936,17 @@ Object {
                 width="24"
               />
                
-              @henryhoffman
+              <a
+                href="https://twitter.com/henryhoffman"
+                rel="noreferrer"
+                target="_blank"
+              >
+                @henryhoffman
+              </a>
             </p>
           </div>
           <div
-            class="sc-1ns6l9f-8 jrLZUN"
+            class="sc-1ns6l9f-8 gCuqNl"
             color="#142A4A"
           >
             <h2
@@ -14350,8 +14962,8 @@ Object {
               class="sc-1ns6l9f-6 jwrRtY"
             >
               <a
-                class="sc-1ns6l9f-7 bZyfQA"
-                color="var(--link)"
+                class="sc-1ns6l9f-7 jXWPBP"
+                color="var(--white)"
                 href="https://docs.unlock-protocol.com/"
               >
                 <span
@@ -14372,8 +14984,8 @@ Object {
                 Documentation
               </a>
               <a
-                class="sc-1ns6l9f-7 bZyfQA"
-                color="var(--link)"
+                class="sc-1ns6l9f-7 jXWPBP"
+                color="var(--white)"
                 href="https://github.com/unlock-protocol/unlock"
               >
                 <span
@@ -14392,8 +15004,8 @@ Object {
                 Github
               </a>
               <a
-                class="sc-1ns6l9f-7 bZyfQA"
-                color="var(--link)"
+                class="sc-1ns6l9f-7 jXWPBP"
+                color="var(--white)"
                 href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
               >
                 <span
@@ -14416,17 +15028,18 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 dYaWtE"
+            class="sc-1ns6l9f-8 hDvccA"
             color="#F6C61B"
           >
             <div
-              class="sc-1ns6l9f-9 knNbAj"
+              class="sc-1ns6l9f-9 eesdbk"
             >
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
               >
                 <h2
                   class="sc-1ns6l9f-1 faiMlu"
+                  color=""
                 >
                   Join our Developer Grant Program!
                 </h2>
@@ -14441,7 +15054,7 @@ Object {
                   <a
                     class="sc-1ns6l9f-7 evLReg"
                     color="var(--white)"
-                    href="https://docs.unlock-protocol.com/"
+                    href="https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22"
                   >
                     <span
                       class="sc-1ns6l9f-5 jRouNP"
@@ -14461,11 +15074,11 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-1ns6l9f-10 igXY"
+                class="sc-1ns6l9f-10 cIzCrf"
                 style="justify-content: center; align-content: center; display: flex; align-items: center;"
               >
                 <img
-                  class="sc-190zb2g-0"
+                  class="sc-190zb2g-0 xOkBG"
                   src="/static/images/illustrations/grants.svg"
                   style="max-width: 330px;"
                 />
@@ -14473,7 +15086,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 icWxEK"
+            class="sc-1ns6l9f-8 osovq"
             color="var(--white)"
             style="text-align: center;"
           >
@@ -14489,6 +15102,8 @@ Object {
               <a
                 class="sc-1ns6l9f-7 ezlHnB"
                 color="#5865F2"
+                href="https://discord.gg/Ah6ZEJyTDp"
+                target="_blank"
               >
                 <span
                   class="sc-1ns6l9f-5 lcnivr"
@@ -14510,6 +15125,8 @@ Object {
               <a
                 class="sc-1ns6l9f-7 XsZtu"
                 color="#4A4A4A"
+                href="https://unlock.community/"
+                target="_blank"
               >
                 <span
                   class="sc-1ns6l9f-5 lcnivr"
@@ -14537,6 +15154,8 @@ Object {
               <a
                 class="sc-1ns6l9f-7 eKXRPG"
                 color="#1DA1F2"
+                href="https://twitter.com/unlockprotocol"
+                target="_blank"
               >
                 <span
                   class="sc-1ns6l9f-5 lcnivr"
@@ -14558,6 +15177,8 @@ Object {
               <a
                 class="sc-1ns6l9f-7 fhMEvL"
                 color="var(--brand)"
+                href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
+                target="_blank"
               >
                 <span
                   class="sc-1ns6l9f-5 lcnivr"
@@ -14580,20 +15201,20 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 bBvqYb"
+            class="sc-1ns6l9f-8 fuSZGb"
             color="transparent"
           >
             <h3
-              class="sc-1ns6l9f-2 leJpOw"
+              class="sc-1ns6l9f-2 iAHDwY"
             >
               Latest News
             </h3>
             <div
-              class="sc-1ns6l9f-9 knNbAj"
+              class="sc-1ns6l9f-9 eesdbk"
             />
           </div>
           <div
-            class="sc-1ns6l9f-8 hXBPoJ"
+            class="sc-1ns6l9f-8 hNYHa-d"
             color="var(--link)"
           >
             <h2
@@ -14606,13 +15227,13 @@ Object {
             </p>
             <form
               action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-              class="sc-k3axsx-0 cXdzNP subscribe"
+              class="sc-k3axsx-0 eUSBYi subscribe"
               method="post"
               rel="noopener noreferrer"
               target="_blank"
             >
               <input
-                class="sc-k3axsx-2 eEReMU"
+                class="sc-k3axsx-2 irKYBe"
                 id="mce-EMAIL"
                 name="EMAIL"
                 placeholder="Your email here"
@@ -14672,7 +15293,7 @@ Object {
             .
           </div>
           <nav
-            class="sc-1tdzjo6-2 cyvwxz"
+            class="sc-1tdzjo6-2 bYMyCg"
           >
             <ul>
               <li>
@@ -14776,7 +15397,7 @@ Object {
             </ul>
           </nav>
           <span
-            class="sc-1tdzjo6-1 hOLmBl"
+            class="sc-1tdzjo6-1 fyDpzt"
           >
             Made with passion for the web!
           </span>
@@ -15265,9 +15886,37 @@ Object {
   cursor: pointer;
 }
 
+.c5 a {
+  color: var(--link) !important;
+}
+
 .c5:hover {
   background-color: var(--link);
   color: var(--white);
+}
+
+.c6 {
+  background-color: var(--link);
+  color: white !important;
+  border: none;
+  font-size: 16px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 16px;
+  padding: 12px;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  cursor: pointer;
+}
+
+.c6 a {
+  color: var(--white) !important;
+}
+
+.c6:hover {
+  background-color: var(--white);
+  color: var(--link) !important;
 }
 
 .c2 {
@@ -15281,6 +15930,7 @@ Object {
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: 43px;
+  margin-bottom: 64px;
 }
 
 .c4 {
@@ -15292,12 +15942,12 @@ Object {
   height: 100%;
 }
 
-.c6 {
+.c7 {
   display: none;
   height: auto;
 }
 
-.c6 .sc-yj92th-0 {
+.c7 .sc-yj92th-0 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -15308,24 +15958,24 @@ Object {
   align-self: center;
 }
 
-.c6 .sc-yj92th-0:nth-child(1) {
+.c7 .sc-yj92th-0:nth-child(1) {
   pointer-events: none;
 }
 
-.c6 .sc-yj92th-0:nth-child(2) {
+.c7 .sc-yj92th-0:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c6 .sc-yj92th-0 > svg {
+.c7 .sc-yj92th-0 > svg {
   fill: var(--grey);
 }
 
-.c6 .sc-yj92th-0:hover > svg {
+.c7 .sc-yj92th-0:hover > svg {
   fill: var(--grey);
 }
 
-.c7 {
+.c8 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -15347,11 +15997,11 @@ Object {
   top: 50px;
 }
 
-.c7 .sc-yj92th-0 {
+.c8 .sc-yj92th-0 {
   margin: 24px;
 }
 
-.c7 .sc-yj92th-0 small {
+.c8 .sc-yj92th-0 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -15361,13 +16011,13 @@ Object {
   line-height: 0;
 }
 
-.c10 {
+.c11 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c9 {
+.c10 {
   background-color: var(--white);
   border-radius: 4px;
   padding: 32px;
@@ -15383,16 +16033,17 @@ Object {
   flex-direction: column;
 }
 
-.c12 {
+.c13 {
   justify-self: end;
   font-size: 12px;
   font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
   text-align: right;
+  margin-top: 32px;
 }
 
-.c11 {
+.c12 {
   margin-top: 64px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -15403,7 +16054,7 @@ Object {
   flex-direction: column;
 }
 
-.c11 ul {
+.c12 ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
@@ -15419,32 +16070,32 @@ Object {
   flex-wrap: wrap;
 }
 
-.c11 ul li {
+.c12 ul li {
   font-weight: 500;
   margin-right: 16px;
 }
 
-.c11 ul a,
-.c11 ul span {
+.c12 ul a,
+.c12 ul span {
   display: inline-block;
   padding: 16px;
   border-radius: 4px;
   margin-bottom: 16px;
 }
 
-.c11 ul span {
+.c12 ul span {
   background-color: var(--lightgrey);
   color: var(--grey);
 }
 
-.c11 ul a {
+.c12 ul a {
   background-color: var(--link);
   color: var(--white);
   -webkit-transition: background-color 400ms ease;
   transition: background-color 400ms ease;
 }
 
-.c11 ul a:hover {
+.c12 ul a:hover {
   background-color: #2768c8;
 }
 
@@ -15465,7 +16116,7 @@ Object {
   padding-bottom: 60px;
 }
 
-.c8 {
+.c9 {
   color: var(--darkgrey);
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
@@ -15485,25 +16136,43 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c6 {
+  .c7 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c8 {
     display: grid;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c12 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
 
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    padding-top: 0px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    margin-top: 0px;
+  }
 }
 
 <div>
@@ -15579,10 +16248,10 @@ Object {
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
-                Commnunity
+                Community
               </a>
               <a
-                class="c5"
+                class="c6"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -15591,7 +16260,7 @@ Object {
               </a>
             </div>
             <div
-              class="c6"
+              class="c7"
             >
               <a
                 class="c5"
@@ -15627,17 +16296,17 @@ Object {
               </a>
             </div>
             <div
-              class="c7"
+              class="c8"
             />
           </header>
           <div
-            class="c8"
+            class="c9"
           />
           <footer
-            class="c9"
+            class="c10"
           >
             <div
-              class="c10"
+              class="c11"
             >
               Check out our open source code on
                
@@ -15663,7 +16332,7 @@ Object {
               .
             </div>
             <nav
-              class="c11"
+              class="c12"
             >
               <ul>
                 <li>
@@ -15767,7 +16436,7 @@ Object {
               </ul>
             </nav>
             <span
-              class="c12"
+              class="c13"
             >
               Made with passion for the web!
             </span>
@@ -15799,6 +16468,18 @@ Object {
 
 }
 
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
 <script />
   </body>,
   "container": <div>
@@ -15810,10 +16491,10 @@ Object {
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 fOAgph"
+        class="sc-12f69w-0 inqBia"
       >
         <header
-          class="sc-g91yl6-0 ehYVGM"
+          class="sc-g91yl6-0 eJWZL"
         >
           <a
             href="/"
@@ -15835,49 +16516,49 @@ Object {
             class="sc-g91yl6-2 bRPYpt"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/about"
               label="About"
             >
               About
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="/blog"
               label="Blog"
             >
               Blog
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
               label="Integrations"
             >
               Integrations
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://github.com/unlock-protocol/unlock"
               label="Developers"
             >
               Developers
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://docs.unlock-protocol.com"
               label="Docs"
             >
               Docs
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
               href="https://discord.gg/Ah6ZEJyTDp"
               label="Discord"
             >
-              Commnunity
+              Community
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 gZjWnH"
               href="undefined/dashboard"
               label="App"
               target="_blank"
@@ -15889,7 +16570,7 @@ Object {
             class="sc-g91yl6-3 gvxMHE"
           >
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -15904,7 +16585,7 @@ Object {
               </svg>
             </a>
             <a
-              class="sc-vjbnjq-0 fSOYNc"
+              class="sc-vjbnjq-0 grhlzI"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -15926,7 +16607,7 @@ Object {
           />
         </header>
         <div
-          class="sc-12f69w-2 dwuYsr"
+          class="sc-12f69w-2 kCCGHb"
         />
         <footer
           class="sc-1tdzjo6-0 eyhxHS"
@@ -15958,7 +16639,7 @@ Object {
             .
           </div>
           <nav
-            class="sc-1tdzjo6-2 cyvwxz"
+            class="sc-1tdzjo6-2 bYMyCg"
           >
             <ul>
               <li>
@@ -16062,7 +16743,7 @@ Object {
             </ul>
           </nav>
           <span
-            class="sc-1tdzjo6-1 hOLmBl"
+            class="sc-1tdzjo6-1 fyDpzt"
           >
             Made with passion for the web!
           </span>

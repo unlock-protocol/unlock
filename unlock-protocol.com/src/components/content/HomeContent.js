@@ -42,11 +42,22 @@ export const HomeContent = ({ posts }) => {
       <Box hero color="var(--white)">
         <Columns>
           <Column>
-            <H1>Unlock your Membership</H1>
+            <H1>
+              Add memberships
+              <br />
+              to your{' '}
+              <RotatingWords>
+                <Word>community</Word>
+                <Word>website</Word>
+                <Word>application</Word>
+                <Word>game</Word>
+                <Word>shop</Word>
+                <Word>API</Word>
+              </RotatingWords>
+            </H1>
 
             <H2>
-              Add a membership to your community, website, app, game, shop and
-              more...
+              Unlock ownership of your community, across all your platforms.
             </H2>
             <ActionButtons>
               <ActionButton
@@ -532,4 +543,56 @@ const Integration = styled.a`
     border: 1px solid #2768c8;
     background-color: #2768c8;
   }
+`
+const RotatingWords = styled.div`
+  display: inline;
+  text-indent: 10px;
+
+  @keyframes rotateWordsFirst {
+    0% {
+      opacity: 0;
+      animation-timing-function: ease-in;
+    }
+    8% {
+      opacity: 1;
+    }
+    19% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  span {
+    animation: rotateWordsFirst 12s linear infinite 0s;
+  }
+
+  span:nth-child(1) {
+    animation-delay: 0s;
+  }
+  span:nth-child(2) {
+    animation-delay: 2s;
+  }
+  span:nth-child(3) {
+    animation-delay: 4s;
+  }
+  span:nth-child(4) {
+    animation-delay: 6s;
+  }
+  span:nth-child(5) {
+    animation-delay: 8s;
+  }
+  span:nth-child(6) {
+    animation-delay: 10s;
+  }
+`
+const Word = styled.span`
+  position: absolute;
+  opacity: 0;
+  overflow: hidden;
+  width: 100%;
 `
