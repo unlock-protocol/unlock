@@ -93,12 +93,17 @@ const Colophon = styled.span`
   font-style: italic;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
   text-align: right;
+  margin-top: 32px;
 `
 
 const Nav = styled.nav`
   margin-top: 64px;
   display: flex;
   flex-direction: column;
+
+  ${Media.phone`
+    display: none;
+  `}
 
   ul {
     margin: 0px;
@@ -115,10 +120,6 @@ const Nav = styled.nav`
     li {
       font-weight: 500;
       margin-right: 16px;
-      /* ${Media.phone`
-      margin-right: 8px;
-      margin-bottom: 16px;
-    `} */
     }
 
     a,
