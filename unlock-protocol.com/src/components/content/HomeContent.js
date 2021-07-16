@@ -42,11 +42,11 @@ export const HomeContent = ({ posts }) => {
       <Box hero color="var(--white)">
         <Columns>
           <Column>
-            <H1>Unlock the potential of memberships.</H1>
+            <H1>Unlock your Membership</H1>
 
             <H2>
-              Ownership of your community,
-              <br /> across all your platforms.
+              Add a membership to your community, website, app, game, shop and
+              more...
             </H2>
             <ActionButtons>
               <ActionButton
