@@ -3,8 +3,10 @@ import styled from 'styled-components'
 export const Section = styled.section.attrs((props) => ({
   id: props.anchor,
 }))`
-  margin-top: 50px;
   margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
   &:before {
     display: block;
     content: '';
