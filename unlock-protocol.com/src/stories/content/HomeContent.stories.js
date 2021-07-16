@@ -6,7 +6,7 @@ import Demo from '../../components/interface/Demo'
 const becomeMember = () => {}
 
 storiesOf('HomeContent', module)
-  .add('Homepage content', () => <HomeContent />)
+  .add('Homepage content', () => <HomeContent posts={[]} />)
   .add('Demo loading', () => (
     <Demo isMember="pending" becomeMember={becomeMember} />
   ))
