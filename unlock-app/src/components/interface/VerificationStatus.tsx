@@ -39,6 +39,10 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     },
     network
   )
+  console.log({
+    lockAddress,
+    network,
+  })
 
   useEffect(() => {
     const onLoad = async () => {

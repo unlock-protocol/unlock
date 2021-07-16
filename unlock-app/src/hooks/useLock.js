@@ -321,14 +321,14 @@ export const useLock = (lockFromProps, network) => {
     }
 
     const storageService = new StorageService(config.services.storage.host)
-    const response = await storageService.getKeyMetadata(
+    const data = await storageService.getKeyMetadata(
       lockFromProps.address,
       keyId,
       payload,
       signature,
       network
     )
-    return response?.data
+    return data
   }
 
   const markAsCheckedIn = async (signer, keyId) => {
