@@ -324,45 +324,6 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  /*
-   * Given a lock address, a key ID, and a typed data signature, get
-   * the metadata (public and protected) associated with that key.
-   * @param {string} lockAddress
-   * @param {string} keyId
-   * @param {*} signature
-   * @param {*} data
-   */
-  async getMetadataFor(lockAddress, keyId, signature, data, network) {
-    const stringData = JSON.stringify(data)
-    const opts = {
-      headers: this.genAuthorizationHeader(signature),
-      // No body allowed in GET, so these are passed as query params for this
-      // call.
-      params: {
-        data: stringData,
-        signature,
-      },
-    }
-    try {
-      const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/${keyId}?chain=${network}`,
-        opts
-      )
-      const payload = {
-        lockAddress,
-        keyId,
-        data: {},
-      }
-
-      if (result.data && result.data.userMetadata) {
-        payload.data = result.data.userMetadata
-      }
-      this.emit(success.getMetadataFor, payload)
-    } catch (error) {
-      this.emit(failure.getMetadataFor, error)
-    }
-  }
-
   /**
    * Given a lock address and a typed data signature, get the metadata
    * (public and protected) associated with each key on that lock.
@@ -500,22 +461,28 @@ export class StorageService extends EventEmitter {
    * @returns
    */
   async getKeyMetadata(lockAddress, keyId, payload, signature, network) {
-    let url = `${this.host}/api/key/${lockAddress}/${keyId}`
-    if (network) {
-      url = `${url}?chain=${network}`
-    }
+    try {
+      let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+      if (network) {
+        url = `${url}?chain=${network}`
+      }
 
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-    if (signature) {
-      options.headers.Authorization = `Bearer ${Buffer.from(signature).toString(
-        'base64'
-      )}`
-    }
+      const options = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      if (signature) {
+        options.headers.Authorization = `Bearer ${Buffer.from(
+          signature
+        ).toString('base64')}`
+      }
 
-    return axios.get(url, options)
+      const response = await axios.get(url, options)
+      return response?.data
+    } catch (error) {
+      console.error(error)
+      return {}
+    }
   }
 }
