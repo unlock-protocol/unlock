@@ -56,7 +56,6 @@
     "yaml-front-matter": "4.1.1"
   },
   "devDependencies": {
-    "eslint-config-next": "11.0.1",
     "nodemon": "2.0.9"
   },
   "workspaces": [

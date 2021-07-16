@@ -29,7 +29,6 @@ const rulesToIgnore = [
 
 module.exports = {
   extends: ['../.eslintrc.js', 'plugin:react/recommended'],
-  plugins: ['react-hooks'],
   settings: {
     react: {
       version: 'detect',
@@ -47,8 +46,6 @@ module.exports = {
       },
     ],
     'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }
     }, {}),
