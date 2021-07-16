@@ -85,6 +85,10 @@ contract('UnlockDiscountToken upgrade', async () => {
       // Grant Unlock minting permissions
       await udt.addMinter(unlock.address)
 
+      // upgrade contract
+      await upgradeContract(udt.address)
+      udt.connect(minter)
+
       // create lock
       const tx = await unlock.createLock(
         Locks.FIRST.expirationDuration.toFixed(),
@@ -163,6 +167,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       await lock.purchase(0, referrer.address, constants.ZERO_ADDRESS, [], {
         value: await lock.keyPrice(),
       })
+      
     })
 
     it('referrer has 0 UDT to start', async () => {
@@ -180,6 +185,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       let gasSpent
 
       beforeEach(async () => {
+        
         // buy a key
         lock.connect(keyBuyer)
         const tx = await lock.purchase(
@@ -225,6 +231,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     })
 
     describe('mint capped by % growth', () => {
+      
       beforeEach(async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
@@ -245,10 +252,10 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       it('amount minted for referrer ~= 10 UDT', async () => {
         const balance = await udt.balanceOf(referrer.address)
-        assert.equal(
-          new BigNumber(balance.toNumber()).shiftedBy(-18).toFixed(0),
-          '10'
-        )
+        // console.log(balance.toNumber())
+        const bn = new BigNumber(balance.toNumber())
+        // console.log(bn.shiftedBy(-18).toFixed(0))
+        assert.equal( bn.shiftedBy(-18).toFixed(0), '10' )
       })
 
       it('amount minted for dev ~= 2 UDT', async () => {
