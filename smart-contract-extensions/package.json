@@ -31,7 +31,7 @@
   "author": "HardlyDifficult",
   "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "3.1.0",
+    "@openzeppelin/contracts": "4.2.0",
     "@openzeppelin/test-helpers": "0.5.11",
     "@openzeppelin/upgrades": "2.8.0",
     "@typescript-eslint/eslint-plugin": "4.3.0",
