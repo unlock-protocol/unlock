@@ -40,10 +40,11 @@ Layout.defaultProps = {
 
 const Page = styled.div`
   max-width: 1080px;
-  padding-top: 48px;
+  padding: 16px;
+  padding-top: 24px;
   margin: 0 auto;
   ${Media.phone`
-    padding-top: 0px;
+    padding: 0px;
   `}
 `
 

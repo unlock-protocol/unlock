@@ -26,7 +26,7 @@ LayoutButton.defaultProps = {
   href: '',
 }
 
-const BaseButton = styled.a`
+export const BaseButton = styled.a`
   background-color: ${(props) =>
     props.bold ? ' var(--link)' : 'var(--white)'};
   color: ${(props) => (props.bold ? 'white !important' : 'var(--link)')};

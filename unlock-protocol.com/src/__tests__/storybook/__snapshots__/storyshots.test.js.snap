@@ -5,11 +5,11 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <script />
-    .c3 {
+    .c4 {
   fill: var(--brand);
 }
 
-.c5 {
+.c7 {
   background-color: var(--white);
   color: var(--link);
   border: none;
@@ -24,16 +24,16 @@ Object {
   cursor: pointer;
 }
 
-.c5 a {
+.c7 a {
   color: var(--link) !important;
 }
 
-.c5:hover {
+.c7:hover {
   background-color: var(--link);
   color: var(--white);
 }
 
-.c6 {
+.c8 {
   background-color: var(--link);
   color: white !important;
   border: none;
@@ -48,11 +48,11 @@ Object {
   cursor: pointer;
 }
 
-.c6 a {
+.c8 a {
   color: var(--white) !important;
 }
 
-.c6:hover {
+.c8:hover {
   background-color: var(--white);
   color: var(--link) !important;
 }
@@ -63,90 +63,36 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c7 {
-  display: none;
-  height: auto;
+.c5 .c6:first-child {
+  margin-left: 0px;
 }
 
-.c7 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c7 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c8 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c8 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
+.c3 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c27 {
@@ -239,7 +185,8 @@ Object {
 
 .c1 {
   max-width: 1080px;
-  padding-top: 48px;
+  padding: 16px;
+  padding-top: 24px;
   margin: 0 auto;
 }
 
@@ -385,31 +332,19 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c2 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c8 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c2 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -425,7 +360,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
-    padding-top: 0px;
+    padding: 0px;
   }
 }
 
@@ -457,69 +392,73 @@ Object {
           <header
             class="c2"
           >
-            <a
-              href="/"
-              style="display: flex; align-items: center;"
-            >
-              <svg
-                class="c3"
-                height="28px"
-                name="Unlock"
-                viewBox="0 0 1200 256"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-                />
-              </svg>
-            </a>
             <div
-              class="c4"
+              class="c3"
             >
               <a
-                class="c5"
+                href="/"
+                style="display: flex; align-items: center;"
+              >
+                <svg
+                  class="c4"
+                  height="28px"
+                  name="Unlock"
+                  viewBox="0 0 1200 256"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              class="c5"
+            >
+              <a
+                class="c6 c7"
                 href="/about"
                 label="About"
               >
                 About
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="/blog"
                 label="Blog"
               >
                 Blog
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
                 label="Integrations"
               >
                 Integrations
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 label="Developers"
               >
                 Developers
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com"
                 label="Docs"
               >
                 Docs
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
                 Community
               </a>
               <a
-                class="c6"
+                class="c6 c8"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -527,45 +466,6 @@ Object {
                 App
               </a>
             </div>
-            <div
-              class="c7"
-            >
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 56 42"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Bars
-                  </title>
-                  <path
-                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                  />
-                </svg>
-              </a>
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 58 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Chevron Up
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-            <div
-              class="c8"
-            />
           </header>
           <div
             class="c9"
@@ -853,7 +753,7 @@ Look at us! We're posting on our very own blog! How exciting!
                 </li>
                 <li>
                   <a
-                    href="https://vote.unlock-protocol.com"
+                    href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                   >
                     Governance
                   </a>
@@ -928,19 +828,7 @@ Look at us! We're posting on our very own blog! How exciting!
 
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) {
+@media only screen and (min-width:736px) and (max-width:1000px) {
 
 }
 
@@ -975,29 +863,33 @@ Look at us! We're posting on our very own blog! How exciting!
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 inqBia"
+        class="sc-12f69w-0 eyWred"
       >
         <header
-          class="sc-g91yl6-0 eJWZL"
+          class="sc-g91yl6-0 NZuNy"
         >
-          <a
-            href="/"
-            style="display: flex; align-items: center;"
-          >
-            <svg
-              class="sc-ryhll6-1 OuCSw"
-              height="28px"
-              name="Unlock"
-              viewBox="0 0 1200 256"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-              />
-            </svg>
-          </a>
           <div
-            class="sc-g91yl6-2 bRPYpt"
+            class="sc-g91yl6-2 cqMbck"
+          >
+            <a
+              href="/"
+              style="display: flex; align-items: center;"
+            >
+              <svg
+                class="sc-ryhll6-1 OuCSw"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div
+            class="sc-g91yl6-1 hNipiw"
           >
             <a
               class="sc-vjbnjq-0 grhlzI"
@@ -1050,45 +942,6 @@ Look at us! We're posting on our very own blog! How exciting!
               App
             </a>
           </div>
-          <div
-            class="sc-g91yl6-3 gvxMHE"
-          >
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 56 42"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Bars
-                </title>
-                <path
-                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                />
-              </svg>
-            </a>
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 58 32"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Chevron Up
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </a>
-          </div>
-          <div
-            class="sc-g91yl6-4 izOhQf"
-          />
         </header>
         <div
           class="sc-12f69w-2 kCCGHb"
@@ -1376,7 +1229,7 @@ Look at us! We're posting on our very own blog! How exciting!
               </li>
               <li>
                 <a
-                  href="https://vote.unlock-protocol.com"
+                  href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                 >
                   Governance
                 </a>
@@ -1500,11 +1353,11 @@ Look at us! We're posting on our very own blog! How exciting!
 exports[`Storyshots Blog pages Blog post page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c3 {
+  "baseElement": .c4 {
   fill: var(--brand);
 }
 
-.c5 {
+.c7 {
   background-color: var(--white);
   color: var(--link);
   border: none;
@@ -1519,16 +1372,16 @@ Object {
   cursor: pointer;
 }
 
-.c5 a {
+.c7 a {
   color: var(--link) !important;
 }
 
-.c5:hover {
+.c7:hover {
   background-color: var(--link);
   color: var(--white);
 }
 
-.c6 {
+.c8 {
   background-color: var(--link);
   color: white !important;
   border: none;
@@ -1543,11 +1396,11 @@ Object {
   cursor: pointer;
 }
 
-.c6 a {
+.c8 a {
   color: var(--white) !important;
 }
 
-.c6:hover {
+.c8:hover {
   background-color: var(--white);
   color: var(--link) !important;
 }
@@ -1558,90 +1411,36 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c7 {
-  display: none;
-  height: auto;
+.c5 .c6:first-child {
+  margin-left: 0px;
 }
 
-.c7 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c7 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c8 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c8 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
+.c3 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c19 {
@@ -1734,7 +1533,8 @@ Object {
 
 .c1 {
   max-width: 1080px;
-  padding-top: 48px;
+  padding: 16px;
+  padding-top: 24px;
   margin: 0 auto;
 }
 
@@ -1874,31 +1674,19 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c2 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c8 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c2 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -1914,7 +1702,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
-    padding-top: 0px;
+    padding: 0px;
   }
 }
 
@@ -1939,69 +1727,73 @@ Object {
           <header
             class="c2"
           >
-            <a
-              href="/"
-              style="display: flex; align-items: center;"
-            >
-              <svg
-                class="c3"
-                height="28px"
-                name="Unlock"
-                viewBox="0 0 1200 256"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-                />
-              </svg>
-            </a>
             <div
-              class="c4"
+              class="c3"
             >
               <a
-                class="c5"
+                href="/"
+                style="display: flex; align-items: center;"
+              >
+                <svg
+                  class="c4"
+                  height="28px"
+                  name="Unlock"
+                  viewBox="0 0 1200 256"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              class="c5"
+            >
+              <a
+                class="c6 c7"
                 href="/about"
                 label="About"
               >
                 About
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="/blog"
                 label="Blog"
               >
                 Blog
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
                 label="Integrations"
               >
                 Integrations
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 label="Developers"
               >
                 Developers
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com"
                 label="Docs"
               >
                 Docs
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
                 Community
               </a>
               <a
-                class="c6"
+                class="c6 c8"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -2009,45 +1801,6 @@ Object {
                 App
               </a>
             </div>
-            <div
-              class="c7"
-            >
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 56 42"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Bars
-                  </title>
-                  <path
-                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                  />
-                </svg>
-              </a>
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 58 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Chevron Up
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-            <div
-              class="c8"
-            />
           </header>
           <div
             class="c9"
@@ -2234,7 +1987,7 @@ are intentionally not generated from this file date, in case we want to override
                 </li>
                 <li>
                   <a
-                    href="https://vote.unlock-protocol.com"
+                    href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                   >
                     Governance
                   </a>
@@ -2312,29 +2065,33 @@ are intentionally not generated from this file date, in case we want to override
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 inqBia"
+        class="sc-12f69w-0 eyWred"
       >
         <header
-          class="sc-g91yl6-0 eJWZL"
+          class="sc-g91yl6-0 NZuNy"
         >
-          <a
-            href="/"
-            style="display: flex; align-items: center;"
-          >
-            <svg
-              class="sc-ryhll6-1 OuCSw"
-              height="28px"
-              name="Unlock"
-              viewBox="0 0 1200 256"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-              />
-            </svg>
-          </a>
           <div
-            class="sc-g91yl6-2 bRPYpt"
+            class="sc-g91yl6-2 cqMbck"
+          >
+            <a
+              href="/"
+              style="display: flex; align-items: center;"
+            >
+              <svg
+                class="sc-ryhll6-1 OuCSw"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div
+            class="sc-g91yl6-1 hNipiw"
           >
             <a
               class="sc-vjbnjq-0 grhlzI"
@@ -2387,45 +2144,6 @@ are intentionally not generated from this file date, in case we want to override
               App
             </a>
           </div>
-          <div
-            class="sc-g91yl6-3 gvxMHE"
-          >
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 56 42"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Bars
-                </title>
-                <path
-                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                />
-              </svg>
-            </a>
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 58 32"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Chevron Up
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </a>
-          </div>
-          <div
-            class="sc-g91yl6-4 izOhQf"
-          />
         </header>
         <div
           class="sc-12f69w-2 kCCGHb"
@@ -2612,7 +2330,7 @@ are intentionally not generated from this file date, in case we want to override
               </li>
               <li>
                 <a
-                  href="https://vote.unlock-protocol.com"
+                  href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                 >
                   Governance
                 </a>
@@ -8314,7 +8032,7 @@ Object {
             </li>
             <li>
               <a
-                href="https://vote.unlock-protocol.com"
+                href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
               >
                 Governance
               </a>
@@ -8460,7 +8178,7 @@ Object {
           </li>
           <li>
             <a
-              href="https://vote.unlock-protocol.com"
+              href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
             >
               Governance
             </a>
@@ -8586,11 +8304,11 @@ Object {
     <script />
     <script />
     <script />
-    .c1 {
+    .c2 {
   fill: var(--brand);
 }
 
-.c3 {
+.c5 {
   background-color: var(--white);
   color: var(--link);
   border: none;
@@ -8605,16 +8323,16 @@ Object {
   cursor: pointer;
 }
 
-.c3 a {
+.c5 a {
   color: var(--link) !important;
 }
 
-.c3:hover {
+.c5:hover {
   background-color: var(--link);
   color: var(--white);
 }
 
-.c4 {
+.c6 {
   background-color: var(--link);
   color: white !important;
   border: none;
@@ -8629,11 +8347,11 @@ Object {
   cursor: pointer;
 }
 
-.c4 a {
+.c6 a {
   color: var(--white) !important;
 }
 
-.c4:hover {
+.c6:hover {
   background-color: var(--white);
   color: var(--link) !important;
 }
@@ -8644,119 +8362,53 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c5 {
-  display: none;
-  height: auto;
+.c3 .c4:first-child {
+  margin-left: 0px;
 }
 
-.c5 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c5 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c5 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c5 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c5 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c6 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c6 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c6 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
+.c1 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c2 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c5 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c6 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c6 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -8768,12 +8420,100 @@ Object {
       <header
         class="c0"
       >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+            style="display: flex; align-items: center;"
+          >
+            <svg
+              class="c2"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <a
+            class="c4 c5"
+            href="/about"
+            label="About"
+          >
+            About
+          </a>
+          <a
+            class="c4 c5"
+            href="/blog"
+            label="Blog"
+          >
+            Blog
+          </a>
+          <a
+            class="c4 c5"
+            href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
+            label="Integrations"
+          >
+            Integrations
+          </a>
+          <a
+            class="c4 c5"
+            href="https://github.com/unlock-protocol/unlock"
+            label="Developers"
+          >
+            Developers
+          </a>
+          <a
+            class="c4 c5"
+            href="https://docs.unlock-protocol.com"
+            label="Docs"
+          >
+            Docs
+          </a>
+          <a
+            class="c4 c5"
+            href="https://discord.gg/Ah6ZEJyTDp"
+            label="Discord"
+          >
+            Community
+          </a>
+          <a
+            class="c4 c6"
+            href="undefined/dashboard"
+            label="App"
+            target="_blank"
+          >
+            App
+          </a>
+        </div>
+      </header>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <header
+      class="sc-g91yl6-0 NZuNy"
+    >
+      <div
+        class="sc-g91yl6-2 cqMbck"
+      >
         <a
           href="/"
           style="display: flex; align-items: center;"
         >
           <svg
-            class="c1"
+            class="sc-ryhll6-1 OuCSw"
             height="28px"
             name="Unlock"
             viewBox="0 0 1200 256"
@@ -8784,128 +8524,9 @@ Object {
             />
           </svg>
         </a>
-        <div
-          class="c2"
-        >
-          <a
-            class="c3"
-            href="/about"
-            label="About"
-          >
-            About
-          </a>
-          <a
-            class="c3"
-            href="/blog"
-            label="Blog"
-          >
-            Blog
-          </a>
-          <a
-            class="c3"
-            href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
-            label="Integrations"
-          >
-            Integrations
-          </a>
-          <a
-            class="c3"
-            href="https://github.com/unlock-protocol/unlock"
-            label="Developers"
-          >
-            Developers
-          </a>
-          <a
-            class="c3"
-            href="https://docs.unlock-protocol.com"
-            label="Docs"
-          >
-            Docs
-          </a>
-          <a
-            class="c3"
-            href="https://discord.gg/Ah6ZEJyTDp"
-            label="Discord"
-          >
-            Community
-          </a>
-          <a
-            class="c4"
-            href="undefined/dashboard"
-            label="App"
-            target="_blank"
-          >
-            App
-          </a>
-        </div>
-        <div
-          class="c5"
-        >
-          <a
-            class="c3"
-          >
-            <svg
-              viewBox="0 0 56 42"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Bars
-              </title>
-              <path
-                d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-              />
-            </svg>
-          </a>
-          <a
-            class="c3"
-          >
-            <svg
-              viewBox="0 0 58 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Chevron Up
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </a>
-        </div>
-        <div
-          class="c6"
-        />
-      </header>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <header
-      class="sc-g91yl6-0 eJWZL"
-    >
-      <a
-        href="/"
-        style="display: flex; align-items: center;"
-      >
-        <svg
-          class="sc-ryhll6-1 OuCSw"
-          height="28px"
-          name="Unlock"
-          viewBox="0 0 1200 256"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-          />
-        </svg>
-      </a>
+      </div>
       <div
-        class="sc-g91yl6-2 bRPYpt"
+        class="sc-g91yl6-1 hNipiw"
       >
         <a
           class="sc-vjbnjq-0 grhlzI"
@@ -8958,45 +8579,6 @@ Object {
           App
         </a>
       </div>
-      <div
-        class="sc-g91yl6-3 gvxMHE"
-      >
-        <a
-          class="sc-vjbnjq-0 grhlzI"
-        >
-          <svg
-            viewBox="0 0 56 42"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>
-              Bars
-            </title>
-            <path
-              d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-            />
-          </svg>
-        </a>
-        <a
-          class="sc-vjbnjq-0 grhlzI"
-        >
-          <svg
-            viewBox="0 0 58 32"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>
-              Chevron Up
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-      <div
-        class="sc-g91yl6-4 izOhQf"
-      />
     </header>
   </div>,
   "debug": [Function],
@@ -9060,15 +8642,8 @@ Object {
     <script />
     <script />
     <script />
-    .c3 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
+    .c2 {
+  fill: var(--brand);
 }
 
 .c5 {
@@ -9125,133 +8700,53 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c1 {
-  color: var(--grey);
-}
-
-.c4 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c7 {
-  display: none;
-  height: auto;
+.c3 .c4:first-child {
+  margin-left: 0px;
 }
 
-.c7 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c7 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c8 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c8 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
-}
-
-.c2 {
-  padding-top: 2px;
+.c1 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c8 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c2 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -9263,78 +8758,73 @@ Object {
       <header
         class="c0"
       >
-        <h1
+        <div
           class="c1"
         >
-          <div
-            class="c2"
+          <a
+            href="/"
+            style="display: flex; align-items: center;"
           >
-            <a
-              href="/"
+            <svg
+              class="c2"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <div
-                class="c3"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </a>
-          </div>
-          Roses are red
-        </h1>
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+        </div>
         <div
-          class="c4"
+          class="c3"
         >
           <a
-            class="c5"
+            class="c4 c5"
             href="/about"
             label="About"
           >
             About
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="/blog"
             label="Blog"
           >
             Blog
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
             label="Integrations"
           >
             Integrations
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://github.com/unlock-protocol/unlock"
             label="Developers"
           >
             Developers
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://docs.unlock-protocol.com"
             label="Docs"
           >
             Docs
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://discord.gg/Ah6ZEJyTDp"
             label="Discord"
           >
             Community
           </a>
           <a
-            class="c6"
+            class="c4 c6"
             href="undefined/dashboard"
             label="App"
             target="_blank"
@@ -9342,45 +8832,6 @@ Object {
             App
           </a>
         </div>
-        <div
-          class="c7"
-        >
-          <a
-            class="c5"
-          >
-            <svg
-              viewBox="0 0 56 42"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Bars
-              </title>
-              <path
-                d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-              />
-            </svg>
-          </a>
-          <a
-            class="c5"
-          >
-            <svg
-              viewBox="0 0 58 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Chevron Up
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </a>
-        </div>
-        <div
-          class="c8"
-        />
       </header>
     </div>
   </body>,
@@ -9390,35 +8841,30 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-g91yl6-0 eJWZL"
+      class="sc-g91yl6-0 NZuNy"
     >
-      <h1
-        class="sc-g91yl6-1 eCBtYN"
-      >
-        <div
-          class="sc-g91yl6-5 cHUtub"
-        >
-          <a
-            href="/"
-          >
-            <div
-              class="sc-ryhll6-0 csSISq"
-            >
-              <svg
-                viewBox="0 0 56 56"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </a>
-        </div>
-        Roses are red
-      </h1>
       <div
-        class="sc-g91yl6-2 bRPYpt"
+        class="sc-g91yl6-2 cqMbck"
+      >
+        <a
+          href="/"
+          style="display: flex; align-items: center;"
+        >
+          <svg
+            class="sc-ryhll6-1 OuCSw"
+            height="28px"
+            name="Unlock"
+            viewBox="0 0 1200 256"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </a>
+      </div>
+      <div
+        class="sc-g91yl6-1 hNipiw"
       >
         <a
           class="sc-vjbnjq-0 grhlzI"
@@ -9471,45 +8917,6 @@ Object {
           App
         </a>
       </div>
-      <div
-        class="sc-g91yl6-3 gvxMHE"
-      >
-        <a
-          class="sc-vjbnjq-0 grhlzI"
-        >
-          <svg
-            viewBox="0 0 56 42"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>
-              Bars
-            </title>
-            <path
-              d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-            />
-          </svg>
-        </a>
-        <a
-          class="sc-vjbnjq-0 grhlzI"
-        >
-          <svg
-            viewBox="0 0 58 32"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>
-              Chevron Up
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-      <div
-        class="sc-g91yl6-4 izOhQf"
-      />
     </header>
   </div>,
   "debug": [Function],
@@ -9573,15 +8980,8 @@ Object {
     <script />
     <script />
     <script />
-    .c3 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
+    .c2 {
+  fill: var(--brand);
 }
 
 .c5 {
@@ -9638,133 +9038,53 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c1 {
-  color: var(--grey);
-}
-
-.c4 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c7 {
-  display: none;
-  height: auto;
+.c3 .c4:first-child {
+  margin-left: 0px;
 }
 
-.c7 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c7 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c8 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c8 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
-}
-
-.c2 {
-  padding-top: 2px;
+.c1 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c0 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c8 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c2 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -9776,78 +9096,73 @@ Object {
       <header
         class="c0"
       >
-        <h1
+        <div
           class="c1"
         >
-          <div
-            class="c2"
+          <a
+            href="/"
+            style="display: flex; align-items: center;"
           >
-            <a
-              href="/"
+            <svg
+              class="c2"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <div
-                class="c3"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </a>
-          </div>
-          Unlock
-        </h1>
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+        </div>
         <div
-          class="c4"
+          class="c3"
         >
           <a
-            class="c5"
+            class="c4 c5"
             href="/about"
             label="About"
           >
             About
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="/blog"
             label="Blog"
           >
             Blog
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
             label="Integrations"
           >
             Integrations
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://github.com/unlock-protocol/unlock"
             label="Developers"
           >
             Developers
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://docs.unlock-protocol.com"
             label="Docs"
           >
             Docs
           </a>
           <a
-            class="c5"
+            class="c4 c5"
             href="https://discord.gg/Ah6ZEJyTDp"
             label="Discord"
           >
             Community
           </a>
           <a
-            class="c6"
+            class="c4 c6"
             href="undefined/dashboard"
             label="App"
             target="_blank"
@@ -9855,45 +9170,6 @@ Object {
             App
           </a>
         </div>
-        <div
-          class="c7"
-        >
-          <a
-            class="c5"
-          >
-            <svg
-              viewBox="0 0 56 42"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Bars
-              </title>
-              <path
-                d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-              />
-            </svg>
-          </a>
-          <a
-            class="c5"
-          >
-            <svg
-              viewBox="0 0 58 32"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>
-                Chevron Up
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </a>
-        </div>
-        <div
-          class="c8"
-        />
       </header>
     </div>
   </body>,
@@ -9903,35 +9179,30 @@ Object {
       rel="stylesheet"
     />
     <header
-      class="sc-g91yl6-0 eJWZL"
+      class="sc-g91yl6-0 NZuNy"
     >
-      <h1
-        class="sc-g91yl6-1 eCBtYN"
-      >
-        <div
-          class="sc-g91yl6-5 cHUtub"
-        >
-          <a
-            href="/"
-          >
-            <div
-              class="sc-ryhll6-0 csSISq"
-            >
-              <svg
-                viewBox="0 0 56 56"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </a>
-        </div>
-        Unlock
-      </h1>
       <div
-        class="sc-g91yl6-2 bRPYpt"
+        class="sc-g91yl6-2 cqMbck"
+      >
+        <a
+          href="/"
+          style="display: flex; align-items: center;"
+        >
+          <svg
+            class="sc-ryhll6-1 OuCSw"
+            height="28px"
+            name="Unlock"
+            viewBox="0 0 1200 256"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </a>
+      </div>
+      <div
+        class="sc-g91yl6-1 hNipiw"
       >
         <a
           class="sc-vjbnjq-0 grhlzI"
@@ -9984,45 +9255,6 @@ Object {
           App
         </a>
       </div>
-      <div
-        class="sc-g91yl6-3 gvxMHE"
-      >
-        <a
-          class="sc-vjbnjq-0 grhlzI"
-        >
-          <svg
-            viewBox="0 0 56 42"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>
-              Bars
-            </title>
-            <path
-              d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-            />
-          </svg>
-        </a>
-        <a
-          class="sc-vjbnjq-0 grhlzI"
-        >
-          <svg
-            viewBox="0 0 58 32"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>
-              Chevron Up
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </a>
-      </div>
-      <div
-        class="sc-g91yl6-4 izOhQf"
-      />
     </header>
   </div>,
   "debug": [Function],
@@ -11279,11 +10511,11 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    .c3 {
+    .c4 {
   fill: var(--brand);
 }
 
-.c5 {
+.c7 {
   background-color: var(--white);
   color: var(--link);
   border: none;
@@ -11298,16 +10530,16 @@ Object {
   cursor: pointer;
 }
 
-.c5 a {
+.c7 a {
   color: var(--link) !important;
 }
 
-.c5:hover {
+.c7:hover {
   background-color: var(--link);
   color: var(--white);
 }
 
-.c6 {
+.c8 {
   background-color: var(--link);
   color: white !important;
   border: none;
@@ -11322,11 +10554,11 @@ Object {
   cursor: pointer;
 }
 
-.c6 a {
+.c8 a {
   color: var(--white) !important;
 }
 
-.c6:hover {
+.c8:hover {
   background-color: var(--white);
   color: var(--link) !important;
 }
@@ -11337,90 +10569,36 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c7 {
-  display: none;
-  height: auto;
+.c5 .c6:first-child {
+  margin-left: 0px;
 }
 
-.c7 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c7 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c8 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c8 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
+.c3 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c56 {
@@ -11513,7 +10691,8 @@ Object {
 
 .c1 {
   max-width: 1080px;
-  padding-top: 48px;
+  padding: 16px;
+  padding-top: 24px;
   margin: 0 auto;
 }
 
@@ -12423,31 +11602,19 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c2 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c8 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c2 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -12463,7 +11630,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
-    padding-top: 0px;
+    padding: 0px;
   }
 }
 
@@ -12555,64 +11722,83 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c10 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c24 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c28 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c31 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c33 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c36 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c41 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c43 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c45 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c49 {
     margin-top: 24px;
+    padding: 16px;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
+  .c11 {
+    margin: 16px 0px;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width:736px) and (max-width:1000px) {
   .c11 {
     margin: 16px 0px;
     -webkit-flex-direction: column;
@@ -12651,69 +11837,73 @@ Object {
           <header
             class="c2"
           >
-            <a
-              href="/"
-              style="display: flex; align-items: center;"
-            >
-              <svg
-                class="c3"
-                height="28px"
-                name="Unlock"
-                viewBox="0 0 1200 256"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-                />
-              </svg>
-            </a>
             <div
-              class="c4"
+              class="c3"
             >
               <a
-                class="c5"
+                href="/"
+                style="display: flex; align-items: center;"
+              >
+                <svg
+                  class="c4"
+                  height="28px"
+                  name="Unlock"
+                  viewBox="0 0 1200 256"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              class="c5"
+            >
+              <a
+                class="c6 c7"
                 href="/about"
                 label="About"
               >
                 About
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="/blog"
                 label="Blog"
               >
                 Blog
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
                 label="Integrations"
               >
                 Integrations
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 label="Developers"
               >
                 Developers
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com"
                 label="Docs"
               >
                 Docs
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
                 Community
               </a>
               <a
-                class="c6"
+                class="c6 c8"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -12721,45 +11911,6 @@ Object {
                 App
               </a>
             </div>
-            <div
-              class="c7"
-            >
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 56 42"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Bars
-                  </title>
-                  <path
-                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                  />
-                </svg>
-              </a>
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 58 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Chevron Up
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-            <div
-              class="c8"
-            />
           </header>
           <div
             class="c9"
@@ -13249,7 +12400,7 @@ Object {
                     →
                      
                     <a
-                      href="https://vote.unlock-protocol.com/#/unlock-protocol.eth/settings"
+                      href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                     >
                       Governance
                     </a>
@@ -13878,7 +13029,7 @@ Object {
                 </li>
                 <li>
                   <a
-                    href="https://vote.unlock-protocol.com"
+                    href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                   >
                     Governance
                   </a>
@@ -13949,19 +13100,7 @@ Object {
 
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) {
+@media only screen and (min-width:736px) and (max-width:1000px) {
 
 }
 
@@ -14066,6 +13205,10 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
+
+}
+
+@media only screen and (min-width:736px) and (max-width:1000px) {
 
 }
 
@@ -14088,29 +13231,33 @@ Object {
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 inqBia"
+        class="sc-12f69w-0 eyWred"
       >
         <header
-          class="sc-g91yl6-0 eJWZL"
+          class="sc-g91yl6-0 NZuNy"
         >
-          <a
-            href="/"
-            style="display: flex; align-items: center;"
-          >
-            <svg
-              class="sc-ryhll6-1 OuCSw"
-              height="28px"
-              name="Unlock"
-              viewBox="0 0 1200 256"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-              />
-            </svg>
-          </a>
           <div
-            class="sc-g91yl6-2 bRPYpt"
+            class="sc-g91yl6-2 cqMbck"
+          >
+            <a
+              href="/"
+              style="display: flex; align-items: center;"
+            >
+              <svg
+                class="sc-ryhll6-1 OuCSw"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div
+            class="sc-g91yl6-1 hNipiw"
           >
             <a
               class="sc-vjbnjq-0 grhlzI"
@@ -14163,55 +13310,16 @@ Object {
               App
             </a>
           </div>
-          <div
-            class="sc-g91yl6-3 gvxMHE"
-          >
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 56 42"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Bars
-                </title>
-                <path
-                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                />
-              </svg>
-            </a>
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 58 32"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Chevron Up
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </a>
-          </div>
-          <div
-            class="sc-g91yl6-4 izOhQf"
-          />
         </header>
         <div
           class="sc-12f69w-2 kCCGHb"
         >
           <div
-            class="sc-1ns6l9f-8 gFFXUu"
+            class="sc-1ns6l9f-8 dKcnoM"
             color="var(--white)"
           >
             <div
-              class="sc-1ns6l9f-9 eesdbk"
+              class="sc-1ns6l9f-9 cggaTS"
             >
               <div
                 class="sc-1ns6l9f-10 cIzCrf"
@@ -14321,7 +13429,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 gvsYSc"
+            class="sc-1ns6l9f-8 kcLiFu"
             color="transparent"
             font-family="'IBM Plex Serif', serif"
           >
@@ -14383,7 +13491,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 hcMUfV"
+            class="sc-1ns6l9f-8 gJxiOb"
             color="var(--link)"
             font-family="'IBM Plex Sans'"
           >
@@ -14393,7 +13501,7 @@ Object {
               Check out Unlock’s community-built integrations and plugins.
             </h2>
             <div
-              class="sc-1ns6l9f-9 eesdbk"
+              class="sc-1ns6l9f-9 cggaTS"
             >
               <div
                 class="sc-1ns6l9f-10 cIzCrf"
@@ -14591,7 +13699,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 fuSZGb"
+            class="sc-1ns6l9f-8 bbTslh"
             color="transparent"
           >
             <h3
@@ -14600,7 +13708,7 @@ Object {
               Why Unlock?
             </h3>
             <div
-              class="sc-1ns6l9f-9 eesdbk"
+              class="sc-1ns6l9f-9 cggaTS"
             >
               <div
                 class="sc-1ns6l9f-10 cIzCrf"
@@ -14691,7 +13799,7 @@ Object {
                   →
                    
                   <a
-                    href="https://vote.unlock-protocol.com/#/unlock-protocol.eth/settings"
+                    href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                   >
                     Governance
                   </a>
@@ -14700,12 +13808,12 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 iuoFTG"
+            class="sc-1ns6l9f-8 jaJBDY"
             color="var(--white)"
             font-family="'IBM Plex Sans'"
           >
             <div
-              class="sc-1ns6l9f-9 eesdbk"
+              class="sc-1ns6l9f-9 cggaTS"
             >
               <div
                 class="sc-1ns6l9f-10 cIzCrf"
@@ -14888,7 +13996,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 sc-1ns6l9f-11 cvwGFl jIFIYM"
+            class="sc-1ns6l9f-8 sc-1ns6l9f-11 cuEDpP jIFIYM"
           >
             <h3
               class="sc-1ns6l9f-2 iAHDwY"
@@ -14928,7 +14036,7 @@ Object {
             </p>
           </div>
           <div
-            class="sc-1ns6l9f-8 gCuqNl"
+            class="sc-1ns6l9f-8 yQwHX"
             color="#142A4A"
           >
             <h2
@@ -15010,11 +14118,11 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 hDvccA"
+            class="sc-1ns6l9f-8 Dqmhe"
             color="#F6C61B"
           >
             <div
-              class="sc-1ns6l9f-9 eesdbk"
+              class="sc-1ns6l9f-9 cggaTS"
             >
               <div
                 class="sc-1ns6l9f-10 cIzCrf"
@@ -15068,7 +14176,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 osovq"
+            class="sc-1ns6l9f-8 heQgVA"
             color="var(--white)"
             style="text-align: center;"
           >
@@ -15183,7 +14291,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 fuSZGb"
+            class="sc-1ns6l9f-8 bbTslh"
             color="transparent"
           >
             <h3
@@ -15192,11 +14300,11 @@ Object {
               Latest News
             </h3>
             <div
-              class="sc-1ns6l9f-9 eesdbk"
+              class="sc-1ns6l9f-9 cggaTS"
             />
           </div>
           <div
-            class="sc-1ns6l9f-8 hNYHa-d"
+            class="sc-1ns6l9f-8 kXLzGr"
             color="var(--link)"
           >
             <h2
@@ -15320,7 +14428,7 @@ Object {
               </li>
               <li>
                 <a
-                  href="https://vote.unlock-protocol.com"
+                  href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                 >
                   Governance
                 </a>
@@ -15849,11 +14957,11 @@ Object {
     <script />
     <script />
     <script />
-    .c3 {
+    .c4 {
   fill: var(--brand);
 }
 
-.c5 {
+.c7 {
   background-color: var(--white);
   color: var(--link);
   border: none;
@@ -15868,16 +14976,16 @@ Object {
   cursor: pointer;
 }
 
-.c5 a {
+.c7 a {
   color: var(--link) !important;
 }
 
-.c5:hover {
+.c7:hover {
   background-color: var(--link);
   color: var(--white);
 }
 
-.c6 {
+.c8 {
   background-color: var(--link);
   color: white !important;
   border: none;
@@ -15892,11 +15000,11 @@ Object {
   cursor: pointer;
 }
 
-.c6 a {
+.c8 a {
   color: var(--white) !important;
 }
 
-.c6:hover {
+.c8:hover {
   background-color: var(--white);
   color: var(--link) !important;
 }
@@ -15907,90 +15015,36 @@ Object {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  margin-bottom: 64px;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  height: 43px;
-  margin-bottom: 64px;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   justify-items: end;
   height: 100%;
+  overflow-x: scroll;
+  margin-top: 16px;
 }
 
-.c7 {
-  display: none;
-  height: auto;
+.c5 .c6:first-child {
+  margin-left: 0px;
 }
 
-.c7 .sc-yj92th-0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .sc-yj92th-0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .sc-yj92th-0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .sc-yj92th-0 > svg {
-  fill: var(--grey);
-}
-
-.c7 .sc-yj92th-0:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c8 .sc-yj92th-0 {
-  margin: 24px;
-}
-
-.c8 .sc-yj92th-0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-  line-height: 0;
+.c3 {
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .c11 {
@@ -16083,7 +15137,8 @@ Object {
 
 .c1 {
   max-width: 1080px;
-  padding-top: 48px;
+  padding: 16px;
+  padding-top: 24px;
   margin: 0 auto;
 }
 
@@ -16107,31 +15162,19 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c2 {
-    display: none;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 16px;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c7 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c8 {
-    display: none;
+@media only screen and (min-width:736px) and (max-width:1000px) {
+  .c2 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -16147,7 +15190,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
-    padding-top: 0px;
+    padding: 0px;
   }
 }
 
@@ -16171,69 +15214,73 @@ Object {
           <header
             class="c2"
           >
-            <a
-              href="/"
-              style="display: flex; align-items: center;"
-            >
-              <svg
-                class="c3"
-                height="28px"
-                name="Unlock"
-                viewBox="0 0 1200 256"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-                />
-              </svg>
-            </a>
             <div
-              class="c4"
+              class="c3"
             >
               <a
-                class="c5"
+                href="/"
+                style="display: flex; align-items: center;"
+              >
+                <svg
+                  class="c4"
+                  height="28px"
+                  name="Unlock"
+                  viewBox="0 0 1200 256"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              class="c5"
+            >
+              <a
+                class="c6 c7"
                 href="/about"
                 label="About"
               >
                 About
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="/blog"
                 label="Blog"
               >
                 Blog
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com/creators/plugins-and-integrations"
                 label="Integrations"
               >
                 Integrations
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 label="Developers"
               >
                 Developers
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://docs.unlock-protocol.com"
                 label="Docs"
               >
                 Docs
               </a>
               <a
-                class="c5"
+                class="c6 c7"
                 href="https://discord.gg/Ah6ZEJyTDp"
                 label="Discord"
               >
                 Community
               </a>
               <a
-                class="c6"
+                class="c6 c8"
                 href="undefined/dashboard"
                 label="App"
                 target="_blank"
@@ -16241,45 +15288,6 @@ Object {
                 App
               </a>
             </div>
-            <div
-              class="c7"
-            >
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 56 42"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Bars
-                  </title>
-                  <path
-                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                  />
-                </svg>
-              </a>
-              <a
-                class="c5"
-              >
-                <svg
-                  viewBox="0 0 58 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>
-                    Chevron Up
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-            <div
-              class="c8"
-            />
           </header>
           <div
             class="c9"
@@ -16359,7 +15367,7 @@ Object {
                 </li>
                 <li>
                   <a
-                    href="https://vote.unlock-protocol.com"
+                    href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                   >
                     Governance
                   </a>
@@ -16430,19 +15438,7 @@ Object {
 
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) {
+@media only screen and (min-width:736px) and (max-width:1000px) {
 
 }
 
@@ -16473,29 +15469,33 @@ Object {
       class="sc-12f69w-1 hZbXYe"
     >
       <div
-        class="sc-12f69w-0 inqBia"
+        class="sc-12f69w-0 eyWred"
       >
         <header
-          class="sc-g91yl6-0 eJWZL"
+          class="sc-g91yl6-0 NZuNy"
         >
-          <a
-            href="/"
-            style="display: flex; align-items: center;"
-          >
-            <svg
-              class="sc-ryhll6-1 OuCSw"
-              height="28px"
-              name="Unlock"
-              viewBox="0 0 1200 256"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
-              />
-            </svg>
-          </a>
           <div
-            class="sc-g91yl6-2 bRPYpt"
+            class="sc-g91yl6-2 cqMbck"
+          >
+            <a
+              href="/"
+              style="display: flex; align-items: center;"
+            >
+              <svg
+                class="sc-ryhll6-1 OuCSw"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0170.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 01-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+          </div>
+          <div
+            class="sc-g91yl6-1 hNipiw"
           >
             <a
               class="sc-vjbnjq-0 grhlzI"
@@ -16548,45 +15548,6 @@ Object {
               App
             </a>
           </div>
-          <div
-            class="sc-g91yl6-3 gvxMHE"
-          >
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 56 42"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Bars
-                </title>
-                <path
-                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                />
-              </svg>
-            </a>
-            <a
-              class="sc-vjbnjq-0 grhlzI"
-            >
-              <svg
-                viewBox="0 0 58 32"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>
-                  Chevron Up
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-            </a>
-          </div>
-          <div
-            class="sc-g91yl6-4 izOhQf"
-          />
         </header>
         <div
           class="sc-12f69w-2 kCCGHb"
@@ -16666,7 +15627,7 @@ Object {
               </li>
               <li>
                 <a
-                  href="https://vote.unlock-protocol.com"
+                  href="https://vote.unlock-protocol.com/#/unlock-protocol.eth"
                 >
                   Governance
                 </a>

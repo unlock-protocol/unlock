@@ -113,6 +113,7 @@ export const Box = styled.div`
 
   ${Media.phone`
     margin-top: 24px;
+    padding: ${(props) => props.padding || 16}px;
   `}
 
   p {
@@ -140,6 +141,11 @@ export const Columns = styled.div`
     margin: 16px 0px;
     flex-direction: column;
   `};
+
+  ${Media.tablet`
+    margin: 16px 0px;
+    flex-direction: column;
+  `}
 `
 
 export const Column = styled.div`

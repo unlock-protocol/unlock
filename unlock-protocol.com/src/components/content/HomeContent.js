@@ -270,7 +270,7 @@ export const HomeContent = ({ posts }) => {
             </p>
             <p style={{ marginTop: 'auto' }}>
               →{' '}
-              <Link href="https://vote.unlock-protocol.com/#/unlock-protocol.eth/settings">
+              <Link href="https://vote.unlock-protocol.com/#/unlock-protocol.eth">
                 <a>Governance</a>
               </Link>
             </p>
