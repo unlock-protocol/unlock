@@ -7,6 +7,8 @@ import { transactionTypeMapping } from '../utils/types'
 import { AuthenticationContext } from '../components/interface/Authenticate'
 import { FATAL_WRONG_NETWORK } from '../errors'
 import { getFiatPricing, getCardConnected } from './useCards'
+import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
+import { StorageService } from '../services/storageService'
 
 /**
  * Event handler
@@ -280,15 +282,76 @@ export const useLock = (lockFromProps, network) => {
   // 0 if a stripe account exists but is not ready
   const isStripeConnected = async () => {
     try {
-      const response = await getCardConnected(config, lock.address, network)
+      const response = await getCardConnected(
+        config,
+        lockFromProps.address,
+        network
+      )
 
       return response.connected
     } catch (error) {
       console.error(
-        `Could not get Stripe status for ${lock.address}: ${error.message}`
+        `Could not get Stripe status for ${lockFromProps.address}: ${error.message}`
       )
       return -1
     }
+  }
+
+  // Checks if the address is a manager
+  const isLockManager = async (lockManager) => {
+    if (!lockManager) {
+      return false
+    }
+    const isLockManager = await web3Service.isLockManager(
+      lockFromProps.address,
+      lockManager,
+      network
+    )
+    return isLockManager
+  }
+
+  const getKeyData = async (keyId, signer) => {
+    let payload = {}
+    let signature
+
+    // If we have a signer, try to get the protected data!
+    if (signer) {
+      payload = generateKeyMetadataPayload(signer, {})
+      signature = await walletService.unformattedSignTypedData(signer, payload)
+    }
+
+    const storageService = new StorageService(config.services.storage.host)
+    const data = await storageService.getKeyMetadata(
+      lockFromProps.address,
+      keyId,
+      payload,
+      signature,
+      network
+    )
+    return data
+  }
+
+  const markAsCheckedIn = async (signer, keyId) => {
+    const payload = generateKeyMetadataPayload(signer, {
+      lockAddress: lockFromProps.address,
+      keyId,
+      metadata: {
+        checkedInAt: new Date().getTime(),
+      },
+    })
+    const signature = await walletService.unformattedSignTypedData(
+      signer,
+      payload
+    )
+    const storageService = new StorageService(config.services.storage.host)
+    const response = await storageService.setKeyMetadata(
+      lockFromProps.address,
+      keyId,
+      payload,
+      signature,
+      network
+    )
+    return response.status === 202
   }
 
   return {
@@ -301,6 +364,9 @@ export const useLock = (lockFromProps, network) => {
     error,
     getCreditCardPricing,
     isStripeConnected,
+    isLockManager,
+    getKeyData,
+    markAsCheckedIn,
   }
 }
 

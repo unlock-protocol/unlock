@@ -6,6 +6,7 @@ import Account from '../interface/Account'
 import VerificationStatus from '../interface/VerificationStatus'
 import { pageTitle } from '../../constants'
 import Authenticate from '../interface/Authenticate'
+import Loading from '../interface/Loading'
 
 export const VerificationContent = () => {
   const { query } = useRouter()
@@ -21,12 +22,17 @@ export const VerificationContent = () => {
     ).toString('hex')}`
     sig = Buffer.from(query.sig, 'base64').toString()
   }
+
+  if (!data || !sig || !hexData) {
+    return <Loading />
+  }
+
   return (
     <Layout title="Verification">
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Authenticate optional requiredNetwork={data && data.network}>
+      <Authenticate optional>
         <Account />
         <VerificationStatus data={data} sig={sig} hexData={hexData} />
       </Authenticate>

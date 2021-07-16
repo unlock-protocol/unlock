@@ -1,25 +1,25 @@
-import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import React, { useState, useContext, useEffect } from 'react'
+import styled from 'styled-components'
 import { isSignatureValidForAddress } from '../../utils/signatures'
-import { DefaultError } from '../creator/FatalError'
-import { OwnedKey } from './keychain/KeychainTypes'
-import keyHolderQuery from '../../queries/keyHolder'
-import 'cross-fetch/polyfill'
+import { useLock } from '../../hooks/useLock'
+import { ActionButton } from './buttons/ActionButton'
+
 import Loading from './Loading'
 import { ValidKey, InvalidKey } from './verification/Key'
-import { Account as AccountType } from '../../unlockTypes'
+import { AuthenticationContext } from './Authenticate'
+import LoginPrompt from './LoginPrompt'
 
 interface VerificationData {
   account: string
   lockAddress: string
   timestamp: number
+  network: number
 }
 
 interface Props {
-  account?: AccountType
-  data?: VerificationData
-  sig?: string
-  hexData?: string
+  data: VerificationData
+  sig: string
+  hexData: string
 }
 
 /**
@@ -27,38 +27,35 @@ interface Props {
  * and display the right status
  */
 export const VerificationStatus = ({ data, sig, hexData }: Props) => {
-  if (!data || !sig || !hexData) {
-    return (
-      <DefaultError
-        illustration="/static/images/illustrations/error.svg"
-        title="No Signature Data Found"
-        critical
-      >
-        We couldn&apos;t find a signature payload in the URL. Please check that
-        you scanned the correct QR code.
-      </DefaultError>
-    )
-  }
-
-  const { account, lockAddress, timestamp } = data
-
-  // TODO: craft a better query to let us directly ask about the single
-  // lock under consideration. This will remove the need to iterate over
-  // all the user's keys to determine if they own a key to this lock.
-  const {
-    loading,
-    error,
-    data: keys,
-  } = useQuery(keyHolderQuery(), {
-    variables: { address: account },
+  const { account, lockAddress, timestamp, network } = data
+  const [showLogin, setShowLogin] = useState(false)
+  const [lock, setLock] = useState(null)
+  const [unlockKey, setUnlockKey] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const { account: viewer } = useContext(AuthenticationContext)
+  const { getKeyForAccount, getLock } = useLock(
+    {
+      address: lockAddress,
+    },
+    network
+  )
+  console.log({
+    lockAddress,
+    network,
   })
+
+  useEffect(() => {
+    const onLoad = async () => {
+      setUnlockKey(await getKeyForAccount(account))
+      setLock(await getLock())
+      setLoading(false)
+    }
+
+    onLoad()
+  }, [lockAddress])
 
   if (loading) {
     return <Loading />
-  }
-  if (error) {
-    // We could not load the user keys...
-    return <p>Key could not be loaded... Please try again</p>
   }
 
   // If the signature is not valid
@@ -66,34 +63,48 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     return <InvalidKey />
   }
 
-  let matchingKey: OwnedKey | undefined
-  if (keys && keys.keyHolders) {
-    matchingKey = keys.keyHolders[0].keys.find((key: OwnedKey) => {
-      return key.lock.address === lockAddress
-    })
-  }
-
   // The user does not have a key!
-  if (!matchingKey) {
+  if (!unlockKey) {
     return <InvalidKey />
   }
 
+  if (showLogin && !viewer) {
+    return <LoginPrompt />
+  }
+
   return (
-    <ValidKey
-      viewer={undefined} /** TODO */
-      owner={account}
-      signatureTimestamp={timestamp}
-      ownedKey={matchingKey}
-      signature={sig}
-    />
+    <Wrapper>
+      <ValidKey
+        viewer={viewer}
+        owner={account}
+        signatureTimestamp={timestamp}
+        unlockKey={unlockKey}
+        lock={lock}
+        network={network}
+      />
+      {!viewer && (
+        <ConnectButton onClick={() => setShowLogin(true)}>
+          Connect to check user in
+        </ConnectButton>
+      )}
+    </Wrapper>
   )
 }
 
-VerificationStatus.defaultProps = {
-  account: null,
-  data: null,
-  sig: '',
-  hexData: '',
-}
+const Wrapper = styled.div`
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+`
+
+const ConnectButton = styled(ActionButton)`
+  max-width: 290px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 16px;
+  color: var(--white);
+`
 
 export default VerificationStatus
