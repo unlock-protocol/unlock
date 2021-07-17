@@ -22,13 +22,11 @@ const LoadLock = ({
 }: LoadLockProps) => {
   const web3Service = useContext(Web3ServiceContext)
   const [loading, setLoading] = useState(true)
-  const { lock, getLock, getCreditCardPricing } = useLock({ address }, network)
+  const { lock, getLock } = useLock({ address }, network)
 
   useEffect(() => {
     const loadLock = async () => {
       await getLock()
-      // Here ideally we should set the lock in a context so that we don't have to reload them all the time!
-      await getCreditCardPricing()
       setLoading(false)
     }
     if (web3Service) {
