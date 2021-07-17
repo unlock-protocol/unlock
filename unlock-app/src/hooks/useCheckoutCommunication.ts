@@ -3,7 +3,7 @@ import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfig } from '../unlockTypes'
 
 export interface UserInfo {
-  address: string
+  address?: string
 }
 
 export interface TransactionInfo {

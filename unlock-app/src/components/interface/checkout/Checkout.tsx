@@ -329,6 +329,13 @@ export const Checkout = ({
     )
   }
 
+  const onLoggedOut = () => {
+    emitUserInfo({})
+    setCheckoutState('')
+    selectLock(null)
+    setShowBack(false)
+  }
+
   const back = () => {
     setCheckoutState('')
     selectLock(null)
@@ -343,7 +350,7 @@ export const Checkout = ({
           back={back}
           allowClose={allowClose}
           hideCheckout={emitCloseModal}
-          onLoggedOut={back}
+          onLoggedOut={onLoggedOut}
         >
           <PaywallLogoWrapper>
             {paywallConfig.icon ? (
