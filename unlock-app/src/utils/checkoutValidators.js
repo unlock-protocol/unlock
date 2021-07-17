@@ -164,9 +164,9 @@ export const isValidPaywallConfig = (config) => {
     log('No paywall config provided.')
     return false
   }
-  if (!isValidObject(config, ['callToAction', 'locks'])) {
+  if (!isValidObject(config, ['locks'])) {
     log(
-      'The paywall config does not contain at least one of the required fields: "callToAction", "locks".'
+      'The paywall config does not contain at least one of the required fields: "locks".'
     )
     return false
   }
@@ -178,11 +178,11 @@ export const isValidPaywallConfig = (config) => {
     }
   }
 
-  if (typeof config.callToAction !== 'object') {
-    log('The paywall config\'s "callToAction" property is not a valid object.')
-    return false
-  }
-  if (!isValidCTA(config.callToAction)) {
+  if (
+    config.callToAction &&
+    config.callToAction === 'object' &&
+    !isValidCTA(config.callToAction)
+  ) {
     return false
   }
 

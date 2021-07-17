@@ -269,6 +269,7 @@ export const useLock = (lockFromProps, network) => {
         fiatPricing,
       }
       setLock(mergedLock)
+
       return fiatPricing
     } catch (error) {
       console.error(

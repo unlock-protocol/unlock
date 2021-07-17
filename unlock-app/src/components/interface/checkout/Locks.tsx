@@ -27,6 +27,7 @@ const LoadLock = ({
   useEffect(() => {
     const loadLock = async () => {
       await getLock()
+      // Here ideally we should set the lock in a context so that we don't have to reload them all the time!
       await getCreditCardPricing()
       setLoading(false)
     }
