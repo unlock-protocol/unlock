@@ -15,7 +15,7 @@ export default function getConfigFromSearch(
       parsedConfig = JSON.parse(decodedConfig)
     } catch (e) {
       console.error(
-        `paywall config ${decodedConfig} in URL not valid JSON, continuing with undefined`
+        'paywall config in URL not valid JSON, continuing with undefined'
       )
       return undefined
     }

@@ -179,9 +179,9 @@ export const isValidPaywallConfig = (config) => {
   }
 
   if (
-    config.callToAction &&
-    config.callToAction === 'object' &&
-    !isValidCTA(config.callToAction)
+    config.callToAction !== undefined &&
+    (typeof config.callToAction !== 'object' ||
+      !isValidCTA(config.callToAction))
   ) {
     return false
   }
