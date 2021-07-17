@@ -343,6 +343,7 @@ export const Checkout = ({
           back={back}
           allowClose={allowClose}
           hideCheckout={emitCloseModal}
+          onLoggedOut={back}
         >
           <PaywallLogoWrapper>
             {paywallConfig.icon ? (
