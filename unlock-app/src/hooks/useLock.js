@@ -9,7 +9,7 @@ import { FATAL_WRONG_NETWORK } from '../errors'
 import { getFiatPricing, getCardConnected } from './useCards'
 import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { StorageService } from '../services/storageService'
-
+import LocksContext from '../contexts/LocksContext'
 /**
  * Event handler
  * @param {*} hash
@@ -183,6 +183,8 @@ export const purchaseKeyFromLock = (
  * @param {*} network // network on which the lock is
  */
 export const useLock = (lockFromProps, network) => {
+  const { locks, addLock } = useContext(LocksContext)
+
   const [lock, setLock] = useReducer(
     (oldLock, newLock) => {
       return { ...oldLock, ...newLock }
@@ -199,7 +201,23 @@ export const useLock = (lockFromProps, network) => {
   const [error, setError] = useState(null)
 
   const getLock = async () => {
-    const lockDetails = await web3Service.getLock(lock.address, network)
+    let lockDetails
+
+    if (locks[lock.address]) {
+      lockDetails = locks[lock.address]
+    } else {
+      lockDetails = await web3Service.getLock(lock.address, network)
+      const fiatPricing = await getFiatPricing(config, lock.address, network)
+      lockDetails = {
+        ...lockDetails,
+        fiatPricing,
+      }
+
+      addLock({
+        ...lockDetails,
+        address: lock.address,
+      })
+    }
     const mergedLock = {
       ...lock,
       ...lockDetails,
@@ -269,6 +287,7 @@ export const useLock = (lockFromProps, network) => {
         fiatPricing,
       }
       setLock(mergedLock)
+
       return fiatPricing
     } catch (error) {
       console.error(

@@ -82,11 +82,13 @@ export const CryptoCheckout = ({
 
   useEffect(() => {
     const getBalance = async () => {
-      try {
-        const balance = await getTokenBalance(lock.currencyContractAddress)
-        setCanAfford(userCanAffordKey(lock, balance))
-      } catch (error) {
-        console.error(error)
+      if (account) {
+        try {
+          const balance = await getTokenBalance(lock.currencyContractAddress)
+          setCanAfford(userCanAffordKey(lock, balance))
+        } catch (error) {
+          console.error(error)
+        }
       }
     }
     getBalance()
