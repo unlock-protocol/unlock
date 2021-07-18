@@ -81,6 +81,15 @@ const DesktopButtons = styled.div`
   overflow-x: scroll;
   margin-top: 16px;
 
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+
+  &::-webkit-scrollbar {
+    /* WebKit */
+    width: 0;
+    height: 0;
+  }
+
   ${BaseButton}:first-child {
     margin-left: 0px;
   }
