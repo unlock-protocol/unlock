@@ -26,7 +26,7 @@ const LoadLock = ({
 
   useEffect(() => {
     const loadLock = async () => {
-      await getLock()
+      await getLock({ pricing: true })
       setLoading(false)
     }
     if (web3Service) {

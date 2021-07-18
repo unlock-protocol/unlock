@@ -259,7 +259,7 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -274,7 +274,7 @@ describe('Signature Validation Middleware', () => {
           body,
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -289,7 +289,7 @@ describe('Signature Validation Middleware', () => {
           body,
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })

@@ -25,12 +25,12 @@ namespace SignatureValidationMiddleware {
     }
   }
 
-  const extractPersonalSignSignee = (header: string, body: string) => {
+  const extractPersonalSignSignee = (header: string, data: string) => {
     const decodedSignature = Base64.decode(header)
 
     try {
       return sigUtil.recoverPersonalSignature({
-        data: JSON.stringify(body),
+        data,
         sig: decodedSignature,
       })
     } catch (error) {
@@ -57,8 +57,14 @@ namespace SignatureValidationMiddleware {
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer-Simple'
     ) {
+      let data = JSON.stringify(source)
+      // Overrides of the content which has been signed because it is better for UX to sign strings than JSON objects.
+      if (req.body?.message?.UserMetaData) {
+        data = `I am signing the metadata for the lock at ${req.params.address}`
+      }
+
       const header = req.headers.authorization.split(' ')[1]
-      return extractPersonalSignSignee(header, source)
+      return extractPersonalSignSignee(header, data)
     } else {
       logger.error('Missing Authorization header. ')
     }
@@ -108,7 +114,6 @@ namespace SignatureValidationMiddleware {
     try {
       const potentialSignee: string =
         body.message[configuration.name][configuration.signee]
-
       if (
         body.message &&
         validateSignee(potentialSignee, signee) &&
@@ -136,7 +141,6 @@ namespace SignatureValidationMiddleware {
   ): any => {
     return (req: any, res: Response, next: any) => {
       const signer = extractSignee(req)
-
       if (signer === null) {
         res.status(401).send('missing signer')
       } else {
@@ -145,7 +149,7 @@ namespace SignatureValidationMiddleware {
           req.owner = owner
           next()
         } else {
-          res.sendStatus(401).send('signature does not match')
+          res.status(401).send('signature does not match')
         }
       }
     }

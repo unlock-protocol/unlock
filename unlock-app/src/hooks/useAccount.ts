@@ -176,11 +176,13 @@ export const useAccount = (address: string, network: number) => {
     metadata: any,
     network: number
   ) => {
+    // Here we need to generate the payload
     const payload = generateKeyHolderMetadataPayload(address, metadata)
-    const signature = await walletService.unformattedSignTypedData(
-      address,
-      payload
-    )
+    // Then ask the user to sign a message!
+    // TODO prevent replays by adding timestamp?
+    const message = `I am signing the metadata for the lock at ${lockAddress}`
+    const signature = await walletService.signMessage(message, 'personal_sign')
+
     const storageService = new StorageService(config.services.storage.host)
 
     const response = await storageService.setUserMetadataData(
@@ -193,6 +195,13 @@ export const useAccount = (address: string, network: number) => {
     return response
   }
 
+  /**
+   * Updates the icon on a lock
+   * @param lockAddress
+   * @param network
+   * @param icon
+   * @returns
+   */
   const updateLockIcon = async (
     lockAddress: string,
     network: number,

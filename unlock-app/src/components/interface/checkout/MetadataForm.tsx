@@ -43,6 +43,7 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed
   // data will be correct.
+  // TODO: IS THIS USED?
   const wrappedOnSubmit = async (formResult: { [key: string]: string }) => {
     const metadata = formResultToMetadata(formResult, fields)
     setSubmittedForm(true)

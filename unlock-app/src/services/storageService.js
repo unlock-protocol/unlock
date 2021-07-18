@@ -419,7 +419,9 @@ export class StorageService extends EventEmitter {
     return fetch(url, {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
