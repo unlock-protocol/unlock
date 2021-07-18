@@ -200,23 +200,26 @@ export const useLock = (lockFromProps, network) => {
   const config = useContext(ConfigContext)
   const [error, setError] = useState(null)
 
-  const getLock = async () => {
+  const getLock = async (opts = {}) => {
     let lockDetails
 
-    if (locks[lock.address]) {
+    if (locks && locks[lock.address]) {
       lockDetails = locks[lock.address]
     } else {
       lockDetails = await web3Service.getLock(lock.address, network)
-      const fiatPricing = await getFiatPricing(config, lock.address, network)
-      lockDetails = {
-        ...lockDetails,
-        fiatPricing,
+      if (opts.pricing) {
+        const fiatPricing = await getFiatPricing(config, lock.address, network)
+        lockDetails = {
+          ...lockDetails,
+          fiatPricing,
+        }
       }
-
-      addLock({
-        ...lockDetails,
-        address: lock.address,
-      })
+      if (addLock) {
+        addLock({
+          ...lockDetails,
+          address: lock.address,
+        })
+      }
     }
     const mergedLock = {
       ...lock,
