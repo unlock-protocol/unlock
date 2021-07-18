@@ -43,7 +43,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   useEffect(() => {
     const onLoad = async () => {
       setUnlockKey(await getKeyForAccount(account))
-      setLock(await getLock())
+      setLock(await getLock({ pricing: false }))
       setLoading(false)
     }
 
