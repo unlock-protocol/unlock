@@ -8,9 +8,14 @@ import SvgComponents from '../svg'
 interface CheckoutFooterProps {
   back: () => void
   showBack: boolean
+  onLoggedOut: () => void
 }
 
-export const CheckoutFooter = ({ showBack, back }: CheckoutFooterProps) => {
+export const CheckoutFooter = ({
+  showBack,
+  back,
+  onLoggedOut,
+}: CheckoutFooterProps) => {
   const { account, deAuthenticate } = useContext(AuthenticationContext)
 
   let shortAddr = ''
@@ -19,6 +24,11 @@ export const CheckoutFooter = ({ showBack, back }: CheckoutFooterProps) => {
       account.length - 3,
       account.length
     )}`
+  }
+
+  const onDisconnect = () => {
+    deAuthenticate()
+    onLoggedOut()
   }
 
   return (
@@ -32,7 +42,7 @@ export const CheckoutFooter = ({ showBack, back }: CheckoutFooterProps) => {
         {account && (
           <span>
             <Address title={account}>{shortAddr}</Address>
-            <DisconnectButton onClick={deAuthenticate}>x</DisconnectButton>
+            <DisconnectButton onClick={onDisconnect}>x</DisconnectButton>
           </span>
         )}
       </Row>

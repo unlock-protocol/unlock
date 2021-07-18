@@ -22,6 +22,7 @@ describe('CheckoutWrapper', () => {
 
     const { container } = renderWithContexts(
       <CheckoutWrapper
+        onLoggedOut={jest.fn()}
         back={jest.fn()}
         showBack={false}
         hideCheckout={hideCheckout}
@@ -41,6 +42,7 @@ describe('CheckoutWrapper', () => {
 
     const { queryByTitle } = renderWithContexts(
       <CheckoutWrapper
+        onLoggedOut={jest.fn()}
         back={jest.fn()}
         showBack={false}
         hideCheckout={hideCheckout}
@@ -59,6 +61,7 @@ describe('CheckoutWrapper', () => {
 
     const { getByTitle } = renderWithContexts(
       <CheckoutWrapper
+        onLoggedOut={jest.fn()}
         back={jest.fn()}
         showBack={false}
         hideCheckout={hideCheckout}

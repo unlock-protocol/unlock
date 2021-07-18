@@ -6,6 +6,7 @@ import useLock, {
   updateKeyPriceOnLock,
 } from '../../hooks/useLock'
 import configure from '../../config'
+import LocksContext from '../../contexts/LocksContext'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
@@ -29,6 +30,9 @@ describe('useLock', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(React, 'useContext').mockImplementation((context) => {
+      if (context === LocksContext) {
+        return { locks: {}, addLock: () => {} }
+      }
       if (context === AuthenticationContext) {
         return { network }
       }

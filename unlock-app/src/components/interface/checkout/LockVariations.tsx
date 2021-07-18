@@ -178,18 +178,18 @@ export const LockPrice = styled.div`
   text-align: right;
   font-style: normal;
   width: 100%;
-`
 
-export const CryptoPrice = styled.span`
-  font-weight: 600;
-  font-size: 16px;
-`
+  span {
+    font-size: 10px;
+    color: var(--grey);
+  }
 
-export const FiatPrice = styled.span`
-  font-size: 10px;
-  color: var(--grey);
+  span:first-child {
+    color: var(--darkgrey);
+    font-weight: 600;
+    font-size: 16px;
+  }
 `
-
 export const QuantityAndDuration = styled.div`
   width: 92px;
   padding: 12px;
@@ -222,6 +222,7 @@ export interface LockProps {
   network: number
   walletNetwork?: number
   selectable: boolean
+  cardEnabled: boolean
 }
 
 export interface LoadingLockProps {
@@ -230,18 +231,29 @@ export interface LoadingLockProps {
 }
 
 interface FullPriceProps {
+  cardEnabled: boolean
   formattedKeyPrice: string
   convertedKeyPrice: string
 }
 
 const FullPrice = ({
+  cardEnabled,
   formattedKeyPrice,
   convertedKeyPrice,
 }: FullPriceProps) => {
+  // If card is enabled, we show fiat price first
+  if (cardEnabled && convertedKeyPrice) {
+    return (
+      <LockPrice>
+        <span>{convertedKeyPrice}</span>
+        <span>{formattedKeyPrice}</span>
+      </LockPrice>
+    )
+  }
   return (
     <LockPrice>
-      <CryptoPrice>{formattedKeyPrice}</CryptoPrice>
-      <FiatPrice>{convertedKeyPrice}</FiatPrice>
+      <span>{formattedKeyPrice}</span>
+      <span>{convertedKeyPrice}</span>
     </LockPrice>
   )
 }
@@ -267,6 +279,7 @@ export const SoldOutLock = ({
   formattedDuration,
   formattedKeyPrice,
   convertedKeyPrice,
+  cardEnabled,
 }: LockProps) => {
   return (
     <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
@@ -276,6 +289,7 @@ export const SoldOutLock = ({
       </InfoWrapper>
       <DisabledLockBody>
         <FullPrice
+          cardEnabled={cardEnabled}
           formattedKeyPrice={formattedKeyPrice}
           convertedKeyPrice={convertedKeyPrice}
         />
@@ -298,6 +312,7 @@ export const PurchaseableLock = ({
   convertedKeyPrice,
   formattedKeysAvailable,
   selectable,
+  cardEnabled,
   onClick,
 }: LockProps) => {
   return (
@@ -312,6 +327,7 @@ export const PurchaseableLock = ({
       </InfoWrapper>
       <BaseLockBody onClick={onClick}>
         <FullPrice
+          cardEnabled={cardEnabled}
           formattedKeyPrice={formattedKeyPrice}
           convertedKeyPrice={convertedKeyPrice}
         />
@@ -336,6 +352,7 @@ export const ProcessingLock = ({
   formattedKeyPrice,
   convertedKeyPrice,
   formattedKeysAvailable,
+  cardEnabled,
 }: LockProps) => {
   return (
     <LockContainer data-address={address} data-testid="ProcessingLock">
@@ -345,6 +362,7 @@ export const ProcessingLock = ({
       </InfoWrapper>
       <BaseLockBody>
         <FullPrice
+          cardEnabled={cardEnabled}
           formattedKeyPrice={formattedKeyPrice}
           convertedKeyPrice={convertedKeyPrice}
         />
@@ -369,6 +387,7 @@ export const ConfirmedLock = ({
   convertedKeyPrice,
   formattedKeysAvailable,
   selectable,
+  cardEnabled,
 }: LockProps) => {
   return (
     <LockContainer
@@ -382,6 +401,7 @@ export const ConfirmedLock = ({
       </InfoWrapper>
       <ConfirmedBody>
         <FullPrice
+          cardEnabled={cardEnabled}
           formattedKeyPrice={formattedKeyPrice}
           convertedKeyPrice={convertedKeyPrice}
         />

@@ -78,6 +78,7 @@ export const userCanAffordKey = (
 
 export const convertedKeyPrice = (lock: LockTickerSymbolLock) => {
   const keyPrice = lock?.fiatPricing?.usd?.keyPrice
+
   if (!keyPrice) {
     return ''
   }
