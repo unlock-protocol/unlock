@@ -58,25 +58,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       payload,
       signature,
     })
-  }
-
-  const toggleShowingQR = () => {
-    setShowingQR(!showingQR)
-  }
-
-  const qrButton = () => {
-    if (signature) {
-      return (
-        <ButtonAction type="button" onClick={toggleShowingQR}>
-          Display QR Code
-        </ButtonAction>
-      )
-    }
-    return (
-      <ButtonAction type="button" onClick={handleSignature}>
-        Confirm Ownership
-      </ButtonAction>
-    )
+    setShowingQR(true)
   }
 
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -100,7 +82,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       {signature && (
         <QRModal
           active={showingQR}
-          dismiss={toggleShowingQR}
+          dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
           signature={signature}
         />
@@ -112,7 +94,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
       />
       {error && <Error>{error}</Error>}
-      {qrButton()}
+      <ButtonAction type="button" onClick={handleSignature}>
+        Confirm Ownership
+      </ButtonAction>
     </Box>
   )
 }
