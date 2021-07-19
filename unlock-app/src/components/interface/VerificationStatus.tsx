@@ -56,12 +56,12 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   // If the signature is not valid
   if (!isSignatureValidForAddress(sig, hexData, account)) {
-    return <InvalidKey />
+    return <InvalidKey reason="Signature does not match!" />
   }
 
   // The user does not have a key!
   if (!unlockKey) {
-    return <InvalidKey />
+    return <InvalidKey reason="This user does not have a key!" />
   }
 
   if (showLogin && !viewer) {

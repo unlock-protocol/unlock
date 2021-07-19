@@ -9,10 +9,14 @@ import {
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
 
+interface InvalidKeyProps {
+  reason: string
+}
+
 /**
  * Shows an invalid key. Since we cannot trust any of the data, we don't show any
  */
-export const InvalidKey = () => {
+export const InvalidKey = ({ reason }: InvalidKeyProps) => {
   return (
     <Wrapper>
       <Box color="--red">
@@ -21,6 +25,9 @@ export const InvalidKey = () => {
         </Circle>
         <KeyStatus>Key Invalid</KeyStatus>
       </Box>
+      <KeyInfo>
+        <Value>{reason}</Value>
+      </KeyInfo>
     </Wrapper>
   )
 }

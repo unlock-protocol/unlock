@@ -22,7 +22,7 @@ const metadata = {}
 
 storiesOf('Verification', module)
   .add('with an invalid key', () => {
-    return <InvalidKey />
+    return <InvalidKey reason="Not valid" />
   })
   .add('with a valid key', () => {
     return (

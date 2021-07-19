@@ -45,28 +45,19 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
-  const handleSignature = () => {
+  const handleSignature = async () => {
+    setError('')
     const payload = JSON.stringify({
       network,
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
     })
-    walletService.signDataPersonal(
-      '', // account address -- unused in walletService
+    const signature = await walletService.signMessage(payload, 'personal_sign')
+    setSignature({
       payload,
-      (error: any, _signature: any) => {
-        if (error) {
-          setError('We could not confirm that you own this key.')
-        } else {
-          setError('')
-          setSignature({
-            payload,
-            signature: _signature,
-          })
-        }
-      }
-    )
+      signature,
+    })
   }
 
   const toggleShowingQR = () => {
