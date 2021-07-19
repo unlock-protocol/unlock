@@ -53,6 +53,4 @@ If you're interested in building your own bot, or building with Unlock, most of 
 
 We are super excited to continue building. Let us know what you want to see and give us feedback in our [Discord](https://discord.gg/Nw3y4GtBSh)
 
-If you like where we are headed, consider following us on twitter:
-
-<a href="https://twitter.com/swordybot?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @swordybot</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+If you like where we are headed, consider <a href="https://twitter.com/swordybot?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">follow @swordybot</a>

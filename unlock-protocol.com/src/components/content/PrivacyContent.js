@@ -2,7 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 
 import Layout from '../interface/Layout'
-import Signature from '../interface/Signature'
+
 import {
   Section,
   Title,
@@ -429,8 +429,6 @@ export const PrivacyContent = () => (
         . We will make every effort to resolve your concerns.
       </Paragraph>
     </Section>
-
-    <Signature />
   </Layout>
 )
 

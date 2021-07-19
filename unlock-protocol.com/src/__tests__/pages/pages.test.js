@@ -58,7 +58,7 @@ describe('Pages', () => {
   describe('Home', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<Home />)
+      rtl.render(<Home posts={[]} />)
       expect(pageTitle).toBeCalled()
     })
   })

@@ -35,6 +35,8 @@ export const globalStyle = `
   body {
     font-family: IBM Plex Sans, Helvetica Neue, Arial, sans-serif;
     color: var(--grey);
+    padding: 0px;
+    margin: 0px;
   }
 
   h1 {

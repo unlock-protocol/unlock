@@ -29,7 +29,7 @@ The numbers are clear: ad blockers are growing in popularity and they’re also 
 
 The ad industry has been one of the most creative when it came to tracking users. For example, did you know that by combining email tracking and banner retargeting, ad networks that you never heard of know your full identity (including your full name and personal information) all across of the web? But the rules of what is possible are now being superseded by the rule of law. Europe’s GDPR has been such as game changer that, 6 months in, several US media sites are still blocking traffic from Europe (and foregoing the corresponding ad revenues), because they understand that they are not compliant. And, as [Robin Berjon](https://twitter.com/robinberjon) puts it, there is still a very real chance that even the largest ad-tech companies might soon be exposed to massive legal action.
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Recently, the <a href="https://twitter.com/CNIL?ref_src=twsrc%5Etfw">@CNIL</a> issued a decision regarding the GDPR compliance of an unknown French adtech company named &quot;Vectaury&quot;. It may seem like small fry, but the decision has potential wide-ranging impacts for Google, the IAB framework, and today&#39;s adtech. It&#39;s thread time! 👇</p>&mdash; Robin Berjon (@robinberjon) <a href="https://twitter.com/robinberjon/status/1063549722613432320?ref_src=twsrc%5Etfw">November 16, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Recently, the <a href="https://twitter.com/CNIL?ref_src=twsrc%5Etfw">@CNIL</a> issued a decision regarding the GDPR compliance of an unknown French adtech company named &quot;Vectaury&quot;. It may seem like small fry, but the decision has potential wide-ranging impacts for Google, the IAB framework, and today&#39;s adtech. It&#39;s thread time! 👇</p>&mdash; Robin Berjon (@robinberjon) <a href="https://twitter.com/robinberjon/status/1063549722613432320?ref_src=twsrc%5Etfw">November 16, 2018</a></blockquote>
 
 ## Economic challenges
 
@@ -53,7 +53,7 @@ So, even from a purely economic standpoint, ads are a terrible way to capture va
 
 Now, as an engineer, I know that we could still find ways around the technical challenges:
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Alt text = Facebook breaks the word &quot;Sponsored&quot; in 4 spans, and adds 4 visually hidden spans with the letter &quot;S&quot;, so that the textContent for this mess is &quot;SpSonSsoSredS&quot; <a href="https://t.co/iFMKbOedHT">https://t.co/iFMKbOedHT</a></p>&mdash; Florens Verschelde (@fvsch) <a href="https://twitter.com/fvsch/status/1071522348606595072?ref_src=twsrc%5Etfw">December 8, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Alt text = Facebook breaks the word &quot;Sponsored&quot; in 4 spans, and adds 4 visually hidden spans with the letter &quot;S&quot;, so that the textContent for this mess is &quot;SpSonSsoSredS&quot; <a href="https://t.co/iFMKbOedHT">https://t.co/iFMKbOedHT</a></p>&mdash; Florens Verschelde (@fvsch) <a href="https://twitter.com/fvsch/status/1071522348606595072?ref_src=twsrc%5Etfw">December 8, 2018</a></blockquote>
 
 And, as an entrepreneur, I know that there are other ways to monetize creation, whether it is content or software that is not ad-based.
 
