@@ -41,6 +41,32 @@ contract('UnlockDiscountToken upgrade', async () => {
       .then((f) => f.deployed())
   })
 
+  describe('Details', () => {
+    it('name is preserved', async () => {
+      const name = await udt.name()
+      assert.equal(name, 'Unlock Discount Token')
+      const updated = await upgradeContract(udt.address)
+      const updatedName = await updated.name()
+      assert.equal(updatedName, 'Unlock Discount Token')
+    })
+
+    it('symbol is preserved', async () => {
+      const symbol = await udt.symbol()
+      assert.equal(symbol, 'UDT')
+      const updated = await upgradeContract(udt.address)
+      const updatedSymbol = await updated.symbol()
+      assert.equal(updatedSymbol, 'UDT')
+    })
+
+    it('decimals are preserved', async () => {
+      const decimals = await udt.decimals()
+      assert.equal(decimals, 18)
+      const updated = await upgradeContract(udt.address)
+      const updatedDecimals = await updated.decimals()
+      assert.equal(updatedDecimals, 18)
+    })
+  })
+
   describe('Supply', () => {
     it('starting supply is 0', async () => {
       const totalSupply = await udt.totalSupply()
