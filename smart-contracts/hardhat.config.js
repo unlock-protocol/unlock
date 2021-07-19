@@ -12,6 +12,12 @@ require('@openzeppelin/hardhat-upgrades')
 // gas reporting for tests
 require('hardhat-gas-reporter')
 
+// contract verification
+if (process.env.ETHERSCAN_API_KEY) {
+  // eslint-disable-next-line global-require
+  require('@nomiclabs/hardhat-etherscan')
+}
+
 const { task } = require('hardhat/config')
 
 // const { deploy } = require('./scripts/deploy')
@@ -39,6 +45,12 @@ const defaultNetworks = {
 }
 
 const networks = getHardhatNetwork(defaultNetworks)
+
+if (process.env.ETHERSCAN_API_KEY) {
+  networks.etherscan = {
+    apiKey: process.env.ETHERSCAN_API_KEY,
+  }
+}
 
 task('accounts', 'Prints the list of accounts', async () => {
   // eslint-disable-next-line no-undef
