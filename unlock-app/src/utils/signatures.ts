@@ -19,6 +19,7 @@ export const isSignatureValidForAddress = (
       }) === address.toLowerCase()
     )
   } catch (error) {
+    console.error(error)
     return false
   }
 }
