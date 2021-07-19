@@ -30,7 +30,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       'UnlockDiscountToken'
     )
 
-    const [deployer, minter] = await ethers.getSigners()
+    const [, minter] = await ethers.getSigners()
     const udtSigned = await UnlockDiscountToken.connect(minter)
 
     udt = await upgrades
@@ -42,13 +42,13 @@ contract('UnlockDiscountToken upgrade', async () => {
   })
 
   describe('Supply', () => {
-    it('Starting supply is 0', async () => {
+    it('starting supply is 0', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(totalSupply.toNumber(), 0, 'starting supply must be 0')
     })
 
     it('Supply is preserved after upgrade', async () => {
-      const [deployer, minter, recipient] = await ethers.getSigners()
+      const [, , recipient] = await ethers.getSigners()
 
       // mint some tokens
       await udt.mint(recipient.address, mintAmount)
@@ -119,7 +119,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       await udt.approve(uniswapRouter.address, constants.MAX_UINT)
       await uniswapRouter.addLiquidityETH(
         udt.address,
-        web3.utils.toWei('10', 'ether'),
+        web3.utils.toWei('1000000', 'ether'),
         '1',
         '1',
         minter.address,
@@ -167,7 +167,18 @@ contract('UnlockDiscountToken upgrade', async () => {
       await lock.purchase(0, referrer.address, constants.ZERO_ADDRESS, [], {
         value: await lock.keyPrice(),
       })
-      
+
+      rate = await uniswapOracle.consult(
+        udt.address,
+        web3.utils.toWei('1', 'ether'),
+        weth.address
+      )
+    })
+
+    it('exchange rate is > 0', async () => {
+      assert.notEqual(web3.utils.fromWei(rate.toString(), 'ether'), 0)
+      // 1 UDT is worth ~0.000042 ETH
+      assert.equal(new BigNumber(rate).shiftedBy(-18).toFixed(5), '0.00004')
     })
 
     it('referrer has 0 UDT to start', async () => {
@@ -185,7 +196,6 @@ contract('UnlockDiscountToken upgrade', async () => {
       let gasSpent
 
       beforeEach(async () => {
-        
         // buy a key
         lock.connect(keyBuyer)
         const tx = await lock.purchase(
@@ -231,13 +241,12 @@ contract('UnlockDiscountToken upgrade', async () => {
     })
 
     describe('mint capped by % growth', () => {
-      
       beforeEach(async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
         // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
         const initialGdp = (await lock.keyPrice()).mul(40000)
-        await unlock.resetTrackedValue(initialGdp, 0)
+        await unlock.resetTrackedValue(initialGdp.toString(), 0)
 
         lock.connect(keyBuyer)
         await lock.purchase(0, keyBuyer.address, referrer.address, [], {
@@ -252,16 +261,14 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       it('amount minted for referrer ~= 10 UDT', async () => {
         const balance = await udt.balanceOf(referrer.address)
-        // console.log(balance.toNumber())
-        const bn = new BigNumber(balance.toNumber())
-        // console.log(bn.shiftedBy(-18).toFixed(0))
-        assert.equal( bn.shiftedBy(-18).toFixed(0), '10' )
+        const bn = new BigNumber(balance.toString())
+        assert.equal(bn.shiftedBy(-18).toFixed(0), '10')
       })
 
       it('amount minted for dev ~= 2 UDT', async () => {
         const balance = await udt.balanceOf(await unlock.owner())
         assert.equal(
-          new BigNumber(balance.toNumber()).shiftedBy(-18).toFixed(0),
+          new BigNumber(balance.toString()).shiftedBy(-18).toFixed(0),
           '2'
         )
       })
