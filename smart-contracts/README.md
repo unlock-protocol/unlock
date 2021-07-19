@@ -2,35 +2,20 @@
 
 See [our docs](https://docs.unlock-protocol.com/developers/smart-contracts-architecture) for an overview of the smart contracts and [the smart-contract-extensions repo](https://github.com/unlock-protocol/unlock/tree/master/smart-contract-extensions) for integration examples. The deployment process itself is [on our wiki](https://github.com/unlock-protocol/unlock/wiki/Releasing-a-new-version-of-the-contracts).
 
-To run:
+## Run locally
 
 ```
-yarn
-yarn ganache
-```
-
-and then in a second console:
-
-```
-yarn build
-yarn test
-```
-
-## Run with Hardhat
-
-```
+yarn install
 npx hardhat node
 ```
 
-This will run all contracts deployment/migrations at start
-
-If you want to run them separately
+Then you can deploy the contracts locally
 
 ```
-npx hardhat deploy
+npx hardhat run scripts/deploy.js 
 ```
 
-#### Run the tests
+### Run the tests
 
 ```
 npx hardhat test
@@ -42,8 +27,26 @@ To see all emitted events
 npx hardhat test --logs
 ```
 
-### Upgrade UDT to be Openzeppelin 4.0 compatible0
+### Run a mainnet fork
+
+Mainnet [forking with Hardhat](https://hardhat.org/guides/mainnet-forking.html#forking-from-mainnet) relies on alchemy.com to retrieve chain archival data. An API key is required
+
+To test on a mainnet fork, you need to export `RUN_MAINNET_FORK=1` and  `ALCHEMY_API_KEY=<xxx>` to your env
+
+ex . 
+```
+export RUN_MAINNET_FORK=1
+export ALCHEMY_API_KEY=<xxx>
+
+npx hardhat node 
+// Running a mainnet fork...
+```
+
+Once you have mainnet running locally, you can run the relevant tests in another terminal:
 
 ```
-genV2/run.sh 
+export RUN_MAINNET_FORK=1
+npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js 
 ```
+
+Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
