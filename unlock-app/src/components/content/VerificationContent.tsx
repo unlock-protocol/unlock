@@ -22,7 +22,7 @@ export const VerificationContent = () => {
       decodeURIComponent(query.data),
       'utf-8'
     ).toString('hex')}`
-    sig = Buffer.from(query.sig, 'base64').toString()
+    sig = query.sig
   }
 
   if (!data || !sig || !hexData) {
