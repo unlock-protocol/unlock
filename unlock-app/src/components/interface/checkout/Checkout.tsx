@@ -11,7 +11,6 @@ import CheckoutWrapper from './CheckoutWrapper'
 import CheckoutContainer from './CheckoutContainer'
 import { Locks } from './Locks'
 import { CallToAction } from './CallToAction'
-import Buttons from '../buttons/lock'
 import Loading from '../Loading'
 import WalletPicker from './WalletPicker'
 import CheckoutMethod from './CheckoutMethod'
@@ -309,16 +308,18 @@ export const Checkout = ({
         />
 
         {!account && (
-          <>
-            <Prompt>Already a member? Access with your</Prompt>
-            <CheckoutButtons>
-              <Buttons.Account
-                as="button"
-                onClick={() => setCheckoutState('login')}
-              />
-              <Buttons.Wallet as="button" onClick={connectWallet} />
-            </CheckoutButtons>
-          </>
+          <Prompt>
+            Already a member? Access with your
+            <br />{' '}
+            <button type="button" onClick={() => setCheckoutState('login')}>
+              unlock acount
+            </button>{' '}
+            or your{' '}
+            <button type="button" onClick={connectWallet}>
+              crypto wallet
+            </button>
+            .
+          </Prompt>
         )}
 
         {hasValidMembership(existingKeys) && (
@@ -326,6 +327,13 @@ export const Checkout = ({
         )}
       </>
     )
+  }
+
+  const onLoggedOut = () => {
+    emitUserInfo({})
+    setCheckoutState('')
+    selectLock(null)
+    setShowBack(false)
   }
 
   const back = () => {
@@ -342,6 +350,7 @@ export const Checkout = ({
           back={back}
           allowClose={allowClose}
           hideCheckout={emitCloseModal}
+          onLoggedOut={onLoggedOut}
         >
           <PaywallLogoWrapper>
             {paywallConfig.icon ? (
@@ -369,19 +378,19 @@ const PaywallLogoWrapper = styled.div`
     max-width: 200px;
   }
 `
-
-const CheckoutButtons = styled.div`
-  width: 50%;
-  display: flex;
-  justify-content: space-around;
-  small {
-    display: inline-block;
-  }
-`
-
 const Prompt = styled.p`
-  font-size: 16px;
-  color: var(--dimgrey);
+  width: 100%;
+  font-size: 14px;
+  color: var(--grey);
+  button {
+    border: none;
+    outline: none;
+    display: inline;
+    padding: 0;
+    background-color: transparent;
+    color: var(--link);
+    cursor: pointer;
+  }
 `
 
 const PublisherLogo = styled.img``

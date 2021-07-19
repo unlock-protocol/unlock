@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Layout from '../interface/Layout'
@@ -7,9 +7,11 @@ import VerificationStatus from '../interface/VerificationStatus'
 import { pageTitle } from '../../constants'
 import Authenticate from '../interface/Authenticate'
 import Loading from '../interface/Loading'
+import LocksContext from '../../contexts/LocksContext'
 
 export const VerificationContent = () => {
   const { query } = useRouter()
+  const [locks, setLocks] = useState({})
   let data
   let hexData
   let sig
@@ -27,6 +29,13 @@ export const VerificationContent = () => {
     return <Loading />
   }
 
+  const addLock = (lock: any) => {
+    return setLocks({
+      ...locks,
+      [lock.address]: lock,
+    })
+  }
+
   return (
     <Layout title="Verification">
       <Head>
@@ -34,7 +43,14 @@ export const VerificationContent = () => {
       </Head>
       <Authenticate optional>
         <Account />
-        <VerificationStatus data={data} sig={sig} hexData={hexData} />
+        <LocksContext.Provider
+          value={{
+            locks,
+            addLock,
+          }}
+        >
+          <VerificationStatus data={data} sig={sig} hexData={hexData} />
+        </LocksContext.Provider>
       </Authenticate>
     </Layout>
   )
