@@ -2,13 +2,22 @@ const BigNumber = require('bignumber.js')
 const { constants } = require('hardlydifficult-eth')
 const { ethers, assert, network, upgrades } = require('hardhat')
 const Locks = require('../fixtures/locks')
+const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
 const estimateGas = 252166
 
 // NB : this needs to be run against a mainnet fork using
-const UDTProxyContractAdress = '0x90DE74265a416e1393A450752175AED98fe11517'
-const deployerAdress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
-const UnlockContractAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
+// import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
+const [UDTProxyInfo] =
+  OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/UnlockDiscountToken']
+const [UnlockProxyInfo] =
+  OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/Unlock']
+
+const UDTProxyContractAdress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
+const UnlockContractAddress = UnlockProxyInfo.address // '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
+const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
+
+const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
 
 // helper function
 const upgradeContract = async (contractAddress) => {
@@ -26,6 +35,7 @@ const upgradeContract = async (contractAddress) => {
 contract('UnlockDiscountToken (on mainnet)', async () => {
   let udt
   let deployer
+  let proxyAdmin
 
   before(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_MAINNET_FORK) {
@@ -35,11 +45,16 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
 
     await network.provider.request({
       method: 'hardhat_impersonateAccount',
-      params: [deployerAdress],
+      params: [proxyAdminAddress],
+    })
+    await network.provider.request({
+      method: 'hardhat_impersonateAccount',
+      params: [deployerAddress],
     })
 
     // get deployer
-    deployer = await ethers.getSigner(deployerAdress)
+    proxyAdmin = await ethers.getSigner(proxyAdminAddress)
+    deployer = await ethers.getSigner(deployerAddress)
 
     const UnlockDiscountToken = await ethers.getContractFactory(
       'UnlockDiscountToken',
@@ -52,11 +67,11 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
   describe('The mainnet fork', () => {
     it('impersonates UDT deployer correctly', async () => {
       const { signer } = udt
-      assert.equal(signer.address, deployerAdress)
+      assert.equal(signer.address, deployerAddress)
     })
 
     it('UDT deployer has been revoked', async () => {
-      assert.equal(await udt.isMinter(deployerAdress), false)
+      assert.equal(await udt.isMinter(deployerAddress), false)
     })
   })
 
@@ -113,7 +128,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       referrer = accounts[2]
       keyBuyer = accounts[3]
 
-      const Unlock = await ethers.getContractFactory('Unlock', deployer)
+      const Unlock = await ethers.getContractFactory('Unlock', proxyAdmin)
       unlock = Unlock.attach(UnlockContractAddress)
 
       // upgrade contract
