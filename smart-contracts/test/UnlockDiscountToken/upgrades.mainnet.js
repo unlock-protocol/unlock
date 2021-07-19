@@ -82,6 +82,21 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       // more than initial pre-mined 1M
       assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
     })
+
+    it('name is set', async () => {
+      const name = await udt.name()
+      assert.equal(name, 'Unlock Discount Token')
+    })
+
+    it('symbol is set', async () => {
+      const symbol = await udt.symbol()
+      assert.equal(symbol, 'UDT')
+    })
+
+    it('decimals are set', async () => {
+      const decimals = await udt.decimals()
+      assert.equal(decimals, 18)
+    })
   })
 
   describe('Supply', () => {
@@ -110,6 +125,26 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         totalSupplyAfterUpdate.toNumber(),
         totalSupply.add(mintAmount)
       )
+    })
+  })
+
+  describe('Details', () => {
+    it('name is preserved', async () => {
+      const updated = await upgradeContract(udt.address)
+      const updatedName = await updated.name()
+      assert.equal(updatedName, 'Unlock Discount Token')
+    })
+
+    it('symbol is preserved', async () => {
+      const updated = await upgradeContract(udt.address)
+      const updatedSymbol = await updated.symbol()
+      assert.equal(updatedSymbol, 'UDT')
+    })
+
+    it('decimals are preserved', async () => {
+      const updated = await upgradeContract(udt.address)
+      const updatedDecimals = await updated.decimals()
+      assert.equal(updatedDecimals, 18)
     })
   })
 
