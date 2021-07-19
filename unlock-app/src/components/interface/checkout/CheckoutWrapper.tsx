@@ -10,6 +10,7 @@ interface WrapperProps {
   bgColor?: string
   back: () => void | null
   showBack: boolean
+  onLoggedOut: () => void
 }
 
 interface WrapperStyleProps {
@@ -21,6 +22,7 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   back,
   hideCheckout,
   allowClose = true,
+  onLoggedOut,
   showBack,
 }: React.PropsWithChildren<WrapperProps>) => {
   return (
@@ -41,7 +43,11 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
         ''
       )}
       {children}
-      <CheckoutFooter showBack={showBack} back={back} />
+      <CheckoutFooter
+        showBack={showBack}
+        back={back}
+        onLoggedOut={onLoggedOut}
+      />
     </Wrapper>
   )
 }

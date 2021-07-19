@@ -9,6 +9,7 @@ import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
 import { AuthenticationContext } from '../components/interface/Authenticate'
 import { processTransaction } from './useLock'
+
 /**
  * Retrieves a lock object at the address
  */

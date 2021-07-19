@@ -49,7 +49,6 @@ router.put(
   signatureValidationMiddleware.generateProcessor(userMetaDataConfiguration)
 )
 
-// Reads the user centric metadata
 router.get(
   '/:address/user/:userAddress',
   signatureValidationMiddleware.generateSignatureEvaluator(
