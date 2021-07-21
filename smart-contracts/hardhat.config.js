@@ -46,11 +46,11 @@ const defaultNetworks = {
 
 const networks = getHardhatNetwork(defaultNetworks)
 
-if (process.env.ETHERSCAN_API_KEY) {
-  networks.etherscan = {
-    apiKey: process.env.ETHERSCAN_API_KEY,
-  }
-}
+const etherscan = process.env.ETHERSCAN_API_KEY
+  ? {
+      apiKey: process.env.ETHERSCAN_API_KEY,
+    }
+  : {}
 
 task('accounts', 'Prints the list of accounts', async () => {
   // eslint-disable-next-line no-undef
@@ -76,6 +76,7 @@ task('balance', "Prints an account's balance")
  */
 module.exports = {
   networks,
+  etherscan,
   gasReporter: {
     currency: 'USD',
     excludeContracts: ['Migrations', 'TestNoop'],
