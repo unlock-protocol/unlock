@@ -113,7 +113,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       expect(await udt.delegates(holder)).to.be.equal(holder)
     })
 
-    describe('change delegation', function () {
+    describe('change delegation', () => {
       beforeEach(async () => {
         await udt.mint(holder, supply)
         await udt.delegate(holder, { from: holder })
@@ -275,12 +275,12 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     })
   })
 
-  describe('Compound test suite', function () {
+  describe('Compound test suite', () => {
     beforeEach(async () => {
       await udt.mint(holder, supply)
     })
 
-    describe('balanceOf', function () {
+    describe('balanceOf', () => {
       it('grants to initial account', async () => {
         expect(await udt.balanceOf(holder)).to.be.bignumber.equal(
           '10000000000000000000000000'
@@ -288,7 +288,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       })
     })
 
-    describe('numCheckpoints', function () {
+    describe('numCheckpoints', () => {
       it('returns the number of checkpoints for a delegate', async () => {
         await udt.transfer(recipient, '100', { from: holder }) // give an account a few tokens for readability
         expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('0')
@@ -341,7 +341,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         await udt.transfer(recipient, '100', { from: holder })
         expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('0')
 
-        const [t1, t2, t3] = await batchInBlock([
+        const [t1] = await batchInBlock([
           () => udt.delegate(other1, { from: recipient, gas: 100000 }),
           () => udt.transfer(other2, 10, { from: recipient, gas: 100000 }),
           () => udt.transfer(other2, 10, { from: recipient, gas: 100000 }),
@@ -363,7 +363,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       })
     })
 
-    describe('getPriorVotes', function () {
+    describe('getPriorVotes', () => {
       it('reverts if block number >= current block', async () => {
         await expectRevert(
           udt.getPriorVotes(other1, 5e10),
@@ -464,7 +464,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     })
 
     it('returns the latest block if >= last checkpoint block', async () => {
-      t1 = await udt.mint(holder, supply)
+      const t1 = await udt.mint(holder, supply)
 
       await time.advanceBlock()
       await time.advanceBlock()
