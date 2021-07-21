@@ -2,7 +2,6 @@
 
 ## UDT Upgrade
 
-
 ### Whats happening
 
 The v1 of the UDT contract was importing contracts from `@openzeppelin/contracts-ethereum-package` which rely solidity 0.5.17. In order to support the Compoud-like governance extension provided by `@openzeppelin/contracts-upgradeable` an upgrade is required. 
@@ -30,4 +29,38 @@ diff -u contracts/ERC20Patched.ref contracts/ERC20Patched.generated.sol > genV2/
 ```sh
 sh udt-upgrade-to-v2.sh
 ```
+
+## Upgrading `.openzeppelin` files
+
+For reference the outcome of oz CLI > upgrades migration (following the [guide](https://docs.openzeppelin.com/upgrades-plugins/1.x/migrate-from-cli?pref=hardhat))
+
+```
+npx migrate-oz-cli-project                                                                                                                                                                                      3 ↵
+✔ Successfully migrated .openzeppelin/unknown-100.json
+✔ Successfully migrated .openzeppelin/unknown-137.json
+✔ Successfully migrated .openzeppelin/kovan.json
+✔ Successfully migrated .openzeppelin/mainnet.json
+✔ Successfully migrated .openzeppelin/rinkeby.json
+✔ Successfully migrated .openzeppelin/ropsten.json
+✔ Migration data exported to openzeppelin-cli-export.json
+✔ Deleting .openzeppelin/project.json
+
+These were your project's compiler options:
+{
+  "manager": "openzeppelin",
+  "compilerSettings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": "200"
+    },
+    "evmVersion": "istanbul"
+  },
+  "solcVersion": "0.5.17",
+  "artifactsDir": "build/contracts",
+  "contractsDir": "contracts",
+  "typechain": {
+    "enabled": false
+  }
+}
+````
 
