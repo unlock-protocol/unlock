@@ -45,4 +45,8 @@ ERC20VotesCompUpgradeable
   function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual override(ERC20Upgradeable, ERC20VotesUpgradeable) {
     return ERC20VotesUpgradeable._afterTokenTransfer(from, to, amount);
   }
+
+  function burn(address account, uint256 amount) public {
+      _burn(account, amount);
+  }
 }
