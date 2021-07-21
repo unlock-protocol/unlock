@@ -9,7 +9,8 @@ import './ERC20Patched.sol';
 */
 contract UnlockDiscountTokenV2 is
 ERC20MintableUpgradeable,
-ERC20DetailedUpgradeable
+ERC20DetailedUpgradeable,
+ERC20VotesCompUpgradeable
 {
  /**
   * @notice A one-time call to configure the token.
@@ -31,5 +32,17 @@ ERC20DetailedUpgradeable
 
   function decimals() public view override(ERC20Upgradeable, ERC20DetailedUpgradeable) returns (uint8) {
     return ERC20DetailedUpgradeable.decimals();
+  }
+
+  function _mint(address account, uint256 amount) internal virtual override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+    return ERC20VotesUpgradeable._mint(account, amount);
+  }
+
+  function _burn(address account, uint256 amount) internal virtual override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+    return ERC20VotesUpgradeable._burn(account, amount);
+  }
+
+  function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual override(ERC20Upgradeable, ERC20VotesUpgradeable) {
+    return ERC20VotesUpgradeable._afterTokenTransfer(from, to, amount);
   }
 }
