@@ -28,8 +28,11 @@ namespace PriceController {
 
       // If it is low enough we want to allow users to claim it for free
       const costToGrant = await pricer.gasFee(req.chain, 1000)
-
-      if (costToGrant < 500) {
+      if (
+        pricing.keyPrice !== undefined &&
+        pricing.keyPrice === 0 &&
+        costToGrant < 500
+      ) {
         // If it costs less than a half a 1ct, then we can grant the key for free!
         return res.json({
           usd: pricing,
