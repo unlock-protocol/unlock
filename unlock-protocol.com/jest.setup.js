@@ -9,7 +9,6 @@ import config from './next.config'
 // Make sure you can use getConfig
 setConfig({
   publicRuntimeConfig: config.publicRuntimeConfig,
-  intercomAppId: '0',
   googleAnalyticsId: '0',
   baseUrl: 'https://unlock-protocol.com',
 })
