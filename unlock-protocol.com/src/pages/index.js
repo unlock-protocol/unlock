@@ -2,9 +2,14 @@ import React from 'react'
 import HomeContent from '../components/content/HomeContent'
 import { prepareBlogProps } from '../utils/blogLoader'
 import UnlockPropTypes from '../propTypes'
+import { GlobalWrapper } from '../components/interface/GlobalWrapper'
 
 const Home = ({ posts }) => {
-  return <HomeContent posts={posts} />
+  return (
+    <GlobalWrapper>
+      <HomeContent posts={posts} />
+    </GlobalWrapper>
+  )
 }
 
 Home.propTypes = {
