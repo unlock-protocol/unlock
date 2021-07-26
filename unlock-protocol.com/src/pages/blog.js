@@ -11,6 +11,7 @@ import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import BlogIndex from '../components/content/BlogIndex'
 import { prepareBlogProps } from '../utils/blogLoader'
+import { GlobalWrapper } from '../components/interface/GlobalWrapper'
 
 // TODO move to BlogContent
 const Blog = ({ posts, page, totalPages }) => {
@@ -21,54 +22,56 @@ const Blog = ({ posts, page, totalPages }) => {
   const description = 'News and updates from the Unlock Protocol team.'
 
   return (
-    <Layout forContent>
-      <Head>
-        <title>{pageTitle(title)}</title>
-        <TwitterTags title={title} description={description} />
-        <OpenGraphTags
-          title={pageTitle(title)}
-          description={description}
-          canonicalPath="/blog"
-        />
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          href="/static/blog.rss"
-        />
-      </Head>
-      <Title>Unlock Blog</Title>
-      <BlogIndex posts={posts} />
-      <Pagination>
-        {page > 1 && (
-          <Left>
-            <Link href="/blog/">
-              <a>← First Page</a>
-            </Link>
-          </Left>
-        )}
-        {page > 2 && (
-          <Left>
-            <Link href={`/blog/${page - 1}`}>
-              <a>│ Previous</a>
-            </Link>
-          </Left>
-        )}
-        {page !== totalPages && (
-          <Right>
-            <Link href={`/blog/${totalPages}`}>
-              <a>Last Page →</a>
-            </Link>
-          </Right>
-        )}
-        {totalPages > page + 1 && (
-          <Right>
-            <Link href={`/blog/${page + 1}`}>
-              <a>Next │</a>
-            </Link>
-          </Right>
-        )}
-      </Pagination>
-    </Layout>
+    <GlobalWrapper>
+      <Layout forContent>
+        <Head>
+          <title>{pageTitle(title)}</title>
+          <TwitterTags title={title} description={description} />
+          <OpenGraphTags
+            title={pageTitle(title)}
+            description={description}
+            canonicalPath="/blog"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            href="/static/blog.rss"
+          />
+        </Head>
+        <Title>Unlock Blog</Title>
+        <BlogIndex posts={posts} />
+        <Pagination>
+          {page > 1 && (
+            <Left>
+              <Link href="/blog/">
+                <a>← First Page</a>
+              </Link>
+            </Left>
+          )}
+          {page > 2 && (
+            <Left>
+              <Link href={`/blog/${page - 1}`}>
+                <a>│ Previous</a>
+              </Link>
+            </Left>
+          )}
+          {page !== totalPages && (
+            <Right>
+              <Link href={`/blog/${totalPages}`}>
+                <a>Last Page →</a>
+              </Link>
+            </Right>
+          )}
+          {totalPages > page + 1 && (
+            <Right>
+              <Link href={`/blog/${page + 1}`}>
+                <a>Next │</a>
+              </Link>
+            </Right>
+          )}
+        </Pagination>
+      </Layout>
+    </GlobalWrapper>
   )
 }
 
