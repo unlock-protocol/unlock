@@ -377,6 +377,8 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c9 {
     margin-top: 0px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
@@ -954,7 +956,7 @@ Look at us! We're posting on our very own blog! How exciting!
           </div>
         </header>
         <div
-          class="sc-12f69w-2 kCCGHb"
+          class="sc-12f69w-2 kfRKFc"
         >
           <h1
             class="sc-1wo6lro-0 FpDHZ"
@@ -1729,6 +1731,8 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c9 {
     margin-top: 0px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
@@ -2166,7 +2170,7 @@ are intentionally not generated from this file date, in case we want to override
           </div>
         </header>
         <div
-          class="sc-12f69w-2 kCCGHb"
+          class="sc-12f69w-2 kfRKFc"
         >
           <div
             class="sc-8h5qi4-2 okEAJ"
@@ -6494,8 +6498,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -6605,8 +6607,6 @@ exports[`Storyshots Buttons/Layout Buttons Bars 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -6736,8 +6736,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -6847,8 +6845,6 @@ exports[`Storyshots Buttons/Layout Buttons ChevronUp 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -6982,8 +6978,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -7113,8 +7107,6 @@ exports[`Storyshots Buttons/Layout Buttons Close Small 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -7248,8 +7240,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -7361,8 +7351,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -7472,8 +7460,6 @@ exports[`Storyshots Buttons/Layout Buttons Jobs 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -7607,8 +7593,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -7740,8 +7724,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--white);
   color: var(--link);
@@ -7871,7 +7853,6 @@ exports[`Storyshots Footer the footer 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
     <script />
     <script />
     .c1 {
@@ -8323,7 +8304,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
     .c2 {
   fill: var(--brand);
 }
@@ -8669,7 +8649,6 @@ exports[`Storyshots Header the header with a title 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
     <script />
     <script />
     .c2 {
@@ -9019,7 +8998,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
     .c2 {
   fill: var(--brand);
 }
@@ -9365,7 +9343,6 @@ exports[`Storyshots HomeContent Demo loading 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
     <script />
     <script />
     .c1 {
@@ -9765,7 +9742,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
     .c1 {
   width: 50%;
 }
@@ -10161,7 +10137,6 @@ exports[`Storyshots HomeContent Demo unlocked 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
     <script />
     <script />
     .c1 {
@@ -11697,6 +11672,8 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c9 {
     margin-top: 0px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
@@ -13156,131 +13133,6 @@ Object {
         </div>
       </div>
     </div>
-    @media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) and (max-width:1000px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) and (max-width:1000px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-<script />
   </body>,
   "container": <div>
     <link
@@ -13372,7 +13224,7 @@ Object {
           </div>
         </header>
         <div
-          class="sc-12f69w-2 kCCGHb"
+          class="sc-12f69w-2 kfRKFc"
         >
           <div
             class="sc-1ns6l9f-8 dKcnoM"
@@ -14615,7 +14467,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
     .c2 {
   display: inline-block;
   width: 120px;
@@ -14866,7 +14717,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
     .c0 {
   display: inline-block;
   width: 120px;
@@ -15014,7 +14864,6 @@ exports[`Storyshots Layout the layout for the content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
     <script />
     <script />
     .c4 {
@@ -15267,6 +15116,8 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c9 {
     margin-top: 0px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
@@ -15504,31 +15355,6 @@ Object {
         </div>
       </div>
     </div>
-    @media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:736px) and (max-width:1000px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-
-}
-
-<script />
   </body>,
   "container": <div>
     <link
@@ -15620,7 +15446,7 @@ Object {
           </div>
         </header>
         <div
-          class="sc-12f69w-2 kCCGHb"
+          class="sc-12f69w-2 kfRKFc"
         />
         <footer
           class="sc-1tdzjo6-0 eyhxHS"
@@ -15824,8 +15650,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--brand);
   height: 56px;
@@ -15932,8 +15756,6 @@ exports[`Storyshots Logo large size 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -16044,8 +15866,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     .c0 {
   background-color: var(--brand);
   height: 28px;
@@ -16152,8 +15972,6 @@ exports[`Storyshots Membership locked state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -16284,8 +16102,6 @@ Object {
   "baseElement": <body>
     <script />
     <script />
-    <script />
-    <script />
     <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -16357,8 +16173,6 @@ exports[`Storyshots Membership unlocked state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {
@@ -16498,8 +16312,6 @@ exports[`Storyshots SVG Icons 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    <script />
-    <script />
     <script />
     <script />
     .c0 {

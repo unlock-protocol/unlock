@@ -10,10 +10,16 @@ const copyFile = promisify(fs.copyFile)
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
-
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
+
+let tagManagerArgs
+if (unlockEnv === 'prod') {
+  tagManagerArgs = {
+    gtmId: 'GTM-ND2KDWB',
+  }
+}
 
 // NOTE: do not set defaults here!
 // This is a mechanism to ensure that we do not deploy code with missing/wrong
@@ -23,7 +29,7 @@ const requiredConfigVariables = {
   googleAnalyticsId,
   urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
   unlockApp: process.env.UNLOCK_APP,
-  intercomAppId: 'f99d98d3', // Hardcoded for now
+  tagManagerArgs,
 }
 
 Object.keys(requiredConfigVariables).forEach((configVariableName) => {

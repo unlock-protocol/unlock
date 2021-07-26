@@ -6,7 +6,6 @@ export const Section = styled.section.attrs((props) => ({
   margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
-  padding: 16px;
   &:before {
     display: block;
     content: '';
