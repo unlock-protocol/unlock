@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import ReactGA from 'react-ga'
-import Intercom from 'react-intercom'
 import getConfig from 'next/config'
 import { MembershipContext } from '../../membershipContext'
 import Membership from './Membership'
@@ -90,7 +89,6 @@ The Unlock team
       <Membership isMember={isMember} becomeMember={becomeMember} />
       <GlobalStyle />
       {children}
-      <Intercom appID={config.intercomAppId} />
     </MembershipContext.Provider>
   )
 }
