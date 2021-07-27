@@ -106,18 +106,21 @@ export const Checkout = ({
   }
 
   const onProvider = async (provider: any) => {
-    const { account } = await authenticate(provider)
-    emitUserInfo({
-      address: account,
-    })
-    if (selectedLock) {
-      if (!provider.isUnlock) {
-        setCheckoutState('crypto-checkout')
+    const result = await authenticate(provider)
+    if (result) {
+      const { account } = result
+      emitUserInfo({
+        address: account,
+      })
+      if (selectedLock) {
+        if (!provider.isUnlock) {
+          setCheckoutState('crypto-checkout')
+        } else {
+          cardCheckoutOrClaim(selectedLock)
+        }
       } else {
-        cardCheckoutOrClaim(selectedLock)
+        setCheckoutState('')
       }
-    } else {
-      setCheckoutState('')
     }
   }
 
