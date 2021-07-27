@@ -3,21 +3,31 @@
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
 
+// full stack trace if needed
+require('hardhat-tracer')
+
 // erc1820 deployment
 require('hardhat-erc1820')
 
 // for upgrades
 require('@openzeppelin/hardhat-upgrades')
 
+// debug storage
+require('hardhat-storage-layout')
+
 const { task } = require('hardhat/config')
 
-// const { deploy } = require('./scripts/deploy')
 const { getHardhatNetwork } = require('./helpers/network')
 
 const settings = {
   optimizer: {
     enabled: true,
     runs: 200,
+  },
+  outputSelection: {
+    '*': {
+      '*': ['storageLayout'],
+    },
   },
 }
 
@@ -48,9 +58,14 @@ if (process.env.RUN_MAINNET_FORK) {
     forking: {
       url: alchemyURL,
       blockNumber: 12811244, // June 12th 2021
+      // gasPrice: 150000000000, // not working, see https://github.com/nomiclabs/hardhat/issues/1216
     },
   }
 }
+
+// task('storage-layout', async (taskArgs, hre) => {
+//   await hre.storageLayout.export()
+// })
 
 task('accounts', 'Prints the list of accounts', async () => {
   // eslint-disable-next-line no-undef
