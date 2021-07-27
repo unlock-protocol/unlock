@@ -169,7 +169,7 @@
           {
             "contract": "ERC20",
             "label": "_allowances",
-            "type": "t_mapping(unknown,t_uint256)",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
             "src": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol"
           },
           {
@@ -205,13 +205,13 @@
           {
             "contract": "ERC20Detailed",
             "label": "_name",
-            "type": "t_string",
+            "type": "t_string_storage",
             "src": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol"
           },
           {
             "contract": "ERC20Detailed",
             "label": "_symbol",
-            "type": "t_string",
+            "type": "t_string_storage",
             "src": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol"
           },
           {
@@ -240,6 +240,9 @@
           "t_mapping(unknown,t_uint256)": {
             "label": "mapping(key => uint256)"
           },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          },
           "t_struct(Role)4_storage": {
             "label": "Role",
             "members": [
@@ -254,6 +257,9 @@
           },
           "t_string": {
             "label": "string"
+          },
+          "t_string_storage": {
+            "label": "string_storage"
           },
           "t_uint8": {
             "label": "uint8"
