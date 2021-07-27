@@ -15,17 +15,19 @@ const [UnlockProxyInfo] =
 
 const UDTProxyContractAdress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
 const UnlockContractAddress = UnlockProxyInfo.address // '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
-const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
+// const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
 
 // helper function
-const upgradeContract = async (contractAddress) => {
+const upgradeContract = async () => {
+  const deployer = await ethers.getSigner(deployerAddress)
   const UnlockDiscountTokenV2 = await ethers.getContractFactory(
-    'UnlockDiscountTokenV2'
+    'UnlockDiscountTokenV2',
+    deployer
   )
   const updated = await upgrades.upgradeProxy(
-    contractAddress,
+    UDTProxyContractAdress,
     UnlockDiscountTokenV2,
     {}
   )
@@ -35,7 +37,6 @@ const upgradeContract = async (contractAddress) => {
 contract('UnlockDiscountToken (on mainnet)', async () => {
   let udt
   let deployer
-  let proxyAdmin
 
   before(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_MAINNET_FORK) {
@@ -45,23 +46,24 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
 
     await network.provider.request({
       method: 'hardhat_impersonateAccount',
-      params: [proxyAdminAddress],
-    })
-    await network.provider.request({
-      method: 'hardhat_impersonateAccount',
       params: [deployerAddress],
     })
 
-    // get deployer
-    proxyAdmin = await ethers.getSigner(proxyAdminAddress)
-    deployer = await ethers.getSigner(deployerAddress)
+    // give some ETH to deployer
+    const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+    await network.provider.send('hardhat_setBalance', [
+      deployerAddress,
+      balance,
+    ])
 
+    // get UDT instance
+    deployer = await ethers.getSigner(deployerAddress)
     const UnlockDiscountToken = await ethers.getContractFactory(
       'UnlockDiscountToken',
       deployer
     )
 
-    udt = await UnlockDiscountToken.attach(UDTProxyContractAdress)
+    udt = UnlockDiscountToken.attach(UDTProxyContractAdress)
   })
 
   describe('The mainnet fork', () => {
@@ -75,8 +77,8 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     })
   })
 
-  describe('Existing UDT contract', () => {
-    it('starting supply is NOT 0', async () => {
+  describe('Existing UDT contract (before upgrade)', () => {
+    it('starting supply > 1M', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(totalSupply.eq(0), false)
       // more than initial pre-mined 1M
@@ -97,6 +99,30 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       const decimals = await udt.decimals()
       assert.equal(decimals, 18)
     })
+
+    it('lives at the same address', async () => {
+      assert.equal(udt.address, UDTProxyContractAdress)
+    })
+
+    /* 
+    // TODO: why bytes length difference btw builds?
+    // 10390
+    // +10352
+    it('is the same bytecode as local version', async () => {
+      const UnlockDiscountToken = await ethers.getContractFactory(
+        'UnlockDiscountToken'
+      )
+      const deployedByteCode = await ethers.provider.getCode(
+        UDTProxyInfo.implementation
+      )
+      deployedAbi.forEach((d, i) => {
+        assert.deepEqual(deployedAbi[i], abi[i])
+        // console.log(deployedAbi[i], abi[i], '\n\n')
+      })
+      assert.equal(UnlockDiscountToken.bytecode.length, deployedByteCode.length)
+      assert.equal(`${UnlockDiscountToken.bytecode}`, `${deployedByteCode}`)
+    })
+    */
   })
 
   describe('Supply', () => {
@@ -104,8 +130,9 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       const totalSupply = await udt.totalSupply()
 
       // upgrade the contract
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract()
 
+      // console.log(updated)
       const totalSupplyAfterUpdate = await updated.totalSupply()
       assert.equal(totalSupplyAfterUpdate.toNumber(), totalSupply.toNumber())
     })
@@ -115,7 +142,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       const mintAmount = 1000
 
       // upgrade
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract()
       const totalSupply = await udt.totalSupply()
 
       // mint some tokens
@@ -130,19 +157,19 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
 
   describe('Details', () => {
     it('name is preserved', async () => {
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract()
       const updatedName = await updated.name()
       assert.equal(updatedName, 'Unlock Discount Token')
     })
 
     it('symbol is preserved', async () => {
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract()
       const updatedSymbol = await updated.symbol()
       assert.equal(updatedSymbol, 'UDT')
     })
 
     it('decimals are preserved', async () => {
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract()
       const updatedDecimals = await updated.decimals()
       assert.equal(updatedDecimals, 18)
     })
@@ -163,11 +190,11 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       referrer = accounts[2]
       keyBuyer = accounts[3]
 
-      const Unlock = await ethers.getContractFactory('Unlock', proxyAdmin)
+      const Unlock = await ethers.getContractFactory('Unlock', deployer)
       unlock = Unlock.attach(UnlockContractAddress)
 
       // upgrade contract
-      await upgradeContract(udt.address)
+      await upgradeContract()
       udt.connect(minter)
 
       // create lock
