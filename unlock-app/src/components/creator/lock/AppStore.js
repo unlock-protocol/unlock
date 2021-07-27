@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { ConfigContext } from '../../../utils/withConfig'
 
@@ -39,6 +39,7 @@ Integration.defaultProps = {
 const AppStore = ({ lock }) => {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
+  const [redirectUri, setRediredtUri] = useState('')
   const integrations = {
     wordpress: {
       name: 'Wordpress',
@@ -96,6 +97,7 @@ const AppStore = ({ lock }) => {
         network: lock.network,
       },
     },
+    redirectUri,
     persistentCheckout: true,
     icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
   }
@@ -121,14 +123,15 @@ const AppStore = ({ lock }) => {
       <Details>
         <DetailTitle>Purchase Address</DetailTitle>
         <p>
-          Share this URL with your fans if you want them to easily purchase the
-          NFT membership.
+          Share the URL below with your fans if you want them to easily purchase
+          this lock&apos;s NFT membership.
         </p>
-        <URlInput
-          style={{ width: '70%' }}
-          type="disabled"
-          value={checkoutUrl}
-        />
+        <p style={{ margin: '0px' }}>
+          Redirect URL:{' '}
+          <RedirectUriInput placeholder="URL to which your members ared redirected once they purchased the membership" />
+        </p>
+
+        <UrlInput type="disabled" value={checkoutUrl} />
         <CopyButton onClick={copyToClipboard}>Copy</CopyButton>
         <CopyButton onClick={openCheckout}>Open</CopyButton>
       </Details>
@@ -276,9 +279,25 @@ const CopyButton = styled(FormButton)`
     background-color: grey;
   }
 `
-const URlInput = styled(Input)`
+
+const InterationInput = styled(Input)`
   height: 40px;
-  font-family: 'Courier New', Courier, monospace;
   font-size: 14px;
+  width: 70%;
+`
+
+const UrlInput = styled(InterationInput)`
+  font-family: 'Courier New', Courier, monospace;
   color: grey;
+`
+
+const RedirectUriInput = styled(Input)`
+  height: 24px;
+  background-color: white;
+  font-size: 12px;
+  width: 50%;
+
+  &::placeholder {
+    opacity: 0.5;
+  }
 `
