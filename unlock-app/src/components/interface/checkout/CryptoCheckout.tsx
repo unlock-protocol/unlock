@@ -62,21 +62,28 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
-  const cryptoPurchase = () => {
+  const cryptoPurchase = async () => {
     if (!cryptoDisabled) {
       setPurchasePending(true)
-      const referrer =
-        paywallConfig && paywallConfig.referrer
-          ? paywallConfig.referrer
-          : account
-      purchaseKey(account, referrer, (hash: string) => {
-        emitTransactionInfo({
-          lock: lock.address,
-          hash,
+      try {
+        const referrer =
+          paywallConfig && paywallConfig.referrer
+            ? paywallConfig.referrer
+            : account
+        await purchaseKey(account, referrer, (hash: string) => {
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
+          setKeyExpiration(Infinity) // Optimistic!
+          setPurchasePending(false)
         })
-        setKeyExpiration(Infinity) // Optimistic!
+      } catch (error) {
+        if (error && error.code === 4001) {
+          alert('Please confirm the transaction in your wallet.')
+        }
         setPurchasePending(false)
-      })
+      }
     }
   }
 
