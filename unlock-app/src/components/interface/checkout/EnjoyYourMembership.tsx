@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
 
 interface EnjoyYourMembershipProps {
-  emitCloseModal: () => void
+  closeModal: (success: boolean) => void
 }
 
 export const EnjoyYourMembership = ({
-  emitCloseModal,
+  closeModal,
 }: EnjoyYourMembershipProps) => {
   return (
-    <EnjoyYourMembershipWrapper onClick={emitCloseModal}>
+    <EnjoyYourMembershipWrapper onClick={() => closeModal(true)}>
       Enjoy your membership!
     </EnjoyYourMembershipWrapper>
   )

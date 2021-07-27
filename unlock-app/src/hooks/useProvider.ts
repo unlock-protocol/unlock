@@ -121,6 +121,14 @@ export const useProvider = (config: any) => {
     setIsUnlockAccount(false)
     setEmail('')
     setEncryptedPrivateKey(null)
+    try {
+      await provider.provider.disconnect()
+    } catch (error) {
+      console.error(
+        'We could not disconnect provider properly using provider.disconnect()'
+      )
+      console.error(error)
+    }
     setProvider(null)
     setLoading(false)
   }

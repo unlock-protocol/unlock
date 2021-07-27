@@ -18,7 +18,7 @@ interface CryptoCheckoutProps {
   lock: any
   network: number
   name: string
-  emitCloseModal: () => void
+  closeModal: (success: boolean) => void
   setCardPurchase: () => void
 }
 
@@ -28,7 +28,7 @@ export const CryptoCheckout = ({
   lock,
   network,
   name,
-  emitCloseModal,
+  closeModal,
   setCardPurchase,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
@@ -62,21 +62,28 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
-  const cryptoPurchase = () => {
+  const cryptoPurchase = async () => {
     if (!cryptoDisabled) {
       setPurchasePending(true)
-      const referrer =
-        paywallConfig && paywallConfig.referrer
-          ? paywallConfig.referrer
-          : account
-      purchaseKey(account, referrer, (hash: string) => {
-        emitTransactionInfo({
-          lock: lock.address,
-          hash,
+      try {
+        const referrer =
+          paywallConfig && paywallConfig.referrer
+            ? paywallConfig.referrer
+            : account
+        await purchaseKey(account, referrer, (hash: string) => {
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
+          setKeyExpiration(Infinity) // Optimistic!
+          setPurchasePending(false)
         })
-        setKeyExpiration(Infinity) // Optimistic!
+      } catch (error) {
+        if (error && error.code === 4001) {
+          alert('Please confirm the transaction in your wallet.')
+        }
         setPurchasePending(false)
-      })
+      }
     }
   }
 
@@ -160,12 +167,10 @@ export const CryptoCheckout = ({
       {hasValidkey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership closeModal={closeModal} />
         </>
       )}
-      {hasOptimisticKey && (
-        <EnjoyYourMembership emitCloseModal={emitCloseModal} />
-      )}
+      {hasOptimisticKey && <EnjoyYourMembership closeModal={closeModal} />}
     </>
   )
 }

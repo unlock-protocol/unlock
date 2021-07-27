@@ -14,7 +14,7 @@ interface CardConfirmationCheckoutProps {
   lock: any
   network: number
   name: string
-  emitCloseModal: () => void
+  closeModal: (success: boolean) => void
   card: any
   token: string
 }
@@ -24,7 +24,7 @@ export const CardConfirmationCheckout = ({
   lock,
   network,
   name,
-  emitCloseModal,
+  closeModal,
   card,
   token,
 }: CardConfirmationCheckoutProps) => {
@@ -128,12 +128,10 @@ export const CardConfirmationCheckout = ({
       {hasValidkey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership closeModal={closeModal} />
         </>
       )}
-      {hasOptimisticKey && (
-        <EnjoyYourMembership emitCloseModal={emitCloseModal} />
-      )}
+      {hasOptimisticKey && <EnjoyYourMembership closeModal={closeModal} />}
     </Wrapper>
   )
 }
