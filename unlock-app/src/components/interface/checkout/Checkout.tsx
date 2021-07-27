@@ -31,7 +31,7 @@ import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import { AuthenticationContext } from '../Authenticate'
 
 interface CheckoutProps {
-  emitCloseModal: () => void
+  emitCloseModal: (success: boolean) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
   web3Provider: any
@@ -67,7 +67,6 @@ const hasExpiredMembership = (keys: Array<any>) => {
     ).length > 0
   )
 }
-
 export const Checkout = ({
   emitCloseModal,
   emitTransactionInfo,
@@ -78,6 +77,7 @@ export const Checkout = ({
     AuthenticationContext
   )
   const paywallConfig = useContext(PaywallConfigContext)
+  const [paywallIcon, setPaywallIcon] = useState(paywallConfig?.icon)
   const config = useContext(ConfigContext)
   const [state, setState] = useState('')
   const [showBack, setShowBack] = useState(false)
@@ -131,6 +131,13 @@ export const Checkout = ({
     paywallCta = 'confirmed'
   } else if (hasExpiredMembership(existingKeys)) {
     paywallCta = 'expired'
+  }
+
+  const closeModal = (success: boolean) => {
+    emitCloseModal(success)
+    if (paywallConfig.redirectUri) {
+      window.location.href = paywallConfig.redirectUri
+    }
   }
 
   const connectWallet = () => {
@@ -197,7 +204,7 @@ export const Checkout = ({
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
           lock={selectedLock}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
         />
       )
@@ -229,7 +236,7 @@ export const Checkout = ({
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           {...cardDetails}
         />
       )
@@ -251,7 +258,7 @@ export const Checkout = ({
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           {...cardDetails}
         />
       )
@@ -323,7 +330,7 @@ export const Checkout = ({
         )}
 
         {hasValidMembership(existingKeys) && (
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership closeModal={closeModal} />
         )}
       </>
     )
@@ -344,17 +351,21 @@ export const Checkout = ({
 
   return (
     <Web3ServiceContext.Provider value={web3Service}>
-      <CheckoutContainer close={emitCloseModal}>
+      <CheckoutContainer close={() => closeModal(false)}>
         <CheckoutWrapper
           showBack={showBack}
           back={back}
           allowClose={allowClose}
-          hideCheckout={emitCloseModal}
+          hideCheckout={closeModal}
           onLoggedOut={onLoggedOut}
         >
           <PaywallLogoWrapper>
-            {paywallConfig.icon ? (
-              <PublisherLogo alt="Publisher Icon" src={paywallConfig.icon} />
+            {paywallIcon ? (
+              <PublisherLogo
+                alt="Publisher Icon"
+                src={paywallIcon}
+                onError={() => setPaywallIcon('')}
+              />
             ) : (
               <RoundedLogo size="56px" />
             )}

@@ -18,7 +18,7 @@ interface CryptoCheckoutProps {
   lock: any
   network: number
   name: string
-  emitCloseModal: () => void
+  closeModal: (success: boolean) => void
   setCardPurchase: () => void
 }
 
@@ -28,7 +28,7 @@ export const CryptoCheckout = ({
   lock,
   network,
   name,
-  emitCloseModal,
+  closeModal,
   setCardPurchase,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
@@ -160,12 +160,10 @@ export const CryptoCheckout = ({
       {hasValidkey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership closeModal={closeModal} />
         </>
       )}
-      {hasOptimisticKey && (
-        <EnjoyYourMembership emitCloseModal={emitCloseModal} />
-      )}
+      {hasOptimisticKey && <EnjoyYourMembership closeModal={closeModal} />}
     </>
   )
 }

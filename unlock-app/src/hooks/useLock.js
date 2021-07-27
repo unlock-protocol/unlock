@@ -208,10 +208,18 @@ export const useLock = (lockFromProps, network) => {
     } else {
       lockDetails = await web3Service.getLock(lock.address, network)
       if (opts.pricing) {
-        const fiatPricing = await getFiatPricing(config, lock.address, network)
-        lockDetails = {
-          ...lockDetails,
-          fiatPricing,
+        try {
+          const fiatPricing = await getFiatPricing(
+            config,
+            lock.address,
+            network
+          )
+          lockDetails = {
+            ...lockDetails,
+            fiatPricing,
+          }
+        } catch (error) {
+          console.error('Could not retrieve fiat pricing', error)
         }
       }
       if (addLock) {
