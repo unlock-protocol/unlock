@@ -4,8 +4,8 @@ here=$(pwd)
 
 UDT_V2_FLATTENED="contracts/ERC20Patched.generated.sol"
 
-UDT_V2_TEMPLATE="scripts/udt-upgrade/ERC20Patched.template.sol"
-UDT_V2_PATCH="scripts/udt-upgrade/ERC20Patched.patch"
+UDT_V2_TEMPLATE="scripts/udt-flatten/ERC20Patched.template.sol"
+UDT_V2_PATCH="scripts/udt-flatten/ERC20Patched.patch"
 UDT_V2_TARGET="contracts/ERC20Patched.sol"
 
 

@@ -27,7 +27,7 @@ diff -u contracts/ERC20Patched.ref contracts/ERC20Patched.generated.sol > genV2/
 6. create a script that replay steps 1-3 and apply the patch to generate the new version of the contract
 
 ```sh
-sh udt-upgrade-to-v2.sh
+sh udt-flatten-v2.sh
 ```
 
 ## Upgrading `.openzeppelin` files
