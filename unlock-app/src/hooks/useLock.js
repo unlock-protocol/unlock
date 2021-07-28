@@ -140,7 +140,7 @@ export const withdrawFromLock = (
 /**
  * Function called to updated the price of a lock
  */
-export const purchaseKeyFromLock = (
+export const purchaseKeyFromLock = async (
   web3Service,
   walletService,
   config,
@@ -151,7 +151,7 @@ export const purchaseKeyFromLock = (
   network,
   callback
 ) => {
-  walletService.purchaseKey(
+  return walletService.purchaseKey(
     {
       lockAddress: lock.address,
       owner: recipient,
@@ -208,10 +208,18 @@ export const useLock = (lockFromProps, network) => {
     } else {
       lockDetails = await web3Service.getLock(lock.address, network)
       if (opts.pricing) {
-        const fiatPricing = await getFiatPricing(config, lock.address, network)
-        lockDetails = {
-          ...lockDetails,
-          fiatPricing,
+        try {
+          const fiatPricing = await getFiatPricing(
+            config,
+            lock.address,
+            network
+          )
+          lockDetails = {
+            ...lockDetails,
+            fiatPricing,
+          }
+        } catch (error) {
+          console.error('Could not retrieve fiat pricing', error)
         }
       }
       if (addLock) {
@@ -260,11 +268,11 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  const purchaseKey = (recipient, referrer, callback) => {
+  const purchaseKey = async (recipient, referrer, callback) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
-      purchaseKeyFromLock(
+      await purchaseKeyFromLock(
         web3Service,
         walletService,
         config,

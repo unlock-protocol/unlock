@@ -41,12 +41,11 @@ namespace SignatureValidationMiddleware {
 
   const extractSigneeFromSource = (
     req: Request,
-    source: string
+    source: any
   ): string | null => {
     if (!source) {
       return null
     }
-
     if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer'
@@ -59,8 +58,11 @@ namespace SignatureValidationMiddleware {
     ) {
       let data = JSON.stringify(source)
       // Overrides of the content which has been signed because it is better for UX to sign strings than JSON objects.
-      if (req.body?.message?.UserMetaData) {
+      if (source.message?.UserMetaData) {
         data = `I am signing the metadata for the lock at ${req.params.address}`
+      }
+      if (source.message?.LockMetaData) {
+        data = `I want to access member data for ${req.params.address}`
       }
 
       const header = req.headers.authorization.split(' ')[1]
@@ -78,7 +80,7 @@ namespace SignatureValidationMiddleware {
 
   const extractSigneeFromQueryParameter = (
     req: Request,
-    source: string
+    source: any
   ): string | null => {
     try {
       const data = extractQueryParameterPayload(source)
