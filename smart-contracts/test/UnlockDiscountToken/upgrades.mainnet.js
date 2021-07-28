@@ -4,6 +4,8 @@ const { config, ethers, assert, network, upgrades } = require('hardhat')
 const Locks = require('../fixtures/locks')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const { errorMessages } = require('../helpers/constants')
+const multisigABI = require('../helpers/ABIs/multisig.json')
+const proxyABI = require('../helpers/ABIs/proxy.json')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
@@ -16,9 +18,10 @@ const [UnlockProxyInfo] =
 
 const UDTProxyContractAdress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
 const UnlockContractAddress = UnlockProxyInfo.address // '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
-// const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
+const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
+const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
 
 // helper function
 const upgradeContract = async () => {
@@ -27,12 +30,54 @@ const upgradeContract = async () => {
     'UnlockDiscountTokenV2',
     deployer
   )
-  const updated = await upgrades.upgradeProxy(
+  const newImpl = await upgrades.prepareUpgrade(
     UDTProxyContractAdress,
     UnlockDiscountTokenV2,
     {}
   )
-  return updated
+
+  // contracts
+  const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
+
+  const [owner, signer1, signer2, signer3] = await multisig.getOwners()
+  const issuer = await ethers.getSigner(owner)
+  await network.provider.request({
+    method: 'hardhat_impersonateAccount',
+    params: [issuer.address],
+  })
+
+  // build upgrade tx
+  const proxy = await ethers.getContractAt(proxyABI, UDTProxyContractAdress)
+  const data = proxy.interface.encodeFunctionData('upgrade', [
+    proxyAdminAddress,
+    newImpl,
+  ])
+
+  // submit upgrade
+  multisig.connect(issuer)
+
+  const tx = await multisig.submitTransaction(
+    UDTProxyContractAdress, // destination
+    0, // ETH value
+    data
+  )
+  console.log(tx)
+  tx.wait()
+
+  const { transactionId } = tx.events
+
+  // reach concensus
+  multisig.connect(signer1)
+  await multisig.confirmTransaction(transactionId)
+  multisig.connect(signer2)
+  await multisig.confirmTransaction(transactionId)
+  multisig.connect(signer3)
+  await multisig.confirmTransaction(transactionId)
+
+  // enact upgrade
+  await multisig.executeTransaction(transactionId)
+
+  // return updated
 }
 
 contract('UnlockDiscountToken (on mainnet)', async () => {
@@ -79,6 +124,8 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     )
 
     udt = UnlockDiscountToken.attach(UDTProxyContractAdress)
+    // console.log( await udt.owner() )
+    await upgradeContract()
   })
 
   describe('The mainnet fork', () => {
@@ -119,7 +166,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert.equal(udt.address, UDTProxyContractAdress)
     })
 
-    /* 
+    /*
     // TODO: why bytes length difference btw builds?
     // 10390
     // +10352
