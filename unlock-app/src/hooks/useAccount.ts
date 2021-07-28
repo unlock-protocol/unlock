@@ -176,9 +176,7 @@ export const useAccount = (address: string, network: number) => {
     metadata: any,
     network: number
   ) => {
-    // Here we need to generate the payload
     const payload = generateKeyHolderMetadataPayload(address, metadata)
-    // Then ask the user to sign a message!
     // TODO prevent replays by adding timestamp?
     const message = `I am signing the metadata for the lock at ${lockAddress}`
     const signature = await walletService.signMessage(message, 'personal_sign')
