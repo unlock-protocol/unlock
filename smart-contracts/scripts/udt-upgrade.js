@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 
-const network = 'rinkeby' // mainnet
+const network = 'mainnet'
 
 async function main() {
   const [UDTInfo] =
@@ -10,10 +10,10 @@ async function main() {
     ]
 
   const UDTV2 = await ethers.getContractFactory('UnlockDiscountTokenV2')
-  await upgrades.upgradeProxy(UDTInfo.address, UDTV2)
+  const implementation = await upgrades.prepareUpgrade(UDTInfo.address, UDTV2)
 
   // eslint-disable-next-line no-console
-  console.log('UDT upgraded to V2')
+  console.log(`UDT V2 implementation deployed at: ${implementation}`)
 }
 
 main()
