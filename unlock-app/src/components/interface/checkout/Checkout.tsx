@@ -1,4 +1,4 @@
-import React, { useState, useContext, useReducer } from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -39,6 +39,9 @@ interface CheckoutProps {
 
 const keysReducer = (state: any, key: any) => {
   // Keeps track of all the keys, by lock
+  if (key === -1) {
+    return {}
+  }
   return {
     ...state,
     [key.lock]: key,
@@ -105,13 +108,19 @@ export const Checkout = ({
     setState(state)
   }
 
-  const onProvider = async (provider: any) => {
-    const result = await authenticate(provider)
-    if (result) {
-      const { account } = result
+  // When the account is changed, make sure we ping!
+  useEffect(() => {
+    if (account) {
+      setHasKey(-1)
       emitUserInfo({
         address: account,
       })
+    }
+  }, [account])
+
+  const onProvider = async (provider: any) => {
+    const result = await authenticate(provider)
+    if (result) {
       if (selectedLock) {
         if (!provider.isUnlock) {
           setCheckoutState('crypto-checkout')
@@ -340,6 +349,7 @@ export const Checkout = ({
   }
 
   const onLoggedOut = () => {
+    setHasKey(-1) // Resets keys
     emitUserInfo({})
     setCheckoutState('')
     selectLock(null)
