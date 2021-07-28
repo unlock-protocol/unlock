@@ -68,7 +68,7 @@ const usePaywall = () => {
       },
     }
 
-    // Remove localStorage (on the demo we do not want to store any accoun)
+    // Remove localStorage (on the demo we do not want to store any account)
     localStorage.removeItem('userInfo')
 
     // Event handler
