@@ -39,12 +39,13 @@ const upgradeContract = async () => {
   // contracts
   const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
 
-  const [owner, signer1, signer2, signer3] = await multisig.getOwners()
-  const issuer = await ethers.getSigner(owner)
+  const [signer0, signer1, signer2, signer3] = await multisig.getOwners()
   await network.provider.request({
     method: 'hardhat_impersonateAccount',
-    params: [issuer.address],
+    params: [signer0],
   })
+  const issuer = await ethers.getSigner(signer0)
+  multisig.connect(issuer)
 
   // build upgrade tx
   const proxy = await ethers.getContractAt(proxyABI, UDTProxyContractAdress)
@@ -54,11 +55,11 @@ const upgradeContract = async () => {
   ])
 
   // submit upgrade
-  multisig.connect(issuer)
-
+  // console.log((await multisig.transactionCount()).toString()) // 33
+  // console.log((await multisig.required()).toString()) // 4
   const tx = await multisig.submitTransaction(
-    UDTProxyContractAdress, // destination
-    0, // ETH value
+    deployer.address, // destination
+    100, // ETH value
     data
   )
   console.log(tx)
@@ -67,12 +68,14 @@ const upgradeContract = async () => {
   const { transactionId } = tx.events
 
   // reach concensus
-  multisig.connect(signer1)
-  await multisig.confirmTransaction(transactionId)
-  multisig.connect(signer2)
-  await multisig.confirmTransaction(transactionId)
-  multisig.connect(signer3)
-  await multisig.confirmTransaction(transactionId)
+  Array.from(signer1, signer2, signer3).forEach( async signer =>{
+    await network.provider.request({
+      method: 'hardhat_impersonateAccount',
+      params: [signer],
+    })
+    multisig.connect(signer1)
+    await multisig.confirmTransaction(transactionId)
+  })
 
   // enact upgrade
   await multisig.executeTransaction(transactionId)
