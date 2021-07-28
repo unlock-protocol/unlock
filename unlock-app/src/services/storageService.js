@@ -334,7 +334,12 @@ export class StorageService extends EventEmitter {
   async getBulkMetadataFor(lockAddress, signature, data, network) {
     const stringData = JSON.stringify(data)
     const opts = {
-      headers: this.genAuthorizationHeader(signature),
+      headers: {
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
+        'Content-Type': 'application/json',
+      },
       // No body allowed in GET, so these are passed as query params for this
       // call.
       params: {
