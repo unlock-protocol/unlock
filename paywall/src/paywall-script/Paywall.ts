@@ -210,7 +210,6 @@ export class Paywall {
   handleOnEventEvent = async (eventName: string) => {
     await enableInjectedProvider(this.provider)
     ;(this.provider! as any).on(eventName, () => {
-      console.log('IT HAPPENED !')
       this.child!.call('resolveOnEvent', eventName)
     })
   }
