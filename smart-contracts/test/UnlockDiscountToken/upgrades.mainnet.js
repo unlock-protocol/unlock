@@ -1,10 +1,11 @@
-const BigNumber = require('bignumber.js')
+const { reverts } = require('truffle-assertions')
 const { constants } = require('hardlydifficult-eth')
-const { ethers, assert, network, upgrades } = require('hardhat')
+const { config, ethers, assert, network, upgrades } = require('hardhat')
 const Locks = require('../fixtures/locks')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
+const { errorMessages } = require('../helpers/constants')
 
-const estimateGas = 252166
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 // NB : this needs to be run against a mainnet fork using
 // import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
@@ -43,6 +44,20 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       // all suite will be skipped
       this.skip()
     }
+
+    // reset fork
+    const { forking } = config.networks.hardhat
+    await network.provider.request({
+      method: 'hardhat_reset',
+      params: [
+        {
+          forking: {
+            jsonRpcUrl: forking.url,
+            blockNumber: forking.blockNumber,
+          },
+        },
+      ],
+    })
 
     await network.provider.request({
       method: 'hardhat_impersonateAccount',
@@ -125,32 +140,27 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     */
   })
 
-  describe('Supply', () => {
+  describe('Existing supply', () => {
     it('Supply is preserved after upgrade', async () => {
       const totalSupply = await udt.totalSupply()
 
       // upgrade the contract
       const updated = await upgradeContract()
 
-      // console.log(updated)
       const totalSupplyAfterUpdate = await updated.totalSupply()
-      assert.equal(totalSupplyAfterUpdate.toNumber(), totalSupply.toNumber())
+      assert.equal(totalSupplyAfterUpdate.toString(), totalSupply.toString())
     })
 
-    it('Supply is updated when minting', async () => {
-      const [, , recipient] = await ethers.getSigners()
-      const mintAmount = 1000
+    it('New tokens can not be issued anymore', async () => {
+      const [, minter] = await ethers.getSigners()
 
       // upgrade
       const updated = await upgradeContract()
-      const totalSupply = await udt.totalSupply()
 
-      // mint some tokens
-      await udt.mint(recipient.address, mintAmount)
-      const totalSupplyAfterUpdate = await updated.totalSupply()
-      assert.equal(
-        totalSupplyAfterUpdate.toNumber(),
-        totalSupply.add(mintAmount)
+      // mint tokens
+      await reverts(
+        updated.addMinter(minter.address),
+        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
       )
     })
   })
@@ -182,9 +192,10 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     let keyBuyer
     let unlock
     let lock
-    let rate
+    let initialBalance
+    let initialSupply
 
-    beforeEach(async () => {
+    before(async () => {
       accounts = await ethers.getSigners()
       minter = accounts[1]
       referrer = accounts[2]
@@ -194,7 +205,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       unlock = Unlock.attach(UnlockContractAddress)
 
       // upgrade contract
-      await upgradeContract()
+      udt = await upgradeContract()
       udt.connect(minter)
 
       // create lock
@@ -219,80 +230,27 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         value: await lock.keyPrice(),
       })
 
-      // const tx = await lock.purchase(0, keyBuyer, referrer, [], {
-      //   from: keyBuyer,
-      //   value: await lock.keyPrice(),
-      // })
-      // const transaction = await web3.eth.getTransaction(tx.tx)
+      const owner = await unlock.owner()
+      initialBalance = await udt.balanceOf(owner)
+      initialSupply = await udt.totalSupply()
     })
 
     it('referrer has 0 UDT to start', async () => {
-      const actual = await udt.balanceOf(referrer.address)
-      assert.equal(actual.toString(), 0)
-    })
-
-    it('owner starts with 0 UDT', async () => {
-      const owner = await unlock.owner()
-      const balance = await udt.balanceOf(owner)
+      const balance = await udt.balanceOf(referrer.address)
       assert(balance.eq(0), `balance not null ${balance.toString()}`)
     })
 
-    describe('mint by gas price', () => {
-      let gasSpent
-
-      beforeEach(async () => {
-        // buy a key
-        lock.connect(keyBuyer)
-        const tx = await lock.purchase(
-          0,
-          keyBuyer.address,
-          referrer.address,
-          [],
-          {
-            value: await lock.keyPrice(),
-          }
-        )
-        // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
-        gasSpent = new BigNumber(tx.gasPrice).times(estimateGas)
-      })
-
-      it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
-        assert.notEqual(actual.toString(), 0)
-      })
-
-      it('amount minted for referrer ~= gas spent', async () => {
-        // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
-        assert.equal(
-          new BigNumber(await udt.balanceOf(referrer.address))
-            .shiftedBy(-18) // shift UDT balance
-            .times(rate)
-            .shiftedBy(-18) // shift the rate
-            .toFixed(3),
-          gasSpent.shiftedBy(-18).toFixed(3)
-        )
-      })
-
-      it('amount minted for dev ~= gas spent * 20%', async () => {
-        assert.equal(
-          new BigNumber(await udt.balanceOf(await unlock.owner()))
-            .shiftedBy(-18) // shift UDT balance
-            .times(rate)
-            .shiftedBy(-18) // shift the rate
-            .toFixed(3),
-          gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
-        )
-      })
+    it('owner starts with some UDT', async () => {
+      assert.equal(
+        initialBalance.eq(0),
+        false,
+        `balance not null ${initialBalance.toString()}`
+      )
     })
 
-    describe('mint capped by % growth', () => {
-      beforeEach(async () => {
-        // 1,000,000 UDT minted thus far
-        // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
-        // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
-        const initialGdp = (await lock.keyPrice()).mul(40000)
-        await unlock.resetTrackedValue(initialGdp.toNumber(), 0)
-
+    describe('mint by gas price', () => {
+      before(async () => {
+        // buy a key
         lock.connect(keyBuyer)
         await lock.purchase(0, keyBuyer.address, referrer.address, [], {
           value: await lock.keyPrice(),
@@ -304,20 +262,38 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         assert.notEqual(actual.toString(), 0)
       })
 
-      it('amount minted for referrer ~= 10 UDT', async () => {
-        const balance = await udt.balanceOf(referrer.address)
-        // console.log(balance.toNumber())
-        const bn = new BigNumber(balance.toNumber())
-        // console.log(bn.shiftedBy(-18).toFixed(0))
-        assert.equal(bn.shiftedBy(-18).toFixed(0), '10')
+      it('owner has earnt some UDT too', async () => {
+        const actual = await udt.balanceOf(await unlock.owner())
+        assert(actual.gt(initialBalance))
       })
 
-      it('amount minted for dev ~= 2 UDT', async () => {
-        const balance = await udt.balanceOf(await unlock.owner())
-        assert.equal(
-          new BigNumber(balance.toNumber()).shiftedBy(-18).toFixed(0),
-          '2'
-        )
+      it('total supply changed', async () => {
+        const actual = await udt.totalSupply()
+        assert(actual.gt(initialSupply))
+      })
+    })
+
+    describe('mint capped by % growth', () => {
+      before(async () => {
+        lock.connect(keyBuyer)
+        await lock.purchase(0, keyBuyer.address, referrer.address, [], {
+          value: await lock.keyPrice(),
+        })
+      })
+
+      it('referrer has some UDT now', async () => {
+        const actual = await udt.balanceOf(referrer.address)
+        assert.equal(actual.eq(0), false)
+      })
+
+      it('owner has earnt some UDT too', async () => {
+        const actual = await udt.balanceOf(await unlock.owner())
+        assert(actual.gt(initialBalance))
+      })
+
+      it('total supply changed', async () => {
+        const actual = await udt.totalSupply()
+        assert(actual.gt(initialSupply))
       })
     })
   })
