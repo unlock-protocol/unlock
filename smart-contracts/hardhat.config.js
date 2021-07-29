@@ -15,6 +15,9 @@ require('@openzeppelin/hardhat-upgrades')
 // debug storage
 require('hardhat-storage-layout')
 
+// gas reporting for tests
+require('hardhat-gas-reporter')
+
 const { task } = require('hardhat/config')
 
 const { getHardhatNetwork } = require('./helpers/network')
@@ -91,6 +94,11 @@ task('balance', "Prints an account's balance")
  */
 module.exports = {
   networks,
+  gasReporter: {
+    currency: 'USD',
+    excludeContracts: ['Migrations', 'TestNoop'],
+    gasPrice: 5,
+  },
   solidity: {
     compilers: [
       { version: '0.4.24', settings },

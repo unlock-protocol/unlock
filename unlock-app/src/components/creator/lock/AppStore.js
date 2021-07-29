@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types'
-import React, { useContext } from 'react'
-
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
+import { ConfigContext } from '../../../utils/withConfig'
+
 import { AuthenticationContext } from '../../interface/Authenticate'
 import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
+import {
+  Input,
+  Button as FormButton,
+} from '../../interface/checkout/FormStyles'
 
 const Integration = ({ name, icon, href }) => (
   <App>
@@ -32,7 +37,9 @@ Integration.defaultProps = {
 }
 
 const AppStore = ({ lock }) => {
+  const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
+  const [redirectUri, setRediredtUri] = useState('')
   const integrations = {
     wordpress: {
       name: 'Wordpress',
@@ -83,8 +90,51 @@ const AppStore = ({ lock }) => {
       href: 'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
     },
   }
+
+  const checkoutURLConfig = {
+    locks: {
+      [lock.address]: {
+        network: lock.network,
+      },
+    },
+    redirectUri,
+    persistentCheckout: true,
+    icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
+  }
+
+  const checkoutUrl = new URL(
+    `/checkout?paywallConfig=${encodeURIComponent(
+      JSON.stringify(checkoutURLConfig)
+    )}`,
+    window.location.href
+  )
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(checkoutUrl)
+    alert('URL Copied to your clipboard')
+  }
+
+  const openCheckout = async () => {
+    window.open(checkoutUrl)
+  }
+
   return (
     <Wrapper>
+      <Details>
+        <DetailTitle>Purchase Address</DetailTitle>
+        <p>
+          Share the URL below with your fans if you want them to easily purchase
+          this lock&apos;s NFT membership.
+        </p>
+        <p style={{ margin: '0px' }}>
+          Redirect URL:{' '}
+          <RedirectUriInput placeholder="URL to which your members ared redirected once they purchased the membership" />
+        </p>
+
+        <UrlInput type="disabled" value={checkoutUrl} />
+        <CopyButton onClick={copyToClipboard}>Copy</CopyButton>
+        <CopyButton onClick={openCheckout}>Open</CopyButton>
+      </Details>
       <Details>
         <DetailTitle>Integrate</DetailTitle>
         <p>
@@ -211,4 +261,43 @@ const Label = styled.div`
   text-transform: uppercase;
   letter-spacing: 1px;
   text-align: center;
+`
+
+const CopyButton = styled(FormButton)`
+  display: inline-block;
+  background-color: var(--lightgrey);
+  color: grey;
+  width: 50px;
+  margin-left: 8px;
+  height: 40px;
+  font-size: 14px;
+  margin-top: 0px;
+  font-family: IBM Plex Sans;
+
+  &:hover {
+    color: var(--lightgrey);
+    background-color: grey;
+  }
+`
+
+const InterationInput = styled(Input)`
+  height: 40px;
+  font-size: 14px;
+  width: 70%;
+`
+
+const UrlInput = styled(InterationInput)`
+  font-family: 'Courier New', Courier, monospace;
+  color: grey;
+`
+
+const RedirectUriInput = styled(Input)`
+  height: 24px;
+  background-color: white;
+  font-size: 12px;
+  width: 50%;
+
+  &::placeholder {
+    opacity: 0.5;
+  }
 `

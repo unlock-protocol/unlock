@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import ReactGA from 'react-ga'
-import Intercom from 'react-intercom'
 import getConfig from 'next/config'
+import TagManager from 'react-gtm-module'
+
 import { MembershipContext } from '../../membershipContext'
 import Membership from './Membership'
 import GlobalStyle from '../../theme/globalStyle'
@@ -12,6 +13,25 @@ const config = getConfig().publicRuntimeConfig
 
 export const GlobalWrapper = ({ children }) => {
   const [isMember, setIsMember] = useState('pending')
+
+  // Register pageview with Google Analytics on the client side only
+  // Executed everytime!
+  useEffect(() => {
+    if (process.browser) {
+      ReactGA.pageview(window.location.pathname + window.location.search)
+    }
+  })
+
+  // Executed only once!
+  useEffect(() => {
+    if (process.browser) {
+      if (config.tagManagerArgs) {
+        console.log('GTM!')
+        TagManager.initialize(config.tagManagerArgs)
+      }
+      ReactGA.initialize(config.googleAnalyticsId)
+    }
+  }, [])
 
   const becomeMember = () => {
     return window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
@@ -52,8 +72,6 @@ export const GlobalWrapper = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    ReactGA.initialize(config.googleAnalyticsId)
-
     /* eslint-disable no-console */
     console.info(`
 *********************************************************************
@@ -90,7 +108,6 @@ The Unlock team
       <Membership isMember={isMember} becomeMember={becomeMember} />
       <GlobalStyle />
       {children}
-      <Intercom appID={config.intercomAppId} />
     </MembershipContext.Provider>
   )
 }

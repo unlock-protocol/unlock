@@ -12,8 +12,9 @@ const paywallConfig = {
   },
   icon: 'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/brand/1808-Unlock-Identity_Unlock-WordMark.svg',
   callToAction: {
-    default:
-      'Get the Unlock membership to get you access to our Discord, blog comments and more!',
+    default: `Get an Unlock membership to access our Discord, blog comments and more!
+
+      If gas prices are high, pick the xDAI membership and receive an airdrop!`,
   },
 }
 

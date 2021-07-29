@@ -4937,7 +4937,7 @@ eth-ens-namehash@2.0.8, eth-ens-namehash@^2.0.0:
     idna-uts46-hx "^2.3.1"
     js-sha3 "^0.5.7"
 
-eth-gas-reporter@0.2.22:
+eth-gas-reporter@0.2.22, eth-gas-reporter@^0.2.20:
   version "0.2.22"
   resolved "https://registry.npmjs.org/eth-gas-reporter/-/eth-gas-reporter-0.2.22.tgz"
   integrity sha512-L1FlC792aTf3j/j+gGzSNlGrXKSxNPXQNk6TnV5NNZ2w3jnQCRyJjDl0zUo25Cq2t90IS5vGdbkwqFQK7Ce+kw==
@@ -6385,6 +6385,14 @@ hardhat-storage-layout@^0.1.6:
   integrity sha512-urp9PUDJmRrFaTnMkyYGAlU0OF7Q+inWMWKHvuGRyvBDwVQKXfj5WoerTax4bBpXukJ4fBYyUTjAr0x+j2LcKQ==
   dependencies:
     console-table-printer "^2.9.0"
+    
+hardhat-gas-reporter@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/hardhat-gas-reporter/-/hardhat-gas-reporter-1.0.4.tgz#59e3137e38e0dfeac2e4f90d5c74160b50ad4829"
+  integrity sha512-G376zKh81G3K9WtDA+SoTLWsoygikH++tD1E7llx+X7J+GbIqfwhDKKgvJjcnEesMrtR9UqQHK02lJuXY1RTxw==
+  dependencies:
+    eth-gas-reporter "^0.2.20"
+    sha1 "^1.1.1"
 
 hardhat-tracer@^1.0.0-alpha.6:
   version "1.0.0-alpha.6"

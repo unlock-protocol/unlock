@@ -45,47 +45,20 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
-  const handleSignature = () => {
+  const handleSignature = async () => {
+    setError('')
     const payload = JSON.stringify({
       network,
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
     })
-    walletService.signDataPersonal(
-      '', // account address -- unused in walletService
+    const signature = await walletService.signMessage(payload, 'personal_sign')
+    setSignature({
       payload,
-      (error: any, _signature: any) => {
-        if (error) {
-          setError('We could not confirm that you own this key.')
-        } else {
-          setError('')
-          setSignature({
-            payload,
-            signature: _signature,
-          })
-        }
-      }
-    )
-  }
-
-  const toggleShowingQR = () => {
-    setShowingQR(!showingQR)
-  }
-
-  const qrButton = () => {
-    if (signature) {
-      return (
-        <ButtonAction type="button" onClick={toggleShowingQR}>
-          Display QR Code
-        </ButtonAction>
-      )
-    }
-    return (
-      <ButtonAction type="button" onClick={handleSignature}>
-        Confirm Ownership
-      </ButtonAction>
-    )
+      signature,
+    })
+    setShowingQR(true)
   }
 
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -109,7 +82,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       {signature && (
         <QRModal
           active={showingQR}
-          dismiss={toggleShowingQR}
+          dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
           signature={signature}
         />
@@ -121,7 +94,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
       />
       {error && <Error>{error}</Error>}
-      {qrButton()}
+      <ButtonAction type="button" onClick={handleSignature}>
+        Confirm Ownership
+      </ButtonAction>
     </Box>
   )
 }

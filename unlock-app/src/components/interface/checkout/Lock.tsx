@@ -28,6 +28,7 @@ const getLockProps = (
   name: string
 ) => {
   return {
+    cardEnabled: lock?.fiatPricing?.creditCardEnabled,
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
     formattedKeyPrice: formattedKeyPrice(lock, baseCurrencySymbol),
     convertedKeyPrice: convertedKeyPrice(lock),
@@ -55,19 +56,21 @@ export const Lock = ({
     const now = new Date().getTime() / 1000
     if (key && key.expiration > now) {
       setHasValidKey(true)
+    } else {
+      setHasValidKey(false)
     }
     setHasKey(key)
   }
 
   useEffect(() => {
+    const getKey = async () => {
+      alreadyHasKey(await getKeyForAccount(account))
+    }
+
     if (account) {
-      const getKey = async () => {
-        const key = await getKeyForAccount(account)
-        if (key) {
-          alreadyHasKey(key)
-        }
-      }
       getKey()
+    } else {
+      setHasValidKey(false)
     }
   }, [account])
 
@@ -85,7 +88,6 @@ export const Lock = ({
     ),
   }
   const isSoldOut = numberOfAvailableKeys(lock) === 0
-
   if (isSoldOut) {
     return <LockVariations.SoldOutLock {...lockProps} />
   }

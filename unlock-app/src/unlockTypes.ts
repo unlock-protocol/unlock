@@ -185,6 +185,7 @@ export interface PaywallConfig {
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
+  redirectUri?: string
   useDelegatedProvider?: boolean
   network: number
   referrer?: string

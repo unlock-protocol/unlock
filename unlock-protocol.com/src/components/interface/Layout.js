@@ -1,40 +1,19 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import ReactGA from 'react-ga'
 import Header from './Header'
 import Footer from './Footer'
-import { RoundedLogo } from './Logo'
 import Media from '../../theme/media'
-import { GlobalWrapper } from './GlobalWrapper'
 
 export default function Layout({ forContent, title, children }) {
-  // Register pageview with Google Analytics on the client side only
-  if (process.browser) {
-    ReactGA.pageview(window.location.pathname + window.location.search)
-  }
-  // Load unlock script!
   return (
-    <GlobalWrapper>
-      <Container>
-        <Left>
-          {!forContent && (
-            <Link href="/">
-              <a>
-                <RoundedLogo />
-              </a>
-            </Link>
-          )}
-        </Left>
-        <Content>
-          <Header forContent={forContent} title={title} />
-          {children}
-          {forContent && <Footer />}
-        </Content>
-        <Right />
-      </Container>
-    </GlobalWrapper>
+    <Container>
+      <Page>
+        <Header forContent={forContent} title={title} />
+        <Content>{children}</Content>
+        {forContent && <Footer />}
+      </Page>
+    </Container>
   )
 }
 
@@ -50,37 +29,30 @@ Layout.defaultProps = {
   forContent: false,
 }
 
+const Page = styled.div`
+  max-width: 1080px;
+  padding: 16px;
+  padding-top: 24px;
+  margin: 0 auto;
+  ${Media.phone`
+    padding: 0px;
+  `}
+`
+
 const Container = styled.div`
+  background-color: var(--offwhite);
   font-family: 'IBM Plex Sans', sans-serif;
-  display: grid;
+  justify-content: center;
+  padding: 0px;
   padding-bottom: 60px; /* Leaving room for the members bar */
-  grid-template-columns: 1fr 896px 1fr;
-  ${Media.phone`
-    display: flex;
-    padding-left: 6px;
-    padding-right: 6px;
-  `};
-`
-
-const Left = styled.div`
-  display: grid;
-  align-items: start;
-  height: 24px;
-
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-const Right = styled.div`
-  ${Media.phone`
-    display: none;
-  `};
 `
 
 const Content = styled.div`
   color: var(--darkgrey);
-  display: grid;
-  row-gap: 24px;
-  width: 100%;
+  flex-direction: column;
+  ${Media.phone`
+    margin-top: 0px;
+    padding-left: 16px;
+    padding-right: 16px;
+  `}
 `

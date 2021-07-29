@@ -324,45 +324,6 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  /*
-   * Given a lock address, a key ID, and a typed data signature, get
-   * the metadata (public and protected) associated with that key.
-   * @param {string} lockAddress
-   * @param {string} keyId
-   * @param {*} signature
-   * @param {*} data
-   */
-  async getMetadataFor(lockAddress, keyId, signature, data, network) {
-    const stringData = JSON.stringify(data)
-    const opts = {
-      headers: this.genAuthorizationHeader(signature),
-      // No body allowed in GET, so these are passed as query params for this
-      // call.
-      params: {
-        data: stringData,
-        signature,
-      },
-    }
-    try {
-      const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/${keyId}?chain=${network}`,
-        opts
-      )
-      const payload = {
-        lockAddress,
-        keyId,
-        data: {},
-      }
-
-      if (result.data && result.data.userMetadata) {
-        payload.data = result.data.userMetadata
-      }
-      this.emit(success.getMetadataFor, payload)
-    } catch (error) {
-      this.emit(failure.getMetadataFor, error)
-    }
-  }
-
   /**
    * Given a lock address and a typed data signature, get the metadata
    * (public and protected) associated with each key on that lock.
@@ -373,7 +334,12 @@ export class StorageService extends EventEmitter {
   async getBulkMetadataFor(lockAddress, signature, data, network) {
     const stringData = JSON.stringify(data)
     const opts = {
-      headers: this.genAuthorizationHeader(signature),
+      headers: {
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
+        'Content-Type': 'application/json',
+      },
       // No body allowed in GET, so these are passed as query params for this
       // call.
       params: {
@@ -458,10 +424,72 @@ export class StorageService extends EventEmitter {
     return fetch(url, {
       method: 'PUT',
       headers: {
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+
+  /**
+   * Saves a key metadata for a lock
+   * @param {*} lockAddress
+   * @param {*} userAddress
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async setKeyMetadata(lockAddress, keyId, payload, signature, network) {
+    let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
         Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
+  }
+
+  /**
+   *
+   * @param {*} lockAddress
+   * @param {*} keyId
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async getKeyMetadata(lockAddress, keyId, payload, signature, network) {
+    try {
+      let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+      if (network) {
+        url = `${url}?chain=${network}`
+      }
+
+      const options = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      if (signature) {
+        options.headers.Authorization = `Bearer ${Buffer.from(
+          signature
+        ).toString('base64')}`
+      }
+
+      const response = await axios.get(url, options)
+      return response?.data
+    } catch (error) {
+      console.error(error)
+      return {}
+    }
   }
 }

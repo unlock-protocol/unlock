@@ -40,6 +40,7 @@
     "fs-extra": "^10.0.0",
     "hardhat": "^2.4.1",
     "hardhat-erc1820": "^0.1.0",
+    "hardhat-gas-reporter": "^1.0.4",
     "hardhat-storage-layout": "^0.1.6",
     "hardhat-tracer": "^1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.2",
