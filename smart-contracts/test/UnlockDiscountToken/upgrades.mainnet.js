@@ -1,7 +1,6 @@
 const { reverts } = require('truffle-assertions')
-const { constants } = require('hardlydifficult-eth')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
-const Locks = require('../fixtures/locks')
+const { time } = require('@openzeppelin/test-helpers')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const { errorMessages } = require('../helpers/constants')
 const multisigABI = require('../helpers/ABIs/multisig.json')
@@ -13,74 +12,73 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 // import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
 const [UDTProxyInfo] =
   OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/UnlockDiscountToken']
-const [UnlockProxyInfo] =
-  OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/Unlock']
-
-const UDTProxyContractAdress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
-const UnlockContractAddress = UnlockProxyInfo.address // '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
+const UDTProxyContractAddress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
 const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
 const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
+const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
 // helper function
 const upgradeContract = async () => {
+  // prepare upgrade and deploy new contract implementation
   const deployer = await ethers.getSigner(deployerAddress)
   const UnlockDiscountTokenV2 = await ethers.getContractFactory(
     'UnlockDiscountTokenV2',
     deployer
   )
   const newImpl = await upgrades.prepareUpgrade(
-    UDTProxyContractAdress,
+    UDTProxyContractAddress,
     UnlockDiscountTokenV2,
     {}
   )
 
-  // contracts
+  // update contract implementation address in proxy admin using multisig
   const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
 
-  const [signer0, signer1, signer2, signer3] = await multisig.getOwners()
+  const signers = await multisig.getOwners()
   await network.provider.request({
     method: 'hardhat_impersonateAccount',
-    params: [signer0],
+    params: [signers[0]],
   })
-  const issuer = await ethers.getSigner(signer0)
-  multisig.connect(issuer)
+  const issuer = await ethers.getSigner(signers[0])
+  const multisigIssuer = multisig.connect(issuer)
 
   // build upgrade tx
-  const proxy = await ethers.getContractAt(proxyABI, UDTProxyContractAdress)
+  const proxy = await ethers.getContractAt(proxyABI, UDTProxyContractAddress)
   const data = proxy.interface.encodeFunctionData('upgrade', [
-    proxyAdminAddress,
+    UDTProxyContractAddress,
     newImpl,
   ])
 
-  // submit upgrade
-  // console.log((await multisig.transactionCount()).toString()) // 33
-  // console.log((await multisig.required()).toString()) // 4
-  const tx = await multisig.submitTransaction(
-    deployer.address, // destination
-    100, // ETH value
+  // submit proxy upgrade tx
+  const tx = await multisigIssuer.submitTransaction(
+    proxyAdminAddress,
+    0, // ETH value
     data
   )
-  console.log(tx)
-  tx.wait()
 
-  const { transactionId } = tx.events
+  // get tx id
+  const { events } = await tx.wait()
+  const evt = events.find((v) => v.event === 'Confirmation')
+  const transactionId = evt.args[1]
 
   // reach concensus
-  Array.from(signer1, signer2, signer3).forEach( async signer =>{
-    await network.provider.request({
-      method: 'hardhat_impersonateAccount',
-      params: [signer],
+  await Promise.all(
+    signers.slice(1, 4).map(async (signerAddress) => {
+      await network.provider.request({
+        method: 'hardhat_impersonateAccount',
+        params: [signerAddress],
+      })
+
+      const signer = await ethers.getSigner(signerAddress)
+
+      const m = multisig.connect(signer)
+      await m.confirmTransaction(transactionId, { gasLimit: 1200000 })
     })
-    multisig.connect(signer1)
-    await multisig.confirmTransaction(transactionId)
-  })
+  )
 
-  // enact upgrade
-  await multisig.executeTransaction(transactionId)
-
-  // return updated
+  return UnlockDiscountTokenV2.attach(UDTProxyContractAddress)
 }
 
 contract('UnlockDiscountToken (on mainnet)', async () => {
@@ -126,9 +124,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       deployer
     )
 
-    udt = UnlockDiscountToken.attach(UDTProxyContractAdress)
-    // console.log( await udt.owner() )
-    await upgradeContract()
+    udt = UnlockDiscountToken.attach(UDTProxyContractAddress)
   })
 
   describe('The mainnet fork', () => {
@@ -166,7 +162,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     })
 
     it('lives at the same address', async () => {
-      assert.equal(udt.address, UDTProxyContractAdress)
+      assert.equal(udt.address, UDTProxyContractAddress)
     })
 
     /*
@@ -235,6 +231,20 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     })
   })
 
+  describe('Multisig', () => {
+    it('tx is deployed properly', async () => {
+      await upgradeContract()
+      const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
+
+      const transactionId = (await multisig.transactionCount()).toNumber() - 1
+      const count = await multisig.getConfirmationCount(transactionId)
+      assert.equal(4, await count.toNumber())
+      assert(await multisig.isConfirmed(transactionId))
+      const [, , , executed] = await multisig.transactions(transactionId)
+      assert(executed)
+    })
+  })
+  /* 
   describe('minting tokens', () => {
     let accounts
     let minter
@@ -344,6 +354,59 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       it('total supply changed', async () => {
         const actual = await udt.totalSupply()
         assert(actual.gt(initialSupply))
+      })
+    })
+  })
+*/
+  describe('governance', () => {
+    describe('Delegation', () => {
+      it('delegation with balance', async () => {
+        const multisig = await ethers.getContractAt(
+          multisigABI,
+          multisigAddress
+        )
+
+        const [holderAddress] = await multisig.getOwners()
+        await network.provider.request({
+          method: 'hardhat_impersonateAccount',
+          params: [holderAddress],
+        })
+        const holder = await ethers.getSigner(holderAddress)
+
+        // make the upgrade
+        udt = await upgradeContract()
+        udt = udt.connect(holder)
+
+        // delegate some votes
+        const supply = await udt.balanceOf(holder.address)
+        const [recipient] = await ethers.getSigners()
+        const tx = await udt.delegate(recipient.address)
+        const { events, blockNumber } = await tx.wait()
+
+        const evtChanged = events.find((v) => v.event === 'DelegateChanged')
+        const [delegator, fromDelegate, toDelegate] = evtChanged.args
+
+        const evtVotesChanges = events.find(
+          (v) => v.event === 'DelegateVotesChanged'
+        )
+        const [delegate, previousBalance, newBalance] = evtVotesChanges.args
+
+        assert.equal(delegator, holder.address)
+        assert.equal(fromDelegate, ZERO_ADDRESS)
+        assert.equal(toDelegate, recipient.address)
+
+        assert.equal(delegate, recipient.address)
+        assert.equal(previousBalance, '0')
+        assert(newBalance.eq(supply))
+
+        assert(supply.eq(await udt.getCurrentVotes(recipient.address)))
+        assert(
+          (await udt.getPriorVotes(recipient.address, blockNumber - 1)).eq(0)
+        )
+        await time.advanceBlock()
+        assert(
+          supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
+        )
       })
     })
   })
