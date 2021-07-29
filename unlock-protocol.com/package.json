@@ -17,7 +17,7 @@
     "@types/react": "17.0.13",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.10",
-    "@unlock-protocol/unlock-assets": "1.4.5",
+    "@unlock-protocol/unlock-assets": "1.4.6",
     "@zeit/next-source-maps": "0.0.3",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.0.6",
