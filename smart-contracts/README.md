@@ -65,3 +65,12 @@ For Mainnet
 - create a `mnemonic.mainnet` files with the words
 - `export MAINNET_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>`
 - `npx hardhat run scripts/udt-upgrade.js --network mainet`
+
+### Verify contracts
+
+Verify and submit contract code on etherscan
+```
+npx hardhat run scripts/verify.js --network rinkeby
+```
+
+
