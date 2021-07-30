@@ -12,7 +12,7 @@ async function main() {
   const manifest = await manifestParser.read()
 
   // contract factories
-  const toVerify = ['Unlock', 'PublicLock', 'UnlockDiscountToken']
+  const toVerify = ['Unlock', 'PublicLock', 'UnlockDiscountTokenV2']
 
   await Promise.all(
     toVerify.map(async (factoryName) => {
