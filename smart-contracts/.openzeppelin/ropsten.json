@@ -151,7 +151,7 @@
           {
             "contract": "ERC20",
             "label": "_allowances",
-            "type": "t_mapping(unknown,t_uint256)",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
             "src": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol"
           },
           {
@@ -187,13 +187,13 @@
           {
             "contract": "ERC20Detailed",
             "label": "_name",
-            "type": "t_string",
+            "type": "t_string_storage",
             "src": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol"
           },
           {
             "contract": "ERC20Detailed",
             "label": "_symbol",
-            "type": "t_string",
+            "type": "t_string_storage",
             "src": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol"
           },
           {
