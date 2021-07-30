@@ -128,7 +128,10 @@ const AppStore = ({ lock }) => {
         </p>
         <p style={{ margin: '0px' }}>
           Redirect URL:{' '}
-          <RedirectUriInput placeholder="URL to which your members ared redirected once they purchased the membership" />
+          <RedirectUriInput
+            onChange={(event) => setRediredtUri(event.target.value)}
+            placeholder="URL to which your members ared redirected once they purchased the membership"
+          />
         </p>
 
         <UrlInput type="disabled" value={checkoutUrl} />
