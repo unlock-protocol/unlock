@@ -50,3 +50,18 @@ npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.j
 ```
 
 Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
+
+
+### Deployment
+
+For Rinkeby
+
+- create a `mnemonic.rinkeby` files with the words
+- `export RINKEBY_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>`
+- `npx hardhat run scripts/udt-upgrade.js --network rinkeby`
+
+For Mainnet
+
+- create a `mnemonic.mainnet` files with the words
+- `export MAINNET_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>`
+- `npx hardhat run scripts/udt-upgrade.js --network mainet`
