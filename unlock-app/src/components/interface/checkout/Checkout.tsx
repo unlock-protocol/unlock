@@ -1,4 +1,4 @@
-import React, { useState, useContext, useReducer } from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -31,7 +31,7 @@ import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import { AuthenticationContext } from '../Authenticate'
 
 interface CheckoutProps {
-  emitCloseModal: () => void
+  emitCloseModal: (success: boolean) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
   web3Provider: any
@@ -39,6 +39,9 @@ interface CheckoutProps {
 
 const keysReducer = (state: any, key: any) => {
   // Keeps track of all the keys, by lock
+  if (key === -1) {
+    return {}
+  }
   return {
     ...state,
     [key.lock]: key,
@@ -67,7 +70,6 @@ const hasExpiredMembership = (keys: Array<any>) => {
     ).length > 0
   )
 }
-
 export const Checkout = ({
   emitCloseModal,
   emitTransactionInfo,
@@ -78,6 +80,7 @@ export const Checkout = ({
     AuthenticationContext
   )
   const paywallConfig = useContext(PaywallConfigContext)
+  const [paywallIcon, setPaywallIcon] = useState(paywallConfig?.icon)
   const config = useContext(ConfigContext)
   const [state, setState] = useState('')
   const [showBack, setShowBack] = useState(false)
@@ -105,19 +108,28 @@ export const Checkout = ({
     setState(state)
   }
 
+  // When the account is changed, make sure we ping!
+  useEffect(() => {
+    if (account) {
+      setHasKey(-1)
+      emitUserInfo({
+        address: account,
+      })
+    }
+  }, [account])
+
   const onProvider = async (provider: any) => {
-    const { account } = await authenticate(provider)
-    emitUserInfo({
-      address: account,
-    })
-    if (selectedLock) {
-      if (!provider.isUnlock) {
-        setCheckoutState('crypto-checkout')
+    const result = await authenticate(provider)
+    if (result) {
+      if (selectedLock) {
+        if (!provider.isUnlock) {
+          setCheckoutState('crypto-checkout')
+        } else {
+          cardCheckoutOrClaim(selectedLock)
+        }
       } else {
-        cardCheckoutOrClaim(selectedLock)
+        setCheckoutState('')
       }
-    } else {
-      setCheckoutState('')
     }
   }
 
@@ -131,6 +143,13 @@ export const Checkout = ({
     paywallCta = 'confirmed'
   } else if (hasExpiredMembership(existingKeys)) {
     paywallCta = 'expired'
+  }
+
+  const closeModal = (success: boolean) => {
+    emitCloseModal(success)
+    if (paywallConfig.redirectUri) {
+      window.location.href = paywallConfig.redirectUri
+    }
   }
 
   const connectWallet = () => {
@@ -197,7 +216,7 @@ export const Checkout = ({
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
           lock={selectedLock}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
         />
       )
@@ -229,7 +248,7 @@ export const Checkout = ({
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           {...cardDetails}
         />
       )
@@ -251,7 +270,7 @@ export const Checkout = ({
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           {...cardDetails}
         />
       )
@@ -323,13 +342,14 @@ export const Checkout = ({
         )}
 
         {hasValidMembership(existingKeys) && (
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership closeModal={closeModal} />
         )}
       </>
     )
   }
 
   const onLoggedOut = () => {
+    setHasKey(-1) // Resets keys
     emitUserInfo({})
     setCheckoutState('')
     selectLock(null)
@@ -344,17 +364,21 @@ export const Checkout = ({
 
   return (
     <Web3ServiceContext.Provider value={web3Service}>
-      <CheckoutContainer close={emitCloseModal}>
+      <CheckoutContainer close={() => closeModal(false)}>
         <CheckoutWrapper
           showBack={showBack}
           back={back}
           allowClose={allowClose}
-          hideCheckout={emitCloseModal}
+          hideCheckout={closeModal}
           onLoggedOut={onLoggedOut}
         >
           <PaywallLogoWrapper>
-            {paywallConfig.icon ? (
-              <PublisherLogo alt="Publisher Icon" src={paywallConfig.icon} />
+            {paywallIcon ? (
+              <PublisherLogo
+                alt="Publisher Icon"
+                src={paywallIcon}
+                onError={() => setPaywallIcon('')}
+              />
             ) : (
               <RoundedLogo size="56px" />
             )}

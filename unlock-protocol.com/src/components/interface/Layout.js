@@ -1,28 +1,19 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import ReactGA from 'react-ga'
 import Header from './Header'
 import Footer from './Footer'
 import Media from '../../theme/media'
 
-import { GlobalWrapper } from './GlobalWrapper'
-
 export default function Layout({ forContent, title, children }) {
-  // Register pageview with Google Analytics on the client side only
-  if (process.browser) {
-    ReactGA.pageview(window.location.pathname + window.location.search)
-  }
   return (
-    <GlobalWrapper>
-      <Container>
-        <Page>
-          <Header forContent={forContent} title={title} />
-          <Content>{children}</Content>
-          {forContent && <Footer />}
-        </Page>
-      </Container>
-    </GlobalWrapper>
+    <Container>
+      <Page>
+        <Header forContent={forContent} title={title} />
+        <Content>{children}</Content>
+        {forContent && <Footer />}
+      </Page>
+    </Container>
   )
 }
 
@@ -61,5 +52,7 @@ const Content = styled.div`
   flex-direction: column;
   ${Media.phone`
     margin-top: 0px;
+    padding-left: 16px;
+    padding-right: 16px;
   `}
 `

@@ -8,6 +8,7 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import { preparePostProps } from '../utils/blogLoader'
+import { GlobalWrapper } from '../components/interface/GlobalWrapper'
 
 // TODO: move to PostContent
 const Post = ({ slug, post }) => {
@@ -26,39 +27,41 @@ const Post = ({ slug, post }) => {
   const { image } = post
 
   return (
-    <Layout forContent>
-      <Head>
-        <title>{pageTitle(title)}</title>
-        <TwitterTags
-          title={pageTitle(title)}
-          description={description}
-          image={image}
+    <GlobalWrapper>
+      <Layout forContent>
+        <Head>
+          <title>{pageTitle(title)}</title>
+          <TwitterTags
+            title={pageTitle(title)}
+            description={description}
+            image={image}
+          />
+          <OpenGraphTags
+            title={pageTitle(title)}
+            description={description}
+            canonicalPath={permalink}
+            image={image}
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            href="/static/blog.rss"
+          />
+        </Head>
+        <BlogPost
+          body={body}
+          publishDate={publishDate}
+          latestUpdateDate={latestUpdateDate}
+          title={title}
+          subTitle={subTitle}
+          scripts={scripts}
+          authorName={authorName}
+          permalink={permalink}
+          membersOnly={membersOnly}
+          nonMembersOnly={nonMembersOnly}
         />
-        <OpenGraphTags
-          title={pageTitle(title)}
-          description={description}
-          canonicalPath={permalink}
-          image={image}
-        />
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          href="/static/blog.rss"
-        />
-      </Head>
-      <BlogPost
-        body={body}
-        publishDate={publishDate}
-        latestUpdateDate={latestUpdateDate}
-        title={title}
-        subTitle={subTitle}
-        scripts={scripts}
-        authorName={authorName}
-        permalink={permalink}
-        membersOnly={membersOnly}
-        nonMembersOnly={nonMembersOnly}
-      />
-    </Layout>
+      </Layout>
+    </GlobalWrapper>
   )
 }
 
