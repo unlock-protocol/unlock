@@ -20,6 +20,26 @@
         ]
       }
     },
+    "dev-137": {
+      "proxies": {
+        "unlock-protocol/Unlock": [
+          {
+            "address": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+            "version": "0.0.8",
+            "implementation": "0x7633dd082406861C384309c67576a4260C5775E0",
+            "admin": "0x3C6e461341AdbF7C0947085e86B4A6f35Ff2F801",
+            "kind": "Upgradeable"
+          }
+        ],
+        "unlock-protocol/PublicLock": [
+          {
+            "address": "0xF1c4ac70e50346e9065fD309Ebcbc608084d555a",
+            "kind": "NonProxy",
+            "bytecodeHash": "60c330f321620b54f6aff1e81aa0a3e59879ed763de971f6da07dbd577a300e9"
+          }
+        ]
+      }
+    },
     "kovan": {
       "proxies": {
         "unlock-protocol/Unlock": [

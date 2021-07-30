@@ -1,9 +1,17 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers, upgrades } = require('hardhat')
-
+const { copySync } = require('fs-extra')
 const { addDeployment } = require('../helpers/deployments')
 
 module.exports = async () => {
+  // when running a mainnet fork
+  if (process.env.RUN_MAINNET_FORK) {
+    // copy .oppenzeppelin mainnet network manifest
+    copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
+    // skip contracts setup
+    return
+  }
+
   // setup accounts
   const [unlockOwner, minter] = await ethers.getSigners()
 
