@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const fs = require('fs')
 
 const chains = {
@@ -56,12 +57,12 @@ const getMnemonic = (networkName) => {
 
   if (networkName) {
     const mnemonicFile = `./mnemonic.${networkName.toLowerCase()}`
-
     // get mnemonic from file
     if (fs.existsSync(mnemonicFile)) {
-      const mnemonic = fs.readFileSync(mnemonicFile).toString().trim()
-      if (mnemonic && mnemonic !== '') {
-        return mnemonic
+      // eslint-disable-next-line import/no-dynamic-require
+      const mnemonic = require(`../${mnemonicFile}`)
+      if (mnemonic && mnemonic.seed !== '') {
+        return mnemonic.seed
       }
     } else {
       throw new Error(`Missing mnemonic file: ${mnemonicFile}`)

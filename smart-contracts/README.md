@@ -52,16 +52,47 @@ npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.j
 Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
 
 
-### Deployment
+### Setup networks
 
-For Rinkeby
+To set up a network for deployment, you need 2 things
 
-- create a `mnemonic.rinkeby` files with the words
-- `export RINKEBY_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>`
-- `npx hardhat run scripts/udt-upgrade.js --network rinkeby`
+1. create a plain text mnemonic file containing the words `mnemonic.<NETWORK NAME>` 
+2. export the provider url to your shell env
 
-For Mainnet
+#### Example : Rinkeby
 
-- create a `mnemonic.mainnet` files with the words
-- `export MAINNET_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>`
-- `npx hardhat run scripts/udt-upgrade.js --network mainet`
+```
+# store menmonic words in file
+vim mnemonic.rinkeby
+
+# export Alchemy/Infura URL
+export RINKEBY_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>
+```
+
+### Run the UDT contract upgradea
+
+Once your network are setup, you can run the UDT contract upgrade
+
+```
+npx hardhat run scripts/udt-upgrade.js --network rinkeby
+```
+
+### Verify contracts
+
+You can verify all contracts on etherscan as follow:
+
+```
+export ETHERSCAN_API_KEY=<your api key>
+
+# contract addresses are fetched from .openzeppelin files
+npx hardhat run scripts/verify.js --network rinkeby
+```
+
+You can also verify a contract using an existing address
+
+```
+npx hardhat verify --network polygon 0x7633dd082406861C384309c67576a4260C5775E0
+```
+
+NB: for Polygon, you need an API key from https://polygonscan.com
+

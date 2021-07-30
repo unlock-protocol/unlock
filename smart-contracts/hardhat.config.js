@@ -18,6 +18,12 @@ require('hardhat-storage-layout')
 // gas reporting for tests
 require('hardhat-gas-reporter')
 
+// contract verification
+if (process.env.ETHERSCAN_API_KEY) {
+  // eslint-disable-next-line global-require
+  require('@nomiclabs/hardhat-etherscan')
+}
+
 const { task } = require('hardhat/config')
 
 const { getHardhatNetwork } = require('./helpers/network')
@@ -47,6 +53,13 @@ const defaultNetworks = {
 }
 
 const networks = getHardhatNetwork(defaultNetworks)
+
+// Etherscan api for verification
+const etherscan = process.env.ETHERSCAN_API_KEY
+  ? {
+      apiKey: process.env.ETHERSCAN_API_KEY,
+    }
+  : {}
 
 // add mainnet fork -- if API key is present
 if (process.env.RUN_MAINNET_FORK) {
@@ -90,6 +103,7 @@ task('balance', "Prints an account's balance")
  */
 module.exports = {
   networks,
+  etherscan,
   gasReporter: {
     currency: 'USD',
     excludeContracts: ['Migrations', 'TestNoop'],
