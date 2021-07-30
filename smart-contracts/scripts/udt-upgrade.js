@@ -1,11 +1,19 @@
 const { ethers, upgrades } = require('hardhat')
 const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 
-const network = 'mainnet'
+const { getNetworkName } = require('../helpers/network')
 
 async function main() {
+  const chainId = await web3.eth.net.getId()
+  const networkName = process.env.RUN_MAINNET_FORK
+    ? 'mainnet'
+    : getNetworkName(chainId)
+
+  // eslint-disable-next-line no-console
+  console.log(`Deploying new implemntation on ${networkName}...`)
+
   const [UDTInfo] =
-    OZ_SDK_EXPORT.networks[network].proxies[
+    OZ_SDK_EXPORT.networks[networkName].proxies[
       'unlock-protocol/UnlockDiscountToken'
     ]
 

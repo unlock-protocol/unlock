@@ -66,10 +66,6 @@ if (process.env.RUN_MAINNET_FORK) {
   }
 }
 
-// task('storage-layout', async (taskArgs, hre) => {
-//   await hre.storageLayout.export()
-// })
-
 task('accounts', 'Prints the list of accounts', async () => {
   // eslint-disable-next-line no-undef
   const accounts = await ethers.getSigners()
