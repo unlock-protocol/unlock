@@ -11,7 +11,7 @@ const navigationButtons = [
   Buttons.About,
   Buttons.Blog,
   Buttons.Integrations,
-  Buttons.Github,
+  Buttons.Developers,
   Buttons.Docs,
   Buttons.Discord,
   Buttons.App,

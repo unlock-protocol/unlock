@@ -143,7 +143,7 @@ export const AboutContent = ({ posts }) => (
       style={{ textAlign: 'center', marginBottom: '48px' }}
     >
       <H2 style={{ marginBottom: '32px' }}>
-        We are commmunity built and governed
+        We are community built and governed
       </H2>
       <p style={{ width: '75%', margin: 'auto' }}>
         Join the 500+ community of developers, creators and governants building

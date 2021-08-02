@@ -34,6 +34,7 @@ import Export from '../build/svg-component/Export'
 import Github from '../build/svg-component/Github'
 import Heart from '../build/svg-component/Heart'
 import Home from '../build/svg-component/Home'
+import Idea from '../build/svg-component/Idea'
 import Info from '../build/svg-component/Info'
 import Jobs from '../build/svg-component/Jobs'
 import Key from '../build/svg-component/Key'
@@ -41,6 +42,7 @@ import Lemniscate from '../build/svg-component/Lemniscate'
 import LiveDemo from '../build/svg-component/LiveDemo'
 import Loading from '../build/svg-component/Loading'
 import LoadingDots from '../build/svg-component/LoadingDots'
+import Lock from '../build/svg-component/Lock'
 import LockClosed from '../build/svg-component/LockClosed'
 import Log from '../build/svg-component/Log'
 import Members from '../build/svg-component/Members'
@@ -101,6 +103,7 @@ export default {
   Github: wrapViewBox(Github, '0 0 24 24'),
   Heart: wrapViewBox(Heart, '-6 -6 36 36'),
   Home,
+  Idea,
   Info,
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
   Key,
@@ -108,6 +111,7 @@ export default {
   LiveDemo: wrapViewBox(LiveDemo, '0 0 64 64'),
   Loading: wrapViewBox(Loading, '0 0 32 32'),
   LoadingDots,
+  Lock: wrapViewBox(Lock, '-15 -4 120 120'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
   Log: wrapViewBox(Log, '0 0 24 24'),
   Members: wrapViewBox(Members, '-4 -4 24 24'),

@@ -81,6 +81,7 @@ module.exports = {
       '/privacy': { page: '/privacy' },
       '/blog': { page: '/blog' },
       '/membership': { page: '/membership' },
+      '/developers': { page: '/developers' },
     }
 
     return addBlogPagesToPageObject(resolve(dir, '..'), pages)

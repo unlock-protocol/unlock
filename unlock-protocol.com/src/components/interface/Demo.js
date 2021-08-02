@@ -34,36 +34,40 @@ NotAMember.propTypes = {
 const AMember = () => (
   <Columns>
     <Column>
-      <div style={{ width: '100%', padding: '8px' }}>
-        <img
-          alt="chanels"
-          style={{ maxWidth: '64px' }}
-          src="/static/images/illustrations/members-channels.svg"
-        />
-      </div>
       <a href="https://discord.com/invite/Ah6ZEJyTDp">
+        <div style={{ width: '100%', padding: '8px' }}>
+          <img
+            alt="chanels"
+            style={{ maxWidth: '64px' }}
+            src="/static/images/illustrations/members-channels.svg"
+          />
+        </div>
         Join our members-only channels
       </a>
     </Column>
     <Column>
-      <div style={{ width: '100%', padding: '8px' }}>
-        <img
-          alt="hoodie"
-          style={{ maxWidth: '64px' }}
-          src="/static/images/illustrations/hoodie.png"
-        />
-      </div>
-      <a href="https://shop.unlock-protocol.com/">Members-only merchandise</a>
+      <a href="https://shop.unlock-protocol.com/">
+        <div style={{ width: '100%', padding: '8px' }}>
+          <img
+            alt="hoodie"
+            style={{ maxWidth: '64px' }}
+            src="/static/images/illustrations/hoodie.png"
+          />
+        </div>
+        Members-only merchandise
+      </a>
     </Column>
     <Column>
-      <div style={{ width: '100%', padding: '8px' }}>
-        <img
-          alt="blog"
-          style={{ maxWidth: '64px' }}
-          src="/static/images/illustrations/blog-chatter.png"
-        />
-      </div>
-      <a href="https://unlock-protocol.com/blog">Comment on our blog</a>
+      <a href="https://unlock-protocol.com/blog">
+        <div style={{ width: '100%', padding: '8px' }}>
+          <img
+            alt="blog"
+            style={{ maxWidth: '64px' }}
+            src="/static/images/illustrations/blog-chatter.png"
+          />
+        </div>
+        Comment on our blog
+      </a>
     </Column>
   </Columns>
 )

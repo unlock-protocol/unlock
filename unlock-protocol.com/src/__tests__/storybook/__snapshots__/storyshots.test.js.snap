@@ -450,7 +450,7 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="https://github.com/unlock-protocol/unlock"
+                href="/developers"
                 label="Developers"
               >
                 Developers
@@ -926,7 +926,7 @@ Look at us! We're posting on our very own blog! How exciting!
             </a>
             <a
               class="sc-vjbnjq-0 grhlzI"
-              href="https://github.com/unlock-protocol/unlock"
+              href="/developers"
               label="Developers"
             >
               Developers
@@ -1797,7 +1797,7 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="https://github.com/unlock-protocol/unlock"
+                href="/developers"
                 label="Developers"
               >
                 Developers
@@ -2140,7 +2140,7 @@ are intentionally not generated from this file date, in case we want to override
             </a>
             <a
               class="sc-vjbnjq-0 grhlzI"
-              href="https://github.com/unlock-protocol/unlock"
+              href="/developers"
               label="Developers"
             >
               Developers
@@ -7383,9 +7383,9 @@ Object {
       <a
         class="c0"
         href="https://github.com/unlock-protocol/unlock"
-        label="Developers"
+        label="Github"
       >
-        Developers
+        Github
       </a>
     </div>
   </body>,
@@ -7397,9 +7397,9 @@ Object {
     <a
       class="sc-vjbnjq-0 grhlzI"
       href="https://github.com/unlock-protocol/unlock"
-      label="Developers"
+      label="Github"
     >
-      Developers
+      Github
     </a>
   </div>,
   "debug": [Function],
@@ -8476,7 +8476,7 @@ Object {
           </a>
           <a
             class="c4 c5"
-            href="https://github.com/unlock-protocol/unlock"
+            href="/developers"
             label="Developers"
           >
             Developers
@@ -8561,7 +8561,7 @@ Object {
         </a>
         <a
           class="sc-vjbnjq-0 grhlzI"
-          href="https://github.com/unlock-protocol/unlock"
+          href="/developers"
           label="Developers"
         >
           Developers
@@ -8823,7 +8823,7 @@ Object {
           </a>
           <a
             class="c4 c5"
-            href="https://github.com/unlock-protocol/unlock"
+            href="/developers"
             label="Developers"
           >
             Developers
@@ -8908,7 +8908,7 @@ Object {
         </a>
         <a
           class="sc-vjbnjq-0 grhlzI"
-          href="https://github.com/unlock-protocol/unlock"
+          href="/developers"
           label="Developers"
         >
           Developers
@@ -9170,7 +9170,7 @@ Object {
           </a>
           <a
             class="c4 c5"
-            href="https://github.com/unlock-protocol/unlock"
+            href="/developers"
             label="Developers"
           >
             Developers
@@ -9255,7 +9255,7 @@ Object {
         </a>
         <a
           class="sc-vjbnjq-0 grhlzI"
-          href="https://github.com/unlock-protocol/unlock"
+          href="/developers"
           label="Developers"
         >
           Developers
@@ -10636,13 +10636,13 @@ Object {
   display: flex;
 }
 
-.c56 {
+.c57 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c55 {
+.c56 {
   background-color: var(--white);
   border-radius: 4px;
   padding: 32px;
@@ -10658,7 +10658,7 @@ Object {
   flex-direction: column;
 }
 
-.c58 {
+.c59 {
   justify-self: end;
   font-size: 12px;
   font-weight: 300;
@@ -10668,7 +10668,7 @@ Object {
   margin-top: 32px;
 }
 
-.c57 {
+.c58 {
   margin-top: 64px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -10679,7 +10679,7 @@ Object {
   flex-direction: column;
 }
 
-.c57 ul {
+.c58 ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
@@ -10695,32 +10695,32 @@ Object {
   flex-wrap: wrap;
 }
 
-.c57 ul li {
+.c58 ul li {
   font-weight: 500;
   margin-right: 16px;
 }
 
-.c57 ul a,
-.c57 ul span {
+.c58 ul a,
+.c58 ul span {
   display: inline-block;
   padding: 16px;
   border-radius: 4px;
   margin-bottom: 16px;
 }
 
-.c57 ul span {
+.c58 ul span {
   background-color: var(--lightgrey);
   color: var(--grey);
 }
 
-.c57 ul a {
+.c58 ul a {
   background-color: var(--link);
   color: var(--white);
   -webkit-transition: background-color 400ms ease;
   transition: background-color 400ms ease;
 }
 
-.c57 ul a:hover {
+.c58 ul a:hover {
   background-color: #2768c8;
 }
 
@@ -10749,14 +10749,14 @@ Object {
   flex-direction: column;
 }
 
-.c50 {
+.c51 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c54 {
+.c55 {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -10765,11 +10765,11 @@ Object {
   background-color: var(--white);
 }
 
-.c54 svg {
+.c55 svg {
   fill: var(--link);
 }
 
-.c51 {
+.c52 {
   background: var(--lightgrey);
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
@@ -10780,7 +10780,7 @@ Object {
   margin-right: 16px;
 }
 
-.c52 {
+.c53 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10799,16 +10799,16 @@ Object {
   padding: 16px;
 }
 
-.c52:hover {
+.c53:hover {
   background-color: var(--white);
   color: var(--link);
 }
 
-.c52:hover .c53 {
+.c53:hover .c54 {
   background-color: var(--link);
 }
 
-.c52:hover svg {
+.c53:hover svg {
   fill: var(--white);
 }
 
@@ -11226,7 +11226,6 @@ Object {
 }
 
 .c10 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11240,7 +11239,7 @@ Object {
 .c24 {
   margin-top: 64px;
   background-color: transparent;
-  padding: 32px;
+  padding: 0px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11254,7 +11253,6 @@ Object {
 }
 
 .c24 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11278,7 +11276,6 @@ Object {
 }
 
 .c28 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11291,7 +11288,7 @@ Object {
 .c31 {
   margin-top: 64px;
   background-color: transparent;
-  padding: 32px;
+  padding: 0px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11305,7 +11302,6 @@ Object {
 }
 
 .c31 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11328,7 +11324,6 @@ Object {
 }
 
 .c33 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11350,7 +11345,6 @@ Object {
 }
 
 .c36 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11374,7 +11368,6 @@ Object {
 }
 
 .c41 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11402,7 +11395,6 @@ Object {
 }
 
 .c43 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
@@ -11429,13 +11421,34 @@ Object {
 }
 
 .c45 p {
-  max-width: 800px;
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
 }
 
 .c49 {
+  margin-top: 64px;
+  background-color: transparent;
+  padding: 32px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  font-family: IBM Plex Sans;
+  border-radius: 8px;
+}
+
+.c49 p {
+  font-weight: 300;
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+.c50 {
   margin-top: 64px;
   background-color: var(--link);
   color: var(--white);
@@ -11452,14 +11465,13 @@ Object {
   border-radius: 8px;
 }
 
-.c49 p {
-  max-width: 800px;
+.c50 p {
   font-weight: 300;
   font-size: 24px;
   margin-top: 4px;
 }
 
-.c49 .c16 {
+.c50 .c16 {
   color: var(--white);
 }
 
@@ -11469,6 +11481,9 @@ Object {
   display: -ms-flexbox;
   display: flex;
   margin: 0px -16px;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
 }
 
 .c12 {
@@ -11476,11 +11491,17 @@ Object {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  margin: 16px;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  width: 100%;
-  margin: 16px;
+  -webkit-box-pack: start;
+  -webkit-justify-content: start;
+  -ms-flex-pack: start;
+  justify-content: start;
+  -webkit-flex: 1 1 0px;
+  -ms-flex: 1 1 0px;
+  flex: 1 1 0px;
 }
 
 .c12 p {
@@ -11545,22 +11566,6 @@ Object {
   margin-right: 16px;
 }
 
-.c35 {
-  width: 50%;
-}
-
-.c35 svg {
-  fill: var(--silver);
-}
-
-.c34 {
-  text-align: center;
-}
-
-.c23 {
-  max-width: 100%;
-}
-
 .c29 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -11592,6 +11597,22 @@ Object {
 .c29:hover {
   border: 1px solid #2768c8;
   background-color: #2768c8;
+}
+
+.c23 {
+  max-width: 100%;
+}
+
+.c35 {
+  width: 50%;
+}
+
+.c35 svg {
+  fill: var(--silver);
+}
+
+.c34 {
+  text-align: center;
 }
 
 .c14 {
@@ -11654,7 +11675,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c57 {
+  .c58 {
     display: none;
   }
 }
@@ -11678,7 +11699,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c50 {
+  .c51 {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
@@ -11686,7 +11707,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c51 {
+  .c52 {
     margin-bottom: 16px;
     width: 100%;
   }
@@ -11766,7 +11787,7 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c24 {
     margin-top: 24px;
-    padding: 16px;
+    padding: 0px;
   }
 }
 
@@ -11780,7 +11801,7 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c31 {
     margin-top: 24px;
-    padding: 16px;
+    padding: 0px;
   }
 }
 
@@ -11827,6 +11848,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
+  .c50 {
+    margin-top: 24px;
+    padding: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
   .c11 {
     margin: 16px 0px;
     -webkit-flex-direction: column;
@@ -11849,6 +11877,9 @@ Object {
     margin: 0px;
     margin-bottom: 8px;
     margin-top: 8px;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
 
@@ -11920,7 +11951,7 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="https://github.com/unlock-protocol/unlock"
+                href="/developers"
                 label="Developers"
               >
                 Developers
@@ -12058,7 +12089,7 @@ Object {
                   style="justify-content: center; align-items: center; flex: 1;"
                 >
                   <img
-                    class="c23"
+                    class="c166 c23"
                     src="/static/images/illustrations/banner-key.svg"
                     style="max-width: 330px;"
                   />
@@ -12150,7 +12181,7 @@ Object {
                     Web
                   </h3>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin"
                   >
                     <span
@@ -12174,7 +12205,7 @@ Object {
                     WordPress
                   </a>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#webflow"
                   >
                     <span
@@ -12193,7 +12224,7 @@ Object {
                     Webflow
                   </a>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#cloudflare"
                   >
                     <span
@@ -12223,7 +12254,7 @@ Object {
                     Community
                   </h3>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord"
                   >
                     <span
@@ -12244,7 +12275,7 @@ Object {
                     Discord
                   </a>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#discourse"
                   >
                     <span
@@ -12280,7 +12311,7 @@ Object {
                     More
                   </h3>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://www.youtube.com/watch?v=oVZi7m-UOtE"
                   >
                     <span
@@ -12288,26 +12319,18 @@ Object {
                       size="36"
                     >
                       <svg
-                        viewBox="-5 -3 32 32"
+                        viewBox="0 0 512 512"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          clip-rule="evenodd"
-                          d="M0 11.79C0 5.279 5.532 0 12.103 0 18.666 0 24 5.486 24 11.996c0 6.51-5.33 11.992-11.9 11.992L0 24V11.79zm11.848-7.972a7.405 7.405 0 014.82 2.214c.527.396 1.001.863 1.408 1.392l-.005-.005.02.025a7.258 7.258 0 01.814 9.675 7.381 7.381 0 01-4.444 2.778 7.431 7.431 0 01-5.182-.858l-4.876.57H4.4h.002-.002.002v-.002h-.002l.007-.024.872-4.343a7.256 7.256 0 01-1.213-5.186 7.293 7.293 0 012.66-4.626 7.421 7.421 0 015.121-1.61zM4.42 19.603l-.017.006v-.002l.017-.004z"
-                          fill-rule="evenodd"
-                        />
-                        <path
-                          d="M18.071 7.426a7.262 7.262 0 011.51 4.499 7.264 7.264 0 01-1.595 4.47 7.38 7.38 0 01-4.028 2.558 7.436 7.436 0 01-4.765-.43L4.401 19.61l4.878-.572a7.43 7.43 0 005.182.859 7.381 7.381 0 004.443-2.778 7.258 7.258 0 00-.833-9.693z"
-                        />
-                        <path
-                          d="M5.735 15.353a7.25 7.25 0 01-.764-4.818 7.294 7.294 0 012.465-4.222 7.415 7.415 0 014.596-1.744 7.42 7.42 0 014.681 1.509 7.404 7.404 0 00-4.865-2.26 7.421 7.421 0 00-5.12 1.61 7.293 7.293 0 00-2.66 4.626A7.256 7.256 0 005.28 15.24l-.877 4.37 1.332-4.257z"
+                          d="M235.1 61.1c-44.4 5-85.7 24.8-117.4 56.3-41.6 41.4-62.5 99.7-56.7 157.7 6.2 61.3 40.4 115.7 93 148.2 76.4 47.1 177 34.9 240.6-29 52.4-52.7 70.6-129.7 47.3-199.8-23.2-69.6-82.3-120-154.9-132-11.6-1.9-40.5-2.7-51.9-1.4zm40 8c55.5 5.6 105.9 36.1 137.4 83 7.5 11.1 17.6 31.9 21.9 44.9 15.5 46.9 12 97.3-9.9 141.5-6.6 13.5-13.9 25.5-15.2 25.4-.5 0-20.1-23.4-43.8-51.9l-43.7-51.9c-.4-.1-10.5 11.6-22.5 25.9-11.9 14.3-22 25.9-22.5 25.8-.4-.2-21.2-28-46.1-61.7l-46.1-61.5c-.5-.1-23.7 30.8-51.5 68.6L81.9 326c-.3 0-2-4.2-3.7-9.3-13.8-40.5-13.3-85.9 1.4-125.5 30-80.6 110.4-130.8 195.5-122.1zm-94.9 261.1c-.5.5-21.2.7-46 .6l-45.3-.3 35.8-48.5 45.8-62 10-13.5.3 61.4-.6 62.3zm49.7-67.8l40.7 56c.4 1-1.2 3.6-4.1 7.1l-4.7 5.5H189v-61.5l.4-61.5c.3 0 18.5 24.5 40.5 54.4zm87.8 104.3c-.2.2-17.2.2-37.7.1l-37.2-.3 37.3-44.9 37.4-44.8.3 44.7-.1 45.2zm47.2-43l35.1 42.8c0 .3-16.6.5-37 .5h-37v-44.7c0-43.7 0-44.7 1.9-42.8 1 1.1 17.6 21 37 44.2zm-114.1 20.5l-11.7 14-7.3 8.8H104.1l-5.4-8.3c-4.9-7.4-10.7-17.8-10.7-19.2 0-.3 37.6-.5 83.6-.5h83.6l-4.4 5.2zm148.4 33.6c-3.5 4.8-22.4 22.6-30.3 28.5-67.9 50.1-158.9 50.1-225.9-.2-8-6-26.9-23.7-30.1-28.3l-2-2.8h290.2l-1.9 2.8zM190.6 109.6c-7 2.2-14.9 10.3-17 17.4-.9 3-1.6 7-1.6 9 0 15 13 28 28 28s28-13 28-28c0-15.2-13.2-28.2-28.4-27.9-2.3 0-6.3.7-9 1.5zm20.4 9.8c5.9 3.9 8.5 8.9 8.5 16.6 0 7.8-2.6 12.7-8.8 16.8-5.6 3.7-15.3 3.9-21 .3-7.6-4.7-11.1-14-8.8-22.9 1.4-5.1 7.5-11.7 12.3-13.1 5.3-1.6 13.5-.6 17.8 2.3zm96.5 19.5c-17.2 4.9-30.8 18.5-35.9 36-2 6.9-2.1 19.9-.1 27.6 2.3 8.7 6.2 15.2 13.7 22.8 20.5 20.8 53.8 20.5 73.7-.8 10.1-10.9 14.4-21.9 14.3-36.6-.2-28.6-23.3-51.1-52.2-50.8-4.1 0-10.2.8-13.5 1.8zm31.9 9.9c3.9 1.8 9.1 5.4 12.5 8.7 26 24.8 12.4 68-23.3 74.6-18.3 3.4-38.1-7-46.7-24.6-3.3-6.7-3.4-7.4-3.4-18.5 0-10.9.2-11.9 3.2-18.2 5.5-11.7 14.7-19.8 27.1-23.9 8.9-3 21.9-2.2 30.6 1.9z"
                         />
                       </svg>
                     </span>
                     Decentraland
                   </a>
                   <a
-                    class="c29"
+                    class="c165 c29"
                     href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#shopify"
                   >
                     <span
@@ -12315,19 +12338,11 @@ Object {
                       size="36"
                     >
                       <svg
-                        viewBox="-5 -3 32 32"
+                        viewBox="-4 -4 40 40"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          clip-rule="evenodd"
-                          d="M0 11.79C0 5.279 5.532 0 12.103 0 18.666 0 24 5.486 24 11.996c0 6.51-5.33 11.992-11.9 11.992L0 24V11.79zm11.848-7.972a7.405 7.405 0 014.82 2.214c.527.396 1.001.863 1.408 1.392l-.005-.005.02.025a7.258 7.258 0 01.814 9.675 7.381 7.381 0 01-4.444 2.778 7.431 7.431 0 01-5.182-.858l-4.876.57H4.4h.002-.002.002v-.002h-.002l.007-.024.872-4.343a7.256 7.256 0 01-1.213-5.186 7.293 7.293 0 012.66-4.626 7.421 7.421 0 015.121-1.61zM4.42 19.603l-.017.006v-.002l.017-.004z"
-                          fill-rule="evenodd"
-                        />
-                        <path
-                          d="M18.071 7.426a7.262 7.262 0 011.51 4.499 7.264 7.264 0 01-1.595 4.47 7.38 7.38 0 01-4.028 2.558 7.436 7.436 0 01-4.765-.43L4.401 19.61l4.878-.572a7.43 7.43 0 005.182.859 7.381 7.381 0 004.443-2.778 7.258 7.258 0 00-.833-9.693z"
-                        />
-                        <path
-                          d="M5.735 15.353a7.25 7.25 0 01-.764-4.818 7.294 7.294 0 012.465-4.222 7.415 7.415 0 014.596-1.744 7.42 7.42 0 014.681 1.509 7.404 7.404 0 00-4.865-2.26 7.421 7.421 0 00-5.12 1.61 7.293 7.293 0 00-2.66 4.626A7.256 7.256 0 005.28 15.24l-.877 4.37 1.332-4.257z"
+                          d="M20.448 31.974l9.625-2.083s-3.474-23.484-3.5-23.641-.156-.255-.281-.255c-.13 0-2.573-.182-2.573-.182s-1.703-1.698-1.922-1.88a.415.415 0 00-.161-.099l-1.219 28.141zm-4.833-16.901s-1.083-.563-2.365-.563c-1.932 0-2.005 1.203-2.005 1.521 0 1.641 4.318 2.286 4.318 6.172 0 3.057-1.922 5.01-4.542 5.01-3.141 0-4.719-1.953-4.719-1.953l.859-2.781s1.661 1.422 3.042 1.422c.901 0 1.302-.724 1.302-1.245 0-2.156-3.542-2.255-3.542-5.807-.047-2.984 2.094-5.891 6.438-5.891 1.677 0 2.5.479 2.5.479l-1.26 3.625zm-.719-13.969c.177 0 .359.052.536.182-1.313.62-2.75 2.188-3.344 5.323a76.43 76.43 0 01-2.516.771c.688-2.38 2.359-6.26 5.323-6.26zm1.646 3.932v.182c-1.005.307-2.115.646-3.193.979.62-2.37 1.776-3.526 2.781-3.958.255.667.411 1.568.411 2.797zm.718-2.973c.922.094 1.521 1.151 1.901 2.339-.464.151-.979.307-1.542.484v-.333c0-1.005-.13-1.828-.359-2.495zm3.99 1.718c-.031 0-.083.026-.104.026-.026 0-.385.099-.953.281C19.63 2.442 18.625.927 16.849.927h-.156C16.183.281 15.558 0 15.021 0c-4.141 0-6.12 5.172-6.74 7.797-1.594.484-2.75.844-2.88.896-.901.286-.927.313-1.031 1.161-.099.615-2.438 18.75-2.438 18.75L20.01 32z"
                         />
                       </svg>
                     </span>
@@ -12352,7 +12367,7 @@ Object {
                   class="c160 c12"
                 >
                   <img
-                    class="c23"
+                    class="c166 c23"
                     src="/static/images/illustrations/ecosystem.svg"
                     style="max-height: 150px;"
                   />
@@ -12383,7 +12398,7 @@ Object {
                   class="c160 c12"
                 >
                   <img
-                    class="c23"
+                    class="c166 c23"
                     src="/static/images/illustrations/cryptoccard.svg"
                     style="max-height: 150px;"
                   />
@@ -12415,7 +12430,7 @@ Object {
                   class="c160 c12"
                 >
                   <img
-                    class="c23"
+                    class="c166 c23"
                     src="/static/images/illustrations/governance.svg"
                     style="max-height: 150px;"
                   />
@@ -12806,7 +12821,7 @@ Object {
                   style="justify-content: center; align-content: center; display: flex; align-items: center;"
                 >
                   <img
-                    class="c23"
+                    class="c166 c23"
                     src="/static/images/illustrations/grants.svg"
                     style="max-width: 330px;"
                   />
@@ -12929,7 +12944,7 @@ Object {
               </div>
             </div>
             <div
-              class="c31"
+              class="c49"
               color="transparent"
             >
               <h3
@@ -12942,7 +12957,7 @@ Object {
               />
             </div>
             <div
-              class="c49"
+              class="c50"
               color="var(--link)"
             >
               <h2
@@ -12955,13 +12970,13 @@ Object {
               </p>
               <form
                 action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-                class="c50 subscribe"
+                class="c51 subscribe"
                 method="post"
                 rel="noopener noreferrer"
                 target="_blank"
               >
                 <input
-                  class="c51"
+                  class="c52"
                   id="mce-EMAIL"
                   name="EMAIL"
                   placeholder="Your email here"
@@ -12969,10 +12984,10 @@ Object {
                   type="email"
                 />
                 <button
-                  class="c52"
+                  class="c53"
                 >
                   <span
-                    class="c53 c54"
+                    class="c54 c55"
                     size="24"
                   >
                     <svg
@@ -12992,10 +13007,10 @@ Object {
             </div>
           </div>
           <footer
-            class="c55"
+            class="c56"
           >
             <div
-              class="c56"
+              class="c57"
             >
               Check out our open source code on
                
@@ -13021,7 +13036,7 @@ Object {
               .
             </div>
             <nav
-              class="c57"
+              class="c58"
             >
               <ul>
                 <li>
@@ -13125,7 +13140,7 @@ Object {
               </ul>
             </nav>
             <span
-              class="c58"
+              class="c59"
             >
               Made with passion for the web!
             </span>
@@ -13194,7 +13209,7 @@ Object {
             </a>
             <a
               class="sc-vjbnjq-0 grhlzI"
-              href="https://github.com/unlock-protocol/unlock"
+              href="/developers"
               label="Developers"
             >
               Developers
@@ -13227,14 +13242,14 @@ Object {
           class="sc-12f69w-2 kfRKFc"
         >
           <div
-            class="sc-1ns6l9f-8 dKcnoM"
+            class="sc-1ns6l9f-8 euuBgy"
             color="var(--white)"
           >
             <div
-              class="sc-1ns6l9f-9 cggaTS"
+              class="sc-1ns6l9f-9 hVeFfr"
             >
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <h1
                   class="sc-1ns6l9f-0 cqTePR"
@@ -13243,30 +13258,30 @@ Object {
                   <br />
                   to your
                   <div
-                    class="sc-190zb2g-2 jCSGXp"
+                    class="sc-190zb2g-0 kzNHZv"
                   >
                     <span
-                      class="sc-190zb2g-3 dfupAT"
+                      class="sc-190zb2g-1 cDHnFl"
                     >
                       website
                     </span>
                     <span
-                      class="sc-190zb2g-3 dfupAT"
+                      class="sc-190zb2g-1 cDHnFl"
                     >
                       app
                     </span>
                     <span
-                      class="sc-190zb2g-3 dfupAT"
+                      class="sc-190zb2g-1 cDHnFl"
                     >
                       game
                     </span>
                     <span
-                      class="sc-190zb2g-3 dfupAT"
+                      class="sc-190zb2g-1 cDHnFl"
                     >
                       shop
                     </span>
                     <span
-                      class="sc-190zb2g-3 dfupAT"
+                      class="sc-190zb2g-1 cDHnFl"
                     >
                       API
                     </span>
@@ -13328,11 +13343,11 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
                 style="justify-content: center; align-items: center; flex: 1;"
               >
                 <img
-                  class="sc-190zb2g-0 xOkBG"
+                  class="sc-1ns6l9f-16 jPuOvt"
                   src="/static/images/illustrations/banner-key.svg"
                   style="max-width: 330px;"
                 />
@@ -13341,7 +13356,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 kcLiFu"
+            class="sc-1ns6l9f-8 jEcOve"
             color="transparent"
             font-family="'IBM Plex Serif', serif"
           >
@@ -13403,7 +13418,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 gJxiOb"
+            class="sc-1ns6l9f-8 gSMYXB"
             color="var(--link)"
             font-family="'IBM Plex Sans'"
           >
@@ -13413,10 +13428,10 @@ Object {
               Check out Unlock’s community-built integrations and plugins.
             </h2>
             <div
-              class="sc-1ns6l9f-9 cggaTS"
+              class="sc-1ns6l9f-9 hVeFfr"
             >
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <h3
                   class="sc-1ns6l9f-2 iAHDwY"
@@ -13424,7 +13439,7 @@ Object {
                   Web
                 </h3>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin"
                 >
                   <span
@@ -13448,7 +13463,7 @@ Object {
                   WordPress
                 </a>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#webflow"
                 >
                   <span
@@ -13467,7 +13482,7 @@ Object {
                   Webflow
                 </a>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#cloudflare"
                 >
                   <span
@@ -13489,7 +13504,7 @@ Object {
                 </a>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <h3
                   class="sc-1ns6l9f-2 iAHDwY"
@@ -13497,7 +13512,7 @@ Object {
                   Community
                 </h3>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord"
                 >
                   <span
@@ -13518,7 +13533,7 @@ Object {
                   Discord
                 </a>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#discourse"
                 >
                   <span
@@ -13546,7 +13561,7 @@ Object {
                 </a>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <h3
                   class="sc-1ns6l9f-2 iAHDwY"
@@ -13554,7 +13569,7 @@ Object {
                   More
                 </h3>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://www.youtube.com/watch?v=oVZi7m-UOtE"
                 >
                   <span
@@ -13562,26 +13577,18 @@ Object {
                     size="36"
                   >
                     <svg
-                      viewBox="-5 -3 32 32"
+                      viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        clip-rule="evenodd"
-                        d="M0 11.79C0 5.279 5.532 0 12.103 0 18.666 0 24 5.486 24 11.996c0 6.51-5.33 11.992-11.9 11.992L0 24V11.79zm11.848-7.972a7.405 7.405 0 014.82 2.214c.527.396 1.001.863 1.408 1.392l-.005-.005.02.025a7.258 7.258 0 01.814 9.675 7.381 7.381 0 01-4.444 2.778 7.431 7.431 0 01-5.182-.858l-4.876.57H4.4h.002-.002.002v-.002h-.002l.007-.024.872-4.343a7.256 7.256 0 01-1.213-5.186 7.293 7.293 0 012.66-4.626 7.421 7.421 0 015.121-1.61zM4.42 19.603l-.017.006v-.002l.017-.004z"
-                        fill-rule="evenodd"
-                      />
-                      <path
-                        d="M18.071 7.426a7.262 7.262 0 011.51 4.499 7.264 7.264 0 01-1.595 4.47 7.38 7.38 0 01-4.028 2.558 7.436 7.436 0 01-4.765-.43L4.401 19.61l4.878-.572a7.43 7.43 0 005.182.859 7.381 7.381 0 004.443-2.778 7.258 7.258 0 00-.833-9.693z"
-                      />
-                      <path
-                        d="M5.735 15.353a7.25 7.25 0 01-.764-4.818 7.294 7.294 0 012.465-4.222 7.415 7.415 0 014.596-1.744 7.42 7.42 0 014.681 1.509 7.404 7.404 0 00-4.865-2.26 7.421 7.421 0 00-5.12 1.61 7.293 7.293 0 00-2.66 4.626A7.256 7.256 0 005.28 15.24l-.877 4.37 1.332-4.257z"
+                        d="M235.1 61.1c-44.4 5-85.7 24.8-117.4 56.3-41.6 41.4-62.5 99.7-56.7 157.7 6.2 61.3 40.4 115.7 93 148.2 76.4 47.1 177 34.9 240.6-29 52.4-52.7 70.6-129.7 47.3-199.8-23.2-69.6-82.3-120-154.9-132-11.6-1.9-40.5-2.7-51.9-1.4zm40 8c55.5 5.6 105.9 36.1 137.4 83 7.5 11.1 17.6 31.9 21.9 44.9 15.5 46.9 12 97.3-9.9 141.5-6.6 13.5-13.9 25.5-15.2 25.4-.5 0-20.1-23.4-43.8-51.9l-43.7-51.9c-.4-.1-10.5 11.6-22.5 25.9-11.9 14.3-22 25.9-22.5 25.8-.4-.2-21.2-28-46.1-61.7l-46.1-61.5c-.5-.1-23.7 30.8-51.5 68.6L81.9 326c-.3 0-2-4.2-3.7-9.3-13.8-40.5-13.3-85.9 1.4-125.5 30-80.6 110.4-130.8 195.5-122.1zm-94.9 261.1c-.5.5-21.2.7-46 .6l-45.3-.3 35.8-48.5 45.8-62 10-13.5.3 61.4-.6 62.3zm49.7-67.8l40.7 56c.4 1-1.2 3.6-4.1 7.1l-4.7 5.5H189v-61.5l.4-61.5c.3 0 18.5 24.5 40.5 54.4zm87.8 104.3c-.2.2-17.2.2-37.7.1l-37.2-.3 37.3-44.9 37.4-44.8.3 44.7-.1 45.2zm47.2-43l35.1 42.8c0 .3-16.6.5-37 .5h-37v-44.7c0-43.7 0-44.7 1.9-42.8 1 1.1 17.6 21 37 44.2zm-114.1 20.5l-11.7 14-7.3 8.8H104.1l-5.4-8.3c-4.9-7.4-10.7-17.8-10.7-19.2 0-.3 37.6-.5 83.6-.5h83.6l-4.4 5.2zm148.4 33.6c-3.5 4.8-22.4 22.6-30.3 28.5-67.9 50.1-158.9 50.1-225.9-.2-8-6-26.9-23.7-30.1-28.3l-2-2.8h290.2l-1.9 2.8zM190.6 109.6c-7 2.2-14.9 10.3-17 17.4-.9 3-1.6 7-1.6 9 0 15 13 28 28 28s28-13 28-28c0-15.2-13.2-28.2-28.4-27.9-2.3 0-6.3.7-9 1.5zm20.4 9.8c5.9 3.9 8.5 8.9 8.5 16.6 0 7.8-2.6 12.7-8.8 16.8-5.6 3.7-15.3 3.9-21 .3-7.6-4.7-11.1-14-8.8-22.9 1.4-5.1 7.5-11.7 12.3-13.1 5.3-1.6 13.5-.6 17.8 2.3zm96.5 19.5c-17.2 4.9-30.8 18.5-35.9 36-2 6.9-2.1 19.9-.1 27.6 2.3 8.7 6.2 15.2 13.7 22.8 20.5 20.8 53.8 20.5 73.7-.8 10.1-10.9 14.4-21.9 14.3-36.6-.2-28.6-23.3-51.1-52.2-50.8-4.1 0-10.2.8-13.5 1.8zm31.9 9.9c3.9 1.8 9.1 5.4 12.5 8.7 26 24.8 12.4 68-23.3 74.6-18.3 3.4-38.1-7-46.7-24.6-3.3-6.7-3.4-7.4-3.4-18.5 0-10.9.2-11.9 3.2-18.2 5.5-11.7 14.7-19.8 27.1-23.9 8.9-3 21.9-2.2 30.6 1.9z"
                       />
                     </svg>
                   </span>
                   Decentraland
                 </a>
                 <a
-                  class="sc-190zb2g-1 iBLMUP"
+                  class="sc-1ns6l9f-15 eTzNLu"
                   href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#shopify"
                 >
                   <span
@@ -13589,19 +13596,11 @@ Object {
                     size="36"
                   >
                     <svg
-                      viewBox="-5 -3 32 32"
+                      viewBox="-4 -4 40 40"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        clip-rule="evenodd"
-                        d="M0 11.79C0 5.279 5.532 0 12.103 0 18.666 0 24 5.486 24 11.996c0 6.51-5.33 11.992-11.9 11.992L0 24V11.79zm11.848-7.972a7.405 7.405 0 014.82 2.214c.527.396 1.001.863 1.408 1.392l-.005-.005.02.025a7.258 7.258 0 01.814 9.675 7.381 7.381 0 01-4.444 2.778 7.431 7.431 0 01-5.182-.858l-4.876.57H4.4h.002-.002.002v-.002h-.002l.007-.024.872-4.343a7.256 7.256 0 01-1.213-5.186 7.293 7.293 0 012.66-4.626 7.421 7.421 0 015.121-1.61zM4.42 19.603l-.017.006v-.002l.017-.004z"
-                        fill-rule="evenodd"
-                      />
-                      <path
-                        d="M18.071 7.426a7.262 7.262 0 011.51 4.499 7.264 7.264 0 01-1.595 4.47 7.38 7.38 0 01-4.028 2.558 7.436 7.436 0 01-4.765-.43L4.401 19.61l4.878-.572a7.43 7.43 0 005.182.859 7.381 7.381 0 004.443-2.778 7.258 7.258 0 00-.833-9.693z"
-                      />
-                      <path
-                        d="M5.735 15.353a7.25 7.25 0 01-.764-4.818 7.294 7.294 0 012.465-4.222 7.415 7.415 0 014.596-1.744 7.42 7.42 0 014.681 1.509 7.404 7.404 0 00-4.865-2.26 7.421 7.421 0 00-5.12 1.61 7.293 7.293 0 00-2.66 4.626A7.256 7.256 0 005.28 15.24l-.877 4.37 1.332-4.257z"
+                        d="M20.448 31.974l9.625-2.083s-3.474-23.484-3.5-23.641-.156-.255-.281-.255c-.13 0-2.573-.182-2.573-.182s-1.703-1.698-1.922-1.88a.415.415 0 00-.161-.099l-1.219 28.141zm-4.833-16.901s-1.083-.563-2.365-.563c-1.932 0-2.005 1.203-2.005 1.521 0 1.641 4.318 2.286 4.318 6.172 0 3.057-1.922 5.01-4.542 5.01-3.141 0-4.719-1.953-4.719-1.953l.859-2.781s1.661 1.422 3.042 1.422c.901 0 1.302-.724 1.302-1.245 0-2.156-3.542-2.255-3.542-5.807-.047-2.984 2.094-5.891 6.438-5.891 1.677 0 2.5.479 2.5.479l-1.26 3.625zm-.719-13.969c.177 0 .359.052.536.182-1.313.62-2.75 2.188-3.344 5.323a76.43 76.43 0 01-2.516.771c.688-2.38 2.359-6.26 5.323-6.26zm1.646 3.932v.182c-1.005.307-2.115.646-3.193.979.62-2.37 1.776-3.526 2.781-3.958.255.667.411 1.568.411 2.797zm.718-2.973c.922.094 1.521 1.151 1.901 2.339-.464.151-.979.307-1.542.484v-.333c0-1.005-.13-1.828-.359-2.495zm3.99 1.718c-.031 0-.083.026-.104.026-.026 0-.385.099-.953.281C19.63 2.442 18.625.927 16.849.927h-.156C16.183.281 15.558 0 15.021 0c-4.141 0-6.12 5.172-6.74 7.797-1.594.484-2.75.844-2.88.896-.901.286-.927.313-1.031 1.161-.099.615-2.438 18.75-2.438 18.75L20.01 32z"
                       />
                     </svg>
                   </span>
@@ -13611,7 +13610,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 bbTslh"
+            class="sc-1ns6l9f-8 cuOhUJ"
             color="transparent"
           >
             <h3
@@ -13620,13 +13619,13 @@ Object {
               Why Unlock?
             </h3>
             <div
-              class="sc-1ns6l9f-9 cggaTS"
+              class="sc-1ns6l9f-9 hVeFfr"
             >
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <img
-                  class="sc-190zb2g-0 xOkBG"
+                  class="sc-1ns6l9f-16 jPuOvt"
                   src="/static/images/illustrations/ecosystem.svg"
                   style="max-height: 150px;"
                 />
@@ -13654,10 +13653,10 @@ Object {
                 </p>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <img
-                  class="sc-190zb2g-0 xOkBG"
+                  class="sc-1ns6l9f-16 jPuOvt"
                   src="/static/images/illustrations/cryptoccard.svg"
                   style="max-height: 150px;"
                 />
@@ -13686,10 +13685,10 @@ Object {
                 </p>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <img
-                  class="sc-190zb2g-0 xOkBG"
+                  class="sc-1ns6l9f-16 jPuOvt"
                   src="/static/images/illustrations/governance.svg"
                   style="max-height: 150px;"
                 />
@@ -13720,15 +13719,15 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 jaJBDY"
+            class="sc-1ns6l9f-8 iBneve"
             color="var(--white)"
             font-family="'IBM Plex Sans'"
           >
             <div
-              class="sc-1ns6l9f-9 cggaTS"
+              class="sc-1ns6l9f-9 hVeFfr"
             >
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <h2
                   class="sc-1ns6l9f-1 faiMlu"
@@ -13742,10 +13741,10 @@ Object {
                 </p>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <div
-                  class="sc-1ns6l9f-10 cIzCrf"
+                  class="sc-1ns6l9f-10 jefPpr"
                 >
                   <section
                     class="sc-1tn4840-1 faWfQE"
@@ -13908,7 +13907,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 sc-1ns6l9f-11 cuEDpP jIFIYM"
+            class="sc-1ns6l9f-8 sc-1ns6l9f-11 jMHSsJ jIFIYM"
           >
             <h3
               class="sc-1ns6l9f-2 iAHDwY"
@@ -13948,7 +13947,7 @@ Object {
             </p>
           </div>
           <div
-            class="sc-1ns6l9f-8 yQwHX"
+            class="sc-1ns6l9f-8 bVStel"
             color="#142A4A"
           >
             <h2
@@ -14030,14 +14029,14 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 Dqmhe"
+            class="sc-1ns6l9f-8 esDTpI"
             color="#F6C61B"
           >
             <div
-              class="sc-1ns6l9f-9 cggaTS"
+              class="sc-1ns6l9f-9 hVeFfr"
             >
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
               >
                 <h2
                   class="sc-1ns6l9f-1 faiMlu"
@@ -14076,11 +14075,11 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-1ns6l9f-10 cIzCrf"
+                class="sc-1ns6l9f-10 jefPpr"
                 style="justify-content: center; align-content: center; display: flex; align-items: center;"
               >
                 <img
-                  class="sc-190zb2g-0 xOkBG"
+                  class="sc-1ns6l9f-16 jPuOvt"
                   src="/static/images/illustrations/grants.svg"
                   style="max-width: 330px;"
                 />
@@ -14088,7 +14087,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 heQgVA"
+            class="sc-1ns6l9f-8 bFCkwW"
             color="var(--white)"
             style="text-align: center;"
           >
@@ -14203,7 +14202,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-1ns6l9f-8 bbTslh"
+            class="sc-1ns6l9f-8 bDqQsL"
             color="transparent"
           >
             <h3
@@ -14212,11 +14211,11 @@ Object {
               Latest News
             </h3>
             <div
-              class="sc-1ns6l9f-9 cggaTS"
+              class="sc-1ns6l9f-9 hVeFfr"
             />
           </div>
           <div
-            class="sc-1ns6l9f-8 kXLzGr"
+            class="sc-1ns6l9f-8 itaGYh"
             color="var(--link)"
           >
             <h2
@@ -15181,7 +15180,7 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="https://github.com/unlock-protocol/unlock"
+                href="/developers"
                 label="Developers"
               >
                 Developers
@@ -15416,7 +15415,7 @@ Object {
             </a>
             <a
               class="sc-vjbnjq-0 grhlzI"
-              href="https://github.com/unlock-protocol/unlock"
+              href="/developers"
               label="Developers"
             >
               Developers
@@ -16853,7 +16852,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'Info';
+  content: 'Idea';
   position: absolute;
 }
 
@@ -16869,7 +16868,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'Jobs';
+  content: 'Info';
   position: absolute;
 }
 
@@ -16885,7 +16884,7 @@ Object {
 }
 
 .c35:hover:before {
-  content: 'Key';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -16901,7 +16900,7 @@ Object {
 }
 
 .c36:hover:before {
-  content: 'Lemniscate';
+  content: 'Key';
   position: absolute;
 }
 
@@ -16917,7 +16916,7 @@ Object {
 }
 
 .c37:hover:before {
-  content: 'LiveDemo';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -16933,7 +16932,7 @@ Object {
 }
 
 .c38:hover:before {
-  content: 'Loading';
+  content: 'LiveDemo';
   position: absolute;
 }
 
@@ -16949,7 +16948,7 @@ Object {
 }
 
 .c39:hover:before {
-  content: 'LoadingDots';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -16965,7 +16964,7 @@ Object {
 }
 
 .c40:hover:before {
-  content: 'LockClosed';
+  content: 'LoadingDots';
   position: absolute;
 }
 
@@ -16981,7 +16980,7 @@ Object {
 }
 
 .c41:hover:before {
-  content: 'Log';
+  content: 'Lock';
   position: absolute;
 }
 
@@ -16997,7 +16996,7 @@ Object {
 }
 
 .c42:hover:before {
-  content: 'Members';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -17013,7 +17012,7 @@ Object {
 }
 
 .c43:hover:before {
-  content: 'Metamask';
+  content: 'Log';
   position: absolute;
 }
 
@@ -17029,7 +17028,7 @@ Object {
 }
 
 .c44:hover:before {
-  content: 'Newsletter';
+  content: 'Members';
   position: absolute;
 }
 
@@ -17045,7 +17044,7 @@ Object {
 }
 
 .c45:hover:before {
-  content: 'Opera';
+  content: 'Metamask';
   position: absolute;
 }
 
@@ -17061,7 +17060,7 @@ Object {
 }
 
 .c46:hover:before {
-  content: 'Person';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -17077,7 +17076,7 @@ Object {
 }
 
 .c47:hover:before {
-  content: 'Preview';
+  content: 'Opera';
   position: absolute;
 }
 
@@ -17093,7 +17092,7 @@ Object {
 }
 
 .c48:hover:before {
-  content: 'Qr';
+  content: 'Person';
   position: absolute;
 }
 
@@ -17109,7 +17108,7 @@ Object {
 }
 
 .c49:hover:before {
-  content: 'Shopify';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -17125,7 +17124,7 @@ Object {
 }
 
 .c50:hover:before {
-  content: 'Telegram';
+  content: 'Qr';
   position: absolute;
 }
 
@@ -17141,7 +17140,7 @@ Object {
 }
 
 .c51:hover:before {
-  content: 'Ticket';
+  content: 'Shopify';
   position: absolute;
 }
 
@@ -17157,7 +17156,7 @@ Object {
 }
 
 .c52:hover:before {
-  content: 'Twitter';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -17173,7 +17172,7 @@ Object {
 }
 
 .c53:hover:before {
-  content: 'Unlock';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -17189,7 +17188,7 @@ Object {
 }
 
 .c54:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -17205,7 +17204,7 @@ Object {
 }
 
 .c55:hover:before {
-  content: 'Upload';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -17221,7 +17220,7 @@ Object {
 }
 
 .c56:hover:before {
-  content: 'Wallet';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -17237,7 +17236,7 @@ Object {
 }
 
 .c57:hover:before {
-  content: 'WalletConnect';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -17253,7 +17252,7 @@ Object {
 }
 
 .c58:hover:before {
-  content: 'Webflow';
+  content: 'Wallet';
   position: absolute;
 }
 
@@ -17269,7 +17268,7 @@ Object {
 }
 
 .c59:hover:before {
-  content: 'Withdraw';
+  content: 'WalletConnect';
   position: absolute;
 }
 
@@ -17285,6 +17284,38 @@ Object {
 }
 
 .c60:hover:before {
+  content: 'Webflow';
+  position: absolute;
+}
+
+.c61 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c61:hover {
+  background-color: var(--offwhite);
+}
+
+.c61:hover:before {
+  content: 'Withdraw';
+  position: absolute;
+}
+
+.c62 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c62:hover {
+  background-color: var(--offwhite);
+}
+
+.c62:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -17806,6 +17837,19 @@ Object {
           </div>
           <div
             class="c33"
+            name="Idea"
+          >
+            <svg
+              viewBox="-14 -4 130 130"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.806 48.14H2.602A2.61 2.61 0 000 50.742a2.61 2.61 0 002.602 2.602h5.204a2.61 2.61 0 002.603-2.602 2.61 2.61 0 00-2.603-2.602zM98.882 48.14h-5.205a2.61 2.61 0 00-2.602 2.602 2.61 2.61 0 002.602 2.602h5.205a2.61 2.61 0 002.602-2.602 2.61 2.61 0 00-2.602-2.602zM48.14 2.602v5.204a2.61 2.61 0 002.602 2.603 2.61 2.61 0 002.602-2.603V2.602A2.61 2.61 0 0050.742 0a2.61 2.61 0 00-2.602 2.602zM18.605 22.248c.52.52 1.171.781 1.822.781.65 0 1.3-.26 1.821-.78 1.041-1.041 1.041-2.603 0-3.644l-4.814-4.814c-1.04-1.04-2.602-1.04-3.643 0-1.04 1.041-1.04 2.602 0 3.643l4.814 4.814zM82.878 79.236c-1.041-1.041-2.602-1.041-3.643 0-1.041 1.04-1.041 2.602 0 3.642l4.814 4.814c.52.52 1.17.781 1.821.781.65 0 1.301-.26 1.822-.78 1.04-1.041 1.04-2.603 0-3.644l-4.814-4.814zM84.049 13.791l-4.814 4.814c-1.041 1.041-1.041 2.602 0 3.643.52.52 1.17.781 1.821.781.65 0 1.301-.26 1.822-.78l4.814-4.815c1.04-1.04 1.04-2.602 0-3.643-1.041-1.04-2.602-1.04-3.643 0zM18.605 79.236l-4.814 4.813c-1.04 1.041-1.04 2.603 0 3.643.52.52 1.171.781 1.822.781.65 0 1.301-.26 1.821-.78l4.814-4.814c1.041-1.041 1.041-2.603 0-3.644-1.04-1.04-2.732-1.04-3.643 0zM48.66 17.044C32.006 18.084 18.475 31.746 17.694 48.4c-.52 10.279 3.513 19.516 10.409 25.891 3.643 3.513 5.855 8.197 5.855 13.271v4.814h33.828v-4.814c0-4.944 1.951-9.628 5.594-13.01 6.636-6.116 10.67-14.703 10.67-24.46-.13-18.996-16.134-34.349-35.39-33.048zM67.656 97.58H33.828v5.205h33.828v-5.204zM67.656 106.688H33.828v5.204h33.828v-5.204zM62.452 115.796h-23.42V121h23.42v-5.204z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c34"
             name="Info"
           >
             <svg
@@ -17820,7 +17864,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c35"
             name="Jobs"
           >
             <svg
@@ -17835,7 +17879,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c36"
             name="Key"
           >
             <svg
@@ -17851,7 +17895,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c36"
+            class="c37"
             name="Lemniscate"
           >
             <svg
@@ -17867,7 +17911,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c37"
+            class="c38"
             name="LiveDemo"
           >
             <svg
@@ -17896,7 +17940,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c38"
+            class="c39"
             name="Loading"
           >
             <svg
@@ -18049,7 +18093,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c39"
+            class="c40"
             name="LoadingDots"
           >
             <svg
@@ -18095,7 +18139,20 @@ Object {
             </svg>
           </div>
           <div
-            class="c40"
+            class="c41"
+            name="Lock"
+          >
+            <svg
+              viewBox="-15 -4 120 120"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M84.676 47.24h-7.912V31.65C76.764 14.172 62.592 0 45.114 0c-17.479 0-31.65 14.172-31.65 31.65v15.59H5.55C2.48 47.24 0 49.72 0 52.79v53.734a5.544 5.544 0 005.55 5.551h79.126c3.07 0 5.551-2.48 5.551-5.551V52.79c0-3.07-2.48-5.55-5.55-5.55zM51.963 91.998c.473 1.771-.945 3.542-2.716 3.542H40.98c-1.89 0-3.189-1.771-2.716-3.542l2.598-10.039c-3.07-1.535-5.196-4.724-5.196-8.503a9.526 9.526 0 019.566-9.566 9.526 9.526 0 019.566 9.566c0 3.78-2.126 6.968-5.197 8.503L51.963 92zm8.976-44.76h-31.65V31.65c0-8.739 7.085-15.825 15.825-15.825 8.739 0 15.825 7.086 15.825 15.825v15.59z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c42"
             name="LockClosed"
           >
             <svg
@@ -18110,7 +18167,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c41"
+            class="c43"
             name="Log"
           >
             <svg
@@ -18125,7 +18182,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c42"
+            class="c44"
             name="Members"
           >
             <svg
@@ -18140,7 +18197,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c43"
+            class="c45"
             name="Metamask"
           >
             <svg
@@ -18235,7 +18292,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c44"
+            class="c46"
             name="Newsletter"
           >
             <svg
@@ -18250,7 +18307,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c45"
+            class="c47"
             name="Opera"
           >
             <svg
@@ -19570,7 +19627,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c46"
+            class="c48"
             name="Person"
           >
             <svg
@@ -19583,7 +19640,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c47"
+            class="c49"
             name="Preview"
           >
             <svg
@@ -19604,7 +19661,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c48"
+            class="c50"
             name="Qr"
           >
             <svg
@@ -19641,7 +19698,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c49"
+            class="c51"
             name="Shopify"
           >
             <svg
@@ -19654,7 +19711,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c50"
+            class="c52"
             name="Telegram"
           >
             <svg
@@ -19669,7 +19726,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c51"
+            class="c53"
             name="Ticket"
           >
             <svg
@@ -19684,7 +19741,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c52"
+            class="c54"
             name="Twitter"
           >
             <svg
@@ -19699,7 +19756,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c53"
+            class="c55"
             name="Unlock"
           >
             <svg
@@ -19712,7 +19769,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c54"
+            class="c56"
             name="UnlockWordMark"
           >
             <svg
@@ -19725,7 +19782,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c55"
+            class="c57"
             name="Upload"
           >
             <svg
@@ -19740,7 +19797,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c56"
+            class="c58"
             name="Wallet"
           >
             <svg
@@ -19753,7 +19810,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c57"
+            class="c59"
             name="WalletConnect"
           >
             <svg
@@ -19766,7 +19823,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c58"
+            class="c60"
             name="Webflow"
           >
             <svg
@@ -19779,7 +19836,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c59"
+            class="c61"
             name="Withdraw"
           >
             <svg
@@ -19794,7 +19851,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c60"
+            class="c62"
             name="Wordpress"
           >
             <svg
@@ -20331,6 +20388,19 @@ Object {
           </svg>
         </div>
         <div
+          class="sc-1slxt9r-1 kjcYQK"
+          name="Idea"
+        >
+          <svg
+            viewBox="-14 -4 130 130"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.806 48.14H2.602A2.61 2.61 0 000 50.742a2.61 2.61 0 002.602 2.602h5.204a2.61 2.61 0 002.603-2.602 2.61 2.61 0 00-2.603-2.602zM98.882 48.14h-5.205a2.61 2.61 0 00-2.602 2.602 2.61 2.61 0 002.602 2.602h5.205a2.61 2.61 0 002.602-2.602 2.61 2.61 0 00-2.602-2.602zM48.14 2.602v5.204a2.61 2.61 0 002.602 2.603 2.61 2.61 0 002.602-2.603V2.602A2.61 2.61 0 0050.742 0a2.61 2.61 0 00-2.602 2.602zM18.605 22.248c.52.52 1.171.781 1.822.781.65 0 1.3-.26 1.821-.78 1.041-1.041 1.041-2.603 0-3.644l-4.814-4.814c-1.04-1.04-2.602-1.04-3.643 0-1.04 1.041-1.04 2.602 0 3.643l4.814 4.814zM82.878 79.236c-1.041-1.041-2.602-1.041-3.643 0-1.041 1.04-1.041 2.602 0 3.642l4.814 4.814c.52.52 1.17.781 1.821.781.65 0 1.301-.26 1.822-.78 1.04-1.041 1.04-2.603 0-3.644l-4.814-4.814zM84.049 13.791l-4.814 4.814c-1.041 1.041-1.041 2.602 0 3.643.52.52 1.17.781 1.821.781.65 0 1.301-.26 1.822-.78l4.814-4.815c1.04-1.04 1.04-2.602 0-3.643-1.041-1.04-2.602-1.04-3.643 0zM18.605 79.236l-4.814 4.813c-1.04 1.041-1.04 2.603 0 3.643.52.52 1.171.781 1.822.781.65 0 1.301-.26 1.821-.78l4.814-4.814c1.041-1.041 1.041-2.603 0-3.644-1.04-1.04-2.732-1.04-3.643 0zM48.66 17.044C32.006 18.084 18.475 31.746 17.694 48.4c-.52 10.279 3.513 19.516 10.409 25.891 3.643 3.513 5.855 8.197 5.855 13.271v4.814h33.828v-4.814c0-4.944 1.951-9.628 5.594-13.01 6.636-6.116 10.67-14.703 10.67-24.46-.13-18.996-16.134-34.349-35.39-33.048zM67.656 97.58H33.828v5.205h33.828v-5.204zM67.656 106.688H33.828v5.204h33.828v-5.204zM62.452 115.796h-23.42V121h23.42v-5.204z"
+            />
+          </svg>
+        </div>
+        <div
           class="sc-1slxt9r-1 iTvFNp"
           name="Info"
         >
@@ -20617,6 +20687,19 @@ Object {
               r="2.333"
               style="animation: ep1opzeolwb5_f_o 1700ms linear infinite normal forwards;"
               transform="translate(9 16)"
+            />
+          </svg>
+        </div>
+        <div
+          class="sc-1slxt9r-1 bEPhpY"
+          name="Lock"
+        >
+          <svg
+            viewBox="-15 -4 120 120"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M84.676 47.24h-7.912V31.65C76.764 14.172 62.592 0 45.114 0c-17.479 0-31.65 14.172-31.65 31.65v15.59H5.55C2.48 47.24 0 49.72 0 52.79v53.734a5.544 5.544 0 005.55 5.551h79.126c3.07 0 5.551-2.48 5.551-5.551V52.79c0-3.07-2.48-5.55-5.55-5.55zM51.963 91.998c.473 1.771-.945 3.542-2.716 3.542H40.98c-1.89 0-3.189-1.771-2.716-3.542l2.598-10.039c-3.07-1.535-5.196-4.724-5.196-8.503a9.526 9.526 0 019.566-9.566 9.526 9.526 0 019.566 9.566c0 3.78-2.126 6.968-5.197 8.503L51.963 92zm8.976-44.76h-31.65V31.65c0-8.739 7.085-15.825 15.825-15.825 8.739 0 15.825 7.086 15.825 15.825v15.59z"
             />
           </svg>
         </div>

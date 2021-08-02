@@ -10,7 +10,7 @@ image: /static/images/blog/unlock-showcase/unlock-showcase.png
 ![Unlock Showcase](/static/images/blog/unlock-showcase/unlock-showcase.png)
 
 
-Unlock Showcase is a collection of projects, plugins and, websites built on Unlock Protocol.
+[Unlock Showcase](https://www.unlockshowcase.com/) is a collection of projects, plugins and, websites built on Unlock Protocol.
 
 Unlock Showcase features interesting projects built with Unlock Protocol as well as third party tools and resources for developers. They would love to get to know about yours: [submit it now](https://www.unlockshowcase.com/submit)!
 
@@ -22,7 +22,7 @@ If you want to boost your project or support the team, please consider booking a
 
 ### About the Creators
 
-Unlock Showcase was created by Kalidou Diagne & Balla Diagne through the Unlock grant program! Kalidou is a front-end developer based in Italy who has recently started exploring the web3 and crypto worlds.
+[Unlock Showcase](https://www.unlockshowcase.com/) was created by Kalidou Diagne & Balla Diagne through the Unlock grant program! Kalidou is a front-end developer based in Italy who has recently started exploring the web3 and crypto worlds.
 
 Unlock Protocol provides UDT token grants to developers who can make the platform more accessible to wider communities.
 

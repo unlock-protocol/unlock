@@ -4,10 +4,10 @@ import LayoutButton from '../LayoutButton'
 const Github = (props) => (
   <LayoutButton
     href="https://github.com/unlock-protocol/unlock"
-    label="Developers"
+    label="Github"
     {...props}
   >
-    Developers
+    Github
   </LayoutButton>
 )
 
