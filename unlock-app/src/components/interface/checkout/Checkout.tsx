@@ -12,7 +12,8 @@ import CheckoutContainer from './CheckoutContainer'
 import { Locks } from './Locks'
 import { CallToAction } from './CallToAction'
 import Loading from '../Loading'
-import WalletPicker from './WalletPicker'
+import LoginPrompt from '../LoginPrompt'
+
 import CheckoutMethod from './CheckoutMethod'
 import CryptoCheckout from './CryptoCheckout'
 import CardCheckout from './CardCheckout'
@@ -76,7 +77,7 @@ export const Checkout = ({
   emitUserInfo,
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
 }: CheckoutProps) => {
-  const { authenticate, account, isUnlockAccount } = useContext(
+  const { authenticate, account, isUnlockAccount, signedMessage } = useContext(
     AuthenticationContext
   )
   const paywallConfig = useContext(PaywallConfigContext)
@@ -114,12 +115,13 @@ export const Checkout = ({
       setHasKey(-1)
       emitUserInfo({
         address: account,
+        signedMessage,
       })
     }
   }, [account])
 
   const onProvider = async (provider: any) => {
-    const result = await authenticate(provider)
+    const result = await authenticate(provider, 'message to sign!')
     if (result) {
       if (selectedLock) {
         if (!provider.isUnlock) {
@@ -187,15 +189,21 @@ export const Checkout = ({
     )
   } else if (state === 'wallet-picker') {
     content = (
-      <WalletPicker
+      <LoginPrompt
+        showTitle={false}
+        unlockUserAccount={false}
         injectedProvider={web3Provider}
+        backgroundColor="var(--white)"
+        activeColor="var(--offwhite)"
         onProvider={(provider) => {
           if (selectedLock) {
             setCheckoutState('crypto-checkout')
           }
           onProvider(provider)
         }}
-      />
+      >
+        Select your crypto wallet of choice
+      </LoginPrompt>
     )
   } else if (state === 'crypto-checkout') {
     // Final step for the crypto checkout. We should save the metadata first!
