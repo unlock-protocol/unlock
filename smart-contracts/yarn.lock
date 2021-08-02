@@ -1402,10 +1402,10 @@
     try-require "^1.2.1"
     web3 "1.2.2"
 
-"@openzeppelin/test-helpers@0.5.11":
-  version "0.5.11"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/test-helpers/-/test-helpers-0.5.11.tgz#67a4d28b1c3b15f98c56ed64680f988c8e882bf0"
-  integrity sha512-HkFpCjtTD8dk+wdYhsT07YbMGCE+Z4Wp5sBKXvPDF3Lynoc0H2KqZgCWV+qr2YZ0WW1oX/sXkKFrrKJ0caBTjw==
+"@openzeppelin/test-helpers@0.5.12":
+  version "0.5.12"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/test-helpers/-/test-helpers-0.5.12.tgz#7933abcc071031f898febfed67f5b83716d0ccb0"
+  integrity sha512-ZPhLmMb8PLGImYLen7YsPnni22i1bXHzrSiY7XZ7cgwuKvk4MRBunzfZ4xGTn/p+1V2/a1XHsjMRDKn7AMVb3Q==
   dependencies:
     "@openzeppelin/contract-loader" "^0.6.2"
     "@truffle/contract" "^4.0.35"
