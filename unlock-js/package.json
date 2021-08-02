@@ -34,9 +34,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.14.5",
-    "@babel/core": "7.14.6",
-    "@babel/preset-env": "7.14.7",
+    "@babel/cli": "7.14.8",
+    "@babel/core": "7.14.8",
+    "@babel/preset-env": "7.14.9",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
