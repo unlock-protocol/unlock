@@ -43,7 +43,7 @@
     "@types/nock": "10.0.3",
     "@types/node": "14.17.4",
     "@types/request-promise-native": "1.0.17",
-    "@types/sequelize": "4.28.9",
+    "@types/sequelize": "4.28.10",
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.11",
     "@unlock-protocol/unlock-js": "0.19.2",
