@@ -4421,10 +4421,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/postmate@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@types/postmate/-/postmate-1.5.1.tgz#56a506c371a7b4388beebacb4420838c2c3c4a2b"
-  integrity sha512-sFia2ycFNrxf1YZS59ShTDkMwhUlOYWAw7EslLePF52x5czUDrvdqB4f3eCXCiQp7yXpqHqwPCf4OBvCTqbaWw==
+"@types/postmate@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@types/postmate/-/postmate-1.5.2.tgz#15b2b0b279d499f4350a893bec722075c74dc2f1"
+  integrity sha512-BpNgyT6GBX1o6MES5SDEnfFhaeLyHWb8JDxF2ph3kZPqaGDPGZ3fZ8DDXV47Dpq9Sx7D9fC8EheqPuUqRWTI/A==
 
 "@types/prettier@^2.0.0":
   version "2.2.3"
