@@ -17356,10 +17356,10 @@ store2@^2.12.0:
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.12.0.tgz#e1f1b7e1a59b6083b2596a8d067f6ee88fd4d3cf"
   integrity sha512-7t+/wpKLanLzSnQPX8WAcuLCCeuSHoWdQuh9SB3xD0kNOM38DNf+0Oa+wmvxmYueRzkmh6IcdKFtvTa+ecgPDw==
 
-storybook-addon-next-router@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/storybook-addon-next-router/-/storybook-addon-next-router-2.0.4.tgz#205a79b90ddb7a04b3da0ba2b613cde66790b68e"
-  integrity sha512-PAlAVA2joJC36r2uRU7pL5tNPqcOlcgJNuWyyiPAG6f/sptBK4EdOKUUdU0X9NBVV6BCkiwbLH/kkPmWYRxiFw==
+storybook-addon-next-router@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/storybook-addon-next-router/-/storybook-addon-next-router-3.0.5.tgz#170c5ed6f5476b42476dfbae1b2cd2b1acf42f33"
+  integrity sha512-GgXhKRBh6nAFhQu9mtaupgdBizD57Ld42o3MFUrs6y1pKEq0/FTSy585o7u46gdEYx1IH8X48dl4qy3iBcwl8w==
 
 stream-browserify@3.0.0:
   version "3.0.0"
