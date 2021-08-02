@@ -8,7 +8,7 @@
     "@babel/core": "7.14.8",
     "@babel/node": "7.14.9",
     "@babel/preset-env": "7.14.9",
-    "@typescript-eslint/parser": "4.28.1",
+    "@typescript-eslint/parser": "4.28.5",
     "aws-sdk": "2.958.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.0.6",
