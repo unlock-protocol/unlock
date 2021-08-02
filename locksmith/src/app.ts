@@ -58,7 +58,11 @@ server.applyMiddleware({ app })
 
 const router = require('./routes')
 
-app.use(cors())
+app.use(
+  cors({
+    origin: /unlock-protocol\.com$/,
+  })
+)
 app.use(bodyParser.json({ limit: '5mb' }))
 app.use('/', router)
 
