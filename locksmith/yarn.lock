@@ -4264,10 +4264,10 @@ express-jwt@6.0.0:
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
 
-express-list-endpoints@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/express-list-endpoints/-/express-list-endpoints-5.0.0.tgz#819b6ff0fb96d975b02cacb704757b200c4f4dc3"
-  integrity sha512-bjypzWA7AQ64VNLbQ3GqwDzLxqK1NIHFRJvFDb7wg0S7YwquI8l8XZsmF0yiEA22gN+p+G6+1KDcXxb6Dn3OaA==
+express-list-endpoints@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/express-list-endpoints/-/express-list-endpoints-6.0.0.tgz#903f000b0cc954bbc35ca44e7aa3917e5292d0c2"
+  integrity sha512-1I30bSVego+AU/eSsX/bV2xrOXW5tFhsuXZp7wZd9396bAAxH7KHaAwLXQYra0Aw33xA67HmNiceGf2SOvXaLg==
 
 express-unless@^0.3.0:
   version "0.3.1"

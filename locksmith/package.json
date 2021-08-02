@@ -67,7 +67,7 @@
     "ethers": "5.4.3",
     "express": "4.17.1",
     "express-jwt": "6.0.0",
-    "express-list-endpoints": "5.0.0",
+    "express-list-endpoints": "6.0.0",
     "express-winston": "4.1.0",
     "graphql": "15.5.1",
     "graphql-tag": "2.12.5",
