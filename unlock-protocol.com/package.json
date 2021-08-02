@@ -12,7 +12,7 @@
     "@storybook/react": "6.3.6",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",
-    "@types/jest": "26.0.23",
+    "@types/jest": "26.0.24",
     "@types/next": "8.0.7",
     "@types/react": "17.0.15",
     "@types/storybook__react": "4.0.2",
