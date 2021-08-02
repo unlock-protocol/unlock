@@ -16,7 +16,7 @@
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",
     "@testing-library/react-hooks": "7.0.1",
-    "@types/eth-sig-util": "2.1.0",
+    "@types/eth-sig-util": "2.1.1",
     "@types/file-saver": "2.0.3",
     "@types/jest": "26.0.23",
     "@types/postmate": "1.5.1",
