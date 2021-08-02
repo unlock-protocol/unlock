@@ -1,39 +1,39 @@
 {
   "manifestVersion": "3.2",
   "impls": {
-    "d862affc38f30c05541fe6bb9dcf43459bdcd003c1b971ad3df9a8825498c2c7": {
-      "address": "0x59F4ec8bad8F993eb051d369Ed528D0Cd5336ffD",
+    "1b20be2a6a26d7ebe9f2a843abc6386484f623da2b7df7fc896ac7cefb59adbf": {
+      "address": "0x7633dd082406861C384309c67576a4260C5775E0",
       "layout": {
         "storage": [
           {
             "contract": "Initializable",
             "label": "initialized",
             "type": "t_bool",
-            "src": "zos-lib/contracts/Initializable.sol"
+            "src": "@openzeppelin/upgrades/contracts/Initializable.sol"
           },
           {
             "contract": "Initializable",
             "label": "initializing",
             "type": "t_bool",
-            "src": "zos-lib/contracts/Initializable.sol"
+            "src": "@openzeppelin/upgrades/contracts/Initializable.sol"
           },
           {
             "contract": "Initializable",
             "label": "______gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "zos-lib/contracts/Initializable.sol"
+            "src": "@openzeppelin/upgrades/contracts/Initializable.sol"
           },
           {
             "contract": "Ownable",
             "label": "_owner",
             "type": "t_address",
-            "src": "openzeppelin-eth/contracts/ownership/Ownable.sol"
+            "src": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol"
           },
           {
             "contract": "Ownable",
             "label": "______gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "openzeppelin-eth/contracts/ownership/Ownable.sol"
+            "src": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol"
           },
           {
             "contract": "Unlock",
@@ -63,6 +63,42 @@
             "contract": "Unlock",
             "label": "globalTokenSymbol",
             "type": "t_string",
+            "src": "contracts/Unlock.sol"
+          },
+          {
+            "contract": "Unlock",
+            "label": "publicLockAddress",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol"
+          },
+          {
+            "contract": "Unlock",
+            "label": "uniswapOracles",
+            "type": "t_mapping(unknown,t_address)",
+            "src": "contracts/Unlock.sol"
+          },
+          {
+            "contract": "Unlock",
+            "label": "weth",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol"
+          },
+          {
+            "contract": "Unlock",
+            "label": "udt",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol"
+          },
+          {
+            "contract": "Unlock",
+            "label": "estimatedGasForPurchase",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol"
+          },
+          {
+            "contract": "Unlock",
+            "label": "chainId",
+            "type": "t_uint256",
             "src": "contracts/Unlock.sol"
           }
         ],
@@ -101,13 +137,21 @@
           },
           "t_string": {
             "label": "string"
+          },
+          "t_mapping(unknown,t_address)": {
+            "label": "mapping(key => address)"
           }
         }
       }
     }
   },
-  "proxies": [],
+  "proxies": [
+    {
+      "address": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+      "kind": "transparent"
+    }
+  ],
   "admin": {
-    "address": "0x845b8BDc2199A9F692aD35c47B4b8d7460477f29"
+    "address": "0x3C6e461341AdbF7C0947085e86B4A6f35Ff2F801"
   }
 }
