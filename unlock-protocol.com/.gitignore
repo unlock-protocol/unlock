@@ -23,4 +23,5 @@ yarn-error.log*
 /src/.next
 /out
 
-paywall.min.js
+blog/blog.index
+src/static/blog.rss
