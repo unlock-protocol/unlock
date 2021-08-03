@@ -60,10 +60,10 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
   const imagePicked = async (event) => {
     if (event.target.files[0]) {
       const file = event.target.files[0]
-      // Max size is 2MB
-      if (file.size > 1024 * 1024 * 2) {
+      // Max size is 1MB
+      if (file.size > 1024 * 1024) {
         setError(
-          'This file is too large to be used. Please use a file that is at most 2GB, or use an external URL.'
+          'This file is too large to be used. Please use a file that is at most 1MB, or use an external URL.'
         )
       } else {
         const reader = new FileReader()
@@ -89,8 +89,13 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
 
   const save = async () => {
     event.preventDefault()
-    await updateLockIcon(lockAddress, network, url)
-    dismiss(url)
+    try {
+      await updateLockIcon(lockAddress, network, url)
+      dismiss(url)
+    } catch (error) {
+      console.error(error)
+      setError('This image could not be saved. Please try again, or reach out.')
+    }
     return false
   }
 

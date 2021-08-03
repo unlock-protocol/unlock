@@ -219,16 +219,12 @@ export const useAccount = (address: string, network: number) => {
       typedData
     )
 
-    try {
-      return await storageService.updateLockIcon(
-        lockAddress,
-        signature,
-        typedData,
-        icon
-      )
-    } catch (error) {
-      return null
-    }
+    return storageService.updateLockIcon(
+      lockAddress,
+      signature,
+      typedData,
+      icon
+    )
   }
 
   return {
