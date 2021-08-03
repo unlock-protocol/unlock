@@ -61,6 +61,7 @@ const router = require('./routes')
 app.use(
   cors({
     origin: /unlock-protocol\.com$/,
+    credentials: true,
   })
 )
 app.use(bodyParser.json({ limit: '5mb' }))
