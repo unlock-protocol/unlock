@@ -39,7 +39,9 @@ Integration.defaultProps = {
 const AppStore = ({ lock }) => {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
-  const [redirectUri, setRediredtUri] = useState('')
+  const [redirectUri, setRedirectUri] = useState('')
+  const [checkoutUrl, setCheckoutUrl] = useState('')
+
   const integrations = {
     wordpress: {
       name: 'Wordpress',
@@ -91,52 +93,88 @@ const AppStore = ({ lock }) => {
     },
   }
 
-  const checkoutURLConfig = {
-    locks: {
-      [lock.address]: {
-        network: lock.network,
-      },
-    },
-    redirectUri,
-    persistentCheckout: true,
-    icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
-  }
-
-  const checkoutUrl = new URL(
-    `/checkout?paywallConfig=${encodeURIComponent(
-      JSON.stringify(checkoutURLConfig)
-    )}`,
-    window.location.href
-  )
-
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(checkoutUrl)
+    await navigator?.clipboard?.writeText(checkoutUrl)
     alert('URL Copied to your clipboard')
   }
 
-  const openCheckout = async () => {
-    window.open(checkoutUrl)
+  const generateUrl = async () => {
+    const checkoutURLConfig = {
+      redirectUri,
+      locks: {
+        [lock.address]: {
+          network: lock.network,
+        },
+      },
+      persistentCheckout: true,
+      icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
+    }
+    setCheckoutUrl(
+      new URL(
+        `/checkout?paywallConfig=${encodeURIComponent(
+          JSON.stringify(checkoutURLConfig)
+        )}`,
+        window.location.href
+      )
+    )
+  }
+
+  const isValidUrl = () => {
+    let url
+
+    try {
+      url = new URL(redirectUri)
+    } catch (_) {
+      return false
+    }
+    return url.protocol === 'http:' || url.protocol === 'https:'
+  }
+
+  const onRedirectUriChange = (event) => {
+    setRedirectUri(event.target.value)
+    if (!isValidUrl) {
+      event.target.setCustomValidity('The URL is not valid')
+    } else {
+      event.target.setCustomValidity('')
+    }
+    event.target.reportValidity()
   }
 
   return (
     <Wrapper>
       <Details>
-        <DetailTitle>Purchase Address</DetailTitle>
+        <DetailTitle>Generate Purchase Addresses</DetailTitle>
         <p>
-          Share the URL below with your fans if you want them to easily purchase
-          this lock&apos;s NFT membership.
+          Generate purchase addresses that you can share with your fans if you
+          want them to easily purchase this lock&apos;s NFT membership.{' '}
+          <a
+            target="_blank"
+            href="https://docs.unlock-protocol.com/creators/selling-memberships"
+            rel="noreferrer"
+          >
+            Learn more about these in our docs
+          </a>
+          .
         </p>
-        <p style={{ margin: '0px' }}>
-          Redirect URL:{' '}
-          <RedirectUriInput
-            onChange={(event) => setRediredtUri(event.target.value)}
-            placeholder="URL to which your members ared redirected once they purchased the membership"
-          />
-        </p>
-
-        <UrlInput type="disabled" value={checkoutUrl} />
-        <CopyButton onClick={copyToClipboard}>Copy</CopyButton>
-        <CopyButton onClick={openCheckout}>Open</CopyButton>
+        {!checkoutUrl && (
+          <>
+            <RedirectUriInput
+              pattern={isValidUrl() ? '.*' : '^\b$'}
+              onChange={onRedirectUriChange}
+              placeholder="URL to which your members are redirected when they have a membership"
+            />
+            <CopyButton disabled={!isValidUrl()} onClick={generateUrl}>
+              Generate
+            </CopyButton>
+          </>
+        )}
+        {checkoutUrl && (
+          <>
+            <UrlInput type="disabled" value={checkoutUrl} />
+            <CopyButton onClick={copyToClipboard}>Copy</CopyButton>
+            <CopyButton onClick={() => setCheckoutUrl('')}>Reset</CopyButton>
+          </>
+        )}
       </Details>
       <Details>
         <DetailTitle>Integrate</DetailTitle>
@@ -270,28 +308,32 @@ const CopyButton = styled(FormButton)`
   display: inline-block;
   background-color: var(--lightgrey);
   color: grey;
-  width: 50px;
+  max-width: 100px;
   margin-left: 8px;
   height: 40px;
   font-size: 14px;
   margin-top: 0px;
   font-family: IBM Plex Sans;
+  height: 24px;
 
-  &:hover {
+  &:disabled {
+    background-color: var(--lightgrey);
+    color: var(--grey);
+  }
+
+  &:hover:enabled {
     color: var(--lightgrey);
     background-color: grey;
   }
 `
 
-const InterationInput = styled(Input)`
+const UrlInput = styled(Input)`
   height: 40px;
   font-size: 14px;
-  width: 70%;
-`
-
-const UrlInput = styled(InterationInput)`
+  width: 50%;
   font-family: 'Courier New', Courier, monospace;
   color: grey;
+  height: 24px;
 `
 
 const RedirectUriInput = styled(Input)`
@@ -299,6 +341,10 @@ const RedirectUriInput = styled(Input)`
   background-color: white;
   font-size: 12px;
   width: 50%;
+
+  &:invalid {
+    background-color: pink;
+  }
 
   &::placeholder {
     opacity: 0.5;
