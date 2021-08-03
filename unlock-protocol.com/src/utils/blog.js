@@ -61,12 +61,9 @@ const generatePostPages = (postFeed) => {
  * @param postFeed
  */
 const generateBlogIndexFile = (baseDir, postFeed, callback) => {
+  const filePath = join(baseDir, 'blog', 'blog.index')
   // Write blog post index to output baseDirectory
-  fs.writeFile(
-    join(baseDir, 'blog', 'blog.index'),
-    JSON.stringify({ items: postFeed }),
-    callback
-  )
+  fs.writeFile(filePath, JSON.stringify({ items: postFeed }), callback)
 }
 
 /**
