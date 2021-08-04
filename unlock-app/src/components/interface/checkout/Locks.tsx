@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useLock } from '../../../hooks/useLock'
 import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
-import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 
 interface LoadLockProps {
   address: string
@@ -20,7 +19,6 @@ const LoadLock = ({
   name,
   onSelected,
 }: LoadLockProps) => {
-  const web3Service = useContext(Web3ServiceContext)
   const [loading, setLoading] = useState(true)
   const { lock, getLock } = useLock({ address }, network)
 
@@ -29,12 +27,10 @@ const LoadLock = ({
       await getLock({ pricing: true })
       setLoading(false)
     }
-    if (web3Service) {
-      loadLock()
-    }
+    loadLock()
   }, [address])
 
-  if (loading || !web3Service) {
+  if (loading) {
     return <LoadingLock address={address} network={network} />
   }
   return (
