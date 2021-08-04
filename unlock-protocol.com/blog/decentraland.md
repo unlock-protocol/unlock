@@ -11,7 +11,6 @@ image: https://github.com/thehen/decentraland-unlock-integration/raw/readme/docs
 
 The past 18 months have proven that "real life" is also very much happening online. The **metaverse** has been taking a significantly bigger place in our lives! Among all platforms, [Decentraland](https://decentraland.org/) is one built on top of the Ethereum network. For example, [the parcels are NFT](https://opensea.io/assets/decentraland).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/q3kPUXdDr80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/q3kPUXdDr80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 When we started our grants program a few months ago, one of our community members, [Henry](http://www.henryhoffman.com/), reached out. He's a gaming expert and wanted to showcase what it would mean to build a private club in Decentraland. His grant application was approved, and today, we're very excited to show his work: he made it simple for developers to build memberships on their parcels.
 
@@ -107,7 +106,7 @@ You can find all of the code [detailed above in this file](https://github.com/th
 
 ## Unlocking games!
 
-In a game, a membership can let the user access specific private spaces, like a saloon, a concert, a lecture… etc, but they can also let users unlock features or particular features. In a game, a membership can let the user access specific private spaces, like a saloon, a concert, a lecture…, but they can also let users unlock features or particular features, and more!
+In a game, a membership can let the user access specific private spaces, like a saloon, a concert, a lecture… etc, but they can also let users unlock features or particular features.
 
 We're really excited to see what developers can build on top of this integration! And one that we're interested in beyond this is the idea that a single membership can be used by multiple games or even entirely outside of games. For example, someone could set up a Discord server that uses the same membership and create member-only channels mapped to the games' memberships!
 
@@ -116,3 +115,6 @@ We're really excited to see what developers can build on top of this integration
 The Unlock protocol is a protocol for memberships that is collectively governed through our governance token UDT. Unlock Inc. distributes some of the pre-mined tokens in the form of grants.
 
 Like Henry, you can [apply for a grant to receive UDT](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22?__hstc=157293157.a64577003debff883e378fbdfc5fa3ab.1627501869513.1627659020947.1627979313219.4&__hssc=157293157.2.1627979313219&__hsfp=1354805476)!
+
+
+<iframe width="100%" height="410" src="https://www.youtube.com/embed/q3kPUXdDr80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
