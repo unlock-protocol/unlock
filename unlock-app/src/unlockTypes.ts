@@ -190,6 +190,7 @@ export interface PaywallConfig {
   network: number
   referrer?: string
   messageToSign?: string
+  pessimistic?: boolean
 }
 
 export interface RawLock {

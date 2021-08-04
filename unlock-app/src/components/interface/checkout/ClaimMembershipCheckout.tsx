@@ -45,6 +45,7 @@ export const ClaimMembershipCheckout = ({
     try {
       const hash = await claimMembershipFromLock(lock.address, network)
       if (hash) {
+        // If not Optimistic, let's wait for transaction to be mined!
         emitTransactionInfo({
           lock: lock.address,
           hash,
