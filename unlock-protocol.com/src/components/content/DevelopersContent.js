@@ -100,6 +100,9 @@ export const DevelopersContent = () => {
             <Point>
               <IconWrapper
                 style={{
+                  minWidth: '64px',
+                  maxWidth: '64px',
+                  height: '64px',
                   backgroundColor: 'var(--link)',
                 }}
               >
@@ -113,6 +116,9 @@ export const DevelopersContent = () => {
             <Point>
               <IconWrapper
                 style={{
+                  minWidth: '64px',
+                  maxWidth: '64px',
+                  height: '64px',
                   backgroundColor: 'var(--brand)',
                 }}
               >
@@ -128,6 +134,10 @@ export const DevelopersContent = () => {
             <Point>
               <IconWrapper
                 style={{
+                  minWidth: '64px',
+                  maxWidth: '64px',
+                  height: '64px',
+
                   backgroundColor: 'var(--green)',
                 }}
               >
@@ -141,6 +151,10 @@ export const DevelopersContent = () => {
             <Point>
               <img
                 style={{
+                  minWidth: '64px',
+                  maxWidth: '64px',
+                  height: '64px',
+
                   marginRight: '16px',
                 }}
                 width="64"
@@ -269,8 +283,6 @@ DevelopersContent.propTypes = {}
 export default DevelopersContent
 
 const IconWrapper = styled.div`
-  min-width: 64px;
-  height: 64px;
   margin-right: 16px;
   border-radius: 50%;
 
