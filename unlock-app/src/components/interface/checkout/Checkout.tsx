@@ -121,7 +121,7 @@ export const Checkout = ({
   }, [account])
 
   const onProvider = async (provider: any) => {
-    const result = await authenticate(provider, 'message to sign!')
+    const result = await authenticate(provider, paywallConfig.messageToSign)
     if (result) {
       if (selectedLock) {
         if (!provider.isUnlock) {
@@ -190,6 +190,7 @@ export const Checkout = ({
   } else if (state === 'wallet-picker') {
     content = (
       <LoginPrompt
+        embedded
         showTitle={false}
         unlockUserAccount={false}
         injectedProvider={web3Provider}
@@ -202,7 +203,7 @@ export const Checkout = ({
           onProvider(provider)
         }}
       >
-        Select your crypto wallet of choice
+        <p>Select your crypto wallet of choice.</p>
       </LoginPrompt>
     )
   } else if (state === 'crypto-checkout') {

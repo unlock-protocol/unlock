@@ -100,7 +100,7 @@ const LoginPrompt = ({
   }
 
   return (
-    <Container>
+    <Container embedded={!!embedded}>
       {!walletToShow && (
         <>
           {showTitle && <SubHeading>Connect a wallet</SubHeading>}
@@ -201,6 +201,8 @@ const WalletButton = styled(ActionButton).attrs({
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  width: ${({ embedded }) => (!embedded ? '400px' : '')};
+  justify-self: center;
 `
 
 LoginPrompt.defaultProps = {
