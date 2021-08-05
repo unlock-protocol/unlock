@@ -150,7 +150,11 @@ export const Checkout = ({
   const closeModal = (success: boolean) => {
     emitCloseModal(success)
     if (paywallConfig.redirectUri) {
-      window.location.href = paywallConfig.redirectUri
+      const redirectUrl = new URL(paywallConfig.redirectUri)
+      if (signedMessage) {
+        redirectUrl.searchParams.append('signature', signedMessage)
+      }
+      window.location.href = redirectUrl.toString()
     }
   }
 

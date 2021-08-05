@@ -17,7 +17,7 @@ interface LoginPromptProps {
   backgroundColor?: string
   activeColor?: string
   injectedProvider?: any
-  onProvider?: () => void
+  onProvider?: (provider: any) => void
 }
 
 export interface EthereumWindow extends Window {
@@ -198,7 +198,11 @@ const WalletButton = styled(ActionButton).attrs({
   }
 `
 
-const Container = styled.div`
+interface ContainerProps {
+  embedded?: boolean
+}
+
+const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   width: ${({ embedded }) => (!embedded ? '400px' : '')};
