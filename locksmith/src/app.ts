@@ -50,6 +50,17 @@ app.use(
   })
 )
 
+// Cors
+app.use(
+  cors({
+    origin: /unlock-protocol\.com$/,
+    credentials: true,
+  })
+)
+
+// Parse body
+app.use(bodyParser.json({ limit: '5mb' }))
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -58,8 +69,6 @@ server.applyMiddleware({ app })
 
 const router = require('./routes')
 
-app.use(cors())
-app.use(bodyParser.json({ limit: '5mb' }))
 app.use('/', router)
 
 // The error handler must be before any other error middleware and after all controllers
