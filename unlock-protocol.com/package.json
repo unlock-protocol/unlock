@@ -83,6 +83,7 @@
     "predeploy": "yarn build && yarn build-blog",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "deploy-ipfs": "npx ipfs-deploy unlock-protocol.com",
     "prestart": "yarn build && yarn build-blog",
     "start": "NODE_ENV=production next start src",
     "test": "UNLOCK_ENV=test jest --env=jsdom",

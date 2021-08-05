@@ -77,6 +77,7 @@
     "predeploy": "yarn build",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "deploy-ipfs": "npx ipfs-deploy unlock-app",
     "deploy-unlock-contract": "node scripts/deploy-unlock.js",
     "prestart": "yarn build",
     "start": "NODE_ENV=production next start src --port ${PORT:=3000}",

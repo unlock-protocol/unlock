@@ -176,6 +176,19 @@ jobs:
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+      # Restore local dependencies from cache
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "package.json" }}
+          - v2-dependencies-
+      # Run deploy ipfs script
+      - run:
+          name: Check global_env variables
+          command: echo ${PINATA_API_KEY} 
+                    echo ${PINATA_SECRET_API_KEY}
+      - run:
+          name: Deploy Ipfs
+          command: yarn run-script deploy-ipfs
 
   deploy-unlock-protocol-com-netlify:
     machine:
@@ -192,7 +205,20 @@ jobs:
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
+      # Restore local dependencies from cache
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "package.json" }}
+          - v2-dependencies-
+      # Run deploy ipfs script
+      - run:
+          name: Check global_env variables
+          command: echo ${PINATA_API_KEY} 
+                    echo ${PINATA_SECRET_API_KEY}
+      - run:
+          name: Deploy Ipfs
+          command: yarn run-script deploy-ipfs
+            
   deploy-paywall-aws:
     machine:
       image: ubuntu-1604:202004-01
