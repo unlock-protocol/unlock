@@ -11,8 +11,6 @@ image: https://github.com/thehen/decentraland-unlock-integration/raw/readme/docs
 
 The past 18 months have proven that "real life" is also very much happening online. The **metaverse** has been taking a significantly bigger place in our lives! Among all platforms, [Decentraland](https://decentraland.org/) is one built on top of the Ethereum network. For example, [the parcels are NFT](https://opensea.io/assets/decentraland).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/q3kPUXdDr80" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 When we started our grants program a few months ago, one of our community members, [Henry](http://www.henryhoffman.com/), reached out. He's a gaming expert and wanted to showcase what it would mean to build a private club in Decentraland. His grant application was approved, and today, we're very excited to show his work: he made it simple for developers to build memberships on their parcels.
 
 Want to try it? Here's a saloon, where only members can enter :) The membership costs 0.1 MANA!
