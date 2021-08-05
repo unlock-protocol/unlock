@@ -10,7 +10,6 @@ import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import Svg from '../interface/svg'
-import { OptInForm } from '../interface/OptInForm'
 import { Demo } from '../interface/Demo'
 
 import {
@@ -24,10 +23,14 @@ import {
   Columns,
   Column,
   Icon,
+  Illustration,
   BoxQuote,
   Quote,
   Avatar,
   Byline,
+  IntegrationsBox,
+  GrantsProgramBox,
+  SignupBox,
 } from '../interface/LandingPageComponents'
 
 export const HomeContent = ({ posts }) => {
@@ -95,7 +98,7 @@ export const HomeContent = ({ posts }) => {
         </Columns>
       </Box>
 
-      <Box color="transparent" fontFamily="'IBM Plex Serif', serif">
+      <Box padding="0" color="transparent" fontFamily="'IBM Plex Serif', serif">
         <H3>What you can do with Unlock</H3>
         <p>
           Create locks and place them anywhere you’d like to lock content. Users
@@ -127,69 +130,9 @@ export const HomeContent = ({ posts }) => {
         </ActionButtons>
       </Box>
 
-      <Box
-        color="var(--link)"
-        contrastColor="var(--white)"
-        fontFamily="'IBM Plex Sans'"
-      >
-        <H2>Check out Unlock’s community-built integrations and plugins.</H2>
-        <Columns>
-          <Column>
-            <H3>Web</H3>
-            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin">
-              <Icon size="36">
-                <Svg.Wordpress />
-              </Icon>
-              WordPress
-            </Integration>
-            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#webflow">
-              <Icon size="36">
-                <Svg.Webflow />
-              </Icon>
-              Webflow
-            </Integration>
-            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#cloudflare">
-              <Icon size="36">
-                <Svg.Cloudflare />
-              </Icon>
-              Cloudflare
-            </Integration>
-          </Column>
-          <Column>
-            <H3>Community</H3>
-            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord">
-              <Icon size="36">
-                <Svg.Discord />
-              </Icon>
-              Discord
-            </Integration>
+      <IntegrationsBox />
 
-            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#discourse">
-              <Icon size="36">
-                <Svg.Discourse />
-              </Icon>
-              Discourse
-            </Integration>
-          </Column>
-          <Column>
-            <H3>More</H3>
-            <Integration href="https://www.youtube.com/watch?v=oVZi7m-UOtE">
-              <Icon size="36">
-                <Svg.Discourse />
-              </Icon>
-              Decentraland
-            </Integration>
-            <Integration href="https://docs.unlock-protocol.com/creators/plugins-and-integrations#shopify">
-              <Icon size="36">
-                <Svg.Discourse />
-              </Icon>
-              Shopify
-            </Integration>
-          </Column>
-        </Columns>
-      </Box>
-
-      <Box color="transparent">
+      <Box padding="0" color="transparent">
         <H3>Why Unlock?</H3>
         <Columns>
           <Column>
@@ -294,7 +237,6 @@ export const HomeContent = ({ posts }) => {
           </Column>
         </Columns>
       </Box>
-
       <BoxQuote>
         <H3>What the community is saying</H3>
         <Quote>
@@ -367,43 +309,7 @@ export const HomeContent = ({ posts }) => {
         </ActionButtons>
       </Box>
 
-      <Box color="#F6C61B" contrastColor="var(--darkgrey)">
-        <Columns>
-          <Column>
-            <H2 color="">Join our Developer Grant Program!</H2>
-            <p style={{ textAlign: 'left' }}>
-              Unlock Protocol is giving UDT token grants to developers who can
-              make the platform more accessible to wider communities.
-            </p>
-            <ActionButtons>
-              <ActionButton
-                href="https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22"
-                contrastColor="#ED663A"
-                color="var(--white)"
-                borderColor="#ED663A"
-              >
-                <Icon size="24">
-                  <Svg.Unlock />
-                </Icon>
-                Learn About Our Grants
-              </ActionButton>
-            </ActionButtons>
-          </Column>
-          <Column
-            style={{
-              justifyContent: 'center',
-              alignContent: 'center',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Illustration
-              style={{ maxWidth: '330px' }}
-              src="/static/images/illustrations/grants.svg"
-            />
-          </Column>
-        </Columns>
-      </Box>
+      <GrantsProgramBox />
 
       <Box color="var(--white)" style={{ textAlign: 'center' }}>
         <H2>Join the community</H2>
@@ -497,14 +403,7 @@ export const HomeContent = ({ posts }) => {
         </Columns>
       </Box>
 
-      <Box color="var(--link)" contrastColor="var(--white)">
-        <H2>Sign Up for Updates</H2>
-        <p>
-          We&apos;ll send you fresh news about our platform, including new
-          features and opportunities for the community.
-        </p>
-        <OptInForm />
-      </Box>
+      <SignupBox />
     </Layout>
   )
 }
@@ -514,34 +413,6 @@ HomeContent.propTypes = {
 }
 
 export default HomeContent
-const Illustration = styled.img`
-  max-width: 100%;
-`
-const Integration = styled.a`
-  display: flex;
-  align-items: center;
-  color: var(--white) !important;
-  border: 1px solid var(--white);
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 400ms ease;
-  width: 230px;
-  margin-bottom: 32px;
-  padding: 16px;
-  font-family: IBM Plex Sans;
-  font-size: 24px;
-  font-weight: 300;
-  cursor: pointer;
-
-  svg {
-    fill: var(--white);
-  }
-
-  &:hover {
-    border: 1px solid #2768c8;
-    background-color: #2768c8;
-  }
-`
 const RotatingWords = styled.div`
   display: inline;
   text-indent: 10px;

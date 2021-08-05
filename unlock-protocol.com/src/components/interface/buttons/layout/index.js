@@ -3,6 +3,7 @@ import App from './App'
 import Blog from './Blog'
 import Close from './Close'
 import Docs from './Docs'
+import Developers from './Developers'
 import Github from './Github'
 import Integrations from './Integrations'
 import Jobs from './Jobs'
@@ -18,6 +19,7 @@ export default {
   Blog,
   Close,
   Docs,
+  Developers,
   Github,
   Integrations,
   Jobs,
