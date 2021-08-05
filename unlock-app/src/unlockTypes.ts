@@ -180,7 +180,6 @@ export interface MetadataInput {
 
 export interface PaywallConfig {
   icon?: string
-  unlockUserAccounts?: true | 'true' | false
   callToAction?: PaywallCallToAction
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]

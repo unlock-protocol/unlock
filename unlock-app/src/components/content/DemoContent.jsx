@@ -25,15 +25,12 @@ const usePaywall = () => {
     }
 
     // Set config
-    const unlockUserAccounts =
-      url.searchParams.get('unlockUserAccounts') === 'true'
     const useMetadataInputs = url.searchParams.get('metadataInputs') === 'true'
     const referrer = url.searchParams.get('referrer')
 
     window.unlockProtocolConfig = {
       persistentCheckout: false,
-      unlockUserAccounts,
-
+      pessismistic: true,
       metadataInputs: useMetadataInputs
         ? [
             {
