@@ -1,17 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface EnjoyYourMembershipProps {
   closeModal: (success: boolean) => void
+  paywallConfig: PaywallConfig
 }
 
 export const EnjoyYourMembership = ({
+  paywallConfig,
   closeModal,
 }: EnjoyYourMembershipProps) => {
+  let label = 'Close'
+  if (paywallConfig.redirectUri) {
+    const redirectUrl = new URL(paywallConfig.redirectUri)
+    label = `Return to ${redirectUrl.host}`
+  }
+
   return (
     <EnjoyYourMembershipWrapper onClick={() => closeModal(true)}>
-      Enjoy your membership!
+      {label}
     </EnjoyYourMembershipWrapper>
   )
 }

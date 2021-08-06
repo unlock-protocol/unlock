@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { ethers, utils } from 'ethers'
 import { useState, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
@@ -21,13 +21,19 @@ export const useProvider = (config: any) => {
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
   const [account, setAccount] = useState<string | undefined>(undefined)
+  const [signedMessage, setSignedMessage] = useState<string | undefined>(
+    undefined
+  )
   const [email, setEmail] = useState<string | undefined>(undefined)
   const [isUnlockAccount, setIsUnlockAccount] = useState<boolean>(false)
   const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
     any | undefined
   >(undefined)
 
-  const resetProvider = async (provider: ethers.providers.Provider) => {
+  const resetProvider = async (
+    provider: ethers.providers.Provider,
+    messageToSign?: string
+  ) => {
     setError('')
     try {
       const _walletService = new WalletService(config.networks)
@@ -38,7 +44,14 @@ export const useProvider = (config: any) => {
       setNetwork(_network || undefined)
 
       const _account = await _walletService.getAccount()
-
+      if (messageToSign) {
+        // @ts-expect-error
+        const _signedMessage = await _walletService.signMessage(
+          messageToSign,
+          'personal_sign'
+        )
+        setSignedMessage(utils.base64.encode(_signedMessage))
+      }
       setWalletService(_walletService)
       setAccount(_account || undefined)
       // @ts-expect-error
@@ -78,12 +91,12 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const connectProvider = async (provider: any) => {
+  const connectProvider = async (provider: any, messageToSign: string) => {
     setLoading(true)
 
     let auth
     if (provider instanceof ethers.providers.Provider) {
-      auth = await resetProvider(provider)
+      auth = await resetProvider(provider, messageToSign)
     } else {
       if (provider.enable) {
         try {
@@ -98,14 +111,17 @@ export const useProvider = (config: any) => {
 
       if (provider.on) {
         provider.on('accountsChanged', () => {
-          resetProvider(new ethers.providers.Web3Provider(provider))
+          resetProvider(
+            new ethers.providers.Web3Provider(provider),
+            messageToSign
+          )
         })
 
         provider.on('chainChanged', () => {
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
-      auth = await resetProvider(ethersProvider)
+      auth = await resetProvider(ethersProvider, messageToSign)
     }
 
     setLoading(false)
@@ -163,6 +179,7 @@ export const useProvider = (config: any) => {
     loading,
     network,
     account,
+    signedMessage,
     email,
     isUnlockAccount,
     encryptedPrivateKey,
