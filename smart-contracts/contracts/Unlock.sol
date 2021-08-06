@@ -182,6 +182,7 @@ contract Unlock is
 
     // trigger event
     emit NewLock(msg.sender, newLock);
+    return newLock;
   }
 
   /**
