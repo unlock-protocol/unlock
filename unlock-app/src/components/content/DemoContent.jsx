@@ -30,7 +30,7 @@ const usePaywall = () => {
 
     window.unlockProtocolConfig = {
       persistentCheckout: false,
-      pessismistic: true,
+      pessimistic: true,
       metadataInputs: useMetadataInputs
         ? [
             {
@@ -54,7 +54,7 @@ const usePaywall = () => {
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
         expired:
-          'Your previous membership has now expired.. You need to get a new membership!',
+          'Your previous membership has now expired. You need to renew it.',
         pending:
           'Thanks for your trust. The transaction is now being processed.',
         confirmed: 'Thanks for being a member!',

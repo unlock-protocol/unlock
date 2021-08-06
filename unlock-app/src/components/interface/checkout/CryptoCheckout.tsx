@@ -39,7 +39,7 @@ export const CryptoCheckout = ({
     changeNetwork,
   } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
-  const [transactionPending, setTransactionPending] = useState(null)
+  const [transactionPending, setTransactionPending] = useState<string>('')
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
@@ -188,9 +188,9 @@ export const CryptoCheckout = ({
             )}
             rel="noreferrer"
           >
-            transaction to be executed
+            NFT membership to be minted
           </a>
-          !
+          ! This should take a few seconds :)
         </Message>
       )}
       {hasValidkey && (
