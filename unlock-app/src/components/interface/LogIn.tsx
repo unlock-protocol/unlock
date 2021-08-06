@@ -15,9 +15,10 @@ interface LogInProps {
   onCancel?: () => void
   onProvider: (provider: any) => void
   network: number
+  useWallet?: () => void
 }
 
-const LogIn = ({ onProvider, onCancel, network }: LogInProps) => {
+const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
   const { retrieveUserAccount } = useAccount('', network)
   const [loginState, dispatch] = useReducer(
     (state: any, action: any) => {
@@ -109,7 +110,12 @@ const LogIn = ({ onProvider, onCancel, network }: LogInProps) => {
         {error && <FormError>{error}</FormError>}
       </Form>
       <Description>
-        {onCancel && <LinkButton onClick={onCancel}>Cancel.</LinkButton>}
+        {onCancel && <LinkButton onClick={onCancel}>Cancel</LinkButton>}
+        {useWallet && (
+          <>
+            Use <LinkButton onClick={useWallet}> crypto wallet</LinkButton>
+          </>
+        )}
       </Description>
     </Container>
   )
@@ -117,15 +123,25 @@ const LogIn = ({ onProvider, onCancel, network }: LogInProps) => {
 
 LogIn.defaultProps = {
   onCancel: undefined,
+  useWallet: undefined,
 }
 
 export default LogIn
 const Description = styled.p`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 16px;
-  color: var(--darkgrey);
+  width: 100%;
+  font-size: 14px;
+  color: var(--grey);
+  button {
+    border: none;
+    outline: none;
+    display: inline;
+    padding: 0;
+    background-color: transparent;
+    color: var(--link);
+    cursor: pointer;
+  }
 `
+
 const LinkButton = styled.a`
   cursor: pointer;
 `

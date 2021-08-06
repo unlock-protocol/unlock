@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { PaywallCallToAction } from '../../../unlockTypes'
 
 export const defaultCallToAction: PaywallCallToAction = {
-  default: 'Unlock your NFT membership now!',
+  default: 'Please pick the NFT membership you want to purchase.',
   expired:
     'Your membership has expired. Please purchase a new one to continue.',
   pending: 'Purchase pending...',

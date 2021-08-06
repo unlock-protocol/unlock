@@ -189,6 +189,7 @@ export interface PaywallConfig {
   useDelegatedProvider?: boolean
   network: number
   referrer?: string
+  messageToSign?: string
 }
 
 export interface RawLock {

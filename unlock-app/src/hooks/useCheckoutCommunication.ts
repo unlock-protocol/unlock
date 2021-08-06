@@ -4,6 +4,7 @@ import { PaywallConfig } from '../unlockTypes'
 
 export interface UserInfo {
   address?: string
+  signedMessage?: string
 }
 
 export interface TransactionInfo {

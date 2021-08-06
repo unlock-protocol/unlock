@@ -6,6 +6,7 @@ import { AuthenticationContext } from '../Authenticate'
 import { useAccount } from '../../../hooks/useAccount'
 import { Button } from './FormStyles'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface ClaimMembershipCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -15,6 +16,7 @@ interface ClaimMembershipCheckoutProps {
   closeModal: (success: boolean) => void
   card: any
   token: string
+  paywallConfig: PaywallConfig
 }
 
 export const ClaimMembershipCheckout = ({
@@ -25,6 +27,7 @@ export const ClaimMembershipCheckout = ({
   closeModal,
   card,
   token,
+  paywallConfig,
 }: ClaimMembershipCheckoutProps) => {
   const { account } = useContext(AuthenticationContext)
   const { claimMembershipFromLock } = useAccount(account, network)
@@ -105,10 +108,18 @@ export const ClaimMembershipCheckout = ({
       {hasValidkey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership closeModal={closeModal} />
+          <EnjoyYourMembership
+            paywallConfig={paywallConfig}
+            closeModal={closeModal}
+          />
         </>
       )}
-      {hasOptimisticKey && <EnjoyYourMembership closeModal={closeModal} />}
+      {hasOptimisticKey && (
+        <EnjoyYourMembership
+          paywallConfig={paywallConfig}
+          closeModal={closeModal}
+        />
+      )}
     </Wrapper>
   )
 }

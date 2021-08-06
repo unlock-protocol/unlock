@@ -94,6 +94,7 @@ export const Authenticate = ({
     error,
     loading,
     network,
+    signedMessage,
     account,
     email,
     encryptedPrivateKey,
@@ -104,22 +105,23 @@ export const Authenticate = ({
     changeNetwork,
   } = useProvider(config)
 
-  const authenticate = async (provider, callback) => {
+  const authenticate = async (provider, messageToSign) => {
     if (!provider) {
       if (providerAdapter) {
-        return connectProvider(providerAdapter)
+        return connectProvider(providerAdapter, messageToSign)
       }
     }
-    return connectProvider(provider)
+    return connectProvider(provider, messageToSign)
   }
 
-  const deAuthenticate = (callback) => {
+  const deAuthenticate = () => {
     disconnectProvider()
   }
 
   return (
     <AuthenticationContext.Provider
       value={{
+        signedMessage,
         account,
         network,
         email,

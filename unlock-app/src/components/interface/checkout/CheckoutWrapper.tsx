@@ -66,7 +66,6 @@ const Wrapper = styled.section`
   padding: 24px 40px 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
   border-radius: 4px;
