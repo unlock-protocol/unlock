@@ -1,20 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
-import { PaywallConfig } from '../../../unlockTypes'
 
 interface EnjoyYourMembershipProps {
   closeModal: (success: boolean) => void
-  paywallConfig: PaywallConfig
+  redirectUri: string
 }
 
 export const EnjoyYourMembership = ({
-  paywallConfig,
+  redirectUri,
   closeModal,
 }: EnjoyYourMembershipProps) => {
   let label = 'Close'
-  if (paywallConfig.redirectUri) {
-    const redirectUrl = new URL(paywallConfig.redirectUri)
+  if (redirectUri) {
+    const redirectUrl = new URL(redirectUri)
     label = `Return to ${redirectUrl.host}`
   }
 

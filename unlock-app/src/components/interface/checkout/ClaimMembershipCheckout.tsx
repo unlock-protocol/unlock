@@ -17,6 +17,7 @@ interface ClaimMembershipCheckoutProps {
   name: string
   closeModal: (success: boolean) => void
   paywallConfig: PaywallConfig
+  redirectUri: string
 }
 
 export const ClaimMembershipCheckout = ({
@@ -26,6 +27,7 @@ export const ClaimMembershipCheckout = ({
   name,
   closeModal,
   paywallConfig,
+  redirectUri,
 }: ClaimMembershipCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
@@ -136,7 +138,7 @@ export const ClaimMembershipCheckout = ({
         <>
           <Message>You already have a valid membership for this lock!</Message>
           <EnjoyYourMembership
-            paywallConfig={paywallConfig}
+            redirectUri={redirectUri}
             closeModal={closeModal}
           />
         </>
@@ -159,7 +161,7 @@ export const ClaimMembershipCheckout = ({
 
       {hasOptimisticKey && (
         <EnjoyYourMembership
-          paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           closeModal={closeModal}
         />
       )}
