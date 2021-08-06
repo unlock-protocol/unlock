@@ -30,7 +30,6 @@ const usePaywall = () => {
 
     window.unlockProtocolConfig = {
       persistentCheckout: false,
-      pessimistic: true,
       metadataInputs: useMetadataInputs
         ? [
             {

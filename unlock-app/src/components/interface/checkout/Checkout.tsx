@@ -253,6 +253,7 @@ export const Checkout = ({
     } else {
       content = (
         <ClaimMembershipCheckout
+          paywallConfig={paywallConfig}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
@@ -275,6 +276,7 @@ export const Checkout = ({
     } else {
       content = (
         <CardConfirmationCheckout
+          paywallConfig={paywallConfig}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}

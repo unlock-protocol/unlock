@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { Lock } from './Lock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
@@ -7,6 +8,7 @@ import { useAccount } from '../../../hooks/useAccount'
 import { Button } from './FormStyles'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { PaywallConfig } from '../../../unlockTypes'
+import { ConfigContext } from '../../../utils/withConfig'
 
 interface ClaimMembershipCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -14,8 +16,6 @@ interface ClaimMembershipCheckoutProps {
   network: number
   name: string
   closeModal: (success: boolean) => void
-  card: any
-  token: string
   paywallConfig: PaywallConfig
 }
 
@@ -25,10 +25,9 @@ export const ClaimMembershipCheckout = ({
   network,
   name,
   closeModal,
-  card,
-  token,
   paywallConfig,
 }: ClaimMembershipCheckoutProps) => {
+  const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
   const { claimMembershipFromLock } = useAccount(account, network)
   const [purchasePending, setPurchasePending] = useState(false)
@@ -39,22 +38,49 @@ export const ClaimMembershipCheckout = ({
   const hasValidkey = keyExpiration > now && keyExpiration < Infinity
   const hasOptimisticKey = keyExpiration === Infinity
 
+  useEffect(() => {
+    const waitForTransaction = async (hash: string) => {
+      if (config.networks[network]) {
+        const provider = new ethers.providers.JsonRpcProvider(
+          config.networks[network].provider
+        )
+        try {
+          const result = await provider.waitForTransaction(hash)
+          setKeyExpiration(Infinity) // Optimistic!
+          setPurchasePending(false)
+        } catch (e) {
+          console.error(e)
+          setError('Claim failed. Please try again.')
+        }
+      }
+    }
+
+    if (purchasePending && typeof purchasePending === 'string') {
+      // If we have a hash, let's wait for it to be mined!
+      waitForTransaction(purchasePending)
+    }
+  }, [purchasePending])
+
   const charge = async () => {
     setError('')
     setPurchasePending(true)
     try {
       const hash = await claimMembershipFromLock(lock.address, network)
       if (hash) {
-        // If not Optimistic, let's wait for transaction to be mined!
         emitTransactionInfo({
           lock: lock.address,
           hash,
         })
-        setKeyExpiration(Infinity) // Optimistic!
+        if (!paywallConfig.pessimistic) {
+          setKeyExpiration(Infinity) // Optimistic!
+          setPurchasePending(false)
+        } else {
+          setPurchasePending(hash)
+        }
       } else {
         setError('Claim failed. Please try again.')
+        setPurchasePending(false)
       }
-      setPurchasePending(false)
     } catch (error) {
       console.error(error)
       setError('Claim failed. Please try again.')
@@ -115,6 +141,22 @@ export const ClaimMembershipCheckout = ({
           />
         </>
       )}
+      {purchasePending && typeof purchasePending === 'string' && (
+        <Message>
+          Waiting for your{' '}
+          <a
+            target="_blank"
+            href={config.networks[network].explorer.urls.transaction(
+              purchasePending
+            )}
+            rel="noreferrer"
+          >
+            NFT membership to be minted
+          </a>
+          ! This should take a few seconds :)
+        </Message>
+      )}
+
       {hasOptimisticKey && (
         <EnjoyYourMembership
           paywallConfig={paywallConfig}

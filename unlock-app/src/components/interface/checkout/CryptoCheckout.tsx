@@ -73,9 +73,6 @@ export const CryptoCheckout = ({
           paywallConfig && paywallConfig.referrer
             ? paywallConfig.referrer
             : account
-        // Here we can wait, or we can set the optimistic key!
-        // based on config.
-        // If we are pessimistic we will wait
 
         await purchaseKey(account, referrer, (hash: string) => {
           emitTransactionInfo({
