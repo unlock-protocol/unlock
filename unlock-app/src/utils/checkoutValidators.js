@@ -195,20 +195,6 @@ export const isValidPaywallConfig = (config) => {
     return false
   }
 
-  if (
-    config.unlockUserAccounts &&
-    !(
-      typeof config.unlockUserAccounts === 'boolean' ||
-      config.unlockUserAccounts === 'true' ||
-      config.unlockUserAccounts === 'false'
-    )
-  ) {
-    log(
-      'The paywall config\'s "unlockUserAccounts" field has an invalid value.'
-    )
-    return false
-  }
-
   // persistentCheckout can be undefined (not set), a boolean, or "true" or "false".
   if (
     typeof config.persistentCheckout !== 'undefined' &&

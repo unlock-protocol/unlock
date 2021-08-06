@@ -32,12 +32,14 @@ export const CryptoCheckout = ({
   setCardPurchase,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
+
   const {
     network: walletNetwork,
     account,
     changeNetwork,
   } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
+  const [transactionPending, setTransactionPending] = useState<string>('')
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
@@ -51,7 +53,7 @@ export const CryptoCheckout = ({
     userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
   const cardDisabled = hasValidkey || hasOptimisticKey
   const canClaimAirdrop =
-    lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled
+    lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled
   const isCreditCardEnabled =
     lock.fiatPricing?.creditCardEnabled && !canClaimAirdrop
 
@@ -71,14 +73,22 @@ export const CryptoCheckout = ({
           paywallConfig && paywallConfig.referrer
             ? paywallConfig.referrer
             : account
+
         await purchaseKey(account, referrer, (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
             hash,
           })
-          setKeyExpiration(Infinity) // Optimistic!
-          setPurchasePending(false)
+          if (!paywallConfig.pessimistic) {
+            setKeyExpiration(Infinity) // Optimistic!
+            setPurchasePending(false)
+          } else {
+            setTransactionPending(hash)
+          }
         })
+        setKeyExpiration(Infinity) // We should actually get the real expiration
+        setPurchasePending(false)
+        setTransactionPending(null)
       } catch (error) {
         if (error && error.code === 4001) {
           alert('Please confirm the transaction in your wallet.')
@@ -114,7 +124,7 @@ export const CryptoCheckout = ({
         purchasePending={purchasePending}
       />
 
-      {keyExpiration < now && (
+      {!transactionPending && keyExpiration < now && (
         <>
           <Prompt>Get your membership with</Prompt>
 
@@ -164,6 +174,21 @@ export const CryptoCheckout = ({
             )}
           </CheckoutOptions>
         </>
+      )}
+      {transactionPending && (
+        <Message>
+          Waiting for your{' '}
+          <a
+            target="_blank"
+            href={networks[network].explorer.urls.transaction(
+              transactionPending
+            )}
+            rel="noreferrer"
+          >
+            NFT membership to be minted
+          </a>
+          ! This should take a few seconds :)
+        </Message>
       )}
       {hasValidkey && (
         <>
