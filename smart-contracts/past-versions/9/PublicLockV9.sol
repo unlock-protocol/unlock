@@ -757,7 +757,7 @@ library Address {
      * It is unsafe to assume that an address for which this function returns
      * false is an externally-owned account (EOA) and not a contract.
      *
-     * Among others, `isContract` will return false for the following 
+     * Among others, `isContract` will return false for the following
      * types of addresses:
      *
      *  - an externally-owned account
@@ -2737,7 +2737,7 @@ contract MixinPurchase is
     }
 
     // Record price without any tips
-    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) && _referrer != _recipient ? _referrer : address(0));
+    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     uint pricePaid;
