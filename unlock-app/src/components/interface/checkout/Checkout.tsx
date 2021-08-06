@@ -157,11 +157,6 @@ export const Checkout = ({
       window.location.href = redirectUrl.toString()
     }
   }
-
-  const connectWallet = () => {
-    setCheckoutState('wallet-picker')
-  }
-
   const cardCheckoutOrClaim = (lock: any) => {
     if (lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled) {
       setCheckoutState('claim-membership')
@@ -189,6 +184,7 @@ export const Checkout = ({
         network={1} // We don't actually need a network here really.
         embedded
         onProvider={onProvider}
+        useWallet={() => setCheckoutState('wallet-picker')}
       />
     )
   } else if (state === 'wallet-picker') {
@@ -347,7 +343,10 @@ export const Checkout = ({
               unlock acount
             </button>{' '}
             or your{' '}
-            <button type="button" onClick={connectWallet}>
+            <button
+              type="button"
+              onClick={() => setCheckoutState('wallet-picker')}
+            >
               crypto wallet
             </button>
             .
@@ -355,7 +354,10 @@ export const Checkout = ({
         )}
 
         {hasValidMembership(existingKeys) && (
-          <EnjoyYourMembership closeModal={closeModal} />
+          <EnjoyYourMembership
+            paywallConfig={paywallConfig}
+            closeModal={closeModal}
+          />
         )}
       </>
     )

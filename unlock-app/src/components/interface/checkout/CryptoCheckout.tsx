@@ -168,10 +168,18 @@ export const CryptoCheckout = ({
       {hasValidkey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership closeModal={closeModal} />
+          <EnjoyYourMembership
+            paywallConfig={paywallConfig}
+            closeModal={closeModal}
+          />
         </>
       )}
-      {hasOptimisticKey && <EnjoyYourMembership closeModal={closeModal} />}
+      {hasOptimisticKey && (
+        <EnjoyYourMembership
+          paywallConfig={paywallConfig}
+          closeModal={closeModal}
+        />
+      )}
     </>
   )
 }
