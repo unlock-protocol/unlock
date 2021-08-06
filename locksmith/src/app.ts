@@ -51,12 +51,7 @@ app.use(
 )
 
 // Cors
-app.use(
-  cors({
-    origin: /unlock-protocol\.com$/,
-    credentials: true,
-  })
-)
+app.use(cors({}))
 
 // Parse body
 app.use(bodyParser.json({ limit: '5mb' }))

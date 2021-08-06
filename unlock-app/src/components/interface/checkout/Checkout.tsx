@@ -158,7 +158,7 @@ export const Checkout = ({
     }
   }
   const cardCheckoutOrClaim = (lock: any) => {
-    if (lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled) {
+    if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
       setCheckoutState('claim-membership')
     } else {
       setCheckoutState('card-purchase')
@@ -253,6 +253,7 @@ export const Checkout = ({
     } else {
       content = (
         <ClaimMembershipCheckout
+          paywallConfig={paywallConfig}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
@@ -275,6 +276,7 @@ export const Checkout = ({
     } else {
       content = (
         <CardConfirmationCheckout
+          paywallConfig={paywallConfig}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
