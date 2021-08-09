@@ -180,7 +180,6 @@ export interface MetadataInput {
 
 export interface PaywallConfig {
   icon?: string
-  unlockUserAccounts?: true | 'true' | false
   callToAction?: PaywallCallToAction
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
@@ -189,6 +188,8 @@ export interface PaywallConfig {
   useDelegatedProvider?: boolean
   network: number
   referrer?: string
+  messageToSign?: string
+  pessimistic?: boolean
 }
 
 export interface RawLock {

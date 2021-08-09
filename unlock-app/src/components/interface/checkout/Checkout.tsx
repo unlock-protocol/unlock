@@ -12,7 +12,8 @@ import CheckoutContainer from './CheckoutContainer'
 import { Locks } from './Locks'
 import { CallToAction } from './CallToAction'
 import Loading from '../Loading'
-import WalletPicker from './WalletPicker'
+import LoginPrompt from '../LoginPrompt'
+
 import CheckoutMethod from './CheckoutMethod'
 import CryptoCheckout from './CryptoCheckout'
 import CardCheckout from './CardCheckout'
@@ -76,7 +77,7 @@ export const Checkout = ({
   emitUserInfo,
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
 }: CheckoutProps) => {
-  const { authenticate, account, isUnlockAccount } = useContext(
+  const { authenticate, account, isUnlockAccount, signedMessage } = useContext(
     AuthenticationContext
   )
   const paywallConfig = useContext(PaywallConfigContext)
@@ -114,12 +115,13 @@ export const Checkout = ({
       setHasKey(-1)
       emitUserInfo({
         address: account,
+        signedMessage,
       })
     }
   }, [account])
 
   const onProvider = async (provider: any) => {
-    const result = await authenticate(provider)
+    const result = await authenticate(provider, paywallConfig.messageToSign)
     if (result) {
       if (selectedLock) {
         if (!provider.isUnlock) {
@@ -148,16 +150,15 @@ export const Checkout = ({
   const closeModal = (success: boolean) => {
     emitCloseModal(success)
     if (paywallConfig.redirectUri) {
-      window.location.href = paywallConfig.redirectUri
+      const redirectUrl = new URL(paywallConfig.redirectUri)
+      if (signedMessage) {
+        redirectUrl.searchParams.append('signature', signedMessage)
+      }
+      window.location.href = redirectUrl.toString()
     }
   }
-
-  const connectWallet = () => {
-    setCheckoutState('wallet-picker')
-  }
-
   const cardCheckoutOrClaim = (lock: any) => {
-    if (lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled) {
+    if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
       setCheckoutState('claim-membership')
     } else {
       setCheckoutState('card-purchase')
@@ -183,19 +184,27 @@ export const Checkout = ({
         network={1} // We don't actually need a network here really.
         embedded
         onProvider={onProvider}
+        useWallet={() => setCheckoutState('wallet-picker')}
       />
     )
   } else if (state === 'wallet-picker') {
     content = (
-      <WalletPicker
+      <LoginPrompt
+        embedded
+        showTitle={false}
+        unlockUserAccount={false}
         injectedProvider={web3Provider}
+        backgroundColor="var(--white)"
+        activeColor="var(--offwhite)"
         onProvider={(provider) => {
           if (selectedLock) {
             setCheckoutState('crypto-checkout')
           }
           onProvider(provider)
         }}
-      />
+      >
+        <p>Select your crypto wallet of choice.</p>
+      </LoginPrompt>
     )
   } else if (state === 'crypto-checkout') {
     // Final step for the crypto checkout. We should save the metadata first!
@@ -244,6 +253,7 @@ export const Checkout = ({
     } else {
       content = (
         <ClaimMembershipCheckout
+          paywallConfig={paywallConfig}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
@@ -266,6 +276,7 @@ export const Checkout = ({
     } else {
       content = (
         <CardConfirmationCheckout
+          paywallConfig={paywallConfig}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
@@ -334,7 +345,10 @@ export const Checkout = ({
               unlock acount
             </button>{' '}
             or your{' '}
-            <button type="button" onClick={connectWallet}>
+            <button
+              type="button"
+              onClick={() => setCheckoutState('wallet-picker')}
+            >
               crypto wallet
             </button>
             .
@@ -342,7 +356,10 @@ export const Checkout = ({
         )}
 
         {hasValidMembership(existingKeys) && (
-          <EnjoyYourMembership closeModal={closeModal} />
+          <EnjoyYourMembership
+            paywallConfig={paywallConfig}
+            closeModal={closeModal}
+          />
         )}
       </>
     )
