@@ -149,7 +149,7 @@ contract Unlock is
     uint _maxNumberOfKeys,
     string memory _lockName,
     bytes12 _salt
-  ) public
+  ) public returns(address)
   {
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 

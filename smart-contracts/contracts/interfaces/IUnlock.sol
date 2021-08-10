@@ -26,7 +26,7 @@ interface IUnlock
     uint _maxNumberOfKeys,
     string calldata _lockName,
     bytes12 _salt
-  ) external;
+  ) external returns(address);
 
     /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
