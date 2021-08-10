@@ -93,7 +93,7 @@ namespace PurchaseController {
 
     try {
       const fulfillmentDispatcher = new Dispatcher()
-      fulfillmentDispatcher.purchaseKey(
+      await fulfillmentDispatcher.purchaseKey(
         Normalizer.ethereumAddress(lock),
         Normalizer.ethereumAddress(publicKey),
         network,
