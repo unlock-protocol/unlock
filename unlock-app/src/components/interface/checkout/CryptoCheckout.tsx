@@ -20,6 +20,7 @@ interface CryptoCheckoutProps {
   name: string
   closeModal: (success: boolean) => void
   setCardPurchase: () => void
+  redirectUri: string
 }
 
 export const CryptoCheckout = ({
@@ -30,6 +31,7 @@ export const CryptoCheckout = ({
   name,
   closeModal,
   setCardPurchase,
+  redirectUri,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
 
@@ -194,14 +196,14 @@ export const CryptoCheckout = ({
         <>
           <Message>You already have a valid membership for this lock!</Message>
           <EnjoyYourMembership
-            paywallConfig={paywallConfig}
+            redirectUri={redirectUri}
             closeModal={closeModal}
           />
         </>
       )}
       {hasOptimisticKey && (
         <EnjoyYourMembership
-          paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           closeModal={closeModal}
         />
       )}

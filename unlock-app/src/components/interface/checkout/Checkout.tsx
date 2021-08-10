@@ -28,14 +28,16 @@ import {
   UserInfo,
   TransactionInfo,
 } from '../../../hooks/useCheckoutCommunication'
-import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import { AuthenticationContext } from '../Authenticate'
+import { PaywallConfig } from '../../../unlockTypes'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
   web3Provider: any
+  paywallConfig?: PaywallConfig
+  redirectUri?: string
 }
 
 const keysReducer = (state: any, key: any) => {
@@ -71,7 +73,10 @@ const hasExpiredMembership = (keys: Array<any>) => {
     ).length > 0
   )
 }
+
 export const Checkout = ({
+  redirectUri,
+  paywallConfig,
   emitCloseModal,
   emitTransactionInfo,
   emitUserInfo,
@@ -80,7 +85,6 @@ export const Checkout = ({
   const { authenticate, account, isUnlockAccount, signedMessage } = useContext(
     AuthenticationContext
   )
-  const paywallConfig = useContext(PaywallConfigContext)
   const [paywallIcon, setPaywallIcon] = useState(paywallConfig?.icon)
   const config = useContext(ConfigContext)
   const [state, setState] = useState('')
@@ -89,6 +93,17 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
+
+  // When the account is changed, make sure we ping!
+  useEffect(() => {
+    if (account) {
+      setHasKey(-1)
+      emitUserInfo({
+        address: account,
+        signedMessage,
+      })
+    }
+  }, [account])
 
   if (!paywallConfig || !config) {
     return <Loading />
@@ -108,17 +123,6 @@ export const Checkout = ({
     }
     setState(state)
   }
-
-  // When the account is changed, make sure we ping!
-  useEffect(() => {
-    if (account) {
-      setHasKey(-1)
-      emitUserInfo({
-        address: account,
-        signedMessage,
-      })
-    }
-  }, [account])
 
   const onProvider = async (provider: any) => {
     const result = await authenticate(provider, paywallConfig.messageToSign)
@@ -149,8 +153,8 @@ export const Checkout = ({
 
   const closeModal = (success: boolean) => {
     emitCloseModal(success)
-    if (paywallConfig.redirectUri) {
-      const redirectUrl = new URL(paywallConfig.redirectUri)
+    if (redirectUri) {
+      const redirectUrl = new URL(redirectUri)
       if (signedMessage) {
         redirectUrl.searchParams.append('signature', signedMessage)
       }
@@ -221,6 +225,7 @@ export const Checkout = ({
       content = (
         <CryptoCheckout
           paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           emitTransactionInfo={handleTransactionInfo}
           network={lockProps?.network || requiredNetwork}
           name={lockProps?.name || ''}
@@ -254,6 +259,7 @@ export const Checkout = ({
       content = (
         <ClaimMembershipCheckout
           paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
@@ -277,6 +283,7 @@ export const Checkout = ({
       content = (
         <CardConfirmationCheckout
           paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
           network={lockProps?.network || requiredNetwork}
@@ -357,7 +364,7 @@ export const Checkout = ({
 
         {hasValidMembership(existingKeys) && (
           <EnjoyYourMembership
-            paywallConfig={paywallConfig}
+            redirectUri={redirectUri}
             closeModal={closeModal}
           />
         )}
@@ -408,6 +415,11 @@ export const Checkout = ({
       </CheckoutContainer>
     </Web3ServiceContext.Provider>
   )
+}
+
+Checkout.defaultProps = {
+  redirectUri: null,
+  paywallConfig: null,
 }
 
 const PaywallLogoWrapper = styled.div`

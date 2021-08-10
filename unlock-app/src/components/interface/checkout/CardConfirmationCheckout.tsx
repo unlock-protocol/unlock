@@ -21,6 +21,7 @@ interface CardConfirmationCheckoutProps {
   card: any
   token: string
   paywallConfig: PaywallConfig
+  redirectUri: string
 }
 
 export const CardConfirmationCheckout = ({
@@ -32,6 +33,7 @@ export const CardConfirmationCheckout = ({
   card,
   token,
   paywallConfig,
+  redirectUri,
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
@@ -163,7 +165,7 @@ export const CardConfirmationCheckout = ({
         <>
           <Message>You already have a valid membership for this lock!</Message>
           <EnjoyYourMembership
-            paywallConfig={paywallConfig}
+            redirectUri={redirectUri}
             closeModal={closeModal}
           />
         </>
@@ -186,7 +188,7 @@ export const CardConfirmationCheckout = ({
 
       {hasOptimisticKey && (
         <EnjoyYourMembership
-          paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           closeModal={closeModal}
         />
       )}
