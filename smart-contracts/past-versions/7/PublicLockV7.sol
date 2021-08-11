@@ -2664,7 +2664,7 @@ contract MixinPurchase is
     }
 
     // Record price without any tips
-    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
+    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     uint pricePaid;
