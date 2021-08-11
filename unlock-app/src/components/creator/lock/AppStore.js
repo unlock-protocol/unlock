@@ -100,7 +100,6 @@ const AppStore = ({ lock }) => {
 
   const generateUrl = async () => {
     const checkoutURLConfig = {
-      redirectUri,
       locks: {
         [lock.address]: {
           network: lock.network,
@@ -111,7 +110,7 @@ const AppStore = ({ lock }) => {
     }
     setCheckoutUrl(
       new URL(
-        `/checkout?paywallConfig=${encodeURIComponent(
+        `/checkout?redirectUri=${redirectUri}&paywallConfig=${encodeURIComponent(
           JSON.stringify(checkoutURLConfig)
         )}`,
         window.location.href
