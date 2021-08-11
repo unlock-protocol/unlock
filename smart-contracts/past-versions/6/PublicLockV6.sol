@@ -2740,7 +2740,7 @@ contract MixinPurchase is
       unlockProtocol.recordConsumedDiscount(discount, tokens);
     }
 
-    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
+    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer);
 
     // trigger event
     emit Transfer(
