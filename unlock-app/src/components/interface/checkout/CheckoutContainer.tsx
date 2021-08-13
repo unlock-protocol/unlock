@@ -18,12 +18,17 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   left: 0;
-  top: 15%;
+  top: 0;
+  padding-top: 10%;
+  padding-bottom: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
   ${Media.phone`
-    top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   `}
 `
 
