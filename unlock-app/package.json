@@ -24,7 +24,7 @@
     "@types/react": "17.0.15",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.11",
-    "@unlock-protocol/unlock-assets": "1.4.6",
+    "@unlock-protocol/unlock-assets": "1.4.7",
     "@unlock-protocol/unlock-js": "0.19.2",
     "@walletconnect/web3-provider": "1.6.5",
     "apollo-boost": "0.4.9",

@@ -2,7 +2,7 @@
 title: Firebase integration
 subTitle: You can now easily add an Unlock membership to any Firebase application
 authorName: Julien Genestoux
-publishDate: August 16, 2021
+publishDate: Sept 2, 2021
 description: The team at Novum Insights has received a grant to build a Firebase integration to let any developer on that platform easily integrate a membership in their application!
 image: /static/images/blog/firebase/firebase.svg
 ---
@@ -60,8 +60,8 @@ Check the [Unlock Firebase integration docs](https://david-layton.gitbook.io/nov
 
 ## A Novum Insights membership!
 
-Novum Insights is a powerful DeFi tool that lets investors identify **Momentum Pairs** of crypto tokens. Novum Insights is now offering an Unlock based membership that uses their Firebase integration!
+Novum Insights is a powerful DeFi tool that lets investors identify **Momentum Pairs** of crypto tokens. Novum Insights is now offering an Unlock based membership that uses their Firebase integration! Right now, they have a 1 year limited edition for Eth 0.04 (50% off!)
 
-Get [your Novum Membership today](https://momentum-pairs.novuminsights.com/)!
+Get [your Novum Membership today](https://novuminsights.com/)!
 
 
