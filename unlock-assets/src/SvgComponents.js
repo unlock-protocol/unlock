@@ -31,6 +31,7 @@ import Eth from '../build/svg-component/Eth'
 import Etherscan from '../build/svg-component/Etherscan'
 import EthSub from '../build/svg-component/EthSub'
 import Export from '../build/svg-component/Export'
+import Firebase from '../build/svg-component/Firebase'
 import Github from '../build/svg-component/Github'
 import Heart from '../build/svg-component/Heart'
 import Home from '../build/svg-component/Home'
@@ -100,6 +101,7 @@ export default {
   Etherscan: wrapViewBox(Etherscan, '0 0 24 24'),
   EthSub: wrapViewBox(EthSub, '0 0 24 24'),
   Export: wrapViewBox(Export, '0 0 24 24'),
+  Firebase: wrapViewBox(Firebase, '-6 0 150 140'),
   Github: wrapViewBox(Github, '0 0 24 24'),
   Heart: wrapViewBox(Heart, '-6 -6 36 36'),
   Home,
