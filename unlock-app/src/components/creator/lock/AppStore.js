@@ -110,7 +110,9 @@ const AppStore = ({ lock }) => {
     }
     setCheckoutUrl(
       new URL(
-        `/checkout?redirectUri=${redirectUri}&paywallConfig=${encodeURIComponent(
+        `/checkout?redirectUri=${encodeURIComponent(
+          redirectUri
+        )}&paywallConfig=${encodeURIComponent(
           JSON.stringify(checkoutURLConfig)
         )}`,
         window.location.href
