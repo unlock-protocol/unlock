@@ -7,13 +7,14 @@ description: At Unlock, we believe that hackers and makers will be building a be
 image: https://avatars2.githubusercontent.com/u/35270686?s=280&v=4
 ---
 
-[HackFS](https://hackfs.com/) is a hackathon organized by the EthGlobal and Protocol Labs teams. The goal of the hackathon is to build the foundation for the decentralized web! At Unlock, we embrace this mission and have decided to join by sponsoring the hackathon!
+EthGlobal and Protocol Labs created [HackFS](https://hackfs.com/), a hackathon designed to enable hackers and makers to lay the foundation for a decentralized web! Unlock embraces this mission completely and decided to help accelerate this movement by sponsoring the hackathon!
 
-The hackathon started on July 30th and, teams have now submitted their projects! We're very excited to see that 17 teams have decided to build on top of the Unlock Protocol! You can view all of their submissions [on this Airtable](https://airtable.com/shrN4lIsh3yXQLQKh/tblfEgiZwI8Iog8ZK).
+Hackathon teams began their work on July 30th and every team has submitted their projects for review by the judges. We're so excited to see that 17 teams chose Unlock Protocol to build their projects upon and all of their submissions are linked [on this Airtable](https://airtable.com/shrN4lIsh3yXQLQKh/tblfEgiZwI8Iog8ZK).
 
-It is very important for us to involve the Unlock community on deciding what are the best ways to promote and grow adoption! For this reason, a few weeks ago we announced that we would [decentralize our grants review process](https://unlock.community/t/decentralizing-the-grants-process/106)!
+As a community-driven protocol, we want all of our community members to participate in deciding the best ways to promote and grow Unlock adoption. For this very reason, we recently decided to [decentralize our grants review process](https://unlock.community/t/decentralizing-the-grants-process/106).
 
-Today, we want to try something new: let all of our community members vote on what the best projects from HackFS are!
+Today we wish to try something new and further empower our community by letting members vote on the best projects from HackFS! The voting process is simple.
+
 
 We have created a [Snapshot proposal](https://snapshot.org/#/unlock-community.eth) to let all existing community members vote! If you did not have a valid membership at the time of Snapshot, you won't be allowed to vote, but you should [get a membership](https://app.unlock-protocol.com/checkout?redirectUri=https%3A%2F%2Fsnapshot.org%2F%23%2Funlock-community.eth%2F&paywallConfig=%7B%22locks%22%3A%7B%220xac1fceC2e4064CCd83ac8C9B0c9B8d944AB0D246%22%3A%7B%22network%22%3A100%7D%7D%2C%22persistentCheckout%22%3Atrue%2C%22icon%22%3A%22https%3A%2F%2Flocksmith.unlock-protocol.com%2Flock%2F0xac1fceC2e4064CCd83ac8C9B0c9B8d944AB0D246%2Ficon%22%7D) for next time!
 
