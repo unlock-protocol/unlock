@@ -20,4 +20,8 @@ module.exports = {
       'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
     unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
   },
+  100: {
+    provider: 'https://xdai.poanetwork.dev',
+    unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
+  },
 }
