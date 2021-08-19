@@ -33,16 +33,11 @@ contract UnlockProtocolGovernor is Initializable,
     return 45818; // 1 week
   }
 
-  // The following functions are overrides required by Solidity.
-  function quorum(uint256 blockNumber)
-    public
-    view
-    override(IGovernorUpgradeable, GovernorVotesQuorumFractionUpgradeable)
-    returns (uint256)
-  {
-    return super.quorum(blockNumber);
+  function quorum(uint256 blockNumber) public pure override returns (uint256) {
+    return 15000e18;
   }
-
+  
+  // The following functions are overrides required by Solidity.
   function getVotes(address account, uint256 blockNumber)
     public
     view
