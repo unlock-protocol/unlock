@@ -12,7 +12,6 @@ contract UnlockProtocolGovernor is Initializable,
   GovernorUpgradeable,
   GovernorCountingSimpleUpgradeable,
   GovernorVotesUpgradeable,
-  GovernorVotesQuorumFractionUpgradeable,
   GovernorTimelockControlUpgradeable
   {
   function initialize(ERC20VotesUpgradeable _token, TimelockControllerUpgradeable _timelock)
