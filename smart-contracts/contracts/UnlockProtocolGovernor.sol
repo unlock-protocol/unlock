@@ -5,7 +5,7 @@ import '@openzeppelin/contracts-upgradeable/governance/GovernorUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/governance/extensions/GovernorCountingSimpleUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/governance/extensions/GovernorVotesUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/governance/extensions/GovernorVotesQuorumFractionUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/governance/extensions/GovernorTimelockCompoundUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/governance/extensions/GovernorTimelockControlUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 
 contract UnlockProtocolGovernor is Initializable,
@@ -13,16 +13,16 @@ contract UnlockProtocolGovernor is Initializable,
   GovernorCountingSimpleUpgradeable,
   GovernorVotesUpgradeable,
   GovernorVotesQuorumFractionUpgradeable,
-  GovernorTimelockCompoundUpgradeable
+  GovernorTimelockControlUpgradeable
   {
-  function initialize(ERC20VotesUpgradeable _token, ICompoundTimelockUpgradeable _timelock)
+  function initialize(ERC20VotesUpgradeable _token, TimelockControllerUpgradeable _timelock)
     public initializer
   {
     __Governor_init('Unlock Protocol Governor');
     __GovernorCountingSimple_init();
     __GovernorVotes_init(_token);
     __GovernorVotesQuorumFraction_init(4);
-    __GovernorTimelockCompound_init(_timelock);
+    __GovernorTimelockControl_init(_timelock);
   }
 
   function votingDelay() public pure override returns (uint256) {
@@ -36,7 +36,7 @@ contract UnlockProtocolGovernor is Initializable,
   function quorum(uint256 blockNumber) public pure override returns (uint256) {
     return 15000e18;
   }
-  
+
   // The following functions are overrides required by Solidity.
   function getVotes(address account, uint256 blockNumber)
     public
@@ -50,7 +50,7 @@ contract UnlockProtocolGovernor is Initializable,
   function state(uint256 proposalId)
     public
     view
-    override(GovernorUpgradeable, GovernorTimelockCompoundUpgradeable)
+    override(GovernorUpgradeable, GovernorTimelockControlUpgradeable)
     returns (ProposalState)
   {
     return super.state(proposalId);
@@ -66,14 +66,14 @@ contract UnlockProtocolGovernor is Initializable,
 
   function _execute(uint256 proposalId, address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
     internal
-    override(GovernorUpgradeable, GovernorTimelockCompoundUpgradeable)
+    override(GovernorUpgradeable, GovernorTimelockControlUpgradeable)
   {
     super._execute(proposalId, targets, values, calldatas, descriptionHash);
   }
 
   function _cancel(address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
     internal
-    override(GovernorUpgradeable, GovernorTimelockCompoundUpgradeable)
+    override(GovernorUpgradeable, GovernorTimelockControlUpgradeable)
     returns (uint256)
   {
     return super._cancel(targets, values, calldatas, descriptionHash);
@@ -82,7 +82,7 @@ contract UnlockProtocolGovernor is Initializable,
   function _executor()
     internal
     view
-    override(GovernorUpgradeable, GovernorTimelockCompoundUpgradeable)
+    override(GovernorUpgradeable, GovernorTimelockControlUpgradeable)
     returns (address)
   {
     return super._executor();
@@ -91,7 +91,7 @@ contract UnlockProtocolGovernor is Initializable,
   function supportsInterface(bytes4 interfaceId)
     public
     view
-    override(GovernorUpgradeable, GovernorTimelockCompoundUpgradeable)
+    override(GovernorUpgradeable, GovernorTimelockControlUpgradeable)
     returns (bool)
   {
     return super.supportsInterface(interfaceId);
