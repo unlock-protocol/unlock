@@ -21,7 +21,6 @@ contract UnlockProtocolGovernor is Initializable,
     __Governor_init('Unlock Protocol Governor');
     __GovernorCountingSimple_init();
     __GovernorVotes_init(_token);
-    __GovernorVotesQuorumFraction_init(4);
     __GovernorTimelockControl_init(_timelock);
   }
 
