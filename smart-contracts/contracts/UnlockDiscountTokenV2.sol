@@ -10,7 +10,7 @@ import './ERC20Patched.sol';
 contract UnlockDiscountTokenV2 is
 ERC20MintableUpgradeable,
 ERC20DetailedUpgradeable,
-ERC20VotesCompUpgradeable
+ERC20VotesUpgradeable
 {
  /**
   * @notice A one-time call to configure the token.

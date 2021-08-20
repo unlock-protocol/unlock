@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.4.1 https://hardhat.org
+// Sources flattened with hardhat v2.5.0 https://hardhat.org
 pragma solidity ^0.8.0;
 
 // File @openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol@v2.5.0
@@ -39,7 +39,7 @@ library Roles {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol@v4.3.0
 
 
 
@@ -100,7 +100,7 @@ interface IERC20PermitUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.3.0
 
 
 
@@ -183,7 +183,7 @@ interface IERC20Upgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol@v4.3.0
 
 
 
@@ -210,7 +210,7 @@ interface IERC20MetadataUpgradeable is IERC20Upgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.3.0
 
 
 
@@ -258,11 +258,11 @@ abstract contract Initializable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.3.0
 
 
 
-/*
+/**
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
  * via msg.sender and msg.data, they should not be accessed in such a direct
@@ -290,11 +290,7 @@ abstract contract ContextUpgradeable is Initializable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol@v4.2.0
-
-
-
-
+// File @openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol@v4.3.0
 
 
 /**
@@ -308,9 +304,10 @@ abstract contract ContextUpgradeable is Initializable {
  * https://forum.zeppelin.solutions/t/how-to-implement-erc20-supply-mechanisms/226[How
  * to implement supply mechanisms].
  *
- * We have followed general OpenZeppelin guidelines: functions revert instead
- * of returning `false` on failure. This behavior is nonetheless conventional
- * and does not conflict with the expectations of ERC20 applications.
+ * We have followed general OpenZeppelin Contracts guidelines: functions revert
+ * instead returning `false` on failure. This behavior is nonetheless
+ * conventional and does not conflict with the expectations of ERC20
+ * applications.
  *
  * Additionally, an {Approval} event is emitted on calls to {transferFrom}.
  * This allows applications to reconstruct the allowance for all accounts just
@@ -368,7 +365,7 @@ abstract contract ERC20Upgradeable is Initializable, ContextUpgradeable, IERC20U
     /**
      * @dev Returns the number of decimals used to get its user representation.
      * For example, if `decimals` equals `2`, a balance of `505` tokens should
-     * be displayed to a user as `5,05` (`505 / 10 ** 2`).
+     * be displayed to a user as `5.05` (`505 / 10 ** 2`).
      *
      * Tokens usually opt for a value of 18, imitating the relationship between
      * Ether and Wei. This is the value {ERC20} uses, unless this function is
@@ -651,9 +648,7 @@ abstract contract ERC20Upgradeable is Initializable, ContextUpgradeable, IERC20U
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol@v4.2.0
-
-
+// File @openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol@v4.3.0
 
 /**
  * @dev Elliptic Curve Digital Signature Algorithm (ECDSA) operations.
@@ -662,9 +657,31 @@ abstract contract ERC20Upgradeable is Initializable, ContextUpgradeable, IERC20U
  * of the private keys of a given address.
  */
 library ECDSAUpgradeable {
+    enum RecoverError {
+        NoError,
+        InvalidSignature,
+        InvalidSignatureLength,
+        InvalidSignatureS,
+        InvalidSignatureV
+    }
+
+    function _throwError(RecoverError error) private pure {
+        if (error == RecoverError.NoError) {
+            return; // no error: do nothing
+        } else if (error == RecoverError.InvalidSignature) {
+            revert("ECDSA: invalid signature");
+        } else if (error == RecoverError.InvalidSignatureLength) {
+            revert("ECDSA: invalid signature length");
+        } else if (error == RecoverError.InvalidSignatureS) {
+            revert("ECDSA: invalid signature 's' value");
+        } else if (error == RecoverError.InvalidSignatureV) {
+            revert("ECDSA: invalid signature 'v' value");
+        }
+    }
+
     /**
      * @dev Returns the address that signed a hashed message (`hash`) with
-     * `signature`. This address can then be used for verification purposes.
+     * `signature` or error string. This address can then be used for verification purposes.
      *
      * The `ecrecover` EVM opcode allows for malleable (non-unique) signatures:
      * this function rejects them by requiring the `s` value to be in the lower
@@ -679,8 +696,10 @@ library ECDSAUpgradeable {
      * Documentation for signature generation:
      * - with https://web3js.readthedocs.io/en/v1.3.4/web3-eth-accounts.html#sign[Web3.js]
      * - with https://docs.ethers.io/v5/api/signer/#Signer-signMessage[ethers]
+     *
+     * _Available since v4.3._
      */
-    function recover(bytes32 hash, bytes memory signature) internal pure returns (address) {
+    function tryRecover(bytes32 hash, bytes memory signature) internal pure returns (address, RecoverError) {
         // Check the signature length
         // - case 65: r,s,v signature (standard)
         // - case 64: r,vs signature (cf https://eips.ethereum.org/EIPS/eip-2098) _Available since v4.1._
@@ -695,7 +714,7 @@ library ECDSAUpgradeable {
                 s := mload(add(signature, 0x40))
                 v := byte(0, mload(add(signature, 0x60)))
             }
-            return recover(hash, v, r, s);
+            return tryRecover(hash, v, r, s);
         } else if (signature.length == 64) {
             bytes32 r;
             bytes32 vs;
@@ -705,16 +724,55 @@ library ECDSAUpgradeable {
                 r := mload(add(signature, 0x20))
                 vs := mload(add(signature, 0x40))
             }
-            return recover(hash, r, vs);
+            return tryRecover(hash, r, vs);
         } else {
-            revert("ECDSA: invalid signature length");
+            return (address(0), RecoverError.InvalidSignatureLength);
         }
     }
 
     /**
-     * @dev Overload of {ECDSA-recover} that receives the `r` and `vs` short-signature fields separately.
+     * @dev Returns the address that signed a hashed message (`hash`) with
+     * `signature`. This address can then be used for verification purposes.
+     *
+     * The `ecrecover` EVM opcode allows for malleable (non-unique) signatures:
+     * this function rejects them by requiring the `s` value to be in the lower
+     * half order, and the `v` value to be either 27 or 28.
+     *
+     * IMPORTANT: `hash` _must_ be the result of a hash operation for the
+     * verification to be secure: it is possible to craft signatures that
+     * recover to arbitrary addresses for non-hashed data. A safe way to ensure
+     * this is by receiving a hash of the original message (which may otherwise
+     * be too long), and then calling {toEthSignedMessageHash} on it.
+     */
+    function recover(bytes32 hash, bytes memory signature) internal pure returns (address) {
+        (address recovered, RecoverError error) = tryRecover(hash, signature);
+        _throwError(error);
+        return recovered;
+    }
+
+    /**
+     * @dev Overload of {ECDSA-tryRecover} that receives the `r` and `vs` short-signature fields separately.
      *
      * See https://eips.ethereum.org/EIPS/eip-2098[EIP-2098 short signatures]
+     *
+     * _Available since v4.3._
+     */
+    function tryRecover(
+        bytes32 hash,
+        bytes32 r,
+        bytes32 vs
+    ) internal pure returns (address, RecoverError) {
+        bytes32 s;
+        uint8 v;
+        assembly {
+            s := and(vs, 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
+            v := add(shr(255, vs), 27)
+        }
+        return tryRecover(hash, v, r, s);
+    }
+
+    /**
+     * @dev Overload of {ECDSA-recover} that receives the `r and `vs` short-signature fields separately.
      *
      * _Available since v4.2._
      */
@@ -723,17 +781,51 @@ library ECDSAUpgradeable {
         bytes32 r,
         bytes32 vs
     ) internal pure returns (address) {
-        bytes32 s;
-        uint8 v;
-        assembly {
-            s := and(vs, 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)
-            v := add(shr(255, vs), 27)
-        }
-        return recover(hash, v, r, s);
+        (address recovered, RecoverError error) = tryRecover(hash, r, vs);
+        _throwError(error);
+        return recovered;
     }
 
     /**
-     * @dev Overload of {ECDSA-recover} that receives the `v`, `r` and `s` signature fields separately.
+     * @dev Overload of {ECDSA-tryRecover} that receives the `v`,
+     * `r` and `s` signature fields separately.
+     *
+     * _Available since v4.3._
+     */
+    function tryRecover(
+        bytes32 hash,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal pure returns (address, RecoverError) {
+        // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature
+        // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines
+        // the valid range for s in (301): 0 < s < secp256k1n ÷ 2 + 1, and for v in (302): v ∈ {27, 28}. Most
+        // signatures from current libraries generate a unique signature with an s-value in the lower half order.
+        //
+        // If your library generates malleable signatures, such as s-values in the upper range, calculate a new s-value
+        // with 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141 - s1 and flip v from 27 to 28 or
+        // vice versa. If your library also generates signatures with 0/1 for v instead 27/28, add 27 to v to accept
+        // these malleable signatures as well.
+        if (uint256(s) > 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0) {
+            return (address(0), RecoverError.InvalidSignatureS);
+        }
+        if (v != 27 && v != 28) {
+            return (address(0), RecoverError.InvalidSignatureV);
+        }
+
+        // If the signature is valid (and not malleable), return the signer address
+        address signer = ecrecover(hash, v, r, s);
+        if (signer == address(0)) {
+            return (address(0), RecoverError.InvalidSignature);
+        }
+
+        return (signer, RecoverError.NoError);
+    }
+
+    /**
+     * @dev Overload of {ECDSA-recover} that receives the `v`,
+     * `r` and `s` signature fields separately.
      */
     function recover(
         bytes32 hash,
@@ -741,26 +833,9 @@ library ECDSAUpgradeable {
         bytes32 r,
         bytes32 s
     ) internal pure returns (address) {
-        // EIP-2 still allows signature malleability for ecrecover(). Remove this possibility and make the signature
-        // unique. Appendix F in the Ethereum Yellow paper (https://ethereum.github.io/yellowpaper/paper.pdf), defines
-        // the valid range for s in (281): 0 < s < secp256k1n ÷ 2 + 1, and for v in (282): v ∈ {27, 28}. Most
-        // signatures from current libraries generate a unique signature with an s-value in the lower half order.
-        //
-        // If your library generates malleable signatures, such as s-values in the upper range, calculate a new s-value
-        // with 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141 - s1 and flip v from 27 to 28 or
-        // vice versa. If your library also generates signatures with 0/1 for v instead 27/28, add 27 to v to accept
-        // these malleable signatures as well.
-        require(
-            uint256(s) <= 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0,
-            "ECDSA: invalid signature 's' value"
-        );
-        require(v == 27 || v == 28, "ECDSA: invalid signature 'v' value");
-
-        // If the signature is valid (and not malleable), return the signer address
-        address signer = ecrecover(hash, v, r, s);
-        require(signer != address(0), "ECDSA: invalid signature");
-
-        return signer;
+        (address recovered, RecoverError error) = tryRecover(hash, v, r, s);
+        _throwError(error);
+        return recovered;
     }
 
     /**
@@ -792,7 +867,7 @@ library ECDSAUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol@v4.3.0
 
 
 
@@ -904,7 +979,7 @@ abstract contract EIP712Upgradeable is Initializable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol@v4.3.0
 
 
 
@@ -948,7 +1023,7 @@ library CountersUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-ERC20PermitUpgradeable.sol@v4.3.0
 
 
 
@@ -1042,7 +1117,7 @@ abstract contract ERC20PermitUpgradeable is Initializable, ERC20Upgradeable, IER
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/math/MathUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/utils/math/MathUpgradeable.sol@v4.3.0
 
 
 
@@ -1069,8 +1144,8 @@ library MathUpgradeable {
      * zero.
      */
     function average(uint256 a, uint256 b) internal pure returns (uint256) {
-        // (a + b) / 2 can overflow, so we distribute.
-        return (a / 2) + (b / 2) + (((a % 2) + (b % 2)) / 2);
+        // (a + b) / 2 can overflow.
+        return (a & b) + (a ^ b) / 2;
     }
 
     /**
@@ -1086,7 +1161,7 @@ library MathUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol@v4.3.0
 
 
 
@@ -1328,7 +1403,7 @@ library SafeCastUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol@v4.2.0
+// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol@v4.3.0
 
 
 
@@ -1438,10 +1513,10 @@ abstract contract ERC20VotesUpgradeable is Initializable, ERC20PermitUpgradeable
     function _checkpointsLookup(Checkpoint[] storage ckpts, uint256 blockNumber) private view returns (uint256) {
         // We run a binary search to look for the earliest checkpoint taken after `blockNumber`.
         //
-        // During the loop, the index of the wanted checkpoint remains in the range [low, high).
+        // During the loop, the index of the wanted checkpoint remains in the range [low-1, high).
         // With each iteration, either `low` or `high` is moved towards the middle of the range to maintain the invariant.
         // - If the middle checkpoint is after `blockNumber`, we look in [low, mid)
-        // - If the middle checkpoint is before `blockNumber`, we look in [mid+1, high)
+        // - If the middle checkpoint is before or equal to `blockNumber`, we look in [mid+1, high)
         // Once we reach a single value (when low == high), we've found the right checkpoint at the index high-1, if not
         // out of bounds (in which case we're looking too far in the past and the result is 0).
         // Note that if the latest checkpoint available is exactly for `blockNumber`, we end up with an index that is
@@ -1591,61 +1666,9 @@ abstract contract ERC20VotesUpgradeable is Initializable, ERC20PermitUpgradeable
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesCompUpgradeable.sol@v4.2.0
+// File scripts/udt-flatten/ERC20Patched.template.sol
 
 
-
-
-/**
- * @dev Extension of ERC20 to support Compound's voting and delegation. This version exactly matches Compound's
- * interface, with the drawback of only supporting supply up to (2^96^ - 1).
- *
- * NOTE: You should use this contract if you need exact compatibility with COMP (for example in order to use your token
- * with Governor Alpha or Bravo) and if you are sure the supply cap of 2^96^ is enough for you. Otherwise, use the
- * {ERC20Votes} variant of this module.
- *
- * This extensions keeps a history (checkpoints) of each account's vote power. Vote power can be delegated either
- * by calling the {delegate} function directly, or by providing a signature to be used with {delegateBySig}. Voting
- * power can be queried through the public accessors {getCurrentVotes} and {getPriorVotes}.
- *
- * By default, token balance does not account for voting power. This makes transfers cheaper. The downside is that it
- * requires users to delegate to themselves in order to activate checkpoints and have their voting power tracked.
- * Enabling self-delegation can easily be done by overriding the {delegates} function. Keep in mind however that this
- * will significantly increase the base gas cost of transfers.
- *
- * _Available since v4.2._
- */
-abstract contract ERC20VotesCompUpgradeable is Initializable, ERC20VotesUpgradeable {
-    function __ERC20VotesComp_init_unchained() internal initializer {
-    }
-    /**
-     * @dev Comp version of the {getVotes} accessor, with `uint96` return type.
-     */
-    function getCurrentVotes(address account) external view returns (uint96) {
-        return SafeCastUpgradeable.toUint96(getVotes(account));
-    }
-
-    /**
-     * @dev Comp version of the {getPastVotes} accessor, with `uint96` return type.
-     */
-    function getPriorVotes(address account, uint256 blockNumber) external view returns (uint96) {
-        return SafeCastUpgradeable.toUint96(getPastVotes(account, blockNumber));
-    }
-
-    /**
-     * @dev Maximum token supply. Reduced to `type(uint96).max` (2^96^ - 1) to fit COMP interface.
-     */
-    function _maxSupply() internal view virtual override returns (uint224) {
-        return type(uint96).max;
-    }
-    uint256[50] private __gap;
-}
-
-
-// File scripts/udt-upgrade/ERC20Patched.template.sol
-
-
-// import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
 
 abstract contract MinterRoleUpgradeable is Initializable, ContextUpgradeable {
     using Roles for Roles.Role;
