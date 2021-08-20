@@ -85,7 +85,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         newBalance: supply,
       })
 
-      expect(await udt.delegates(holder)).to.be.equal(holder);
+      expect(await udt.delegates(holder)).to.be.equal(holder)
       assert(supply.eq(await udt.getVotes(holder)))
       assert(
         new BN(0).eq(await udt.getPastVotes(holder, receipt.blockNumber - 1))
@@ -138,9 +138,9 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         expect(await udt.delegates(holder)).to.be.equal(holderDelegatee)
 
         expect(await udt.getVotes(holder)).to.be.bignumber.equal('0')
-        expect(
-          await udt.getVotes(holderDelegatee)
-        ).to.be.bignumber.equal(supply)
+        expect(await udt.getVotes(holderDelegatee)).to.be.bignumber.equal(
+          supply
+        )
         expect(
           await udt.getPastVotes(holder, receipt.blockNumber - 1)
         ).to.be.bignumber.equal(supply)
@@ -250,9 +250,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     })
 
     afterEach(async () => {
-      expect(await udt.getVotes(holder)).to.be.bignumber.equal(
-        holderVotes
-      )
+      expect(await udt.getVotes(holder)).to.be.bignumber.equal(holderVotes)
       expect(await udt.getVotes(recipient)).to.be.bignumber.equal(
         recipientVotes
       )
@@ -260,9 +258,9 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       // need to advance 2 blocks to see the effect of a transfer on "getPastVotes"
       const blockNumber = await time.latestBlock()
       await time.advanceBlock()
-      expect(
-        await udt.getPastVotes(holder, blockNumber)
-      ).to.be.bignumber.equal(holderVotes)
+      expect(await udt.getPastVotes(holder, blockNumber)).to.be.bignumber.equal(
+        holderVotes
+      )
       expect(
         await udt.getPastVotes(recipient, blockNumber)
       ).to.be.bignumber.equal(recipientVotes)
