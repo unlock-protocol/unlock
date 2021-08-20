@@ -12,6 +12,7 @@ interface OAuthConnectProps {
 
 export const OAuthConnect = ({
   oAuthConfig,
+
   redirectUri,
   closeModal,
 }: OAuthConnectProps) => {

@@ -19,6 +19,7 @@ export const LogInSignUp = ({
   onProvider,
   onCancel,
   network,
+  useWallet,
 }: LogInSignUpProps) => {
   const [isSignup, setIsSignup] = useState(signup || !login)
 
@@ -31,6 +32,7 @@ export const LogInSignUp = ({
             network={network}
             onCancel={onCancel}
             onProvider={onProvider}
+            useWallet={useWallet}
           />
         </>
       )}
