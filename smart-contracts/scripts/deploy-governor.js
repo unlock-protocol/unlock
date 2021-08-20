@@ -23,14 +23,14 @@ async function main() {
   )
 
   // deploying Unlock Protocol with a proxy
-  const UnlockDiscountTokenTimelock = await ethers.getContractFactory(
-    'UnlockDiscountTokenTimelock'
+  const UnlockProtocolTimelock = await ethers.getContractFactory(
+    'UnlockProtocolTimelock'
   )
 
   // one week in seconds
   const MINDELAY = 60 * 24 * 7
 
-  const timelock = await upgrades.deployProxy(UnlockDiscountTokenTimelock, [
+  const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
     MINDELAY,
     [], // proposers list is empty at deployment
     [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
@@ -41,7 +41,7 @@ async function main() {
   console.log('> Timelock w proxy deployed at:', timelock.address)
 
   // save deployment info
-  await addDeployment('UnlockDiscountTokenTimelock', timelock, true)
+  await addDeployment('UnlockProtocolTimelock', timelock, true)
 
   // deploying Unlock Protocol with a proxy
   const UnlockProtocolGovernor = await ethers.getContractFactory(
