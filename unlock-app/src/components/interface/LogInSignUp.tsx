@@ -10,6 +10,7 @@ interface LogInSignUpProps {
   onProvider: (provider: any) => void
   onCancel?: () => void
   network: number
+  useWallet?: () => void
 }
 
 export const LogInSignUp = ({

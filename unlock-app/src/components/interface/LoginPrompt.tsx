@@ -68,7 +68,6 @@ const LoginPrompt = ({
   injectedProvider,
   activeColor,
   onProvider,
-  useWallet,
 }: LoginPromptProps) => {
   const config = useContext(ConfigContext)
   const { authenticate } = useContext(AuthenticationContext)
