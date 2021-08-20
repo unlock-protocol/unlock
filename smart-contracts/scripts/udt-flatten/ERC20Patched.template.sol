@@ -1,8 +1,7 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
-// import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesCompUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20VotesUpgradeable.sol';
 
 contract MinterRoleUpgradeable is Initializable, ContextUpgradeable {
     using Roles for Roles.Role;
