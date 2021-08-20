@@ -26,7 +26,7 @@ export const LogInSignUp = ({
     <BrowserOnly>
       {!isSignup && (
         <>
-          <h1>Login to your Unlock Account</h1>
+          <h1>Login</h1>
           <LogIn
             network={network}
             onCancel={onCancel}
