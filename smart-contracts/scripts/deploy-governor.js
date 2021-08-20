@@ -4,8 +4,14 @@ const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 const { getNetworkName } = require('../helpers/network')
 const { getDeployment, addDeployment } = require('../helpers/deployments')
 
+const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
+const TIMELOCK_ADMIN_ROLE =
+  '0x5f58e3a2316349923ce3780f8d587db2d72378aed66a8261c916544fa6846ca5'
+const PROPOSER_ROLE =
+  '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
+
 async function main() {
-  const [unlockOwner, proposer, executor] = await ethers.getSigners()
+  const [unlockOwner] = await ethers.getSigners()
 
   // fetch chain info
   const chainId = await unlockOwner.getChainId()
@@ -13,7 +19,7 @@ async function main() {
 
   // eslint-disable-next-line no-console
   console.log(
-    `Deploying Timelock on ${networkName} with the account: ${unlockOwner.address}...`
+    `Deploying Governor on ${networkName} with the account: ${unlockOwner.address}...`
   )
 
   // deploying Unlock Protocol with a proxy
@@ -26,24 +32,16 @@ async function main() {
 
   const timelock = await upgrades.deployProxy(UnlockDiscountTokenTimelock, [
     MINDELAY,
-    [proposer.address],
-    [executor.address],
+    [], // proposers list is empty at deployment
+    [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
   ])
   await timelock.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('> Timelock w proxy deployed to:', timelock.address)
+  console.log('> Timelock w proxy deployed at:', timelock.address)
 
   // save deployment info
   await addDeployment('UnlockDiscountTokenTimelock', timelock, true)
-
-  // eslint-disable-next-line no-console
-  console.log('---')
-
-  // eslint-disable-next-line no-console
-  console.log(
-    `Deploying Unlock Governor on ${networkName} with the account: ${unlockOwner.address}...`
-  )
 
   // deploying Unlock Protocol with a proxy
   const UnlockProtocolGovernor = await ethers.getContractFactory(
@@ -71,10 +69,34 @@ async function main() {
   await governor.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('> Governor deployed (w proxy) to:', governor.address)
+  console.log('> Governor deployed (w proxy) at:', governor.address)
 
   // save deployment info
   await addDeployment('UnlockProtocolGovernor', governor, true)
+
+  // governor should be the only proposer
+  await timelock.grantRole(PROPOSER_ROLE, governor.address)
+
+  // eslint-disable-next-line no-console
+  console.log(
+    '> Governor added to Timelock as sole proposer. ',
+    `${governor.address} is Proposer: ${await timelock.hasRole(
+      PROPOSER_ROLE,
+      governor.address
+    )} `
+  )
+
+  // deployer should renounced the Admin role after setup (leaving only Timelock as Admin)
+  await timelock.renounceRole(TIMELOCK_ADMIN_ROLE, unlockOwner.address)
+
+  // eslint-disable-next-line no-console
+  console.log(
+    '> Unlock Owner recounced Admin Role. ',
+    `${unlockOwner.address} isAdmin: ${await timelock.hasRole(
+      TIMELOCK_ADMIN_ROLE,
+      unlockOwner.address
+    )} `
+  )
 }
 
 main()
