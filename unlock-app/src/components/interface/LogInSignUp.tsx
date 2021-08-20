@@ -49,6 +49,7 @@ LogInSignUp.defaultProps = {
   login: true,
   embedded: false,
   onCancel: null,
+  useWallet: null,
 }
 
 export default LogInSignUp

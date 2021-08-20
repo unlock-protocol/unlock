@@ -3,6 +3,7 @@ import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
 import { AuthenticationContext } from '../Authenticate'
 import Loading from '../Loading'
+import { Button, NeutralButton } from './FormStyles'
 
 interface OAuthConnectProps {
   oAuthConfig: OAuthConfig
@@ -73,8 +74,8 @@ export const OAuthConnect = ({
           The application {clientId} wants to identify you and access your
           membership status.
         </p>
-        <button onClick={onAllowed}>Allow</button> &nbsp;
-        <button onClick={accessDenied}>Deny</button>
+        <Button onClick={onAllowed}>Allow</Button>
+        <NeutralButton onClick={accessDenied}>Deny</NeutralButton>
       </>
     )
   }
