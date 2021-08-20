@@ -149,6 +149,7 @@ const LoginPrompt = ({
           onCancel={onCancel}
           login
           onProvider={handleUnlockProvider}
+          useWallet={() => setWalletToShow('')}
         />
       )}
     </Container>

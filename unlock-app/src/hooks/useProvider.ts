@@ -44,13 +44,13 @@ export const useProvider = (config: any) => {
       setNetwork(_network || undefined)
 
       const _account = await _walletService.getAccount()
+      let _signedMessage
       if (messageToSign) {
-        // @ts-expect-error
-        const _signedMessage = await _walletService.signMessage(
-          messageToSign,
-          'personal_sign'
+        _signedMessage = utils.base64.encode(
+          // @ts-expect-error
+          await _walletService.signMessage(messageToSign, 'personal_sign')
         )
-        setSignedMessage(utils.base64.encode(_signedMessage))
+        setSignedMessage(_signedMessage)
       }
       setWalletService(_walletService)
       setAccount(_account || undefined)
@@ -59,6 +59,7 @@ export const useProvider = (config: any) => {
         return {
           network: _network,
           account: _account,
+          signedMessage: _signedMessage,
         }
       }
       // @ts-expect-error
@@ -70,6 +71,7 @@ export const useProvider = (config: any) => {
       return {
         network: _network,
         account: _account,
+        signedMessage: _signedMessage,
         // @ts-expect-error
         isUnlock: provider.isUnlock,
         // @ts-expect-error

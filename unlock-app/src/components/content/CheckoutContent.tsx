@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Checkout } from '../interface/checkout/Checkout'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
+import getOAuthFromSearch from '../../utils/getOAuthFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
@@ -36,6 +37,14 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
     return <Loading />
   }
 
+  const oAuthConfig = getOAuthFromSearch(query)
+
+  let defaultState = 'loading'
+  if (oAuthConfig) {
+    defaultState = 'connect'
+  } else if (paywallConfig) {
+    defaultState = 'pick-lock'
+  }
   return (
     <LocksContext.Provider
       value={{
@@ -49,6 +58,8 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
           checkoutCommunication.providerAdapter || selectProvider(config)
         }
         redirectUri={redirectUri || paywallConfig?.redirectUri}
+        oAuthConfig={oAuthConfig}
+        defaultState={defaultState}
         paywallConfig={paywallConfig} // last to avoid override by ...checkoutCommunication
       />
     </LocksContext.Provider>
