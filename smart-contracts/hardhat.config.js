@@ -73,7 +73,7 @@ if (process.env.RUN_MAINNET_FORK) {
   networks.hardhat = {
     forking: {
       url: alchemyURL,
-      blockNumber: 12811244, // June 12th 2021
+      blockNumber: 13062709, // Aug 20th 2021
       // gasPrice: 150000000000, // not working, see https://github.com/nomiclabs/hardhat/issues/1216
     },
   }
