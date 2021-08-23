@@ -77,6 +77,17 @@ Once your network are setup, you can run the UDT contract upgrade
 npx hardhat run scripts/udt-upgrade.js --network rinkeby
 ```
 
+
+## Upgrade a contract
+
+### Unlock 
+
+```
+$ npx hardhat upgrade --contract contracts/Unlock.sol --network localhost
+Deploying new implemntation on mainnet...
+Unlock V9 implementation deployed at: 0xCD8a1C3ba11CF5ECfa6267617243239504a98d90
+```
+
 ### Verify contracts
 
 You can verify all contracts on etherscan as follow:

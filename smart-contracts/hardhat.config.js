@@ -1,4 +1,9 @@
 // hardhat.config.js
+const { task } = require('hardhat/config')
+const { copySync } = require('fs-extra')
+const { getNetworkName } = require('./helpers/network')
+const { getDeployment } = require('./helpers/deployments')
+const OZ_SDK_EXPORT = require('./openzeppelin-cli-export.json')
 
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
@@ -23,8 +28,6 @@ if (process.env.ETHERSCAN_API_KEY) {
   // eslint-disable-next-line global-require
   require('@nomiclabs/hardhat-etherscan')
 }
-
-const { task } = require('hardhat/config')
 
 const { getHardhatNetwork } = require('./helpers/network')
 
@@ -77,6 +80,9 @@ if (process.env.RUN_MAINNET_FORK) {
       // gasPrice: 150000000000, // not working, see https://github.com/nomiclabs/hardhat/issues/1216
     },
   }
+
+  // replace localhost manifest by mainnet one
+  copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
 }
 
 task('accounts', 'Prints the list of accounts', async () => {
@@ -96,6 +102,38 @@ task('balance', "Prints an account's balance")
     const balance = await web3.eth.getBalance(account)
     // eslint-disable-next-line no-console
     console.log(web3.utils.fromWei(balance, 'ether'), 'ETH')
+  })
+
+task('upgrade', 'Upgrade a contract')
+  .addParam('contract', 'The contract path')
+  .setAction(async ({ contract }, { ethers, upgrades }) => {
+    const { chainId } = await ethers.provider.getNetwork()
+    const contractName = contract.replace('contracts/', '').replace('.sol', '')
+
+    const networkName = process.env.RUN_MAINNET_FORK
+      ? 'mainnet'
+      : getNetworkName(chainId)
+
+    // eslint-disable-next-line no-console
+    console.log(`Deploying new implemntation on ${networkName}...`)
+
+    let contractInfo
+    if (networkName === 'localhost') {
+      contractInfo = await getDeployment(chainId, contractName)
+    } else {
+      ;[contractInfo] =
+        OZ_SDK_EXPORT.networks[networkName].proxies[
+          `unlock-protocol/${contractName}`
+        ]
+    }
+
+    const { address } = contractInfo
+
+    const Contract = await ethers.getContractFactory(contractName)
+    const implementation = await upgrades.prepareUpgrade(address, Contract)
+
+    // eslint-disable-next-line no-console
+    console.log(`${contractName} implementation deployed at: ${implementation}`)
   })
 
 /**
