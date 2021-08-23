@@ -66,6 +66,13 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         assert(supply.eq(await udt.balanceOf(holder)))
       })
     })
+    it('minting restriction', async () => {
+      const amount = new BN('2').pow(new BN('96'))
+      await expectRevert(
+        udt.mint(minter, amount, { from: minter }),
+        'ERC20Votes: total supply risks overflowing votes'
+      )
+    })
   })
 
   describe('Delegation', () => {
@@ -85,13 +92,12 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         newBalance: supply,
       })
 
-      expect(await udt.delegates(holder)).to.be.equal(holder)
-      assert(supply.eq(await udt.getVotes(holder)))
+      assert(supply.eq(await udt.getCurrentVotes(holder)))
       assert(
-        new BN(0).eq(await udt.getPastVotes(holder, receipt.blockNumber - 1))
+        new BN(0).eq(await udt.getPriorVotes(holder, receipt.blockNumber - 1))
       )
       await time.advanceBlock()
-      assert(supply.eq(await udt.getPastVotes(holder, receipt.blockNumber)))
+      assert(supply.eq(await udt.getPriorVotes(holder, receipt.blockNumber)))
     })
     it('delegation without balance', async () => {
       expect(await udt.delegates(holder)).to.be.equal(ZERO_ADDRESS)
@@ -137,22 +143,22 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
 
         expect(await udt.delegates(holder)).to.be.equal(holderDelegatee)
 
-        expect(await udt.getVotes(holder)).to.be.bignumber.equal('0')
-        expect(await udt.getVotes(holderDelegatee)).to.be.bignumber.equal(
-          supply
-        )
+        expect(await udt.getCurrentVotes(holder)).to.be.bignumber.equal('0')
         expect(
-          await udt.getPastVotes(holder, receipt.blockNumber - 1)
+          await udt.getCurrentVotes(holderDelegatee)
         ).to.be.bignumber.equal(supply)
         expect(
-          await udt.getPastVotes(holderDelegatee, receipt.blockNumber - 1)
+          await udt.getPriorVotes(holder, receipt.blockNumber - 1)
+        ).to.be.bignumber.equal(supply)
+        expect(
+          await udt.getPriorVotes(holderDelegatee, receipt.blockNumber - 1)
         ).to.be.bignumber.equal('0')
         await time.advanceBlock()
         expect(
-          await udt.getPastVotes(holder, receipt.blockNumber)
+          await udt.getPriorVotes(holder, receipt.blockNumber)
         ).to.be.bignumber.equal('0')
         expect(
-          await udt.getPastVotes(holderDelegatee, receipt.blockNumber)
+          await udt.getPriorVotes(holderDelegatee, receipt.blockNumber)
         ).to.be.bignumber.equal(supply)
       })
     })
@@ -250,19 +256,21 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     })
 
     afterEach(async () => {
-      expect(await udt.getVotes(holder)).to.be.bignumber.equal(holderVotes)
-      expect(await udt.getVotes(recipient)).to.be.bignumber.equal(
+      expect(await udt.getCurrentVotes(holder)).to.be.bignumber.equal(
+        holderVotes
+      )
+      expect(await udt.getCurrentVotes(recipient)).to.be.bignumber.equal(
         recipientVotes
       )
 
-      // need to advance 2 blocks to see the effect of a transfer on "getPastVotes"
+      // need to advance 2 blocks to see the effect of a transfer on "getPriorVotes"
       const blockNumber = await time.latestBlock()
       await time.advanceBlock()
-      expect(await udt.getPastVotes(holder, blockNumber)).to.be.bignumber.equal(
-        holderVotes
-      )
       expect(
-        await udt.getPastVotes(recipient, blockNumber)
+        await udt.getPriorVotes(holder, blockNumber)
+      ).to.be.bignumber.equal(holderVotes)
+      expect(
+        await udt.getPriorVotes(recipient, blockNumber)
       ).to.be.bignumber.equal(recipientVotes)
     })
   })
@@ -316,16 +324,16 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
 
         await time.advanceBlock()
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber)
         ).to.be.bignumber.equal('100')
         expect(
-          await udt.getPastVotes(other1, t2.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t2.receipt.blockNumber)
         ).to.be.bignumber.equal('90')
         expect(
-          await udt.getPastVotes(other1, t3.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t3.receipt.blockNumber)
         ).to.be.bignumber.equal('80')
         expect(
-          await udt.getPastVotes(other1, t4.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t4.receipt.blockNumber)
         ).to.be.bignumber.equal('100')
       })
 
@@ -355,16 +363,16 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       })
     })
 
-    describe('getPastVotes', () => {
+    describe('getPriorVotes', () => {
       it('reverts if block number >= current block', async () => {
         await expectRevert(
-          udt.getPastVotes(other1, 5e10),
+          udt.getPriorVotes(other1, 5e10),
           'ERC20Votes: block not yet mined'
         )
       })
 
       it('returns 0 if there are no checkpoints', async () => {
-        expect(await udt.getPastVotes(other1, 0)).to.be.bignumber.equal('0')
+        expect(await udt.getPriorVotes(other1, 0)).to.be.bignumber.equal('0')
       })
 
       it('returns the latest block if >= last checkpoint block', async () => {
@@ -373,10 +381,10 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         await time.advanceBlock()
 
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber)
         ).to.be.bignumber.equal('10000000000000000000000000')
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber + 1)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber + 1)
         ).to.be.bignumber.equal('10000000000000000000000000')
       })
 
@@ -387,10 +395,10 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         await time.advanceBlock()
 
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber - 1)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber - 1)
         ).to.be.bignumber.equal('0')
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber + 1)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber + 1)
         ).to.be.bignumber.equal('10000000000000000000000000')
       })
 
@@ -409,31 +417,31 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
         await time.advanceBlock()
 
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber - 1)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber - 1)
         ).to.be.bignumber.equal('0')
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber)
         ).to.be.bignumber.equal('10000000000000000000000000')
         expect(
-          await udt.getPastVotes(other1, t1.receipt.blockNumber + 1)
+          await udt.getPriorVotes(other1, t1.receipt.blockNumber + 1)
         ).to.be.bignumber.equal('10000000000000000000000000')
         expect(
-          await udt.getPastVotes(other1, t2.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t2.receipt.blockNumber)
         ).to.be.bignumber.equal('9999999999999999999999990')
         expect(
-          await udt.getPastVotes(other1, t2.receipt.blockNumber + 1)
+          await udt.getPriorVotes(other1, t2.receipt.blockNumber + 1)
         ).to.be.bignumber.equal('9999999999999999999999990')
         expect(
-          await udt.getPastVotes(other1, t3.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t3.receipt.blockNumber)
         ).to.be.bignumber.equal('9999999999999999999999980')
         expect(
-          await udt.getPastVotes(other1, t3.receipt.blockNumber + 1)
+          await udt.getPriorVotes(other1, t3.receipt.blockNumber + 1)
         ).to.be.bignumber.equal('9999999999999999999999980')
         expect(
-          await udt.getPastVotes(other1, t4.receipt.blockNumber)
+          await udt.getPriorVotes(other1, t4.receipt.blockNumber)
         ).to.be.bignumber.equal('10000000000000000000000000')
         expect(
-          await udt.getPastVotes(other1, t4.receipt.blockNumber + 1)
+          await udt.getPriorVotes(other1, t4.receipt.blockNumber + 1)
         ).to.be.bignumber.equal('10000000000000000000000000')
       })
     })

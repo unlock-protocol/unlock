@@ -399,13 +399,13 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         assert.equal(previousBalance, '0')
         assert(newBalance.eq(supply))
 
-        assert(supply.eq(await udt.getVotes(recipient.address)))
+        assert(supply.eq(await udt.getCurrentVotes(recipient.address)))
         assert(
-          (await udt.getPastVotes(recipient.address, blockNumber - 1)).eq(0)
+          (await udt.getPriorVotes(recipient.address, blockNumber - 1)).eq(0)
         )
         await time.advanceBlock()
         assert(
-          supply.eq(await udt.getPastVotes(recipient.address, blockNumber))
+          supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
         )
       })
     })
