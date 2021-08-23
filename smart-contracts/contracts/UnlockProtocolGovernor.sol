@@ -14,6 +14,11 @@ contract UnlockProtocolGovernor is Initializable,
   GovernorVotesUpgradeable,
   GovernorTimelockControlUpgradeable
   {
+
+  uint256 _votingDelay;
+  uint256 _votingPeriod;
+  uint256 _quorum;
+
   function initialize(ERC20VotesUpgradeable _token, TimelockControllerUpgradeable _timelock)
     public initializer
   {
@@ -21,18 +26,23 @@ contract UnlockProtocolGovernor is Initializable,
     __GovernorCountingSimple_init();
     __GovernorVotes_init(_token);
     __GovernorTimelockControl_init(_timelock);
+
+    _votingDelay = 1; // 1 block
+    _votingPeriod = 45818; // 1 week
+    _quorum = 15000e18; // 15k UDT
   }
 
-  function votingDelay() public pure override returns (uint256) {
-    return 1; // 1 block
+  function votingDelay() public view override returns (uint256) {
+    return _votingDelay;
   }
 
-  function votingPeriod() public pure override returns (uint256) {
-    return 45818; // 1 week
+  function votingPeriod() public view override returns (uint256) {
+    return _votingPeriod;
   }
 
-  function quorum(uint256 blockNumber) public pure override returns (uint256) {
-    return 15000e18;
+  function quorum(uint256 blockNumber) public view override returns (uint256) {
+    require(blockNumber < block.number, 'ERC20Votes: block not yet mined');
+    return _quorum;
   }
 
   // The following functions are overrides required by Solidity.
