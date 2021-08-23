@@ -1,6 +1,24 @@
 # Various scripts to manage the contracts
 
-## UDT Upgrade
+## Upgrade the contracts
+
+### Unlock 
+
+```
+$ npx hardhat run scripts/unlock-upgrade.
+Deploying new implemntation on mainnet...
+Unlock V9 implementation deployed at: 0xCD8a1C3ba11CF5ECfa6267617243239504a98d90
+```
+
+### UDT
+
+```
+$ npx hardhat run scripts/unlock-upgrade.
+Deploying new implemntation on mainnet...
+Unlock V9 implementation deployed at: 0xCD8a1C3ba11CF5ECfa6267617243239504a98d90
+```
+
+## Notes on UDT Upgrade
 
 ### Whats happening
 
