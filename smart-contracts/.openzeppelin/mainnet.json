@@ -69,13 +69,13 @@
           {
             "contract": "Unlock",
             "label": "globalBaseTokenURI",
-            "type": "t_string",
+            "type": "t_string_storage",
             "src": "contracts/Unlock.sol"
           },
           {
             "contract": "Unlock",
             "label": "globalTokenSymbol",
-            "type": "t_string",
+            "type": "t_string_storage",
             "src": "contracts/Unlock.sol"
           },
           {
@@ -87,7 +87,7 @@
           {
             "contract": "Unlock",
             "label": "uniswapOracles",
-            "type": "t_mapping(unknown,t_address)",
+            "type": "t_mapping(t_address,t_contract(IUniswapOracle)7444)",
             "src": "contracts/Unlock.sol"
           },
           {
