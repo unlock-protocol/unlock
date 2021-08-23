@@ -95,7 +95,7 @@ export default class KeyPricer {
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
 
     const gasFee = await this.gasFee(network)
-    const unlockServiceFee = this.unlockServiceFee(usdKeyPrice + gasFee)
+    const unlockServiceFee = this.unlockServiceFee(usdKeyPrice) + gasFee
 
     return {
       keyPrice: usdKeyPrice,
