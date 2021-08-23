@@ -23,13 +23,15 @@ export const getAllKeysMetadataForLock = async (
   viewer,
   walletService,
   storageService,
-  network
+  network,
+  page
 ) => {
   const payload = generateKeyTypedData({
     LockMetaData: {
       address: lock.address,
       owner: viewer,
       timestamp: Date.now(),
+      page,
     },
   })
   // TODO prevent replays by adding timestamp?
@@ -141,7 +143,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
           viewer,
           walletService,
           storageService,
-          network
+          network,
+          page
         )
         return buildMembersWithMetadata(lockWithKeys, storedMetadata)
       } catch (error) {
