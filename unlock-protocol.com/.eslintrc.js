@@ -1,5 +1,8 @@
 module.exports = {
-  extends: ['../.eslintrc.js', 'plugin:react/recommended'],
+  extends: [
+    '@unlock-protocol/unlock-lint',
+    'plugin:react/recommended'
+  ],
   settings: {
     react: {
       version: 'detect',

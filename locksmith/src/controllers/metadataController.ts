@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from '@types/express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'
