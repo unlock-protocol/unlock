@@ -39,7 +39,6 @@
       "eslint --fix"
     ]
   },
-  "devDependencies": {},
   "scripts": {
     "build": "webpack",
     "dev": "UNLOCK_ENV=dev nodemon src/server.js --exec babel-node",
