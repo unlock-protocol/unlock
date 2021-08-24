@@ -1,6 +1,7 @@
 {
   "name": "unlock_protocol",
   "license": "UNLICENSED",
+  "version" : "0.0.1",
   "scripts": {
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
     "codegen": "graph codegen",
