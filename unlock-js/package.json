@@ -10,15 +10,14 @@
     "url": "https://github.com/unlock-protocol/unlock.git"
   },
   "scripts": {
-    "pretest": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
-    "test": "jest",
+    "prepare-test": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
+    "test": "yarn prepare-test && jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
     "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
     "ci": "yarn test && yarn lint",
-    "prepublishOnly": "yarn build",
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -b 1"
   },
   "author": "Unlock Inc",
@@ -35,9 +34,9 @@
   },
   "devDependencies": {
     "@babel/cli": "7.14.8",
-    "@babel/core": "7.14.8",
     "@babel/preset-env": "7.14.9",
     "@unlock-protocol/eslint-config": "workspace:*",
+    "@unlock-protocol/tooling": "workspace:*",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",

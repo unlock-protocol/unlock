@@ -227,30 +227,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.14.8":
-  version: 7.14.8
-  resolution: "@babel/core@npm:7.14.8"
-  dependencies:
-    "@babel/code-frame": ^7.14.5
-    "@babel/generator": ^7.14.8
-    "@babel/helper-compilation-targets": ^7.14.5
-    "@babel/helper-module-transforms": ^7.14.8
-    "@babel/helpers": ^7.14.8
-    "@babel/parser": ^7.14.8
-    "@babel/template": ^7.14.5
-    "@babel/traverse": ^7.14.8
-    "@babel/types": ^7.14.8
-    convert-source-map: ^1.7.0
-    debug: ^4.1.0
-    gensync: ^1.0.0-beta.2
-    json5: ^2.1.2
-    semver: ^6.3.0
-    source-map: ^0.5.0
-  checksum: cfb715d659b9e1ebaf9f11d87363171121d6e363b8b82766cbd4a723c04066d65d0f1ce12d6ef569a83dc5ee88efa3da0e5e6fac6945c5d627d8dc387a027b26
-  languageName: node
-  linkType: hard
-
-"@babel/core@npm:7.15.0, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.4, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.4, @babel/core@npm:^7.8.7":
+"@babel/core@npm:7.15.0, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.4, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.15.0, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.4, @babel/core@npm:^7.8.7":
   version: 7.15.0
   resolution: "@babel/core@npm:7.15.0"
   dependencies:
@@ -273,7 +250,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.12.1, @babel/generator@npm:^7.12.11, @babel/generator@npm:^7.12.5, @babel/generator@npm:^7.14.8, @babel/generator@npm:^7.15.0, @babel/generator@npm:^7.7.2":
+"@babel/generator@npm:^7.12.1, @babel/generator@npm:^7.12.11, @babel/generator@npm:^7.12.5, @babel/generator@npm:^7.15.0, @babel/generator@npm:^7.7.2":
   version: 7.15.0
   resolution: "@babel/generator@npm:7.15.0"
   dependencies:
@@ -437,7 +414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-transforms@npm:^7.12.1, @babel/helper-module-transforms@npm:^7.14.5, @babel/helper-module-transforms@npm:^7.14.8, @babel/helper-module-transforms@npm:^7.15.0":
+"@babel/helper-module-transforms@npm:^7.12.1, @babel/helper-module-transforms@npm:^7.14.5, @babel/helper-module-transforms@npm:^7.15.0":
   version: 7.15.0
   resolution: "@babel/helper-module-transforms@npm:7.15.0"
   dependencies:
@@ -592,7 +569,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.0.0, @babel/parser@npm:^7.1.0, @babel/parser@npm:^7.12.11, @babel/parser@npm:^7.12.3, @babel/parser@npm:^7.12.7, @babel/parser@npm:^7.14.5, @babel/parser@npm:^7.14.8, @babel/parser@npm:^7.15.0, @babel/parser@npm:^7.3.1, @babel/parser@npm:^7.3.3, @babel/parser@npm:^7.7.0, @babel/parser@npm:^7.7.2":
+"@babel/parser@npm:^7.0.0, @babel/parser@npm:^7.1.0, @babel/parser@npm:^7.12.11, @babel/parser@npm:^7.12.3, @babel/parser@npm:^7.12.7, @babel/parser@npm:^7.14.5, @babel/parser@npm:^7.15.0, @babel/parser@npm:^7.3.1, @babel/parser@npm:^7.3.3, @babel/parser@npm:^7.7.0, @babel/parser@npm:^7.7.2":
   version: 7.15.3
   resolution: "@babel/parser@npm:7.15.3"
   bin:
@@ -2083,7 +2060,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.1.0, @babel/traverse@npm:^7.1.6, @babel/traverse@npm:^7.12.1, @babel/traverse@npm:^7.12.11, @babel/traverse@npm:^7.12.9, @babel/traverse@npm:^7.13.0, @babel/traverse@npm:^7.14.5, @babel/traverse@npm:^7.14.8, @babel/traverse@npm:^7.15.0, @babel/traverse@npm:^7.2.3, @babel/traverse@npm:^7.4.5, @babel/traverse@npm:^7.7.0, @babel/traverse@npm:^7.7.2":
+"@babel/traverse@npm:^7.1.0, @babel/traverse@npm:^7.1.6, @babel/traverse@npm:^7.12.1, @babel/traverse@npm:^7.12.11, @babel/traverse@npm:^7.12.9, @babel/traverse@npm:^7.13.0, @babel/traverse@npm:^7.14.5, @babel/traverse@npm:^7.15.0, @babel/traverse@npm:^7.2.3, @babel/traverse@npm:^7.4.5, @babel/traverse@npm:^7.7.0, @babel/traverse@npm:^7.7.2":
   version: 7.15.0
   resolution: "@babel/traverse@npm:7.15.0"
   dependencies:
@@ -10547,16 +10524,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/eslint-config@0.0.1, @unlock-protocol/eslint-config@workspace:*, @unlock-protocol/eslint-config@workspace:eslint-config":
+"@unlock-protocol/eslint-config@workspace:*, @unlock-protocol/eslint-config@workspace:eslint-config":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eslint-config@workspace:eslint-config"
   dependencies:
-    "@babel/core": 7.14.8
     "@typescript-eslint/eslint-plugin": 4.28.5
     "@typescript-eslint/parser": 4.28.5
+    "@unlock-protocol/tooling": "workspace:*"
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.2.2
-    eslint: 7.32.0
     eslint-config-airbnb: 18.2.1
     eslint-config-prettier: 8.3.0
     eslint-config-standard: 16.0.3
@@ -10576,6 +10552,15 @@ __metadata:
     typescript: 4.3.5
   peerDependencies:
     eslint: ">= 5.4"
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/tooling@workspace:*, @unlock-protocol/tooling@workspace:tooling":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/tooling@workspace:tooling"
+  dependencies:
+    "@babel/core": ^7.15.0
+    eslint: ^7.32.0
   languageName: unknown
   linkType: soft
 
@@ -10653,16 +10638,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-assets@workspace:unlock-assets"
   dependencies:
-    "@babel/core": 7.14.8
     "@storybook/addon-actions": 6.3.6
     "@storybook/addon-essentials": 6.3.6
     "@storybook/addon-links": 6.3.6
     "@storybook/react": 6.3.6
     "@svgr/cli": 5.5.0
+    "@unlock-protocol/tooling": "workspace:*"
     babel-loader: 8.2.2
     gh-pages: 3.2.3
     microbundle-crl: 0.13.11
     npm-run-all: 4.1.5
+    prop-types: ^15.7.2
     react: 17.0.2
     react-dom: 17.0.2
     react-scripts: 4.0.3
@@ -10677,9 +10663,9 @@ __metadata:
   resolution: "@unlock-protocol/unlock-js@workspace:unlock-js"
   dependencies:
     "@babel/cli": 7.14.8
-    "@babel/core": 7.14.8
     "@babel/preset-env": 7.14.9
     "@unlock-protocol/eslint-config": "workspace:*"
+    "@unlock-protocol/tooling": "workspace:*"
     "@unlock-protocol/unlock-abi-4": 1.1.1
     "@unlock-protocol/unlock-abi-6": 1.0.2
     "@unlock-protocol/unlock-abi-7": 1.0.3
@@ -20183,7 +20169,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:7.32.0, eslint@npm:^7.11.0":
+"eslint@npm:7.32.0, eslint@npm:^7.11.0, eslint@npm:^7.32.0":
   version: 7.32.0
   resolution: "eslint@npm:7.32.0"
   dependencies:
@@ -29288,7 +29274,8 @@ fsevents@~2.1.1:
     "@types/sequelize": 4.28.10
     "@types/stripe": 8.0.416
     "@types/supertest": 2.0.11
-    "@unlock-protocol/eslint-config": 0.0.1
+    "@unlock-protocol/eslint-config": "workspace:*"
+    "@unlock-protocol/tooling": "workspace:*"
     "@unlock-protocol/unlock-js": 0.19.2
     apollo-cache-inmemory: 1.6.6
     apollo-client: 2.6.10
@@ -29303,6 +29290,7 @@ fsevents@~2.1.1:
     cors: 2.8.5
     cross-fetch: 3.1.4
     dotenv: 10.0.0
+    eslint: ^7.32.0
     eth-sig-util: 2.5.4
     ethereumjs-util: 6.2.1
     ethers: 5.4.3
@@ -31721,6 +31709,7 @@ fsevents@~2.1.1:
     "@testing-library/react": 11.2.7
     "@testing-library/react-hooks": 7.0.1
     "@types/node": 14.17.7
+    "@unlock-protocol/tooling": "workspace:*"
     axios: 0.21.1
     babel-jest: 27.0.6
     dotenv: 10.0.0
@@ -42199,7 +42188,6 @@ typescript@4.2.4:
   dependencies:
     "@apollo/react-hooks": 4.0.0
     "@apollo/react-testing": 4.0.0
-    "@babel/core": 7.14.8
     "@storybook/addon-actions": 6.3.6
     "@storybook/addon-knobs": 6.2.9
     "@storybook/addon-viewport": 6.3.6
@@ -42218,6 +42206,7 @@ typescript@4.2.4:
     "@types/react": 17.0.15
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.11
+    "@unlock-protocol/tooling": "workspace:*"
     "@unlock-protocol/unlock-assets": 1.4.6
     "@unlock-protocol/unlock-js": 0.19.2
     "@walletconnect/web3-provider": 1.5.2
@@ -42269,7 +42258,6 @@ typescript@4.2.4:
   version: 0.0.0-use.local
   resolution: "unlock-paywall@workspace:paywall"
   dependencies:
-    "@babel/core": 7.14.8
     "@storybook/addon-actions": 6.2.9
     "@storybook/addon-knobs": 6.2.9
     "@storybook/addon-storyshots": 6.2.9
@@ -42285,6 +42273,7 @@ typescript@4.2.4:
     "@types/react": 17.0.15
     "@types/react-dom": 17.0.9
     "@types/styled-components": 5.1.11
+    "@unlock-protocol/tooling": "workspace:*"
     "@zeit/next-css": 1.0.1
     "@zeit/next-source-maps": 0.0.3
     babel-jest: 27.0.6
@@ -42322,7 +42311,6 @@ typescript@4.2.4:
   version: 0.0.0-use.local
   resolution: "unlock-protocol.com@workspace:unlock-protocol.com"
   dependencies:
-    "@babel/core": 7.14.8
     "@storybook/addon-actions": 6.3.6
     "@storybook/addon-knobs": 6.2.9
     "@storybook/addon-storyshots": 6.3.6
@@ -42336,7 +42324,8 @@ typescript@4.2.4:
     "@types/react": 17.0.15
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.11
-    "@unlock-protocol/eslint-config": 0.0.1
+    "@unlock-protocol/eslint-config": "workspace:*"
+    "@unlock-protocol/tooling": "workspace:*"
     "@unlock-protocol/unlock-assets": 1.4.6
     "@zeit/next-source-maps": 0.0.3
     babel-eslint: 10.1.0
@@ -45091,10 +45080,10 @@ typescript@4.2.4:
   resolution: "wedlocks@workspace:wedlocks"
   dependencies:
     "@babel/cli": 7.14.8
-    "@babel/core": 7.14.8
     "@babel/node": 7.14.9
     "@babel/preset-env": 7.14.9
-    "@unlock-protocol/eslint-config": 0.0.1
+    "@unlock-protocol/eslint-config": "workspace:*"
+    "@unlock-protocol/tooling": "workspace:*"
     aws-sdk: 2.958.0
     babel-jest: 27.0.6
     babel-loader: 8.2.2

@@ -1,0 +1,10 @@
+{
+  "name": "@unlock-protocol/tooling",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Unlock's base tooling",
+  "dependencies": {
+    "@babel/core": "^7.15.0",
+    "eslint": "^7.32.0"
+  }
+}

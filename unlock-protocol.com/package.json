@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.14.8",
     "@storybook/addon-actions": "6.3.6",
     "@storybook/addon-knobs": "6.2.9",
     "@storybook/addon-storyshots": "6.3.6",
@@ -17,7 +16,8 @@
     "@types/react": "17.0.15",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.11",
-    "@unlock-protocol/eslint-config": "0.0.1",
+    "@unlock-protocol/eslint-config": "workspace:*",
+    "@unlock-protocol/tooling": "workspace:*",
     "@unlock-protocol/unlock-assets": "1.4.6",
     "@zeit/next-source-maps": "0.0.3",
     "babel-eslint": "10.1.0",
