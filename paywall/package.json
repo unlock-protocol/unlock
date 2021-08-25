@@ -50,6 +50,7 @@
     "@testing-library/react": "11.2.7",
     "@types/jest": "26.0.24",
     "@unlock-protocol/tooling": "workspace:*",
+    "@unlock-protocol/eslint-config": "workspace:*",
     "babel-jest": "27.0.6",
     "babel-loader": "8.2.2",
     "babel-plugin-require-context-hook": "1.0.0",
