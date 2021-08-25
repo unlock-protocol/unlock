@@ -1,6 +1,6 @@
 module.exports = {
   extends: [
-    '@unlock-protocol/unlock-lint',
+    '@unlock-protocol/eslint-config',
     'plugin:react/recommended'
   ],
   settings: {

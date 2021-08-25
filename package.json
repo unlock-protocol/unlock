@@ -41,7 +41,7 @@
     "subgraph",
     "unlock-app",
     "unlock-assets",
-    "unlock-lint",
+    "eslint-config",
     "unlock-js",
     "unlock-protocol.com",
     "locksmith",

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@unlock-protocol/unlock-lint'],
+  extends: ['@unlock-protocol/eslint-config'],
   rules: {
     // TODO: fix the functions this triggers
     'consistent-return': 'off',

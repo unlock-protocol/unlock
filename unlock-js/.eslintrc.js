@@ -17,7 +17,7 @@ const rulesToIgnore = [
 ]
 
 module.exports = {
-  extends: ['@unlock-protocol/unlock-lint'],
+  extends: ['@unlock-protocol/eslint-config'],
   rules: {
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }

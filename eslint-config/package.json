@@ -1,5 +1,5 @@
 {
-  "name": "@unlock-protocol/unlock-lint",
+  "name": "@unlock-protocol/eslint-config",
   "version": "0.0.1",
   "main": "index.js",
   "description": "Unlock's base JS ESLint config",
@@ -12,7 +12,6 @@
     "@typescript-eslint/parser": "4.28.5",
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.2.2",
-    "eslint": "7.32.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
@@ -31,6 +30,13 @@
     "typescript": "4.3.5"
   },
   "devDependencies": {
+    "eslint": "7.32.0",
     "jest": "^27.0.6"
+  },
+  "peerDependencies": {
+    "eslint": ">= 5.4"
+  },
+  "eslintConfig": {
+    "extends": "./index.js"
   }
 }

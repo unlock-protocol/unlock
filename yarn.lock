@@ -5134,21 +5134,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-waffle@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@nomiclabs/hardhat-waffle@npm:2.0.1"
-  dependencies:
-    "@types/sinon-chai": ^3.2.3
-    "@types/web3": 1.0.19
-  peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    ethereum-waffle: ^3.2.0
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: 2876a0cbcfdb9d23a21dc83acbdc3bd1b8e24a3c4cb71c76283c1beca0ba60c8485fd74e1b1e5df72d088167c1797ccb5c39845a63d69cb0fee65413807efb9b
-  languageName: node
-  linkType: hard
-
 "@nomiclabs/hardhat-web3@npm:2.0.0":
   version: 2.0.0
   resolution: "@nomiclabs/hardhat-web3@npm:2.0.0"
@@ -6370,7 +6355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/fake-timers@npm:^7.0.2, @sinonjs/fake-timers@npm:^7.1.0":
+"@sinonjs/fake-timers@npm:^7.0.2":
   version: 7.1.2
   resolution: "@sinonjs/fake-timers@npm:7.1.2"
   dependencies:
@@ -9129,7 +9114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:*, @types/chai@npm:^4.2.0":
+"@types/chai@npm:^4.2.0":
   version: 4.2.21
   resolution: "@types/chai@npm:4.2.21"
   checksum: fc7d32fbae47ad6d3576bcb8cf24a243af03c93bb97cd9456a5415da888ab78a03800dcc4cc25a21ad1b493bcdaee7377f163bc4dd8db463c3530dafddea205c
@@ -10061,25 +10046,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sinon-chai@npm:^3.2.3":
-  version: 3.2.5
-  resolution: "@types/sinon-chai@npm:3.2.5"
-  dependencies:
-    "@types/chai": "*"
-    "@types/sinon": "*"
-  checksum: 0e482de52bc6a390921b940dd30786b9ddbc78d2c32a5590f094606ecf20523a5ea2fadc1f702e5e45479e1f7dc19be1061fdf9fe01ad26f466511cea418899e
-  languageName: node
-  linkType: hard
-
-"@types/sinon@npm:*":
-  version: 10.0.2
-  resolution: "@types/sinon@npm:10.0.2"
-  dependencies:
-    "@sinonjs/fake-timers": ^7.1.0
-  checksum: 44d149b0ba4ebfbadd7452e31edb35aab782d74bb542a808e5b0cc72f40fd2db6b4179bb97a79d5e2dc1b870823a395cd21349037a7af336810c1662ee9f076f
-  languageName: node
-  linkType: hard
-
 "@types/source-list-map@npm:*":
   version: 0.1.2
   resolution: "@types/source-list-map@npm:0.1.2"
@@ -10581,6 +10547,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@unlock-protocol/eslint-config@0.0.1, @unlock-protocol/eslint-config@workspace:*, @unlock-protocol/eslint-config@workspace:eslint-config":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/eslint-config@workspace:eslint-config"
+  dependencies:
+    "@babel/core": 7.14.8
+    "@typescript-eslint/eslint-plugin": 4.28.5
+    "@typescript-eslint/parser": 4.28.5
+    babel-eslint: 10.1.0
+    babel-plugin-polyfill-corejs2: 0.2.2
+    eslint: 7.32.0
+    eslint-config-airbnb: 18.2.1
+    eslint-config-prettier: 8.3.0
+    eslint-config-standard: 16.0.3
+    eslint-import-resolver-typescript: 2.4.0
+    eslint-plugin-import: 2.23.4
+    eslint-plugin-jest: 24.4.0
+    eslint-plugin-jsx-a11y: 6.4.1
+    eslint-plugin-mocha: 9.0.0
+    eslint-plugin-node: 11.1.0
+    eslint-plugin-prettier: 3.4.0
+    eslint-plugin-promise: 5.1.0
+    eslint-plugin-react: 7.24.0
+    eslint-plugin-react-hooks: 4.2.0
+    eslint-plugin-standard: 4.1.0
+    jest: ^27.0.6
+    prettier: 2.3.2
+    typescript: 4.3.5
+  peerDependencies:
+    eslint: ">= 5.4"
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/unlock-abi-0@npm:1.0.4":
   version: 1.0.4
   resolution: "@unlock-protocol/unlock-abi-0@npm:1.0.4"
@@ -10661,22 +10659,10 @@ __metadata:
     "@storybook/addon-links": 6.3.6
     "@storybook/react": 6.3.6
     "@svgr/cli": 5.5.0
-    babel-eslint: 10.1.0
     babel-loader: 8.2.2
-    eslint: 7.32.0
-    eslint-config-prettier: 8.3.0
-    eslint-config-standard: 16.0.3
-    eslint-config-standard-react: 11.0.1
-    eslint-plugin-import: 2.23.4
-    eslint-plugin-node: 11.1.0
-    eslint-plugin-prettier: 3.4.0
-    eslint-plugin-promise: 5.1.0
-    eslint-plugin-react: 7.24.0
-    eslint-plugin-standard: 4.1.0
     gh-pages: 3.2.3
     microbundle-crl: 0.13.11
     npm-run-all: 4.1.5
-    prettier: 2.3.2
     react: 17.0.2
     react-dom: 17.0.2
     react-scripts: 4.0.3
@@ -10693,12 +10679,12 @@ __metadata:
     "@babel/cli": 7.14.8
     "@babel/core": 7.14.8
     "@babel/preset-env": 7.14.9
+    "@unlock-protocol/eslint-config": "workspace:*"
     "@unlock-protocol/unlock-abi-4": 1.1.1
     "@unlock-protocol/unlock-abi-6": 1.0.2
     "@unlock-protocol/unlock-abi-7": 1.0.3
     "@unlock-protocol/unlock-abi-8": 1.0.0
     "@unlock-protocol/unlock-abi-9": 1.0.0
-    "@unlock-protocol/unlock-lint": 0.0.1
     babel-jest: 27.0.6
     cross-fetch: 3.1.4
     eslint: 7.32.0
@@ -10711,36 +10697,6 @@ __metadata:
   peerDependencies:
     cross-fetch: 3.1.4
     ethers: 5.4.3
-  languageName: unknown
-  linkType: soft
-
-"@unlock-protocol/unlock-lint@0.0.1, @unlock-protocol/unlock-lint@workspace:unlock-lint":
-  version: 0.0.0-use.local
-  resolution: "@unlock-protocol/unlock-lint@workspace:unlock-lint"
-  dependencies:
-    "@babel/core": 7.14.8
-    "@typescript-eslint/eslint-plugin": 4.28.5
-    "@typescript-eslint/parser": 4.28.5
-    babel-eslint: 10.1.0
-    babel-plugin-polyfill-corejs2: 0.2.2
-    eslint: 7.32.0
-    eslint-config-airbnb: 18.2.1
-    eslint-config-prettier: 8.3.0
-    eslint-config-standard: 16.0.3
-    eslint-import-resolver-typescript: 2.4.0
-    eslint-plugin-import: 2.23.4
-    eslint-plugin-jest: 24.4.0
-    eslint-plugin-jsx-a11y: 6.4.1
-    eslint-plugin-mocha: 9.0.0
-    eslint-plugin-node: 11.1.0
-    eslint-plugin-prettier: 3.4.0
-    eslint-plugin-promise: 5.1.0
-    eslint-plugin-react: 7.24.0
-    eslint-plugin-react-hooks: 4.2.0
-    eslint-plugin-standard: 4.1.0
-    jest: ^27.0.6
-    prettier: 2.3.2
-    typescript: 4.3.5
   languageName: unknown
   linkType: soft
 
@@ -19829,16 +19785,6 @@ __metadata:
     eslint-plugin-testing-library:
       optional: true
   checksum: ab983e9a3101ee266f3b6b7118e76f7200ff0bab1a44ff84a03f300a90857b039c8a5b632d467f09540c13919565ac969ddef3dc13f903e5960fe46070a9da51
-  languageName: node
-  linkType: hard
-
-"eslint-config-standard-react@npm:11.0.1":
-  version: 11.0.1
-  resolution: "eslint-config-standard-react@npm:11.0.1"
-  peerDependencies:
-    eslint: ^7.12.1
-    eslint-plugin-react: ^7.21.5
-  checksum: d14c29423a56d7e05b71554dd8b00840aca7a76bd73fae1b4168d758886251dbb20ea695f00fc43cd26143cd953ac462b49dd6e2d27ee5ad02a433e736f76b09
   languageName: node
   linkType: hard
 
@@ -29271,7 +29217,6 @@ fsevents@~2.1.1:
     "@nomiclabs/hardhat-ethers": 2.0.2
     "@nomiclabs/hardhat-etherscan": 2.1.4
     "@nomiclabs/hardhat-truffle5": 2.0.0
-    "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/cli": 2.8.2
     "@openzeppelin/contracts-ethereum-package": 2.5.0
@@ -29343,8 +29288,8 @@ fsevents@~2.1.1:
     "@types/sequelize": 4.28.10
     "@types/stripe": 8.0.416
     "@types/supertest": 2.0.11
+    "@unlock-protocol/eslint-config": 0.0.1
     "@unlock-protocol/unlock-js": 0.19.2
-    "@unlock-protocol/unlock-lint": 0.0.1
     apollo-cache-inmemory: 1.6.6
     apollo-client: 2.6.10
     apollo-datasource-graphql: 1.3.2
@@ -29358,8 +29303,6 @@ fsevents@~2.1.1:
     cors: 2.8.5
     cross-fetch: 3.1.4
     dotenv: 10.0.0
-    eslint: 7.32.0
-    eslint-config-standard: 16.0.3
     eth-sig-util: 2.5.4
     ethereumjs-util: 6.2.1
     ethers: 5.4.3
@@ -42393,6 +42336,7 @@ typescript@4.2.4:
     "@types/react": 17.0.15
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.11
+    "@unlock-protocol/eslint-config": 0.0.1
     "@unlock-protocol/unlock-assets": 1.4.6
     "@zeit/next-source-maps": 0.0.3
     babel-eslint: 10.1.0
@@ -42402,13 +42346,6 @@ typescript@4.2.4:
     babel-plugin-styled-components: 1.13.2
     babel-preset-react-app: 10.0.0
     dotenv: 10.0.0
-    eslint: 7.32.0
-    eslint-config-airbnb: 18.2.1
-    eslint-config-prettier: 8.3.0
-    eslint-config-standard: 16.0.3
-    eslint-import-resolver-typescript: 2.4.0
-    eslint-plugin-mocha: 9.0.0
-    eslint-plugin-react-hooks: 4.2.0
     jest: 26.6.3
     jest-styled-components: 7.0.5
     lint-staged: 11.1.1
@@ -45157,19 +45094,12 @@ typescript@4.2.4:
     "@babel/core": 7.14.8
     "@babel/node": 7.14.9
     "@babel/preset-env": 7.14.9
-    "@typescript-eslint/parser": 4.28.5
+    "@unlock-protocol/eslint-config": 0.0.1
     aws-sdk: 2.958.0
-    babel-eslint: 10.1.0
     babel-jest: 27.0.6
     babel-loader: 8.2.2
     dotenv: 10.0.0
     eslint: 7.32.0
-    eslint-config-airbnb: 18.2.1
-    eslint-config-prettier: 8.3.0
-    eslint-config-standard: 16.0.3
-    eslint-import-resolver-typescript: 2.4.0
-    eslint-plugin-mocha: 9.0.0
-    eslint-plugin-react-hooks: 4.2.0
     jest: 26.6.3
     lint-staged: 11.1.1
     netlify-cli: 5.4.3

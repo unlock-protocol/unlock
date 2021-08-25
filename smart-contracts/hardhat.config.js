@@ -3,6 +3,7 @@ const { task } = require('hardhat/config')
 const { copySync } = require('fs-extra')
 const { getNetworkName } = require('./helpers/network')
 const { getDeployment } = require('./helpers/deployments')
+const { getHardhatNetwork } = require('./helpers/network')
 const OZ_SDK_EXPORT = require('./openzeppelin-cli-export.json')
 
 require('@nomiclabs/hardhat-ethers')
@@ -29,7 +30,7 @@ if (process.env.ETHERSCAN_API_KEY) {
   require('@nomiclabs/hardhat-etherscan')
 }
 
-const { getHardhatNetwork } = require('./helpers/network')
+
 
 const settings = {
   optimizer: {

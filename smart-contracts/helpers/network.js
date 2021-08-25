@@ -86,7 +86,6 @@ const getHardhatNetwork = (_networks) => {
     try {
       const url = getProviderUrl(net)
       const accounts = getAccounts(net)
-
       if (accounts && url) {
         networks[net] = {
           url,
