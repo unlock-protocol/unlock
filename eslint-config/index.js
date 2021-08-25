@@ -24,7 +24,14 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        trailingComma: 'es5',
+        singleQuote: true,
+        semi: false,
+      },
+    ],
     'linebreak-style': ['error', 'unix'],
     quotes: [
       'error',
