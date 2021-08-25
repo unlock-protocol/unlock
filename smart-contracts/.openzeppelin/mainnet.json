@@ -524,6 +524,153 @@
           }
         }
       }
+    },
+    "c1cd311ce43adf0c1fea96e686ac6080a5184b3a0c75b58858174621d66d7dd9": {
+      "address": "0x9837f7330870506D6626B91aC027c658D81157B8",
+      "txHash": "0xd667f576a10d21b292a0a51775279fea25941ba6f1b49c0b6bd7f3b07925a9f6",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/upgrades/contracts/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/upgrades/contracts/Initializable.sol:26"
+          },
+          {
+            "contract": "Initializable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/upgrades/contracts/Initializable.sol:61"
+          },
+          {
+            "contract": "Ownable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol:17"
+          },
+          {
+            "contract": "Ownable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol:80"
+          },
+          {
+            "contract": "Unlock",
+            "label": "grossNetworkProduct",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:68"
+          },
+          {
+            "contract": "Unlock",
+            "label": "totalDiscountGranted",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:70"
+          },
+          {
+            "contract": "Unlock",
+            "label": "locks",
+            "type": "t_mapping(t_address,t_struct(LockBalances)2318_storage)",
+            "src": "contracts/Unlock.sol:73"
+          },
+          {
+            "contract": "Unlock",
+            "label": "globalBaseTokenURI",
+            "type": "t_string_storage",
+            "src": "contracts/Unlock.sol:77"
+          },
+          {
+            "contract": "Unlock",
+            "label": "globalTokenSymbol",
+            "type": "t_string_storage",
+            "src": "contracts/Unlock.sol:81"
+          },
+          {
+            "contract": "Unlock",
+            "label": "publicLockAddress",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:84"
+          },
+          {
+            "contract": "Unlock",
+            "label": "uniswapOracles",
+            "type": "t_mapping(t_address,t_contract(IUniswapOracle)7444)",
+            "src": "contracts/Unlock.sol:88"
+          },
+          {
+            "contract": "Unlock",
+            "label": "weth",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:91"
+          },
+          {
+            "contract": "Unlock",
+            "label": "udt",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:94"
+          },
+          {
+            "contract": "Unlock",
+            "label": "estimatedGasForPurchase",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:97"
+          },
+          {
+            "contract": "Unlock",
+            "label": "chainId",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:100"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_struct(LockBalances)2318_storage)": {
+            "label": "mapping(address => struct Unlock.LockBalances)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_struct(LockBalances)2318_storage": {
+            "label": "struct Unlock.LockBalances",
+            "members": [
+              {
+                "label": "deployed",
+                "type": "t_bool"
+              },
+              {
+                "label": "totalSales",
+                "type": "t_uint256"
+              },
+              {
+                "label": "yieldedDiscountTokens",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_mapping(t_address,t_contract(IUniswapOracle)7444)": {
+            "label": "mapping(address => contract IUniswapOracle)"
+          },
+          "t_contract(IUniswapOracle)7444": {
+            "label": "contract IUniswapOracle"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
     }
   }
 }
