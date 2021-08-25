@@ -54,7 +54,6 @@
     "next": "10.2.3",
     "node-forge": "0.10.0",
     "postmate": "1.5.2",
-    "prettier": "2.3.2",
     "prop-types": "15.7.2",
     "qrcode.react": "1.0.1",
     "react": "17.0.2",

@@ -33,7 +33,6 @@
     "netlify-cli": "5.4.3",
     "next": "10.2.3",
     "path-match": "1.2.4",
-    "prettier": "2.3.2",
     "prop-types": "15.7.2",
     "raw-loader": "4.0.2",
     "react": "17.0.2",
