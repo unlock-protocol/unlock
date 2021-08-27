@@ -1,3 +1,4 @@
+.git
 **/node_modules
 **/build
 
@@ -5,5 +6,26 @@
 **/src/out
 
 node_modules/
+shared/node_modules/
 
 .vscode
+
+# Artifacts
+unlock-app/src/artifacts/
+smart-contract-extensions/build/
+smart-contracts/build/
+smart-contracts/cache
+smart-contracts/artifacts
+builds/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
