@@ -24,7 +24,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@unlock-protocol/tooling" : "workspace:*",
+    "@babel/core": "7.14.8",
     "@typescript-eslint/eslint-plugin": "2.14.0",
     "@typescript-eslint/parser": "2.14.0",
     "babel-eslint": "10.0.3",

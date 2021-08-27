@@ -25,11 +25,12 @@
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-standard": "4.1.0",
+    "prettier": "2.3.2",
     "typescript": "4.3.5"
   },
   "devDependencies": {
-    "@unlock-protocol/tooling": "workspace:*",
-    "jest": "^27.0.6"
+    "jest": "^27.0.6",
+    "eslint": "7.32.0"
   },
   "peerDependencies": {
     "eslint": ">= 5.4"
