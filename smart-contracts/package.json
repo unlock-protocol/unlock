@@ -14,7 +14,7 @@
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/cli": "2.8.2",
     "@openzeppelin/contracts-ethereum-package": "2.5.0",
-    "@openzeppelin/contracts-upgradeable": "4.3.0",
+    "@openzeppelin/contracts-upgradeable": "4.3.1",
     "@openzeppelin/hardhat-upgrades": "1.9.0",
     "@openzeppelin/test-helpers": "0.5.12",
     "@openzeppelin/upgrades": "2.8.0",
