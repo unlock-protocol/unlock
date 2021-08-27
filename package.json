@@ -39,7 +39,7 @@
     "shared/tooling",
     "shared/eslint-config",
     "smart-contracts",
-    "smart-contracts-extensions",
+    "smart-contract-extensions",
     "subgraph",
     "unlock-app",
     "unlock-assets",
