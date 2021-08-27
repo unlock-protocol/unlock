@@ -27,6 +27,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "7.14.8",
     "@sentry/node": "6.10.0",
     "@sentry/tracing": "6.10.0",
     "@types/cors": "2.8.12",

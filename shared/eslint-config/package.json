@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@babel/cli": "7.14.8",
     "@typescript-eslint/eslint-plugin": "4.28.5",
     "@typescript-eslint/parser": "4.28.5",
     "babel-eslint": "10.1.0",
@@ -29,8 +30,8 @@
     "typescript": "4.3.5"
   },
   "devDependencies": {
-    "jest": "^27.0.6",
-    "eslint": "7.32.0"
+    "eslint": "7.32.0",
+    "jest": "^27.0.6"
   },
   "peerDependencies": {
     "eslint": ">= 5.4"
