@@ -136,19 +136,20 @@ task('upgrade', 'Upgrade a contract')
     console.log(`${contractName} implementation deployed at: ${implementation}`)
   })
 
-task('deploy-template', 'Deploys a new PublicLock contract')
-.setAction(async (params, { ethers }) => {
+task('deploy-template', 'Deploys a new PublicLock contract').setAction(
+  async (params, { ethers }) => {
+    const { chainId } = await ethers.provider.getNetwork()
+    const networkName = process.env.RUN_MAINNET_FORK
+      ? 'mainnet'
+      : getNetworkName(chainId)
 
-  const { chainId } = await ethers.provider.getNetwork()
-  const networkName = process.env.RUN_MAINNET_FORK
-    ? 'mainnet'
-    : getNetworkName(chainId)
-
-  const PublicLock = await ethers.getContractFactory('PublicLock')
-  const publicLock = await PublicLock.deploy()
-  console.log(`New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`)
-})
-
+    const PublicLock = await ethers.getContractFactory('PublicLock')
+    const publicLock = await PublicLock.deploy()
+    console.log(
+      `New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`
+    )
+  }
+)
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
