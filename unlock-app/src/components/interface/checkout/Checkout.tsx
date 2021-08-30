@@ -96,7 +96,7 @@ export const Checkout = ({
   const { authenticate, account, isUnlockAccount, signedMessage } = useContext(
     AuthenticationContext
   )
-  const [paywallIcon, setPaywallIcon] = useState(paywallConfig?.icon)
+  const [skipPaywallIcon, setSkipPaywallIcon] = useState(false)
   const config = useContext(ConfigContext)
   const [state, setState] = useState('loading')
   const [showBack, setShowBack] = useState(false)
@@ -104,7 +104,6 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
-
   // state change
   useEffect(() => {
     setState(defaultState)
@@ -432,11 +431,11 @@ export const Checkout = ({
           onLoggedOut={onLoggedOut}
         >
           <PaywallLogoWrapper>
-            {paywallIcon ? (
+            {paywallConfig?.icon && !skipPaywallIcon ? (
               <PublisherLogo
                 alt="Publisher Icon"
-                src={paywallIcon}
-                onError={() => setPaywallIcon('')}
+                src={paywallConfig?.icon}
+                onError={() => setSkipPaywallIcon(true)}
               />
             ) : (
               <RoundedLogo size="56px" />
