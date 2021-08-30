@@ -97,7 +97,7 @@ export const Lock = ({
     )
   }
 
-  const isSoldOut = numberOfAvailableKeys(lock) === 0
+  const isSoldOut = numberOfAvailableKeys(lock) <= 0
   if (isSoldOut) {
     return <LockVariations.SoldOutLock {...lockProps} />
   }
