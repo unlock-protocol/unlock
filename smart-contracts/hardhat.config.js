@@ -76,7 +76,7 @@ if (process.env.RUN_MAINNET_FORK) {
   networks.hardhat = {
     forking: {
       url: alchemyURL,
-      blockNumber: 13062709, // Aug 20th 2021
+      blockNumber: 13102200, // Aug 20th 2021
       // gasPrice: 150000000000, // not working, see https://github.com/nomiclabs/hardhat/issues/1216
     },
   }
@@ -115,7 +115,7 @@ task('upgrade', 'Upgrade a contract')
       : getNetworkName(chainId)
 
     // eslint-disable-next-line no-console
-    console.log(`Deploying new implemntation on ${networkName}...`)
+    console.log(`Deploying new implementation on ${networkName}...`)
 
     let contractInfo
     if (networkName === 'localhost') {
@@ -135,6 +135,20 @@ task('upgrade', 'Upgrade a contract')
     // eslint-disable-next-line no-console
     console.log(`${contractName} implementation deployed at: ${implementation}`)
   })
+
+task('deploy-template', 'Deploys a new PublicLock contract')
+.setAction(async (params, { ethers }) => {
+
+  const { chainId } = await ethers.provider.getNetwork()
+  const networkName = process.env.RUN_MAINNET_FORK
+    ? 'mainnet'
+    : getNetworkName(chainId)
+
+  const PublicLock = await ethers.getContractFactory('PublicLock')
+  const publicLock = await PublicLock.deploy()
+  console.log(`New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`)
+})
+
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
