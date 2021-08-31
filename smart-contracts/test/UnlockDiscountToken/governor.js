@@ -127,9 +127,8 @@ contract('UnlockProtocolGovernor', () => {
       )
     })
 
-    const quorum = ethers.utils.parseUnits('15000.0', 18)
-
     beforeEach(async () => {
+      const quorum = ethers.utils.parseUnits('15000.0', 18)
       const [owner, minter, voter] = await ethers.getSigners()
 
       // bring default voting period to 10 blocks for testing purposes
@@ -201,7 +200,7 @@ contract('UnlockProtocolGovernor', () => {
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
-          '<proposal description: update the quorum>',
+          '<proposal description>',
         ]
 
         await launchVotingProcess(voter, proposal)
@@ -233,7 +232,7 @@ contract('UnlockProtocolGovernor', () => {
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
-          '<proposal description: update the quorum>',
+          '<proposal description>',
         ]
 
         await launchVotingProcess(voter, proposal)
