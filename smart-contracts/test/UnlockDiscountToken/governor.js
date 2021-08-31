@@ -1,12 +1,42 @@
-const { ethers, upgrades } = require('hardhat')
-const { getDeployment } = require('../../helpers/deployments')
+const { time } = require('@openzeppelin/test-helpers')
 
+const { reverts } = require('truffle-assertions')
+const { ethers, upgrades, network } = require('hardhat')
+const { getDeployment } = require('../../helpers/deployments')
+const { errorMessages } = require('../helpers/constants')
+
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 // const TIMELOCK_ADMIN_ROLE = '0x5f58e3a2316349923ce3780f8d587db2d72378aed66a8261c916544fa6846ca5'
 // const PROPOSER_ROLE = '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
 
+
 contract('UnlockProtocolGovernor', () => {
   let gov
+  let udt
+
+  // helper to recreate voting process
+  const launchVotingProcess = async (voter, proposalId) => {
+
+    // proposale exists but does not accep votes yet
+    assert.equal(await gov.state(proposalId), 0) // Pending
+
+    // wait for a block (default voting delay)
+    await time.advanceBlock()
+
+    // now ready to receive votes
+    assert.equal(await gov.state(proposalId), 1) // Active
+
+    // vote
+    gov = gov.connect(voter)
+    await gov.castVote(proposalId, 0)
+
+    // wait until voting delay is over
+    const deadline = await gov.proposalDeadline(proposalId)
+    await time.advanceBlockTo(deadline.toNumber())
+
+    assert.equal(await gov.state(proposalId), 3) // Succeeded
+  }
 
   beforeEach(async () => {
     // deploying timelock with a proxy
@@ -21,8 +51,13 @@ contract('UnlockProtocolGovernor', () => {
     ])
     await timelock.deployed()
 
-    const UDTInfo = await getDeployment(31337, 'UnlockDiscountToken')
+    const UDTInfo = await getDeployment(31337, 'UnlockDiscountTokenV2')
     const tokenAddress = UDTInfo.address
+
+    const UnlockDiscountToken = await ethers.getContractFactory(
+      'UnlockDiscountTokenV2'
+    )
+    udt = await UnlockDiscountToken.attach(tokenAddress)
 
     // deploy governor
     const UnlockProtocolGovernor = await ethers.getContractFactory(
@@ -37,7 +72,7 @@ contract('UnlockProtocolGovernor', () => {
   })
 
   describe('Default values', () => {
-    it('default duration is 1 block', async () => {
+    it('default delay is 1 block', async () => {
       assert.equal(await gov.votingDelay(), 1)
     })
 
@@ -47,6 +82,143 @@ contract('UnlockProtocolGovernor', () => {
 
     it('quorum is 15k UDT', async () => {
       assert.equal(await gov.quorum(1), 15000e18)
+    })
+  })
+
+  describe('Update voting params', () => {
+    
+    it('should only be possible through voting', async () => {
+      assert.equal(await gov.votingDelay(), 1)
+      await reverts(
+        gov.setVotingDelay(2),
+        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
+      )
+      await reverts(
+        gov.setQuorum(2),
+        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
+      )
+      await reverts(
+        gov.setVotingPeriod(2),
+        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
+      )
+    })
+
+    const quorum = ethers.utils.parseUnits('15000.0', 18)
+
+    beforeEach(async () => {
+      const [owner, minter, voter] = await ethers.getSigners()
+
+      // bring default voting period to 10 blocks for testing purposes
+      await network.provider.send('hardhat_setStorageAt', [
+        gov.address,
+        '0x1c7', // '455' storage slot
+        '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
+      ])
+
+      // get tokens
+      udt = await udt.connect(minter)
+      await udt.mint(owner.address, quorum)
+
+      // give voter a few more tokens of its own to make sure we are above quorum
+      await udt.mint(minter.address, ethers.utils.parseUnits('10.0', 18))
+      await udt.delegate(voter.address)
+
+      // delegate votes
+      udt = await udt.connect(owner)
+      const tx = await udt.delegate(voter.address)
+      await tx.wait()
+
+      assert.equal((await udt.getVotes(voter.address)).gt(quorum), true)
+    })
+
+    describe('Quorum', () => {
+      it('should be properly updated through voting', async () => {
+        
+        const newQuorum = ethers.utils.parseUnits('35.0', 18)
+
+        const [, , voter] = await ethers.getSigners()
+        const encoded = gov.interface.encodeFunctionData('setQuorum', [
+          newQuorum,
+        ])
+
+        // propose
+        const proposalTx = await gov.propose(
+          [gov.address],
+          [web3.utils.toWei('0')],
+          [encoded],
+          '<proposal description: update the quorum>'
+        )
+
+        const { events } = await proposalTx.wait()
+        const evt = events.find((v) => v.event === 'ProposalCreated')
+        const { proposalId } = evt.args
+        
+        await launchVotingProcess(voter, proposalId)
+
+        const lastBlock = await time.latestBlock()
+        await time.advanceBlock()
+
+        // make sure quorum has been changed succesfully
+        assert(await gov.quorum(await lastBlock.toNumber()), newQuorum)
+      })
+    })
+    
+    describe('VotingPeriod', () => {
+      it('should be properly updated through voting', async () => {
+
+        const newVotingPeriod = 10
+
+        const [, , voter] = await ethers.getSigners()
+        const encoded = gov.interface.encodeFunctionData('setVotingPeriod', [
+          newVotingPeriod,
+        ])
+
+        // propose
+        const proposalTx = await gov.propose(
+          [gov.address],
+          [web3.utils.toWei('0')],
+          [encoded],
+          '<proposal description: update the quorum>'
+        )
+
+        const { events } = await proposalTx.wait()
+        const evt = events.find((v) => v.event === 'ProposalCreated')
+        const { proposalId } = evt.args
+        
+        await launchVotingProcess(voter, proposalId)
+
+        // make sure quorum has been changed succesfully
+        assert(await gov.votingPeriod(), newVotingPeriod)
+      })
+    })
+    
+    describe('VotingDelay', () => {
+      it('should be properly updated through voting', async () => {
+
+        const newVotingDelay = 10000
+
+        const [, , voter] = await ethers.getSigners()
+        const encoded = gov.interface.encodeFunctionData('setVotingDelay', [
+          newVotingDelay,
+        ])
+
+        // propose
+        const proposalTx = await gov.propose(
+          [gov.address],
+          [web3.utils.toWei('0')],
+          [encoded],
+          '<proposal description: update the quorum>'
+        )
+
+        const { events } = await proposalTx.wait()
+        const evt = events.find((v) => v.event === 'ProposalCreated')
+        const { proposalId } = evt.args
+        
+        await launchVotingProcess(voter, proposalId)
+
+        // make sure quorum has been changed succesfully
+        assert(await gov.votingDelay(), newVotingDelay)
+      })
     })
   })
 })
