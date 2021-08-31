@@ -54,18 +54,21 @@ contract UnlockProtocolGovernor is Initializable,
 
   // governance setters
   function setVotingDelay(uint256 newVotingDelay) public onlyGovernance {
+    uint256 oldVotingDelay = _votingDelay;
     _votingDelay = newVotingDelay;
-    emit VotingDelayUpdated(_votingDelay, newVotingDelay);
+    emit VotingDelayUpdated(oldVotingDelay, newVotingDelay);
   }
 
   function setVotingPeriod(uint256 newVotingPeriod) public onlyGovernance {
+    uint256 oldVotingPeriod = _votingPeriod;
     _votingPeriod = newVotingPeriod;
-    emit VotingPeriodUpdated(_votingPeriod, newVotingPeriod);
+    emit VotingPeriodUpdated(oldVotingPeriod, newVotingPeriod);
   }
 
   function setQuorum(uint256 newQuorum) public onlyGovernance {
+    uint256 oldQuorum = _quorum;
     _quorum = newQuorum;
-    emit QuorumUpdated(_quorum, newQuorum);
+    emit QuorumUpdated(oldQuorum, newQuorum);
   }
 
   // The following functions are overrides required by Solidity.
