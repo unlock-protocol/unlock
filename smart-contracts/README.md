@@ -96,3 +96,14 @@ npx hardhat verify --network polygon 0x7633dd082406861C384309c67576a4260C5775E0
 
 NB: for Polygon, you need an API key from https://polygonscan.com
 
+## Deploy Governor + Timelock
+
+```
+npx hardhat run scripts/deploy-governor.js 
+
+Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266...
+> Timelock w proxy deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+> Governor deployed (w proxy) at: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+> Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true 
+> Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false 
+````
