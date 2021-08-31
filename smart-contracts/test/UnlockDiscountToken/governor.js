@@ -8,7 +8,8 @@ const { errorMessages } = require('../helpers/constants')
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 // const TIMELOCK_ADMIN_ROLE = '0x5f58e3a2316349923ce3780f8d587db2d72378aed66a8261c916544fa6846ca5'
-const PROPOSER_ROLE = '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
+const PROPOSER_ROLE =
+  '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
 
 contract('UnlockProtocolGovernor', () => {
   let gov
@@ -16,7 +17,6 @@ contract('UnlockProtocolGovernor', () => {
 
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
-
     const proposalTx = await gov.propose(...proposal)
 
     const { events } = await proposalTx.wait()
@@ -43,9 +43,11 @@ contract('UnlockProtocolGovernor', () => {
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
     // get params
-    const descriptionHash = web3.utils.keccak256(proposal.slice(-1).find(Boolean))
+    const descriptionHash = web3.utils.keccak256(
+      proposal.slice(-1).find(Boolean)
+    )
     const [targets, values, calldatas] = proposal
-    
+
     // queue proposal in timelock
     await gov.queue(targets, values, calldatas, descriptionHash)
     assert.equal(await gov.state(proposalId), 5) // Queued
@@ -53,7 +55,6 @@ contract('UnlockProtocolGovernor', () => {
     // execute the proposal
     await gov.execute(targets, values, calldatas, descriptionHash)
     assert.equal(await gov.state(proposalId), 7) // Executed
-
   }
 
   beforeEach(async () => {
@@ -165,7 +166,7 @@ contract('UnlockProtocolGovernor', () => {
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
-          '<proposal description: update the quorum>'
+          '<proposal description: update the quorum>',
         ]
 
         await launchVotingProcess(voter, proposal)
@@ -193,7 +194,7 @@ contract('UnlockProtocolGovernor', () => {
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
-          '<proposal description: update the quorum>'
+          '<proposal description: update the quorum>',
         ]
 
         await launchVotingProcess(voter, proposal)
@@ -216,7 +217,7 @@ contract('UnlockProtocolGovernor', () => {
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
-          '<proposal description: update the quorum>'
+          '<proposal description: update the quorum>',
         ]
 
         await launchVotingProcess(voter, proposal)
