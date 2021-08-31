@@ -8,15 +8,20 @@ const { errorMessages } = require('../helpers/constants')
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 // const TIMELOCK_ADMIN_ROLE = '0x5f58e3a2316349923ce3780f8d587db2d72378aed66a8261c916544fa6846ca5'
-// const PROPOSER_ROLE = '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
-
+const PROPOSER_ROLE = '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
 
 contract('UnlockProtocolGovernor', () => {
   let gov
   let udt
 
   // helper to recreate voting process
-  const launchVotingProcess = async (voter, proposalId) => {
+  const launchVotingProcess = async (voter, proposal) => {
+
+    const proposalTx = await gov.propose(...proposal)
+
+    const { events } = await proposalTx.wait()
+    const evt = events.find((v) => v.event === 'ProposalCreated')
+    const { proposalId } = evt.args
 
     // proposale exists but does not accep votes yet
     assert.equal(await gov.state(proposalId), 0) // Pending
@@ -29,13 +34,26 @@ contract('UnlockProtocolGovernor', () => {
 
     // vote
     gov = gov.connect(voter)
-    await gov.castVote(proposalId, 0)
+    await gov.castVote(proposalId, 1)
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
     await time.advanceBlockTo(deadline.toNumber())
 
-    assert.equal(await gov.state(proposalId), 3) // Succeeded
+    assert.equal(await gov.state(proposalId), 4) // Succeeded
+
+    // get params
+    const descriptionHash = web3.utils.keccak256(proposal.slice(-1).find(Boolean))
+    const [targets, values, calldatas] = proposal
+    
+    // queue proposal in timelock
+    await gov.queue(targets, values, calldatas, descriptionHash)
+    assert.equal(await gov.state(proposalId), 5) // Queued
+
+    // execute the proposal
+    await gov.execute(targets, values, calldatas, descriptionHash)
+    assert.equal(await gov.state(proposalId), 7) // Executed
+
   }
 
   beforeEach(async () => {
@@ -69,6 +87,9 @@ contract('UnlockProtocolGovernor', () => {
       timelock.address,
     ])
     await gov.deployed()
+
+    // grant role
+    await timelock.grantRole(PROPOSER_ROLE, gov.address)
   })
 
   describe('Default values', () => {
@@ -86,7 +107,6 @@ contract('UnlockProtocolGovernor', () => {
   })
 
   describe('Update voting params', () => {
-    
     it('should only be possible through voting', async () => {
       assert.equal(await gov.votingDelay(), 1)
       await reverts(
@@ -133,7 +153,6 @@ contract('UnlockProtocolGovernor', () => {
 
     describe('Quorum', () => {
       it('should be properly updated through voting', async () => {
-        
         const newQuorum = ethers.utils.parseUnits('35.0', 18)
 
         const [, , voter] = await ethers.getSigners()
@@ -142,30 +161,26 @@ contract('UnlockProtocolGovernor', () => {
         ])
 
         // propose
-        const proposalTx = await gov.propose(
+        const proposal = [
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
           '<proposal description: update the quorum>'
-        )
+        ]
 
-        const { events } = await proposalTx.wait()
-        const evt = events.find((v) => v.event === 'ProposalCreated')
-        const { proposalId } = evt.args
-        
-        await launchVotingProcess(voter, proposalId)
+        await launchVotingProcess(voter, proposal)
 
         const lastBlock = await time.latestBlock()
         await time.advanceBlock()
 
         // make sure quorum has been changed succesfully
-        assert(await gov.quorum(await lastBlock.toNumber()), newQuorum)
+        const changed = await gov.quorum(await lastBlock.toNumber())
+        assert.equal(changed.eq(newQuorum), true)
       })
     })
-    
+
     describe('VotingPeriod', () => {
       it('should be properly updated through voting', async () => {
-
         const newVotingPeriod = 10
 
         const [, , voter] = await ethers.getSigners()
@@ -174,27 +189,22 @@ contract('UnlockProtocolGovernor', () => {
         ])
 
         // propose
-        const proposalTx = await gov.propose(
+        const proposal = [
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
           '<proposal description: update the quorum>'
-        )
+        ]
 
-        const { events } = await proposalTx.wait()
-        const evt = events.find((v) => v.event === 'ProposalCreated')
-        const { proposalId } = evt.args
-        
-        await launchVotingProcess(voter, proposalId)
+        await launchVotingProcess(voter, proposal)
 
-        // make sure quorum has been changed succesfully
-        assert(await gov.votingPeriod(), newVotingPeriod)
+        const changed = await gov.votingPeriod()
+        assert.equal(changed.eq(newVotingPeriod), true)
       })
     })
-    
+
     describe('VotingDelay', () => {
       it('should be properly updated through voting', async () => {
-
         const newVotingDelay = 10000
 
         const [, , voter] = await ethers.getSigners()
@@ -202,22 +212,17 @@ contract('UnlockProtocolGovernor', () => {
           newVotingDelay,
         ])
 
-        // propose
-        const proposalTx = await gov.propose(
+        const proposal = [
           [gov.address],
           [web3.utils.toWei('0')],
           [encoded],
           '<proposal description: update the quorum>'
-        )
+        ]
 
-        const { events } = await proposalTx.wait()
-        const evt = events.find((v) => v.event === 'ProposalCreated')
-        const { proposalId } = evt.args
-        
-        await launchVotingProcess(voter, proposalId)
+        await launchVotingProcess(voter, proposal)
 
-        // make sure quorum has been changed succesfully
-        assert(await gov.votingDelay(), newVotingDelay)
+        const changed = await gov.votingDelay()
+        assert.equal(changed.eq(newVotingDelay), true)
       })
     })
   })
