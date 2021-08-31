@@ -45,6 +45,19 @@ contract UnlockProtocolGovernor is Initializable,
     return _quorum;
   }
 
+  // governance setters
+  function setVotingDelay(uint256 __votingDelay) public onlyGovernance {
+    _votingDelay = __votingDelay;
+  }
+
+  function setVotingPeriod(uint256 __votingPeriod) public onlyGovernance {
+    _votingPeriod = __votingPeriod;
+  }
+
+  function setQuorum(uint256 __quorum) public onlyGovernance {
+    _quorum = __quorum;
+  }
+
   // The following functions are overrides required by Solidity.
   function getVotes(address account, uint256 blockNumber)
     public
