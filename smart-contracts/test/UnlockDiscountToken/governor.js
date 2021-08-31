@@ -52,7 +52,7 @@ contract('UnlockProtocolGovernor', () => {
     // queue proposal in timelock
     await gov.queue(targets, values, calldatas, descriptionHash)
     assert.equal(await gov.state(proposalId), 5) // Queued
-    
+
     // execute the proposal
     const tx = await gov.execute(targets, values, calldatas, descriptionHash)
     assert.equal(await gov.state(proposalId), 7) // Executed
@@ -160,9 +160,7 @@ contract('UnlockProtocolGovernor', () => {
         const quorum = ethers.utils.parseUnits('35.0', 18)
 
         const [, , voter] = await ethers.getSigners()
-        const encoded = gov.interface.encodeFunctionData('setQuorum', [
-          quorum,
-        ])
+        const encoded = gov.interface.encodeFunctionData('setQuorum', [quorum])
 
         // propose
         const proposal = [
@@ -212,11 +210,13 @@ contract('UnlockProtocolGovernor', () => {
         assert.equal(changed.eq(votingPeriod), true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find((v) => v.event === 'VotingPeriodUpdated')
+        const evt = updateTx.events.find(
+          (v) => v.event === 'VotingPeriodUpdated'
+        )
         const { oldVotingPeriod, newVotingPeriod } = evt.args
         assert.equal(newVotingPeriod.eq(votingPeriod), true)
         // nb: old value is the one we enforced through eth_storageAt
-        assert.equal( oldVotingPeriod.toNumber(), 50) 
+        assert.equal(oldVotingPeriod.toNumber(), 50)
       })
     })
 
@@ -242,7 +242,9 @@ contract('UnlockProtocolGovernor', () => {
         assert.equal(changed.eq(votingDelay), true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find((v) => v.event === 'VotingDelayUpdated')
+        const evt = updateTx.events.find(
+          (v) => v.event === 'VotingDelayUpdated'
+        )
         const { oldVotingDelay, newVotingDelay } = evt.args
         assert.equal(newVotingDelay, votingDelay)
         assert.equal(oldVotingDelay, 1)
