@@ -32,6 +32,13 @@ contract UnlockProtocolGovernor is Initializable,
     _quorum = 15000e18; // 15k UDT
   }
 
+  /*
+  * Events to track params changes
+  */
+  event QuorumUpdated(uint256 oldQuorum, uint256 newQuorum);
+  event VotingDelayUpdated(uint256 oldVotingDelay, uint256 newVotingDelay);
+  event VotingPeriodUpdated(uint256 oldVotingPeriod, uint256 newVotingPeriod);
+
   function votingDelay() public view override returns (uint256) {
     return _votingDelay;
   }
@@ -46,16 +53,19 @@ contract UnlockProtocolGovernor is Initializable,
   }
 
   // governance setters
-  function setVotingDelay(uint256 __votingDelay) public onlyGovernance {
-    _votingDelay = __votingDelay;
+  function setVotingDelay(uint256 newVotingDelay) public onlyGovernance {
+    _votingDelay = newVotingDelay;
+    emit VotingDelayUpdated(_votingDelay, newVotingDelay);
   }
 
-  function setVotingPeriod(uint256 __votingPeriod) public onlyGovernance {
-    _votingPeriod = __votingPeriod;
+  function setVotingPeriod(uint256 newVotingPeriod) public onlyGovernance {
+    _votingPeriod = newVotingPeriod;
+    emit VotingPeriodUpdated(_votingPeriod, newVotingPeriod);
   }
 
-  function setQuorum(uint256 __quorum) public onlyGovernance {
-    _quorum = __quorum;
+  function setQuorum(uint256 newQuorum) public onlyGovernance {
+    _quorum = newQuorum;
+    emit QuorumUpdated(_quorum, newQuorum);
   }
 
   // The following functions are overrides required by Solidity.
