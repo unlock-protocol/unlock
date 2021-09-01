@@ -2,8 +2,8 @@
 
 set -e
 
-if ! [ -x "$(command -v hub)" ]; then
-  echo 'Error: hub is not installed. It is required to open the pull-request' >&2
+if ! [ -x "$(command -v gh)" ]; then
+  echo 'Error: gh (https://cli.github.com/) is not installed. It is required to open the pull-request' >&2
   exit 1
 fi
 
@@ -69,6 +69,7 @@ git push origin $BRANCH --no-verify
 echo "Open pull request"
 PROD_DEPLOY_TYPE="manual"
 source "${BASH_SOURCE%/*}/production-pull-request-template.sh"
-GITHUB_TOKEN=$GITHUB_API_TOKEN hub pull-request -b production -h $BRANCH --message "$MESSAGE"
+
+gh pr create --head $BRANCH --title "Production Deploy" --base production --body "$MESSAGE"
 
 git checkout master
