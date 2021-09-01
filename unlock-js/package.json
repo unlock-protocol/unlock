@@ -35,14 +35,14 @@
   },
   "devDependencies": {
     "@babel/cli": "7.14.8",
-    "@babel/core": "7.14.8",
-    "@babel/preset-env": "7.14.9",
+    "@babel/core": "7.15.0",
+    "@babel/preset-env": "7.15.0",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@unlock-protocol/unlock-abi-8": "1.0.0",
     "@unlock-protocol/unlock-abi-9": "1.0.0",
-    "babel-jest": "27.0.6",
+    "babel-jest": "27.1.0",
     "cross-fetch": "3.1.4",
     "eslint": "7.32.0",
     "ethers": "5.4.3",
@@ -50,6 +50,6 @@
     "lint-staged": "11.1.1",
     "prettier": "2.3.2",
     "ts-jest": "26.5.6",
-    "typescript": "4.3.5"
+    "typescript": "4.4.2"
   }
 }
