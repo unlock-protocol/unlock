@@ -12,7 +12,7 @@ npx hardhat node
 Then you can deploy the contracts locally
 
 ```
-npx hardhat run scripts/deploy.js 
+npx hardhat run scripts/deploy.js
 ```
 
 ### Run the tests
@@ -33,12 +33,12 @@ Mainnet [forking with Hardhat](https://hardhat.org/guides/mainnet-forking.html#f
 
 To test on a mainnet fork, you need to export `RUN_MAINNET_FORK=1` and  `ALCHEMY_API_KEY=<xxx>` to your env
 
-ex . 
+ex .
 ```
 export RUN_MAINNET_FORK=1
 export ALCHEMY_API_KEY=<xxx>
 
-npx hardhat node 
+npx hardhat node
 // Running a mainnet fork...
 ```
 
@@ -46,7 +46,7 @@ Once you have mainnet running locally, you can run the relevant tests in another
 
 ```
 export RUN_MAINNET_FORK=1
-npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js 
+npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
 ```
 
 Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
@@ -56,20 +56,26 @@ Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skippe
 
 To set up a network for deployment, you need 2 things
 
-1. create a plain text mnemonic file containing the words `mnemonic.<NETWORK NAME>` 
+1. create a plain text mnemonic file containing the words `mnemonic.<NETWORK NAME>`
+
 2. export the provider url to your shell env
 
 #### Example : Rinkeby
 
 ```
 # store menmonic words in file
-vim mnemonic.rinkeby
+cat mnemonic.rinkeby
+
+module.exports = {
+  mnemonic: "blah blah...",
+  initialIndex: 2
+}
 
 # export Alchemy/Infura URL
 export RINKEBY_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>
 ```
 
-### Run the UDT contract upgradea
+### Run the UDT contract upgrade
 
 Once your network are setup, you can run the UDT contract upgrade
 
@@ -80,7 +86,7 @@ npx hardhat run scripts/udt-upgrade.js --network rinkeby
 
 ## Upgrade a contract
 
-### Unlock 
+### Unlock
 
 ```
 $ npx hardhat upgrade --contract contracts/Unlock.sol --network localhost
@@ -110,11 +116,11 @@ NB: for Polygon, you need an API key from https://polygonscan.com
 ## Deploy Governor + Timelock
 
 ```
-npx hardhat run scripts/deploy-governor.js 
+npx hardhat run scripts/deploy-governor.js
 
 Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266...
 > Timelock w proxy deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
 > Governor deployed (w proxy) at: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
-> Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true 
-> Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false 
+> Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true
+> Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false
 ````
