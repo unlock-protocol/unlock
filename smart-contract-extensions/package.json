@@ -50,7 +50,7 @@
     "eth-gas-reporter": "0.2.22",
     "hardlydifficult-eth": "1.1.2",
     "prettier": "2.1.1",
-    "solidity-coverage": "0.7.16",
+    "solidity-coverage": "0.7.17",
     "solium": "1.2.5",
     "truffle": "5.1.43",
     "truffle-assertions": "0.9.2",
