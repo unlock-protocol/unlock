@@ -79,7 +79,7 @@ export const useProvider = (config: any) => {
         // @ts-expect-error
         passwordEncryptedPrivateKey: provider.passwordEncryptedPrivateKey,
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
         setError(
           'Unlock is currently not deployed on this network. Please switch network and refresh the page'

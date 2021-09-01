@@ -99,7 +99,7 @@ export const useAccount = (address: string, network: number) => {
         password,
         response.data.recoveryPhrase
       )
-    } catch (error) {
+    } catch (error: any) {
       const details = error?.response?.data[0]
       if (
         details?.validatorKey === 'not_unique' &&

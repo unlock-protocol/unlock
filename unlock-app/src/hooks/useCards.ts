@@ -276,7 +276,7 @@ export const useCards = (address: string) => {
     try {
       const cards = await getCardsForAddress(config, walletService, address)
       setCards(cards)
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
     setLoading(false)
@@ -292,7 +292,7 @@ export const useCards = (address: string) => {
       await saveCardsForAddress(config, walletService, address, stripeTokenId)
       // Refresh cards: TODO make locksmith return the cards
       await getCards()
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
     setLoading(false)
@@ -308,7 +308,7 @@ export const useCards = (address: string) => {
       if (deleted) {
         setCards([])
       }
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
     setLoading(false)
