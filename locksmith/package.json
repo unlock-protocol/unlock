@@ -64,7 +64,7 @@
     "eslint-config-standard": "16.0.3",
     "eth-sig-util": "2.5.4",
     "ethereumjs-util": "6.2.1",
-    "ethers": "5.4.3",
+    "ethers": "5.4.6",
     "express": "4.17.1",
     "express-jwt": "6.0.0",
     "express-list-endpoints": "6.0.0",
