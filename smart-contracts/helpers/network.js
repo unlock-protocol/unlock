@@ -52,7 +52,7 @@ const getAccounts = (networkName) => {
   if (process.env.CI === 'true') {
     return {
       mnemonic: 'test test test test test test test test test test test junk',
-      initialIndex: 0
+      initialIndex: 0,
     }
   }
 
@@ -73,7 +73,7 @@ const getAccounts = (networkName) => {
   }
   return {
     mnemonic: 'test test test test test test test test test test test junk',
-    initialIndex: 0
+    initialIndex: 0,
   }
 }
 
