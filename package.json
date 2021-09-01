@@ -6,10 +6,6 @@
   "directories": {
     "doc": "docs"
   },
-  "devDependencies": {
-    "husky": "7.0.1",
-    "lint-staged": "11.1.1"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd smart-contracts && yarn build && cd ../unlock-app && yarn build && cd ../locksmith && yarn build",
