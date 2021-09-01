@@ -5,10 +5,13 @@ const { getNetworkName } = require('../helpers/network')
 const { getDeployment, addDeployment } = require('../helpers/deployments')
 
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
-const TIMELOCK_ADMIN_ROLE =
-  '0x5f58e3a2316349923ce3780f8d587db2d72378aed66a8261c916544fa6846ca5'
-const PROPOSER_ROLE =
-  '0xb09aa5aeb3702cfd50b6b62bc4532604938f21248a27a1d5ca736082b6819cc1'
+
+const TIMELOCK_ADMIN_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('TIMELOCK_ADMIN_ROLE')
+)
+const PROPOSER_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
+)
 
 async function main() {
   const [unlockOwner] = await ethers.getSigners()

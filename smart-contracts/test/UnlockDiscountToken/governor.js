@@ -7,7 +7,7 @@ const { errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
-// const TIMELOCK_ADMIN_ROLE = const PROPOSER_ROLE = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('TIMELOCK_ADMIN_ROLE'))
+
 const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
 )
