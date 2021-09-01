@@ -1,6 +1,6 @@
 # Various scripts to manage the contracts
 
-## UDT Upgrade
+## Notes on UDT Upgrade
 
 ### Whats happening
 

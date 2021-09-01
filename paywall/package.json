@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@types/next": "8.0.7",
-    "@types/node": "14.17.7",
+    "@types/node": "14.17.14",
     "@types/postmate": "1.5.2",
     "@types/react": "17.0.15",
     "@types/react-dom": "17.0.9",
@@ -31,7 +31,7 @@
     "@zeit/next-source-maps": "0.0.3",
     "dotenv": "10.0.0",
     "lint-staged": "11.0.0",
-    "netlify-cli": "5.4.3",
+    "netlify-cli": "6.8.2",
     "next": "10.2.3",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
