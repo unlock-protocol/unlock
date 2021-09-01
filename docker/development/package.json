@@ -8,6 +8,6 @@
     "@unlock-protocol/unlock-js": "0.19.2",
     "cross-fetch": "3.1.4",
     "erc1820": "0.0.2",
-    "ethers": "5.4.3"
+    "ethers": "5.4.6"
   }
 }
