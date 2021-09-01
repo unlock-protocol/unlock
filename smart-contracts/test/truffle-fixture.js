@@ -48,4 +48,14 @@ module.exports = async () => {
 
   // save deployment info
   await addDeployment('UnlockDiscountToken', token, true)
+
+  // 5. deploy UDT (v2)
+  const UDTv2 = await ethers.getContractFactory('UnlockDiscountTokenV2')
+  const tokenv2 = await upgrades.deployProxy(UDTv2, [minter.address], {
+    initializer: 'initialize(address)',
+  })
+  await tokenv2.deployed()
+
+  // save deployment info
+  await addDeployment('UnlockDiscountTokenV2', tokenv2, true)
 }
