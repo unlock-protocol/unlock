@@ -29,7 +29,7 @@ namespace UserController {
         return res.status(creationStatus.status).json({ recoveryPhrase })
       }
       return res.sendStatus(400)
-    } catch (error) {
+    } catch (error: any) {
       if (error.name === 'SequelizeUniqueConstraintError') {
         return res.status(400).json(error.errors)
       } else {
