@@ -7,10 +7,10 @@ import { CheckoutFooter } from './CheckoutStyles'
 interface WrapperProps {
   hideCheckout: (...args: any[]) => any
   allowClose: boolean
-  bgColor?: string
   back: () => void | null
   showBack: boolean
   onLoggedOut: () => void
+  children: React.ReactNode
 }
 
 interface WrapperStyleProps {

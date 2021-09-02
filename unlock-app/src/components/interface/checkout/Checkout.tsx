@@ -109,6 +109,11 @@ export const Checkout = ({
     setState(defaultState)
   }, [defaultState])
 
+  // state change
+  useEffect(() => {
+    setState(defaultState)
+  }, [defaultState])
+
   // When the account is changed, make sure we ping!
   useEffect(() => {
     if (account) {
