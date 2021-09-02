@@ -15,6 +15,9 @@ BUILD_PATH="out/";
 # unlock-protocol.com is always deployed to production
 DEPLOY_ENV="prod"
 
+yarn global add -W netlify-cli@6.8.5
+
+
 if [ "$PUBLISH" = "true" ]; then
   # This is a build on master, we deploy as a published build
   PROD="--prod";

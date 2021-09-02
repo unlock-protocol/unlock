@@ -12,6 +12,9 @@ COMMIT=$3
 PUBLISH=$4
 BUILD_PATH="out/";
 
+yarn global add -W netlify-cli@6.8.5
+
+
 if [ "$DEPLOY_ENV" = "staging" ]; then
   if [ "$PUBLISH" = "true" ]; then
     # This is a build on master, we deploy to staging as a published build
