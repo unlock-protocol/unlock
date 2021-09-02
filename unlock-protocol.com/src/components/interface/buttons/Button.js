@@ -46,6 +46,8 @@ BaseButton.propTypes = {
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
   fillHoverColor: PropTypes.string,
+  title: PropTypes.string,
+  disabled: PropTypes.bool,
 }
 
 BaseButton.defaultProps = {
@@ -53,6 +55,8 @@ BaseButton.defaultProps = {
   label: '',
   children: null,
   action: null,
+  title: '',
+  disabled: false,
   backgroundColor: 'var(--lightgrey)',
   backgroundHoverColor: 'var(--link)',
   fillColor: 'var(--grey)',

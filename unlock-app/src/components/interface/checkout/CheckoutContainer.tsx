@@ -4,6 +4,7 @@ import Media from '../../../theme/media'
 
 interface Props {
   close: () => void
+  children: React.ReactNode
 }
 
 export const CheckoutContainer: React.FunctionComponent<Props> = ({

@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   graph-node:
-    image: graphprotocol/graph-node:v0.23.1
+    image: graphprotocol/graph-node:v0.24.0
     ports:
       - '8000:8000'
       - '8001:8001'
@@ -13,4 +13,4 @@ services:
       - '5001:5001'
 
   postgres:
-    image: postgres:13.3
+    image: postgres:13.4
