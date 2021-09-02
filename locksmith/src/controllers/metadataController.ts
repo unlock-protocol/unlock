@@ -36,7 +36,7 @@ namespace MetadataController {
         return false
       }
       return await web3Service.isLockManager(lockAddress, lockManager, network)
-    } catch (error) {
+    } catch (error: any) {
       logger.error('evaluateLockOwnership failed', {
         error: error.message,
         lockAddress,
