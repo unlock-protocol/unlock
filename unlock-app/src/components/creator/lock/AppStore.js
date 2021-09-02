@@ -68,6 +68,11 @@ const AppStore = ({ lock }) => {
       icon: <Svg.Discourse />,
       href: 'https://unlock.community/',
     },
+    firebase: {
+      name: 'Firebase',
+      icon: <Svg.Firebase />,
+      href: 'https://docs.unlock-protocol.com/creators/plugins-and-integrations#firebase',
+    },
   }
 
   const tutorials = {
