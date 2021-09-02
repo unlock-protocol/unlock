@@ -21,7 +21,7 @@
     "@types/jest": "26.0.24",
     "@types/postmate": "1.5.2",
     "@types/qrcode.react": "1.0.2",
-    "@types/react": "17.0.15",
+    "@types/react": "17.0.19",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.11",
     "@unlock-protocol/unlock-assets": "1.4.6",
