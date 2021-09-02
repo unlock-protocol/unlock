@@ -29,7 +29,7 @@ export const numberOfAvailableKeys = ({
   maxNumberOfKeys,
   outstandingKeys,
 }: LockKeysAvailableLock) => {
-  if (unlimitedKeys) {
+  if (unlimitedKeys || maxNumberOfKeys! < 0) {
     return Infinity
   }
 
