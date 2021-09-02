@@ -24,7 +24,7 @@ namespace AuthorizedLockOperations {
         network
       )
       return isKeyGranter
-    } catch (error) {
+    } catch (error: any) {
       logger.error(
         `Could not check if lock ${lockAddress} authorized ${keyGranterWallet.address} to grant keys on ${network}. ${error.message}`
       )

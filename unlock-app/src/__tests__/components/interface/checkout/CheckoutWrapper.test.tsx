@@ -27,7 +27,9 @@ describe('CheckoutWrapper', () => {
         showBack={false}
         hideCheckout={hideCheckout}
         allowClose={allowClose}
-      />
+      >
+        <br />
+      </CheckoutWrapper>
     )
 
     // the close button is also an a tag, but it doesn't render when allowClose is false
@@ -47,7 +49,9 @@ describe('CheckoutWrapper', () => {
         showBack={false}
         hideCheckout={hideCheckout}
         allowClose={allowClose}
-      />
+      >
+        <br />
+      </CheckoutWrapper>
     )
 
     expect(queryByTitle('Close')).toBeNull()
@@ -66,7 +70,9 @@ describe('CheckoutWrapper', () => {
         showBack={false}
         hideCheckout={hideCheckout}
         allowClose={allowClose}
-      />
+      >
+        <br />
+      </CheckoutWrapper>
     )
 
     const button = getByTitle('Close')
