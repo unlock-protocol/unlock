@@ -48,35 +48,33 @@ const getProviderUrl = (networkName) => {
   return null
 }
 
-const getMnemonic = (networkName) => {
+const getAccounts = (networkName) => {
   if (process.env.CI === 'true') {
-    return 'test test test test test test test test test test test junk'
+    return {
+      mnemonic: 'test test test test test test test test test test test junk',
+      initialIndex: 0,
+    }
   }
 
   checkErrors(networkName)
 
   if (networkName) {
     const mnemonicFile = `./mnemonic.${networkName.toLowerCase()}`
-    // get mnemonic from file
+    // get account from file
     if (fs.existsSync(mnemonicFile)) {
       // eslint-disable-next-line import/no-dynamic-require
       const mnemonic = require(`../${mnemonicFile}`)
-      if (mnemonic && mnemonic.seed !== '') {
-        return mnemonic.seed
+      if (mnemonic) {
+        return mnemonic
       }
     } else {
       throw new Error(`Missing mnemonic file: ${mnemonicFile}`)
     }
   }
-  return null
-}
-
-const getAccounts = (networkName) => {
-  const mnemonic = getMnemonic(networkName)
-  if (!mnemonic || mnemonic === '') {
-    return 'test test test test test test test test test test test junk'
+  return {
+    mnemonic: 'test test test test test test test test test test test junk',
+    initialIndex: 0,
   }
-  return mnemonic
 }
 
 // parse additional networks and accounts
@@ -90,9 +88,7 @@ const getHardhatNetwork = (_networks) => {
       if (accounts && url) {
         networks[net] = {
           url,
-          accounts: {
-            mnemonic: accounts,
-          },
+          accounts,
         }
         // eslint-disable-next-line no-console
         console.log(`Added config for ${net}.`)
@@ -108,7 +104,6 @@ const getHardhatNetwork = (_networks) => {
 module.exports = {
   supportedNetworks,
   getProviderUrl,
-  getAccounts,
   getNetworkName,
   getHardhatNetwork,
 }
