@@ -15,8 +15,6 @@ BUILD_PATH="out/";
 # unlock-protocol.com is always deployed to production
 DEPLOY_ENV="prod"
 
-yarn global add -W netlify-cli@6.8.5
-
 
 if [ "$PUBLISH" = "true" ]; then
   # This is a build on master, we deploy as a published build
@@ -33,7 +31,7 @@ if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   UNLOCK_ENV="$DEPLOY_ENV" yarn deploy;
   # And ship!
   echo $MESSAGE
-  netlify deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
+  npx netlify deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
