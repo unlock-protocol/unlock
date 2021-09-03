@@ -13,6 +13,7 @@
   "dependencies": {
     "@graphprotocol/graph-cli": "0.21.1",
     "@graphprotocol/graph-ts": "0.20.1",
+    "@unlock-protocol/eslint-config": "0.0.1",
     "eslint": "7.32.0",
     "fs-extra": "10.0.0",
     "handlebars": "4.7.7",

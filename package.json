@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Unlock is a protocol for decentralized access control",
   "main": "index.js",
+  "private": true,
   "directories": {
     "doc": "docs"
   },
@@ -20,6 +21,9 @@
     "husky": "7.0.2",
     "lint-staged": "11.1.2"
   },
+  "workspaces": [
+    "packages/**"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd smart-contracts && yarn build && cd ../unlock-app && yarn build && cd ../locksmith && yarn build",
