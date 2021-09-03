@@ -12,9 +12,6 @@ COMMIT=$3
 PUBLISH=$4
 BUILD_PATH="out/";
 
-yarn global add -W netlify-cli@6.8.5
-
-
 if [ "$DEPLOY_ENV" = "staging" ]; then
   if [ "$PUBLISH" = "true" ]; then
     # This is a build on master, we deploy to staging as a published build
@@ -39,7 +36,7 @@ if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   UNLOCK_ENV="$DEPLOY_ENV" yarn deploy;
   # And ship!
   echo $MESSAGE
-  netlify deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
+  npx netlify-cli deploy --build -s $SITE_ID -a $AUTH_TOKEN --dir=$BUILD_PATH $PROD --message="$MESSAGE"
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
