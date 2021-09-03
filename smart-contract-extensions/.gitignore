@@ -7,3 +7,6 @@ mnemonic.*
 .openzeppelin/dev-*
 coverage.json
 coverage/
+
+artifacts
+cache

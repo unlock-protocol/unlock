@@ -214,7 +214,7 @@ contract('DiscountCodeHook', accounts => {
           from: keyBuyer,
         }
       ),
-      'ONLY_LOCK_MANAGER.'
+      "VM Exception while processing transaction: reverted with reason string 'ONLY_LOCK_MANAGER'"
     )
   })
 
