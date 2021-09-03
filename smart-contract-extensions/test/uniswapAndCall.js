@@ -16,11 +16,16 @@ async function createAndFundExchange(uniswap, token, tokenOwner) {
   await token.mint(tokenOwner, '1000000000000000000000000', {
     from: tokenOwner,
   })
+  
   await token.approve(exchange.address, -1, { from: tokenOwner })
+  
+  const blockNumber = await web3.eth.getBlockNumber()
+  const latestBlock = await web3.eth.getBlock(blockNumber)
+
   await exchange.addLiquidity(
     '1',
     '1000000000000000000000000',
-    Math.round(Date.now() / 1000) + 60,
+    latestBlock.timestamp + 60,
     {
       from: tokenOwner,
       value: web3.utils.toWei('1', 'ether'),
@@ -138,6 +143,7 @@ contract('swapAndCall', accounts => {
       assert.equal(balance, 0)
     })
   })
+
 
   describe('started with sourceTokens', () => {
     beforeEach(async () => {
