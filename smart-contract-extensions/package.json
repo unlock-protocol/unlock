@@ -1,5 +1,5 @@
 {
-  "name": "smart-contract-extensions",
+  "name": "@unlock-protocol/smart-contract-extensions",
   "version": "0.0.1",
   "description": "Contracts which interact with other contracts",
   "scripts": {

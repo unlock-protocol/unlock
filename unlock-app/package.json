@@ -1,5 +1,5 @@
 {
-  "name": "unlock-app",
+  "name": "@unlock-protocol/unlock-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

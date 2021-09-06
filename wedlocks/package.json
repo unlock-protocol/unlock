@@ -1,5 +1,5 @@
 {
-  "name": "wedlocks",
+  "name": "@unlock-protocol/wedlocks",
   "version": "1.0.0",
   "description": "The email server for Unlock",
   "main": "src/server.js",

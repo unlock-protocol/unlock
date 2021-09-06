@@ -1,5 +1,5 @@
 {
-  "name": "unlock_protocol",
+  "name": "@unlock-protocol/subgraph",
   "license": "UNLICENSED",
   "scripts": {
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",

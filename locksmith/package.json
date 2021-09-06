@@ -1,5 +1,5 @@
 {
-  "name": "locksmith",
+  "name": "@unlock-protocol/locksmith",
   "version": "1.0.0",
   "description": "an unlock storage service",
   "main": "server.js",

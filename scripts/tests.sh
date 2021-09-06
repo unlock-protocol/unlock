@@ -7,7 +7,8 @@ SERVICE=$1
 REPO_ROOT=`dirname "$0"`/..
 BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
-COMMAND="yarn workspace $SERVICE run ci"
+
+COMMAND="yarn workspace @unlock-protocol/$SERVICE run ci"
 
 # Setting the right env var
 export UNLOCK_ENV=test

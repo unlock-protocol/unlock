@@ -1,5 +1,5 @@
 {
-  "name": "unlock-paywall",
+  "name": "@unlock-protocol/unlock-paywall",
   "version": "0.1.0",
   "private": true,
   "scripts": {
