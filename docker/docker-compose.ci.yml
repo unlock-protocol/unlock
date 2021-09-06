@@ -40,8 +40,6 @@ services:
       cache_from:
         - smart-contract-extensions
         - unlockprotocol/smart-contract-extensions:master
-    depends_on:
-      - ganache
 
   smart-contracts: # Image with our contracts
     image: smart-contracts
