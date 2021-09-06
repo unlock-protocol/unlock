@@ -77,7 +77,7 @@ services:
     build:
       context: ../
       args:
-        BUILD_DIR: unlock-protocol-com
+        BUILD_DIR: unlock-protocol.com
       cache_from:
         - unlock-protocol-com
         - unlockprotocol/unlock-protocol-com:master
