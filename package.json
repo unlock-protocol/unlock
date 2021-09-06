@@ -22,7 +22,7 @@
     "lint-staged": "11.1.2"
   },
   "workspaces": [
-    "shared/eslint-config",
+    "packages/**",
     "smart-contracts",
     "smart-contract-extensions",
     "subgraph",
