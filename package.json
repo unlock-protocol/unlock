@@ -22,7 +22,19 @@
     "lint-staged": "11.1.2"
   },
   "workspaces": [
-    "packages/**"
+    "shared/eslint-config",
+    "smart-contracts",
+    "smart-contract-extensions",
+    "subgraph",
+    "unlock-app",
+    "unlock-assets",
+    "unlock-js",
+    "unlock-protocol.com",
+    "locksmith",
+    "newsletter",
+    "paywall",
+    "nudge",
+    "wedlocks"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
