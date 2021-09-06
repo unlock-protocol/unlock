@@ -4,9 +4,13 @@ import logger from '../logger'
 
 namespace AuthController {
   export const authorize = async (
-    request: SignedRequest,
-    response: Response
-  ): Promise<any> => {}
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    console.log(req.body)
+    logger.info('I was here')
+    return res.send('Cool')
+  }
 }
 
 export = AuthController

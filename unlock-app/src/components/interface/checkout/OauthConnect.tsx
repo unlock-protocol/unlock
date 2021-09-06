@@ -13,7 +13,6 @@ interface OAuthConnectProps {
 
 export const OAuthConnect = ({
   oAuthConfig,
-
   redirectUri,
   closeModal,
 }: OAuthConnectProps) => {
@@ -35,9 +34,6 @@ export const OAuthConnect = ({
     // Here we need to wait for the parent coponent to re-render because authenticate sets a bunch of things!
     if (result) {
       setShowLogin(false)
-      console.log(
-        'Redirect back! Make sure to include code (signed message) and state too!'
-      )
       console.log(
         'Actually do not redirect just yet if there are memberships to purchase!'
       )

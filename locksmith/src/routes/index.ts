@@ -36,7 +36,7 @@ router.use('/claim', claimRouter)
 router.use('/price', priceRouter)
 router.use('/api/key/:chain([0-9]{1,6})/', metadataRouter)
 router.use('/api/key', metadataRouter)
-router.use('/api/key', metadataRouter)
+router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
 
 router.use('/', (_, res) => {
