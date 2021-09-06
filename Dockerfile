@@ -65,6 +65,10 @@ WORKDIR /home/unlock/
 RUN mkdir /home/unlock/${BUILD_DIR}
 COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
 
+# copy scripts
+RUN mkdir /home/unlock/scripts
+COPY --chown=node scripts /home/unlock/scripts
+
 # install deps
 RUN SKIP_SERVICES=true yarn install --pure-lockfile --non-interactive
 
@@ -74,4 +78,3 @@ RUN apk del .build-deps \
     && apk add bash
 
 USER node
-WORKDIR /home/unlock/${BUILD_DIR}
