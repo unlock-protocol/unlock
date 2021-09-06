@@ -8,7 +8,12 @@ REPO_ROOT=`dirname "$0"`/..
 BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 
-COMMAND="yarn workspace @unlock-protocol/$SERVICE run ci"
+if [ "$SERVICE" = "unlock-protocol-com" ] ; then
+    # need to replace "unlock-protocol-com" to dotcom
+    COMMAND="yarn workspace @unlock-protocol/unlock-protocol.com run ci"
+else 
+    COMMAND="yarn workspace @unlock-protocol/$SERVICE run ci"
+fi
 
 # Setting the right env var
 export UNLOCK_ENV=test
