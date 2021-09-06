@@ -60,7 +60,7 @@
   },
   "scripts": {
     "test": "npx hardhat test",
-    "lint": "solium -d ./contracts/ && eslint .",
+    "lint": "solium -d ./contracts/ && eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lintFix": "solium -d ./contracts/ --fix && eslint . --fix",
     "dev": "yarn lint && yarn build && yarn test",
     "ci": "yarn lint && yarn test",

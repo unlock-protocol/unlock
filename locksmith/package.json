@@ -10,7 +10,7 @@
     "dev": "tsc-watch --onSuccess 'yarn start' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test yarn run db:migrate",
     "test": "jest --forceExit --runInBand",
-    "lint": "eslint --ext .ts,.js src/ __tests__/",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ __tests__/",
     "db:migrate": "sequelize --config ./config/sequelize.config.js db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",
     "preci": "yarn lint",

@@ -9,7 +9,7 @@
     "deploy": "next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "test": "jest --env=jsdom",
-    "lint": "eslint --ext .tsx,.ts,.js .",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js .",
     "ci": "yarn test && yarn lint"
   },
   "dependencies": {

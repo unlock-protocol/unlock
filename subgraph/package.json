@@ -8,7 +8,7 @@
     "create": "node ./bin/create",
     "remove": "node ./bin/remove",
     "deploy": "node ./bin/deploy",
-    "lint": "eslint --ext .ts,.js src/ bin/"
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.21.1",

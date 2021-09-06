@@ -13,7 +13,7 @@
     "prestart": "yarn run build",
     "start": "yarn build-script && NODE_ENV=production node src/server.js",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
-    "lint": "eslint --ext .tsx,.ts,.js src/",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "build-script": "yarn build-unlock.latest.js",
     "watch-script": "webpack --watch --config unlock.latest.js.webpack.config.js",
     "build-unlock.latest.js": "webpack --config unlock.latest.js.webpack.config.js",

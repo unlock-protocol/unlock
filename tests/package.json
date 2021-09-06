@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --bail",
-    "lint": "eslint test helpers",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config test helpers",
     "ci": "yarn test && yarn lint"
   },
   "jest": {

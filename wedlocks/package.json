@@ -39,7 +39,7 @@
     "build": "webpack",
     "dev": "UNLOCK_ENV=dev nodemon src/server.js --exec babel-node",
     "test": "UNLOCK_ENV=test jest",
-    "lint": "eslint --ext .ts,.js src/",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/",
     "ci": "yarn test && yarn lint",
     "deploy-netlify": "./scripts/deploy-netlify.sh"
   },

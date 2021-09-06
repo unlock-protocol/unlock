@@ -84,7 +84,7 @@
     "start": "NODE_ENV=production next start src",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "prettier": "prettier",
-    "lint": "eslint --ext .tsx,.ts,.js src/",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "ci": "yarn test && yarn lint",
     "tsc": "tsc"
