@@ -1,9 +1,9 @@
 # default value
 ARG BUILD_DIR=unlock-js
 
-#
-# 1. fetch packages
-#
+##
+## 1. get only needed packages
+##
 FROM alpine:3.11 as manifests
 
 # args need to be mentioned at each stage
