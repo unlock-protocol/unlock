@@ -62,6 +62,8 @@ services:
       cache_from:
         - unlock-app
         - unlockprotocol/unlock-app:master
+    depends_on:
+      - ganache-integration
     ports:
       - 3000:3000
     expose:
