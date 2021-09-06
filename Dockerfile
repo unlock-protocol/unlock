@@ -17,12 +17,10 @@ WORKDIR /tmp
 COPY package.json .
 COPY yarn.lock .
 
-# remove unused workspaces from manifest
-RUN  mkdir /opt/manifests /opt/manifests/packages  \
-    && jq  -r '.workspaces |= ["packages/**", ["${BUILD_DIR}}"]' /tmp/package.json | \
-    xargs -n 1 -I'{}' sh -c 'mkdir /opt/manifests/{}; cp {}/package.json /opt/manifests/{}' \
-    && cp yarn.lock /opt/manifests \
-    && cp package.json /opt/manifests
+# only needed workspaces in manifest
+RUN  mkdir /opt/manifests /opt/manifests/packages
+RUN jq  -r '.workspaces |= ["packages/**", "'${BUILD_DIR}'"]' /tmp/package.json > /opt/manifests/package.json \
+    && cp yarn.lock /opt/manifests
 
 # add shared folder
 WORKDIR /opt/manifests
@@ -38,13 +36,8 @@ LABEL Unlock <ops@unlock-protocol.com>
 ARG BUILD_DIR
 
 RUN mkdir /home/unlock
-# RUN mkdir /home/unlock/scripts
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
-
-# To leverage the docker caching it is better to install the deps
-# before the file changes. This will allow docker to not install
-# dependencies again if they are not changed.
 
 # copy packages info
 COPY --chown=node --from=manifests /opt/manifests .
