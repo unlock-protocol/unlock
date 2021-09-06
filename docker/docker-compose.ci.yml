@@ -44,7 +44,7 @@ services:
       - ganache
 
   smart-contracts: # Image with our contracts
-    image: smart-contractss
+    image: smart-contracts
     build:
       context: ../
       args:
