@@ -1,5 +1,5 @@
 {
-  "name": "newsletter",
+  "name": "@unlock-protocol/newsletter",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,13 +9,14 @@
     "deploy": "next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "test": "jest --env=jsdom",
-    "lint": "eslint --ext .tsx,.ts,.js .",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js .",
     "ci": "yarn test && yarn lint"
   },
   "dependencies": {
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",
     "@testing-library/react-hooks": "7.0.2",
+    "@unlock-protocol/eslint-config": "0.0.1",
     "@types/node": "14.17.14",
     "axios": "0.21.1",
     "babel-jest": "27.1.0",

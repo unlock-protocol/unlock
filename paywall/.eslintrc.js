@@ -28,7 +28,7 @@ const rulesToIgnore = [
 ]
 
 module.exports = {
-  extends: ['../.eslintrc.js', 'plugin:react/recommended'],
+  extends: ['@unlock-protocol/eslint-config', 'plugin:react/recommended'],
   plugins: ['react-hooks'],
   settings: {
     react: {

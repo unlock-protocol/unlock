@@ -12,6 +12,7 @@ module.exports = {
     browser: true,
     jest: true,
   },
+  root: true,
   plugins: ['jest', 'promise', 'import', '@typescript-eslint', 'prettier'],
   parser: '@typescript-eslint/parser',
   settings: {
