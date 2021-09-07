@@ -3,6 +3,7 @@ require('./src/utils/envLoader')
 module.exports = {
   testPathIgnorePatterns: ['<rootDir>/__tests__/test-helpers/'],
   collectCoverage: true,
+  testEnvironment: 'jsdom',
   coverageThreshold: {
     global: {
       branches: 63,
