@@ -1,4 +1,5 @@
 require('./src/utils/envLoader')
+require('setimmediate') // attach to global scope
 
 module.exports = {
   testPathIgnorePatterns: ['<rootDir>/__tests__/test-helpers/'],
