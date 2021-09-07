@@ -4,8 +4,10 @@ jobs:
   unlock-protocol-com-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
-      DOCKER_BUILDKIT: 1 # disable buildkit until I can figure what is going on!
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -17,8 +19,10 @@ jobs:
   unlock-app-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -30,8 +34,10 @@ jobs:
   unlock-js-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
       BLOCKTIME: 0
     steps:
       - checkout
@@ -49,8 +55,10 @@ jobs:
   smart-contracts-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -62,8 +70,10 @@ jobs:
   smart-contract-extensions-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -75,8 +85,10 @@ jobs:
   locksmith-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
       DB_NAME: locksmith_test
@@ -92,8 +104,10 @@ jobs:
   paywall-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -105,8 +119,10 @@ jobs:
   newsletter-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -118,8 +134,10 @@ jobs:
   wedlocks-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -131,8 +149,10 @@ jobs:
   nudge-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -144,8 +164,10 @@ jobs:
   integration-tests:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -161,8 +183,10 @@ jobs:
   deploy-unlock-app-netlify:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -180,8 +204,10 @@ jobs:
   deploy-unlock-protocol-com-netlify:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -196,8 +222,10 @@ jobs:
   deploy-paywall-aws:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -215,8 +243,10 @@ jobs:
   deploy-paywall-netlify:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -234,8 +264,10 @@ jobs:
   deploy-newsletter-netlify:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -253,8 +285,10 @@ jobs:
   deploy-wedlocks-netlify:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -271,6 +305,7 @@ jobs:
       - image: circleci/python:3.9.6
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -301,6 +336,7 @@ jobs:
       - image: circleci/python:3.9.6
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -328,6 +364,7 @@ jobs:
       - image: circleci/python:3.9.6
     environment:
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -353,9 +390,11 @@ jobs:
   promote-unlock-core-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -365,9 +404,11 @@ jobs:
   promote-unlock-app-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -379,9 +420,11 @@ jobs:
   promote-unlock-protocol-com-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -393,9 +436,11 @@ jobs:
   promote-locksmith-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -407,9 +452,11 @@ jobs:
   promote-paywall-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -421,9 +468,11 @@ jobs:
   promote-nudge-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -435,9 +484,11 @@ jobs:
   promote-wedlocks-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -449,9 +500,11 @@ jobs:
   promote-smart-contracts-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -463,9 +516,11 @@ jobs:
   promote-integration-tests-image:
     machine:
       image: ubuntu-1604:202104-01
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
