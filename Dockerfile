@@ -35,6 +35,9 @@ LABEL Unlock <ops@unlock-protocol.com>
 # args need to be mentioned at each stage
 ARG BUILD_DIR
 
+# add yarn cache to speedup local builds
+ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
+
 RUN mkdir /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
@@ -61,20 +64,26 @@ RUN apk add --no-cache --virtual .build-deps \
 USER node
 WORKDIR /home/unlock/
 
-# copy app code
-RUN mkdir /home/unlock/${BUILD_DIR}
-COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
-
-# copy scripts
-RUN mkdir /home/unlock/scripts
-COPY --chown=node scripts /home/unlock/scripts
-
 # install deps
-RUN SKIP_SERVICES=true yarn install --pure-lockfile --non-interactive
+RUN mkdir /home/unlock/${BUILD_DIR}
+COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
+COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock
+RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 SKIP_SERVICES=true yarn install
 
 # delete deps once packages are built
 USER root
 RUN apk del .build-deps \
     && apk add bash
 
+# make sure of cache folder perms
+RUN chown -R node:node /home/unlock/yarn-cache
+
 USER node
+
+# copy scripts
+RUN mkdir /home/unlock/scripts
+COPY --chown=node scripts /home/unlock/scripts
+
+# copy app code
+COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
+
