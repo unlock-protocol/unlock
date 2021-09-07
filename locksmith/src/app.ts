@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import { typeDefs } from './graphql/typeDefinitions'
 import { resolvers } from './graphql/resolvers'
+import 'setimmediate'
 
 const app = express()
 
