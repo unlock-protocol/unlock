@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:experimental
+
 # default value
 ARG BUILD_DIR=unlock-js
 

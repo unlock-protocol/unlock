@@ -3,7 +3,7 @@ version: 2
 jobs:
   unlock-protocol-com-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1 # disable buildkit until I can figure what is going on!
     steps:
@@ -16,7 +16,7 @@ jobs:
 
   unlock-app-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -29,7 +29,7 @@ jobs:
 
   unlock-js-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
       BLOCKTIME: 0
@@ -48,7 +48,7 @@ jobs:
 
   smart-contracts-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -61,7 +61,7 @@ jobs:
 
   smart-contract-extensions-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -74,7 +74,7 @@ jobs:
 
   locksmith-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
       DB_USERNAME: locksmith_test
@@ -91,7 +91,7 @@ jobs:
 
   paywall-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -104,7 +104,7 @@ jobs:
 
   newsletter-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -117,7 +117,7 @@ jobs:
 
   wedlocks-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -130,7 +130,7 @@ jobs:
 
   nudge-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -143,7 +143,7 @@ jobs:
 
   integration-tests:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -160,7 +160,7 @@ jobs:
 
   deploy-unlock-app-netlify:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -179,7 +179,7 @@ jobs:
 
   deploy-unlock-protocol-com-netlify:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -195,7 +195,7 @@ jobs:
 
   deploy-paywall-aws:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -214,7 +214,7 @@ jobs:
 
   deploy-paywall-netlify:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -233,7 +233,7 @@ jobs:
 
   deploy-newsletter-netlify:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -252,7 +252,7 @@ jobs:
 
   deploy-wedlocks-netlify:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_BUILDKIT: 1
     steps:
@@ -352,7 +352,7 @@ jobs:
 
   promote-unlock-core-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -364,7 +364,7 @@ jobs:
 
   promote-unlock-app-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -378,7 +378,7 @@ jobs:
 
   promote-unlock-protocol-com-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -392,7 +392,7 @@ jobs:
 
   promote-locksmith-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -406,7 +406,7 @@ jobs:
 
   promote-paywall-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -420,7 +420,7 @@ jobs:
 
   promote-nudge-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -434,7 +434,7 @@ jobs:
 
   promote-wedlocks-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -448,7 +448,7 @@ jobs:
 
   promote-smart-contracts-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -462,7 +462,7 @@ jobs:
 
   promote-integration-tests-image:
     machine:
-      image: ubuntu-1604:202004-01
+      image: ubuntu-1604:202104-01
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
