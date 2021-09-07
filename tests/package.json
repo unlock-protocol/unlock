@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --bail",
-    "lint": "eslint test helpers",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config test helpers",
     "ci": "yarn test && yarn lint"
   },
   "jest": {
@@ -26,23 +26,10 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "2.14.0",
     "@typescript-eslint/parser": "2.14.0",
+    "@unlock-protocol/eslint-config": "0.0.1",
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",
     "eslint": "5.16.0",
-    "eslint-config-airbnb": "18.0.1",
-    "eslint-config-prettier": "6.9.0",
-    "eslint-config-standard": "14.1.0",
-    "eslint-import-resolver-typescript": "2.0.0",
-    "eslint-plugin-import": "2.19.1",
-    "eslint-plugin-jest": "23.3.0",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-mocha": "6.2.2",
-    "eslint-plugin-node": "11.0.0",
-    "eslint-plugin-prettier": "3.1.2",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-react": "7.17.0",
-    "eslint-plugin-react-hooks": "2.3.0",
-    "eslint-plugin-standard": "4.0.1",
     "expect-puppeteer": "4.4.0",
     "fs-extra": "^8.0.0",
     "jest": "24.9.0",

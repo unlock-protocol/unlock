@@ -12,7 +12,7 @@
   "scripts": {
     "pretest": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
     "test": "jest",
-    "lint": "eslint --ext .tsx,.ts,.js src/",
+    "lint": "yarn run eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
     "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
@@ -42,6 +42,7 @@
     "@unlock-protocol/unlock-abi-7": "1.0.3",
     "@unlock-protocol/unlock-abi-8": "1.0.0",
     "@unlock-protocol/unlock-abi-9": "1.0.0",
+    "@unlock-protocol/eslint-config": "0.0.1",
     "babel-jest": "27.1.0",
     "cross-fetch": "3.1.4",
     "eslint": "7.32.0",

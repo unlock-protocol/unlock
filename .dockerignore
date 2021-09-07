@@ -7,3 +7,15 @@
 node_modules/
 
 .vscode
+.git
+
+# docker itself (prevent rebuilds when editing)
+Dockerfile
+
+# Artifacts
+unlock-app/src/artifacts/
+smart-contract-extensions/build/
+smart-contracts/build/
+smart-contracts/cache
+smart-contracts/artifacts
+builds/

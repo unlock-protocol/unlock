@@ -35,18 +35,18 @@ services:
     image: smart-contract-extensionss
     build:
       context: ../
-      dockerfile: ./docker/smart-contract-extensions.dockerfile
+      args:
+        BUILD_DIR: smart-contract-extensions
       cache_from:
         - smart-contract-extensions
         - unlockprotocol/smart-contract-extensions:master
-    depends_on:
-      - ganache
 
   smart-contracts: # Image with our contracts
-    image: smart-contractss
+    image: smart-contracts
     build:
       context: ../
-      dockerfile: ./docker/smart-contracts.dockerfile
+      args:
+        BUILD_DIR: smart-contracts
       cache_from:
         - smart-contracts
         - unlockprotocol/smart-contracts:master
@@ -57,10 +57,13 @@ services:
     image: unlock-app
     build:
       context: ../
-      dockerfile: ./docker/unlock-app.dockerfile
+      args: 
+        BUILD_DIR: unlock-app
       cache_from:
         - unlock-app
         - unlockprotocol/unlock-app:master
+    depends_on:
+      - ganache-integration
     ports:
       - 3000:3000
     expose:
@@ -73,7 +76,8 @@ services:
     image: unlock-protocol-com
     build:
       context: ../
-      dockerfile: ./docker/unlock-protocol-com.dockerfile
+      args:
+        BUILD_DIR: unlock-protocol.com
       cache_from:
         - unlock-protocol-com
         - unlockprotocol/unlock-protocol-com:master
@@ -86,7 +90,8 @@ services:
     image: paywall
     build:
       context: ../
-      dockerfile: ./docker/paywall.dockerfile
+      args:
+        BUILD_DIR: paywall
       cache_from:
         - paywall
         - unlockprotocol/paywall:master
@@ -97,7 +102,8 @@ services:
     image: newsletter
     build:
       context: ../
-      dockerfile: ./docker/newsletter.dockerfile
+      args:
+        BUILD_DIR: newsletter
       cache_from:
         - newsletter
         - unlockprotocol/newsletter:master
@@ -110,7 +116,8 @@ services:
     image: unlock-js
     build:
       context: ../
-      dockerfile: ./docker/unlock-js.dockerfile
+      args:
+        BUILD_DIR: unlock-js
       cache_from:
         - unlock-js
         - unlockprotocol/unlock-js:master
@@ -123,7 +130,8 @@ services:
     image: nudge
     build:
       context: ../
-      dockerfile: ./docker/nudge.dockerfile
+      args:
+        BUILD_DIR: nudge
       cache_from:
         - nudge
         - unlockprotocol/nudge:master
@@ -134,7 +142,8 @@ services:
     image: wedlocks
     build:
       context: ../
-      dockerfile: ./docker/wedlocks.dockerfile
+      args:
+        BUILD_DIR: wedlocks
       cache_from:
         - wedlocks
         - unlockprotocol/wedlocks:master
@@ -145,7 +154,8 @@ services:
     image: integration-tests
     build:
       context: ../
-      dockerfile: ./docker/integration-tests.dockerfile
+      args:
+        BUILD_DIR: integration-tests
       cache_from:
         - integration-tests
         - unlockprotocol/integration-tests:master
@@ -164,7 +174,8 @@ services:
     image: locksmith
     build:
       context: ../
-      dockerfile: ./docker/locksmith.dockerfile
+      args:
+        BUILD_DIR: locksmith
       cache_from:
         - locksmith
         - unlockprotocol/locksmith:master
