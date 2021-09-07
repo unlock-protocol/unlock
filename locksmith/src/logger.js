@@ -1,5 +1,5 @@
+import 'setimmediate'
 import Sentry from 'winston-sentry-log'
-
 import winston from 'winston'
 
 const { combine, timestamp, json, simple } = winston.format

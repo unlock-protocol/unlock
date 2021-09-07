@@ -1,8 +1,8 @@
+import 'setimmediate'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
-import 'setimmediate'
 import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
