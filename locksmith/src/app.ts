@@ -1,4 +1,4 @@
-import 'setimmediate'
+import 'setimmediate' // polyfill to prevent jest from crashing
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
