@@ -1,0 +1,14 @@
+{
+    "name": "@unlock-protocol/eth-node",
+    "description": "Simple ETH node for development purposes",
+    "private": true,
+    "dependencies": {
+        "@nomiclabs/hardhat-ethers": "^2.0.2",
+        "@unlock-protocol/unlock-abi-9": "^1.0.0",
+        "@unlock-protocol/unlock-js": "^0.19.2",
+        "cross-fetch": "^3.1.4",
+        "ethers": "^5.4.6",
+        "hardhat": "^2.6.3",
+        "hardhat-erc1820": "^0.1.0"
+    }
+}
