@@ -5,7 +5,6 @@ set -e
 
 SERVICE=$1
 
-echo $SERVICE
 
 # Build the image
 docker build -t $SERVICE --build-arg BUILD_DIR=$SERVICE --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from unlockprotocol/$SERVICE:$CIRCLE_BRANCH .
