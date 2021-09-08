@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
+          command: scripts/monorepo.sh unlock-protocol-com $CIRCLE_BRANCH
       - run:
           name: unlock-protocol-com tests
           command: scripts/tests.sh unlock-protocol-com
