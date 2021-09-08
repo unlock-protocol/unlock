@@ -446,8 +446,6 @@ workflows:
               only:
                 - master
                 - production
-          requires:
-            - promote-unlock-core-image
       - deploy-locksmith-beanstalk:
           filters:
             branches:
