@@ -11,7 +11,7 @@ ARG BUILD_DIR
 # install deps
 RUN apk add coreutils jq
 
-# copy 
+# copy
 WORKDIR /tmp
 COPY package.json .
 COPY yarn.lock .
@@ -28,7 +28,7 @@ COPY packages  /opt/manifests/packages
 ##
 ## 2. build the app
 ##
-FROM node:12-alpine as unlock-app
+FROM node:12-alpine as app
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
@@ -67,7 +67,7 @@ WORKDIR /home/unlock/
 RUN mkdir /home/unlock/${BUILD_DIR}
 COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
 COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock
-RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 SKIP_SERVICES=true yarn install
+RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
 
 # delete deps once packages are built
 USER root
@@ -86,3 +86,5 @@ COPY --chown=node scripts /home/unlock/scripts
 # copy app code
 COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
 
+# Expose a port for outside (only used by locksmith right now, but available for others too!)
+EXPOSE 8080

@@ -19,3 +19,8 @@ smart-contracts/build/
 smart-contracts/cache
 smart-contracts/artifacts
 builds/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+.git
+.gitignore

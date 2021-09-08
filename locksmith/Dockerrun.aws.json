@@ -7,5 +7,7 @@
       {
         "ContainerPort": 8080
       }
-    ]
+    ],
+    "Entrypoint": "yarn",
+    "Command": "start"
   }

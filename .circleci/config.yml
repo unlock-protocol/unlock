@@ -440,18 +440,8 @@ workflows:
       - deploy-unlock-protocol-com-netlify:
           requires:
             - integration-tests
-      - promote-locksmith-image:
-          filters:
-            branches:
-              only:
-                - master
-                - production
+      - promote-locksmith-image
       - deploy-locksmith-beanstalk:
-          filters:
-            branches:
-              only:
-                - master
-                - production
           requires:
             - promote-locksmith-image
       - deploy-wedlocks-netlify:
