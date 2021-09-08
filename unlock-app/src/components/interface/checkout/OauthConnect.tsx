@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { utils } from 'ethers'
 import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
 import { AuthenticationContext } from '../Authenticate'
@@ -26,19 +27,26 @@ export const OAuthConnect = ({
   const [showLogin, setShowLogin] = useState(false)
   const { clientId } = oAuthConfig
   // What if the user has no account?
+
+  // TODO: add a timestamp to digest for increased security
+  const digest = `Connecting my acccount to ${clientId}.`
+
   const onProvider = async (provider: any) => {
-    const result = await authenticate(
-      provider,
-      `Connecting my acccount to ${clientId}.`
-    )
+    const result = await authenticate(provider, digest)
     // Here we need to wait for the parent coponent to re-render because authenticate sets a bunch of things!
     if (result) {
       setShowLogin(false)
       console.log(
         'Actually do not redirect just yet if there are memberships to purchase!'
       )
+
+      const code = JSON.stringify({
+        d: digest,
+        s: result.signedMessage,
+      })
+
       closeModal(true, redirectUri, {
-        code: result.signedMessage,
+        code: btoa(code),
         state: oAuthConfig.state,
       })
     }
