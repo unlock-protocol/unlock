@@ -274,8 +274,6 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
-      - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
@@ -399,8 +397,6 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
-      - run:
           name: promote image
           command: scripts/promote-image.sh locksmith
 
@@ -512,11 +508,6 @@ workflows:
           requires:
             - integration-tests
       - promote-unlock-core-image:
-          filters:
-            branches:
-              only:
-                - master
-                - production
           requires:
             - integration-tests
       - promote-unlock-app-image:
@@ -532,11 +523,6 @@ workflows:
           requires:
             - promote-unlock-core-image
       - promote-locksmith-image:
-          filters:
-            branches:
-              only:
-                - master
-                - production
           requires:
             - promote-unlock-core-image
       - promote-paywall-image:
@@ -567,11 +553,6 @@ workflows:
           requires:
             - promote-unlock-core-image
       - deploy-locksmith-beanstalk:
-          filters:
-            branches:
-              only:
-                - master
-                - production
           requires:
             - promote-locksmith-image
       - deploy-wedlocks-netlify:
