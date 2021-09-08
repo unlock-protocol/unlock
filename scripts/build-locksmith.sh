@@ -4,6 +4,5 @@ set -ex
 
 USERNAME=unlockprotocol
 IMAGE=locksmith
-REPO_ROOT=`dirname "$0"`/..
 
-docker build -t $USERNAME/$IMAGE:latest $REPO_ROOT/locksmith
+docker build -t $USERNAME/$IMAGE:latest --build-arg BUILD_DIR=locksmith .
