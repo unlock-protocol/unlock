@@ -1,4 +1,6 @@
 # syntax = docker/dockerfile:experimental
+
+# default LISTEN port to 3000
 ARG PORT=3000
 
 ##
@@ -114,18 +116,28 @@ USER root
 RUN mkdir /app
 RUN chown node:node /app
 
-USER node
 WORKDIR /app
 
-# copy built files
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/build build
+# copy package info
 COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
 COPY --from=build --chown=node /home/unlock/$BUILD_DIR/yarn.lock yarn.lock
 
+# delete dev deps to prevent yarn from fetching them
+RUN apk add --no-cache --virtual .build-deps coreutils jq  \
+    && jq 'del(.devDependencies)' package.json > package.json.tmp \
+    && mv package.json.tmp package.json \ 
+    && apk del .build-deps \
+    && chown node:node package.json
+
 # prod install 
 # NOTE: this required that all shared packages have been published to npm
-RUN yarn install --production --pure-lockfile --non-interactive
+USER node
+ENV NODE_ENV production
+RUN yarn install --production --non-interactive --pure-lockfile
+
+# copy built files
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/build/ .
 
 # start command
 EXPOSE $PORT
-CMD ["yarn", "start"]
+CMD ["yarn", "prod"]
