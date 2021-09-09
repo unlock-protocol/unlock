@@ -68,10 +68,9 @@ RUN apk add --no-cache --virtual .build-deps \
     build-base \
     && pip install --no-cache-dir virtualenv
 
-USER node
-WORKDIR /home/unlock/
 
 # install deps
+USER node
 RUN mkdir /home/unlock/${BUILD_DIR}
 COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
 COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock

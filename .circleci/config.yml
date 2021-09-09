@@ -232,6 +232,10 @@ jobs:
     # - run:
     #       command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
+          name: Show docker info
+          command: |
+            docker info
+      - run:
           name: Install Heroku CLI
           command: |
             curl https://cli-assets.heroku.com/install.sh | sh
@@ -246,7 +250,7 @@ jobs:
       - run:
           name: Build Docker Container
           command: |
-            docker build --rm=false -t registry.heroku.com/<< parameters.service >>/<< parameters.app-type >> .
+            docker build -t registry.heroku.com/<< parameters.service >>/<< parameters.app-type >> .
       - run:
           name: Push Container To Heroku
           command: |
