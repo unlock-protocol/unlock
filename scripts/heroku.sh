@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-# to be added to CI env
+# two args
 SERVICE=$1
 HEROKU_APP_NAME=$2
 
@@ -11,7 +11,7 @@ echo "Deploying $SERVICE to Heroku $HEROKU_APP_NAME ..."
 if ! command -v heroku &> /dev/null
 then
     echo "installing heroku"
-    wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh 5 | sh
+    curl https://cli-assets.heroku.com/install.sh | sh
     exit
 fi
 
@@ -27,3 +27,6 @@ heroku container:login
 
 # release on heroku 
 heroku container:release -a $HEROKU_APP_NAME web
+
+# migrate the database 
+heroku run -a $HEROKU_APP_NAME yarn db:migrate
