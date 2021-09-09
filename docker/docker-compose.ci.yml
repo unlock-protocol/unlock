@@ -60,7 +60,7 @@ services:
     build:
       context: ../
       target: dev
-      args: 
+      args:
         BUILD_DIR: unlock-app
       cache_from:
         - unlock-app
@@ -133,18 +133,6 @@ services:
     depends_on:
       - ganache-integration
 
-  nudge: # Container for nudge
-    image: nudge
-    build:
-      context: ../
-      target: dev
-      args:
-        BUILD_DIR: nudge
-      cache_from:
-        - nudge
-        - unlockprotocol/nudge:master
-    env_file:
-      - ./${UNLOCK_ENV}.env
 
   wedlocks: # Container for wedlocks
     image: wedlocks
