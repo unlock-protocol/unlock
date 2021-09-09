@@ -104,10 +104,6 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
-  // state change
-  useEffect(() => {
-    setState(defaultState)
-  }, [defaultState])
 
   // state change
   useEffect(() => {
@@ -180,7 +176,9 @@ export const Checkout = ({
       }
       if (queryParams) {
         for (const key in queryParams) {
-          redirectUrl.searchParams.append(key, queryParams[key])
+          if (queryParams[key] !== undefined && queryParams[key] !== null) {
+            redirectUrl.searchParams.append(key, queryParams[key])
+          }
         }
       }
       window.location.href = redirectUrl.toString()

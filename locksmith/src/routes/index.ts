@@ -7,6 +7,7 @@ const purchaseRouter = require('./purchase')
 const claimRouter = require('./claim')
 const priceRouter = require('./price')
 const metadataRouter = require('./metadata')
+const authRouter = require('./auth')
 const healthCheckRouter = require('./health')
 const config = require('../../config/config')
 
@@ -36,6 +37,7 @@ router.use('/price', priceRouter)
 router.use('/api/key/:chain([0-9]{1,6})/', metadataRouter)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)
+router.use('/api/oauth', authRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
