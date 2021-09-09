@@ -22,4 +22,22 @@ const config = {
   },
 }
 
+if (process.env.NODE_ENV === 'staging') {
+  
+  // delete local config
+  delete config.username
+  delete config.password
+  delete config.database
+  delete config.host
+
+  // use db string provided by Heroku
+  config.use_env_variable = "DATABASE_URL"
+  config.dialectOptions = {
+    ssl: {
+      require : true,
+      rejectUnauthorized: false
+    }
+  }
+}
+
 module.exports = config
