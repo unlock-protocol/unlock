@@ -33,8 +33,10 @@ if (process.env.NODE_ENV === 'staging') {
   // use db string provided by Heroku
   config.use_env_variable = "DATABASE_URL"
   config.dialectOptions = {
-    ssl: true,
-    rejectUnauthorized: false
+    ssl: {
+      require : true,
+      rejectUnauthorized: false
+    }
   }
 }
 
