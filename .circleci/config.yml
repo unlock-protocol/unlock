@@ -289,11 +289,8 @@ workflows:
       - build-and-deploy-to-heroku:
           service: locksmith
           app-name: unlock-locksmith-staging
-          # requires:
-          #   - integration-tests
-          # filters:
-          #   branches:
-          #     only: master
+          requires:
+            - integration-tests
       -  deploy-to-netlify:
           name: "deploy-unlock-app-netlify"
           service: "unlock-app"
