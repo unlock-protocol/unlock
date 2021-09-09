@@ -12,7 +12,6 @@ if ! command -v heroku &> /dev/null
 then
     echo "installing heroku"
     curl https://cli-assets.heroku.com/install.sh | sh
-    exit
 fi
 
 # build image
