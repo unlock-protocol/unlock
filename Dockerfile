@@ -41,12 +41,13 @@ LABEL Unlock <ops@unlock-protocol.com>
 ARG BUILD_DIR
 ARG PORT
 
-# add yarn cache to speedup local builds
-ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
-
+# setup home dir
 RUN mkdir /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
+
+# add yarn cache to speedup local builds
+ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
 
 # copy packages info
 COPY --chown=node --from=manifests /opt/manifests .
