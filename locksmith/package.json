@@ -62,6 +62,7 @@
     "parse-data-uri": "0.2.0",
     "pg": "8.7.1",
     "random-words": "1.1.1",
+    "reflect-metadata": "0.1.13",
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
     "sequelize": "5.22.4",
@@ -101,7 +102,6 @@
     "typescript": "4.4.2",
     "aws-sdk": "2.981.0",
     "run-script-os": "1.1.6",
-    "reflect-metadata": "0.1.13",
     "node-mocks-http": "1.10.1"
   },
   "jest": {
