@@ -215,6 +215,9 @@ jobs:
       BUILDKIT_PROGRESS: plain
     parameters:
       service:
+        description: "The service/app to build"
+        type: string
+      app-name:
         description: "The Heroku app name to which the application should be deployed"
         type: string
       app-type:
@@ -244,15 +247,15 @@ jobs:
       - run:
           name: Build Docker Container
           command: |
-            docker build --rm=false -t registry.heroku.com/<< parameters.service >>/<< parameters.app-type >> --build-arg BUILD_DIR=<< parameters.service >> .
+            docker build --rm=false -t registry.heroku.com/<< parameters.app-name >>/<< parameters.app-type >> --build-arg BUILD_DIR=<< parameters.service >> .
       - run:
           name: Push Container To Heroku
           command: |
-            docker push registry.heroku.com/<< parameters.service >>/<< parameters.app-type >>
+            docker push registry.heroku.com/<< parameters.app-name >>/<< parameters.app-type >>
       - run:
           name: Release Deployed Container
           command: |
-            heroku container:release << parameters.app-type >> -a << parameters.service >>
+            heroku container:release << parameters.app-type >> -a << parameters.app-name >>
 
   promote-locksmith-image:
     executor: ubuntu_20-executor
@@ -309,6 +312,7 @@ workflows:
             - newsletter-tests
       - build-and-deploy-to-heroku:
           service: locksmith
+          app-name: unlock-protocol-locksmith
           # requires:
           #   - integration-tests
           # filters:
