@@ -28,4 +28,4 @@ heroku container:login
 heroku container:release -a $HEROKU_APP_NAME web
 
 # migrate the database
-heroku run -a $HEROKU_APP_NAME yarn db:migrate
+heroku run -a --exit-code $HEROKU_APP_NAME yarn db:migrate
