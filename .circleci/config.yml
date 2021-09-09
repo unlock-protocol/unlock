@@ -101,12 +101,6 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" << parameters.service >> netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
-  # unlock-app
-  # unlock-protocol-com
-  # paywall
-  # newsletter
-  # wedlocks
-
   deploy-paywall-aws:
     executor: ubuntu_20-executor
     environment:
@@ -315,8 +309,8 @@ workflows:
             - newsletter-tests
       - build-and-deploy-to-heroku:
           service: "unlock-protocol-locksmith"
-          requires:
-            - integration-tests
+          # requires:
+          #   - integration-tests
           # filters:
           #   branches:
           #     only: master
