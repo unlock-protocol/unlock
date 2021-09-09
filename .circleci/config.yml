@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 jobs:
   unlock-protocol-com-tests:
@@ -422,15 +422,15 @@ jobs:
       - run:
           name: Build Docker Container
           command: |
-            docker build --rm=false -t registry.heroku.com/<< parameters.app-name >>/<< parameters.app-type >> .
+            docker build --rm=false -t registry.heroku.com/<< parameters.service >>/<< parameters.app-type >> .
       - run:
           name: Push Container To Heroku
           command: |
-            docker push registry.heroku.com/<< parameters.app-name >>/<< parameters.app-type >>
+            docker push registry.heroku.com/<< parameters.service >>/<< parameters.app-type >>
       - run:
           name: Release Deployed Container
           command: |
-            heroku container:release << parameters.app-type >> -a << parameters.app-name >>
+            heroku container:release << parameters.app-type >> -a << parameters.service >>
 
   promote-locksmith-image:
     machine:
@@ -471,12 +471,12 @@ workflows:
             - wedlocks-tests
             - newsletter-tests
       - build-and-deploy-to-heroku:
+          service: "unlock-protocol-locksmith"
           requires:
             - integration-tests
-          app-name: "unlock-protocol-locksmith"
           # filters:
           #   branches:
-          #     only: staging
+          #     only: master
       - deploy-unlock-app-netlify:
           requires:
             - integration-tests
