@@ -7,31 +7,23 @@ executors:
       docker_layer_caching: true
 
 jobs:
-  unlock-protocol-com-tests:
+  run-tests:
     executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+    parameters:
+      service:
+        description: "The sub-repository where the application should be tested"
+        type: string
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-protocol-com $CIRCLE_BRANCH
+          name: Check for changes in repository
+          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
       - run:
-          name: unlock-protocol-com tests
-          command: scripts/tests.sh unlock-protocol-com
-
-  unlock-app-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
-      - run:
-          name: unlock-app tests
-          command: scripts/tests.sh unlock-app
+          name: Running << parameters.service >> tests
+          command: scripts/tests.sh << parameters.service >>
 
   unlock-js-tests:
     executor: ubuntu_20-executor
@@ -52,32 +44,6 @@ jobs:
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
-  smart-contracts-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
-      - run:
-          name: Smart Contract Tests
-          command: scripts/tests.sh smart-contracts
-
-  smart-contract-extensions-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh smart-contract-extensions $CIRCLE_BRANCH
-      - run:
-          name: Smart Contract Extension Tests
-          command: scripts/tests.sh smart-contract-extensions
-
   locksmith-tests:
     executor: ubuntu_20-executor
     environment:
@@ -94,58 +60,6 @@ jobs:
       - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
-
-  paywall-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: Paywall Tests
-          command: scripts/tests.sh paywall
-
-  newsletter-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
-      - run:
-          name: Newsletter Tests
-          command: scripts/tests.sh newsletter
-
-  wedlocks-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
-      - run:
-          name: Wedlocks Tests
-          command: scripts/tests.sh wedlocks
-
-  nudge-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Nudge Tests
-          command: scripts/tests.sh nudge
 
   integration-tests:
     executor: ubuntu_20-executor
@@ -422,14 +336,31 @@ workflows:
   build-test-and-deploy:
     jobs:
       - locksmith-tests
-      - paywall-tests
-      - newsletter-tests
-      - smart-contracts-tests
-      - smart-contract-extensions-tests
-      - unlock-protocol-com-tests
-      - wedlocks-tests
-      - unlock-app-tests
       - unlock-js-tests
+      # - run-tests:
+      #     name: "nudge-tests"
+      #     service: nudge
+      - run-tests:
+          name: "paywall-tests"
+          service: paywall
+      - run-tests:
+          name: "newsletter-tests"
+          service: newsletter
+      - run-tests:
+          name: "smart-contracts-tests"
+          service: smart-contracts
+      - run-tests:
+          name: "smart-contracts-extensions-tests"
+          service: smart-contract-extensions
+      - run-tests:
+          name: "unlock-protocol-com-tests"
+          service: unlock-protocol-com
+      - run-tests:
+          name: "wedlocks-tests"
+          service: wedlocks
+      - run-tests:
+          name: "unlock-app-tests"
+          service: unlock-app
       - integration-tests:
           requires:
             - unlock-protocol-com-tests
