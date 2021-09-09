@@ -1,10 +1,14 @@
 version: 2.1
 
+executors:
+  ubuntu_20-executor:
+    machine:
+      image: 'ubuntu-2004:202104-01'
+      docker_layer_caching: true
+
 jobs:
   unlock-protocol-com-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -17,9 +21,7 @@ jobs:
           command: scripts/tests.sh unlock-protocol-com
 
   unlock-app-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -32,9 +34,7 @@ jobs:
           command: scripts/tests.sh unlock-app
 
   unlock-js-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -53,9 +53,7 @@ jobs:
           when: on_fail
 
   smart-contracts-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -68,9 +66,7 @@ jobs:
           command: scripts/tests.sh smart-contracts
 
   smart-contract-extensions-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -83,9 +79,7 @@ jobs:
           command: scripts/tests.sh smart-contract-extensions
 
   locksmith-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -102,9 +96,7 @@ jobs:
           command: scripts/tests.sh locksmith
 
   paywall-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -117,9 +109,7 @@ jobs:
           command: scripts/tests.sh paywall
 
   newsletter-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -132,9 +122,7 @@ jobs:
           command: scripts/tests.sh newsletter
 
   wedlocks-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -147,9 +135,7 @@ jobs:
           command: scripts/tests.sh wedlocks
 
   nudge-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -162,9 +148,7 @@ jobs:
           command: scripts/tests.sh nudge
 
   integration-tests:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -181,9 +165,7 @@ jobs:
           when: on_fail
 
   deploy-unlock-app-netlify:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -202,9 +184,7 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-unlock-protocol-com-netlify:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -220,9 +200,7 @@ jobs:
           command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-paywall-aws:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -241,9 +219,7 @@ jobs:
           command: scripts/deploy-aws.sh "$ENV_TARGET" paywall "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-paywall-netlify:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -262,9 +238,7 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-newsletter-netlify:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -283,9 +257,7 @@ jobs:
           command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-wedlocks-netlify:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -388,9 +360,7 @@ jobs:
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI" 1
   
   build-and-deploy-to-heroku:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
@@ -433,9 +403,7 @@ jobs:
             heroku container:release << parameters.app-type >> -a << parameters.service >>
 
   promote-locksmith-image:
-    machine:
-      image: ubuntu-1604:202104-01
-      docker_layer_caching: true
+    executor: ubuntu_20-executor
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DOCKER_BUILDKIT: 1
