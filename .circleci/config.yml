@@ -151,61 +151,6 @@ jobs:
           name: Deploy Locksmith to Beanstalk
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh
 
-  deploy-nudge-beanstalk-staging:
-    docker:
-      - image: circleci/python:3.9.6
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-      - run:
-          name: Set GIT_COMMIT_DESC
-          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
-      - run:
-          name: Deploy Staging to Beanstalk
-          command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-rinkeby" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI" 4
-
-  deploy-nudge-beanstalk-production:
-    docker:
-      - image: circleci/python:3.9.6
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-      - run:
-          name: Set GIT_COMMIT_DESC
-          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
-      - run:
-          name: Deploy Staging to Beanstalk
-          command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI" 1
 
   build-and-deploy-to-heroku:
     executor: ubuntu_20-executor
@@ -254,9 +199,6 @@ workflows:
     jobs:
       - locksmith-tests
       - unlock-js-tests
-      # - run-tests:
-      #     name: "nudge-tests"
-      #     service: nudge
       - run-tests:
           name: "paywall-tests"
           service: paywall
