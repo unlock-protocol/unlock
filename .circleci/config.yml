@@ -206,7 +206,7 @@ jobs:
       - run:
           name: Deploy Staging to Beanstalk
           command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI" 1
-  
+
   build-and-deploy-to-heroku:
     executor: ubuntu_20-executor
     environment:
@@ -227,12 +227,12 @@ jobs:
       - run:
           name: Show docker info
           command: |
-            docker info      
+            docker info
       - run:
           name: Build container & deploy to heroku
           command: |
             sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >>
-      
+
   promote-locksmith-image:
     executor: ubuntu_20-executor
     environment:
@@ -320,17 +320,9 @@ workflows:
               only:
                 - master
                 - production
-      - deploy-locksmith-beanstalk:
-          filters:
-            branches:
-              only:
-                - master
-                - production
-          requires:
-            - promote-locksmith-image
       - deploy-to-netlify:
           service: "wedlocks"
-          name: 
+          name:
             "deploy-wedlocks-netlify"
           filters:
             branches:
