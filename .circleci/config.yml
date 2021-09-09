@@ -78,15 +78,19 @@ jobs:
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
-  deploy-unlock-app-netlify:
+  deploy-to-netlify:
     executor: ubuntu_20-executor
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+    parameters:
+      service:
+        description: "The service/sub-repository to deploy"
+        type: string
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
+          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -95,23 +99,13 @@ jobs:
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+          command: scripts/deploy.sh "$ENV_TARGET" << parameters.service >> netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
-  deploy-unlock-protocol-com-netlify:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+  # unlock-app
+  # unlock-protocol-com
+  # paywall
+  # newsletter
+  # wedlocks
 
   deploy-paywall-aws:
     executor: ubuntu_20-executor
@@ -131,60 +125,6 @@ jobs:
       - run:
           name: Deploy to AWS
           command: scripts/deploy-aws.sh "$ENV_TARGET" paywall "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-paywall-netlify:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-newsletter-netlify:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-wedlocks-netlify:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-locksmith-beanstalk:
     docker:
@@ -376,19 +316,27 @@ workflows:
           # filters:
           #   branches:
           #     only: master
-      - deploy-unlock-app-netlify:
+      -  deploy-to-netlify:
+          name: "deploy-unlock-app-netlify"
+          service: "unlock-app"
           requires:
             - integration-tests
-      - deploy-paywall-netlify:
+      - deploy-to-netlify:
+          name: "deploy-paywall-netlify"
+          service: paywall
           requires:
             - integration-tests
       - deploy-paywall-aws:
           requires:
             - integration-tests
-      - deploy-newsletter-netlify:
+      - deploy-to-netlify:
+          name: "deploy-newsletter-netlify"
+          service: "newsletter"
           requires:
             - integration-tests
-      - deploy-unlock-protocol-com-netlify:
+      - deploy-to-netlify:
+          name: "deploy-unlock-protocol-com-netlify"
+          service: "unlock-protocol-com"
           requires:
             - integration-tests
       - promote-locksmith-image:
@@ -405,7 +353,10 @@ workflows:
                 - production
           requires:
             - promote-locksmith-image
-      - deploy-wedlocks-netlify:
+      - deploy-to-netlify:
+          service: "wedlocks"
+          name: 
+            "deploy-wedlocks-netlify"
           filters:
             branches:
               only: master
