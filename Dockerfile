@@ -42,7 +42,7 @@ ARG BUILD_DIR
 ARG PORT
 
 # setup home dir
-RUN mkdir /home/unlock
+RUN mkdir -p /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
 
