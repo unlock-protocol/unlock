@@ -2,11 +2,10 @@
 set -eu
 
 # to be added to CI env
-HEROKU_API_KEY=$(heroku auth:token)
-HEROKU_APP_NAME=unlock-protocol-locksmith
+SERVICE=$1
+HEROKU_APP_NAME=$2
 
-HEROKU_USERNAME=clement@unlock-protocol.com
-DOCKER_BUILD_ARG=locksmith
+echo "Deploying $SERVICE to Heroku $HEROKU_APP_NAME ..."
 
 # install heroku client
 if ! command -v heroku &> /dev/null
@@ -17,13 +16,14 @@ then
 fi
 
 # build image
-docker info
-docker build -t $DOCKER_BUILD_ARG:latest --build-arg BUILD_DIR=$DOCKER_BUILD_ARG .
+docker build --rm=false -t registry.heroku.com/$HEROKU_APP_NAME/web --build-arg BUILD_DIR=$SERVICE .
 
 # push image to Heroku registry
-docker login -username=$HEROKU_USERNAME --password=$HEROKU_API_KEY registry.heroku.com
-docker tag $DOCKER_BUILD_ARG:latest registry.heroku.com/$HEROKU_APP_NAME/web
+docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
 docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+#make sure we are logged in
+heroku container:login
 
 # release on heroku 
 heroku container:release -a $HEROKU_APP_NAME web

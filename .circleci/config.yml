@@ -220,10 +220,6 @@ jobs:
       app-name:
         description: "The Heroku app name to which the application should be deployed"
         type: string
-      app-type:
-        description: "The Heroku app type (web or worker) of the application to be deployed"
-        type: string
-        default: "web"
     steps:
       - checkout
     # - run:
@@ -231,32 +227,12 @@ jobs:
       - run:
           name: Show docker info
           command: |
-            docker info
+            docker info      
       - run:
-          name: Install Heroku CLI
+          name: Build container & deploy to heroku
           command: |
-            curl https://cli-assets.heroku.com/install.sh | sh
-      - run:
-          name: Login into Heroku Docker Repository
-          command: |
-            docker login --username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
-      - run:
-          name: Verify Container Login
-          command: |
-            heroku container:login
-      - run:
-          name: Build Docker Container
-          command: |
-            docker build --rm=false -t registry.heroku.com/<< parameters.app-name >>/<< parameters.app-type >> --build-arg BUILD_DIR=<< parameters.service >> .
-      - run:
-          name: Push Container To Heroku
-          command: |
-            docker push registry.heroku.com/<< parameters.app-name >>/<< parameters.app-type >>
-      - run:
-          name: Release Deployed Container
-          command: |
-            heroku container:release << parameters.app-type >> -a << parameters.app-name >>
-
+            sh .scripts/heroku.sh << parameters.service >> << parameters.app-name >>
+      
   promote-locksmith-image:
     executor: ubuntu_20-executor
     environment:
