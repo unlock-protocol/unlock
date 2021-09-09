@@ -231,7 +231,7 @@ jobs:
       - run:
           name: Build container & deploy to heroku
           command: |
-            sh .scripts/heroku.sh << parameters.service >> << parameters.app-name >>
+            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >>
       
   promote-locksmith-image:
     executor: ubuntu_20-executor
