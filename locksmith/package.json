@@ -101,6 +101,7 @@
     "typescript": "4.4.2",
     "aws-sdk": "2.981.0",
     "run-script-os": "1.1.6",
+    "reflect-metadata": "0.1.13",
     "node-mocks-http": "1.10.1"
   },
   "jest": {
