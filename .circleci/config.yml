@@ -308,7 +308,7 @@ workflows:
             - wedlocks-tests
             - newsletter-tests
       - build-and-deploy-to-heroku:
-          service: "unlock-protocol-locksmith"
+          service: locksmith
           # requires:
           #   - integration-tests
           # filters:
