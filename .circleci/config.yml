@@ -244,7 +244,7 @@ jobs:
       - run:
           name: Build Docker Container
           command: |
-            docker build -t registry.heroku.com/<< parameters.service >>/<< parameters.app-type >> .
+            docker build --rm=fasle -t registry.heroku.com/<< parameters.service >>/<< parameters.app-type >> --build-arg BUILD_DIR=<< parameters.service >> .
       - run:
           name: Push Container To Heroku
           command: |
