@@ -288,7 +288,7 @@ workflows:
             - newsletter-tests
       - build-and-deploy-to-heroku:
           service: locksmith
-          app-name: unlock-protocol-locksmith
+          app-name: unlock-locksmith-staging
           # requires:
           #   - integration-tests
           # filters:
