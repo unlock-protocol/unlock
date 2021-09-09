@@ -1,4 +1,5 @@
 # syntax = docker/dockerfile:experimental
+ARG PORT=3000
 
 ##
 ## 1. get only needed packages
@@ -7,6 +8,7 @@ FROM alpine:3.11 as manifests
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
+ARG PORT
 
 # install deps
 RUN apk add coreutils jq
@@ -18,6 +20,8 @@ COPY yarn.lock .
 
 # only needed workspaces in manifest
 RUN  mkdir /opt/manifests /opt/manifests/packages
+
+# scope workspaces and prevent package hoisting
 RUN jq  -r '.workspaces |= ["packages/**", "'${BUILD_DIR}'"]' /tmp/package.json > /opt/manifests/package.json \
     && cp yarn.lock /opt/manifests
 
@@ -26,13 +30,14 @@ WORKDIR /opt/manifests
 COPY packages  /opt/manifests/packages
 
 ##
-## 2. build the app
+## 2. fetch all deps
 ##
-FROM node:12-alpine as unlock-app
+FROM node:12-alpine as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
+ARG PORT
 
 # add yarn cache to speedup local builds
 ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
@@ -86,3 +91,41 @@ COPY --chown=node scripts /home/unlock/scripts
 # copy app code
 COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
 
+##
+## 3. build the app
+##
+FROM dev as build
+
+ARG BUILD_DIR
+ARG PORT
+
+# additional build step
+RUN yarn workspace @unlock-protocol/$BUILD_DIR build
+
+##
+## 4. export a minimal image w only the prod app
+##
+FROM node:12-alpine as prod
+
+ARG BUILD_DIR
+ARG PORT
+
+USER root
+RUN mkdir /app
+RUN chown node:node /app
+
+USER node
+WORKDIR /app
+
+# copy built files
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/build build
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/yarn.lock yarn.lock
+
+# prod install 
+# NOTE: this required that all shared packages have been published to npm
+RUN yarn install --production --pure-lockfile --non-interactive
+
+# start command
+EXPOSE $PORT
+CMD ["yarn", "start"]
