@@ -2,6 +2,10 @@
     "name": "@unlock-protocol/eth-node",
     "description": "Simple ETH node for development purposes",
     "private": true,
+    "scripts" : {
+        "deploy": "hardhat run scripts/deploy.js --network localhost",
+        "start": "hardhat node"
+    },
     "dependencies": {
         "@nomiclabs/hardhat-ethers": "^2.0.2",
         "@unlock-protocol/unlock-abi-9": "^1.0.0",

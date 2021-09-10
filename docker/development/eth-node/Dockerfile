@@ -12,6 +12,5 @@ RUN yarn install --pure-lockfile
 # add files
 COPY . .
 
-
 EXPOSE 8545
-# ENTRYPOINT [ "yarn", "hardhat" ]
+CMD [ "yarn", "start" ]

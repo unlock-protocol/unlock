@@ -10,7 +10,7 @@ Creates a standalone hardhat node,intended for development purposes
 docker build -t eth-node .
 
 # launch ETH node 
-docker run --rm -it eth-node node
+docker run -it --rm -p 8545:8545 eth-node
 ```
 
 ## Prepare for Unlock dev
