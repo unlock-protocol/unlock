@@ -93,7 +93,7 @@ jobs:
           command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+          command: export ENV_TARGET='prod'
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
