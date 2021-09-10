@@ -55,6 +55,7 @@ app.use(
 app.use(cors({}))
 
 // Parse body
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '5mb' }))
 
 const server = new ApolloServer({

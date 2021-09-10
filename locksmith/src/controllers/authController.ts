@@ -11,14 +11,31 @@ namespace AuthController {
   ): Promise<any> => {
     const { redirect_uri, client_id, grant_type, code } = req.body
 
-    if (
-      !redirect_uri ||
-      !client_id ||
-      grant_type !== 'authorization_code' ||
-      !code
-    ) {
+    if (!redirect_uri) {
       return res.status(400).json({
         error: 'invalid_request',
+        details: 'missing redirect_uri',
+      })
+    }
+
+    if (!client_id) {
+      return res.status(400).json({
+        error: 'invalid_request',
+        details: 'missing client_id',
+      })
+    }
+
+    if (grant_type !== 'authorization_code') {
+      return res.status(400).json({
+        error: 'invalid_request',
+        details: 'wrong grant_type',
+      })
+    }
+
+    if (!code) {
+      return res.status(400).json({
+        error: 'invalid_request',
+        details: 'missing code',
       })
     }
 
@@ -26,6 +43,7 @@ namespace AuthController {
     if (redirectUrl.host !== client_id) {
       return res.status(400).json({
         error: 'invalid_request',
+        details: 'client_id does not match redirect_uri host',
       })
     }
 
