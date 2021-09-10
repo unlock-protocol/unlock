@@ -106,6 +106,8 @@ services:
         - unlockprotocol/unlock-js:master
     env_file:
       - ./${UNLOCK_ENV}.env
+    depends_on: 
+      - eth-node
 
 
   wedlocks: # Container for wedlocks
