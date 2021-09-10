@@ -1,6 +1,10 @@
 FROM node:12-alpine as unlock-eth-node
 LABEL Unlock <ops@unlock-protocol.com>
 
+USER root
+RUN mkdir /app
+RUN chown -R node:node /app
+
 USER node
 WORKDIR /app
 
@@ -11,8 +15,6 @@ RUN yarn install --pure-lockfile
 
 # add files
 COPY --chown=node . .
-
-RUN chown node:node /app
 
 EXPOSE 8545
 CMD [ "yarn", "start" ]
