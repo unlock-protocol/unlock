@@ -24,7 +24,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
   .then(async () => {
     // Instantiate the walletService
     const walletService = new WalletService({
-      1337: {
+      31337: {
         provider: providerURL,
       },
     })
