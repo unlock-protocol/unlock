@@ -8,7 +8,7 @@ import { ZERO } from '../../constants'
 let host
 const port = 8545
 if (process.env.CI) {
-  host = 'ganache-integration'
+  host = 'eth-node'
 } else {
   host = '127.0.0.1'
 }

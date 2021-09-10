@@ -1,23 +1,12 @@
 version: '3.2'
 services:
-  ganache:
+  
+  eth-node:
     restart: always
     build:
-      context: ./development
-      dockerfile: ganache.dockerfile
-    env_file: ../.env.dev.local
+      context: ./development/eth-node
     ports:
       - 8545:8545
-
-  ganache-standup:
-    image: ganache-standup
-    build:
-      context: ./development
-      dockerfile: ganache.dockerfile
-    env_file: ../.env.dev.local
-    entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
-    depends_on:
-      - ganache
 
   jaeger:
     restart: always
@@ -50,7 +39,7 @@ services:
     command: yarn db:migrate
     depends_on:
       - postgres
-      - ganache
+      - eth-node
 
   locksmith:
     env_file: development.env
@@ -66,7 +55,7 @@ services:
       - '8080:8080'
     depends_on:
       - postgres
-      - ganache
+      - eth-node
 
   subgraph_deployment:
     build:
