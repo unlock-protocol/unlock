@@ -18,8 +18,8 @@ const { AddressZero } = ethers.constants
 const host = process.env.HTTP_PROVIDER_HOST || '127.0.0.1'
 const port = process.env.HTTP_PROVIDER_PORT || 8545
 
-const locksmithHost = process.env.LOCKSMITH_HOST
-const locksmithPort = process.env.LOCKSMITH_PORT
+const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
+const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
 const providerURL = `http://${host}:${port}`
 
@@ -45,10 +45,6 @@ async function main() {
   // All non-unlock related deployments and transactions should be done with a signer
   // that is not `0` so that we keep the nonces manageable.
   // const [signer] = await ethers.getSigners()
-
-  // Wait for the node's http endpoint to be up.
-  // serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
-  //   .then(async () => {
 
   // Instantiate the walletService
   const walletService = new WalletService({ 
