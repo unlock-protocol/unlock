@@ -13,6 +13,7 @@ services:
     image: smart-contract-extensionss
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: smart-contract-extensions
       cache_from:
@@ -23,6 +24,7 @@ services:
     image: smart-contracts
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: smart-contracts
       cache_from:
@@ -35,7 +37,8 @@ services:
     image: unlock-app
     build:
       context: ../
-      args: 
+      target: dev
+      args:
         BUILD_DIR: unlock-app
       cache_from:
         - unlock-app
@@ -52,8 +55,9 @@ services:
     image: unlock-protocol-com
     build:
       context: ../
+      target: dev
       args:
-        BUILD_DIR: unlock-protocol.com
+        BUILD_DIR: unlock-protocol-com
       cache_from:
         - unlock-protocol-com
         - unlockprotocol/unlock-protocol-com:master
@@ -66,6 +70,7 @@ services:
     image: paywall
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: paywall
       cache_from:
@@ -78,6 +83,7 @@ services:
     image: newsletter
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: newsletter
       cache_from:
@@ -92,6 +98,7 @@ services:
     image: unlock-js
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: unlock-js
       cache_from:
@@ -100,22 +107,12 @@ services:
     env_file:
       - ./${UNLOCK_ENV}.env
 
-  nudge: # Container for nudge
-    image: nudge
-    build:
-      context: ../
-      args:
-        BUILD_DIR: nudge
-      cache_from:
-        - nudge
-        - unlockprotocol/nudge:master
-    env_file:
-      - ./${UNLOCK_ENV}.env
 
   wedlocks: # Container for wedlocks
     image: wedlocks
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: wedlocks
       cache_from:
@@ -128,6 +125,7 @@ services:
     image: integration-tests
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: integration-tests
       cache_from:
@@ -148,6 +146,7 @@ services:
     image: locksmith
     build:
       context: ../
+      target: dev
       args:
         BUILD_DIR: locksmith
       cache_from:

@@ -1,5 +1,5 @@
 {
-  "name": "@unlock-protocol/unlock-protocol.com",
+  "name": "@unlock-protocol/unlock-protocol-com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -49,7 +49,6 @@
     "docker/development",
     "locksmith",
     "newsletter",
-    "nudge",
     "paywall",
     "smart-contract-extensions",
     "smart-contracts",

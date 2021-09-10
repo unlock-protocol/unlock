@@ -1,5 +1,8 @@
 # syntax = docker/dockerfile:experimental
 
+# default LISTEN port to 3000
+ARG PORT=3000
+
 ##
 ## 1. get only needed packages
 ##
@@ -7,6 +10,7 @@ FROM alpine:3.11 as manifests
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
+ARG PORT
 
 # install deps
 RUN apk add coreutils jq
@@ -18,6 +22,8 @@ COPY yarn.lock .
 
 # only needed workspaces in manifest
 RUN  mkdir /opt/manifests /opt/manifests/packages
+
+# scope workspaces and prevent package hoisting
 RUN jq  -r '.workspaces |= ["packages/**", "'${BUILD_DIR}'"]' /tmp/package.json > /opt/manifests/package.json \
     && cp yarn.lock /opt/manifests
 
@@ -26,20 +32,22 @@ WORKDIR /opt/manifests
 COPY packages  /opt/manifests/packages
 
 ##
-## 2. build the app
+## 2. fetch all deps
 ##
-FROM node:12-alpine as unlock-app
+FROM node:12-alpine as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
+ARG PORT
+
+# setup home dir
+RUN mkdir -p /home/unlock
+RUN chown -R node /home/unlock
+WORKDIR /home/unlock
 
 # add yarn cache to speedup local builds
 ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
-
-RUN mkdir /home/unlock
-RUN chown -R node /home/unlock
-WORKDIR /home/unlock
 
 # copy packages info
 COPY --chown=node --from=manifests /opt/manifests .
@@ -60,10 +68,9 @@ RUN apk add --no-cache --virtual .build-deps \
     build-base \
     && pip install --no-cache-dir virtualenv
 
-USER node
-WORKDIR /home/unlock/
 
 # install deps
+USER node
 RUN mkdir /home/unlock/${BUILD_DIR}
 COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
 COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock
@@ -86,3 +93,51 @@ COPY --chown=node scripts /home/unlock/scripts
 # copy app code
 COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
 
+##
+## 3. build the app
+##
+FROM dev as build
+
+ARG BUILD_DIR
+ARG PORT
+
+# additional build step
+RUN yarn workspace @unlock-protocol/$BUILD_DIR build
+
+##
+## 4. export a minimal image w only the prod app
+##
+FROM node:12-alpine as prod
+
+ARG BUILD_DIR
+ARG PORT
+
+USER root
+RUN mkdir /app
+RUN chown node:node /app
+
+WORKDIR /app
+
+# copy package info
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/yarn.lock yarn.lock
+
+# delete dev deps to prevent yarn from fetching them
+RUN apk add --no-cache --virtual .build-deps coreutils jq  \
+    && jq 'del(.devDependencies)' package.json > package.json.tmp \
+    && mv package.json.tmp package.json \ 
+    && apk del .build-deps \
+    && chown node:node package.json
+
+# prod install 
+# NOTE: this required that all shared packages have been published to npm
+USER node
+ENV NODE_ENV production
+RUN yarn install --production --non-interactive --pure-lockfile
+
+# copy built files
+COPY --from=build --chown=node /home/unlock/$BUILD_DIR/build/ .
+
+# start command
+EXPOSE $PORT
+CMD ["yarn", "prod"]
