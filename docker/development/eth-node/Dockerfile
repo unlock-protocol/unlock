@@ -5,12 +5,12 @@ USER node
 WORKDIR /app
 
 # install deps
-COPY package.json package.json
-COPY yarn.lock yarn.lock
+COPY --chown=node package.json package.json
+COPY --chown=node yarn.lock yarn.lock
 RUN yarn install --pure-lockfile
 
 # add files
-COPY . .
+COPY --chown=node . .
 
 RUN chown node:node /app
 
