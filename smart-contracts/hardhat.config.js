@@ -145,7 +145,7 @@ task('deploy-template', 'Deploys a new PublicLock contract').setAction(
 
     const PublicLock = await ethers.getContractFactory('PublicLock')
     const publicLock = await PublicLock.deploy()
-    
+
     // eslint-disable-next-line no-console
     console.log(
       `New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`
