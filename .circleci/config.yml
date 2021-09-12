@@ -232,7 +232,7 @@ workflows:
           service: locksmith
           app-name: unlock-locksmith-staging
           requires:
-            - integration-tests
+            - promote-locksmith-image
           filters:
             branches:
               only: master
@@ -265,6 +265,8 @@ workflows:
               only:
                 - master
                 - production
+          requires:
+            - integration-tests
       - deploy-to-netlify:
           service: "wedlocks"
           name:
