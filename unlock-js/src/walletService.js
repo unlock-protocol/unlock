@@ -2,9 +2,6 @@ import { ethers } from 'ethers'
 import UnlockService from './unlockService'
 import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
-import { generateKeyMetadataPayload } from './typedData/keyMetadata'
-import { generateKeyHolderMetadataPayload } from './typedData/keyHolderMetadata'
-import 'cross-fetch/polyfill'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -322,24 +319,6 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Signs data for the given account.
-   * We favor eth_signTypedData which provides a better UI
-   * In Metamask, it is called eth_signTypedData_v3
-   *
-   * @param {*} account
-   * @param {*} data
-   * @param {*} callback
-   */
-  async signData(account, data, callback) {
-    try {
-      const result = await this.unformattedSignTypedData(account, data)
-      return callback(null, Buffer.from(result).toString('base64'))
-    } catch (err) {
-      return callback(err, null)
-    }
-  }
-
-  /**
    * Tries multiple approaches for eth_signTypedData
    * @param {*} account
    * @param {*} data
@@ -397,157 +376,6 @@ export default class WalletService extends UnlockService {
       }
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
-    } catch (error) {
-      callback(error, null)
-    }
-  }
-
-  /**
-   * Sign and send a request to update metadata specific to a given key.
-   *
-   * @param {Object} params
-   * @param {string} params.lockAddress - The address of the lock
-   * @param {string} params.keyId - The id of the key to set metadata on
-   * @param {Object.<string, string>} params.metadata - The metadata fields and values to set
-   * @param {string} params.locksmithHost - A url with no trailing slash
-   * @param {*} callback
-   */
-  async setKeyMetadata(
-    { lockAddress, keyId, metadata, locksmithHost, network },
-    callback
-  ) {
-    let url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
-    if (network) {
-      url = `${url}?chain=${network}`
-    }
-
-    try {
-      const currentAddress = await this.getAccount()
-      const payload = generateKeyMetadataPayload(currentAddress, metadata)
-      const signature = await this.unformattedSignTypedData(
-        currentAddress,
-        payload
-      )
-
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-
-      if (response.status !== 202) {
-        callback(
-          new Error(
-            `Received ${response.status} from locksmith: ${response.statusText}`
-          )
-        )
-        return
-      }
-      callback(null, true)
-    } catch (error) {
-      callback(error, null)
-    }
-  }
-
-  /**
-   * @typedef {Object} keyholderMetadata
-   * @property {Object.<string, string>} [publicData={}] - Publicly available metadata
-   * @property {Object.<string, string>} [protectedData={}] - Restricted access metadata
-   */
-
-  /**
-   * Sign and send a request to update metadata specific to a given
-   * user address for a given lock.
-   *
-   * @param {Object} params
-   * @param {string} params.lockAddress - The address of the lock
-   * @param {string} params.userAddress - The address of the user (optional, defaults to current wallet user)
-   * @param {keyholderMetadata} params.metadata - The metadata fields and values to set
-   * @param {string} params.locksmithHost - A url with no trailing slash
-   * @param {*} callback
-   */
-  async setUserMetadata(
-    { lockAddress, userAddress, metadata, locksmithHost, network },
-    callback
-  ) {
-    let url = `${locksmithHost}/api/key/${lockAddress}/user/${userAddress}`
-    if (network) {
-      url = `${url}?chain=${network}`
-    }
-
-    try {
-      const currentAddress = await this.getAccount()
-      const payload = generateKeyHolderMetadataPayload(currentAddress, metadata)
-      const signature = await this.unformattedSignTypedData(
-        currentAddress,
-        payload
-      )
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-
-      if (response.status !== 202) {
-        callback(
-          new Error(
-            `Received ${response.status} from locksmith: ${response.statusText}`
-          )
-        )
-        return
-      }
-      callback(null, true)
-    } catch (error) {
-      callback(error, null)
-    }
-  }
-
-  /**
-   * Sign and send a request to read metadata specific to a given key.
-   *
-   * @param {Object} params
-   * @param {string} params.lockAddress - The address of the lock
-   * @param {string} params.keyId - The id of the key to read metadata on
-   * @param {string} params.locksmithHost - A url with no trailing slash
-   * @param {boolean} params.getProtectedData - when truthy, will generate signature to get protected metadata
-   * @param {*} callback
-   */
-  async getKeyMetadata(
-    { lockAddress, keyId, locksmithHost, getProtectedData, network },
-    callback
-  ) {
-    let url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
-    if (network) {
-      url = `${url}?chain=${network}`
-    }
-    try {
-      let options = {
-        method: 'GET',
-        accept: 'json',
-      }
-
-      if (getProtectedData) {
-        const currentAddress = await this.getAccount()
-        const payload = generateKeyMetadataPayload(currentAddress, {})
-        const signature = await this.unformattedSignTypedData(
-          currentAddress,
-          payload
-        )
-        options.Authorization = `Bearer ${Buffer.from(signature).toString(
-          'base64'
-        )}`
-      }
-
-      const response = await fetch(url, options)
-
-      const json = await response.json()
-      callback(null, json)
     } catch (error) {
       callback(error, null)
     }
