@@ -76,6 +76,7 @@ export const CryptoCheckout = ({
             ? paywallConfig.referrer
             : account
 
+        // TODO: handle failed transactions!!
         await purchaseKey(account, referrer, (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
