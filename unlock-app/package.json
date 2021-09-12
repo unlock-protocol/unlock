@@ -26,7 +26,7 @@
     "@types/styled-components": "5.1.11",
     "@unlock-protocol/eslint-config": "0.0.1",
     "@unlock-protocol/unlock-assets": "1.4.7",
-    "@unlock-protocol/unlock-js": "0.19.3",
+    "@unlock-protocol/unlock-js": "0.20.1",
     "@walletconnect/web3-provider": "1.6.5",
     "apollo-boost": "0.4.9",
     "axios": "0.21.2",
