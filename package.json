@@ -38,10 +38,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd smart-contracts && yarn build && cd ../unlock-app && yarn build && cd ../locksmith && yarn build",
-    "start": "./scripts/start.sh",
-    "nuke": "./scripts/nuke.sh",
-    "lint": "./scripts/lint.sh",
-    "start-locksmith": "cd locksmith && yarn start"
   },
   "repository": {
     "type": "git",
