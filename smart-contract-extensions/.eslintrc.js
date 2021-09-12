@@ -16,7 +16,7 @@ const rulesToIgnore = [
 ]
 
 module.exports = {
-  extends: ['../.eslintrc.js'],
+  extends: ['@unlock-protocol/eslint-config'],
   plugins: ['mocha'],
   globals: {
     it: true,

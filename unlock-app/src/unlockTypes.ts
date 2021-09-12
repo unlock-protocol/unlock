@@ -232,4 +232,5 @@ export interface OAuthConfig {
   clientId: string
   responseType: string
   state: string
+  redirectUri: string
 }

@@ -564,23 +564,6 @@ describe('Form field validators', () => {
             })
           ).toBe(false)
         })
-
-        it('lock has wrong number of properties', () => {
-          expect.assertions(1)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              locks: {
-                [lock]: {
-                  name: 'hi',
-                  whatthe: 'hey?',
-                },
-              },
-            })
-          ).toBe(false)
-        })
-
         it('lock name is not a string', () => {
           expect.assertions(4)
 

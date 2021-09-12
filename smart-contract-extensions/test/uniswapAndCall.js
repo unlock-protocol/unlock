@@ -16,11 +16,16 @@ async function createAndFundExchange(uniswap, token, tokenOwner) {
   await token.mint(tokenOwner, '1000000000000000000000000', {
     from: tokenOwner,
   })
-  await token.approve(exchange.address, -1, { from: tokenOwner })
+  
+  await token.approve(exchange.address, constants.MAX_UINT, { from: tokenOwner })
+  
+  const blockNumber = await web3.eth.getBlockNumber()
+  const latestBlock = await web3.eth.getBlock(blockNumber)
+
   await exchange.addLiquidity(
     '1',
     '1000000000000000000000000',
-    Math.round(Date.now() / 1000) + 60,
+    latestBlock.timestamp + 60,
     {
       from: tokenOwner,
       value: web3.utils.toWei('1', 'ether'),
@@ -79,7 +84,7 @@ contract('swapAndCall', accounts => {
     await targetToken.mint(testAccount, '1000000000000000000000000', {
       from: owner,
     })
-    await targetToken.approve(tokenLock.address, -1, { from: testAccount })
+    await targetToken.approve(tokenLock.address, constants.MAX_UINT, { from: testAccount })
     tokenLock.purchase(keyPrice, testAccount, constants.ZERO_ADDRESS, [], {
       from: testAccount,
     })
@@ -97,7 +102,7 @@ contract('swapAndCall', accounts => {
       calls.push({
         contract: targetExchange.address,
         callData: targetExchange.contract.methods
-          .ethToTokenSwapOutput(keyPrice, -1)
+          .ethToTokenSwapOutput(keyPrice, constants.MAX_UINT)
           .encodeABI(),
         value: ethValue,
       })
@@ -139,13 +144,14 @@ contract('swapAndCall', accounts => {
     })
   })
 
+
   describe('started with sourceTokens', () => {
     beforeEach(async () => {
       await sourceToken.mint(testAccount, '1000000000000000000000000', {
         from: owner,
       })
       // Infinite approval for the tokenSpender allows us to call this once for many swapAndCalls
-      await sourceToken.approve(await swapAndCall.tokenSpender(), -1, {
+      await sourceToken.approve(await swapAndCall.tokenSpender(), constants.MAX_UINT, {
         from: testAccount,
       })
     })
@@ -172,7 +178,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: sourceExchange.address,
           callData: sourceExchange.contract.methods
-            .tokenToTokenSwapOutput(keyPrice, -1, -1, -1, targetToken.address)
+            .tokenToTokenSwapOutput(keyPrice, constants.MAX_UINT, constants.MAX_UINT, constants.MAX_UINT, targetToken.address)
             .encodeABI(),
         })
         // Approve the Lock to spend funds help by the swapAndCall contract
@@ -243,7 +249,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: sourceExchange.address,
           callData: sourceExchange.contract.methods
-            .tokenToEthSwapOutput(keyPrice, -1, -1)
+            .tokenToEthSwapOutput(keyPrice, constants.MAX_UINT, constants.MAX_UINT)
             .encodeABI(),
         })
         // Call purchase on the Lock
@@ -305,7 +311,7 @@ contract('swapAndCall', accounts => {
         calls.push({
           contract: sourceExchange.address,
           callData: sourceExchange.contract.methods
-            .tokenToEthSwapOutput(keyPrice, -1, -1)
+            .tokenToEthSwapOutput(keyPrice, constants.MAX_UINT, constants.MAX_UINT)
             .encodeABI(),
         })
         // Call purchase on the Lock

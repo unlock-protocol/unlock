@@ -1,37 +1,35 @@
-version: 2
+version: 2.1
+
+executors:
+  ubuntu_20-executor:
+    machine:
+      image: 'ubuntu-2004:202104-01'
+      docker_layer_caching: true
 
 jobs:
-  unlock-protocol-com-tests:
-    machine:
-      image: ubuntu-1604:202004-01
+  run-tests:
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0 # disable buildkit until I can figure what is going on!
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    parameters:
+      service:
+        description: "The sub-repository where the application should be tested"
+        type: string
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
+          name: Check for changes in repository
+          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
       - run:
-          name: unlock-protocol-com tests
-          command: scripts/tests.sh unlock-protocol-com
-
-  unlock-app-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
-      - run:
-          name: unlock-app tests
-          command: scripts/tests.sh unlock-app
+          name: Running << parameters.service >> tests
+          command: scripts/tests.sh << parameters.service >>
 
   unlock-js-tests:
-    machine:
-      image: ubuntu-1604:202004-01
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
       BLOCKTIME: 0
     steps:
       - checkout
@@ -46,37 +44,11 @@ jobs:
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
-  smart-contracts-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
-      - run:
-          name: Smart Contract Tests
-          command: scripts/tests.sh smart-contracts
-
-  smart-contract-extensions-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh smart-contract-extensions $CIRCLE_BRANCH
-      - run:
-          name: Smart Contract Extension Tests
-          command: scripts/tests.sh smart-contract-extensions
-
   locksmith-tests:
-    machine:
-      image: ubuntu-1604:202004-01
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
       DB_USERNAME: locksmith_test
       DB_PASSWORD: password
       DB_NAME: locksmith_test
@@ -89,63 +61,11 @@ jobs:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
 
-  paywall-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: Paywall Tests
-          command: scripts/tests.sh paywall
-
-  newsletter-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
-      - run:
-          name: Newsletter Tests
-          command: scripts/tests.sh newsletter
-
-  wedlocks-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
-      - run:
-          name: Wedlocks Tests
-          command: scripts/tests.sh wedlocks
-
-  nudge-tests:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Nudge Tests
-          command: scripts/tests.sh nudge
-
   integration-tests:
-    machine:
-      image: ubuntu-1604:202004-01
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -158,46 +78,34 @@ jobs:
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
-  deploy-unlock-app-netlify:
-    machine:
-      image: ubuntu-1604:202004-01
+  deploy-to-netlify:
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    parameters:
+      service:
+        description: "The service/sub-repository to deploy"
+        type: string
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
+          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+          command: export ENV_TARGET='prod'
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
       - run:
           name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" unlock-app netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-unlock-protocol-com-netlify:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh prod unlock-protocol-com netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+          command: scripts/deploy.sh "$ENV_TARGET" << parameters.service >> netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
   deploy-paywall-aws:
-    machine:
-      image: ubuntu-1604:202004-01
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -212,65 +120,12 @@ jobs:
           name: Deploy to AWS
           command: scripts/deploy-aws.sh "$ENV_TARGET" paywall "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
-  deploy-paywall-netlify:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" paywall netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-newsletter-netlify:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-wedlocks-netlify:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to Netlify
-          command: scripts/deploy.sh "$ENV_TARGET" wedlocks netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
   deploy-locksmith-beanstalk:
     docker:
       - image: circleci/python:3.9.6
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -296,106 +151,39 @@ jobs:
           name: Deploy Locksmith to Beanstalk
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh
 
-  deploy-nudge-beanstalk-staging:
-    docker:
-      - image: circleci/python:3.9.6
+
+  build-and-deploy-to-heroku:
+    executor: ubuntu_20-executor
     environment:
-      DOCKER_BUILDKIT: 0
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    parameters:
+      service:
+        description: "The service/app to build"
+        type: string
+      app-name:
+        description: "The Heroku app name to which the application should be deployed"
+        type: string
     steps:
       - checkout
+    # - run:
+    #       command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
+          name: Show docker info
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
+            docker info
       - run:
-          name: Set GIT_COMMIT_DESC
-          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
-      - run:
-          name: Deploy Staging to Beanstalk
-          command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-rinkeby" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI" 4
-
-  deploy-nudge-beanstalk-production:
-    docker:
-      - image: circleci/python:3.9.6
-    environment:
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
+          name: Build container & deploy to heroku
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-      - run:
-          name: Set GIT_COMMIT_DESC
-          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
-      - run:
-          name: Deploy Staging to Beanstalk
-          command: nudge/scripts/deploy-elasticbeanstalk-docker.sh "nudge" "nudge-mainnet" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$WEB3_PROVIDER_HOST" "$GRAPHQL_BASE_URL" "$UNLOCK_APP_NETLIFY_PROD_WEDLOCKS_URI" 1
-
-  promote-unlock-core-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh unlock-core
-
-  promote-unlock-app-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh unlock-app
-
-  promote-unlock-protocol-com-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-protocol-com $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh unlock-protocol-com
+            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >>
 
   promote-locksmith-image:
-    machine:
-      image: ubuntu-1604:202004-01
+    executor: ubuntu_20-executor
     environment:
       DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     steps:
       - checkout
       - run:
@@ -404,90 +192,34 @@ jobs:
           name: promote image
           command: scripts/promote-image.sh locksmith
 
-  promote-paywall-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh paywall
-
-  promote-nudge-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh nudge $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh nudge
-
-  promote-wedlocks-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh wedlocks
-
-  promote-smart-contracts-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh smart-contracts
-
-  promote-integration-tests-image:
-    machine:
-      image: ubuntu-1604:202004-01
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh integration-tests $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh integration-tests
-
 workflows:
   version: 2
 
   build-test-and-deploy:
     jobs:
       - locksmith-tests
-      - paywall-tests
-      - newsletter-tests
-      - smart-contracts-tests
-      - smart-contract-extensions-tests
-      - unlock-protocol-com-tests
-      - wedlocks-tests
-      - unlock-app-tests
       - unlock-js-tests
+      - run-tests:
+          name: "paywall-tests"
+          service: paywall
+      - run-tests:
+          name: "newsletter-tests"
+          service: newsletter
+      - run-tests:
+          name: "smart-contracts-tests"
+          service: smart-contracts
+      - run-tests:
+          name: "smart-contracts-extensions-tests"
+          service: smart-contract-extensions
+      - run-tests:
+          name: "unlock-protocol-com-tests"
+          service: unlock-protocol-com
+      - run-tests:
+          name: "wedlocks-tests"
+          service: wedlocks
+      - run-tests:
+          name: "unlock-app-tests"
+          service: unlock-app
       - integration-tests:
           requires:
             - unlock-protocol-com-tests
@@ -496,85 +228,47 @@ workflows:
             - paywall-tests
             - wedlocks-tests
             - newsletter-tests
-      - deploy-unlock-app-netlify:
+      - build-and-deploy-to-heroku:
+          service: locksmith
+          app-name: unlock-locksmith-staging
           requires:
             - integration-tests
-      - deploy-paywall-netlify:
+          filters:
+            branches:
+              only: master
+      -  deploy-to-netlify:
+          name: "deploy-unlock-app-netlify"
+          service: "unlock-app"
+          requires:
+            - integration-tests
+      - deploy-to-netlify:
+          name: "deploy-paywall-netlify"
+          service: paywall
           requires:
             - integration-tests
       - deploy-paywall-aws:
           requires:
             - integration-tests
-      - deploy-newsletter-netlify:
+      - deploy-to-netlify:
+          name: "deploy-newsletter-netlify"
+          service: "newsletter"
           requires:
             - integration-tests
-      - deploy-unlock-protocol-com-netlify:
+      - deploy-to-netlify:
+          name: "deploy-unlock-protocol-com-netlify"
+          service: "unlock-protocol-com"
           requires:
             - integration-tests
-      - promote-unlock-core-image:
-          filters:
-            branches:
-              only:
-                - master
-                - production
-          requires:
-            - integration-tests
-      - promote-unlock-app-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - promote-unlock-core-image
-      - promote-unlock-protocol-com-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - promote-unlock-core-image
       - promote-locksmith-image:
           filters:
             branches:
               only:
                 - master
                 - production
-          requires:
-            - promote-unlock-core-image
-      - promote-paywall-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - promote-unlock-core-image
-      - promote-wedlocks-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - promote-unlock-core-image
-      - promote-smart-contracts-image:
-          filters:
-            branches:
-              only: master
-          requires:
-            - smart-contracts-tests
-            - promote-unlock-core-image
-      - promote-integration-tests-image:
-          filters:
-            branches:
-              only:
-                - master
-                - production
-          requires:
-            - promote-unlock-core-image
-      - deploy-locksmith-beanstalk:
-          filters:
-            branches:
-              only:
-                - master
-                - production
-          requires:
-            - promote-locksmith-image
-      - deploy-wedlocks-netlify:
+      - deploy-to-netlify:
+          service: "wedlocks"
+          name:
+            "deploy-wedlocks-netlify"
           filters:
             branches:
               only: master

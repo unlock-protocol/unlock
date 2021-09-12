@@ -1,4 +1,4 @@
-import { ethers, utils } from 'ethers'
+import { ethers } from 'ethers'
 import { useState, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
@@ -46,10 +46,12 @@ export const useProvider = (config: any) => {
       const _account = await _walletService.getAccount()
       let _signedMessage
       if (messageToSign) {
-        _signedMessage = utils.base64.encode(
-          // @ts-expect-error
-          await _walletService.signMessage(messageToSign, 'personal_sign')
+        // @ts-expect-error
+        _signedMessage = await _walletService.signMessage(
+          messageToSign,
+          'personal_sign'
         )
+
         setSignedMessage(_signedMessage)
       }
       setWalletService(_walletService)
