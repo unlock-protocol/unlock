@@ -57,7 +57,11 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
         web3Provider={
           checkoutCommunication.providerAdapter || selectProvider(config)
         }
-        redirectUri={oAuthConfig?.redirectUri || paywallConfig?.redirectUri}
+        redirectUri={
+          oAuthConfig?.redirectUri ||
+          paywallConfig?.redirectUri ||
+          query?.redirectUri
+        }
         oAuthConfig={oAuthConfig}
         defaultState={defaultState}
         paywallConfig={paywallConfig} // last to avoid override by ...checkoutCommunication

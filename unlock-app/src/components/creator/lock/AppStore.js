@@ -110,6 +110,7 @@ const AppStore = ({ lock }) => {
           network: lock.network,
         },
       },
+      pessimistic: true,
       persistentCheckout: true,
       icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
     }

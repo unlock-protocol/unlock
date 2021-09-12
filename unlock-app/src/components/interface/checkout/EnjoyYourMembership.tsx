@@ -15,7 +15,7 @@ export const EnjoyYourMembership = ({
   let label = 'Close'
   if (redirectUri) {
     const redirectUrl = new URL(redirectUri)
-    label = `Return to ${redirectUrl.host}`
+    label = `Go to ${redirectUrl.host}`
   }
   const { signedMessage } = useContext(AuthenticationContext)
 
