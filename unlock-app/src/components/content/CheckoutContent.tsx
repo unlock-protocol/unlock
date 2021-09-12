@@ -15,7 +15,6 @@ interface CheckoutContentProps {
 export const CheckoutContent = ({ query }: CheckoutContentProps) => {
   const checkoutCommunication = useCheckoutCommunication()
   const configFromSearch = getConfigFromSearch(query)
-  const redirectUri = query.redirectUri
   const config = useContext(ConfigContext)
   const [locks, setLocks] = useState({})
   // We need to delay render until we have a config at least, and
@@ -33,6 +32,7 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
       [lock.address]: lock,
     })
   }
+
   if (noProviderAdapter) {
     return <Loading />
   }
@@ -57,7 +57,11 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
         web3Provider={
           checkoutCommunication.providerAdapter || selectProvider(config)
         }
-        redirectUri={redirectUri || paywallConfig?.redirectUri}
+        redirectUri={
+          oAuthConfig?.redirectUri ||
+          paywallConfig?.redirectUri ||
+          query?.redirectUri
+        }
         oAuthConfig={oAuthConfig}
         defaultState={defaultState}
         paywallConfig={paywallConfig} // last to avoid override by ...checkoutCommunication

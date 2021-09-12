@@ -9,10 +9,11 @@ TARGET=$3
 COMMIT=$4
 BRANCH=$5
 IS_FORKED_PR=$6
-NPM_SCRIPT="yarn run deploy-$TARGET"
 REPO_ROOT=`dirname "$0"`/..
 BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
+
+NPM_SCRIPT="yarn workspace @unlock-protocol/$SERVICE deploy-$TARGET"
 
 # Setting the right env var
 export UNLOCK_ENV=$ENV_TARGET
@@ -47,10 +48,8 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
-# We cannot rely on docker compose to build the images since we have a base :(
-# First we need to build the base
-docker build --build-arg BUILDKIT_INLINE_CACHE=1  -t unlock-core -f docker/unlock-core.dockerfile --cache-from unlockprotocol/unlock-core:master .
-docker build --build-arg BUILDKIT_INLINE_CACHE=1  -t $SERVICE -f docker/$SERVICE.dockerfile --cache-from unlockprotocol/$SERVICE:master .
+# First we need to build 
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $SERVICE
 
 # Run deploy code!
 docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS -e UNLOCK_ENV=prod $SERVICE $NPM_SCRIPT $OPTS
