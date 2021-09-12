@@ -1,5 +1,8 @@
 # Changes
 
+# 0.19.3
+- Removed hard coded gas amounts when applicable
+
 # 0.19.2
 - Updated API calls to locksmith to add chain
 
