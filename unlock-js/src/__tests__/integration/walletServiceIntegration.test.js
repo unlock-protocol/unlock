@@ -297,13 +297,13 @@ describe.each(versions)('%s', (versionName) => {
           expect(key.lock).toEqual(lockAddress)
         })
 
-        it('should have set the right duration on the key', () => {
+        it('should have set the right duration on the key', async () => {
           expect.assertions(1)
-          // the actual expiration depends on mining time (which we do not control)
-          // We round to the minute!
+          const blockNumber = await ethers.provider.getBlockNumber()
+          const latestBlock = await ethers.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-              Math.floor(lock.expirationDuration + new Date().getTime() / 1000)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
 
@@ -400,7 +400,10 @@ describe.each(versions)('%s', (versionName) => {
           expect.assertions(1)
           let newBalance
           if (lock.currencyContractAddress === null) {
-            newBalance = await web3Service.getAddressBalance(lockAddress, chainId)
+            newBalance = await web3Service.getAddressBalance(
+              lockAddress,
+              chainId
+            )
           } else {
             newBalance = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
@@ -417,7 +420,10 @@ describe.each(versions)('%s', (versionName) => {
           expect.assertions(1)
           let newBalance
           if (lock.currencyContractAddress === null) {
-            newBalance = await web3Service.getAddressBalance(keyPurchaser, chainId)
+            newBalance = await web3Service.getAddressBalance(
+              keyPurchaser,
+              chainId
+            )
           } else {
             newBalance = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
@@ -451,13 +457,13 @@ describe.each(versions)('%s', (versionName) => {
           expect(key.lock).toEqual(lockAddress)
         })
 
-        it('should have set the right duration on the key', () => {
+        it('should have set the right duration on the key', async () => {
           expect.assertions(1)
-          // the actual expiration depends on mining time (which we do not control)
-          // We round to the minute!
+          const blockNumber = await ethers.provider.getBlockNumber()
+          const latestBlock = await ethers.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-              Math.floor(lock.expirationDuration + new Date().getTime() / 1000)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
       })
