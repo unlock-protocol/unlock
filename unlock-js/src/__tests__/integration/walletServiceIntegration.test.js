@@ -299,8 +299,8 @@ describe.each(versions)('%s', (versionName) => {
 
         it('should have set the right duration on the key', async () => {
           expect.assertions(1)
-          const blockNumber = await ethers.provider.getBlockNumber()
-          const latestBlock = await ethers.provider.getBlock(blockNumber)
+          const blockNumber = await walletService.provider.getBlockNumber()
+          const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
               Math.floor(lock.expirationDuration + latestBlock.timestamp)
@@ -459,8 +459,8 @@ describe.each(versions)('%s', (versionName) => {
 
         it('should have set the right duration on the key', async () => {
           expect.assertions(1)
-          const blockNumber = await ethers.provider.getBlockNumber()
-          const latestBlock = await ethers.provider.getBlock(blockNumber)
+          const blockNumber = await walletService.provider.getBlockNumber()
+          const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
               Math.floor(lock.expirationDuration + latestBlock.timestamp)
