@@ -5,7 +5,6 @@ import v7 from '../v7'
 import v8 from '../v8'
 import v9 from '../v9'
 import WalletService from '../walletService'
-import { GAS_AMOUNTS } from '../constants'
 
 const supportedVersions = [v4, v6, v7, v8, v9]
 
@@ -14,14 +13,6 @@ let walletService
 describe('WalletService (ethers)', () => {
   beforeEach(() => {
     walletService = new WalletService({})
-  })
-
-  describe('gasAmountConstants', () => {
-    it('returns GAS_AMOUNTS', () => {
-      expect.assertions(1)
-
-      expect(WalletService.gasAmountConstants()).toBe(GAS_AMOUNTS)
-    })
   })
 
   describe('unformattedSignTypedData', () => {
