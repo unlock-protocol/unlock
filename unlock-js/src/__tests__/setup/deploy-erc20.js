@@ -19,7 +19,7 @@ const deploy = async (provider, signer) => {
     signer
   )
 
-  let erc20Contract = await factory.deploy({ gasLimit: 6000000 })
+  let erc20Contract = await factory.deploy()
   await erc20Contract.deployed()
 
   return erc20Contract.address
@@ -46,10 +46,7 @@ const transfer = async (
 
   const mintTx = await erc20Contract.mint(
     recipient,
-    ethers.utils.parseUnits(amount, decimals),
-    {
-      gasLimit: 6000000,
-    }
+    ethers.utils.parseUnits(amount, decimals)
   )
   return await mintTx.wait()
 }

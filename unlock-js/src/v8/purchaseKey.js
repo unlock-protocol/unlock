@@ -70,10 +70,22 @@ export default async function (
         this.signer
       )
       // Since we sent the approval transaction, we cannot rely on Ethers to do an estimate, because the computation would fail (since the approval might not have been mined yet)
-      purchaseForOptions.gasLimit = 500000
+      purchaseForOptions.gasLimit = 400000
     }
   } else {
     purchaseForOptions.value = actualAmount
+  }
+
+  // Estimate gas. Bump by 30% because estimates are wrong
+  if (!purchaseForOptions.gasLimit) {
+    const gasLimit = await lockContract.estimateGas.purchase(
+      actualAmount,
+      owner,
+      referrer,
+      data,
+      purchaseForOptions
+    )
+    purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toString()
   }
 
   const transactionPromise = lockContract.purchase(
