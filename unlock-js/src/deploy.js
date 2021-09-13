@@ -2,8 +2,6 @@ const ethers = require('ethers')
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
 
-const gas = require('./constants').GAS_AMOUNTS
-
 /*
  * WARNING: THIS IS DEPRECATED.
  * Use WalletService.deployUnlock
@@ -40,15 +38,13 @@ export default async function deploy(
   )
   const accounts = await provider.listAccounts()
 
-  const unlockContract = await factory.deploy({ gasLimit: gas.deployContract })
+  const unlockContract = await factory.deploy()
 
   await unlockContract.deployed()
 
   const writableUnlockContract = unlockContract.connect(wallet)
   // Initialize
-  const result = await writableUnlockContract.initialize(accounts[0], {
-    gasLimit: 1000000,
-  })
+  const result = await writableUnlockContract.initialize(accounts[0])
   unlockContract.options = { address: unlockContract.address } // compatibility with the web3 way
   onNewContractInstance(unlockContract)
   return result
