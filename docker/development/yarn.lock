@@ -408,10 +408,10 @@
     "@ethersproject/properties" "^5.4.0"
     "@ethersproject/strings" "^5.4.0"
 
-"@unlock-protocol/unlock-js@0.19.3":
-  version "0.19.3"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.19.3.tgz#293336107c98e9dbb9339c19cd6d54c55bc263ab"
-  integrity sha512-rxMg2I4QvkGJrh6PcIIUC5TdovgiXA4H3QVe/DpB8TJcT1lHxDzmNy8WTQMrgza1G9qahdHXHVmQEgxZmUD/Ew==
+"@unlock-protocol/unlock-js@0.20.2":
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.20.2.tgz#4d75f3c30a4e14d3b8e15ad603d0d29cdc1c9d2c"
+  integrity sha512-koEbNumCbXdq/yAMSXvKhqAd0yZw2Ekh4Hp3g4uaJFhI6Ak2Wkkr836OqnTraabpBe2crNE3/jSKbHG/mBjYZw==
 
 accepts@~1.3.7:
   version "1.3.7"
