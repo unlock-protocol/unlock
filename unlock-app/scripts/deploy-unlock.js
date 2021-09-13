@@ -8,7 +8,7 @@ const net = require('net')
 
 /*
  * This script is meant to be used in dev environment to deploy a version of the Unlock smart
- * contract from the packaged version to the local ganache server.
+ * contract from the packaged version to the local eth node.
  */
 
 const host = process.env.HTTP_PROVIDER || '127.0.0.1'

@@ -33,7 +33,7 @@ export const selectProvider = (config: any) => {
   const ethereumWindow: EthereumWindow = window
 
   if (config?.env === 'test') {
-    // We set the provider to be the provider by the local ganache
+    // We set the provider to be the provider by the local eth node
     provider = `http://${config.httpProvider}:8545`
   } else if (ethereumWindow && ethereumWindow.ethereum) {
     provider = ethereumWindow.ethereum

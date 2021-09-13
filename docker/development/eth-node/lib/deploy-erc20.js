@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const ethers = require('ethers')
+const { ethers } = require('hardhat')
 var fs = require('fs')
 
 var testErc20Token = JSON.parse(

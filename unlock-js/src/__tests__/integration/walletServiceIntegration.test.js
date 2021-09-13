@@ -5,13 +5,9 @@ import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import { ZERO } from '../../constants'
 
-let host
+const host = process.env.CI ? 'eth-node' : '127.0.0.1'
 const port = 8545
-if (process.env.CI) {
-  host = 'ganache-integration'
-} else {
-  host = '127.0.0.1'
-}
+const chainId = 31337
 
 const provider = `http://${host}:${port}`
 // This test suite will do the following:
@@ -29,7 +25,7 @@ jest.setTimeout(300000)
 let accounts
 
 const networks = {
-  1337: {
+  31337: {
     provider,
   },
 }
@@ -44,11 +40,11 @@ describe.each(versions)('%s', (versionName) => {
   beforeAll(async () => {
     walletService = new WalletService(networks)
 
-    let signer = new ethers.providers.JsonRpcProvider(provider, 1337)
+    let signer = new ethers.providers.JsonRpcProvider(provider, chainId)
     await walletService.connect(signer)
 
     const unlockAddress = await walletService.deployUnlock(versionName)
-    networks[1337].unlockAddress = unlockAddress
+    networks[chainId].unlockAddress = unlockAddress
 
     web3Service = new Web3Service(networks)
 
@@ -57,7 +53,7 @@ describe.each(versions)('%s', (versionName) => {
 
   it('should yield true to isUnlockContractDeployed', async () => {
     expect.assertions(1)
-    expect(await walletService.isUnlockContractDeployed(1337)).toBe(true)
+    expect(await walletService.isUnlockContractDeployed(chainId)).toBe(true)
   })
 
   it('should return the right version for unlockContractAbiVersion', async () => {
@@ -96,7 +92,7 @@ describe.each(versions)('%s', (versionName) => {
             unlockDiscountToken: ZERO,
             wrappedEth: ZERO,
             estimatedGasForPurchase: 0,
-            chainId: 1337,
+            chainId,
           },
           (error, hash) => {
             if (error) {
@@ -132,7 +128,7 @@ describe.each(versions)('%s', (versionName) => {
         expectedLockAddress = await web3Service.generateLockAddress(
           accounts[0],
           lockParams,
-          1337
+          chainId
         )
 
         lockAddress = await walletService.createLock(
@@ -144,7 +140,7 @@ describe.each(versions)('%s', (versionName) => {
             lockCreationHash = hash
           }
         )
-        lock = await web3Service.getLock(lockAddress, 1337)
+        lock = await web3Service.getLock(lockAddress, chainId)
       })
 
       it('should have yielded a transaction hash', () => {
@@ -199,7 +195,7 @@ describe.each(versions)('%s', (versionName) => {
         const isLockManager = await web3Service.isLockManager(
           lockAddress,
           accounts[0],
-          1337
+          chainId
         )
         expect(isLockManager).toBe(true)
       })
@@ -227,7 +223,7 @@ describe.each(versions)('%s', (versionName) => {
               transactionHash = hash
             }
           )
-          lock = await web3Service.getLock(lockAddress, 1337)
+          lock = await web3Service.getLock(lockAddress, chainId)
         })
 
         it('should have yielded a transaction hash', () => {
@@ -254,7 +250,7 @@ describe.each(versions)('%s', (versionName) => {
           keyBefore = await web3Service.getKeyByLockForOwner(
             lockAddress,
             keyGrantee,
-            1337
+            chainId
           )
           tokenId = await walletService.grantKey(
             {
@@ -271,7 +267,7 @@ describe.each(versions)('%s', (versionName) => {
           key = await web3Service.getKeyByLockForOwner(
             lockAddress,
             keyGrantee,
-            1337
+            chainId
           )
         })
 
@@ -301,13 +297,13 @@ describe.each(versions)('%s', (versionName) => {
           expect(key.lock).toEqual(lockAddress)
         })
 
-        it('should have set the right duration on the key', () => {
+        it('should have set the right duration on the key', async () => {
           expect.assertions(1)
-          // the actual expiration depends on mining time (which we do not control)
-          // We round to the minute!
+          const blockNumber = await walletService.provider.getBlockNumber()
+          const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-              Math.floor(lock.expirationDuration + new Date().getTime() / 1000)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
 
@@ -317,7 +313,7 @@ describe.each(versions)('%s', (versionName) => {
             const keyManager = await web3Service.keyManagerOf(
               lockAddress,
               key.tokenId,
-              1337
+              chainId
             )
             expect(keyManager).toBe(accounts[0])
           })
@@ -340,25 +336,25 @@ describe.each(versions)('%s', (versionName) => {
             // Get the ether balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getAddressBalance(
               lockAddress,
-              1337
+              chainId
             )
             // Get the ether balance of the user before the purchase
             userBalanceBefore = await web3Service.getAddressBalance(
               keyPurchaser,
-              1337
+              chainId
             )
           } else {
             // Get the erc20 balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               lockAddress,
-              1337
+              chainId
             )
             // Get the erc20 balance of the user before the purchase
             userBalanceBefore = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               keyPurchaser,
-              1337
+              chainId
             )
           }
 
@@ -386,7 +382,7 @@ describe.each(versions)('%s', (versionName) => {
           key = await web3Service.getKeyByLockForOwner(
             lockAddress,
             keyOwner,
-            1337
+            chainId
           )
         })
 
@@ -404,12 +400,15 @@ describe.each(versions)('%s', (versionName) => {
           expect.assertions(1)
           let newBalance
           if (lock.currencyContractAddress === null) {
-            newBalance = await web3Service.getAddressBalance(lockAddress, 1337)
+            newBalance = await web3Service.getAddressBalance(
+              lockAddress,
+              chainId
+            )
           } else {
             newBalance = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               lockAddress,
-              1337
+              chainId
             )
           }
           expect(parseFloat(newBalance)).toEqual(
@@ -421,12 +420,15 @@ describe.each(versions)('%s', (versionName) => {
           expect.assertions(1)
           let newBalance
           if (lock.currencyContractAddress === null) {
-            newBalance = await web3Service.getAddressBalance(keyPurchaser, 1337)
+            newBalance = await web3Service.getAddressBalance(
+              keyPurchaser,
+              chainId
+            )
           } else {
             newBalance = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               keyPurchaser,
-              1337
+              chainId
             )
           }
 
@@ -446,7 +448,7 @@ describe.each(versions)('%s', (versionName) => {
         it('should have assigned the key to the right user', async () => {
           expect.assertions(2)
           expect(key.owner).toEqual(keyOwner)
-          const owner = await web3Service.ownerOf(key.lock, tokenId, 1337)
+          const owner = await web3Service.ownerOf(key.lock, tokenId, chainId)
           expect(owner).toEqual(keyOwner)
         })
 
@@ -455,13 +457,13 @@ describe.each(versions)('%s', (versionName) => {
           expect(key.lock).toEqual(lockAddress)
         })
 
-        it('should have set the right duration on the key', () => {
+        it('should have set the right duration on the key', async () => {
           expect.assertions(1)
-          // the actual expiration depends on mining time (which we do not control)
-          // We round to the minute!
+          const blockNumber = await walletService.provider.getBlockNumber()
+          const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-              Math.floor(lock.expirationDuration + new Date().getTime() / 1000)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
       })
@@ -479,25 +481,25 @@ describe.each(versions)('%s', (versionName) => {
             // Get the ether balance of the lock before the withdrawal
             lockBalanceBefore = await web3Service.getAddressBalance(
               lockAddress,
-              1337
+              chainId
             )
             // Get the ether balance of the beneficiary before the withdrawal
             userBalanceBefore = await web3Service.getAddressBalance(
               lock.beneficiary,
-              1337
+              chainId
             )
           } else {
             // Get the erc20 balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               lockAddress,
-              1337
+              chainId
             )
             // Get the erc20 balance of the user before the purchase
             userBalanceBefore = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               lock.beneficiary,
-              1337
+              chainId
             )
           }
 
@@ -531,14 +533,14 @@ describe.each(versions)('%s', (versionName) => {
             // Get the ether balance of the lock before the withdrawal
             lockBalanceAfter = await web3Service.getAddressBalance(
               lockAddress,
-              1337
+              chainId
             )
           } else {
             // Get the erc20 balance of the lock before the purchase
             lockBalanceAfter = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               lockAddress,
-              1337
+              chainId
             )
           }
           expect(parseFloat(lockBalanceAfter)).toEqual(
@@ -553,7 +555,7 @@ describe.each(versions)('%s', (versionName) => {
             // Get the ether balance of the beneficiary before the withdrawal
             beneficiaryBalanceAfter = await web3Service.getAddressBalance(
               lock.beneficiary,
-              1337
+              chainId
             )
             // We should take gas paid into account... so the amount is larger than before
             // but smaller than the sum of the previous balance and the amount in the lock
@@ -565,7 +567,7 @@ describe.each(versions)('%s', (versionName) => {
             beneficiaryBalanceAfter = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               lock.beneficiary,
-              1337
+              chainId
             )
             expect(parseFloat(beneficiaryBalanceAfter)).toEqual(
               parseFloat(userBalanceBefore) + parseFloat(withdrawnAmount)
@@ -587,7 +589,7 @@ describe.each(versions)('%s', (versionName) => {
             key = await web3Service.getKeyByLockForOwner(
               lockAddress,
               keyOwner,
-              1337
+              chainId
             )
             done()
           }, 5000)
@@ -602,7 +604,7 @@ describe.each(versions)('%s', (versionName) => {
           const afterCancellation = await web3Service.getKeyByLockForOwner(
             lockAddress,
             keyOwner,
-            1337
+            chainId
           )
           expect(afterCancellation.expiration < key.expiration).toBe(true)
         })
@@ -616,7 +618,7 @@ describe.each(versions)('%s', (versionName) => {
             const isKeyManager = await web3Service.isKeyGranter(
               lockAddress,
               keyGranter,
-              1337
+              chainId
             )
             expect(isKeyManager).toBe(false)
           })
@@ -631,7 +633,7 @@ describe.each(versions)('%s', (versionName) => {
             const isKeyManager = await web3Service.isKeyGranter(
               lockAddress,
               keyGranter,
-              1337
+              chainId
             )
             expect(isKeyManager).toBe(true)
           })
@@ -653,7 +655,7 @@ describe.each(versions)('%s', (versionName) => {
             const key = await web3Service.getKeyByLockForOwner(
               lockAddress,
               keyOwner,
-              1337
+              chainId
             )
             expiration = key.expiration
 
@@ -669,7 +671,7 @@ describe.each(versions)('%s', (versionName) => {
             const key = await web3Service.getKeyByLockForOwner(
               lockAddress,
               keyOwner,
-              1337
+              chainId
             )
 
             expect(expiration).toBeGreaterThan(key.expiration)
@@ -689,7 +691,7 @@ describe.each(versions)('%s', (versionName) => {
             const { expiration } = await web3Service.getKeyByLockForOwner(
               lockAddress,
               accounts[0],
-              1337
+              chainId
             )
             const now = Math.floor(new Date().getTime() / 1000)
             expect(expiration).toBeGreaterThan(now)
@@ -699,7 +701,7 @@ describe.each(versions)('%s', (versionName) => {
               await web3Service.getKeyExpirationByLockForOwner(
                 lockAddress,
                 recipient,
-                1337
+                chainId
               )
 
             expect(recipientDurationBefore).toBe(0)
@@ -716,7 +718,7 @@ describe.each(versions)('%s', (versionName) => {
               await web3Service.getKeyExpirationByLockForOwner(
                 lockAddress,
                 accounts[0],
-                1337
+                chainId
               )
 
             expect(newExpiration).toBeLessThan(expiration)
@@ -725,7 +727,7 @@ describe.each(versions)('%s', (versionName) => {
               await web3Service.getKeyExpirationByLockForOwner(
                 lockAddress,
                 recipient,
-                1337
+                chainId
               )
             ).toBeGreaterThan(recipientDurationBefore)
           })
