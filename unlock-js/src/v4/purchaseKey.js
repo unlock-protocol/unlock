@@ -1,5 +1,5 @@
 import utils from '../utils'
-import { GAS_AMOUNTS, ZERO } from '../constants'
+import { ZERO } from '../constants'
 import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
 
 /**
@@ -40,9 +40,7 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  const purchaseForOptions = {
-    gasLimit: GAS_AMOUNTS.purchaseFor,
-  }
+  const purchaseForOptions = {}
 
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(

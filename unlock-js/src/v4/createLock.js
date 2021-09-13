@@ -1,10 +1,5 @@
 import ethersUtils from '../utils'
-import {
-  GAS_AMOUNTS,
-  ETHERS_MAX_UINT,
-  UNLIMITED_KEYS_COUNT,
-  ZERO,
-} from '../constants'
+import { ETHERS_MAX_UINT, UNLIMITED_KEYS_COUNT, ZERO } from '../constants'
 
 import { getErc20Decimals } from '../erc20'
 
@@ -52,10 +47,7 @@ export default async function (lock, callback) {
     currencyContractAddress,
     decimalKeyPrice,
     maxNumberOfKeys,
-    lockName,
-    {
-      gasLimit: GAS_AMOUNTS.createLock,
-    }
+    lockName
   )
   const hash = await this._handleMethodCall(transactionPromise)
 
