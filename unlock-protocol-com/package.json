@@ -45,21 +45,6 @@
   "devDependencies": {
     "nodemon": "2.0.12"
   },
-  "workspaces": [
-    "docker/development",
-    "locksmith",
-    "newsletter",
-    "paywall",
-    "smart-contract-extensions",
-    "smart-contracts",
-    "subgraph",
-    "tests",
-    "unlock-app",
-    "unlock-assets",
-    "unlock-js",
-    "unlock-protocol.com",
-    "wedlocks"
-  ],
   "scripts": {
     "predev": "yarn build",
     "dev": "next dev -p 3002 src",

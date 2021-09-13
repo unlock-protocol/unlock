@@ -1,31 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Svg from './svg'
 import Media from '../../theme/media'
 
-export const OptInForm = () => (
-  <Form
-    action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&amp;id=6764cd60ef"
-    method="post"
-    className="subscribe"
-    rel="noopener noreferrer"
-    target="_blank"
-  >
-    <EmailInput
-      type="email"
-      placeholder="Your email here"
-      id="mce-EMAIL"
-      name="EMAIL"
-      required
-    />
-    <Subscribe>
-      <Icon size="24">
-        <Svg.Checkmark />
-      </Icon>
-      Submit
-    </Subscribe>
-  </Form>
-)
+export const OptInForm = () => {
+  const [email, setEmail] = useState('')
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!email) return
+    const portalId = '19942922'
+    const formGuid = '868101be-ae3e-422e-bc86-356c96939187'
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        portalId,
+        formGuid,
+        fields: [
+          {
+            name: 'email',
+            value: email,
+          },
+        ],
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    // send POST request
+    fetch(
+      `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`,
+      options
+    )
+    alert('Thanks! We sent a confirmation email, please check it out!')
+    setEmail('')
+  }
+  return (
+    <Form onSubmit={handleSubmit}>
+      <EmailInput
+        type="email"
+        placeholder="Your email here"
+        name="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <Subscribe type="submit">
+        <Icon size="24">
+          <Svg.Checkmark />
+        </Icon>
+        Submit
+      </Subscribe>
+    </Form>
+  )
+}
 
 export default OptInForm
 

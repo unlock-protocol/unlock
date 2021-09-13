@@ -1,5 +1,5 @@
 import utils from '../utils'
-import { GAS_AMOUNTS, ZERO } from '../constants'
+import { ZERO } from '../constants'
 import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
 
 /**
@@ -41,7 +41,7 @@ export default async function (
   }
 
   const purchaseForOptions = {
-    gasLimit: GAS_AMOUNTS.purchaseFor,
+    gasLimit: 400000,
   }
 
   if (erc20Address && erc20Address !== ZERO) {
@@ -64,10 +64,7 @@ export default async function (
     purchaseForOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract['purchaseFor(address)'](
-    owner,
-    purchaseForOptions
-  )
+  const transactionPromise = lockContract.purchaseFor(owner, purchaseForOptions)
 
   const hash = await this._handleMethodCall(transactionPromise)
 

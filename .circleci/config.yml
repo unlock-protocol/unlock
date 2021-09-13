@@ -93,7 +93,7 @@ jobs:
           command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+          command: scripts/circleci/set-env-target.sh << parameters.service >> >> $BASH_ENV
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -233,6 +233,9 @@ workflows:
           app-name: unlock-locksmith-staging
           requires:
             - integration-tests
+          filters:
+            branches:
+              only: master
       -  deploy-to-netlify:
           name: "deploy-unlock-app-netlify"
           service: "unlock-app"
