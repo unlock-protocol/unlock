@@ -1,5 +1,5 @@
 import utils from '../utils'
-import { GAS_AMOUNTS, ZERO } from '../constants'
+import { ZERO } from '../constants'
 import { getErc20Decimals } from '../erc20'
 
 /**
@@ -31,12 +31,8 @@ export default async function (
   }
   const actualAmount = utils.toDecimal(keyPrice, decimals)
 
-  const transactionPromise = lockContract['updateKeyPrice(uint256)'](
-    actualAmount,
-    {
-      gasLimit: GAS_AMOUNTS.updateKeyPrice,
-    }
-  )
+  const transactionPromise =
+    lockContract['updateKeyPrice(uint256)'](actualAmount)
   const hash = await this._handleMethodCall(transactionPromise)
 
   if (callback) {

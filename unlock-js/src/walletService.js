@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
 import UnlockService from './unlockService'
-import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
 
 const bytecode = require('./bytecode').default
@@ -13,14 +12,6 @@ const abis = require('./abis').default
  * actually retrieving the data from the chain/smart contracts
  */
 export default class WalletService extends UnlockService {
-  /**
-   * Exposes gas amount constants to be utilzed when sending relevant transactions
-   * for the platform.
-   */
-  static gasAmountConstants() {
-    return GAS_AMOUNTS
-  }
-
   /**
    * This needs to be called with a ethers.providers which includes a signer or with a signer
    */
@@ -149,9 +140,7 @@ export default class WalletService extends UnlockService {
       this.signer
     )
 
-    const contract = await factory.deploy({
-      gasLimit: 6500000, // TODO use better value (per version?)
-    })
+    const contract = await factory.deploy()
 
     if (callback) {
       callback(null, contract.deployTransaction.hash)
@@ -184,9 +173,7 @@ export default class WalletService extends UnlockService {
       bytecode[version].Unlock,
       this.signer
     )
-    const unlockContract = await factory.deploy({
-      gasLimit: GAS_AMOUNTS.deployContract,
-    })
+    const unlockContract = await factory.deploy()
 
     if (callback) {
       callback(null, unlockContract.deployTransaction.hash)
@@ -197,9 +184,7 @@ export default class WalletService extends UnlockService {
     // Let's now run the initialization
     const address = await this.signer.getAddress()
     const writableUnlockContract = unlockContract.connect(this.signer)
-    const transaction = await writableUnlockContract.initialize(address, {
-      gasLimit: 1000000,
-    })
+    const transaction = await writableUnlockContract.initialize(address)
 
     if (callback) {
       callback(null, transaction.hash)
