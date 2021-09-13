@@ -808,10 +808,10 @@
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-9/-/unlock-abi-9-1.0.0.tgz#632a12f9603067b99c3e20aac5708ad0c7da772f"
   integrity sha512-kXWnuKNeLhsrK2FnZHv3ltJkeqB16dpi7RacVb/BRJddJMLAkrblNfppyDVuLUrUK5IsTr7/+WXOSdBCrDiB0Q==
 
-"@unlock-protocol/unlock-js@^0.19.2":
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.19.2.tgz#14b9c7d97fa3ea85a762d4fc677b48784bdcf990"
-  integrity sha512-37pthyd6pF9YlYGUtFAZh94dWbjx7rO0wdGGqB8MC7rFGWuEKbyx8a0MOLmvOu3U4W+FrdoK/CYPhiU/GDdWWg==
+"@unlock-protocol/unlock-js@0.20.2":
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.20.2.tgz#4d75f3c30a4e14d3b8e15ad603d0d29cdc1c9d2c"
+  integrity sha512-koEbNumCbXdq/yAMSXvKhqAd0yZw2Ekh4Hp3g4uaJFhI6Ak2Wkkr836OqnTraabpBe2crNE3/jSKbHG/mBjYZw==
 
 abort-controller@^3.0.0:
   version "3.0.0"
