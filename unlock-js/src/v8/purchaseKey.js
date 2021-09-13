@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import utils from '../utils'
 import { ZERO } from '../constants'
 import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
