@@ -107,7 +107,4 @@ export class WalletService {
       transaction: any | null
     ) => void
   ) => Promise<string>
-  setKeyMetadata: (params: SetKeyMetadataParams, callback: any) => void
-  setUserMetadata: (params: SetUserMetadataParams, callback: any) => void
-  getKeyMetadata: (params: GetKeyMetadataParams, callback: any) => void
 }

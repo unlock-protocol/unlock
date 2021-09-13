@@ -1,5 +1,11 @@
 # Changes
 
+# 0.20.2
+- Adding forced estimate for gas
+
+# 0.20.0
+- removed metadata functions (breaking change)
+
 # 0.19.2
 - Updated API calls to locksmith to add chain
 
