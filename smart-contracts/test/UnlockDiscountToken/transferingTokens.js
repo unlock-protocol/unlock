@@ -11,7 +11,7 @@ let unlock
 let udt
 let lock
 
-const estimateGas = 252166
+const estimateGas = 252166 * 2
 
 contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
