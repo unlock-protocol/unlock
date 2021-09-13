@@ -43,8 +43,8 @@ const settings = {
   },
 }
 
-// When running CI, we connect to the 'ganache' container
-const testHost = process.env.CI === 'true' ? 'ganache' : '127.0.0.1'
+// When running CI, we connect to the hardhat node container
+const testHost = process.env.CI === 'true' ? 'eth-node' : '127.0.0.1'
 const defaultNetworks = {
   ganache: {
     url: `http://${testHost}:8545`,
@@ -145,6 +145,8 @@ task('deploy-template', 'Deploys a new PublicLock contract').setAction(
 
     const PublicLock = await ethers.getContractFactory('PublicLock')
     const publicLock = await PublicLock.deploy()
+
+    // eslint-disable-next-line no-console
     console.log(
       `New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`
     )

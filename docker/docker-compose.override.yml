@@ -1,23 +1,12 @@
 version: '3.2'
 services:
-  ganache:
+  
+  eth-node:
     restart: always
     build:
-      context: ./development
-      dockerfile: ganache.dockerfile
-    env_file: ../.env.dev.local
+      context: ./development/eth-node
     ports:
       - 8545:8545
-
-  ganache-standup:
-    image: ganache-standup
-    build:
-      context: ./development
-      dockerfile: ganache.dockerfile
-    env_file: ../.env.dev.local
-    entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
-    depends_on:
-      - ganache
 
   jaeger:
     restart: always
@@ -42,21 +31,23 @@ services:
     image: locksmith
     build:
       context: ../
-      dockerfile: ./docker/locksmith.dockerfile
+      args:
+        BUILD_DIR: locksmith
       cache_from:
         - locksmith
         - unlockprotocol/locksmith:master
     command: yarn db:migrate
     depends_on:
       - postgres
-      - ganache
+      - eth-node
 
   locksmith:
     env_file: development.env
     image: locksmith
     build:
       context: ../
-      dockerfile: ./docker/locksmith.dockerfile
+      args:
+        BUILD_DIR: locksmith
       cache_from:
         - locksmith
         - unlockprotocol/locksmith:master
@@ -64,7 +55,7 @@ services:
       - '8080:8080'
     depends_on:
       - postgres
-      - ganache
+      - eth-node
 
   subgraph_deployment:
     build:
@@ -75,7 +66,11 @@ services:
       - graph-node
 
   wedlocks:
-    image: unlockprotocol/wedlocks
+    image: wedlocks
+    build:
+      context: ../
+      args:
+          BUILD_DIR: locksmith
     command: yarn dev
     env_file: development.env
     ports:

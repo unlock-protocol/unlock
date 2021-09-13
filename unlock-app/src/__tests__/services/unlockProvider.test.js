@@ -39,7 +39,7 @@ describe('Unlock Provider', () => {
   let provider
   beforeAll(async () => {
     const providerUrl = process.env.CI
-      ? 'http://ganache-integration::8545'
+      ? 'http://eth-node:8545'
       : 'http://127.0.0.1:8545'
     const requiredNetworkId = 1492
 

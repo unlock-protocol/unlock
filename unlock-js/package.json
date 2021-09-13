@@ -10,7 +10,7 @@
     "url": "https://github.com/unlock-protocol/unlock.git"
   },
   "scripts": {
-    "pretest": "yarn build && node ./src/__tests__/setup/prepare-ganache-for-unlock.js",
+    "pretest": "yarn build && node ./src/__tests__/setup/prepare-eth-node-for-unlock.js",
     "test": "jest",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
