@@ -40,7 +40,9 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  const purchaseForOptions = {}
+  const purchaseForOptions = {
+    gasLimit: 400000,
+  }
 
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
@@ -62,10 +64,7 @@ export default async function (
     purchaseForOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract['purchaseFor(address)'](
-    owner,
-    purchaseForOptions
-  )
+  const transactionPromise = lockContract.purchaseFor(owner, purchaseForOptions)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
