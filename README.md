@@ -26,31 +26,65 @@ Please read more about contributing in our [contributor guide](https://github.co
 
 ## Getting started
 
-We use [docker](https://docker.com/) to run a set of containers which provide the required infrastructure (database, local ethereum test network, subgraph...)
-
-1. Check out the code from this repository
+### The code
 
 Unlock uses a mono repo which includes all the services and applications we develop.
 
 ```
+# get the code
 git clone https://github.com/unlock-protocol/unlock
 cd unlock
 ```
 
-2. Install all dependencies
-
-This will install all dependencies required for all the Unlock components (smart contracts and react app). You'll need [yarn](https://yarnpkg.com) installed globally.
+You'll need [yarn](https://yarnpkg.com) installed globally.
 
 ```
+# install all dependencies
 yarn
 ```
 
-3. Set up your environment variables
+We use Yarn workspace to execute commands i.e. `yarn worskspace <workspace name> <command>`
+
+
+### The protocol
+
+You can run a local version of the protocol using [Docker](https://docs.docker.com/install/). 
+
+```
+cd docker && docker-compose up --build 
+```
+
+This will create the required infrastructure (database, local ethereum test network, subgraph...) and start services such as the Locksmith API and a Wedlocks mailing service for debug purposes.
+
+NB: config is defined in both `docker-compose.yml` and `docker-compose.override.yml`.
+
+
+### Run one of the app
+
+The main dashboard lives in the `unlock-app` folder of this repo. To launch it locally, you will have to
+
+
+```
+# install deps
+yarn 
+
+# start Unlock main app
+yarn worskspace @unlock-protocol/unlock-app start
+```
+
+This will start 
+
+-  `http://localhost:3000/dashboard` to start using the application and deploy locks locally. 
+-  `http://localhost:3002` our static landing page site.
+
+
+### Config and environment variables
 
 At the root of the repo, add a file called `.env.dev.local` which includes the following variables and add your wallet address to the first line:
 
 ```
 ETHEREUM_ADDRESS=<your ethereum address>
+
 READ_ONLY_PROVIDER=http://localhost:8545
 LOCKSMITH_URI=http://localhost:8080
 WEDLOCKS_URI=http://localhost:1337
@@ -70,26 +104,6 @@ LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example).
 This will let you interract with the application using your regular setup.
 
-4. Run the docker cluster.
-
-Once [docker has been installed](https://docs.docker.com/install/) on your machine, start the cluster:
-
-```
-$ cd docker && docker-compose up --build
-```
-
-This cluster includes all the required "infrastructure" to run our apps locally.
-When starting this script does several things: deploys the unlock smart contract, transfers eth to your address, ... etc. It is actually defined in both `docker-compose.yml` and `docker-compose.override.yml`.
-
-5. Run the app
-
-This applies to any of our applications, but we'll take `unlock-app` as an example as it is our "main" dashboard:
-
-```
-cd unlock-app && yarn dev
-```
-
-Important: You should then head to `http://localhost:3000/dashboard` so you can start using the application and deploy locks locally. (going to the root will redirect you to `http://localhost:3002` which is our static landing page site.)
 
 ## Thank you
 

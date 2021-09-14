@@ -43,7 +43,8 @@ services:
     depends_on:
       - postgres
       - eth-node
-
+  
+  # deploy the unlock graph on graph-node, then stop after execution
   subgraph:
     build:
       context: ../
