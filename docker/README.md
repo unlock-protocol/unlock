@@ -5,7 +5,6 @@ In effort to aid the ease of development, we have provided a Docker compose file
 The following services are run as part of the compose setup:
 
 * eth-node (hardhat)
-* jaeger
 * graph protocol node
 * ipfs
 * postgres
