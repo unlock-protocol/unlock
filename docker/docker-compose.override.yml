@@ -68,8 +68,8 @@ services:
       target: dev
       context: ../
       args:
-          BUILD_DIR: locksmith
-    command: yarn dev
+          BUILD_DIR: wedlocks
+    command: [ "yarn", "workspace", "@unlock-protocol/wedlocks", "dev"]
     env_file: development.env
     ports:
       - '1337:1337'
