@@ -6972,11 +6972,6 @@
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.19.2.tgz#14b9c7d97fa3ea85a762d4fc677b48784bdcf990"
   integrity sha512-37pthyd6pF9YlYGUtFAZh94dWbjx7rO0wdGGqB8MC7rFGWuEKbyx8a0MOLmvOu3U4W+FrdoK/CYPhiU/GDdWWg==
 
-"@unlock-protocol/unlock-js@0.20.2":
-  version "0.20.2"
-  resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-js/-/unlock-js-0.20.2.tgz#4d75f3c30a4e14d3b8e15ad603d0d29cdc1c9d2c"
-  integrity sha512-koEbNumCbXdq/yAMSXvKhqAd0yZw2Ekh4Hp3g4uaJFhI6Ak2Wkkr836OqnTraabpBe2crNE3/jSKbHG/mBjYZw==
-
 "@walletconnect/browser-utils@^1.6.5":
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/@walletconnect/browser-utils/-/browser-utils-1.6.5.tgz#01180682e90b95384e820191a1c6ad4a78729439"
