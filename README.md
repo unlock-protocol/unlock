@@ -28,7 +28,7 @@ Please read more about contributing in our [contributor guide](https://github.co
 
 ### The code
 
-Unlock uses a mono repo which includes all the services and applications we develop.
+Unlock uses a monorepo which includes all the services and applications we develop.
 
 ```
 # get the code
@@ -39,11 +39,21 @@ cd unlock
 You'll need [yarn](https://yarnpkg.com) installed globally.
 
 ```
-# install all dependencies
 yarn
+# install all dependencies (...may take a while)
 ```
 
-We use Yarn workspace to execute commands i.e. `yarn worskspace <workspace name> <command>`
+To execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
+
+```
+# build the contracts
+yarn workspace @unlock-protocol/smart-contracts build
+
+# validate lint for paywall
+yarn workspace @unlock-protocol/paywall lint
+
+# etc.
+```
 
 
 ### The protocol
@@ -54,15 +64,15 @@ You can run a local version of the protocol using [Docker](https://docs.docker.c
 cd docker && docker-compose up --build 
 ```
 
-This will create the required infrastructure (database, local ethereum test network, subgraph...) and start services such as the Locksmith API and a Wedlocks mailing service for debug purposes.
+This will create the required infrastructure (database, local ethereum test network, subgraph...) and start core services such as the [Locksmith](./locksmith) API and a [Wedlocks](./wedlocks) mailing service for debug purposes.
 
 NB: config is defined in both `docker-compose.yml` and `docker-compose.override.yml`.
 
-
 ### Run one of the app
 
-The main dashboard lives in the `unlock-app` folder of this repo. To launch it locally, you will have to
+The main dashboard lives in the `unlock-app` folder of this repo. 
 
+To launch it locally:
 
 ```
 # install deps
@@ -80,19 +90,27 @@ This will start
 
 ### Config and environment variables
 
-At the root of the repo, add a file called `.env.dev.local` which includes the following variables and add your wallet address to the first line:
+If you run the app locally on you machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
 
 ```
+# your wallet address to the first line
 ETHEREUM_ADDRESS=<your ethereum address>
 
+# the ETH node
 READ_ONLY_PROVIDER=http://localhost:8545
+
+# core service URLs
 LOCKSMITH_URI=http://localhost:8080
 WEDLOCKS_URI=http://localhost:1337
+
+# other optional services
 DASHBOARD_URL=http://localhost:3000
 PAYWALL_URL=http://localhost:3001
 PAYWALL_SCRIPT_URL=http://localhost:3001/static/paywall.min.js
 UNLOCK_STATIC_URL=http://localhost:3002
 UNLOCK_TICKETS_URL=http://0.0.0.0:3003
+
+# replace this by
 ERC20_CONTRACT_SYMBOL=DAI
 ERC20_CONTRACT_ADDRESS=0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9
 BOOTSTRAP_AMOUNT=15.0
@@ -104,6 +122,7 @@ LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example).
 This will let you interract with the application using your regular setup.
 
+NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder. 
 
 ## Thank you
 
