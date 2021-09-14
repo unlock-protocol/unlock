@@ -340,7 +340,7 @@ export const Checkout = ({
         network={lockProps?.network || paywallConfig?.network}
         onAccountCreated={async (unlockProvider) => {
           await onProvider(unlockProvider)
-          setCheckoutState('confirm-claim')
+          setCheckoutState('claim-membership')
         }}
       />
     )
