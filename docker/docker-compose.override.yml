@@ -15,22 +15,6 @@ services:
     ports:
       - '5432:5432'
 
-  locksmith-migration:
-    env_file: development.env
-    image: locksmith
-    build:
-      context: ../
-      target: dev
-      args:
-        BUILD_DIR: locksmith
-      cache_from:
-        - locksmith
-        - unlockprotocol/locksmith:master
-    command: yarn db:migrate
-    depends_on:
-      - postgres
-      - eth-node
-
   locksmith:
     env_file: development.env
     image: locksmith
@@ -42,8 +26,20 @@ services:
       cache_from:
         - locksmith
         - unlockprotocol/locksmith:master
+    command: [ 
+      "/opt/wait-for-it.sh", 
+      "-t", "0", 
+      "postgres:5432", 
+      "--", 
+      "yarn",
+      "workspace",
+      "@unlock-protocol/locksmith",
+      "dev"
+      ]
     ports:
       - '8080:8080'
+    volumes:
+      - ./development/wait-for-it/wait-for-it.sh:/opt/wait-for-it.sh
     depends_on:
       - postgres
       - eth-node
