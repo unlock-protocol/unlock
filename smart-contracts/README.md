@@ -101,8 +101,12 @@ You can verify all contracts on etherscan as follow:
 ```
 export ETHERSCAN_API_KEY=<your api key>
 
+# get implementation address
+npx hardhat impl --contract contracts/<YourContract.sol>
+> implementation address: <address>
+
 # contract addresses are fetched from .openzeppelin files
-npx hardhat run scripts/verify.js --network rinkeby
+npx hardhat verify <address>
 ```
 
 You can also verify a contract using an existing address

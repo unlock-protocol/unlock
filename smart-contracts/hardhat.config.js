@@ -1,6 +1,10 @@
 // hardhat.config.js
 const { task } = require('hardhat/config')
-const { copySync } = require('fs-extra')
+const { copySync, pathExists } = require('fs-extra')
+const {
+  Manifest,
+  hashBytecodeWithoutMetadata,
+} = require('@openzeppelin/upgrades-core')
 const { getNetworkName } = require('./helpers/network')
 const { getDeployment } = require('./helpers/deployments')
 const OZ_SDK_EXPORT = require('./openzeppelin-cli-export.json')
@@ -104,6 +108,39 @@ task('balance', "Prints an account's balance")
     console.log(web3.utils.fromWei(balance, 'ether'), 'ETH')
   })
 
+task('impl', 'Get the contract implementation address')
+  .addParam('contract', 'The contract path')
+  .setAction(async ({ contract }, { ethers, network }) => {
+    const { chainId } = await ethers.provider.getNetwork()
+    const networkName = getNetworkName(chainId)
+
+    if (!(await pathExists(contract))) {
+      // eslint-disable-next-line no-console
+      console.log(`ERROR: Contract file not found: ${contract}...`)
+      return
+    }
+
+    // parse OZ manifest
+    const manifestParser = await Manifest.forNetwork(network.provider)
+    const manifest = await manifestParser.read()
+
+    const contractName = contract.replace('contracts/', '').replace('.sol', '')
+    const factory = await ethers.getContractFactory(contractName)
+
+    // get implementation address
+    const bytecodeHash = hashBytecodeWithoutMetadata(factory.bytecode)
+    if (Object.keys(manifest.impls).includes(bytecodeHash)) {
+      const { address } = manifest.impls[bytecodeHash]
+      // eslint-disable-next-line no-console
+      console.log(`> implementation address: ${address}`)
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(
+        `No implementation found in .openzeppelin ${networkName} manifest.`
+      )
+    }
+  })
+
 task('upgrade', 'Upgrade a contract')
   .addParam('contract', 'The contract path')
   .setAction(async ({ contract }, { ethers, upgrades }) => {
@@ -152,6 +189,13 @@ task('deploy-template', 'Deploys a new PublicLock contract').setAction(
     )
   }
 )
+
+task('config', 'Show current config')
+  .addFlag('json', 'output as JSON')
+  .setAction(({ json }, { config }) => {
+    // eslint-disable-next-line no-console
+    console.log(json ? JSON.stringify(config) : config)
+  })
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
