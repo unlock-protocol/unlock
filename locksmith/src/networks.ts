@@ -22,7 +22,7 @@ export const networks: NetworkConfigs = {
   4: {
     provider:
       'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
-    locksmithUri: 'https://rinkeby.locksmith.unlock-protocol.com',
+    locksmithUri: 'https://staging-locksmith.unlock-protocol.com',
     unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
     unlockAppUrl: 'https://app.unlock-protocol.com',
     subgraphURI:
