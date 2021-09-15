@@ -6091,10 +6091,10 @@
   dependencies:
     stripe "*"
 
-"@types/styled-components@5.1.11":
-  version "5.1.11"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.11.tgz#a3a1bc0f2cdad7318d8ce219ee507e6b353503b5"
-  integrity sha512-u8g3bSw9KUiZY+S++gh+LlURGraqBe3MC5I5dygrNjGDHWWQfsmZZRTJ9K9oHU2CqWtxChWmJkDI/gp+TZPQMw==
+"@types/styled-components@5.1.14":
+  version "5.1.14"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.14.tgz#e9cf8cdb5eef9d139628183a84c083f630635d67"
+  integrity sha512-d6P1/tyNytqKwam3cQXq7a9uPtovc/mdAs7dBiz1YbDdNIT3X4WmuFU78YdSYh84TXVuhOwezZ3EeKuNBhwsHQ==
   dependencies:
     "@types/hoist-non-react-statics" "*"
     "@types/react" "*"
@@ -15779,7 +15779,7 @@ hardhat-erc1820@0.1.0:
   resolved "https://registry.yarnpkg.com/hardhat-erc1820/-/hardhat-erc1820-0.1.0.tgz#9bc5a2acc9c9b84f3be9041c25fa349010cd3192"
   integrity sha512-oQxe7Li8Ev6/Gs6PMcH9+IjaXS+xh6HyPBTGnlRVG4yfmkYF7ajVvzxfYY/FGlM9/j+F2uZjRhxsc//qisC82A==
 
-hardhat-gas-reporter@1.0.4, hardhat-gas-reporter@^1.0.4:
+hardhat-gas-reporter@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/hardhat-gas-reporter/-/hardhat-gas-reporter-1.0.4.tgz#59e3137e38e0dfeac2e4f90d5c74160b50ad4829"
   integrity sha512-G376zKh81G3K9WtDA+SoTLWsoygikH++tD1E7llx+X7J+GbIqfwhDKKgvJjcnEesMrtR9UqQHK02lJuXY1RTxw==
@@ -15801,10 +15801,10 @@ hardhat-tracer@1.0.0-alpha.6:
   dependencies:
     ethers "^5.0.24"
 
-hardhat@2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.6.4.tgz#9ff3f139f697bfc4e14836a3fef3ca4c62357d65"
-  integrity sha512-6QNfu1FptjtyGJ+jBR7LMX7AMY9gWWw9kAUD7v0YZNZH1ZBgsZdMHqXKiSzO5pLQXo+fy9zZovKAUNYbjQ/1fw==
+hardhat@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.6.2.tgz#940d1df0a0373a6400879e1041fe0c9b746ed84d"
+  integrity sha512-83kCYIrkRq+vrsjOLIv349fbMpL7Vp/ZGpWtu+KLMH3wcAAs+aMsABZJ8W5hb5uo69+06KeF0pCHQ6y8tBAcwA==
   dependencies:
     "@ethereumjs/block" "^3.4.0"
     "@ethereumjs/blockchain" "^5.4.0"
@@ -15854,10 +15854,10 @@ hardhat@2.6.4:
     uuid "^3.3.2"
     ws "^7.4.6"
 
-hardhat@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.6.2.tgz#940d1df0a0373a6400879e1041fe0c9b746ed84d"
-  integrity sha512-83kCYIrkRq+vrsjOLIv349fbMpL7Vp/ZGpWtu+KLMH3wcAAs+aMsABZJ8W5hb5uo69+06KeF0pCHQ6y8tBAcwA==
+hardhat@2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.6.4.tgz#9ff3f139f697bfc4e14836a3fef3ca4c62357d65"
+  integrity sha512-6QNfu1FptjtyGJ+jBR7LMX7AMY9gWWw9kAUD7v0YZNZH1ZBgsZdMHqXKiSzO5pLQXo+fy9zZovKAUNYbjQ/1fw==
   dependencies:
     "@ethereumjs/block" "^3.4.0"
     "@ethereumjs/blockchain" "^5.4.0"
@@ -18367,7 +18367,7 @@ jest-snapshot@^27.0.2, jest-snapshot@^27.1.0:
     pretty-format "^27.1.0"
     semver "^7.3.2"
 
-jest-specific-snapshot@^5.0.0:
+jest-specific-snapshot@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-5.0.0.tgz#48f72d5613af7f3e30df75b6b3534db6bab32ea0"
   integrity sha512-V65vuPxZQExD3tGbv+Du5tbG1E3H3Dq/HFbsCEkPJP27w5vr/nATQJl61Dx5doBfu54OrJak0JaeYVSeZubDKg==
@@ -18521,7 +18521,7 @@ jest@26.6.3:
     import-local "^3.0.2"
     jest-cli "^26.6.3"
 
-jest@^27.0.6:
+jest@27.1.0:
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-27.1.0.tgz#eaab62dfdc02d8b7c814cd27b8d2d92bc46d3d69"
   integrity sha512-pSQDVwRSwb109Ss13lcMtdfS9r8/w2Zz8+mTUA9VORD66GflCdl8nUFCqM96geOD2EBwWCNURrNAfQsLIDNBdg==
@@ -25387,7 +25387,7 @@ setimmediate@1.0.4:
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.4.tgz#20e81de622d4a02588ce0c8da8973cbcf1d3138f"
   integrity sha1-IOgd5iLUoCWIzgyNqJc8vPHTE48=
 
-setimmediate@^1.0.4, setimmediate@^1.0.5:
+setimmediate@1.0.5, setimmediate@^1.0.4, setimmediate@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/setimmediate/-/setimmediate-1.0.5.tgz#290cbb232e306942d7d7ea9b83732ab7856f8285"
   integrity sha1-KQy7Iy4waULX1+qbg3Mqt4VvgoU=
@@ -26442,10 +26442,10 @@ styled-components@5.2.3:
     shallowequal "^1.1.0"
     supports-color "^5.5.0"
 
-styled-components@5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.3.0.tgz#e47c3d3e9ddfff539f118a3dd0fd4f8f4fb25727"
-  integrity sha512-bPJKwZCHjJPf/hwTJl6TbkSZg/3evha+XPEizrZUGb535jLImwDUdjTNxXqjjaASt2M4qO4AVfoHJNe3XB/tpQ==
+styled-components@5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.3.1.tgz#8a86dcd31bff7049c2ed408bae36fa23f03f071a"
+  integrity sha512-JThv2JRzyH0NOIURrk9iskdxMSAAtCfj/b2Sf1WJaCUsloQkblepy1jaCLX/bYE+mhYo3unmwVSI9I5d9ncSiQ==
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
     "@babel/traverse" "^7.4.5"
@@ -28734,7 +28734,7 @@ web3-eth-abi@1.4.0:
     underscore "1.12.1"
     web3-utils "1.4.0"
 
-web3-eth-abi@1.5.2, web3-eth-abi@^1.5.2:
+web3-eth-abi@1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/web3-eth-abi/-/web3-eth-abi-1.5.2.tgz#b627eada967f39ae4657ddd61b693cb00d55cb29"
   integrity sha512-P3bJbDR5wib4kWGfVeBKBVi27T+AiHy4EJxYM6SMNbpm3DboLDdisu9YBd6INMs8rzxgnprBbGmmyn4jKIDKAA==

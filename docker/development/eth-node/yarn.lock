@@ -668,7 +668,7 @@
     "@ethersproject/properties" "^5.4.0"
     "@ethersproject/strings" "^5.4.0"
 
-"@nomiclabs/hardhat-ethers@^2.0.2":
+"@nomiclabs/hardhat-ethers@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-ethers/-/hardhat-ethers-2.0.2.tgz#c472abcba0c5185aaa4ad4070146e95213c68511"
   integrity sha512-6quxWe8wwS4X5v3Au8q1jOvXYEPkS1Fh+cME5u6AwNdnI4uERvPlVjlgRWzpnb+Rrt1l/cEqiNRH9GlsBMSDQg==
@@ -803,7 +803,7 @@
   dependencies:
     "@types/node" "*"
 
-"@unlock-protocol/unlock-abi-9@^1.0.0":
+"@unlock-protocol/unlock-abi-9@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@unlock-protocol/unlock-abi-9/-/unlock-abi-9-1.0.0.tgz#632a12f9603067b99c3e20aac5708ad0c7da772f"
   integrity sha512-kXWnuKNeLhsrK2FnZHv3ltJkeqB16dpi7RacVb/BRJddJMLAkrblNfppyDVuLUrUK5IsTr7/+WXOSdBCrDiB0Q==
@@ -1189,7 +1189,7 @@ create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-fetch@^3.1.4:
+cross-fetch@3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.4.tgz#9723f3a3a247bf8b89039f3a380a9244e8fa2f39"
   integrity sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==
@@ -1634,12 +1634,12 @@ growl@1.10.5:
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
   integrity sha512-qBr4OuELkhPenW6goKVXiv47US3clb3/IbuWF9KNKEijAy9oeHxU9IgzjvJhHkUzhaj7rOUD7+YGWqUjLp5oSA==
 
-hardhat-erc1820@^0.1.0:
+hardhat-erc1820@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/hardhat-erc1820/-/hardhat-erc1820-0.1.0.tgz#9bc5a2acc9c9b84f3be9041c25fa349010cd3192"
   integrity sha512-oQxe7Li8Ev6/Gs6PMcH9+IjaXS+xh6HyPBTGnlRVG4yfmkYF7ajVvzxfYY/FGlM9/j+F2uZjRhxsc//qisC82A==
 
-hardhat@^2.6.3:
+hardhat@2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.6.3.tgz#2a40de477e8eb6e1227844b149d77a0a220faa68"
   integrity sha512-gKcltj1s4RyCMz1zqdDuIm9SLzxRno3WKuXPHryvSOYzdC1kkbPWEsGLcj3hCU39WFqCjkcbdXes1alREoADTw==
