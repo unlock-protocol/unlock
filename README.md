@@ -68,6 +68,15 @@ This will create the required infrastructure (database, local ethereum test netw
 
 NB: config is defined in both `docker-compose.yml` and `docker-compose.override.yml`.
 
+### Deploy and provision the contracts
+
+The following script will deploy the contracts, create some dummy locks and send you some local tokens for development.
+
+```
+cd docker
+docker-compose exec eth-node yarn provision
+```
+
 ### Run one of the app
 
 The main dashboard lives in the `unlock-app` folder of this repo. 
@@ -110,17 +119,16 @@ PAYWALL_SCRIPT_URL=http://localhost:3001/static/paywall.min.js
 UNLOCK_STATIC_URL=http://localhost:3002
 UNLOCK_TICKETS_URL=http://0.0.0.0:3003
 
-# replace this by
+# deployment
+HTTP_PROVIDER_HOST=127.0.0.1
+HTTP_PROVIDER_PORT=8545
 ERC20_CONTRACT_SYMBOL=DAI
 ERC20_CONTRACT_ADDRESS=0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9
 BOOTSTRAP_AMOUNT=15.0
-HTTP_PROVIDER_HOST=127.0.0.1
-HTTP_PROVIDER_PORT=8545
 LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 ```
 
-Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example).
-This will let you interract with the application using your regular setup.
+Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interract with the application using your regular setup.
 
 NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder. 
 
