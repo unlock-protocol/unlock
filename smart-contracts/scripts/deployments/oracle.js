@@ -4,8 +4,9 @@ const UniswapOracle = require('hardlydifficult-eth/build/contracts/UniswapOracle
 async function main({ uniswapFactoryAddress }) {
   if (!uniswapFactoryAddress) {
     // eslint-disable-next-line no-console
-    console.log('UNISWAP ORACLE > Missing Uniswap V2 Factory address... aborting.')
-    return
+    throw new Error(
+      'UNISWAP ORACLE > Missing Uniswap V2 Factory address... aborting.'
+    )
   }
   const Oracle = await ethers.getContractFactory(
     UniswapOracle.abi,

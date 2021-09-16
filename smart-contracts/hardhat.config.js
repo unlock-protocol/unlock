@@ -228,16 +228,13 @@ task('deploy', 'Deploy the entire Unlock protocol')
       premintAmount,
       liquidity,
     }) => {
-
       const { chainId } = await ethers.provider.getNetwork()
       const networkName = process.env.RUN_MAINNET_FORK
         ? 'mainnet'
         : getNetworkName(chainId)
 
       // eslint-disable-next-line no-console
-      console.log(
-        `Starting deployments on ${networkName}...`
-      )
+      console.log(`Starting deployments on ${networkName}...`)
 
       if (deployments.includes('all')) {
         // eslint-disable-next-line global-require
@@ -252,9 +249,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
           premintAmount,
           liquidity,
         })
-      }
-      else {
-
+      } else {
         const existingTasks = [
           'all',
           'uniswap',
@@ -264,35 +259,35 @@ task('deploy', 'Deploy the entire Unlock protocol')
           'template',
         ]
 
-        deployments
-          .forEach(t => {
-            if( !existingTasks.includes(t)) throw new Error(`Unknown deployments task ${deployments}`)
-          })
+        deployments.forEach((t) => {
+          if (!existingTasks.includes(t))
+            throw new Error(`Unknown deployments task ${deployments}`)
+        })
 
         if (deployments.includes('uniswap')) {
           // eslint-disable-next-line global-require
           const uniswapDeployer = require('./scripts/deployments/uniswap-v2')
           await uniswapDeployer({ wethAddress })
-        } 
-        
+        }
+
         if (deployments.includes('weth')) {
           // eslint-disable-next-line global-require
           const wethDeployer = require('./scripts/deployments/weth')
           await wethDeployer()
         }
-        
+
         if (deployments.includes('governor')) {
           // eslint-disable-next-line global-require
           const govDeployer = require('./scripts/deployments/governor')
           await govDeployer()
         }
-        
+
         if (deployments.includes('oracle')) {
           // eslint-disable-next-line global-require
           const oracleDeployer = require('./scripts/deployments/oracle')
           await oracleDeployer({ uniswapFactoryAddress })
         }
-        
+
         if (deployments.includes('template')) {
           // eslint-disable-next-line global-require
           const oracleDeployer = require('./scripts/deployments/template')

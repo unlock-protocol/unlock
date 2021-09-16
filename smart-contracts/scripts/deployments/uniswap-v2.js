@@ -9,8 +9,7 @@ const log = (...message) => {
 
 async function main({ wethAddress }) {
   if (!wethAddress) {
-    log(`Missing WETH... aborting`)
-    return
+    throw new Error('Missing WETH... aborting')
   }
 
   log(`Using WETH contract at: ${wethAddress}`)

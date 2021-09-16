@@ -4,7 +4,6 @@ const { constants } = require('hardlydifficult-eth')
 const { getNetworkName } = require('../../helpers/network')
 const { addDeployment } = require('../../helpers/deployments')
 
-
 const { MaxUint256 } = ethers.constants
 
 // TODO: params
@@ -148,7 +147,6 @@ async function main({
 
   // add liquidity
   if (liquidity) {
-
     await udt
       .connect(deployer)
       .approve(uniswapRouterAddress, ethers.utils.parseEther(liquidity))
@@ -183,12 +181,12 @@ async function main({
   if (!oracleAddress) {
     // eslint-disable-next-line global-require
     const oracleDeployer = require('./oracle')
-    oracleAddress = await oracleDeployer({ 
-      uniswapFactoryAddress
+    oracleAddress = await oracleDeployer({
+      uniswapFactoryAddress,
     })
   }
 
-  await unlock.setOracle(udtAddress, oracleAddress)
+  await unlock.connect(deployer).setOracle(udtAddress, oracleAddress)
   log('Oracle address set in Unlock:', oracleAddress)
 }
 
