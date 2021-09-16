@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const UniswapV2Factory = require('@uniswap/v2-core/build/UniswapV2Factory.json')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
-
+const WETH = require('hardlydifficult-eth/src/tokens/weth.json')
 /*
 const WETH = {
   mainnet: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
@@ -23,7 +23,7 @@ async function main() {
   log(`Deploying Uniswap contracts using ${deployerAddress}`)
 
   // Deploy WETH
-  const weth = await ethers.getContractFactory('WETH9')
+  const weth = await ethers.getContractFactory(WETH.abi, WETH.bytecode)
   const wethInstance = await weth.deploy()
   await wethInstance.deployed()
 
