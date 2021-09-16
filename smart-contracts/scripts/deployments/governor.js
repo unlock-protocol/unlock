@@ -1,8 +1,8 @@
 const { ethers, upgrades } = require('hardhat')
-const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
+const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
-const { getNetworkName } = require('../helpers/network')
-const { getDeployment, addDeployment } = require('../helpers/deployments')
+const { getNetworkName } = require('../../helpers/network')
+const { getDeployment, addDeployment } = require('../../helpers/deployments')
 
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 

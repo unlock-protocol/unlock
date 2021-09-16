@@ -197,6 +197,67 @@ task('config', 'Show current config')
     console.log(json ? JSON.stringify(config) : config)
   })
 
+task('deploy-uniswap-v2', 'Deploy Uniswap v2 router')
+  .addOptionalParam('wethAddress', 'the address of the WETH token contract')
+  .setAction(async ({ wethAddress }) => {
+    // eslint-disable-next-line global-require
+    const uniswapDeployer = require('./scripts/deployments/uniswap-v2')
+    await uniswapDeployer({ wethAddress })
+  })
+
+task('deploy-all', 'Deploy the entire Unlock protocol')
+  .addOptionalParam(
+    'unlockAddress',
+    'the address of an existing Unlock contract'
+  )
+  .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
+  .addOptionalParam(
+    'publicLockAddress',
+    'the address of an existing public Lock contract'
+  )
+  .addOptionalParam('wethAddress', 'the address of the WETH token contract')
+  .addOptionalParam(
+    'uniswapRouterAddress',
+    'the address of an existing Uniswap Router V2 contract'
+  )
+  .addOptionalParam(
+    'oracleAddress',
+    'the address of an existing Uniswap Oracle contract'
+  )
+  .addOptionalParam(
+    'premintAmount',
+    'the amount of tokens to be pre-minted when originating UDT'
+  )
+  .addOptionalParam(
+    'liquidity',
+    'the amount of liquidity to be added to the WETH<>UDT pool'
+  )
+  .setAction(
+    async ({
+      unlockAddress,
+      udtAddress,
+      publicLockAddress,
+      wethAddress,
+      uniswapRouterAddress,
+      oracleAddress,
+      premintAmount,
+      liquidity,
+    }) => {
+      // eslint-disable-next-line global-require
+      const mainDeployer = require('./scripts/deployments')
+      await mainDeployer({
+        unlockAddress,
+        udtAddress,
+        publicLockAddress,
+        wethAddress,
+        uniswapRouterAddress,
+        oracleAddress,
+        premintAmount,
+        liquidity,
+      })
+    }
+  )
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
