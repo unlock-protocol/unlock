@@ -1,8 +1,9 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers, upgrades } = require('hardhat')
-
+const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
+const { constants } = require('hardlydifficult-eth')
 const { getNetworkName } = require('../../helpers/network')
 const { addDeployment } = require('../../helpers/deployments')
+
 
 const { MaxUint256 } = ethers.constants
 
@@ -28,6 +29,7 @@ async function main({
   udtAddress,
   publicLockAddress,
   wethAddress,
+  uniswapFactoryAddress,
   uniswapRouterAddress,
   oracleAddress,
 }) {
@@ -129,22 +131,23 @@ async function main({
   }
 
   // deploy uniswap v2 if needed
-  if (!uniswapRouterAddress) {
+  const Router = await ethers.getContractFactory(
+    UniswapV2Router02.abi,
+    UniswapV2Router02.bytecode
+  )
+  if (!uniswapFactoryAddress) {
     // eslint-disable-next-line global-require
     const uniswapDeployer = require('./uniswap-v2')
     const uniswap = await uniswapDeployer({ wethAddress })
     uniswapRouterAddress = uniswap.router
+    uniswapFactoryAddress = uniswap.factory
   }
+
+  const uniswapRouter = Router.attach(uniswapRouterAddress)
+  uniswapFactoryAddress = await uniswapRouter.factory()
 
   // add liquidity
   if (liquidity) {
-    // eslint-disable-next-line global-require
-    const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
-    const Router = await ethers.getContractFactory(
-      UniswapV2Router02.abi,
-      UniswapV2Router02.bytecode
-    )
-    const uniswapRouter = Router.attach(uniswapRouterAddress)
 
     await udt
       .connect(deployer)
@@ -180,7 +183,9 @@ async function main({
   if (!oracleAddress) {
     // eslint-disable-next-line global-require
     const oracleDeployer = require('./oracle')
-    oracleAddress = await oracleDeployer({ uniswapRouterAddress })
+    oracleAddress = await oracleDeployer({ 
+      uniswapFactoryAddress
+    })
   }
 
   await unlock.setOracle(udtAddress, oracleAddress)

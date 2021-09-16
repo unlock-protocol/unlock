@@ -1,17 +1,17 @@
 const { ethers } = require('hardhat')
 const UniswapOracle = require('hardlydifficult-eth/build/contracts/UniswapOracle.json')
 
-async function main({ uniswapRouterAddress }) {
-  if (!uniswapRouterAddress) {
+async function main({ uniswapFactoryAddress }) {
+  if (!uniswapFactoryAddress) {
     // eslint-disable-next-line no-console
-    console.log('UNISWAP ORACLE > Missing Uniswap Router address... aborting.')
+    console.log('UNISWAP ORACLE > Missing Uniswap V2 Factory address... aborting.')
     return
   }
   const Oracle = await ethers.getContractFactory(
     UniswapOracle.abi,
     UniswapOracle.bytecode
   )
-  const oracle = await Oracle.deploy(uniswapRouterAddress)
+  const oracle = await Oracle.deploy(uniswapFactoryAddress)
   await oracle.deployed()
 
   // eslint-disable-next-line no-console

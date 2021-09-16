@@ -196,8 +196,12 @@ task('deploy', 'Deploy the entire Unlock protocol')
   )
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam(
+    'uniswapFactoryAddress',
+    'the address of an existing Uniswap V2 Factory contract'
+  )
+  .addOptionalParam(
     'uniswapRouterAddress',
-    'the address of an existing Uniswap Router V2 contract'
+    'the address of an existing Uniswap V2 Router contract'
   )
   .addOptionalParam(
     'oracleAddress',
@@ -218,6 +222,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
       udtAddress,
       publicLockAddress,
       wethAddress,
+      uniswapFactoryAddress,
       uniswapRouterAddress,
       oracleAddress,
       premintAmount,
@@ -242,7 +247,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
           udtAddress,
           publicLockAddress,
           wethAddress,
-          uniswapRouterAddress,
+          uniswapFactoryAddress,
           oracleAddress,
           premintAmount,
           liquidity,
@@ -285,7 +290,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
         if (deployments.includes('oracle')) {
           // eslint-disable-next-line global-require
           const oracleDeployer = require('./scripts/deployments/oracle')
-          await oracleDeployer({ uniswapRouterAddress })
+          await oracleDeployer({ uniswapFactoryAddress })
         }
         
         if (deployments.includes('template')) {
