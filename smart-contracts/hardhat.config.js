@@ -173,23 +173,6 @@ task('upgrade', 'Upgrade a contract')
     console.log(`${contractName} implementation deployed at: ${implementation}`)
   })
 
-task('deploy-template', 'Deploys a new PublicLock contract').setAction(
-  async (params, { ethers }) => {
-    const { chainId } = await ethers.provider.getNetwork()
-    const networkName = process.env.RUN_MAINNET_FORK
-      ? 'mainnet'
-      : getNetworkName(chainId)
-
-    const PublicLock = await ethers.getContractFactory('PublicLock')
-    const publicLock = await PublicLock.deploy()
-
-    // eslint-disable-next-line no-console
-    console.log(
-      `New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`
-    )
-  }
-)
-
 task('config', 'Show current config')
   .addFlag('json', 'output as JSON')
   .setAction(({ json }, { config }) => {
@@ -197,15 +180,11 @@ task('config', 'Show current config')
     console.log(json ? JSON.stringify(config) : config)
   })
 
-task('deploy-uniswap-v2', 'Deploy Uniswap v2 router')
-  .addOptionalParam('wethAddress', 'the address of the WETH token contract')
-  .setAction(async ({ wethAddress }) => {
-    // eslint-disable-next-line global-require
-    const uniswapDeployer = require('./scripts/deployments/uniswap-v2')
-    await uniswapDeployer({ wethAddress })
-  })
-
-task('deploy-all', 'Deploy the entire Unlock protocol')
+task('deploy', 'Deploy the entire Unlock protocol')
+  .addOptionalVariadicPositionalParam(
+    'deployments',
+    'the name of the deployments to execute'
+  )
   .addOptionalParam(
     'unlockAddress',
     'the address of an existing Unlock contract'
@@ -234,6 +213,7 @@ task('deploy-all', 'Deploy the entire Unlock protocol')
   )
   .setAction(
     async ({
+      deployments,
       unlockAddress,
       udtAddress,
       publicLockAddress,
@@ -243,18 +223,77 @@ task('deploy-all', 'Deploy the entire Unlock protocol')
       premintAmount,
       liquidity,
     }) => {
-      // eslint-disable-next-line global-require
-      const mainDeployer = require('./scripts/deployments')
-      await mainDeployer({
-        unlockAddress,
-        udtAddress,
-        publicLockAddress,
-        wethAddress,
-        uniswapRouterAddress,
-        oracleAddress,
-        premintAmount,
-        liquidity,
-      })
+
+      const { chainId } = await ethers.provider.getNetwork()
+      const networkName = process.env.RUN_MAINNET_FORK
+        ? 'mainnet'
+        : getNetworkName(chainId)
+
+      // eslint-disable-next-line no-console
+      console.log(
+        `Starting deployments on ${networkName}...`
+      )
+
+      if (deployments.includes('all')) {
+        // eslint-disable-next-line global-require
+        const mainDeployer = require('./scripts/deployments')
+        await mainDeployer({
+          unlockAddress,
+          udtAddress,
+          publicLockAddress,
+          wethAddress,
+          uniswapRouterAddress,
+          oracleAddress,
+          premintAmount,
+          liquidity,
+        })
+      }
+      else {
+
+        const existingTasks = [
+          'all',
+          'uniswap',
+          'weth',
+          'governor',
+          'oracle',
+          'template',
+        ]
+
+        deployments
+          .forEach(t => {
+            if( !existingTasks.includes(t)) throw new Error(`Unknown deployments task ${deployments}`)
+          })
+
+        if (deployments.includes('uniswap')) {
+          // eslint-disable-next-line global-require
+          const uniswapDeployer = require('./scripts/deployments/uniswap-v2')
+          await uniswapDeployer({ wethAddress })
+        } 
+        
+        if (deployments.includes('weth')) {
+          // eslint-disable-next-line global-require
+          const wethDeployer = require('./scripts/deployments/weth')
+          await wethDeployer()
+        }
+        
+        if (deployments.includes('governor')) {
+          // eslint-disable-next-line global-require
+          const govDeployer = require('./scripts/deployments/governor')
+          await govDeployer()
+        }
+        
+        if (deployments.includes('oracle')) {
+          // eslint-disable-next-line global-require
+          const oracleDeployer = require('./scripts/deployments/oracle')
+          await oracleDeployer({ uniswapRouterAddress })
+        }
+        
+        if (deployments.includes('template')) {
+          // eslint-disable-next-line global-require
+          const oracleDeployer = require('./scripts/deployments/template')
+          await oracleDeployer({ uniswapRouterAddress })
+        }
+      }
     }
   )
 

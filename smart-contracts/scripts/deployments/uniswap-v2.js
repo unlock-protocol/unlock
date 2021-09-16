@@ -8,6 +8,11 @@ const log = (...message) => {
 }
 
 async function main({ wethAddress }) {
+  if (!wethAddress) {
+    log(`Missing WETH... aborting`)
+    return
+  }
+
   log(`Using WETH contract at: ${wethAddress}`)
 
   const [deployer] = await ethers.getSigners()
