@@ -210,6 +210,7 @@ module.exports = {
   },
   solidity: {
     compilers: [
+      { version: '0.4.18', settings },
       { version: '0.4.24', settings },
       { version: '0.4.25', settings },
       { version: '0.5.0', settings },

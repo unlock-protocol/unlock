@@ -9,9 +9,9 @@ const { AddressZero } = ethers.constants
 // TODO: params
 const premintAmount = 20000
 const estimatedGasForPurchase = 0
-const wethAddress = AddressZero
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
+let wethAddress = null
 let udtAddress = null
 
 // helpers
@@ -84,6 +84,13 @@ async function main() {
     udtAddress = udt.address
   }
 
+  // deploy uniswap v2 if needed
+  if (! wethAddress) {
+    const uniswapDeployer = require('./deploy-uniswap-v2')
+    const uniswap = await uniswapDeployer()
+    wethAddress = uniswap.router
+  }
+  
   // 5. Config unlock
   unlock.configUnlock(
     udtAddress,
