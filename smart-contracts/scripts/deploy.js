@@ -4,15 +4,17 @@ const { ethers, upgrades } = require('hardhat')
 const { getNetworkName } = require('../helpers/network')
 const { addDeployment } = require('../helpers/deployments')
 
-const { AddressZero } = ethers.constants
+const { MaxUint256 } = ethers.constants
 
 // TODO: params
-const premintAmount = 20000
 const estimatedGasForPurchase = 0
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
-let wethAddress = null
+
+const premintAmount = '1000000.0' // in ETH, must be a string
+let uniswapRouterAddress = null // WETH <> UDT pair
 let udtAddress = null
+let liquidity = '100.0' // in ETH, must be a string
 
 // helpers
 const log = (...message) => {
@@ -25,21 +27,21 @@ const saveDeploymentInfo = async (contractName, data) => {
 }
 
 async function main() {
-  const [unlockOwner, minter, holder] = await ethers.getSigners()
+  const [deployer, minter] = await ethers.getSigners()
 
   // fetch chain info
-  const chainId = await unlockOwner.getChainId()
+  const chainId = await deployer.getChainId()
   const networkName = getNetworkName(chainId)
   const isLocalNet = networkName === 'localhost'
   log(
-    `Deploying contracts on ${networkName} with the account: ${unlockOwner.address}`
+    `Deploying contracts on ${networkName} with the account: ${deployer.address}`
   )
   log(`isLocalNet : ${isLocalNet}`)
   log(`Deployment info saved to ./deployments/${networkName}.`)
 
   // 1. deploying Unlock with a transparent / upgradable proxy
   const Unlock = await ethers.getContractFactory('Unlock')
-  const unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
+  const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
   })
   await unlock.deployed()
@@ -54,16 +56,18 @@ async function main() {
 
   // 3. setting lock template
   unlock.setLockTemplate(publicLock.address, {
-    from: unlockOwner.address,
+    from: deployer.address,
     gasLimit: constants.MAX_GAS,
   })
   log('Template set for newly deployed lock')
 
-  // 4. setup UDT if needed
+  // 4. setup UDT
+  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+  let udt
+
   if (!udtAddress) {
     // deploy UDT v2 (upgradable)
-    const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
-    let udt = await upgrades.deployProxy(UDT, [minter.address], {
+    udt = await upgrades.deployProxy(UDT, [minter.address], {
       initializer: 'initialize(address)',
     })
     await udt.deployed()
@@ -72,8 +76,8 @@ async function main() {
 
     // pre-mint some UDTs, then delegate mint caps to contract
     udt = udt.connect(minter)
-    await udt.mint(holder.address, premintAmount)
-    log(`Pre-minted ${premintAmount} UDT`)
+    await udt.mint(deployer.address, ethers.utils.parseEther(premintAmount))
+    log(`Pre-minted ${premintAmount} UDT to deployer`)
 
     await udt.addMinter(unlock.address)
     log('grant minting permissions to the Unlock Contract')
@@ -82,19 +86,52 @@ async function main() {
     log('minter renounced minter role')
 
     udtAddress = udt.address
+  } else {
+    // attach existing contract
+    udt = UDT.attach(udtAddress)
   }
 
   // deploy uniswap v2 if needed
-  if (! wethAddress) {
+  if (!uniswapRouterAddress) {
+    // eslint-disable-next-line global-require
     const uniswapDeployer = require('./deploy-uniswap-v2')
     const uniswap = await uniswapDeployer()
-    wethAddress = uniswap.router
+    uniswapRouterAddress = uniswap.router
   }
-  
+
+  // add liquidity
+  if (liquidity) {
+    // eslint-disable-next-line global-require
+    const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
+    const Router = await ethers.getContractFactory(
+      UniswapV2Router02.abi,
+      UniswapV2Router02.bytecode
+    )
+    const uniswapRouter = Router.attach(uniswapRouterAddress)
+
+    await udt
+      .connect(deployer)
+      .approve(uniswapRouterAddress, ethers.utils.parseEther(liquidity))
+    log(`UDT approved Uniswap Router for ${liquidity} ETH`)
+
+    await uniswapRouter.connect(deployer).addLiquidityETH(
+      udtAddress,
+      ethers.utils.parseEther(liquidity), // pool size
+      '1',
+      '1',
+      deployer.address, // receiver
+      MaxUint256, // max timestamp
+      { value: ethers.utils.parseEther('10.0') }
+    )
+    log(`added liquidity to uniswap ${liquidity}`)
+  }
+
+  // 6. deploy oracle
+
   // 5. Config unlock
   unlock.configUnlock(
     udtAddress,
-    wethAddress,
+    uniswapRouterAddress,
     estimatedGasForPurchase,
     'UDT',
     `http://${locksmithHost}:${locksmithPort}/api/key/`,
