@@ -117,10 +117,44 @@ npx hardhat verify --network polygon 0x7633dd082406861C384309c67576a4260C5775E0
 
 NB: for Polygon, you need an API key from https://polygonscan.com
 
-## Deploy Governor + Timelock
+## Deploy the conctracts
+
+### Deploy all
+
+You can setup an entire test environments with all contracts using
 
 ```
-npx hardhat run scripts/deploy-governor.js
+npx hardhat deploy all
+```
+
+Or deploy different part separately
+
+```
+$ npx hardhat deploy weth
+WETH > deployed to : 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+
+$ npx hardhat deploy uniswap --weth-address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+UNISWAP/WETH SETUP > Using WETH contract at: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+UNISWAP/WETH SETUP > Deploying Uniswap contracts using 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+UNISWAP/WETH SETUP > Uniswap V2 Factory deployed to : 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+UNISWAP/WETH SETUP > Router V02 deployed to :  0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+
+$ npx hardhat deploy oracle --uniswap-router-address 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9
+UNISWAP ORACLE > Oracle deployed at: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+```
+
+### Deploy PublicLock template
+
+You can setup an entire test environments with all contracts using
+
+```
+npx hardhat deploy template
+```
+
+### Governor + Timelock
+
+```
+npx hardhat deploy governor
 
 Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266...
 > Timelock w proxy deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
