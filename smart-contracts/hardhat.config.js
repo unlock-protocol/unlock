@@ -180,7 +180,7 @@ task('config', 'Show current config')
     console.log(json ? JSON.stringify(config) : config)
   })
 
-const existingSetters = ['template']
+const existingSetters = ['template', 'unlock-config']
 task('set', 'Various setters for Unlock contracts')
   .addOptionalVariadicPositionalParam(
     'setters',
@@ -191,13 +191,24 @@ task('set', 'Various setters for Unlock contracts')
     'the address of an existing Unlock contract'
   )
   .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
+  .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam(
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )
+  .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
+  .addOptionalParam('locksmithURI', 'the locksmith URL to use in Unlock config')
   .setAction(
     async (
-      { setters, unlockAddress, udtAddress, publicLockAddress },
+      {
+        setters,
+        unlockAddress,
+        udtAddress,
+        publicLockAddress,
+        wethAddress,
+        estimatedGasForPurchase,
+        locksmithURI,
+      },
       { ethers }
     ) => {
       setters.forEach((t) => {
@@ -211,6 +222,18 @@ task('set', 'Various setters for Unlock contracts')
         await templateSetter({
           publicLockAddress,
           unlockAddress,
+        })
+      }
+
+      if (setters.includes('unlock-config')) {
+        // eslint-disable-next-line global-require
+        const unlockConfigSetter = require('./scripts/setters/unlock-config')
+        await unlockConfigSetter({
+          unlockAddress,
+          udtAddress,
+          wethAddress,
+          estimatedGasForPurchase,
+          locksmithURI,
         })
       }
 
@@ -268,6 +291,8 @@ task('deploy', 'Deploy the entire Unlock protocol')
     'liquidity',
     'the amount of liquidity to be added to the WETH<>UDT pool'
   )
+  .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
+  .addOptionalParam('locksmithURI', 'the URL locksmith to use in Unlock config')
   .addFlag('setTemplate', 'set the PublicLock instance in Unlock')
   .setAction(
     async (
@@ -278,11 +303,13 @@ task('deploy', 'Deploy the entire Unlock protocol')
         publicLockAddress,
         wethAddress,
         uniswapFactoryAddress,
-        uniswapRouterAddress,
         oracleAddress,
         premintAmount,
         liquidity,
         setTemplate,
+        estimatedGasForPurchase,
+        locksmithURI,
+        uniswapRouterAddress,
       },
       { ethers }
     ) => {
@@ -302,11 +329,14 @@ task('deploy', 'Deploy the entire Unlock protocol')
           udtAddress,
           publicLockAddress,
           wethAddress,
+          uniswapRouterAddress,
           uniswapFactoryAddress,
           oracleAddress,
           premintAmount,
           liquidity,
           setTemplate,
+          estimatedGasForPurchase,
+          locksmithURI,
         })
       } else {
         // make sure the task exists
@@ -320,7 +350,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
           const wethDeployer = require('./scripts/deployments/weth')
           await wethDeployer()
         }
-        
+
         if (deployments.includes('uniswap')) {
           // eslint-disable-next-line global-require
           const uniswapDeployer = require('./scripts/deployments/uniswap-v2')

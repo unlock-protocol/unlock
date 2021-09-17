@@ -5,11 +5,6 @@ const { addDeployment } = require('../../helpers/deployments')
 
 const { MaxUint256 } = ethers.constants
 
-// TODO: params
-const estimatedGasForPurchase = 0
-const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
-const locksmithPort = process.env.LOCKSMITH_PORT || 3000
-
 const log = (...message) => {
   // eslint-disable-next-line no-console
   console.log('UNLOCK SETUP >', ...message)
@@ -26,9 +21,11 @@ async function main({
   udtAddress,
   publicLockAddress,
   wethAddress,
-  uniswapFactoryAddress,
   uniswapRouterAddress,
+  uniswapFactoryAddress,
   oracleAddress,
+  estimatedGasForPurchase,
+  locksmithURI,
 }) {
   let unlock
   let udt
@@ -130,6 +127,7 @@ async function main({
     UniswapV2Router02.abi,
     UniswapV2Router02.bytecode
   )
+
   if (!uniswapFactoryAddress) {
     // eslint-disable-next-line global-require
     const uniswapDeployer = require('./uniswap-v2')
@@ -161,17 +159,14 @@ async function main({
   }
 
   // 5. Config unlock
-  unlock
-    .connect(deployer)
-    .configUnlock(
-      udtAddress,
-      wethAddress,
-      estimatedGasForPurchase,
-      'UDT',
-      `http://${locksmithHost}:${locksmithPort}/api/key/`,
-      chainId
-    )
-  log('unlock configured properly')
+  // eslint-disable-next-line global-require
+  const unlockConfigSetter = require('../setters/unlock-config')
+  await unlockConfigSetter({
+    udtAddress,
+    wethAddress,
+    estimatedGasForPurchase,
+    locksmithURI,
+  })
 
   // 6. deploy oracle
   if (!oracleAddress) {

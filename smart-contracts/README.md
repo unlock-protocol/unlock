@@ -157,6 +157,16 @@ npx hardhat deploy template
 npx hardhat set template --unlock-address <xxx> --public-lock-address <xxx>
 ```
 
+### Update Unlock config
+
+```
+npx hardhat set unlock-config --unlock-address <xxx> \
+  --udt-address <xxx>
+  --wethAddress <xxx>
+  --estimatedGasForPurchase <xxx>
+  --locksmithURI <xxx>
+```
+
 ### Governor + Timelock
 
 ```
