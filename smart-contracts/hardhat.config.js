@@ -271,6 +271,7 @@ const existingDeployments = [
   'uniswap',
   'governor',
   'oracle',
+  'gnosis',
 ]
 
 task('deploy', 'Deploy the entire Unlock protocol')
@@ -396,6 +397,12 @@ task('deploy', 'Deploy the entire Unlock protocol')
           // eslint-disable-next-line global-require
           const oracleDeployer = require('./scripts/deployments/oracle')
           await oracleDeployer({ uniswapFactoryAddress })
+        }
+
+        if (deployments.includes('gnosis')) {
+          // eslint-disable-next-line global-require
+          const gnosisDeployer = require('./scripts/deployments/gnosis')
+          await gnosisDeployer()
         }
 
         if (deployments.includes('template')) {
