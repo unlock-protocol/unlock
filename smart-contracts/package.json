@@ -68,11 +68,10 @@
     "dev": "yarn lint && yarn build && yarn test",
     "ci": "yarn lint && yarn test",
     "build": "hardhat compile",
-    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -e 1000000 -i 1337",
-    "zos": "openzeppelin",
-    "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (truffle-flattener contracts/Unlock.sol > build/Unlock-Flattened.sol) && (truffle-flattener contracts/UnlockDiscountToken.sol > build/UnlockDiscountToken-Flattened.sol) && (echo Wrote files: build/*-Flattened.sol)",
-    "verify": "truffle run verify contracts/Unlock.sol contracts/PublicLock.sol contracts/UnlockDiscountToken.sol",
-    "debug": "truffle debug"
+    "verify": "npx hardhat verify",
+    "deploy": "npx hardhat deploy",
+    "deploy-all": "npx hardhat deploy all",
+    "set": "npx hardhat set"
   },
   "author": "",
   "license": "ISC"
