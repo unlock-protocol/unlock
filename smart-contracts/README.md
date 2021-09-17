@@ -151,6 +151,12 @@ You can setup an entire test environments with all contracts using
 npx hardhat deploy template
 ```
 
+### Set the template
+
+```
+npx hardhat set template --unlock-address <xxx> --public-lock-address <xxx>
+```
+
 ### Governor + Timelock
 
 ```

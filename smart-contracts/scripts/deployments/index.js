@@ -1,6 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
-const { constants } = require('hardlydifficult-eth')
 const { getNetworkName } = require('../../helpers/network')
 const { addDeployment } = require('../../helpers/deployments')
 
@@ -11,7 +10,6 @@ const estimatedGasForPurchase = 0
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
-// helpers
 const log = (...message) => {
   // eslint-disable-next-line no-console
   console.log('UNLOCK SETUP >', ...message)
@@ -34,7 +32,6 @@ async function main({
 }) {
   let unlock
   let udt
-  let publicLock
 
   const [deployer, minter] = await ethers.getSigners()
 
@@ -67,17 +64,16 @@ async function main({
     const publicLock = await PublicLock.deploy()
     await saveDeploymentInfo('PublicLock', publicLock)
     log('PublicLock deployed at', publicLock.address)
-
-    // setting lock template
-    unlock.setLockTemplate(publicLock.address, {
-      from: deployer.address,
-      gasLimit: constants.MAX_GAS,
-    })
-    log('Template set for newly deployed lock')
-
     publicLockAddress = publicLock.address
   }
-  publicLock = PublicLock.attach(publicLockAddress)
+
+  // setting lock template
+  // eslint-disable-next-line global-require
+  const templateSetter = require('../setters/set-template')
+  await templateSetter({
+    publicLockAddress,
+    unlockAddress,
+  })
 
   // setup UDT
   const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
@@ -192,10 +188,10 @@ async function main({
 
 // execute as standalone
 if (require.main === module) {
+  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {
-      // eslint-disable-next-line no-console
       console.error(error)
       process.exit(1)
     })

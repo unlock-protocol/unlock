@@ -11,7 +11,7 @@ async function main() {
   )
   // eslint-disable-next-line no-console
   console.log(
-    'PUBLC LOCK > Please verify it and call setTemplate on the Unlock.'
+    'PUBLC LOCK > Please verify it and call `npx hardhat set template` on the Unlock.'
   )
   return publicLock.address
 }
