@@ -13,10 +13,10 @@ async function main() {
 
 // execute as standalone
 if (require.main === module) {
+  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {
-      // eslint-disable-next-line no-console
       console.error(error)
       process.exit(1)
     })
