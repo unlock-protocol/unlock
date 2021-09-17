@@ -7,7 +7,9 @@ async function main() {
   await weth.deployed()
 
   // eslint-disable-next-line no-console
-  console.log(`WETH > deployed to : ${weth.address}`)
+  console.log(
+    `WETH > deployed to : ${weth.address} (tx: ${weth.deployTransaction.hash}`
+  )
   return weth.address
 }
 

@@ -20,12 +20,14 @@ async function main({ publicLockAddress, unlockAddress }) {
   const unlock = Unlock.attach(unlockAddress)
 
   // set lock template
-  unlock.setLockTemplate(publicLockAddress, {
+  const tx = await unlock.setLockTemplate(publicLockAddress, {
     from: deployer.address,
     gasLimit: constants.MAX_GAS,
   })
+  const { transactionHash } = await tx.wait()
+
   // eslint-disable-next-line no-console
-  console.log('UNLOCK SETUP> Template set for Lock')
+  console.log(`UNLOCK SETUP> Template set for Lock (tx: ${transactionHash})`)
 }
 
 // execute as standalone

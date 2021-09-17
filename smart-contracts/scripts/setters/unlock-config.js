@@ -28,7 +28,7 @@ async function main({
   const unlock = Unlock.attach(unlockAddress)
 
   // set lock config
-  unlock
+  const tx = await unlock
     .connect(deployer)
     .configUnlock(
       udtAddress,
@@ -39,8 +39,12 @@ async function main({
       chainId
     )
 
+  const { transactionHash } = await tx.wait()
+
   // eslint-disable-next-line no-console
-  console.log('UNLOCK CONFIG > Unlock configured properly.')
+  console.log(
+    `UNLOCK CONFIG > Unlock configured properly. (tx: ${transactionHash})`
+  )
 }
 
 // execute as standalone

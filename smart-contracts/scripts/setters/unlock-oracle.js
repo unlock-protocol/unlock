@@ -1,13 +1,11 @@
 const { ethers } = require('hardhat')
 
-async function main({
-  unlockAddress,
-  udtAddress,
-  oracleAddress,
-}) {
+async function main({ unlockAddress, udtAddress, oracleAddress }) {
   if (!unlockAddress) {
     // eslint-disable-next-line no-console
-    throw new Error('UNLOCK ORACLE CONFIG > Missing Unlock address... aborting.')
+    throw new Error(
+      'UNLOCK ORACLE CONFIG > Missing Unlock address... aborting.'
+    )
   }
   if (!udtAddress) {
     // eslint-disable-next-line no-console
@@ -19,18 +17,19 @@ async function main({
   }
 
   const [deployer] = await ethers.getSigners()
-  
+
   // get unlock instance
   const Unlock = await ethers.getContractFactory('Unlock')
   const unlock = Unlock.attach(unlockAddress)
 
-  
   // set oracle
   const tx = await unlock.connect(deployer).setOracle(udtAddress, oracleAddress)
-  await tx.wait()
-  
+  const { transactionHash } = await tx.wait()
+
   // eslint-disable-next-line no-console
-  console.log('UNLOCK ORACLE CONFIG > Oracle configured properly.')
+  console.log(
+    `UNLOCK ORACLE CONFIG > Oracle configured properly. (tx: ${transactionHash})`
+  )
 }
 
 // execute as standalone

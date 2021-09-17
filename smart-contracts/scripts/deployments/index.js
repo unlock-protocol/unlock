@@ -23,7 +23,6 @@ async function main({
   estimatedGasForPurchase,
   locksmithURI,
 }) {
-  let unlock
   let udt
 
   const [deployer, minter] = await ethers.getSigners()
@@ -42,10 +41,6 @@ async function main({
     const unlockDeployer = require('./unlock')
     unlockAddress = await unlockDeployer()
   }
-
-  // get unlock instance
-  const Unlock = await ethers.getContractFactory('Unlock')
-  unlock = Unlock.attach(unlockAddress)
 
   // deploying PublicLock
   if (!publicLockAddress) {
@@ -67,12 +62,11 @@ async function main({
     udtAddress = await udtDeployer()
   }
 
-  // attach existing contract instance
-  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
-  udt = UDT.attach(udtAddress)
-
   // pre-mint some UDTs, then delegate mint caps to contract
   if (premintAmount) {
+    const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+    udt = UDT.attach(udtAddress)
+
     udt = udt.connect(minter)
     await udt.mint(deployer.address, ethers.utils.parseEther(premintAmount))
     log(`Pre-minted ${premintAmount} UDT to deployer`)

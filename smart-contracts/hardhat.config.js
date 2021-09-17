@@ -192,7 +192,10 @@ task('set', 'Various setters for Unlock contracts')
   )
   .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
-  .addOptionalParam('oracleAddress', 'the address of the Uniswap Oracle contract')
+  .addOptionalParam(
+    'oracleAddress',
+    'the address of the Uniswap Oracle contract'
+  )
   .addOptionalParam(
     'publicLockAddress',
     'the address of an existing public Lock contract'
@@ -246,7 +249,7 @@ task('set', 'Various setters for Unlock contracts')
           locksmithURI,
         })
       }
-      
+
       if (setters.includes('unlock-oracle')) {
         // eslint-disable-next-line global-require
         const unlockOracleSetter = require('./scripts/setters/unlock-oracle')
