@@ -83,7 +83,6 @@ Once your network are setup, you can run the UDT contract upgrade
 npx hardhat run scripts/udt-upgrade.js --network rinkeby
 ```
 
-
 ## Upgrade a contract
 
 ### Unlock
@@ -132,12 +131,17 @@ yarn deploy-all
 Or deploy different part separately
 
 ```
+# some sample commands
 yarn deploy unlock
 yarn deploy udt
 yarn deploy weth
 yarn deploy uniswap --weth-address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 yarn deploy oracle --uniswap-factory-address 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
-# etc.
+
+# config tasks are also available
+yarn set unlock-oracle --oracle-address <xxx> \
+  --unlock-address <xxx> \
+  --udt-address <xxx>
 ```
 
 see `yarn deploy --help` for a list of all available deployments

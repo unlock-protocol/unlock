@@ -157,8 +157,12 @@ async function main({
     })
   }
 
-  await unlock.connect(deployer).setOracle(udtAddress, oracleAddress)
-  log('Oracle address set in Unlock:', oracleAddress)
+  const oracleSetter = require('../setters/unlock-oracle')
+  await oracleSetter({
+    unlockAddress,
+    udtAddress,
+    oracleAddress,
+  })
 }
 
 // execute as standalone

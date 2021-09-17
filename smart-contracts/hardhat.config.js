@@ -180,7 +180,7 @@ task('config', 'Show current config')
     console.log(json ? JSON.stringify(config) : config)
   })
 
-const existingSetters = ['template', 'unlock-config']
+const existingSetters = ['template', 'unlock-config', 'unlock-oracle']
 task('set', 'Various setters for Unlock contracts')
   .addVariadicPositionalParam(
     'setters',
@@ -192,6 +192,7 @@ task('set', 'Various setters for Unlock contracts')
   )
   .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
+  .addOptionalParam('oracleAddress', 'the address of the Uniswap Oracle contract')
   .addOptionalParam(
     'publicLockAddress',
     'the address of an existing public Lock contract'
@@ -205,6 +206,7 @@ task('set', 'Various setters for Unlock contracts')
         unlockAddress,
         udtAddress,
         publicLockAddress,
+        oracleAddress,
         wethAddress,
         estimatedGasForPurchase,
         locksmithURI,
@@ -215,6 +217,14 @@ task('set', 'Various setters for Unlock contracts')
         if (!existingSetters.includes(t))
           throw new Error(`Unknown deployments task ${t}`)
       })
+
+      const { chainId } = await ethers.provider.getNetwork()
+      const networkName = process.env.RUN_MAINNET_FORK
+        ? 'mainnet'
+        : getNetworkName(chainId)
+
+      // eslint-disable-next-line no-console
+      console.log(`Connecting to ${networkName}...`)
 
       if (setters.includes('template')) {
         // eslint-disable-next-line global-require
@@ -236,14 +246,16 @@ task('set', 'Various setters for Unlock contracts')
           locksmithURI,
         })
       }
-
-      const { chainId } = await ethers.provider.getNetwork()
-      const networkName = process.env.RUN_MAINNET_FORK
-        ? 'mainnet'
-        : getNetworkName(chainId)
-
-      // eslint-disable-next-line no-console
-      console.log(`Starting deployments on ${networkName}...`)
+      
+      if (setters.includes('unlock-oracle')) {
+        // eslint-disable-next-line global-require
+        const unlockOracleSetter = require('./scripts/setters/unlock-oracle')
+        await unlockOracleSetter({
+          unlockAddress,
+          udtAddress,
+          oracleAddress,
+        })
+      }
     }
   )
 
