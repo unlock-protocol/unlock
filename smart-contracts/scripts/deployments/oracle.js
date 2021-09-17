@@ -16,7 +16,11 @@ async function main({ uniswapFactoryAddress }) {
   await oracle.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('UNISWAP ORACLE > Oracle deployed at:', oracle.address)
+  console.log(
+    'UNISWAP ORACLE > Oracle deployed at:',
+    oracle.address,
+    ` (tx: ${oracle.deployTransaction.hash})`
+  )
 
   return oracle.address
 }

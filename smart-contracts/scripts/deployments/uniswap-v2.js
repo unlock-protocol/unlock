@@ -19,32 +19,33 @@ async function main({ wethAddress }) {
   log(`Deploying Uniswap contracts using ${deployerAddress}`)
 
   // Deploy Factory
-  const factory = await ethers.getContractFactory(
+  const Factory = await ethers.getContractFactory(
     UniswapV2Factory.abi,
     UniswapV2Factory.bytecode
   )
-  const factoryInstance = await factory.deploy(deployerAddress)
-  await factoryInstance.deployed()
+  const factory = await Factory.deploy(deployerAddress)
+  await factory.deployed()
 
-  log(`Uniswap V2 Factory deployed to : ${factoryInstance.address}`)
+  log(
+    `Uniswap V2 Factory deployed to : ${factory.address} (tx: ${factory.deployTransaction.hash})`
+  )
 
   // Deploy Router passing Factory Address and WETH Address
-  const router = await ethers.getContractFactory(
+  const Router = await ethers.getContractFactory(
     UniswapV2Router02.abi,
     UniswapV2Router02.bytecode
   )
-  const routerInstance = await router.deploy(
-    factoryInstance.address,
-    wethAddress
-  )
-  await routerInstance.deployed()
+  const router = await Router.deploy(factory.address, wethAddress)
+  await router.deployed()
 
-  log(`Router V02 deployed to :  ${routerInstance.address}`)
+  log(
+    `Router V02 deployed to :  ${router.address} (tx: ${router.deployTransaction.hash})`
+  )
 
   return {
     weth: wethAddress,
-    factory: factoryInstance.address,
-    router: routerInstance.address,
+    factory: factory.address,
+    router: router.address,
   }
 }
 

@@ -7,11 +7,11 @@ async function main() {
 
   // eslint-disable-next-line no-console
   console.log(
-    `PUBLC LOCK > deployed to : ${publicLock.address} (${publicLock.deployTransaction.hash})`
+    `PUBLIC LOCK > deployed to : ${publicLock.address} (tx: ${publicLock.deployTransaction.hash})`
   )
   // eslint-disable-next-line no-console
   console.log(
-    'PUBLC LOCK > Please verify it and call `npx hardhat set template` on the Unlock.'
+    'PUBLIC LOCK > Please verify it and call `npx hardhat set template` on the Unlock.'
   )
   return publicLock.address
 }

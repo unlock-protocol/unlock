@@ -41,7 +41,11 @@ async function main() {
   await timelock.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('> Timelock w proxy deployed at:', timelock.address)
+  console.log(
+    '> Timelock w proxy deployed at:',
+    timelock.address,
+    ` (tx: ${timelock.deployTransaction.hash})`
+  )
 
   // save deployment info
   await addDeployment('UnlockProtocolTimelock', timelock, true)
@@ -72,7 +76,11 @@ async function main() {
   await governor.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('> Governor deployed (w proxy) at:', governor.address)
+  console.log(
+    '> Governor deployed (w proxy) at:',
+    governor.address,
+    ` (tx: ${governor.deployTransaction.hash})`
+  )
 
   // save deployment info
   await addDeployment('UnlockProtocolGovernor', governor, true)
