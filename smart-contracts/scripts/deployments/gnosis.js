@@ -1,4 +1,4 @@
-const multisigABI = require('../test/helpers/ABIs/multisig.json')
+/* const multisigABI = require('../../test/helpers/ABIs/multisig.json')
 
 // helpers
 const log = (...message) => {
@@ -6,13 +6,10 @@ const log = (...message) => {
   console.log('GNOSIS SAFE SETUP >', ...message)
 }
 
-// multisig on mainnet
-const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-
 async function main() {
-  const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
-  const signers = await multisig.getOwners()
-  console.log(signers)
+  // const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
+  // const signers = await multisig.getOwners()
+  // log(signers)
 }
 
 main()
@@ -22,3 +19,4 @@ main()
     console.error(error)
     process.exit(1)
   })
+*/
