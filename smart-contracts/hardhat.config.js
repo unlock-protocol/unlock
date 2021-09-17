@@ -182,7 +182,7 @@ task('config', 'Show current config')
 
 const existingSetters = ['template', 'unlock-config']
 task('set', 'Various setters for Unlock contracts')
-  .addOptionalVariadicPositionalParam(
+  .addVariadicPositionalParam(
     'setters',
     `the name of the setters to execute: ${existingSetters.toString()}`
   )
@@ -249,15 +249,17 @@ task('set', 'Various setters for Unlock contracts')
 
 const existingDeployments = [
   'all',
-  'uniswap',
+  'unlock',
+  'udt',
+  'template',
   'weth',
+  'uniswap',
   'governor',
   'oracle',
-  'template',
 ]
 
 task('deploy', 'Deploy the entire Unlock protocol')
-  .addOptionalVariadicPositionalParam(
+  .addVariadicPositionalParam(
     'deployments',
     `the names of the deployments to execute: ${existingDeployments.toString()}`
   )
@@ -344,6 +346,18 @@ task('deploy', 'Deploy the entire Unlock protocol')
           if (!existingDeployments.includes(t))
             throw new Error(`Unknown deployments task ${t}`)
         })
+
+        if (deployments.includes('udt')) {
+          // eslint-disable-next-line global-require
+          const udtDeployer = require('./scripts/deployments/udt')
+          await udtDeployer()
+        }
+
+        if (deployments.includes('unlock')) {
+          // eslint-disable-next-line global-require
+          const unlockDeployer = require('./scripts/deployments/unlock')
+          await unlockDeployer()
+        }
 
         if (deployments.includes('weth')) {
           // eslint-disable-next-line global-require

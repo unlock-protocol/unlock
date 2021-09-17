@@ -1,17 +1,13 @@
-const { ethers, upgrades } = require('hardhat')
+/* eslint-disable global-require */
+const { ethers } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { getNetworkName } = require('../../helpers/network')
-const { addDeployment } = require('../../helpers/deployments')
 
 const { MaxUint256 } = ethers.constants
 
 const log = (...message) => {
   // eslint-disable-next-line no-console
-  console.log('UNLOCK SETUP >', ...message)
-}
-
-const saveDeploymentInfo = async (contractName, data) => {
-  await addDeployment(contractName, data, true)
+  console.log('UNLOCK DEPLOYMENT >', ...message)
 }
 
 async function main({
@@ -40,52 +36,39 @@ async function main({
     `Deploying contracts on ${networkName} with the account: ${deployer.address}`
   )
   log(`isLocalNet : ${isLocalNet}`)
-  log(`Deployment info saved to ./deployments/${networkName}.`)
 
-  // deploying Unlock with a transparent / upgradable proxy
-  const Unlock = await ethers.getContractFactory('Unlock')
   if (!unlockAddress) {
-    const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
-      initializer: 'initialize(address)',
-    })
-    await unlock.deployed()
-    await saveDeploymentInfo('Unlock', unlock)
-    log('Unlock proxy deployed to:', unlock.address)
-    unlockAddress = unlock.address
+    // deploying Unlock with a transparent / upgradable proxy
+    const unlockDeployer = require('./unlock')
+    unlockAddress = await unlockDeployer()
   }
+
+  // get unlock instance
+  const Unlock = await ethers.getContractFactory('Unlock')
   unlock = Unlock.attach(unlockAddress)
 
   // deploying PublicLock
-  const PublicLock = await ethers.getContractFactory('PublicLock')
   if (!publicLockAddress) {
-    const publicLock = await PublicLock.deploy()
-    await saveDeploymentInfo('PublicLock', publicLock)
-    log('PublicLock deployed at', publicLock.address)
-    publicLockAddress = publicLock.address
+    const publicLockDeployer = require('./template')
+    publicLockAddress = await publicLockDeployer()
   }
 
-  // setting lock template
-  // eslint-disable-next-line global-require
+  // set lock template
   const templateSetter = require('../setters/set-template')
   await templateSetter({
     publicLockAddress,
     unlockAddress,
   })
 
-  // setup UDT
-  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+  // deploy UDT
   if (!udtAddress) {
     // deploy UDT v2 (upgradable)
-    udt = await upgrades.deployProxy(UDT, [minter.address], {
-      initializer: 'initialize(address)',
-    })
-    await udt.deployed()
-    await saveDeploymentInfo('UnlockDiscountToken', udt)
-    log('UDT (v2) deployed to:', udt.address)
-
-    udtAddress = udt.address
+    const udtDeployer = require('./udt')
+    udtAddress = await udtDeployer()
   }
-  // attach existing contract
+
+  // attach existing contract instance
+  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
   udt = UDT.attach(udtAddress)
 
   // pre-mint some UDTs, then delegate mint caps to contract
@@ -112,7 +95,6 @@ async function main({
     }
 
     if (!Object.keys(WETH).includes(networkName)) {
-      // eslint-disable-next-line global-require
       const wethDeployer = require('./weth')
       wethAddress = await wethDeployer()
       log(`WETH deployed to : ${wethAddress}`)
@@ -123,19 +105,18 @@ async function main({
   }
 
   // deploy uniswap v2 if needed
-  const Router = await ethers.getContractFactory(
-    UniswapV2Router02.abi,
-    UniswapV2Router02.bytecode
-  )
-
   if (!uniswapFactoryAddress) {
-    // eslint-disable-next-line global-require
     const uniswapDeployer = require('./uniswap-v2')
     const uniswap = await uniswapDeployer({ wethAddress })
     uniswapRouterAddress = uniswap.router
     uniswapFactoryAddress = uniswap.factory
   }
 
+  // get uniswap instance
+  const Router = await ethers.getContractFactory(
+    UniswapV2Router02.abi,
+    UniswapV2Router02.bytecode
+  )
   const uniswapRouter = Router.attach(uniswapRouterAddress)
   uniswapFactoryAddress = await uniswapRouter.factory()
 
@@ -158,19 +139,18 @@ async function main({
     log(`added liquidity to uniswap ${liquidity}`)
   }
 
-  // 5. Config unlock
-  // eslint-disable-next-line global-require
+  // config unlock
   const unlockConfigSetter = require('../setters/unlock-config')
   await unlockConfigSetter({
+    unlockAddress,
     udtAddress,
     wethAddress,
     estimatedGasForPurchase,
     locksmithURI,
   })
 
-  // 6. deploy oracle
+  // deploy oracle if needed
   if (!oracleAddress) {
-    // eslint-disable-next-line global-require
     const oracleDeployer = require('./oracle')
     oracleAddress = await oracleDeployer({
       uniswapFactoryAddress,
