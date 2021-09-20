@@ -89,6 +89,7 @@ require('./tasks/deploy')
 require('./tasks/impl')
 require('./tasks/upgrade')
 require('./tasks/set')
+require('./tasks/gnosis')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

@@ -117,12 +117,6 @@ task('deploy:oracle', 'Deploy UDT <> WETH oracle contract')
     return await oracleDeployer({ uniswapFactoryAddress })
   })
 
-task('deploy:gnosis', 'Deploy a Gnosis safe').setAction(async () => {
-  // eslint-disable-next-line global-require
-  const gnosisDeployer = require('../scripts/deployments/gnosis')
-  return await gnosisDeployer()
-})
-
 task('deploy:template', 'Deploy PublicLock contract').setAction(async () => {
   // eslint-disable-next-line global-require
   const templateDeployer = require('../scripts/deployments/template')
