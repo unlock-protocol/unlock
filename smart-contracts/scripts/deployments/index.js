@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-const { ethers } = require('hardhat')
+const { ethers, run } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { getNetworkName } = require('../../helpers/network')
 
@@ -38,19 +38,16 @@ async function main({
 
   if (!unlockAddress) {
     // deploying Unlock with a transparent / upgradable proxy
-    const unlockDeployer = require('./unlock')
-    unlockAddress = await unlockDeployer()
+    unlockAddress = await run('deploy:unlock')
   }
 
   // deploying PublicLock
   if (!publicLockAddress) {
-    const publicLockDeployer = require('./template')
-    publicLockAddress = await publicLockDeployer()
+    publicLockAddress = await run('deploy:template')
   }
 
   // set lock template
-  const templateSetter = require('../setters/set-template')
-  await templateSetter({
+  await run('set:template', {
     publicLockAddress,
     unlockAddress,
   })
@@ -58,8 +55,7 @@ async function main({
   // deploy UDT
   if (!udtAddress) {
     // deploy UDT v2 (upgradable)
-    const udtDeployer = require('./udt')
-    udtAddress = await udtDeployer()
+    udtAddress = await run('deploy:udt')
   }
 
   // pre-mint some UDTs, then delegate mint caps to contract
@@ -89,8 +85,7 @@ async function main({
     }
 
     if (!Object.keys(WETH).includes(networkName)) {
-      const wethDeployer = require('./weth')
-      wethAddress = await wethDeployer()
+      wethAddress = await run('deploy:weth')
       log(`WETH deployed to : ${wethAddress}`)
     } else {
       wethAddress = WETH[networkName]
@@ -100,10 +95,9 @@ async function main({
 
   // deploy uniswap v2 if needed
   if (!uniswapFactoryAddress) {
-    const uniswapDeployer = require('./uniswap-v2')
-    const uniswap = await uniswapDeployer({ wethAddress })
-    uniswapRouterAddress = uniswap.router
-    uniswapFactoryAddress = uniswap.factory
+    const { router, factory } = await run('deploy:uniswap', { wethAddress })
+    uniswapRouterAddress = router
+    uniswapFactoryAddress = factory
   }
 
   // get uniswap instance
@@ -134,8 +128,7 @@ async function main({
   }
 
   // config unlock
-  const unlockConfigSetter = require('../setters/unlock-config')
-  await unlockConfigSetter({
+  await run('set:unlock-config', {
     unlockAddress,
     udtAddress,
     wethAddress,
@@ -145,14 +138,12 @@ async function main({
 
   // deploy oracle if needed
   if (!oracleAddress) {
-    const oracleDeployer = require('./oracle')
-    oracleAddress = await oracleDeployer({
+    oracleAddress = await run('deploy:oracle', {
       uniswapFactoryAddress,
     })
   }
 
-  const oracleSetter = require('../setters/unlock-oracle')
-  await oracleSetter({
+  await run('set:unlock-oracle', {
     unlockAddress,
     udtAddress,
     oracleAddress,
