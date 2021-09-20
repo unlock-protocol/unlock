@@ -115,10 +115,7 @@ task('set:unlock-oracle', 'Set UDT <> WETH oracle address in Unlock contract')
     'unlockAddress',
     'the address of an existing Unlock contract'
   )
-  .addOptionalParam(
-    'publicLockAddress',
-    'the address of an existing public Lock contract'
-  )
+  .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
   .addOptionalParam(
     'oracleAddress',
     'the address of the Uniswap Oracle contract'

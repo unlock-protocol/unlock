@@ -13,7 +13,9 @@ async function main({ unlockAddress, udtAddress, oracleAddress }) {
   }
   if (!oracleAddress) {
     // eslint-disable-next-line no-console
-    throw new Error('UNLOCK ORACLE CONFIG > Missing WETH address... aborting.')
+    throw new Error(
+      'UNLOCK ORACLE CONFIG > Missing oracle address... aborting.'
+    )
   }
 
   const [deployer] = await ethers.getSigners()

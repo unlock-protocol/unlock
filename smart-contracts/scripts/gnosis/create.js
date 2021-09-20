@@ -16,7 +16,9 @@ async function main({ owners, threshold }) {
   }
   if (owners.length < threshold) {
     // eslint-disable-next-line no-console
-    throw new Error('GNOSIS SAFE SETUP > Threshold is greater than number of owners.')
+    throw new Error(
+      'GNOSIS SAFE SETUP > Threshold is greater than number of owners.'
+    )
   }
 
   const [deployer] = await ethers.getSigners()

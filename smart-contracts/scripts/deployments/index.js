@@ -59,13 +59,16 @@ async function main({
   }
 
   // pre-mint some UDTs, then delegate mint caps to contract
-  if (premintAmount) {
+  if (isLocalNet || premintAmount) {
     const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
     udt = UDT.attach(udtAddress)
 
     udt = udt.connect(minter)
-    await udt.mint(deployer.address, ethers.utils.parseEther(premintAmount))
-    log(`Pre-minted ${premintAmount} UDT to deployer`)
+    await udt.mint(
+      deployer.address,
+      ethers.utils.parseEther(premintAmount || '1000000.0')
+    )
+    log(`Pre-minted ${premintAmount || '1000000.0'} UDT to deployer`)
 
     await udt.addMinter(unlockAddress)
     log('grant minting permissions to the Unlock Contract')
@@ -109,22 +112,23 @@ async function main({
   uniswapFactoryAddress = await uniswapRouter.factory()
 
   // add liquidity
-  if (liquidity) {
+  if (liquidity || isLocalNet) {
+    const amountLiquidity = liquidity || '1000.0'
     await udt
       .connect(deployer)
-      .approve(uniswapRouterAddress, ethers.utils.parseEther(liquidity))
-    log(`UDT approved Uniswap Router for ${liquidity} ETH`)
+      .approve(uniswapRouterAddress, ethers.utils.parseEther(amountLiquidity))
+    log(`UDT approved Uniswap Router for ${amountLiquidity} ETH`)
 
     await uniswapRouter.connect(deployer).addLiquidityETH(
       udtAddress,
-      ethers.utils.parseEther(liquidity), // pool size
+      ethers.utils.parseEther(amountLiquidity), // pool size
       '1',
       '1',
       deployer.address, // receiver
       MaxUint256, // max timestamp
       { value: ethers.utils.parseEther('10.0') }
     )
-    log(`added liquidity to uniswap ${liquidity}`)
+    log(`added liquidity to uniswap ${amountLiquidity}`)
   }
 
   // config unlock
