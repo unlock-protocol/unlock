@@ -26,7 +26,6 @@ export const GlobalWrapper = ({ children }) => {
   useEffect(() => {
     if (process.browser) {
       if (config.tagManagerArgs) {
-        console.log('GTM!')
         TagManager.initialize(config.tagManagerArgs)
       }
       ReactGA.initialize(config.googleAnalyticsId)
