@@ -9,6 +9,10 @@ export default function configure(
 ) {
   const isServer = typeof window === 'undefined'
 
+  const tagManagerArgs = {
+    gtmId: 'GTM-5XL2RNW',
+  }
+
   const env = runtimeConfig.unlockEnv
 
   // Services
@@ -198,6 +202,7 @@ export default function configure(
   }
 
   return {
+    tagManagerArgs,
     requiredConfirmations: 12,
     base64WedlocksPublicKey,
     isServer,
