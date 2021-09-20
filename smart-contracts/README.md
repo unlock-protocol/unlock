@@ -109,13 +109,13 @@ NB: for Polygon, you need an API key from https://polygonscan.com
 
 ```
 # deploy a new template
-yarn deploy template
+yarn hardhat deploy:template
 
 # verify the contract
 ETHERSCAN_API_KEY=<your api key> yarn verify <template-address>
 
 # Set the template
-yarn set template --unlock-address <xxx> --public-lock-address <template-address>
+yarn hardhat set:template --unlock-address <xxx> --public-lock-address <template-address>
 ```
 
 ## Deploy the contracts
@@ -132,25 +132,25 @@ Or deploy different part separately
 
 ```
 # some sample commands
-yarn deploy unlock
-yarn deploy udt
-yarn deploy weth
-yarn deploy uniswap --weth-address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-yarn deploy oracle --uniswap-factory-address 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+yarn hardhat deploy:unlock
+yarn hardhat deploy:udt
+yarn hardhat deploy:weth
+yarn hardhat deploy:uniswap --weth-address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+yarn hardhat deploy:oracle --uniswap-factory-address 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
 
 # config tasks are also available
-yarn set unlock-oracle --oracle-address <xxx> \
+yarn hardhat set:unlock-oracle --oracle-address <xxx> \
   --unlock-address <xxx> \
   --udt-address <xxx>
 ```
 
-see `yarn deploy --help` for a list of all available deployments
+see `npx hardhat --help` for a list of all available tasks and deployments
 
 
 ### Update Unlock config
 
 ```
-yarn set unlock-config --unlock-address <xxx> \
+yarn hardhat set:unlock-config --unlock-address <xxx> \
   --udt-address <xxx>
   --wethAddress <xxx>
   --estimatedGasForPurchase <xxx>
@@ -160,7 +160,7 @@ yarn set unlock-config --unlock-address <xxx> \
 ## Governor + Timelock
 
 ```
-yarn deploy governor
+yarn hardhat deploy:governor
 
 Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266...
 > Timelock w proxy deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0

@@ -70,9 +70,8 @@
     "ci": "yarn lint && yarn test",
     "build": "hardhat compile",
     "verify": "npx hardhat verify",
-    "deploy": "npx hardhat deploy",
-    "deploy-all": "npx hardhat deploy all",
-    "set": "npx hardhat set"
+    "hardhat": "npx hardhat",
+    "deploy-all": "npx hardhat deploy"
   },
   "author": "",
   "license": "ISC"
