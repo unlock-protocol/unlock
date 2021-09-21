@@ -1,7 +1,7 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
 import logger from '../logger'
-import networks from '@unlock-protocol/networks'
 
 const { ethers } = require('ethers')
 

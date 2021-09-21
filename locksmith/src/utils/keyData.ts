@@ -3,7 +3,6 @@ import networks from '@unlock-protocol/networks'
 
 import logger from '../logger'
 
-
 export default class KeyData {
   async get(lockAddress: string, tokenId: string, network: number) {
     const web3Service = new Web3Service(networks)

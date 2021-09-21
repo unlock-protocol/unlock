@@ -2,7 +2,6 @@ import { gql } from 'apollo-server-express'
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import networks from '@unlock-protocol/networks'
 
-
 export class KeyHolder extends GraphQLDataSource {
   async get(address: string, network: number) {
     this.baseURL = networks[network].subgraphURI
