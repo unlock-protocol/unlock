@@ -19,7 +19,7 @@ if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
 export const networkConfigs: NetworkConfigs = {}
 
 const chainIds = [
-  1, 4, 100, 137, 1337
+  1, 4, 100, 137, 31337
 ]
 
 chainIds.map((chainId) => {
@@ -31,7 +31,7 @@ chainIds.map((chainId) => {
 
   networkConfigs[chainId] = {
     readOnlyProvider : readOnlyProvider || provider,
-    locksmithUri,
+    locksmithUri: locksmithUri|| '',
     unlockAppUrl
    }
 })
