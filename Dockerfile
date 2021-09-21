@@ -76,9 +76,6 @@ COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.js
 COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock
 RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 SKIP_SERVICES=true yarn install
 
-# build required packages
-RUN yarn workspace @unlock-protocol/networks build
-
 # delete deps once packages are built
 USER root
 RUN apk del .build-deps \
@@ -88,6 +85,9 @@ RUN apk del .build-deps \
 RUN chown -R node:node /home/unlock/yarn-cache
 
 USER node
+
+# build required packages
+RUN yarn workspace @unlock-protocol/networks build
 
 # copy scripts
 RUN mkdir /home/unlock/scripts
