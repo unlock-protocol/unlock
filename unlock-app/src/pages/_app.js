@@ -2,6 +2,7 @@ import App from 'next/app'
 import React from 'react'
 import 'cross-fetch/polyfill'
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
+import TagManager from 'react-gtm-module'
 import configure from '../config'
 
 import GlobalStyle from '../theme/globalStyle'
@@ -22,6 +23,11 @@ class UnlockApp extends App {
     }
 
     if (!config.isServer) {
+      // if (config.env === 'prod' && config.tagManagerArgs) {
+      if (config.tagManagerArgs) {
+        TagManager.initialize(config.tagManagerArgs)
+      }
+
       /* eslint-disable no-console */
       console.info(`
 *********************************************************************
