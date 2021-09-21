@@ -1,7 +1,7 @@
 import { NetworkConfig } from '../types';
 
 export const xdai: NetworkConfig = {
-    providerUrl: 'https://rpc.xdaichain.com/',
+    provider: 'https://rpc.xdaichain.com/',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
     id: 100,
     name: 'xDai',

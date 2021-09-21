@@ -1,7 +1,7 @@
 import { NetworkConfig } from '../types';
 
 export const rinkeby: NetworkConfig = {
-    providerUrl:
+    provider:
         'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
     unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
     id: 4,

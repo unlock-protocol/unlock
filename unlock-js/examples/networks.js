@@ -14,10 +14,10 @@ const { rinkeby, xdai } = require('@unlock-protocol/networks')
 module.exports = {
   4: {
     unlockAddress: rinkeby.unlockAddress,
-    provider: rinkeby.providerUrl,
+    provider: rinkeby.provider,
   },
   100: {
     unlockAddress: xdai.unlockAddress,
-    provider: xdai.providerUrl,
+    provider: xdai.provider,
   },
 }

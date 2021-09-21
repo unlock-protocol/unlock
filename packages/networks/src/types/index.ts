@@ -1,7 +1,7 @@
 export interface NetworkConfig {
     id: number
     name: string
-    providerUrl: string
+    provider: string
     locksmithUri?: string
     unlockAppUrl?: string
     blockTime?: number
