@@ -1,8 +1,8 @@
 const { ethers, upgrades } = require('hardhat')
-const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
+const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
-const { getNetworkName } = require('../helpers/network')
-const { getDeployment, addDeployment } = require('../helpers/deployments')
+const { getNetworkName } = require('../../helpers/network')
+const { getDeployment, addDeployment } = require('../../helpers/deployments')
 
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
@@ -41,7 +41,11 @@ async function main() {
   await timelock.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('> Timelock w proxy deployed at:', timelock.address)
+  console.log(
+    '> Timelock w proxy deployed at:',
+    timelock.address,
+    ` (tx: ${timelock.deployTransaction.hash})`
+  )
 
   // save deployment info
   await addDeployment('UnlockProtocolTimelock', timelock, true)
@@ -72,7 +76,11 @@ async function main() {
   await governor.deployed()
 
   // eslint-disable-next-line no-console
-  console.log('> Governor deployed (w proxy) at:', governor.address)
+  console.log(
+    '> Governor deployed (w proxy) at:',
+    governor.address,
+    ` (tx: ${governor.deployTransaction.hash})`
+  )
 
   // save deployment info
   await addDeployment('UnlockProtocolGovernor', governor, true)
@@ -102,10 +110,14 @@ async function main() {
   )
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    // eslint-disable-next-line no-console
-    console.error(error)
-    process.exit(1)
-  })
+if (require.main === module) {
+  /* eslint-disable promise/prefer-await-to-then, no-console */
+  main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error(error)
+      process.exit(1)
+    })
+}
+
+module.exports = main

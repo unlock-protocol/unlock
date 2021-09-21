@@ -1,9 +1,5 @@
 // hardhat.config.js
-const { task } = require('hardhat/config')
 const { copySync } = require('fs-extra')
-const { getNetworkName } = require('./helpers/network')
-const { getDeployment } = require('./helpers/deployments')
-const OZ_SDK_EXPORT = require('./openzeppelin-cli-export.json')
 
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
@@ -85,73 +81,15 @@ if (process.env.RUN_MAINNET_FORK) {
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
 }
 
-task('accounts', 'Prints the list of accounts', async () => {
-  // eslint-disable-next-line no-undef
-  const accounts = await ethers.getSigners()
-
-  accounts.forEach((account, i) => {
-    // eslint-disable-next-line no-console
-    console.log(`[${i}]: ${account.address}`)
-  })
-})
-
-task('balance', "Prints an account's balance")
-  .addParam('account', "The account's address")
-  .setAction(async (taskArgs) => {
-    const account = web3.utils.toChecksumAddress(taskArgs.account)
-    const balance = await web3.eth.getBalance(account)
-    // eslint-disable-next-line no-console
-    console.log(web3.utils.fromWei(balance, 'ether'), 'ETH')
-  })
-
-task('upgrade', 'Upgrade a contract')
-  .addParam('contract', 'The contract path')
-  .setAction(async ({ contract }, { ethers, upgrades }) => {
-    const { chainId } = await ethers.provider.getNetwork()
-    const contractName = contract.replace('contracts/', '').replace('.sol', '')
-
-    const networkName = process.env.RUN_MAINNET_FORK
-      ? 'mainnet'
-      : getNetworkName(chainId)
-
-    // eslint-disable-next-line no-console
-    console.log(`Deploying new implementation on ${networkName}...`)
-
-    let contractInfo
-    if (networkName === 'localhost') {
-      contractInfo = await getDeployment(chainId, contractName)
-    } else {
-      ;[contractInfo] =
-        OZ_SDK_EXPORT.networks[networkName].proxies[
-          `unlock-protocol/${contractName}`
-        ]
-    }
-
-    const { address } = contractInfo
-
-    const Contract = await ethers.getContractFactory(contractName)
-    const implementation = await upgrades.prepareUpgrade(address, Contract)
-
-    // eslint-disable-next-line no-console
-    console.log(`${contractName} implementation deployed at: ${implementation}`)
-  })
-
-task('deploy-template', 'Deploys a new PublicLock contract').setAction(
-  async (params, { ethers }) => {
-    const { chainId } = await ethers.provider.getNetwork()
-    const networkName = process.env.RUN_MAINNET_FORK
-      ? 'mainnet'
-      : getNetworkName(chainId)
-
-    const PublicLock = await ethers.getContractFactory('PublicLock')
-    const publicLock = await PublicLock.deploy()
-
-    // eslint-disable-next-line no-console
-    console.log(
-      `New PublicLock template deployed at ${publicLock.address} on ${networkName} (${publicLock.deployTransaction.hash}). Please verify it and call setTemplate on the Unlock`
-    )
-  }
-)
+// tasks
+require('./tasks/accounts')
+require('./tasks/balance')
+require('./tasks/config')
+require('./tasks/deploy')
+require('./tasks/impl')
+require('./tasks/upgrade')
+require('./tasks/set')
+require('./tasks/gnosis')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

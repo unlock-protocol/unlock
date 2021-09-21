@@ -83,7 +83,6 @@ Once your network are setup, you can run the UDT contract upgrade
 npx hardhat run scripts/udt-upgrade.js --network rinkeby
 ```
 
-
 ## Upgrade a contract
 
 ### Unlock
@@ -91,32 +90,77 @@ npx hardhat run scripts/udt-upgrade.js --network rinkeby
 ```
 $ npx hardhat upgrade --contract contracts/Unlock.sol --network localhost
 Deploying new implemntation on mainnet...
-Unlock V9 implementation deployed at: 0xCD8a1C3ba11CF5ECfa6267617243239504a98d90
+Unlock V9 implementation deployed at: <contract-address>
+
+#  verify the implementation contract
+ETHERSCAN_API_KEY=<your-api-key> yarn verify <contract-address>
 ```
 
-### Verify contracts
-
-You can verify all contracts on etherscan as follow:
+### Get implementation address
 
 ```
-export ETHERSCAN_API_KEY=<your api key>
-
-# contract addresses are fetched from .openzeppelin files
-npx hardhat run scripts/verify.js --network rinkeby
-```
-
-You can also verify a contract using an existing address
-
-```
-npx hardhat verify --network polygon 0x7633dd082406861C384309c67576a4260C5775E0
+npx hardhat impl --contract contracts/<YourContract.sol>
+> implementation address: <address>
 ```
 
 NB: for Polygon, you need an API key from https://polygonscan.com
 
-## Deploy Governor + Timelock
+### Update PublicLock template
 
 ```
-npx hardhat run scripts/deploy-governor.js
+# deploy a new template
+yarn hardhat deploy:template
+
+# verify the contract
+ETHERSCAN_API_KEY=<your api key> yarn verify <template-address>
+
+# Set the template
+yarn hardhat set:template --unlock-address <xxx> --public-lock-address <template-address>
+```
+
+## Deploy the contracts
+
+### Deploy all
+
+You can setup an entire environment using
+
+```
+yarn deploy-all 
+```
+
+Or deploy different part separately
+
+```
+# some sample commands
+yarn hardhat deploy:unlock
+yarn hardhat deploy:udt
+yarn hardhat deploy:weth
+yarn hardhat deploy:uniswap --weth-address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+yarn hardhat deploy:oracle --uniswap-factory-address 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+
+# config tasks are also available
+yarn hardhat set:unlock-oracle --oracle-address <xxx> \
+  --unlock-address <xxx> \
+  --udt-address <xxx>
+```
+
+see `npx hardhat --help` for a list of all available tasks and deployments
+
+
+### Update Unlock config
+
+```
+yarn hardhat set:unlock-config --unlock-address <xxx> \
+  --udt-address <xxx>
+  --wethAddress <xxx>
+  --estimatedGasForPurchase <xxx>
+  --locksmithURI <xxx>
+```
+
+## Governor + Timelock
+
+```
+yarn hardhat deploy:governor
 
 Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266...
 > Timelock w proxy deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
