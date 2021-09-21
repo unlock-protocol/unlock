@@ -1,7 +1,7 @@
 const metadataOperations = require('../../src/operations/metadataOperations')
 require('../../src/models')
 
-const chain = 1337
+const chain = 31337
 
 describe('metadataOperations', () => {
   describe('updateKeyMetadata', () => {

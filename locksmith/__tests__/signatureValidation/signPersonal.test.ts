@@ -34,7 +34,7 @@ const body = {
       { name: 'address', type: 'address' },
     ],
   },
-  domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+  domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
   primaryType: 'Lock',
   message: {
     lock: {
@@ -206,7 +206,7 @@ describe('Signature Validation Middleware', () => {
               { name: 'address', type: 'address' },
             ],
           },
-          domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+          domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
           primaryType: 'Lock',
           message: {
             lock: {

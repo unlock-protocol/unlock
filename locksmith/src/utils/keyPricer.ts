@@ -1,10 +1,11 @@
 import { ethers } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
+
 import * as Normalizer from './normalizer'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import PriceConversion from './priceConversion'
 
-import networks from '../networks'
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
 const stripePercentage = 0.029

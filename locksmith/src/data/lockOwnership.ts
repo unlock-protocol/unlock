@@ -1,9 +1,9 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 const lockOperations = require('../operations/lockOperations')
 
 const { updateLockOwnership } = lockOperations
-const { networks } = require('../networks')
 
 export default class LockOwnership {
   static async update(addresses: string[], chain: number) {

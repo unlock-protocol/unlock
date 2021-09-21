@@ -10,7 +10,7 @@ export const getTransaction = async (
   const rpcRequest = {
     method: 'eth_getTransactionByHash',
     params: [transactionHash],
-    id: 1337, // Not used here
+    id: 31337, // Not used here
     jsonrpc: '2.0',
   }
 

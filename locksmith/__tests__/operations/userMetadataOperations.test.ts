@@ -7,7 +7,7 @@ const models = require('../../src/models')
 
 const { UserTokenMetadata } = models
 
-const chain = 1337
+const chain = 31337
 
 describe('userMetadataOperations', () => {
   beforeAll(async () => {

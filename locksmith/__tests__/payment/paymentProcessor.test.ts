@@ -172,7 +172,7 @@ describe('PaymentProcessor', () => {
           accountId,
           lockAddress,
           accountId,
-          1337,
+          31337,
           1.85
         )
 

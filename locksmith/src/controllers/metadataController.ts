@@ -2,6 +2,7 @@
 /* eslint-disable no-use-before-define */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
@@ -13,8 +14,6 @@ import * as metadataOperations from '../operations/metadataOperations'
 import logger from '../logger'
 
 const config = require('../../config/config')
-
-const { networks } = require('../networks')
 
 namespace MetadataController {
   export const evaluateLockOwnership = async (

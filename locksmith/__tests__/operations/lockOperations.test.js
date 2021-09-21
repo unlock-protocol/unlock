@@ -16,7 +16,7 @@ beforeEach(() => {
   Lock = models.Lock // resetting Lock for before each test
 })
 
-const chain = 1337
+const chain = 31337
 
 describe('lockOperations', () => {
   describe('createLock', () => {

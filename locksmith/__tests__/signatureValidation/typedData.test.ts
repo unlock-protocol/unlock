@@ -170,12 +170,12 @@ describe('Signature Validation Middleware', () => {
                 { name: 'address', type: 'address' },
               ],
             },
-            domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+            domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
               lock: {
                 name: 'New Lock',
-                owner: '0x3aec7369839f58bcd282a8644355b0973c81579f',
+                owner: '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140',
                 address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
               },
             },
@@ -189,7 +189,7 @@ describe('Signature Validation Middleware', () => {
         })
         processor(request, response, function next() {
           expect(request.owner).toBe(
-            '0x3AeC7369839F58BCd282A8644355B0973c81579F'
+            '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140'
           )
           done()
         })
@@ -241,7 +241,7 @@ describe('Signature Validation Middleware', () => {
                 { name: 'address', type: 'address' },
               ],
             },
-            domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+            domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
               lock: {
@@ -280,7 +280,7 @@ describe('Signature Validation Middleware', () => {
                 { name: 'address', type: 'address' },
               ],
             },
-            domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+            domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
               lock: {

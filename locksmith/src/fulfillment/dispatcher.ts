@@ -1,7 +1,7 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 const { ethers } = require('ethers')
-const { networks } = require('../networks')
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 

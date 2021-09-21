@@ -12,7 +12,7 @@ export const keyExpirationTimestampFor = async (
       },
       'latest',
     ],
-    id: 1337, // Not used here
+    id: 31337, // Not used here
     jsonrpc: '2.0',
   }
 
