@@ -25,7 +25,7 @@ We’re excited about supporting creators that are interested in building demos,
 
 We’re excited to have such an insightful project in our grant program and are wishing Kale all the best as they build this powerful integration for the creators, artists and musicians entering this new Web3 world.
 
-If you’d like to join our Discord to connect with Marty about the project or explore some ideas of your own, please [join us here](https://discord.gg/Ah6ZEJyTDp).
+If you’d like to join our Discord to connect with Kale about the project or explore some ideas of your own, please [join us here](https://discord.gg/Ah6ZEJyTDp).
 
 AND if you already have an idea for an integration using Unlock, please submit your project [proposal here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 
