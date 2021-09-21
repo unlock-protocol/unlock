@@ -22,7 +22,7 @@ export const rinkeby: NetworkConfig = {
         address: '0xaFF4481D10270F50f203E0763e2597776068CBc5',
     },
     baseCurrencySymbol: 'Eth',
-    // locksmith: services.storage.host,
+    locksmithUri: 'https://rinkeby.locksmith.unlock-protocol.com',
     nativeCurrency: {
         name: 'Rinkeby Eth',
         symbol: 'Eth',

@@ -2,6 +2,7 @@ export interface NetworkConfig {
     id: number
     name: string
     provider: string
+    readOnlyProvider?: string
     locksmithUri?: string
     unlockAppUrl?: string
     blockTime?: number

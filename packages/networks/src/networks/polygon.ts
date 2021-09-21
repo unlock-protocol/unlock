@@ -19,7 +19,7 @@ export const polygon: NetworkConfig = {
     requiredConfirmations: 12,
     erc20: null,
     baseCurrencySymbol: 'Matic',
-    // locksmith: services.storage.host,
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
     nativeCurrency: {
         name: 'Matic',
         symbol: 'MATIC',

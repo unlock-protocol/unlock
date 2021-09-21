@@ -17,7 +17,7 @@ export const xdai: NetworkConfig = {
         },
     },
     erc20: null, // no default ERC20 on xdai for now
-    // locksmith: services.storage.host,
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
     baseCurrencySymbol: 'xDai',
     nativeCurrency: {
         name: 'xDAI',
