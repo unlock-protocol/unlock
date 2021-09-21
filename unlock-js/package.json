@@ -52,6 +52,6 @@
     "typescript": "4.4.2"
   },
   "dependencies": {
-    "@unlock-protocol/networks": "0.0.1"
+    "@unlock-protocol/networks": "0.0.2"
   }
 }
