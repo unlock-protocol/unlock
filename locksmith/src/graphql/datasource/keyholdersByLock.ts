@@ -1,9 +1,10 @@
 import { gql } from 'apollo-server-express'
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
-import Normalizer from '../../utils/normalizer'
+import networks from '@unlock-protocol/networks'
 
+import Normalizer from '../../utils/normalizer'
 const logger = require('../../logger')
-const { networks } = require('../../networks')
+
 
 export class KeyHoldersByLock extends GraphQLDataSource {
   async getKeyHolders(

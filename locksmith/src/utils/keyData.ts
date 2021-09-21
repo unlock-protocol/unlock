@@ -1,8 +1,8 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 import logger from '../logger'
 
-const { networks } = require('../networks')
 
 export default class KeyData {
   async get(lockAddress: string, tokenId: string, network: number) {
