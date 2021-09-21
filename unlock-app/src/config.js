@@ -53,10 +53,15 @@ export default function configure(
   }
 
   // Network config
-  const networks = networksConfig.map((n) => ({
-    ...n,
-    locksmith: services.storage.host,
-  }))
+  const networks = {}
+
+  // add locksmithURL
+  Object.keys(networksConfig).map((chainId) => {
+    networks[chainId] = {
+      ...networks[chainId],
+      locksmith: services.storage.host,
+    }
+  })
 
   return {
     requiredConfirmations: 12,
