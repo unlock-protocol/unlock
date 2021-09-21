@@ -46,7 +46,7 @@
     "@testing-library/jest-dom": "5.12.0",
     "@testing-library/react": "11.2.7",
     "@types/jest": "26.0.24",
-    "@unlock-protocol/eslint-config" : "0.0.1",
+    "@unlock-protocol/eslint-config": "0.0.1",
     "babel-jest": "27.0.6",
     "babel-loader": "8.2.2",
     "babel-plugin-require-context-hook": "1.0.0",

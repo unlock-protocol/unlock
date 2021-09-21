@@ -16,7 +16,7 @@ const mockWeb3Service: { getLock: any } = {
   }),
 }
 
-const chain = 1337
+const chain = 31337
 
 function getMockWeb3Service() {
   return mockWeb3Service
