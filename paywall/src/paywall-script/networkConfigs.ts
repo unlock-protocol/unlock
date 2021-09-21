@@ -18,20 +18,14 @@ if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
 // This means probably adding to the unlockProtocolConfig object to include the provider, loksmith Uri and unlockAppUrl
 export const networkConfigs: NetworkConfigs = {}
 
-const chainIds = [
-  1, 4, 100, 137, 31337
-]
+const chainIds = [1, 4, 100, 137, 31337]
 
 chainIds.map((chainId) => {
-  const {
-    readOnlyProvider,
-    provider,
-    locksmithUri
-  } = networks[chainId]
+  const { readOnlyProvider, provider, locksmithUri } = networks[chainId]
 
   networkConfigs[chainId] = {
-    readOnlyProvider : readOnlyProvider || provider,
-    locksmithUri: locksmithUri|| '',
-    unlockAppUrl
-   }
+    readOnlyProvider: readOnlyProvider || provider,
+    locksmithUri: locksmithUri || '',
+    unlockAppUrl,
+  }
 })
