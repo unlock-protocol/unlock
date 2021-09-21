@@ -7,7 +7,7 @@ description: The team at Novum Insights has received a grant to build a Firebase
 image: /static/images/blog/firebase/firebase.svg
 ---
 
-Every single application, whether it is built for the web, for mobile devices, or computer can be monetized with Unlock! Memberships are an elegant wat to restrict access to some content, features or even APIs. Today, we're excited to showcase the work of the [Novum Insights](https://novuminsights.com/) team who have shipped a integration of Unlock with [Firebase](https://firebase.google.com/)!
+Every single application, whether it is built for the web, for mobile devices, or computer can be monetized with Unlock! Memberships are an elegant way to restrict access to some content, features or even APIs. Today, we're excited to showcase the work of the [Novum Insights](https://novuminsights.com/) team who have shipped a integration of Unlock with [Firebase](https://firebase.google.com/)!
 
 Firebase is a platform developed by Google for creating mobile and web applications. It is a framework which includes both server and client sides components for easy development and deployments.
 
