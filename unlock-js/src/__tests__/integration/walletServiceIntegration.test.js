@@ -585,14 +585,18 @@ describe.each(versions)('%s', (versionName) => {
           await walletService.purchaseKey({
             lockAddress,
           })
+          await new Promise((resolve)=> 
+            setTimeout(async () => {
+              key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                chainId
+              )
+              resolve()
+            }, 5000)
+          )
 
-          setTimeout(async () => {
-            key = await web3Service.getKeyByLockForOwner(
-              lockAddress,
-              keyOwner,
-              chainId
-            )
-          }, 5000)
+          console.log(key)
         })
 
         it('should have a key and allow the member to cancel it and get a refund', async () => {
