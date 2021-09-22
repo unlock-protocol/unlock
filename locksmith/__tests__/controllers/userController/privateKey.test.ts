@@ -2,6 +2,9 @@ import models = require('../../../src/models')
 import app = require('../../../src/app')
 import UserOperations = require('../../../src/operations/userOperations')
 
+// These tests are slow because we generate private keys
+jest.setTimeout(15000)
+
 beforeAll(() => {
   const { UserReference } = models
   const { User } = models
@@ -46,10 +49,12 @@ describe('encrypted private key retrevial', () => {
       const response = await request(app).get(
         `/users/${emailAddress}/privatekey`
       )
-
+      console.log(response)
       const passwordEncryptedPrivateKey = JSON.parse(
         response.body.passwordEncryptedPrivateKey
       )
+
+      console.log(passwordEncryptedPrivateKey)
 
       expect(passwordEncryptedPrivateKey).toHaveProperty('address')
       expect(passwordEncryptedPrivateKey).toHaveProperty('id')
