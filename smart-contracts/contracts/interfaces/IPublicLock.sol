@@ -32,8 +32,9 @@ contract IPublicLock
 
   /**
    * @dev Never used directly
+   * 
    */
-  function initialize() external;
+  function initialize() external; // CLEM: why does this exist?
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -47,6 +48,7 @@ contract IPublicLock
   * @param _account The account to get the balance of.
   * @return The number of tokens of the given type for the given address, possibly 0.
   */
+  // CLEM: Unused? should be deleted. - use native ERC20 instead
   function getBalance(
     address _tokenAddress,
     address _account
@@ -71,7 +73,7 @@ contract IPublicLock
    * use cases.
    */
   function withdraw(
-    address _tokenAddress,
+    address _tokenAddress, 
     uint _amount
   ) external;
 
@@ -108,7 +110,7 @@ contract IPublicLock
    * Checks if the user has a non-expired key.
    * @param _user The address of the key owner
    */
-  function getHasValidKey(
+  function getHasValidKey( // CLEM: replace by ERC721 balanceOf ?
     address _user
   ) external view returns (bool);
 
@@ -127,7 +129,7 @@ contract IPublicLock
   * @param _pageSize the number of Key Owners requested per page
   * @dev Throws if there are no key owners yet
   */
-  function getOwnersByPage(
+  function getOwnersByPage( // CLEM: delete. Move to 3rd part contract (or graph)?
     uint _page,
     uint _pageSize
   ) external view returns (address[] memory);
@@ -137,7 +139,7 @@ contract IPublicLock
    * @param _tokenId The tokenId of the key to check
    * @param _keyOwner The potential key owners address
    */
-  function isKeyOwner(
+  function isKeyOwner( // CLEM: to delete. Duplicate
     uint _tokenId,
     address _keyOwner
   ) external view returns (bool);
@@ -155,7 +157,7 @@ contract IPublicLock
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than totalSupply.
    */
-  function numberOfOwners() external view returns (uint);
+  function numberOfOwners() external view returns (uint); // CLEM: to delete bcz nbOwners = totalSupply. Is 2 memberships possible ?
 
   /**
    * Allows a Lock manager to assign a descriptive name for this Lock.
@@ -248,7 +250,7 @@ contract IPublicLock
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev this considers any discount from Unlock or the OnKeyPurchase hook.
    */
-  function purchasePriceFor(
+  function purchasePriceFor( // CLEM: Useful when hooks are used to define prices
     address _recipient,
     address _referrer,
     bytes calldata _data
@@ -304,7 +306,7 @@ contract IPublicLock
    * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyManager
    * @param _tokenId The key to cancel
    */
-  function cancelAndRefundFor(
+  function cancelAndRefundFor( // CLEM: sign a refund/cancel message (meta-tx) - could be moved to 3rd part contract LockManager
     address _keyManager,
     uint8 _v,
     bytes32 _r,
@@ -317,10 +319,10 @@ contract IPublicLock
    * senders account.
    * @dev This can be used to invalidate a previously signed message.
    */
-  function invalidateOffchainApproval(
+  function invalidateOffchainApproval( // CLEM: delete? related to meta-tx
     uint _nextAvailableNonce
   ) external;
-
+`
   /**
    * Allow a Lock manager to change the refund penalty.
    * @dev Throws if called by other than a Lock manager
@@ -343,7 +345,7 @@ contract IPublicLock
     address _keyOwner
   ) external view returns (uint refund);
 
-  function keyManagerToNonce(address ) external view returns (uint256 );
+  function keyManagerToNonce(address ) external view returns (uint256 ); // CLEM: meta-tx too
 
   /**
    * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
@@ -352,7 +354,7 @@ contract IPublicLock
    * @param _txSender The address cancelling cancel on behalf of the keyOwner
    * @return approvalHash The hash to sign
    */
-  function getCancelAndRefundApprovalHash(
+  function getCancelAndRefundApprovalHash( // CLEM: meta-tx signing
     address _keyManager,
     address _txSender
   ) external view returns (bytes32 approvalHash);
@@ -436,7 +438,7 @@ contract IPublicLock
   ///===================================================================
 
   /// From ERC165.sol
-  function supportsInterface(bytes4 interfaceId) external view returns (bool );
+  function supportsInterface(bytes4 interfaceId) external view returns (bool ); // CLEM: in use? to check
   ///===================================================================
 
   /// From ERC-721
@@ -448,7 +450,7 @@ contract IPublicLock
     /**
      * @dev Returns the owner of the NFT specified by `tokenId`.
      */
-    function ownerOf(uint256 tokenId) public view returns (address _owner);
+    function ownerOf(uint256 tokenId) public view returns (address _owner); 
 
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
