@@ -585,7 +585,7 @@ describe.each(versions)('%s', (versionName) => {
           await walletService.purchaseKey({
             lockAddress,
           })
-          await new Promise((resolve)=> 
+          await new Promise((resolve) =>
             setTimeout(async () => {
               key = await web3Service.getKeyByLockForOwner(
                 lockAddress,
