@@ -10,9 +10,9 @@
   "license": "MIT",
   "devDependencies": {
     "node-fetch": "3.0.0",
-    "style-loader": "3.0.0",
-    "webpack": "5.36.2",
-    "webpack-cli": "4.6.0"
+    "style-loader": "3.3.0",
+    "webpack": "5.53.0",
+    "webpack-cli": "4.8.0"
   },
   "dependencies": {
     "postmate": "1.5.2",
