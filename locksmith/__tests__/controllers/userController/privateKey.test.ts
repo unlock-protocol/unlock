@@ -49,12 +49,10 @@ describe('encrypted private key retrevial', () => {
       const response = await request(app).get(
         `/users/${emailAddress}/privatekey`
       )
-      console.log(response)
+
       const passwordEncryptedPrivateKey = JSON.parse(
         response.body.passwordEncryptedPrivateKey
       )
-
-      console.log(passwordEncryptedPrivateKey)
 
       expect(passwordEncryptedPrivateKey).toHaveProperty('address')
       expect(passwordEncryptedPrivateKey).toHaveProperty('id')
