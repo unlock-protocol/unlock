@@ -2,6 +2,9 @@ import models = require('../../../src/models')
 import app = require('../../../src/app')
 import UserOperations = require('../../../src/operations/userOperations')
 
+// These tests are slow because we generate private keys
+jest.setTimeout(15000)
+
 beforeAll(() => {
   const { UserReference } = models
   const { User } = models
