@@ -176,8 +176,6 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         from: protocolOwner,
       })
 
-      console.log((await udt.totalSupply()).toString())
-
       await lock.purchase(0, keyBuyer, referrer, [], {
         from: keyBuyer,
         value: await lock.keyPrice(),

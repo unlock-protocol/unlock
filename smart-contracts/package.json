@@ -7,17 +7,20 @@
     "test": "test"
   },
   "dependencies": {
+    "@gnosis.pm/safe-core-sdk": "^0.3.1",
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-etherscan": "2.1.6",
     "@nomiclabs/hardhat-truffle5": "2.0.0",
     "@nomiclabs/hardhat-waffle": "2.0.1",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts-ethereum-package": "2.5.0",
-    "@openzeppelin/contracts-upgradeable": "4.3.1",
+    "@openzeppelin/contracts-upgradeable": "4.3.2",
     "@openzeppelin/hardhat-upgrades": "1.10.0",
     "@openzeppelin/test-helpers": "0.5.13",
     "@openzeppelin/upgrades": "2.8.0",
     "@openzeppelin/upgrades-core": "1.9.0",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@unlock-protocol/eslint-config": "0.0.1",
     "@unlock-protocol/unlock-abi-0": "1.0.4",
     "@unlock-protocol/unlock-abi-1": "1.0.0",
@@ -48,6 +51,7 @@
     "hardlydifficult-ethereum-contracts": "0.11.1",
     "lint-staged": "11.1.2",
     "prettier": "2.4.0",
+    "prompt": "^1.2.0",
     "truffle-assertions": "0.9.2"
   },
   "devDependencies": {
@@ -65,11 +69,9 @@
     "dev": "yarn lint && yarn build && yarn test",
     "ci": "yarn lint && yarn test",
     "build": "hardhat compile",
-    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -e 1000000 -i 1337",
-    "zos": "openzeppelin",
-    "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (truffle-flattener contracts/Unlock.sol > build/Unlock-Flattened.sol) && (truffle-flattener contracts/UnlockDiscountToken.sol > build/UnlockDiscountToken-Flattened.sol) && (echo Wrote files: build/*-Flattened.sol)",
-    "verify": "truffle run verify contracts/Unlock.sol contracts/PublicLock.sol contracts/UnlockDiscountToken.sol",
-    "debug": "truffle debug"
+    "verify": "npx hardhat verify",
+    "hardhat": "npx hardhat",
+    "deploy-all": "npx hardhat deploy"
   },
   "author": "",
   "license": "ISC"

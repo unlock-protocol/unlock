@@ -7,21 +7,17 @@
  *   }
  * }
  *
- * As of writing, we have the following deployments:
- * Unlock Contract:
- * mainnet: 0x3d5409cce1d45233de1d4ebdee74b8e004abdd13
- * rinkeby: 0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b
- * xdai: 0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863
  */
+
+const { rinkeby, xdai } = require('@unlock-protocol/networks')
 
 module.exports = {
   4: {
-    provider:
-      'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
-    unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
+    unlockAddress: rinkeby.unlockAddress,
+    provider: rinkeby.provider,
   },
   100: {
-    provider: 'https://xdai.poanetwork.dev',
-    unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
+    unlockAddress: xdai.unlockAddress,
+    provider: xdai.provider,
   },
 }
