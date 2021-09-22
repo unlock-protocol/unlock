@@ -72,7 +72,7 @@ if (process.env.RUN_MAINNET_FORK) {
   networks.hardhat = {
     forking: {
       url: alchemyURL,
-      blockNumber: 13102200, // Aug 20th 2021
+      blockNumber: 13270350, // Sep 21st 2021
       // gasPrice: 150000000000, // not working, see https://github.com/nomiclabs/hardhat/issues/1216
     },
   }
@@ -116,5 +116,8 @@ module.exports = {
       { version: '0.8.0', settings },
       { version: '0.8.4', settings },
     ],
+  },
+  mocha: {
+    timeout: 2000000,
   },
 }
