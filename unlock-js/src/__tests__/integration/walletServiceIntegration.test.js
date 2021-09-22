@@ -580,18 +580,18 @@ describe.each(versions)('%s', (versionName) => {
         let key
         let keyOwner
 
-        beforeAll(async (done) => {
+        beforeAll(async () => {
           keyOwner = accounts[0]
           await walletService.purchaseKey({
             lockAddress,
           })
+
           setTimeout(async () => {
             key = await web3Service.getKeyByLockForOwner(
               lockAddress,
               keyOwner,
               chainId
             )
-            done()
           }, 5000)
         })
 
