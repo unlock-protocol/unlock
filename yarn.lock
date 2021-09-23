@@ -9743,7 +9743,7 @@ __metadata:
     "@types/supertest": 2.0.11
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/unlock-js": 0.20.3
+    "@unlock-protocol/unlock-js": 0.20.4
     apollo-cache-inmemory: 1.6.6
     apollo-client: 2.6.10
     apollo-datasource-graphql: 1.3.2
@@ -10081,7 +10081,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": 1.4.7
-    "@unlock-protocol/unlock-js": 0.20.3
+    "@unlock-protocol/unlock-js": 0.20.4
     "@walletconnect/web3-provider": 1.6.5
     apollo-boost: 0.4.9
     axios: 0.21.2
@@ -10171,7 +10171,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/unlock-js@0.20.3, @unlock-protocol/unlock-js@workspace:unlock-js":
+"@unlock-protocol/unlock-js@0.20.4, @unlock-protocol/unlock-js@workspace:unlock-js":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-js@workspace:unlock-js"
   dependencies:
