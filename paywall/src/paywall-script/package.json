@@ -15,6 +15,7 @@
     "webpack-cli": "4.6.0"
   },
   "dependencies": {
-    "postmate": "1.5.2"
+    "postmate": "1.5.2",
+    "@unlock-protocol/networks": "0.0.2"
   }
 }

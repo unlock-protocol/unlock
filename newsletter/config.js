@@ -21,7 +21,7 @@ export default function configure(runtimeConfig = nextConfig) {
   }
 
   if (env === 'dev') {
-    // we start ganache locally with a block time of 3
+    // we start eth node locally with a block time of 3
     isRequiredNetwork = (networkId) => networkId === 1337
   }
 

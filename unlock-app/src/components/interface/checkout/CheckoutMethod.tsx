@@ -122,7 +122,7 @@ const MainChoice = styled(ActionButton).attrs({
   activeBorderColor: 'var(--blue)',
 })`
   border: 1px solid var(--white);
-  & :hover {
+  &:hover {
     border: 1px solid var(--blue);
   }
   display: flex;

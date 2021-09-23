@@ -8,9 +8,13 @@ import v9 from '../v9'
 
 const supportedVersions = [v4, v6, v7, v8, v9]
 
+const host = process.env.CI ? 'eth-node' : '127.0.0.1'
+const port = 8545
+const provider = `http://${host}:${port}`
+
 const networks = {
-  1337: {
-    provider: 'http://127.0.0.1:8545',
+  31337: {
+    provider,
     unlockAddress: '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F',
   },
 }
@@ -56,7 +60,7 @@ describe('Web3Service', () => {
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
         expect.assertions(3)
-        const args = ['0xlock', 1337]
+        const args = ['0xlock', 31337]
         const result = {}
         const version = {
           [method](_args) {
