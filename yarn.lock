@@ -8913,7 +8913,7 @@ __metadata:
     "@types/stripe": 8.0.416
     "@types/supertest": 2.0.11
     "@unlock-protocol/eslint-config": 0.0.1
-    "@unlock-protocol/networks": 0.0.2
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-js": 0.19.2
     apollo-cache-inmemory: 1.6.6
     apollo-client: 2.6.10
@@ -8970,7 +8970,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/networks@0.0.2, @unlock-protocol/networks@workspace:packages/networks":
+"@unlock-protocol/networks@workspace:./packages/networks, @unlock-protocol/networks@workspace:packages/networks":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/networks@workspace:packages/networks"
   dependencies:
@@ -9250,7 +9250,7 @@ __metadata:
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": 0.0.1
-    "@unlock-protocol/networks": 0.0.2
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": 1.4.7
     "@unlock-protocol/unlock-js": 0.20.2
     "@walletconnect/web3-provider": 1.6.5
@@ -9369,7 +9369,7 @@ __metadata:
     "@babel/core": 7.15.0
     "@babel/preset-env": 7.15.0
     "@unlock-protocol/eslint-config": 0.0.1
-    "@unlock-protocol/networks": 0.0.2
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-abi-4": 1.1.1
     "@unlock-protocol/unlock-abi-6": 1.0.2
     "@unlock-protocol/unlock-abi-7": 1.0.3
