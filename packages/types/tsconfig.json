@@ -1,0 +1,7 @@
+{
+    "extends": "@unlock-protocol/tsconfig",
+    "compilerOptions": {
+        "declaration": true,
+        "outDir": "dist"
+    }
+}
