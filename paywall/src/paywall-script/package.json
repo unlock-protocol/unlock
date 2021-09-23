@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "postmate": "1.5.2",
-    "@unlock-protocol/networks": "0.0.2"
+    "@unlock-protocol/networks": "workspace:./packages/networks"
   }
 }

@@ -11,5 +11,8 @@
     },
     "devDependencies": {
         "typescript": "4.4.3"
-    }
+    },
+    "files": [
+        "dist"
+    ]
 }
