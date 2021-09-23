@@ -6,7 +6,7 @@ const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { getProxyAddress } = require('../../helpers/proxy')
 const Locks = require('../fixtures/locks')
 
-const estimateGas = 252166
+const estimateGas = 252166 * 2
 
 // helper function
 const upgradeContract = async (contractAddress) => {

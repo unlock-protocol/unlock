@@ -86,6 +86,9 @@ RUN chown -R node:node /home/unlock/yarn-cache
 
 USER node
 
+# build required packages
+RUN yarn workspace @unlock-protocol/networks build
+
 # copy scripts
 RUN mkdir /home/unlock/scripts
 COPY --chown=node scripts /home/unlock/scripts
@@ -122,15 +125,19 @@ WORKDIR /app
 COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
 COPY --from=build --chown=node /home/unlock/$BUILD_DIR/yarn.lock yarn.lock
 
-# delete dev deps to prevent yarn from fetching them
+# delete dev deps (prevents yarn from fetching them)
+# add link: protocol workaround for yarn local links to work
 RUN apk add --no-cache --virtual .build-deps coreutils jq  \
-    && jq 'del(.devDependencies)' package.json > package.json.tmp \
+    && jq 'del(.devDependencies) | (.dependencies |= (with_entries(if .key == "@unlock-protocol/networks" then .key = "link:./packages/networks" else . end)))' package.json > package.json.tmp \
     && mv package.json.tmp package.json \ 
     && apk del .build-deps \
     && chown node:node package.json
 
+
+# get local packages builds
+COPY --from=build --chown=node /home/unlock/packages packages
+
 # prod install 
-# NOTE: this required that all shared packages have been published to npm
 USER node
 ENV NODE_ENV production
 RUN yarn install --production --non-interactive --pure-lockfile

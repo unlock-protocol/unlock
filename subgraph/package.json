@@ -1,5 +1,7 @@
 {
   "name": "@unlock-protocol/subgraph",
+  "version": "0.0.1",
+  "private" : true,
   "license": "UNLICENSED",
   "scripts": {
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",

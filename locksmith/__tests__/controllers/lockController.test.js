@@ -4,7 +4,7 @@ const { Lock } = require('../../src/models')
 
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const validLockAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
-const chain = 1337
+const chain = 31337
 
 const testLockDetails = {
   chain,
@@ -46,7 +46,7 @@ const lockPayload = {
       { name: 'address', type: 'address' },
     ],
   },
-  domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+  domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
   primaryType: 'Lock',
   message: {
     lock: {
@@ -93,7 +93,7 @@ describe('lockController', () => {
         Date.now = jest.fn(() => 1546130837000)
 
         await request(app)
-          .post('/lock?network=1337')
+          .post('/lock?network=31337')
           .set('Accept', /json/)
           .send(lockPayload)
 

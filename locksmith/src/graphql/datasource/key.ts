@@ -1,7 +1,6 @@
 import { gql } from 'apollo-server-express'
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
-
-const { networks } = require('../../networks')
+import networks from '@unlock-protocol/networks'
 
 export class Key extends GraphQLDataSource {
   async getKeys(args: any, network: number) {
