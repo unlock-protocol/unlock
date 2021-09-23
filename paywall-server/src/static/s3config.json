@@ -1,0 +1,18 @@
+{
+  "IndexDocument": {
+    "Suffix": "index.html"
+  },
+  "ErrorDocument": {
+    "Key": "index.html"
+  },
+  "RoutingRules": [
+    {
+      "Condition": {
+        "KeyPrefixEquals": "static/unlock.1.0.min.js"
+      },
+      "Redirect": {
+        "ReplaceKeyWith": "static/unlock.latest.min.js"
+      }
+    }
+  ]
+}
