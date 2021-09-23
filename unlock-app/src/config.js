@@ -62,7 +62,7 @@ export default function configure(
   // add locksmithURL
   Object.keys(networksConfig).map((chainId) => {
     networks[chainId] = {
-      ...networks[chainId],
+      ...networksConfig[chainId],
       locksmith: services.storage.host,
     }
   })
