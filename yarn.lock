@@ -9754,6 +9754,7 @@ __metadata:
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/types": "workspace:./packages/types"
     "@zeit/next-css": 1.0.1
     "@zeit/next-source-maps": 0.0.3
     babel-jest: 27.0.6
@@ -9790,13 +9791,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/paywall@workspace:paywall"
   dependencies:
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/paywall-server": "workspace:./paywall-server"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
+    babel-jest: ^27.2.1
+    dotenv: ^10.0.0
+    eslint: 7.25.0
+    jest: ^27.2.1
+    jest-fetch-mock: ^3.0.3
     node-fetch: 3.0.0
     postmate: 1.5.2
     style-loader: 3.0.0
+    ts-jest: ^27.0.5
     ts-loader: ^9.2.6
     typescript: ^4.4.3
     webpack: 5.36.2
@@ -18138,7 +18146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:10.0.0":
+"dotenv@npm:10.0.0, dotenv@npm:^10.0.0":
   version: 10.0.0
   resolution: "dotenv@npm:10.0.0"
   checksum: f412c5fe8c24fbe313d302d2500e247ba8a1946492db405a4de4d30dd0eb186a88a43f13c958c5a7de303938949c4231c56994f97d05c4bc1f22478d631b4005
@@ -26062,7 +26070,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-fetch-mock@npm:3.0.3":
+"jest-fetch-mock@npm:3.0.3, jest-fetch-mock@npm:^3.0.3":
   version: 3.0.3
   resolution: "jest-fetch-mock@npm:3.0.3"
   dependencies:
@@ -26857,7 +26865,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest@npm:27.2.1":
+"jest@npm:27.2.1, jest@npm:^27.2.1":
   version: 27.2.1
   resolution: "jest@npm:27.2.1"
   dependencies:
@@ -39606,7 +39614,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:27.0.5":
+"ts-jest@npm:27.0.5, ts-jest@npm:^27.0.5":
   version: 27.0.5
   resolution: "ts-jest@npm:27.0.5"
   dependencies:

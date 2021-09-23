@@ -1,11 +1,12 @@
 import 'jest-fetch-mock'
-import { Enabler } from '../../utils/enableInjectedProvider'
-import { Paywall } from '../../paywall-script/Paywall'
-import * as isUnlockedUtil from '../../utils/isUnlocked'
-import * as paywallScriptUtils from '../../paywall-script/utils'
-import * as optimisticUnlockingUtils from '../../utils/optimisticUnlocking'
+import { Enabler } from '@unlock-protocol/paywall-server/src/utils/enableInjectedProvider'
+import * as isUnlockedUtil from '@unlock-protocol/paywall-server/src/utils/isUnlocked'
+import * as optimisticUnlockingUtils from '@unlock-protocol/paywall-server/src/utils/optimisticUnlocking'
 
-import { networkConfigs } from '../../paywall-script/networkConfigs'
+import { Paywall } from '../Paywall'
+import * as paywallScriptUtils from '../utils'
+import { networkConfigs } from '../networkConfigs'
+
 
 const paywallConfig = {
   network: 31337, // test network
@@ -41,7 +42,7 @@ const savedTransactions = [
   },
 ]
 
-let paywall: Paywall
+let paywall: Paywall;
 
 describe('Paywall object', () => {
   beforeEach(() => {

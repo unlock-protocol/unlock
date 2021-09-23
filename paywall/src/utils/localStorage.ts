@@ -1,8 +1,8 @@
 // copied from the MDN docs as the best way to detect localStorage presence
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Testing_for_availability
-export default function localStorageAvailable(window) {
+export default function localStorageAvailable(): boolean {
+  const storage = localStorage
   try {
-    var storage = window.localStorage
     const x = '__storage_test__'
     storage.setItem(x, x)
     storage.removeItem(x)
@@ -25,17 +25,18 @@ export default function localStorageAvailable(window) {
   }
 }
 
-export function store(key, value) {
-  if (localStorageAvailable(window)) {
+export function store(key: string, value: object) {
+  if (localStorageAvailable()) {
     window.localStorage.setItem(key, JSON.stringify(value))
   } else {
     // Fail silently!
   }
 }
 
-export function retrieve(key) {
-  if (localStorageAvailable(window)) {
-    return JSON.parse(window.localStorage.getItem(key))
+export function retrieve(key: string) {
+  if (localStorageAvailable()) {
+    const item = localStorage.getItem(key) || ''
+    return JSON.parse(item)
   }
   return undefined
 }

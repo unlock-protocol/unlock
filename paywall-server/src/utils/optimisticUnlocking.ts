@@ -73,8 +73,8 @@ export const optimisticLocks = async (
   )
 
   const unlocked: string[] = []
-  recentTransactions.map((transaction) => {
-    const lockIsOptimistc = willUnlock(
+  recentTransactions.map(async (transaction) => {
+    const lockIsOptimistc = await willUnlock(
       provider,
       user,
       transaction.recipient,
