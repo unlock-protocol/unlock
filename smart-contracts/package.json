@@ -7,7 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@gnosis.pm/safe-core-sdk": "^0.3.1",
+    "@gnosis.pm/safe-core-sdk": "0.3.1",
     "@nomiclabs/hardhat-ethers": "2.0.2",
     "@nomiclabs/hardhat-etherscan": "2.1.6",
     "@nomiclabs/hardhat-truffle5": "2.0.0",
@@ -19,8 +19,8 @@
     "@openzeppelin/test-helpers": "0.5.13",
     "@openzeppelin/upgrades": "2.8.0",
     "@openzeppelin/upgrades-core": "1.9.0",
-    "@uniswap/v2-core": "^1.0.1",
-    "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "@uniswap/v2-core": "1.0.1",
+    "@uniswap/v2-periphery": "1.1.0-beta.0",
     "@unlock-protocol/eslint-config": "0.0.1",
     "@unlock-protocol/unlock-abi-0": "1.0.4",
     "@unlock-protocol/unlock-abi-1": "1.0.0",
@@ -51,7 +51,7 @@
     "hardlydifficult-ethereum-contracts": "0.11.1",
     "lint-staged": "11.1.2",
     "prettier": "2.4.0",
-    "prompt": "^1.2.0",
+    "prompt": "1.2.0",
     "truffle-assertions": "0.9.2"
   },
   "devDependencies": {
