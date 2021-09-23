@@ -14,6 +14,7 @@
 /src/unlock.js/dist
 .next/
 out/
+tmp
 
 # misc
 .DS_Store

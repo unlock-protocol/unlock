@@ -1,5 +1,5 @@
 import networks from '@unlock-protocol/networks'
-import { NetworkConfigs } from '../unlockTypes'
+import { NetworkConfigs } from '@unlock-protocol/types'
 
 declare var PAYWALL_URL: string
 

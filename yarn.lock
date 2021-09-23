@@ -9737,9 +9737,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/paywall@workspace:paywall":
+"@unlock-protocol/paywall-server@workspace:./paywall-server, @unlock-protocol/paywall-server@workspace:paywall-server":
   version: 0.0.0-use.local
-  resolution: "@unlock-protocol/paywall@workspace:paywall"
+  resolution: "@unlock-protocol/paywall-server@workspace:paywall-server"
   dependencies:
     "@babel/core": 7.14.8
     "@svgr/cli": 5.5.0
@@ -9781,6 +9781,23 @@ __metadata:
     ts-jest: 27.0.5
     ts-loader: 9.2.5
     typescript: 4.2.4
+    webpack: 5.36.2
+    webpack-cli: 4.6.0
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/paywall@workspace:paywall":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/paywall@workspace:paywall"
+  dependencies:
+    "@unlock-protocol/networks": "workspace:./packages/networks"
+    "@unlock-protocol/paywall-server": "workspace:./paywall-server"
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    node-fetch: 3.0.0
+    postmate: 1.5.2
+    style-loader: 3.0.0
+    ts-loader: ^9.2.6
+    typescript: ^4.4.3
     webpack: 5.36.2
     webpack-cli: 4.6.0
   languageName: unknown
@@ -9890,6 +9907,15 @@ __metadata:
 "@unlock-protocol/tsconfig@workspace:./packages/tsconfig, @unlock-protocol/tsconfig@workspace:packages/tsconfig":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/tsconfig@workspace:packages/tsconfig"
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/types@workspace:packages/types":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/types@workspace:packages/types"
+  dependencies:
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    typescript: ^4.4.3
   languageName: unknown
   linkType: soft
 
@@ -30410,7 +30436,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:*":
+"node-fetch@npm:*, node-fetch@npm:3.0.0":
   version: 3.0.0
   resolution: "node-fetch@npm:3.0.0"
   dependencies:
@@ -39625,6 +39651,21 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"ts-loader@npm:^9.2.6":
+  version: 9.2.6
+  resolution: "ts-loader@npm:9.2.6"
+  dependencies:
+    chalk: ^4.1.0
+    enhanced-resolve: ^5.0.0
+    micromatch: ^4.0.0
+    semver: ^7.3.4
+  peerDependencies:
+    typescript: "*"
+    webpack: ^5.0.0
+  checksum: 309d8fb6348c0c3a7166d42c1238c585ede00f816155b24217dbca489406a72409395d7954bc5801ddb9ca71c71e7e0b2375dbc342337e0ab1a461944598a7fe
+  languageName: node
+  linkType: hard
+
 "ts-pnp@npm:1.2.0, ts-pnp@npm:^1.1.6":
   version: 1.2.0
   resolution: "ts-pnp@npm:1.2.0"
@@ -39903,7 +39944,7 @@ typescript@4.4.2:
   languageName: node
   linkType: hard
 
-typescript@4.4.3:
+"typescript@4.4.3, typescript@^4.4.3":
   version: 4.4.3
   resolution: "typescript@npm:4.4.3"
   bin:
@@ -39953,7 +39994,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.4.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.4.3
   resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"
   bin:

@@ -3,15 +3,15 @@ import Postmate from 'postmate'
 import { PaywallConfig, NetworkConfigs } from 'src/unlockTypes'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
-import { store, retrieve } from '../utils/localStorage'
-import { willUnlock } from '../utils/optimisticUnlocking'
-import { isUnlocked } from '../utils/isUnlocked'
+import { store, retrieve } from '../paywall/src/utils/localStorage'
+import { willUnlock } from '../paywall/src/utils/optimisticUnlocking'
+import { isUnlocked } from '../paywall/src/utils/isUnlocked'
 import {
   Enabler,
   getProvider,
   Web3Window,
   enableInjectedProvider,
-} from '../utils/enableInjectedProvider'
+} from '../paywall/src/utils/enableInjectedProvider'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
