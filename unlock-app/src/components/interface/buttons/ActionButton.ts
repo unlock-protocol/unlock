@@ -31,7 +31,7 @@ export const ActionButton = styled.button<ActionButtonProps>`
   background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : props.color || 'var(--green)'};
 
-  & :hover {
+  &:hover {
     color: ${(props) =>
       props.disabled
         ? 'var(--white)'
@@ -63,7 +63,7 @@ export const CancelCreateLockButton = styled(ActionButton)`
   align-self: end;
   height: 48px;
   background-color: var(--yellow);
-  & :hover {
+  &:hover {
     background-color: var(--red);
   }
   ${Media.phone`

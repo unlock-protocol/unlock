@@ -366,7 +366,7 @@ const Button = styled.button`
   border: none;
   outline: inherit;
   padding 0;
-  & :hover {
+  &:hover {
     color: #333;
     transition: color 100ms ease;
   }

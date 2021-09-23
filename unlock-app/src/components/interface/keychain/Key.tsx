@@ -110,16 +110,16 @@ const Box = styled.div`
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   ${Media.phone`
-width: 100%;
-margin: 0 0 16px 0;
-`}
+    width: 100%;
+    margin: 0 0 16px 0;
+  `}
   ${Media.nophone`
-width: 30%;
-margin: 0 16px 16px 0;
-`}
-& :hover {
+    width: 30%;
+    margin: 0 16px 16px 0;
+  `}
+  &:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 100ms ease;
+    transition: box-shadow 500ms ease;
   }
 `
 
@@ -185,7 +185,7 @@ const ButtonAction = styled.button`
   /* background: none; */
   border: none;
   padding: 5px;
-  & :hover {
+  &:hover {
     color: #333;
     transition: color 100ms ease;
   }
