@@ -4,5 +4,8 @@
     "compilerOptions": {
         "outDir": "build",
         "moduleResolution" : "node"
-    }
+    },
+    "exclude": [
+        "build"
+    ]
 }
