@@ -10,7 +10,7 @@
   "schedule": [
     "on the first day of the month"
   ],
-  "rebaseStalePrs": false,
+  "rebaseStalePrs": true,
   "minor": {
     "groupName": "minor and patch updates"
   },
@@ -47,9 +47,6 @@
       "minor": {
         "groupName": "smart-contracts"
       },
-      "reviewers": [
-        "NickCuso"
-      ]
     },
     {
       "paths": [
