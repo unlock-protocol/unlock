@@ -110,6 +110,9 @@ ARG PORT
 # additional build step
 RUN yarn workspace @unlock-protocol/$BUILD_DIR build
 
+# package everything for prod
+RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
+
 ##
 ## 4. export a minimal image w only the prod app
 ##
@@ -125,27 +128,7 @@ RUN chown node:node /app
 WORKDIR /app
 
 # copy package info
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
-
-# delete dev deps (prevents yarn from fetching them)
-# add link: protocol workaround for yarn local links to work
-RUN apk add --no-cache --virtual .build-deps coreutils jq  \
-    && jq 'del(.devDependencies) | (.dependencies |= (with_entries(if .key == "@unlock-protocol/networks" then .key = "link:./packages/networks" else . end)))' package.json > package.json.tmp \
-    && mv package.json.tmp package.json \ 
-    && apk del .build-deps \
-    && chown node:node package.json
-
-
-# get local packages builds
-COPY --from=build --chown=node /home/unlock/packages packages
-
-# prod install 
-USER node
-ENV NODE_ENV production
-RUN yarn install --production --non-interactive --pure-lockfile
-
-# copy built files
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/build/ .
+COPY --from=build --chown=node /home/node/app .
 
 # start command
 EXPOSE $PORT
