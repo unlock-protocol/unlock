@@ -36,7 +36,7 @@
     "@babel/cli": "7.14.8",
     "@babel/core": "7.15.0",
     "@babel/preset-env": "7.15.0",
-    "@unlock-protocol/eslint-config": "0.0.1",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",

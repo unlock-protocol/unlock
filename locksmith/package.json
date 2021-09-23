@@ -90,7 +90,7 @@
     "@types/sequelize": "4.28.10",
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.11",
-    "@unlock-protocol/eslint-config": "0.0.1",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "aws-sdk": "2.981.0",
     "babel-jest": "27.1.0",
     "eslint": "7.32.0",
