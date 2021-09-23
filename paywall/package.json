@@ -44,6 +44,7 @@
     "@testing-library/react": "12.1.0",
     "@types/jest": "27.0.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "babel-jest": "27.0.6",
     "babel-loader": "8.2.2",
     "babel-plugin-require-context-hook": "1.0.0",
