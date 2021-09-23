@@ -10060,6 +10060,7 @@ __metadata:
     "@apollo/react-hooks": 4.0.0
     "@apollo/react-testing": 4.0.0
     "@babel/core": 7.15.0
+    "@babel/plugin-proposal-optional-chaining": ^7.14.5
     "@storybook/addon-actions": 6.3.7
     "@storybook/addon-knobs": 6.2.9
     "@storybook/addon-viewport": 6.3.7
@@ -10203,6 +10204,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": 7.15.0
+    "@babel/plugin-proposal-optional-chaining": ^7.14.5
     "@testing-library/jest-dom": 5.14.1
     "@testing-library/react": 12.1.0
     "@types/jest": 27.0.2

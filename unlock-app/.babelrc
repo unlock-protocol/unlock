@@ -5,6 +5,7 @@
         "next/babel",
       ],
       "plugins": [
+        "@babel/plugin-proposal-optional-chaining",
         [
           "styled-components",
           {
@@ -20,6 +21,7 @@
         "next/babel",
       ],
       "plugins": [
+        "@babel/plugin-proposal-optional-chaining",
         [
           "styled-components",
           {
@@ -42,6 +44,7 @@
         ]
       ],
       "plugins": [
+        "@babel/plugin-proposal-optional-chaining",
         [
           "styled-components",
           {
