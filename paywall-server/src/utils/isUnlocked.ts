@@ -1,6 +1,7 @@
+import { PaywallConfig, NetworkConfigs } from '@unlock-protocol/types'
+
 import { keyExpirationTimestampFor } from './keyExpirationTimestampFor'
 import { optimisticUnlocking } from './optimisticUnlocking'
-import { PaywallConfig, NetworkConfigs } from '../unlockTypes'
 
 /**
  * A function which, given a user account, a paywall config will return the list of unlocked locks.

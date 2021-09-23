@@ -1,17 +1,17 @@
 import Postmate from 'postmate'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PaywallConfig, NetworkConfigs } from 'src/unlockTypes'
+import { PaywallConfig, NetworkConfigs } from '@unlock-protocol/types'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
-import { store, retrieve } from '../paywall/src/utils/localStorage'
-import { willUnlock } from '../paywall/src/utils/optimisticUnlocking'
-import { isUnlocked } from '../paywall/src/utils/isUnlocked'
+import { store, retrieve } from '@unlock-protocol/paywall-server/src/utils/localStorage'
+import { willUnlock } from '@unlock-protocol/paywall-server/src/utils/optimisticUnlocking'
+import { isUnlocked } from '@unlock-protocol/paywall-server/src/utils/isUnlocked'
 import {
   Enabler,
   getProvider,
   Web3Window,
   enableInjectedProvider,
-} from '../paywall/src/utils/enableInjectedProvider'
+} from '@unlock-protocol/paywall-server/src/utils/enableInjectedProvider'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 

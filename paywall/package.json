@@ -5,6 +5,7 @@
   "main": "dist/module.js",
   "types": "module.d.ts",
   "scripts": {
+    "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js"
   },
   "license": "MIT",
@@ -20,7 +21,7 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/paywall-server": "workspace:./paywall-server",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@unlock-protocol/types" : "workspace:./packages/types",
+    "@unlock-protocol/types": "workspace:./packages/types",
     "postmate": "1.5.2"
   }
 }

@@ -11,10 +11,11 @@
     ] /* Specify library files to be included in the compilation. */,
     "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "sourceMap": true /* Generates corresponding '.map' file. */,
-    "outDir": "./tmp/unlockpaywall" /* Redirect output structure to the directory. */,
+    "outDir": "./dist" /* Redirect output structure to the directory. */,
     "removeComments": false /* Do not emit comments to output. */,
     
     /* Additional Checks */
+    "moduleResolution": "node",
     "noImplicitReturns": false,             /* Report error when not all code paths in function return a value. */
     "noFallthroughCasesInSwitch": false,    /* Report errors for fallthrough cases in switch statement. */
 

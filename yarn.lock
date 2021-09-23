@@ -9793,6 +9793,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/paywall-server": "workspace:./paywall-server"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/types": "workspace:./packages/types"
     node-fetch: 3.0.0
     postmate: 1.5.2
     style-loader: 3.0.0
@@ -9910,7 +9911,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/types@workspace:packages/types":
+"@unlock-protocol/types@workspace:./packages/types, @unlock-protocol/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:

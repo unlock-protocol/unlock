@@ -1,2 +1,1 @@
-import * as Types from "./types/unlockTypes";
-export { Types }
+export * from "./types/unlockTypes";
