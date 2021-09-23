@@ -27,7 +27,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/unlock-assets": "1.4.7",
-    "@unlock-protocol/unlock-js": "0.20.2",
+    "@unlock-protocol/unlock-js": "0.20.3",
     "@walletconnect/web3-provider": "1.6.5",
     "apollo-boost": "0.4.9",
     "axios": "0.21.2",
