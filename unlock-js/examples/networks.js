@@ -9,6 +9,7 @@
  *
  */
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { rinkeby, xdai } = require('@unlock-protocol/networks')
 
 module.exports = {
