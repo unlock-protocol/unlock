@@ -151,7 +151,6 @@ jobs:
           name: Deploy Locksmith to Beanstalk
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh
 
-
   build-and-deploy-to-heroku:
     executor: ubuntu_20-executor
     environment:
@@ -191,6 +190,14 @@ jobs:
       - run:
           name: promote image
           command: scripts/promote-image.sh locksmith
+
+  open-prod-pull-request:
+    executor: ubuntu_20-executor
+    steps:
+      - checkout
+      - run:
+          name: 'Open automated production pull request'
+          command: scripts/automated-production-pr.sh
 
 workflows:
   version: 2
@@ -274,3 +281,14 @@ workflows:
               only: master
           requires:
             - integration-tests
+
+  prepare-prod-deploy:
+    triggers:
+      - schedule:
+          cron: '30 12 * * 2' # use cron syntax to set the scheduled trigger
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - open-prod-pull-request
