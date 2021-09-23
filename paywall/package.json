@@ -30,7 +30,7 @@
     "@zeit/next-source-maps": "0.0.3",
     "dotenv": "10.0.0",
     "lint-staged": "11.0.0",
-    "next": "10.2.3",
+    "next": "11.1.1",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
     "prop-types": "15.7.2",
