@@ -9704,6 +9704,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/networks@workspace:packages/networks"
   dependencies:
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     typescript: 4.4.3
   languageName: unknown
   linkType: soft
@@ -9881,6 +9882,12 @@ __metadata:
     handlebars: 4.7.7
     lint-staged: 11.1.2
     yargs: 17.1.1
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/tsconfig@workspace:./packages/tsconfig, @unlock-protocol/tsconfig@workspace:packages/tsconfig":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/tsconfig@workspace:packages/tsconfig"
   languageName: unknown
   linkType: soft
 
