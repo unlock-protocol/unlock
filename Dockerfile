@@ -46,12 +46,16 @@ RUN mkdir -p /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
 
-# add yarn cache to speedup local builds
-ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
-
 # copy packages info
 COPY --chown=node --from=manifests /opt/manifests .
 COPY --chown=node .prettierrc /home/unlock/.
+
+# yarn config
+COPY  --chown=node .yarn/ /home/unlock/.yarn/
+COPY  --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
+
+# add yarn cache folder to be used by docker buildkit 
+RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml 
 
 # Setting user as root to handle apk install
 USER root
@@ -73,8 +77,7 @@ RUN apk add --no-cache --virtual .build-deps \
 USER node
 RUN mkdir /home/unlock/${BUILD_DIR}
 COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
-COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock
-RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 SKIP_SERVICES=true yarn install
+RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
 
 # delete deps once packages are built
 USER root
@@ -123,7 +126,6 @@ WORKDIR /app
 
 # copy package info
 COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/yarn.lock yarn.lock
 
 # delete dev deps (prevents yarn from fetching them)
 # add link: protocol workaround for yarn local links to work
