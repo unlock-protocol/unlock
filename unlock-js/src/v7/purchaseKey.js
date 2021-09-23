@@ -77,6 +77,10 @@ export default async function (
     purchaseForOptions.value = actualAmount
   }
 
+  // To get good estimates we need the gas price, because it matters in the actual execution
+  const gasPrice = await this.provider.getGasPrice()
+  purchaseForOptions.gasPrice = gasPrice
+
   // Estimate gas. Bump by 30% because estimates are wrong
   if (!purchaseForOptions.gasLimit) {
     const gasLimit = await lockContract.estimateGas.purchase(
@@ -86,7 +90,7 @@ export default async function (
       data,
       purchaseForOptions
     )
-    purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toString()
+    purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
   }
 
   const transactionPromise = lockContract.purchase(

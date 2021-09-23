@@ -1,5 +1,8 @@
 # Changes
 
+# 0.20.3
+- Adding forced estimate for gas which includes gas price because it matters for execution
+
 # 0.20.2
 - Adding forced estimate for gas
 
