@@ -94,7 +94,7 @@ export const ButtonLink = styled.a`
       fill: ${(props) => props.fillHoverColor || 'white'};
     }
   }
-  & :focus {
+  &:focus {
     outline: none;
   }
 `
