@@ -55,7 +55,7 @@ describe.skip('keychain -- KeyDetails', () => {
 
     const { getByText } = render(errorMock)
 
-    await rtl.wait(() => {
+    await rtl.waitFor(() => {
       expect(getByText('Could not retrieve keys')).toBeInTheDocument()
       // should also display the error message
       expect(getByText('Network error: welp')).toBeInTheDocument()
@@ -81,7 +81,7 @@ describe.skip('keychain -- KeyDetails', () => {
 
     const { getByText } = render(noResultsMock)
 
-    await rtl.wait(() => {
+    await rtl.waitFor(() => {
       expect(getByText("You don't have any keys yet")).toBeInTheDocument()
     })
   })
@@ -111,7 +111,7 @@ describe.skip('keychain -- KeyDetails', () => {
 
     const { getByText } = render(resultsMock)
 
-    await rtl.wait(() => {
+    await rtl.waitFor(() => {
       expect(getByText('ERC20 paywall lock')).toBeInTheDocument()
     })
   })
