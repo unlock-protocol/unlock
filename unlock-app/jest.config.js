@@ -25,4 +25,9 @@ module.exports = {
       statements: 58,
     },
   },
+  globals: {
+    'ts-jest' : {
+      babelConfig: true,
+    }
+  }
 }

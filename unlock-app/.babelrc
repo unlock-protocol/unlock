@@ -2,10 +2,9 @@
   "env": {
     "development": {
       "presets": [
-        "next/babel",
+        "next/babel"
       ],
       "plugins": [
-        "@babel/plugin-proposal-optional-chaining",
         [
           "styled-components",
           {
@@ -18,10 +17,9 @@
     },
     "production": {
       "presets": [
-        "next/babel",
+        "next/babel"
       ],
       "plugins": [
-        "@babel/plugin-proposal-optional-chaining",
         [
           "styled-components",
           {
@@ -40,11 +38,10 @@
             "preset-env": {
               "modules": "commonjs"
             }
-          },
+          }
         ]
       ],
       "plugins": [
-        "@babel/plugin-proposal-optional-chaining",
         [
           "styled-components",
           {
@@ -54,7 +51,7 @@
           }
         ],
         [
-          "require-context-hook",
+          "require-context-hook"
         ]
       ]
     }
