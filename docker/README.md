@@ -4,8 +4,7 @@ In effort to aid the ease of development, we have provided a Docker compose file
 
 The following services are run as part of the compose setup:
 
-* ganache
-* jaeger
+* eth-node (hardhat)
 * graph protocol node
 * ipfs
 * postgres

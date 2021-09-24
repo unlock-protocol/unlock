@@ -8,12 +8,6 @@ const copyFile = promisify(fs.copyFile)
 
 module.exports = withCSS({
   webpack: (config) => {
-    // Fixes npm packages that depend on `fs` module
-    // TODO: is this still needed? How can we be sure?
-    config.node = {
-      fs: 'empty',
-    }
-
     // Despite being mostly Typescript-configured by default, Next
     // will fail to resolve .ts{x} files if we don't set the
     // resolvers.
