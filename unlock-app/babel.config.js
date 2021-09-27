@@ -1,8 +1,8 @@
-{
+module.exports = {
   "env": {
     "development": {
       "presets": [
-        "next/babel",
+        "next/babel"
       ],
       "plugins": [
         [
@@ -17,7 +17,7 @@
     },
     "production": {
       "presets": [
-        "next/babel",
+        "next/babel"
       ],
       "plugins": [
         [
@@ -38,7 +38,7 @@
             "preset-env": {
               "modules": "commonjs"
             }
-          },
+          }
         ]
       ],
       "plugins": [
@@ -51,7 +51,7 @@
           }
         ],
         [
-          "require-context-hook",
+          "require-context-hook"
         ]
       ]
     }

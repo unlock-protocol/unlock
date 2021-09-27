@@ -4,12 +4,15 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Unlock Protocol's contract addressess for various networks",
-    "scripts" : {
+    "scripts": {
         "start": "tsc --watch",
         "build": "tsc",
         "prepublish": "yarn build"
     },
     "devDependencies": {
         "typescript": "4.4.3"
-    }
+    },
+    "files": [
+        "dist"
+    ]
 }

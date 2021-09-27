@@ -19,3 +19,18 @@ smart-contracts/build/
 smart-contracts/cache
 smart-contracts/artifacts
 builds/
+
+shared/node_modules/
+
+.vscode
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
