@@ -10,18 +10,24 @@ module.exports = {
     '<rootDir>/node_modules/',
     '<rootDir>/src/__tests__/test-helpers/',
   ],
-  moduleDirectories: ["node_modules", "src"],
+  moduleDirectories: ["node_modules", "<rootDir>/src"],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
   transform: {
-    '^.+\\.(js|jsx|tsx)$': ['<rootDir>/../node_modules/babel-jest', {
-      presets: ['next/babel'],
-      plugins: ['@babel/plugin-proposal-optional-chaining']
+    '^.+\\.(js|jsx|tsx)$': [
+      '<rootDir>/../node_modules/babel-jest', {
+        presets: [
+          'next/babel', 
+          ["@babel/preset-env", { "modules": "auto" }]
+        ],
+        plugins: [
+          '@babel/plugin-proposal-optional-chaining'
+        ]
     }],
-    '^.+\\.(ts)$': 'ts-jest',
+    '^.+\\.(js|ts|tsx)$': 'ts-jest',
   },
   coveragePathIgnorePatterns: ['/node_modules/', 'src/stories/.*/*.stories.js'],
   transformIgnorePatterns: [
-    "/node_modules/(?!ethereum-cryptography)",
+    '[/\\\\]node_modules[/\\\\](?!(ethereum-cryptography)).+\\.(js|jsx|ts|tsx)$',
   ],
   collectCoverage: true,
   coverageThreshold: {
