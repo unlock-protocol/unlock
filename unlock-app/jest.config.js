@@ -12,7 +12,7 @@ module.exports = {
   ],
   moduleDirectories: [
     'node_modules',
-    'src',
+    '<rootDir>/unlock-app/node_modules',
     '<rootDir>/unlock-app/src'
     ],
   moduleFileExtensions: [
