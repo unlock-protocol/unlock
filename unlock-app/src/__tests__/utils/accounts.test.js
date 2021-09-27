@@ -6,7 +6,7 @@ import {
 
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
-jest.setTimeout(15000)
+jest.setTimeout(20000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
