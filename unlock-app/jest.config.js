@@ -10,25 +10,46 @@ module.exports = {
     '<rootDir>/node_modules/',
     '<rootDir>/src/__tests__/test-helpers/',
   ],
-  moduleDirectories: ["node_modules", "<rootDir>/src"],
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
-  transform: {
-    '^.+\\.(js|jsx|tsx)$': [
-      '<rootDir>/../node_modules/babel-jest', {
+  moduleDirectories: [
+    'node_modules',
+    'src',
+    '<rootDir>/unlock-app/src'
+    ],
+  moduleFileExtensions: [
+    'js', 
+    'jsx', 
+    'ts', 
+    'tsx', 
+    'json'
+  ],
+  preset: 'ts-jest/presets/js-with-ts',
+  globals: {
+    'ts-jest': {
+      babelConfig: {
         presets: [
-          'next/babel', 
-          ["@babel/preset-env", { "modules": "auto" }]
+          [
+            "next/babel",
+            {
+              "preset-env": {
+                "modules": "commonjs"
+              }
+            }
+          ]
         ],
         plugins: [
-          '@babel/plugin-proposal-optional-chaining'
+          '@babel/plugin-proposal-optional-chaining',
+          'require-context-hook'
         ]
-    }],
-    '^.+\\.(js|ts|tsx)$': 'ts-jest',
+      }
+    }
   },
-  coveragePathIgnorePatterns: ['/node_modules/', 'src/stories/.*/*.stories.js'],
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\](?!(ethereum-cryptography)).+\\.(js|jsx|ts|tsx)$',
   ],
+  coveragePathIgnorePatterns: [
+    '/node_modules/', 
+    'src/stories/.*/*.stories.js'
+    ],
   collectCoverage: true,
   coverageThreshold: {
     global: {
