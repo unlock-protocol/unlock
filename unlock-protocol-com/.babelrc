@@ -3,6 +3,7 @@
     "development": {
       "presets": ["next/babel"],
       "plugins": [
+        "@babel/plugin-syntax-optional-chaining",
         [
           "styled-components",
           {
@@ -16,6 +17,7 @@
     "production": {
       "presets": ["next/babel"],
       "plugins": [
+        "@babel/plugin-syntax-optional-chaining",
         [
           "styled-components",
           {
@@ -38,6 +40,7 @@
         ]
       ],
       "plugins": [
+        "@babel/plugin-syntax-optional-chaining",
         [
           "styled-components",
           {

@@ -24,3 +24,13 @@ builds/
 # npm files as we use yarn
 package-lock.json
 yarn-error.log
+
+# yarn v2
+.yarn/*
+.pnp.js
+# !.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

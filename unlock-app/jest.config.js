@@ -10,12 +10,46 @@ module.exports = {
     '<rootDir>/node_modules/',
     '<rootDir>/src/__tests__/test-helpers/',
   ],
-  transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest',
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+  moduleDirectories: [
+    'node_modules',
+    '<rootDir>/unlock-app/node_modules',
+    '<rootDir>/unlock-app/src'
+    ],
+  moduleFileExtensions: [
+    'js', 
+    'jsx', 
+    'ts', 
+    'tsx', 
+    'json'
+  ],
+  preset: 'ts-jest/presets/js-with-ts',
+  globals: {
+    'ts-jest': {
+      babelConfig: {
+        presets: [
+          [
+            "next/babel",
+            {
+              "preset-env": {
+                "modules": "commonjs"
+              }
+            }
+          ]
+        ],
+        plugins: [
+          '@babel/plugin-proposal-optional-chaining',
+          'require-context-hook'
+        ]
+      }
+    }
   },
-  coveragePathIgnorePatterns: ['/node_modules/', 'src/stories/.*/*.stories.js'],
-  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
+  transformIgnorePatterns: [
+    '[/\\\\]node_modules[/\\\\](?!(ethereum-cryptography)).+\\.(js|jsx|ts|tsx)$',
+  ],
+  coveragePathIgnorePatterns: [
+    '/node_modules/', 
+    'src/stories/.*/*.stories.js'
+    ],
   collectCoverage: true,
   coverageThreshold: {
     global: {
@@ -24,5 +58,5 @@ module.exports = {
       lines: 60,
       statements: 58,
     },
-  },
+  }
 }

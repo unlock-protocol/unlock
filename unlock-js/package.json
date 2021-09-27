@@ -10,11 +10,11 @@
     "url": "https://github.com/unlock-protocol/unlock.git"
   },
   "scripts": {
-    "pretest": "yarn build && node ./src/__tests__/setup/prepare-eth-node-for-unlock.js",
-    "test": "jest",
+    "prepare-eth": "node ./src/__tests__/setup/prepare-eth-node-for-unlock.js",
+    "test": "yarn build && yarn prepare-eth && jest",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
-    "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "build-esm": "BABEL_ENV=esm npx babel src --ignore src/__tests__ --out-dir esm",
+    "build-cjs": "BABEL_ENV=cjs npx babel src --ignore src/__tests__ --out-dir lib",
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
     "ci": "yarn test && yarn lint",
@@ -36,7 +36,7 @@
     "@babel/cli": "7.14.8",
     "@babel/core": "7.15.0",
     "@babel/preset-env": "7.15.0",
-    "@unlock-protocol/eslint-config": "0.0.1",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
     "@unlock-protocol/unlock-abi-6": "1.0.2",
     "@unlock-protocol/unlock-abi-7": "1.0.3",
@@ -50,5 +50,8 @@
     "prettier": "2.3.2",
     "ts-jest": "27.0.5",
     "typescript": "4.4.2"
+  },
+  "dependencies": {
+    "@unlock-protocol/networks": "workspace:./packages/networks"
   }
 }
