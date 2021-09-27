@@ -1,5 +1,5 @@
 {
-  "name": "@unlock-protocol/paywall-server",
+  "name": "@unlock-protocol/paywall-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {

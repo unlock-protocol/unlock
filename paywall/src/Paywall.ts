@@ -4,14 +4,14 @@ import { PaywallConfig, NetworkConfigs } from '@unlock-protocol/types'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from './utils/localStorage'
-import { isUnlocked } from '@unlock-protocol/paywall-server/src/utils/isUnlocked'
-import { willUnlock } from '@unlock-protocol/paywall-server/src/utils/optimisticUnlocking'
+import { isUnlocked } from '@unlock-protocol/paywall-app/src/utils/isUnlocked'
+import { willUnlock } from '@unlock-protocol/paywall-app/src/utils/optimisticUnlocking'
 import {
   Enabler,
   getProvider,
   Web3Window,
   enableInjectedProvider,
-} from '@unlock-protocol/paywall-server/src/utils/enableInjectedProvider'
+} from '@unlock-protocol/paywall-app/src/utils/enableInjectedProvider'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 

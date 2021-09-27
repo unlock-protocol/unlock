@@ -9737,9 +9737,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/paywall-server@workspace:./paywall-server, @unlock-protocol/paywall-server@workspace:paywall-server":
+"@unlock-protocol/paywall-app@workspace:./paywall-app, @unlock-protocol/paywall-app@workspace:paywall-app":
   version: 0.0.0-use.local
-  resolution: "@unlock-protocol/paywall-server@workspace:paywall-server"
+  resolution: "@unlock-protocol/paywall-app@workspace:paywall-app"
   dependencies:
     "@babel/core": 7.14.8
     "@svgr/cli": 5.5.0
@@ -9793,7 +9793,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/paywall-server": "workspace:./paywall-server"
+    "@unlock-protocol/paywall-app": "workspace:./paywall-app"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: ^27.2.1

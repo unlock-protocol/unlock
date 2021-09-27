@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { PaywallConfig } from '@unlock-protocol/types'
-import { Enabler } from '@unlock-protocol/paywall-server/src/utils/enableInjectedProvider'
+import { Enabler } from '@unlock-protocol/paywall-app/src/utils/enableInjectedProvider'
 
 /**
  * Dispatches events
