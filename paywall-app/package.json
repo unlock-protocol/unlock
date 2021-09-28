@@ -8,12 +8,9 @@
     "build": "next build src",
     "deploy": "yarn run build && next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "start": "yarn run build && yarn build-script && NODE_ENV=production node src/server.js",
+    "start": "yarn run build && NODE_ENV=production node src/server.js",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "build-script": "yarn build-unlock.latest.js",
-    "watch-script": "webpack --watch --config unlock.latest.js.webpack.config.js",
-    "build-unlock.latest.js": "webpack --config unlock.latest.js.webpack.config.js",
     "ci": "yarn test && yarn lint"
   },
   "dependencies": {
@@ -23,6 +20,7 @@
     "@types/react": "17.0.19",
     "@types/react-dom": "17.0.9",
     "@types/styled-components": "5.1.14",
+    "@unlock-protocol/paywall": "workspace:./paywall",
     "@unlock-protocol/types": "workspace:./packages/types",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",

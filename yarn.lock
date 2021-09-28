@@ -9753,6 +9753,7 @@ __metadata:
     "@types/react-dom": 17.0.9
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/paywall": "workspace:./paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
     "@zeit/next-css": 1.0.1
@@ -9787,14 +9788,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/paywall@workspace:packages/paywall":
+"@unlock-protocol/paywall@workspace:./paywall, @unlock-protocol/paywall@workspace:paywall":
   version: 0.0.0-use.local
-  resolution: "@unlock-protocol/paywall@workspace:packages/paywall"
+  resolution: "@unlock-protocol/paywall@workspace:paywall"
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    "@unlock-protocol/types": "workspace:packages/types"
+    "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: ^27.2.1
     dotenv: ^10.0.0
     eslint: 7.25.0
