@@ -9775,6 +9775,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: ^27.2.1
+    babel-plugin-require-context-hook: ^1.0.0
     babel-plugin-styled-components: ^1.13.2
     dotenv: ^10.0.0
     eslint: 7.25.0
@@ -13235,7 +13236,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-require-context-hook@npm:1.0.0":
+"babel-plugin-require-context-hook@npm:1.0.0, babel-plugin-require-context-hook@npm:^1.0.0":
   version: 1.0.0
   resolution: "babel-plugin-require-context-hook@npm:1.0.0"
   checksum: 574f02bbdb540cc1f20b17b253eeca4bfa7289b67211f056edf82411b897de0523e3fcc751cf688b55b2cfe92d217e4f3734bb2cf4b9edd41a8163c5d2430641
