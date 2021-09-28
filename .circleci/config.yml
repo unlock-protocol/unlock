@@ -34,10 +34,10 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
+          command: scripts/monorepo.sh packages/unlock-js $CIRCLE_BRANCH
       - run:
           name: unlock-js tests
-          command: scripts/tests.sh unlock-js
+          command: scripts/tests.sh packages/unlock-js
           no_output_timeout: 30m
       - run:
           name: Log failing tests
