@@ -9,14 +9,13 @@ module.exports = () => {
     cache: false,
     mode,
     devtool: 'source-map',
-    entry: path.resolve(__dirname, 'module.js'),
+    entry: path.resolve(__dirname, 'src', 'index.ts'),
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'module.js',
+      filename: 'unlock.latest.min.js',
       library: '@unlock-protocol/paywall',
       libraryTarget: 'umd',
       umdNamedDefine: true,
-      globalObject: 'this',
     },
     module: {
       rules: [
@@ -36,7 +35,6 @@ module.exports = () => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        fetch: "require('node-fetch')",
         PAYWALL_URL: JSON.stringify(process.env.PAYWALL_URL),
       }),
     ],
