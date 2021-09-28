@@ -1,9 +1,8 @@
 {
   "name": "@unlock-protocol/paywall",
   "version": "0.1.0",
-  "module": "dist/module.js",
-  "main": "dist/module.js",
-  "types": "module.d.ts",
+  "module": "src/index.ts",
+  "main": "dist/unlock.latest.min.js",
   "scripts": {
     "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js",
