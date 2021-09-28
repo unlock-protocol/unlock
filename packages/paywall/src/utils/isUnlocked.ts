@@ -16,8 +16,8 @@ export const isUnlocked = async (
   const unlockedLocks: string[] = []
   await Promise.all(
     // For each lock
-    Object.entries(paywallConfig.locks).map(async ([lockAddress, props]) => {
-      let network = props.network || paywallConfig.network
+    Object.entries(paywallConfig.locks).map(async ([lockAddress]) => {
+      let network = paywallConfig.network
       const { readOnlyProvider, locksmithUri } = networks[network]
       const timestamp = await keyExpirationTimestampFor(
         readOnlyProvider,

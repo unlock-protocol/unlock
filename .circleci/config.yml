@@ -207,9 +207,6 @@ workflows:
       - locksmith-tests
       - unlock-js-tests
       - run-tests:
-          name: "paywall-app-tests"
-          service: paywall-app
-      - run-tests:
           name: "paywall-lib-tests"
           service: paywall
       - run-tests:

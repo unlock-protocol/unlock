@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@unlock-protocol/networks": "workspace:./packages/networks",
-    "@unlock-protocol/paywall-app": "workspace:./paywall-app",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:./packages/types",
     "postmate": "1.5.2"

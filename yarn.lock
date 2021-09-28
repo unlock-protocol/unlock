@@ -9737,7 +9737,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/paywall-app@workspace:./paywall-app, @unlock-protocol/paywall-app@workspace:paywall-app":
+"@unlock-protocol/paywall-app@workspace:paywall-app":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/paywall-app@workspace:paywall-app"
   dependencies:
@@ -9787,15 +9787,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/paywall@workspace:paywall":
+"@unlock-protocol/paywall@workspace:packages/paywall":
   version: 0.0.0-use.local
-  resolution: "@unlock-protocol/paywall@workspace:paywall"
+  resolution: "@unlock-protocol/paywall@workspace:packages/paywall"
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/paywall-app": "workspace:./paywall-app"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    "@unlock-protocol/types": "workspace:./packages/types"
+    "@unlock-protocol/types": "workspace:packages/types"
     babel-jest: ^27.2.1
     dotenv: ^10.0.0
     eslint: 7.25.0

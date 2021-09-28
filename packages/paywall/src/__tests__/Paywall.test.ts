@@ -1,7 +1,7 @@
 import 'jest-fetch-mock'
-import { Enabler } from '@unlock-protocol/paywall-app/src/utils/enableInjectedProvider'
-import * as isUnlockedUtil from '@unlock-protocol/paywall-app/src/utils/isUnlocked'
-import * as optimisticUnlockingUtils from '@unlock-protocol/paywall-app/src/utils/optimisticUnlocking'
+import { Enabler } from '../utils/enableInjectedProvider'
+import * as isUnlockedUtil from '../utils/isUnlocked'
+import * as optimisticUnlockingUtils from '../utils/optimisticUnlocking'
 
 import { Paywall } from '../Paywall'
 import * as paywallScriptUtils from '../utils'
