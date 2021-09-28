@@ -59,5 +59,6 @@
   "bugs": {
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
-  "homepage": "https://github.com/unlock-protocol/unlock#readme"
+  "homepage": "https://github.com/unlock-protocol/unlock#readme",
+  "packageManager": "yarn@3.0.2"
 }
