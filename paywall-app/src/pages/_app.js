@@ -1,6 +1,5 @@
 import App from 'next/app'
 import React from 'react'
-
 import GlobalStyle from '../theme/globalStyle.css'
 
 class UnlockApp extends App {
@@ -9,7 +8,6 @@ class UnlockApp extends App {
 
     return (
       <>
-        <GlobalStyle />
         <Component {...pageProps} />
       </>
     )
