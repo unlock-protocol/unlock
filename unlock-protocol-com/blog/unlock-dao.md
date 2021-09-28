@@ -66,12 +66,12 @@ Finally, we collaborated with the Tally team to make sure their front-end for DA
 
 As part of the DAO launch, the Unlock Inc. team has allocated 10% of the pre-mine to the DAO. This first allocation provides a budget to the community who can already start to use the funds as they want. The allocation has been done through 2 mechanisms:
 
-- 5,000 UDT immediately available. [first 'test' transaction](https://www.notion.so/f22fc9ab030db3a1742bdb5eefee3a92) and [second transaction](https://www.notion.so/847f0dc5c94eba26c84207270106807d),
+- 5,000 UDT immediately available. [first 'test' transaction](https://etherscan.io/tx/0x8d726c90d70817d8b865c13a38b85689f22fc9ab030db3a1742bdb5eefee3a92) and [second transaction](https://etherscan.io/tx/0xb220c3a5adfb633635ab056a65f83083847f0dc5c94eba26c84207270106807d),
 - 95,000 UDT [distributed through a Sablier stream for 1 year](https://app.sablier.finance/stream/100400).
 
 It is important for us to make sure that the DAO gets funding with vesting to ensure that not all tokens are spent immediately.
 
-Additionally, we are transferring ownership of the LP tokens for the Uniswap V2 pool ([tx1](https://www.notion.so/1a32e226da6d82144753af2517042b9c) and [tx2](https://www.notion.so/14180be10d24e188f857d8f4ef3a2a88)) which was created at launch time in order to have a public price (as it is used to determine how many UDT are minted for the referrer on key purchases).
+Additionally, we are transferring ownership of the LP tokens for the Uniswap V2 pool ([tx1](https://etherscan.io/tx/0x91d19da260fae927a2eb28fa6655838e1a32e226da6d82144753af2517042b9c) and [tx2](https://etherscan.io/tx/0x3733c7f6bdd42f3aa1e3478b661c32a214180be10d24e188f857d8f4ef3a2a88)) which was created at launch time in order to have a public price (as it is used to determine how many UDT are minted for the referrer on key purchases).
 
 This is a _first_ allocation. We hope the community uses these funds to foster adoption of the protocol and we're excited to see the first few proposals!
 
