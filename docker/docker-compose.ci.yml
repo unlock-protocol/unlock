@@ -72,7 +72,7 @@ services:
       context: ../
       target: dev
       args:
-        BUILD_DIR: paywall
+        BUILD_DIR: packages/paywall
       cache_from:
         - paywall
         - unlockprotocol/paywall:master
@@ -100,7 +100,7 @@ services:
       context: ../
       target: dev
       args:
-        BUILD_DIR: unlock-js
+        BUILD_DIR: packages/unlock-js
       cache_from:
         - unlock-js
         - unlockprotocol/unlock-js:master
