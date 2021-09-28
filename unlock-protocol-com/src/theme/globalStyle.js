@@ -49,6 +49,12 @@ export const globalStyle = `
     font-weight: 500;
   }
 
+  h3 {
+    font-size: 14px;
+    margin-bottom: 0px;
+  }
+
+
   a {
     text-decoration: none;
     color: var(--link);
