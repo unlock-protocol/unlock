@@ -6,7 +6,7 @@
   "scripts": {
     "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "ci": "yarn test"
   },

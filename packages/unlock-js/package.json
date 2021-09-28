@@ -12,7 +12,7 @@
   "scripts": {
     "prepare-eth": "node ./src/__tests__/setup/prepare-eth-node-for-unlock.js",
     "test": "yarn build && yarn prepare-eth && jest",
-    "lint": "yarn run eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm npx babel src --ignore src/__tests__ --out-dir esm",
     "build-cjs": "BABEL_ENV=cjs npx babel src --ignore src/__tests__ --out-dir lib",
     "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
