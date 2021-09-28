@@ -8672,6 +8672,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/random-words@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@types/random-words@npm:1.1.2"
+  checksum: 67ba58a76e9b31c41e16cef1d119c5040f713269d4ebd4c1c4144dade6b5d01a83c82a9578e329fb5c0f9ad6112ec0725438e9df4fd431cdbf4c9e8227b67843
+  languageName: node
+  linkType: hard
+
 "@types/range-parser@npm:*":
   version: 1.2.4
   resolution: "@types/range-parser@npm:1.2.4"
@@ -9622,6 +9629,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/nock": 10.0.3
     "@types/node": 14.17.14
+    "@types/random-words": ^1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/sequelize": 4.28.10
     "@types/stripe": 8.0.416
@@ -10097,6 +10105,7 @@ __metadata:
     "@babel/preset-env": 7.15.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
+    "@unlock-protocol/types": "workspace:./packages/types"
     "@unlock-protocol/unlock-abi-4": 1.1.1
     "@unlock-protocol/unlock-abi-6": 1.0.2
     "@unlock-protocol/unlock-abi-7": 1.0.3

@@ -1,18 +1,13 @@
 /* eslint-disable */
 import { providers, Wallet } from 'ethers'
-
-interface Web3ServiceParams {
-  readOnlyProvider: string
-  unlockAddress: string
-  network: number
-}
+import { NetworkConfig, NetworkConfigs } from '@unlock-protocol/types'
 
 export interface PurchaseKeyParams {
   lockAddress: string
   owner: string
-  keyPrice: string
-  erc20Address: string | null
-  referrer: string | null
+  keyPrice?: string
+  erc20Address?: string | null
+  referrer?: string | null
 }
 
 export interface TransactionDefaults {
@@ -42,10 +37,17 @@ export interface KeyResult {
   expiration: number
 }
 
+export interface KeyPayload {
+  tokenId: string
+  lock: string
+  owner: string | null
+  expiration: number
+}
+
 type Web3Provider = string | providers.Web3Provider
 
 export class Web3Service {
-  constructor(params: Web3ServiceParams)
+  constructor(params: NetworkConfig)
   getTransaction: (
     transactionHash: string,
     network: number
@@ -58,6 +60,13 @@ export class Web3Service {
     network: number
   ) => Promise<string>
   isLockManager: (lock: string, manager: string, network: number) => Promise<boolean>
+  ownerOf: (lockAddress: string, tokenId: string, network: number) => Promise<string>
+  isKeyGranter: (
+    lockAddress: string,
+    owner: string,
+    network: number
+  ) => Promise<boolean>
+  getKeyExpirationByLockForOwner: (lock: string, owner: string, network: number) => Promise<KeyPayload>
 }
 
 interface SetKeyMetadataParams {
@@ -91,12 +100,13 @@ interface GetKeyMetadataParams {
 }
 
 export class WalletService {
-  constructor({ unlockAddress }: { unlockAddress: string })
+  constructor(NetworkConfigs)
   ready: boolean
   provider?: any
-  connect: (provider: Web3Provider) => Promise<string>
+  connect: (provider: Web3Provider, signer: unknown) => Promise<string>
   setUnlockAddress: (address: string) => void
   getAccount: () => Promise<string | false>
+  grantKey: ({ lockAddress: string, recipient: string }, callback: function) => unknown
   // callback is never called with an error and is always called with
   // a hash -- this may change in the future.
   purchaseKey: (

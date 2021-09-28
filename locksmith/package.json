@@ -28,6 +28,7 @@
   "dependencies": {
     "@sentry/node": "6.12.0",
     "@sentry/tracing": "6.12.0",
+    "@types/random-words": "^1.1.2",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/unlock-js": "0.20.4",
     "apollo-cache-inmemory": "1.6.6",
