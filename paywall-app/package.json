@@ -19,7 +19,7 @@
     "@types/react": "17.0.19",
     "@types/react-dom": "17.0.9",
     "@types/styled-components": "5.1.14",
-    "@unlock-protocol/paywall": "workspace:./paywall",
+    "@unlock-protocol/paywall": "workspace:./packages/paywall",
     "@unlock-protocol/types": "workspace:./packages/types",
     "dotenv": "10.0.0",
     "lint-staged": "11.0.0",

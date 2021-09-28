@@ -6,10 +6,7 @@ module.exports = {
     '<rootDir>/node_modules/',
     '<rootDir>/src/__tests__/test-helpers/',
   ],
-  transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest',
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
+  preset: 'ts-jest/presets/js-with-ts',
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
   moduleNameMapper: {
     '\\.css$': '<rootDir>/src/__mocks__/styleMocks.js',
