@@ -16,6 +16,7 @@ module.exports = () => {
       library: '@unlock-protocol/paywall',
       libraryTarget: 'umd',
       umdNamedDefine: true,
+      globalObject: 'this',
     },
     module: {
       rules: [
