@@ -12,6 +12,7 @@ import {
   Web3Window,
   enableInjectedProvider,
 } from './utils/enableInjectedProvider'
+
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
 /**
