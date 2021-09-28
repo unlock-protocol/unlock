@@ -232,7 +232,7 @@ workflows:
             - unlock-protocol-com-tests
             - unlock-app-tests
             - locksmith-tests
-            - paywall-tests
+            - paywall-lib-tests
             - wedlocks-tests
             - newsletter-tests
       - build-and-deploy-to-heroku:
@@ -250,7 +250,7 @@ workflows:
             - integration-tests
       - deploy-to-netlify:
           name: "deploy-paywall-netlify"
-          service: paywall
+          service: paywall-app
           requires:
             - integration-tests
       - deploy-paywall-aws:
