@@ -35,7 +35,7 @@
   "devDependencies": {
     "@babel/cli": "7.14.8",
     "@babel/core": "7.15.0",
-    "@babel/preset-env": "7.15.0",
+    "@babel/preset-env": "^7.15.6",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/types": "workspace:./packages/types",
     "@unlock-protocol/unlock-abi-4": "1.1.1",
