@@ -92,10 +92,8 @@ RUN chown -R node:node /home/unlock/yarn-cache
 
 USER node
 
-# build required packages
-RUN yarn workspace @unlock-protocol/networks build
-RUN yarn workspace @unlock-protocol/types build
-RUN yarn workspace @unlock-protocol/unlock-js build
+# build all packages in packages/**
+RUN yarn build
 
 # copy scripts
 RUN mkdir /home/unlock/scripts
