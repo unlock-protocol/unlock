@@ -60,5 +60,5 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.0.2"
+  "packageManager": "yarn@3.1.0-rc.7"
 }
