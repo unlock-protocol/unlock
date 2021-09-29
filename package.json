@@ -39,6 +39,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "yarn workspaces foreach -p --from '{@unlock-protocol/types,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/networks}' run clean",
+    "build": "yarn workspaces foreach --parallel --topological-dev --from '{@unlock-protocol/types,@unlock-protocol/unlock-js,@unlock-protocol/networks}' run build",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "./scripts/lint.sh",
