@@ -39,7 +39,6 @@ services:
     expose:
       - 3000
 
-
   unlock-protocol-com: # Container for the static site
     env_file:
       - ./${UNLOCK_ENV}.env
@@ -51,6 +50,18 @@ services:
         BUILD_DIR: unlock-protocol-com
     ports:
       - 3002:3002
+
+  paywall-app: # Container for the paywall application
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: paywall-app
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: paywall-app
+    ports:
+      - 3001:3001
 
   paywall: # Container for the paywall application
     env_file:
