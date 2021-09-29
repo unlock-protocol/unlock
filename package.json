@@ -1,6 +1,6 @@
 {
   "name": "unlock",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unlock is a protocol for decentralized access control",
   "main": "index.js",
   "private": true,
@@ -39,10 +39,16 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "yarn workspaces foreach -p --from '{@unlock-protocol/types,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/networks}' run clean",
-    "build": "yarn workspaces foreach --parallel --topological-dev --from '{@unlock-protocol/types,@unlock-protocol/unlock-js,@unlock-protocol/networks}' run build",
-    "publish": "lerna publish",
-    "version": "lerna version",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/networks}'",
+    "packages:clean": "yarn packages --parallel run clean",
+    "packages:build": "yarn packages --parallel --topological-dev run build",
+    "packages:publish": "yarn packages --no-private npm publish ",
+    "build": "yarn packages:clean && yarn packages:build",
+    "packages:version": "yarn packages version --deferred",
+    "version:apply": "yarn version apply --all",
+    "version:check": "yarn version check --interactive",
+    "bump": "yarn packages:version patch && yarn version:apply",
+    "release": "yarn build && yarn bump && yarn publish",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn workspaces foreach -p lint"
