@@ -95,6 +95,7 @@ USER node
 # build required packages
 RUN yarn workspace @unlock-protocol/networks build
 RUN yarn workspace @unlock-protocol/types build
+RUN yarn workspace @unlock-protocol/unlock-js build
 
 # copy scripts
 RUN mkdir /home/unlock/scripts
