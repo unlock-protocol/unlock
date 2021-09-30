@@ -1,0 +1,29 @@
+/* This file is a combination of the automatically generated config produced by `tsc --init` and the recommended config suggested by zeit for next-typescript */{
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "esnext" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
+    "module": "esnext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "lib": [
+      "dom",
+      "es2017"
+    ] /* Specify library files to be included in the compilation. */,
+    "jsx": "preserve" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
+    "sourceMap": true /* Generates corresponding '.map' file. */,
+    "outDir": "./dist" /* Redirect output structure to the directory. */,
+    "removeComments": false /* Do not emit comments to output. */,
+    /* Additional Checks */
+    "moduleResolution": "node",
+    "noImplicitReturns": false, /* Report error when not all code paths in function return a value. */
+    "noFallthroughCasesInSwitch": false, /* Report errors for fallthrough cases in switch statement. */
+    "experimentalDecorators": false, /* Enables experimental support for ES7 decorators. */
+    "emitDecoratorMetadata": false /* Enables experimental support for emitting type metadata for decorators. */,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

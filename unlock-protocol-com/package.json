@@ -11,6 +11,7 @@
     "@types/react": "17.0.19",
     "@types/styled-components": "5.1.14",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/unlock-assets": "1.4.6",
     "@zeit/next-source-maps": "0.0.3",
     "babel-eslint": "10.1.0",

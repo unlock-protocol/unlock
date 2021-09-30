@@ -27,7 +27,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/unlock-assets": "1.4.7",
-    "@unlock-protocol/unlock-js": "0.20.4",
+    "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@walletconnect/web3-provider": "1.6.5",
     "apollo-boost": "0.4.9",
     "axios": "0.21.2",
@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.14.5",
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "npm-check": "5.9.2"
   },
   "scripts": {
