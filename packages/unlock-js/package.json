@@ -1,0 +1,58 @@
+{
+  "name": "@unlock-protocol/unlock-js",
+  "version": "0.20.4",
+  "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlock-protocol/unlock.git"
+  },
+  "scripts": {
+    "prepare-eth": "node ./src/__tests__/setup/prepare-eth-node-for-unlock.js",
+    "test": "yarn build && yarn prepare-eth && jest",
+    "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
+    "build-esm": "BABEL_ENV=esm npx babel src --ignore src/__tests__ --out-dir esm",
+    "build-cjs": "BABEL_ENV=cjs npx babel src --ignore src/__tests__ --out-dir lib",
+    "build": "yarn clean && node ./scripts/compressAbi.js && yarn build-cjs && yarn build-esm",
+    "clean": "rm -rf lib/ && rm -rf esm/",
+    "ci": "yarn test && yarn lint",
+    "prepublishOnly": "yarn build",
+    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -b 1"
+  },
+  "author": "Unlock Inc",
+  "license": "MIT",
+  "peerDependencies": {
+    "ethers": "5.4.6"
+  },
+  "browserslist": "> 0.25%, not dead",
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "7.14.8",
+    "@babel/core": "7.15.0",
+    "@babel/preset-env": "^7.15.6",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/types": "workspace:./packages/types",
+    "@unlock-protocol/unlock-abi-4": "1.1.1",
+    "@unlock-protocol/unlock-abi-6": "1.0.2",
+    "@unlock-protocol/unlock-abi-7": "1.0.3",
+    "@unlock-protocol/unlock-abi-8": "1.0.0",
+    "@unlock-protocol/unlock-abi-9": "1.0.0",
+    "babel-jest": "27.1.0",
+    "eslint": "7.32.0",
+    "ethers": "5.4.6",
+    "jest": "27.2.1",
+    "lint-staged": "11.1.2",
+    "prettier": "2.3.2",
+    "ts-jest": "27.0.5",
+    "typescript": "4.4.2"
+  },
+  "dependencies": {
+    "@unlock-protocol/networks": "workspace:./packages/networks"
+  }
+}

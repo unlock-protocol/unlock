@@ -51,8 +51,8 @@ COPY --chown=node --from=manifests /opt/manifests .
 COPY --chown=node .prettierrc /home/unlock/.
 
 # yarn config
-COPY  --chown=node .yarn/ /home/unlock/.yarn/
-COPY  --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
+COPY --chown=node .yarn/ /home/unlock/.yarn/
+COPY --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
 
 # add yarn cache folder to be used by docker buildkit 
 RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml 
@@ -75,7 +75,10 @@ RUN apk add --no-cache --virtual .build-deps \
 
 # install deps
 USER node
-RUN mkdir /home/unlock/${BUILD_DIR}
+
+# attempt to create dir only for non-packages
+RUN if echo ${BUILD_DIR} | grep -q "packages" ; then echo "skipping"; else mkdir /home/unlock/${BUILD_DIR}; fi
+
 COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
 RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
 
@@ -91,6 +94,8 @@ USER node
 
 # build required packages
 RUN yarn workspace @unlock-protocol/networks build
+RUN yarn workspace @unlock-protocol/types build
+RUN yarn workspace @unlock-protocol/unlock-js build
 
 # copy scripts
 RUN mkdir /home/unlock/scripts
@@ -107,8 +112,8 @@ FROM dev as build
 ARG BUILD_DIR
 ARG PORT
 
-# additional build step
-RUN yarn workspace @unlock-protocol/$BUILD_DIR build
+# additional build step (nb: strip "packages/" to get worspace name)
+RUN yarn workspace @unlock-protocol/${BUILD_DIR/packages\/} build
 
 # package everything for prod
 RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
