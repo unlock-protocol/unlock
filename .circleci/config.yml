@@ -220,7 +220,7 @@ workflows:
             - wedlocks-tests
             - newsletter-tests
       - build-and-deploy-to-heroku:
-          name: "locksmith-staging"
+          name: "deploy-locksmith-staging"
           service: locksmith
           app-name: unlock-locksmith-staging
           requires:
@@ -229,7 +229,7 @@ workflows:
             branches:
               only: master
       - build-and-deploy-to-heroku:
-          name: "locksmith-production"
+          name: "deploy-locksmith-production"
           service: locksmith
           app-name: unlock-locksmith-production
           requires:
