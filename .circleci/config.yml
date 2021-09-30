@@ -159,20 +159,6 @@ jobs:
           command: |
             sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >>
 
-  promote-locksmith-image:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
-      - run:
-          name: promote image
-          command: scripts/promote-image.sh locksmith
-
   open-prod-pull-request:
     executor: ubuntu_20-executor
     steps:
@@ -227,7 +213,7 @@ workflows:
             - integration-tests
           filters:
             branches:
-              only: master
+              only: master 
       - build-and-deploy-to-heroku:
           name: "deploy-locksmith-production"
           service: locksmith
@@ -236,7 +222,7 @@ workflows:
             - integration-tests
           filters:
             branches:
-              only: master
+              only: production # deploy in production
       -  deploy-to-netlify:
           name: "deploy-unlock-app-netlify"
           service: "unlock-app"
@@ -260,12 +246,6 @@ workflows:
           service: "unlock-protocol-com"
           requires:
             - integration-tests
-      - promote-locksmith-image:
-          filters:
-            branches:
-              only:
-                - master
-                - production
       - deploy-to-netlify:
           service: "wedlocks"
           name:
