@@ -22,7 +22,7 @@ const config = {
   },
 }
 
-if (process.env.NODE_ENV === 'staging') {
+if (process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'production') {
   
   // delete local config
   delete config.username
