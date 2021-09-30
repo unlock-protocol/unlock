@@ -1,9 +1,6 @@
 {
   "name": "@unlock-protocol/paywall-app",
   "version": "0.1.0",
-  "module": "dist/module.js",
-  "main": "dist/module.js",
-  "types": "module.d.ts",
   "scripts": {
     "dev": "nodemon src/server.js",
     "build": "next build src",
@@ -21,9 +18,7 @@
     "@types/react": "17.0.19",
     "@types/react-dom": "17.0.9",
     "@types/styled-components": "5.1.14",
-    "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:./packages/types",
     "dotenv": "10.0.0",
     "lint-staged": "11.0.0",
