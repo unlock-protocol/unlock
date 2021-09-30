@@ -8,6 +8,7 @@
     "build": "webpack --mode=production --config webpack.config.js",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
+    "clean": "rm -rf build dist coverage",
     "ci": "yarn test"
   },
   "license": "MIT",

@@ -1,7 +1,6 @@
 {
   "name": "@unlock-protocol/paywall-app",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "nodemon src/server.js",
     "build": "next build src",
@@ -33,6 +32,7 @@
     "style-loader": "3.0.0",
     "styled-components": "5.2.3"
   },
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "7.14.8",
     "@svgr/cli": "5.5.0",
