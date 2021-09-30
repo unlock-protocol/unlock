@@ -13,17 +13,11 @@ const config = {
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
-  logging: false,
-  jaeger: {
-    serviceName: 'locksmith',
-    tags: [],
-    port: 6832,
-    maxPacketSize: 65000,
-  },
+  logging: false
 }
 
 if (process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'production') {
-  
+
   // delete local config
   delete config.username
   delete config.password
