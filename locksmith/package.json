@@ -68,7 +68,7 @@
     "stripe": "8.174.0",
     "unlock-abi-1-1": "1.1.1",
     "winston": "3.3.3",
-    "winston-sentry-log": "1.0.22",
+    "winston-sentry-log": "1.0.23",
     "yargs": "17.1.1"
   },
   "devDependencies": {
