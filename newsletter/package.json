@@ -16,7 +16,7 @@
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.1.1",
     "@testing-library/react-hooks": "7.0.2",
-    "@types/node": "14.17.14",
+    "@types/node": "14.17.20",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "axios": "0.21.2",
     "babel-jest": "27.1.0",
