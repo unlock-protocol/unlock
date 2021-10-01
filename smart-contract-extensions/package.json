@@ -45,7 +45,7 @@
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.1",
-    "hardhat": "2.6.2",
+    "hardhat": "2.6.4",
     "hardhat-gas-reporter": "1.0.4",
     "hardlydifficult-eth": "1.1.4",
     "jest-specific-snapshot": "5.0.0",
