@@ -42,7 +42,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.0",
     "eslint": "7.25.0",
-    "nodemon": "2.0.12",
+    "nodemon": "2.0.13",
     "prettier": "2.2.1",
     "typescript": "4.4.3"
   },
