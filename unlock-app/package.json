@@ -43,7 +43,7 @@
     "eslint": "7.32.0",
     "eth-sig-util": "2.5.4",
     "ethereumjs-utils": "5.2.5",
-    "ethers": "5.4.6",
+    "ethers": "5.4.7",
     "file-saver": "2.0.5",
     "graphql": "15.5.2",
     "jest": "27.2.1",
