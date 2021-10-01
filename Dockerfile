@@ -34,7 +34,7 @@ COPY packages  /opt/manifests/packages
 ##
 ## 2. fetch all deps
 ##
-FROM node:12-alpine as dev
+FROM node:16-alpine as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
@@ -119,7 +119,7 @@ RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
 ##
 ## 4. export a minimal image w only the prod app
 ##
-FROM node:12-alpine as prod
+FROM node:16-alpine as prod
 
 ARG BUILD_DIR
 ARG PORT
