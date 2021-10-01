@@ -8,7 +8,7 @@
     "@testing-library/react": "12.1.1",
     "@types/jest": "27.0.2",
     "@types/next": "8.0.7",
-    "@types/react": "17.0.19",
+    "@types/react": "17.0.26",
     "@types/styled-components": "5.1.14",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
