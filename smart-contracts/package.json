@@ -55,7 +55,7 @@
     "truffle-assertions": "0.9.2"
   },
   "devDependencies": {
-    "web3": "1.5.2"
+    "web3": "1.6.0"
   },
   "lint-staged": {
     "*.{js,ts}": [
