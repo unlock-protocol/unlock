@@ -9711,7 +9711,7 @@ __metadata:
     hardhat-gas-reporter: 1.0.4
     hardlydifficult-eth: 1.1.4
     jest-specific-snapshot: 5.0.0
-    prettier: 2.4.0
+    prettier: 2.4.1
     solidity-coverage: 0.7.17
     solium: 1.2.5
     truffle-assertions: 0.9.2
@@ -9767,7 +9767,7 @@ __metadata:
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     lint-staged: 11.1.2
-    prettier: 2.4.0
+    prettier: 2.4.1
     prompt: 1.2.0
     truffle-assertions: 0.9.2
     web3: 1.5.2
@@ -33288,12 +33288,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.4.0":
-  version: 2.4.0
-  resolution: "prettier@npm:2.4.0"
+"prettier@npm:2.4.1, prettier@npm:^2.1.2":
+  version: 2.4.1
+  resolution: "prettier@npm:2.4.1"
   bin:
     prettier: bin-prettier.js
-  checksum: ac1bf07566dad5f58469e6d8a954bd5c0f833935597deb00330e9f673e14e4cf81e07dee7eff5776c0edebe11358d199f332d9940be40c8b455516034e553ce0
+  checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
   languageName: node
   linkType: hard
 
@@ -33303,15 +33303,6 @@ fsevents@~2.1.1:
   bin:
     prettier: ./bin-prettier.js
   checksum: bc78219e0f8173a808f4c6c8e0a137dd8ebd4fbe013e63fe1a37a82b48612f17b8ae8e18a992adf802ee2cf7428f14f084e7c2846ca5759cf4013c6e54810e1f
-  languageName: node
-  linkType: hard
-
-"prettier@npm:^2.1.2":
-  version: 2.4.1
-  resolution: "prettier@npm:2.4.1"
-  bin:
-    prettier: bin-prettier.js
-  checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
   languageName: node
   linkType: hard
 
