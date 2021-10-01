@@ -43,19 +43,6 @@ contract IPublicLock
   function publicLockVersion() public pure returns (uint);
 
   /**
-  * @notice Gets the current balance of the account provided.
-  * @param _tokenAddress The token type to retrieve the balance of.
-  * @param _account The account to get the balance of.
-  * @return The number of tokens of the given type for the given address, possibly 0.
-  */
-  // CLEM: Unused? should be deleted. - use native ERC20 instead
-  function getBalance(
-    address _tokenAddress,
-    address _account
-  ) external view
-    returns (uint);
-
-  /**
   * @notice Used to disable lock before migrating keys and/or destroying contract.
   * @dev Throws if called by other than a lock manager.
   * @dev Throws if lock contract has already been disabled.
@@ -73,7 +60,7 @@ contract IPublicLock
    * use cases.
    */
   function withdraw(
-    address _tokenAddress, 
+    address _tokenAddress, //Q: why replicate tokenAddress if it is stored by constructor?
     uint _amount
   ) external;
 
@@ -322,7 +309,7 @@ contract IPublicLock
   function invalidateOffchainApproval( // CLEM: delete? related to meta-tx
     uint _nextAvailableNonce
   ) external;
-`
+
   /**
    * Allow a Lock manager to change the refund penalty.
    * @dev Throws if called by other than a Lock manager

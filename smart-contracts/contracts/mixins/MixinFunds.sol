@@ -32,22 +32,6 @@ contract MixinFunds
   }
 
   /**
-   * Gets the current balance of the account provided.
-   */
-  function getBalance(
-    address _tokenAddress,
-    address _account
-  ) public view
-    returns (uint)
-  {
-    if(_tokenAddress == address(0)) {
-      return _account.balance;
-    } else {
-      return IERC20(_tokenAddress).balanceOf(_account);
-    }
-  }
-
-  /**
    * Transfers funds from the contract to the account provided.
    *
    * Security: be wary of re-entrancy when calling this function.
