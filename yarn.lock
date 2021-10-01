@@ -181,6 +181,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/cli@npm:7.15.7":
+  version: 7.15.7
+  resolution: "@babel/cli@npm:7.15.7"
+  dependencies:
+    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
+    chokidar: ^3.4.0
+    commander: ^4.0.1
+    convert-source-map: ^1.1.0
+    fs-readdir-recursive: ^1.1.0
+    glob: ^7.0.0
+    make-dir: ^2.1.0
+    slash: ^2.0.0
+    source-map: ^0.5.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  dependenciesMeta:
+    "@nicolo-ribaudo/chokidar-2":
+      optional: true
+    chokidar:
+      optional: true
+  bin:
+    babel: ./bin/babel.js
+    babel-external-helpers: ./bin/babel-external-helpers.js
+  checksum: 128c8251c1f8c3d719fe8a0c6ce45db0ac086c7f877bc9dd34a3cf0a3e8caa4664ca17c24ca4c644b4d277b6e3ce4a73cb950f69003fb278a90bbf7d4645f903
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:7.10.4":
   version: 7.10.4
   resolution: "@babel/code-frame@npm:7.10.4"
@@ -1195,11 +1222,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/node@npm:7.14.9":
-  version: 7.14.9
-  resolution: "@babel/node@npm:7.14.9"
+"@babel/node@npm:7.15.4":
+  version: 7.15.4
+  resolution: "@babel/node@npm:7.15.4"
   dependencies:
-    "@babel/register": ^7.14.5
+    "@babel/register": ^7.15.3
     commander: ^4.0.1
     core-js: ^3.16.0
     node-environment-flags: ^1.0.5
@@ -1209,7 +1236,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
   bin:
     babel-node: ./bin/babel-node.js
-  checksum: eba6f175153b8a5564515b2dd49ef53810e0d593e8cbbe67c1053d14f0b9cc7b3a6ef064710987136eba8ffb97bd300c33e14f487128be0d34d857efa92281f8
+  checksum: 9867ff7023ee5d1821ed2d362b497253fd52f68856fb207997d29ebdee3605eafc55415fe5b6a5d50e3edc5b79a365628acd102b22d58211e012cb60f605395c
   languageName: node
   linkType: hard
 
@@ -2798,7 +2825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/register@npm:^7.12.1":
+"@babel/register@npm:^7.12.1, @babel/register@npm:^7.15.3":
   version: 7.15.3
   resolution: "@babel/register@npm:7.15.3"
   dependencies:
@@ -2810,21 +2837,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 7da9d0399baebe6a5e517abd864cb22eef17d608e893d4f3b95d10411f0038b2b39c954fc611da9c3dc3d87427b8bdb45a576b1528100e65b36c1e9ad31987ca
-  languageName: node
-  linkType: hard
-
-"@babel/register@npm:^7.14.5":
-  version: 7.14.5
-  resolution: "@babel/register@npm:7.14.5"
-  dependencies:
-    clone-deep: ^4.0.1
-    find-cache-dir: ^2.0.0
-    make-dir: ^2.1.0
-    pirates: ^4.0.0
-    source-map-support: ^0.5.16
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 5fab2384f5e3588cf5978312997afcc4cabcfc519eb6db7ebe3c5e704dc7faa7eef691b6939bc086937f732cdfbba028ea3fec0bdc23c41f19443bea13135a97
   languageName: node
   linkType: hard
 
@@ -4806,6 +4818,13 @@ __metadata:
     readdirp: ^2.2.1
     upath: ^1.1.1
   checksum: 76003fce915aa6891b759498d3f79bc7b4db48395dc465e28f982e95fd04ebb63a7755ebbaa7e1fe6ff65edf182ba82ad51d97ebcf7ad1c6feaf8f53d43415bb
+  languageName: node
+  linkType: hard
+
+"@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3":
+  version: 2.1.8-no-fsevents.3
+  resolution: "@nicolo-ribaudo/chokidar-2@npm:2.1.8-no-fsevents.3"
+  checksum: ee55cc9241aeea7eb94b8a8551bfa4246c56c53bc71ecda0a2104018fcc328ba5723b33686bdf9cc65d4df4ae65e8016b89e0bbdeb94e0309fe91bb9ced42344
   languageName: node
   linkType: hard
 
@@ -9866,15 +9885,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/wedlocks@workspace:wedlocks"
   dependencies:
-    "@babel/cli": 7.14.8
+    "@babel/cli": 7.15.7
     "@babel/core": 7.15.0
-    "@babel/node": 7.14.9
+    "@babel/node": 7.15.4
     "@babel/preset-env": 7.15.6
-    "@typescript-eslint/parser": 4.30.0
+    "@typescript-eslint/parser": 4.32.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    aws-sdk: 2.981.0
+    aws-sdk: 2.999.0
     babel-eslint: 10.1.0
-    babel-jest: 27.1.0
+    babel-jest: 27.2.4
     babel-loader: 8.2.2
     dotenv: 10.0.0
     eslint: 7.32.0
@@ -9883,10 +9902,10 @@ __metadata:
     node-forge: 0.10.0
     nodemailer: 6.6.5
     nodemon: 2.0.12
-    prettier: 2.3.2
+    prettier: 2.4.1
     ts-jest: 27.0.5
     typescript: 4.4.3
-    webpack: 5.51.1
+    webpack: 5.56.0
     webpack-cli: 4.8.0
     winston: 3.3.3
   languageName: unknown
@@ -12334,23 +12353,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-sdk@npm:2.981.0":
-  version: 2.981.0
-  resolution: "aws-sdk@npm:2.981.0"
-  dependencies:
-    buffer: 4.9.2
-    events: 1.1.1
-    ieee754: 1.1.13
-    jmespath: 0.15.0
-    querystring: 0.2.0
-    sax: 1.2.1
-    url: 0.10.3
-    uuid: 3.3.2
-    xml2js: 0.4.19
-  checksum: d54ea76e56e7618ad1eb0478a2a3f95be79666c17ffa8a021cc1609bdbee1f0b2a84af7ec0bbbc4fe0c1bb9c33c38303f7b4cb0b62691f9180c48516a85d1560
-  languageName: node
-  linkType: hard
-
 "aws-sdk@npm:2.998.0":
   version: 2.998.0
   resolution: "aws-sdk@npm:2.998.0"
@@ -12365,6 +12367,23 @@ __metadata:
     uuid: 3.3.2
     xml2js: 0.4.19
   checksum: 3adcb9fa7490aa3d9b57e3dc61b2cc0310c88a677b32bbebf6fdd49889cc4f888b8d1fdc238e2c65aa3386a299986e2906cc27c7333a6011d120b9412ca39937
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:2.999.0":
+  version: 2.999.0
+  resolution: "aws-sdk@npm:2.999.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.15.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 3.3.2
+    xml2js: 0.4.19
+  checksum: e9fd1dc41f717b6fa4b1d9fc89a88822bc55384a8d2d231df1d12b4a8a5a543e9f5011d15154faa69b4e7e83ca31ca17b4fc392c676a314c93cb6506db96de6a
   languageName: node
   linkType: hard
 
@@ -18198,6 +18217,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"enhanced-resolve@npm:^5.8.3":
+  version: 5.8.3
+  resolution: "enhanced-resolve@npm:5.8.3"
+  dependencies:
+    graceful-fs: ^4.2.4
+    tapable: ^2.2.0
+  checksum: d79fbe531106448b768bb0673fb623ec0202d7ee70373ab7d4f4745d5dfe0806f38c9db7e7da8c941288fe475ab3d538db3791fce522056eeea40ca398c9e287
+  languageName: node
+  linkType: hard
+
 "enquirer@npm:2.3.4":
   version: 2.3.4
   resolution: "enquirer@npm:2.3.4"
@@ -18431,10 +18460,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "es-module-lexer@npm:0.7.1"
-  checksum: c66fb633cc521529862818caf603897d58d30442c885a1a1ed16823ddbbb8a437e3952454a4b2650242df1c1b4d0efa42fedbe49594e3ef2ceb3c891cf1211dd
+"es-module-lexer@npm:^0.9.0":
+  version: 0.9.2
+  resolution: "es-module-lexer@npm:0.9.2"
+  checksum: 34d74e4848703312e5b35e3a76b60fb1a7125272991287c394fa6d81a0e681d20c6dfc0d9882efe0ef66fb91424371aec38c411f862326fbc7890349bd00ad8e
   languageName: node
   linkType: hard
 
@@ -43348,9 +43377,9 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"webpack@npm:5.51.1":
-  version: 5.51.1
-  resolution: "webpack@npm:5.51.1"
+"webpack@npm:5.56.0":
+  version: 5.56.0
+  resolution: "webpack@npm:5.56.0"
   dependencies:
     "@types/eslint-scope": ^3.7.0
     "@types/estree": ^0.0.50
@@ -43361,8 +43390,8 @@ typescript@^3.8.3:
     acorn-import-assertions: ^1.7.6
     browserslist: ^4.14.5
     chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.8.0
-    es-module-lexer: ^0.7.1
+    enhanced-resolve: ^5.8.3
+    es-module-lexer: ^0.9.0
     eslint-scope: 5.1.1
     events: ^3.2.0
     glob-to-regexp: ^0.4.1
@@ -43381,7 +43410,7 @@ typescript@^3.8.3:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 20060bc197a5e690f12e453e86bd89da5b91626a2032efa907122fe541fedc688b1d573e9f92f7b66f15c609808653e158408ebf7c94783723dfbf4ac894a4a7
+  checksum: 27eebf2ac518fe6198fe1933a1ba3a72fb34c6540319f63caed09c7d8bd9e5c3aef20805fb2122adecfbe3bc971b28ca09b1f809655cb1136e083549e09470d7
   languageName: node
   linkType: hard
 
