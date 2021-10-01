@@ -9915,7 +9915,7 @@ __metadata:
     jest: 27.2.1
     jest-canvas-mock: 2.3.1
     jest-fetch-mock: 3.0.3
-    jest-mock-axios: 4.4.0
+    jest-mock-axios: 4.4.1
     jest-styled-components: 7.0.5
     js-base64: 3.6.1
     next: 11.1.1
@@ -25996,12 +25996,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-mock-axios@npm:4.4.0":
-  version: 4.4.0
-  resolution: "jest-mock-axios@npm:4.4.0"
+"jest-mock-axios@npm:4.4.1":
+  version: 4.4.1
+  resolution: "jest-mock-axios@npm:4.4.1"
   dependencies:
     synchronous-promise: ^2.0.15
-  checksum: a49c4ca51d9a33ca07dfc40d288fcdada0ab92a571b4d0188996c8351c6904cf885c1f665c8a641b31b85fac7dc6cc2c7058fefe816600230da9cdfe8341bcb5
+  checksum: a4da30eb990688363b942ea94b661259819d595e7cebe003fad59acca7b8d5635578245930b8997b1750d73886b069014ef19d1aaf52c8d1f08b015498b4c6bf
   languageName: node
   linkType: hard
 
