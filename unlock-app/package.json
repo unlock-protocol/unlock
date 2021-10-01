@@ -52,7 +52,7 @@
     "jest-mock-axios": "4.4.0",
     "jest-styled-components": "7.0.5",
     "js-base64": "3.6.1",
-    "next": "11.1.1",
+    "next": "11.1.2",
     "node-forge": "0.10.0",
     "postmate": "1.5.2",
     "prettier": "2.3.2",
