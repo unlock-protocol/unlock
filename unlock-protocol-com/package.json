@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.14.5",
-    "nodemon": "2.0.12"
+    "nodemon": "2.0.13"
   },
   "scripts": {
     "dev": "yarn build && next dev -p 3002 src",
