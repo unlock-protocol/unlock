@@ -9329,7 +9329,7 @@ __metadata:
     apollo-link-http: 1.5.17
     apollo-server: 3.3.0
     apollo-server-express: 2.25.2
-    aws-sdk: 2.998.0
+    aws-sdk: 2.999.0
     babel-jest: 27.2.4
     body-parser: 1.19.0
     color-scheme: 1.0.1
@@ -12351,9 +12351,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-sdk@npm:2.998.0":
-  version: 2.998.0
-  resolution: "aws-sdk@npm:2.998.0"
+"aws-sdk@npm:2.999.0":
+  version: 2.999.0
+  resolution: "aws-sdk@npm:2.999.0"
   dependencies:
     buffer: 4.9.2
     events: 1.1.1
@@ -12364,7 +12364,7 @@ __metadata:
     url: 0.10.3
     uuid: 3.3.2
     xml2js: 0.4.19
-  checksum: 3adcb9fa7490aa3d9b57e3dc61b2cc0310c88a677b32bbebf6fdd49889cc4f888b8d1fdc238e2c65aa3386a299986e2906cc27c7333a6011d120b9412ca39937
+  checksum: e9fd1dc41f717b6fa4b1d9fc89a88822bc55384a8d2d231df1d12b4a8a5a543e9f5011d15154faa69b4e7e83ca31ca17b4fc392c676a314c93cb6506db96de6a
   languageName: node
   linkType: hard
 
