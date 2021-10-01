@@ -5059,23 +5059,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.9.0":
-  version: 1.9.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.9.0"
-  dependencies:
-    bn.js: ^5.1.2
-    cbor: ^8.0.0
-    chalk: ^4.1.0
-    compare-versions: ^3.6.0
-    debug: ^4.1.1
-    ethereumjs-util: ^7.0.3
-    proper-lockfile: ^4.1.1
-    solidity-ast: ^0.4.15
-  checksum: bc1aed9d77dbfed4fa16b9eef53ca1db872e142041fc5c3eb303ee9ac30f3f30435e521265eee60ae229b6caef62616304e101ec05196e0619d9f8d7302e2a25
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:^1.9.0":
+"@openzeppelin/upgrades-core@npm:1.9.2, @openzeppelin/upgrades-core@npm:^1.9.0":
   version: 1.9.2
   resolution: "@openzeppelin/upgrades-core@npm:1.9.2"
   dependencies:
@@ -9761,7 +9745,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": 1.10.0
     "@openzeppelin/test-helpers": 0.5.13
     "@openzeppelin/upgrades": 2.8.0
-    "@openzeppelin/upgrades-core": 1.9.0
+    "@openzeppelin/upgrades-core": 1.9.2
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
