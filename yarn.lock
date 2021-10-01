@@ -10099,7 +10099,7 @@ __metadata:
     jest: 27.2.1
     lint-staged: 11.1.2
     node-forge: 0.10.0
-    nodemailer: 6.6.3
+    nodemailer: 6.6.5
     nodemon: 2.0.12
     prettier: 2.3.2
     ts-jest: 27.0.5
@@ -30419,10 +30419,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:6.6.3":
-  version: 6.6.3
-  resolution: "nodemailer@npm:6.6.3"
-  checksum: c1b267a5de2d61947fc922fad81c10c7c65e2b71c4e0979eec833666efd7dc403039e03cec6f6fc201a82221def28b686833d2d06c2c27194ee270d98604b676
+"nodemailer@npm:6.6.5":
+  version: 6.6.5
+  resolution: "nodemailer@npm:6.6.5"
+  checksum: 17daaeced44e6cdf53527018986ed090e950448fbef89608220a236e1d3e081e76eb8264edbdf8b7bd5d26f096fb86044576015b5000c59dc83f3712282c46da
   languageName: node
   linkType: hard
 
