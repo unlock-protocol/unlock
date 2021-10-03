@@ -27,7 +27,7 @@
     "lint-staged": "11.1.2",
     "next": "11.1.2",
     "path-match": "1.2.4",
-    "prettier": "2.3.2",
+    "prettier": "2.4.1",
     "prop-types": "15.7.2",
     "raw-loader": "4.0.2",
     "react": "17.0.2",
