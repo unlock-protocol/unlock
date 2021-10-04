@@ -100,6 +100,7 @@ const AppStore = ({ lock }) => {
 
   const copyToClipboard = async () => {
     await navigator?.clipboard?.writeText(checkoutUrl)
+    // eslint-disable-next-line no-alert
     alert('URL Copied to your clipboard')
   }
 

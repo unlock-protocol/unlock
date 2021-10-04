@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Head from 'next/head'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
-import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
 import { usePaywall } from '../../hooks/usePaywall'
 import configure from '../../config'
@@ -90,10 +89,6 @@ const Paragraph = styled.p`
   font-size: 20px;
 `
 
-const Confirmed = styled(Paragraph)`
-  color: var(--green);
-`
-
 const Form = styled.form`
   display: grid;
   margin-top: 20px;
@@ -143,50 +138,4 @@ const Title = styled.h1`
   grid-column: 1 3;
   color: var(--brand);
   padding: 0;
-`
-
-const Greyout = styled.div`
-  background: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: var(--alwaysontop);
-  & > * {
-    max-height: 100%;
-    overflow-y: scroll;
-  }
-`
-
-const MessageBox = styled.div`
-  background: var(--white);
-  min-width: 50%;
-  max-width: 98%;
-  border-radius: 4px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: var(--darkgrey);
-  font-size: 20px;
-`
-
-const Dismiss = styled.button`
-  height: 24px;
-  font-size: 20px;
-  font-family: Roboto, sans-serif;
-  text-align: center;
-  border: none;
-  background: none;
-  color: var(--grey);
-
-  &:hover {
-    color: var(--link);
-  }
 `

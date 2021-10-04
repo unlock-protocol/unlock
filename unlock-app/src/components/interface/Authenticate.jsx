@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, { createContext, useContext, useState, useMemo } from 'react'
 import ApolloClient from 'apollo-boost'
 import PropTypes, { number } from 'prop-types'

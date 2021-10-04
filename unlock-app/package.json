@@ -26,7 +26,7 @@
     "@types/styled-components": "5.1.14",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
-    "@unlock-protocol/unlock-assets": "1.4.7",
+    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@walletconnect/web3-provider": "1.6.5",
     "apollo-boost": "0.4.9",

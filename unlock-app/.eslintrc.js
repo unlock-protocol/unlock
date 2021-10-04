@@ -1,5 +1,6 @@
 const rulesToIgnore = [
   'no-unused-vars',
+  'no-console',
   'no-restricted-globals',
   'radix',
   'eqeqeq',
@@ -30,7 +31,10 @@ const rulesToIgnore = [
 ]
 
 module.exports = {
-  extends: ['@unlock-protocol/eslint-config', 'plugin:react/recommended'],
+  extends: [
+    '@unlock-protocol/eslint-config', 
+    'plugin:react/recommended'
+  ],
   settings: {
     react: {
       version: 'detect',
