@@ -94,6 +94,7 @@ export const CryptoCheckout = ({
         setTransactionPending(null)
       } catch (error) {
         if (error && error.code === 4001) {
+          // eslint-disable-next-line no-alert
           alert('Please confirm the transaction in your wallet.')
         }
         setPurchasePending(false)

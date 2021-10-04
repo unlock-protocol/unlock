@@ -9440,7 +9440,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    "@unlock-protocol/unlock-assets": 1.4.7
+    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.6.5
     apollo-boost: 0.4.9
@@ -9487,9 +9487,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-assets@1.4.7, @unlock-protocol/unlock-assets@workspace:unlock-assets":
+"@unlock-protocol/unlock-assets@npm:1.4.6":
+  version: 1.4.6
+  resolution: "@unlock-protocol/unlock-assets@npm:1.4.6"
+  peerDependencies:
+    react: 17.0.2
+  checksum: d735ccc0665f42c8f7f174a487f33fa391371c43e18522019de03cf0fb098fc1a13edd9a57cfbb6fca707412dcb6554f5ced5f2cce1ab64b036cde4192abd395
+  languageName: node
+  linkType: hard
+
+"@unlock-protocol/unlock-assets@workspace:./packages/unlock-assets, @unlock-protocol/unlock-assets@workspace:packages/unlock-assets":
   version: 0.0.0-use.local
-  resolution: "@unlock-protocol/unlock-assets@workspace:unlock-assets"
+  resolution: "@unlock-protocol/unlock-assets@workspace:packages/unlock-assets"
   dependencies:
     "@babel/core": 7.15.5
     "@storybook/addon-actions": 6.3.9
@@ -9521,15 +9530,6 @@ __metadata:
     react: 17.0.2
   languageName: unknown
   linkType: soft
-
-"@unlock-protocol/unlock-assets@npm:1.4.6":
-  version: 1.4.6
-  resolution: "@unlock-protocol/unlock-assets@npm:1.4.6"
-  peerDependencies:
-    react: 17.0.2
-  checksum: d735ccc0665f42c8f7f174a487f33fa391371c43e18522019de03cf0fb098fc1a13edd9a57cfbb6fca707412dcb6554f5ced5f2cce1ab64b036cde4192abd395
-  languageName: node
-  linkType: hard
 
 "@unlock-protocol/unlock-js@workspace:./packages/unlock-js, @unlock-protocol/unlock-js@workspace:packages/unlock-js":
   version: 0.0.0-use.local
@@ -33636,6 +33636,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react-dom@link:../node_modules/react-dom::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample":
+  version: 0.0.0-use.local
+  resolution: "react-dom@link:../node_modules/react-dom::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample"
+  languageName: node
+  linkType: soft
+
 "react-dom@npm:17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
@@ -33848,6 +33854,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react-scripts@link:../node_modules/react-scripts::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample":
+  version: 0.0.0-use.local
+  resolution: "react-scripts@link:../node_modules/react-scripts::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample"
+  languageName: node
+  linkType: soft
+
 "react-scripts@npm:4.0.3":
   version: 4.0.3
   resolution: "react-scripts@npm:4.0.3"
@@ -34038,6 +34050,12 @@ fsevents@~2.1.1:
   checksum: b67bf5b3e86dbab72d658b9a52a3589e5960583ab28c7c66272427d8fe30d4c7de422d5046ae96bd2683cdf80cc3264b2516f5ce80cae1dbe6cf3ca6dda392c5
   languageName: node
   linkType: hard
+
+"react@link:../node_modules/react::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample":
+  version: 0.0.0-use.local
+  resolution: "react@link:../node_modules/react::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample"
+  languageName: node
+  linkType: soft
 
 "react@npm:17.0.2":
   version: 17.0.2
@@ -39471,6 +39489,23 @@ typescript@^3.8.3:
   checksum: 62ef936de8d83f738ce286f101ba2c615d321a7dd0f78efdf88728a2e6da9f9822fe38dbd0ef3fab3cef6a40f8e37fec904c7199b7a29d9066cb294e848b233b
   languageName: node
   linkType: hard
+
+"unlock-assets-example@workspace:packages/unlock-assets/example":
+  version: 0.0.0-use.local
+  resolution: "unlock-assets-example@workspace:packages/unlock-assets/example"
+  dependencies:
+    react: "link:../node_modules/react"
+    react-dom: "link:../node_modules/react-dom"
+    react-scripts: "link:../node_modules/react-scripts"
+    unlock-assets: "link:.."
+  languageName: unknown
+  linkType: soft
+
+"unlock-assets@link:..::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample":
+  version: 0.0.0-use.local
+  resolution: "unlock-assets@link:..::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample"
+  languageName: node
+  linkType: soft
 
 "unlock@workspace:.":
   version: 0.0.0-use.local
