@@ -1,6 +1,16 @@
 {
-  "extends": "solhint:default",
+  "extends": "solhint:recommended",
   "rules": {
-    "max-line-length": "warn"
+    "max-line-length": "off",
+    "quotes" : "off",
+    "compiler-version": [
+      "error",
+      "^0.8.0"
+    ],
+    "comprehensive-interface" : "warn",
+    "ordering": "warn",
+    "private-vars-leading-underscore": "warn",
+    "var-name-mixedcase": "warn",
+    "reason-string": "warn"
   }
 }
