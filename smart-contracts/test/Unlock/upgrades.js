@@ -21,7 +21,7 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-const versionsCount = 9
+const versionsCount = 10
 let unlock
 
 contract('Unlock / upgrades', async (accounts) => {
