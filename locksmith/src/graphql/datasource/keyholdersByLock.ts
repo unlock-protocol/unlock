@@ -1,11 +1,19 @@
 import { gql } from 'apollo-server-express'
-import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
+import { GraphQLDataSource } from 'apollo-datasource-graphql'
+import networks from '@unlock-protocol/networks'
+
 import Normalizer from '../../utils/normalizer'
 
 const logger = require('../../logger')
 
-export class KeyHoldersByLock extends UnlockGraphQLDataSource {
-  async getKeyHolders(addresses: [string], page: number): Promise<any[]> {
+export class KeyHoldersByLock extends GraphQLDataSource {
+  async getKeyHolders(
+    addresses: [string],
+    page: number,
+    network: number
+  ): Promise<any[]> {
+    this.baseURL = networks[network].subgraphURI
+
     const genKeyHolderQuery = gql`
       query Lock($addresses: [String!], $first: Int!, $skip: Int!) {
         locks(where: { address_in: $addresses }) {
@@ -39,8 +47,12 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
   }
 
   /* Utilized in the members page */
-  async getKeyHoldingAddresses(lockAddress: string, page: number) {
-    const queryResults = await this.getKeyHolders([lockAddress], page)
+  async getKeyHoldingAddresses(
+    lockAddress: string,
+    page: number,
+    network: number
+  ) {
+    const queryResults = await this.getKeyHolders([lockAddress], page, network)
 
     try {
       if (queryResults.length === 0) {

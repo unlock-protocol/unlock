@@ -1,15 +1,16 @@
 import { ethers } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
+
 import * as Normalizer from './normalizer'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import PriceConversion from './priceConversion'
 
-import networks from '../networks'
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
 const stripePercentage = 0.029
 const ZERO = ethers.constants.AddressZero
-
+export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
 export default class KeyPricer {
   readOnlyEthereumService: any
 
@@ -20,14 +21,16 @@ export default class KeyPricer {
   async keyPriceUSD(lockAddress: string, network: number): Promise<number> {
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
-      network
+      network,
+      { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
-
     let symbol = 'ETH'
     if (!lock.currencyContractAddress || lock.currencyContractAddress == ZERO) {
       if (network === 100) {
         symbol = 'DAI'
-      } // Add support for other "main currencies!" (MATIC... etc)
+      } else if (network === 137) {
+        symbol = 'MATIC'
+      }
     } else {
       symbol = lock.currencySymbol
     }
@@ -36,30 +39,37 @@ export default class KeyPricer {
     return priceConversion.convertToUSD(symbol, lock.keyPrice)
   }
 
-  // Fee denominated in cents
-  async gasFee(network: number): Promise<number> {
-    // eslint-disable-next-line new-cap
+  // Fee denominated in cents by default. multiply base to get more accurate
+  async gasFee(network: number, base?: number): Promise<number> {
+    if (!base) {
+      base = 1
+    }
     const providerUrl = networks[network].provider
     const provider = new ethers.providers.JsonRpcProvider(providerUrl)
-    const keyGrantingGas = 200000 // harcoded : TODO get better estimate
 
     // Price of gas
     const gasPrice: any = await provider.getGasPrice()
 
     // Cost in gwei
-    const costInGwei = gasPrice * keyGrantingGas
+    const costInGwei = gasPrice * GAS_COST
 
     // Cost in base currency
-    const gasCost = parseFloat(
-      ethers.utils.formatEther(
-        ethers.utils.parseUnits(costInGwei.toString(), 'wei')
-      )
-    )
+    const gasCost =
+      parseFloat(
+        ethers.utils.formatEther(
+          ethers.utils.parseUnits(costInGwei.toString(), 'wei')
+        )
+      ) * base
 
     let symbol = 'ETH'
     if (network === 100) {
       symbol = 'DAI'
-    } // Add support for other "main currencies!" (MATIC... etc)
+    }
+    if (network === 137) {
+      symbol = 'MATIC'
+    }
+    // TODO: support more "native" currencies
+
     const priceConversion = new PriceConversion()
     return priceConversion.convertToUSD(symbol, gasCost)
   }
@@ -85,13 +95,13 @@ export default class KeyPricer {
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
 
     const gasFee = await this.gasFee(network)
-    const unlockServiceFee = this.unlockServiceFee(usdKeyPrice + gasFee)
+    const unlockServiceFee = this.unlockServiceFee(usdKeyPrice) + gasFee
+
     return {
       keyPrice: usdKeyPrice,
-      gasFee,
       unlockServiceFee,
       creditCardProcessing: this.creditCardProcessingFee(
-        usdKeyPrice + gasFee + unlockServiceFee
+        usdKeyPrice + unlockServiceFee
       ),
     }
   }

@@ -23,8 +23,16 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     this.isUnlock = true
   }
 
-  // You should be able to just pass the action for
-  // GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD into here
+  static reconnect(oldProvider, { provider, id }) {
+    const newProvider = new UnlockProvider({ provider, id })
+    newProvider.wallet = oldProvider.wallet
+    newProvider.wallet.connect(newProvider)
+    newProvider.emailAddress = oldProvider.emailAddress
+    newProvider.passwordEncryptedPrivateKey =
+      oldProvider.passwordEncryptedPrivateKey
+    return newProvider
+  }
+
   async connect({ key, password, emailAddress }) {
     this.wallet = await getAccountFromPrivateKey(key, password)
     this.wallet.connect(this)
@@ -48,7 +56,6 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
       // TODO: Catch methods we don't want to dispatch and throw an error
       return super.send(method, params)
     }
-
     return this[method](params)
   }
 

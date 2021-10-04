@@ -17,28 +17,28 @@ const networkMap = {
   development: {
     mainnet: {
       subgraph: 'unlock-protocol/unlock',
-      graphNode: 'http://localhost:8020/',
-      ipfs: 'http://localhost:5001',
+      graphNode: 'http://graph-node:8020/',
+      ipfs: 'http://ipfs:5001',
     },
     kovan: {
       subgraph: 'unlock-protocol/unlock-kovan',
-      graphNode: 'http://localhost:8020/',
-      ipfs: 'http://localhost:5001',
+      graphNode: 'http://graph-node:8020/',
+      ipfs: 'http://ipfs:5001',
     },
     rinkeby: {
       subgraph: 'unlock-protocol/unlock-rinkeby',
-      graphNode: 'http://localhost:8020/',
-      ipfs: 'http://localhost:5001',
+      graphNode: 'http://graph-node:8020/',
+      ipfs: 'http://ipfs:5001',
     },
     ropsten: {
       subgraph: 'unlock-protocol/unlock-ropsten',
-      graphNode: 'http://localhost:8020/',
-      ipfs: 'http://localhost:5001',
+      graphNode: 'http://graph-node:8020/',
+      ipfs: 'http://ipfs:5001',
     },
     xdai: {
       subgraph: 'unlock-protocol/xdai',
-      graphNode: 'http://localhost:8020/',
-      ipfs: 'http://localhost:5001',
+      graphNode: 'http://graph-node:8020/',
+      ipfs: 'http://ipfs:5001',
     },
   },
   production: {
@@ -67,6 +67,11 @@ const networkMap = {
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',
     },
+    matic: {
+      subgraph: 'unlock-protocol/polygon',
+      graphNode: 'https://api.thegraph.com/deploy/',
+      ipfs: 'https://api.thegraph.com/ipfs/',
+    },
     demorinkeby: {
       subgraph: 'unlock-protocol/demo-rinkeby',
       graphNode: 'https://api.thegraph.com/deploy/',
@@ -90,9 +95,9 @@ function process(operation) {
   }
 
   if (operation === 'deploy') {
-    executeCommand(
-      `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${config.subgraph}`
-    )
+    const label = argv.label ? `--version-label ${argv.label}` : ''
+    const cmd = `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${label} ${config.subgraph}`
+    executeCommand(cmd)
   } else {
     executeCommand(
       `graph ${operation} --node ${config.graphNode} ${config.subgraph}`

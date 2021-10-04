@@ -3,12 +3,12 @@
 import '@testing-library/jest-dom/extend-expect'
 import 'jest-styled-components'
 
-import { setConfig } from 'next/config'
-import config from './next.config'
 
-// Make sure you can use getConfig
-setConfig({
-  publicRuntimeConfig: config.publicRuntimeConfig,
+jest.doMock('next/config', () => {
+  const mockConfig = require('./next.config')
+  return jest.fn(() => ({
+    publicRuntimeConfig : mockConfig.publicRuntimeConfig
+  })
 })
 
 // Mocking fetch calls

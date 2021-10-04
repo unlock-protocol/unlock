@@ -1,9 +1,10 @@
 import { gql } from 'apollo-server-express'
-import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
+import { GraphQLDataSource } from 'apollo-datasource-graphql'
+import networks from '@unlock-protocol/networks'
 
-// eslint-disable-next-line import/prefer-default-export
-export class Key extends UnlockGraphQLDataSource {
-  async getKeys(args: any) {
+export class Key extends GraphQLDataSource {
+  async getKeys(args: any, network: number) {
+    this.baseURL = networks[network].subgraphURI
     const queryPredicate = args.first ? `(first: ${args.first})` : ''
 
     const keysQuery = gql`
@@ -71,3 +72,5 @@ export class Key extends UnlockGraphQLDataSource {
     }
   }
 }
+
+export default Key

@@ -60,14 +60,6 @@ jest.mock('../../src/utils/keyPricer', () => {
 
 describe('Purchase Controller', () => {
   describe('purchase in USD initiation', () => {
-    describe("when the purchase hasn't been signed correctly", () => {
-      it('returns a 401 status code', async () => {
-        expect.assertions(1)
-        const response = await request(app).post('/purchase/USD')
-        expect(response.status).toBe(401)
-      })
-    })
-
     describe('when the purchase request is appropriately signed and user has payment details', () => {
       const message = {
         purchaseRequest: {

@@ -35,15 +35,15 @@ export default function HomeContent() {
   }
 
   const urlParams = new URLSearchParams(window.location.search)
-  const title = urlParams.get('title')
-  const description = urlParams.get('description')
+  const title = urlParams.get('title') || 'Join the newsletter'
+  const description =
+    urlParams.get('description') ||
+    'Unlock this newsletter by purchasing your own NFT membership!'
   const lockAddresses = urlParams.getAll('locks')
-
   // Let's now add the snippet!
-  const [lockState] = usePaywall(lockAddresses)
-  const [checkWallet, setCheckWallet] = useState(false)
+  usePaywall(lockAddresses)
 
-  const onSubmit = async event => {
+  const onSubmit = async (event) => {
     event.preventDefault()
     window.unlockProtocol.loadCheckoutModal()
   }
@@ -78,44 +78,9 @@ export default function HomeContent() {
       </Head>
       <Title>{title}</Title>
 
-      {checkWallet && (
-        <Greyout>
-          <MessageBox>
-            <p>
-              Please check your browser&apos;s cryptocurrency wallet to sign
-              your email address!
-            </p>
-            <Dismiss onClick={() => setCheckWallet(false)}>Dismiss</Dismiss>
-          </MessageBox>
-        </Greyout>
-      )}
-
       <Grid>
         <Description>{description}</Description>
-
-        {lockState === 'loading' && (
-          <Loading message="Please check your crypto wallet..." />
-        )}
-        {lockState === 'unlocked' && (
-          <>
-            <Confirmed>You have successfuly subscribed! Thank you...</Confirmed>
-            <p>
-              Use your{' '}
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-                href={`${config.unlockAppUrl}/keychain`}
-              >
-                keychain to update your membership
-              </a>
-              !
-            </p>
-          </>
-        )}
-
-        {lockState === 'locked' && (
-          <EmailForm onSubmit={onSubmit} label="Join" />
-        )}
+        <EmailForm onSubmit={onSubmit} label="Join" />
       </Grid>
     </Layout>
   )

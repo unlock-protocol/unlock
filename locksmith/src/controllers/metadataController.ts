@@ -2,6 +2,7 @@
 /* eslint-disable no-use-before-define */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
@@ -10,12 +11,9 @@ import { addMetadata, getMetadata } from '../operations/userMetadataOperations'
 import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
 import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
+import logger from '../logger'
 
 const config = require('../../config/config')
-const logger = require('../logger')
-const { networks } = require('../networks')
-
-const chain = 1337
 
 namespace MetadataController {
   export const evaluateLockOwnership = async (
@@ -23,8 +21,11 @@ namespace MetadataController {
     lockManager: string,
     network: number
   ) => {
+    const web3Service = new Web3Service(networks)
+    logger.info('networks', networks)
+    logger.info('data', { lockAddress, lockManager, network })
+    logger.info('network', networks[network])
     try {
-      const web3Service = new Web3Service(networks)
       if (!lockAddress || !lockManager) {
         logger.error(
           'Missing lockAddress or lockManager',
@@ -33,9 +34,14 @@ namespace MetadataController {
         )
         return false
       }
-      return web3Service.isLockManager(lockAddress, lockManager, network)
-    } catch (error) {
-      logger.error('evaluateLockOwnership failed', { error })
+      return await web3Service.isLockManager(lockAddress, lockManager, network)
+    } catch (error: any) {
+      logger.error('evaluateLockOwnership failed', {
+        error: error.message,
+        lockAddress,
+        lockManager,
+        network,
+      })
       return false
     }
   }
@@ -103,21 +109,23 @@ namespace MetadataController {
     const owner = Normalizer.ethereumAddress(req.owner)
     const address: string = Normalizer.ethereumAddress(req.params.address)
     const metadata = req.body.message.LockMetaData
-
     if ((await evaluateLockOwnership(address, owner, req.chain)) === false) {
-      res.sendStatus(401)
+      res
+        .status(401)
+        .send(`${owner} is not a lock manager for ${address} on ${req.chain}`)
     } else {
-      const successfulUpdate = metadataOperations.updateDefaultLockMetadata({
-        address,
-        data: {
-          ...metadata,
-        },
-      })
-
+      const successfulUpdate =
+        await metadataOperations.updateDefaultLockMetadata({
+          address,
+          chain: req.chain,
+          data: {
+            ...metadata,
+          },
+        })
       if (successfulUpdate) {
         res.sendStatus(202)
       } else {
-        res.sendStatus(400)
+        res.status(400).send('update failed')
       }
     }
   }
@@ -131,11 +139,12 @@ namespace MetadataController {
     const metadata = req.body.message.KeyMetaData
     const id = req.params.keyId.toLowerCase()
     const { chain } = req
-
     if ((await evaluateLockOwnership(address, owner, chain)) === false) {
-      res.sendStatus(401)
+      res
+        .status(401)
+        .send(`${owner} is not a lock manager for ${address} on ${chain}`)
     } else {
-      const successfulUpdate = metadataOperations.updateKeyMetadata({
+      const successfulUpdate = await metadataOperations.updateKeyMetadata({
         chain,
         address,
         id,
@@ -145,7 +154,7 @@ namespace MetadataController {
       if (successfulUpdate) {
         res.sendStatus(202)
       } else {
-        res.sendStatus(400)
+        res.status(400).send('update failed')
       }
     }
   }
@@ -162,7 +171,7 @@ namespace MetadataController {
 
     if (req.owner === userAddress) {
       await addMetadata({
-        chain,
+        chain: req.chain,
         userAddress,
         tokenAddress,
         data,
@@ -170,7 +179,7 @@ namespace MetadataController {
 
       res.sendStatus(202)
     } else {
-      res.sendStatus(401)
+      res.status(401).send(`${req.owner} is not ${userAddress}`)
     }
   }
 
@@ -192,8 +201,10 @@ namespace MetadataController {
       )
 
       res.json(userMetaData)
+    } else if (expiredSignature(signatureTime)) {
+      res.status(401).send('Signature expired')
     } else {
-      res.sendStatus(401)
+      res.status(401).send(`Signee ${req.signee} is not ${userAddress}`)
     }
   }
 
@@ -202,28 +213,35 @@ namespace MetadataController {
     res: Response
   ): Promise<any> => {
     if (!req.query.data) {
-      res.sendStatus(401)
+      res.status(400).send('missing data')
     } else {
       const payload = JSON.parse(decodeURIComponent(req.query.data))
       const lockAddress = Normalizer.ethereumAddress(
         payload.message.LockMetaData.address
       )
-      const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
-        lockAddress,
-        payload.message.LockMetaData.page || 0
-      )
+      const keyHolderAddresses =
+        await new KeyHoldersByLock().getKeyHoldingAddresses(
+          lockAddress,
+          payload.message.LockMetaData.page || 0,
+          req.chain
+        )
       const isAuthorized = await evaluateLockOwnership(
         lockAddress,
         req.signee,
         req.chain
       )
       if (!isAuthorized) {
-        res.sendStatus(401)
+        res
+          .status(401)
+          .send(
+            `${req.signee} is not a lock manager for ${lockAddress} on ${req.chain}`
+          )
       } else {
         res.json(
           await lockOperations.getKeyHolderMetadata(
             lockAddress,
-            keyHolderAddresses
+            keyHolderAddresses,
+            req.chain
           )
         )
       }

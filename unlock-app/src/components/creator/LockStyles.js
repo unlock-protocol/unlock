@@ -3,10 +3,10 @@ import Media from '../../theme/media'
 import Address from '../interface/Address'
 
 export const LockRowGrid =
-  'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(198px, 1fr);'
+  'grid-template-columns: 48px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(198px, 1fr);'
 
 export const PhoneLockRowGrid =
-  'grid-template-columns: 43px minmax(80px, 140px) repeat(2, minmax(56px, 80px)); grid-auto-flow: column;'
+  'grid-template-columns: 48px minmax(80px, 140px) repeat(2, minmax(56px, 80px)); grid-auto-flow: column;'
 
 export const LockWarning = styled.div`
   padding-left: 8px;
@@ -29,11 +29,8 @@ export const LockRow = styled.div`
   transition: box-shadow 100ms ease;
   border-radius: 4px;
 
-  & > * {
-  }
-  & :hover {
+  &:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 100ms ease;
   }
 `
 

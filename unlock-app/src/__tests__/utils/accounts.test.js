@@ -6,17 +6,15 @@ import {
 
 import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
-jest.setTimeout(15000)
+jest.setTimeout(20000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
     it('should call ethers.createRandom', async () => {
       expect.assertions(3)
 
-      const {
-        address,
-        passwordEncryptedPrivateKey,
-      } = await createAccountAndPasswordEncryptKey('hello')
+      const { address, passwordEncryptedPrivateKey } =
+        await createAccountAndPasswordEncryptKey('hello')
 
       expect(address).toMatch(/^0x[a-fA-F0-9]{40}$/)
       expect(passwordEncryptedPrivateKey.address).toBe(
@@ -31,10 +29,8 @@ describe('account helpers', () => {
   describe('web3 account decryption', () => {
     it('should decrypt an account given the correct password', async () => {
       expect.assertions(1)
-      const {
-        address,
-        passwordEncryptedPrivateKey,
-      } = await createAccountAndPasswordEncryptKey('guest')
+      const { address, passwordEncryptedPrivateKey } =
+        await createAccountAndPasswordEncryptKey('guest')
 
       const decryptedAddress = await getAccountFromPrivateKey(
         passwordEncryptedPrivateKey,
@@ -50,9 +46,8 @@ describe('account helpers', () => {
 
     it('should throw when an incorrect password is given for an account', async () => {
       expect.assertions(2)
-      const {
-        passwordEncryptedPrivateKey,
-      } = await createAccountAndPasswordEncryptKey('guest')
+      const { passwordEncryptedPrivateKey } =
+        await createAccountAndPasswordEncryptKey('guest')
 
       try {
         await getAccountFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
@@ -68,10 +63,8 @@ describe('account helpers', () => {
       expect.assertions(1)
       const oldPassword = 'p@55ω0rd'
       const newPassword = 'γΘτΕ'
-      const {
-        address,
-        passwordEncryptedPrivateKey,
-      } = await createAccountAndPasswordEncryptKey(oldPassword)
+      const { address, passwordEncryptedPrivateKey } =
+        await createAccountAndPasswordEncryptKey(oldPassword)
 
       const newEncryptedKey = await reEncryptPrivateKey(
         passwordEncryptedPrivateKey,
@@ -93,9 +86,8 @@ describe('account helpers', () => {
 
   it('should throw when an incorrect password is given for an account', async () => {
     expect.assertions(2)
-    const {
-      passwordEncryptedPrivateKey,
-    } = await createAccountAndPasswordEncryptKey('ghost')
+    const { passwordEncryptedPrivateKey } =
+      await createAccountAndPasswordEncryptKey('ghost')
 
     try {
       // Note that password order has been swapped

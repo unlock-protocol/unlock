@@ -1,8 +1,9 @@
+import 'setimmediate' // polyfill to prevent jest from crashing
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
-import expressWinston from 'express-winston'
+import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
@@ -12,8 +13,7 @@ import { resolvers } from './graphql/resolvers'
 const app = express()
 
 Sentry.init({
-  dsn:
-    'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+  dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
   integrations: [
     // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
@@ -51,6 +51,13 @@ app.use(
   })
 )
 
+// Cors
+app.use(cors({}))
+
+// Parse body
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json({ limit: '5mb' }))
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -59,8 +66,6 @@ server.applyMiddleware({ app })
 
 const router = require('./routes')
 
-app.use(cors())
-app.use(bodyParser.json())
 app.use('/', router)
 
 // The error handler must be before any other error middleware and after all controllers

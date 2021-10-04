@@ -1,4 +1,5 @@
 const helpers = require('hardlydifficult-ethereum-contracts')
+const { ethers } = require('hardhat')
 
 contract('test-artifacts / uniswap', (accounts) => {
   const protocolOwner = accounts[0]
@@ -19,11 +20,15 @@ contract('test-artifacts / uniswap', (accounts) => {
       tx.logs[0].args.exchange
     )
     await sai.mint(protocolOwner, '10000000000', { from: protocolOwner })
-    await sai.approve(exchange.address, -1, { from: protocolOwner })
+    await sai.approve(exchange.address, '10000000000', { from: protocolOwner })
+
+    const blockNumber = await ethers.provider.getBlockNumber()
+    const latestBlock = await ethers.provider.getBlock(blockNumber)
+
     await exchange.addLiquidity(
       '1',
       '10000000000',
-      Math.round(Date.now() / 1000) + 60,
+      latestBlock.timestamp + 60,
       {
         from: protocolOwner,
         value: '10000000000',

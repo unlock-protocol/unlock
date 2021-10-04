@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import Svg from '../svg'
+import Loading from '../Loading'
 
 export const fadeInOut = keyframes`
   0%   { opacity: 1; }
@@ -9,31 +10,40 @@ export const fadeInOut = keyframes`
   100% { opacity: 1; }
 `
 
-export const Arrow = styled(Svg.Arrow)`
-  width: 32px;
+export const Cross = styled(Svg.Arrow)`
+  width: 36px;
   fill: var(--darkgrey);
-  margin-left: auto;
   margin-right: 8px;
 `
 
+export const Cart = styled(Svg.Cart)`
+  width: 36px;
+  fill: var(--grey);
+  margin-right: 8px;
+`
+
+export const Arrow = styled(Svg.Arrow)`
+  width: 36px;
+  fill: var(--darkgrey);
+  margin-right: 8px;
+  display: none;
+`
+
 const Checkmark = styled(Svg.Checkmark)`
-  width: 32px;
+  width: 36px;
   fill: var(--white);
-  margin-left: auto;
   margin-right: 8px;
   border-radius: 16px;
   background-color: var(--green);
 `
 
 export const Ellipsis = styled(Svg.LoadingDots)`
-  width: 32px;
-  margin-left: auto;
+  width: 36px;
   margin-right: 8px;
 `
 
 export const BaseLockBody = styled.div`
   height: 48px;
-  width: 100%;
   border-radius: 4px;
   display: flex;
   flex-direction: row;
@@ -41,13 +51,8 @@ export const BaseLockBody = styled.div`
   border: 1px var(--white) solid;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   background-color: var(--white);
-  cursor: pointer;
-  &:hover {
-    border: 1px solid var(--blue);
-  }
-  &:hover ${Arrow} {
-    fill: var(--blue);
-  }
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 `
 
 const NetworkName = styled.span`
@@ -79,6 +84,7 @@ export const InsufficentBalanceOverlay = styled.div`
 export const LoadingLockBody = styled(BaseLockBody)`
   box-shadow: none;
   cursor: wait;
+  justify-content: center;
   border: 1px var(--lightgrey) solid;
   animation: ${fadeInOut} 2s linear infinite;
   background-color: var(--lightgrey);
@@ -104,12 +110,32 @@ const ConfirmedBody = styled(BaseLockBody)`
 `
 
 export const LockContainer = styled.div`
-  width: 240px;
+  width: 100%;
   height: 72px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   margin-top: 17px;
+
+  ${(props) => {
+    if (props.selectable) {
+      return `
+        cursor: pointer;
+        &:hover ${BaseLockBody} {
+          border: 1px solid var(--blue);
+        }
+        &:hover ${Arrow} {
+          display: block;
+          fill: var(--blue);
+        }
+        &:hover ${Cart} {
+          display: none;
+        }
+
+      `
+    }
+    return null
+  }};
 `
 
 const DisabledLockContainer = styled(LockContainer)`
@@ -124,7 +150,8 @@ export const LockName = styled.span`
   font-weight: normal;
 `
 
-export const KeysAvailable = styled.span`
+const SoldOut = styled.span`
+  color: var(--red);
   font-size: 9px;
   color: var(--grey);
   font-family: IBM Plex Sans;
@@ -132,16 +159,8 @@ export const KeysAvailable = styled.span`
   font-weight: normal;
 `
 
-const SoldOut = styled(KeysAvailable)`
-  color: var(--red);
-`
-
 const WrongNetwork = styled(NetworkName)`
   color: var(--red);
-`
-
-const Processing = styled(KeysAvailable)`
-  color: var(--link);
 `
 
 export const InfoWrapper = styled.div`
@@ -152,18 +171,28 @@ export const InfoWrapper = styled.div`
   align-items: center;
 `
 
-export const LockPrice = styled.span`
-  color: var(--darkgrey);
+export const LockPrice = styled.div`
+  display: flex;
+  flex-direction: column;
   font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  margin-left: 12px;
   text-align: right;
-  width: 120px;
-`
+  font-style: normal;
+  width: 100%;
 
-export const ValidityDuration = styled.div`
+  span {
+    font-size: 10px;
+    color: var(--grey);
+  }
+
+  span:first-child {
+    color: var(--darkgrey);
+    font-weight: 600;
+    font-size: 16px;
+  }
+`
+export const QuantityAndDuration = styled.div`
+  width: 92px;
+  padding: 12px;
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
@@ -174,8 +203,9 @@ export const ValidityDuration = styled.div`
   align-items: center;
   text-align: right;
   height: 100%;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: 0 auto;
+  color: var(--grey);
   & > span {
     width: 100%;
   }
@@ -185,11 +215,14 @@ export interface LockProps {
   address: string
   name: string
   formattedKeyPrice: string
+  convertedKeyPrice: string
   formattedDuration: string
   formattedKeysAvailable: string
   onClick?: () => void
   network: number
   walletNetwork?: number
+  selectable: boolean
+  cardEnabled: boolean
 }
 
 export interface LoadingLockProps {
@@ -197,45 +230,46 @@ export interface LoadingLockProps {
   network: number
 }
 
-export const LoadingLock = ({ address, network }: LoadingLockProps) => {
+interface FullPriceProps {
+  cardEnabled: boolean
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+}
+
+const FullPrice = ({
+  cardEnabled,
+  formattedKeyPrice,
+  convertedKeyPrice,
+}: FullPriceProps) => {
+  // If card is enabled, we show fiat price first
+  if (cardEnabled && convertedKeyPrice) {
+    return (
+      <LockPrice>
+        <span>{convertedKeyPrice}</span>
+        <span>{formattedKeyPrice}</span>
+      </LockPrice>
+    )
+  }
   return (
-    <LockContainer data-address={address} data-testid="LoadingLock">
-      <LoadingLockBody />
-      <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
-    </LockContainer>
+    <LockPrice>
+      <span>{formattedKeyPrice}</span>
+      <span>{convertedKeyPrice}</span>
+    </LockPrice>
   )
 }
 
-export const WrongNetworkLock = ({
-  walletNetwork,
-  network,
-  address,
-  name,
-  formattedDuration,
-  formattedKeyPrice,
-  formattedKeysAvailable,
-}: LockProps) => {
+export const LoadingLock = ({ address, network }: LoadingLockProps) => {
   return (
-    <DisabledLockContainer
-      data-address={address}
-      data-testid="WrongNetworkLock"
-    >
+    <LockContainer data-address={address} data-testid="LoadingLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
-        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
+        <LockName>&nbsp;</LockName>
+        <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
-      <DisabledLockBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
-          <span>{formattedDuration}</span>
-        </ValidityDuration>
-        <Arrow />
-      </DisabledLockBody>
-      <WrongNetwork>
-        Connect your wallet to {ETHEREUM_NETWORKS_NAMES[network]}
-      </WrongNetwork>
-    </DisabledLockContainer>
+
+      <LoadingLockBody>
+        <Loading size={24} />
+      </LoadingLockBody>
+    </LockContainer>
   )
 }
 export const SoldOutLock = ({
@@ -244,109 +278,27 @@ export const SoldOutLock = ({
   name,
   formattedDuration,
   formattedKeyPrice,
+  convertedKeyPrice,
+  cardEnabled,
 }: LockProps) => {
   return (
     <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
-        <SoldOut>Sold Out</SoldOut>
+        <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <DisabledLockBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
+        <FullPrice
+          cardEnabled={cardEnabled}
+          formattedKeyPrice={formattedKeyPrice}
+          convertedKeyPrice={convertedKeyPrice}
+        />
+        <QuantityAndDuration>
+          <SoldOut>Sold Out</SoldOut>
           <span>{formattedDuration}</span>
-        </ValidityDuration>
-        <Arrow />
+        </QuantityAndDuration>
+        <Cross />
       </DisabledLockBody>
-      <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
-    </DisabledLockContainer>
-  )
-}
-
-export const InsufficientBalanceLock = ({
-  address,
-  name,
-  formattedDuration,
-  formattedKeyPrice,
-  formattedKeysAvailable,
-}: LockProps) => {
-  return (
-    <DisabledLockContainer
-      data-address={address}
-      data-testid="InsufficientBalanceLock"
-    >
-      <InfoWrapper>
-        <LockName>{name}</LockName>
-        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
-      </InfoWrapper>
-      <DisabledLockBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
-          <span>{formattedDuration}</span>
-        </ValidityDuration>
-        <Arrow />
-      </DisabledLockBody>
-      <InsufficentBalanceOverlay>
-        Insufficient Balance
-      </InsufficentBalanceOverlay>
-    </DisabledLockContainer>
-  )
-}
-
-export const CreditCardNotAvailableLock = ({
-  address,
-  name,
-  formattedDuration,
-  formattedKeyPrice,
-  formattedKeysAvailable,
-}: LockProps) => {
-  return (
-    <DisabledLockContainer
-      data-address={address}
-      data-testid="CreditCardNotAvailableLock"
-    >
-      <InfoWrapper>
-        <LockName>{name}</LockName>
-        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
-      </InfoWrapper>
-      <DisabledLockBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
-          <span>{formattedDuration}</span>
-        </ValidityDuration>
-        <Arrow />
-      </DisabledLockBody>
-      <InsufficentBalanceOverlay>
-        Credit Card Not Available
-      </InsufficentBalanceOverlay>
-    </DisabledLockContainer>
-  )
-}
-
-export const DisabledLock = ({
-  network,
-  address,
-  name,
-  formattedDuration,
-  formattedKeyPrice,
-}: LockProps) => {
-  return (
-    <DisabledLockContainer data-address={address} data-testid="DisabledLock">
-      <InfoWrapper>
-        <LockName>{name}</LockName>
-      </InfoWrapper>
-      <DisabledLockBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
-          <span>{formattedDuration}</span>
-        </ValidityDuration>
-        <Arrow />
-      </DisabledLockBody>
-      <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
     </DisabledLockContainer>
   )
 }
@@ -357,24 +309,37 @@ export const PurchaseableLock = ({
   name,
   formattedDuration,
   formattedKeyPrice,
+  convertedKeyPrice,
   formattedKeysAvailable,
+  selectable,
+  cardEnabled,
   onClick,
 }: LockProps) => {
   return (
-    <LockContainer data-address={address} data-testid="PurchaseableLock">
+    <LockContainer
+      selectable={selectable}
+      data-address={address}
+      data-testid="PurchaseableLock"
+    >
       <InfoWrapper>
         <LockName>{name}</LockName>
-        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
+        <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody onClick={onClick}>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
+        <FullPrice
+          cardEnabled={cardEnabled}
+          formattedKeyPrice={formattedKeyPrice}
+          convertedKeyPrice={convertedKeyPrice}
+        />
+        <QuantityAndDuration>
+          {formattedKeysAvailable !== 'Unlimited' && (
+            <span>{formattedKeysAvailable} Left</span>
+          )}
           <span>{formattedDuration}</span>
-        </ValidityDuration>
+        </QuantityAndDuration>
+        <Cart />
         <Arrow />
       </BaseLockBody>
-      <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
     </LockContainer>
   )
 }
@@ -385,22 +350,30 @@ export const ProcessingLock = ({
   name,
   formattedDuration,
   formattedKeyPrice,
+  convertedKeyPrice,
+  formattedKeysAvailable,
+  cardEnabled,
 }: LockProps) => {
   return (
     <LockContainer data-address={address} data-testid="ProcessingLock">
       <InfoWrapper>
         <LockName>{name}</LockName>
-        <Processing>Processing</Processing>
+        <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
+        <FullPrice
+          cardEnabled={cardEnabled}
+          formattedKeyPrice={formattedKeyPrice}
+          convertedKeyPrice={convertedKeyPrice}
+        />
+        <QuantityAndDuration>
+          {formattedKeysAvailable !== 'Unlimited' && (
+            <span>{formattedKeysAvailable} Left</span>
+          )}
           <span>{formattedDuration}</span>
-        </ValidityDuration>
+        </QuantityAndDuration>
         <Ellipsis />
       </BaseLockBody>
-      <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
     </LockContainer>
   )
 }
@@ -411,23 +384,35 @@ export const ConfirmedLock = ({
   name,
   formattedDuration,
   formattedKeyPrice,
+  convertedKeyPrice,
   formattedKeysAvailable,
+  selectable,
+  cardEnabled,
 }: LockProps) => {
   return (
-    <LockContainer data-address={address} data-testid="ConfirmedLock">
+    <LockContainer
+      selectable={selectable}
+      data-address={address}
+      data-testid="ConfirmedLock"
+    >
       <InfoWrapper>
         <LockName>{name}</LockName>
-        <KeysAvailable>{formattedKeysAvailable} Available</KeysAvailable>
+        <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <ConfirmedBody>
-        <LockPrice>{formattedKeyPrice}</LockPrice>
-        <ValidityDuration>
-          <span>Valid for</span>
+        <FullPrice
+          cardEnabled={cardEnabled}
+          formattedKeyPrice={formattedKeyPrice}
+          convertedKeyPrice={convertedKeyPrice}
+        />
+        <QuantityAndDuration>
+          {formattedKeysAvailable !== 'Unlimited' && (
+            <span>{formattedKeysAvailable} Left</span>
+          )}
           <span>{formattedDuration}</span>
-        </ValidityDuration>
+        </QuantityAndDuration>
         <Checkmark />
       </ConfirmedBody>
-      <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
     </LockContainer>
   )
 }

@@ -31,10 +31,10 @@ export interface EventCreation {
 }
 
 export interface ItemizedKeyPrice {
-  keyPrice: number
-  gasFee: number
-  creditCardProcessing: number
-  unlockServiceFee: number
+  gasFee?: number
+  keyPrice?: number
+  creditCardProcessing?: number
+  unlockServiceFee?: number
 }
 
 export interface SignedRequest extends Request {

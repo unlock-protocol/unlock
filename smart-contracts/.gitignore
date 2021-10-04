@@ -5,3 +5,17 @@
 mnemonic.*
 .openzeppelin/.session
 .openzeppelin/dev-1337.json
+.openzeppelin/unknown-31337.json
+
+artifacts/
+cache/
+*.generated.sol
+*.generated.sol*
+*.sol.rej
+*.ref 
+
+deployments/hardhat
+deployments/localhost
+deployments/ganache
+contracts/proxy
+contracts/past-versions

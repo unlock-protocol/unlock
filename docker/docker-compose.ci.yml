@@ -1,57 +1,29 @@
 version: '3.2'
 services:
-  ganache: # Used for smart contract tests only
-    restart: always
-    image: trufflesuite/ganache-cli:v6.12.2
-    expose:
-      - 8545
-    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1337', '-e 1000000']
 
-  ganache-standup: # Sets up the ganache instance with the required smart contracts and balances
-    image: ganache-standup
+  eth-node: # hardhat node
+    image: eth-node
     build:
-      context: ./development
-      dockerfile: ganache.dockerfile
-    env_file:
-      - ./${UNLOCK_ENV}.env
-    entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
-    depends_on:
-      - ganache-integration
-
-  ganache-integration: # Used for integration tests
-    env_file:
-      - ./${UNLOCK_ENV}.env
-    restart: always
-    image: ganache-integration
-    build:
-      context: ./development
-      dockerfile: ganache.dockerfile
+      context: ./development/eth-node
+    # entrypoint: ['node', '/standup/prepare-ganache-for-unlock.js']
     ports:
       - 8545:8545
-    expose:
-      - 8545
 
   smart-contract-extensions: # example of Unlock integrations
     image: smart-contract-extensionss
     build:
       context: ../
-      dockerfile: ./docker/smart-contract-extensions.dockerfile
-      cache_from:
-        - smart-contract-extensions
-        - unlockprotocol/smart-contract-extensions:master
-    depends_on:
-      - ganache
+      target: dev
+      args:
+        BUILD_DIR: smart-contract-extensions
 
   smart-contracts: # Image with our contracts
-    image: smart-contractss
+    image: smart-contracts
     build:
       context: ../
-      dockerfile: ./docker/smart-contracts.dockerfile
-      cache_from:
-        - smart-contracts
-        - unlockprotocol/smart-contracts:master
-    depends_on:
-      - ganache
+      target: dev
+      args:
+        BUILD_DIR: smart-contracts
 
   unlock-app: # Container for the dashboard
     env_file:
@@ -59,15 +31,13 @@ services:
     image: unlock-app
     build:
       context: ../
-      dockerfile: ./docker/unlock-app.dockerfile
-      cache_from:
-        - unlock-app
-        - unlockprotocol/unlock-app:master
+      target: dev
+      args:
+        BUILD_DIR: unlock-app
     ports:
       - 3000:3000
     expose:
       - 3000
-
 
   unlock-protocol-com: # Container for the static site
     env_file:
@@ -75,12 +45,23 @@ services:
     image: unlock-protocol-com
     build:
       context: ../
-      dockerfile: ./docker/unlock-protocol-com.dockerfile
-      cache_from:
-        - unlock-protocol-com
-        - unlockprotocol/unlock-protocol-com:master
+      target: dev
+      args:
+        BUILD_DIR: unlock-protocol-com
     ports:
       - 3002:3002
+
+  paywall-app: # Container for the paywall application
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: paywall-app
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: paywall-app
+    ports:
+      - 3001:3001
 
   paywall: # Container for the paywall application
     env_file:
@@ -88,10 +69,9 @@ services:
     image: paywall
     build:
       context: ../
-      dockerfile: ./docker/paywall.dockerfile
-      cache_from:
-        - paywall
-        - unlockprotocol/paywall:master
+      target: dev
+      args:
+        BUILD_DIR: packages/paywall
     ports:
       - 3001:3001
 
@@ -99,10 +79,9 @@ services:
     image: newsletter
     build:
       context: ../
-      dockerfile: ./docker/newsletter.dockerfile
-      cache_from:
-        - newsletter
-        - unlockprotocol/newsletter:master
+      target: dev
+      args:
+        BUILD_DIR: newsletter
     env_file:
       - ./${UNLOCK_ENV}.env
     ports:
@@ -112,34 +91,22 @@ services:
     image: unlock-js
     build:
       context: ../
-      dockerfile: ./docker/unlock-js.dockerfile
-      cache_from:
-        - unlock-js
-        - unlockprotocol/unlock-js:master
+      target: dev
+      args:
+        BUILD_DIR: packages/unlock-js
     env_file:
       - ./${UNLOCK_ENV}.env
-    depends_on:
-      - ganache-integration
+    depends_on: 
+      - eth-node
 
-  nudge: # Container for nudge
-    image: nudge
-    build:
-      context: ../
-      dockerfile: ./docker/nudge.dockerfile
-      cache_from:
-        - nudge
-        - unlockprotocol/nudge:master
-    env_file:
-      - ./${UNLOCK_ENV}.env
 
   wedlocks: # Container for wedlocks
     image: wedlocks
     build:
       context: ../
-      dockerfile: ./docker/wedlocks.dockerfile
-      cache_from:
-        - wedlocks
-        - unlockprotocol/wedlocks:master
+      target: dev
+      args:
+        BUILD_DIR: wedlocks
     env_file:
       - ./${UNLOCK_ENV}.env
 
@@ -147,15 +114,14 @@ services:
     image: integration-tests
     build:
       context: ../
-      dockerfile: ./docker/integration-tests.dockerfile
-      cache_from:
-        - integration-tests
-        - unlockprotocol/integration-tests:master
+      target: dev
+      args:
+        BUILD_DIR: integration-tests
 
     env_file:
       - ./${UNLOCK_ENV}.env
     depends_on:
-      - ganache-integration
+      # - eth-node
       - unlock-app
       - paywall
       - locksmith
@@ -166,10 +132,9 @@ services:
     image: locksmith
     build:
       context: ../
-      dockerfile: ./docker/locksmith.dockerfile
-      cache_from:
-        - locksmith
-        - unlockprotocol/locksmith:master
+      target: dev
+      args:
+        BUILD_DIR: locksmith
     env_file:
       - ././${UNLOCK_ENV}.env
       - ./integration-locksmith.env
@@ -178,7 +143,6 @@ services:
       - 8080:8080
     depends_on:
       - postgres
-      - ganache
 
   #############
   # Overrides #
@@ -191,10 +155,9 @@ services:
     depends_on:
       - ipfs
       - postgres
-      - ganache-integration
 
   ipfs: # Required for subgraph
-    image: ipfs/go-ipfs:v0.8.0
+    image: ipfs/go-ipfs:v0.10.0
     ports:
       - '5001:5001'
 
@@ -208,7 +171,6 @@ services:
       - ipfs
       - postgres
       - graph-node
-      - ganache-integration
 
   postgres: # locksmith the subgraph store data in it
     env_file:

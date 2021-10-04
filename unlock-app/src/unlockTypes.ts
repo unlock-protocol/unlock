@@ -94,6 +94,7 @@ export interface PaywallConfigLocks {
 
 export interface PaywallConfigLock {
   name?: string
+  network?: number
   metadataInputs?: MetadataInput[]
 }
 
@@ -179,14 +180,16 @@ export interface MetadataInput {
 
 export interface PaywallConfig {
   icon?: string
-  unlockUserAccounts?: true | 'true' | false
   callToAction?: PaywallCallToAction
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
+  redirectUri?: string
   useDelegatedProvider?: boolean
   network: number
   referrer?: string
+  messageToSign?: string
+  pessimistic?: boolean
 }
 
 export interface RawLock {
@@ -224,4 +227,10 @@ export interface UserMetadata {
 export interface DelayedPurchase {
   lockAddress: string
   purchaseKey: () => void
+}
+export interface OAuthConfig {
+  clientId: string
+  responseType: string
+  state: string
+  redirectUri: string
 }

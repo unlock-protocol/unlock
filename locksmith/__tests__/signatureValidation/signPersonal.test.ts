@@ -34,7 +34,7 @@ const body = {
       { name: 'address', type: 'address' },
     ],
   },
-  domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+  domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
   primaryType: 'Lock',
   message: {
     lock: {
@@ -206,7 +206,7 @@ describe('Signature Validation Middleware', () => {
               { name: 'address', type: 'address' },
             ],
           },
-          domain: { name: 'Unlock Dashboard', version: '1', chainId: 1337 },
+          domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
           primaryType: 'Lock',
           message: {
             lock: {
@@ -244,7 +244,7 @@ describe('Signature Validation Middleware', () => {
     describe('when a signature is not provided', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -259,7 +259,7 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -274,7 +274,7 @@ describe('Signature Validation Middleware', () => {
           body,
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -289,7 +289,7 @@ describe('Signature Validation Middleware', () => {
           body,
         })
 
-        const spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'status')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })

@@ -19,6 +19,30 @@ jest.mock('../../../hooks/useLocks', () => {
   }
 })
 
+const renderWithContexts = (component) => {
+  const account = '0x123'
+  const network = 1337
+  const config = {
+    networks: {
+      1337: {
+        explorer: {
+          urls: {
+            address: () => '',
+          },
+        },
+      },
+    },
+  }
+
+  return rtl.render(
+    <ConfigContext.Provider value={config}>
+      <AuthenticationContext.Provider value={{ account, network }}>
+        {component}
+      </AuthenticationContext.Provider>
+    </ConfigContext.Provider>
+  )
+}
+
 const ConfigProvider = ConfigContext.Provider
 
 jest.mock('next/link', () => {
@@ -90,7 +114,7 @@ describe('CreatorLocks', () => {
       }
     })
     const loading = false
-    const wrapper = rtl.render(
+    const wrapper = renderWithContexts(
       <CreatorLocks
         account={account}
         loading={loading}
@@ -113,7 +137,7 @@ describe('CreatorLocks', () => {
       }
     })
     const loading = true
-    const wrapper = rtl.render(
+    const wrapper = renderWithContexts(
       <CreatorLocks
         account={account}
         loading={loading}

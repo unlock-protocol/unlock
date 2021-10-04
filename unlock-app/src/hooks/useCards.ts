@@ -4,6 +4,8 @@ import { Card } from '@stripe/stripe-js'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
 
+// TODO: cleanup. We don't need a hook but the API calls should be kept
+
 interface Config {
   services: {
     storage: {
@@ -57,10 +59,73 @@ export const getSignature = async (
 }
 
 /**
- * returns the cards for a given address
  * @param walletService
  * @param address
  */
+export const chargeAndSaveCard = async (
+  config: any,
+  walletService: any,
+  address: string,
+  stripeTokenId: string,
+  network: number,
+  lock: string,
+  pricing: any
+) => {
+  const typedData = generateTypedData({
+    'Charge Card': {
+      publicKey: address,
+      stripeTokenId,
+      pricing,
+      lock,
+      network,
+    },
+  })
+
+  const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      ...genAuthorizationHeader(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(`${config.services.storage.host}/purchase`, opts)
+  return response.json()
+}
+
+export const claimMembership = async (
+  config: any,
+  walletService: any,
+  address: string,
+  network: number,
+  lock: string
+) => {
+  const typedData = generateTypedData({
+    'Claim Membership': {
+      publicKey: address,
+      lock,
+      network,
+    },
+  })
+
+  const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      ...genAuthorizationHeader(token),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(`${config.services.storage.host}/claim`, opts)
+  return response.json()
+}
+
 export const saveCardsForAddress = async (
   config: any,
   walletService: any,
@@ -93,11 +158,6 @@ export const saveCardsForAddress = async (
   )
 }
 
-/**
- * returns the cards for a given address
- * @param walletService
- * @param address
- */
 export const getCardsForAddress = async (
   config: any,
   walletService: any,
@@ -158,6 +218,48 @@ export const deleteCardForAddress = async (
   )
   return (await response).status === 202
 }
+
+/**
+ * Retrieves the pricing for a lock to be purchasable via credit card
+ */
+export const getFiatPricing = async (
+  config: any,
+  lock: string,
+  network: number
+) => {
+  const opts = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  const response = await fetch(
+    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}`,
+    opts
+  )
+  return response.json()
+}
+
+export const getCardConnected = async (
+  config: any,
+  lock: string,
+  network: number
+) => {
+  const opts = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  const response = await fetch(
+    `${config.services.storage.host}/lock/${lock}/stripe-connected?chain=${network}`,
+    opts
+  )
+  return response.json()
+}
+
 export const useCards = (address: string) => {
   const walletService: WalletService = useContext(WalletServiceContext)
   const config: Config = useContext(ConfigContext)
@@ -174,7 +276,7 @@ export const useCards = (address: string) => {
     try {
       const cards = await getCardsForAddress(config, walletService, address)
       setCards(cards)
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
     setLoading(false)
@@ -190,7 +292,7 @@ export const useCards = (address: string) => {
       await saveCardsForAddress(config, walletService, address, stripeTokenId)
       // Refresh cards: TODO make locksmith return the cards
       await getCards()
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
     setLoading(false)
@@ -206,7 +308,7 @@ export const useCards = (address: string) => {
       if (deleted) {
         setCards([])
       }
-    } catch (e) {
+    } catch (e: any) {
       setError(e)
     }
     setLoading(false)

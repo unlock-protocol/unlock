@@ -25,14 +25,11 @@ const usePaywall = () => {
     }
 
     // Set config
-    const unlockUserAccounts =
-      url.searchParams.get('unlockUserAccounts') === 'true'
     const useMetadataInputs = url.searchParams.get('metadataInputs') === 'true'
+    const referrer = url.searchParams.get('referrer')
 
     window.unlockProtocolConfig = {
       persistentCheckout: false,
-      unlockUserAccounts,
-
       metadataInputs: useMetadataInputs
         ? [
             {
@@ -51,11 +48,12 @@ const usePaywall = () => {
       locks: {
         [url.searchParams.get('lock')]: {},
       },
+      referrer,
       network: parseInt(url.searchParams.get('network'), 10),
       callToAction: {
         default: 'This content is locked. You need to unlock it!',
         expired:
-          'Your previous membership has now expired.. You need to get a new membership!',
+          'Your previous membership has now expired. You need to renew it.',
         pending:
           'Thanks for your trust. The transaction is now being processed.',
         confirmed: 'Thanks for being a member!',
@@ -66,7 +64,7 @@ const usePaywall = () => {
       },
     }
 
-    // Remove localStorage (on the demo we do not want to store any accoun)
+    // Remove localStorage (on the demo we do not want to store any account)
     localStorage.removeItem('userInfo')
 
     // Event handler

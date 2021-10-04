@@ -9,6 +9,7 @@ import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
 import { AuthenticationContext } from '../components/interface/Authenticate'
 import { processTransaction } from './useLock'
+
 /**
  * Retrieves a lock object at the address
  */
@@ -61,6 +62,7 @@ export const retrieveLocks = async (
       addToLocks({
         ...lock,
         ...lockFromChain,
+        network,
       })
     }
     // HACK: We delay each lock retrieval by 300ms to avoid rate limits...
@@ -123,6 +125,7 @@ export const createLock = async (
         )
 
         lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
+        lock.network = network
 
         // Store the hash!
         storageService.storeTransaction(
@@ -158,6 +161,15 @@ export const useLocks = (owner) => {
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
+    if (lock === -1) {
+      // Reset!
+      return []
+    }
+    if (lock.network !== network) {
+      // Wrong network
+      return locks
+    }
+
     const index = locks.findIndex(
       (element) => element.address.toLowerCase() === lock.address.toLowerCase()
     )
@@ -200,6 +212,7 @@ export const useLocks = (owner) => {
    * Retrieves the locks when initialized both from the graph and from pending transactions
    */
   useEffect(() => {
+    addToLocks(-1) // reset all locks!
     retrieveLocks(
       web3Service,
       graphService,
@@ -208,7 +221,7 @@ export const useLocks = (owner) => {
       setLoading,
       network
     )
-  }, [owner])
+  }, [owner, network])
 
   return { error, loading, locks, addLock }
 }

@@ -10,6 +10,8 @@ import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
 import { UserTokenMetadata } from './usertokenmetadata'
 import { StripeCustomer } from './stripeCustomer'
 import { StripeConnectLock } from './stripeConnectLock'
+import { LockIcons } from './lockIcons'
+import { Charge } from './charge'
 
 const config = require('../../config/config')
 
@@ -27,6 +29,8 @@ sequelize.addModels([
   UserTokenMetadata,
   StripeCustomer,
   StripeConnectLock,
+  LockIcons,
+  Charge,
 ])
 
 User.removeAttribute('id')
@@ -43,3 +47,5 @@ export * from './authorizedLock'
 export * from './usertokenmetadata'
 export * from './stripeCustomer'
 export * from './stripeConnectLock'
+export * from './charge'
+export * from './lockIcons'

@@ -26,7 +26,7 @@ interface IUnlock
     uint _maxNumberOfKeys,
     string calldata _lockName,
     bytes12 _salt
-  ) external;
+  ) external returns(address);
 
     /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
@@ -87,6 +87,12 @@ interface IUnlock
     view
     returns(string memory);
 
+  // Function to read the chainId field.
+  function chainId()
+    external
+    view
+    returns(uint);
+
   /**
    * @dev Redundant with globalTokenSymbol() for backwards compatibility with v3 & v4 locks.
    */
@@ -103,7 +109,8 @@ interface IUnlock
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
-    string calldata _URI
+    string calldata _URI,
+    uint _chainId
   )
     external;
 

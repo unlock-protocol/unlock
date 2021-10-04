@@ -13,7 +13,7 @@ const privateKey = ethJsUtil.toBuffer(
 
 const lockOwningAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const lockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
-const chain = 1337
+const chain = 31337
 
 function generateTypedData(message: any) {
   return {
@@ -148,7 +148,7 @@ describe('Metadata Controller', () => {
           .get(`/api/key/${lockAddress}/keyHolderMetadata`)
           .set('Accept', 'json')
 
-        expect(response.status).toBe(401)
+        expect(response.status).toBe(400)
       })
     })
   })

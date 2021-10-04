@@ -17,7 +17,6 @@ export const success = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
   getCards: 'getCards.success',
   keyPurchase: 'keyPurchase.success',
-  getKeyPrice: 'getKeyPrice.success',
   ejectUser: 'ejectUser.success',
   getMetadataFor: 'getMetadataFor.success',
   getBulkMetadataFor: 'getBulkMetadataFor.success',
@@ -35,7 +34,6 @@ export const failure = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
   getCards: 'getCards.failure',
   keyPurchase: 'keyPurchase.failure',
-  getKeyPrice: 'getKeyPrice.failure',
   ejectUser: 'ejectUser.failure',
   getMetadataFor: 'getMetadataFor.failure',
   getBulkMetadataFor: 'getBulkMetadataFor.failure',
@@ -125,14 +123,14 @@ export class StorageService extends EventEmitter {
    */
   async createUser(user, emailAddress, password) {
     const opts = {}
-    const response = await axios.post(`${this.host}/users/`, user, opts)
-    return {
-      passwordEncryptedPrivateKey:
-        user.message.user.passwordEncryptedPrivateKey,
-      emailAddress,
-      password,
-      recoveryPhrase: response.data.recoveryPhrase,
-    }
+    return axios.post(`${this.host}/users/`, user, opts)
+    // return {
+    //   passwordEncryptedPrivateKey:
+    //     user.message.user.passwordEncryptedPrivateKey,
+    //   emailAddress,
+    //   password,
+    //   recoveryPhrase: response.data.recoveryPhrase,
+    // }
   }
 
   /**
@@ -309,21 +307,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a lock address (ERC20), return the price of a key for that lock in dollars
-   * On success returns an object of { creditCardProcessing, gasFee, keyPrice, unlockServiceFee }
-   * all denominated in cents.
-   * @param {string} lockAddress
-   */
-  async getKeyPrice(lockAddress) {
-    try {
-      const result = await axios.get(`${this.host}/price/${lockAddress}`)
-      this.emit(success.getKeyPrice, result.data)
-    } catch (error) {
-      this.emit(failure.getKeyPrice, error)
-    }
-  }
-
-  /**
    * Ejects a user
    *
    * @param {*} publicKey
@@ -341,45 +324,6 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  /*
-   * Given a lock address, a key ID, and a typed data signature, get
-   * the metadata (public and protected) associated with that key.
-   * @param {string} lockAddress
-   * @param {string} keyId
-   * @param {*} signature
-   * @param {*} data
-   */
-  async getMetadataFor(lockAddress, keyId, signature, data) {
-    const stringData = JSON.stringify(data)
-    const opts = {
-      headers: this.genAuthorizationHeader(signature),
-      // No body allowed in GET, so these are passed as query params for this
-      // call.
-      params: {
-        data: stringData,
-        signature,
-      },
-    }
-    try {
-      const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/${keyId}`,
-        opts
-      )
-      const payload = {
-        lockAddress,
-        keyId,
-        data: {},
-      }
-
-      if (result.data && result.data.userMetadata) {
-        payload.data = result.data.userMetadata
-      }
-      this.emit(success.getMetadataFor, payload)
-    } catch (error) {
-      this.emit(failure.getMetadataFor, error)
-    }
-  }
-
   /**
    * Given a lock address and a typed data signature, get the metadata
    * (public and protected) associated with each key on that lock.
@@ -387,10 +331,15 @@ export class StorageService extends EventEmitter {
    * @param {string} signature
    * @param {*} data
    */
-  async getBulkMetadataFor(lockAddress, signature, data) {
+  async getBulkMetadataFor(lockAddress, signature, data, network) {
     const stringData = JSON.stringify(data)
     const opts = {
-      headers: this.genAuthorizationHeader(signature),
+      headers: {
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
+        'Content-Type': 'application/json',
+      },
       // No body allowed in GET, so these are passed as query params for this
       // call.
       params: {
@@ -400,7 +349,7 @@ export class StorageService extends EventEmitter {
     }
     try {
       const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata`,
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
         opts
       )
 
@@ -412,8 +361,7 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a lock address and a typed data signature, get the metadata
-   * (public and protected) associated with each key on that lock.
+   * Given a lock address and a typed data signature, connect to stripe
    * @param {string} lockAddress
    * @param {string} signature
    * @param {*} data
@@ -434,5 +382,114 @@ export class StorageService extends EventEmitter {
     )
 
     return result?.data
+  }
+
+  async updateLockIcon(lockAddress, signature, data, icon) {
+    const opts = {
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
+    }
+
+    const result = await axios.post(
+      `${this.host}/lock/${lockAddress}/icon`,
+      { ...data, icon },
+      opts
+    )
+
+    return result?.data
+  }
+
+  /**
+   * Saves a user metadata for a lock
+   * @param {*} lockAddress
+   * @param {*} userAddress
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async setUserMetadataData(
+    lockAddress,
+    userAddress,
+    payload,
+    signature,
+    network
+  ) {
+    let url = `${this.host}/api/key/${lockAddress}/user/${userAddress}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+
+  /**
+   * Saves a key metadata for a lock
+   * @param {*} lockAddress
+   * @param {*} userAddress
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async setKeyMetadata(lockAddress, keyId, payload, signature, network) {
+    let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+    if (network) {
+      url = `${url}?chain=${network}`
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+
+  /**
+   *
+   * @param {*} lockAddress
+   * @param {*} keyId
+   * @param {*} payload
+   * @param {*} signature
+   * @param {*} network
+   * @returns
+   */
+  async getKeyMetadata(lockAddress, keyId, payload, signature, network) {
+    try {
+      let url = `${this.host}/api/key/${lockAddress}/${keyId}`
+      if (network) {
+        url = `${url}?chain=${network}`
+      }
+
+      const options = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      if (signature) {
+        options.headers.Authorization = `Bearer ${Buffer.from(
+          signature
+        ).toString('base64')}`
+      }
+
+      const response = await axios.get(url, options)
+      return response?.data
+    } catch (error) {
+      console.error(error)
+      return {}
+    }
   }
 }

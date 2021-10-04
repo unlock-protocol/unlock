@@ -133,10 +133,8 @@ describe.skip('StorageService', () => {
         },
       })
 
-      const {
-        hashes,
-        senderAddress,
-      } = await storageService.getRecentTransactionsHashesSentBy(sender)
+      const { hashes, senderAddress } =
+        await storageService.getRecentTransactionsHashesSentBy(sender)
       expect(senderAddress).toEqual(sender)
       expect(hashes).toEqual([
         {
@@ -519,50 +517,6 @@ describe.skip('StorageService', () => {
     })
   })
 
-  describe('Retrieve a key price', () => {
-    describe('When a request succeeds', () => {
-      it('emits a success', (done) => {
-        expect.assertions(1)
-        const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
-        axios.get.mockReturnValue({
-          data: {
-            creditCardProcessing: 450,
-            gasFee: 30,
-            keyPrice: 100,
-            unlockServiceFee: 20,
-          },
-        })
-
-        storageService.getKeyPrice(lockAddress)
-
-        storageService.on(success.getKeyPrice, (data) => {
-          expect(data).toEqual({
-            creditCardProcessing: 450,
-            gasFee: 30,
-            keyPrice: 100,
-            unlockServiceFee: 20,
-          })
-          done()
-        })
-      })
-    })
-
-    describe('When a request fails', () => {
-      it('emits a failure', (done) => {
-        expect.assertions(1)
-        const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
-        axios.get.mockRejectedValue('could not communicate with server')
-
-        storageService.getKeyPrice(lockAddress)
-
-        storageService.on(failure.getKeyPrice, (error) => {
-          expect(error).toEqual('could not communicate with server')
-          done()
-        })
-      })
-    })
-  })
-
   describe('ejecting user', () => {
     it('should send a request to eject a user', (done) => {
       expect.assertions(1)
@@ -757,82 +711,6 @@ describe.skip('StorageService', () => {
       })
 
       expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
-    })
-  })
-
-  describe('getMetadataFor', () => {
-    it('should emit success on success', (done) => {
-      expect.assertions(2)
-
-      const lockAddress = 'address'
-      const keyId = '1'
-      const typedData = {
-        data: 'typed',
-      }
-      const userMetadata = {
-        public: {
-          seven: '7',
-        },
-        protected: {
-          'capital seven': '七',
-        },
-      }
-      axios.get.mockReturnValue({
-        data: {
-          userMetadata,
-        },
-      })
-
-      storageService.on(success.getMetadataFor, (result) => {
-        expect(result).toEqual({
-          lockAddress,
-          keyId,
-          data: userMetadata,
-        })
-
-        done()
-      })
-
-      storageService.getMetadataFor(
-        lockAddress,
-        keyId,
-        'a signature',
-        typedData
-      )
-      expect(axios.get).toHaveBeenCalledWith(
-        `${serviceHost}/api/key/${lockAddress}/${keyId}`,
-        {
-          headers: {
-            Authorization: ' Bearer a signature',
-          },
-          params: {
-            data: JSON.stringify(typedData),
-            signature: 'a signature',
-          },
-        }
-      )
-    })
-
-    it('should emit failure on failure', (done) => {
-      expect.assertions(1)
-
-      const lockAddress = 'address'
-      const keyId = '1'
-      const typedData = 'stringified-typed-data'
-
-      axios.get.mockRejectedValue('welp')
-
-      storageService.on(failure.getMetadataFor, (error) => {
-        expect(error).toBe('welp')
-        done()
-      })
-
-      storageService.getMetadataFor(
-        lockAddress,
-        keyId,
-        'a signature',
-        typedData
-      )
     })
   })
 

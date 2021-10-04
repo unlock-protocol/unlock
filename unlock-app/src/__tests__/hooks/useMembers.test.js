@@ -64,8 +64,8 @@ const storedMetata = [
   },
 ]
 const walletService = {
-  signData: jest.fn((user, data, callback) => {
-    return callback(null, signature)
+  signMessage: jest.fn((user, data, callback) => {
+    return Promise.resolve(signature)
   }),
 }
 
@@ -145,10 +145,9 @@ describe('useMembers', () => {
         walletService,
         storageService
       )
-      expect(walletService.signData).toHaveBeenCalledWith(
-        viewer,
-        typedData,
-        expect.any(Function)
+      expect(walletService.signMessage).toHaveBeenCalledWith(
+        'I want to access member data for 0xlockAddress',
+        'personal_sign'
       )
     })
 
@@ -164,7 +163,8 @@ describe('useMembers', () => {
       expect(storageService.getBulkMetadataFor).toHaveBeenCalledWith(
         lock.address,
         signature,
-        typedData
+        typedData,
+        undefined // network
       )
       expect(metadataForLock).toEqual(storedMetata)
     })

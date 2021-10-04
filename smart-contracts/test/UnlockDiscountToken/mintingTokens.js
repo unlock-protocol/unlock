@@ -11,9 +11,9 @@ let unlock
 let udt
 let lock
 
-const estimateGas = 252166
+const estimateGas = 252166 * 2
 
-contract('UnlockDiscountToken / mintingTokens', (accounts) => {
+contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
@@ -79,6 +79,7 @@ contract('UnlockDiscountToken / mintingTokens', (accounts) => {
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
+      1, // mainnet
       { from: protocolOwner }
     )
     await unlock.setOracle(udt.address, uniswapOracle.address, {
@@ -159,7 +160,7 @@ contract('UnlockDiscountToken / mintingTokens', (accounts) => {
           .times(rate)
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
-        gasSpent.times(0.2).shiftedBy(-18).toFixed(3)
+        gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
       )
     })
   })
@@ -169,6 +170,7 @@ contract('UnlockDiscountToken / mintingTokens', (accounts) => {
       // 1,000,000 UDT minted thus far
       // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
       // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
+
       const initialGdp = new BigNumber(await lock.keyPrice()).times(40000)
       await unlock.resetTrackedValue(initialGdp.toFixed(0), 0, {
         from: protocolOwner,

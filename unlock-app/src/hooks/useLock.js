@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useReducer } from 'react'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
@@ -6,7 +6,10 @@ import { TransactionType } from '../unlockTypes'
 import { transactionTypeMapping } from '../utils/types'
 import { AuthenticationContext } from '../components/interface/Authenticate'
 import { FATAL_WRONG_NETWORK } from '../errors'
-
+import { getFiatPricing, getCardConnected } from './useCards'
+import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
+import { StorageService } from '../services/storageService'
+import LocksContext from '../contexts/LocksContext'
 /**
  * Event handler
  * @param {*} hash
@@ -22,6 +25,7 @@ export const processTransaction = async (
   network
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
+  const blockTime = config.networks[network].blockTime
   if (
     !transaction ||
     transaction.confirmations <= config.requiredConfirmations
@@ -37,7 +41,7 @@ export const processTransaction = async (
         hash,
         network
       )
-    }, config.blockTime / 2)
+    }, blockTime / 2)
 
     setLock({
       ...lock,
@@ -136,7 +140,7 @@ export const withdrawFromLock = (
 /**
  * Function called to updated the price of a lock
  */
-export const purchaseKeyFromLock = (
+export const purchaseKeyFromLock = async (
   web3Service,
   walletService,
   config,
@@ -147,7 +151,7 @@ export const purchaseKeyFromLock = (
   network,
   callback
 ) => {
-  walletService.purchaseKey(
+  return walletService.purchaseKey(
     {
       lockAddress: lock.address,
       owner: recipient,
@@ -179,12 +183,59 @@ export const purchaseKeyFromLock = (
  * @param {*} network // network on which the lock is
  */
 export const useLock = (lockFromProps, network) => {
-  const [lock, setLock] = useState(lockFromProps)
+  const { locks, addLock } = useContext(LocksContext)
+
+  const [lock, setLock] = useReducer(
+    (oldLock, newLock) => {
+      return { ...oldLock, ...newLock }
+    },
+    {
+      ...lockFromProps,
+      network,
+    }
+  )
   const { network: walletNetwork } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
   const [error, setError] = useState(null)
+
+  const getLock = async (opts = {}) => {
+    let lockDetails
+
+    if (locks && locks[lock.address]) {
+      lockDetails = locks[lock.address]
+    } else {
+      lockDetails = await web3Service.getLock(lock.address, network)
+      if (opts.pricing) {
+        try {
+          const fiatPricing = await getFiatPricing(
+            config,
+            lock.address,
+            network
+          )
+          lockDetails = {
+            ...lockDetails,
+            fiatPricing,
+          }
+        } catch (error) {
+          console.error('Could not retrieve fiat pricing', error)
+        }
+      }
+      if (addLock) {
+        addLock({
+          ...lockDetails,
+          address: lock.address,
+        })
+      }
+    }
+    const mergedLock = {
+      ...lock,
+      ...lockDetails,
+    }
+    setLock(mergedLock)
+    return mergedLock
+  }
 
   const updateKeyPrice = (newKeyPrice, callback) => {
     if (walletNetwork !== network) {
@@ -217,11 +268,11 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  const purchaseKey = (recipient, referrer, callback) => {
+  const purchaseKey = async (recipient, referrer, callback) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
-      purchaseKeyFromLock(
+      await purchaseKeyFromLock(
         web3Service,
         walletService,
         config,
@@ -239,16 +290,113 @@ export const useLock = (lockFromProps, network) => {
     return web3Service.getKeyByLockForOwner(lock.address, owner, network)
   }
 
+  const getCreditCardPricing = async () => {
+    try {
+      const fiatPricing = await getFiatPricing(config, lock.address, network)
+      const mergedLock = {
+        ...lock,
+        fiatPricing,
+      }
+      setLock(mergedLock)
+
+      return fiatPricing
+    } catch (error) {
+      console.error(
+        `Could not get card pricing for ${lock.address}: ${error.message}`
+      )
+    }
+  }
+
+  // Returns 1 if connected
+  // -1 if no stripe account exsist
+  // 0 if a stripe account exists but is not ready
+  const isStripeConnected = async () => {
+    try {
+      const response = await getCardConnected(
+        config,
+        lockFromProps.address,
+        network
+      )
+
+      return response.connected
+    } catch (error) {
+      console.error(
+        `Could not get Stripe status for ${lockFromProps.address}: ${error.message}`
+      )
+      return -1
+    }
+  }
+
+  // Checks if the address is a manager
+  const isLockManager = async (lockManager) => {
+    if (!lockManager) {
+      return false
+    }
+    const isLockManager = await web3Service.isLockManager(
+      lockFromProps.address,
+      lockManager,
+      network
+    )
+    return isLockManager
+  }
+
+  const getKeyData = async (keyId, signer) => {
+    let payload = {}
+    let signature
+
+    // If we have a signer, try to get the protected data!
+    if (signer) {
+      payload = generateKeyMetadataPayload(signer, {})
+      signature = await walletService.unformattedSignTypedData(signer, payload)
+    }
+
+    const storageService = new StorageService(config.services.storage.host)
+    const data = await storageService.getKeyMetadata(
+      lockFromProps.address,
+      keyId,
+      payload,
+      signature,
+      network
+    )
+    return data
+  }
+
+  const markAsCheckedIn = async (signer, keyId) => {
+    const payload = generateKeyMetadataPayload(signer, {
+      lockAddress: lockFromProps.address,
+      keyId,
+      metadata: {
+        checkedInAt: new Date().getTime(),
+      },
+    })
+    const signature = await walletService.unformattedSignTypedData(
+      signer,
+      payload
+    )
+    const storageService = new StorageService(config.services.storage.host)
+    const response = await storageService.setKeyMetadata(
+      lockFromProps.address,
+      keyId,
+      payload,
+      signature,
+      network
+    )
+    return response.status === 202
+  }
+
   return {
-    lock: {
-      ...lockFromProps, // merge lock
-      ...lock,
-    },
+    getLock,
+    lock,
     updateKeyPrice,
     withdraw,
     purchaseKey,
     getKeyForAccount,
     error,
+    getCreditCardPricing,
+    isStripeConnected,
+    isLockManager,
+    getKeyData,
+    markAsCheckedIn,
   }
 }
 

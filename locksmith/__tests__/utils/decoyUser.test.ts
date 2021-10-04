@@ -1,5 +1,7 @@
 import { DecoyUser } from '../../src/utils/decoyUser'
 
+jest.setTimeout(15000)
+
 describe('DecoyUser', () => {
   const decoyUser = new DecoyUser()
   describe('recoveryPhrase', () => {

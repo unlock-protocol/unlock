@@ -7,7 +7,10 @@ import { CheckoutFooter } from './CheckoutStyles'
 interface WrapperProps {
   hideCheckout: (...args: any[]) => any
   allowClose: boolean
-  bgColor?: string
+  back: () => void | null
+  showBack: boolean
+  onLoggedOut: () => void
+  children: React.ReactNode
 }
 
 interface WrapperStyleProps {
@@ -16,8 +19,11 @@ interface WrapperStyleProps {
 
 const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
   children,
+  back,
   hideCheckout,
   allowClose = true,
+  onLoggedOut,
+  showBack,
 }: React.PropsWithChildren<WrapperProps>) => {
   return (
     <Wrapper
@@ -37,7 +43,11 @@ const CheckoutWrapper: React.FunctionComponent<WrapperProps> = ({
         ''
       )}
       {children}
-      <CheckoutFooter />
+      <CheckoutFooter
+        showBack={showBack}
+        back={back}
+        onLoggedOut={onLoggedOut}
+      />
     </Wrapper>
   )
 }
@@ -56,7 +66,6 @@ const Wrapper = styled.section`
   padding: 24px 40px 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
   border-radius: 4px;

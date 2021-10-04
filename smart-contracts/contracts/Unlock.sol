@@ -96,6 +96,9 @@ contract Unlock is
   // The approx amount of gas required to purchase a key
   uint public estimatedGasForPurchase;
 
+  // Blockchain ID the network id on which this version of Unlock is operating
+  uint public chainId;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -107,7 +110,8 @@ contract Unlock is
     address weth,
     uint estimatedGasForPurchase,
     string globalTokenSymbol,
-    string globalTokenURI
+    string globalTokenURI,
+    uint chainId
   );
 
   event SetLockTemplate(
@@ -145,7 +149,7 @@ contract Unlock is
     uint _maxNumberOfKeys,
     string memory _lockName,
     bytes12 _salt
-  ) public
+  ) public returns(address)
   {
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
@@ -178,6 +182,7 @@ contract Unlock is
 
     // trigger event
     emit NewLock(msg.sender, newLock);
+    return newLock;
   }
 
   /**
@@ -242,22 +247,42 @@ contract Unlock is
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
-          // tokensToMint is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToMint = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
-          // or tokensToMint is capped by percent growth
-          uint maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
-          if(tokensToMint > maxTokens)
+          // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
+          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
+
+          // or tokensToDistribute is capped by network GDP growth
+          uint maxTokens = 0;
+          if (chainId > 1)
           {
-            tokensToMint = maxTokens;
+            // non mainnet: we distribute tokens using asymptotic curve between 0 and 0.5
+            // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));
+            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(valueInETH) / (2 + 2 * valueInETH / grossNetworkProduct) / grossNetworkProduct;
+          } else {
+            // Mainnet: we mint new token using log curve
+            maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
           }
 
-          if(tokensToMint > 0)
+          // cap to GDP growth!
+          if(tokensToDistribute > maxTokens)
+          {
+            tokensToDistribute = maxTokens;
+          }
+
+          if(tokensToDistribute > 0)
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            uint devReward = tokensToMint.mul(20) / 100;
-            IMintableERC20(udt).mint(_referrer, tokensToMint - devReward);
-            if(devReward > 0)
+            uint devReward = tokensToDistribute.mul(20) / 100;
+            if (chainId > 1)
             {
+              uint balance = IMintableERC20(udt).balanceOf(address(this));
+              if (balance > tokensToDistribute) {
+                // Only distribute if there are enough tokens
+                IMintableERC20(udt).transfer(_referrer, tokensToDistribute - devReward);
+                IMintableERC20(udt).transfer(owner(), devReward);
+              }
+            } else {
+              // No distribnution
+              IMintableERC20(udt).mint(_referrer, tokensToDistribute - devReward);
               IMintableERC20(udt).mint(owner(), devReward);
             }
           }
@@ -289,7 +314,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 8;
+    return 9;
   }
 
   /**
@@ -300,7 +325,8 @@ contract Unlock is
     address _weth,
     uint _estimatedGasForPurchase,
     string calldata _symbol,
-    string calldata _URI
+    string calldata _URI,
+    uint _chainId
   ) external
     onlyOwner
   {
@@ -311,7 +337,9 @@ contract Unlock is
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
 
-    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI);
+    chainId = _chainId;
+
+    emit ConfigUnlock(_udt, _weth, _estimatedGasForPurchase, _symbol, _URI, _chainId);
   }
 
   /**

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -13,32 +13,96 @@ import Media, { NoPhone, Phone } from '../../theme/media'
 import { DefaultError } from './FatalError'
 import Loading from '../interface/Loading'
 import { useLocks } from '../../hooks/useLocks'
+import { useAccount } from '../../hooks/useAccount'
+import { ConfigContext } from '../../utils/withConfig'
 
-/**
- * A wrapper to get the locks via a hook
- * @param {*} param0
- */
-export const CreatorLocksFromHook = ({ formIsVisible, hideForm }) => {
+const BalanceWarning = () => {
+  const config = useContext(ConfigContext)
   const { account, network } = useContext(AuthenticationContext)
+  const { getTokenBalance } = useAccount(account, network)
+
+  const [balance, setBalance] = useState(-1) // default to negative balance so we do not show messages while loading
+
+  useEffect(() => {
+    const getBalance = async () => {
+      const _balance = await getTokenBalance()
+      setBalance(parseFloat(_balance))
+    }
+    getBalance()
+  }, [account, network])
+
+  if (balance !== 0) {
+    return null
+  }
+
+  const warning = (
+    <>
+      You currently do not have any{' '}
+      {config.networks[network].baseCurrencySymbol} token to pay for gas to
+      deploy on the {config.networks[network].name} network.{' '}
+    </>
+  )
+
+  let callToAction = null
+  if (network === 1) {
+    callToAction = (
+      <>
+        Purchase some Ether using{' '}
+        <a href="https://www.coinbase.com/" target="_blank" rel="noreferrer">
+          Coinbase
+        </a>
+      </>
+    )
+  }
+
+  if (network === 100) {
+    // TODO: check whether they actually have DAI on mainnet first?
+    callToAction = (
+      <>
+        Transfer some Ethereum&apos;s DAI to the xDAI chain using{' '}
+        <a
+          href="https://omni.xdaichain.com/bridge"
+          target="_blank"
+          rel="noreferrer"
+        >
+          the Omnibridge.
+        </a>
+      </>
+    )
+  }
+
+  if (network === 137) {
+    // TODO: check whether they actually have DAI on mainnet first?
+    callToAction = (
+      <>
+        Transfer some Matic to the Polygon chain using{' '}
+        <a
+          href="https://wallet.matic.network/bridge"
+          target="_blank"
+          rel="noreferrer"
+        >
+          the Bridge.
+        </a>
+      </>
+    )
+  }
+
   return (
-    <CreatorLocks
-      account={account}
-      formIsVisible={formIsVisible}
-      hideForm={hideForm}
-      network={network}
-    />
+    <Warning>
+      {warning}
+      {callToAction}
+    </Warning>
   )
 }
-CreatorLocksFromHook.propTypes = {
-  formIsVisible: PropTypes.bool.isRequired,
-  hideForm: PropTypes.func.isRequired,
-}
 
-export const CreatorLocks = ({ account, network, formIsVisible, hideForm }) => {
+export const CreatorLocks = ({ formIsVisible, hideForm }) => {
+  const { account, network } = useContext(AuthenticationContext)
   const { loading, locks, addLock, error } = useLocks(account)
 
   return (
     <Locks>
+      <BalanceWarning />
+
       <LockHeaderRow>
         <LockHeader>Locks</LockHeader>
         <LockMinorHeader>Name / Address</LockMinorHeader>
@@ -63,7 +127,12 @@ export const CreatorLocks = ({ account, network, formIsVisible, hideForm }) => {
       {locks.length > 0 &&
         locks.map((lock) => {
           return (
-            <CreatorLock key={lock.address} lock={lock} network={network} />
+            <CreatorLock
+              showIntegrations={locks.length == 1}
+              key={lock.address}
+              lock={lock}
+              network={network}
+            />
           )
         })}
       {locks.length === 0 && !loading && !formIsVisible && (
@@ -82,12 +151,10 @@ export const CreatorLocks = ({ account, network, formIsVisible, hideForm }) => {
 }
 
 CreatorLocks.propTypes = {
-  account: PropTypes.string.isRequired,
-  network: PropTypes.number.isRequired,
   formIsVisible: PropTypes.bool.isRequired,
   hideForm: PropTypes.func.isRequired,
 }
-export default CreatorLocksFromHook
+export default CreatorLocks
 
 const Locks = styled.section`
   display: grid;
@@ -138,4 +205,11 @@ export const Quantity = styled(LockMinorHeader)`
   ${Media.phone`
     grid-row: span 2;
   `};
+`
+
+const Warning = styled.p`
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--red);
 `

@@ -7,11 +7,31 @@ import Media from '../../theme/media'
 import { AuthenticationContext } from './Authenticate'
 import { ConfigContext } from '../../utils/withConfig'
 
+interface NetworkType {
+  name: string
+  id: number
+}
+interface NetworkProps {
+  network: NetworkType
+}
+
+export const Network = ({ network }: NetworkProps) => {
+  return <option value={network.id}>{network.name}</option>
+}
+
 export function Account() {
   const { networks } = useContext(ConfigContext)
-  const { account, network } = useContext(AuthenticationContext)
+  const { account, network, deAuthenticate, changeNetwork } = useContext(
+    AuthenticationContext
+  )
+
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt((account || '0x0000').slice(2, 10), 16)
+
+  const networkSelected = (event: any) => {
+    changeNetwork(networks[event?.target?.value])
+  }
+
   return (
     <AccountWrapper>
       <AccountDetails>
@@ -20,7 +40,21 @@ export function Account() {
         </DoubleHeightCell>
         <Label>
           <NetworkInfo title="To change network, switch in your wallet of choice and refresh the page">
-            {network ? networks[network].name : 'Not connected'}
+            {!network && <p>Not connected</p>}
+            {network && (
+              <NetworkSelect onChange={networkSelected} value={network}>
+                {Object.keys(networks).map((networkId) => {
+                  return (
+                    <Network network={networks[networkId]} key={networkId} />
+                  )
+                })}
+              </NetworkSelect>
+            )}
+            {network && (
+              <DisconnectButton type="button" onClick={deAuthenticate}>
+                Disconnect
+              </DisconnectButton>
+            )}
           </NetworkInfo>
         </Label>
         <DoubleHeightCell />
@@ -34,6 +68,33 @@ export function Account() {
     </AccountWrapper>
   )
 }
+
+const NetworkSelect = styled.select`
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  color: rgb(106, 106, 106);
+
+  /* height: 48px;
+  width: 100%;
+  border: thin var(--lightgrey) solid;
+  border-radius: 4px;
+  background-color: var(--lightgrey);
+  font-size: 16px;
+  padding: 0 8px;
+  color: var(--darkgrey);
+  margin-bottom: 16px;
+  appearance: none; */
+`
+
+const DisconnectButton = styled.button`
+  cursor: pointer;
+  border: 1px solid var(--grey);
+  border-radius: 3px;
+  background-color: transparent;
+  color: rgb(106, 106, 106);
+`
 
 const UserIcon = styled(Jazzicon).attrs({
   diameter: 40,

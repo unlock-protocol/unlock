@@ -1,39 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { WalletService } from '@unlock-protocol/unlock-js'
-import { CallToAction } from './CallToAction'
-import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import { durationsAsTextFromSeconds } from '../../../utils/durations'
-import { useFiatPurchaseKey } from '../../../hooks/useFiatPurchaseKey'
-import MetadataForm from './MetadataForm'
 import {
   lockKeysAvailable,
   numberOfAvailableKeys,
-  lockTickerSymbol,
-  userCanAffordKey,
+  convertedKeyPrice,
+  formattedKeyPrice,
 } from '../../../utils/checkoutLockUtils'
 import * as LockVariations from './LockVariations'
-import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
-import { useAccount } from '../../../hooks/useAccount'
 import { useLock } from '../../../hooks/useLock'
 import { AuthenticationContext } from '../Authenticate'
-import { useFiatKeyPrices } from '../../../hooks/useFiatKeyPrices'
 import { ConfigContext } from '../../../utils/withConfig'
-import { WalletServiceContext } from '../../../utils/withWalletService'
-import {
-  getCardsForAddress,
-  saveCardsForAddress,
-} from '../../../hooks/useCards'
-import { PaymentDetails } from '../user-account/PaymentDetails'
 
 interface LockProps {
   lock: any
-  emitTransactionInfo: (info: TransactionInfo) => void
-  activePayment: string
-  setFocus: (address: string) => void
-  handleFiatAvailable: () => void
   setHasKey: (state: boolean) => void
+  onSelected: (lock: any) => void | null
   network: number
   name: string
+  hasOptimisticKey: boolean
+  purchasePending: boolean
 }
 
 const getLockProps = (
@@ -43,11 +28,10 @@ const getLockProps = (
   name: string
 ) => {
   return {
+    cardEnabled: lock?.fiatPricing?.creditCardEnabled,
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: `${lock.keyPrice} ${lockTickerSymbol(
-      lock,
-      baseCurrencySymbol
-    )}`,
+    formattedKeyPrice: formattedKeyPrice(lock, baseCurrencySymbol),
+    convertedKeyPrice: convertedKeyPrice(lock),
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: name || lock.name,
     address: lock.address,
@@ -57,174 +41,45 @@ const getLockProps = (
 export const Lock = ({
   network,
   lock,
-  emitTransactionInfo,
-  activePayment,
-  setFocus,
-  handleFiatAvailable,
   setHasKey,
   name,
+  onSelected,
+  hasOptimisticKey,
+  purchasePending,
 }: LockProps) => {
   const config = useContext(ConfigContext)
-  const walletService: WalletService = useContext(WalletServiceContext)
-
-  const paywallConfig = useContext(PaywallConfigContext)
-  const { account, network: walletNetwork } = useContext(AuthenticationContext)
-  const { purchaseKey, getKeyForAccount } = useLock(lock, network)
-  const [showMetadataForm, setShowMetadataForm] = useState(false)
-  const [captureCreditCard, setCaptureCreditCard] = useState(false)
-  const [hasValidKey, setHasValidKey] = useState(false)
-  const [canAfford, setCanAfford] = useState(true)
-  const [purchasePending, setPurchasePending] = useState(false)
-  const { getTokenBalance } = useAccount(account, network)
-  const { fiatPrices } = useFiatKeyPrices(lock.address, network)
-
-  const { purchaseKey: fiatPurchaseKey } = useFiatPurchaseKey(
-    emitTransactionInfo
-  )
-
-  useEffect(() => {
-    if (fiatPrices.usd) {
-      handleFiatAvailable()
-    }
-  }, [fiatPrices.usd])
+  const [loading, setLoading] = useState(false)
+  const { account } = useContext(AuthenticationContext)
+  const { getKeyForAccount } = useLock(lock, network)
+  const [hasValidKey, setHasValidKey] = useState(hasOptimisticKey)
 
   const alreadyHasKey = (key: any) => {
     const now = new Date().getTime() / 1000
     if (key && key.expiration > now) {
       setHasValidKey(true)
+    } else {
+      setHasValidKey(false)
     }
     setHasKey(key)
   }
 
-  // TODO: combine all of these into a single call so that we can show the loading state?
   useEffect(() => {
+    const getKey = async () => {
+      setLoading(true)
+      alreadyHasKey(await getKeyForAccount(account))
+      setLoading(false)
+    }
+
     if (account) {
-      const getKey = async () => {
-        const key = await getKeyForAccount(account)
-        if (key) {
-          alreadyHasKey(key)
-        }
-      }
       getKey()
-
-      const getBalance = async () => {
-        const balance = await getTokenBalance(lock.currencyContractAddress)
-        setCanAfford(userCanAffordKey(lock, balance))
-      }
-      getBalance()
+    } else {
+      setHasValidKey(false)
     }
-  }, [account, lock.address, lock.keyPrice])
-
-  // Actual purchase
-  const purchase = async () => {
-    try {
-      if (activePayment === 'Credit Card') {
-        const cards = await getCardsForAddress(config, walletService, account)
-        if (cards.length === 0) {
-          // Show card form!
-          setCaptureCreditCard(true)
-          setFocus(lock.address)
-        } else {
-          // Here we would want to make sure the user agreed by showing the confirmation screen?
-          setPurchasePending(true)
-          await fiatPurchaseKey(lock.address, account)
-          alreadyHasKey({
-            lock: lock.address,
-            owner: account,
-            expiration: Infinity, // Hum. What do we do?
-          }) // optimistic Unlocking!
-        }
-      } else {
-        const referrer =
-          paywallConfig && paywallConfig.referrer
-            ? paywallConfig.referrer
-            : account
-        setPurchasePending(true)
-        purchaseKey(account, referrer, (hash: string) => {
-          alreadyHasKey({
-            lock: lock.address,
-            owner: account,
-            expiration: Infinity, // Hum. What do we do?
-          }) // optimistic Unlocking!
-          emitTransactionInfo({
-            lock: lock.address,
-            hash,
-          })
-        })
-      }
-    } catch (error) {
-      setPurchasePending(false)
-    }
-  }
+  }, [account])
 
   const onClick = async () => {
-    // First check if the user is logged in. If not, ask them to login...
-    // If they are move on!
-    if (
-      paywallConfig.metadataInputs ||
-      paywallConfig.locks[lock.address].metadataInputs
-    ) {
-      setFocus(lock.address)
-      setShowMetadataForm(true)
-    } else {
-      purchase()
-    }
+    onSelected && onSelected(lock)
   }
-
-  const handleMetadataSubmitted = () => {
-    setShowMetadataForm(false)
-    purchase()
-    setFocus('')
-  }
-
-  const handlePaymentDetails = async (stripeTokenId: string) => {
-    setFocus('')
-    setCaptureCreditCard(false)
-    await saveCardsForAddress(config, walletService, account, stripeTokenId)
-    purchase() // Finish the purchase!
-  }
-
-  if (showMetadataForm) {
-    return (
-      <>
-        <CallToAction
-          state="metadata"
-          callToAction={paywallConfig.callToAction}
-        />
-
-        <MetadataForm
-          network={network}
-          lock={lock}
-          fields={paywallConfig!.metadataInputs!}
-          onSubmit={handleMetadataSubmitted}
-          onCancel={() => {
-            setFocus('')
-            setShowMetadataForm(false)
-          }}
-        />
-      </>
-    )
-  }
-  if (captureCreditCard) {
-    return (
-      <>
-        <CallToAction state="card" callToAction={paywallConfig.callToAction} />
-
-        <PaymentDetails
-          saveCard={(token) => handlePaymentDetails(token)}
-          onCancel={() => {
-            setFocus('')
-            setCaptureCreditCard(false)
-          }}
-
-          // setShowingPaymentForm={setShowingPaymentForm}
-          // invokePurchase={showingPaymentForm.invokePurchase!}
-        />
-      </>
-    )
-  }
-
-  let disabled = !account
 
   const lockProps: LockVariations.LockProps = {
     onClick,
@@ -235,57 +90,29 @@ export const Lock = ({
       name
     ),
   }
-  if (activePayment === 'Credit Card') {
-    if (fiatPrices.usd) {
-      const basePrice = parseInt(fiatPrices.usd)
-      const formattedPrice = (basePrice / 100).toFixed(2)
-      lockProps.formattedKeyPrice = `$${formattedPrice}`
-    } else {
-      disabled = true
-    }
-  }
-  if (disabled) {
-    return <LockVariations.DisabledLock {...lockProps} />
-  }
 
-  const isSoldOut = numberOfAvailableKeys(lock) === 0
-
-  const userIsOnWrongNetwork = walletNetwork !== network
-
-  // Lock is sold out
-  if (userIsOnWrongNetwork) {
+  if (loading) {
     return (
-      <LockVariations.WrongNetworkLock
-        walletNetwork={walletNetwork}
-        {...lockProps}
-      />
+      <LockVariations.LoadingLock address={lock.address} network={network} />
     )
   }
 
-  // Lock is sold out
+  const isSoldOut = numberOfAvailableKeys(lock) <= 0
   if (isSoldOut) {
     return <LockVariations.SoldOutLock {...lockProps} />
   }
 
-  if (hasValidKey) {
-    return <LockVariations.ConfirmedLock {...lockProps} />
+  if (hasValidKey || hasOptimisticKey) {
+    return <LockVariations.ConfirmedLock {...lockProps} selectable={false} />
   }
 
   if (purchasePending) {
     return <LockVariations.ProcessingLock {...lockProps} />
   }
 
-  // TODO: consider that some other lock is being/has been purchased
-  // if (state.purchasingLockAddress || activeKeys.length) {
-  //   return <LockVariations.DisabledLock {...lockProps} />
-  // }
-
-  // No lock is being/has been purchased
-  if (canAfford || activePayment === 'Credit Card') {
-    return <LockVariations.PurchaseableLock {...lockProps} />
-  }
-
-  return <LockVariations.InsufficientBalanceLock {...lockProps} />
+  return (
+    <LockVariations.PurchaseableLock {...lockProps} selectable={!!onSelected} />
+  )
 }
 
 Lock.defaultProps = {}

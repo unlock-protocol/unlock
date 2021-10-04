@@ -12,6 +12,7 @@ interface SignUpProps {
   embedded?: boolean
 }
 
+// DEPRECATED?
 const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   const { query } = useRouter()
   const wedlockService = useContext(WedlockServiceContext)
@@ -42,7 +43,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
       ? query.email[0]
       : query.email
     if (emailAddress) {
-      return <FinishSignUp emailAddress={emailAddress} />
+      return <FinishSignUp onSuccess={() => {}} emailAddress={emailAddress} />
     }
     return <InvalidLink />
   }
@@ -158,7 +159,7 @@ const Form = styled.form`
 `
 
 const Input = styled.input`
-  height: 60px;
+  height: 48px;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -168,15 +169,19 @@ const Input = styled.input`
 `
 
 const SubmitButton = styled.input`
-  height: 60px;
+  height: 48px;
   width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  color: var(--white);
-  margin-top: 25px;
+  color: white;
+  &[disabled] {
+    background-color: var(--grey);
+    cursor: not-allowed;
+    color: white;
+  }
 `
 
 const Confirmation = styled.div`

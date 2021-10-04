@@ -9,9 +9,14 @@ interface LockKeysAvailableLock {
   outstandingKeys?: number
 }
 
+interface LockFiatPricing {
+  [currency: string]: any
+}
 interface LockTickerSymbolLock {
+  keyPrice?: string
   currencyContractAddress: string | null
   currencySymbol?: string
+  fiatPricing?: LockFiatPricing
 }
 
 interface LockPriceLock {
@@ -24,7 +29,7 @@ export const numberOfAvailableKeys = ({
   maxNumberOfKeys,
   outstandingKeys,
 }: LockKeysAvailableLock) => {
-  if (unlimitedKeys) {
+  if (unlimitedKeys || maxNumberOfKeys! < 0) {
     return Infinity
   }
 
@@ -51,9 +56,9 @@ export const lockTickerSymbol = (
   baseCurrencySymbol: string
 ) => {
   if (lock.currencyContractAddress) {
-    return (lock as any).currencySymbol || 'ERC20'
+    return ((lock as any).currencySymbol || 'ERC20').toUpperCase()
   }
-  return baseCurrencySymbol
+  return baseCurrencySymbol.toUpperCase()
 }
 
 export const userCanAffordKey = (
@@ -69,4 +74,23 @@ export const userCanAffordKey = (
 
   // TODO: take balance of eth into account for gas (it's tricky!)
   return keyPrice <= _balance
+}
+
+export const convertedKeyPrice = (lock: LockTickerSymbolLock) => {
+  const keyPrice = lock?.fiatPricing?.usd?.keyPrice
+
+  if (!keyPrice) {
+    return ''
+  }
+  return `~$${parseInt(keyPrice) / 100}`
+}
+
+export const formattedKeyPrice = (
+  lock: LockTickerSymbolLock,
+  baseCurrencySymbol: string
+) => {
+  if (lock.keyPrice === '0') {
+    return 'FREE'
+  }
+  return `${lock.keyPrice} ${lockTickerSymbol(lock, baseCurrencySymbol)}`
 }

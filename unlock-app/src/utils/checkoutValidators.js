@@ -92,18 +92,33 @@ export const isValidCTA = (callToAction) => {
 }
 
 export const isValidConfigLock = (lock, configLocks) => {
-  if (!isAccount(lock)) return false
+  if (!isAccount(lock)) {
+    log(
+      `The paywall config's "locks" field contains a key "${lock}" which has an invalid address.`
+    )
+    return false
+  }
   const thisLock = configLocks[lock]
-  if (!thisLock || typeof thisLock !== 'object') return false
-  if (!Object.keys(thisLock).length) return true
-  if (Object.keys(thisLock).length !== 1) return false
+  if (!thisLock || typeof thisLock !== 'object') {
+    log(
+      `The paywall config's "locks" field contains a key "${lock}" which is not an object.`
+    )
+    return false
+  }
+  if (
+    typeof thisLock.network !== 'undefined' &&
+    typeof thisLock.network !== 'number'
+  ) {
+    log(
+      `The paywall config's "locks" field contains a key "${lock}" which has an invalid network (it needs to be a number).`
+    )
+  }
   if (
     typeof thisLock.name !== 'undefined' &&
     typeof thisLock.name !== 'string'
   ) {
-    // TODO: which of the above conditions did it fail on?
     log(
-      `The paywall config's "locks" field contains a key "${lock}" which has an invalid value.`
+      `The paywall config's "locks" field contains a key "${lock}" which has an invalid name.`
     )
     return false
   }
@@ -116,11 +131,15 @@ export const isValidConfigLocks = (configLocks) => {
     return false
   }
   const locks = Object.keys(configLocks)
-  if (!locks.length) return false
+  if (!locks.length) {
+    log('The paywall configs\'s "locks" is missing locks.')
+    return false
+  }
   if (
     locks.filter((lock) => isValidConfigLock(lock, configLocks)).length !==
     locks.length
   ) {
+    log('The paywall configs\'s "locks" field is not valid.')
     // The logging of lock failures in `isValidConfigLock` should make
     // it clear which lock caused this to fail.
     return false
@@ -164,9 +183,9 @@ export const isValidPaywallConfig = (config) => {
     log('No paywall config provided.')
     return false
   }
-  if (!isValidObject(config, ['callToAction', 'locks'])) {
+  if (!isValidObject(config, ['locks'])) {
     log(
-      'The paywall config does not contain at least one of the required fields: "callToAction", "locks".'
+      'The paywall config does not contain at least one of the required fields: "locks".'
     )
     return false
   }
@@ -174,15 +193,17 @@ export const isValidPaywallConfig = (config) => {
   // Icon may not be specified
   if (config.icon) {
     if (!isValidIcon(config.icon)) {
+      log('The paywall config\'s "icon" is not valid.')
       return false
     }
   }
 
-  if (typeof config.callToAction !== 'object') {
-    log('The paywall config\'s "callToAction" property is not a valid object.')
-    return false
-  }
-  if (!isValidCTA(config.callToAction)) {
+  if (
+    config.callToAction !== undefined &&
+    (typeof config.callToAction !== 'object' ||
+      !isValidCTA(config.callToAction))
+  ) {
+    log('The paywall config\'s "callToAction" is not valid.')
     return false
   }
 
@@ -192,20 +213,6 @@ export const isValidPaywallConfig = (config) => {
     return false
   }
   if (!isValidConfigLocks(config.locks)) {
-    return false
-  }
-
-  if (
-    config.unlockUserAccounts &&
-    !(
-      typeof config.unlockUserAccounts === 'boolean' ||
-      config.unlockUserAccounts === 'true' ||
-      config.unlockUserAccounts === 'false'
-    )
-  ) {
-    log(
-      'The paywall config\'s "unlockUserAccounts" field has an invalid value.'
-    )
     return false
   }
 

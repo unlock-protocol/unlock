@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 
 import styled from 'styled-components'
 import { AuthenticationContext } from '../../interface/Authenticate'
@@ -7,47 +7,34 @@ import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
 import { useAccount } from '../../../hooks/useAccount'
+import ConnectCard from '../ConnectCard'
+import useLock from '../../../hooks/useLock'
 
-const CreditCardSettings = ({ lock, network }) => {
-  // TODO: only allow for lock versions which support this
-  // TODO: show indication that everything is set
-  // TODO: add button to perform keyGranting transaction here as well
-  const { account } = useContext(AuthenticationContext)
-  const [error, setError] = useState('')
+const CreditCardSettings = ({ lock: lockFromProps, network }) => {
+  const { lock, getCreditCardPricing } = useLock(lockFromProps, network)
+  const [fiatPricing, setFiatPricing] = useState(null)
 
-  const { connectStripeToLock } = useAccount(account, network)
-
-  const connectStripe = async () => {
-    setError('')
-    const redirectUrl = await connectStripeToLock(
-      lock.address,
-      network,
-      window.location.origin
-    )
-    if (!redirectUrl) {
-      return setError(
-        'We could not connect your lock to a Stripe account. Please try again later.'
-      )
-    }
-    window.location.href = redirectUrl
-  }
-
+  useEffect(async () => {
+    setFiatPricing(await getCreditCardPricing())
+  }, [lock.address])
   return (
     <Wrapper>
       <Details>
         <DetailTitle>Credit Card</DetailTitle>
         <DetailBlock>
-          <p>
-            You can enable credit card payments for your lock by connecting it
-            to a Stripe API key. This will enable users without crypto wallets,
-            as well as users with wallets to pay using their credit cards!
-          </p>
-          <p>
-            <button type="button" onClick={connectStripe}>
-              Connect Stripe
-            </button>
-            {error && <Error>{error}</Error>}
-          </p>
+          <Text>
+            We are using Stripe to enable credit card payments on your lock. The
+            funds are directly accessible for you on Stripe and do not transit
+            through Unlock.
+            {fiatPricing?.usd?.keyPrice < 50 && (
+              <Error>
+                <br />
+                Your current price is too low for us to process credit cards. It
+                needs to be at least $0.50.
+              </Error>
+            )}
+          </Text>
+          <ConnectCard lock={lock} lockNetwork={network} />
         </DetailBlock>
       </Details>
     </Wrapper>
@@ -80,13 +67,15 @@ const DetailTitle = styled.h3`
 
 const DetailBlock = styled.div`
   display: flex;
-
-  p {
-    max-width: 400px;
-    margin-right: 10px;
-    margin-top: 8px;
-  }
 `
-const Error = styled.p`
+
+const Text = styled.p`
+  font-size: 16px;
+  max-width: 400px;
+  margin-right: 10px;
+  margin-top: 8px;
+`
+
+const Error = styled.span`
   color: var(--sharpred);
 `

@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
-import { useRouter } from 'next/router'
 import Buttons from '../../interface/buttons/lock'
 import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
@@ -12,14 +11,7 @@ import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 import { AuthenticationContext } from '../../interface/Authenticate'
 
-export function LockIconBar({
-  lock,
-  toggleCode,
-  edit,
-  withdraw,
-  toggleCreditCard,
-}) {
-  const { query } = useRouter()
+export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
   const config = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
@@ -40,26 +32,21 @@ export function LockIconBar({
   // Otherwise, we just show the lock icon bar
   return (
     <StatusBlock>
-      <IconBarContainer>
-        <IconBar>
-          {query.showCard === 'true' && (
-            <Buttons.CreditCard
-              as="button"
-              lock={lock}
-              action={toggleCreditCard}
-            />
-          )}
-          <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
-          <Buttons.Edit as="button" action={() => edit(lock.address)} />
-          {/* Reinstate when we're ready <Buttons.ExportLock /> */}
-          <Buttons.Members href={membersPage} />
-          <Buttons.AppStore as="button" action={toggleCode} />
-          <Buttons.Explorer
-            target="_blank"
-            href={config.networks[network].explorer.urls.address(lock.address)}
-          />
-        </IconBar>
-      </IconBarContainer>
+      <IconBar>
+        <Buttons.CreditCard as="button" lock={lock} action={toggleCreditCard} />
+        <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
+        <Buttons.Demo
+          as="a"
+          href={`/demo?network=${network}&lock=${lock.address}`}
+          target="_blank"
+        />
+        <Buttons.Members href={membersPage} />
+        <Buttons.AppStore as="button" action={toggleCode} />
+        <Buttons.Explorer
+          target="_blank"
+          href={config.networks[network].explorer.urls.address(lock.address)}
+        />
+      </IconBar>
     </StatusBlock>
   )
 }
@@ -68,24 +55,17 @@ LockIconBar.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   toggleCode: PropTypes.func.isRequired,
   toggleCreditCard: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
 }
 export default withConfig(LockIconBar)
 
-const IconBarContainer = styled.div`
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
+const IconBar = styled.div`
+  display: flex;
+  justify-content: space-around;
   ${Media.phone`
     display: none;
   `};
+  flex-wrap: wrap;
+  max-width: 250px;
 `
-
-const IconBar = styled.div`
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(6, 24px);
-`
-
 const StatusBlock = styled.div``

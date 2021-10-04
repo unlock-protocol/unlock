@@ -1,0 +1,19 @@
+{
+    "name": "@unlock-protocol/tsconfig",
+    "version": "0.0.1",
+    "main": "tsconfig.json",
+    "description": "Unlock's base Typescript config",
+    "engines": {
+        "node": ">=12"
+    },
+    "files": [
+        "tsconfig.json"
+    ],
+    "keywords": [
+        "tsconfig",
+        "typescript",
+        "ts",
+        "config",
+        "configuration"
+    ]
+}

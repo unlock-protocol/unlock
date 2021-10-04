@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['../.eslintrc.js'],
+  extends: ['@unlock-protocol/eslint-config'],
   globals: {
     page: true,
     browser: true,

@@ -50,6 +50,9 @@ Button.propTypes = {
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
   fillHoverColor: PropTypes.string,
+  disabled: PropTypes.bool,
+  title: PropTypes.string,
+  target: PropTypes.string,
 }
 
 Button.defaultProps = {
@@ -62,6 +65,9 @@ Button.defaultProps = {
   backgroundHoverColor: 'var(--link)',
   fillColor: 'var(--grey)',
   fillHoverColor: 'white',
+  disabled: false,
+  title: '',
+  target: '',
 }
 
 export const ButtonLink = styled.a`
@@ -88,7 +94,7 @@ export const ButtonLink = styled.a`
       fill: ${(props) => props.fillHoverColor || 'white'};
     }
   }
-  & :focus {
+  &:focus {
     outline: none;
   }
 `

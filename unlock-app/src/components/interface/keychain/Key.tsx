@@ -45,47 +45,20 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
-  const handleSignature = () => {
+  const handleSignature = async () => {
+    setError('')
     const payload = JSON.stringify({
       network,
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
     })
-    walletService.signDataPersonal(
-      '', // account address -- unused in walletService
+    const signature = await walletService.signMessage(payload, 'personal_sign')
+    setSignature({
       payload,
-      (error: any, _signature: any) => {
-        if (error) {
-          setError('We could not confirm that you own this key.')
-        } else {
-          setError('')
-          setSignature({
-            payload,
-            signature: _signature,
-          })
-        }
-      }
-    )
-  }
-
-  const toggleShowingQR = () => {
-    setShowingQR(!showingQR)
-  }
-
-  const qrButton = () => {
-    if (signature) {
-      return (
-        <ButtonAction type="button" onClick={toggleShowingQR}>
-          Display QR Code
-        </ButtonAction>
-      )
-    }
-    return (
-      <ButtonAction type="button" onClick={handleSignature}>
-        Confirm Ownership
-      </ButtonAction>
-    )
+      signature,
+    })
+    setShowingQR(true)
   }
 
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -109,7 +82,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       {signature && (
         <QRModal
           active={showingQR}
-          dismiss={toggleShowingQR}
+          dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
           signature={signature}
         />
@@ -121,7 +94,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
       />
       {error && <Error>{error}</Error>}
-      {qrButton()}
+      <ButtonAction type="button" onClick={handleSignature}>
+        Confirm Ownership
+      </ButtonAction>
     </Box>
   )
 }
@@ -135,16 +110,16 @@ const Box = styled.div`
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   ${Media.phone`
-width: 100%;
-margin: 0 0 16px 0;
-`}
+    width: 100%;
+    margin: 0 0 16px 0;
+  `}
   ${Media.nophone`
-width: 30%;
-margin: 0 16px 16px 0;
-`}
-& :hover {
+    width: 30%;
+    margin: 0 16px 16px 0;
+  `}
+  &:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 100ms ease;
+    transition: box-shadow 500ms ease;
   }
 `
 
@@ -210,7 +185,7 @@ const ButtonAction = styled.button`
   /* background: none; */
   border: none;
   padding: 5px;
-  & :hover {
+  &:hover {
     color: #333;
     transition: color 100ms ease;
   }

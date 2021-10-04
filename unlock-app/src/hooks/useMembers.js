@@ -22,30 +22,28 @@ export const getAllKeysMetadataForLock = async (
   lock,
   viewer,
   walletService,
-  storageService
+  storageService,
+  network,
+  page
 ) => {
-  return new Promise((resolve, reject) => {
-    // If the user is the owner, we can grab the metadata for each lock
-    const typedData = generateKeyTypedData({
-      LockMetaData: {
-        address: lock.address,
-        owner: viewer,
-        timestamp: Date.now(),
-      },
-    })
-
-    walletService.signData(viewer, typedData, async (error, signature) => {
-      if (error) {
-        reject('Could not sign typed data for metadata request.')
-      }
-      const storedMetadata = await storageService.getBulkMetadataFor(
-        lock.address,
-        signature,
-        typedData
-      )
-      resolve(storedMetadata)
-    })
+  const payload = generateKeyTypedData({
+    LockMetaData: {
+      address: lock.address,
+      owner: viewer,
+      timestamp: Date.now(),
+      page,
+    },
   })
+  // TODO prevent replays by adding timestamp?
+  const message = `I want to access member data for ${lock.address}`
+  const signature = await walletService.signMessage(message, 'personal_sign')
+  const response = await storageService.getBulkMetadataFor(
+    lock.address,
+    signature,
+    payload,
+    network
+  )
+  return response
 }
 
 /**
@@ -144,7 +142,9 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
           lockWithKeys,
           viewer,
           walletService,
-          storageService
+          storageService,
+          network,
+          page
         )
         return buildMembersWithMetadata(lockWithKeys, storedMetadata)
       } catch (error) {
@@ -152,6 +152,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
         return []
       }
     })
+
     const membersByLock = await Promise.all(membersForLocksPromise)
     const members = Object.values(
       membersByLock.reduce((acc, array) => {
@@ -168,13 +169,12 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
     }
     setLoading(false)
   }
-
   /**
    * When the keyHolders object changes, load the metadata
    */
   useEffect(() => {
     loadMembers()
-  }, [lockAddresses, viewer, filter, page])
+  }, [JSON.stringify(lockAddresses), viewer, filter, page])
 
   const list = Object.values(members)
   const columns = generateColumns(list)

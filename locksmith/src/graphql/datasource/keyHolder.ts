@@ -1,9 +1,11 @@
 import { gql } from 'apollo-server-express'
-import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
+import { GraphQLDataSource } from 'apollo-datasource-graphql'
+import networks from '@unlock-protocol/networks'
 
-// eslint-disable-next-line import/prefer-default-export
-export class KeyHolder extends UnlockGraphQLDataSource {
-  async get(address: string) {
+export class KeyHolder extends GraphQLDataSource {
+  async get(address: string, network: number) {
+    this.baseURL = networks[network].subgraphURI
+
     const keyHolderQuery = gql`
       query KeyHolder($address: String!) {
         keyHolders(where: { address: $address }) {
@@ -37,3 +39,5 @@ export class KeyHolder extends UnlockGraphQLDataSource {
     }
   }
 }
+
+export default KeyHolder

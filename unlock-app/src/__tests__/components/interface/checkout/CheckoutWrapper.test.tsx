@@ -1,6 +1,17 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import CheckoutWrapper from '../../../../components/interface/checkout/CheckoutWrapper'
+import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+
+const renderWithContexts = (component: any) => {
+  const account = '0x123'
+  const network = 1337
+  return rtl.render(
+    <AuthenticationContext.Provider value={{ account, network }}>
+      {component}
+    </AuthenticationContext.Provider>
+  )
+}
 
 describe('CheckoutWrapper', () => {
   it('renders the footer', () => {
@@ -9,8 +20,16 @@ describe('CheckoutWrapper', () => {
     const hideCheckout = jest.fn()
     const allowClose = false
 
-    const { container } = rtl.render(
-      <CheckoutWrapper hideCheckout={hideCheckout} allowClose={allowClose} />
+    const { container } = renderWithContexts(
+      <CheckoutWrapper
+        onLoggedOut={jest.fn()}
+        back={jest.fn()}
+        showBack={false}
+        hideCheckout={hideCheckout}
+        allowClose={allowClose}
+      >
+        <br />
+      </CheckoutWrapper>
     )
 
     // the close button is also an a tag, but it doesn't render when allowClose is false
@@ -23,8 +42,16 @@ describe('CheckoutWrapper', () => {
     const hideCheckout = jest.fn()
     const allowClose = false
 
-    const { queryByTitle } = rtl.render(
-      <CheckoutWrapper hideCheckout={hideCheckout} allowClose={allowClose} />
+    const { queryByTitle } = renderWithContexts(
+      <CheckoutWrapper
+        onLoggedOut={jest.fn()}
+        back={jest.fn()}
+        showBack={false}
+        hideCheckout={hideCheckout}
+        allowClose={allowClose}
+      >
+        <br />
+      </CheckoutWrapper>
     )
 
     expect(queryByTitle('Close')).toBeNull()
@@ -36,8 +63,16 @@ describe('CheckoutWrapper', () => {
     const hideCheckout = jest.fn()
     const allowClose = true
 
-    const { getByTitle } = rtl.render(
-      <CheckoutWrapper hideCheckout={hideCheckout} allowClose={allowClose} />
+    const { getByTitle } = renderWithContexts(
+      <CheckoutWrapper
+        onLoggedOut={jest.fn()}
+        back={jest.fn()}
+        showBack={false}
+        hideCheckout={hideCheckout}
+        allowClose={allowClose}
+      >
+        <br />
+      </CheckoutWrapper>
     )
 
     const button = getByTitle('Close')

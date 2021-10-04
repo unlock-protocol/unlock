@@ -9,7 +9,6 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { GraphServiceContext } from '../../utils/withGraphService'
 import { GraphService } from '../../services/graphService'
-import ProviderContext from '../../contexts/ProviderContext'
 
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
@@ -90,44 +89,63 @@ export const Authenticate = ({
   providerAdapter,
 }) => {
   const config = useContext(ConfigContext)
-  const { setProvider } = useContext(ProviderContext)
 
   const {
+    error,
     loading,
     network,
+    signedMessage,
     account,
     email,
     encryptedPrivateKey,
     walletService,
     connectProvider,
+    disconnectProvider,
+    isUnlockAccount,
+    changeNetwork,
   } = useProvider(config)
 
-  const authenticate = (provider, callback) => {
+  const authenticate = async (provider, messageToSign) => {
     if (!provider) {
       if (providerAdapter) {
-        setProvider(providerAdapter)
-        connectProvider(providerAdapter, callback)
-        return
+        return connectProvider(providerAdapter, messageToSign)
       }
     }
-    connectProvider(provider, callback)
+    return connectProvider(provider, messageToSign)
+  }
+
+  const deAuthenticate = () => {
+    disconnectProvider()
   }
 
   return (
     <AuthenticationContext.Provider
-      value={{ account, network, email, encryptedPrivateKey, authenticate }}
+      value={{
+        signedMessage,
+        account,
+        network,
+        email,
+        encryptedPrivateKey,
+        authenticate,
+        isUnlockAccount,
+        deAuthenticate,
+        changeNetwork,
+      }}
     >
-      <WalletServiceContext.Provider value={walletService}>
-        <Providers
-          network={requiredNetwork || network}
-          networkConfig={config.networks}
-          account={account}
-          email={email}
-          encryptedPrivateKey={encryptedPrivateKey}
-        >
-          {children}
-        </Providers>
-      </WalletServiceContext.Provider>
+      {error && <p>{error}</p>}
+      {!error && (
+        <WalletServiceContext.Provider value={walletService}>
+          <Providers
+            network={requiredNetwork || network}
+            networkConfig={config.networks}
+            account={account}
+            email={email}
+            encryptedPrivateKey={encryptedPrivateKey}
+          >
+            {children}
+          </Providers>
+        </WalletServiceContext.Provider>
+      )}
     </AuthenticationContext.Provider>
   )
 }
