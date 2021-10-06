@@ -4,7 +4,7 @@
     "max-line-length": "off",
     "quotes" : "off",
     "compiler-version": [
-      "error",
+      "warn",
       "^0.8.0"
     ],
     "comprehensive-interface" : "warn",
