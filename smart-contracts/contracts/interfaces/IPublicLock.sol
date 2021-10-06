@@ -59,7 +59,7 @@ contract IPublicLock
    * use cases.
    */
   function withdraw(
-    address _tokenAddress, //Q: why replicate tokenAddress if it is stored by constructor?
+    address _tokenAddress,
     uint _amount
   ) external;
 
@@ -96,7 +96,7 @@ contract IPublicLock
    * Checks if the user has a non-expired key.
    * @param _user The address of the key owner
    */
-  function getHasValidKey( // CLEM: replace by ERC721 balanceOf ?
+  function getHasValidKey(
     address _user
   ) external view returns (bool);
 
@@ -215,7 +215,7 @@ contract IPublicLock
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev this considers any discount from Unlock or the OnKeyPurchase hook.
    */
-  function purchasePriceFor( // CLEM: Useful when hooks are used to define prices
+  function purchasePriceFor(
     address _recipient,
     address _referrer,
     bytes calldata _data
@@ -366,7 +366,7 @@ contract IPublicLock
   ///===================================================================
 
   /// From ERC165.sol
-  function supportsInterface(bytes4 interfaceId) external view returns (bool ); // CLEM: in use? to check
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
   ///===================================================================
 
   /// From ERC-721
@@ -384,8 +384,6 @@ contract IPublicLock
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
      *
-     *
-     *
      * Requirements:
      * - `from`, `to` cannot be zero.
      * - `tokenId` must be owned by `from`.
@@ -393,6 +391,7 @@ contract IPublicLock
      * NFT by either {approve} or {setApprovalForAll}.
      */
     function safeTransferFrom(address from, address to, uint256 tokenId) public;
+    
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
@@ -421,8 +420,6 @@ contract IPublicLock
     function tokenOfOwnerByIndex(address _owner, uint256 index) public view returns (uint256 tokenId);
 
     function tokenByIndex(uint256 index) public view returns (uint256);
-
-
 
     /**
      * @notice An ERC-20 style transfer.

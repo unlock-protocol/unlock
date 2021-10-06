@@ -190,6 +190,7 @@ contract MixinKeys is
   {
     return owners.length;
   }
+
   // Returns the owner of a given tokenId
   function ownerOf(
     uint _tokenId
