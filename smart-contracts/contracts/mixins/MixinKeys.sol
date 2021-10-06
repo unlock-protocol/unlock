@@ -121,7 +121,7 @@ contract MixinKeys is
     uint _tokenId
   ) {
     require(
-      isKeyOwner(_tokenId, msg.sender), 'ONLY_KEY_OWNER'
+      ownerOf(_tokenId) == msg.sender, 'ONLY_KEY_OWNER'
     );
     _;
   }
@@ -164,18 +164,6 @@ contract MixinKeys is
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
-  }
-
-  /**
-   * Checks if the given address owns the given tokenId.
-   */
-  function isKeyOwner(
-    uint _tokenId,
-    address _keyOwner
-  ) public view
-    returns (bool)
-  {
-    return _ownerOf[_tokenId] == _keyOwner;
   }
 
   /**
@@ -310,7 +298,7 @@ contract MixinKeys is
     returns (bool)
   {
     if(keyManagerOf[_tokenId] == _keyManager ||
-      (keyManagerOf[_tokenId] == address(0) && isKeyOwner(_tokenId, _keyManager))) {
+      (keyManagerOf[_tokenId] == address(0) && ownerOf(_tokenId) == _keyManager)) {
       return true;
     } else {
       return false;
@@ -342,7 +330,7 @@ contract MixinKeys is
     uint _tokenId
   ) internal
   {
-    if (_ownerOf[_tokenId] != _keyOwner) {
+    if (ownerOf(_tokenId) != _keyOwner) {
       // TODO: this may include duplicate entries
       owners.push(_keyOwner);
       // We register the owner of the tokenID
@@ -366,7 +354,7 @@ contract MixinKeys is
     bool _addTime
   ) internal
   {
-    address tokenOwner = _ownerOf[_tokenId];
+    address tokenOwner = ownerOf(_tokenId);
     require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
     Key storage key = keyByOwner[tokenOwner];
     uint formerTimestamp = key.expirationTimestamp;
