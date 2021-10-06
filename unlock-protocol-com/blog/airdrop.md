@@ -35,7 +35,7 @@ We capped the amount of ɄDT that any address can claim to 10 ɄDT!
 
 **One of the most critical aspect of a successful DAO is participation**. For this reason, we have decided to alter [Uniswap's merkle-distributor contract](https://github.com/unlock-protocol/merkle-distributor), to require eligible addresses to delegate their tokens in order to claim them.
 
-Our goal here is to make sure that all new tokens claimed are accounted for when it comes to governance. Additionally, since delegation applies to all off the tokens owned by an address, we expect that a large portion of the existing token holders will achieve delegation in order to claim additional tokens!
+Our goal here is to make sure that all new tokens claimed are accounted for when it comes to governance. Additionally, since delegation applies to all of the tokens owned by an address, we expect that a large portion of the existing token holders will achieve delegation in order to claim additional tokens!
 
 In order to ease the process, we identified a few members of our community who are willing to be delegates:
 
