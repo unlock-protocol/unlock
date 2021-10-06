@@ -29,7 +29,7 @@ We applied the following rules:
 
 * __1 ɄDT for any ɄDT holder__ with a balance of 3 ɄDT or more, as of September 1st 2021 at midnight (including liquidity providers on the Uniswap v2 pool)
 
-We capped the amount of ɄDT that any adress can claim to 10 ɄDT!
+We capped the amount of ɄDT that any address can claim to 10 ɄDT!
 
 # Claiming... and delegating
 
