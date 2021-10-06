@@ -32,9 +32,8 @@ contract IPublicLock
 
   /**
    * @dev Never used directly
-   * 
    */
-  function initialize() external; // CLEM: why does this exist?
+  function initialize() external;
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -93,7 +92,7 @@ contract IPublicLock
    */
   function updateBeneficiary( address _beneficiary ) external;
 
-    /**
+  /**
    * Checks if the user has a non-expired key.
    * @param _user The address of the key owner
    */
@@ -109,27 +108,6 @@ contract IPublicLock
   function getTokenIdFor(
     address _account
   ) external view returns (uint);
-
-  /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  * @dev Throws if there are no key owners yet
-  */
-  function getOwnersByPage( // CLEM: delete. Move to 3rd part contract (or graph)?
-    uint _page,
-    uint _pageSize
-  ) external view returns (address[] memory);
-
-  /**
-   * Checks if the given address owns the given tokenId.
-   * @param _tokenId The tokenId of the key to check
-   * @param _keyOwner The potential key owners address
-   */
-  function isKeyOwner( // CLEM: to delete. Duplicate
-    uint _tokenId,
-    address _keyOwner
-  ) external view returns (bool);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
@@ -288,29 +266,6 @@ contract IPublicLock
   function cancelAndRefund(uint _tokenId) external;
 
   /**
-   * @dev Cancels a key managed by a different user and sends the funds to the keyOwner.
-   * @param _keyManager the key managed by this user will be canceled
-   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyManager
-   * @param _tokenId The key to cancel
-   */
-  function cancelAndRefundFor( // CLEM: sign a refund/cancel message (meta-tx) - could be moved to 3rd part contract LockManager
-    address _keyManager,
-    uint8 _v,
-    bytes32 _r,
-    bytes32 _s,
-    uint _tokenId
-  ) external;
-
-  /**
-   * @notice Sets the minimum nonce for a valid off-chain approval message from the
-   * senders account.
-   * @dev This can be used to invalidate a previously signed message.
-   */
-  function invalidateOffchainApproval( // CLEM: delete? related to meta-tx
-    uint _nextAvailableNonce
-  ) external;
-
-  /**
    * Allow a Lock manager to change the refund penalty.
    * @dev Throws if called by other than a Lock manager
    * @param _freeTrialLength The new duration of free trials for this lock
@@ -331,20 +286,6 @@ contract IPublicLock
   function getCancelAndRefundValueFor(
     address _keyOwner
   ) external view returns (uint refund);
-
-  function keyManagerToNonce(address ) external view returns (uint256 ); // CLEM: meta-tx too
-
-  /**
-   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
-   * @dev this can be computed in JS instead of read from the contract.
-   * @param _keyManager The key manager's address (also the message signer)
-   * @param _txSender The address cancelling cancel on behalf of the keyOwner
-   * @return approvalHash The hash to sign
-   */
-  function getCancelAndRefundApprovalHash( // CLEM: meta-tx signing
-    address _keyManager,
-    address _txSender
-  ) external view returns (bytes32 approvalHash);
 
   function addKeyGranter(address account) external;
 
@@ -437,7 +378,7 @@ contract IPublicLock
     /**
      * @dev Returns the owner of the NFT specified by `tokenId`.
      */
-    function ownerOf(uint256 tokenId) public view returns (address _owner); 
+    function ownerOf(uint256 tokenId) public view returns (address _owner);
 
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to

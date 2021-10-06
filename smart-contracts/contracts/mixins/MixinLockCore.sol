@@ -123,7 +123,7 @@ contract MixinLockCore is
   {
 
     uint balance = IERC20(_tokenAddress).balanceOf(address(this));
-    
+
     uint amount;
     if(_amount == 0 || _amount > balance)
     {
