@@ -1,7 +1,6 @@
 pragma solidity 0.5.17;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
-import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinLockManagerRole.sol';
@@ -10,7 +9,6 @@ import './MixinFunds.sol';
 
 contract MixinRefunds is
   MixinLockManagerRole,
-  MixinSignatures,
   MixinFunds,
   MixinLockCore,
   MixinKeys
@@ -23,9 +21,6 @@ contract MixinRefunds is
 
   uint public freeTrialLength;
 
-  /// @notice The typehash per the EIP-712 standard
-  /// @dev This can be computed in JS instead of read from the contract
-  bytes32 private constant CANCEL_TYPEHASH = keccak256('cancelAndRefundFor(address _keyOwner)');
 
   event CancelKey(
     uint indexed tokenId,
@@ -74,32 +69,6 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Cancels a key managed by a different user and sends the funds to the msg.sender.
-   * @param _keyManager the key managed by this user will be canceled
-   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyOwner
-   * @param _tokenId The key to cancel
-   */
-  function cancelAndRefundFor(
-    address _keyManager,
-    uint8 _v,
-    bytes32 _r,
-    bytes32 _s,
-    uint _tokenId
-  ) external
-    consumeOffchainApproval(
-      getCancelAndRefundApprovalHash(_keyManager, msg.sender),
-      _keyManager,
-      _v,
-      _r,
-      _s
-    )
-  {
-    address keyOwner = ownerOf(_tokenId);
-    uint refund = _getCancelAndRefundValue(keyOwner);
-    _cancelAndRefund(keyOwner, refund);
-  }
-
-  /**
    * Allow the owner to change the refund penalty.
    */
   function updateRefundPenalty(
@@ -130,33 +99,6 @@ contract MixinRefunds is
     returns (uint refund)
   {
     return _getCancelAndRefundValue(_keyOwner);
-  }
-
-  /**
-   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
-   * @dev this can be computed in JS instead of read from the contract.
-   * @param _keyManager The key manager's address (also the message signer)
-   * @param _txSender The address cancelling cancel on behalf of the keyOwner
-   * @return approvalHash The hash to sign
-   */
-  function getCancelAndRefundApprovalHash(
-    address _keyManager,
-    address _txSender
-  ) public view
-    returns (bytes32 approvalHash)
-  {
-    return keccak256(
-      abi.encodePacked(
-        // Approval is specific to this Lock
-        address(this),
-        // The specific function the signer is approving
-        CANCEL_TYPEHASH,
-        // Approval enables only one cancel call
-        keyManagerToNonce[_keyManager],
-        // Approval allows only one account to broadcast the tx
-        _txSender
-      )
-    );
   }
 
   /**

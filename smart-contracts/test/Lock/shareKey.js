@@ -129,7 +129,7 @@ contract('Lock / shareKey', (accounts) => {
       })
 
       it('The original owner still owns their key', async () => {
-        assert.equal(await lock.isKeyOwner.call(tokenId1, keyOwner1), true)
+        assert.equal(await lock.ownerOf.call(tokenId1), keyOwner1)
       })
     })
   })

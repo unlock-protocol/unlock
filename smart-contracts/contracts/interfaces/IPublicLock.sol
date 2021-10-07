@@ -6,7 +6,7 @@ pragma solidity 0.5.17;
  */
 
 
-contract IPublicLock
+interface IPublicLock
 {
 
 // See indentationissue description here:
@@ -39,19 +39,7 @@ contract IPublicLock
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
   */
-  function publicLockVersion() public pure returns (uint);
-
-  /**
-  * @notice Gets the current balance of the account provided.
-  * @param _tokenAddress The token type to retrieve the balance of.
-  * @param _account The account to get the balance of.
-  * @return The number of tokens of the given type for the given address, possibly 0.
-  */
-  function getBalance(
-    address _tokenAddress,
-    address _account
-  ) external view
-    returns (uint);
+  function publicLockVersion() external pure returns (uint);
 
   /**
   * @notice Used to disable lock before migrating keys and/or destroying contract.
@@ -104,7 +92,7 @@ contract IPublicLock
    */
   function updateBeneficiary( address _beneficiary ) external;
 
-    /**
+  /**
    * Checks if the user has a non-expired key.
    * @param _user The address of the key owner
    */
@@ -120,27 +108,6 @@ contract IPublicLock
   function getTokenIdFor(
     address _account
   ) external view returns (uint);
-
-  /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  * @dev Throws if there are no key owners yet
-  */
-  function getOwnersByPage(
-    uint _page,
-    uint _pageSize
-  ) external view returns (address[] memory);
-
-  /**
-   * Checks if the given address owns the given tokenId.
-   * @param _tokenId The tokenId of the key to check
-   * @param _keyOwner The potential key owners address
-   */
-  function isKeyOwner(
-    uint _tokenId,
-    address _keyOwner
-  ) external view returns (bool);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
@@ -299,29 +266,6 @@ contract IPublicLock
   function cancelAndRefund(uint _tokenId) external;
 
   /**
-   * @dev Cancels a key managed by a different user and sends the funds to the keyOwner.
-   * @param _keyManager the key managed by this user will be canceled
-   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyManager
-   * @param _tokenId The key to cancel
-   */
-  function cancelAndRefundFor(
-    address _keyManager,
-    uint8 _v,
-    bytes32 _r,
-    bytes32 _s,
-    uint _tokenId
-  ) external;
-
-  /**
-   * @notice Sets the minimum nonce for a valid off-chain approval message from the
-   * senders account.
-   * @dev This can be used to invalidate a previously signed message.
-   */
-  function invalidateOffchainApproval(
-    uint _nextAvailableNonce
-  ) external;
-
-  /**
    * Allow a Lock manager to change the refund penalty.
    * @dev Throws if called by other than a Lock manager
    * @param _freeTrialLength The new duration of free trials for this lock
@@ -342,20 +286,6 @@ contract IPublicLock
   function getCancelAndRefundValueFor(
     address _keyOwner
   ) external view returns (uint refund);
-
-  function keyManagerToNonce(address ) external view returns (uint256 );
-
-  /**
-   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
-   * @dev this can be computed in JS instead of read from the contract.
-   * @param _keyManager The key manager's address (also the message signer)
-   * @param _txSender The address cancelling cancel on behalf of the keyOwner
-   * @return approvalHash The hash to sign
-   */
-  function getCancelAndRefundApprovalHash(
-    address _keyManager,
-    address _txSender
-  ) external view returns (bytes32 approvalHash);
 
   function addKeyGranter(address account) external;
 
@@ -436,25 +366,23 @@ contract IPublicLock
   ///===================================================================
 
   /// From ERC165.sol
-  function supportsInterface(bytes4 interfaceId) external view returns (bool );
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
   ///===================================================================
 
   /// From ERC-721
   /**
      * @dev Returns the number of NFTs in `owner`'s account.
      */
-    function balanceOf(address _owner) public view returns (uint256 balance);
+    function balanceOf(address _owner) external view returns (uint256 balance);
 
     /**
      * @dev Returns the owner of the NFT specified by `tokenId`.
      */
-    function ownerOf(uint256 tokenId) public view returns (address _owner);
+    function ownerOf(uint256 tokenId) external view returns (address _owner);
 
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
-     *
-     *
      *
      * Requirements:
      * - `from`, `to` cannot be zero.
@@ -462,7 +390,8 @@ contract IPublicLock
      * - If the caller is not `from`, it must be have been allowed to move this
      * NFT by either {approve} or {setApprovalForAll}.
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
+    function safeTransferFrom(address from, address to, uint256 tokenId) external;
+    
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
@@ -471,8 +400,8 @@ contract IPublicLock
      * - If the caller is not `from`, it must be approved to move this NFT by
      * either {approve} or {setApprovalForAll}.
      */
-    function transferFrom(address from, address to, uint256 tokenId) public;
-    function approve(address to, uint256 tokenId) public;
+    function transferFrom(address from, address to, uint256 tokenId) external;
+    function approve(address to, uint256 tokenId) external;
 
     /**
     * @notice Get the approved address for a single NFT
@@ -480,19 +409,17 @@ contract IPublicLock
     * @param _tokenId The NFT to find the approved address for
     * @return The approved address for this NFT, or the zero address if there is none
     */
-    function getApproved(uint256 _tokenId) public view returns (address operator);
+    function getApproved(uint256 _tokenId) external view returns (address operator);
 
-    function setApprovalForAll(address operator, bool _approved) public;
-    function isApprovedForAll(address _owner, address operator) public view returns (bool);
+    function setApprovalForAll(address operator, bool _approved) external;
+    function isApprovedForAll(address _owner, address operator) external view returns (bool);
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
 
-    function totalSupply() public view returns (uint256);
-    function tokenOfOwnerByIndex(address _owner, uint256 index) public view returns (uint256 tokenId);
+    function totalSupply() external view returns (uint256);
+    function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
 
-    function tokenByIndex(uint256 index) public view returns (uint256);
-
-
+    function tokenByIndex(uint256 index) external view returns (uint256);
 
     /**
      * @notice An ERC-20 style transfer.

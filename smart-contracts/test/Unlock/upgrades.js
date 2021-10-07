@@ -349,11 +349,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
                   it('Latest Key is owned', async () => {
                     const id = await lockLatest.getTokenIdFor(keyOwner.address)
-                    const isOwned = await lockLatest.isKeyOwner(
-                      id,
-                      keyOwner.address
-                    )
-                    assert.equal(isOwned, true)
+                    assert.equal(await lockLatest.ownerOf(id), keyOwner.address)
                   })
 
                   it('Latest publicLock version is correct', async () => {
