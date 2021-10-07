@@ -3,6 +3,7 @@
   "rules": {
     "max-line-length": "off",
     "quotes" : "off",
+    "not-rely-on-time": "off",
     "compiler-version": [
       "warn",
       "^0.5.4"
