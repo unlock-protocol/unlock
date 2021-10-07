@@ -50,7 +50,7 @@ In order to ease the process, we identified a few members of our community who a
 Of course, you can very well pick any other address, but please, remember that it's very important for that delegate you chose to vote on proposals made by the community!
 # Time limit
 
-Finally, in order to make sure that tokens available for the airdrop are not wasted, we added a clean-up mechanism. This mechanism can be triggered by anyone after 1,000,000 blocks have been mined [from the moment](https://etherscan.io/block/13367076) the [airdrop contract](https://etherscan.io/address/0xFC6ed78d048Fdf1a22Bee990eA34995F9C029ad6) has been deployed. We expect this to be around 150 days, or around March 4th 2021!
+Finally, in order to make sure that tokens available for the airdrop are not wasted, we added a clean-up mechanism. This mechanism can be triggered by anyone after 1,000,000 blocks have been mined [from the moment](https://etherscan.io/block/13367076) the [airdrop contract](https://etherscan.io/address/0xFC6ed78d048Fdf1a22Bee990eA34995F9C029ad6) has been deployed. We expect this to be around 150 days, or around March 4th 2022!
 
 At that point, all of the remaining tokens that have not been claimed will be transfered to the DAO, through the timelock contract, for the community to use as they want, along with the rest of the treasury.
 
