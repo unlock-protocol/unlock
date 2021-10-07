@@ -5,9 +5,9 @@
   "main": "src/server.js",
   "dependencies": {
     "@babel/cli": "7.15.7",
-    "@babel/core": "7.15.5",
-    "@babel/node": "7.15.4",
-    "@babel/preset-env": "7.15.6",
+    "@babel/core": "7.15.8",
+    "@babel/node": "7.15.8",
+    "@babel/preset-env": "7.15.8",
     "@typescript-eslint/parser": "4.32.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "aws-sdk": "2.999.0",
