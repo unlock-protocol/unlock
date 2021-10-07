@@ -122,7 +122,7 @@ interface IPublicLock
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than totalSupply.
    */
-  function numberOfOwners() external view returns (uint); // CLEM: to delete bcz nbOwners = totalSupply. Is 2 memberships possible ?
+  function numberOfOwners() external view returns (uint);
 
   /**
    * Allows a Lock manager to assign a descriptive name for this Lock.
