@@ -1,6 +1,7 @@
 const { ethers } = require('hardhat')
 const UniswapOracle = require('hardlydifficult-eth/build/contracts/UniswapOracle.json')
 
+// TODO: check if oracle has already been deployed and skips if one already exists!
 async function main({ uniswapFactoryAddress }) {
   if (!uniswapFactoryAddress) {
     // eslint-disable-next-line no-console

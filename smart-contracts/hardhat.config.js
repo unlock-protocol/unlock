@@ -22,11 +22,8 @@ require('hardhat-gas-reporter')
 // test coverage
 require('solidity-coverage')
 
-// contract verification
-if (process.env.ETHERSCAN_API_KEY) {
-  // eslint-disable-next-line global-require
-  require('@nomiclabs/hardhat-etherscan')
-}
+// eslint-disable-next-line global-require
+require('@nomiclabs/hardhat-etherscan')
 
 const { getHardhatNetwork } = require('./helpers/network')
 
@@ -105,6 +102,7 @@ module.exports = {
       { version: '0.6.12', settings },
       { version: '0.7.6', settings },
       { version: '0.8.0', settings },
+      { version: '0.8.2', settings },
       { version: '0.8.4', settings },
     ],
   },
