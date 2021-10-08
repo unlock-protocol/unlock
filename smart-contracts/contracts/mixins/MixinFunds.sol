@@ -40,14 +40,14 @@ contract MixinFunds
    */
   function _transfer(
     address _tokenAddress,
-    address _to,
+    address payable _to,
     uint _amount
   ) internal
   {
     if(_amount > 0) {
       if(_tokenAddress == address(0)) {
         // https://diligence.consensys.net/blog/2019/09/stop-using-soliditys-transfer-now/
-        address(uint160(_to)).sendValue(_amount);
+        _to.sendValue(_amount);
       } else {
         IERC20Upgradeable token = IERC20Upgradeable(_tokenAddress);
         token.safeTransfer(_to, _amount);

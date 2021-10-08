@@ -60,7 +60,7 @@ contract MixinLockCore is
   uint internal _totalSupply;
 
   // The account which will receive funds on withdrawal
-  address public beneficiary;
+  address payable public beneficiary;
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
@@ -84,7 +84,7 @@ contract MixinLockCore is
   }
 
   function _initializeMixinLockCore(
-    address _beneficiary,
+    address payable _beneficiary,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
@@ -177,7 +177,7 @@ contract MixinLockCore is
    * which receives funds on withdrawal.
    */
   function updateBeneficiary(
-    address _beneficiary
+    address payable _beneficiary
   ) external
   {
     require(msg.sender == beneficiary || isLockManager(msg.sender), 'ONLY_BENEFICIARY_OR_LOCKMANAGER');

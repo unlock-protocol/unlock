@@ -23,7 +23,6 @@ contract MixinRefunds is
 
   uint public freeTrialLength;
 
-
   event CancelKey(
     uint indexed tokenId,
     address indexed owner,
@@ -47,7 +46,7 @@ contract MixinRefunds is
    * of the key
    */
   function expireAndRefundFor(
-    address _keyOwner,
+    address payable _keyOwner,
     uint amount
   ) external
     onlyLockManager
@@ -64,7 +63,7 @@ contract MixinRefunds is
     external
     onlyKeyManagerOrApproved(_tokenId)
   {
-    address keyOwner = ownerOf(_tokenId);
+    address payable keyOwner = payable(ownerOf(_tokenId));
     uint refund = _getCancelAndRefundValue(keyOwner);
 
     _cancelAndRefund(keyOwner, refund);
@@ -107,7 +106,7 @@ contract MixinRefunds is
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
    */
   function _cancelAndRefund(
-    address _keyOwner,
+    address payable _keyOwner,
     uint refund
   ) internal
   {

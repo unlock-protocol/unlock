@@ -27,7 +27,7 @@ import './mixins/MixinKeyGranterRole.sol';
  * https://eips.ethereum.org/EIPS/eip-721
  */
 contract PublicLock is
-  IPublicLock,
+  
   Initializable,
   ERC165Upgradeable,
   MixinLockManagerRole,
@@ -44,7 +44,7 @@ contract PublicLock is
   MixinRefunds
 {
   function initialize(
-    address _lockCreator,
+    address payable _lockCreator,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
@@ -76,5 +76,21 @@ contract PublicLock is
   
   // TODO: what should be done here?
   fallback() external payable {}
+
+  /**
+   Overrides
+  */
+  function supportsInterface(bytes4 interfaceId) 
+    public 
+    view 
+    virtual 
+    override(
+      AccessControlUpgradeable, 
+      ERC165Upgradeable
+    ) 
+    returns (bool) 
+    {
+    return super.supportsInterface(interfaceId);
+  }
 
 }
