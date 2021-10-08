@@ -16,8 +16,8 @@ import './MixinLockManagerRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
-  IERC721Enumerable,
-  ERC165,
+  IERC721EnumerableUpgradeable,
+  ERC165Upgradeable,
   MixinLockManagerRole,
   MixinLockCore,
   MixinKeys
@@ -43,11 +43,10 @@ contract MixinLockMetadata is
     string memory _lockName
   ) internal
   {
-    ERC165.initialize();
     name = _lockName;
     // registering the optional erc721 metadata interface with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
-    _registerInterface(0x5b5e139f);
+    supportsInterface(0x5b5e139f);
   }
 
   /**

@@ -16,7 +16,7 @@ import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 contract MixinKeys is
   MixinLockCore
 {
-  using SafeMath for uint;
+  using SafeMathUpgradeable for uint;
 
   // The struct for a key
   struct Key {

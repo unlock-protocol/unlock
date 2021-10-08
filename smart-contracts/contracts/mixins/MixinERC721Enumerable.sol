@@ -12,8 +12,8 @@ import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeabl
  * @title Implements the ERC-721 Enumerable extension.
  */
 contract MixinERC721Enumerable is
-  IERC721Enumerable,
-  ERC165,
+  IERC721EnumerableUpgradeable,
+  ERC165Upgradeable,
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
@@ -26,7 +26,7 @@ contract MixinERC721Enumerable is
      *     bytes4(keccak256('tokenOfOwnerByIndex(address,uint256)')) ^
      *     bytes4(keccak256('tokenByIndex(uint256)'))
      */
-    _registerInterface(0x780e9d63);
+    supportsInterface(0x780e9d63);
   }
 
   /// @notice Enumerate valid NFTs

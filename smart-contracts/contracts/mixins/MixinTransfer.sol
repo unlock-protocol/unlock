@@ -7,8 +7,8 @@ import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 
 /**
@@ -25,8 +25,8 @@ contract MixinTransfer is
   MixinLockCore,
   MixinKeys
 {
-  using SafeMath for uint;
-  using Address for address;
+  using SafeMathUpgradeable for uint;
+  using AddressUpgradeable for address;
 
   event TransferFeeChanged(
     uint transferFeeBasisPoints
@@ -306,7 +306,7 @@ contract MixinTransfer is
     if (!to.isContract()) {
       return true;
     }
-    bytes4 retval = IERC721Receiver(to).onERC721Received(
+    bytes4 retval = IERC721ReceiverUpgradeable(to).onERC721Received(
       msg.sender, from, tokenId, _data);
     return (retval == _ERC721_RECEIVED);
   }

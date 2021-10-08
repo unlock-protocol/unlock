@@ -15,7 +15,7 @@ contract MixinRefunds is
   MixinLockCore,
   MixinKeys
 {
-  using SafeMath for uint;
+  using SafeMathUpgradeable for uint;
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyBasisPoints / BASIS_POINTS_DEN`.

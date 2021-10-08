@@ -19,12 +19,12 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockCore is
-  IERC721Enumerable,
+  IERC721EnumerableUpgradeable,
   MixinLockManagerRole,
   MixinFunds,
   MixinDisable
 {
-  using Address for address;
+  using AddressUpgradeable for address;
 
   event Withdrawal(
     address indexed sender,
@@ -129,7 +129,7 @@ contract MixinLockCore is
     if(_tokenAddress == address(0)) {
       balance = address(this).balance;
     } else {
-      balance = IERC20(_tokenAddress).balanceOf(address(this));
+      balance = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
     }
 
     uint amount;
@@ -164,7 +164,7 @@ contract MixinLockCore is
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
     require(
-      _tokenAddress == address(0) || IERC20(_tokenAddress).totalSupply() > 0,
+      _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
       'INVALID_TOKEN'
     );
     keyPrice = _keyPrice;
@@ -217,6 +217,6 @@ contract MixinLockCore is
     onlyLockManagerOrBeneficiary
     returns (bool)
   {
-    return IERC20(tokenAddress).approve(_spender, _amount);
+    return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 }

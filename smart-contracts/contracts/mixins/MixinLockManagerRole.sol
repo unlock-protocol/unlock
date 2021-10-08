@@ -7,7 +7,7 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
 
-contract MixinLockManagerRole {
+contract MixinLockManagerRole is AccessControlUpgradeable {
 
   bytes32 public constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
 

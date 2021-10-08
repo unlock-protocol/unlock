@@ -21,7 +21,7 @@ contract MixinPurchase is
   MixinLockCore,
   MixinKeys
 {
-  using SafeMath for uint;
+  using SafeMathUpgradeable for uint;
 
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
 
@@ -99,7 +99,7 @@ contract MixinPurchase is
     if(tokenAddress != address(0))
     {
       pricePaid = _value;
-      IERC20 token = IERC20(tokenAddress);
+      IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
       token.safeTransferFrom(msg.sender, address(this), _value);
     }
     else
