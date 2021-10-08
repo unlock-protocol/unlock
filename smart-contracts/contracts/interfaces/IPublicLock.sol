@@ -30,7 +30,8 @@ interface IPublicLock
    * @notice Allow the contract to accept tips in ETH sent directly to the contract.
    * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
-  function() external payable;
+  // receive() external payable;
+  // fallback() external payable;
 
   /**
    * @dev Never used directly
@@ -409,7 +410,7 @@ interface IPublicLock
     * @notice Get the approved address for a single NFT
     * @dev Throws if `_tokenId` is not a valid NFT.
     * @param _tokenId The NFT to find the approved address for
-    * @return The approved address for this NFT, or the zero address if there is none
+    * @return operator The approved address for this NFT, or the zero address if there is none
     */
     function getApproved(uint256 _tokenId) external view returns (address operator);
 

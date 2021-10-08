@@ -38,7 +38,7 @@ library UnlockUtils {
     bytes memory bstr = new bytes(len);
     uint k = len - 1;
     while (c != 0) {
-      bstr[k--] = byte(uint8(48 + c % 10));
+      bstr[k--] = bytes1(uint8(48 + c % 10));
       c /= 10;
     }
     return string(bstr);
