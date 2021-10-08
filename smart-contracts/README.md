@@ -146,9 +146,9 @@ see `npx hardhat --help` for a list of all available tasks and deployments
 ```
 yarn hardhat set:unlock-config --unlock-address <xxx> \
   --udt-address <xxx>
-  --wethAddress <xxx>
-  --estimatedGasForPurchase <xxx>
-  --locksmithURI <xxx>
+  --weth-address <xxx>
+  --estimated-gas-for-purchase <xxx>
+  --locksmith-u-r-i <xxx>
 ```
 
 ## Governor + Timelock
