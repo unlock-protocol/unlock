@@ -1,4 +1,6 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+
+pragma solidity >=0.5.17 <0.9.0;
 
 interface IMintableERC20
 {
