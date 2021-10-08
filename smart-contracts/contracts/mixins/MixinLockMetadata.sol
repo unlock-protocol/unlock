@@ -16,7 +16,6 @@ import './MixinLockManagerRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
-  ERC165Upgradeable,
   MixinLockManagerRole,
   MixinLockCore,
   MixinKeys

@@ -100,7 +100,7 @@ contract MixinPurchase is
     {
       pricePaid = _value;
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-      token.transferFrom(msg.sender, address(this), _value);
+      token.transferFrom(msg.sender, address(this), pricePaid);
     }
     else
     {
