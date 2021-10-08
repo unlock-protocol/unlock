@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
@@ -16,7 +16,6 @@ import './MixinLockManagerRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
-  IERC721EnumerableUpgradeable,
   ERC165Upgradeable,
   MixinLockManagerRole,
   MixinLockCore,

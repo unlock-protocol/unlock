@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import './MixinDisable.sol';
 import './MixinLockManagerRole.sol';
@@ -19,7 +19,6 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockCore is
-  IERC721EnumerableUpgradeable,
   MixinLockManagerRole,
   MixinFunds,
   MixinDisable

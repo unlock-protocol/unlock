@@ -4,16 +4,14 @@ pragma solidity ^0.8.0;
 
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol';
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
+// import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol';
 
 
 /**
  * @title Implements the ERC-721 Enumerable extension.
  */
 contract MixinERC721Enumerable is
-  IERC721EnumerableUpgradeable,
-  ERC165Upgradeable,
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
