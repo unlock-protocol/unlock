@@ -53,7 +53,6 @@ contract PublicLock is
   ) public
     initializer()
   {
-    ERC165Upgradeable.initialize();
     MixinFunds._initializeMixinFunds(_tokenAddress);
     MixinDisable._initializeMixinDisable();
     MixinLockCore._initializeMixinLockCore(_lockCreator, _expirationDuration, _keyPrice, _maxNumberOfKeys);
