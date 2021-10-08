@@ -3,7 +3,7 @@ pragma solidity 0.5.17;
 import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 import './MixinFunds.sol';
 
 

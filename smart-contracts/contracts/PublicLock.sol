@@ -2,8 +2,8 @@ pragma solidity 0.5.17;
 
 
 import './interfaces/IPublicLock.sol';
-import '@openzeppelin/upgrades/contracts/Initializable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol';
 import './mixins/MixinDisable.sol';
 import './mixins/MixinERC721Enumerable.sol';
 import './mixins/MixinFunds.sol';

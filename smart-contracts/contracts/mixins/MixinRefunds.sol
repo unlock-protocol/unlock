@@ -1,6 +1,6 @@
 pragma solidity 0.5.17;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinLockManagerRole.sol';

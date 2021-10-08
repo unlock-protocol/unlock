@@ -13,7 +13,6 @@
     "@nomiclabs/hardhat-truffle5": "2.0.2",
     "@nomiclabs/hardhat-waffle": "2.0.1",
     "@nomiclabs/hardhat-web3": "2.0.0",
-    "@openzeppelin/contracts-ethereum-package": "2.5.0",
     "@openzeppelin/contracts-upgradeable": "4.3.2",
     "@openzeppelin/hardhat-upgrades": "1.10.0",
     "@openzeppelin/test-helpers": "0.5.13",
@@ -64,6 +63,7 @@
   },
   "scripts": {
     "test": "npx hardhat test",
+    "clean": "rm -rf artifacts",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code",

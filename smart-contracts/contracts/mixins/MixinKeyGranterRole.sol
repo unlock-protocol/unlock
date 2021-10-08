@@ -3,21 +3,20 @@ pragma solidity 0.5.17;
 // This contract mostly follows the pattern established by openzeppelin in
 // openzeppelin/contracts-ethereum-package/contracts/access/roles
 
-import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
+import '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
 import './MixinLockManagerRole.sol';
 
 
 contract MixinKeyGranterRole is MixinLockManagerRole {
-  using Roles for Roles.Role;
+
+  bytes32 public constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
 
   event KeyGranterAdded(address indexed account);
   event KeyGranterRemoved(address indexed account);
 
-  Roles.Role private keyGranters;
-
   function _initializeMixinKeyGranterRole(address sender) internal {
     if (!isKeyGranter(sender)) {
-      keyGranters.add(sender);
+      _setupRole(KEY_GRANTER_ROLE, sender);
     }
   }
 
@@ -27,16 +26,16 @@ contract MixinKeyGranterRole is MixinLockManagerRole {
   }
 
   function isKeyGranter(address account) public view returns (bool) {
-    return keyGranters.has(account);
+    return hasRole(KEY_GRANTER_ROLE, account);
   }
 
   function addKeyGranter(address account) public onlyLockManager {
-    keyGranters.add(account);
+    grantRole(KEY_GRANTER_ROLE, account);
     emit KeyGranterAdded(account);
   }
 
   function revokeKeyGranter(address _granter) public onlyLockManager {
-    keyGranters.remove(_granter);
+    renounceRole(KEY_GRANTER_ROLE, _granter);
     emit KeyGranterRemoved(_granter);
   }
 }
