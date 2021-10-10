@@ -1,7 +1,7 @@
 import { NetworkConfig } from '../types';
 
 export const xdai: NetworkConfig = {
-    provider: 'https://rpc.xdaichain.com/',
+    provider: 'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
     id: 100,
     name: 'xDai',
