@@ -1,7 +1,10 @@
 /* eslint-disable global-require */
 const fs = require('fs')
 const resolve = require('path').resolve
+const debug = require('debug')
 const networksConfigs = require('../networks.js')
+
+const log = debug('hardhat:config')
 
 const getNetworkName = (chainId) => {
   const networkName = Object.keys(networksConfigs).find((name) => {
@@ -41,7 +44,7 @@ const getAccounts = (networkName) => {
 
   const accountsFile = resolve('./accounts.js')
   if (fs.existsSync(accountsFile)) {
-    console.log(
+    log(
       `No ${networkAccountsFile} file. Trying with the default one: ${accountsFile}.`
     )
     // eslint-disable-next-line import/no-dynamic-require
