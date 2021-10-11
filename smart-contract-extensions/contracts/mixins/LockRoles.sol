@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
 import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 
