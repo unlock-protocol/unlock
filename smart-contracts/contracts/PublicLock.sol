@@ -46,7 +46,7 @@ contract PublicLock is
     address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys,
-    string memory _lockName
+    string calldata _lockName
   ) public
     initializer()
   {

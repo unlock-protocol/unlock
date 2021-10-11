@@ -16,7 +16,6 @@ interface IPublicLock
 // solium-disable indentation
 
   /// Functions
-
   function initialize(
     address _lockCreator,
     uint _expirationDuration,
@@ -33,10 +32,10 @@ interface IPublicLock
   // receive() external payable;
   // fallback() external payable;
 
-  /**
-   * @dev Never used directly
-   */
-  function initialize() external;
+  // roles
+  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
+  function KEY_GRANTER_ROLE() external pure returns (bytes32);
+  function LOCK_MANAGER_ROLE() external pure returns (bytes32);
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -423,6 +422,15 @@ interface IPublicLock
     function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
 
     function tokenByIndex(uint256 index) external view returns (uint256);
+
+    /**
+    * Innherited from Open Zeppelin AccessControl.sol
+     */
+    function getRoleAdmin(bytes32 role) external view returns (bytes32);
+    function grantRole(bytes32 role, address account) external;
+    function revokeRole(bytes32 role, address account) external;
+    function renounceRole(bytes32 role, address account) external;
+    function hasRole(bytes32 role, address account) external view returns (bool);
 
     /**
      * @notice An ERC-20 style transfer.

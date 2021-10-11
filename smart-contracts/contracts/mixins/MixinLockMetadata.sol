@@ -39,7 +39,7 @@ contract MixinLockMetadata is
   );
 
   function _initializeMixinLockMetadata(
-    string memory _lockName
+    string calldata _lockName
   ) internal
   {
     ERC165StorageUpgradeable.__ERC165Storage_init();
