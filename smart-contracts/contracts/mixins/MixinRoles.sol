@@ -21,7 +21,11 @@ contract MixinRoles is AccessControlUpgradeable {
 
   // initializer
   function _initializeMixinRoles(address sender) internal {
-    // all lock managers can add/remove key granters
+
+    // for admin mamangers to add other lock admins
+    _setRoleAdmin(LOCK_MANAGER_ROLE, LOCK_MANAGER_ROLE);
+
+    // for lock managers to add/remove key granters
     _setRoleAdmin(KEY_GRANTER_ROLE, LOCK_MANAGER_ROLE);
 
     if (!isLockManager(sender)) {
