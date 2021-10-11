@@ -74,7 +74,7 @@ contract('Lock / transfer', (accounts) => {
       originalExpiration = await lock.keyExpirationTimestampFor(
         multipleKeyOwner
       )
-      await lock.transfer(destination, constants.MAX_UINT, {
+      await lock.transfer(destination, 10, {
         from: multipleKeyOwner,
       })
     })
