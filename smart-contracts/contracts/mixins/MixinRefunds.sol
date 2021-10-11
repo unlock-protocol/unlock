@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinRoles.sol';
@@ -15,8 +14,6 @@ contract MixinRefunds is
   MixinLockCore,
   MixinKeys
 {
-  using SafeMathUpgradeable for uint;
-
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyBasisPoints / BASIS_POINTS_DEN`.
   uint public refundPenaltyBasisPoints;
@@ -147,16 +144,14 @@ contract MixinRefunds is
     if(timeRemaining + freeTrialLength >= expirationDuration) {
       refund = keyPrice;
     } else {
-      // Math: using safeMul in case keyPrice or timeRemaining is very large
-      refund = keyPrice.mul(timeRemaining) / expirationDuration;
+      refund = keyPrice * timeRemaining / expirationDuration;
     }
 
     // Apply the penalty if this is not a free trial
     if(freeTrialLength == 0 || timeRemaining + freeTrialLength < expirationDuration)
     {
-      uint penalty = keyPrice.mul(refundPenaltyBasisPoints) / BASIS_POINTS_DEN;
+      uint penalty = keyPrice * refundPenaltyBasisPoints / BASIS_POINTS_DEN;
       if (refund > penalty) {
-        // Math: safeSub is not required since the if confirms this won't underflow
         refund -= penalty;
       } else {
         refund = 0;

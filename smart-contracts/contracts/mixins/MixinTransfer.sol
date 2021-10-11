@@ -9,7 +9,6 @@ import './MixinFunds.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
@@ -25,7 +24,6 @@ contract MixinTransfer is
   MixinLockCore,
   MixinKeys
 {
-  using SafeMathUpgradeable for uint;
   using AddressUpgradeable for address;
 
   event TransferFeeChanged(
@@ -67,7 +65,7 @@ contract MixinTransfer is
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee based on amount of time wanted share
     uint fee = getTransferFee(keyOwner, _timeShared);
-    uint timePlusFee = _timeShared.add(fee);
+    uint timePlusFee = _timeShared + fee;
 
     // ensure that we don't try to share too much
     if(timePlusFee < timeRemaining) {
@@ -151,8 +149,7 @@ contract MixinTransfer is
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      toKey.expirationTimestamp = fromKey
-        .expirationTimestamp.add(previousExpiration - block.timestamp);
+      toKey.expirationTimestamp = fromKey.expirationTimestamp + previousExpiration - block.timestamp;
     }
 
     // Effectively expiring the key for the previous owner
@@ -183,7 +180,7 @@ contract MixinTransfer is
   {
     uint maxTimeToSend = _value * expirationDuration;
     Key storage fromKey = keyByOwner[msg.sender];
-    uint timeRemaining = fromKey.expirationTimestamp.sub(block.timestamp);
+    uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     if(maxTimeToSend < timeRemaining)
     {
       shareKey(_to, fromKey.tokenId, maxTimeToSend);
@@ -280,7 +277,7 @@ contract MixinTransfer is
       } else {
         timeToTransfer = _time;
       }
-      fee = timeToTransfer.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
+      fee = timeToTransfer * transferFeeBasisPoints / BASIS_POINTS_DEN;
       return fee;
     }
   }

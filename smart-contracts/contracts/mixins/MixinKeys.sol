@@ -3,7 +3,6 @@
 pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 
 
 /**
@@ -16,8 +15,6 @@ import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 contract MixinKeys is
   MixinLockCore
 {
-  using SafeMathUpgradeable for uint;
-
   // The struct for a key
   struct Key {
     uint tokenId;
@@ -364,12 +361,12 @@ contract MixinKeys is
     bool validKey = getHasValidKey(tokenOwner);
     if(_addTime) {
       if(validKey) {
-        key.expirationTimestamp = formerTimestamp.add(_deltaT);
+        key.expirationTimestamp = formerTimestamp + _deltaT;
       } else {
-        key.expirationTimestamp = block.timestamp.add(_deltaT);
+        key.expirationTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      key.expirationTimestamp = formerTimestamp.sub(_deltaT);
+      key.expirationTimestamp = formerTimestamp - _deltaT;
     }
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }
