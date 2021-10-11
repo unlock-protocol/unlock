@@ -36,10 +36,13 @@ library UnlockUtils {
       j /= 10;
     }
     bytes memory bstr = new bytes(len);
-    uint k = len - 1;
+    uint k = len;
     while (c != 0) {
-      bstr[k--] = bytes1(uint8(48 + c % 10));
-      c /= 10;
+        k = k-1;
+        uint8 temp = (48 + uint8(c - c / 10 * 10));
+        bytes1 b1 = bytes1(temp);
+        bstr[k] = b1;
+        c /= 10;
     }
     return string(bstr);
   }
