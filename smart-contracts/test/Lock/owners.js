@@ -8,7 +8,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
 
-const { VM_ERROR_INVALID_OPCODE } = errorMessages
+const { VM_ERROR_REVERT_UNKNOWN } = errorMessages
 
 let lock
 let locks
@@ -66,7 +66,10 @@ contract('Lock / owners', (accounts) => {
   })
 
   it('should fail to access to an individual key owner when out of bounds', async () => {
-    await truffleAssert.fails(lock.owners.call(6), VM_ERROR_INVALID_OPCODE)
+    await truffleAssert.fails(
+      lock.owners.call(6),
+      'Transaction reverted without a reason string'
+    )
   })
 
   describe('after a transfer to a new address', () => {
