@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
@@ -20,7 +20,7 @@ import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
  */
 
 contract MixinTransfer is
-  MixinLockManagerRole,
+  MixinRoles,
   MixinFunds,
   MixinLockCore,
   MixinKeys

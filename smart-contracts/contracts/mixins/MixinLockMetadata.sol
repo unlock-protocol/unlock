@@ -7,7 +7,7 @@ import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpg
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 
 /**
  * @title Mixin for metadata about the Lock.
@@ -17,7 +17,7 @@ import './MixinLockManagerRole.sol';
  */
 contract MixinLockMetadata is
   ERC165StorageUpgradeable,
-  MixinLockManagerRole,
+  MixinRoles,
   MixinLockCore,
   MixinKeys
 {

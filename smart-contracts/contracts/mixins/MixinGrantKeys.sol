@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import './MixinKeys.sol';
-import './MixinKeyGranterRole.sol';
+import './MixinRoles.sol';
 
 
 /**
@@ -13,7 +13,7 @@ import './MixinKeyGranterRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinGrantKeys is
-  MixinKeyGranterRole,
+  MixinRoles,
   MixinKeys
 {
   /**

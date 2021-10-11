@@ -15,8 +15,7 @@ import './mixins/MixinLockMetadata.sol';
 import './mixins/MixinPurchase.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinTransfer.sol';
-import './mixins/MixinLockManagerRole.sol';
-import './mixins/MixinKeyGranterRole.sol';
+import './mixins/MixinRoles.sol';
 
 
 /**
@@ -29,8 +28,7 @@ import './mixins/MixinKeyGranterRole.sol';
 contract PublicLock is
   Initializable,
   ERC165StorageUpgradeable,
-  MixinLockManagerRole,
-  MixinKeyGranterRole,
+  MixinRoles,
   MixinFunds,
   MixinDisable,
   MixinLockCore,
@@ -58,8 +56,7 @@ contract PublicLock is
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRefunds._initializeMixinRefunds();
-    MixinLockManagerRole._initializeMixinLockManagerRole(_lockCreator);
-    MixinKeyGranterRole._initializeMixinKeyGranterRole(_lockCreator);
+    MixinRoles._initializeMixinRoles(_lockCreator);
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);

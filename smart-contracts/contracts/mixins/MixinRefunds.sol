@@ -5,12 +5,12 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 import './MixinFunds.sol';
 
 
 contract MixinRefunds is
-  MixinLockManagerRole,
+  MixinRoles,
   MixinFunds,
   MixinLockCore,
   MixinKeys
