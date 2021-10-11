@@ -5,6 +5,9 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { errorMessages } = require('../helpers/constants')
+
+const { HARDHAT_VM_ERROR } = errorMessages
 
 let unlock
 let lock
@@ -59,7 +62,7 @@ contract('Lock / transfer', (accounts) => {
 
       await reverts(
         lock.transfer(destination, 1, { from: singleKeyOwner }),
-        'SafeMath: subtraction overflow'
+        `${HARDHAT_VM_ERROR} reverted with panic code 0x11 (Arithmetic operation underflowed or overflowed outside of an unchecked block)`
       )
     })
   })

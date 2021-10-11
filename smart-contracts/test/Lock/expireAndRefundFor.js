@@ -95,7 +95,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
         lock.expireAndRefundFor(keyOwners[3], refundAmount, {
           from: keyOwners[3],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'MixinRoles: caller does not have the LockManager role'
       )
     })
 
@@ -104,7 +104,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
         lock.expireAndRefundFor(accounts[7], refundAmount, {
           from: keyOwners[3],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'MixinRoles: caller does not have the LockManager role'
       )
     })
 
