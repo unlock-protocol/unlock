@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 
 import './interfaces/IPublicLock.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
-import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
 import './mixins/MixinDisable.sol';
 import './mixins/MixinERC721Enumerable.sol';
 import './mixins/MixinFunds.sol';
@@ -27,9 +27,8 @@ import './mixins/MixinKeyGranterRole.sol';
  * https://eips.ethereum.org/EIPS/eip-721
  */
 contract PublicLock is
-  
   Initializable,
-  ERC165Upgradeable,
+  ERC165StorageUpgradeable,
   MixinLockManagerRole,
   MixinKeyGranterRole,
   MixinFunds,
@@ -63,7 +62,7 @@ contract PublicLock is
     MixinKeyGranterRole._initializeMixinKeyGranterRole(_lockCreator);
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
-    supportsInterface(0x80ac58cd);
+    _registerInterface(0x80ac58cd);
   }
 
   /**
@@ -84,8 +83,10 @@ contract PublicLock is
     view 
     virtual 
     override(
+      MixinERC721Enumerable,
+      MixinLockMetadata,
       AccessControlUpgradeable, 
-      ERC165Upgradeable
+      ERC165StorageUpgradeable
     ) 
     returns (bool) 
     {
