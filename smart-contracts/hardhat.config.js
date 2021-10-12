@@ -19,6 +19,9 @@ require('hardhat-storage-layout')
 // gas reporting for tests
 require('hardhat-gas-reporter')
 
+// test coverage
+require('solidity-coverage')
+
 // contract verification
 if (process.env.ETHERSCAN_API_KEY) {
   // eslint-disable-next-line global-require
