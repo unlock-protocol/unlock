@@ -19,3 +19,6 @@ deployments/localhost
 deployments/ganache
 contracts/proxy
 contracts/past-versions
+
+coverage
+coverage.json
