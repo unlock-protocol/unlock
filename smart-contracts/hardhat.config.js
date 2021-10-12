@@ -39,19 +39,7 @@ const settings = {
   },
 }
 
-// When running CI, we connect to the hardhat node container
-const testHost = process.env.CI === 'true' ? 'eth-node' : '127.0.0.1'
-const defaultNetworks = {
-  ganache: {
-    url: `http://${testHost}:8545`,
-    chainId: 1337,
-    accounts: {
-      mnemonic: 'hello unlock save the web',
-    },
-  },
-}
-
-const networks = getHardhatNetwork(defaultNetworks)
+const networks = getHardhatNetwork()
 
 // Etherscan api for verification
 const etherscan = process.env.ETHERSCAN_API_KEY
