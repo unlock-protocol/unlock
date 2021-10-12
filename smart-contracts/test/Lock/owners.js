@@ -6,9 +6,6 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
-const { errorMessages } = require('../helpers/constants')
-
-const { VM_ERROR_REVERT_UNKNOWN } = errorMessages
 
 let lock
 let locks

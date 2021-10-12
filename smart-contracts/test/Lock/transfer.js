@@ -1,4 +1,3 @@
-const { constants } = require('hardlydifficult-eth')
 const { reverts } = require('truffle-assertions')
 const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
