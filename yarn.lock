@@ -9382,6 +9382,7 @@ __metadata:
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
     bignumber.js: 9.0.1
+    debug: ^4.3.2
     eslint: 7.32.0
     eslint-plugin-mocha: 9.0.0
     eth-gas-reporter: 0.2.22
@@ -16759,7 +16760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4":
+"debug@npm:4, debug@npm:^4.3.2":
   version: 4.3.2
   resolution: "debug@npm:4.3.2"
   dependencies:

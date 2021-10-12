@@ -4,15 +4,17 @@ See [our docs](https://docs.unlock-protocol.com/developers/smart-contracts-archi
 
 ## Run locally
 
+Start hardhat node.
+
 ```
 yarn install
-npx hardhat node
+yarn run hardhat node
 ```
 
 Then you can deploy the contracts locally
 
 ```
-npx hardhat run scripts/deploy.js
+yarn run hardhat deploy
 ```
 
 ### Run the tests
@@ -54,27 +56,19 @@ Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skippe
 
 ### Setup networks
 
-To set up a network for deployment, you need 2 things
+To set up a network for deployment, change `networks.js` to add your networks and/or change the provider used (defaults might be slower/rate limited).
 
-1. create a plain text mnemonic file containing the words `mnemonic.<NETWORK NAME>`
+### Setup account
 
-2. export the provider url to your shell env
-
-#### Example : Rinkeby
+You can create a "global" `accounts.js` that will be used for all networks or customize each network by using `accounts.<NETWORK NAME>.js`.
+The format of the file is:
 
 ```
-# store menmonic words in file
-cat mnemonic.rinkeby
-
 module.exports = {
-  mnemonic: "blah blah...",
-  initialIndex: 2
+  mnemonic: 'test test test test test test test test test test test junk',
+  initialIndex: 0,
 }
-
-# export Alchemy/Infura URL
-export RINKEBY_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>
 ```
-
 ### Run the UDT contract upgrade
 
 Once your network are setup, you can run the UDT contract upgrade
@@ -125,7 +119,7 @@ yarn hardhat set:template --unlock-address <xxx> --public-lock-address <template
 You can setup an entire environment using
 
 ```
-yarn deploy-all 
+yarn deploy-all
 ```
 
 Or deploy different part separately

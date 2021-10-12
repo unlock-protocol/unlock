@@ -1,53 +1,30 @@
 /* eslint-disable global-require */
 const fs = require('fs')
+const resolve = require('path').resolve
+const debug = require('debug')
+const networksConfigs = require('../networks.js')
 
-const chains = {
-  rinkeby: 4,
-  ropsten: 3,
-  kovan: 42,
-  xdai: 100,
-  mainnet: 1,
-  polygon: 137,
-}
-
-const supportedNetworks = Object.keys(chains)
+const log = debug('hardhat:config')
 
 const getNetworkName = (chainId) => {
-  if (chainId === 31337) {
-    // for hardhat
-    return 'localhost'
-  }
-  if (chainId === 1337) {
-    return 'ganache'
-  }
-  const networkName = Object.keys(chains).find((k) => chains[k] === chainId)
+  const networkName = Object.keys(networksConfigs).find((name) => {
+    return networksConfigs[name].chainId === chainId
+  })
   if (!networkName) throw new Error(`Network ${chainId} not supported.`)
-  return networkName
+  return networksConfigs[networkName].name
 }
-
-const checkErrors = (networkName) => {
-  if (!networkName || networkName === '') {
-    throw new Error('an ETH network name is required ')
-  }
-
-  if (!supportedNetworks.includes(networkName.toLowerCase())) {
-    throw new Error(`ETH network not supported : ${networkName}`)
-  }
-}
-
-const getProviderUrl = (networkName) => {
-  checkErrors(networkName)
-
-  if (networkName) {
-    const uri = process.env[`${networkName.toUpperCase()}_PROVIDER_URL`]
-    if (uri && uri !== '') {
-      return uri
-    }
-  }
-
-  return null
-}
-
+/**
+ * https://hardhat.org/hardhat-network/reference/#config
+ * Ether:
+ * + An object describing an HD wallet. This is the default. It can have any of the following fields:
+ *       - mnemonic: a 12 or 24 word mnemonic phrase as defined by BIP39. Default value: "test test test test test test test test test test test junk"
+ *       - initialIndex: The initial index to derive. Default value: 0.
+ *       - path: The HD parent of all the derived keys. Default value: "m/44'/60'/0'/0".
+ *       - count: The number of accounts to derive. Default value: 20.
+ *       - accountsBalance: string with the balance (in wei) assigned to every account derived. Default value: "10000000000000000000000" (10000 ETH).
+ * + An array of the initial accounts that the Hardhat Network will create. Each of them must be an object with privateKey and balance fields.
+ * @returns
+ */
 const getAccounts = (networkName) => {
   if (process.env.CI === 'true') {
     return {
@@ -56,54 +33,44 @@ const getAccounts = (networkName) => {
     }
   }
 
-  checkErrors(networkName)
-
-  if (networkName) {
-    const mnemonicFile = `./mnemonic.${networkName.toLowerCase()}`
-    // get account from file
-    if (fs.existsSync(mnemonicFile)) {
-      // eslint-disable-next-line import/no-dynamic-require
-      const mnemonic = require(`../${mnemonicFile}`)
-      if (mnemonic) {
-        return mnemonic
-      }
-    } else {
-      throw new Error(`Missing mnemonic file: ${mnemonicFile}`)
+  const networkAccountsFile = resolve(`./accounts.${networkName}.js`)
+  if (fs.existsSync(networkAccountsFile)) {
+    // eslint-disable-next-line import/no-dynamic-require
+    const accounts = require(networkAccountsFile)
+    if (accounts) {
+      return accounts
     }
   }
-  return {
-    mnemonic: 'test test test test test test test test test test test junk',
-    initialIndex: 0,
+
+  const accountsFile = resolve('./accounts.js')
+  if (fs.existsSync(accountsFile)) {
+    log(
+      `No ${networkAccountsFile} file. Trying with the default one: ${accountsFile}.`
+    )
+    // eslint-disable-next-line import/no-dynamic-require
+    const accounts = require(accountsFile)
+    if (accounts) {
+      return accounts
+    }
   }
+
+  throw new Error(
+    `Missing accounts file: '${accountsFile}'. Please create it with an 'accounts' value from https://hardhat.org/hardhat-network/reference/#config`
+  )
 }
 
-// parse additional networks and accounts
-const getHardhatNetwork = (_networks) => {
-  const networks = _networks || {}
-  supportedNetworks.forEach((net) => {
-    try {
-      const url = getProviderUrl(net)
-      const accounts = getAccounts(net)
-
-      if (accounts && url) {
-        networks[net] = {
-          url,
-          accounts,
-        }
-        // eslint-disable-next-line no-console
-        console.log(`Added config for ${net}.`)
-      }
-    } catch (error) {
-      // console.error(error.message)
-      // console.log(`skipped.`)
+const getHardhatNetwork = () => {
+  const networks = {}
+  Object.keys(networksConfigs).forEach((name) => {
+    networks[name] = {
+      ...networksConfigs[name],
+      accounts: getAccounts(name),
     }
   })
   return networks
 }
 
 module.exports = {
-  supportedNetworks,
-  getProviderUrl,
   getNetworkName,
   getHardhatNetwork,
 }
