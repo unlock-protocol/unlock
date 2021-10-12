@@ -14,6 +14,7 @@ import './mixins/MixinLockMetadata.sol';
 import './mixins/MixinPurchase.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinTransfer.sol';
+import './mixins/MixinSignatures.sol';
 import './mixins/MixinLockManagerRole.sol';
 import './mixins/MixinKeyGranterRole.sol';
 
@@ -31,6 +32,7 @@ contract PublicLock is
   ERC165,
   MixinLockManagerRole,
   MixinKeyGranterRole,
+  MixinSignatures,
   MixinFunds,
   MixinDisable,
   MixinLockCore,

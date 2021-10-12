@@ -121,15 +121,7 @@ contract MixinLockCore is
   ) external
     onlyLockManagerOrBeneficiary
   {
-
-    // get balance
-    uint balance;
-    if(_tokenAddress == address(0)) {
-      balance = address(this).balance;
-    } else {
-      balance = IERC20(_tokenAddress).balanceOf(address(this));
-    }
-
+    uint balance = getBalance(_tokenAddress, address(this));
     uint amount;
     if(_amount == 0 || _amount > balance)
     {
