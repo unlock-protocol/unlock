@@ -20,7 +20,7 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-const versionsCount = 10
+const versionsCount = 9
 let unlock
 
 contract('Unlock / upgrades', async (accounts) => {
@@ -180,17 +180,10 @@ contract('Unlock / upgrades', async (accounts) => {
             it('PublicLock version is set', async () => {
               if (versionNumber >= 1) {
                 // Version numbers were introduced to PublicLock with v1
-                const templateVersion = await lock.publicLockVersion()
-                const version =
-                  typeof templateVersion !== 'number'
-                    ? templateVersion.toNumber()
-                    : templateVersion
-                if (versionNumber === 2) {
+                const version = await lock.publicLockVersion()
+                if (versionNumber == 2) {
                   // version 2 had a bug: we forgot to bump the lock version
                   assert.equal(version, 1)
-                } else if (versionNumber === 9) {
-                  // unlock 9 uses lock 8
-                  assert.equal(version, 8)
                 } else {
                   assert.equal(version, versionNumber)
                 }
