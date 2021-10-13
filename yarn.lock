@@ -9297,7 +9297,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -9571,16 +9571,8 @@ __metadata:
     "@openzeppelin/upgrades-core": 1.9.2
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
+    "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/unlock-abi-0": 1.0.4
-    "@unlock-protocol/unlock-abi-1": 1.0.0
-    "@unlock-protocol/unlock-abi-2": 1.0.0
-    "@unlock-protocol/unlock-abi-3": 1.0.0
-    "@unlock-protocol/unlock-abi-4": 1.1.1
-    "@unlock-protocol/unlock-abi-5": 1.0.4
-    "@unlock-protocol/unlock-abi-6": 1.0.2
-    "@unlock-protocol/unlock-abi-7": 1.0.3
-    "@unlock-protocol/unlock-abi-8": 1.0.0
     babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
@@ -9639,25 +9631,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-0@1.0.4, @unlock-protocol/unlock-abi-0@workspace:packages/contracts/deprec/V0":
+"@unlock-protocol/unlock-abi-0@workspace:packages/contracts/deprec/V0":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-0@workspace:packages/contracts/deprec/V0"
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-1@1.0.0, @unlock-protocol/unlock-abi-1@workspace:packages/contracts/deprec/V1":
+"@unlock-protocol/unlock-abi-1@workspace:packages/contracts/deprec/V1":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-1@workspace:packages/contracts/deprec/V1"
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-2@1.0.0, @unlock-protocol/unlock-abi-2@workspace:packages/contracts/deprec/V2":
+"@unlock-protocol/unlock-abi-2@workspace:packages/contracts/deprec/V2":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-2@workspace:packages/contracts/deprec/V2"
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-3@1.0.0, @unlock-protocol/unlock-abi-3@workspace:packages/contracts/deprec/V3":
+"@unlock-protocol/unlock-abi-3@workspace:packages/contracts/deprec/V3":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-3@workspace:packages/contracts/deprec/V3"
   languageName: unknown
@@ -9669,7 +9661,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-5@1.0.4, @unlock-protocol/unlock-abi-5@workspace:packages/contracts/deprec/V5":
+"@unlock-protocol/unlock-abi-5@workspace:packages/contracts/deprec/V5":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-5@workspace:packages/contracts/deprec/V5"
   languageName: unknown
