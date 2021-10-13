@@ -1,1 +1,0 @@
-These packages were used to publish successive version sof the ABIs. They are now replace by `@unlock-protocol/contracts`
