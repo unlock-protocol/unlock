@@ -21,6 +21,9 @@ YOU CAN ADD MULTIPLE LOCKS IF YOU WISH
 - Set the messimistic feature
 - If you want to collect metadata from your customers you can add multiple of them. 
 
-# Please visit this link for the example 
+# Sample embedded code in html: 
+[test.html](https://github.com/ManyRios/unlock/blob/paywall-js/paywall/paywallconfig/test.html)
+
+# Please visit this link for the final form 
 
 [Paywall Config Example](https://unlock-paywall-config.vercel.app/)
