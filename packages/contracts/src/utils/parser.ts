@@ -27,23 +27,22 @@ const parseExports = async (folderName : String) => {
     return exports
 }
 
-const main = async () => {
+async function main () {
     const folders = [
-        'PublicLock/abis',
-        'Unlock/abis',
-        'UnlockDiscountToken/abis',
+        'abis/PublicLock',
+        'abis/Unlock',
+        'abis/UnlockDiscountToken',
     ]
     
     const paths = await Promise.all(
         folders.map(async f => await parseExports(f))
     )
 
-    
     const exports = paths
         .flat()
         .map(abiPath => {
             const s = abiPath.split('/')
-            const contractName = s[1]
+            const contractName = s[2]
             const versionNumber = s[3].replace(contractName, '').replace('.json', '')            
             return {
                 contractName,
@@ -51,8 +50,10 @@ const main = async () => {
                 abiPath
             }
         })
-    
-    console.log('// This file is generated, please don\'t edit ')
+
+    console.log('// This file is generated, please don\'t edit directly')
+    console.log('// Refer to \'utils/parser.ts\' and \'yarn build:index\' for more\n')
+
     exports.forEach(({
         contractName,
         versionNumber,
@@ -65,7 +66,7 @@ const main = async () => {
         contractName,
         versionNumber
     }) => console.log(`export {${contractName}${versionNumber}}`))
-    // 
+    
 }
 
 main()

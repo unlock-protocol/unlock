@@ -5,13 +5,11 @@
 ```js
 
 // get latest
-import unlock from '@unlock-protocol/abis/Unlock'
-
-unlock.abi;
-unlock.address; // if available
+import unlock from '@unlock-protocol/contracts/abis/Unlock'
 
 // get previous versions
-import unlock from '@unlock-protocol/abis/UnlockV0'
+import unlock from '@unlock-protocol/contracts/abis/UnlockV0'
+import { UnlockV0 } from '@unlock-protocol/contracts'
 
 ```
 
