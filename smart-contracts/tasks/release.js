@@ -48,7 +48,7 @@ task('release', 'Release a new version of the contract')
 
     // write files
     const artifact = await hre.artifacts.readArtifact(contractName)
-    await fs.writeJSON(abiPath, artifact)
+    await fs.writeJSON(abiPath, artifact, { spaces: 2 })
 
     // eslint-disable-next-line no-console
     console.log(`Artifact for ${contractName} at: ${abiPath}`)
