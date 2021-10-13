@@ -12,6 +12,7 @@ jobs:
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
     parameters:
       service:
         description: "The sub-repository where the application should be tested"
@@ -24,25 +25,6 @@ jobs:
       - run:
           name: Running << parameters.service >> tests
           command: scripts/tests.sh << parameters.service >>
-
-  unlock-js-tests:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-      BLOCKTIME: 0
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
-      - run:
-          name: unlock-js tests
-          command: scripts/tests.sh unlock-js
-          no_output_timeout: 30m
-      - run:
-          name: Log failing tests
-          command: ./scripts/docker-compose-log.sh
-          when: on_fail
 
   locksmith-tests:
     executor: ubuntu_20-executor
@@ -122,7 +104,7 @@ jobs:
 
   deploy-locksmith-beanstalk:
     docker:
-      - image: circleci/python:3.9.6
+      - image: circleci/python:3.9.7
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
@@ -205,10 +187,12 @@ workflows:
   build-test-and-deploy:
     jobs:
       - locksmith-tests
-      - unlock-js-tests
       - run-tests:
-          name: "paywall-tests"
-          service: paywall
+          name: "unlock-js-tests"
+          service: packages/unlock-js
+      - run-tests:
+          name: "paywall-lib-tests"
+          service: packages/paywall
       - run-tests:
           name: "newsletter-tests"
           service: newsletter
@@ -232,7 +216,7 @@ workflows:
             - unlock-protocol-com-tests
             - unlock-app-tests
             - locksmith-tests
-            - paywall-tests
+            - paywall-lib-tests
             - wedlocks-tests
             - newsletter-tests
       - build-and-deploy-to-heroku:
@@ -250,7 +234,7 @@ workflows:
             - integration-tests
       - deploy-to-netlify:
           name: "deploy-paywall-netlify"
-          service: paywall
+          service: paywall-app
           requires:
             - integration-tests
       - deploy-paywall-aws:

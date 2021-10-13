@@ -6,7 +6,7 @@ ARG PORT=3000
 ##
 ## 1. get only needed packages
 ##
-FROM alpine:3.11 as manifests
+FROM alpine:3.14 as manifests
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
@@ -46,12 +46,16 @@ RUN mkdir -p /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
 
-# add yarn cache to speedup local builds
-ENV YARN_CACHE_FOLDER /home/unlock/yarn-cache
-
 # copy packages info
 COPY --chown=node --from=manifests /opt/manifests .
 COPY --chown=node .prettierrc /home/unlock/.
+
+# yarn config
+COPY --chown=node .yarn/ /home/unlock/.yarn/
+COPY --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
+
+# add yarn cache folder to be used by docker buildkit 
+RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml 
 
 # Setting user as root to handle apk install
 USER root
@@ -71,10 +75,12 @@ RUN apk add --no-cache --virtual .build-deps \
 
 # install deps
 USER node
-RUN mkdir /home/unlock/${BUILD_DIR}
+
+# attempt to create dir only for non-packages
+RUN if echo ${BUILD_DIR} | grep -q "packages" ; then echo "skipping"; else mkdir /home/unlock/${BUILD_DIR}; fi
+
 COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
-COPY --chown=node ${BUILD_DIR}/yarn.lock /home/unlock/${BUILD_DIR}/yarn.lock
-RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 SKIP_SERVICES=true yarn install
+RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
 
 # delete deps once packages are built
 USER root
@@ -86,8 +92,8 @@ RUN chown -R node:node /home/unlock/yarn-cache
 
 USER node
 
-# build required packages
-RUN yarn workspace @unlock-protocol/networks build
+# build all packages in packages/**
+RUN yarn build
 
 # copy scripts
 RUN mkdir /home/unlock/scripts
@@ -104,8 +110,11 @@ FROM dev as build
 ARG BUILD_DIR
 ARG PORT
 
-# additional build step
-RUN yarn workspace @unlock-protocol/$BUILD_DIR build
+# additional build step (nb: strip "packages/" to get worspace name)
+RUN yarn workspace @unlock-protocol/${BUILD_DIR/packages\/} build
+
+# package everything for prod
+RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
 
 ##
 ## 4. export a minimal image w only the prod app
@@ -122,28 +131,7 @@ RUN chown node:node /app
 WORKDIR /app
 
 # copy package info
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/package.json package.json
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/yarn.lock yarn.lock
-
-# delete dev deps (prevents yarn from fetching them)
-# add link: protocol workaround for yarn local links to work
-RUN apk add --no-cache --virtual .build-deps coreutils jq  \
-    && jq 'del(.devDependencies) | (.dependencies |= (with_entries(if .key == "@unlock-protocol/networks" then .key = "link:./packages/networks" else . end)))' package.json > package.json.tmp \
-    && mv package.json.tmp package.json \ 
-    && apk del .build-deps \
-    && chown node:node package.json
-
-
-# get local packages builds
-COPY --from=build --chown=node /home/unlock/packages packages
-
-# prod install 
-USER node
-ENV NODE_ENV production
-RUN yarn install --production --non-interactive --pure-lockfile
-
-# copy built files
-COPY --from=build --chown=node /home/unlock/$BUILD_DIR/build/ .
+COPY --from=build --chown=node /home/node/app .
 
 # start command
 EXPOSE $PORT
