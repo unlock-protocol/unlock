@@ -162,3 +162,15 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 > Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true
 > Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false
 ````
+
+## Release a new version of a contract
+
+1. Update the version number in the contract
+2. Fix relevant tests
+3. Create a PR mentioning the version bump
+4. Make you changes 
+5. Release the new versions of the contracts ABI with the following command
+
+```
+yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contracts/<Unlock|PublicLock>.sol
+```
