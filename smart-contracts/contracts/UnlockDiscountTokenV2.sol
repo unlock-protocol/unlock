@@ -20,6 +20,14 @@ ERC20VotesCompUpgradeable
   {
     ERC20MintableUpgradeable.initialize(_minter);
     ERC20DetailedUpgradeable.initialize('Unlock Discount Token', 'UDT', 18);
+    __ERC20Permit_init(name());
+  }
+
+  function initialize2() public {
+      require(_EIP712NameHash() == bytes32(0), "Already initialized: EIP712_init, ERC20Permit_init, ERC20Votes_init");
+      __EIP712_init_unsafe(name(), "1");
+      __ERC20Permit_init_unsafe(name());
+      __ERC20Votes_init_unsafe();
   }
 
   function name() public view override(IERC20MetadataUpgradeable, ERC20DetailedUpgradeable) returns (string memory) {
@@ -44,9 +52,5 @@ ERC20VotesCompUpgradeable
 
   function _afterTokenTransfer(address from, address to, uint256 amount) internal virtual override(ERC20Upgradeable, ERC20VotesUpgradeable) {
     return ERC20VotesUpgradeable._afterTokenTransfer(from, to, amount);
-  }
-
-  function burn(address account, uint256 amount) public {
-    _burn(account, amount);
   }
 }
