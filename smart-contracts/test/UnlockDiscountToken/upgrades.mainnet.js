@@ -1,4 +1,3 @@
-const { reverts } = require('truffle-assertions')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
@@ -41,6 +40,10 @@ const upgradeContract = async () => {
     method: 'hardhat_impersonateAccount',
     params: [signers[0]],
   })
+  // give some ETH
+  const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+  await network.provider.send('hardhat_setBalance', [signers[0], balance])
+
   const issuer = await ethers.getSigner(signers[0])
   const multisigIssuer = multisig.connect(issuer)
 
@@ -70,6 +73,13 @@ const upgradeContract = async () => {
         method: 'hardhat_impersonateAccount',
         params: [signerAddress],
       })
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [
+        signerAddress,
+        balance,
+      ])
 
       const signer = await ethers.getSigner(signerAddress)
 
@@ -244,7 +254,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert(executed)
     })
   })
-  /* 
+  /*
   describe('minting tokens', () => {
     let accounts
     let minter
