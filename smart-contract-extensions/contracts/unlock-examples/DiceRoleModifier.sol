@@ -12,7 +12,7 @@ contract DiceRoleModifier
   IPublicLockV9 public lock;
   event Roll(uint256 value);
 
-  constructor(IPublicLockV9 _lockAddress) public
+  constructor(IPublicLockV9 _lockAddress)
   {
     lock = _lockAddress;
   }

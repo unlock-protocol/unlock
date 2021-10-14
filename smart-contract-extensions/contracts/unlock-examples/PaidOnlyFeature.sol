@@ -18,7 +18,7 @@ contract PaidOnlyFeature
 
   // If the Lock's contract address is known when this is deployed
   // we can assign it in the constructor.
-  constructor(IPublicLockV9 _lockAddress) public
+  constructor(IPublicLockV9 _lockAddress)
   {
     lock = _lockAddress;
   }

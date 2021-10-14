@@ -18,7 +18,7 @@ contract ExternalRefund is LockRoles
     uint _amount
   );
 
-  constructor(IPublicLockV9 _lockAddress, uint256 _refundAmount, IERC20 _token) public
+  constructor(IPublicLockV9 _lockAddress, uint256 _refundAmount, IERC20 _token)
   {
     lock = _lockAddress;
     refundAmount = _refundAmount;

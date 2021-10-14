@@ -78,7 +78,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
     bytes calldata _data,
     uint /*minKeyPrice*/,
     uint /*pricePaid*/
-  ) external override
+  ) external view override
   {
     // Confirm `_to` (the new keyOwner)
     bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));

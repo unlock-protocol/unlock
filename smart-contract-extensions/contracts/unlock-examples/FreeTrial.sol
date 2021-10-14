@@ -13,7 +13,7 @@ contract FreeTrial
   IPublicLockV9 public lock;
   mapping(address => uint256) public accountLastUse;
 
-  constructor(IPublicLockV9 _lockAddress) public
+  constructor(IPublicLockV9 _lockAddress)
   {
     lock = _lockAddress;
   }
