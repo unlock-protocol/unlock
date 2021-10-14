@@ -2,6 +2,7 @@
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const copyFile = promisify(fs.copyFile)
 
@@ -11,6 +12,20 @@ module.exports = {
     // will fail to resolve .ts{x} files if we don't set the
     // resolvers.
     config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
+
+    // output the js lib
+    const unlockJSFile = require.resolve('@unlock-protocol/paywall')
+    config.plugins.push(
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: unlockJSFile,
+            to: join(__dirname, 'src/static/unlock.latest.min.js'),
+          },
+        ],
+      })
+    )
+
     return config
   },
   exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {

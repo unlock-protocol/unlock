@@ -26,3 +26,6 @@ tmp
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# output directly from package
+src/static/unlock.latest.min.js
