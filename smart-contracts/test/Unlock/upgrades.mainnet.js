@@ -1,4 +1,5 @@
 const { config, ethers, assert, network, upgrades } = require('hardhat')
+const { reverts } = require('truffle-assertions')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const multisigABI = require('../helpers/ABIs/multisig.json')
 const proxyABI = require('../helpers/ABIs/proxy.json')
