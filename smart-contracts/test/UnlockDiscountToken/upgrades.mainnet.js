@@ -1,3 +1,4 @@
+const { reverts } = require('truffle-assertions')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
