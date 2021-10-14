@@ -9297,7 +9297,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@^0.0.1, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -9533,8 +9533,8 @@ __metadata:
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 4.32.0
     "@typescript-eslint/parser": 4.32.0
+    "@unlock-protocol/contracts": ^0.0.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/unlock-abi-7": 1.0.3
     babel-eslint: 10.1.0
     bignumber.js: 9.0.1
     chai: 4.3.4
@@ -9673,7 +9673,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-7@1.0.3, @unlock-protocol/unlock-abi-7@workspace:packages/contracts/deprec/V7":
+"@unlock-protocol/unlock-abi-7@workspace:packages/contracts/deprec/V7":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-7@workspace:packages/contracts/deprec/V7"
   languageName: unknown
