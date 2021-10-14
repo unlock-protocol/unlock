@@ -8,7 +8,7 @@ pragma solidity >=0.5.17 <0.9.0;
  */
 
 
-interface IPublicLock
+interface IPublicLockV9
 {
 
 // See indentationissue description here:

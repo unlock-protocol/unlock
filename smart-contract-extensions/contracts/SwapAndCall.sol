@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/security/Pausable.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
-import 'hardlydifficult-eth/contracts/proxies/CallContract.sol';
+import './utils/CallContract.sol';
 import './TokenSpender.sol';
 
 /**

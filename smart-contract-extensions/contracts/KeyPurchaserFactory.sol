@@ -2,8 +2,8 @@
 pragma solidity 0.8.2;
 
 import './KeyPurchaser.sol';
-import 'hardlydifficult-eth/contracts/proxies/Clone2Factory.sol';
-import 'hardlydifficult-eth/contracts/proxies/Clone2Probe.sol';
+import './utils/Clone2Factory.sol';
+import './utils/Clone2Probe.sol';
 import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 
 /**
