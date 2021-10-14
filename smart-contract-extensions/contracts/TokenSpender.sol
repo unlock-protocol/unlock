@@ -24,7 +24,7 @@ contract TokenSpender
    */
   address public supportedContract;
 
-  constructor() public
+  constructor()
   {
     supportedContract = msg.sender;
   }

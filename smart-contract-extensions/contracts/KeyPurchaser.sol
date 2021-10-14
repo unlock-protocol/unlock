@@ -141,7 +141,7 @@ contract KeyPurchaser is Initializable, LockRoles
     IERC20 token = IERC20(lock.tokenAddress());
     if(address(token) != address(0))
     {
-      token.approve(address(lock), uint(-1));
+      token.approve(address(lock), type(uint).max);
     }
   }
 
@@ -188,10 +188,10 @@ contract KeyPurchaser is Initializable, LockRoles
     uint lastPurchase = timestampOfLastPurchase[_recipient];
     // `now` must be strictly larger than the timestamp of the last block
     // so now - lastPurchase is always >= 1
-    require(now - lastPurchase >= renewMinFrequency, 'BEFORE_MIN_FREQUENCY');
+    require(block.timestamp - lastPurchase >= renewMinFrequency, 'BEFORE_MIN_FREQUENCY');
 
     uint expiration = lock.keyExpirationTimestampFor(_recipient);
-    require(expiration <= now || expiration - now <= renewWindow, 'OUTSIDE_RENEW_WINDOW');
+    require(expiration <= block.timestamp || expiration - block.timestamp <= renewWindow, 'OUTSIDE_RENEW_WINDOW');
 
     purchasePrice = lock.purchasePriceFor(_recipient, _referrer, _data);
     require(purchasePrice <= maxPurchasePrice, 'PRICE_TOO_HIGH');
@@ -256,7 +256,7 @@ contract KeyPurchaser is Initializable, LockRoles
     }
 
     lock.purchase(keyPrice, _recipient, _referrer, _data);
-    timestampOfLastPurchase[_recipient] = now;
+    timestampOfLastPurchase[_recipient] = block.timestamp;
 
     // RE events: it's not clear emitting an event adds value over the ones from purchase and the token transfer
   }

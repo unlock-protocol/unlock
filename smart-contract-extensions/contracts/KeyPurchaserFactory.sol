@@ -29,7 +29,7 @@ contract KeyPurchaserFactory
    */
   mapping(address => address[]) public lockToKeyPurchasers;
 
-  constructor() public
+  constructor()
   {
     keyPurchaserTemplate = address(new KeyPurchaser());
   }
