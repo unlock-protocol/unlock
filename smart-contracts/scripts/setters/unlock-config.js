@@ -9,15 +9,21 @@ async function main({
 }) {
   if (!unlockAddress) {
     // eslint-disable-next-line no-console
-    throw new Error('UNLOCK CONFIG > Missing Unlock address... aborting.')
+    throw new Error(
+      'UNLOCK CONFIG > Missing Unlock address... aborting. Please use --unlock-address'
+    )
   }
   if (!wethAddress) {
     // eslint-disable-next-line no-console
-    throw new Error('UNLOCK CONFIG > Missing WETH address... aborting.')
+    throw new Error(
+      'UNLOCK CONFIG > Missing WETH address... aborting. Please use --weth-address'
+    )
   }
   if (!udtAddress) {
     // eslint-disable-next-line no-console
-    throw new Error('UNLOCK CONFIG > Missing UDT address... aborting.')
+    throw new Error(
+      'UNLOCK CONFIG > Missing UDT address... aborting. Please use --udt-address'
+    )
   }
 
   const [deployer] = await ethers.getSigners()
@@ -34,8 +40,8 @@ async function main({
       udtAddress,
       wethAddress,
       estimatedGasForPurchase || 0,
-      'UDT',
-      locksmithURI || 'http://127.0.0.1:3000/api/key/',
+      'KEY',
+      locksmithURI || `http://127.0.0.1:3000/api/key/${chainId}/`,
       chainId
     )
 
