@@ -165,13 +165,6 @@ async function main({
         uniswapFactoryAddress,
       })
     }
-
-    // Add Oracle for UDT (note: Oracle is also used to compute GDP of non-native-currency locks)
-    await run('set:unlock-oracle', {
-      unlockAddress,
-      udtAddress,
-      oracleAddress,
-    })
   }
 
   // config unlock
@@ -182,6 +175,18 @@ async function main({
     estimatedGasForPurchase,
     locksmithURI,
   })
+
+  if (
+    udtAddress !== '0x0000000000000000000000000000000000000000' &&
+    oracleAddress
+  ) {
+    // Add Oracle for UDT (note: Oracle is also used to compute GDP of non-native-currency locks)
+    await run('set:unlock-oracle', {
+      unlockAddress,
+      udtAddress,
+      oracleAddress,
+    })
+  }
 }
 
 // execute as standalone
