@@ -17,7 +17,6 @@ const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf3991
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
 const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
 // helper function
 const upgradeContract = async () => {
@@ -276,120 +275,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert.isTrue(supplyAfter.eq(totalSupply))
     })
   })
-  /*
-  describe('minting tokens', () => {
-    let accounts
-    let minter
-    let referrer
-    let keyBuyer
-    let unlock
-    let lock
-    let initialBalance
-    let initialSupply
 
-    before(async () => {
-      accounts = await ethers.getSigners()
-      minter = accounts[1]
-      referrer = accounts[2]
-      keyBuyer = accounts[3]
-
-      const Unlock = await ethers.getContractFactory('Unlock', deployer)
-      unlock = Unlock.attach(UnlockContractAddress)
-
-      // upgrade contract
-      udt = await upgradeContract()
-      udt.connect(minter)
-
-      // create lock
-      const tx = await unlock.createLock(
-        Locks.FIRST.expirationDuration.toFixed(),
-        web3.utils.padLeft(0, 40),
-        Locks.FIRST.keyPrice.toFixed(),
-        Locks.FIRST.maxNumberOfKeys.toFixed(),
-        Locks.FIRST.lockName,
-        // This ensures that the salt is unique even if we deploy locks multiple times
-        ethers.utils.randomBytes(12)
-      )
-
-      const { events } = await tx.wait()
-      const evt = events.find((v) => v.event === 'NewLock')
-      const PublicLock = await ethers.getContractFactory('PublicLock')
-      lock = await PublicLock.attach(evt.args.newLockAddress)
-
-      // Purchase a valid key for the referrer
-      await lock.connect(referrer)
-      await lock.purchase(0, referrer.address, constants.ZERO_ADDRESS, [], {
-        value: await lock.keyPrice(),
-      })
-
-      const owner = await unlock.owner()
-      initialBalance = await udt.balanceOf(owner)
-      initialSupply = await udt.totalSupply()
-    })
-
-    it('referrer has 0 UDT to start', async () => {
-      const balance = await udt.balanceOf(referrer.address)
-      assert(balance.eq(0), `balance not null ${balance.toString()}`)
-    })
-
-    it('owner starts with some UDT', async () => {
-      assert.equal(
-        initialBalance.eq(0),
-        false,
-        `balance not null ${initialBalance.toString()}`
-      )
-    })
-
-    describe('mint by gas price', () => {
-      before(async () => {
-        // buy a key
-        lock.connect(keyBuyer)
-        await lock.purchase(0, keyBuyer.address, referrer.address, [], {
-          value: await lock.keyPrice(),
-        })
-      })
-
-      it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
-        assert.notEqual(actual.toString(), 0)
-      })
-
-      it('owner has earnt some UDT too', async () => {
-        const actual = await udt.balanceOf(await unlock.owner())
-        assert(actual.gt(initialBalance))
-      })
-
-      it('total supply changed', async () => {
-        const actual = await udt.totalSupply()
-        assert(actual.gt(initialSupply))
-      })
-    })
-
-    describe('mint capped by % growth', () => {
-      before(async () => {
-        lock.connect(keyBuyer)
-        await lock.purchase(0, keyBuyer.address, referrer.address, [], {
-          value: await lock.keyPrice(),
-        })
-      })
-
-      it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
-        assert.equal(actual.eq(0), false)
-      })
-
-      it('owner has earnt some UDT too', async () => {
-        const actual = await udt.balanceOf(await unlock.owner())
-        assert(actual.gt(initialBalance))
-      })
-
-      it('total supply changed', async () => {
-        const actual = await udt.totalSupply()
-        assert(actual.gt(initialSupply))
-      })
-    })
-  })
-*/
   describe('governance', () => {
     describe('Delegation', () => {
       it('delegation with balance', async () => {
@@ -424,12 +310,12 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         const [delegate, previousBalance, newBalance] = evtVotesChanges.args
 
         assert.equal(delegator, holder.address)
-        assert.equal(fromDelegate, ZERO_ADDRESS)
+        assert.equal(fromDelegate, holder.address)
         assert.equal(toDelegate, recipient.address)
 
-        assert.equal(delegate, recipient.address)
-        assert.equal(previousBalance, '0')
-        assert(newBalance.eq(supply))
+        assert.equal(delegate, holder.address)
+        assert.equal(newBalance.toString(), '0')
+        assert(previousBalance.eq(supply))
 
         assert(supply.eq(await udt.getCurrentVotes(recipient.address)))
         assert(
