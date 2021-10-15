@@ -37,7 +37,6 @@ const upgradeContract = async () => {
   const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
 
   const signers = await multisig.getOwners()
-  console.log(signers)
   await network.provider.request({
     method: 'hardhat_impersonateAccount',
     params: [signers[0]],
