@@ -95,7 +95,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
   let udt
   let deployer
 
-  before(async function setupMainnetForkTestEnv() {
+  beforeEach(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_MAINNET_FORK) {
       // all suite will be skipped
       this.skip()
