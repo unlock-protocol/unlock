@@ -255,6 +255,27 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert(executed)
     })
   })
+
+  describe('initialize2()', () => {
+    it('reset pastTotalSupply properly', async () => {
+      // upgrade contract
+      udt = await upgradeContract()
+
+      const blockNumber = await ethers.provider.getBlockNumber()
+      await time.advanceBlock()
+      const supplyBefore = await udt.getPastTotalSupply(blockNumber)
+
+      const tx = await udt.initialize2()
+      const receipt = await tx.wait()
+      await time.advanceBlock()
+
+      const supplyAfter = await udt.getPastTotalSupply(receipt.blockNumber)
+      assert.isTrue(supplyBefore.lt(supplyAfter))
+
+      const totalSupply = await udt.totalSupply()
+      assert.isTrue(supplyAfter.eq(totalSupply))
+    })
+  })
   /*
   describe('minting tokens', () => {
     let accounts
