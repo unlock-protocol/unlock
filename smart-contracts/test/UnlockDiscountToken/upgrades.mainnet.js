@@ -276,8 +276,6 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     })
 
     it('sets domain separator', async () => {
-      assert.equal(udt.DOMAIN_SEPARATOR, null)
-
       // upgrade contract
       udt = await upgradeContract()
 
