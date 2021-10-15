@@ -274,6 +274,26 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       const totalSupply = await udt.totalSupply()
       assert.isTrue(supplyAfter.eq(totalSupply))
     })
+
+    it('sets domain separator', async () => {
+      assert.equal(udt.DOMAIN_SEPARATOR, null)
+
+      // upgrade contract
+      udt = await upgradeContract()
+
+      const domainSeparatorBefore = await udt.DOMAIN_SEPARATOR()
+      assert.isTrue(domainSeparatorBefore.length !== 0)
+      const tx = await udt.initialize2()
+      await tx.wait()
+
+      const domainSeparatorAfter = await udt.DOMAIN_SEPARATOR()
+      assert.notEqual(domainSeparatorBefore, domainSeparatorAfter)
+      assert.isTrue(domainSeparatorAfter.length !== 0)
+      assert.equal(
+        domainSeparatorAfter,
+        '0x0dc4f0fce638778d2a5554eff74ade84b8b7ed5fedb8fb117b60b798fe94a4fe'
+      )
+    })
   })
 
   describe('governance', () => {
