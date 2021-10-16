@@ -516,22 +516,22 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       ).to.be.bignumber.equal('10000000000000000000000000')
       expect(
         await udt.getPastTotalSupply(t2.receipt.blockNumber)
-      ).to.be.bignumber.equal('9999999999999999999999990')
+      ).to.be.bignumber.equal('10000000000000000000000000')
       expect(
         await udt.getPastTotalSupply(t2.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('9999999999999999999999990')
+      ).to.be.bignumber.equal('10000000000000000000000000')
       expect(
         await udt.getPastTotalSupply(t3.receipt.blockNumber)
-      ).to.be.bignumber.equal('9999999999999999999999980')
+      ).to.be.bignumber.equal('10000000000000000000000000')
       expect(
         await udt.getPastTotalSupply(t3.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('9999999999999999999999980')
+      ).to.be.bignumber.equal('10000000000000000000000000')
       expect(
         await udt.getPastTotalSupply(t4.receipt.blockNumber)
-      ).to.be.bignumber.equal('10000000000000000000000000')
+      ).to.be.bignumber.equal('10000000000000000000000020')
       expect(
         await udt.getPastTotalSupply(t4.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000000')
+      ).to.be.bignumber.equal('10000000000000000000000020')
     })
   })
 })
