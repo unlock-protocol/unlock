@@ -281,6 +281,10 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
 
       const domainSeparatorBefore = await udt.DOMAIN_SEPARATOR()
       assert.isTrue(domainSeparatorBefore.length !== 0)
+      assert.equal(
+        domainSeparatorBefore,
+        '0x441b58d23170603d99a03316b633425cffa08ea4fd19bd4fa31bb12ff0c7113e'
+      )
       const tx = await udt.initialize2()
       await tx.wait()
 
@@ -291,6 +295,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         domainSeparatorAfter,
         '0x0dc4f0fce638778d2a5554eff74ade84b8b7ed5fedb8fb117b60b798fe94a4fe'
       )
+      assert.notEqual(domainSeparatorAfter, domainSeparatorBefore)
     })
   })
 
@@ -343,6 +348,131 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         assert(
           supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
         )
+      })
+
+      it.only('delegation by signature', async () => {
+        // make the upgrade
+        udt = await upgradeContract()
+        await udt.initialize2()
+
+        // Create a user
+        const delegator = ethers.Wallet.createRandom()
+
+        // We assume the first signer on the multisig has at least 1 token
+        const multisig = await ethers.getContractAt(
+          multisigABI,
+          multisigAddress
+        )
+
+        const [holderAddress] = await multisig.getOwners()
+        await network.provider.request({
+          method: 'hardhat_impersonateAccount',
+          params: [holderAddress],
+        })
+        const holder = await ethers.getSigner(holderAddress)
+
+        const balanceBefore = await udt.balanceOf(delegator.address)
+        assert.equal(balanceBefore, 0)
+
+        const delegateBefore = await udt.delegates(delegator.address)
+        assert.equal(delegateBefore, 0)
+
+        const votesHolderBefore = await udt.getCurrentVotes(holder.address)
+        assert.isTrue(votesHolderBefore.gt(0))
+
+        const balanceHolderBefore = await udt.balanceOf(holder.address)
+        assert.isTrue(balanceHolderBefore.gt(0))
+
+        // Transfer 1 token
+        udt = udt.connect(holder)
+        await udt.transfer(delegator.address, 1)
+
+        const balanceAfter = await udt.balanceOf(delegator.address)
+        assert.equal(balanceAfter, 1)
+
+        const domain = {
+          name: await udt.name(),
+          version: '1',
+          chainId: 1,
+          verifyingContract: udt.address,
+        }
+
+        const types = {
+          Delegation: [
+            { name: 'delegatee', type: 'address' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'expiry', type: 'uint256' },
+          ],
+        }
+
+        const delegatee = holder.address
+        const nonce = 0
+        const expiry = Math.floor(new Date().getTime())
+
+        const message = {
+          delegatee,
+          nonce,
+          expiry,
+        }
+
+        const signature = await delegator._signTypedData(domain, types, message)
+
+        // Let's now have the holder submit the
+        const { v, r, s } = ethers.utils.splitSignature(signature)
+        const tx = await udt.delegateBySig(delegatee, nonce, expiry, v, r, s)
+        const { events } = await tx.wait()
+
+        const evtDelegateChanged = events.find(
+          (v) => v.event === 'DelegateChanged'
+        )
+        expect(evtDelegateChanged.args).equal([
+          delegator.address,
+          '0x0000000000000000000000000000000000000000',
+          delegatee,
+        ])
+
+        const evtDelegateVotesChanged = events.find(
+          (v) => v.event === 'DelegateVotesChanged'
+        )
+        expect(evtDelegateVotesChanged.args).equal([holder.address, 0, 0])
+
+        const delegateAfter = await udt.delegates(delegator.address)
+        assert.equal(delegateAfter, delegatee)
+
+        const votesHolderAfter = await udt.getCurrentVotes(holder.address)
+        assert.isTrue(votesHolderAfter.gt(votesHolderBefore))
+
+        // Check that everything is fine!
+        // // delegate some votes
+        // const supply = await udt.balanceOf(holder.address)
+        // const [recipient] = await ethers.getSigners()
+        // const tx = await udt.delegate(recipient.address)
+        // const { events, blockNumber } = await tx.wait()
+
+        // const evtChanged = events.find((v) => v.event === 'DelegateChanged')
+        // const [delegator, fromDelegate, toDelegate] = evtChanged.args
+
+        // const evtVotesChanges = events.find(
+        //   (v) => v.event === 'DelegateVotesChanged'
+        // )
+        // const [delegate, previousBalance, newBalance] = evtVotesChanges.args
+
+        // assert.equal(delegator, holder.address)
+        // assert.equal(fromDelegate, holder.address)
+        // assert.equal(toDelegate, recipient.address)
+
+        // assert.equal(delegate, holder.address)
+        // assert.equal(newBalance.toString(), '0')
+        // assert(previousBalance.eq(supply))
+
+        // assert(supply.eq(await udt.getCurrentVotes(recipient.address)))
+        // assert(
+        //   (await udt.getPriorVotes(recipient.address, blockNumber - 1)).eq(0)
+        // )
+        // await time.advanceBlock()
+        // assert(
+        //   supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
+        // )
       })
     })
   })
