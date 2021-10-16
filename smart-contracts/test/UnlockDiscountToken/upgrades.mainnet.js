@@ -83,8 +83,8 @@ const upgradeContract = async () => {
 
       const signer = await ethers.getSigner(signerAddress)
 
-      const m = multisig.connect(signer)
-      await m.confirmTransaction(transactionId, { gasLimit: 1200000 })
+      await deployer.sendTransaction({ to: signerAddress, value: ethers.utils.parseEther('0.1') });
+      await multisig.connect(signer).confirmTransaction(transactionId, { gasLimit: 1200000 })
     })
   )
 
@@ -279,6 +279,13 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       // upgrade contract
       udt = await upgradeContract()
 
+      const expectedDomain = {
+        name:              await udt.name(),
+        version:           '1',
+        chainId:           await udt.provider.getNetwork().then(({ chainId }) => chainId),
+        verifyingContract: udt.address,
+      };
+
       const domainSeparatorBefore = await udt.DOMAIN_SEPARATOR()
       assert.isTrue(domainSeparatorBefore.length !== 0)
       assert.equal(
@@ -293,14 +300,14 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert.isTrue(domainSeparatorAfter.length !== 0)
       assert.equal(
         domainSeparatorAfter,
-        '0x0dc4f0fce638778d2a5554eff74ade84b8b7ed5fedb8fb117b60b798fe94a4fe'
+        ethers.utils._TypedDataEncoder.hashDomain(expectedDomain),
       )
       assert.notEqual(domainSeparatorAfter, domainSeparatorBefore)
     })
   })
 
   describe('transfers', () => {
-    it.only('should support transfer by permit', async () => {
+    it('should support transfer by permit', async () => {
       const [spender] = await ethers.getSigners()
 
       const permitter = ethers.Wallet.createRandom()
@@ -322,7 +329,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       const domain = {
         name: await udt.name(),
         version: '1',
-        chainId: 1,
+        chainId: await udt.provider.getNetwork().then(({ chainId }) => chainId),
         verifyingContract: udt.address,
       }
 
@@ -417,7 +424,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         )
       })
 
-      it.only('delegation by signature', async () => {
+      it('delegation by signature', async () => {
         // make the upgrade
         udt = await upgradeContract()
         await udt.initialize2()
@@ -460,7 +467,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         const domain = {
           name: await udt.name(),
           version: '1',
-          chainId: 1,
+          chainId: await udt.provider.getNetwork().then(({ chainId }) => chainId),
           verifyingContract: udt.address,
         }
 
