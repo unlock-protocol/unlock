@@ -48,7 +48,7 @@ Once you have mainnet running locally, you can run the relevant tests in another
 
 ```
 export RUN_MAINNET_FORK=1
-npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
+yarn hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
 ```
 
 Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
@@ -168,7 +168,7 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 1. Update the version number in the contract
 2. Fix relevant tests
 3. Create a PR mentioning the version bump
-4. Make you changes 
+4. Make you changes
 5. Release the new versions of the contracts ABI with the following command
 
 ```
