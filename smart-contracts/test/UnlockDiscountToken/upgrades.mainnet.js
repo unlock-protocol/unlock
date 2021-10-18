@@ -1,23 +1,17 @@
 const { reverts } = require('truffle-assertions')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const { errorMessages } = require('../helpers/constants')
 const multisigABI = require('../helpers/ABIs/multisig.json')
 const proxyABI = require('../helpers/ABIs/proxy.json')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
-// NB : this needs to be run against a mainnet fork using
-// import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
-const [UDTProxyInfo] =
-  OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/UnlockDiscountToken']
-const UDTProxyContractAddress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
-const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
+const UDTProxyContractAddress = '0x90DE74265a416e1393A450752175AED98fe11517'
+const proxyAdminAddress = '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
 const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
 // helper function
 const upgradeContract = async () => {
@@ -41,6 +35,10 @@ const upgradeContract = async () => {
     method: 'hardhat_impersonateAccount',
     params: [signers[0]],
   })
+  // give some ETH
+  const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+  await network.provider.send('hardhat_setBalance', [signers[0], balance])
+
   const issuer = await ethers.getSigner(signers[0])
   const multisigIssuer = multisig.connect(issuer)
 
@@ -70,6 +68,13 @@ const upgradeContract = async () => {
         method: 'hardhat_impersonateAccount',
         params: [signerAddress],
       })
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [
+        signerAddress,
+        balance,
+      ])
 
       const signer = await ethers.getSigner(signerAddress)
 
@@ -85,7 +90,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
   let udt
   let deployer
 
-  before(async function setupMainnetForkTestEnv() {
+  beforeEach(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_MAINNET_FORK) {
       // all suite will be skipped
       this.skip()
@@ -120,7 +125,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     // get UDT instance
     deployer = await ethers.getSigner(deployerAddress)
     const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountToken',
+      'UnlockDiscountTokenV2',
       deployer
     )
 
@@ -244,120 +249,128 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert(executed)
     })
   })
-  /* 
-  describe('minting tokens', () => {
-    let accounts
-    let minter
-    let referrer
-    let keyBuyer
-    let unlock
-    let lock
-    let initialBalance
-    let initialSupply
 
-    before(async () => {
-      accounts = await ethers.getSigners()
-      minter = accounts[1]
-      referrer = accounts[2]
-      keyBuyer = accounts[3]
+  describe('initialize2()', () => {
+    it('reset pastTotalSupply properly', async () => {
+      // upgrade contract
+      udt = await upgradeContract()
 
-      const Unlock = await ethers.getContractFactory('Unlock', deployer)
-      unlock = Unlock.attach(UnlockContractAddress)
+      const blockNumber = await ethers.provider.getBlockNumber()
+      await time.advanceBlock()
+      const supplyBefore = await udt.getPastTotalSupply(blockNumber)
+
+      const tx = await udt.initialize2()
+      const receipt = await tx.wait()
+      await time.advanceBlock()
+
+      const supplyAfter = await udt.getPastTotalSupply(receipt.blockNumber)
+      assert.isTrue(supplyBefore.lt(supplyAfter))
+
+      const totalSupply = await udt.totalSupply()
+      assert.isTrue(supplyAfter.eq(totalSupply))
+    })
+
+    it('sets domain separator', async () => {
+      const domainSeparatorBefore = await udt.DOMAIN_SEPARATOR()
+      assert.isTrue(domainSeparatorBefore.length !== 0)
+      // Note: Etherscan yields a different value, but Hardhat will still show a chain id of 31337 on mainnet forks, and this affects the DOMAIN_SEPARATOR
+      assert.equal(
+        domainSeparatorBefore,
+        '0x441b58d23170603d99a03316b633425cffa08ea4fd19bd4fa31bb12ff0c7113e'
+      )
 
       // upgrade contract
       udt = await upgradeContract()
-      udt.connect(minter)
 
-      // create lock
-      const tx = await unlock.createLock(
-        Locks.FIRST.expirationDuration.toFixed(),
-        web3.utils.padLeft(0, 40),
-        Locks.FIRST.keyPrice.toFixed(),
-        Locks.FIRST.maxNumberOfKeys.toFixed(),
-        Locks.FIRST.lockName,
-        // This ensures that the salt is unique even if we deploy locks multiple times
-        ethers.utils.randomBytes(12)
-      )
+      const expectedDomain = {
+        name: await udt.name(),
+        version: '1',
+        chainId: await udt.provider.getNetwork().then(({ chainId }) => chainId),
+        verifyingContract: udt.address,
+      }
 
-      const { events } = await tx.wait()
-      const evt = events.find((v) => v.event === 'NewLock')
-      const PublicLock = await ethers.getContractFactory('PublicLock')
-      lock = await PublicLock.attach(evt.args.newLockAddress)
+      const tx = await udt.initialize2()
+      await tx.wait()
 
-      // Purchase a valid key for the referrer
-      await lock.connect(referrer)
-      await lock.purchase(0, referrer.address, constants.ZERO_ADDRESS, [], {
-        value: await lock.keyPrice(),
-      })
-
-      const owner = await unlock.owner()
-      initialBalance = await udt.balanceOf(owner)
-      initialSupply = await udt.totalSupply()
-    })
-
-    it('referrer has 0 UDT to start', async () => {
-      const balance = await udt.balanceOf(referrer.address)
-      assert(balance.eq(0), `balance not null ${balance.toString()}`)
-    })
-
-    it('owner starts with some UDT', async () => {
+      const domainSeparatorAfter = await udt.DOMAIN_SEPARATOR()
+      assert.notEqual(domainSeparatorBefore, domainSeparatorAfter)
+      assert.isTrue(domainSeparatorAfter.length !== 0)
       assert.equal(
-        initialBalance.eq(0),
-        false,
-        `balance not null ${initialBalance.toString()}`
+        domainSeparatorAfter,
+        ethers.utils._TypedDataEncoder.hashDomain(expectedDomain)
       )
-    })
-
-    describe('mint by gas price', () => {
-      before(async () => {
-        // buy a key
-        lock.connect(keyBuyer)
-        await lock.purchase(0, keyBuyer.address, referrer.address, [], {
-          value: await lock.keyPrice(),
-        })
-      })
-
-      it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
-        assert.notEqual(actual.toString(), 0)
-      })
-
-      it('owner has earnt some UDT too', async () => {
-        const actual = await udt.balanceOf(await unlock.owner())
-        assert(actual.gt(initialBalance))
-      })
-
-      it('total supply changed', async () => {
-        const actual = await udt.totalSupply()
-        assert(actual.gt(initialSupply))
-      })
-    })
-
-    describe('mint capped by % growth', () => {
-      before(async () => {
-        lock.connect(keyBuyer)
-        await lock.purchase(0, keyBuyer.address, referrer.address, [], {
-          value: await lock.keyPrice(),
-        })
-      })
-
-      it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
-        assert.equal(actual.eq(0), false)
-      })
-
-      it('owner has earnt some UDT too', async () => {
-        const actual = await udt.balanceOf(await unlock.owner())
-        assert(actual.gt(initialBalance))
-      })
-
-      it('total supply changed', async () => {
-        const actual = await udt.totalSupply()
-        assert(actual.gt(initialSupply))
-      })
+      assert.notEqual(domainSeparatorAfter, domainSeparatorBefore)
     })
   })
-*/
+
+  describe('transfers', () => {
+    it('should support transfer by permit', async () => {
+      const [spender] = await ethers.getSigners()
+
+      const permitter = ethers.Wallet.createRandom()
+
+      udt = await upgradeContract()
+      await udt.initialize2()
+      udt = udt.connect(spender)
+
+      // Check approval
+      const approvedAmountBefore = await udt
+        .connect(spender)
+        .allowance(spender.address, permitter.address)
+      assert.equal(approvedAmountBefore, 0)
+
+      const value = 1
+      const deadline = Math.floor(new Date().getTime()) + 60 * 60 * 24
+      const { chainId } = await ethers.provider.getNetwork()
+      const nonce = await udt.nonces(permitter.address)
+
+      const domain = {
+        name: await udt.name(),
+        version: '1',
+        chainId,
+        verifyingContract: udt.address,
+      }
+
+      const types = {
+        Permit: [
+          { name: 'owner', type: 'address' },
+          { name: 'spender', type: 'address' },
+          { name: 'value', type: 'uint256' },
+          { name: 'nonce', type: 'uint256' },
+          { name: 'deadline', type: 'uint256' },
+        ],
+      }
+
+      const message = {
+        owner: permitter.address,
+        spender: spender.address,
+        value,
+        nonce,
+        deadline,
+      }
+
+      const signature = await permitter._signTypedData(domain, types, message)
+
+      // Let's now have the holder submit the
+      const { v, r, s } = ethers.utils.splitSignature(signature)
+
+      const tx = await udt.permit(
+        permitter.address,
+        spender.address,
+        value,
+        deadline,
+        v,
+        r,
+        s
+      )
+      const { events } = await tx.wait()
+      const evtApproval = events.find((v) => v.event === 'Approval')
+      assert.equal(evtApproval.args.owner, permitter.address)
+      assert.equal(evtApproval.args.spender, spender.address)
+      assert.isTrue(evtApproval.args.value.eq(value))
+    })
+  })
+
   describe('governance', () => {
     describe('Delegation', () => {
       it('delegation with balance', async () => {
@@ -392,12 +405,12 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         const [delegate, previousBalance, newBalance] = evtVotesChanges.args
 
         assert.equal(delegator, holder.address)
-        assert.equal(fromDelegate, ZERO_ADDRESS)
+        assert.equal(fromDelegate, holder.address)
         assert.equal(toDelegate, recipient.address)
 
-        assert.equal(delegate, recipient.address)
-        assert.equal(previousBalance, '0')
-        assert(newBalance.eq(supply))
+        assert.equal(delegate, holder.address)
+        assert.equal(newBalance.toString(), '0')
+        assert(previousBalance.eq(supply))
 
         assert(supply.eq(await udt.getCurrentVotes(recipient.address)))
         assert(
@@ -407,6 +420,110 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         assert(
           supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
         )
+      })
+
+      it('delegation by signature', async () => {
+        // make the upgrade
+        udt = await upgradeContract()
+        await udt.initialize2()
+
+        // Create a user
+        const delegator = ethers.Wallet.createRandom()
+
+        // We assume the first signer on the multisig has at least 1 token
+        const multisig = await ethers.getContractAt(
+          multisigABI,
+          multisigAddress
+        )
+
+        const [holderAddress] = await multisig.getOwners()
+        await network.provider.request({
+          method: 'hardhat_impersonateAccount',
+          params: [holderAddress],
+        })
+        const holder = await ethers.getSigner(holderAddress)
+
+        const balanceBefore = await udt.balanceOf(delegator.address)
+        assert.equal(balanceBefore, 0)
+
+        const delegateBefore = await udt.delegates(delegator.address)
+        assert.equal(delegateBefore, 0)
+
+        const votesHolderBefore = await udt.getCurrentVotes(holder.address)
+        assert.isTrue(votesHolderBefore.gt(0))
+
+        const balanceHolderBefore = await udt.balanceOf(holder.address)
+        assert.isTrue(balanceHolderBefore.gt(0))
+
+        // Transfer 1 token
+        udt = udt.connect(holder)
+        await udt.transfer(delegator.address, 1)
+
+        const balanceAfter = await udt.balanceOf(delegator.address)
+        assert.equal(balanceAfter, 1)
+
+        const { chainId } = await ethers.provider.getNetwork()
+
+        const domain = {
+          name: await udt.name(),
+          version: '1',
+          chainId,
+          verifyingContract: udt.address,
+        }
+
+        const types = {
+          Delegation: [
+            { name: 'delegatee', type: 'address' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'expiry', type: 'uint256' },
+          ],
+        }
+
+        const delegatee = holder.address
+        const nonce = 0
+        const expiry = Math.floor(new Date().getTime()) + 60 * 60 * 24 // 1 day
+
+        const message = {
+          delegatee,
+          nonce,
+          expiry,
+        }
+
+        const signature = await delegator._signTypedData(domain, types, message)
+
+        // Let's now have the holder submit the
+        const { v, r, s } = ethers.utils.splitSignature(signature)
+        const tx = await udt.delegateBySig(delegatee, nonce, expiry, v, r, s)
+        const { events } = await tx.wait()
+
+        const evtDelegateChanged = events.find(
+          (v) => v.event === 'DelegateChanged'
+        )
+        assert.equal(evtDelegateChanged.args.delegator, delegator.address)
+        assert.equal(
+          evtDelegateChanged.args.fromDelegate,
+          ethers.constants.AddressZero
+        )
+        assert.equal(evtDelegateChanged.args.toDelegate, holder.address)
+
+        const evtDelegateVotesChanged = events.find(
+          (v) => v.event === 'DelegateVotesChanged'
+        )
+        assert.equal(evtDelegateVotesChanged.args.delegate, holder.address)
+        assert.isTrue(
+          evtDelegateVotesChanged.args.previousBalance.eq(
+            votesHolderBefore.sub(1)
+          )
+        )
+        assert.isTrue(
+          evtDelegateVotesChanged.args.newBalance.eq(votesHolderBefore)
+        )
+
+        const delegateAfter = await udt.delegates(delegator.address)
+        assert.equal(delegateAfter, delegatee)
+
+        const votesHolderAfter = await udt.getCurrentVotes(holder.address)
+        assert.isTrue(votesHolderAfter.eq(votesHolderBefore))
       })
     })
   })
