@@ -5060,6 +5060,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/contracts-ethereum-package@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@openzeppelin/contracts-ethereum-package@npm:3.0.0"
+  checksum: b7a5bc986eb96b0d9e929f9bcbdc0a9f406cc772e4c97a373d02adfc58431672fb1e46e31fd04f615760ad97babc962490b1f16ecca4fb99c5679ca82e8a8d40
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/contracts-upgradeable@npm:4.3.2":
   version: 4.3.2
   resolution: "@openzeppelin/contracts-upgradeable@npm:4.3.2"
@@ -9564,7 +9571,7 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.2
     "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts-ethereum-package": 2.5.0
+    "@openzeppelin/contracts-ethereum-package": 3.0.0
     "@openzeppelin/contracts-upgradeable": 4.3.2
     "@openzeppelin/hardhat-upgrades": 1.10.0
     "@openzeppelin/test-helpers": 0.5.13
