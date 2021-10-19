@@ -54,7 +54,7 @@ YOU CAN ADD MULTIPLE LOCKS IF YOU WISH
 - Add a valid URL image for your icon
 - Set a message for your customers 
 - Add a referrer Code 
-- Set the messimistic feature
+- Set the pessimistic feature
 - If you want to collect metadata from your customers you can add multiple of them. 
 
 
