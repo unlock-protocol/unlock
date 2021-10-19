@@ -16,7 +16,8 @@ const getProxyAddress = async function getProxyAddress(chainId, contractName) {
   // get proxy address from deprec OpenZeppelin CLI migration data
   // see https://docs.openzeppelin.com/upgrades-plugins/1.x/migrate-from-cli
   const { proxies } = OZ_SDK_EXPORT.networks[networkName]
-  const deployedInstance = proxies[`unlock-protocol/${contractName}`]
+  const deployedInstance =
+    proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
 
   return deployedInstance.address
 }
