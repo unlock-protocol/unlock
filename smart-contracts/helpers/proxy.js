@@ -13,8 +13,8 @@ const getProxyAddress = function getProxyAddress(chainId, contractName) {
   }
 
   const { proxies } = OZ_SDK_EXPORT.networks[networkName]
-  const { address } =
-    proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
+  const [proxy] = proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
+  const { address } = proxy
 
   if (!address) {
     throw new Error(
