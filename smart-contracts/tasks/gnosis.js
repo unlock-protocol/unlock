@@ -5,6 +5,6 @@ task('gnosis:create', 'Create a Gnosis safe from a list of owners')
   .addOptionalParam('threshold', 'threshold for majority vote', '1')
   .setAction(async ({ owners, threshold }) => {
     // eslint-disable-next-line global-require
-    const gnosisDeployer = require('../scripts/gnosis/create')
+    const gnosisDeployer = require('../scripts/multisig/create')
     return await gnosisDeployer({ owners, threshold })
   })
