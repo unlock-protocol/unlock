@@ -8,7 +8,8 @@ import {
   Button,
 } from "react-bootstrap";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
-import { initialValues, networks, labels, genJson, genUrl, validateField } from "./config";
+//import networks from '@unlock-protocol/networks'
+import { initialValues, networks, labels, genJson, genUrl, validateField, calltoAction } from "./config";
 
 const Forms = (props) => {
   const [show, setShow] = useState();//state for modal window
@@ -78,7 +79,7 @@ const Forms = (props) => {
                                 type="radio"
                                 name={`locks.${index}.network`}
                                 id="gridRadios"
-                                value={i.toString()}
+                                value={i}
                               />
                               <label
                                 className="form-check-label"
@@ -137,7 +138,7 @@ const Forms = (props) => {
                       variant={"secondary"}
                       className="mb-3"
                       onClick={() =>
-                        push({ name: "", address: "", network: "1" })
+                        push({ name: "", address: "", network: 1 })
                       }
                     >
                       Add more locks
@@ -156,6 +157,20 @@ const Forms = (props) => {
                   />
                 </div>
               ))}
+              <div className="form-group border p-2 mt-2">
+                <label htmlFor="">Set a Message to your buyers(optional):</label>
+                {Object.keys(calltoAction).map((i) => (
+                  <div clasName="form-group " key={i}>
+                    <label htmlFor="" className="text-capitalize">{`${i}:`}</label>
+                    <Field
+                      name={`calltoAction.${i}`}
+                      className="form-control"
+                      type="text"
+                      placeholder={ i === "default" ? "Please Join this membership" : ""}
+                    />
+                  </div>
+                ))}
+              </div>
 
               <div className="form-group">
                 <label htmlFor="pessimistic">
@@ -195,7 +210,7 @@ const Forms = (props) => {
                   </div>
                 ))}
               </div>
-              <Row className="form-group mt-3">
+              <Row className="form-group mt-3 border ">
                 <label htmlFor="" className="mb-1">
                   <h6>Meta Inputs(optional)</h6>
                 </label>
