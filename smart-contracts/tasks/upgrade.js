@@ -119,3 +119,38 @@ task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
       implementation,
     })
   })
+
+/**
+ *
+ * ex. UDT on mainnet
+ * yarn hardhat propose-upgrade --proxy-address 0x90DE74265a416e1393A450752175AED98fe11517 \
+ * --implementation xxx
+ *
+ */
+
+task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
+  .addParam('contract', 'The contract path')
+  .addParam('implementation', 'The implementation contract path')
+  .setAction(async ({ contract, implementation }, { ethers, network }) => {
+    const { chainId } = await ethers.provider.getNetwork()
+    const contractName = contract.replace('contracts/', '').replace('.sol', '')
+
+    // validate proxy address
+    const proxyAddress = getProxyAddress(chainId, contractName)
+
+    // get proxy admin address from OZ manifest
+    const manifest = await Manifest.forNetwork(network.provider)
+    const manifestAdmin = await manifest.getAdmin()
+    const proxyAdminAddress = manifestAdmin?.address
+    if (proxyAdminAddress === undefined) {
+      throw new Error('No ProxyAdmin was found in the network manifest')
+    }
+
+    // eslint-disable-next-line global-require
+    const proposeUpgrade = require('../scripts/multisig/propose-upgrade')
+    await proposeUpgrade({
+      proxyAddress,
+      proxyAdminAddress,
+      implementation,
+    })
+  })
