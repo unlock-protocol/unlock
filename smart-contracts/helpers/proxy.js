@@ -3,8 +3,7 @@ const { getDeployment } = require('./deployments')
 const { getNetworkName } = require('./network')
 const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 
-const getProxyAddress = async function getProxyAddress(web3, contractName) {
-  const chainId = await web3.eth.net.getId()
+const getProxyAddress = async function getProxyAddress(chainId, contractName) {
   const networkName = getNetworkName(chainId)
 
   // hardhat dev/test env
