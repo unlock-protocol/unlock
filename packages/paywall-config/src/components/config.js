@@ -1,8 +1,9 @@
 //Initial form values 
 export const initialValues = {
   locks: [{ address: "", network: "1", name: "" }],
-  icon: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.10UUFNA8oLdFdDpzt-Em_QHaHa%26pid%3DApi&f=1",
+  icon: "",
   pessimistic: "false",
+  callToAction: {},
   defaultValueCall: "Please join this membership!",
   metadataInputs: [{}]
 }
@@ -16,15 +17,22 @@ export const networks = {
 
 export const labels = {
   icon: "Icon URL(optional):",
-  defaultValueCall: "Set a Message(optional):",
   referrer: "Referrer(optional):",
+  messageToSign: "Message to Sign(optional)"
 };
+
+export const calltoAction = {
+  default: "",
+  expired: "",
+  metadata: ""
+}
 
 //Function to generate JSON
 export async function genJson(value) {
  let locks = {}
+ 
  //This code helps to enumerate all the locks added in the form to convert it into an object 
-  value.locks.map(({address, network, name}, i) => (
+  value.locks.map(({address, network, name}, i) => ( 
     Object.defineProperty(locks, `${address}`, {
       value: {
         network: network,
@@ -33,6 +41,7 @@ export async function genJson(value) {
       enumerable: true
     })
   ))
+
 //this is the object where the final JSON will be generated 
   const unlockPaywall = {
     pessimistic: value.pessimistic,
@@ -40,8 +49,9 @@ export async function genJson(value) {
       ...locks
     },
     icon: value.icon,
+    messageToSign: value.messageToSign,
     callToAction: {
-      default: value.defaultValueCall
+      ...value.calltoAction
     },
    referrer: value.referrer
   };
@@ -55,6 +65,7 @@ export async function genJson(value) {
   }
  
   const fin = await JSON.stringify(unlockPaywall, null, 2);
+
   return fin;
 }
 
