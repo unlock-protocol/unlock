@@ -1,5 +1,5 @@
 {
-  "name": "unlock-purchase",
+  "name": "@unlock-protocol/purchase-url-builder",
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
