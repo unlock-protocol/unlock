@@ -3,7 +3,7 @@ const { getDeployment } = require('./deployments')
 const { getNetworkName } = require('./network')
 const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 
-const getProxyAddress = async function getProxyAddress(chainId, contractName) {
+const getProxyAddress = function getProxyAddress(chainId, contractName) {
   const networkName = getNetworkName(chainId)
 
   // hardhat dev/test env
@@ -12,14 +12,17 @@ const getProxyAddress = async function getProxyAddress(chainId, contractName) {
     return deployment.address
   }
 
-  // TODO: convert OZ CLI migration data to
-  // get proxy address from deprec OpenZeppelin CLI migration data
-  // see https://docs.openzeppelin.com/upgrades-plugins/1.x/migrate-from-cli
   const { proxies } = OZ_SDK_EXPORT.networks[networkName]
-  const deployedInstance =
+  const { address } =
     proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
 
-  return deployedInstance.address
+  if (!address) {
+    throw new Error(
+      `The proxy address for ${contractName} was not found in the network manifest (chainId: ${chainId})`
+    )
+  }
+
+  return address
 }
 
 module.exports = {

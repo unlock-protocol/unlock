@@ -15,7 +15,7 @@ contract('Unlock / UnlockProxy', (accounts) => {
 
     // get proxy from hardhat deployment
     const chainId = await web3.eth.net.getId()
-    this.proxyAddress = await getProxyAddress(chainId, 'Unlock')
+    this.proxyAddress = getProxyAddress(chainId, 'Unlock')
 
     // use with truffle
     this.unlock = await Unlock.at(this.proxyAddress)
