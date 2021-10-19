@@ -8,6 +8,13 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 contract('UnlockDiscountToken on mainnet', async () => {
   let udt
 
+  before(() => {
+    if (!process.env.RUN_MAINNET_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
+  })
+
   beforeEach(async () => {
     const UnlockDiscountToken = await ethers.getContractFactory(
       'UnlockDiscountTokenV2'
