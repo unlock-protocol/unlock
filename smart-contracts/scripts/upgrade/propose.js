@@ -33,14 +33,14 @@ const confirmTx = async ({ signers, multisig, transactionId }) => {
   const [lastTx] = txs.slice(-1)
   const { events, transactionHash } = lastTx
   const failure = events.find((v) => v.event === 'ExecutionFailure')
+  const success = events.find((v) => v.event === 'Execution')
 
   if (failure) {
     // eslint-disable-next-line no-console
     console.log(
       `ERROR: Proposal ${transactionId} failed to execute (txid: ${transactionHash})`
     )
-    console.log(failure)
-  } else {
+  } else if (success) {
     // eslint-disable-next-line no-console
     console.log(
       `Proposal ${transactionId} executed successfully (txid: ${transactionHash})`
