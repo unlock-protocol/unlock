@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const { getProxyAddress } = require('../../helpers/proxy')
 
-const { resetState } = require('../helpers/mainnet')
+const { resetState, impersonate } = require('../helpers/mainnet')
 
 const { errorMessages } = require('../helpers/constants')
 
@@ -53,7 +53,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe('Mint', () => {
+  describe.only('Mint', () => {
     it('can not add minter anymore', async () => {
       const [, minter] = await ethers.getSigners()
 
@@ -62,6 +62,23 @@ contract('UnlockDiscountToken on mainnet', async () => {
         udt.addMinter(minter.address),
         `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
       )
+    })
+    it('Unlock contract can mint', async () => {
+      const unlockAddress = getProxyAddress(chainId, 'Unlock')
+      const [, , , recipient] = await ethers.getSigners()
+
+      await impersonate(unlockAddress)
+      const unlock = await ethers.getSigner(unlockAddress)
+
+      const amount = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+      const tx = await udt.connect(unlock).mint(recipient.address, amount)
+
+      const { events } = await tx.wait()
+      const { args } = events.find((v) => v.event === 'Transfer')
+
+      assert.equal(args.from, ethers.constants.AddressZero)
+      assert.equal(args.to, recipient.address)
+      assert.equal(args.value.eq(amount), true)
     })
   })
 
