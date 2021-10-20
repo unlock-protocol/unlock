@@ -5081,10 +5081,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:3.4.2":
-  version: 3.4.2
-  resolution: "@openzeppelin/contracts@npm:3.4.2"
-  checksum: 0c90f029fe50a49643588e4c8670dae3bbf31795133a6ddce9bdcbc258486332700bb732287baabf7bf807f39182fe8ea2ffa19aa5caf359b1b9c0f083280748
+"@openzeppelin/contracts@npm:4.3.2":
+  version: 4.3.2
+  resolution: "@openzeppelin/contracts@npm:4.3.2"
+  checksum: 9032453eef3e10b6453b667c7edd3381292665083b855ca8a8b5f64b473e768eacb53516865fb3ce1e493deadbb977069e483cce5650c42807a742ab59a18695
   languageName: node
   linkType: hard
 
@@ -9297,7 +9297,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@^0.0.1, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -9528,13 +9528,13 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-truffle5": 2.0.2
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 3.4.2
+    "@openzeppelin/contracts": 4.3.2
     "@openzeppelin/test-helpers": 0.5.13
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 4.32.0
     "@typescript-eslint/parser": 4.32.0
+    "@unlock-protocol/contracts": ^0.0.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/unlock-abi-7": 1.0.3
     babel-eslint: 10.1.0
     bignumber.js: 9.0.1
     chai: 4.3.4
@@ -9564,7 +9564,6 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.2
     "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts-ethereum-package": 2.5.0
     "@openzeppelin/contracts-upgradeable": 4.3.2
     "@openzeppelin/hardhat-upgrades": 1.10.0
     "@openzeppelin/test-helpers": 0.5.13
@@ -9674,7 +9673,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/unlock-abi-7@1.0.3, @unlock-protocol/unlock-abi-7@workspace:packages/contracts/deprec/V7":
+"@unlock-protocol/unlock-abi-7@workspace:packages/contracts/deprec/V7":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-abi-7@workspace:packages/contracts/deprec/V7"
   languageName: unknown

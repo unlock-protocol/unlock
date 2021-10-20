@@ -19,24 +19,17 @@ contract('Lock / initializers', (accounts) => {
     lock = locks.FIRST
   })
 
-  it('There are exactly 2 public initializers in PublicLock', async () => {
+  it('There are exactly 1 public initializer in PublicLock', async () => {
     const count = publicLockContract.abi.filter((x) =>
       (x.name || '').toLowerCase().includes('initialize')
     ).length
-    assert.equal(count, 2)
+    assert.equal(count, 1)
   })
 
   it('initialize() may not be called again', async () => {
     await reverts(
-      lock.initialize(),
-      `${VM_ERROR_REVERT_WITH_REASON} 'Contract instance has already been initialized'`
-    )
-  })
-
-  it('initialize(lock settings..) may not be called again', async () => {
-    await reverts(
       lock.initialize(accounts[0], 0, constants.ZERO_ADDRESS, 0, 0, ''),
-      `${VM_ERROR_REVERT_WITH_REASON} 'Contract instance has already been initialized'`
+      `${VM_ERROR_REVERT_WITH_REASON} 'Initializable: contract is already initialized'`
     )
   })
 })

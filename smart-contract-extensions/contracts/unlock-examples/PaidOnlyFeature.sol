@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
-// The IPublicLockV7Sol6 interface allows us to make calls to the Lock
-import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
+// The IPublicLockV9 interface allows us to make calls to the Lock
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 
 
 /**
@@ -11,14 +11,14 @@ import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
 contract PaidOnlyFeature
 {
   // The address of the Lock for this content
-  IPublicLockV7Sol6 public lock;
+  IPublicLockV9 public lock;
 
   // A very simple example functionality
   uint public callCounter;
 
   // If the Lock's contract address is known when this is deployed
   // we can assign it in the constructor.
-  constructor(IPublicLockV7Sol6 _lockAddress) public
+  constructor(IPublicLockV9 _lockAddress)
   {
     lock = _lockAddress;
   }

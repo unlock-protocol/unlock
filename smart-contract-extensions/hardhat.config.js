@@ -20,9 +20,7 @@ const settings = {
 
 module.exports = {
   solidity: {
-    compilers: [
-      { version: '0.6.11', settings },
-    ]
+    compilers: [{ version: '0.8.2', settings }],
   },
   gasReporter: {
     currency: 'USD',
