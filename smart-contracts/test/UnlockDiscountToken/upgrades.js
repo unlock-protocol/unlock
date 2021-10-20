@@ -105,7 +105,8 @@ contract('UnlockDiscountToken upgrade', async () => {
       keyBuyer = accounts[3]
 
       const Unlock = await ethers.getContractFactory('Unlock')
-      const unlockAddress = await getProxyAddress(web3, 'Unlock')
+      const { chainId } = await ethers.provider.getNetwork()
+      const unlockAddress = getProxyAddress(chainId, 'Unlock')
       unlock = Unlock.attach(unlockAddress)
 
       // Grant Unlock minting permissions

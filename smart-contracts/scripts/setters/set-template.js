@@ -22,6 +22,7 @@ async function main({ publicLockAddress, unlockAddress }) {
   const existingTemplate = await unlock.publicLockAddress()
 
   if (existingTemplate === ethers.utils.getAddress(publicLockAddress)) {
+    // eslint-disable-next-line no-console
     console.log('UNLOCK SETUP > Template already set for PublicLock')
     return
   }
