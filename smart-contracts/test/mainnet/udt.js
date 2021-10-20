@@ -65,7 +65,9 @@ contract('UnlockDiscountToken on mainnet', async () => {
       )
     })
     it('random accounts can not mint', async () => {
-      const [, , lambda, recipient] = await ethers.getSigners()
+      const [, , , , lambda] = await ethers.getSigners()
+      const recipient = await ethers.Wallet.createRandom()
+
       await reverts(
         udt.connect(lambda).mint(recipient.address, amount),
         `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
@@ -76,7 +78,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
         assert.equal(await udt.isMinter(unlockAddress), true)
       })
       it('can mint', async () => {
-        const [, , , recipient] = await ethers.getSigners()
+        const recipient = await ethers.Wallet.createRandom()
 
         await impersonate(unlockAddress)
         const unlock = await ethers.getSigner(unlockAddress)
@@ -109,6 +111,73 @@ contract('UnlockDiscountToken on mainnet', async () => {
         true,
         'starting supply must be different from 0'
       )
+      // more than 1M
+      assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
+    })
+  })
+
+  describe('transfers', () => {
+    it('should support transfer by permit', async () => {
+      const [spender] = await ethers.getSigners()
+      const permitter = ethers.Wallet.createRandom()
+
+      udt = udt.connect(spender)
+
+      // Check approval
+      const approvedAmountBefore = await udt
+        .connect(spender)
+        .allowance(spender.address, permitter.address)
+      assert.equal(approvedAmountBefore, 0)
+
+      const value = 1
+      const deadline = Math.floor(new Date().getTime()) + 60 * 60 * 24
+      const { chainId } = await ethers.provider.getNetwork()
+      const nonce = await udt.nonces(permitter.address)
+
+      const domain = {
+        name: await udt.name(),
+        version: '1',
+        chainId,
+        verifyingContract: udt.address,
+      }
+
+      const types = {
+        Permit: [
+          { name: 'owner', type: 'address' },
+          { name: 'spender', type: 'address' },
+          { name: 'value', type: 'uint256' },
+          { name: 'nonce', type: 'uint256' },
+          { name: 'deadline', type: 'uint256' },
+        ],
+      }
+
+      const message = {
+        owner: permitter.address,
+        spender: spender.address,
+        value,
+        nonce,
+        deadline,
+      }
+
+      const signature = await permitter._signTypedData(domain, types, message)
+
+      // Let's now have the holder submit the
+      const { v, r, s } = ethers.utils.splitSignature(signature)
+
+      const tx = await udt.permit(
+        permitter.address,
+        spender.address,
+        value,
+        deadline,
+        v,
+        r,
+        s
+      )
+      const { events } = await tx.wait()
+      const evtApproval = events.find((v) => v.event === 'Approval')
+      assert.equal(evtApproval.args.owner, permitter.address)
+      assert.equal(evtApproval.args.spender, spender.address)
+      assert.isTrue(evtApproval.args.value.eq(value))
     })
   })
 })
