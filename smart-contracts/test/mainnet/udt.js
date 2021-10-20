@@ -11,6 +11,7 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 contract('UnlockDiscountToken on mainnet', async () => {
   let udt
   const chainId = 1 // mainnet
+  const unlockAddress = getProxyAddress(chainId, 'Unlock')
 
   beforeEach(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_MAINNET_FORK) {
@@ -53,32 +54,41 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe.only('Mint', () => {
-    it('can not add minter anymore', async () => {
-      const [, minter] = await ethers.getSigners()
+  describe('Mint', () => {
+    const amount = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
 
-      // mint tokens
+    it('minters can not be added anymore', async () => {
+      const [, minter] = await ethers.getSigners()
       await reverts(
         udt.addMinter(minter.address),
         `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
       )
     })
-    it('Unlock contract can mint', async () => {
-      const unlockAddress = getProxyAddress(chainId, 'Unlock')
-      const [, , , recipient] = await ethers.getSigners()
+    it('random accounts can not mint', async () => {
+      const [, , lambda, recipient] = await ethers.getSigners()
+      await reverts(
+        udt.connect(lambda).mint(recipient.address, amount),
+        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
+      )
+    })
+    describe('the Unlock contract', () => {
+      it('is declared as minter', async () => {
+        assert.equal(await udt.isMinter(unlockAddress), true)
+      })
+      it('can mint', async () => {
+        const [, , , recipient] = await ethers.getSigners()
 
-      await impersonate(unlockAddress)
-      const unlock = await ethers.getSigner(unlockAddress)
+        await impersonate(unlockAddress)
+        const unlock = await ethers.getSigner(unlockAddress)
+        const tx = await udt.connect(unlock).mint(recipient.address, amount)
 
-      const amount = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
-      const tx = await udt.connect(unlock).mint(recipient.address, amount)
+        const { events } = await tx.wait()
+        const { args } = events.find((v) => v.event === 'Transfer')
 
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'Transfer')
-
-      assert.equal(args.from, ethers.constants.AddressZero)
-      assert.equal(args.to, recipient.address)
-      assert.equal(args.value.eq(amount), true)
+        assert.equal(args.from, ethers.constants.AddressZero)
+        assert.equal(args.to, recipient.address)
+        assert.equal(args.value.eq(amount), true)
+      })
     })
   })
 
