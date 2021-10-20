@@ -139,7 +139,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
         lock.setBaseTokenURI('https://fakeURI.com', {
           from: accounts[1],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'MixinRoles: caller does not have the LockManager role'
       )
     })
   })

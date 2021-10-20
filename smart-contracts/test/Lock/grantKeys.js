@@ -15,7 +15,7 @@ let lock
 let locks
 let tx
 
-const { VM_ERROR_INVALID_OPCODE } = errorMessages
+const { HARDHAT_VM_ERROR } = errorMessages
 
 contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
@@ -104,7 +104,7 @@ contract('Lock / grantKeys', (accounts) => {
               from: lockCreator,
             }
           ),
-          VM_ERROR_INVALID_OPCODE
+          `${HARDHAT_VM_ERROR} reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)`
         )
       })
     })

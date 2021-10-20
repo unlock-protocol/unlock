@@ -1,4 +1,5 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.5.17 <0.8.5;
 
 // This contract provides some utility methods for use with the unlock protocol smart contracts.
 // Borrowed from:
@@ -34,10 +35,13 @@ library UnlockUtils {
       j /= 10;
     }
     bytes memory bstr = new bytes(len);
-    uint k = len - 1;
+    uint k = len;
     while (c != 0) {
-      bstr[k--] = byte(uint8(48 + c % 10));
-      c /= 10;
+        k = k-1;
+        uint8 temp = (48 + uint8(c - c / 10 * 10));
+        bytes1 b1 = bytes1(temp);
+        bstr[k] = b1;
+        c /= 10;
     }
     return string(bstr);
   }
@@ -47,7 +51,7 @@ library UnlockUtils {
   ) internal pure
     returns(string memory)
   {
-    bytes32 value = bytes32(uint256(_addr));
+    bytes32 value = bytes32(uint256(uint160(_addr)));
     bytes memory alphabet = '0123456789abcdef';
     bytes memory str = new bytes(42);
     str[0] = '0';

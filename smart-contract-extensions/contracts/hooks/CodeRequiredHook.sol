@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
-import '@openzeppelin/contracts/cryptography/ECDSA.sol';
-import '@unlock-protocol/unlock-abi-7/ILockKeyPurchaseHookV7.sol';
-import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
+import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/ILockKeyPurchaseHookV7.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 import '../mixins/LockRoles.sol';
 
 
@@ -24,7 +24,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
    * @notice Allows the lock manager to add one or more codes.
    */
   function addCodes(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     address[] calldata _codeAddresses
   ) external
     onlyLockManager(_lock)
@@ -40,7 +40,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
    * @notice Allows the lock manager to remove one or more codes.
    */
   function removeCodes(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     address[] calldata _codeAddresses
   ) external
     onlyLockManager(_lock)
@@ -63,7 +63,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
   ) external override view
     returns (uint minKeyPrice)
   {
-    return IPublicLockV7Sol6(msg.sender).keyPrice();
+    return IPublicLockV9(msg.sender).keyPrice();
   }
 
   /**
@@ -78,7 +78,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
     bytes calldata _data,
     uint /*minKeyPrice*/,
     uint /*pricePaid*/
-  ) external override
+  ) external view override
   {
     // Confirm `_to` (the new keyOwner)
     bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));

@@ -1,4 +1,6 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.5.17 <0.8.5;
+
 
 import '../PublicLock.sol';
 

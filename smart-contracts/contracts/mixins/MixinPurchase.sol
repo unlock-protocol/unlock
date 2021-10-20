@@ -1,9 +1,9 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinFunds.sol';
 
 
@@ -19,8 +19,6 @@ contract MixinPurchase is
   MixinLockCore,
   MixinKeys
 {
-  using SafeMath for uint;
-
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
 
   /**
@@ -67,13 +65,11 @@ contract MixinPurchase is
       );
     } else if (toKey.expirationTimestamp > block.timestamp) {
       // This is an existing owner trying to extend their key
-      newTimeStamp = toKey.expirationTimestamp.add(expirationDuration);
+      newTimeStamp = toKey.expirationTimestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
       // This is an existing owner trying to renew their expired key
-      // SafeAdd is not required here since expirationDuration is capped to a tiny value
-      // (relative to the size of a uint)
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
@@ -97,8 +93,8 @@ contract MixinPurchase is
     if(tokenAddress != address(0))
     {
       pricePaid = _value;
-      IERC20 token = IERC20(tokenAddress);
-      token.safeTransferFrom(msg.sender, address(this), _value);
+      IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
+      token.transferFrom(msg.sender, address(this), pricePaid);
     }
     else
     {

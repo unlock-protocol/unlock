@@ -1,26 +1,23 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 import './MixinFunds.sol';
 
 
 contract MixinRefunds is
-  MixinLockManagerRole,
+  MixinRoles,
   MixinFunds,
   MixinLockCore,
   MixinKeys
 {
-  using SafeMath for uint;
-
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyBasisPoints / BASIS_POINTS_DEN`.
   uint public refundPenaltyBasisPoints;
 
   uint public freeTrialLength;
-
 
   event CancelKey(
     uint indexed tokenId,
@@ -45,7 +42,7 @@ contract MixinRefunds is
    * of the key
    */
   function expireAndRefundFor(
-    address _keyOwner,
+    address payable _keyOwner,
     uint amount
   ) external
     onlyLockManager
@@ -62,7 +59,7 @@ contract MixinRefunds is
     external
     onlyKeyManagerOrApproved(_tokenId)
   {
-    address keyOwner = ownerOf(_tokenId);
+    address payable keyOwner = payable(ownerOf(_tokenId));
     uint refund = _getCancelAndRefundValue(keyOwner);
 
     _cancelAndRefund(keyOwner, refund);
@@ -105,7 +102,7 @@ contract MixinRefunds is
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
    */
   function _cancelAndRefund(
-    address _keyOwner,
+    address payable _keyOwner,
     uint refund
   ) internal
   {
@@ -146,16 +143,14 @@ contract MixinRefunds is
     if(timeRemaining + freeTrialLength >= expirationDuration) {
       refund = keyPrice;
     } else {
-      // Math: using safeMul in case keyPrice or timeRemaining is very large
-      refund = keyPrice.mul(timeRemaining) / expirationDuration;
+      refund = keyPrice * timeRemaining / expirationDuration;
     }
 
     // Apply the penalty if this is not a free trial
     if(freeTrialLength == 0 || timeRemaining + freeTrialLength < expirationDuration)
     {
-      uint penalty = keyPrice.mul(refundPenaltyBasisPoints) / BASIS_POINTS_DEN;
+      uint penalty = keyPrice * refundPenaltyBasisPoints / BASIS_POINTS_DEN;
       if (refund > penalty) {
-        // Math: safeSub is not required since the if confirms this won't underflow
         refund -= penalty;
       } else {
         refund = 0;

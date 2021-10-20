@@ -1,9 +1,10 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import './MixinDisable.sol';
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
 import '../interfaces/hooks/ILockKeyCancelHook.sol';
@@ -17,12 +18,11 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockCore is
-  IERC721Enumerable,
-  MixinLockManagerRole,
+  MixinRoles,
   MixinFunds,
   MixinDisable
 {
-  using Address for address;
+  using AddressUpgradeable for address;
 
   event Withdrawal(
     address indexed sender,
@@ -37,6 +37,21 @@ contract MixinLockCore is
     address oldTokenAddress,
     address tokenAddress
   );
+
+   /**
+    * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
+    */
+  event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+
+  /**
+    * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
+    */
+  event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+
+  /**
+    * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.
+    */
+  event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
 
   // Unlock Protocol address
   // TODO: should we make that private/internal?
@@ -58,7 +73,7 @@ contract MixinLockCore is
   uint internal _totalSupply;
 
   // The account which will receive funds on withdrawal
-  address public beneficiary;
+  address payable public beneficiary;
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
@@ -82,7 +97,7 @@ contract MixinLockCore is
   }
 
   function _initializeMixinLockCore(
-    address _beneficiary,
+    address payable _beneficiary,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
@@ -127,7 +142,7 @@ contract MixinLockCore is
     if(_tokenAddress == address(0)) {
       balance = address(this).balance;
     } else {
-      balance = IERC20(_tokenAddress).balanceOf(address(this));
+      balance = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
     }
 
     uint amount;
@@ -162,7 +177,7 @@ contract MixinLockCore is
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
     require(
-      _tokenAddress == address(0) || IERC20(_tokenAddress).totalSupply() > 0,
+      _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
       'INVALID_TOKEN'
     );
     keyPrice = _keyPrice;
@@ -175,7 +190,7 @@ contract MixinLockCore is
    * which receives funds on withdrawal.
    */
   function updateBeneficiary(
-    address _beneficiary
+    address payable _beneficiary
   ) external
   {
     require(msg.sender == beneficiary || isLockManager(msg.sender), 'ONLY_BENEFICIARY_OR_LOCKMANAGER');
@@ -215,6 +230,6 @@ contract MixinLockCore is
     onlyLockManagerOrBeneficiary
     returns (bool)
   {
-    return IERC20(tokenAddress).approve(_spender, _amount);
+    return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 }

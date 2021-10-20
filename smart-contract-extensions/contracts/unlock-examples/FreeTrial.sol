@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
-import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 
 
 /**
@@ -10,10 +10,10 @@ import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
  */
 contract FreeTrial
 {
-  IPublicLockV7Sol6 public lock;
+  IPublicLockV9 public lock;
   mapping(address => uint256) public accountLastUse;
 
-  constructor(IPublicLockV7Sol6 _lockAddress) public
+  constructor(IPublicLockV9 _lockAddress)
   {
     lock = _lockAddress;
   }

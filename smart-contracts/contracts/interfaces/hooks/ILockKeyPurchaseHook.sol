@@ -1,4 +1,5 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.5.17 <0.9.0;
 
 
 /**
@@ -15,7 +16,7 @@ interface ILockKeyPurchaseHook
    * @param recipient the account which will be granted a key
    * @param referrer the account which referred this key sale
    * @param data arbitrary data populated by the front-end which initiated the sale
-   * @return the minimum value/price required to purchase a key with these settings
+   * @return minKeyPrice the minimum value/price required to purchase a key with these settings
    * @dev the lock's address is the `msg.sender` when this function is called via
    * the lock's `purchasePriceFor` function
    */

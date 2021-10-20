@@ -1,7 +1,7 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
 
 /**
@@ -14,8 +14,6 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 contract MixinKeys is
   MixinLockCore
 {
-  using SafeMath for uint;
-
   // The struct for a key
   struct Key {
     uint tokenId;
@@ -362,12 +360,12 @@ contract MixinKeys is
     bool validKey = getHasValidKey(tokenOwner);
     if(_addTime) {
       if(validKey) {
-        key.expirationTimestamp = formerTimestamp.add(_deltaT);
+        key.expirationTimestamp = formerTimestamp + _deltaT;
       } else {
-        key.expirationTimestamp = block.timestamp.add(_deltaT);
+        key.expirationTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      key.expirationTimestamp = formerTimestamp.sub(_deltaT);
+      key.expirationTimestamp = formerTimestamp - _deltaT;
     }
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }

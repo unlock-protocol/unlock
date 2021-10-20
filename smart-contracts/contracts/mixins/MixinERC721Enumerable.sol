@@ -1,17 +1,17 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
 
 
 /**
  * @title Implements the ERC-721 Enumerable extension.
  */
 contract MixinERC721Enumerable is
-  IERC721Enumerable,
-  ERC165,
+  ERC165StorageUpgradeable,
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
@@ -56,5 +56,18 @@ contract MixinERC721Enumerable is
   {
     require(_index == 0, 'ONLY_ONE_KEY_PER_OWNER');
     return getTokenIdFor(_keyOwner);
+  }
+
+  function supportsInterface(bytes4 interfaceId) 
+    public 
+    view 
+    virtual 
+    override(
+      AccessControlUpgradeable,
+      ERC165StorageUpgradeable
+    ) 
+    returns (bool) 
+    {
+    return super.supportsInterface(interfaceId);
   }
 }
