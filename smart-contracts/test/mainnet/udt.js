@@ -38,7 +38,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     udt = await UnlockDiscountToken.attach(proxyAddress).connect(minter)
   })
 
-  describe('ERC20 Details', () => {
+  describe('ERC20 details', () => {
     it('name is preserved', async () => {
       const name = await udt.name()
       assert.equal(name, 'Unlock Discount Token')
@@ -55,7 +55,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe('Mint', () => {
+  describe('mint', () => {
     const amount = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
 
     it('minters can not be added anymore', async () => {
@@ -95,7 +95,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe('Burn', () => {
+  describe('burn', () => {
     it('function does not exist', async () => {
       assert.equal(udt.burn, null)
       assert.equal(Object.keys(udt).includes('burn'), false)
@@ -104,8 +104,8 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe('Supply', () => {
-    it('is not 0', async () => {
+  describe.only('supply', () => {
+    it('is more than 1M', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(
         totalSupply.gt(0),
@@ -114,6 +114,38 @@ contract('UnlockDiscountToken on mainnet', async () => {
       )
       // more than 1M
       assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
+    })
+
+    // totalSupply at block height for ERC20Votes function
+    describe('pastTotalSupply', async () => {
+      it('corresponds to latest totalSupply', async () => {
+        const blockNumber = await ethers.provider.getBlockNumber()
+        await time.advanceBlock()
+        const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
+        const totalSupply = await udt.totalSupply()
+        assert.isTrue(pastTotalSupply.eq(totalSupply))
+      })
+      it('increases when tokens are minted', async () => {
+        const amount = ethers.utils.hexStripZeros(
+          ethers.utils.parseEther('1000')
+        )
+        const blockNumber = await ethers.provider.getBlockNumber()
+        await time.advanceBlock()
+        const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
+
+        // mint some tokens
+        const recipient = await ethers.Wallet.createRandom()
+        await impersonate(unlockAddress)
+        const unlock = await ethers.getSigner(unlockAddress)
+        const tx = await udt.connect(unlock).mint(recipient.address, amount)
+        const receipt = await tx.wait()
+        await time.advanceBlock()
+
+        const pastTotalSupplyAfter = await udt.getPastTotalSupply(
+          receipt.blockNumber
+        )
+        assert.isTrue(pastTotalSupplyAfter.eq(pastTotalSupply.add(amount)))
+      })
     })
   })
 
@@ -320,7 +352,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe.only('domain separator', () => {
+  describe('domain separator', () => {
     it('is set correctly', async () => {
       const expectedDomain = {
         name: await udt.name(),
@@ -336,6 +368,4 @@ contract('UnlockDiscountToken on mainnet', async () => {
       )
     })
   })
-
-  
 })
