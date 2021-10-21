@@ -105,4 +105,7 @@ module.exports = {
       { version: '0.8.4', settings },
     ],
   },
+  mocha: {
+    timeout: 2000000,
+  },
 }
