@@ -1,5 +1,6 @@
-const { config, ethers, network } = require('hardhat')
+const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
+const { resetState, impersonate } = require('../helpers/mainnet')
 
 const UnlockDiscountTokenV2 = artifacts.require('UnlockDiscountTokenV2.sol')
 const UnlockProtocolGovernor = artifacts.require('UnlockProtocolGovernor.sol')
@@ -40,25 +41,6 @@ const timelockContractAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated
 
 /**
- * Resets the node
- */
-const resetNode = async () => {
-  // reset fork
-  const { forking } = config.networks.hardhat
-  await network.provider.request({
-    method: 'hardhat_reset',
-    params: [
-      {
-        forking: {
-          jsonRpcUrl: forking.url,
-          blockNumber: forking.blockNumber,
-        },
-      },
-    ],
-  })
-}
-
-/**
  * Delegates top holders to delegate so that when delegate votes, enough weight is added
  * @param {*} tokenHolders
  * @param {*} delegate
@@ -67,15 +49,9 @@ const delegateAll = async (tokenHolders, delegate) => {
   // Let's have all voters delegate!
   // eslint-disable-next-line no-restricted-syntax
   for await (const holderAddress of tokenHolders) {
+    // eslint-disable-next-line no-console
     console.log(`${holderAddress} delegate to ${delegate}`)
-    await network.provider.request({
-      method: 'hardhat_impersonateAccount',
-      params: [holderAddress],
-    })
-    await network.provider.send('hardhat_setBalance', [
-      holderAddress,
-      '0x1000000000000000',
-    ])
+    await impersonate(holderAddress)
     const voterWallet = await ethers.getSigner(holderAddress)
     const udt = await new ethers.Contract(
       udtContractAddress,
@@ -93,10 +69,7 @@ const delegateAll = async (tokenHolders, delegate) => {
  * @returns
  */
 const submitProposal = async (proposerAddress, proposal) => {
-  await network.provider.request({
-    method: 'hardhat_impersonateAccount',
-    params: [proposerAddress],
-  })
+  await impersonate(proposerAddress)
   const proposerWallet = await ethers.getSigner(proposerAddress)
 
   const gov = await new ethers.Contract(
@@ -123,10 +96,7 @@ const submitProposal = async (proposerAddress, proposal) => {
  * @param {*} proposalId
  */
 const vote = async (voterAddress, proposalId) => {
-  await network.provider.request({
-    method: 'hardhat_impersonateAccount',
-    params: [voterAddress],
-  })
+  await impersonate(voterAddress)
   const voterWallet = await ethers.getSigner(voterAddress)
   const governanceForVoter = await new ethers.Contract(
     governanceContractAddress,
@@ -214,10 +184,7 @@ const executeProposal = async (executorAddress, proposal, timestamp) => {
  */
 const prerequisites = async () => {
   // Impersonate team wallet
-  await network.provider.request({
-    method: 'hardhat_impersonateAccount',
-    params: [teamWalletAddress],
-  })
+  await impersonate(teamWalletAddress)
   const teamWallet = await ethers.getSigner(teamWalletAddress)
   const udt = await new ethers.Contract(
     udtContractAddress,
@@ -266,7 +233,7 @@ describe('Governance', () => {
     )
 
     // Reset the node
-    await resetNode()
+    await resetState()
 
     // Run prerequisites
     await prerequisites()
