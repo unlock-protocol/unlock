@@ -319,4 +319,23 @@ contract('UnlockDiscountToken on mainnet', async () => {
       })
     })
   })
+
+  describe.only('domain separator', () => {
+    it('is set correctly', async () => {
+      const expectedDomain = {
+        name: await udt.name(),
+        version: '1',
+        chainId: await udt.provider.getNetwork().then(({ chainId }) => chainId),
+        verifyingContract: udt.address,
+      }
+
+      const domainSeparator = await udt.DOMAIN_SEPARATOR()
+      assert.equal(
+        domainSeparator,
+        ethers.utils._TypedDataEncoder.hashDomain(expectedDomain)
+      )
+    })
+  })
+
+  
 })
