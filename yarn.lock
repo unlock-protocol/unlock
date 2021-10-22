@@ -41912,11 +41912,9 @@ typescript@^4.4.4:
   languageName: node
   linkType: soft
 
-"unlock-express-example@workspace:packages/unlock-express/example":
+"unlock-express@workspace:packages/unlock-express":
   version: 0.0.0-use.local
-  resolution: "unlock-express-example@workspace:packages/unlock-express/example"
-  dependencies:
-    express: ^4.17.1
+  resolution: "unlock-express@workspace:packages/unlock-express"
   languageName: unknown
   linkType: soft
 
