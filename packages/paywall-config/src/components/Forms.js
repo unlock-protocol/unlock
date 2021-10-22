@@ -8,8 +8,8 @@ import {
   Button,
 } from "react-bootstrap";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
-//import networks from '@unlock-protocol/networks'
-import { initialValues, networks, labels, genJson, genUrl, validateField, calltoAction } from "./config";
+import networks from '@unlock-protocol/networks'
+import { initialValues, labels, genJson, genUrl, validateField, calltoAction } from "./config";
 
 const Forms = (props) => {
   const [show, setShow] = useState();//state for modal window
