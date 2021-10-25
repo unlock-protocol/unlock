@@ -1,17 +1,21 @@
 import networks from '@unlock-protocol/networks'
 import { NetworkConfigs } from '@unlock-protocol/types'
 
-declare var PAYWALL_URL: string
+declare let PAYWALL_URL: string
 
 let unlockAppUrl: string
+let locksmithUri: string
 const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
 
 if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   unlockAppUrl = 'https://staging-app.unlock-protocol.com'
+  locksmithUri = 'https://staging-locksmith.unlock-protocol.com'
 } else if (baseUrl.match('paywall.unlock-protocol.com')) {
   unlockAppUrl = 'https://app.unlock-protocol.com'
+  locksmithUri = 'https://locksmith.unlock-protocol.com'
 } else {
   unlockAppUrl = 'http://0.0.0.0:3000'
+  locksmithUri = 'http://0.0.0.0:8080'
 }
 
 // TODO: allow customization of these values when running the script
@@ -21,11 +25,11 @@ export const networkConfigs: NetworkConfigs = {}
 const chainIds = [1, 4, 100, 137, 31337]
 
 chainIds.map((chainId) => {
-  const { readOnlyProvider, provider, locksmithUri } = networks[chainId]
+  const { readOnlyProvider, provider } = networks[chainId]
 
   networkConfigs[chainId] = {
     readOnlyProvider: readOnlyProvider || provider,
-    locksmithUri: locksmithUri || '',
+    locksmithUri,
     unlockAppUrl,
   }
 })

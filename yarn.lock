@@ -40740,6 +40740,14 @@ typescript@^4.4.4:
   languageName: node
   linkType: soft
 
+"unlock-express-example@workspace:packages/unlock-express/example":
+  version: 0.0.0-use.local
+  resolution: "unlock-express-example@workspace:packages/unlock-express/example"
+  dependencies:
+    express: ^4.17.1
+  languageName: unknown
+  linkType: soft
+
 "unlock@workspace:.":
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
