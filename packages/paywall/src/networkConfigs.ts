@@ -1,11 +1,9 @@
 import networks from '@unlock-protocol/networks'
 import { NetworkConfigs } from '@unlock-protocol/types'
 
-declare let PAYWALL_URL: string
-
 let unlockAppUrl: string
 let locksmithUri: string
-const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
+const baseUrl = window?.location?.host || 'localhost'
 if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   unlockAppUrl = 'https://staging-app.unlock-protocol.com'
   locksmithUri = 'https://staging-locksmith.unlock-protocol.com'
@@ -16,8 +14,6 @@ if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   unlockAppUrl = 'http://0.0.0.0:3000'
   locksmithUri = 'http://0.0.0.0:8080'
 }
-
-console.log({ baseUrl, unlockAppUrl, locksmithUri })
 
 // TODO: allow customization of these values when running the script
 // This means probably adding to the unlockProtocolConfig object to include the provider, loksmith Uri and unlockAppUrl
