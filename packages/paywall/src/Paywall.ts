@@ -122,10 +122,13 @@ export class Paywall {
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
     // For each lock.
+
     if (!this.userAccountAddress) {
       return
     }
+
     this.lockStatus = undefined
+
     const unlockedLocks = await isUnlocked(
       this.userAccountAddress,
       this.paywallConfig,
