@@ -15,9 +15,6 @@ if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   locksmithUri = 'http://0.0.0.0:8080'
 }
 
-console.log(window.location)
-console.log({ baseUrl, unlockAppUrl, locksmithUri })
-
 // TODO: allow customization of these values when running the script
 // This means probably adding to the unlockProtocolConfig object to include the provider, loksmith Uri and unlockAppUrl
 export const networkConfigs: NetworkConfigs = {}
