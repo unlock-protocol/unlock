@@ -23,6 +23,7 @@ module.exports = {
     },
   },
   globals: {
+    PAYWALL_URL: 'localhost',
     __ENVIRONMENT_VARIABLES__: {
       locksmithUri: 'http://0.0.0.0:8080',
     },

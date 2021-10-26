@@ -2,8 +2,10 @@ import { Paywall } from './Paywall'
 import { setupUnlockProtocolVariable } from './utils'
 import { networkConfigs } from './networkConfigs'
 
+declare let PAYWALL_URL: string
+
 const rawConfig = (window as any).unlockProtocolConfig
-const baseUrl = window?.location?.host || 'localhost'
+const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
 if (!rawConfig) {
   console.error(
     'Missing window.unlockProtocolConfig. See docs on how to configure your locks: https://docs.unlock-protocol.com/'

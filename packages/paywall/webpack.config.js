@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
-const path = require('path')
+const webpack = require('webpack')
+var path = require('path')
 
 const mode = process.env.UNLOCK_ENV === 'prod' ? 'production' : 'development'
 
@@ -33,6 +34,10 @@ module.exports = () => {
     resolve: {
       extensions: ['.ts', '.js'],
     },
-    plugins: [],
+    plugins: [
+      new webpack.DefinePlugin({
+        PAYWALL_URL: JSON.stringify(process.env.PAYWALL_URL),
+      }),
+    ],
   }
 }
