@@ -37,7 +37,8 @@ fi
 # For example: UNLOCK_APP_NETLIFY_STAGING_SITE_ID will be passed as SITE_ID
 UPCASE_SERVICE="${SERVICE^^}"
 TARGET_PREFIX="${UPCASE_SERVICE//-/_}_${TARGET^^}_$ENV_PREFIX"
-ENV_VARS=`env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
+ENV_VARS       =`env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
+BUILD_ARGS_VARS=`env | grep "^$TARGET_PREFIX" | awk '{print "--build-arg ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
@@ -48,8 +49,8 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
-# First we need to build 
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $SERVICE
+# First we need to build
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $BUILD_ARGS_VARS $SERVICE
 
 # Run deploy code!
 docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS -e UNLOCK_ENV=prod $SERVICE $NPM_SCRIPT $OPTS

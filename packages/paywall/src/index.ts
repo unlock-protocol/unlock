@@ -6,6 +6,10 @@ declare let PAYWALL_URL: string
 
 const rawConfig = (window as any).unlockProtocolConfig
 const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
+console.log('____________________________________')
+console.log(PAYWALL_URL)
+console.log('____________________________________')
+
 if (!rawConfig) {
   console.error(
     'Missing window.unlockProtocolConfig. See docs on how to configure your locks: https://docs.unlock-protocol.com/'
