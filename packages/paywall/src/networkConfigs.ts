@@ -1,12 +1,10 @@
 import networks from '@unlock-protocol/networks'
 import { NetworkConfigs } from '@unlock-protocol/types'
 
-declare let PAYWALL_URL: string
-
 let unlockAppUrl: string
 let locksmithUri: string
-const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
-console.log(document.currentScript)
+const baseUrl =
+  document?.currentScript?.getAttribute('src') || 'paywall.unlock-protocol.com' // assume prod
 
 if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   unlockAppUrl = 'https://staging-app.unlock-protocol.com'
