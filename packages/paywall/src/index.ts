@@ -2,10 +2,9 @@ import { Paywall } from './Paywall'
 import { setupUnlockProtocolVariable } from './utils'
 import { networkConfigs } from './networkConfigs'
 
-declare let PAYWALL_URL: string
-
 const rawConfig = (window as any).unlockProtocolConfig
-const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
+const baseUrl =
+  document?.currentScript?.getAttribute('src') || 'paywall.unlock-protocol.com' // assume prod
 
 if (!rawConfig) {
   console.error(
