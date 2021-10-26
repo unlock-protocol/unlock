@@ -4,10 +4,6 @@ const path = require('path')
 
 const mode = process.env.UNLOCK_ENV === 'prod' ? 'production' : 'development'
 
-console.log(
-  `Building paywall lib for ${process.env.PAYWALL_URL} (mode: ${mode})`
-)
-
 module.exports = () => {
   return {
     cache: false,

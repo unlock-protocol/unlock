@@ -6,6 +6,8 @@ declare let PAYWALL_URL: string
 let unlockAppUrl: string
 let locksmithUri: string
 const baseUrl = PAYWALL_URL || 'localhost' // Set at build time
+console.log(document.currentScript)
+
 if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   unlockAppUrl = 'https://staging-app.unlock-protocol.com'
   locksmithUri = 'https://staging-locksmith.unlock-protocol.com'
