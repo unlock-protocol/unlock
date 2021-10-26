@@ -71,13 +71,14 @@ const Forms = (props) => {
                           <br />
                           {Object.keys(networks).map((i) => (
                             <div
-                              class="form-check form-check-inline"
+                              className="form-check form-check-inline"
                               key={networks[i]}
                             >
                               <Field
                                 className="form-check-input"
                                 type="radio"
                                 name={`locks.${index}.network`}
+                                data-testid={`locksNetworks${index}`}
                                 id="gridRadios"
                                 value={i}
                               />
@@ -95,29 +96,27 @@ const Forms = (props) => {
                             </label>
                             <Field
                               name={`locks.${index}.address`}
+                              data-testid={`locksAddress${index}`}
                               validate={validateField}
                               placeholder="0x6dDcB553E1A7f06bb46fA9Bd65BEd73056649eb6"
                               className="form-control"
                               type="text"
                             />
                             <ErrorMessage
-                              name={`locks.${index}.address`}
                               component="div"
                               className="field-error text-red"
+                              data-testid={`locksAddressError${index}`}
+                              name={`locks.${index}.address`}
                             />
                           </div>
                           <div className="form-group">
                             <label htmlFor={`locks.${index}.name`}>Name</label>
                             <Field
                               name={`locks.${index}.name`}
+                              data-testid={`locksName${index}`}
                               className="form-control"
                               type="text"
                               placeholder="Name for your lock"
-                            />
-                            <ErrorMessage
-                              name={`locks.${index}.name`}
-                              component="div"
-                              className="field-error"
                             />
                           </div>
                           {values.locks.length > 1 && (
@@ -135,6 +134,7 @@ const Forms = (props) => {
                       ))}
                     <Button
                       type="button"
+                      data-testid={'AddLocks'}
                       variant={"secondary"}
                       className="mb-3"
                       onClick={() =>
@@ -148,7 +148,7 @@ const Forms = (props) => {
               </FieldArray>
 
               {Object.keys(labels).map((i) => (
-                <div clasName="form-group " key={i}>
+                <div className="form-group " key={i}>
                   <label htmlFor="">{labels[i]}</label>
                   <Field
                     name={i}
@@ -160,7 +160,7 @@ const Forms = (props) => {
               <div className="form-group border p-2 mt-2">
                 <label htmlFor="">Set a Message to your buyers(optional):</label>
                 {Object.keys(calltoAction).map((i) => (
-                  <div clasName="form-group " key={i}>
+                  <div className="form-group " key={i}>
                     <label htmlFor="" className="text-capitalize">{`${i}:`}</label>
                     <Field
                       name={`calltoAction.${i}`}
@@ -192,14 +192,14 @@ const Forms = (props) => {
                 <br />
 
                 {["false", "true"].map((val) => (
-                  <div class="form-check form-check-inline">
+                  <div className="form-check form-check-inline" key={val}>
                     <Field
                       className="form-check-input"
                       type="radio"
                       name="pessimistic"
                       id="gridRadios"
                       value={val}
-                      key={val}
+                      
                     />
                     <label
                       className="form-check-label text-capitalize"
@@ -232,7 +232,7 @@ const Forms = (props) => {
                              {["text", "date", "color", "email", "url"].map(
                                (i) => (
                                  <div
-                                   class="form-check form-check-inline"
+                                   className="form-check form-check-inline"
                                    key={i}
                                  >
                                    <Field
@@ -240,7 +240,7 @@ const Forms = (props) => {
                                      type="radio"
                                      validate={validateField}
                                      name={`metadataInputs.${index}.type`}
-                                     id="gridRadios"
+                                     data-testid={`metadataTypes${index}`}
                                      value={i}
                                    />
                                     <ErrorMessage
@@ -260,12 +260,11 @@ const Forms = (props) => {
                            </div>
                            <div className="form-group">
                              <Field
-                               Field
                                className="form-control"
                                validate={validateField}
                                type="text"
                                name={`metadataInputs.${index}.name`}
-                               id="meta"
+                               data-testid={`metadataName${index}`}
                                placeholder="Name for the data(required)"
                              />
                              <ErrorMessage
@@ -279,7 +278,7 @@ const Forms = (props) => {
                              <br />
                              {["true", "false"].map((i) => (
                                <div
-                                 class="form-check form-check-inline"
+                                 className="form-check form-check-inline"
                                  key={i}
                                >
                                  <Field
@@ -287,6 +286,7 @@ const Forms = (props) => {
                                    validate={validateField}
                                    type="radio"
                                    name={`metadataInputs.${index}.required`}
+                                   data-testid={`metadataReq${index}`}
                                    id="gridRadios"
                                    value={i}
                                  />
@@ -307,11 +307,9 @@ const Forms = (props) => {
                            </div>
                            <div className="form-group">
                              <Field
-                               Field
                                className="form-control"
                                type="text"
                                name={`metadataInputs.${index}.defaultValue`}
-                               id="metaInputs"
                                placeholder="Default value(optional)"
                              />
                            </div>
@@ -320,7 +318,7 @@ const Forms = (props) => {
                              <br />
                              {["true", "false"].map((i) => (
                                <div
-                                 class="form-check form-check-inline"
+                                 className="form-check form-check-inline"
                                  key={i}
                                >
                                  <Field
@@ -356,6 +354,7 @@ const Forms = (props) => {
                        type="button"
                        variant={"secondary"}
                        className="mb-3"
+                       data-testid={'AddMeta'}
                        onClick={() =>
                          push({
                           
@@ -373,6 +372,7 @@ const Forms = (props) => {
 
               <div className="form-group text-center">
                 <button
+                  data-testid={'submit'}
                   type="submit"
                   className="btn btn-danger mt-4"
                   disabled={isSubmitting}
@@ -424,3 +424,4 @@ const Forms = (props) => {
 };
 
 export default Forms;
+
