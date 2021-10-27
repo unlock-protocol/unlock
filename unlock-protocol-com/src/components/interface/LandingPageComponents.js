@@ -362,7 +362,7 @@ export const GrantsProgramBox = () => {
   )
 }
 
-export const SignupBox = () => {
+export const SignupBox = ({ children }) => {
   return (
     <Box color="var(--link)" contrastColor="var(--white)">
       <H2>Sign Up for Updates</H2>
@@ -371,6 +371,7 @@ export const SignupBox = () => {
         features and opportunities for the community.
       </p>
       <OptInForm />
+      {children}
     </Box>
   )
 }
