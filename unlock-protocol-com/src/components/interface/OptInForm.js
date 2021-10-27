@@ -36,7 +36,7 @@ export const OptInForm = () => {
     setEmail('')
   }
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form id="newsletter-signup-form" onSubmit={handleSubmit}>
       <EmailInput
         type="email"
         placeholder="Your email here"
