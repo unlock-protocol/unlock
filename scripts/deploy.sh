@@ -48,7 +48,7 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
-# First we need to build 
+# First we need to build
 docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $SERVICE
 
 # Run deploy code!

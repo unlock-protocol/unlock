@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
-import '@openzeppelin/upgrades/contracts/Initializable.sol';
+import '@openzeppelin/contracts/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts/utils/Address.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
-import '@openzeppelin/contracts/math/SafeMath.sol';
-import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
+import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
+import '@openzeppelin/contracts/utils/math/SafeMath.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 import './mixins/LockRoles.sol';
 
 /**
@@ -35,7 +35,7 @@ contract KeyPurchaser is Initializable, LockRoles
   /**
    * @notice This is the lock for the content users are subscribing to.
    */
-  IPublicLockV7Sol6 public lock;
+  IPublicLockV9 public lock;
 
   /**
    * @notice The most you will spend on a single key purchase.
@@ -97,7 +97,7 @@ contract KeyPurchaser is Initializable, LockRoles
    * contract may be deployed with a minimal proxy.
    */
   function initialize(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     uint _maxPurchasePrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -141,7 +141,7 @@ contract KeyPurchaser is Initializable, LockRoles
     IERC20 token = IERC20(lock.tokenAddress());
     if(address(token) != address(0))
     {
-      token.approve(address(lock), uint(-1));
+      token.approve(address(lock), type(uint).max);
     }
   }
 
@@ -188,10 +188,10 @@ contract KeyPurchaser is Initializable, LockRoles
     uint lastPurchase = timestampOfLastPurchase[_recipient];
     // `now` must be strictly larger than the timestamp of the last block
     // so now - lastPurchase is always >= 1
-    require(now - lastPurchase >= renewMinFrequency, 'BEFORE_MIN_FREQUENCY');
+    require(block.timestamp - lastPurchase >= renewMinFrequency, 'BEFORE_MIN_FREQUENCY');
 
     uint expiration = lock.keyExpirationTimestampFor(_recipient);
-    require(expiration <= now || expiration - now <= renewWindow, 'OUTSIDE_RENEW_WINDOW');
+    require(expiration <= block.timestamp || expiration - block.timestamp <= renewWindow, 'OUTSIDE_RENEW_WINDOW');
 
     purchasePrice = lock.purchasePriceFor(_recipient, _referrer, _data);
     require(purchasePrice <= maxPurchasePrice, 'PRICE_TOO_HIGH');
@@ -256,7 +256,7 @@ contract KeyPurchaser is Initializable, LockRoles
     }
 
     lock.purchase(keyPrice, _recipient, _referrer, _data);
-    timestampOfLastPurchase[_recipient] = now;
+    timestampOfLastPurchase[_recipient] = block.timestamp;
 
     // RE events: it's not clear emitting an event adds value over the ones from purchase and the token transfer
   }

@@ -1,5 +1,5 @@
 /* eslint no-console: 0 */
-
+console.log('Starting Locksmith...')
 const args = require('yargs').argv
 const net = require('net')
 const listEndpoints = require('express-list-endpoints')
@@ -36,42 +36,11 @@ const serverIsUp = (host, port, delay, maxAttempts, callback) => {
   tryConnecting()
 }
 
-/**
- * Evalutes if the environment is properly configured to correctly run the application. In a
- * failure scenario the applicatioh will fail to run, and an appropriate errors will be displayed.
- */
-
-const environmentEvaluation = () => {
-  const errors = []
-  const requiredEnvironmentVariables = [
-    'DB_USERNAME',
-    'DB_PASSWORD',
-    'DB_NAME',
-    'DB_HOSTNAME',
-    'DEFAULT_NETWORK',
-    'PURCHASER_CREDENTIALS',
-  ]
-
-  requiredEnvironmentVariables.forEach((environmentVariable) => {
-    if (!process.env[environmentVariable]) {
-      errors.push(
-        `${environmentVariable} is required to operate in this context`
-      )
-    }
-  })
-
-  if (errors.length != 0) {
-    errors.forEach((error) => {
-      console.error(error)
-    })
-    console.log('Halting execution.')
-    return process.exit(1)
-  }
-}
-
 if (!config.host || process.env.NODE_ENV === 'production') {
+  console.log(`Listening on ${port}`)
   return app.listen(port)
 }
+
 if (args.routes) {
   console.log('Routes:')
   listEndpoints(app).forEach((endpoint) => {

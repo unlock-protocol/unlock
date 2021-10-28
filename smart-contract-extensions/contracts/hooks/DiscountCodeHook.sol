@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
-import '@openzeppelin/contracts/math/SafeMath.sol';
-import '@openzeppelin/contracts/cryptography/ECDSA.sol';
-import '@unlock-protocol/unlock-abi-7/ILockKeyPurchaseHookV7.sol';
-import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
+import '@openzeppelin/contracts/utils/math/SafeMath.sol';
+import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/ILockKeyPurchaseHookV7.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 import '../mixins/LockRoles.sol';
 
 
@@ -30,7 +30,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
    * @dev To remove a code, just set the discount to 0.
    */
   function addCodes(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     address[] calldata _codeAddresses,
     uint[] calldata _discountBasisPoints
   ) external
@@ -62,7 +62,7 @@ contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
   ) external override view
     returns (uint minKeyPrice)
   {
-    minKeyPrice = IPublicLockV7Sol6(msg.sender).keyPrice();
+    minKeyPrice = IPublicLockV9(msg.sender).keyPrice();
     if(_signature.length == 65)
     {
       bytes32 secretMessage = ECDSA.toEthSignedMessageHash(keccak256(abi.encode(_recipient)));

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.6.11;
+pragma solidity 0.8.2;
 
 import './KeyPurchaser.sol';
-import 'hardlydifficult-eth/contracts/proxies/Clone2Factory.sol';
-import 'hardlydifficult-eth/contracts/proxies/Clone2Probe.sol';
-import '@unlock-protocol/unlock-abi-7/IPublicLockV7Sol6.sol';
+import './utils/Clone2Factory.sol';
+import './utils/Clone2Probe.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 
 /**
  * @notice A factory for creating keyPurchasers.
@@ -29,13 +29,13 @@ contract KeyPurchaserFactory
    */
   mapping(address => address[]) public lockToKeyPurchasers;
 
-  constructor() public
+  constructor()
   {
     keyPurchaserTemplate = address(new KeyPurchaser());
   }
 
   function _getClone2Salt(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -52,7 +52,7 @@ contract KeyPurchaserFactory
    * @dev This works whether or not the keyPurchaser has actually been deployed yet.
    */
   function getExpectedAddress(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -72,7 +72,7 @@ contract KeyPurchaserFactory
    * @dev See KeyPurchaser for a description of the other params.
    */
   function deployKeyPurchaser(
-    IPublicLockV7Sol6 _lock,
+    IPublicLockV9 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,

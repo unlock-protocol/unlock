@@ -12,6 +12,7 @@ import OpenGraphTags from '../components/page/OpenGraphTags'
 import BlogIndex from '../components/content/BlogIndex'
 import { prepareBlogProps } from '../utils/blogLoader'
 import { GlobalWrapper } from '../components/interface/GlobalWrapper'
+import { SignupBox } from '../components/interface/LandingPageComponents'
 
 // TODO move to BlogContent
 const Blog = ({ posts, page, totalPages }) => {
@@ -70,6 +71,18 @@ const Blog = ({ posts, page, totalPages }) => {
             </Right>
           )}
         </Pagination>
+
+        <SignupBox>
+          <p style={{ 'margin-top': '16px', 'margin-bottom': '0px;' }}>
+            Or use our{' '}
+            <a
+              style={{ color: 'white', 'text-decoration': 'underline' }}
+              href="/static/blog.rss"
+            >
+              RSS feed
+            </a>
+          </p>
+        </SignupBox>
       </Layout>
     </GlobalWrapper>
   )
@@ -98,6 +111,7 @@ const Title = styled.h1`
 
 const Pagination = styled.ul`
   margin: 0px;
+  margin-bottom: 120px;
   padding: 0px;
   li {
     display: inline-block;

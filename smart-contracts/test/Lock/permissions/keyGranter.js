@@ -44,14 +44,14 @@ contract('Permissions / KeyGranter', (accounts) => {
       assert.equal(result, false)
       await reverts(
         lock.addKeyGranter(accounts[5], { from: notAuthorized }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'MixinRoles: caller does not have the LockManager role'
       )
     })
 
     it('should only allow a lockManager to remove a KeyGranter', async () => {
       await reverts(
         lock.revokeKeyGranter(newKeyGranter, { from: notAuthorized }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'MixinRoles: caller does not have the LockManager role'
       )
       await lock.revokeKeyGranter(newKeyGranter, { from: lockCreator })
       result = await lock.isKeyGranter.call(newKeyGranter)
