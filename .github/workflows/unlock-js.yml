@@ -1,0 +1,15 @@
+name: Unlock-JS
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for changes in repository
+        run: scripts/monorepo.sh packages/unlock-js ${GITHUB_REF##*/}
+      - name: Running tests
+        run: scripts/tests.sh packages/unlock-js
