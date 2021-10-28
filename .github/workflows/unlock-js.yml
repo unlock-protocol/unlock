@@ -2,9 +2,11 @@ name: Unlock-JS
 
 on:
   push:
-    - "packages/unlock-js/*"
+    paths: 
+      - "packages/unlock-js/*"
   pull_request:
-    - "packages/unlock-js/*"
+    paths: 
+      - "packages/unlock-js/*"
 
 jobs:
   run-tests:
