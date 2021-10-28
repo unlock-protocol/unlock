@@ -6,6 +6,7 @@ const bytecode = require('./bytecode').default
 const abis = require('./abis').default
 
 // @todo Remove this testing change
+// testing
 
 /**
  * This service interacts with the user's wallet.
