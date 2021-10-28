@@ -32,7 +32,7 @@ describe('keyExpirationTimestampFor', () => {
       jsonrpc: '2.0',
       method: 'eth_call',
     })
-    const params = body.params
+    const { params } = body
     expect(params[0]).toEqual({
       data: `0xabdf82ce000000000000000000000000${userAddress.substring(2)}`,
       to: lockAddress,

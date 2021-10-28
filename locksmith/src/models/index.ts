@@ -12,10 +12,19 @@ import { StripeCustomer } from './stripeCustomer'
 import { StripeConnectLock } from './stripeConnectLock'
 import { LockIcons } from './lockIcons'
 import { Charge } from './charge'
+import logger from '../logger'
 
-const config = require('../../config/config')
+const config = require('../../config/config').database
 
-const sequelize = new Sequelize(config)
+logger.info(`Connecting to database, ${JSON.stringify(config)}`)
+
+let sequelize
+if (config.uri) {
+  sequelize = new Sequelize(config.uri, config.options)
+} else {
+  // We assume config from an object of {username, password, database, host, dialect}
+  sequelize = new Sequelize(config)
+}
 
 sequelize.addModels([
   User,

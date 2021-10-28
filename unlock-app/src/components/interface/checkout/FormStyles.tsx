@@ -14,6 +14,11 @@ export const Input = styled.input`
   padding: 0 8px;
   color: var(--darkgrey);
   margin-bottom: 16px;
+
+  &::placeholder {
+    color: var(--grey);
+    font-weight: 300;
+  }
 `
 
 export const Label = styled.label`

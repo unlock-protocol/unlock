@@ -1,21 +1,11 @@
 # Locksmith
 
-Locksmith provides the ability to store metadata associated with Locks outside
-of the Ethereum blockchain, with reasonable permission around writes.
-
-Locksmith currently handles the following responsibilities:
-
-- Event Data Storage
-- Price Data Storage
-- Lock Data Storage
-- Token Metadata Storage
-- Block Metadata Storage
-- User Accounts
-- Managed Key Purchases
-
-The general idea being that some of the functionality will be moved towards a decentralized
-counterpart when the technology is available and time permits.
-
+Locksmith is a backend service that prvovides some services in the context of Unlock.
+None of these services are required to use the core-protocol.
+Among these services, locksmith provides the following:
+* NFT metadata hosting
+* membership metadata hosting
+* Unlock accounts
 ## Getting Started
 
 ### Running in Development
@@ -28,7 +18,7 @@ You can start Locksmith in development with the following command: `yarn dev`.
 ### Running in Production
 
 Locksmith's suggested production datastore is [Postgres](https://www.postgresql.org/),
-and will require access to a running Instance.
+and will require access to a running instance.
 
 You can configure your connection details in a few ways. Here are the suggested methods:
 

@@ -495,10 +495,10 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       const t1 = await udt.mint(holder, supply)
       await time.advanceBlock()
       await time.advanceBlock()
-      const t2 = await udt.burn(holder, 10)
+      const t2 = await udt.mint(holder, 10)
       await time.advanceBlock()
       await time.advanceBlock()
-      const t3 = await udt.burn(holder, 10)
+      const t3 = await udt.mint(holder, 10)
       await time.advanceBlock()
       await time.advanceBlock()
       const t4 = await udt.mint(holder, 20)
@@ -516,22 +516,22 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       ).to.be.bignumber.equal('10000000000000000000000000')
       expect(
         await udt.getPastTotalSupply(t2.receipt.blockNumber)
-      ).to.be.bignumber.equal('9999999999999999999999990')
+      ).to.be.bignumber.equal('10000000000000000000000010')
       expect(
         await udt.getPastTotalSupply(t2.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('9999999999999999999999990')
+      ).to.be.bignumber.equal('10000000000000000000000010')
       expect(
         await udt.getPastTotalSupply(t3.receipt.blockNumber)
-      ).to.be.bignumber.equal('9999999999999999999999980')
+      ).to.be.bignumber.equal('10000000000000000000000020')
       expect(
         await udt.getPastTotalSupply(t3.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('9999999999999999999999980')
+      ).to.be.bignumber.equal('10000000000000000000000020')
       expect(
         await udt.getPastTotalSupply(t4.receipt.blockNumber)
-      ).to.be.bignumber.equal('10000000000000000000000000')
+      ).to.be.bignumber.equal('10000000000000000000000040')
       expect(
         await udt.getPastTotalSupply(t4.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000000')
+      ).to.be.bignumber.equal('10000000000000000000000040')
     })
   })
 })

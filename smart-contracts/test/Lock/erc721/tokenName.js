@@ -26,7 +26,7 @@ contract('Lock / erc721 / name', (accounts) => {
         unnamedlock.updateLockName('Hardly', {
           from: accounts[1],
         }),
-        'MixinLockManager: caller does not have the LockManager role'
+        'MixinRoles: caller does not have the LockManager role'
       )
     })
 

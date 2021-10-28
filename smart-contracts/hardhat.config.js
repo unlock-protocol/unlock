@@ -19,11 +19,11 @@ require('hardhat-storage-layout')
 // gas reporting for tests
 require('hardhat-gas-reporter')
 
-// contract verification
-if (process.env.ETHERSCAN_API_KEY) {
-  // eslint-disable-next-line global-require
-  require('@nomiclabs/hardhat-etherscan')
-}
+// test coverage
+require('solidity-coverage')
+
+// eslint-disable-next-line global-require
+require('@nomiclabs/hardhat-etherscan')
 
 const { getHardhatNetwork } = require('./helpers/network')
 
@@ -39,19 +39,7 @@ const settings = {
   },
 }
 
-// When running CI, we connect to the hardhat node container
-const testHost = process.env.CI === 'true' ? 'eth-node' : '127.0.0.1'
-const defaultNetworks = {
-  ganache: {
-    url: `http://${testHost}:8545`,
-    chainId: 1337,
-    accounts: {
-      mnemonic: 'hello unlock save the web',
-    },
-  },
-}
-
-const networks = getHardhatNetwork(defaultNetworks)
+const networks = getHardhatNetwork()
 
 // Etherscan api for verification
 const etherscan = process.env.ETHERSCAN_API_KEY
@@ -72,8 +60,6 @@ if (process.env.RUN_MAINNET_FORK) {
   networks.hardhat = {
     forking: {
       url: alchemyURL,
-      blockNumber: 13102200, // Aug 20th 2021
-      // gasPrice: 150000000000, // not working, see https://github.com/nomiclabs/hardhat/issues/1216
     },
   }
 
@@ -90,6 +76,8 @@ require('./tasks/impl')
 require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
+require('./tasks/release')
+// require('./tasks/mainnet-tests')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -114,6 +102,7 @@ module.exports = {
       { version: '0.6.12', settings },
       { version: '0.7.6', settings },
       { version: '0.8.0', settings },
+      { version: '0.8.2', settings },
       { version: '0.8.4', settings },
     ],
   },

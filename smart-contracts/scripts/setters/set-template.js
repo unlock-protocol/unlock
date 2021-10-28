@@ -19,6 +19,14 @@ async function main({ publicLockAddress, unlockAddress }) {
   const Unlock = await ethers.getContractFactory('Unlock')
   const unlock = Unlock.attach(unlockAddress)
 
+  const existingTemplate = await unlock.publicLockAddress()
+
+  if (existingTemplate === ethers.utils.getAddress(publicLockAddress)) {
+    // eslint-disable-next-line no-console
+    console.log('UNLOCK SETUP > Template already set for PublicLock')
+    return
+  }
+
   // set lock template
   const tx = await unlock.setLockTemplate(publicLockAddress, {
     from: deployer.address,

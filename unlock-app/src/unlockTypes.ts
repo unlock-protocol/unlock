@@ -175,6 +175,7 @@ export interface MetadataInput {
   defaultValue?: string
   type: 'text' | 'date' | 'color' | 'email' | 'url'
   required: boolean
+  placeholder?: string
   public?: true // optional, all non-public fields are treated as protected
 }
 

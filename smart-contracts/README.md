@@ -4,15 +4,17 @@ See [our docs](https://docs.unlock-protocol.com/developers/smart-contracts-archi
 
 ## Run locally
 
+Start hardhat node.
+
 ```
 yarn install
-npx hardhat node
+yarn run hardhat node
 ```
 
 Then you can deploy the contracts locally
 
 ```
-npx hardhat run scripts/deploy.js
+yarn run hardhat deploy
 ```
 
 ### Run the tests
@@ -46,7 +48,7 @@ Once you have mainnet running locally, you can run the relevant tests in another
 
 ```
 export RUN_MAINNET_FORK=1
-npx hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
+yarn hardhat --network localhost test test/UnlockDiscountToken/upgrades.mainnet.js
 ```
 
 Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skipped and will be marked as pending on the CI.
@@ -54,27 +56,19 @@ Note that if the var `RUN_MAINNET_FORK` is not set, the mainnet tests are skippe
 
 ### Setup networks
 
-To set up a network for deployment, you need 2 things
+To set up a network for deployment, change `networks.js` to add your networks and/or change the provider used (defaults might be slower/rate limited).
 
-1. create a plain text mnemonic file containing the words `mnemonic.<NETWORK NAME>`
+### Setup account
 
-2. export the provider url to your shell env
-
-#### Example : Rinkeby
+You can create a "global" `accounts.js` that will be used for all networks or customize each network by using `accounts.<NETWORK NAME>.js`.
+The format of the file is:
 
 ```
-# store menmonic words in file
-cat mnemonic.rinkeby
-
 module.exports = {
-  mnemonic: "blah blah...",
-  initialIndex: 2
+  mnemonic: 'test test test test test test test test test test test junk',
+  initialIndex: 0,
 }
-
-# export Alchemy/Infura URL
-export RINKEBY_PROVIDER_URL=https://eth-rinkeby.alchemyapi.io/v2/<key>
 ```
-
 ### Run the UDT contract upgrade
 
 Once your network are setup, you can run the UDT contract upgrade
@@ -125,7 +119,7 @@ yarn hardhat set:template --unlock-address <xxx> --public-lock-address <template
 You can setup an entire environment using
 
 ```
-yarn deploy-all 
+yarn deploy-all
 ```
 
 Or deploy different part separately
@@ -152,9 +146,9 @@ see `npx hardhat --help` for a list of all available tasks and deployments
 ```
 yarn hardhat set:unlock-config --unlock-address <xxx> \
   --udt-address <xxx>
-  --wethAddress <xxx>
-  --estimatedGasForPurchase <xxx>
-  --locksmithURI <xxx>
+  --weth-address <xxx>
+  --estimated-gas-for-purchase <xxx>
+  --locksmith-u-r-i <xxx>
 ```
 
 ## Governor + Timelock
@@ -168,3 +162,15 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 > Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true
 > Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false
 ````
+
+## Release a new version of a contract
+
+1. Update the version number in the contract
+2. Fix relevant tests
+3. Create a PR mentioning the version bump
+4. Make you changes
+5. Release the new versions of the contracts ABI with the following command
+
+```
+yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contracts/<Unlock|PublicLock>.sol
+```

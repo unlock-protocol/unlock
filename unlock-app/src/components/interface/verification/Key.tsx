@@ -159,11 +159,11 @@ export const ValidKey = ({
       const _isLockManager = await isLockManager(viewer)
       if (_isLockManager) {
         setViewerIsLockOwner(true)
-        const metadata = await getKeyData(unlockKey.tokenId, viewer)
+        const metadata = (await getKeyData(unlockKey.tokenId, viewer)) as any
         setKeyData(metadata || {})
       } else {
         setViewerIsLockOwner(false)
-        const metadata = await getKeyData(unlockKey.tokenId)
+        const metadata = (await getKeyData(unlockKey.tokenId)) as any
         setKeyData(metadata || {})
       }
       setLoading(false)

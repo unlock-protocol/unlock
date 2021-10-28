@@ -96,7 +96,7 @@ services:
         BUILD_DIR: packages/unlock-js
     env_file:
       - ./${UNLOCK_ENV}.env
-    depends_on: 
+    depends_on:
       - eth-node
 
 
