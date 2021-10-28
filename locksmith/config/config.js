@@ -22,10 +22,14 @@ const config = {
 // Heroku sets DATABASE_URL
 if (process.env.DATABASE_URL) {
   config.database.uri = process.env.DATABASE_URL
-  config.database.dialectOptions = {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
+  config.database.options = {
+    dialect: 'postgres',
+    ssl: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
     },
   }
 } else {
