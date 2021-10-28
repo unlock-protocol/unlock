@@ -7,7 +7,7 @@
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
     "dev": "NODE_ENV=development yarn db:migrate && tsc-watch --onSuccess 'yarn start' --onFailure 'echo Beep! Compilation Failed'",
-    "test": "NODE_ENV=test yarn run db:migrate && jest --forceExit --runInBand",
+    "test": "NODE_ENV=test yarn run db:migrate && NODE_ENV=test jest --forceExit --runInBand",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ __tests__/",
     "db:migrate": "sequelize --config ./config/sequelize.config.js db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",
