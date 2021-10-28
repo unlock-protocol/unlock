@@ -12,13 +12,8 @@ const config = {
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
   logging: false,
-  jaeger: {
-    serviceName: 'locksmith',
-    tags: [],
-    port: 6832,
-    maxPacketSize: 65000,
-  },
 }
+
 // Heroku sets DATABASE_URL
 if (process.env.DATABASE_URL) {
   config.database.uri = process.env.DATABASE_URL
