@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Media from '../../theme/media'
@@ -374,4 +375,12 @@ export const SignupBox = ({ children }) => {
       {children}
     </Box>
   )
+}
+
+SignupBox.propTypes = {
+  children: PropTypes.node,
+}
+
+SignupBox.defaultProps = {
+  children: null,
 }
