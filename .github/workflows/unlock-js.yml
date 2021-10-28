@@ -1,6 +1,12 @@
 name: Unlock-JS
 
-on: [push, pull_request]
+on:
+  push:
+    paths: 
+      - "packages/unlock-js"
+  pull_request:
+    paths: 
+      - "packages/unlock-js"
 
 jobs:
   run-tests:
@@ -11,7 +17,5 @@ jobs:
       BLOCKTIME: 0
     steps:
       - uses: actions/checkout@v2
-      - name: Check for changes in repository
-        run: scripts/monorepo.sh packages/unlock-js ${GITHUB_REF##*/}
       - name: Running tests
         run: scripts/tests.sh packages/unlock-js
