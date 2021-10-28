@@ -65,10 +65,14 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
       </Message>
       {error && <Error>{error}</Error>}
 
-      {fields.map(({ name, type, required }) => (
+      {fields.map(({ name, type, required, placeholder }) => (
         <StyledLabel required={required} key={name}>
           <span>{name}</span>
-          <Input type={type} {...register(name, { required })} />
+          <Input
+            placeholder={placeholder}
+            type={type}
+            {...register(name, { required })}
+          />
         </StyledLabel>
       ))}
 
