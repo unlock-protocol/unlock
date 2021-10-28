@@ -20,10 +20,7 @@ logger.info(`Connecting to database, ${JSON.stringify(config)}`)
 
 let sequelize
 if (config.uri) {
-  sequelize = new Sequelize(config.uri, {
-    dialect: 'postgres',
-    ...config.dialectOptions,
-  })
+  sequelize = new Sequelize(config.uri, config.options)
 } else {
   // We assume config from an object of {username, password, database, host, dialect}
   sequelize = new Sequelize(config)
