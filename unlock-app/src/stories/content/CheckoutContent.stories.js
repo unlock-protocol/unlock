@@ -90,6 +90,7 @@ storiesOf('Checkout', module)
           name: 'Name',
           type: 'text',
           required: true,
+          placeholder: 'John Doe',
         },
         {
           name: 'Email',

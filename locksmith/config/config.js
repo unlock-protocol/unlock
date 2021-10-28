@@ -1,9 +1,7 @@
 const config = {
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  host: process.env.DB_HOSTNAME,
-  dialect: 'postgres',
+  database: {
+    dialect: 'postgres',
+  },
   stripeSecret: process.env.STRIPE_SECRET,
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
   unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
@@ -13,25 +11,27 @@ const config = {
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
-  logging: false
+  logging: false,
 }
 
-if (process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'production') {
-
-  // delete local config
-  delete config.username
-  delete config.password
-  delete config.database
-  delete config.host
-
-  // use db string provided by Heroku
-  config.use_env_variable = "DATABASE_URL"
-  config.dialectOptions = {
-    ssl: {
-      require : true,
-      rejectUnauthorized: false
-    }
+// Heroku sets DATABASE_URL
+if (process.env.DATABASE_URL) {
+  config.database.uri = process.env.DATABASE_URL
+  config.database.options = {
+    dialect: 'postgres',
+    ssl: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   }
+} else {
+  config.database.username = process.env.DB_USERNAME
+  config.database.password = process.env.DB_PASSWORD
+  config.database.database = process.env.DB_NAME
+  config.database.host = process.env.DB_HOSTNAME
 }
 
 module.exports = config

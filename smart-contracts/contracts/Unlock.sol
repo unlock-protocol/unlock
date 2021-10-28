@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.5.17;
 
 /**
@@ -314,7 +315,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 9;
+    return 10;
   }
 
   /**

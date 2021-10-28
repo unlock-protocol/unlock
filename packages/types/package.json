@@ -18,10 +18,11 @@
         "configuration"
     ],
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "clean": "rm -rf dist"
     },
     "devDependencies": {
         "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-        "typescript": "^4.4.3"
+        "typescript": "4.4.3"
     }
 }

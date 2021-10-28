@@ -4,7 +4,6 @@ const fs = require('fs-extra')
 const path = require('path')
 
 // files path
-const pastVersionsPath = path.resolve(__dirname, '..', '..', 'past-versions')
 const contractsPath = path.resolve(
   __dirname,
   '..',
@@ -21,7 +20,7 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-const versionsCount = 9
+const versionsCount = 10
 let unlock
 
 contract('Unlock / upgrades', async (accounts) => {
@@ -39,27 +38,35 @@ contract('Unlock / upgrades', async (accounts) => {
 
       let originalLockData
 
-      const pastVersionPath = path.resolve(pastVersionsPath, `${versionNumber}`)
-      const contractPath = path.resolve(contractsPath, `${versionNumber}`)
-      const artifactPath = path.resolve(artifactsPath, `${versionNumber}`)
+      const pastUnlockPath = require.resolve(
+        `@unlock-protocol/contracts/dist/Unlock/UnlockV${versionNumber}.sol`
+      )
+      const pastPublicLockPath = require.resolve(
+        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
+      )
 
       before(async function copyAndBuildContract() {
         // make sure mocha doesnt time out
         this.timeout(200000)
 
-        // make sure contract file exists
-        await fs.ensureDir(pastVersionPath)
-
         // copy all versions over
-        await fs.copy(pastVersionPath, contractPath)
+        await fs.copy(
+          pastUnlockPath,
+          path.resolve(contractsPath, `UnlockV${versionNumber}.sol`)
+        )
+
+        await fs.copy(
+          pastPublicLockPath,
+          path.resolve(contractsPath, `PublicLockV${versionNumber}.sol`)
+        )
 
         // re-compile contract using hardhat
         await run('compile')
       })
 
       after(async () => {
-        await fs.remove(contractPath)
-        await fs.remove(artifactPath)
+        await fs.remove(contractsPath)
+        await fs.remove(artifactsPath)
       })
 
       beforeEach(async () => {
@@ -71,7 +78,7 @@ contract('Unlock / upgrades', async (accounts) => {
         )
 
         Unlock = await ethers.getContractFactory(
-          `contracts/past-versions/${versionNumber}/UnlockV${versionNumber}.sol:Unlock`
+          `contracts/past-versions/UnlockV${versionNumber}.sol:Unlock`
         )
 
         // deploy instance
@@ -102,7 +109,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
           beforeEach(async () => {
             publicLock = await ethers.getContractFactory(
-              `contracts/past-versions/${versionNumber}/PublicLockV${versionNumber}.sol:PublicLock`
+              `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`
             )
 
             if (versionNumber >= 5) {
@@ -173,10 +180,17 @@ contract('Unlock / upgrades', async (accounts) => {
             it('PublicLock version is set', async () => {
               if (versionNumber >= 1) {
                 // Version numbers were introduced to PublicLock with v1
-                const version = await lock.publicLockVersion()
-                if (versionNumber == 2) {
+                const templateVersion = await lock.publicLockVersion()
+                const version =
+                  typeof templateVersion !== 'number'
+                    ? templateVersion.toNumber()
+                    : templateVersion
+                if (versionNumber === 2) {
                   // version 2 had a bug: we forgot to bump the lock version
                   assert.equal(version, 1)
+                } else if (versionNumber === 9) {
+                  // unlock 9 uses lock 8
+                  assert.equal(version, 8)
                 } else {
                   assert.equal(version, versionNumber)
                 }
@@ -342,11 +356,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
                   it('Latest Key is owned', async () => {
                     const id = await lockLatest.getTokenIdFor(keyOwner.address)
-                    const isOwned = await lockLatest.isKeyOwner(
-                      id,
-                      keyOwner.address
-                    )
-                    assert.equal(isOwned, true)
+                    assert.equal(await lockLatest.ownerOf(id), keyOwner.address)
                   })
 
                   it('Latest publicLock version is correct', async () => {

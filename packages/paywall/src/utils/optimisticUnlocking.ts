@@ -138,9 +138,16 @@ export const getTransactionsForUserAndLocks = async (
     .join('&')
 
   const url = `${locksmithUri}/transactions?for=${user}&${filterLocks}`
-  const response = await fetch(url)
-  const body = await response.json()
-  return body.transactions
+  try {
+    const response = await fetch(url)
+    const body = await response.json()
+    return body.transactions
+  } catch (error: any) {
+    console.error(
+      `Could not retrieve transactions for ${user} on ${locks}: ${error}`
+    )
+    return []
+  }
 }
 
 export const withinLast24Hours = (dateString: string) => {

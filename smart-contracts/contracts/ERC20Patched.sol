@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 // Sources flattened with hardhat v2.4.1 https://hardhat.org
 pragma solidity ^0.8.0;
 
@@ -847,6 +848,13 @@ abstract contract EIP712Upgradeable is Initializable {
         _HASHED_VERSION = hashedVersion;
     }
 
+    function __EIP712_init_unsafe(string memory name, string memory version) internal {
+        bytes32 hashedName = keccak256(bytes(name));
+        bytes32 hashedVersion = keccak256(bytes(version));
+        _HASHED_NAME = hashedName;
+        _HASHED_VERSION = hashedVersion;
+    }
+
     /**
      * @dev Returns the domain separator for the current chain.
      */
@@ -987,7 +995,12 @@ abstract contract ERC20PermitUpgradeable is Initializable, ERC20Upgradeable, IER
     }
 
     function __ERC20Permit_init_unchained(string memory name) internal initializer {
-        _PERMIT_TYPEHASH = keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");}
+        _PERMIT_TYPEHASH = keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
+    }
+
+    function __ERC20Permit_init_unsafe(string memory name) internal {
+        _PERMIT_TYPEHASH = keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)");
+    }
 
     /**
      * @dev See {IERC20Permit-permit}.
@@ -1356,6 +1369,14 @@ library SafeCastUpgradeable {
 abstract contract ERC20VotesUpgradeable is Initializable, ERC20PermitUpgradeable {
     function __ERC20Votes_init_unchained() internal initializer {
     }
+
+    function __ERC20Votes_init_unsafe() internal {
+        if (_totalSupplyCheckpoints.length == 0 || _totalSupplyCheckpoints[_totalSupplyCheckpoints.length - 1].votes != totalSupply()) {
+            delete _totalSupplyCheckpoints;
+            _writeCheckpoint(_totalSupplyCheckpoints, _add, totalSupply());
+        }
+    }
+
     struct Checkpoint {
         uint32 fromBlock;
         uint224 votes;

@@ -7,30 +7,30 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/core": "7.14.8",
-    "@typescript-eslint/eslint-plugin": "4.28.5",
-    "@typescript-eslint/parser": "4.28.5",
+    "@babel/core": "7.15.8",
+    "@typescript-eslint/eslint-plugin": "4.32.0",
+    "@typescript-eslint/parser": "4.32.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.2.2",
     "eslint": "7.32.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
-    "eslint-import-resolver-typescript": "2.4.0",
-    "eslint-plugin-import": "2.23.4",
-    "eslint-plugin-jest": "24.4.0",
+    "eslint-import-resolver-typescript": "2.5.0",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-jest": "24.5.0",
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-mocha": "9.0.0",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-promise": "5.1.0",
-    "eslint-plugin-react": "7.24.0",
+    "eslint-plugin-react": "7.26.1",
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-standard": "4.1.0",
-    "prettier": "2.3.2",
-    "typescript": "4.3.5"
+    "prettier": "2.4.1",
+    "typescript": "4.4.3"
   },
   "devDependencies": {
-    "jest": "27.1.0"
+    "jest": "27.2.4"
   }
 }

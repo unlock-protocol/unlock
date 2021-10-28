@@ -11,20 +11,19 @@ const fs = require('fs')
 const path = require('path')
 
 /* eslint-disable import/no-extraneous-dependencies */
-const v4 = require('@unlock-protocol/unlock-abi-4')
-const v6 = require('@unlock-protocol/unlock-abi-6')
-const v7 = require('@unlock-protocol/unlock-abi-7')
-const v8 = require('@unlock-protocol/unlock-abi-8')
-const v9 = require('@unlock-protocol/unlock-abi-9')
-/* eslint-enable import/no-extraneous-dependencies */
+const abis = require('@unlock-protocol/contracts')
 
-const toCompress = {
-  v4,
-  v6,
-  v7,
-  v8,
-  v9,
-}
+const toCompress = {}
+
+const versions = ['v4', 'v6', 'v7', 'v8', 'v9']
+
+versions.forEach((v) => {
+  toCompress[v] = {
+    Unlock: abis[`Unlock${v.toUpperCase()}`],
+    PublicLock: abis[`PublicLock${v.toUpperCase()}`],
+  }
+})
+
 const output = {}
 
 function formatTypes(types) {

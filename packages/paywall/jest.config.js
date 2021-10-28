@@ -5,6 +5,8 @@ module.exports = {
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/src/__tests__/test-helpers/',
+    '<rootDir>/build/',
+    '<rootDir>/dist/',
   ],
   preset: 'ts-jest/presets/js-with-ts',
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
@@ -21,7 +23,6 @@ module.exports = {
     },
   },
   globals: {
-    PAYWALL_URL: 'localhost',
     __ENVIRONMENT_VARIABLES__: {
       locksmithUri: 'http://0.0.0.0:8080',
     },

@@ -6,7 +6,7 @@ ARG PORT=3000
 ##
 ## 1. get only needed packages
 ##
-FROM alpine:3.11 as manifests
+FROM alpine:3.14 as manifests
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
@@ -15,7 +15,7 @@ ARG PORT
 # install deps
 RUN apk add coreutils jq
 
-# copy 
+# copy
 WORKDIR /tmp
 COPY package.json .
 COPY yarn.lock .
@@ -54,8 +54,8 @@ COPY --chown=node .prettierrc /home/unlock/.
 COPY --chown=node .yarn/ /home/unlock/.yarn/
 COPY --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
 
-# add yarn cache folder to be used by docker buildkit 
-RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml 
+# add yarn cache folder to be used by docker buildkit
+RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml
 
 # Setting user as root to handle apk install
 USER root
@@ -92,10 +92,8 @@ RUN chown -R node:node /home/unlock/yarn-cache
 
 USER node
 
-# build required packages
-RUN yarn workspace @unlock-protocol/networks build
-RUN yarn workspace @unlock-protocol/types build
-RUN yarn workspace @unlock-protocol/unlock-js build
+# build all packages in packages/**
+RUN yarn build
 
 # copy scripts
 RUN mkdir /home/unlock/scripts
