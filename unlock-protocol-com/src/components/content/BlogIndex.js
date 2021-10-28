@@ -10,7 +10,7 @@ export const BlogIndex = ({ posts }) => (
     <Blurb>
       We’re building the new business model for the web that empowers creators.
       <br />
-      Unlock the potential of memberships
+      Unlock the potential of memberships!
     </Blurb>
     {posts.map(
       ({ title, authorName, publishDate, slug, description, image }) => (
@@ -98,7 +98,6 @@ const Blurb = styled.div`
   font-size: 24px;
   margin-bottom: 66px;
   color: #59c245;
-  max-width: 524px;
 `
 
 const Image = styled.img`
