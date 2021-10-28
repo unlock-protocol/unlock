@@ -13,6 +13,10 @@ const configPath = path.resolve(
 // eslint-disable-next-line no-console
 console.log(`Loading config from ${configPath}`)
 
-dotenv.config({
-  path: configPath,
-})
+try {
+  dotenv.config({
+    path: configPath,
+  })
+} catch (error) {
+  console.error('Failed to load config', error)
+}
