@@ -1,6 +1,6 @@
 ---
-title: Welcome Austin Robey!
-subTitle: Growing thee team, to grow usage of the protocol!
+title: Welcome Austin Robey to Unlock!
+subTitle: Growing the team, to grow usage of the protocol!
 authorName: Amber Case
 publishDate: October 26, 2021
 description: We’re very excited to announce that Austin Robey is now Unlock’s Head of Growth! He’ll help us expand the use of our protocol within the indie music industry and beyond
