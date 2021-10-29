@@ -97,7 +97,6 @@ export const useProvider = (config: any) => {
 
   const connectProvider = async (provider: any, messageToSign: string) => {
     setLoading(true)
-
     let auth
     if (provider instanceof ethers.providers.Provider) {
       auth = await resetProvider(provider, messageToSign)
