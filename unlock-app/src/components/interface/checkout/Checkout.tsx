@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useReducer,
-  useEffect,
-  useCallback,
-} from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -226,12 +220,7 @@ export const Checkout = ({
         injectedProvider={web3Provider}
         backgroundColor="var(--white)"
         activeColor="var(--offwhite)"
-        onProvider={(provider) => {
-          if (selectedLock) {
-            setCheckoutState('crypto-checkout')
-          }
-          onProvider(provider)
-        }}
+        onProvider={onProvider}
       >
         <p>Select your crypto wallet of choice.</p>
       </LoginPrompt>

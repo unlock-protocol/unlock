@@ -97,7 +97,7 @@ describe('Paywall object', () => {
 
   describe('methodCall event', () => {
     it('forwards the method call to the injected provider', async () => {
-      expect.assertions(2)
+      expect.assertions(1)
 
       const provider = {
         enable: jest.fn(),
@@ -112,7 +112,6 @@ describe('Paywall object', () => {
         id: 31337,
       })
 
-      expect(provider.enable).toHaveBeenCalledWith()
       expect(provider.sendAsync).toHaveBeenCalledWith(
         {
           method: 'net_version',
