@@ -22,9 +22,5 @@ module.exports = {
       functions: 65,
     },
   },
-  globals: {
-    __ENVIRONMENT_VARIABLES__: {
-      locksmithUri: 'http://0.0.0.0:8080',
-    },
-  },
+  globals: {},
 }

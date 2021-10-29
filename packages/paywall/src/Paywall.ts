@@ -12,6 +12,7 @@ import {
   Web3Window,
   enableInjectedProvider,
 } from './utils/enableInjectedProvider'
+import { unlockAppUrl } from './urls'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
@@ -142,12 +143,7 @@ export class Paywall {
     return this.lockPage()
   }
 
-  shakeHands = async (config?: PaywallConfig) => {
-    if (!config) {
-      config = this.paywallConfig
-    }
-
-    const { unlockAppUrl } = this.networkConfigs[config.network]
+  shakeHands = async () => {
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],

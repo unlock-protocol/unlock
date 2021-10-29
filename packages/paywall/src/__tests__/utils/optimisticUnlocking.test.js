@@ -9,7 +9,7 @@ const locks = [lock, '0xanother']
 const transaction = '0xtransaction'
 const locksmithUri = 'https://locksmith.unlock-protocol.com'
 
-const { readOnlyProvider } = __ENVIRONMENT_VARIABLES__ /* eslint no-undef: 0 */
+const readOnlyProvider = 'https://rpc.endpoint'
 
 const savedTransactions = [
   {
