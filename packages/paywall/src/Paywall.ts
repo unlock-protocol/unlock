@@ -12,6 +12,7 @@ import {
   Web3Window,
   enableInjectedProvider,
 } from './utils/enableInjectedProvider'
+import { unlockAppUrl } from './urls'
 
 export const checkoutIframeClassName = 'unlock-protocol-checkout'
 
@@ -36,6 +37,7 @@ export enum CheckoutEvents {
   transactionInfo = 'checkout.transactionInfo',
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
+  enable = 'checkout.enable',
 }
 
 export interface MethodCall {
@@ -122,10 +124,13 @@ export class Paywall {
   // Will lock or unlock the page based on the current state
   checkKeysAndLock = async () => {
     // For each lock.
+
     if (!this.userAccountAddress) {
       return
     }
+
     this.lockStatus = undefined
+
     const unlockedLocks = await isUnlocked(
       this.userAccountAddress,
       this.paywallConfig,
@@ -138,12 +143,7 @@ export class Paywall {
     return this.lockPage()
   }
 
-  shakeHands = async (config?: PaywallConfig) => {
-    if (!config) {
-      config = this.paywallConfig
-    }
-
-    const { unlockAppUrl } = this.networkConfigs[config.network]
+  shakeHands = async () => {
     const child = await new Postmate({
       url: `${unlockAppUrl}/checkout`,
       classListArray: [checkoutIframeClassName, 'show'],
@@ -157,6 +157,7 @@ export class Paywall {
     child.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
     child.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
     child.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
+    child.on(CheckoutEvents.enable, this.handleEnable)
 
     // transactionInfo event also carries transaction hash.
     child.on(CheckoutEvents.transactionInfo, this.handleTransactionInfoEvent)
@@ -198,7 +199,6 @@ export class Paywall {
   }
 
   handleMethodCallEvent = async ({ method, params, id }: MethodCall) => {
-    await enableInjectedProvider(this.provider)
     ;(this.provider! as any).sendAsync(
       { method, params, id },
       (error: any, response: any) => {
@@ -208,10 +208,14 @@ export class Paywall {
   }
 
   handleOnEventEvent = async (eventName: string) => {
-    await enableInjectedProvider(this.provider)
     ;(this.provider! as any).on(eventName, () => {
       this.child!.call('resolveOnEvent', eventName)
     })
+  }
+
+  handleEnable = async () => {
+    await enableInjectedProvider(this.provider)
+    this.child!.call('resolveOnEnable')
   }
 
   showIframe = () => {

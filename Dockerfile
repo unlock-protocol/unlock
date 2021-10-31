@@ -15,7 +15,7 @@ ARG PORT
 # install deps
 RUN apk add coreutils jq
 
-# copy 
+# copy
 WORKDIR /tmp
 COPY package.json .
 COPY yarn.lock .
@@ -54,8 +54,8 @@ COPY --chown=node .prettierrc /home/unlock/.
 COPY --chown=node .yarn/ /home/unlock/.yarn/
 COPY --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
 
-# add yarn cache folder to be used by docker buildkit 
-RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml 
+# add yarn cache folder to be used by docker buildkit
+RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml
 
 # Setting user as root to handle apk install
 USER root

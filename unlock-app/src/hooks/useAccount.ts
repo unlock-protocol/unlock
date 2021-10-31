@@ -19,6 +19,10 @@ import {
   reEncryptPrivateKey,
 } from '../utils/accounts'
 
+interface ApiResponse {
+  url: string
+}
+
 export const getAccountTokenBalance = async (
   web3Service: any,
   accountAddress: string,
@@ -67,7 +71,11 @@ export const useAccount = (address: string, network: number) => {
 
     try {
       return (
-        await storageService.getStripeConnect(lockAddress, signature, typedData)
+        (await storageService.getStripeConnect(
+          lockAddress,
+          signature,
+          typedData
+        )) as ApiResponse
       ).url
     } catch (error) {
       return null

@@ -7,7 +7,6 @@ import { Paywall } from '../Paywall'
 import * as paywallScriptUtils from '../utils'
 import { networkConfigs } from '../networkConfigs'
 
-
 const paywallConfig = {
   network: 31337, // test network
   callToAction: {
@@ -42,10 +41,11 @@ const savedTransactions = [
   },
 ]
 
-let paywall: Paywall;
-
 describe('Paywall object', () => {
+  let paywall: Paywall
+
   beforeEach(() => {
+    localStorage.clear()
     jest.resetAllMocks()
     paywall = new Paywall(paywallConfig, networkConfigs)
     paywall.unlockPage = jest.fn()
@@ -97,7 +97,7 @@ describe('Paywall object', () => {
 
   describe('methodCall event', () => {
     it('forwards the method call to the injected provider', async () => {
-      expect.assertions(2)
+      expect.assertions(1)
 
       const provider = {
         enable: jest.fn(),
@@ -112,7 +112,6 @@ describe('Paywall object', () => {
         id: 31337,
       })
 
-      expect(provider.enable).toHaveBeenCalledWith()
       expect(provider.sendAsync).toHaveBeenCalledWith(
         {
           method: 'net_version',
@@ -125,6 +124,14 @@ describe('Paywall object', () => {
   })
 
   describe('checkKeysAndLock', () => {
+    let paywall: Paywall
+    beforeEach(() => {
+      jest.resetAllMocks()
+      paywall = new Paywall(paywallConfig, networkConfigs)
+      paywall.unlockPage = jest.fn()
+      paywall.lockPage = jest.fn()
+    })
+
     it('should return without locking or unlocking if the account is not set', async () => {
       expect.assertions(2)
       paywall.userAccountAddress = undefined
@@ -136,6 +143,7 @@ describe('Paywall object', () => {
 
     it('should call isUnlocked and unlockPage the page if it yields a lock address', async () => {
       expect.assertions(2)
+      paywall.userAccountAddress = '0xUser'
       jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([testLock])
       jest
         .spyOn(optimisticUnlockingUtils, 'getTransactionsForUserAndLocks')
@@ -160,6 +168,7 @@ describe('Paywall object', () => {
   describe('transactionInfo', () => {
     it('should try to optimistically unlock', async () => {
       expect.assertions(2)
+      paywall.userAccountAddress = '0xtheaddress'
 
       jest
         .spyOn(optimisticUnlockingUtils, 'willUnlock')
@@ -222,23 +231,23 @@ describe('Paywall object', () => {
       expect(optimisticUnlockingUtils.willUnlock).not.toHaveBeenCalled()
     })
   })
-})
 
-describe('Paywall unlockPage', () => {
-  beforeEach(() => {
-    paywall = new Paywall(paywallConfig, networkConfigs)
-  })
+  describe('Paywall unlockPage', () => {
+    beforeEach(() => {
+      paywall = new Paywall(paywallConfig, networkConfigs)
+    })
 
-  it('should dispatch an event for lock status', async () => {
-    expect.assertions(1)
-    jest.spyOn(paywallScriptUtils, 'dispatchEvent')
-    paywall.unlockPage([testLock])
-    expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
-      paywallScriptUtils.unlockEvents.status,
-      {
-        locks: [testLock],
-        state: 'unlocked',
-      }
-    )
+    it('should dispatch an event for lock status', async () => {
+      expect.assertions(1)
+      jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+      paywall.unlockPage([testLock])
+      expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
+        paywallScriptUtils.unlockEvents.status,
+        {
+          locks: [testLock],
+          state: 'unlocked',
+        }
+      )
+    })
   })
 })

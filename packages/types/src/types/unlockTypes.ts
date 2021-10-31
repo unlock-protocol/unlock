@@ -25,8 +25,8 @@ export enum TransactionStatus {
 
 interface NetworkConfig {
   readOnlyProvider: string
-  locksmithUri: string
-  unlockAppUrl: string
+  locksmithUri?: string
+  unlockAppUrl?: string
 }
 export interface NetworkConfigs {
   [networkId: string]: NetworkConfig
