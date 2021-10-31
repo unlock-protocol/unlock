@@ -1,7 +1,68 @@
 # unlock-express
 
-An express plugin to add locks to express. This enables server-side locking of resources in order to make sure only actual members can use it.
-
+An express plugin to add locks to express applicattions. This enables server-side locking of resources in order to make sure only actual  (paying) members can access/view them.
 # Usage
 
-# Dev
+Install:
+`npm install @unlock-protocol/unlock-express`
+
+Configure plugin:
+
+```javascript
+const { membersOnly, hasValidMembership, buildCheckoutUrl } = configureUnlock({
+  // Yield a config for the paywall based on the req. This allows for customization of the config based on the route or other elements (required) See https://docs.unlock-protocol.com/developers/paywall/configuring-checkout
+  yieldPaywallConfig : (req) => {
+   return {
+    locks: {
+      '0xafa8fE6D93174D17D98E7A539A90a2EFBC0c0Fc1': {
+        network: 4
+      }
+    }
+   }
+  },
+  // Yields the current user ethereum address (required)
+  getUserEthereumAddress: async (req) => {
+    return req.cookies.userAddress
+  },
+  // Saves the address for the current user (required). You can use signature
+  updateUserEthereumAddress: async (req, res, address, signature) => {
+    res.cookie('userAddress', address)
+  },
+
+  // Advanced/optional stuff:
+  // Easily customize the redirect URL (optional)
+  baseAuthRedirectUri: `/my-callback`,
+
+  // Customize behavior on failure (usually when the user refused to purchase a membership!)
+  onFailure: async (req, res) => {
+    res.send('Please make sure you purchase the membership!')
+  },
+
+  // Customize the params on redirect URL: useful to identify the user for updateUserEthereumAddress and getUserEthereumAddress (optional)
+  optionalRedirectParams: async (req) => {
+    return {
+      // Probably set a user id for example
+    }
+  },
+
+  // Customize te RPC provider URLs
+  providers: {
+    1: 'provider URL',
+    4: 'provider URL',
+    100: 'provider URL',
+    137: 'provider URL',
+  }
+}, app)
+```
+
+Add to routes:
+
+```javascript
+app.get('/members', membersOnly(), (req, res) => {
+  ...
+})
+```
+
+Additionally the plugin config exports to other functions: `hasValidMembership` and `buildCheckoutUrl` that can be used to respectively check if a address has any valid membership for a specific paywall config, and build a checkout URL for a paywall config.
+
+See `/example` for more details!
