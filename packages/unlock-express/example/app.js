@@ -40,7 +40,6 @@ const { membersOnly } = configureUnlock(
   },
   app
 )
-
 app.get('/', (req, res) => {
   res.send('Welcome! <a href="/members">members only</a>')
 })
@@ -54,7 +53,6 @@ app.get('/logout', (req, res) => {
   res.clearCookie('userAddress')
   res.redirect('/')
 })
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })

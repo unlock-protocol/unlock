@@ -161,6 +161,7 @@ export const useProvider = (config: any) => {
     } else {
       // Check if network can be changed
       try {
+        // wallet_switchEthereumChain
         await provider.send('wallet_addEthereumChain', [
           {
             chainId: `0x${network.id.toString(16)}`,
