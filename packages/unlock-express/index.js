@@ -145,11 +145,11 @@ const configureUnlock = (config, app) => {
       return next()
     }
 
+    const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`
+
     // Build the redirect url
     const redirectUriParams = await config.optionalRedirectParams(req)
-    const redirectUri = new URL(
-      `${process.env.BASE_URI}${config.baseAuthRedirectUri}`
-    )
+    const redirectUri = new URL(`${baseUrl}${config.baseAuthRedirectUri}`)
     const searchParams = new URLSearchParams({
       ...redirectUriParams,
     })

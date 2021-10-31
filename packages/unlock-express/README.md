@@ -52,6 +52,9 @@ const { membersOnly, hasValidMembership, buildCheckoutUrl } = configureUnlock({
     100: 'provider URL',
     137: 'provider URL',
   }
+
+  // Customise the baseUrl for the application (do not include a path!)
+  baseUrl: 'https://myapp.tld:port'
 }, app)
 ```
 

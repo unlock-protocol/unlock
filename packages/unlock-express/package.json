@@ -1,6 +1,11 @@
 {
   "name": "@unlock-protocol/unlock-express",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "public": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js ."
   },
