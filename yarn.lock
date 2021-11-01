@@ -9076,7 +9076,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:17.0.9, @types/react-dom@npm:>=16.9.0":
+"@types/react-dom@npm:17.0.10":
+  version: 17.0.10
+  resolution: "@types/react-dom@npm:17.0.10"
+  dependencies:
+    "@types/react": "*"
+  checksum: cc7d8d5b77ee2f3b989c107abd8ec0f2460ba1b1ee6e6d637124e1939594b5619fa4166ef0ea7632a69b68358e0b71aa618de446ccc416dcc0017175549da601
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:>=16.9.0":
   version: 17.0.9
   resolution: "@types/react-dom@npm:17.0.9"
   dependencies:
@@ -9963,7 +9972,7 @@ __metadata:
     "@types/node": 14.17.20
     "@types/postmate": 1.5.2
     "@types/react": 17.0.26
-    "@types/react-dom": 17.0.9
+    "@types/react-dom": 17.0.10
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
