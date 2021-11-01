@@ -9294,18 +9294,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.26":
-  version: 17.0.26
-  resolution: "@types/react@npm:17.0.26"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 943fe7e912ea6d664910fb9391a96d8f31c985265fb768d448461123dd970080494b7987a9bd54ca664c8675cb09680c8763823ff18622222e302c8d121b7d31
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:>=16.14.8, @types/react@npm:>=16.9.11":
+"@types/react@npm:17.0.33, @types/react@npm:>=16.14.8, @types/react@npm:>=16.9.11":
   version: 17.0.33
   resolution: "@types/react@npm:17.0.33"
   dependencies:
@@ -10261,7 +10250,7 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 16.11.6
     "@types/postmate": 1.5.2
-    "@types/react": 17.0.26
+    "@types/react": 17.0.33
     "@types/react-dom": 17.0.10
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -10531,7 +10520,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
-    "@types/react": 17.0.26
+    "@types/react": 17.0.33
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -10662,7 +10651,7 @@ __metadata:
     "@testing-library/react": 12.1.1
     "@types/jest": 27.0.2
     "@types/next": 8.0.7
-    "@types/react": 17.0.26
+    "@types/react": 17.0.33
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -13165,15 +13154,6 @@ __metadata:
   version: 4.2.3
   resolution: "axe-core@npm:4.2.3"
   checksum: 753487b6d599dd478edebe8c9966c0f3ae44877b784add323e72db8c221ba8c248a841d35ef920d5b4bd6203552e15e443b36d2dd4cb3ff7d8e894cc64c5cb57
-  languageName: node
-  linkType: hard
-
-"axios@npm:0.23.0":
-  version: 0.23.0
-  resolution: "axios@npm:0.23.0"
-  dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 879f61022bd825da2a7ebb72410bc528683ba54c140436baa0b924b7cab02ec0919fe64a04a546f482a75f5fd570b77884f9826764a95f2fd88265e61dcb70db
   languageName: node
   linkType: hard
 
