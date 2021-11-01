@@ -10204,7 +10204,7 @@ __metadata:
     sequelize-cli: 6.2.0
     sequelize-typescript: 1.1.0
     setimmediate: 1.0.5
-    stripe: 8.184.0
+    stripe: 8.185.0
     supertest: 6.1.6
     ts-jest: 27.0.5
     tsc-watch: 4.5.0
@@ -13165,15 +13165,6 @@ __metadata:
   version: 4.2.3
   resolution: "axe-core@npm:4.2.3"
   checksum: 753487b6d599dd478edebe8c9966c0f3ae44877b784add323e72db8c221ba8c248a841d35ef920d5b4bd6203552e15e443b36d2dd4cb3ff7d8e894cc64c5cb57
-  languageName: node
-  linkType: hard
-
-"axios@npm:0.23.0":
-  version: 0.23.0
-  resolution: "axios@npm:0.23.0"
-  dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 879f61022bd825da2a7ebb72410bc528683ba54c140436baa0b924b7cab02ec0919fe64a04a546f482a75f5fd570b77884f9826764a95f2fd88265e61dcb70db
   languageName: node
   linkType: hard
 
@@ -39965,13 +39956,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"stripe@npm:8.184.0":
-  version: 8.184.0
-  resolution: "stripe@npm:8.184.0"
+"stripe@npm:8.185.0":
+  version: 8.185.0
+  resolution: "stripe@npm:8.185.0"
   dependencies:
     "@types/node": ">=8.1.0"
     qs: ^6.6.0
-  checksum: 3c34c40fe0f3b00ca60e59c30e9720fc075b646b63620f9858a18a4f958d86bcf05fcce09fcfb915dc13e2d1fb1489f182571394eaa5800790a1cc97633c999d
+  checksum: 6068374e0556dd447d71c290eefe07b58b3f87a187e83e30f227630f1d15f991d141a9143d5fb0c048899c4097f799000be16381094c3fca61ec2a4e53abae3a
   languageName: node
   linkType: hard
 

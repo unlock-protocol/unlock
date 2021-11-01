@@ -65,7 +65,7 @@
     "sequelize-cli": "6.2.0",
     "sequelize-typescript": "1.1.0",
     "setimmediate": "1.0.5",
-    "stripe": "8.184.0",
+    "stripe": "8.185.0",
     "unlock-abi-1-1": "1.1.1",
     "winston": "3.3.3",
     "winston-sentry-log": "1.0.24",
