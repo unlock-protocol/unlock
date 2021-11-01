@@ -25103,12 +25103,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"husky@npm:7.0.2":
-  version: 7.0.2
-  resolution: "husky@npm:7.0.2"
+"husky@npm:7.0.4":
+  version: 7.0.4
+  resolution: "husky@npm:7.0.4"
   bin:
     husky: lib/bin.js
-  checksum: 2ccfe6ddc51dc05ae8ea1e2fbb893344e93a813e00c595d6b5f5e704b7b998d6b0e2adda7c57f99b5e46a60dc07c7d860269a2ea91661c6bacef0eca8e0b8e96
+  checksum: c6ec4af63da2c9522da8674a20ad9b48362cc92704896cc8a58c6a2a39d797feb2b806f93fbd83a6d653fbdceb2c3b6e0b602c6b2e8565206ffc2882ef7db9e9
   languageName: node
   linkType: hard
 
@@ -42042,7 +42042,7 @@ typescript@^4.4.4:
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.2.2
     eslint: 7.32.0
-    husky: 7.0.2
+    husky: 7.0.4
     lint-staged: 11.2.6
     prettier: 2.4.1
     typescript: 4.4.3
