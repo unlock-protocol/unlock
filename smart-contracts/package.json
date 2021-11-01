@@ -16,7 +16,7 @@
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts-upgradeable": "4.3.2",
     "@openzeppelin/hardhat-upgrades": "1.11.0",
-    "@openzeppelin/test-helpers": "0.5.13",
+    "@openzeppelin/test-helpers": "0.5.15",
     "@openzeppelin/upgrades": "2.8.0",
     "@openzeppelin/upgrades-core": "1.10.0",
     "@uniswap/v2-core": "1.0.1",
