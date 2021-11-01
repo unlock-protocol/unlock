@@ -36,7 +36,7 @@
     "@openzeppelin/test-helpers": "0.5.13",
     "@openzeppelin/upgrades": "2.8.0",
     "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
+    "@typescript-eslint/parser": "5.2.0",
     "@unlock-protocol/contracts": "^0.0.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-eslint": "10.1.0",
