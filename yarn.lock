@@ -10206,7 +10206,7 @@ __metadata:
     setimmediate: 1.0.5
     stripe: 8.184.0
     supertest: 6.1.6
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     tsc-watch: 4.5.0
     typescript: 4.4.3
     unlock-abi-1-1: 1.1.1
@@ -10247,7 +10247,7 @@ __metadata:
     react-dom: 17.0.2
     react-test-renderer: 17.0.2
     styled-components: 5.3.1
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     typescript: 4.4.3
   languageName: unknown
   linkType: soft
@@ -10311,7 +10311,7 @@ __metadata:
     node-fetch: 3.0.0
     postmate: 1.5.2
     style-loader: 3.3.1
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     ts-loader: 9.2.6
     typescript: 4.4.3
     webpack: 5.61.0
@@ -10578,7 +10578,7 @@ __metadata:
     react-test-renderer: 17.0.2
     storybook-addon-next-router: 3.0.8
     styled-components: 5.3.1
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     typescript: 4.4.3
     validator: 13.6.0
   languageName: unknown
@@ -10645,7 +10645,7 @@ __metadata:
     jest: 27.3.1
     lint-staged: 11.2.6
     prettier: 2.4.1
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     typescript: 4.4.3
   peerDependencies:
     ethers: 5.5.1
@@ -10694,7 +10694,7 @@ __metadata:
     rss: 1.2.2
     showdown-highlight: 2.1.8
     styled-components: 5.3.1
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     typescript: 4.4.3
     yaml-front-matter: 4.1.1
   languageName: unknown
@@ -10722,7 +10722,7 @@ __metadata:
     nodemailer: 6.6.5
     nodemon: 2.0.13
     prettier: 2.4.1
-    ts-jest: 27.0.5
+    ts-jest: 27.0.7
     typescript: 4.4.3
     webpack: 5.56.0
     webpack-cli: 4.8.0
@@ -13165,15 +13165,6 @@ __metadata:
   version: 4.2.3
   resolution: "axe-core@npm:4.2.3"
   checksum: 753487b6d599dd478edebe8c9966c0f3ae44877b784add323e72db8c221ba8c248a841d35ef920d5b4bd6203552e15e443b36d2dd4cb3ff7d8e894cc64c5cb57
-  languageName: node
-  linkType: hard
-
-"axios@npm:0.23.0":
-  version: 0.23.0
-  resolution: "axios@npm:0.23.0"
-  dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 879f61022bd825da2a7ebb72410bc528683ba54c140436baa0b924b7cab02ec0919fe64a04a546f482a75f5fd570b77884f9826764a95f2fd88265e61dcb70db
   languageName: node
   linkType: hard
 
@@ -29566,7 +29557,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lodash.memoize@npm:^4.1.2":
+"lodash.memoize@npm:4.x, lodash.memoize@npm:^4.1.2":
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
   checksum: 9ff3942feeccffa4f1fafa88d32f0d24fdc62fd15ded5a74a5f950ff5f0c6f61916157246744c620173dddf38d37095a92327d5fd3861e2063e736a5c207d089
@@ -29732,7 +29723,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.6.1 || ^4.16.1, lodash@npm:4.x, lodash@npm:>=3.5 <5, lodash@npm:^4.14.2, lodash@npm:^4.17.11, lodash@npm:^4.17.12, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.17.5, lodash@npm:^4.3.0, lodash@npm:^4.7.0":
+"lodash@npm:4.6.1 || ^4.16.1, lodash@npm:>=3.5 <5, lodash@npm:^4.14.2, lodash@npm:^4.17.11, lodash@npm:^4.17.12, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.17.5, lodash@npm:^4.3.0, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -41185,15 +41176,15 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:27.0.5":
-  version: 27.0.5
-  resolution: "ts-jest@npm:27.0.5"
+"ts-jest@npm:27.0.7":
+  version: 27.0.7
+  resolution: "ts-jest@npm:27.0.7"
   dependencies:
     bs-logger: 0.x
     fast-json-stable-stringify: 2.x
     jest-util: ^27.0.0
     json5: 2.x
-    lodash: 4.x
+    lodash.memoize: 4.x
     make-error: 1.x
     semver: 7.x
     yargs-parser: 20.x
@@ -41212,7 +41203,7 @@ resolve@^2.0.0-next.3:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: fd53cdb6f913cbe802799d2b491f70f33c52c840c4b8483cecf600ff360efbd00c8d7ed9eb0dd677219f330ee38928b7b9890e9853e9f4d3574b9d8e1dcf4a30
+  checksum: 3711361cb5ae54aac547b00f8ad118ec88333c391af4bff0420497e9faa296eace4e8272c627ecbf4be675af9f68c437e4c2ccc5693c6d744796ec7da6dda131
   languageName: node
   linkType: hard
 
