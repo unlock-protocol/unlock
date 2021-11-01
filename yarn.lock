@@ -5480,9 +5480,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-etherscan@npm:2.1.6":
-  version: 2.1.6
-  resolution: "@nomiclabs/hardhat-etherscan@npm:2.1.6"
+"@nomiclabs/hardhat-etherscan@npm:2.1.7":
+  version: 2.1.7
+  resolution: "@nomiclabs/hardhat-etherscan@npm:2.1.7"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@ethersproject/address": ^5.0.2
@@ -5493,7 +5493,7 @@ __metadata:
     semver: ^6.3.0
   peerDependencies:
     hardhat: ^2.0.4
-  checksum: a6150f375baf7cdfaafbeaaf7e68d77d0cefbb28dcf9cfa3448ad7ba132a01480fc45d06591713305c522f8a52edefffb3c6c903c0d800952e2dedc0a3de567c
+  checksum: 0651ef4674aa5bfc2cbf157921fb9c76cc733a7f6b1b617f820b21628aefebc80d1503e9ceb7a2cdfb92cf6096f75b0637d724c53780000064418f6d0571401e
   languageName: node
   linkType: hard
 
@@ -10078,7 +10078,7 @@ __metadata:
   dependencies:
     "@gnosis.pm/safe-core-sdk": 0.3.1
     "@nomiclabs/hardhat-ethers": 2.0.2
-    "@nomiclabs/hardhat-etherscan": 2.1.6
+    "@nomiclabs/hardhat-etherscan": 2.1.7
     "@nomiclabs/hardhat-truffle5": 2.0.2
     "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
@@ -41910,14 +41910,6 @@ typescript@^4.4.4:
   version: 0.0.0-use.local
   resolution: "unlock-assets@link:..::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample"
   languageName: node
-  linkType: soft
-
-"unlock-express-example@workspace:packages/unlock-express/example":
-  version: 0.0.0-use.local
-  resolution: "unlock-express-example@workspace:packages/unlock-express/example"
-  dependencies:
-    express: ^4.17.1
-  languageName: unknown
   linkType: soft
 
 "unlock@workspace:.":
