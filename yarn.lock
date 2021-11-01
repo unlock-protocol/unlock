@@ -4229,13 +4229,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-core-sdk@npm:0.3.1":
-  version: 0.3.1
-  resolution: "@gnosis.pm/safe-core-sdk@npm:0.3.1"
+"@gnosis.pm/safe-core-sdk@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@gnosis.pm/safe-core-sdk@npm:1.0.0"
   dependencies:
     "@gnosis.pm/safe-core-sdk-types": ^0.1.1
     ethereumjs-util: ^7.0.10
-  checksum: 54cba675cfd93bba030db7b62b4fd9ba2936c72b795a6144ca6c2aa6ba6b7ccd5253cc4da74fda6077f5e2cddacc38667e54e4c6d5043e2c690085aba0ee0641
+  checksum: 3e89b1123f5169c422c4dcea6d3ba61a4c34d5f7702ecd7c4c8407a1d6e8b18dd315252d84ce688303f31ab453b9c8134bceb661765ee97d5040e9eccc22079c
   languageName: node
   linkType: hard
 
@@ -9999,7 +9999,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
-    "@gnosis.pm/safe-core-sdk": 0.3.1
+    "@gnosis.pm/safe-core-sdk": 1.0.0
     "@nomiclabs/hardhat-ethers": 2.0.2
     "@nomiclabs/hardhat-etherscan": 2.1.7
     "@nomiclabs/hardhat-truffle5": 2.0.2
