@@ -11171,6 +11171,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/unlock-express@workspace:^, @unlock-protocol/unlock-express@workspace:packages/unlock-express":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/unlock-express@workspace:packages/unlock-express"
+  dependencies:
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    eslint: 7.32.0
+    ethers: 5.5.1
+    prettier: 2.4.1
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/unlock-js@workspace:./packages/unlock-js, @unlock-protocol/unlock-js@workspace:packages/unlock-js":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-js@workspace:packages/unlock-js"
@@ -17399,6 +17410,16 @@ __metadata:
   dependencies:
     safe-buffer: ~5.1.1
   checksum: 985d974a2d33e1a2543ada51c93e1ba2f73eaed608dc39f229afc78f71dcc4c8b7d7c684aa647e3c6a3a204027444d69e53e169ce94e8d1fa8d7dee80c9c8fed
+  languageName: node
+  linkType: hard
+
+"cookie-parser@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "cookie-parser@npm:1.4.5"
+  dependencies:
+    cookie: 0.4.0
+    cookie-signature: 1.0.6
+  checksum: 09b41e191af8e472229b53468b858a53f64a355b438ecb56a38be2a729b862b8233041e5af102115caebae534d399813ec7270b68a949bba3b987b38555c30b6
   languageName: node
   linkType: hard
 
@@ -41989,6 +42010,16 @@ typescript@^4.4.4:
   version: 0.0.0-use.local
   resolution: "unlock-assets@link:..::locator=unlock-assets-example%40workspace%3Apackages%2Funlock-assets%2Fexample"
   languageName: node
+  linkType: soft
+
+"unlock-express-example@workspace:packages/unlock-express/example":
+  version: 0.0.0-use.local
+  resolution: "unlock-express-example@workspace:packages/unlock-express/example"
+  dependencies:
+    "@unlock-protocol/unlock-express": "workspace:^"
+    cookie-parser: ^1.4.5
+    express: ^4.17.1
+  languageName: unknown
   linkType: soft
 
 "unlock@workspace:.":
