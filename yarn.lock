@@ -10190,7 +10190,7 @@ __metadata:
     lodash.isequal: 4.5.0
     multer: 1.4.3
     multer-s3: 2.10.0
-    nock: 13.1.3
+    nock: 13.1.4
     node-mocks-http: 1.11.0
     nodemon: 2.0.13
     parse-data-uri: 0.2.0
@@ -13165,15 +13165,6 @@ __metadata:
   version: 4.2.3
   resolution: "axe-core@npm:4.2.3"
   checksum: 753487b6d599dd478edebe8c9966c0f3ae44877b784add323e72db8c221ba8c248a841d35ef920d5b4bd6203552e15e443b36d2dd4cb3ff7d8e894cc64c5cb57
-  languageName: node
-  linkType: hard
-
-"axios@npm:0.23.0":
-  version: 0.23.0
-  resolution: "axios@npm:0.23.0"
-  dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 879f61022bd825da2a7ebb72410bc528683ba54c140436baa0b924b7cab02ec0919fe64a04a546f482a75f5fd570b77884f9826764a95f2fd88265e61dcb70db
   languageName: node
   linkType: hard
 
@@ -31691,15 +31682,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nock@npm:13.1.3":
-  version: 13.1.3
-  resolution: "nock@npm:13.1.3"
+"nock@npm:13.1.4":
+  version: 13.1.4
+  resolution: "nock@npm:13.1.4"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     lodash.set: ^4.3.2
     propagate: ^2.0.0
-  checksum: 9e53a1edaa804a4b1c8dfb25c46b85ce5ddda8a1ceaa804d0a7caed0de564e1eaa1ef6c590ac5b013efaf4f009e47cf7f40d96e19f23be1122d39caf619b8df9
+  checksum: 2452150f52991229dcba1ee5f32870e7db7ef338fa7a0d4b73f6c034a8df22da076b9569ec04e3c1cdaa919a4657aad702b8eb20ada81b0f43c2feb9c6ae4b48
   languageName: node
   linkType: hard
 
