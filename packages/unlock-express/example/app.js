@@ -14,7 +14,7 @@ app.use(cookieParser())
 const { membersOnly } = configureUnlock(
   {
     // Required: Yield a config for the paywall based on the request. This allows for customization of the config based on the route or other elements.
-    yieldPaywallConfig: (req) => {
+    yieldPaywallConfig: async (req) => {
       return {
         locks: {
           '0xafa8fE6D93174D17D98E7A539A90a2EFBC0c0Fc1': {

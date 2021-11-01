@@ -7,9 +7,9 @@ const keyExpirationFor = require('./src/keyExpirationFor')
  * @returns
  */
 const configureUnlock = (config, app) => {
-  if (!config.baseAuthRedirectUri) {
+  if (!config.baseAuthRedirectPath) {
     // eslint-disable-next-line no-param-reassign
-    config.baseAuthRedirectUri = '/unlock-callback'
+    config.baseAuthRedirectPath = '/unlock-callback'
   }
 
   if (!config.providers) {
@@ -53,7 +53,7 @@ const configureUnlock = (config, app) => {
     }
   }
 
-  app.get(config.baseAuthRedirectUri, async (req, res) => {
+  app.get(config.baseAuthRedirectPath, async (req, res) => {
     const { signature, originalUrl, error } = req.query
 
     if (error) {
@@ -149,7 +149,7 @@ const configureUnlock = (config, app) => {
 
     // Build the redirect url
     const redirectUriParams = await config.optionalRedirectParams(req)
-    const redirectUri = new URL(`${baseUrl}${config.baseAuthRedirectUri}`)
+    const redirectUri = new URL(`${baseUrl}${config.baseAuthRedirectPath}`)
     const searchParams = new URLSearchParams({
       ...redirectUriParams,
     })
