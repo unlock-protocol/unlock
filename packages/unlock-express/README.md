@@ -1,9 +1,12 @@
 # unlock-express
 
 An express plugin to add Locks to express applications. This enables server-side locking of resources/routes in order to make sure only actual (paying) members can access/view them.
+
+[More details in our docs](https://docs.unlock-protocol.com/developers/tutorials/backend-locking-with-express.js).
 # Usage
 
 Install:
+
 `npm install @unlock-protocol/unlock-express`
 
 Configure plugin:
@@ -11,7 +14,7 @@ Configure plugin:
 ```javascript
 const { membersOnly, hasValidMembership, buildCheckoutUrl } = configureUnlock({
   // Yield a config for the paywall based on the req. This allows for customization of the config based on the route or other elements (required) See https://docs.unlock-protocol.com/developers/paywall/configuring-checkout
-  yieldPaywallConfig : (req) => {
+  yieldPaywallConfig : async (req) => {
    return {
     locks: {
       '0xafa8fE6D93174D17D98E7A539A90a2EFBC0c0Fc1': {
@@ -31,7 +34,7 @@ const { membersOnly, hasValidMembership, buildCheckoutUrl } = configureUnlock({
 
   // Advanced/optional stuff:
   // Easily customize the redirect URL (optional)
-  baseAuthRedirectUri: `/my-callback`,
+  baseAuthRedirectPath: `/my-callback`,
 
   // Customize behavior on failure (usually when the user refused to purchase a membership!)
   onFailure: async (req, res) => {
@@ -68,4 +71,4 @@ app.get('/members', membersOnly(), (req, res) => {
 
 Additionally the plugin config exports to other functions: `hasValidMembership` and `buildCheckoutUrl` that can be used to respectively check if a address has any valid membership for a specific paywall config, and build a checkout URL for a paywall config.
 
-See `/example` for more details!
+See `/example` for more details.
