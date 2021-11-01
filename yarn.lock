@@ -5756,9 +5756,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/test-helpers@npm:0.5.13":
-  version: 0.5.13
-  resolution: "@openzeppelin/test-helpers@npm:0.5.13"
+"@openzeppelin/test-helpers@npm:0.5.15":
+  version: 0.5.15
+  resolution: "@openzeppelin/test-helpers@npm:0.5.15"
   dependencies:
     "@openzeppelin/contract-loader": ^0.6.2
     "@truffle/contract": ^4.0.35
@@ -5770,7 +5770,7 @@ __metadata:
     semver: ^5.6.0
     web3: ^1.2.5
     web3-utils: ^1.2.5
-  checksum: d4556e5aff7dd6a6614eba576ce9e289dadbb0235ca2c4085c6f66724a556d46d72c577a26b2abbd434413787b46ef388a50bbb4f38848e690eaec30e475bfa3
+  checksum: 7b204f2ad360131a00c967dfad1b0b7ffaa81b98ab2239db335012bc3d14ca723f9a160436eff1ac4564309e96897ed2a328318227d26ccde7c9e1ae4eeaeaf3
   languageName: node
   linkType: hard
 
@@ -10346,7 +10346,7 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.2
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.3.2
-    "@openzeppelin/test-helpers": 0.5.13
+    "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 4.33.0
     "@typescript-eslint/parser": 5.2.0
@@ -10383,7 +10383,7 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts-upgradeable": 4.3.2
     "@openzeppelin/hardhat-upgrades": 1.11.0
-    "@openzeppelin/test-helpers": 0.5.13
+    "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@openzeppelin/upgrades-core": 1.10.0
     "@uniswap/v2-core": 1.0.1
@@ -13165,15 +13165,6 @@ __metadata:
   version: 4.2.3
   resolution: "axe-core@npm:4.2.3"
   checksum: 753487b6d599dd478edebe8c9966c0f3ae44877b784add323e72db8c221ba8c248a841d35ef920d5b4bd6203552e15e443b36d2dd4cb3ff7d8e894cc64c5cb57
-  languageName: node
-  linkType: hard
-
-"axios@npm:0.23.0":
-  version: 0.23.0
-  resolution: "axios@npm:0.23.0"
-  dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 879f61022bd825da2a7ebb72410bc528683ba54c140436baa0b924b7cab02ec0919fe64a04a546f482a75f5fd570b77884f9826764a95f2fd88265e61dcb70db
   languageName: node
   linkType: hard
 
