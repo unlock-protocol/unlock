@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-testing": "4.0.0",
-    "@babel/core": "7.15.8",
+    "@babel/core": "7.16.0",
     "@storybook/addon-actions": "6.3.12",
     "@storybook/addon-knobs": "6.3.1",
     "@storybook/addon-viewport": "6.3.12",
@@ -30,7 +30,7 @@
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@walletconnect/web3-provider": "1.6.5",
     "apollo-boost": "0.4.9",
-    "axios": "0.23.0",
+    "axios": "0.24.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.3.1",
     "babel-loader": "8.2.2",
@@ -45,7 +45,7 @@
     "ethereumjs-utils": "5.2.5",
     "ethers": "5.5.1",
     "file-saver": "2.0.5",
-    "graphql": "15.6.1",
+    "graphql": "15.7.2",
     "jest": "27.3.1",
     "jest-canvas-mock": "2.3.1",
     "jest-fetch-mock": "3.0.3",
@@ -61,7 +61,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-gtm-module": "2.0.11",
-    "react-hook-form": "7.17.5",
+    "react-hook-form": "7.18.0",
     "react-jazzicon": "0.1.3",
     "react-test-renderer": "17.0.2",
     "storybook-addon-next-router": "3.0.8",
@@ -71,7 +71,7 @@
     "validator": "13.6.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "7.14.5",
+    "@babel/plugin-proposal-optional-chaining": "7.16.0",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "npm-check": "5.9.2"
   },
