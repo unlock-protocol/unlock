@@ -1,6 +1,6 @@
 # unlock-express
 
-An express plugin to add locks to express applicattions. This enables server-side locking of resources in order to make sure only actual  (paying) members can access/view them.
+An express plugin to add Locks to express applications. This enables server-side locking of resources/routes in order to make sure only actual (paying) members can access/view them.
 # Usage
 
 Install:
