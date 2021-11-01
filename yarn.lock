@@ -10302,7 +10302,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: 27.3.1
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 1.13.2
+    babel-plugin-styled-components: 1.13.3
     css-loader: 6.5.0
     dotenv: 10.0.0
     eslint: 7.32.0
@@ -10546,7 +10546,7 @@ __metadata:
     babel-jest: 27.3.1
     babel-loader: 8.2.2
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 1.13.2
+    babel-plugin-styled-components: 1.13.3
     babel-preset-react-app: 10.0.0
     cross-fetch: 3.1.4
     deep-object-diff: 1.1.0
@@ -10672,7 +10672,7 @@ __metadata:
     babel-jest: 27.3.1
     babel-loader: 8.2.2
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 1.13.2
+    babel-plugin-styled-components: 1.13.3
     babel-preset-react-app: 10.0.0
     dotenv: 10.0.0
     eslint: 7.32.0
@@ -13168,15 +13168,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.23.0":
-  version: 0.23.0
-  resolution: "axios@npm:0.23.0"
-  dependencies:
-    follow-redirects: ^1.14.4
-  checksum: 879f61022bd825da2a7ebb72410bc528683ba54c140436baa0b924b7cab02ec0919fe64a04a546f482a75f5fd570b77884f9826764a95f2fd88265e61dcb70db
-  languageName: node
-  linkType: hard
-
 "axios@npm:0.24.0":
   version: 0.24.0
   resolution: "axios@npm:0.24.0"
@@ -13732,7 +13723,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-styled-components@npm:1.13.2, babel-plugin-styled-components@npm:>= 1.12.0":
+"babel-plugin-styled-components@npm:1.13.3":
+  version: 1.13.3
+  resolution: "babel-plugin-styled-components@npm:1.13.3"
+  dependencies:
+    "@babel/helper-annotate-as-pure": ^7.15.4
+    "@babel/helper-module-imports": ^7.15.4
+    babel-plugin-syntax-jsx: ^6.18.0
+    lodash: ^4.17.11
+  peerDependencies:
+    styled-components: ">= 2"
+  checksum: 265520afd1c1e6633cd796446725b57f3d9eac6abb1d506c0399c34792f6f8a954865c2908cb24703fdf6c06aab8136e2a5098c53a0c7fb744bbdceaf3d5081b
+  languageName: node
+  linkType: hard
+
+"babel-plugin-styled-components@npm:>= 1.12.0":
   version: 1.13.2
   resolution: "babel-plugin-styled-components@npm:1.13.2"
   dependencies:

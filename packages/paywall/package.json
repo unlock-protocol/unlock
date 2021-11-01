@@ -35,7 +35,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:./packages/types",
     "babel-plugin-require-context-hook": "1.0.0",
-    "babel-plugin-styled-components": "1.13.2",
+    "babel-plugin-styled-components": "1.13.3",
     "postmate": "1.5.2"
   }
 }
