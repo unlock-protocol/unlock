@@ -818,10 +818,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.11.0":
-  version: 0.11.1
-  resolution: "@solidity-parser/parser@npm:0.11.1"
-  checksum: eee5a7aea63e245df3745396bf84ea04f9763647f94d9d3e0c496833198ab881db177fcea818274ea8c3f0b18fdf76d6bca2afcea427f9ed9702210b3588a225
+"@solidity-parser/parser@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "@solidity-parser/parser@npm:0.14.0"
+  dependencies:
+    antlr4ts: ^0.5.0-alpha.4
+  checksum: fe92710e53b2bb9e8423129ca2984c08723f575eda2e4f83a8e883a741436e5ca0bd36826c10ec553bd72d6fe6abd5178ee291baafdf0bb71eb56ca91e383804
   languageName: node
   linkType: hard
 
@@ -916,7 +918,7 @@ __metadata:
     "@unlock-protocol/unlock-js": 0.20.4
     cross-fetch: 3.1.4
     ethers: 5.5.1
-    hardhat: 2.6.4
+    hardhat: 2.6.7
     hardhat-erc1820: 0.1.0
   languageName: unknown
   linkType: soft
@@ -1073,6 +1075,15 @@ __metadata:
   dependencies:
     color-convert: ^1.9.0
   checksum: d85ade01c10e5dd77b6c89f34ed7531da5830d2cb5882c645f330079975b716438cd7ebb81d0d6e6b4f9c577f19ae41ab55f07f19786b02f9dfd9e0377395665
+  languageName: node
+  linkType: hard
+
+"antlr4ts@npm:^0.5.0-alpha.4":
+  version: 0.5.0-dev
+  resolution: "antlr4ts@npm:0.5.0-dev"
+  dependencies:
+    source-map-support: ^0.5.16
+  checksum: 640dae2229124372b0329315e9614ae983bb80b1af237d8c0b3e90a2d85fb534e851c51d65d1897c92b36d27851d041ad8d95aab44af19cf7355b3ad11a3ddbf
   languageName: node
   linkType: hard
 
@@ -2198,9 +2209,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.6.4":
-  version: 2.6.4
-  resolution: "hardhat@npm:2.6.4"
+"hardhat@npm:2.6.7":
+  version: 2.6.7
+  resolution: "hardhat@npm:2.6.7"
   dependencies:
     "@ethereumjs/block": ^3.4.0
     "@ethereumjs/blockchain": ^5.4.0
@@ -2209,7 +2220,7 @@ fsevents@~2.3.2:
     "@ethereumjs/vm": ^5.5.2
     "@ethersproject/abi": ^5.1.2
     "@sentry/node": ^5.18.1
-    "@solidity-parser/parser": ^0.11.0
+    "@solidity-parser/parser": ^0.14.0
     "@types/bn.js": ^5.1.0
     "@types/lru-cache": ^5.1.0
     abort-controller: ^3.0.0
@@ -2251,7 +2262,7 @@ fsevents@~2.3.2:
     ws: ^7.4.6
   bin:
     hardhat: internal/cli/cli.js
-  checksum: 8884e64734e5b3ab7c2b127f9abe26ed532f3ae7289139bfd2163ba8b01d230a30fe59ecc52ea114a66377e469d5b6fd1f5befaf63c273ac10bd96bd939d3f82
+  checksum: d48dd07d45a9184d962dccb352d7733e54bd272ed675b8c806ab6f0c60730cfbac5e60d5c7a33c9da3e04c487ff0b564ee7b3eeec9e880863fe24a677ff1ce02
   languageName: node
   linkType: hard
 
@@ -3855,6 +3866,16 @@ resolve@1.17.0:
     buffer-from: ^1.0.0
     source-map: ^0.6.0
   checksum: c72802fdba9cb62b92baef18cc14cc4047608b77f0353e6c36dd993444149a466a2845332c5540d4a6630957254f0f68f4ef5a0120c33d2e83974c51a05afbac
+  languageName: node
+  linkType: hard
+
+"source-map-support@npm:^0.5.16":
+  version: 0.5.20
+  resolution: "source-map-support@npm:0.5.20"
+  dependencies:
+    buffer-from: ^1.0.0
+    source-map: ^0.6.0
+  checksum: 43946aff452011960d16154304b11011e0185549493e65dd90da045959409fb2d266ba1c854fff3d5949f8e59382e3fcc7f7c5fa66136007a6750ad06c6c0baa
   languageName: node
   linkType: hard
 
