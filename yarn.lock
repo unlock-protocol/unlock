@@ -8645,14 +8645,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/user-event@npm:^12.1.10":
-  version: 12.8.3
-  resolution: "@testing-library/user-event@npm:12.8.3"
+"@testing-library/user-event@npm:13.5.0":
+  version: 13.5.0
+  resolution: "@testing-library/user-event@npm:13.5.0"
   dependencies:
     "@babel/runtime": ^7.12.5
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
-  checksum: c9fb5ee07cbe79ddf32d81e1a353e556d02a1f1619456ccfad6abcdf1b7db400fdc9d7a8e0be3994f456e7135a0dfb7fa10b29fb98a0f5fc417b99fce0ce8166
+  checksum: 16319de685fbb7008f1ba667928f458b2d08196918002daca56996de80ef35e6d9de26e9e1ece7d00a004692b95a597cf9142fff0dc53f2f51606a776584f549
   languageName: node
   linkType: hard
 
@@ -10829,7 +10829,7 @@ __metadata:
   dependencies:
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
-    "@testing-library/user-event": ^12.1.10
+    "@testing-library/user-event": 13.5.0
     "@unlock-protocol/networks": "workspace:./packages/networks"
     bootstrap: ^5.1.1
     formik: ^2.2.9
@@ -13592,23 +13592,6 @@ __metadata:
   version: 2.1.1
   resolution: "await-to-js@npm:2.1.1"
   checksum: b8a4a6f825aa3430e005551c1fe1ea8df51e0a4a7ad730d73a065adc9f982bec4353a2540981ee16d12be4933e59a1e90b8327889f1ff8a37a20765a716d9219
-  languageName: node
-  linkType: hard
-
-"aws-sdk@npm:2.1018.0":
-  version: 2.1018.0
-  resolution: "aws-sdk@npm:2.1018.0"
-  dependencies:
-    buffer: 4.9.2
-    events: 1.1.1
-    ieee754: 1.1.13
-    jmespath: 0.15.0
-    querystring: 0.2.0
-    sax: 1.2.1
-    url: 0.10.3
-    uuid: 3.3.2
-    xml2js: 0.4.19
-  checksum: b2deb6dff61ba705fbb306e47900c31b89d2e80e1d3cb84ac736d14ffb444d977de2bc834c4b6493b19103f0b6e23b5f53b1baf52039837ef8596672aa06c16f
   languageName: node
   linkType: hard
 
