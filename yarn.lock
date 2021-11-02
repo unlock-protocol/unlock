@@ -10732,7 +10732,7 @@ __metadata:
     apollo-link-http: 1.5.17
     apollo-server: 3.4.0
     apollo-server-express: 2.25.2
-    aws-sdk: 2.1018.0
+    aws-sdk: 2.1019.0
     babel-jest: 27.3.1
     body-parser: 1.19.0
     color-scheme: 1.0.1
@@ -10769,7 +10769,7 @@ __metadata:
     sequelize-cli: 6.2.0
     sequelize-typescript: 1.1.0
     setimmediate: 1.0.5
-    stripe: 8.185.0
+    stripe: 8.186.0
     supertest: 6.1.6
     ts-jest: 27.0.7
     tsc-watch: 4.5.0
@@ -13670,6 +13670,23 @@ __metadata:
     uuid: 3.3.2
     xml2js: 0.4.19
   checksum: b2deb6dff61ba705fbb306e47900c31b89d2e80e1d3cb84ac736d14ffb444d977de2bc834c4b6493b19103f0b6e23b5f53b1baf52039837ef8596672aa06c16f
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:2.1019.0":
+  version: 2.1019.0
+  resolution: "aws-sdk@npm:2.1019.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.15.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 3.3.2
+    xml2js: 0.4.19
+  checksum: e87af9a761547c3e2beb6d400a165f90939e256df091b8761099a689a9a2aeeb9b92e7e0a93ea0db413e7050387bb0580edb0edafa35541d439f7b2a1803f2c1
   languageName: node
   linkType: hard
 
@@ -40044,13 +40061,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"stripe@npm:8.185.0":
-  version: 8.185.0
-  resolution: "stripe@npm:8.185.0"
+"stripe@npm:8.186.0":
+  version: 8.186.0
+  resolution: "stripe@npm:8.186.0"
   dependencies:
     "@types/node": ">=8.1.0"
     qs: ^6.6.0
-  checksum: 6068374e0556dd447d71c290eefe07b58b3f87a187e83e30f227630f1d15f991d141a9143d5fb0c048899c4097f799000be16381094c3fca61ec2a4e53abae3a
+  checksum: 82fb9b48d0d3465dc3c7a6751247ed0b74fbbea47e510c5dc032597246d82c855d90dfe3068bdee0c4ed1b00a524402b74bfb744d816f8301896546b1b416f36
   languageName: node
   linkType: hard
 
