@@ -107,4 +107,3 @@ task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
       implementation,
     })
   })
-

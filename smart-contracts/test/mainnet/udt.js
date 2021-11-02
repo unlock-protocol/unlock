@@ -104,7 +104,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
   })
 
-  describe.only('supply', () => {
+  describe('supply', () => {
     it('is more than 1M', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(
