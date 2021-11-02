@@ -3,7 +3,7 @@ const { reverts } = require('truffle-assertions')
 const { time } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/proxy')
 
-const { resetState, impersonate } = require('../helpers/mainnet')
+const { resetNodeState, impersonate } = require('../helpers/mainnet')
 const { errorMessages } = require('../helpers/constants')
 const { getUnlockMultisigOwners } = require('../../helpers/multisig')
 
@@ -21,7 +21,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     }
 
     // reset fork
-    await resetState()
+    await resetNodeState()
 
     // prepare proxy info
     const proxyAddress = getProxyAddress(chainId, 'UnlockDiscountTokenV2')
@@ -150,6 +150,54 @@ contract('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('transfers', () => {
+    it('should support simple transfer of tokens', async () => {
+      const amount = 1
+      const [holderAddress] = await getUnlockMultisigOwners()
+      await impersonate(holderAddress)
+      const holder = await ethers.getSigner(holderAddress)
+
+      const recipient = await ethers.Wallet.createRandom()
+      await udt.connect(holder).transfer(recipient.address, amount)
+
+      const balanceAfter = await udt.balanceOf(recipient.address)
+      assert.equal(balanceAfter, amount)
+    })
+    it('should support allowance/transferFrom', async () => {
+      const amount = 1
+
+      const [holderAddress] = await getUnlockMultisigOwners()
+      await impersonate(holderAddress)
+      const holder = await ethers.getSigner(holderAddress)
+
+      const [spender] = await ethers.getSigners()
+      const recipient = await ethers.Wallet.createRandom()
+
+      const allowanceBefore = await udt.allowance(
+        holder.address,
+        spender.address
+      )
+      assert.equal(allowanceBefore.toNumber(), 0)
+
+      // allow
+      await udt.connect(holder).approve(spender.address, amount)
+      const allowance = await udt.allowance(holder.address, spender.address)
+      assert.equal(allowance.toNumber(), amount)
+
+      // transfer
+      await udt
+        .connect(spender)
+        .transferFrom(holder.address, recipient.address, amount)
+
+      const balanceAfter = await udt.balanceOf(recipient.address)
+      assert.equal(balanceAfter, amount)
+
+      const allowanceAfter = await udt.allowance(
+        holder.address,
+        recipient.address
+      )
+      assert.equal(allowanceAfter.toNumber(), 0)
+    })
+
     it('should support transfer by permit', async () => {
       const [spender] = await ethers.getSigners()
       const permitter = ethers.Wallet.createRandom()
@@ -256,9 +304,6 @@ contract('UnlockDiscountToken on mainnet', async () => {
       })
 
       it('delegation by signature', async () => {
-        // make the upgrade
-        // await udt.initialize2()
-
         // Create a user
         const delegator = ethers.Wallet.createRandom()
 

@@ -1,6 +1,6 @@
 const { ethers, network, config } = require('hardhat')
 
-const resetState = async () => {
+const resetNodeState = async () => {
   // reset fork
   const { forking } = config.networks.hardhat
   await network.provider.request({
@@ -16,17 +16,21 @@ const resetState = async () => {
   })
 }
 
+const addSomeETH = async (address) => {
+  const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+  await network.provider.send('hardhat_setBalance', [address, balance])
+}
+
 const impersonate = async (address) => {
   await network.provider.request({
     method: 'hardhat_impersonateAccount',
     params: [address],
   })
-  // give some ETH
-  const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
-  await network.provider.send('hardhat_setBalance', [address, balance])
+  await addSomeETH(address) // give some ETH just in case
 }
 
 module.exports = {
-  resetState,
+  resetNodeState,
   impersonate,
+  addSomeETH,
 }
