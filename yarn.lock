@@ -8580,6 +8580,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/jest-dom@npm:5.15.0":
+  version: 5.15.0
+  resolution: "@testing-library/jest-dom@npm:5.15.0"
+  dependencies:
+    "@babel/runtime": ^7.9.2
+    "@types/testing-library__jest-dom": ^5.9.1
+    aria-query: ^4.2.2
+    chalk: ^3.0.0
+    css: ^3.0.0
+    css.escape: ^1.5.1
+    dom-accessibility-api: ^0.5.6
+    lodash: ^4.17.15
+    redent: ^3.0.0
+  checksum: fb11af2462b28bdcbbddf199f58e7f9153358358e2ec47dba311f21d88014351cc31087560e9cbacbccc78063e455361efffb31be6242edd1dbd2e21bb3f4359
+  languageName: node
+  linkType: hard
+
 "@testing-library/react-hooks@npm:7.0.2":
   version: 7.0.2
   resolution: "@testing-library/react-hooks@npm:7.0.2"
@@ -11133,7 +11150,7 @@ __metadata:
     "@storybook/react": 6.3.12
     "@stripe/react-stripe-js": 1.6.0
     "@stripe/stripe-js": 1.20.3
-    "@testing-library/jest-dom": 5.14.1
+    "@testing-library/jest-dom": 5.15.0
     "@testing-library/react": 12.1.1
     "@testing-library/react-hooks": 7.0.2
     "@types/eth-sig-util": 2.1.1
@@ -11190,7 +11207,7 @@ __metadata:
     styled-components: 5.3.1
     ts-jest: 27.0.7
     typescript: 4.4.3
-    validator: 13.6.0
+    validator: 13.7.0
   languageName: unknown
   linkType: soft
 
@@ -42589,10 +42606,10 @@ typescript@^4.4.4:
   languageName: node
   linkType: hard
 
-"validator@npm:13.6.0":
-  version: 13.6.0
-  resolution: "validator@npm:13.6.0"
-  checksum: 1f9f813228a709d993b965813ad9d8ce009717bec64f57a0ac40d5f50ef781ee47260f85741e125775823fb31aa3beb7f974e0f5fb1afe9bc4615b7fadd7f8bb
+"validator@npm:13.7.0":
+  version: 13.7.0
+  resolution: "validator@npm:13.7.0"
+  checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
   languageName: node
   linkType: hard
 
