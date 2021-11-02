@@ -47,7 +47,7 @@
     "lint-staged": "11.2.6",
     "prettier": "2.4.1",
     "ts-jest": "27.0.7",
-    "typescript": "4.4.3"
+    "typescript": "4.4.4"
   },
   "dependencies": {
     "@unlock-protocol/networks": "workspace:./packages/networks"
