@@ -10077,14 +10077,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/styled-components@npm:5.1.14":
-  version: 5.1.14
-  resolution: "@types/styled-components@npm:5.1.14"
+"@types/styled-components@npm:5.1.15":
+  version: 5.1.15
+  resolution: "@types/styled-components@npm:5.1.15"
   dependencies:
     "@types/hoist-non-react-statics": "*"
     "@types/react": "*"
     csstype: ^3.0.2
-  checksum: 314cc98cfdc21a608973cf5c690d335c0acaa1a9b9cf1e5714a9b073967bfbc0a7def7e9fef81b921d4017b19e39c068e189ee79ce7553f24bc714c4dd5bd430
+  checksum: d565e0a3cf3fdb79aab73c0aa2d69d93152afe2661b3ec546592b64e0781f05d21d2a9715a15acaa8422b6d6a2b1250d9ba8c96ea656776051351393bada7a82
   languageName: node
   linkType: hard
 
@@ -10750,7 +10750,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-test-renderer: 17.0.2
-    styled-components: 5.3.1
+    styled-components: 5.3.3
     ts-jest: 27.0.7
     typescript: 4.4.4
   languageName: unknown
@@ -10767,7 +10767,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/react": 17.0.33
     "@types/react-dom": 17.0.10
-    "@types/styled-components": 5.1.14
+    "@types/styled-components": 5.1.15
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -10789,7 +10789,7 @@ __metadata:
     react-dom: 17.0.2
     react-test-renderer: 17.0.2
     style-loader: 3.3.1
-    styled-components: 5.3.1
+    styled-components: 5.3.3
     typescript: 4.4.4
   languageName: unknown
   linkType: soft
@@ -11037,7 +11037,7 @@ __metadata:
     "@types/qrcode.react": 1.0.2
     "@types/react": 17.0.33
     "@types/storybook__react": 4.0.2
-    "@types/styled-components": 5.1.14
+    "@types/styled-components": 5.1.15
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -11081,7 +11081,7 @@ __metadata:
     react-jazzicon: 0.1.3
     react-test-renderer: 17.0.2
     storybook-addon-next-router: 3.0.8
-    styled-components: 5.3.1
+    styled-components: 5.3.3
     ts-jest: 27.0.7
     typescript: 4.4.4
     validator: 13.7.0
@@ -11126,7 +11126,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-scripts: 4.0.3
-    styled-components: 5.3.1
+    styled-components: 5.3.3
   peerDependencies:
     react: 17.0.2
   languageName: unknown
@@ -11178,7 +11178,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/next": 8.0.7
     "@types/react": 17.0.33
-    "@types/styled-components": 5.1.14
+    "@types/styled-components": 5.1.15
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/unlock-assets": 1.4.6
@@ -11208,7 +11208,7 @@ __metadata:
     react-test-renderer: 17.0.2
     rss: 1.2.2
     showdown-highlight: 2.1.8
-    styled-components: 5.3.1
+    styled-components: 5.3.3
     ts-jest: 27.0.7
     typescript: 4.4.4
     yaml-front-matter: 4.1.1
@@ -40047,9 +40047,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"styled-components@npm:5.3.1":
-  version: 5.3.1
-  resolution: "styled-components@npm:5.3.1"
+"styled-components@npm:5.3.3":
+  version: 5.3.3
+  resolution: "styled-components@npm:5.3.3"
   dependencies:
     "@babel/helper-module-imports": ^7.0.0
     "@babel/traverse": ^7.4.5
@@ -40065,7 +40065,7 @@ resolve@^2.0.0-next.3:
     react: ">= 16.8.0"
     react-dom: ">= 16.8.0"
     react-is: ">= 16.8.0"
-  checksum: 2d833d573c039f4af5c422ce33f06212dfa51a821994ec1d7a697355752b422cad6e92eeff712dbd9c0339aade8eb5bce10c30dfecb3c8e707530b6dda7dda10
+  checksum: a104341068fc39fa2c73950a34970d832dc7a511fc52b3df12f34e6746031f1f128f53b4d540bf39d9f0da043cf0d91517faf874d2c87de5e385f5c2e7620436
   languageName: node
   linkType: hard
 
