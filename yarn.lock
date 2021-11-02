@@ -8360,7 +8360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.14.1, @testing-library/jest-dom@npm:^5.11.4":
+"@testing-library/jest-dom@npm:5.14.1":
   version: 5.14.1
   resolution: "@testing-library/jest-dom@npm:5.14.1"
   dependencies:
@@ -8416,6 +8416,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/react@npm:11.2.7":
+  version: 11.2.7
+  resolution: "@testing-library/react@npm:11.2.7"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    "@testing-library/dom": ^7.28.1
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  checksum: 64e07cb96e40dbdbd3c46a09c47bed14446b30efafaa65a5d4fed5a7553878990cda108578f2b114422a775f31c635d51fd50b752f6163ddd6b8474e0e5fc2ce
+  languageName: node
+  linkType: hard
+
 "@testing-library/react@npm:12.1.1":
   version: 12.1.1
   resolution: "@testing-library/react@npm:12.1.1"
@@ -8426,19 +8439,6 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: 1882161426854801a9e5b00c6e50e76b813c22158c8a45c36b87d0aeab4d6ce0920387f8f738562bb693ec217a5885641ef82f0a135cddcde870edda097f2ebb
-  languageName: node
-  linkType: hard
-
-"@testing-library/react@npm:^11.1.0":
-  version: 11.2.7
-  resolution: "@testing-library/react@npm:11.2.7"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-    "@testing-library/dom": ^7.28.1
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: 64e07cb96e40dbdbd3c46a09c47bed14446b30efafaa65a5d4fed5a7553878990cda108578f2b114422a775f31c635d51fd50b752f6163ddd6b8474e0e5fc2ce
   languageName: node
   linkType: hard
 
@@ -10400,11 +10400,11 @@ __metadata:
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    copyfiles: ^2.4.1
-    fs-extra: ^10.0.0
+    copyfiles: 2.4.1
+    fs-extra: 10.0.0
     hardhat: 2.6.7
     jest: 27.3.1
-    typescript: ^4.4.4
+    typescript: 4.4.4
   languageName: unknown
   linkType: soft
 
@@ -10572,7 +10572,7 @@ __metadata:
     babel-loader: 8.2.3
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.0
-    copy-webpack-plugin: ^9.0.1
+    copy-webpack-plugin: 9.0.1
     dotenv: 10.0.0
     eslint: 7.32.0
     lint-staged: 11.2.6
@@ -10624,19 +10624,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/purchase-url-builder@workspace:packages/paywall-config"
   dependencies:
-    "@testing-library/jest-dom": ^5.11.4
-    "@testing-library/react": ^11.1.0
+    "@testing-library/jest-dom": 5.14.1
+    "@testing-library/react": 11.2.7
     "@testing-library/user-event": 13.5.0
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    bootstrap: ^5.1.1
-    formik: ^2.2.9
-    react: ^17.0.2
-    react-bootstrap: ^1.6.3
-    react-bootstrap-formik: ^1.7.2
-    react-dom: ^17.0.2
+    bootstrap: 5.1.3
+    formik: 2.2.9
+    react: 17.0.2
+    react-bootstrap: 1.6.4
+    react-bootstrap-formik: 1.7.2
+    react-dom: 17.0.2
     react-scripts: 4.0.3
     web-vitals: 2.1.2
-    yup: ^0.32.9
+    yup: 0.32.11
   languageName: unknown
   linkType: soft
 
@@ -10695,7 +10695,7 @@ __metadata:
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
     bignumber.js: 9.0.1
-    debug: ^4.3.2
+    debug: 4.3.2
     eslint: 7.32.0
     eslint-plugin-mocha: 9.0.0
     eth-gas-reporter: 0.2.22
@@ -10712,8 +10712,8 @@ __metadata:
     lint-staged: 11.2.6
     prettier: 2.4.1
     prompt: 1.2.0
-    solhint: ^3.3.6
-    solidity-coverage: ^0.7.17
+    solhint: 3.3.6
+    solidity-coverage: 0.7.17
     truffle-assertions: 0.9.2
     web3: 1.6.0
   languageName: unknown
@@ -14913,7 +14913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap@npm:>=4, bootstrap@npm:^5.1.1":
+"bootstrap@npm:5.1.3, bootstrap@npm:>=4":
   version: 5.1.3
   resolution: "bootstrap@npm:5.1.3"
   peerDependencies:
@@ -17152,7 +17152,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-parser@npm:^1.4.5":
+"cookie-parser@npm:1.4.5":
   version: 1.4.5
   resolution: "cookie-parser@npm:1.4.5"
   dependencies:
@@ -17220,7 +17220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-webpack-plugin@npm:^9.0.1":
+"copy-webpack-plugin@npm:9.0.1":
   version: 9.0.1
   resolution: "copy-webpack-plugin@npm:9.0.1"
   dependencies:
@@ -17237,7 +17237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copyfiles@npm:^2.4.1":
+"copyfiles@npm:2.4.1":
   version: 2.4.1
   resolution: "copyfiles@npm:2.4.1"
   dependencies:
@@ -18192,7 +18192,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.3.2":
+"debug@npm:4, debug@npm:4.3.2, debug@npm:^4.3.2":
   version: 4.3.2
   resolution: "debug@npm:4.3.2"
   dependencies:
@@ -22636,7 +22636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formik@npm:>=2.2, formik@npm:^2.2.9":
+"formik@npm:2.2.9, formik@npm:>=2.2":
   version: 2.2.9
   resolution: "formik@npm:2.2.9"
   dependencies:
@@ -22721,7 +22721,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:10.0.0, fs-extra@npm:^10.0.0":
+"fs-extra@npm:10.0.0":
   version: 10.0.0
   resolution: "fs-extra@npm:10.0.0"
   dependencies:
@@ -35536,7 +35536,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-bootstrap-formik@npm:^1.7.2":
+"react-bootstrap-formik@npm:1.7.2":
   version: 1.7.2
   resolution: "react-bootstrap-formik@npm:1.7.2"
   dependencies:
@@ -35552,6 +35552,34 @@ fsevents@~2.1.1:
     react-bootstrap: ">=1.5"
     yup: ">=0.32"
   checksum: de48e4d725c7e55b97d1f0772cb05e6fcc488a8b8404dc3f6244fed491afff87d782210dd34661b38b8d9f19bafff982ebf82ba2dbf0de860f83805a9f1178cd
+  languageName: node
+  linkType: hard
+
+"react-bootstrap@npm:1.6.4":
+  version: 1.6.4
+  resolution: "react-bootstrap@npm:1.6.4"
+  dependencies:
+    "@babel/runtime": ^7.14.0
+    "@restart/context": ^2.1.4
+    "@restart/hooks": ^0.3.26
+    "@types/invariant": ^2.2.33
+    "@types/prop-types": ^15.7.3
+    "@types/react": ">=16.14.8"
+    "@types/react-transition-group": ^4.4.1
+    "@types/warning": ^3.0.0
+    classnames: ^2.3.1
+    dom-helpers: ^5.2.1
+    invariant: ^2.2.4
+    prop-types: ^15.7.2
+    prop-types-extra: ^1.1.0
+    react-overlays: ^5.1.1
+    react-transition-group: ^4.4.1
+    uncontrollable: ^7.2.1
+    warning: ^4.0.3
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: c68ecd9becbcd55328a899ee4ae246d0a0a21082ab603caf10da22f27a635088227e93ea3e3c380c883538a8e07e0b8e017868f562dcd72fa85998a830be8124
   languageName: node
   linkType: hard
 
@@ -35580,34 +35608,6 @@ fsevents@~2.1.1:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
   checksum: e986b2f44412f15f72b41ab8e266af7bf189c77978458d0a7b5e5c20586092b074454ba1903f55b0c9ae988206ba83c3f77374c7754453ecc8cdd81bbef69bfc
-  languageName: node
-  linkType: hard
-
-"react-bootstrap@npm:^1.6.3":
-  version: 1.6.4
-  resolution: "react-bootstrap@npm:1.6.4"
-  dependencies:
-    "@babel/runtime": ^7.14.0
-    "@restart/context": ^2.1.4
-    "@restart/hooks": ^0.3.26
-    "@types/invariant": ^2.2.33
-    "@types/prop-types": ^15.7.3
-    "@types/react": ">=16.14.8"
-    "@types/react-transition-group": ^4.4.1
-    "@types/warning": ^3.0.0
-    classnames: ^2.3.1
-    dom-helpers: ^5.2.1
-    invariant: ^2.2.4
-    prop-types: ^15.7.2
-    prop-types-extra: ^1.1.0
-    react-overlays: ^5.1.1
-    react-transition-group: ^4.4.1
-    uncontrollable: ^7.2.1
-    warning: ^4.0.3
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: c68ecd9becbcd55328a899ee4ae246d0a0a21082ab603caf10da22f27a635088227e93ea3e3c380c883538a8e07e0b8e017868f562dcd72fa85998a830be8124
   languageName: node
   linkType: hard
 
@@ -35688,7 +35688,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: soft
 
-"react-dom@npm:17.0.2, react-dom@npm:^17.0.2":
+"react-dom@npm:17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
   dependencies:
@@ -36129,7 +36129,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: soft
 
-"react@npm:17.0.2, react@npm:^17.0.2":
+"react@npm:17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:
@@ -38694,7 +38694,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"solhint@npm:^3.3.6":
+"solhint@npm:3.3.6":
   version: 3.3.6
   resolution: "solhint@npm:3.3.6"
   dependencies:
@@ -38729,7 +38729,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"solidity-coverage@npm:0.7.17, solidity-coverage@npm:^0.7.17":
+"solidity-coverage@npm:0.7.17":
   version: 0.7.17
   resolution: "solidity-coverage@npm:0.7.17"
   dependencies:
@@ -41244,7 +41244,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"typescript@4.4.4, typescript@^4.4.4":
+typescript@4.4.4:
   version: 4.4.4
   resolution: "typescript@npm:4.4.4"
   bin:
@@ -41264,7 +41264,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.4.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.4.4#~builtin<compat/typescript>":
   version: 4.4.4
   resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"
   bin:
@@ -41705,8 +41705,8 @@ typescript@^3.8.3:
   resolution: "unlock-express-example@workspace:packages/unlock-express/example"
   dependencies:
     "@unlock-protocol/unlock-express": "workspace:^"
-    cookie-parser: ^1.4.5
-    express: ^4.17.1
+    cookie-parser: 1.4.5
+    express: 4.17.1
   languageName: unknown
   linkType: soft
 
@@ -46287,7 +46287,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"yup@npm:>=0.32, yup@npm:^0.32.9":
+"yup@npm:0.32.11, yup@npm:>=0.32":
   version: 0.32.11
   resolution: "yup@npm:0.32.11"
   dependencies:
