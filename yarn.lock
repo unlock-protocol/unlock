@@ -11286,7 +11286,7 @@ __metadata:
     "@babel/preset-env": 7.16.0
     "@typescript-eslint/parser": 5.3.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    aws-sdk: 2.1018.0
+    aws-sdk: 2.1019.0
     babel-eslint: 10.1.0
     babel-jest: 27.3.1
     babel-loader: 8.2.2
@@ -13670,6 +13670,23 @@ __metadata:
     uuid: 3.3.2
     xml2js: 0.4.19
   checksum: b2deb6dff61ba705fbb306e47900c31b89d2e80e1d3cb84ac736d14ffb444d977de2bc834c4b6493b19103f0b6e23b5f53b1baf52039837ef8596672aa06c16f
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:2.1019.0":
+  version: 2.1019.0
+  resolution: "aws-sdk@npm:2.1019.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.15.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 3.3.2
+    xml2js: 0.4.19
+  checksum: e87af9a761547c3e2beb6d400a165f90939e256df091b8761099a689a9a2aeeb9b92e7e0a93ea0db413e7050387bb0580edb0edafa35541d439f7b2a1803f2c1
   languageName: node
   linkType: hard
 
