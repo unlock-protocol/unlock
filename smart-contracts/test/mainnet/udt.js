@@ -39,17 +39,17 @@ contract('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('ERC20 details', () => {
-    it('name is preserved', async () => {
+    it('name is set', async () => {
       const name = await udt.name()
       assert.equal(name, 'Unlock Discount Token')
     })
 
-    it('symbol is preserved', async () => {
+    it('symbol is set', async () => {
       const symbol = await udt.symbol()
       assert.equal(symbol, 'UDT')
     })
 
-    it('decimals are preserved', async () => {
+    it('decimals are set', async () => {
       const decimals = await udt.decimals()
       assert.equal(decimals, 18)
     })
