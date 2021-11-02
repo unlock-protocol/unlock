@@ -10819,7 +10819,7 @@ __metadata:
     multer-s3: 2.10.0
     nock: 13.1.4
     node-mocks-http: 1.11.0
-    nodemon: 2.0.13
+    nodemon: 2.0.14
     parse-data-uri: 0.2.0
     pg: 8.7.1
     random-words: 1.1.1
@@ -10903,7 +10903,7 @@ __metadata:
     eslint: 7.32.0
     lint-staged: 11.2.6
     next: 11.1.2
-    nodemon: 2.0.13
+    nodemon: 2.0.14
     path-match: 1.2.4
     postmate: 1.5.2
     prettier: 2.4.1
@@ -11318,7 +11318,7 @@ __metadata:
     jest-styled-components: 7.0.5
     lint-staged: 11.2.6
     next: 11.1.2
-    nodemon: 2.0.13
+    nodemon: 2.0.14
     path-match: 1.2.4
     prettier: 2.4.1
     prop-types: 15.7.2
@@ -11358,7 +11358,7 @@ __metadata:
     lint-staged: 11.2.6
     node-forge: 0.10.0
     nodemailer: 6.7.0
-    nodemon: 2.0.13
+    nodemon: 2.0.14
     prettier: 2.4.1
     ts-jest: 27.0.7
     typescript: 4.4.3
@@ -32128,9 +32128,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nodemon@npm:2.0.13":
-  version: 2.0.13
-  resolution: "nodemon@npm:2.0.13"
+"nodemon@npm:2.0.14":
+  version: 2.0.14
+  resolution: "nodemon@npm:2.0.14"
   dependencies:
     chokidar: ^3.2.2
     debug: ^3.2.6
@@ -32144,7 +32144,7 @@ fsevents@~2.1.1:
     update-notifier: ^5.1.0
   bin:
     nodemon: bin/nodemon.js
-  checksum: 36a73798a21c5151f1190bab0d9ccce18e11304eed340d669f1c5c6fdf4f51c80203af4ff1531f129d602784c2dec0297ed801b0cb68f70a5845e7f473ace418
+  checksum: 0fd6b03b0b86417e8208dee0d6f8130aef1a85d26e64f2f6f046163fa12b430f0dc12a9d78ccf7a76de69e485f24fa1caa6cc15f233e571335d4a3f198a55bbe
   languageName: node
   linkType: hard
 
