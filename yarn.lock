@@ -11200,7 +11200,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-gtm-module: 2.0.11
-    react-hook-form: 7.18.0
+    react-hook-form: 7.18.1
     react-jazzicon: 0.1.3
     react-test-renderer: 17.0.2
     storybook-addon-next-router: 3.0.8
@@ -36168,12 +36168,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.18.0":
-  version: 7.18.0
-  resolution: "react-hook-form@npm:7.18.0"
+"react-hook-form@npm:7.18.1":
+  version: 7.18.1
+  resolution: "react-hook-form@npm:7.18.1"
   peerDependencies:
     react: ^16.8.0 || ^17
-  checksum: 556b873f28385ca75f76de9046cf70279dc960a0ad4629113f2e396da835ed6326a92c325d93e1f834e8f44b1521a91de88fbecf7d87593fbed7e593605c3dae
+  checksum: 77c49d2d5aed7491b6abba46b6f1166d8305503b8b072804cee0902ce0922e1a01b895b4dc057ee3ecf5847938609955b468e41c7f753dc316d6441f6f53ad5a
   languageName: node
   linkType: hard
 
