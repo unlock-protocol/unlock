@@ -35,11 +35,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "7.15.8",
+    "@babel/core": "7.16.0",
     "@svgr/cli": "5.5.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "babel-loader": "8.2.2",
+    "babel-loader": "8.2.3",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.0",
     "eslint": "7.32.0",
