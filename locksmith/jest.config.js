@@ -1,5 +1,5 @@
-const base = require('@unlock-protocol/eslint-config')
 require('./src/utils/envLoader')
+const base = require('@unlock-protocol/jest-config')
 
 module.exports = {
   ...base,

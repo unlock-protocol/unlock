@@ -86,6 +86,7 @@
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.11",
     "@unlock-protocol/eslint-config": "workspace:^",
+    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "aws-sdk": "2.1018.0",
     "babel-jest": "27.3.1",
