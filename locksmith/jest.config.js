@@ -1,8 +1,9 @@
+const base = require('@unlock-protocol/eslint-config')
 require('./src/utils/envLoader')
 
 module.exports = {
+  ...base,
   testPathIgnorePatterns: ['<rootDir>/__tests__/test-helpers/'],
-  collectCoverage: true,
   coverageThreshold: {
     global: {
       branches: 63,
@@ -10,5 +11,4 @@ module.exports = {
       lines: 75,
     },
   },
-  preset: 'ts-jest/presets/js-with-ts',
 }

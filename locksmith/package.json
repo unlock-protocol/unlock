@@ -85,7 +85,7 @@
     "@types/sequelize": "4.28.10",
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.11",
-    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "aws-sdk": "2.1018.0",
     "babel-jest": "27.3.1",
