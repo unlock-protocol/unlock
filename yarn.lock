@@ -10838,7 +10838,7 @@ __metadata:
     react-bootstrap-formik: ^1.7.2
     react-dom: ^17.0.2
     react-scripts: 4.0.3
-    web-vitals: ^1.0.1
+    web-vitals: 2.1.2
     yup: ^0.32.9
   languageName: unknown
   linkType: soft
@@ -42690,10 +42690,10 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web-vitals@npm:^1.0.1":
-  version: 1.1.2
-  resolution: "web-vitals@npm:1.1.2"
-  checksum: 92071029089277166e11141b735831d9011e85737d32c1360034676db898ab0ca95f19041ee01904f2189ad6e711b9da6b17567e4831290a429a586c98bc573f
+"web-vitals@npm:2.1.2":
+  version: 2.1.2
+  resolution: "web-vitals@npm:2.1.2"
+  checksum: 488c93a514504ad0a056d3afc41ef143494e5562e08175c0122f704ea3d3c08a1f62de445042ed51a1937d49bf868a50842e20066fe3dc99677937e5625ffa3e
   languageName: node
   linkType: hard
 
