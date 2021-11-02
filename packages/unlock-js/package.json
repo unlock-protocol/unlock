@@ -41,7 +41,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/types": "workspace:./packages/types",
     "babel-jest": "27.3.1",
-    "eslint": "7.32.0",
+    "eslint": "8.1.0",
     "ethers": "5.5.1",
     "jest": "27.3.1",
     "lint-staged": "11.2.6",
