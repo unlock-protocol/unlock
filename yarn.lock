@@ -3606,7 +3606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.16, @babel/runtime@npm:^7.13.8, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.14.8, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.6.3, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.16, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.14.8, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.6.3, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
@@ -6288,7 +6288,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.10.1, @popperjs/core@npm:^2.8.6":
+"@popperjs/core@npm:^2.10.1":
   version: 2.10.2
   resolution: "@popperjs/core@npm:2.10.2"
   checksum: 43c189e3eb6d032433512d94761b54fc7cae15957ca5528008813f887a67b5760b949f30a5141b476be2ba5a6c677c91def150f603d2d3e30b5e97a5ae51474e
@@ -10631,7 +10631,7 @@ __metadata:
     bootstrap: 5.1.3
     formik: 2.2.9
     react: 17.0.2
-    react-bootstrap: 1.6.4
+    react-bootstrap: 2.0.1
     react-bootstrap-formik: 1.7.2
     react-dom: 17.0.2
     react-scripts: 4.0.3
@@ -35555,13 +35555,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-bootstrap@npm:1.6.4":
-  version: 1.6.4
-  resolution: "react-bootstrap@npm:1.6.4"
+"react-bootstrap@npm:2.0.1":
+  version: 2.0.1
+  resolution: "react-bootstrap@npm:2.0.1"
   dependencies:
     "@babel/runtime": ^7.14.0
     "@restart/context": ^2.1.4
     "@restart/hooks": ^0.3.26
+    "@restart/ui": ^0.2.3
     "@types/invariant": ^2.2.33
     "@types/prop-types": ^15.7.3
     "@types/react": ">=16.14.8"
@@ -35572,14 +35573,13 @@ fsevents@~2.1.1:
     invariant: ^2.2.4
     prop-types: ^15.7.2
     prop-types-extra: ^1.1.0
-    react-overlays: ^5.1.1
     react-transition-group: ^4.4.1
     uncontrollable: ^7.2.1
     warning: ^4.0.3
   peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: c68ecd9becbcd55328a899ee4ae246d0a0a21082ab603caf10da22f27a635088227e93ea3e3c380c883538a8e07e0b8e017868f562dcd72fa85998a830be8124
+    react: ">=16.14.0"
+    react-dom: ">=16.14.0"
+  checksum: d30e48c5a910756c560460bc8dd241af5321f0ba6f0e420bd61dcc40064ca890b8857bad680164d720f1ba4ae456a25435ff37d9390ba889206601995df20ab2
   languageName: node
   linkType: hard
 
@@ -35870,25 +35870,6 @@ fsevents@~2.1.1:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
-  languageName: node
-  linkType: hard
-
-"react-overlays@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "react-overlays@npm:5.1.1"
-  dependencies:
-    "@babel/runtime": ^7.13.8
-    "@popperjs/core": ^2.8.6
-    "@restart/hooks": ^0.3.26
-    "@types/warning": ^3.0.0
-    dom-helpers: ^5.2.0
-    prop-types: ^15.7.2
-    uncontrollable: ^7.2.1
-    warning: ^4.0.3
-  peerDependencies:
-    react: ">=16.3.0"
-    react-dom: ">=16.3.0"
-  checksum: 8145f066ea7a70d51901561e5c883a638b12217baa523330506323f92bae515c557247aa4846b6d537fa8dd7fd1ddcea53cab6b2a1e3d216922590b5cdc94ddf
   languageName: node
   linkType: hard
 
