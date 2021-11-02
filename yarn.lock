@@ -8372,23 +8372,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.14.1":
-  version: 5.14.1
-  resolution: "@testing-library/jest-dom@npm:5.14.1"
-  dependencies:
-    "@babel/runtime": ^7.9.2
-    "@types/testing-library__jest-dom": ^5.9.1
-    aria-query: ^4.2.2
-    chalk: ^3.0.0
-    css: ^3.0.0
-    css.escape: ^1.5.1
-    dom-accessibility-api: ^0.5.6
-    lodash: ^4.17.15
-    redent: ^3.0.0
-  checksum: eeba37ba10be550bd9ab7dd0dda77d9011a96d9a4f75c70ed57d7bf120fe4126b251ccfb1444da1746c19773bbe4efbd96a0408f970d98c9cd1d399b2455d2c1
-  languageName: node
-  linkType: hard
-
 "@testing-library/jest-dom@npm:5.15.0":
   version: 5.15.0
   resolution: "@testing-library/jest-dom@npm:5.15.0"
@@ -10529,7 +10512,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/newsletter@workspace:newsletter"
   dependencies:
-    "@testing-library/jest-dom": 5.14.1
+    "@testing-library/jest-dom": 5.15.0
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
     "@types/node": 16.11.6
@@ -10623,7 +10606,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/purchase-url-builder@workspace:packages/paywall-config"
   dependencies:
-    "@testing-library/jest-dom": 5.14.1
+    "@testing-library/jest-dom": 5.15.0
     "@testing-library/react": 12.1.2
     "@testing-library/user-event": 13.5.0
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -10969,7 +10952,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.16.0
     "@babel/plugin-proposal-optional-chaining": 7.16.0
-    "@testing-library/jest-dom": 5.14.1
+    "@testing-library/jest-dom": 5.15.0
     "@testing-library/react": 12.1.2
     "@types/jest": 27.0.2
     "@types/next": 8.0.7
