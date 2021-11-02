@@ -26,14 +26,14 @@
     "react": "17.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.15.8",
+    "@babel/core": "7.16.0",
     "@storybook/addon-actions": "6.3.12",
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/addon-links": "6.3.12",
     "@storybook/react": "6.3.12",
     "@svgr/cli": "5.5.0",
     "babel-eslint": "10.1.0",
-    "babel-loader": "8.2.2",
+    "babel-loader": "8.2.3",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
