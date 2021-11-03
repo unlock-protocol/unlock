@@ -77,7 +77,7 @@ require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
 require('./tasks/release')
-// require('./tasks/mainnet-tests')
+require('./tasks/gov')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

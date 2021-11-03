@@ -63,31 +63,20 @@ const delegateAll = async (tokenHolders, delegate) => {
 }
 
 /**
- * Submits a proposal
- * @param {*} proposerAddress
- * @param {*} proposal
- * @returns
+ * Set state for pre-requisites to governance decision, should be customized for every proposal
  */
-const submitProposal = async (proposerAddress, proposal) => {
-  await impersonate(proposerAddress)
-  const proposerWallet = await ethers.getSigner(proposerAddress)
-
-  const gov = await new ethers.Contract(
-    governanceContractAddress,
-    UnlockProtocolGovernor.abi,
-    proposerWallet
+const prerequisites = async () => {
+  // Impersonate team wallet
+  await impersonate(teamWalletAddress)
+  const teamWallet = await ethers.getSigner(teamWalletAddress)
+  const udt = await new ethers.Contract(
+    udtContractAddress,
+    UnlockDiscountTokenV2.abi,
+    teamWallet
   )
 
-  const proposalTx = await gov.propose(...proposal)
-
-  const { events } = await proposalTx.wait()
-  const evt = events.find((v) => v.event === 'ProposalCreated')
-  const { proposalId } = evt.args
-
-  await time.advanceBlock()
-
-  console.log('proposal submitted', proposalId)
-  return proposalId
+  // Transfer 1 UDT from team's wallet to governance
+  await udt.transfer(timelockContractAddress, ethers.utils.parseUnits('1', 18))
 }
 
 /**
@@ -179,22 +168,6 @@ const executeProposal = async (executorAddress, proposal, timestamp) => {
   })
 }
 
-/**
- * Set state for pre-requisites to governance decision, should be customized for every proposal
- */
-const prerequisites = async () => {
-  // Impersonate team wallet
-  await impersonate(teamWalletAddress)
-  const teamWallet = await ethers.getSigner(teamWalletAddress)
-  const udt = await new ethers.Contract(
-    udtContractAddress,
-    UnlockDiscountTokenV2.abi,
-    teamWallet
-  )
-
-  // Transfer 1 UDT from team's wallet to governance
-  await udt.transfer(timelockContractAddress, ethers.utils.parseUnits('1', 18))
-}
 
 /**
  * This can be customized for every proposal!

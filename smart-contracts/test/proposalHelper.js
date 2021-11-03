@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 
-const { encodeProposalFunc, parseProposal } = require('../helpers/proposal')
+const { encodeProposalFunc, parseProposal } = require('../helpers/gov')
 const { getDeployment } = require('../helpers/deployments')
 
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated but deterministic for tests
