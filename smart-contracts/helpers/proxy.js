@@ -1,4 +1,5 @@
 // this is currently used in tests
+const { Manifest } = require('@openzeppelin/upgrades-core')
 const { getDeployment } = require('./deployments')
 const { getNetworkName } = require('./network')
 const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
@@ -25,6 +26,18 @@ const getProxyAddress = function getProxyAddress(chainId, contractName) {
   return address
 }
 
+const getProxyAdminAddress = async ({ network }) => {
+  // get proxy admin address from OZ manifest
+  const manifest = await Manifest.forNetwork(network.provider)
+  const manifestAdmin = await manifest.getAdmin()
+  const proxyAdminAddress = manifestAdmin.address
+  if (proxyAdminAddress === undefined) {
+    throw new Error('No ProxyAdmin was found in the network manifest')
+  }
+  return proxyAdminAddress
+}
+
 module.exports = {
   getProxyAddress,
+  getProxyAdminAddress,
 }

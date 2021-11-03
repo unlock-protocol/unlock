@@ -1,7 +1,6 @@
 const { task } = require('hardhat/config')
-const { Manifest } = require('@openzeppelin/upgrades-core')
 const { getNetworkName } = require('../helpers/network')
-const { getProxyAddress } = require('../helpers/proxy')
+const { getProxyAddress, getProxyAdminAddress } = require('../helpers/proxy')
 
 const getDeploymentInfo = async ({ ethers, contract }) => {
   const contractName = contract.replace('contracts/', '').replace('.sol', '')
@@ -20,17 +19,6 @@ const getDeploymentInfo = async ({ ethers, contract }) => {
     networkName,
     proxyAddress,
   }
-}
-
-const getProxyAdminAddress = async ({ network }) => {
-  // get proxy admin address from OZ manifest
-  const manifest = await Manifest.forNetwork(network.provider)
-  const manifestAdmin = await manifest.getAdmin()
-  const proxyAdminAddress = manifestAdmin.address
-  if (proxyAdminAddress === undefined) {
-    throw new Error('No ProxyAdmin was found in the network manifest')
-  }
-  return proxyAdminAddress
 }
 
 task('upgrade', 'Upgrade an existing contract with a new implementation')
