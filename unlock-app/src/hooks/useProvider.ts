@@ -109,7 +109,6 @@ export const useProvider = (config: any) => {
           return
         }
       }
-
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
       if (provider.on) {
