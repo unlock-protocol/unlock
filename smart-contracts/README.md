@@ -79,6 +79,17 @@ npx hardhat run scripts/udt-upgrade.js --network rinkeby
 
 ## Upgrade a contract
 
+### Prepare and test the new contract on a mainnet node
+
+```
+# setup credentials
+export RUN_MAINNET_FORK=1
+export ALCHEMY_API_KEY=<xxx>
+
+# run the tests
+yarn test test/mainnet/udt.js
+```
+
 ### Unlock
 
 ```
