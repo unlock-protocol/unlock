@@ -1,7 +1,7 @@
 const ethers = require('ethers')
 
-const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated
-const proposerAddress = '0x9d3ea9e9adde71141f4534db3b9b80df3d03ee5f'
+const tokenRecipientAddress = '0x70997970c51812dc3a010c7d01b50e0d17dc79c8'
+const proposerAddress = '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
 
 module.exports = {
   contractName: 'UnlockDiscountTokenV2',

@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { parseProposal, submitProposal } = require('../../helpers/gov')
-const { impersonate } = require('../helpers/mainnet')
+const { impersonate } = require('../../test/helpers/mainnet')
 
 async function main({
   proposerAddress,
@@ -38,20 +38,31 @@ async function main({
     functionArgs,
     proposalName,
   })
+  // eslint-disable-next-line no-console
+  console.log(`Proposed: ${contractName} ${functionName} ${functionArgs}`)
 
   // submit the proposal
   if (isDev) {
     await impersonate(proposerAddress)
   }
+  // eslint-disable-next-line no-console
+  console.log(`Proposer: ${proposerAddress}`)
   const proposalTx = await submitProposal({ proposerAddress, proposal })
 
-  // check for failure
-  const { events } = await proposalTx.wait()
+  const { events, transactionHash } = await proposalTx.wait()
   const evt = events.find((v) => v.event === 'ProposalCreated')
-  const { proposalId } = evt.args
 
+  // check for failure
+  if (!evt) {
+    throw new Error('GOV PROPOSAL > Proposal not created.')
+  }
+
+  // success
+  const { proposalId } = evt.args
   // eslint-disable-next-line no-console
-  console.log('proposal submitted', proposalId)
+  console.log(
+    `proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
+  )
   return proposalId
 }
 

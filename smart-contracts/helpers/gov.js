@@ -1,13 +1,6 @@
 const { ethers } = require('hardhat')
 const { getDeployment } = require('./deployments')
 
-const getGovernor = async ({ proposerAddress }) => {
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-  const proposerWallet = await ethers.getSigner(proposerAddress)
-  return new ethers.Contract(address, abi, proposerWallet)
-}
-
 const encodeProposalFunc = ({ interface, functionName, functionArgs }) => {
   const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
   return calldata
@@ -40,12 +33,14 @@ const parseProposal = async ({
 }
 
 const submitProposal = async ({ proposerAddress, proposal }) => {
-  const gov = await getGovernor({ proposerAddress })
-  return gov.propose(...proposal)
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+  const proposerWallet = await ethers.getSigner(proposerAddress)
+  const gov = new ethers.Contract(address, abi, proposerWallet)
+  return await gov.propose(...proposal)
 }
 
 module.exports = {
-  getGovernor,
   encodeProposalFunc,
   parseProposal,
   submitProposal,
