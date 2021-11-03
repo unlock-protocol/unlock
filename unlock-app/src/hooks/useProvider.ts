@@ -140,7 +140,7 @@ export const useProvider = (config: any) => {
     setEmail('')
     setEncryptedPrivateKey(null)
     try {
-      await provider.provider.disconnect()
+      await provider.provider.close()
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
