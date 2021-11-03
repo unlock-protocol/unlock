@@ -73,10 +73,10 @@ const Blog = ({ posts, page, totalPages }) => {
         </Pagination>
 
         <SignupBox>
-          <p style={{ 'margin-top': '16px', 'margin-bottom': '0px;' }}>
+          <p style={{ marginTop: '16px', marginBottom: '0px;' }}>
             Or use our{' '}
             <a
-              style={{ color: 'white', 'text-decoration': 'underline' }}
+              style={{ color: 'white', textDecoration: 'underline' }}
               href="/static/blog.rss"
             >
               RSS feed
