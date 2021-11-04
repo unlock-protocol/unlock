@@ -21,3 +21,15 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
 
     return await voteProposal({ proposalId, voter })
   })
+
+task('gov:state', 'Check proposal state')
+  .addParam('proposalId', 'The proposal id')
+  .setAction(async ({ proposalId }) => {
+    // eslint-disable-next-line global-require
+    const { getProposalState } = require('../helpers/gov')
+
+    const state = await getProposalState({ proposalId })
+    // eslint-disable-next-line no-console
+    console.log(`Current proposal state: ${state}`)
+  })
+

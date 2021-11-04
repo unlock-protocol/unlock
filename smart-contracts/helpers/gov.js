@@ -64,7 +64,27 @@ const submitProposal = async ({ proposerAddress, proposal }) => {
   return await gov.propose(...proposal)
 }
 
+const getProposalState = async ({ proposalId }) => {
+  const states = [
+    'Pending',
+    'Active',
+    'Canceled',
+    'Defeated',
+    'Succeeded',
+    'Queued',
+    'Expired',
+    'Executed',
+  ]
+
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+  const gov = await ethers.getContractAt(abi, address)
+  const state = await gov.state(proposalId)
+  return states[state]
+}
+
 module.exports = {
+  getProposalState,
   encodeProposalFunc,
   parseProposal,
   submitProposal,
