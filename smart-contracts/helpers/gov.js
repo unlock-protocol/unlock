@@ -68,6 +68,21 @@ const queueProposal = async ({ proposal }) => {
   return await gov.queue(targets, values, calldatas, descriptionHash)
 }
 
+const executeProposal = async ({ proposal }) => {
+  const { proposerAddress } = proposal
+  const [targets, values, calldatas, description] = await parseProposal(
+    proposal
+  )
+  const descriptionHash = web3.utils.keccak256(description)
+  const voterWallet = await ethers.getSigner(proposerAddress)
+
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+
+  const gov = await new ethers.Contract(address, abi, voterWallet)
+  return await gov.execute(targets, values, calldatas, descriptionHash)
+}
+
 /**
  * Submits a proposal
  */
@@ -105,4 +120,5 @@ module.exports = {
   parseProposal,
   submitProposal,
   queueProposal,
+  executeProposal,
 }

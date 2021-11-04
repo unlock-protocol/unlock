@@ -51,7 +51,7 @@ async function main({ proposal, proposalId }) {
     const eta = await gov.proposalEta(proposalId)
     // eslint-disable-next-line no-console
     console.log(
-      `GOV QUEUE > Proposal is already queued for execution. ETA :${new Date(
+      `GOV QUEUE > Proposal is queued for execution. ETA :${new Date(
         eta.toNumber() * 1000
       )}`
     )
