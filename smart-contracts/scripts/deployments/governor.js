@@ -58,7 +58,7 @@ async function main() {
   // get UDT token address
   let tokenAddress
   if (networkName === 'localhost') {
-    const UDTInfo = await getDeployment(chainId, 'UnlockDiscountToken')
+    const UDTInfo = await getDeployment(chainId, 'UnlockDiscountTokenV2')
     tokenAddress = UDTInfo.address
   } else {
     const [UDTInfo] =
