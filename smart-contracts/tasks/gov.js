@@ -44,3 +44,17 @@ task('gov:state', 'Check proposal state')
     // eslint-disable-next-line no-console
     console.log(`Current proposal state: ${state}`)
   })
+
+task('gov:delegate', 'Delagate voting power')
+  .addParam('delegate', 'The delegate receving the voting power')
+  .addOptionalParam('holder', 'The holder address')
+  .setAction(async ({ delegate, holder }) => {
+    // eslint-disable-next-line global-require
+    const delegateVote = require('../scripts/gov/delegate')
+
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    return await delegateVote({
+      delegateAddress: delegate,
+      holderAddress: holder,
+    })
+  })
