@@ -9,5 +9,5 @@ module.exports = {
   functionArgs: [tokenRecipientAddress, ethers.utils.parseUnits('0.01', 18)],
   proposalName: '#000 This is just an example!',
   proposerAddress,
-  // NB: no payable value specified (defaulted to 0)
+  // no payable value specified default to 0
 }

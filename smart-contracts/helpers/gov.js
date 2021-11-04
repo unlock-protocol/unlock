@@ -6,9 +6,30 @@ const encodeProposalFunc = ({ interface, functionName, functionArgs }) => {
   return calldata
 }
 
-/**
- * Submits a proposal
- */
+const getProposalId = async (proposalFile) => {
+  const { proposerAddress } = proposalFile
+  const [to, value, calldata, description] = await parseProposal(proposalFile)
+
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+
+  const proposerWallet = await ethers.getSigner(proposerAddress)
+  const gov = new ethers.Contract(address, abi, proposerWallet)
+
+  const descriptionHash = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes(description)
+  )
+
+  const proposalId = await gov.hashProposal(
+    to,
+    value,
+    calldata,
+    descriptionHash
+  )
+
+  return proposalId
+}
+
 const parseProposal = async ({
   contractName,
   functionName,
@@ -32,6 +53,9 @@ const parseProposal = async ({
   ]
 }
 
+/**
+ * Submits a proposal
+ */
 const submitProposal = async ({ proposerAddress, proposal }) => {
   const { chainId } = await ethers.provider.getNetwork()
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
@@ -44,4 +68,5 @@ module.exports = {
   encodeProposalFunc,
   parseProposal,
   submitProposal,
+  getProposalId,
 }
