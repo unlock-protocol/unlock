@@ -15,11 +15,15 @@ task('gov:submit', 'Submit a proposal to UDT Governor contract')
 task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   .addParam('proposalId', 'The proposal id')
   .addParam('voter', 'The address of the voter')
-  .setAction(async ({ proposalId, voter }) => {
+  .addFlag(
+    'authority',
+    'Grant max voting quorum to the voter (for dev purposes)'
+  )
+  .setAction(async ({ proposalId, voter, authority }) => {
     // eslint-disable-next-line global-require
     const voteProposal = require('../scripts/gov/vote')
 
-    return await voteProposal({ proposalId, voter })
+    return await voteProposal({ proposalId, voter, authority })
   })
 
 task('gov:queue', 'Queue proposal')
@@ -57,4 +61,16 @@ task('gov:delegate', 'Delagate voting power')
       delegateAddress: delegate,
       holderAddress: holder,
     })
+  })
+
+task('gov:execute', 'Closing vote period and execute a proposal (local only)')
+  .addParam('proposalId', 'The proposal id')
+  .addParam('proposal', 'The file containing the proposal')
+  .setAction(async ({ proposalId, proposal }) => {
+    // eslint-disable-next-line global-require
+    const executeProposal = require('../scripts/gov/execute')
+
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const prop = require(resolve(proposal))
+    return await executeProposal({ proposal: prop, proposalId })
   })
