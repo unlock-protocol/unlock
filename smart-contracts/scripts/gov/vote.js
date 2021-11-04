@@ -19,9 +19,6 @@ async function main({ voter, proposalId }) {
     throw new Error('GOV VOTE > Missing proposal ID.')
   }
 
-  // convert to uint
-  // proposalId = ethers.BigNumber.from(proposalId)
-
   // eslint-disable-next-line no-console
   console.log(`Voter: ${voter}`)
   if (isDev) {
@@ -46,8 +43,6 @@ async function main({ voter, proposalId }) {
       throw new Error('GOV VOTE > Vote not casted.')
     }
 
-    // success
-    const { proposalId } = evt.args
     // eslint-disable-next-line no-console
     console.log(
       `vote casted: ${voter} approves (votes 1) (txid: ${transactionHash})`

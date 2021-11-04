@@ -1,4 +1,4 @@
-const { ethers, upgrades } = require('hardhat')
+const { ethers, upgrades, network } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
 const { getNetworkName } = require('../../helpers/network')
@@ -81,6 +81,15 @@ async function main() {
     governor.address,
     ` (tx: ${governor.deployTransaction.hash})`
   )
+
+  if (networkName === 'localhost') {
+    // bring default voting period to 10 blocks while developing locally
+    await network.provider.send('hardhat_setStorageAt', [
+      governor.address,
+      '0x1c7', // '455' storage slot
+      '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
+    ])
+  }
 
   // save deployment info
   await addDeployment('UnlockProtocolGovernor', governor, true)
