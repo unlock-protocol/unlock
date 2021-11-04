@@ -19,9 +19,10 @@ async function main({ proposal, proposalId }) {
   // contract instance
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
   const gov = await ethers.getContractAt(abi, address)
+  let state = await getProposalState(proposalId)
 
   // close voting period
-  if (isDev) {
+  if (isDev && state === 'Active') {
     const deadline = await gov.proposalDeadline(proposalId)
     const currentBlock = await ethers.provider.getBlockNumber()
     if (currentBlock < deadline) {
@@ -30,16 +31,14 @@ async function main({ proposal, proposalId }) {
       console.log(
         `GOV EXEC > closing voting period (advancing to block #${deadline.toNumber()}`
       )
+      state = await getProposalState(proposalId)
     }
   }
 
   // queue proposal
-  const state = await getProposalState(proposalId)
-
   if (state === 'Succeeded') {
     const tx = await queueProposal({ proposal, proposalId })
     const { events, transactionHash } = await tx.wait()
-    console.log(events)
     const evt = events.find((v) => v.event === 'ProposalQueued')
     const { eta } = evt.args
     // eslint-disable-next-line no-console

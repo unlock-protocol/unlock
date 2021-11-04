@@ -19,7 +19,6 @@ async function main({ holderAddress, delegateAddress }) {
     await ethers.getSigner(holderAddress)
     if (isDev) {
       await impersonate(holderAddress)
-      await addUDT(holderAddress)
     }
   } else {
     ;[holder] = await ethers.getSigners()
