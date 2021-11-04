@@ -26,7 +26,6 @@ async function main({
   locksmithURI,
 }) {
   let udt
-
   const [deployer, minter] = await ethers.getSigners()
 
   // fetch chain info
@@ -38,7 +37,6 @@ async function main({
   )
 
   log(`isLocalNet : ${isLocalNet}`)
-
   if (!unlockAddress) {
     // deploying Unlock with a transparent / upgradable proxy
     unlockAddress = await run('deploy:unlock')
@@ -174,6 +172,7 @@ async function main({
     wethAddress,
     estimatedGasForPurchase,
     locksmithURI,
+    isLocalNet,
   })
 
   if (

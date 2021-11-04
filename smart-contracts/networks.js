@@ -60,7 +60,7 @@ module.exports = {
   },
   optimism: {
     chainId: 10,
-    url: 'Node:https://mainnet.optimism.io',
+    url: 'https://mainnet.optimism.io',
     name: 'optimism',
   },
 }
