@@ -30,8 +30,9 @@ async function main() {
     'UnlockProtocolTimelock'
   )
 
-  // one week in seconds
-  const MINDELAY = 60 * 24 * 7
+  // time lock in seconds
+  const oneWeekInSeconds = 60 * 60 * 24 * 7
+  const MINDELAY = networkName === 'localhost' ? 30 : oneWeekInSeconds
 
   const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
     MINDELAY,
