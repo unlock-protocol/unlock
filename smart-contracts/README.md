@@ -201,7 +201,7 @@ yarn hardhat deploy --network localhost
 yarn hardhat deploy:governor --network localhost
 
 # test your proposal
-yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network localhost
+yarn hardhat gov --proposal proposals/<your-proposal>.js --network localhost
 ```
 
 3. When things are ready, post it ot the DAO!

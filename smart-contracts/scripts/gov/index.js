@@ -16,6 +16,11 @@ async function main({ proposal }) {
     proposal,
     proposalId: `${proposalId}`,
   })
+
+  await run('gov:execute', {
+    proposal,
+    proposalId: `${proposalId}`,
+  })
 }
 
 // execute as standalone
