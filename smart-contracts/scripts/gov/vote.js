@@ -1,9 +1,10 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getDeployment } = require('../../helpers/deployments')
+const { getProposalState } = require('../../helpers/gov')
 const { impersonate, addUDT } = require('../../test/helpers/mainnet')
 
-async function main({ voter, proposalId }) {
+async function main({ voter, proposalId, authority }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
@@ -18,14 +19,44 @@ async function main({ voter, proposalId }) {
     // eslint-disable-next-line no-console
     throw new Error('GOV VOTE > Missing proposal ID.')
   }
+  if (authority && !isDev) {
+    // eslint-disable-next-line no-console
+    throw new Error(
+      'GOV VOTE > The authority flag can only be used on dev network.'
+    )
+  }
 
-  // eslint-disable-next-line no-console
-  console.log(`Voter: ${voter}`)
   if (isDev) {
     await impersonate(voter)
-    await addUDT(voter) // give voter some UDT
-    await time.advanceBlock() // make sure proposal state is Pending > Active
+    // make sure proposal state is active
+    const state = await getProposalState(proposalId)
+    if (state === 'Pending') {
+      await time.advanceBlock()
+    }
+
+    if (authority) {
+      // let's reach concensus
+      const quorum = 15000 // 15k UDT hardcoded in contract
+      const [, holder] = await ethers.getSigners()
+
+      // give twice the quorum in UDT
+      await addUDT(holder.address, quorum * 2)
+      const { address: udtAddress, abi: udtAbi } = getDeployment(
+        chainId,
+        'UnlockDiscountTokenV2'
+      )
+      const udt = await new ethers.Contract(udtAddress, udtAbi, holder)
+
+      const tx = await udt.delegate(voter)
+      const { events } = await tx.wait()
+      const evt = events.find((v) => v.event === 'DelegateVotesChanged')
+      if (evt) {
+        // eslint-disable-next-line no-console
+        console.log('GOV VOTE (dev) > delegated quorum to voter')
+      }
+    }
   }
+
   const voterWallet = await ethers.getSigner(voter)
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
   const gov = await ethers.getContractAt(abi, address)

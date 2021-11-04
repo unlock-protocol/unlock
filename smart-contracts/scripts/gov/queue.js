@@ -44,13 +44,17 @@ async function main({ proposal, proposalId }) {
     const { eta } = evt.args
     // eslint-disable-next-line no-console
     console.log(
-      `Proposal queued: ETA :${eta.toNumber()} (tx: ${transactionHash})`
+      `Proposal queued. ETA :${new Date(
+        eta.toNumber() * 1000
+      )} (tx: ${transactionHash})`
     )
   } else if (state === 'Queued') {
     const eta = await gov.proposalEta(proposalId)
     // eslint-disable-next-line no-console
     console.log(
-      `GOV QUEUE > Proposal is already queued for execution. ETA :${eta.toNumber()}`
+      `GOV QUEUE > Proposal is already queued for execution. ETA :${new Date(
+        eta.toNumber() * 1000
+      )}`
     )
   } else {
     throw new Error(
