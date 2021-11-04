@@ -53,6 +53,21 @@ const parseProposal = async ({
   ]
 }
 
+const queueProposal = async ({ proposal }) => {
+  const { proposerAddress } = proposal
+  const [targets, values, calldatas, description] = await parseProposal(
+    proposal
+  )
+  const descriptionHash = web3.utils.keccak256(description)
+  const voterWallet = await ethers.getSigner(proposerAddress)
+
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+
+  const gov = await new ethers.Contract(address, abi, voterWallet)
+  return await gov.queue(targets, values, calldatas, descriptionHash)
+}
+
 /**
  * Submits a proposal
  */
@@ -64,7 +79,7 @@ const submitProposal = async ({ proposerAddress, proposal }) => {
   return await gov.propose(...proposal)
 }
 
-const getProposalState = async ({ proposalId }) => {
+const getProposalState = async (proposalId) => {
   const states = [
     'Pending',
     'Active',
@@ -86,7 +101,8 @@ const getProposalState = async ({ proposalId }) => {
 module.exports = {
   getProposalState,
   encodeProposalFunc,
+  getProposalId,
   parseProposal,
   submitProposal,
-  getProposalId,
+  queueProposal,
 }
