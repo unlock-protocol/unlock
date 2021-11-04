@@ -1,6 +1,14 @@
 const { task } = require('hardhat/config')
 const { resolve } = require('path')
 
+task('gov', 'Submit (and validate) a proposal to UDT Governor contract')
+  .addParam('proposal', 'The file containing the proposal')
+  .setAction(async ({ proposal }) => {
+    // eslint-disable-next-line global-require
+    const processProposal = require('../scripts/gov')
+    return await processProposal({ proposal })
+  })
+
 task('gov:submit', 'Submit a proposal to UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .setAction(async ({ proposal }) => {
