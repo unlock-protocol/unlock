@@ -29,6 +29,12 @@ const impersonate = async (address) => {
   })
   await addSomeETH(address) // give some ETH just in case
 }
+const stopImpersonate = async (address) => {
+  await network.provider.request({
+    method: 'hardhat_stopImpersonatingAccount',
+    params: [address],
+  })
+}
 
 const toBytes32 = (bn) => {
   return ethers.utils.hexlify(ethers.utils.zeroPad(bn.toHexString(), 32))
@@ -63,6 +69,7 @@ const addUDT = async (recipientAddress, amount = 1000) => {
 module.exports = {
   resetNodeState,
   impersonate,
+  stopImpersonate,
   addUDT,
   addSomeETH,
 }
