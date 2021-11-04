@@ -57,6 +57,19 @@ task('gov:state', 'Check proposal state')
     console.log(`Current proposal state: ${state}`)
   })
 
+task('gov:id', 'Retrieve proposal ID')
+  .addParam('proposal', 'The file containing the proposal')
+  .setAction(async ({ proposal }) => {
+    // eslint-disable-next-line global-require
+    const { getProposalId } = require('../helpers/gov')
+
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const prop = require(resolve(proposal))
+    const proposalId = await getProposalId(prop)
+    // eslint-disable-next-line no-console
+    console.log(`Proposal id: ${proposalId}`)
+  })
+
 task('gov:delegate', 'Delagate voting power')
   .addParam('delegate', 'The delegate receving the voting power')
   .addOptionalParam('holder', 'The holder address')
