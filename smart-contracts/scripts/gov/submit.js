@@ -63,6 +63,7 @@ async function main({
   console.log(
     `proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
   )
+
   return proposalId
 }
 
