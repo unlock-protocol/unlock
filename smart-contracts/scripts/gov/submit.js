@@ -12,24 +12,22 @@ async function main({
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
-  // eslint-disable-next-line no-console
-  if (isDev) console.log('Dev mode ON')
 
   if (!proposerAddress) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV PROPOSAL > Missing proposer address.')
+    throw new Error('GOV SUBMIT > Missing proposer address.')
   }
   if (!functionName) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV PROPOSAL > Missing function name.')
+    throw new Error('GOV SUBMIT > Missing function name.')
   }
   if (!functionArgs) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV PROPOSAL > Missing function args.')
+    throw new Error('GOV SUBMIT > Missing function args.')
   }
   if (!proposalName) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV PROPOSAL > Missing proposal name.')
+    throw new Error('GOV SUBMIT > Missing proposal name.')
   }
 
   const proposal = await parseProposal({
@@ -40,14 +38,16 @@ async function main({
   })
 
   // eslint-disable-next-line no-console
-  console.log(`Proposed: ${contractName} ${functionName} ${functionArgs}`)
+  console.log(
+    `GOV SUBMIT > Proposed: ${contractName} ${functionName} ${functionArgs}`
+  )
 
   // submit the proposal
   if (isDev) {
     await impersonate(proposerAddress)
   }
   // eslint-disable-next-line no-console
-  console.log(`Proposer: ${proposerAddress}`)
+  console.log(`GOV SUBMIT > Proposer: ${proposerAddress}`)
   const proposalTx = await submitProposal({ proposerAddress, proposal })
 
   const { events, transactionHash } = await proposalTx.wait()
@@ -55,14 +55,14 @@ async function main({
 
   // check for failure
   if (!evt) {
-    throw new Error('GOV PROPOSAL > Proposal not created.')
+    throw new Error('GOV SUBMIT > Proposal not created.')
   }
 
   // success
   const { proposalId } = evt.args
   // eslint-disable-next-line no-console
   console.log(
-    `proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
+    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
   )
 
   return proposalId

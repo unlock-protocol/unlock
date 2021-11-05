@@ -17,7 +17,7 @@ task('balance:udt', "Prints an account's UDT balance")
     await udtBalance({ account })
   })
 
-task('balance:votes', "Prints an account's UDT balance")
+task('balance:votes', "Prints an account's UDT Gov voting power")
   .addParam('account', "The account's address")
   .setAction(async ({ account }) => {
     // eslint-disable-next-line global-require

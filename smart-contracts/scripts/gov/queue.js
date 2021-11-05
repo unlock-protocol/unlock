@@ -1,16 +1,16 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getDeployment } = require('../../helpers/deployments')
-const { queueProposal, getProposalState } = require('../../helpers/gov')
+const {
+  queueProposal,
+  getProposalState,
+  getProposalVotes,
+} = require('../../helpers/gov')
 
 async function main({ proposal, proposalId }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
-  if (!isDev) {
-    // eslint-disable-next-line no-console
-    console.log('GOV QUEUE > Dev mode ON.')
-  }
 
   if (!proposalId) {
     throw new Error('GOV QUEUE > Missing proposal ID.')
@@ -29,11 +29,17 @@ async function main({ proposal, proposalId }) {
       await time.advanceBlockTo(deadline.toNumber())
       // eslint-disable-next-line no-console
       console.log(
-        `GOV EXEC > closing voting period (advancing to block #${deadline.toNumber()})`
+        `GOV QUEUE > closing voting period (advancing to block #${deadline.toNumber()})`
       )
       state = await getProposalState(proposalId)
     }
   }
+
+  const votes = await getProposalVotes(proposalId)
+  // eslint-disable-next-line no-console
+  console.log(
+    `GOV QUEUE > Current proposal ${state} - votes (against, for, abstain): ${votes}`
+  )
 
   // queue proposal
   if (state === 'Succeeded') {
@@ -43,7 +49,7 @@ async function main({ proposal, proposalId }) {
     const { eta } = evt.args
     // eslint-disable-next-line no-console
     console.log(
-      `Proposal queued. ETA :${new Date(
+      `GOV QUEUE > Proposal queued. ETA :${new Date(
         eta.toNumber() * 1000
       )} (tx: ${transactionHash})`
     )

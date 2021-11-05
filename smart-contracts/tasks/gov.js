@@ -22,16 +22,12 @@ task('gov:submit', 'Submit a proposal to UDT Governor contract')
 
 task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   .addParam('proposalId', 'The proposal id')
-  .addParam('voter', 'The address of the voter')
-  .addFlag(
-    'authority',
-    'Grant max voting quorum to the voter (for dev purposes)'
-  )
-  .setAction(async ({ proposalId, voter, authority }) => {
+  .addOptionalParam('voter', 'The address of the voter')
+  .setAction(async ({ proposalId, voter }) => {
     // eslint-disable-next-line global-require
     const voteProposal = require('../scripts/gov/vote')
 
-    return await voteProposal({ proposalId, voter, authority })
+    return await voteProposal({ proposalId, voter })
   })
 
 task('gov:votes', 'Show votes for a specific proposal')
@@ -42,7 +38,7 @@ task('gov:votes', 'Show votes for a specific proposal')
 
     const votes = await getProposalVotes(proposalId)
     // eslint-disable-next-line no-console
-    console.log(`Current proposal votes: ${votes}`)
+    console.log(`Current proposal votes (against, for, abstain): ${votes}`)
   })
 
 task('gov:queue', 'Queue proposal')
