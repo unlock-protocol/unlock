@@ -36,7 +36,7 @@ async function main({ voter, proposalId, authority }) {
 
     if (authority) {
       // let's reach concensus
-      const quorum = 15000 // 15k UDT hardcoded in contract
+      const quorum = 15000 // 15k UDT quorum hardcoded in contract
       const [, holder] = await ethers.getSigners()
 
       // give twice the quorum in UDT

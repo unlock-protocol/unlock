@@ -107,7 +107,24 @@ const getDeployment = (chainId, contractName) => {
 
 const getProxyData = ({ networkName, contractName }) => {
   const { proxies } = OZ_SDK_EXPORT.networks[networkName]
-  const [proxy] = proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
+  let proxy
+  if (contractName === 'UnlockProtocolGovernor' && networkName === 'mainnet') {
+    proxy = { address: '0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94' }
+  } else if (
+    contractName === 'UnlockProtocolTimelock' &&
+    networkName === 'mainnet'
+  ) {
+    proxy = { address: '0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b' }
+  } else {
+    try {
+      const contractNameClean = contractName.replace('V2', '') // UDT v2 uses UDT v1 proxy
+      ;[proxy] = proxies[`unlock-protocol/${contractNameClean}`]
+    } catch (error) {
+      throw new Error(
+        `Missing network manifest for ${contractName} on ${networkName})`
+      )
+    }
+  }
   return proxy
 }
 
