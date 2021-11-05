@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { impersonate, addUDT } = require('../../test/helpers/mainnet')
+const { impersonate } = require('../../test/helpers/mainnet')
 const { getDeployment } = require('../../helpers/deployments')
 
 async function main({ holderAddress, delegateAddress }) {

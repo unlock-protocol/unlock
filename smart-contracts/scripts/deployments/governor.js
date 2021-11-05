@@ -3,6 +3,7 @@ const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 
 const { getNetworkName } = require('../../helpers/network')
 const { getDeployment, addDeployment } = require('../../helpers/deployments')
+const { addUDT } = require('../../test/helpers/mainnet')
 
 const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
@@ -90,6 +91,9 @@ async function main() {
       '0x1c7', // '455' storage slot
       '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
     ])
+
+    // grant timelock some UDT
+    await addUDT(timelock.address, 10000)
   }
 
   // save deployment info

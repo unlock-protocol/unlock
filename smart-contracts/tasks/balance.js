@@ -1,5 +1,4 @@
 const { task } = require('hardhat/config')
-const { getDeployment } = require('../helpers/deployments')
 
 task('balance', "Prints an account's ETH balance")
   .addParam('account', "The account's address")

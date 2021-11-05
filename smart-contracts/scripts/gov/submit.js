@@ -38,6 +38,7 @@ async function main({
     functionArgs,
     proposalName,
   })
+
   // eslint-disable-next-line no-console
   console.log(`Proposed: ${contractName} ${functionName} ${functionArgs}`)
 
