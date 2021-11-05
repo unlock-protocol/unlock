@@ -63,7 +63,7 @@
     "request-promise-native": "1.0.9",
     "sequelize": "5.22.4",
     "sequelize-cli": "6.2.0",
-    "sequelize-typescript": "1.1.0",
+    "sequelize-typescript": "2.1.1",
     "setimmediate": "1.0.5",
     "stripe": "8.186.0",
     "unlock-abi-1-1": "1.1.1",
