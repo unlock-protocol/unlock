@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const { time } = require('@openzeppelin/test-helpers')
-const { getProxyAddress } = require('../../helpers/proxy')
+const { getProxyAddress } = require('../../helpers/deployments')
 
 const { resetNodeState, impersonate } = require('../helpers/mainnet')
 const { errorMessages } = require('../helpers/constants')
@@ -12,7 +12,7 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 contract('UnlockDiscountToken on mainnet', async () => {
   let udt
   const chainId = 1 // mainnet
-  const unlockAddress = getProxyAddress(chainId, 'Unlock')
+  let unlockAddress
 
   beforeEach(async function setupMainnetForkTestEnv() {
     if (!process.env.RUN_MAINNET_FORK) {
@@ -36,6 +36,8 @@ contract('UnlockDiscountToken on mainnet', async () => {
     )
     const [, minter] = await ethers.getSigners()
     udt = await UnlockDiscountToken.attach(proxyAddress).connect(minter)
+
+    unlockAddress = getProxyAddress(chainId, 'Unlock')
   })
 
   describe('ERC20 details', () => {
