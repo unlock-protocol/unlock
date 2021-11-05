@@ -34,6 +34,17 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
     return await voteProposal({ proposalId, voter, authority })
   })
 
+task('gov:votes', 'Show votes for a specific proposal')
+  .addParam('proposalId', 'The proposal id')
+  .setAction(async ({ proposalId }) => {
+    // eslint-disable-next-line global-require
+    const { getProposalVotes } = require('../helpers/gov')
+
+    const votes = await getProposalVotes(proposalId)
+    // eslint-disable-next-line no-console
+    console.log(`Current proposal votes: ${votes}`)
+  })
+
 task('gov:queue', 'Queue proposal')
   .addParam('proposalId', 'The proposal id')
   .addParam('proposal', 'The file containing the proposal')

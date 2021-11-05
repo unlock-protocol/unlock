@@ -16,3 +16,11 @@ task('balance:udt', "Prints an account's UDT balance")
     const udtBalance = require('../scripts/getters/udt-balance')
     await udtBalance({ account })
   })
+
+task('balance:votes', "Prints an account's UDT balance")
+  .addParam('account', "The account's address")
+  .setAction(async ({ account }) => {
+    // eslint-disable-next-line global-require
+    const udtVotes = require('../scripts/getters/udt-votes')
+    await udtVotes({ account })
+  })

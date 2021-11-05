@@ -29,7 +29,7 @@ async function main({ proposal, proposalId }) {
       await time.advanceBlockTo(deadline.toNumber())
       // eslint-disable-next-line no-console
       console.log(
-        `GOV EXEC > closing voting period (advancing to block #${deadline.toNumber()}`
+        `GOV EXEC > closing voting period (advancing to block #${deadline.toNumber()})`
       )
       state = await getProposalState(proposalId)
     }
