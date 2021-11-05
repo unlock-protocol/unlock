@@ -66,9 +66,9 @@ RUN apk add --no-cache --virtual .build-deps \
     bash \
     git \
     openssh \
-    python \
-    python-dev \
-    py-pip \
+    python3 \
+    python3-dev \
+    py3-pip \
     build-base \
     && pip install --no-cache-dir virtualenv
 
