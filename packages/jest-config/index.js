@@ -7,6 +7,8 @@ const ignore = [
   '**/node_modules/**',
   '**/docker/**',
   '**/build/**',
+  '<rootDir>/.next/',
+  '<rootDir>/__tests__/test-helpers/',
 ]
 
 const projects = glob.sync(`${rootPath}/**/jest.config.js`, {
@@ -24,7 +26,12 @@ module.exports = {
     "node"
   ],
   preset: 'ts-jest/presets/js-with-ts',
-  testPathIgnorePatterns: ["/node_modules/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "<rootDir>/node_modules/",
+    '<rootDir>/.next/',
+    '<rootDir>/__tests__/test-helpers/',
+  ],
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\](?!(ethereum-cryptography)).+\\.(js|jsx|ts|tsx)$',
   ],

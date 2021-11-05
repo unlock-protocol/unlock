@@ -31,6 +31,7 @@
     "webpack-cli": "4.9.1"
   },
   "dependencies": {
+    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:./packages/types",

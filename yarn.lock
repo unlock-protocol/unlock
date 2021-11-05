@@ -10873,6 +10873,7 @@ __metadata:
     "@testing-library/react-hooks": 7.0.2
     "@types/node": 16.11.6
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     axios: 0.24.0
     babel-jest: 27.3.1
     dotenv: 10.0.0
@@ -10936,6 +10937,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/postmate": 1.5.2
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
@@ -11174,6 +11176,7 @@ __metadata:
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
@@ -11316,6 +11319,7 @@ __metadata:
     "@types/react": 17.0.33
     "@types/styled-components": 5.1.14
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/unlock-assets": 1.4.6
     "@zeit/next-source-maps": 0.0.3

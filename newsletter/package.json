@@ -18,6 +18,7 @@
     "@testing-library/react-hooks": "7.0.2",
     "@types/node": "16.11.6",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/jest-config": "workspace:^",
     "axios": "0.24.0",
     "babel-jest": "27.3.1",
     "dotenv": "10.0.0",
