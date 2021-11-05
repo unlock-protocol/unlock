@@ -84,7 +84,7 @@ export const useProvider = (config: any) => {
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
         setError(
-          'Unlock is currently not deployed on this network. Please switch network and refresh the page'
+          `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
         )
       } else {
         setError(error.message)

@@ -29,6 +29,7 @@ export const mainnet: NetworkConfig = {
         symbol: 'Eth',
         decimals: 18,
     },
+    startBlock: 7120795,
 }
 
 export default mainnet

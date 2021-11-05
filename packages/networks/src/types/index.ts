@@ -25,6 +25,7 @@ export interface NetworkConfig {
         symbol: string
         decimals: number
     },
+    startBlock?: number
 }
 
 export interface NetworkConfigs {
