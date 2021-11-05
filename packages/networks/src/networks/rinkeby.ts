@@ -28,6 +28,7 @@ export const rinkeby: NetworkConfig = {
         symbol: 'Eth',
         decimals: 18,
     },
+    startBlock: 3530008,
 }
 
 export default rinkeby
