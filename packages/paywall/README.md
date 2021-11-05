@@ -22,7 +22,7 @@ const paywallConfig = {};
 // Configure networks to use
 const networkConfigs = {
   1: {
-    readOnlyProvider: 'HTTP PROVIDER',
+    provider: 'HTTP PROVIDER',
   },
   100: {
     // configuration for xdai... etc

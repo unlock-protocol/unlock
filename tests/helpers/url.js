@@ -20,7 +20,7 @@ const {
 module.exports = {
   main: (path = '/') => `http://${unlockHost}:${unlockPort}${path}`,
   paywall: (path = '/') => `http://${paywallHost}:${paywallPort}${path}`,
-  newdemo: lockAddress =>
+  newdemo: (lockAddress) =>
     `http://${paywallHost}:${paywallPort}/newdemo?lock=${lockAddress}`,
-  readOnlyProvider: () => `http://${httpProviderHost}:${httpProviderPort}`,
+  provider: () => `http://${httpProviderHost}:${httpProviderPort}`,
 }

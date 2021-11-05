@@ -5,8 +5,6 @@ export const mainnet: NetworkConfig = {
     id: 1,
     provider:
         'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
-    readOnlyProvider:
-        'https://eth-mainnet.alchemyapi.io/v2/b7Mxclz5hGyHqoeodGLQ17F5Qi97S7xJ',
     unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
     name: 'Ethereum',
     blockTime: 8000,

@@ -9,7 +9,7 @@ const locks = [lock, '0xanother']
 const transaction = '0xtransaction'
 const locksmithUri = 'https://locksmith.unlock-protocol.com'
 
-const readOnlyProvider = 'https://rpc.endpoint'
+const provider = 'https://rpc.endpoint'
 
 const savedTransactions = [
   {
@@ -37,7 +37,7 @@ describe('optimisticUnlocking', () => {
     })
 
     const optimistic = await OptimisticUnlocking.optimisticUnlocking(
-      readOnlyProvider,
+      provider,
       locksmithUri,
       locks,
       user
@@ -49,7 +49,7 @@ describe('optimisticUnlocking', () => {
     expect(OptimisticUnlocking.willUnlock).toHaveBeenCalledTimes(1)
     expect(OptimisticUnlocking.willUnlock).toHaveBeenNthCalledWith(
       1,
-      readOnlyProvider,
+      provider,
       user,
       lock,
       '0xtransactionHash',
@@ -90,7 +90,7 @@ describe('willUnlock', () => {
     it('should return true if optimistcIfMissing is true', async () => {
       expect.assertions(1)
       const willUnlock = await OptimisticUnlocking.willUnlock(
-        readOnlyProvider,
+        provider,
         user,
         lock,
         transaction,
@@ -101,7 +101,7 @@ describe('willUnlock', () => {
     it('should return false if optimistcIfMissing is false', async () => {
       expect.assertions(1)
       const willUnlock = await OptimisticUnlocking.willUnlock(
-        readOnlyProvider,
+        provider,
         user,
         lock,
         transaction,
@@ -121,7 +121,7 @@ describe('willUnlock', () => {
 
       expect(
         await OptimisticUnlocking.willUnlock(
-          readOnlyProvider,
+          provider,
           user,
           lock,
           transaction,
@@ -144,7 +144,7 @@ describe('willUnlock', () => {
 
         expect(
           await OptimisticUnlocking.willUnlock(
-            readOnlyProvider,
+            provider,
             user,
             lock,
             transaction,
@@ -168,7 +168,7 @@ describe('willUnlock', () => {
 
         expect(
           await OptimisticUnlocking.willUnlock(
-            readOnlyProvider,
+            provider,
             user,
             lock,
             transaction,
