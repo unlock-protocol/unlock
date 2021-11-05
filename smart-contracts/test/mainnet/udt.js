@@ -15,8 +15,6 @@ contract('UnlockDiscountToken on mainnet', async () => {
   let unlockAddress
 
   beforeEach(async function setupMainnetForkTestEnv() {
-    unlockAddress = getProxyAddress(chainId, 'Unlock')
-
     if (!process.env.RUN_MAINNET_FORK) {
       // all suite will be skipped
       this.skip()
@@ -38,6 +36,8 @@ contract('UnlockDiscountToken on mainnet', async () => {
     )
     const [, minter] = await ethers.getSigners()
     udt = await UnlockDiscountToken.attach(proxyAddress).connect(minter)
+
+    unlockAddress = getProxyAddress(chainId, 'Unlock')
   })
 
   describe('ERC20 details', () => {
