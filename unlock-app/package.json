@@ -42,7 +42,7 @@
     "deep-object-diff": "1.1.0",
     "dotenv": "10.0.0",
     "eslint": "8.1.0",
-    "eth-sig-util": "2.5.4",
+    "eth-sig-util": "3.0.1",
     "ethereumjs-utils": "5.2.5",
     "ethers": "5.5.1",
     "file-saver": "2.0.5",
