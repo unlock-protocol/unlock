@@ -70,7 +70,7 @@ RUN apk add --no-cache --virtual .build-deps \
     python3-dev \
     py3-pip \
     build-base \
-    && pip install --no-cache-dir virtualenv
+    && pip3 install --no-cache-dir virtualenv
 
 
 # install deps
