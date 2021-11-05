@@ -50,6 +50,7 @@
     "typescript": "4.4.4"
   },
   "dependencies": {
+    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks"
   }
 }

@@ -1,5 +1,7 @@
+const base = require('@unlock-protocol/jest-config')
+
 module.exports = {
-  collectCoverage: true,
+  ...base,
   testPathIgnorePatterns: [
     '<rootDir>/lib/',
     '<rootDir>/node_modules/',
