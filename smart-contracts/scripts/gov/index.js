@@ -55,24 +55,11 @@ async function main({ proposal }) {
     await time.advanceBlock()
   }
 
-  const proposalId = await run('gov:submit', {
-    proposal,
-  })
-
-  await run('gov:vote', {
-    proposalId: `${proposalId}`,
-    // no voter address enables authoritarian mode
-  })
-
-  await run('gov:queue', {
-    proposal,
-    proposalId: `${proposalId}`,
-  })
-
-  await run('gov:execute', {
-    proposal,
-    proposalId: `${proposalId}`,
-  })
+  // Run the gov workflow
+  await run('gov:submit', { proposal })
+  await run('gov:vote', { proposal }) // no voter address enables authoritarian mode
+  await run('gov:queue', { proposal })
+  await run('gov:execute', { proposal })
 }
 
 // execute as standalone

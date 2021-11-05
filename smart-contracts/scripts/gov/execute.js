@@ -1,16 +1,22 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getDeployment } = require('../../helpers/deployments')
-const { getProposalState, executeProposal } = require('../../helpers/gov')
+const {
+  getProposalState,
+  executeProposal,
+  getProposalId,
+} = require('../../helpers/gov')
 
-async function main({ proposalId, proposal }) {
+async function main({ proposal }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  if (!proposalId) {
-    throw new Error('GOV EXEC > Missing proposal ID.')
+  if (!proposal) {
+    throw new Error('GOV EXEC > Missing proposal.')
   }
+
+  const proposalId = await getProposalId(proposal)
 
   // contract instance etc
   let state = await getProposalState(proposalId)

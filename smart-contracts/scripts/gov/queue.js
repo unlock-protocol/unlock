@@ -5,16 +5,18 @@ const {
   queueProposal,
   getProposalState,
   getProposalVotes,
+  getProposalId,
 } = require('../../helpers/gov')
 
-async function main({ proposal, proposalId }) {
+async function main({ proposal }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  if (!proposalId) {
+  if (!proposal) {
     throw new Error('GOV QUEUE > Missing proposal ID.')
   }
+  const proposalId = await getProposalId(proposal)
 
   // contract instance
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
