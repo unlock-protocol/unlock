@@ -1,4 +1,7 @@
+const base = require('@unlock-protocol/jest-config')
+
 module.exports = {
+  ...base,
   setupFiles: [
     '<rootDir>/.jest/env.js',
     '<rootDir>/.jest/register-context.js',
@@ -13,44 +16,29 @@ module.exports = {
   moduleDirectories: [
     'node_modules',
     '<rootDir>/unlock-app/node_modules',
-    '<rootDir>/unlock-app/src'
-    ],
-  moduleFileExtensions: [
-    'js', 
-    'jsx', 
-    'ts', 
-    'tsx', 
-    'json'
+    '<rootDir>/unlock-app/src',
   ],
-  preset: 'ts-jest/presets/js-with-ts',
   globals: {
     'ts-jest': {
       babelConfig: {
         presets: [
           [
-            "next/babel",
+            'next/babel',
             {
-              "preset-env": {
-                "modules": "commonjs"
-              }
-            }
-          ]
+              'preset-env': {
+                modules: 'commonjs',
+              },
+            },
+          ],
         ],
         plugins: [
           '@babel/plugin-proposal-optional-chaining',
-          'require-context-hook'
-        ]
-      }
-    }
+          'require-context-hook',
+        ],
+      },
+    },
   },
-  transformIgnorePatterns: [
-    '[/\\\\]node_modules[/\\\\](?!(ethereum-cryptography)).+\\.(js|jsx|ts|tsx)$',
-  ],
-  coveragePathIgnorePatterns: [
-    '/node_modules/', 
-    'src/stories/.*/*.stories.js'
-    ],
-  collectCoverage: true,
+  coveragePathIgnorePatterns: ['src/stories/.*/*.stories.js'],
   coverageThreshold: {
     global: {
       branches: 55,
@@ -58,5 +46,5 @@ module.exports = {
       lines: 60,
       statements: 58,
     },
-  }
+  },
 }

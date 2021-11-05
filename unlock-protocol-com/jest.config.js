@@ -1,4 +1,7 @@
+const base = require('@unlock-protocol/jest-config')
+
 module.exports = {
+  ...base,
   setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: [

@@ -1,7 +1,9 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+const { Manifest } = require('@openzeppelin/upgrades-core')
 const { getNetworkName } = require('./network')
+const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 
 const deploymentsPath = path.resolve(__dirname, '../deployments')
 
@@ -77,11 +79,79 @@ const addDeployment = async (contractName, instance, isProxy) => {
 }
 
 const getDeployment = (chainId, contractName) => {
+  // get ABI etc
   const deploymentFilePath = getDeploymentsFilePath(chainId, contractName)
-  return fs.readJsonSync(deploymentFilePath)
+  const { abi, address, implementationAddress } =
+    fs.readJsonSync(deploymentFilePath)
+
+  const networkName = process.env.RUN_MAINNET_FORK
+    ? 'mainnet'
+    : getNetworkName(chainId)
+
+  const deployment = {
+    contractName,
+    abi,
+    address,
+    implementation: implementationAddress,
+  }
+
+  // support all networks
+  if (networkName !== 'localhost') {
+    const proxy = getProxyData({ networkName, contractName })
+    deployment.address = proxy.address
+    deployment.implementation = proxy.implementation
+  }
+
+  return deployment
+}
+
+const getProxyData = ({ networkName, contractName }) => {
+  const { proxies } = OZ_SDK_EXPORT.networks[networkName]
+  let proxy
+  if (contractName === 'UnlockProtocolGovernor' && networkName === 'mainnet') {
+    proxy = { address: '0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94' }
+  } else if (
+    contractName === 'UnlockProtocolTimelock' &&
+    networkName === 'mainnet'
+  ) {
+    proxy = { address: '0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b' }
+  } else {
+    try {
+      const contractNameClean = contractName.replace('V2', '') // UDT v2 uses UDT v1 proxy
+      ;[proxy] = proxies[`unlock-protocol/${contractNameClean}`]
+    } catch (error) {
+      throw new Error(
+        `Missing network manifest for ${contractName} on ${networkName})`
+      )
+    }
+  }
+  return proxy
+}
+
+const getProxyAddress = function getProxyAddress(chainId, contractName) {
+  const { address } = getDeployment(chainId, `${contractName}`)
+  if (!address) {
+    throw new Error(
+      `The proxy address for ${contractName} was not found in the network manifest (chainId: ${chainId})`
+    )
+  }
+  return address
+}
+
+const getProxyAdminAddress = async ({ network }) => {
+  // get proxy admin address from OZ manifest
+  const manifest = await Manifest.forNetwork(network.provider)
+  const manifestAdmin = await manifest.getAdmin()
+  const proxyAdminAddress = manifestAdmin.address
+  if (proxyAdminAddress === undefined) {
+    throw new Error('No ProxyAdmin was found in the network manifest')
+  }
+  return proxyAdminAddress
 }
 
 module.exports = {
+  getProxyAdminAddress,
+  getProxyAddress,
   addDeployment,
   getDeployment,
 }

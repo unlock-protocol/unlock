@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import WalletConnectProvider from '@walletconnect/web3-provider'
+import WalletLink from 'walletlink'
 import { ConfigContext } from '../../utils/withConfig'
 import SvgComponents from './svg'
 
@@ -72,11 +73,6 @@ const LoginPrompt = ({
   const config = useContext(ConfigContext)
   const { authenticate } = useContext(AuthenticationContext)
   const [walletToShow, setWalletToShow] = useState('')
-
-  const walletConnectProvider = new WalletConnectProvider({
-    rpc: rpcForWalletConnect(config),
-  })
-
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
   const authenticateIfNotHandled = async (provider: any) => {
@@ -96,7 +92,20 @@ const LoginPrompt = ({
   }
 
   const handleWalletConnectProvider = async () => {
+    const walletConnectProvider = new WalletConnectProvider({
+      rpc: rpcForWalletConnect(config),
+    })
     await authenticateIfNotHandled(walletConnectProvider)
+  }
+
+  const handleCoinbaseWalletProvider = async () => {
+    const walletLink = new WalletLink({
+      appName: 'Unlock',
+      appLogoUrl: '/static/images/svg/default-lock-logo.svg',
+    })
+
+    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
+    await authenticateIfNotHandled(ethereum)
   }
 
   return (
@@ -124,6 +133,15 @@ const LoginPrompt = ({
           >
             <SvgComponents.WalletConnect fill="var(--blue)" />
             WalletConnect
+          </WalletButton>
+
+          <WalletButton
+            color={backgroundColor}
+            activeColor={activeColor}
+            onClick={handleCoinbaseWalletProvider}
+          >
+            <SvgComponents.CoinbaseWallet fill="var(--blue)" />
+            Coinbase Wallet
           </WalletButton>
 
           {unlockUserAccount && (
