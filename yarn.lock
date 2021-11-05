@@ -10478,7 +10478,7 @@ __metadata:
     express-jwt: 6.1.0
     express-list-endpoints: 6.0.0
     express-winston: 4.2.0
-    graphql: 15.7.2
+    graphql: 16.0.1
     graphql-tag: 2.12.5
     isomorphic-fetch: 3.0.0
     jest: 27.3.1
@@ -10854,7 +10854,7 @@ __metadata:
     ethereumjs-utils: 5.2.5
     ethers: 5.5.1
     file-saver: 2.0.5
-    graphql: 15.7.2
+    graphql: 16.0.1
     jest: 27.3.1
     jest-canvas-mock: 2.3.1
     jest-fetch-mock: 3.0.3
@@ -23910,10 +23910,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"graphql@npm:15.7.2":
-  version: 15.7.2
-  resolution: "graphql@npm:15.7.2"
-  checksum: eacb746e2981d0c346ef7365601873963af5356f64ce4d890ab89d213c67bf5bc1ae957b93c3902198798774c842b55dff219f38bad858691765e4debc265750
+"graphql@npm:16.0.1":
+  version: 16.0.1
+  resolution: "graphql@npm:16.0.1"
+  checksum: e2fbddc78ac93b84af5b1871cdced5ce796102373b91f888983e8bae26856788833aa641f5da15b9e4da05cef2edcc82b744a86a27e7e1ef6c9ce422571ab16c
   languageName: node
   linkType: hard
 
