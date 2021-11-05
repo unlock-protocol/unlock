@@ -6,9 +6,29 @@ const encodeProposalFunc = ({ interface, functionName, functionArgs }) => {
   return calldata
 }
 
-const getProposalId = async (proposalFile) => {
-  const { proposerAddress } = proposalFile
-  const [to, value, calldata, description] = await parseProposal(proposalFile)
+const getProposalId = async (proposal) => {
+  const [targets, values, calldata, description] = await parseProposal(proposal)
+
+  const descriptionHash = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes(description)
+  )
+
+  // solidityKeccak256
+  const proposalId = ethers.BigNumber.from(
+    ethers.utils.keccak256(
+      ethers.utils.defaultAbiCoder.encode(
+        ['address[]', 'uint256[]', 'bytes[]', 'bytes32'],
+        [targets, values, calldata, descriptionHash]
+      )
+    )
+  )
+
+  return proposalId
+}
+
+const getProposalIdFromContract = async (proposal) => {
+  const { proposerAddress } = proposal
+  const [to, value, calldata, description] = await parseProposal(proposal)
 
   const { chainId } = await ethers.provider.getNetwork()
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
@@ -125,6 +145,7 @@ module.exports = {
   getProposalState,
   encodeProposalFunc,
   getProposalId,
+  getProposalIdFromContract,
   parseProposal,
   submitProposal,
   queueProposal,

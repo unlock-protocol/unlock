@@ -2,7 +2,8 @@ const { ethers } = require('hardhat')
 const {
   encodeProposalFunc,
   parseProposal,
-  // getProposalId,
+  getProposalId,
+  getProposalIdFromContract,
 } = require('../helpers/gov')
 const { getDeployment } = require('../helpers/deployments')
 
@@ -75,18 +76,15 @@ contract('Proposal Helper', () => {
     })
   })
 
-  /*
-  // commented out because id is not deterministic
-  describe.skip('proposal ID', () => {
+  describe('proposal ID', () => {
     it('can be retrieved', async () => {
+      // eslint-disable-next-line global-require
       const proposalExample = require('../proposals/000-example')
       const proposalId = await getProposalId(proposalExample)
-      assert.equal(
-        (await proposalId.toString()).length,
-        '4586235160897764506187177627485798166029008166185535260693197033249511221438'
-          .length
+      const proposalIdFromContract = await getProposalIdFromContract(
+        proposalExample
       )
+      assert.equal(proposalId.toString(), proposalIdFromContract.toString())
     })
   })
-  */
 })
