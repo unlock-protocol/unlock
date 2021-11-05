@@ -5123,9 +5123,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.22.2":
-  version: 0.22.2
-  resolution: "@graphprotocol/graph-cli@npm:0.22.2"
+"@graphprotocol/graph-cli@npm:0.23.1":
+  version: 0.23.1
+  resolution: "@graphprotocol/graph-cli@npm:0.23.1"
   dependencies:
     assemblyscript: 0.19.10
     binary-install-raw: 0.0.13
@@ -5152,16 +5152,16 @@ __metadata:
     yaml: ^1.5.1
   bin:
     graph: bin/graph
-  checksum: b380b049bf14eed8c818163e67d5d4818880dacdee0da7709f1926e5d2fad3e2912dbd56797827b896002f1259ea23faf9f04088a524cab3bd24f32dd3e4934f
+  checksum: a83a699b6b45349c933cc401b4f8dc37b04c9b7ced25867f192d9e5b26b0c0e15614b83bf51eb0eb920187d35818ca99619c31f259331b400c156d985102fc47
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:0.22.1":
-  version: 0.22.1
-  resolution: "@graphprotocol/graph-ts@npm:0.22.1"
+"@graphprotocol/graph-ts@npm:0.23.1":
+  version: 0.23.1
+  resolution: "@graphprotocol/graph-ts@npm:0.23.1"
   dependencies:
     assemblyscript: 0.19.10
-  checksum: 9ba65f4205e52ce493adf1b56c197fa6d142fb07a511b3734d85df3eb740c326e1079b038ab56aabccc37e1f5e718ee9a67bf24ae0d2134173449ec2ba92c0e1
+  checksum: dbccebee9517e389989a5a2b976b88427b0467adebf4ce72d00aa4f0af27d044f9e09e09b83d5b4784bd39855947947207a951b4e0a093c6017d921025017375
   languageName: node
   linkType: hard
 
@@ -10719,13 +10719,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.22.2
-    "@graphprotocol/graph-ts": 0.22.1
+    "@graphprotocol/graph-cli": 0.23.1
+    "@graphprotocol/graph-ts": 0.23.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     eslint: 8.1.0
     fs-extra: 10.0.0
     handlebars: 4.7.7
-    lint-staged: 11.1.2
+    lint-staged: 11.2.6
     yargs: 17.2.1
   languageName: unknown
   linkType: soft
@@ -16008,16 +16008,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "chalk@npm:4.1.1"
-  dependencies:
-    ansi-styles: ^4.1.0
-    supports-color: ^7.1.0
-  checksum: 036e973e665ba1a32c975e291d5f3d549bceeb7b1b983320d4598fb75d70fe20c5db5d62971ec0fe76cdbce83985a00ee42372416abfc3a5584465005a7855ed
-  languageName: node
-  linkType: hard
-
 "change-case@npm:3.0.2":
   version: 3.0.2
   resolution: "change-case@npm:3.0.2"
@@ -16902,7 +16892,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^7.0.0, commander@npm:^7.2.0":
+"commander@npm:^7.0.0":
   version: 7.2.0
   resolution: "commander@npm:7.2.0"
   checksum: 53501cbeee61d5157546c0bef0fedb6cdfc763a882136284bed9a07225f09a14b82d2a84e7637edfd1a679fb35ed9502fd58ef1d091e6287f60d790147f68ddc
@@ -26459,13 +26449,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"is-unicode-supported@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "is-unicode-supported@npm:0.1.0"
-  checksum: a2aab86ee7712f5c2f999180daaba5f361bdad1efadc9610ff5b8ab5495b86e4f627839d085c6530363c6d6d4ecbde340fb8e54bdb83da4ba8e0865ed5513c52
-  languageName: node
-  linkType: hard
-
 "is-upper-case@npm:^1.1.0":
   version: 1.1.2
   resolution: "is-upper-case@npm:1.1.2"
@@ -29120,30 +29103,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:11.1.2":
-  version: 11.1.2
-  resolution: "lint-staged@npm:11.1.2"
-  dependencies:
-    chalk: ^4.1.1
-    cli-truncate: ^2.1.0
-    commander: ^7.2.0
-    cosmiconfig: ^7.0.0
-    debug: ^4.3.1
-    enquirer: ^2.3.6
-    execa: ^5.0.0
-    listr2: ^3.8.2
-    log-symbols: ^4.1.0
-    micromatch: ^4.0.4
-    normalize-path: ^3.0.0
-    please-upgrade-node: ^3.2.0
-    string-argv: 0.3.1
-    stringify-object: ^3.3.0
-  bin:
-    lint-staged: bin/lint-staged.js
-  checksum: 0050d1836dda879c58561fa4efd100f5cd14fcbf8ee3fdeab7e89ec4219c019543bb5bf2442f760557ebe4bb8b7bfc56a9c98b9384acecfe0f8553f091723e36
-  languageName: node
-  linkType: hard
-
 "lint-staged@npm:11.2.6":
   version: 11.2.6
   resolution: "lint-staged@npm:11.2.6"
@@ -29182,23 +29141,6 @@ fsevents@~2.1.1:
   peerDependencies:
     enquirer: ">= 2.3.0 < 3"
   checksum: 3628d5a867a1352bdac865e586772469c9e9b5d5ba258c32436ca7058c587c4b185acb47824179e750b3e6ea8bdf08d9151148cf9d1b05c849022b84c65276c4
-  languageName: node
-  linkType: hard
-
-"listr2@npm:^3.8.2":
-  version: 3.10.0
-  resolution: "listr2@npm:3.10.0"
-  dependencies:
-    cli-truncate: ^2.1.0
-    colorette: ^1.2.2
-    log-update: ^4.0.0
-    p-map: ^4.0.0
-    rxjs: ^6.6.7
-    through: ^2.3.8
-    wrap-ansi: ^7.0.0
-  peerDependencies:
-    enquirer: ">= 2.3.0 < 3"
-  checksum: 9dc1a896972462642fe55817b946174b4f6d067cfe1d9a323517e235ed745773526797f20ef65b346d244356690f929c763d06243e511c4ba6abdcffeb009efc
   languageName: node
   linkType: hard
 
@@ -29655,16 +29597,6 @@ fsevents@~2.1.1:
   dependencies:
     chalk: ^2.4.2
   checksum: f2322e1452d819050b11aad247660e1494f8b2219d40a964af91d5f9af1a90636f1b3d93f2952090e42af07cc5550aecabf6c1d8ec1181207e95cb66ba112361
-  languageName: node
-  linkType: hard
-
-"log-symbols@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "log-symbols@npm:4.1.0"
-  dependencies:
-    chalk: ^4.1.0
-    is-unicode-supported: ^0.1.0
-  checksum: fce1497b3135a0198803f9f07464165e9eb83ed02ceb2273930a6f8a508951178d8cf4f0378e9d28300a2ed2bc49050995d2bd5f53ab716bb15ac84d58c6ef74
   languageName: node
   linkType: hard
 

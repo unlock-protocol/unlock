@@ -13,13 +13,13 @@
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.22.2",
-    "@graphprotocol/graph-ts": "0.22.1",
+    "@graphprotocol/graph-cli": "0.23.1",
+    "@graphprotocol/graph-ts": "0.23.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "eslint": "8.1.0",
     "fs-extra": "10.0.0",
     "handlebars": "4.7.7",
-    "lint-staged": "11.1.2",
+    "lint-staged": "11.2.6",
     "yargs": "17.2.1"
   },
   "lint-staged": {
