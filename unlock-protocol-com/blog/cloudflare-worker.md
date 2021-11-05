@@ -51,7 +51,7 @@ Let's start with a bit of boilerplate configuration.
 ```javascript
 // Cloudflare even has its own Ethereum Gateway!
 // See https://www.cloudflare.com/distributed-web-gateway/#ethereum-gateway
-const readOnlyProvider = 'https://cloudflare-eth.com/'
+const provider = 'https://cloudflare-eth.com/'
 
 // This is used for "optimistic" unlocking: a service which ensures
 // that "pending" transactions are still taken into account to unlock
@@ -112,7 +112,7 @@ async function handleRequest(request) {
       cookies.unlockAccount,
       unlockConfig,
       {
-        readOnlyProvider,
+        provider,
         locksmithUri,
       }
     )
