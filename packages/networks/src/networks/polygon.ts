@@ -25,6 +25,7 @@ export const polygon: NetworkConfig = {
         symbol: 'MATIC',
         decimals: 18,
     },
+    startBlock: 15714206,
 }
 
 export default polygon

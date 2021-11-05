@@ -24,5 +24,6 @@ export const xdai: NetworkConfig = {
         symbol: 'xDai',
         decimals: 18,
     },
+    startBlock: 14521200,
 }
 export default xdai

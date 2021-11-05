@@ -25,7 +25,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "ethers": "5.4.7"
+    "ethers": "5.5.1"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -34,22 +34,23 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.15.7",
-    "@babel/core": "7.15.8",
-    "@babel/preset-env": "7.15.8",
+    "@babel/cli": "7.16.0",
+    "@babel/core": "7.16.0",
+    "@babel/preset-env": "7.16.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "babel-jest": "27.2.4",
-    "eslint": "7.32.0",
-    "ethers": "5.4.7",
-    "jest": "27.2.4",
-    "lint-staged": "11.1.2",
+    "babel-jest": "27.3.1",
+    "eslint": "8.1.0",
+    "ethers": "5.5.1",
+    "jest": "27.3.1",
+    "lint-staged": "11.2.6",
     "prettier": "2.4.1",
-    "ts-jest": "27.0.5",
-    "typescript": "4.4.3"
+    "ts-jest": "27.0.7",
+    "typescript": "4.4.4"
   },
   "dependencies": {
+    "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks"
   }
 }

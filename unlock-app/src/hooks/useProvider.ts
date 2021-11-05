@@ -84,7 +84,7 @@ export const useProvider = (config: any) => {
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
         setError(
-          'Unlock is currently not deployed on this network. Please switch network and refresh the page'
+          `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
         )
       } else {
         setError(error.message)
@@ -109,7 +109,6 @@ export const useProvider = (config: any) => {
           return
         }
       }
-
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
       if (provider.on) {
@@ -141,7 +140,7 @@ export const useProvider = (config: any) => {
     setEmail('')
     setEncryptedPrivateKey(null)
     try {
-      await provider.provider.disconnect()
+      await provider.provider.close()
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
@@ -153,27 +152,46 @@ export const useProvider = (config: any) => {
   }
 
   const changeNetwork = async (network: any) => {
-    // Let's behave differently based on the provider?
     if (provider.isUnlock) {
-      // We need to reconnect!
       const newProvider = UnlockProvider.reconnect(provider, network)
       resetProvider(newProvider)
     } else {
-      // Check if network can be changed
       try {
-        await provider.send('wallet_addEthereumChain', [
-          {
-            chainId: `0x${network.id.toString(16)}`,
-            chainName: network.name,
-            rpcUrls: [network.provider],
-            nativeCurrency: network.nativeCurrency,
-          },
-          account,
-        ])
-      } catch (error) {
-        window.alert(
-          'Network could not be changed. Please change it from your wallet.'
+        await provider.send(
+          'wallet_switchEthereumChain',
+          [
+            {
+              chainId: `0x${network.id.toString(16)}`,
+            },
+          ],
+          account
         )
+      } catch (switchError: any) {
+        // This error code indicates that the chain has not been added to the provider yet.
+        if (switchError.code === 4902) {
+          try {
+            await provider.send(
+              'wallet_addEthereumChain',
+              [
+                {
+                  chainId: `0x${network.id.toString(16)}`,
+                  chainName: network.name,
+                  rpcUrls: [network.provider],
+                  nativeCurrency: network.nativeCurrency,
+                },
+              ],
+              account
+            )
+          } catch (addError) {
+            window.alert(
+              'Network could not be added. Please try manually adding it to your wallet'
+            )
+          }
+        } else {
+          window.alert(
+            'Network could not be changed. Please change it from your wallet.'
+          )
+        }
       }
     }
   }
