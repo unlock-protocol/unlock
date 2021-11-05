@@ -4,6 +4,9 @@ module.exports = {
   ...base,
   setupFiles: ['<rootDir>/.jest/env.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
   coverageThreshold: {
     global: {
       branches: 54,
