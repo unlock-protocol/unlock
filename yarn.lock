@@ -10390,7 +10390,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
+"@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:^, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
   dependencies:
@@ -10420,6 +10420,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/jest-config@workspace:^, @unlock-protocol/jest-config@workspace:packages/jest-config":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/jest-config@workspace:packages/jest-config"
+  dependencies:
+    glob: ^7.2.0
+    ts-jest: ^27.0.7
+  peerDependencies:
+    jest: 27.3.1
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/locksmith@workspace:locksmith":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
@@ -10440,7 +10451,8 @@ __metadata:
     "@types/sequelize": 4.28.10
     "@types/stripe": 8.0.416
     "@types/supertest": 2.0.11
-    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/eslint-config": "workspace:^"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
@@ -10517,6 +10529,7 @@ __metadata:
     "@testing-library/react-hooks": 7.0.2
     "@types/node": 16.11.6
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     axios: 0.24.0
     babel-jest: 27.3.1
     dotenv: 10.0.0
@@ -10580,6 +10593,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/postmate": 1.5.2
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
@@ -10818,6 +10832,7 @@ __metadata:
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.15
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
@@ -10932,6 +10947,7 @@ __metadata:
     "@babel/preset-env": 7.16.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: 27.3.1
@@ -10960,6 +10976,7 @@ __metadata:
     "@types/react": 17.0.33
     "@types/styled-components": 5.1.15
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/unlock-assets": 1.4.6
     "@zeit/next-source-maps": 0.0.3
@@ -23467,7 +23484,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.0.3, glob@npm:^7.0.5, glob@npm:^7.1.7":
+"glob@npm:^7.0.3, glob@npm:^7.0.5, glob@npm:^7.1.7, glob@npm:^7.2.0":
   version: 7.2.0
   resolution: "glob@npm:7.2.0"
   dependencies:
@@ -41040,7 +41057,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:27.0.7":
+"ts-jest@npm:27.0.7, ts-jest@npm:^27.0.7":
   version: 27.0.7
   resolution: "ts-jest@npm:27.0.7"
   dependencies:
