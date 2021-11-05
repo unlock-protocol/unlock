@@ -12,9 +12,11 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 contract('UnlockDiscountToken on mainnet', async () => {
   let udt
   const chainId = 1 // mainnet
-  const unlockAddress = getProxyAddress(chainId, 'Unlock')
+  let unlockAddress
 
   beforeEach(async function setupMainnetForkTestEnv() {
+    unlockAddress = getProxyAddress(chainId, 'Unlock')
+
     if (!process.env.RUN_MAINNET_FORK) {
       // all suite will be skipped
       this.skip()
