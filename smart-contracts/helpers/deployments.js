@@ -1,7 +1,15 @@
 const fs = require('fs-extra')
 const path = require('path')
 
+const { Manifest } = require('@openzeppelin/upgrades-core')
 const { getNetworkName } = require('./network')
+const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
+
+const getProxyData = async ({ networkName, contractName }) => {
+  const { proxies } = OZ_SDK_EXPORT.networks[networkName]
+  const [proxy] = proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
+  return proxy
+}
 
 const deploymentsPath = path.resolve(__dirname, '../deployments')
 
@@ -77,11 +85,61 @@ const addDeployment = async (contractName, instance, isProxy) => {
 }
 
 const getDeployment = (chainId, contractName) => {
+  // get ABI etc
   const deploymentFilePath = getDeploymentsFilePath(chainId, contractName)
-  return fs.readJsonSync(deploymentFilePath)
+  const { abi, address, implementationAddress } =
+    fs.readJsonSync(deploymentFilePath)
+
+  const networkName = process.env.RUN_MAINNET_FORK
+    ? 'mainnet'
+    : getNetworkName(chainId)
+
+  const deployment = {
+    contractName,
+    abi,
+    address,
+    implementation: implementationAddress,
+  }
+
+  // support all networks
+  if (networkName !== 'localhost') {
+    const {
+      address: networkAddress,
+      implementation: networkImplementationAddress,
+    } = getProxyData(chainId, contractName)
+
+    deployment.address = networkAddress
+    deployment.implementation = networkImplementationAddress
+  }
+
+  console.log(deployment)
+  return deployment
+}
+
+const getProxyAddress = function getProxyAddress(chainId, contractName) {
+  const { address } = getDeployment(chainId, `${contractName}`)
+  if (!address) {
+    throw new Error(
+      `The proxy address for ${contractName} was not found in the network manifest (chainId: ${chainId})`
+    )
+  }
+  return address
+}
+
+const getProxyAdminAddress = async ({ network }) => {
+  // get proxy admin address from OZ manifest
+  const manifest = await Manifest.forNetwork(network.provider)
+  const manifestAdmin = await manifest.getAdmin()
+  const proxyAdminAddress = manifestAdmin.address
+  if (proxyAdminAddress === undefined) {
+    throw new Error('No ProxyAdmin was found in the network manifest')
+  }
+  return proxyAdminAddress
 }
 
 module.exports = {
+  getProxyAdminAddress,
+  getProxyAddress,
   addDeployment,
   getDeployment,
 }

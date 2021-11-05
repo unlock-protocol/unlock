@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const { time } = require('@openzeppelin/test-helpers')
-const { getProxyAddress } = require('../../helpers/proxy')
+const { getProxyAddress } = require('../../helpers/deployments')
 
 const { resetNodeState, impersonate } = require('../helpers/mainnet')
 const { errorMessages } = require('../helpers/constants')
