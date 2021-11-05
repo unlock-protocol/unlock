@@ -5,12 +5,6 @@ const { Manifest } = require('@openzeppelin/upgrades-core')
 const { getNetworkName } = require('./network')
 const OZ_SDK_EXPORT = require('../openzeppelin-cli-export.json')
 
-const getProxyData = async ({ networkName, contractName }) => {
-  const { proxies } = OZ_SDK_EXPORT.networks[networkName]
-  const [proxy] = proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
-  return proxy
-}
-
 const deploymentsPath = path.resolve(__dirname, '../deployments')
 
 const getDeploymentsFolder = (chainId) => {
@@ -103,17 +97,18 @@ const getDeployment = (chainId, contractName) => {
 
   // support all networks
   if (networkName !== 'localhost') {
-    const {
-      address: networkAddress,
-      implementation: networkImplementationAddress,
-    } = getProxyData(chainId, contractName)
-
-    deployment.address = networkAddress
-    deployment.implementation = networkImplementationAddress
+    const proxy = getProxyData({ networkName, contractName })
+    deployment.address = proxy.address
+    deployment.implementation = proxy.implementation
   }
 
-  console.log(deployment)
   return deployment
+}
+
+const getProxyData = ({ networkName, contractName }) => {
+  const { proxies } = OZ_SDK_EXPORT.networks[networkName]
+  const [proxy] = proxies[`unlock-protocol/${contractName.replace('V2', '')}`]
+  return proxy
 }
 
 const getProxyAddress = function getProxyAddress(chainId, contractName) {
