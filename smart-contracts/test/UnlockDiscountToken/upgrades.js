@@ -3,7 +3,7 @@ const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades } = require('hardhat')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 
-const { getProxyAddress } = require('../../helpers/proxy')
+const { getProxyAddress } = require('../../helpers/deployments')
 const Locks = require('../fixtures/locks')
 
 const estimateGas = 252166 * 2

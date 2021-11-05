@@ -1,4 +1,4 @@
-const { getProxyAddress } = require('../../helpers/proxy.js')
+const { getProxyAddress } = require('../../helpers/deployments.js')
 
 module.exports = async function getProxy(contractArtifact) {
   const chainId = await web3.eth.net.getId()

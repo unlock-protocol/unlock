@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const { addDeployment } = require('../../helpers/deployments')
 
 async function main() {
   const PublicLock = await ethers.getContractFactory('PublicLock')
@@ -13,6 +14,10 @@ async function main() {
   console.log(
     'PUBLIC LOCK > Please verify it and call `npx hardhat set template` on the Unlock.'
   )
+
+  // save deployment info
+  await addDeployment('Unlock', publicLock, false)
+
   return publicLock.address
 }
 

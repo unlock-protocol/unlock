@@ -1,4 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
+const { addDeployment } = require('../../helpers/deployments')
 
 async function main() {
   const [deployer] = await ethers.getSigners()
@@ -13,6 +14,9 @@ async function main() {
   console.log(
     `UNLOCK SETUP > Unlock (w proxy) deployed to: ${unlock.address} (tx: ${unlock.deployTransaction.hash})`
   )
+
+  // save deployment info
+  await addDeployment('Unlock', unlock, true)
 
   return unlock.address
 }

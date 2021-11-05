@@ -1,6 +1,9 @@
 const { task } = require('hardhat/config')
 const { getNetworkName } = require('../helpers/network')
-const { getProxyAddress, getProxyAdminAddress } = require('../helpers/proxy')
+const {
+  getProxyAddress,
+  getProxyAdminAddress,
+} = require('../helpers/deployments')
 
 const getDeploymentInfo = async ({ ethers, contract }) => {
   const contractName = contract.replace('contracts/', '').replace('.sol', '')

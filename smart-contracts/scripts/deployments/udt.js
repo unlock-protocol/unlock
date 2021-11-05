@@ -1,4 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
+const { addDeployment } = require('../../helpers/deployments')
 
 async function main() {
   const [, minter] = await ethers.getSigners()
@@ -13,6 +14,9 @@ async function main() {
   console.log(
     `UDT SETUP > UDTv2 (w proxy) deployed to: ${udt.address} (tx: ${udt.deployTransaction.hash})`
   )
+
+  // save deployment info
+  await addDeployment('UnlockDiscountTokenV2', udt, true)
 
   return udt.address
 }

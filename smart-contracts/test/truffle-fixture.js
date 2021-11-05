@@ -58,4 +58,12 @@ module.exports = async () => {
 
   // save deployment info
   await addDeployment('UnlockDiscountTokenV2', tokenv2, true)
+
+  // 5. deploy Gov
+  const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
+  const gov = await Governor.deploy()
+  await gov.deployed()
+
+  // save deployment info
+  await addDeployment('UnlockProtocolGovernor', gov, true)
 }

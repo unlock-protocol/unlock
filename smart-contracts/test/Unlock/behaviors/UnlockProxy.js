@@ -1,5 +1,5 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
-const { getProxyAddress } = require('../../../helpers/proxy.js')
+const { getProxyAddress } = require('../../../helpers/deployments.js')
 
 const shared = require('./shared')
 
