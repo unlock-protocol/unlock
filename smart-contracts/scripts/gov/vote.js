@@ -54,6 +54,7 @@ async function main({ voter, proposalId, authority }) {
         // eslint-disable-next-line no-console
         console.log('GOV VOTE (dev) > delegated quorum to voter')
       }
+      await time.advanceBlock()
     }
   }
 
