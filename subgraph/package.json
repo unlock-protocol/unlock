@@ -7,8 +7,6 @@
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
     "codegen": "graph codegen",
     "build": "node ./bin/build",
-    "create": "node ./bin/create",
-    "remove": "node ./bin/remove",
     "deploy": "node ./bin/deploy",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },

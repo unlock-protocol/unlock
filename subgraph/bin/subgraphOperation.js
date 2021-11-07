@@ -77,7 +77,7 @@ const networkMap = {
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',
     },
-    binance: {
+    bsc: {
       subgraph: 'unlock-protocol/bsc',
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',

@@ -1,6 +1,6 @@
 import { NetworkConfig } from '../types';
 
-export const binance: NetworkConfig = {
+export const bsc: NetworkConfig = {
     provider:
         'https://bsc-dataseed.binance.org/',
     unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
@@ -25,7 +25,7 @@ export const binance: NetworkConfig = {
         symbol: 'BNB',
         decimals: 18,
     },
-    startBlock: 12368889,
+    startBlock: 12396000, // 12368889,
 }
 
-export default binance
+export default bsc
