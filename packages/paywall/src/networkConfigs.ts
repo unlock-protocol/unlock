@@ -8,7 +8,7 @@ Object.keys(networks)
   .forEach((chainId: number) => {
     const { provider } = networks[chainId as number]
 
-    networkConfigs[chainId] = {
+    networkConfigs[chainId as number] = {
       provider,
     }
   })
