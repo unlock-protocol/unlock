@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-const */
-import { BigInt, Bytes, Address } from '@graphprotocol/graph-ts'
+import { BigInt, Bytes, Address, log } from '@graphprotocol/graph-ts'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock as PublicLock7 } from '../generated/templates/PublicLock7/PublicLock'
-import { Lock, LockManager } from '../generated/schema'
+import { Lock, LockManager, Lock } from '../generated/schema'
 import {
   PublicLock as PublicLockTemplate,
   PublicLock7 as PublicLockTemplate7,
@@ -21,7 +21,6 @@ function addInitialLockManager(lockAddress: Bytes, manager: Bytes): void {
 
 function bootstrapLock(publicLock: PublicLock): Lock {
   let version = publicLock.try_publicLockVersion()
-
   let lock = new Lock(publicLock._address.toHexString())
   if (!version.reverted) {
     lock.version = BigInt.fromI32(version.value)
@@ -101,6 +100,7 @@ function processPreV7(event: NewLock, lock: Lock): void {
 export function processNewLock(event: NewLock): void {
   let lockAddress = event.params.newLockAddress
   let chainPublicLock = PublicLock.bind(lockAddress)
+
   let lock = bootstrapLock(chainPublicLock)
 
   if (lock.version >= BigInt.fromI32(7)) {
