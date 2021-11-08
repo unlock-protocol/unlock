@@ -6,9 +6,9 @@ export const networkConfigs: NetworkConfigs = {}
 Object.keys(networks)
   .map(Number)
   .forEach((chainId: number) => {
-    const { readOnlyProvider, provider } = networks[chainId as number]
+    const { provider } = networks[chainId as number]
 
-    networkConfigs[chainId] = {
-      readOnlyProvider: readOnlyProvider || provider,
+    networkConfigs[chainId as number] = {
+      provider,
     }
   })

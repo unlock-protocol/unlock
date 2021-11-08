@@ -104,7 +104,7 @@ jobs:
 
   deploy-locksmith-beanstalk:
     docker:
-      - image: circleci/python:3.9.7
+      - image: circleci/python:3.10.0
     environment:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain

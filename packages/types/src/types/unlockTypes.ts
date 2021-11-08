@@ -24,7 +24,7 @@ export enum TransactionStatus {
 /* eslint-enable no-unused-vars */
 
 interface NetworkConfig {
-  readOnlyProvider: string
+  provider: string
   locksmithUri?: string
   unlockAppUrl?: string
 }

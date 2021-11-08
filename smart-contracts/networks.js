@@ -48,4 +48,9 @@ module.exports = {
     url: 'https://arb1.arbitrum.io/rpc',
     name: 'arbitrum',
   },
+  binance: {
+    chainId: 56,
+    url: 'https://bsc-dataseed.binance.org/',
+    name: 'binance',
+  },
 }

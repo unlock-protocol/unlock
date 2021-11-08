@@ -14,7 +14,7 @@ dataSources:
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - NewLock
@@ -45,7 +45,7 @@ templates:
       abi: PublicLock
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - PublicLock
@@ -75,7 +75,7 @@ templates:
       abi: PublicLock
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.3
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - PublicLock7
