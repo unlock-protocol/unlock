@@ -42,6 +42,5 @@ With `subgraph.yaml` created, we should generate the associated code with the fo
 
 These command require the passing of the following command line arguments `--network` & `--environment`.
 
-* `yarn create` - Allows for the creation of the subgraph
-* `yarn remove` - Removes the subgraph from the graph node
-* `yarn deploy` - Deploy the latest subgraph code to the graph node
+* `yarn run deploy` - Deploy the latest subgraph code to the graph node
+

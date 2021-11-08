@@ -61,11 +61,8 @@ const generate = async (generationValues) => {
   await fs.writeFile(path.join(__dirname, '..', 'subgraph.yaml'), result)
 }
 
-let generationValues
-if (argv.network) {
-  generationValues = templateValues(argv.network)
-} else {
-  generationValues = templateValues('winston')
-}
+const network = argv.network || 'winston'
+
+const generationValues = templateValues(network)
 
 generate(generationValues)
