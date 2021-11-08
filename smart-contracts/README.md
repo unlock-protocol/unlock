@@ -79,6 +79,17 @@ npx hardhat run scripts/udt-upgrade.js --network rinkeby
 
 ## Upgrade a contract
 
+### Prepare and test the new contract on a mainnet node
+
+```
+# setup credentials
+export RUN_MAINNET_FORK=1
+export ALCHEMY_API_KEY=<xxx>
+
+# run the tests
+yarn test test/mainnet/udt.js
+```
+
 ### Unlock
 
 ```
@@ -161,7 +172,45 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 > Governor deployed (w proxy) at: 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
 > Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true
 > Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false
-````
+```
+
+### Make a DAO proposal
+
+1. First, create a file in the `proposals` folder to descibe the proposal itself. The file needs to export the following:
+
+```js
+{
+  contractName, // the contract - ex. UnlockDiscountTokenV2
+  functionName, // the function to be executed - ex. 'transfer'
+  functionArgs, // args of the function - ex. [ 0x000, 10000 ]
+  proposalName, // ex 'wire Worpdress plugin grant`
+  proposerAddress // the proposer (you)
+}
+```
+
+check [`./proposals/000-example.js`](./proposals/000-example.js) for an example.
+
+2. Test you proposal locally
+
+```
+# start a node
+yarn hardhat node
+
+# from a 2nd terminal, deploy contracts and governor
+yarn hardhat deploy --network localhost
+yarn hardhat deploy:governor --network localhost
+
+# test your proposal
+yarn hardhat gov --proposal proposals/<your-proposal>.js --network localhost
+```
+
+3. When things are ready, post it ot the DAO!
+
+```
+yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainnet
+```
+
+4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
 
 ## Release a new version of a contract
 

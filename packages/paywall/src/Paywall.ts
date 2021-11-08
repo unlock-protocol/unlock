@@ -175,11 +175,15 @@ export class Paywall {
   }
 
   handleTransactionInfoEvent = async ({ hash, lock }: TransactionInfo) => {
-    const { readOnlyProvider } = this.networkConfigs[this.paywallConfig.network]
+    const network =
+      this.paywallConfig.locks[lock]?.network || this.paywallConfig.network
+
+    const { provider } =
+      this.networkConfigs[network.toString()] || this.networkConfigs[network]
     dispatchEvent(unlockEvents.transactionSent, { hash, lock })
     if (!this.paywallConfig.pessimistic) {
       const optimistic = await willUnlock(
-        readOnlyProvider,
+        provider,
         this.userAccountAddress!,
         lock,
         hash,

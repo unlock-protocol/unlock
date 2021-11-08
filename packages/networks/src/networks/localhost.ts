@@ -1,7 +1,7 @@
 import { NetworkConfig } from '../types';
 
 export const localhost : NetworkConfig = {
-    id: 31117,
+    id: 31337,
     name: 'localhost',
     provider: 'http://127.0.0.1:8545',
     locksmithUri: 'http://127.0.0.1:8080',

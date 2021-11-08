@@ -77,7 +77,8 @@ require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
 require('./tasks/release')
-// require('./tasks/mainnet-tests')
+require('./tasks/gov')
+require('./tasks/utils')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -105,5 +106,8 @@ module.exports = {
       { version: '0.8.2', settings },
       { version: '0.8.4', settings },
     ],
+  },
+  mocha: {
+    timeout: 2000000,
   },
 }

@@ -20,9 +20,9 @@ export const isUnlocked = async (
     Object.entries(paywallConfig.locks).map(async ([lockAddress]) => {
       const network =
         paywallConfig.locks[lockAddress].network || paywallConfig.network
-      const { readOnlyProvider } = networks[network]
+      const { provider } = networks[network]
       const timestamp = await keyExpirationTimestampFor(
-        readOnlyProvider,
+        provider,
         lockAddress,
         userAccountAddress!
       )
@@ -31,7 +31,7 @@ export const isUnlocked = async (
         unlockedLocks.push(lockAddress)
       } else if (!paywallConfig.pessimistic) {
         const optimistic = await optimisticUnlocking(
-          readOnlyProvider,
+          provider,
           locksmithUri,
           [lockAddress],
           userAccountAddress!

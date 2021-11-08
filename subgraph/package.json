@@ -7,20 +7,19 @@
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
     "codegen": "graph codegen",
     "build": "node ./bin/build",
-    "create": "node ./bin/create",
-    "remove": "node ./bin/remove",
     "deploy": "node ./bin/deploy",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.22.2",
-    "@graphprotocol/graph-ts": "0.22.1",
+    "@graphprotocol/graph-cli": "0.21.1",
+    "@graphprotocol/graph-ts": "0.20.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "7.32.0",
+    "@unlock-protocol/networks": "workspace:^",
+    "eslint": "8.1.0",
     "fs-extra": "10.0.0",
     "handlebars": "4.7.7",
     "lint-staged": "11.1.2",
-    "yargs": "17.2.1"
+    "yargs": "17.1.1"
   },
   "lint-staged": {
     ".{js,ts,tsx}": [
