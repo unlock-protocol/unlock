@@ -1,4 +1,4 @@
-import React, { useState, useContext, useReducer } from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -12,7 +12,8 @@ import CheckoutContainer from './CheckoutContainer'
 import { Locks } from './Locks'
 import { CallToAction } from './CallToAction'
 import Loading from '../Loading'
-import WalletPicker from './WalletPicker'
+import LoginPrompt from '../LoginPrompt'
+
 import CheckoutMethod from './CheckoutMethod'
 import CryptoCheckout from './CryptoCheckout'
 import CardCheckout from './CardCheckout'
@@ -27,18 +28,26 @@ import {
   UserInfo,
   TransactionInfo,
 } from '../../../hooks/useCheckoutCommunication'
-import { PaywallConfigContext } from '../../../contexts/PaywallConfigContext'
 import { AuthenticationContext } from '../Authenticate'
+import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
+import { OAuthConnect } from './OauthConnect'
 
 interface CheckoutProps {
-  emitCloseModal: () => void
+  emitCloseModal: (success: boolean) => void
   emitTransactionInfo: (info: TransactionInfo) => void
   emitUserInfo: (info: UserInfo) => void
   web3Provider: any
+  paywallConfig?: PaywallConfig
+  oAuthConfig?: OAuthConfig
+  redirectUri?: string
+  defaultState: string
 }
 
 const keysReducer = (state: any, key: any) => {
   // Keeps track of all the keys, by lock
+  if (key === -1) {
+    return {}
+  }
   return {
     ...state,
     [key.lock]: key,
@@ -69,29 +78,45 @@ const hasExpiredMembership = (keys: Array<any>) => {
 }
 
 export const Checkout = ({
+  oAuthConfig,
+  redirectUri,
+  paywallConfig,
   emitCloseModal,
   emitTransactionInfo,
   emitUserInfo,
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
+  defaultState,
 }: CheckoutProps) => {
-  const { authenticate, account, isUnlockAccount } = useContext(
+  const { authenticate, account, isUnlockAccount, signedMessage } = useContext(
     AuthenticationContext
   )
-  const paywallConfig = useContext(PaywallConfigContext)
+  const [skipPaywallIcon, setSkipPaywallIcon] = useState(false)
   const config = useContext(ConfigContext)
-  const [state, setState] = useState('')
+  const [state, setState] = useState('loading')
   const [showBack, setShowBack] = useState(false)
   const [cardDetails, setCardDetails] = useState(null)
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
 
-  if (!paywallConfig || !config) {
-    return <Loading />
-  }
+  // state change
+  useEffect(() => {
+    setState(defaultState)
+  }, [defaultState])
 
-  const requiredNetwork = paywallConfig.network
-  const allowClose = !(!paywallConfig || paywallConfig.persistentCheckout)
+  // When the account is changed, make sure we ping!
+  useEffect(() => {
+    if (account) {
+      setHasKey(-1)
+      emitUserInfo({
+        address: account,
+        signedMessage,
+      })
+    }
+  }, [account])
+
+  const allowClose = !(!paywallConfig || paywallConfig?.persistentCheckout)
+
   const handleTransactionInfo = (info: any) => {
     emitTransactionInfo(info)
   }
@@ -106,18 +131,17 @@ export const Checkout = ({
   }
 
   const onProvider = async (provider: any) => {
-    const { account } = await authenticate(provider)
-    emitUserInfo({
-      address: account,
-    })
-    if (selectedLock) {
-      if (!provider.isUnlock) {
-        setCheckoutState('crypto-checkout')
+    const result = await authenticate(provider, paywallConfig?.messageToSign)
+    if (result) {
+      if (selectedLock) {
+        if (!provider.isUnlock) {
+          setCheckoutState('crypto-checkout')
+        } else {
+          cardCheckoutOrClaim(selectedLock)
+        }
       } else {
-        cardCheckoutOrClaim(selectedLock)
+        setCheckoutState(defaultState)
       }
-    } else {
-      setCheckoutState('')
     }
   }
 
@@ -133,12 +157,30 @@ export const Checkout = ({
     paywallCta = 'expired'
   }
 
-  const connectWallet = () => {
-    setCheckoutState('wallet-picker')
+  const closeModal = (
+    success: boolean,
+    redirectUri?: string,
+    queryParams?: any
+  ) => {
+    emitCloseModal(success)
+    if (redirectUri) {
+      const redirectUrl = new URL(redirectUri)
+      if (!success) {
+        redirectUrl.searchParams.append('error', 'access-denied')
+      }
+      if (queryParams) {
+        for (const key in queryParams) {
+          if (queryParams[key] !== undefined && queryParams[key] !== null) {
+            redirectUrl.searchParams.append(key, queryParams[key])
+          }
+        }
+      }
+      window.location.href = redirectUrl.toString()
+    }
   }
 
   const cardCheckoutOrClaim = (lock: any) => {
-    if (lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled) {
+    if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
       setCheckoutState('claim-membership')
     } else {
       setCheckoutState('card-purchase')
@@ -157,33 +199,38 @@ export const Checkout = ({
       cardCheckoutOrClaim(lock)
     }
   }
-  const lockProps = selectedLock && paywallConfig.locks[selectedLock.address]
+
+  const lockProps = selectedLock && paywallConfig?.locks[selectedLock.address]
+
   if (state === 'login') {
     content = (
       <LogIn
         network={1} // We don't actually need a network here really.
         embedded
         onProvider={onProvider}
+        useWallet={() => setCheckoutState('wallet-picker')}
       />
     )
   } else if (state === 'wallet-picker') {
     content = (
-      <WalletPicker
+      <LoginPrompt
+        embedded
+        showTitle={false}
+        unlockUserAccount={false}
         injectedProvider={web3Provider}
-        onProvider={(provider) => {
-          if (selectedLock) {
-            setCheckoutState('crypto-checkout')
-          }
-          onProvider(provider)
-        }}
-      />
+        backgroundColor="var(--white)"
+        activeColor="var(--offwhite)"
+        onProvider={onProvider}
+      >
+        <p>Select your crypto wallet of choice.</p>
+      </LoginPrompt>
     )
   } else if (state === 'crypto-checkout') {
     // Final step for the crypto checkout. We should save the metadata first!
-    if (paywallConfig.metadataInputs && !savedMetadata) {
+    if (paywallConfig?.metadataInputs && !savedMetadata) {
       content = (
         <MetadataForm
-          network={lockProps?.network || requiredNetwork}
+          network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
@@ -193,11 +240,12 @@ export const Checkout = ({
       content = (
         <CryptoCheckout
           paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           emitTransactionInfo={handleTransactionInfo}
-          network={lockProps?.network || requiredNetwork}
+          network={lockProps?.network || paywallConfig?.network}
           name={lockProps?.name || ''}
           lock={selectedLock}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
         />
       )
@@ -209,14 +257,14 @@ export const Checkout = ({
           setCardDetails({ card, token })
           setCheckoutState('confirm-card-purchase')
         }}
-        network={lockProps?.network || requiredNetwork}
+        network={lockProps?.network || paywallConfig?.network}
       />
     )
   } else if (state === 'claim-membership') {
-    if (paywallConfig.metadataInputs && !savedMetadata) {
+    if (paywallConfig?.metadataInputs && !savedMetadata) {
       content = (
         <MetadataForm
-          network={lockProps?.network || requiredNetwork}
+          network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
@@ -225,20 +273,22 @@ export const Checkout = ({
     } else {
       content = (
         <ClaimMembershipCheckout
+          paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
-          network={lockProps?.network || requiredNetwork}
+          network={lockProps?.network || paywallConfig?.network}
           name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           {...cardDetails}
         />
       )
     }
   } else if (state === 'confirm-card-purchase') {
-    if (paywallConfig.metadataInputs && !savedMetadata) {
+    if (paywallConfig?.metadataInputs && !savedMetadata) {
       content = (
         <MetadataForm
-          network={lockProps?.network || requiredNetwork}
+          network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
@@ -247,11 +297,13 @@ export const Checkout = ({
     } else {
       content = (
         <CardConfirmationCheckout
+          paywallConfig={paywallConfig}
+          redirectUri={redirectUri}
           emitTransactionInfo={handleTransactionInfo}
           lock={selectedLock}
-          network={lockProps?.network || requiredNetwork}
+          network={lockProps?.network || paywallConfig?.network}
           name={lockProps?.name || ''}
-          emitCloseModal={emitCloseModal}
+          closeModal={closeModal}
           {...cardDetails}
         />
       )
@@ -261,7 +313,7 @@ export const Checkout = ({
       <NewAccountCheckout
         askForCard
         showLogin={() => setCheckoutState('login')}
-        network={lockProps?.network || requiredNetwork}
+        network={lockProps?.network || paywallConfig?.network}
         onAccountCreated={async (unlockProvider, { card, token }) => {
           setCardDetails({ card, token })
           await onProvider(unlockProvider)
@@ -274,10 +326,10 @@ export const Checkout = ({
       <NewAccountCheckout
         askForCard={false}
         showLogin={() => setCheckoutState('login')}
-        network={lockProps?.network || requiredNetwork}
+        network={lockProps?.network || paywallConfig?.network}
         onAccountCreated={async (unlockProvider) => {
           await onProvider(unlockProvider)
-          setCheckoutState('confirm-claim')
+          setCheckoutState('claim-membership')
         }}
       />
     )
@@ -293,16 +345,16 @@ export const Checkout = ({
         onNewAccountSelected={() => setCheckoutState('new-account')}
       />
     )
-  } else {
+  } else if (state === 'pick-lock') {
     content = (
       <>
         <CallToAction
           state={paywallCta}
-          callToAction={paywallConfig.callToAction}
+          callToAction={paywallConfig?.callToAction}
         />
         <Locks
-          network={requiredNetwork}
-          locks={paywallConfig.locks}
+          network={paywallConfig?.network}
+          locks={paywallConfig?.locks}
           setHasKey={setHasKey}
           onSelected={onSelected}
         />
@@ -315,7 +367,10 @@ export const Checkout = ({
               unlock acount
             </button>{' '}
             or your{' '}
-            <button type="button" onClick={connectWallet}>
+            <button
+              type="button"
+              onClick={() => setCheckoutState('wallet-picker')}
+            >
               crypto wallet
             </button>
             .
@@ -323,38 +378,59 @@ export const Checkout = ({
         )}
 
         {hasValidMembership(existingKeys) && (
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership
+            redirectUri={redirectUri}
+            closeModal={closeModal}
+          />
         )}
       </>
     )
+  } else if (state === 'connect') {
+    content = (
+      <OAuthConnect
+        redirectUri={redirectUri}
+        closeModal={closeModal}
+        oAuthConfig={oAuthConfig}
+      />
+    )
+  } else if (state === 'loading') {
+    // Maybe show an error if this is too long?
+    content = <Loading />
   }
 
   const onLoggedOut = () => {
+    setHasKey(-1) // Resets keys
     emitUserInfo({})
-    setCheckoutState('')
+    setCheckoutState(defaultState)
     selectLock(null)
     setShowBack(false)
   }
 
   const back = () => {
-    setCheckoutState('')
+    setCheckoutState(defaultState)
     selectLock(null)
     setShowBack(false)
   }
 
   return (
     <Web3ServiceContext.Provider value={web3Service}>
-      <CheckoutContainer close={emitCloseModal}>
+      <CheckoutContainer
+        close={() => allowClose && closeModal(false, redirectUri)}
+      >
         <CheckoutWrapper
           showBack={showBack}
           back={back}
           allowClose={allowClose}
-          hideCheckout={emitCloseModal}
+          hideCheckout={() => closeModal(false, redirectUri)}
           onLoggedOut={onLoggedOut}
         >
           <PaywallLogoWrapper>
-            {paywallConfig.icon ? (
-              <PublisherLogo alt="Publisher Icon" src={paywallConfig.icon} />
+            {paywallConfig?.icon && !skipPaywallIcon ? (
+              <PublisherLogo
+                alt="Publisher Icon"
+                src={paywallConfig?.icon}
+                onError={() => setSkipPaywallIcon(true)}
+              />
             ) : (
               <RoundedLogo size="56px" />
             )}
@@ -367,6 +443,12 @@ export const Checkout = ({
       </CheckoutContainer>
     </Web3ServiceContext.Provider>
   )
+}
+
+Checkout.defaultProps = {
+  redirectUri: null,
+  paywallConfig: null,
+  oAuthConfig: null,
 }
 
 const PaywallLogoWrapper = styled.div`

@@ -1,4 +1,5 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.5.17 <0.9.0;
 
 
 /**
@@ -26,7 +27,7 @@ interface IUnlock
     uint _maxNumberOfKeys,
     string calldata _lockName,
     bytes12 _salt
-  ) external;
+  ) external returns(address);
 
     /**
    * This function keeps track of the added GDP, as well as grants of discount tokens

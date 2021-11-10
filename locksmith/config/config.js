@@ -1,9 +1,7 @@
 const config = {
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  host: process.env.DB_HOSTNAME,
-  dialect: 'postgres',
+  database: {
+    dialect: 'postgres',
+  },
   stripeSecret: process.env.STRIPE_SECRET,
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
   unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
@@ -14,12 +12,26 @@ const config = {
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
   logging: false,
-  jaeger: {
-    serviceName: 'locksmith',
-    tags: [],
-    port: 6832,
-    maxPacketSize: 65000,
-  },
+}
+
+// Heroku sets DATABASE_URL
+if (process.env.DATABASE_URL) {
+  config.database.uri = process.env.DATABASE_URL
+  config.database.options = {
+    dialect: 'postgres',
+    ssl: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
+} else {
+  config.database.username = process.env.DB_USERNAME
+  config.database.password = process.env.DB_PASSWORD
+  config.database.database = process.env.DB_NAME
+  config.database.host = process.env.DB_HOSTNAME
 }
 
 module.exports = config

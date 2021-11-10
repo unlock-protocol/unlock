@@ -19,6 +19,10 @@ import {
   reEncryptPrivateKey,
 } from '../utils/accounts'
 
+interface ApiResponse {
+  url: string
+}
+
 export const getAccountTokenBalance = async (
   web3Service: any,
   accountAddress: string,
@@ -67,7 +71,11 @@ export const useAccount = (address: string, network: number) => {
 
     try {
       return (
-        await storageService.getStripeConnect(lockAddress, signature, typedData)
+        (await storageService.getStripeConnect(
+          lockAddress,
+          signature,
+          typedData
+        )) as ApiResponse
       ).url
     } catch (error) {
       return null
@@ -94,12 +102,13 @@ export const useAccount = (address: string, network: number) => {
         emailAddress,
         password
       )
+      // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
       recoveryKey = await reEncryptPrivateKey(
         passwordEncryptedPrivateKey,
         password,
         response.data.recoveryPhrase
       )
-    } catch (error) {
+    } catch (error: any) {
       const details = error?.response?.data[0]
       if (
         details?.validatorKey === 'not_unique' &&
@@ -176,9 +185,7 @@ export const useAccount = (address: string, network: number) => {
     metadata: any,
     network: number
   ) => {
-    // Here we need to generate the payload
     const payload = generateKeyHolderMetadataPayload(address, metadata)
-    // Then ask the user to sign a message!
     // TODO prevent replays by adding timestamp?
     const message = `I am signing the metadata for the lock at ${lockAddress}`
     const signature = await walletService.signMessage(message, 'personal_sign')
@@ -221,16 +228,12 @@ export const useAccount = (address: string, network: number) => {
       typedData
     )
 
-    try {
-      return await storageService.updateLockIcon(
-        lockAddress,
-        signature,
-        typedData,
-        icon
-      )
-    } catch (error) {
-      return null
-    }
+    return storageService.updateLockIcon(
+      lockAddress,
+      signature,
+      typedData,
+      icon
+    )
   }
 
   return {

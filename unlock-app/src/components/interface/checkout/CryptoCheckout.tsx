@@ -18,8 +18,9 @@ interface CryptoCheckoutProps {
   lock: any
   network: number
   name: string
-  emitCloseModal: () => void
+  closeModal: (success: boolean) => void
   setCardPurchase: () => void
+  redirectUri: string
 }
 
 export const CryptoCheckout = ({
@@ -28,16 +29,19 @@ export const CryptoCheckout = ({
   lock,
   network,
   name,
-  emitCloseModal,
+  closeModal,
   setCardPurchase,
+  redirectUri,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
+
   const {
     network: walletNetwork,
     account,
     changeNetwork,
   } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
+  const [transactionPending, setTransactionPending] = useState<string>('')
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
@@ -51,9 +55,10 @@ export const CryptoCheckout = ({
     userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
   const cardDisabled = hasValidkey || hasOptimisticKey
   const canClaimAirdrop =
-    lock.keyPrice === '0' && lock.fiatPricing.creditCardEnabled
+    lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled
   const isCreditCardEnabled =
     lock.fiatPricing?.creditCardEnabled && !canClaimAirdrop
+
   const handleHasKey = (key: any) => {
     setKeyExpiration(key.expiration)
   }
@@ -62,21 +67,38 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
-  const cryptoPurchase = () => {
+  const cryptoPurchase = async () => {
     if (!cryptoDisabled) {
       setPurchasePending(true)
-      const referrer =
-        paywallConfig && paywallConfig.referrer
-          ? paywallConfig.referrer
-          : account
-      purchaseKey(account, referrer, (hash: string) => {
-        emitTransactionInfo({
-          lock: lock.address,
-          hash,
+      try {
+        const referrer =
+          paywallConfig && paywallConfig.referrer
+            ? paywallConfig.referrer
+            : account
+
+        // TODO: handle failed transactions!!
+        await purchaseKey(account, referrer, (hash: string) => {
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
+          if (!paywallConfig.pessimistic) {
+            setKeyExpiration(Infinity) // Optimistic!
+            setPurchasePending(false)
+          } else {
+            setTransactionPending(hash)
+          }
         })
-        setKeyExpiration(Infinity) // Optimistic!
+        setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)
-      })
+        setTransactionPending(null)
+      } catch (error) {
+        if (error && error.code === 4001) {
+          // eslint-disable-next-line no-alert
+          alert('Please confirm the transaction in your wallet.')
+        }
+        setPurchasePending(false)
+      }
     }
   }
 
@@ -106,7 +128,7 @@ export const CryptoCheckout = ({
         purchasePending={purchasePending}
       />
 
-      {keyExpiration < now && (
+      {!transactionPending && keyExpiration < now && (
         <>
           <Prompt>Get your membership with</Prompt>
 
@@ -157,14 +179,35 @@ export const CryptoCheckout = ({
           </CheckoutOptions>
         </>
       )}
+      {transactionPending && (
+        <Message>
+          Waiting for your{' '}
+          <a
+            target="_blank"
+            href={networks[network].explorer.urls.transaction(
+              transactionPending
+            )}
+            rel="noreferrer"
+          >
+            NFT membership to be minted
+          </a>
+          ! This should take a few seconds :)
+        </Message>
+      )}
       {hasValidkey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+          <EnjoyYourMembership
+            redirectUri={redirectUri}
+            closeModal={closeModal}
+          />
         </>
       )}
       {hasOptimisticKey && (
-        <EnjoyYourMembership emitCloseModal={emitCloseModal} />
+        <EnjoyYourMembership
+          redirectUri={redirectUri}
+          closeModal={closeModal}
+        />
       )}
     </>
   )

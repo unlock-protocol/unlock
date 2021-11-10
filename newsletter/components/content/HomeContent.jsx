@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Head from 'next/head'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
-import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
 import { usePaywall } from '../../hooks/usePaywall'
 import configure from '../../config'
@@ -35,12 +34,13 @@ export default function HomeContent() {
   }
 
   const urlParams = new URLSearchParams(window.location.search)
-  const title = urlParams.get('title')
-  const description = urlParams.get('description')
+  const title = urlParams.get('title') || 'Join the newsletter'
+  const description =
+    urlParams.get('description') ||
+    'Unlock this newsletter by purchasing your own NFT membership!'
   const lockAddresses = urlParams.getAll('locks')
   // Let's now add the snippet!
-  const [lockState] = usePaywall(lockAddresses)
-  const [checkWallet, setCheckWallet] = useState(false)
+  usePaywall(lockAddresses)
 
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -77,44 +77,9 @@ export default function HomeContent() {
       </Head>
       <Title>{title}</Title>
 
-      {checkWallet && (
-        <Greyout>
-          <MessageBox>
-            <p>
-              Please check your browser&apos;s cryptocurrency wallet to sign
-              your email address!
-            </p>
-            <Dismiss onClick={() => setCheckWallet(false)}>Dismiss</Dismiss>
-          </MessageBox>
-        </Greyout>
-      )}
-
       <Grid>
         <Description>{description}</Description>
-
-        {lockState === 'loading' && (
-          <Loading message="Please check your crypto wallet..." />
-        )}
-        {lockState === 'unlocked' && (
-          <>
-            <Confirmed>You have successfuly subscribed! Thank you...</Confirmed>
-            <p>
-              Use your{' '}
-              <a
-                rel="noopener noreferrer"
-                target="_blank"
-                href={`${config.unlockAppUrl}/keychain`}
-              >
-                keychain to update your membership
-              </a>
-              !
-            </p>
-          </>
-        )}
-
-        {lockState === 'locked' && (
-          <EmailForm onSubmit={onSubmit} label="Join" />
-        )}
+        <EmailForm onSubmit={onSubmit} label="Join" />
       </Grid>
     </Layout>
   )
@@ -122,10 +87,6 @@ export default function HomeContent() {
 
 const Paragraph = styled.p`
   font-size: 20px;
-`
-
-const Confirmed = styled(Paragraph)`
-  color: var(--green);
 `
 
 const Form = styled.form`
@@ -177,50 +138,4 @@ const Title = styled.h1`
   grid-column: 1 3;
   color: var(--brand);
   padding: 0;
-`
-
-const Greyout = styled.div`
-  background: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: var(--alwaysontop);
-  & > * {
-    max-height: 100%;
-    overflow-y: scroll;
-  }
-`
-
-const MessageBox = styled.div`
-  background: var(--white);
-  min-width: 50%;
-  max-width: 98%;
-  border-radius: 4px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: var(--darkgrey);
-  font-size: 20px;
-`
-
-const Dismiss = styled.button`
-  height: 24px;
-  font-size: 20px;
-  font-family: Roboto, sans-serif;
-  text-align: center;
-  border: none;
-  background: none;
-  color: var(--grey);
-
-  &:hover {
-    color: var(--link);
-  }
 `

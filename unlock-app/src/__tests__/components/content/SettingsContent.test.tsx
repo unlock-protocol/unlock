@@ -6,7 +6,7 @@ import SettingsContent from '../../../components/content/SettingsContent'
 
 let useCardsMock: any
 
-jest.mock('../../../hooks/useCards.ts', () => {
+jest.doMock('../../../hooks/useCards.ts', () => {
   return {
     useCards: jest.fn(() => useCardsMock),
   }
@@ -14,7 +14,7 @@ jest.mock('../../../hooks/useCards.ts', () => {
 
 let useProviderMock: any
 
-jest.mock('../../../hooks/useProvider.ts', () => {
+jest.doMock('../../../hooks/useProvider.ts', () => {
   return {
     useProvider: jest.fn(() => useProviderMock),
   }

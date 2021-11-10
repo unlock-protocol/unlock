@@ -250,7 +250,7 @@ contract('keyPurchaser', accounts => {
       })
 
       // Make first purchase
-      await dai.approve(keyPurchaser.address, -1, { from: endUser })
+      await dai.approve(keyPurchaser.address, constants.MAX_UINT, { from: endUser })
       await keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
         from: otherAccount,
       })
@@ -292,7 +292,7 @@ contract('keyPurchaser', accounts => {
       })
 
       // Make first purchase
-      await dai.approve(keyPurchaser.address, -1, { from: endUser })
+      await dai.approve(keyPurchaser.address, constants.MAX_UINT, { from: endUser })
       await keyPurchaser.purchaseFor(endUser, constants.ZERO_ADDRESS, [], {
         from: otherAccount,
       })
@@ -387,7 +387,7 @@ contract('keyPurchaser', accounts => {
         }
       )
 
-      await dai.approve(keyPurchaser.address, -1, {
+      await dai.approve(keyPurchaser.address, constants.MAX_UINT, {
         from: endUser,
       })
 

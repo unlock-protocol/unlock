@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { Checkout } from '../interface/checkout/Checkout'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
-import { CheckoutStoreProvider } from '../../hooks/useCheckoutStore'
+import getOAuthFromSearch from '../../utils/getOAuthFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
-import { PaywallConfigContext } from '../../contexts/PaywallConfigContext'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
 import { selectProvider } from '../interface/LoginPrompt'
@@ -27,7 +26,6 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
     !checkoutCommunication.providerAdapter
 
   const paywallConfig = checkoutCommunication.paywallConfig || configFromSearch
-
   const addLock = (lock: any) => {
     return setLocks({
       ...locks,
@@ -35,10 +33,18 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
     })
   }
 
-  if (!paywallConfig || noProviderAdapter) {
+  if (noProviderAdapter) {
     return <Loading />
   }
 
+  const oAuthConfig = getOAuthFromSearch(query)
+
+  let defaultState = 'loading'
+  if (oAuthConfig) {
+    defaultState = 'connect'
+  } else if (paywallConfig) {
+    defaultState = 'pick-lock'
+  }
   return (
     <LocksContext.Provider
       value={{
@@ -46,16 +52,20 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
         addLock,
       }}
     >
-      <PaywallConfigContext.Provider value={paywallConfig}>
-        <CheckoutStoreProvider>
-          <Checkout
-            {...checkoutCommunication}
-            web3Provider={
-              checkoutCommunication.providerAdapter || selectProvider(config)
-            }
-          />
-        </CheckoutStoreProvider>
-      </PaywallConfigContext.Provider>
+      <Checkout
+        {...checkoutCommunication}
+        web3Provider={
+          checkoutCommunication.providerAdapter || selectProvider(config)
+        }
+        redirectUri={
+          oAuthConfig?.redirectUri ||
+          paywallConfig?.redirectUri ||
+          query?.redirectUri
+        }
+        oAuthConfig={oAuthConfig}
+        defaultState={defaultState}
+        paywallConfig={paywallConfig} // last to avoid override by ...checkoutCommunication
+      />
     </LocksContext.Provider>
   )
 }

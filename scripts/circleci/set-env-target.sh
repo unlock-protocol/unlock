@@ -4,8 +4,11 @@
 # ENV_TARGET is based on the branch.
 # CirclCi uses the BASH_ENV variable to set values https://circleci.com/docs/2.0/env-vars/#using-bash_env-to-set-environment-variables
 
+SERVICE=$1
 
-if [ "$CIRCLE_BRANCH" = "production" ]; then
+if [ "$SERVICE" = "unlock-protocol-com" ]; then
+  echo "export ENV_TARGET='prod'"
+elif [ "$CIRCLE_BRANCH" = "production" ]; then
   echo "export ENV_TARGET='prod'"
 else
   echo "export ENV_TARGET='staging'"

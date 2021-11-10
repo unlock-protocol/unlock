@@ -10,6 +10,7 @@ interface LogInSignUpProps {
   onProvider: (provider: any) => void
   onCancel?: () => void
   network: number
+  useWallet?: () => void
 }
 
 export const LogInSignUp = ({
@@ -19,6 +20,7 @@ export const LogInSignUp = ({
   onProvider,
   onCancel,
   network,
+  useWallet,
 }: LogInSignUpProps) => {
   const [isSignup, setIsSignup] = useState(signup || !login)
 
@@ -26,11 +28,12 @@ export const LogInSignUp = ({
     <BrowserOnly>
       {!isSignup && (
         <>
-          <h1>Login to your Unlock Account</h1>
+          <h1>Login</h1>
           <LogIn
             network={network}
             onCancel={onCancel}
             onProvider={onProvider}
+            useWallet={useWallet}
           />
         </>
       )}
@@ -46,6 +49,7 @@ LogInSignUp.defaultProps = {
   login: true,
   embedded: false,
   onCancel: null,
+  useWallet: null,
 }
 
 export default LogInSignUp

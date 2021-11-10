@@ -1,0 +1,20 @@
+{
+    "name": "@unlock-protocol/networks",
+    "version": "0.0.2",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "description": "Unlock Protocol's contract addressess for various networks",
+    "scripts": {
+        "start": "tsc --watch",
+        "build": "tsc",
+        "clean": "rm -rf ./dist",
+        "prepublish": "yarn build"
+    },
+    "devDependencies": {
+        "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+        "typescript": "4.4.4"
+    },
+    "files": [
+        "dist"
+    ]
+}

@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import WalletConnectProvider from '@walletconnect/web3-provider'
+import WalletLink from 'walletlink'
 import { ConfigContext } from '../../utils/withConfig'
+import SvgComponents from './svg'
 
 import { AuthenticationContext } from './Authenticate'
 import { ActionButton } from './buttons/ActionButton'
@@ -12,6 +14,11 @@ interface LoginPromptProps {
   onCancel?: () => void
   embedded?: boolean
   children?: React.ReactNode
+  showTitle?: boolean
+  backgroundColor?: string
+  activeColor?: string
+  injectedProvider?: any
+  onProvider?: (provider: any) => void
 }
 
 export interface EthereumWindow extends Window {
@@ -27,7 +34,7 @@ export const selectProvider = (config: any) => {
   const ethereumWindow: EthereumWindow = window
 
   if (config?.env === 'test') {
-    // We set the provider to be the provider by the local ganache
+    // We set the provider to be the provider by the local eth node
     provider = `http://${config.httpProvider}:8545`
   } else if (ethereumWindow && ethereumWindow.ethereum) {
     provider = ethereumWindow.ethereum
@@ -57,55 +64,99 @@ const LoginPrompt = ({
   unlockUserAccount,
   onCancel,
   embedded,
+  showTitle,
+  backgroundColor,
+  injectedProvider,
+  activeColor,
+  onProvider,
 }: LoginPromptProps) => {
   const config = useContext(ConfigContext)
   const { authenticate } = useContext(AuthenticationContext)
   const [walletToShow, setWalletToShow] = useState('')
-  const injectedProvider = selectProvider(config)
+  const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
-  const walletConnectProvider = new WalletConnectProvider({
-    rpc: rpcForWalletConnect(config),
-  })
+  const authenticateIfNotHandled = async (provider: any) => {
+    if (onProvider) {
+      await onProvider(provider)
+    } else {
+      await authenticate(provider)
+    }
+  }
 
   const handleInjectProvider = async () => {
-    await authenticate(injectedProvider)
+    await authenticateIfNotHandled(injectedOrDefaultProvider)
   }
 
   const handleUnlockProvider = async (provider: any) => {
-    await authenticate(provider)
+    await authenticateIfNotHandled(provider)
   }
 
   const handleWalletConnectProvider = async () => {
-    await authenticate(walletConnectProvider)
+    const walletConnectProvider = new WalletConnectProvider({
+      rpc: rpcForWalletConnect(config),
+    })
+    await authenticateIfNotHandled(walletConnectProvider)
+  }
+
+  const handleCoinbaseWalletProvider = async () => {
+    const walletLink = new WalletLink({
+      appName: 'Unlock',
+      appLogoUrl: '/static/images/svg/default-lock-logo.svg',
+    })
+
+    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
+    await authenticateIfNotHandled(ethereum)
   }
 
   return (
-    <Container>
+    <Container embedded={!!embedded}>
       {!walletToShow && (
         <>
-          <SubHeading>Connect a wallet</SubHeading>
+          {showTitle && <SubHeading>Connect a wallet</SubHeading>}
 
           {children && <Description>{children}</Description>}
 
           <WalletButton
-            disabled={!injectedProvider}
+            color={backgroundColor}
+            activeColor={activeColor}
+            disabled={!injectedOrDefaultProvider}
             onClick={handleInjectProvider}
           >
-            Authenticate with your browser wallet
-          </WalletButton>
-
-          <WalletButton onClick={handleWalletConnectProvider}>
-            Wallet connect
+            <SvgComponents.Metamask />
+            In browser wallet
           </WalletButton>
 
           <WalletButton
-            disabled={!unlockUserAccount}
-            onClick={() => {
-              setWalletToShow('unlock')
-            }}
+            color={backgroundColor}
+            activeColor={activeColor}
+            onClick={handleWalletConnectProvider}
           >
-            Unlock Account
+            <SvgComponents.WalletConnect fill="var(--blue)" />
+            WalletConnect
           </WalletButton>
+
+          <WalletButton
+            color={backgroundColor}
+            activeColor={activeColor}
+            onClick={handleCoinbaseWalletProvider}
+          >
+            <SvgComponents.CoinbaseWallet fill="var(--blue)" />
+            Coinbase Wallet
+          </WalletButton>
+
+          {unlockUserAccount && (
+            <WalletButton
+              color={backgroundColor}
+              activeColor={activeColor}
+              disabled={!unlockUserAccount}
+              onClick={() => {
+                setWalletToShow('unlock')
+              }}
+            >
+              <SvgComponents.Unlock fill="var(--brand)" />
+              Unlock Account
+            </WalletButton>
+          )}
         </>
       )}
 
@@ -116,6 +167,7 @@ const LoginPrompt = ({
           onCancel={onCancel}
           login
           onProvider={handleUnlockProvider}
+          useWallet={() => setWalletToShow('')}
         />
       )}
     </Container>
@@ -137,21 +189,43 @@ const Description = styled.p`
   color: var(--darkgrey);
   margin: 5px;
 `
+
 const WalletButton = styled(ActionButton).attrs({
-  color: 'var(--white)',
-  activeColor: 'var(--white)',
-  fontColor: 'var(--green)',
-  fontActiveColor: 'var(--activegreen)',
+  fontColor: 'var(--dimgrey)',
+  fontActiveColor: 'var(--dimgrey)',
+  borderColor: 'transparent',
+  activeBorderColor: 'transparent',
 })`
   margin: 10px 0px;
+
+  display: flex;
+  text-align: left;
+  margin: 10px 0px;
+  align-items: center;
+
+  a,
+  a:hover,
+  a:visited,
+  a:active {
+    color: inherit !important;
+  }
+
+  svg {
+    margin-right: 10px;
+    width: 32px;
+    height: 32px;
+  }
 `
 
-const Container = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 400px;
+interface ContainerProps {
+  embedded?: boolean
+}
+
+const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
+  width: ${({ embedded }) => (!embedded ? '400px' : '')};
+  justify-self: center;
 `
 
 LoginPrompt.defaultProps = {
@@ -159,6 +233,11 @@ LoginPrompt.defaultProps = {
   onCancel: null,
   embedded: false,
   children: null,
+  showTitle: true,
+  backgroundColor: 'var(--offwhite)',
+  activeColor: 'var(--white)',
+  injectedProvider: null,
+  onProvider: null,
 }
 
 export default LoginPrompt

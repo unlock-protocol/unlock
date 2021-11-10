@@ -1,9 +1,17 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers, upgrades } = require('hardhat')
-
+const { copySync } = require('fs-extra')
 const { addDeployment } = require('../helpers/deployments')
 
 module.exports = async () => {
+  // when running a mainnet fork
+  if (process.env.RUN_MAINNET_FORK) {
+    // copy .oppenzeppelin mainnet network manifest
+    copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
+    // skip contracts setup
+    return
+  }
+
   // setup accounts
   const [unlockOwner, minter] = await ethers.getSigners()
 
@@ -40,4 +48,22 @@ module.exports = async () => {
 
   // save deployment info
   await addDeployment('UnlockDiscountToken', token, true)
+
+  // 5. deploy UDT (v2)
+  const UDTv2 = await ethers.getContractFactory('UnlockDiscountTokenV2')
+  const tokenv2 = await upgrades.deployProxy(UDTv2, [minter.address], {
+    initializer: 'initialize(address)',
+  })
+  await tokenv2.deployed()
+
+  // save deployment info
+  await addDeployment('UnlockDiscountTokenV2', tokenv2, true)
+
+  // 5. deploy Gov
+  const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
+  const gov = await Governor.deploy()
+  await gov.deployed()
+
+  // save deployment info
+  await addDeployment('UnlockProtocolGovernor', gov, true)
 }

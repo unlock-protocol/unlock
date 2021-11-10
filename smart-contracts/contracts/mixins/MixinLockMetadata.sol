@@ -1,11 +1,12 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
+// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 
 /**
  * @title Mixin for metadata about the Lock.
@@ -14,9 +15,8 @@ import './MixinLockManagerRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
-  IERC721Enumerable,
-  ERC165,
-  MixinLockManagerRole,
+  ERC165StorageUpgradeable,
+  MixinRoles,
   MixinLockCore,
   MixinKeys
 {
@@ -38,10 +38,10 @@ contract MixinLockMetadata is
   );
 
   function _initializeMixinLockMetadata(
-    string memory _lockName
+    string calldata _lockName
   ) internal
   {
-    ERC165.initialize();
+    ERC165StorageUpgradeable.__ERC165Storage_init();
     name = _lockName;
     // registering the optional erc721 metadata interface with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
@@ -137,5 +137,18 @@ contract MixinLockMetadata is
         seperator,
         tokenId
       );
+  }
+
+  function supportsInterface(bytes4 interfaceId) 
+    public 
+    view 
+    virtual 
+    override(
+      AccessControlUpgradeable,
+      ERC165StorageUpgradeable
+    ) 
+    returns (bool) 
+    {
+    return super.supportsInterface(interfaceId);
   }
 }

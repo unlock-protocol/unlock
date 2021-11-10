@@ -1,7 +1,8 @@
-pragma solidity 0.5.17;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 import './MixinFunds.sol';
-import './MixinLockManagerRole.sol';
+import './MixinRoles.sol';
 
 /**
  * @title Mixin allowing the Lock owner to disable a Lock (preventing new purchases)
@@ -11,7 +12,7 @@ import './MixinLockManagerRole.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinDisable is
-  MixinLockManagerRole,
+  MixinRoles,
   MixinFunds
 {
   // Used to disable payable functions when deprecating an old lock

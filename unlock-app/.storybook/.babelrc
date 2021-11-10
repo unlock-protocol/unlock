@@ -10,20 +10,7 @@
             "displayName": true,
             "preprocess": false
           }
-        ]
-      ]
-    },
-    "production": {
-      "presets": ["next/babel"],
-      "plugins": [
-        [
-          "styled-components",
-          {
-            "ssr": true,
-            "displayName": false,
-            "preprocess": false
-          }
-        ]
+        ],
       ]
     },
     "test": {
@@ -46,7 +33,7 @@
             "preprocess": false
           }
         ],
-        ["require-context-hook"]
+        ["require-context-hook"],
       ]
     }
   }

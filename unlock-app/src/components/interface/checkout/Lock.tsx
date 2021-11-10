@@ -48,6 +48,7 @@ export const Lock = ({
   purchasePending,
 }: LockProps) => {
   const config = useContext(ConfigContext)
+  const [loading, setLoading] = useState(false)
   const { account } = useContext(AuthenticationContext)
   const { getKeyForAccount } = useLock(lock, network)
   const [hasValidKey, setHasValidKey] = useState(hasOptimisticKey)
@@ -56,19 +57,23 @@ export const Lock = ({
     const now = new Date().getTime() / 1000
     if (key && key.expiration > now) {
       setHasValidKey(true)
+    } else {
+      setHasValidKey(false)
     }
     setHasKey(key)
   }
 
   useEffect(() => {
+    const getKey = async () => {
+      setLoading(true)
+      alreadyHasKey(await getKeyForAccount(account))
+      setLoading(false)
+    }
+
     if (account) {
-      const getKey = async () => {
-        const key = await getKeyForAccount(account)
-        if (key) {
-          alreadyHasKey(key)
-        }
-      }
       getKey()
+    } else {
+      setHasValidKey(false)
     }
   }, [account])
 
@@ -85,8 +90,14 @@ export const Lock = ({
       name
     ),
   }
-  const isSoldOut = numberOfAvailableKeys(lock) === 0
 
+  if (loading) {
+    return (
+      <LockVariations.LoadingLock address={lock.address} network={network} />
+    )
+  }
+
+  const isSoldOut = numberOfAvailableKeys(lock) <= 0
   if (isSoldOut) {
     return <LockVariations.SoldOutLock {...lockProps} />
   }

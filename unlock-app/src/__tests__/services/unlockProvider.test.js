@@ -3,6 +3,9 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
 
+// These tests are slow because we generate private keys
+jest.setTimeout(15000)
+
 const utf8ToHex = (str) =>
   utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)
 
@@ -36,7 +39,7 @@ describe('Unlock Provider', () => {
   let provider
   beforeAll(async () => {
     const providerUrl = process.env.CI
-      ? 'http://ganache-integration::8545'
+      ? 'http://eth-node:8545'
       : 'http://127.0.0.1:8545'
     const requiredNetworkId = 1492
 

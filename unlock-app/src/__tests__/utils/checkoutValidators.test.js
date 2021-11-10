@@ -564,23 +564,6 @@ describe('Form field validators', () => {
             })
           ).toBe(false)
         })
-
-        it('lock has wrong number of properties', () => {
-          expect.assertions(1)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              locks: {
-                [lock]: {
-                  name: 'hi',
-                  whatthe: 'hey?',
-                },
-              },
-            })
-          ).toBe(false)
-        })
-
         it('lock name is not a string', () => {
           expect.assertions(4)
 
@@ -622,86 +605,6 @@ describe('Form field validators', () => {
                   name: 0,
                 },
               },
-            })
-          ).toBe(false)
-        })
-      })
-
-      describe('unlockUserAccounts', () => {
-        it('unlockUserAccounts is missing', () => {
-          expect.assertions(1)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-            })
-          ).toBe(true)
-        })
-
-        it('unlockUserAccounts is true', () => {
-          expect.assertions(2)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: true,
-            })
-          ).toBe(true)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: 'true',
-            })
-          ).toBe(true)
-        })
-
-        it('unlockUserAccounts is false', () => {
-          expect.assertions(2)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: false,
-            })
-          ).toBe(true)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: 'false',
-            })
-          ).toBe(true)
-        })
-
-        it('unlockUserAccounts is not a boolean', () => {
-          expect.assertions(4)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: 'hello',
-            })
-          ).toBe(false)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: [],
-            })
-          ).toBe(false)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: 7,
-            })
-          ).toBe(false)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              unlockUserAccounts: {},
             })
           ).toBe(false)
         })

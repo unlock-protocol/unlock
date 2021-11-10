@@ -1,16 +1,16 @@
 version: '3.2'
 services:
   graph-node:
-    image: graphprotocol/graph-node:v0.23.1
+    image: graphprotocol/graph-node:v0.24.2
     ports:
       - '8000:8000'
       - '8001:8001'
       - '8020:8020'
 
   ipfs:
-    image: ipfs/go-ipfs:v0.9.0
+    image: ipfs/go-ipfs:v0.10.0
     ports:
       - '5001:5001'
 
   postgres:
-    image: postgres:13.3
+    image: postgres:14.0

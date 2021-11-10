@@ -51,6 +51,16 @@ namespace PurchaseController {
       return res.status(400).send({ error: 'Missing Stripe customer info' })
     }
 
+    const dispatcher = new Dispatcher()
+    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
+      network
+    )
+    if (!hasEnoughToPayForGas) {
+      return res
+        .status(400)
+        .send({ error: 'Purchaser does not have enough to pay for gas' })
+    }
+
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
       const hash = await processor.initiatePurchaseForConnectedStripeAccount(
@@ -93,7 +103,7 @@ namespace PurchaseController {
 
     try {
       const fulfillmentDispatcher = new Dispatcher()
-      fulfillmentDispatcher.purchaseKey(
+      await fulfillmentDispatcher.purchaseKey(
         Normalizer.ethereumAddress(lock),
         Normalizer.ethereumAddress(publicKey),
         network,

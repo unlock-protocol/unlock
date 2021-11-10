@@ -1,10 +1,9 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
 import logger from '../logger'
 
 const { ethers } = require('ethers')
-
-const { networks } = require('../networks')
 
 const config = require('../../config/config')
 
@@ -24,7 +23,7 @@ namespace AuthorizedLockOperations {
         network
       )
       return isKeyGranter
-    } catch (error) {
+    } catch (error: any) {
       logger.error(
         `Could not check if lock ${lockAddress} authorized ${keyGranterWallet.address} to grant keys on ${network}. ${error.message}`
       )

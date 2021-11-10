@@ -23,31 +23,27 @@ export const getAllKeysMetadataForLock = async (
   viewer,
   walletService,
   storageService,
-  network
+  network,
+  page
 ) => {
-  return new Promise((resolve, reject) => {
-    // If the user is the owner, we can grab the metadata for each lock
-    const typedData = generateKeyTypedData({
-      LockMetaData: {
-        address: lock.address,
-        owner: viewer,
-        timestamp: Date.now(),
-      },
-    })
-
-    walletService.signData(viewer, typedData, async (error, signature) => {
-      if (error) {
-        reject('Could not sign typed data for metadata request.')
-      }
-      const storedMetadata = await storageService.getBulkMetadataFor(
-        lock.address,
-        signature,
-        typedData,
-        network
-      )
-      resolve(storedMetadata)
-    })
+  const payload = generateKeyTypedData({
+    LockMetaData: {
+      address: lock.address,
+      owner: viewer,
+      timestamp: Date.now(),
+      page,
+    },
   })
+  // TODO prevent replays by adding timestamp?
+  const message = `I want to access member data for ${lock.address}`
+  const signature = await walletService.signMessage(message, 'personal_sign')
+  const response = await storageService.getBulkMetadataFor(
+    lock.address,
+    signature,
+    payload,
+    network
+  )
+  return response
 }
 
 /**
@@ -147,7 +143,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
           viewer,
           walletService,
           storageService,
-          network
+          network,
+          page
         )
         return buildMembersWithMetadata(lockWithKeys, storedMetadata)
       } catch (error) {

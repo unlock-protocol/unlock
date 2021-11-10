@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.5.17;
 
 /**
@@ -149,7 +150,7 @@ contract Unlock is
     uint _maxNumberOfKeys,
     string memory _lockName,
     bytes12 _salt
-  ) public
+  ) public returns(address)
   {
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
@@ -182,6 +183,7 @@ contract Unlock is
 
     // trigger event
     emit NewLock(msg.sender, newLock);
+    return newLock;
   }
 
   /**
@@ -313,7 +315,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 9;
+    return 10;
   }
 
   /**
