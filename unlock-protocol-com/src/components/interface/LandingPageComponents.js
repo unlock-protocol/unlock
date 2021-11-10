@@ -157,7 +157,9 @@ export const Column = styled.div`
   margin: 16px;
   flex-direction: ${(props) => (props.transposed ? 'row' : 'column')};
   justify-content: start;
-  flex: 1 1 0px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basic: 100%;
 
   p {
     font-family: IBM Plex Sans;
