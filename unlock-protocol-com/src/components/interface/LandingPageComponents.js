@@ -159,7 +159,7 @@ export const Column = styled.div`
   justify-content: start;
   flex-grow: 1;
   flex-shrink: 1;
-  flex-basic: 100%;
+  flex-basis: 100%;
 
   p {
     font-family: IBM Plex Sans;
