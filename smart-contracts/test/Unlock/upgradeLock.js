@@ -1,6 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('truffle-assertions')
-const { errorMessages } = require('../helpers/constants')
 
 const lockArgs = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days
