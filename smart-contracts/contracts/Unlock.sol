@@ -126,7 +126,8 @@ contract Unlock is
     initializer()
   {
     // We must manually initialize Ownable
-    // OwnableUpgradeable.initialize(_unlockOwner);
+    __Ownable_init();
+    transferOwnership(_unlockOwner);
   }
 
   /**
