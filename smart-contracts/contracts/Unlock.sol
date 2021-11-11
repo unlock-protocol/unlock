@@ -29,7 +29,6 @@ pragma solidity ^0.8.2;
 
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import './utils/Ownable.sol';
-import './utils/Clone2Factory.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
@@ -42,7 +41,6 @@ contract Unlock is
   Initializable,
   Ownable
 {
-  using Clone2Factory for address;
 
   /**
    * The struct for a lock
