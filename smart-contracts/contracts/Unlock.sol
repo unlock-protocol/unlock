@@ -28,18 +28,18 @@ pragma solidity ^0.8.2;
  */
 
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
-import './utils/Ownable.sol';
-import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
-import './interfaces/IPublicLock.sol';
-import './interfaces/IMintableERC20.sol';
 import '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
 import '@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol';
+import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
+import './utils/UnlockOwnable.sol';
+import './interfaces/IPublicLock.sol';
+import './interfaces/IMintableERC20.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
   Initializable,
-  Ownable
+  UnlockOwnable
 {
 
   /**
@@ -101,7 +101,7 @@ contract Unlock is
   // publicLock templates
   mapping(address => uint16) private _publicLockVersions;
   mapping(uint16 => address) private _publicLockImpls;
-  uint16 public _publicLock_publicLockLatestVersion;
+  uint16 public publicLockLlatestVersion;
 
   // Events
   event NewLock(
@@ -132,6 +132,10 @@ contract Unlock is
     uint16 indexed version
   );
 
+  event ProxyAdminDeployed(
+    address indexed newProxyAdminAddress
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
     address _unlockOwner
@@ -140,7 +144,7 @@ contract Unlock is
     initializer()
   {
     // We must manually initialize Ownable
-    Ownable.__initializeOwnable(_unlockOwner);
+    UnlockOwnable.__initializeOwnable(_unlockOwner);
   }
 
   /**
@@ -181,7 +185,7 @@ contract Unlock is
 
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
-    if (_publicLockLatestVersion < version) _publicLockLatestVersion = version;
+    if (publicLockLlatestVersion < version) publicLockLlatestVersion = version;
     emit UnlockTemplateAdded(impl, version);
   }
 
@@ -218,10 +222,10 @@ contract Unlock is
     }
 
     // default to latest implementation
-    address impl = _publicLockImpls[_publicLockLatestVersion];
+    address impl = _publicLockImpls[publicLockLlatestVersion];
 
     bytes memory data = abi.encodeWithSignature(
-      'initialize(address)',
+      'initialize(address,uint256,address,uint256,uint256,string)',
       msg.sender,
       _expirationDuration,
       _tokenAddress,
