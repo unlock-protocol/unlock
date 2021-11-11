@@ -35,6 +35,9 @@ import './utils/UnlockOwnable.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
 
+// TODO: remove console
+import 'hardhat/console.sol';
+
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
@@ -75,7 +78,7 @@ contract Unlock is
   // Used by locks where the owner has not set a custom symbol
   string public globalTokenSymbol;
 
-  // The address of the public lock template, used when `createLock` is called
+  // The address of the latest public lock template, used by default when `createLock` is called
   address public publicLockAddress;
 
   // Map token address to oracle contract address if the token is supported
@@ -109,6 +112,11 @@ contract Unlock is
     address indexed newLockAddress
   );
 
+  event LockUpgraded(
+    address lockAddress, 
+    uint16 version
+  );
+
   event ConfigUnlock(
     address udt,
     address weth,
@@ -130,10 +138,6 @@ contract Unlock is
   event UnlockTemplateAdded(
     address indexed impl, 
     uint16 indexed version
-  );
-
-  event ProxyAdminDeployed(
-    address indexed newProxyAdminAddress
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
@@ -159,7 +163,6 @@ contract Unlock is
   function _deployProxyAdmin() private returns(address) {
     proxyAdmin = new ProxyAdmin();
     proxyAdminAddress = address(proxyAdmin);
-    emit ProxyAdminDeployed(proxyAdminAddress);
     return address(proxyAdmin);
   }
 
@@ -191,6 +194,8 @@ contract Unlock is
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
     if (publicLockLatestVersion < version) publicLockLatestVersion = version;
+
+    // TODO: init template to prevent possible attack
     emit UnlockTemplateAdded(impl, version);
   }
 
@@ -211,6 +216,7 @@ contract Unlock is
     bytes12 _salt
   ) public returns(address)
   {
+    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // create lock
@@ -226,9 +232,7 @@ contract Unlock is
       salt := mload(pointer)
     }
     
-    // default to latest implementation
-    address impl = _publicLockImpls[publicLockLatestVersion];
-
+    // TODO: more flexible approche to init w params
     bytes memory data = abi.encodeWithSignature(
       'initialize(address,uint256,address,uint256,uint256,string)', 
       msg.sender,
@@ -240,7 +244,7 @@ contract Unlock is
     );
 
     // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(impl, proxyAdminAddress, data);
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockAddress, proxyAdminAddress, data);
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
@@ -251,6 +255,32 @@ contract Unlock is
     // trigger event
     emit NewLock(msg.sender, newLock);
     return newLock;
+  }
+
+  /**
+   * @dev Upgrade a Lock template implementation
+   * @param lockAddress the address of the lock to be upgraded
+   * @param version the version number of the template
+   */
+  function upgradeLock(address payable lockAddress, uint16 version) public returns(address) {
+    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
+    require(lockAddress != address(0), "lockAddress can not be address 0");
+    
+    // check perms
+    require(isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
+
+    // check version
+    IPublicLock lock = IPublicLock(lockAddress);
+    uint16 currentVersion = lock.publicLockVersion();
+    require( version == currentVersion + 1, 'version error: only +1 increments are allowed');
+
+    // make our upgrade
+    address impl = _publicLockImpls[version];
+    TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
+    proxyAdmin.upgrade(proxy, impl);
+
+    emit LockUpgraded(lockAddress, version);
+    return lockAddress;
   }
 
   function isLockManager(address lockAddress, address _sender) public view returns(bool isManager) {
