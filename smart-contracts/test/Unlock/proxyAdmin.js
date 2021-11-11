@@ -36,7 +36,7 @@ contract('proxyAdmin', () => {
     assert.equal(await proxyAdmin.owner(), unlock.address)
   })
 
-  it('forbid to deploy twice', async  () => {
+  it('forbid to deploy twice', async () => {
     const tx = await unlock.initializeProxyAdmin()
     await tx.wait()
     reverts(unlock.initializeProxyAdmin(), 'ProxyAdmin already deployed')
