@@ -33,6 +33,8 @@ import './utils/Clone2Factory.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
+import '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
+import '@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -94,6 +96,15 @@ contract Unlock is
   // Blockchain ID the network id on which this version of Unlock is operating
   uint public chainId;
 
+  // store proxy admin
+  address public proxyAdminAddress;
+  ProxyAdmin private proxyAdmin;
+
+  // publicLock templates
+  mapping(address => uint16) private _publicLockVersions;
+  mapping(uint16 => address) private _publicLockImpls;
+  uint16 public _publicLock_publicLockLatestVersion;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -118,6 +129,11 @@ contract Unlock is
     uint totalDiscountGranted
   );
 
+  event UnlockTemplateAdded(
+    address indexed impl,
+    uint16 indexed version
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
     address _unlockOwner
@@ -127,6 +143,48 @@ contract Unlock is
   {
     // We must manually initialize Ownable
     Ownable.__initializeOwnable(_unlockOwner);
+  }
+
+  /**
+  * @dev Deploy the ProxyAdmin contract that will manage lock templates upgrades
+  * This deploys an instance of ProxyAdmin used by PublicLock transparent proxies.
+  */
+  function _deployProxyAdmin() private returns(address) {
+    proxyAdmin = new ProxyAdmin();
+    proxyAdminAddress = address(proxyAdmin);
+    emit ProxyAdminDeployed(proxyAdminAddress);
+    return address(proxyAdmin);
+  }
+
+  /**
+  * @dev Helper to get the version number of a template from his address
+  */
+  function publicLockVersions(address _impl) external view returns(uint16) {
+    return _publicLockVersions[_impl];
+  }
+
+  /**
+  * @dev Helper to get the address of a template based on its version number
+  */
+  function publicLockImpls(uint16 _version) external view returns(address) {
+    return _publicLockImpls[_version];
+  }
+
+  /**
+  * @dev Registers a new PublicLock template immplementation
+  * The template is identified by a version number
+  * Once registered, the template can be used to upgrade an existing Lock
+  */
+  function addImpl(address impl, uint16 version) public onlyOwner {
+    require(impl != address(0), "impl address can not be 0x");
+    require(version != 0, "version can not be 0");
+    require(_publicLockVersions[impl] == 0, "address already used by another version");
+    require(_publicLockImpls[version] == address(0), "version already assigned");
+
+    _publicLockVersions[impl] = version;
+    _publicLockImpls[version] = impl;
+    if (_publicLockLatestVersion < version) _publicLockLatestVersion = version;
+    emit UnlockTemplateAdded(impl, version);
   }
 
   /**
@@ -160,8 +218,12 @@ contract Unlock is
       mstore(add(pointer, 0x14), _salt)
       salt := mload(pointer)
     }
-    address payable newLock = payable(address(uint160(publicLockAddress.createClone2(salt))));
-    IPublicLock(newLock).initialize(
+
+    // default to latest implementation
+    address impl = _publicLockImpls[_publicLockLatestVersion];
+
+    bytes memory data = abi.encodeWithSignature(
+      'initialize(address)',
       msg.sender,
       _expirationDuration,
       _tokenAddress,
@@ -170,7 +232,11 @@ contract Unlock is
       _lockName
     );
 
-    // Assign the new Lock
+    // deploy a proxy pointing to impl
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(impl, proxyAdminAddress, data);
+    address payable newLock = payable(address(proxy));
+
+    // assign the new Lock
     locks[newLock] = LockBalances({
       deployed: true, totalSales: 0, yieldedDiscountTokens: 0
     });
