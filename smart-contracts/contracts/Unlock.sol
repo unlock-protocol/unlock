@@ -147,7 +147,7 @@ contract Unlock is
     UnlockOwnable.__initializeOwnable(_unlockOwner);
   }
 
-  function initializeProxyAdmin() public onlyOwner {
+  function initializeProxyAdmin() public {
     require(proxyAdminAddress == address(0), "ProxyAdmin already deployed");
     _deployProxyAdmin();
   }
