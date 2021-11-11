@@ -3,7 +3,6 @@ const { copySync } = require('fs-extra')
 
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
-require('@nomiclabs/hardhat-waffle')
 
 // full stack trace if needed
 require('hardhat-tracer')
