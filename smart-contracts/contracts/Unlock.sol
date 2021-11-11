@@ -253,6 +253,13 @@ contract Unlock is
     return newLock;
   }
 
+  function isLockManager(address lockAddress, address _sender) public view returns(bool isManager) {
+    require(lockAddress != address(0), "lockAddress can not be address 0");
+    require(_sender != address(0), "sender can not be address 0");
+    IPublicLock lock = IPublicLock(lockAddress);
+    return lock.isLockManager(_sender);
+  }
+
   /**
    * This function returns the discount available for a user, when purchasing a
    * a key from a lock.
