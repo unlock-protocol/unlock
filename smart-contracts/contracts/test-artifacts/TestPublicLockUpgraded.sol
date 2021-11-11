@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import 'hardhat/console.sol';
 import "../PublicLock.sol";
+import "../interfaces/IPublicLock.sol";
 
 contract TestPublicLockUpgraded is PublicLock {
 
@@ -10,4 +11,8 @@ contract TestPublicLockUpgraded is PublicLock {
   function sayHello() external pure returns (string memory) {
     return 'hello world';
   }
+}
+
+interface ITestPublicLockUpgraded is IPublicLock {
+  function sayHello() external pure returns (string memory);
 }
