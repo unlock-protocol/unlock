@@ -147,6 +147,11 @@ contract Unlock is
     UnlockOwnable.__initializeOwnable(_unlockOwner);
   }
 
+  function initializeProxyAdmin() public onlyOwner {
+    require(proxyAdminAddress == address(0), "ProxyAdmin already deployed");
+    _deployProxyAdmin();
+  }
+
   /**
   * @dev Deploy the ProxyAdmin contract that will manage lock templates upgrades
   * This deploys an instance of ProxyAdmin used by PublicLock transparent proxies.
