@@ -27,8 +27,8 @@ pragma solidity ^0.8.2;
  *  b. Keeping track of GNP
  */
 
-import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
+import './utils/Ownable.sol';
 import './utils/Clone2Factory.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
 import './interfaces/IPublicLock.sol';
@@ -38,7 +38,7 @@ import './interfaces/IMintableERC20.sol';
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
   Initializable,
-  OwnableUpgradeable
+  Ownable
 {
   using Clone2Factory for address;
 
@@ -126,8 +126,7 @@ contract Unlock is
     initializer()
   {
     // We must manually initialize Ownable
-    __Ownable_init();
-    transferOwnership(_unlockOwner);
+    Ownable.__initializeOwnable(_unlockOwner);
   }
 
   /**
