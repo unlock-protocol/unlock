@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.5.17;
+pragma solidity ^0.8.2;
 
 /**
  * @title The Unlock contract
@@ -27,26 +27,20 @@ pragma solidity 0.5.17;
  *  b. Keeping track of GNP
  */
 
-import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
-import '@openzeppelin/upgrades/contracts/Initializable.sol';
-import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
-import './interfaces/IPublicLock.sol';
-import './interfaces/IUnlock.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
+import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
+import './utils/Clone2Factory.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
-  IUnlock,
   Initializable,
-  Ownable
+  OwnableUpgradeable
 {
-  using Address for address;
   using Clone2Factory for address;
-  using SafeMath for uint;
 
   /**
    * The struct for a lock
@@ -131,8 +125,8 @@ contract Unlock is
     public
     initializer()
   {
-    // We must manually initialize Ownable.sol
-    Ownable.initialize(_unlockOwner);
+    // We must manually initialize Ownable
+    // OwnableUpgradeable.initialize(_unlockOwner);
   }
 
   /**
@@ -161,12 +155,12 @@ contract Unlock is
     {
       let pointer := mload(0x40)
       // The salt is the msg.sender
-      mstore(pointer, shl(96, caller))
+      mstore(pointer, shl(96, caller()))
       // followed by the _salt provided
       mstore(add(pointer, 0x14), _salt)
       salt := mload(pointer)
     }
-    address payable newLock = address(uint160(publicLockAddress.createClone2(salt)));
+    address payable newLock = payable(address(uint160(publicLockAddress.createClone2(salt))));
     IPublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
@@ -198,7 +192,7 @@ contract Unlock is
     uint /* _keyPrice */
   )
     public
-    view
+    pure
     returns (uint discount, uint tokens)
   {
     // TODO: implement me
@@ -235,7 +229,7 @@ contract Unlock is
         valueInETH = _value;
       }
 
-      grossNetworkProduct = grossNetworkProduct.add(valueInETH);
+      grossNetworkProduct = grossNetworkProduct + valueInETH;
       // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
 
@@ -249,7 +243,7 @@ contract Unlock is
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice).mul(125 * 10 ** 18) / 100 / udtPrice;
+          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice) * (125 * 10 ** 18) / 100 / udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           uint maxTokens = 0;
@@ -257,10 +251,10 @@ contract Unlock is
           {
             // non mainnet: we distribute tokens using asymptotic curve between 0 and 0.5
             // maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul((valueInETH / grossNetworkProduct) / (2 + 2 * valueInETH / grossNetworkProduct));
-            maxTokens = IMintableERC20(udt).balanceOf(address(this)).mul(valueInETH) / (2 + 2 * valueInETH / grossNetworkProduct) / grossNetworkProduct;
+            maxTokens = IMintableERC20(udt).balanceOf(address(this)) * valueInETH / (2 + 2 * valueInETH / grossNetworkProduct) / grossNetworkProduct;
           } else {
             // Mainnet: we mint new token using log curve
-            maxTokens = IMintableERC20(udt).totalSupply().mul(valueInETH) / 2 / grossNetworkProduct;
+            maxTokens = IMintableERC20(udt).totalSupply() * valueInETH / 2 / grossNetworkProduct;
           }
 
           // cap to GDP growth!
@@ -272,7 +266,7 @@ contract Unlock is
           if(tokensToDistribute > 0)
           {
             // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            uint devReward = tokensToDistribute.mul(20) / 100;
+            uint devReward = tokensToDistribute * 20 / 100;
             if (chainId > 1)
             {
               uint balance = IMintableERC20(udt).balanceOf(address(this));
