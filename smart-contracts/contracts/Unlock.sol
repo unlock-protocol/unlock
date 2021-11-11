@@ -101,7 +101,7 @@ contract Unlock is
   // publicLock templates
   mapping(address => uint16) private _publicLockVersions;
   mapping(uint16 => address) private _publicLockImpls;
-  uint16 public publicLockLlatestVersion;
+  uint16 public publicLockLatestVersion;
 
   // Events
   event NewLock(
@@ -185,7 +185,7 @@ contract Unlock is
 
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
-    if (publicLockLlatestVersion < version) publicLockLlatestVersion = version;
+    if (publicLockLatestVersion < version) publicLockLatestVersion = version;
     emit UnlockTemplateAdded(impl, version);
   }
 
@@ -222,7 +222,7 @@ contract Unlock is
     }
 
     // default to latest implementation
-    address impl = _publicLockImpls[publicLockLlatestVersion];
+    address impl = _publicLockImpls[publicLockLatestVersion];
 
     bytes memory data = abi.encodeWithSignature(
       'initialize(address,uint256,address,uint256,uint256,string)',
