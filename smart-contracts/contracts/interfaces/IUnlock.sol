@@ -164,6 +164,9 @@ interface IUnlock
     address _oracleAddress
   ) external;
 
+  // Initialize the Ownable contract, granting contract ownership to the specified sender
+  function __initializeOwnable(address sender) external;
+
   /**
    * @dev Returns true if the caller is the current owner.
    */
