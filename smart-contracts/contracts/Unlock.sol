@@ -177,7 +177,7 @@ contract Unlock is
   * The template is identified by a version number 
   * Once registered, the template can be used to upgrade an existing Lock
   */
-  function addImpl(address impl, uint16 version) public onlyOwner {
+  function addLockTemplate(address impl, uint16 version) public onlyOwner {
     require(impl != address(0), "impl address can not be 0x");
     require(version != 0, "version can not be 0");
     require(_publicLockVersions[impl] == 0, "address already used by another version");
