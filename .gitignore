@@ -12,10 +12,6 @@ unlock-app/src/artifacts/
 smart-contract-extensions/build/
 smart-contracts/build/
 builds/
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 
 # dot env files
 .env.*.local
