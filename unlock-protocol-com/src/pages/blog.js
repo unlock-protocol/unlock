@@ -73,7 +73,7 @@ const Blog = ({ posts, page, totalPages }) => {
         </Pagination>
 
         <SignupBox>
-          <p style={{ marginTop: '16px', marginBottom: '0px;' }}>
+          <p style={{ marginTop: '16px', marginBottom: '0px' }}>
             Or use our{' '}
             <a
               style={{ color: 'white', textDecoration: 'underline' }}
