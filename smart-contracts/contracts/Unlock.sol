@@ -196,7 +196,7 @@ contract Unlock is
     if (publicLockLatestVersion < version) publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
-    setLockTemplate(impl);
+    this.setLockTemplate(impl);
   }
 
   /**
@@ -213,27 +213,10 @@ contract Unlock is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string memory _lockName,
-    bytes12 _salt
   ) public returns(address)
   {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
-
-    // create lock
-    bytes32 salt;
-    // solium-disable-next-line
-    assembly
-    {
-      let pointer := mload(0x40)
-      // The salt is the msg.sender
-      mstore(pointer, shl(96, caller()))
-      // followed by the _salt provided
-      mstore(add(pointer, 0x14), _salt)
-      salt := mload(pointer)
-    }
-
-    // default to latest implementation
-    address impl = _publicLockImpls[publicLockLatestVersion];
 
     // TODO: more flexible approche to init w params
     bytes memory data = abi.encodeWithSignature(
@@ -455,7 +438,7 @@ contract Unlock is
    * @dev This will initialize the template and revokeOwnership.
    */
   function setLockTemplate(
-    address payable _publicLockAddress
+    address _publicLockAddress
   ) external
     onlyOwner
   {
