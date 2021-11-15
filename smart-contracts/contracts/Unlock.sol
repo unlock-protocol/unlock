@@ -186,11 +186,6 @@ contract Unlock is
   * Once registered, the template can be used to upgrade an existing Lock
   */
   function addLockTemplate(address impl, uint16 version) public onlyOwner {
-    require(impl != address(0), "impl address can not be 0x");
-    require(version != 0, "version can not be 0");
-    require(_publicLockVersions[impl] == 0, "address already used by another version");
-    require(_publicLockImpls[version] == address(0), "version already assigned");
-
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;
     if (publicLockLatestVersion < version) publicLockLatestVersion = version;
@@ -243,7 +238,6 @@ contract Unlock is
    */
   function upgradeLock(address payable lockAddress, uint16 version) public returns(address) {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
-    require(lockAddress != address(0), "lockAddress can not be address 0");
 
     // check perms
     require(isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
@@ -263,8 +257,6 @@ contract Unlock is
   }
 
   function isLockManager(address lockAddress, address _sender) public view returns(bool isManager) {
-    require(lockAddress != address(0), "lockAddress can not be address 0");
-    require(_sender != address(0), "sender can not be address 0");
     IPublicLock lock = IPublicLock(lockAddress);
     return lock.isLockManager(_sender);
   }
