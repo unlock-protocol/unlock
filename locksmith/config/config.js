@@ -1,6 +1,8 @@
+const urlParser = require('url')
+
 const config = {
   database: {
-    dialect: 'postgres',
+    dialect: 'postgres', // sequelize v4 needs this
   },
   stripeSecret: process.env.STRIPE_SECRET,
   web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
@@ -16,7 +18,13 @@ const config = {
 
 // Heroku sets DATABASE_URL
 if (process.env.DATABASE_URL) {
-  config.database.uri = process.env.DATABASE_URL
+  const databaseConfigUrl = new urlParser.URL(process.env.DATABASE_URL)
+  config.database.username = databaseConfigUrl.username
+  config.database.password = databaseConfigUrl.password
+  config.database.host = databaseConfigUrl.hostname
+  config.database.database = databaseConfigUrl.pathname
+
+  // Heroku needs this:
   config.database.options = {
     dialect: 'postgres',
     ssl: true,
@@ -32,6 +40,9 @@ if (process.env.DATABASE_URL) {
   config.database.password = process.env.DB_PASSWORD
   config.database.database = process.env.DB_NAME
   config.database.host = process.env.DB_HOSTNAME
+  config.database.options = {
+    dialect: 'postgres',
+  }
 }
 
 module.exports = config
