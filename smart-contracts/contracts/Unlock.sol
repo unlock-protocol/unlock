@@ -200,33 +200,27 @@ contract Unlock is
   }
 
   /**
-  * @dev Create lock
+  * @notice Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
-  * to know the lock's address before the transaction is mined.
+  * @param data bytes containing the call to initialize the lock template
+  * @dev this call is passed as encoded function - for instance:
+  *  bytes memory data = abi.encodeWithSignature(
+  *    'initialize(address,uint256,address,uint256,uint256,string)',
+  *    msg.sender,
+  *    _expirationDuration,
+  *    _tokenAddress,
+  *    _keyPrice,
+  *    _maxNumberOfKeys,
+  *    _lockName
+  *  );
+  * @return address of the create lock
   */
   function createLock(
-    uint _expirationDuration,
-    address _tokenAddress,
-    uint _keyPrice,
-    uint _maxNumberOfKeys,
-    string memory _lockName
+    bytes memory data
   ) public returns(address)
   {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
-
-    // TODO: more flexible approche to init w params
-    bytes memory data = abi.encodeWithSignature(
-      'initialize(address,uint256,address,uint256,uint256,string)',
-      msg.sender,
-      _expirationDuration,
-      _tokenAddress,
-      _keyPrice,
-      _maxNumberOfKeys,
-      _lockName
-    );
 
     // deploy a proxy pointing to impl
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockAddress, proxyAdminAddress, data);
