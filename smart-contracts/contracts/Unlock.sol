@@ -195,8 +195,8 @@ contract Unlock is
     _publicLockImpls[version] = impl;
     if (publicLockLatestVersion < version) publicLockLatestVersion = version;
 
-    // TODO: init template to prevent possible attack
     emit UnlockTemplateAdded(impl, version);
+    setLockTemplate(impl);
   }
 
   /**
