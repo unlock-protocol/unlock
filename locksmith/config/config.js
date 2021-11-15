@@ -25,14 +25,11 @@ if (process.env.DATABASE_URL) {
   config.database.database = databaseConfigUrl.pathname
 
   // Heroku needs this:
-  config.database.options = {
-    dialect: 'postgres',
-    ssl: true,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+  config.database.ssl = true
+  config.database.dialectOptions = {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
     },
   }
 } else {
