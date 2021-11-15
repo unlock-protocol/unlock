@@ -35,7 +35,7 @@
     "apollo-client": "2.6.10",
     "apollo-datasource-graphql": "1.3.2",
     "apollo-link-http": "1.5.17",
-    "apollo-server": "3.4.0",
+    "apollo-server": "3.4.1",
     "apollo-server-express": "2.25.2",
     "body-parser": "1.19.0",
     "color-scheme": "1.0.1",
@@ -101,11 +101,6 @@
     "ts-jest": "27.0.7",
     "tsc-watch": "4.5.0",
     "typescript": "4.4.4"
-  },
-  "jest": {
-    "testMatch": [
-      "**/__tests__/**/*.test.js?(x)"
-    ]
   },
   "files": [
     "build",
