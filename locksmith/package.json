@@ -102,11 +102,6 @@
     "tsc-watch": "4.5.0",
     "typescript": "4.4.4"
   },
-  "jest": {
-    "testMatch": [
-      "**/__tests__/**/*.test.js?(x)"
-    ]
-  },
   "files": [
     "build",
     "migrations",
