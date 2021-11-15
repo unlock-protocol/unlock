@@ -22,7 +22,7 @@ if (process.env.DATABASE_URL) {
   config.database.username = databaseConfigUrl.username
   config.database.password = databaseConfigUrl.password
   config.database.host = databaseConfigUrl.hostname
-  config.database.database = databaseConfigUrl.pathname
+  config.database.database = databaseConfigUrl.pathname.substring(1)
 
   // Heroku needs this:
   config.database.ssl = true
