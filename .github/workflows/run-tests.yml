@@ -28,7 +28,8 @@ jobs:
     steps:
       - name: Check for changes in ${{ matrix.target.service }}
         run: |
-          echo scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }} && \
+          chmod +x ./scripts/monorepo.sh && \
+          ./scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }} && \
           echo "::set-output name=${{ format('{0}_changed', matrix.target.name) }}::$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})" && \
           echo "::set-output name=${{ format('{0}_haha', matrix.target.name) }}::$(echo ${{ matrix.target.service }})"
         shell: bash
