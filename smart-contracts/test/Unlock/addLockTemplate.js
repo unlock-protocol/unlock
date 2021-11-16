@@ -51,20 +51,6 @@ contract('PublicLock template versions', () => {
     expect(await unlock.publicLockLatestVersion()).to.equals(532)
   })
 
-  it('Should forbid same address / version to be reused', async () => {
-    const tx1 = await unlock.addLockTemplate(publicLock.address, 1)
-    await tx1.wait()
-    await reverts(
-      unlock.addLockTemplate(publicLock.address, 3),
-      'address already used by another version'
-    )
-
-    await reverts(
-      unlock.addLockTemplate(publicLockUpgraded.address, 1),
-      'version already assigned'
-    )
-  })
-
   it('Should store publicLockImpls properly', async () => {
     const tx1 = await unlock.addLockTemplate(publicLock.address, 1)
     await tx1.wait()
