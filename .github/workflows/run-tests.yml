@@ -33,7 +33,7 @@ jobs:
         # if: ${{steps.monorepo.outputs[format('{0}_changed', matrix.target.name)]}}
         run: |
           echo ${{steps.monorepo.outputs}} && \
-          echo ${{ format('{0}_changed', matrix.target.name }} && \
+          echo ${{ format('{0}_changed', matrix.target.name) }} && \
           echo ${{ steps.monorepo.outputs[format('{0}_changed', matrix.target.name) ]}}
         shell: bash
   # run-tests:
