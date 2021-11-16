@@ -117,16 +117,16 @@ const LoginPrompt = ({
   }
 
   const tryAutoLogin = useCallback(() => {
-    const storedProvider: ProviderName | null = getStorage('provider') as ProviderName; 
-    if (!storedProvider) return;
+    const storedProvider: ProviderName | null = getStorage('provider') as ProviderName
+    if (!storedProvider) return
     
-    if (storedProvider === 'isMetaMask') handleInjectProvider();
-    if (storedProvider === 'isWalletLink') handleCoinbaseWalletProvider();
-    if (storedProvider === 'isWalletConnect') handleWalletConnectProvider();
+    if (storedProvider === 'isMetaMask') handleInjectProvider()
+    if (storedProvider === 'isWalletLink') handleCoinbaseWalletProvider()
+    if (storedProvider === 'isWalletConnect') handleWalletConnectProvider()
   }, [])
 
   useEffect(() => {
-    tryAutoLogin();
+    tryAutoLogin()
   }, [])
 
   return (

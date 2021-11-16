@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
-import { useAppStorage } from './useAppStorage';
+import { useAppStorage } from './useAppStorage'
 import { ProviderName, Providers } from '../components/interface/LoginPrompt'
 export interface EthereumWindow extends Window {
   web3: any
@@ -34,17 +34,17 @@ export const useProvider = (config: any) => {
 
   useEffect(() => {
     if (!getStorage('account') && account) {
-      setStorage('account', account);
+      setStorage('account', account)
     }
 
     if (!getStorage('network') && network) {
-      setStorage('network', network);
+      setStorage('network', network)
     }
 
     if (!getStorage('provider') && provider) {
       Object.values(Providers).map((name: ProviderName) => {
         if (provider?.provider[name]) {
-          setStorage('provider', name);
+          setStorage('provider', name)
         }
       })
     }
@@ -159,7 +159,7 @@ export const useProvider = (config: any) => {
     setIsUnlockAccount(false)
     setEmail('')
     setEncryptedPrivateKey(null)
-    clearStorage();
+    clearStorage()
     try {
       await provider.provider.close()
     } catch (error) {
