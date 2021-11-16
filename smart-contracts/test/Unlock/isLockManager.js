@@ -28,9 +28,6 @@ contract('isLockManager', () => {
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
 
-    // set proxyAdmin
-    await unlock.initializeProxyAdmin()
-
     // add impl as v1
     const txImpl = await unlock.addLockTemplate(publicLock.address, 1)
     await txImpl.wait()
