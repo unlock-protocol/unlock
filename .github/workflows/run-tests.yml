@@ -1,0 +1,26 @@
+on: [pull_request]
+jobs:
+  run-tests:
+    name: Unlock Test Suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: 
+        - packages/unlock-js
+        - packages/paywall
+        - newsletter
+        - smart-contracts
+        - smart-contract-extensions
+        - unlock-protocol-com
+        - wedlocks
+        - unlock-app
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for changes in repository
+        run: scripts/monorepo.sh ${{ matrix.target.service }} $CIRCLE_BRANCH
+      - name: Running ${{ matrix.target.service }} tests
+        run: scripts/tests.sh ${{ matrix.target.service }}
