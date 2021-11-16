@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import WalletLink from 'walletlink'
@@ -8,6 +8,7 @@ import SvgComponents from './svg'
 import { AuthenticationContext } from './Authenticate'
 import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
+import { useAppStorage } from '../../hooks/useAppStorage'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -59,6 +60,13 @@ export const rpcForWalletConnect = (config: any) => {
   return rpc
 }
 
+export const Providers = [
+  'isMetaMask',
+  'isWalletLink',
+  'isWalletConnect'
+] as const;
+export type ProviderName = typeof Providers[number];
+
 const LoginPrompt = ({
   children,
   unlockUserAccount,
@@ -74,7 +82,7 @@ const LoginPrompt = ({
   const { authenticate } = useContext(AuthenticationContext)
   const [walletToShow, setWalletToShow] = useState('')
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
-
+  const { getStorage } = useAppStorage()
   const authenticateIfNotHandled = async (provider: any) => {
     if (onProvider) {
       await onProvider(provider)
@@ -107,6 +115,19 @@ const LoginPrompt = ({
     const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
     await authenticateIfNotHandled(ethereum)
   }
+
+  const tryAutoLogin = useCallback(() => {
+    const storedProvider: ProviderName | null = getStorage('provider') as ProviderName; 
+    if (!storedProvider) return;
+    
+    if (storedProvider === 'isMetaMask') handleInjectProvider();
+    if (storedProvider === 'isWalletLink') handleCoinbaseWalletProvider();
+    if (storedProvider === 'isWalletConnect') handleWalletConnectProvider();
+  }, [])
+
+  useEffect(() => {
+    tryAutoLogin();
+  }, [])
 
   return (
     <Container embedded={!!embedded}>
