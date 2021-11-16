@@ -140,7 +140,7 @@ contract Unlock is
     uint16 indexed version
   );
 
-  // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
+  // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
     address _unlockOwner
   )
@@ -149,6 +149,8 @@ contract Unlock is
   {
     // We must manually initialize Ownable
     UnlockOwnable.__initializeOwnable(_unlockOwner);
+    // add a proxy admin on deployment
+    _deployProxyAdmin();
   }
 
   function initializeProxyAdmin() public {
@@ -191,7 +193,6 @@ contract Unlock is
     if (publicLockLatestVersion < version) publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
-    this.setLockTemplate(impl);
   }
 
   /**
