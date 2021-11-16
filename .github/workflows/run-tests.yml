@@ -1,31 +1,54 @@
 on: [pull_request]
 jobs:
-  run-tests:
+  monorepo:
     name: Unlock Test Suite
     runs-on: ubuntu-latest
     strategy:
       matrix:
         target: 
-        - packages/unlock-js
-        - packages/paywall
-        - newsletter
-        - smart-contracts
-        - smart-contract-extensions
-        - unlock-protocol-com
-        - wedlocks
-        - unlock-app
-    env:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-      BLOCKTIME: 0
+        - name: "unlock-js-tests"
+          service: packages/unlock-js      
+        - name: "paywall-lib-tests"
+          service: packages/paywall      
+        - name: "newsletter-tests"
+          service: newsletter      
+        - name: "smart-contracts-tests"
+          service: smart-contracts      
+        - name: "smart-contracts-extensions-tests"
+          service: smart-contract-extensions      
+        - name: "unlock-protocol-com-tests"
+          service: unlock-protocol-com      
+        - name: "wedlocks-tests"
+          service: wedlocks      
+        - name: "unlock-app-tests"
+          service: unlock-app
+    # outputs:
+    #   changed-folders:
+    #     ${{ steps.monorepo.outputs.changed }}
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Check for changes in repository
-        run: echo "::set-output name=${{ matrix.target }}_changed::$(scripts/monorepo.sh ${{ matrix.target }} ${{ github.ref_name }})"
+      - name: Check for changes in ${{ matrix.target.service }}
+        run: echo "::set-output name=${{ matrix.target.name }}_changed::$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})"
         shell: bash
-      - name: Running ${{ matrix.target }} tests
-        if: ${{ matrix.target }}_changed
-        run: scripts/tests.sh ${{ matrix.target }}
+      - name: Running ${{ matrix.target.service }} tests
+        if: ${{steps.run_tests.outputs[matrix.target.name]}}
+        run: echo ${{ matrix.target.name }}
         shell: bash
+  # run-tests:
+  #   name: Unlock Test Suite
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     DOCKER_BUILDKIT: 1
+  #     BUILDKIT_PROGRESS: plain
+  #     BLOCKTIME: 0
+  #   steps:
+  #     - run: echo 
+  #     # - uses: actions/checkout@v2
+  # #       with:
+  # #         fetch-depth: 0
+  # #     - name: Check for changes in ${{ matrix.target.service }}
+  # #       run: echo "::set-output name=${{ matrix.target.name }}_changed::$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})"
+  # #       shell: bash
+  # #     - name: Running ${{ matrix.target.service }} tests
+  # #       if: ${{steps.run_tests.outputs[matrix.target.name]}}
+  # #       run: scripts/tests.sh ${{ matrix.target }}
+  # #       shell: bash
