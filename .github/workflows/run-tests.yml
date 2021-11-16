@@ -27,13 +27,13 @@ jobs:
     #     ${{ steps.monorepo.outputs.changed }}
     steps:
       - name: Check for changes in ${{ matrix.target.service }}
-        run: echo "::set-output name=${{ format('{0}_changed', matrix.target.name) }}_changed::$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})"
+        run: echo "::set-output name=${{ format('{0}_changed', matrix.target.name) }}::$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})"
         shell: bash
         id: check_changes
       - name: Running ${{ matrix.target.service }} tests
         # if: ${{steps.monorepo.outputs[format('{0}_changed', matrix.target.name)]}}
         run: |
-          echo ${{ steps.check_changes.outputs }} && \
+          echo ${{join(steps.check_changes.outputs.*, '\n')}} && \
           echo ${{ format('{0}_changed', matrix.target.name) }} && \
           echo ${{ steps.check_changes.outputs[format('{0}_changed', matrix.target.name) ]}}
         shell: bash
