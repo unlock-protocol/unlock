@@ -24,11 +24,6 @@ shared/node_modules/
 
 .vscode
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-
 # yarn
 .yarn/cache
 .yarn/unplugged
