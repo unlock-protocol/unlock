@@ -41,7 +41,7 @@ interface IUnlock
   * @notice Upgrade a lock to a specific version
   * @dev only available for publicLockVersion > 10 (proxyAdmin /required)
   * @param lockAddress the existing lock address
-  * @param version the versin number you are targeting
+  * @param version the version number you are targeting
   * Likely implemented with OpenZeppelin TransparentProxy contract
   */
   function upgradeLock(
