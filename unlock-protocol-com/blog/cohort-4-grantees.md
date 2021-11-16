@@ -1,6 +1,6 @@
 ---
 title: Let's celebrate our 4th Cohort of Unlock Grantees
-subTitle: Unlock is now available on the Binance Smart Chain!
+subTitle: A web3 Discord alternative, memberships, DAO onboarding, and identity!
 authorName: Crystal Street
 publishDate: November 15, 2021
 description: Unlock Grantees Cohort 4 covers everything from easy crypto adoption for SaaS to Element integrations and everything in between!
