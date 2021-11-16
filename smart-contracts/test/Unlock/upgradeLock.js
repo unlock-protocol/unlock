@@ -1,14 +1,6 @@
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('truffle-assertions')
-
-const lockArgs = {
-  expirationDuration: 60 * 60 * 24 * 30, // 30 days
-  tokenAddress: ethers.constants.AddressZero,
-  keyPrice: ethers.utils.parseEther('0.01'),
-  maxNumberOfKeys: 10,
-  lockName: 'A neat upgradeable lock!',
-  salt: web3.utils.randomHex(12),
-}
+const createLockHash = require('../helpers/createLockCalldata')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
@@ -32,9 +24,6 @@ describe('upgradeLock (deploy template with Proxy)', () => {
 
     currentVersion = await publicLock.publicLockVersion()
 
-    // set proxyAdmin
-    await unlock.initializeProxyAdmin()
-
     // add impl as v1
     const txImpl = await unlock.addLockTemplate(
       publicLock.address,
@@ -46,9 +35,15 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     await unlock.setLockTemplate(publicLock.address)
 
     // deploy a simple lock
-    const tx = await unlock
-      .connect(creator)
-      .createLock(...Object.values(lockArgs))
+    const args = [
+      60 * 60 * 24 * 30, // 30 days
+      ethers.constants.AddressZero,
+      ethers.utils.parseEther('0.01'),
+      10,
+      'A neat upgradeable lock!',
+    ]
+    const calldata = await createLockHash({ args, from: creator.address })
+    const tx = await unlock.createLock(calldata)
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')
     const { newLockAddress } = evt.args

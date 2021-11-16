@@ -1,4 +1,3 @@
-const { constants } = require('hardlydifficult-eth')
 const { ethers } = require('hardhat')
 
 async function main({ publicLockAddress, unlockAddress }) {
