@@ -20,6 +20,8 @@ jobs:
       BLOCKTIME: 0
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
       - name: Check for changes in repository
         run: scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }}
         shell: bash
