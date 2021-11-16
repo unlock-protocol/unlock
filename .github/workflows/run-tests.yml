@@ -22,5 +22,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check for changes in repository
         run: scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }}
+        shell: bash
       - name: Running ${{ matrix.target.service }} tests
         run: scripts/tests.sh ${{ matrix.target.service }}
+        shell: bash
