@@ -23,7 +23,6 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         web3.utils.toWei('1', 'ether'), // keyPrice: in wei
         constants.MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
-        // '0x000000000000000000000000',
       ]
       const calldata = await createLockHash({ args })
       transaction = await unlock.createLock(calldata)
