@@ -35,7 +35,6 @@ module.exports = async () => {
 
   // 3. setting lock template
   const version = await publicLock.publicLockVersion()
-  // console.log(await unlock.owner(), unlockOwner.address)
   await unlock.connect(unlockOwner).addLockTemplate(publicLock.address, version)
   await unlock.connect(unlockOwner).setLockTemplate(publicLock.address)
 

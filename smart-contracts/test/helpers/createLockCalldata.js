@@ -5,7 +5,10 @@ module.exports = async ({
   from, // if needed
   signature, // solidity signature string
 }) => {
-  const { interface } = await ethers.getContractFactory('PublicLock')
+  // use fully qualified path to avoid confusion during upgrades test
+  const { interface } = await ethers.getContractFactory(
+    'contracts/PublicLock.sol:PublicLock'
+  )
 
   const func =
     signature || 'initialize(address,uint256,address,uint256,uint256,string)'
