@@ -1,4 +1,3 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers, upgrades } = require('hardhat')
 const { copySync } = require('fs-extra')
 const { addDeployment } = require('../helpers/deployments')
