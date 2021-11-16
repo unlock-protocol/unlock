@@ -238,7 +238,7 @@ contract Unlock is
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
 
     // check perms
-    require(isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
+    require(_isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
 
     // check version
     IPublicLock lock = IPublicLock(lockAddress);
@@ -254,7 +254,7 @@ contract Unlock is
     return lockAddress;
   }
 
-  function isLockManager(address lockAddress, address _sender) public view returns(bool isManager) {
+  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
     IPublicLock lock = IPublicLock(lockAddress);
     return lock.isLockManager(_sender);
   }

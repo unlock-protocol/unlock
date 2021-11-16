@@ -158,11 +158,6 @@ interface IUnlock
     address payable _publicLockAddress
   ) external;
 
-  /**
-   * @dev This checks wether the sender is a manager of the specified lock
-   */
-  function isLockManager(address lockAddress, address _sender) external view returns(bool isManager);
-
   // Allows the owner to change the value tracking variables as needed.
   function resetTrackedValue(
     uint _grossNetworkProduct,
