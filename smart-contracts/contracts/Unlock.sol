@@ -35,9 +35,6 @@ import './utils/UnlockOwnable.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
 
-// TODO: remove console
-import 'hardhat/console.sol';
-
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
