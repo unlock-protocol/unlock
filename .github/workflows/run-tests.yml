@@ -42,7 +42,8 @@ jobs:
         run: |
           echo ${{join(steps.check_changes.outputs.*, '\n')}} && \
           echo ${{ format('{0}_changed', matrix.target.name) }} && \
-          echo ${{ steps.check_changes.outputs[format('{0}_changed', matrix.target.name) ]}}
+          echo ${{ steps.check_changes.outputs[format('{0}_changed', matrix.target.name) ]}} && \
+          echo ${{ steps.check_changes.outputs[format('{0}_changed', matrix.target.name) ] == 'changed' }} 
         shell: bash
   # run-tests:
   #   name: Unlock Test Suite

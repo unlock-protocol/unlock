@@ -12,6 +12,8 @@ if [ ! "$BRANCH" = "master" ]; then
   HAS_CHANGES=$(git diff `git merge-base HEAD origin/master` --name-only -- $SHARED_CONFIG_FILES $SERVICE)
   if [ ! -n "$HAS_CHANGES" ]; then
     echo "No change in $SERVICE, skipping job."
+  else
+    echo "changed"
   fi
 fi
 
