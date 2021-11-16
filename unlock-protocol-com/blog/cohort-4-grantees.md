@@ -32,11 +32,11 @@ MJ, aka Mecyver is working on an Element + Unlock integration. Providing a viabl
 
 Chisos Capital is utilizing Unlock to support their membership club and community of investors and entrepreneurs throughout their ecosystem.
 
-## Carlos Diaz-Padron- MetaDoor DAO App Integration
+## Carlos Diaz-Padron and Gail Wilson - Metaphor
 
 [https://twitter.com/the_carlosdp](https://twitter.com/the_carlosdp)
 
-Carlos is working on an integration for MetaDoor DAO with the intention of creating an easy method for joining a DAO.  This will allow members to bypass expensive, and often prohibitive, token ownership that normally powers DAO participation.
+Carlos and Gail are working on an integration for Metaphor's DAO onboarding tool, with the intention of creating an easy method for joining a DAO.  This will allow members to bypass expensive, and often prohibitive, token ownership that normally powers DAO participation.
 
 ## Fanny Lakoubay - BAD 2.0 (Blockchain Art Directory)
 
