@@ -61,4 +61,4 @@ We’re excited to have such insightful projects in our grant program and are wi
 
 AND if you already have an idea for an integration using Unlock, please submit your project [proposal here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 
-Unlock Protocol is driven by and for our community. We’re here to help YOU build the future path of blockchain technology and together we’ll explore all that’s possible with community and decentralization as our core foundations. [Join the conversation](https://unlock.community/).
+Unlock Protocol is driven by and for our community. We’re here to help YOU build the future path of blockchain technology. Together we’ll explore all that’s possible with community and decentralization as our core foundations. [Join the conversation](https://unlock.community/).
