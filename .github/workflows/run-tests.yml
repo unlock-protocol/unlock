@@ -21,6 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check for changes in repository
-        run: scripts/monorepo.sh ${{ matrix.target.service }} $CIRCLE_BRANCH
+        run: scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }}
       - name: Running ${{ matrix.target.service }} tests
         run: scripts/tests.sh ${{ matrix.target.service }}
