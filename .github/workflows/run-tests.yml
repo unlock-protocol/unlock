@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check for changes in repository
-        run: echo "::set-output name=${{ matrix.target.service }}_changed scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }}"
+        run: echo ::set-output name=${ matrix.target.service }_changed:$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})
         shell: bash
       - name: Running ${{ matrix.target.service }} tests
         if: ${{ matrix.target.service }}_changed
