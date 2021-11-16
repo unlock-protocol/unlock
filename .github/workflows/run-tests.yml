@@ -26,6 +26,9 @@ jobs:
     #   changed-folders:
     #     ${{ steps.monorepo.outputs.changed }}
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Check for changes in ${{ matrix.target.service }}
         run: |
           chmod +x ./scripts/monorepo.sh && \
