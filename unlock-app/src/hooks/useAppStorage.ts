@@ -21,7 +21,7 @@ export function useAppStorage() {
   const getStorage = useCallback((key: string): string | null => {
     const value = localStorage.getItem(getKey(key))
     if (!value) return null
-    return isObject(value) ? JSON.parse(key) : value
+    return isObject(value) ? JSON.parse(value) : value
   }, [])
 
   const clearStorage = useCallback((): void => {
