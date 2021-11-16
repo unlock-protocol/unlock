@@ -13,6 +13,14 @@ interface IUnlock
   function initialize(address _unlockOwner) external;
 
   /**
+  * @dev deploy a ProxyAdmin contract used to upgrade locks
+  */
+  function initializeProxyAdmin() external;
+
+  // store contract proxy admin address
+  function proxyAdminAddress() external view;
+
+  /**
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
@@ -27,6 +35,18 @@ interface IUnlock
     uint _maxNumberOfKeys,
     string calldata _lockName,
     bytes12 _salt
+  ) external returns(address);
+
+  /**
+  * @notice Upgrade a lock to a specific version
+  * @dev only available for publicLockVersion > 10 (proxyAdmin /required)
+  * @param lockAddress the existing lock address
+  * @param version the version number you are targeting
+  * Likely implemented with OpenZeppelin TransparentProxy contract
+  */
+  function upgradeLock(
+    address payable lockAddress, 
+    uint16 version
   ) external returns(address);
 
     /**
@@ -114,6 +134,21 @@ interface IUnlock
     uint _chainId
   )
     external;
+
+  /**
+   * @notice Add a PublicLock template to be used for future calls to `createLock`.
+   * @dev This is used to upgrade conytract per version number
+   */
+  function addLockTemplate(address impl, uint16 version) external;
+
+  // match lock templates addresses with version numbers
+  function publicLockImpls(uint16 _version) external view;
+  
+  // match version numbers with lock templates addresses 
+  function publicLockVersions(address _impl) external view;
+
+  // the latest existing lock template version
+  function publicLockLatestVersion() external view;
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.

@@ -4,6 +4,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const TimeMachineMock = artifacts.require('TimeMachineMock')
 const { reverts } = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
+const createLockHash = require('../helpers/createLockCalldata')
 
 let unlock
 
@@ -21,18 +22,18 @@ contract('Lock / timeMachine', (accounts) => {
   let tx
 
   before(async () => {
-    let salt = 42
     unlock = await getProxy(unlockContract)
     await unlock.setLockTemplate((await TimeMachineMock.new()).address)
-    let tx = await unlock.createLock(
-      new BigNumber(60 * 60 * 24 * 30), // 30 days
+
+    const args = [
+      60 * 60 * 24 * 30, // 30 days
       web3.utils.padLeft(0, 40),
-      new BigNumber(web3.utils.toWei('0.01', 'ether')),
+      web3.utils.toWei('0.01', 'ether'),
       11,
       'TimeMachineMockLock',
-      `0x${salt.toString(16)}`,
-      { from: lockOwner }
-    )
+    ]
+    const calldata = await createLockHash({ args, from: lockOwner })
+    let tx = await unlock.createLock(calldata)
     lockAddress = tx.logs[0].args.newLockAddress
 
     lock = await TimeMachineMock.at(lockAddress)

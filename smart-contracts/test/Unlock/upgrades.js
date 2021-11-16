@@ -2,6 +2,7 @@ const { ethers, upgrades, run } = require('hardhat')
 
 const fs = require('fs-extra')
 const path = require('path')
+const createLockHash = require('../helpers/createLockCalldata')
 
 // files path
 const contractsPath = path.resolve(
@@ -136,7 +137,17 @@ contract('Unlock / upgrades', async (accounts) => {
               // Create Lock
               let lockTx
 
-              if (versionNumber >= 5) {
+              if (versionNumber >= 10) {
+                const args = [
+                  60 * 60 * 24, // expirationDuration 1 day
+                  web3.utils.padLeft(0, 40), // token address
+                  keyPrice,
+                  5, // maxNumberOfKeys
+                  'UpgradeTestingLock',
+                ]
+                const calldata = await createLockHash({ args })
+                lockTx = await unlock.connect(lockOwner).createLock(calldata)
+              } else if (versionNumber >= 5) {
                 // Version 5 introduced `create2`, requiring a salt
                 lockTx = await unlock.connect(lockOwner).createLock(
                   60 * 60 * 24, // expirationDuration 1 day
@@ -234,6 +245,14 @@ contract('Unlock / upgrades', async (accounts) => {
                     await PublicLockLatest.deploy()
                   await publicLockLatestTemplate.deployed()
 
+                  // set template
+                  const version =
+                    await publicLockLatestTemplate.publicLockVersion()
+                  await unlock.initializeProxyAdmin()
+                  await unlock.addLockTemplate(
+                    publicLockLatestTemplate.address,
+                    version
+                  )
                   await unlock.setLockTemplate(publicLockLatestTemplate.address)
                 })
 
@@ -309,14 +328,15 @@ contract('Unlock / upgrades', async (accounts) => {
 
                   beforeEach(async () => {
                     // Create a new Lock
-                    const lockLatestTx = await unlock.createLock(
+                    const args = [
                       60 * 60 * 24, // expirationDuration 1 day
                       web3.utils.padLeft(0, 40),
                       keyPrice,
                       5, // maxNumberOfKeys
                       'After-Upgrade Lock',
-                      '0x950c4fa9d9ae57edb7f2ccca' // web3.utils.randomHex(12),
-                    )
+                    ]
+                    const calldata = await createLockHash({ args })
+                    const lockLatestTx = await unlock.createLock(calldata)
 
                     const { events } = await lockLatestTx.wait()
                     const evt = events.find(({ event }) => event === 'NewLock')
@@ -339,7 +359,7 @@ contract('Unlock / upgrades', async (accounts) => {
                     if (versionNumber !== versionsCount - 1) {
                       // ignore last version
                       const version = await lockLatest.publicLockVersion()
-                      assert.notEqual(await version.toNumber(), versionNumber)
+                      assert.notEqual(await version, versionNumber)
                     }
                   })
 

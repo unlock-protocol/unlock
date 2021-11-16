@@ -1,4 +1,3 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers, upgrades } = require('hardhat')
 const { copySync } = require('fs-extra')
 const { addDeployment } = require('../helpers/deployments')
@@ -34,10 +33,9 @@ module.exports = async () => {
   await addDeployment('PublicLock', publicLock)
 
   // 3. setting lock template
-  unlock.setLockTemplate(publicLock.address, {
-    from: unlockOwner.address,
-    gasLimit: constants.MAX_GAS,
-  })
+  const version = await publicLock.publicLockVersion()
+  await unlock.connect(unlockOwner).addLockTemplate(publicLock.address, version)
+  await unlock.connect(unlockOwner).setLockTemplate(publicLock.address)
 
   // 4. deploy UDT
   const UDT = await ethers.getContractFactory('UnlockDiscountToken')

@@ -1,4 +1,5 @@
 const { reverts } = require('truffle-assertions')
+const createLockHash = require('../../helpers/createLockCalldata')
 
 const PublicLock = artifacts.require('PublicLock')
 
@@ -15,18 +16,15 @@ exports.shouldCreateLock = (options) => {
     describe('lock created successfully', () => {
       let transaction
       beforeEach(async () => {
-        transaction = await unlock.createLock(
+        const args = [
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           web3.utils.padLeft(0, 40),
           web3.utils.toWei('1', 'ether'), // keyPrice: in wei
           100, // maxNumberOfKeys
           'New Lock',
-          '0x000000000000000000000000',
-          {
-            from: accounts[0],
-            gas: 6000000,
-          }
-        )
+        ]
+        const calldata = await createLockHash({ args, from: accounts[0] })
+        transaction = await unlock.createLock(calldata, { gas: 6000000 })
         evt = transaction.logs.find((v) => v.event === 'NewLock')
       })
 
@@ -60,19 +58,18 @@ exports.shouldCreateLock = (options) => {
 
     describe('lock creation fails', () => {
       it('should fail if expirationDuration is too large', async () => {
-        await reverts(
-          unlock.createLock(
-            60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-            web3.utils.padLeft(0, 40),
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-            100, // maxNumberOfKeys
-            'Too Big Expiration Lock',
-            '0x000000000000000000000000',
-            {
-              from: accounts[0],
-              gas: 4000000,
-            }
-          )
+        const args = [
+          60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
+          web3.utils.padLeft(0, 40),
+          web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+          100, // maxNumberOfKeys
+          'Too Big Expiration Lock',
+        ]
+        const calldata = await createLockHash({ args, from: accounts[0] })
+        reverts(
+          unlock.createLock(calldata, {
+            gas: 4000000,
+          })
         )
       })
     })

@@ -3,6 +3,7 @@ const BigNumber = require('bignumber.js')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const WalletService = require('../helpers/walletServiceMock.js')
+const createLockHash = require('../helpers/createLockCalldata')
 
 let unlock
 
@@ -11,18 +12,15 @@ contract('Unlock / gas', (accounts) => {
 
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
-
-    let tx = await unlock.createLock(
+    const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       web3.utils.padLeft(0, 40),
       web3.utils.toWei('1', 'ether'), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',
-      '0x000000000000000000000000',
-      {
-        from: accounts[0],
-      }
-    )
+    ]
+    const calldata = await createLockHash({ args, from: accounts[0] })
+    let tx = await unlock.createLock(calldata)
     createLockGas = new BigNumber(tx.receipt.gasUsed)
   })
 

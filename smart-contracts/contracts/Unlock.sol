@@ -28,9 +28,10 @@ pragma solidity ^0.8.2;
  */
 
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
-import './utils/Ownable.sol';
-import './utils/Clone2Factory.sol';
+import '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
+import '@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
+import './utils/UnlockOwnable.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
 
@@ -38,9 +39,8 @@ import './interfaces/IMintableERC20.sol';
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
   Initializable,
-  Ownable
+  UnlockOwnable
 {
-  using Clone2Factory for address;
 
   /**
    * The struct for a lock
@@ -75,7 +75,7 @@ contract Unlock is
   // Used by locks where the owner has not set a custom symbol
   string public globalTokenSymbol;
 
-  // The address of the public lock template, used when `createLock` is called
+  // The address of the latest public lock template, used by default when `createLock` is called
   address public publicLockAddress;
 
   // Map token address to oracle contract address if the token is supported
@@ -94,10 +94,24 @@ contract Unlock is
   // Blockchain ID the network id on which this version of Unlock is operating
   uint public chainId;
 
+  // store proxy admin
+  address public proxyAdminAddress;
+  ProxyAdmin private proxyAdmin;
+
+  // publicLock templates
+  mapping(address => uint16) private _publicLockVersions;
+  mapping(uint16 => address) private _publicLockImpls;
+  uint16 public publicLockLatestVersion;
+
   // Events
   event NewLock(
     address indexed lockOwner,
     address indexed newLockAddress
+  );
+
+  event LockUpgraded(
+    address lockAddress,
+    uint16 version
   );
 
   event ConfigUnlock(
@@ -118,7 +132,12 @@ contract Unlock is
     uint totalDiscountGranted
   );
 
-  // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
+  event UnlockTemplateAdded(
+    address indexed impl,
+    uint16 indexed version
+  );
+
+  // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(
     address _unlockOwner
   )
@@ -126,51 +145,81 @@ contract Unlock is
     initializer()
   {
     // We must manually initialize Ownable
-    Ownable.__initializeOwnable(_unlockOwner);
+    UnlockOwnable.__initializeOwnable(_unlockOwner);
+    // add a proxy admin on deployment
+    _deployProxyAdmin();
+  }
+
+  function initializeProxyAdmin() public {
+    require(proxyAdminAddress == address(0), "ProxyAdmin already deployed");
+    _deployProxyAdmin();
   }
 
   /**
-  * @dev Create lock
+  * @dev Deploy the ProxyAdmin contract that will manage lock templates upgrades
+  * This deploys an instance of ProxyAdmin used by PublicLock transparent proxies.
+  */
+  function _deployProxyAdmin() private returns(address) {
+    proxyAdmin = new ProxyAdmin();
+    proxyAdminAddress = address(proxyAdmin);
+    return address(proxyAdmin);
+  }
+
+  /**
+  * @dev Helper to get the version number of a template from his address
+  */
+  function publicLockVersions(address _impl) external view returns(uint16) {
+    return _publicLockVersions[_impl];
+  }
+
+  /**
+  * @dev Helper to get the address of a template based on its version number
+  */
+  function publicLockImpls(uint16 _version) external view returns(address) {
+    return _publicLockImpls[_version];
+  }
+
+  /**
+  * @dev Registers a new PublicLock template immplementation
+  * The template is identified by a version number
+  * Once registered, the template can be used to upgrade an existing Lock
+  */
+  function addLockTemplate(address impl, uint16 version) public onlyOwner {
+    _publicLockVersions[impl] = version;
+    _publicLockImpls[version] = impl;
+    if (publicLockLatestVersion < version) publicLockLatestVersion = version;
+
+    emit UnlockTemplateAdded(impl, version);
+  }
+
+  /**
+  * @notice Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * @param _salt an identifier for the Lock, which is unique for the user.
-  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
-  * to know the lock's address before the transaction is mined.
+  * @param data bytes containing the call to initialize the lock template
+  * @dev this call is passed as encoded function - for instance:
+  *  bytes memory data = abi.encodeWithSignature(
+  *    'initialize(address,uint256,address,uint256,uint256,string)',
+  *    msg.sender,
+  *    _expirationDuration,
+  *    _tokenAddress,
+  *    _keyPrice,
+  *    _maxNumberOfKeys,
+  *    _lockName
+  *  );
+  * @return address of the create lock
   */
   function createLock(
-    uint _expirationDuration,
-    address _tokenAddress,
-    uint _keyPrice,
-    uint _maxNumberOfKeys,
-    string memory _lockName,
-    bytes12 _salt
+    bytes memory data
   ) public returns(address)
   {
+    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
-    // create lock
-    bytes32 salt;
-    // solium-disable-next-line
-    assembly
-    {
-      let pointer := mload(0x40)
-      // The salt is the msg.sender
-      mstore(pointer, shl(96, caller()))
-      // followed by the _salt provided
-      mstore(add(pointer, 0x14), _salt)
-      salt := mload(pointer)
-    }
-    address payable newLock = payable(address(uint160(publicLockAddress.createClone2(salt))));
-    IPublicLock(newLock).initialize(
-      msg.sender,
-      _expirationDuration,
-      _tokenAddress,
-      _keyPrice,
-      _maxNumberOfKeys,
-      _lockName
-    );
+    // deploy a proxy pointing to impl
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockAddress, proxyAdminAddress, data);
+    address payable newLock = payable(address(proxy));
 
-    // Assign the new Lock
+    // assign the new Lock
     locks[newLock] = LockBalances({
       deployed: true, totalSales: 0, yieldedDiscountTokens: 0
     });
@@ -178,6 +227,36 @@ contract Unlock is
     // trigger event
     emit NewLock(msg.sender, newLock);
     return newLock;
+  }
+
+  /**
+   * @dev Upgrade a Lock template implementation
+   * @param lockAddress the address of the lock to be upgraded
+   * @param version the version number of the template
+   */
+  function upgradeLock(address payable lockAddress, uint16 version) public returns(address) {
+    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
+
+    // check perms
+    require(_isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
+
+    // check version
+    IPublicLock lock = IPublicLock(lockAddress);
+    uint16 currentVersion = lock.publicLockVersion();
+    require( version == currentVersion + 1, 'version error: only +1 increments are allowed');
+
+    // make our upgrade
+    address impl = _publicLockImpls[version];
+    TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
+    proxyAdmin.upgrade(proxy, impl);
+
+    emit LockUpgraded(lockAddress, version);
+    return lockAddress;
+  }
+
+  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
+    IPublicLock lock = IPublicLock(lockAddress);
+    return lock.isLockManager(_sender);
   }
 
   /**
@@ -342,7 +421,7 @@ contract Unlock is
    * @dev This will initialize the template and revokeOwnership.
    */
   function setLockTemplate(
-    address payable _publicLockAddress
+    address _publicLockAddress
   ) external
     onlyOwner
   {
