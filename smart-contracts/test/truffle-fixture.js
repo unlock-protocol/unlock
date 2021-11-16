@@ -34,10 +34,10 @@ module.exports = async () => {
   await addDeployment('PublicLock', publicLock)
 
   // 3. setting lock template
-  unlock.setLockTemplate(publicLock.address, {
-    from: unlockOwner.address,
-    gasLimit: constants.MAX_GAS,
-  })
+  const version = await publicLock.publicLockVersion()
+  // console.log(await unlock.owner(), unlockOwner.address)
+  await unlock.connect(unlockOwner).addLockTemplate(publicLock.address, version)
+  await unlock.connect(unlockOwner).setLockTemplate(publicLock.address)
 
   // 4. deploy UDT
   const UDT = await ethers.getContractFactory('UnlockDiscountToken')
