@@ -40,5 +40,5 @@ jobs:
         if: ${{ steps.check_changes.outputs[format('{0}_changed', matrix.target.name) ] == 'changed' }}
         run: |
           chmod +x ./scripts/tests.sh && \
-          ./scripts/tests.sh ${{ matrix.target }}
+          ./scripts/tests.sh ${{ matrix.target.service }}
         shell: bash
