@@ -1,7 +1,7 @@
 ---
 title: Announcing Unlock Protocol's $50,000 Smart Contract Audit Contest
 subTitle: Find bugs. Earn money.
-authorName: Unlock Protocol Team
+authorName: Christopher Carfi
 publishDate: November 17, 2021
 description: $50,000 in prizes for participants in the Unlock Protocol smart contract code audit contest, launched in conjunction with Code4rena.
 image: /static/images/blog/code4rena-contest/c4-logo.png
