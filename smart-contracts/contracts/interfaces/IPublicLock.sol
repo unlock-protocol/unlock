@@ -40,7 +40,7 @@ interface IPublicLock
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
   */
-  function publicLockVersion() external pure returns (uint);
+  function publicLockVersion() external pure returns (uint16);
 
   /**
   * @notice Used to disable lock before migrating keys and/or destroying contract.
