@@ -5,23 +5,23 @@ on:
       - production
 jobs:
   deploy-locksmith-production:    
-    uses: unlock-protocol/unlock/.github/workflows/heroku.yml@master
+    uses: unlock-protocol/unlock/.github/workflows/heroku.yml@gh-actions
     with:
       service: locksmith
       app-name: unlock-locksmith-production
   deploy-unlock-app-netlify:
-    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@gh-actions
     with:
       service: unlock-app
   deploy-paywall-to-netlify:
-    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@gh-actions
     with:
       service: paywall-app
   deploy-newsletter-netlify:
-    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@gh-actions
     with:
       service: "newsletter"
   deploy-unlock-protocol-com-netlify:
-    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@gh-actions
     with:
       service: "unlock-protocol-com"

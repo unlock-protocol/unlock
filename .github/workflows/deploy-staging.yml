@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   deploy-locksmith-staging:    
-    uses: unlock-protocol/unlock/.github/workflows/heroku.yml@master
+    uses: unlock-protocol/unlock/.github/workflows/heroku.yml@gh-actions
     with:
       service: locksmith
       app-name: unlock-locksmith-staging
