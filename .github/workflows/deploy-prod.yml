@@ -1,0 +1,27 @@
+name: Staging Deployment
+on: 
+  push:
+    branches:
+      - production
+jobs:
+  deploy-locksmith-production:    
+    uses: unlock-protocol/unlock/.github/workflows/heroku.yml@master
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-production
+  deploy-unlock-app-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    with:
+      service: unlock-app
+  deploy-paywall-to-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    with:
+      service: paywall-app
+  deploy-newsletter-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    with:
+      service: "newsletter"
+  deploy-unlock-protocol-com-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/netlify.yml@master
+    with:
+      service: "unlock-protocol-com"
