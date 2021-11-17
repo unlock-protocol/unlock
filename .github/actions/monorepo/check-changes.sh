@@ -22,7 +22,7 @@ main() {
       changed+="$f"
     fi
   done
-  json_array=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -s .)
+  json_array=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -sc .)
   echo $json_array
 }
 
