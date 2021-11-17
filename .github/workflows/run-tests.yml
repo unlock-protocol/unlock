@@ -1,31 +1,36 @@
-on: 
-  workflow_run:
-    workflows: [ "Check changes in monorepo" ]
-    types: [completed]
+on: [pull_request]
 
 name: Unlock Test Suite
 jobs:
   monorepo-changes:
     runs-on: ubuntu-latest
-    name: Get repos w changes
+    name: "Check for changes in all monorepo"
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      changed: ${{ steps.check-changes.outputs.changed }}
+    env:
+      TARGETS: '[
+        "locksmith",
+        "packages/unlock-js",
+        "packages/paywall",
+        "newsletter",
+        "smart-contracts",
+        "smart-contract-extensions",
+        "unlock-protocol-com",
+        "wedlocks",
+        "unlock-app" 
+        ]'
     steps:
-      - name: Download artefact
-        if: github.event_name == 'workflow_run'
-        uses: dawidd6/action-download-artifact@v2
+      - uses: actions/checkout@v2
         with:
-          workflow: 'Check changes in monorepo'
-          workflow_conclusion: success
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          run_id: ${{ github.event.workflow_run.id }}
-          run_number: ${{ github.event.workflow_run.run_number }}
-          name: changed.json
-      - id: set-matrix
+          fetch-depth: 0
+      - name: "Check which folders have changed"
         run: |
-          JSON=$(cat changed.json)
-          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
-
+          changed=$(.github/actions/monorepo/check-changes.sh)
+          printf 'changed:%s\n' "${changed[@]}"
+          echo ::set-output name=changed::'$changed'
+        shell: bash
+        id: check-changes
+    
   run-tests:
     needs: monorepo-changes
     name: Tests ${{ matrix.target }}
@@ -41,7 +46,7 @@ jobs:
       DB_HOSTNAME: db
     strategy:
       matrix: 
-        target: ${{fromJson(needs.monorepo-changes.outputs.matrix)}}
+        target: ${{fromJson(needs.monorepo-changes.outputs.changed)}}
     steps:
       - uses: actions/checkout@v2
       - name: Running ${{ matrix.target }} tests
