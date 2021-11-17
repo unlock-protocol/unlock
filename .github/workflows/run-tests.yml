@@ -1,15 +1,23 @@
 on: [pull_request]
+name: Unlock Test Suite
 jobs:
   run-tests:
-    name: Unlock Test Suite
+    name: Tests ${{ matrix.target.service }}
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
       BLOCKTIME: 0
+      # below env vars are just used by locksmith
+      DB_USERNAME: locksmith_test
+      DB_PASSWORD: password
+      DB_NAME: locksmith_test
+      DB_HOSTNAME: db
     strategy:
       matrix:
         target: 
+        - name: locksmith
+          service: locksmith
         - name: "unlock-js-tests"
           service: packages/unlock-js      
         - name: "paywall-lib-tests"
