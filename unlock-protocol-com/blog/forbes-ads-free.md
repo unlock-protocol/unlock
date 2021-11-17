@@ -4,7 +4,7 @@ subTitle: Memberships can have diverse benefits!
 authorName: Julien Genestoux
 publishDate: December 17, 2019
 description: Forbes introduced their very first membership today and it lets anyone with an ethereum wallet unlock an ads free experience
-image: /static/images/blog/forbes-ads-free/forbes.svg
+image: /static/images/blog/forbes-ads-free/forbes.png
 ---
 
 At Unlock, we believe that the attention driven economy will be replaced by a membership driven economy. In today's web, creation is rewarded if it is able to attract the eyes, rather than expand the sight: this brought us information overload, endless slideshows, clickbait and fake news.
