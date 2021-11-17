@@ -1,0 +1,13 @@
+name: 'Open weekly production pull request'
+on:
+  schedule:
+    - cron: '30 12 * * 2'
+jobs:
+  prod-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Open production PR"
+        run: |
+          chmod +x scripts/automated-production-pr.sh
+          scripts/automated-production-pr.sh
