@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Check for changes in all monorepo"
     outputs:
-      matrix: ${{ steps.check-changes.outputs.matrix }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     env:
       TARGETS: '[
         "locksmith",
