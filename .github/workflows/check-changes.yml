@@ -1,0 +1,36 @@
+on: [pull_request]
+name: Check changes in monorepo folders
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    name: "Check for changes in all monorepo"
+    outputs:
+      matrix: ${{ steps.check-changes.outputs.matrix }}
+    env:
+      TARGETS: '[
+        "locksmith",
+        "packages/unlock-js",
+        "packages/paywall",
+        "newsletter",
+        "smart-contracts",
+        "smart-contract-extensions",
+        "unlock-protocol-com",
+        "wedlocks",
+        "unlock-app" 
+        ]'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: "Check which folders have changed"
+        run: |
+          changes=$(.github/actions/check-changes/monorepo.sh)
+          echo printf '%s\n' "${changed[@]}"
+          echo "::set-output matrix=changed::'$changes'"
+        shell: bash
+        id: check-changes
+      - name: "Assign changes to output"
+        id: set-matrix
+        run: |
+          echo "::set-output name=matrix::${{ fromJson(steps.check_changes.outputs.changed) }}"      
+
