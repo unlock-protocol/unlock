@@ -10,8 +10,12 @@ main() {
       changed+="$f"
     fi
   done
-  json_array=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -sc .)
-  echo $json_array
+  if [ ${#changed[@]} -eq 0 ]; then
+    echo "[]"
+  else
+    json_array=$(printf '%s\n' "${changed[@]}" | jq -R . | jq -sc .)
+    echo $json_array
+  fi
 }
 
 main
