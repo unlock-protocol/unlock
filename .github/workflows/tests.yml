@@ -31,7 +31,7 @@ jobs:
         shell: bash
         id: check-changes
     
-  run-tests:
+  unit-tests:
     needs: monorepo-changes
     name: Tests ${{ matrix.target }}
     runs-on: ubuntu-latest
@@ -52,3 +52,23 @@ jobs:
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash
+
+  integration-tests:
+    name: Integration Tests
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Integration Tests
+        run: scripts/integration-tests.sh
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: /tmp/screenshots
+      - name: Log failing tests
+        if: ${{ failure() }}
+        run: ./scripts/docker-compose-log.sh
