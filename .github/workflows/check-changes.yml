@@ -26,7 +26,7 @@ jobs:
         run: |
           changes=$(.github/actions/check-changes/monorepo.sh)
           echo printf '%s\n' "${changed[@]}"
-          echo "::set-output matrix=changed::'$changes'"
+          echo "::set-output name:changed=changed::'$changes'"
         shell: bash
         id: check-changes
       - name: "Assign changes to output"
