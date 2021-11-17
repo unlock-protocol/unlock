@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: "Check which folders have changed"
         run: |
-          changed=$(.github/actions/check-changes/monorepo.sh)
+          changed=$(.github/actions/monorepo/check-changes.sh)
           printf '%s\n' "${changed[@]}"
           echo ::set-output name=changed::$changed"
         shell: bash
