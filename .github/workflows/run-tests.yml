@@ -27,7 +27,7 @@ jobs:
         run: |
           changed=$(.github/actions/monorepo/check-changes.sh)
           printf 'changed:%s\n' "${changed[@]}"
-          echo ::set-output name=changed::'$changed'
+          echo ::set-output name=changed::$changed
         shell: bash
         id: check-changes
     
@@ -46,7 +46,7 @@ jobs:
       DB_HOSTNAME: db
     strategy:
       matrix: 
-        target: ${{fromJson(needs.monorepo-changes.outputs.changed)}}
+        target: ${{fromJson( needs.monorepo-changes.outputs.changed )}}
     steps:
       - uses: actions/checkout@v2
       - name: Running ${{ matrix.target }} tests
