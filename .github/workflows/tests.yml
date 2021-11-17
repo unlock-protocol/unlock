@@ -35,7 +35,7 @@ jobs:
     needs: monorepo-changes
     name: Tests ${{ matrix.target }}
     runs-on: ubuntu-latest
-    if: ${{ needs.monorepo-changes.outputs.changed == [] }}
+    if: ${{ needs.monorepo-changes.outputs.changed == '[]' }}
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
