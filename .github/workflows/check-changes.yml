@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Check for changes in all monorepo"
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      changed: ${{ steps.check-changes.outputs.changed }}
     env:
       TARGETS: '[
         "locksmith",
@@ -29,8 +29,3 @@ jobs:
           echo ::set-output name=changed::'$changed'
         shell: bash
         id: check-changes
-      - name: "Assign changes to output"
-        id: set-matrix
-        run: |
-          echo "::set-output name=matrix::${{ fromJson(steps.check_changes.outputs.changed) }}"      
-
