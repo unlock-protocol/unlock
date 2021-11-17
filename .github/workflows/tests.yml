@@ -4,7 +4,7 @@ name: Unlock Test Suite
 jobs:
   monorepo-changes:
     runs-on: ubuntu-latest
-    name: "Check for changes in all monorepo"
+    name: "Check for changes in monorepo"
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}
     env:
