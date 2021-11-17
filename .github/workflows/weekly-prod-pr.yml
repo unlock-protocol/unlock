@@ -8,6 +8,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: "Open production PR"
-        run: |
-          chmod +x scripts/automated-production-pr.sh
-          scripts/automated-production-pr.sh
+        run: scripts/automated-production-pr.sh

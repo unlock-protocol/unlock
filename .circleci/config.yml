@@ -21,7 +21,9 @@ jobs:
       - checkout
       - run:
           name: Check for changes in repository
-          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
+          command: |
+            changed=$(scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH)
+            if [ $changed != "changed"] then; do circleci step halt ;done
       - run:
           name: Running << parameters.service >> tests
           command: scripts/tests.sh << parameters.service >>
