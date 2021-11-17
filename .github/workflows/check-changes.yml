@@ -30,8 +30,3 @@ jobs:
           echo $changed > changed.json
         shell: bash
         id: check-changes
-      - name: "Save to file"
-        uses: actions/upload-artifact@v2
-        with:
-          name: changes
-          path: changed.json
