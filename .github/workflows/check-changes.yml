@@ -1,5 +1,5 @@
 on: [pull_request]
-name: Check changes in monorepo folders
+name: "Check changes in monorepo"
 jobs:
   check-changes:
     runs-on: ubuntu-latest
@@ -27,5 +27,11 @@ jobs:
           changed=$(.github/actions/monorepo/check-changes.sh)
           printf 'changed:%s\n' "${changed[@]}"
           echo ::set-output name=changed::'$changed'
+          echo $changed > changed.json
         shell: bash
         id: check-changes
+      - name: "Save to file"
+        uses: actions/upload-artifact@v2
+        with:
+          name: changes
+          path: changed.json

@@ -1,8 +1,34 @@
-on: [pull_request]
+on: 
+  workflow_run:
+    workflows: [ "Check changes in monorepo" ]
+    types: [completed]
+
 name: Unlock Test Suite
 jobs:
+  monorepo-changes:
+    runs-on: ubuntu-latest
+    name: Get repos w changes
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Download artefact
+        if: github.event_name == 'workflow_run'
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: 'Check changes in monorepo'
+          workflow_conclusion: success
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+          run_number: ${{ github.event.workflow_run.run_number }}
+          name: changed.json
+      - id: set-matrix
+        run: |
+          JSON=$(cat changed.json)
+          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
+
   run-tests:
-    name: Tests ${{ matrix.target.service }}
+    needs: monorepo-changes
+    name: Tests ${{ matrix.target }}
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
@@ -14,39 +40,10 @@ jobs:
       DB_NAME: locksmith_test
       DB_HOSTNAME: db
     strategy:
-      matrix:
-        target: 
-        - name: locksmith
-          service: locksmith
-        - name: "unlock-js-tests"
-          service: packages/unlock-js      
-        - name: "paywall-lib-tests"
-          service: packages/paywall      
-        - name: "newsletter-tests"
-          service: newsletter      
-        - name: "smart-contracts-tests"
-          service: smart-contracts      
-        - name: "smart-contracts-extensions-tests"
-          service: smart-contract-extensions      
-        - name: "unlock-protocol-com-tests"
-          service: unlock-protocol-com      
-        - name: "wedlocks-tests"
-          service: wedlocks      
-        - name: "unlock-app-tests"
-          service: unlock-app
+      matrix: 
+        target: ${{fromJson(needs.monorepo-changes.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Check for changes in ${{ matrix.target.service }}
-        run: |
-          chmod +x ./scripts/monorepo.sh
-          echo "::set-output name=${{ format('{0}_changed', matrix.target.name) }}::$(scripts/monorepo.sh ${{ matrix.target.service }} ${{ github.ref_name }})"
-        shell: bash
-        id: check_changes
-      - name: Running ${{ matrix.target.service }} tests
-        if: ${{ steps.check_changes.outputs[format('{0}_changed', matrix.target.name) ] == 'changed' }}
-        run: |
-          chmod +x ./scripts/tests.sh && \
-          ./scripts/tests.sh ${{ matrix.target.service }}
+      - name: Running ${{ matrix.target }} tests
+        run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash
