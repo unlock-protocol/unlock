@@ -17,10 +17,10 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v2
-      - name: Check for changes in ${{ input.service }}
+      - name: Check for changes in ${{ inputs.service }}
         run: |
-          chmod +x ./scripts/monorepo.sh && \
-          echo "::set-output name=${{ format('{0}_changed', input.service) }}::$(scripts/monorepo.sh ${{ input.service }} ${{ github.ref_name }})"
+          changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
       - name: Check if forked PR
@@ -28,8 +28,7 @@ jobs:
           echo "::set-output name=is_forked::$(${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}})
       - name: Set target environment
         run: |
-          echo "::set-output name=target::$(${{ github.ref == 'refs/heads/production' || input.service == 'unlock-protocol-com' }} && 'prod' || 'staging')"
+          echo "::set-output name=target::$(${{ contains(github.base_ref, 'production') || input.service == 'unlock-protocol-com' }} && 'prod' || 'staging')"
       - name: Deploy to Netlify
         run: |
-          chmod +x ./scripts/deploy.sh && \
-          scripts/deploy.sh ${{ outputs.target }} ${{ input.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ outputs.is_forked }}
+          scripts/deploy.sh ${{ outputs.target }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ outputs.is_forked }}

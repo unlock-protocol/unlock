@@ -14,7 +14,7 @@ on:
 
 jobs:
   deploy-to-heroku:
-    name: Deploy ${{ input.service }} on Heroku (${{ input.app-name }})
+    name: Deploy ${{ inputs.service }} on Heroku (${{ inputs.app-name }})
     runs-on: ubuntu-latest
     env:
       DOCKER_REPOSITORY: unlockprotocol
@@ -22,14 +22,13 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v2
-      - name: Check for changes in ${{ input.service }}
+      - name: Check for changes in ${{ inputs.service }}
         run: |
-          chmod +x ./scripts/monorepo.sh
-          echo "::set-output name=${{ format('{0}_changed', input.service) }}::$(scripts/monorepo.sh ${{ input.service }} ${{ github.ref_name }})"
+          changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          echo "::set-output name=changed::$changed"
         shell: bash
-        id: check_changes      
+        id: check_changes
       - name: Build & deploy to heroku
-        if: ${{ steps.check_changes.outputs[format('{0}_changed', input.service) ] == 'changed' }}
+        if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
-          chmod +x ./scripts/heroku.sh && \
           sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }}
