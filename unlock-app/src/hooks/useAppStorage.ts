@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { ProviderName } from '../components/interface/LoginPrompt'
 
 const APP_NAME = '@unlock-app'
 
@@ -31,9 +32,14 @@ export function useAppStorage() {
       .forEach(removeKey)
   }, [])
 
+  const getStoredProvider = useCallback(() => {
+    return getStorage('provider') as ProviderName;
+  }, [])
+
   return {
     setStorage,
     getStorage,
     clearStorage,
+    getStoredProvider
   }
 }

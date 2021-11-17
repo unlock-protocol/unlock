@@ -20,6 +20,7 @@ interface LoginPromptProps {
   activeColor?: string
   injectedProvider?: any
   onProvider?: (provider: any) => void
+  onAutoLogin?: (promise: Promise<any>) => any
 }
 
 export interface EthereumWindow extends Window {
@@ -63,9 +64,9 @@ export const rpcForWalletConnect = (config: any) => {
 export const Providers = [
   'isMetaMask',
   'isWalletLink',
-  'isWalletConnect'
-] as const;
-export type ProviderName = typeof Providers[number];
+  'isWalletConnect',
+] as const
+export type ProviderName = typeof Providers[number]
 
 const LoginPrompt = ({
   children,
@@ -77,12 +78,13 @@ const LoginPrompt = ({
   injectedProvider,
   activeColor,
   onProvider,
+  onAutoLogin,
 }: LoginPromptProps) => {
   const config = useContext(ConfigContext)
   const { authenticate } = useContext(AuthenticationContext)
   const [walletToShow, setWalletToShow] = useState('')
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
-  const { getStorage } = useAppStorage()
+  const { getStoredProvider } = useAppStorage()
   const authenticateIfNotHandled = async (provider: any) => {
     if (onProvider) {
       await onProvider(provider)
@@ -116,17 +118,19 @@ const LoginPrompt = ({
     await authenticateIfNotHandled(ethereum)
   }
 
-  const tryAutoLogin = useCallback(() => {
-    const storedProvider: ProviderName | null = getStorage('provider') as ProviderName
-    if (!storedProvider) return
-    
-    if (storedProvider === 'isMetaMask') handleInjectProvider()
-    if (storedProvider === 'isWalletLink') handleCoinbaseWalletProvider()
-    if (storedProvider === 'isWalletConnect') handleWalletConnectProvider()
+  useEffect(() => {
+    onAutoLoginCallback()
   }, [])
 
-  useEffect(() => {
-    tryAutoLogin()
+  const onAutoLoginCallback = useCallback(() => {
+    if (typeof onAutoLogin !== 'function') return
+    const storedProvider = getStoredProvider()
+
+    if (storedProvider === 'isMetaMask') onAutoLogin(handleInjectProvider())
+    if (storedProvider === 'isWalletLink')
+      onAutoLogin(handleCoinbaseWalletProvider())
+    if (storedProvider === 'isWalletConnect')
+      onAutoLogin(handleWalletConnectProvider())
   }, [])
 
   return (
