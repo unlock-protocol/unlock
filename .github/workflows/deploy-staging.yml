@@ -1,0 +1,11 @@
+name: Staging Deployment
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  deploy-locksmith-staging:    
+    uses: unlock-protocol/unlock/.github/workflows/deploy/heroku.yml@main
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-staging

@@ -1,0 +1,35 @@
+name: Deploy on Heroku
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        description: "The service/app to build"
+        type: string
+        required: true
+      app-name:
+        description: "The Heroku app name to which the application should be deployed"
+        type: string
+        required: true
+
+jobs:
+  deploy-to-heroku:
+    name: Deploy ${{ input.service }} on Heroku (${{ input.app-name }})
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check for changes in ${{ input.service }}
+        run: |
+          chmod +x ./scripts/monorepo.sh
+          echo "::set-output name=${{ format('{0}_changed', input.service) }}::$(scripts/monorepo.sh ${{ input.service }} ${{ github.ref_name }})"
+        shell: bash
+        id: check_changes      
+      - name: Build & deploy to heroku
+        if: ${{ steps.check_changes.outputs[format('{0}_changed', input.service) ] == 'changed' }}
+        run: |
+          chmod +x ./scripts/heroku.sh && \
+          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }}
