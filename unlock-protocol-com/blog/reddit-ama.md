@@ -1,7 +1,7 @@
 ---
 title: Highlights from Unlock's Reddit AMA on r/Cryptocurrency!
 subTitle: Julien Genestoux and Amber Case answer Reddit's questions about Unlock
-authorName: Crystal Street
+authorName: James Au
 publishDate: September 24, 2021
 description: Unlock's CEO Julien Genestoux and adviser Amber Case answer Reddit's questions about Unlock
 image: /static/images/blog/reddit-ama/reddit-ama.png
