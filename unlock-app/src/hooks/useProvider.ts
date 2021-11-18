@@ -176,7 +176,7 @@ export const useProvider = (config: any) => {
                 {
                   chainId: `0x${network.id.toString(16)}`,
                   chainName: network.name,
-                  rpcUrls: [network.provider],
+                  rpcUrls: [network.publicProvider],
                   nativeCurrency: network.nativeCurrency,
                 },
               ],
