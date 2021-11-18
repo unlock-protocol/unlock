@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#
+# Check for changes based on git history
+# Directories to be scannned should be passed as a stringified JSON array to env $TARGETS
+# 
 
 main() {
   targets=($(jq -r .[] <<< $TARGETS))

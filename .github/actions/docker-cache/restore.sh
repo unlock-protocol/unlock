@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+#
+# Restore docker buildkit cache from tarball, so it can be directly reused by CI tasks
+# This is used here to bring back yarn V2 cache 
+# which allow to build without re-fetching modules from distant package repo
+# thx to https://github.com/Mahoney-playground/docker-cache-action 
 
 set -euo pipefail
 # shellcheck source=timing.sh
