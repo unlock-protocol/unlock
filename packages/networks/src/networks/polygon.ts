@@ -1,6 +1,7 @@
 import { NetworkConfig } from '../types';
 
 export const polygon: NetworkConfig = {
+    publicProvider: 'https://rpc-mainnet.maticvigil.com/',
     provider:
         'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
     unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',

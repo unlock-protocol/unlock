@@ -1,6 +1,7 @@
 import { NetworkConfig } from '../types';
 
 export const bsc: NetworkConfig = {
+    publicProvider: 'https://bsc-dataseed.binance.org/',
     provider:
         'https://bsc-dataseed.binance.org/',
     unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',

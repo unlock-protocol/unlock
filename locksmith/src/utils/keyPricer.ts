@@ -44,7 +44,7 @@ export default class KeyPricer {
     if (!base) {
       base = 1
     }
-    const providerUrl = networks[network].provider
+    const providerUrl = networks[network].publicProvider
     const provider = new ethers.providers.JsonRpcProvider(providerUrl)
 
     // Price of gas
