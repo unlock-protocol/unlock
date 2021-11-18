@@ -6,11 +6,11 @@ description: "What are contract upgrades on Ethereum, and how we use, test and d
 image: /static/images/blog/unlocking-smart-contracts/code.jpeg
 ---
 
-Blockchains like Ethereum exist to prevent recorded data from being altered. Once published, the content of a contract can not be changed. Only values stored by the contract itself can be updated (i.e. balance, owner, etc) but the code itself is immutable. However, the same address can still lead to different contracts. At Unlock, we are about to deploy the 10th version of our main contract but the [address](https://etherscan.io/address/0x3d5409cce1d45233de1d4ebdee74b8e004abdd13) never changed since day one. How are these upgrades made possible? black magic? blocks reorg? 
+Blockchains like Ethereum exist to prevent recorded data from being altered. Once published, the content of a contract can not be changed. Only values stored by the contract itself can be updated (i.e. balance, owner, etc) but the code itself is immutable. However, the same address can still lead to different contracts. At Unlock, we are about to deploy the 10th version of our main contract but the [address](https://etherscan.io/address/0x3d5409cce1d45233de1d4ebdee74b8e004abdd13) never changed since day one. How are these upgrades made possible? black magic? blocks reorg?
 
 ## Proxies on Ethereum
 
-A proxy is a piece of code that acts as an intermediary between the entity doing a request and the provider answering it. Instead of directly calling a program, you call the proxy that will take care of passing your demand and brings you back what you asked. As a provider, the proxy will take charge of handling all the incoming, forwarding only what asked. 
+A proxy is a piece of code that acts as an intermediary between the entity doing a request and the provider answering it. Instead of directly calling a program, you call the proxy that will take care of passing your demand and brings you back what you asked. As a provider, the proxy will take charge of handling all the incoming, forwarding only what asked.
 
 On Ethereum, *proxy contracts* are used to forward call to an end contract that does the heavy lifting - often called *implementation*. If you decide to change the way the contract behaves, you just need to point the proxy to a new implementation, and tell him to forward things there. Requests can still be sent to the same address (the address of the proxy) but the behaviour may have changed.
 
@@ -18,11 +18,12 @@ This pattern turns out very useful when developing a product like Unlock, becaus
 
 ## Potential storage conflicts
 
-Upgrading a contract is not like updating a web page though. Everything on-chain is unreversible and mistakes are very costly, destroying entire projects - and accessorily costing tons of gas for a simple upgrade. 
+Upgrading a contract is not like updating a web page though. Everything on-chain is unreversible and mistakes are very costly, destroying entire projects - and accessorily costing tons of gas for a simple upgrade.
 
 One important risk is *storage conflicts*. On Ethereum, contracts have their own storage for persitent information. A simple token contract keeps addresses of all the holders in its storage. The storage lives in the almighty Ethereum Virtual Machine (EVM) and takes the form of a very long list, initially full of zeros. When a contract is compiled, each variable is assigned a *slot* in the storage following their order in the contract. When data is stored, the EVM picks some of the zeros in the corresponding slots and replace them with the new value.
 
-![](https://programtheblockchain.com/storage/fixed.png)  
+![](https://programtheblockchain.com/storage/fixed.png)
+
 *Anatomy of a storage slot, from a good [write-up](https://programtheblockchain.com/posts/2018/03/09/understanding-ethereum-smart-contract-storage/).*
 
 When using a proxy, the calls are forwarded to the end/implementation contract, but the data is stored within the proxy itself. To know how to store it, the proxy reads variable from the end contract to define the slots. That means data will be kept when the end contract changes. That also means that if variables changes in the end contract, the storage layout ends up being modified. In certain cases, conflicts in slots can occur, making it impossible for the proxy to find existing slots - or even leading it to erase them.
@@ -35,7 +36,7 @@ Despite avoiding technical failures, we have to make sure to preserve existing f
 
 First, we developed a set of scripts that are used both for local development and multi-chains deployment. Powered by [hardhat](https://hardhat.org), we now have [tools](https://github.com/unlock-protocol/unlock/tree/master/smart-contracts/scripts) to deploy and configure our contracts, submit DAO proposals, upgrade contracts, etc. Before sending an upgade, we run relevant tests on a [local fork of Ethereum mainnet](https://hardhat.org/hardhat-network/guides/mainnet-forking.html), then proceed to an upgrade and finally run the test again against the upgraded version. That way we can check that our contracts behaviours are preserved after an upgrade.
 
-```shell 
+```shell
 $ yarn hardhat
 
 AVAILABLE TASKS:
@@ -72,13 +73,13 @@ However, the minimal proxy approach _did not allow for upgrades_. We wanted all 
 
 We used Open Zeppelin [TransparentProxy](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contracts/proxy/transparent/TransparentUpgradeableProxy.sol) pattern, and added the following logic to our contract :
 
-- when a lock is created:
-  - deploy a proxy 
-  - point it to the latest implemtation
+* when a lock is created:
+    * deploy a proxy
+    * point it to the latest implemtation
 
-- when a lock is upgraded:
-  - check if the caller is authorized as a lock manager
-  - point to the new implementation
+* when a lock is upgraded:
+    * check if the caller is authorized as a lock manager
+    * point to the new implementation
 
 We decided to store a single [`ProxyAdmin`](https://docs.openzeppelin.com/contracts/4.x/api/proxy#ProxyAdmin) instance in our main contract that will take care of all the upgrade process. When `upgradeLock` is called, our main contract will check into the deployed lock if the caller is a lock manager. If yes, our proxy admin will proceed to upgrade the lock. If not, the upgrade will be rejected.
 
