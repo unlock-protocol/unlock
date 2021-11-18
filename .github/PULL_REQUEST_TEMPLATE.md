@@ -1,3 +1,5 @@
+Thank you for your contribution to Unlock Protocol!
+
 # Description
 
 <!--
