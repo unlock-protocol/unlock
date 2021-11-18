@@ -109,7 +109,7 @@ We decided to store a single [`ProxyAdmin`](https://docs.openzeppelin.com/contra
   }
 ```
 
-The various versions are stored in the contract with a version number and its corresponding implementation. For instance, lock managers can launch an upgrade by calling `upgradeLock(0x...lockAddress, 10)` to upgrade their lock to version 10 - or though the dashboard. For better compatibility, we forbid bumps of more than one version number (so version 9 to 10 works, but 8 to 10 will fail).
+The various versions are stored in the contract with a version number and its corresponding implementation. For instance, lock managers can launch an upgrade by calling `upgradeLock(0x...lockAddress, 10)` to upgrade their lock to version 10 - or through the dashboard. For better compatibility, we forbid bumps of more than one version number (so version 9 to 10 works, but 8 to 10 will fail).
 
 ## Coming release
 
