@@ -196,7 +196,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       await lock.purchase(
         0,
         referrer.address,
-        constants.ZERO_ADDRESS,
+        web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
         [],
         {
