@@ -104,6 +104,7 @@ export const Authenticate = ({
     disconnectProvider,
     isUnlockAccount,
     changeNetwork,
+    watchAsset,
   } = useProvider(config)
 
   const authenticate = async (provider, messageToSign) => {
@@ -131,6 +132,7 @@ export const Authenticate = ({
         isUnlockAccount,
         deAuthenticate,
         changeNetwork,
+        watchAsset,
       }}
     >
       {error && <p>{error}</p>}

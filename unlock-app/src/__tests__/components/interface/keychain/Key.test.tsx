@@ -68,7 +68,7 @@ describe.skip('keychain -- Key', () => {
     global.Date.now = dateNowStub
     const { getByText } = render({})
 
-    const button = getByText('Confirm Ownership')
+    const button = getByText('Generate QR Code')
     rtl.fireEvent.click(button)
 
     expect(signData).toHaveBeenCalledWith(
