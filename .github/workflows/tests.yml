@@ -19,26 +19,21 @@ jobs:
         "wedlocks",
         "unlock-app" 
         ]'
+      $FORCE_ALL_TESTS: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Some log"
-        run: |
-          echo ${{ github.event.pull_request.labels.*.name }}
-          echo ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
-          echo $FORCE_ALL_TESTS
-      - name: "Run all tests"
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
-        run: |
-          echo 'Run all tests'
-          echo ::set-output name=changed::$TARGETS
       - name: "Check which folders should run tests"
-        if: "!${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}"
         run: |
-          changed=$(.github/actions/monorepo/check-changes.sh)
+          if [ -z ${FORCE_ALL_TESTS} ]; then
+            echo 'Run all tests'
+            echo ::set-output name=changed::$TARGETS
+          else 
+            changed=$(.github/actions/monorepo/check-changes.sh)
+            echo ::set-output name=changed::$changed
+          fi
           printf 'changed:%s\n' "${changed[@]}"
-          echo ::set-output name=changed::$changed
         shell: bash
         id: check-changes
     
