@@ -22,15 +22,36 @@ contract('Lock / disableLock', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks.FIRST
-    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice,
-    })
-    await lock.purchase(0, keyOwner2, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice,
-    })
-    await lock.purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      keyOwner,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice,
+      }
+    )
+    await lock.purchase(
+      0,
+      keyOwner2,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice,
+      }
+    )
+    await lock.purchase(
+      0,
+      keyOwner3,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice,
+      }
+    )
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
   })
 

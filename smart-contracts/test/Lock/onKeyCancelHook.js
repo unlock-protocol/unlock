@@ -27,10 +27,17 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       constants.ZERO_ADDRESS
     )
     keyPrice = await lock.keyPrice()
-    await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      to,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
     const ID = await lock.getTokenIdFor.call(to)
     await lock.cancelAndRefund(ID, { from: to })
   })
