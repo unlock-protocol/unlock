@@ -139,7 +139,6 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         keyBuyer,
         referrer,
         constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
         [],
         {
           from: keyBuyer,

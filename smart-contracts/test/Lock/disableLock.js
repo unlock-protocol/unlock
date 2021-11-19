@@ -80,16 +80,23 @@ contract('Lock / disableLock', (accounts) => {
 
     it('should fail if a user tries to purchase a key', async () => {
       await reverts(
-        lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice,
-        }),
+        lock.purchase(
+          0,
+          keyOwner,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice,
+          }
+        ),
         'LOCK_DEPRECATED'
       )
     })
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await reverts(
-        lock.purchase(0, keyOwner, accounts[3], [], {
+        lock.purchase(0, keyOwner, accounts[3], web3.utils.padLeft(0, 40), [], {
           value: keyPrice,
         }),
         'LOCK_DEPRECATED'
