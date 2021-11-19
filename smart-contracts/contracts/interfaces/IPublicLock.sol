@@ -213,6 +213,16 @@ interface IPublicLock
   ) external payable;
 
   /**
+  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  */
+  function setGasRefundPercentage(uint8 _percent) external;
+  
+  /**
+  * @dev Returns percentage be refunded to the sender on purchase
+  */
+  function gasRefundPercentage() public view external (uint8 percentage);
+
+  /**
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev this considers any discount from Unlock or the OnKeyPurchase hook.
    */

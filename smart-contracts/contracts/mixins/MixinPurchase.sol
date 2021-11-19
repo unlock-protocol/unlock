@@ -31,6 +31,9 @@ contract MixinPurchase is
     _gasRefundPercentage = _percent;
   }
   
+  /**
+  * @dev Returns percentage be refunded to the sender on purchase
+  */
   function gasRefundPercentage() public view returns (uint8 percentage) {
     return _gasRefundPercentage;
   }
