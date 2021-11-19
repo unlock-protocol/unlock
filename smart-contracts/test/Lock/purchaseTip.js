@@ -47,6 +47,7 @@ contract('Lock / purchaseTip', (accounts) => {
             keyPrice.toString(),
             accounts[2],
             web3.utils.padLeft(0, 40),
+            web3.utils.padLeft(0, 40),
             [],
             {
               from: accounts[2],
@@ -68,6 +69,7 @@ contract('Lock / purchaseTip', (accounts) => {
           await lock.purchase(
             tip.toString(),
             accounts[2],
+            web3.utils.padLeft(0, 40),
             web3.utils.padLeft(0, 40),
             [],
             {
@@ -92,6 +94,7 @@ contract('Lock / purchaseTip', (accounts) => {
             keyPrice.toString(),
             accounts[2],
             web3.utils.padLeft(0, 40),
+            web3.utils.padLeft(0, 40),
             [],
             {
               from: accounts[2],
@@ -115,10 +118,17 @@ contract('Lock / purchaseTip', (accounts) => {
       if (!isErc20) {
         describe('purchase with unspecified ETH tip', () => {
           beforeEach(async () => {
-            await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
-              from: accounts[2],
-              value: isErc20 ? 0 : tip.toString(),
-            })
+            await lock.purchase(
+              0,
+              accounts[2],
+              web3.utils.padLeft(0, 40),
+              web3.utils.padLeft(0, 40),
+              [],
+              {
+                from: accounts[2],
+                value: isErc20 ? 0 : tip.toString(),
+              }
+            )
           })
 
           it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
@@ -137,10 +147,17 @@ contract('Lock / purchaseTip', (accounts) => {
       if (isErc20) {
         it('should fail if value is less than keyPrice', async () => {
           await truffleAssert.fails(
-            lock.purchase(1, accounts[2], web3.utils.padLeft(0, 40), [], {
-              from: accounts[2],
-              value: isErc20 ? 0 : keyPrice.toString(),
-            }),
+            lock.purchase(
+              1,
+              accounts[2],
+              web3.utils.padLeft(0, 40),
+              web3.utils.padLeft(0, 40),
+              [],
+              {
+                from: accounts[2],
+                value: isErc20 ? 0 : keyPrice.toString(),
+              }
+            ),
             'revert',
             'INSUFFICIENT_VALUE'
           )

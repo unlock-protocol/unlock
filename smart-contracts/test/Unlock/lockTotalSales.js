@@ -27,10 +27,17 @@ contract('Unlock / lockTotalSales', (accounts) => {
 
   describe('buy 1 key', () => {
     before(async () => {
-      await lock.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
-        value: price,
-        from: accounts[0],
-      })
+      await lock.purchase(
+        0,
+        accounts[0],
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: price,
+          from: accounts[0],
+        }
+      )
     })
 
     it('total sales includes the purchase', async () => {
@@ -44,10 +51,17 @@ contract('Unlock / lockTotalSales', (accounts) => {
   describe('buy multiple keys', () => {
     before(async () => {
       for (let i = 1; i < 5; i++) {
-        await lock.purchase(0, accounts[i], web3.utils.padLeft(0, 40), [], {
-          value: price,
-          from: accounts[i],
-        })
+        await lock.purchase(
+          0,
+          accounts[i],
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: price,
+            from: accounts[i],
+          }
+        )
       }
     })
 
