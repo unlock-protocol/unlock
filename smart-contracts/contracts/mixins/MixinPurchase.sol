@@ -21,6 +21,17 @@ contract MixinPurchase is
 {
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
 
+  event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
+
+  uint16 private _gasRefundPercentage = 0; // default to 0
+
+  /**
+  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  */
+  function setGasRefundPercentage(uint16 _percent) public {
+    _gasRefundPercentage = _percent;
+  }
+
   /**
   * @dev Purchase function
   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
@@ -105,6 +116,19 @@ contract MixinPurchase is
     if(address(onKeyPurchaseHook) != address(0))
     {
       onKeyPurchaseHook.onKeyPurchase(msg.sender, _recipient, _referrer, _data, inMemoryKeyPrice, pricePaid);
+    }
+
+    // refund gas
+    if (_gasRefundPercentage != 0) {
+      uint toRefund = _gasRefundPercentage / 100 * uint(pricePaid);
+      if(tokenAddress != address(0)) {
+        IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
+        token.transferFrom(address(this), msg.sender, toRefund);
+      } else {
+        (bool success, ) = msg.sender.call{value: toRefund}("");
+        require(success, "Refund failed.");
+      }
+      emit GasRefunded(msg.sender, toRefund, tokenAddress);
     }
   }
 
