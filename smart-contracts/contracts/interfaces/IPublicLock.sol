@@ -220,7 +220,7 @@ interface IPublicLock
   /**
   * @dev Returns percentage be refunded to the sender on purchase
   */
-  function gasRefundPercentage() public view external (uint8 percentage);
+  function gasRefundPercentage() external view returns (uint8 percentage);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.

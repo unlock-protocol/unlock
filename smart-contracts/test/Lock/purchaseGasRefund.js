@@ -1,3 +1,4 @@
+const truffleAssert = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
@@ -41,9 +42,32 @@ contract('Lock / purchaseGasRefund', (accounts) => {
         })
       })
 
-      it('sets gasRefundPercentage properly', async () => {
-        await lock.setGasRefundPercentage(25)
-        assert.equal(await lock.gasRefundPercentage(), 25)
+      describe('gas refund percentage', () => {
+        it('get set properly', async () => {
+          await lock.setGasRefundPercentage(25)
+          assert.equal(await lock.gasRefundPercentage(), 25)
+        })
+
+        it('can not be set if caller is not lock manager or beneficiary', async () => {
+          await truffleAssert.fails(
+            lock.setGasRefundPercentage(25, {
+              from: accounts[3],
+            }),
+            'revert',
+            'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
+          )
+        })
+
+        it('can be by set beneficiary', async () => {
+          await lock.setGasRefundPercentage(25, { from: accounts[0] })
+          assert.equal(await lock.gasRefundPercentage(), 25)
+        })
+
+        it('can set by lock manager', async () => {
+          await lock.addLockManager(accounts[5], { from: accounts[0] })
+          await lock.setGasRefundPercentage(25, { from: accounts[5] })
+          assert.equal(await lock.gasRefundPercentage(), 25)
+        })
       })
 
       describe('purchase with gas refund', () => {

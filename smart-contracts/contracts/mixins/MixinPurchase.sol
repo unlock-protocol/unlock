@@ -27,14 +27,14 @@ contract MixinPurchase is
   /**
   * @dev Set a percentage of the key price to be refunded to the sender on purchase
   */
-  function setGasRefundPercentage(uint8 _percent) public {
+  function setGasRefundPercentage(uint8 _percent) external onlyLockManagerOrBeneficiary {
     _gasRefundPercentage = _percent;
   }
   
   /**
   * @dev Returns percentage be refunded to the sender on purchase
   */
-  function gasRefundPercentage() public view returns (uint8 percentage) {
+  function gasRefundPercentage() external view onlyLockManagerOrBeneficiary returns (uint8 percentage) {
     return _gasRefundPercentage;
   }
 
