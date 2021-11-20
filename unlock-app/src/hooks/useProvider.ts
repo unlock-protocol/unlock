@@ -4,7 +4,6 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
-import { ProviderName, Providers } from '../components/interface/LoginPrompt'
 export interface EthereumWindow extends Window {
   web3: any
   ethereum: any
