@@ -53,13 +53,12 @@ const LoginPrompt = ({
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
 
-  const { injectedOrDefaultProvider } = useAuthenticate({ injectedProvider })
-  const { getProviderHandler } = useAuthenticateHandler({
-    onProvider,
-    injectedProvider,
+  const { injectedOrDefaultProvider } = useAuthenticate({ injectedProvider, onProvider })
+  const { authenticateWithProvider } = useAuthenticateHandler({
+    injectedProvider
   })
   const loginWithProvider = useCallback(async (key: WalletProvider) => {
-    await getProviderHandler(key)
+    await authenticateWithProvider(key)
   }, [])
 
   return (

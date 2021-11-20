@@ -12,7 +12,7 @@ export function useAutoLogin({ authenticate }: AutoLogin) {
   const [isLoading, setLoading] = useState(false)
   const { getStorage } = useAppStorage()
 
-  const { getProviderHandler } = useAuthenticateHandler({ authenticate })
+  const { authenticateWithProvider } = useAuthenticateHandler({ authenticate })
 
   const getAutoLoginData = useCallback((): Promise<
     [boolean, WalletProvider]
@@ -34,7 +34,7 @@ export function useAutoLogin({ authenticate }: AutoLogin) {
     setLoading(true)
     const [canAutoLogin, storedProvider] = await getAutoLoginData()
     if (canAutoLogin && storedProvider) {
-      await getProviderHandler(storedProvider)
+      await authenticateWithProvider(storedProvider)
     }
     setLoading(false)
   }, [])

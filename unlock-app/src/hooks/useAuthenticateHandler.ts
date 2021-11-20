@@ -12,11 +12,11 @@ enum WALLET_PROVIDER {
 export type WalletProvider = keyof typeof WALLET_PROVIDER
 interface AuthenticateHandler {
   injectedProvider?: any
-  authenticate?: (provider: any, messageToSign?: any) => Promise<any>
+  authenticate?: (provider: any, messageToSign?: any) => Promise<any>,
 }
 export function useAuthenticateHandler({
   injectedProvider,
-  authenticate
+  authenticate,
 }: AuthenticateHandler) {
   const {
     handleInjectProvider,
@@ -35,12 +35,12 @@ export function useAuthenticateHandler({
     UNLOCK: handleUnlockProvider,
   }
 
-  const getProviderHandler = useCallback(async (provider: WalletProvider) => {
+  const authenticateWithProvider = useCallback(async (provider: WalletProvider) => {
     await walletHandlers[provider]()
     setStorage('provider', provider)
   }, [])
 
   return {
-    getProviderHandler,
+    authenticateWithProvider,
   }
 }
