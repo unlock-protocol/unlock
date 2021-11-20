@@ -32,14 +32,9 @@ export function useAppStorage() {
       .forEach(removeKey)
   }, [])
 
-  const getStoredProvider = useCallback(() => {
-    return getStorage('provider') as ProviderName;
-  }, [])
-
   return {
     setStorage,
     getStorage,
     clearStorage,
-    getStoredProvider
   }
 }

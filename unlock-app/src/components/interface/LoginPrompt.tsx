@@ -20,7 +20,6 @@ interface LoginPromptProps {
   activeColor?: string
   injectedProvider?: any
   onProvider?: (provider: any) => void
-  onAutoLogin?: (promise: Promise<any>) => any
 }
 
 export interface EthereumWindow extends Window {
@@ -53,9 +52,12 @@ const LoginPrompt = ({
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
 
-  const { injectedOrDefaultProvider } = useAuthenticate({ injectedProvider, onProvider })
+  const { injectedOrDefaultProvider } = useAuthenticate({
+    injectedProvider,
+    onProvider,
+  })
   const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider
+    injectedProvider,
   })
   const loginWithProvider = useCallback(async (key: WalletProvider) => {
     await authenticateWithProvider(key)

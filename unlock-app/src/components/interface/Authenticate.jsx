@@ -151,7 +151,7 @@ export const Authenticate = ({
             email={email}
             encryptedPrivateKey={encryptedPrivateKey}
           >
-            {!isLoading ? children : "Loading..."}
+            {!isLoading ? children : <Loading />}
           </Providers>
         </WalletServiceContext.Provider>
       )}

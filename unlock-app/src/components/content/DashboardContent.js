@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useContext, useState, useCallback } from 'react'
+import React, { useContext, useState } from 'react'
 
 import Head from 'next/head'
 import PropTypes from 'prop-types'
@@ -53,6 +53,7 @@ ButtonToCreateLock.defaultProps = {
 
 export const DashboardContent = () => {
   const { account, network } = useContext(AuthenticationContext)
+
   const [formIsVisible, setFormIsVisible] = useState(false)
   const toggleForm = () => {
     formIsVisible ? setFormIsVisible(false) : setFormIsVisible(true)
