@@ -22,8 +22,8 @@ import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
-import { useAutoLogin } from '../../hooks/useAutoLogin';
-import { useEffect } from 'react';
+import { useAutoLogin } from '../../hooks/useAutoLogin'
+import { useEffect } from 'react'
 
 const GraphServiceProvider = GraphServiceContext.Provider
 
@@ -92,7 +92,7 @@ export const Authenticate = ({
   providerAdapter,
 }) => {
   const config = useContext(ConfigContext)
-  
+
   const {
     error,
     loading,
