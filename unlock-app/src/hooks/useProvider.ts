@@ -40,14 +40,6 @@ export const useProvider = (config: any) => {
     if (!getStorage('network') && network) {
       setStorage('network', network)
     }
-
-    if (!getStorage('provider') && provider) {
-      Object.values(Providers).map((name: ProviderName) => {
-        if (provider?.provider[name]) {
-          setStorage('provider', name)
-        }
-      })
-    }
   }, [account, network, provider])
 
   const resetProvider = async (

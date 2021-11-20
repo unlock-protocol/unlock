@@ -19,7 +19,6 @@ import {
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
-import { useAutoLogin } from '../../hooks/useAutoLogin'
 
 const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
   const { account } = useContext(AuthenticationContext)
@@ -55,7 +54,6 @@ ButtonToCreateLock.defaultProps = {
 
 export const DashboardContent = () => {
   const { account, network } = useContext(AuthenticationContext)
-  const { canAutoLogin } = useAutoLogin()
   const [formIsVisible, setFormIsVisible] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const toggleForm = () => {
@@ -65,22 +63,13 @@ export const DashboardContent = () => {
     setFormIsVisible(false)
   }
 
-  const onAutoLogin = useCallback(async (promise) => {
-    const runAutoLogin = typeof promise === 'object' && canAutoLogin()
-    setLoading(runAutoLogin)
-    if (runAutoLogin) await promise
-    setLoading(false)
-  }, [])
-
-  if (isLoading) return <Loading />
-
   return (
     <Layout title="Creator Dashboard">
       <Head>
         <title>{pageTitle('Dashboard')}</title>
       </Head>
       {!account && (
-        <LoginPrompt onAutoLogin={onAutoLogin}>
+        <LoginPrompt>
           In order to deploy locks, we require the use of your own Ethereum
           wallet.{' '}
           <a
