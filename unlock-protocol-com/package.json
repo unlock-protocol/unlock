@@ -13,7 +13,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@unlock-protocol/unlock-assets": "1.4.6",
+    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@zeit/next-source-maps": "0.0.3",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.3.1",
@@ -45,28 +45,23 @@
     "yaml-front-matter": "4.1.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "7.16.0",
-    "nodemon": "2.0.14"
+    "@babel/plugin-proposal-optional-chaining": "7.16.0"
   },
   "scripts": {
-    "dev": "yarn build && next dev -p 3002 src",
-    "next": "next",
-    "build": "yarn build-blog && next build src",
+    "dev": "yarn build && next dev -p 3002",
+    "build": "yarn build-blog && next build",
     "build-blog": "node scripts/build-blog.js",
-    "deploy": "yarn build && next export src -o out",
+    "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "start": "yarn build && NODE_ENV=production next start src",
+    "start": "yarn build && NODE_ENV=production next start",
     "test": "yarn build-blog && UNLOCK_ENV=test jest --env=jsdom",
-    "prettier": "prettier",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
-    "ci": "yarn test && yarn lint",
-    "tsc": "tsc"
+    "ci": "yarn test && yarn lint"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix"
-    ],
-    "*.js.snap": []
+    ]
   },
   "browserslist": [
     ">0.2%",

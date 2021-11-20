@@ -3,10 +3,10 @@ title: Unlock Protocol Winning Teams from Web3Weekend
 authorName: Amber Case
 publishDate: June 1, 2021
 description: On May 28-30th, 2021, Unlock participated in Web3Weekend, in partnership with Protocol Labs and EthGlobal. We added UDT Tokens to the $50K+prize bounty shared by all of the sponsors and community.
-image: /static/images/blog/web3-weekend/web3-weekend-hackathon.png
+image: /images/blog/web3-weekend/web3-weekend-hackathon.png
 ---
 
-![web3 weekend](/static/images/blog/web3-weekend/web3-weekend-hackathon.png)
+![web3 weekend](/images/blog/web3-weekend/web3-weekend-hackathon.png)
 
 On May 28-30th, 2021, Unlock participated in [Web3Weekend](https://web3.ethglobal.co/), in partnership with Protocol Labs and EthGlobal. We added UDT Tokens to the $50K+ prize bounty shared by all of the sponsors and community.
 

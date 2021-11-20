@@ -4,7 +4,7 @@ subTitle: Improvements to the Unlock-Protocol
 authorName: Nick Furfaro
 publishDate: April 1, 2020
 description: V7 focuses on adding new features, revamping our access-control system, & general improvements to the codebase.
-image: /static/images/blog/v7.jpg
+image: /images/blog/v7.jpg
 ---
 
 Some of you may have noticed a huge leap in our version numbers; the last release was v1.3 and now we've jumped to v7. Let me explain the reasoning for this. Since our first release, we've been using 2 different version numbering systems. We've followed semver standards in our published modules, but our smart-contracts (which can be queried for their current version) have used the type `uint` to store this value for simplicity. We've decided to make things more straightforward by using the `uint`-style versioning consistently, which means we don't need to map between 2 different systems internally. Moving forward, version numbers will simply increment each version. The name of the npm-module and the version number returned when querying our contracts for their version will be identical. We've just released v7 of our contracts, and so the newly published module has been cleverly named "unlock-abi-7".
