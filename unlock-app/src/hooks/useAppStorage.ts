@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 const APP_NAME = '@unlock-app'
 
 export function useAppStorage() {
-  const a = 10;
   const isObject = useCallback((value: any) => typeof value === 'object', [])
 
   const getKey = useCallback((key: string) => `${APP_NAME}.${key}`, [])
