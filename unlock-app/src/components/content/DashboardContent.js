@@ -11,7 +11,6 @@ import CreatorLocks from '../creator/CreatorLocks'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import LoginPrompt from '../interface/LoginPrompt'
-import Loading from '../interface/Loading'
 
 import {
   CreateLockButton,
@@ -55,7 +54,6 @@ ButtonToCreateLock.defaultProps = {
 export const DashboardContent = () => {
   const { account, network } = useContext(AuthenticationContext)
   const [formIsVisible, setFormIsVisible] = useState(false)
-  const [isLoading, setLoading] = useState(false)
   const toggleForm = () => {
     formIsVisible ? setFormIsVisible(false) : setFormIsVisible(true)
   }
