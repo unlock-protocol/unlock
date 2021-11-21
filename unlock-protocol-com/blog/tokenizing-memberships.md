@@ -4,7 +4,7 @@ subTitle: What if there was a new way to interact with the communities you are p
 authorName: Julien Genestoux
 publishDate: October 18, 2019
 description: What if there was a new way to interact with the communities you are part of?
-image: /static/images/blog/tokenized-memberships.jpg
+image: /images/blog/tokenized-memberships.jpg
 ---
 
 The web needs a [new business model](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1) — one which doesn’t erode people’s privacy or centralize control into the hands of a few powerful entities.
@@ -19,7 +19,7 @@ At Unlock, we want to help your participation in those communities — your memb
 
 > At Unlock, we want to help memberships materialize.
 
-![locks](/static/images/blog/tokenized-memberships.jpg)
+![locks](/images/blog/tokenized-memberships.jpg)
 
 # What does that really mean?
 

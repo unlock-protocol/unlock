@@ -4,7 +4,7 @@ subTitle: What if we got the business model of the web wrong?
 authorName: Julien Genestoux
 publishDate: December 13, 2018
 description: What if we got the business model of the web wrong?
-image: /static/images/blog/adsupportedweb/1984.jpg
+image: /images/blog/adsupportedweb/1984.jpg
 ---
 For the last 20 years, every consumer-oriented application, service or content platform used “ads” as its default business model. Like always, the road to hell has been paved with good intentions: we assumed that the mostly innocuous billboards could be transposed to the web… but these banner ads quickly became endless trojan horses into our privacy, feelings and opinions.
 
@@ -16,7 +16,7 @@ Delivering relevant ads has always been the main challenge for ad platforms. As 
 
 Ad blockers have been around for a little while, but there is no denying that their impact has been growing vastly in the last couple years. If anything, the constant alerts to disable ad blockers demonstrates that they are having a real impact.
 
-![ad blocker](/static/images/blog/adsupportedweb/adblocker.png)
+![ad blocker](/images/blog/adsupportedweb/adblocker.png)
 _About 30% of web users in the US browse with an ad-blocker._
 
 On top of the “individual” use of ad-blockers, we’re starting to see institutions enter the arena. The most notorious example is Apple who has started to tighten the use of 3rd party cookies in Safari, as well as opened the gate to ad blocker on their AppStore.
@@ -65,7 +65,7 @@ The quick answer is that whoever pays for the stuff we consume has a message to 
 
 Advertisers rightfully want to drive down the unit costs of their ads: who would not try to achieve the same goals at a lower price? But doing so also means that, on the other end of that relationship, the incentive of the publisher becomes to increase the volume of ads they display. As such, in the ad-supported web, the incentive for the creator is to create more content, not better content. All of the metrics that we used, whether it is CPM, cost per click, or performance/conversion eventually all boil down to “how much attention can this content take from consumers”. This started with the “information overload” complaints from 20 years ago and continued with the incessant slideshows, notifications, click bait and eventually fake news: everything that can steal a couple more minutes of the free web users’ time is financially rewarded: **the content itself becomes an excuse for the ads that surround it**.
 
-![1984](/static/images/blog/adsupportedweb/1984.jpg)
+![1984](/images/blog/adsupportedweb/1984.jpg)
 _Image: 1984 by [Lesley Barnes](https://www.lesleybarnes.co.uk/1984-The-Graphic-Canon-3)_
 
 What if we got all this wrong? What if instead of volume, we rewarded quality? What if creators were being paid based on the value they create for their consumers, rather than based on the attention they steal from them?

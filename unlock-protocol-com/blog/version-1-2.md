@@ -4,7 +4,7 @@ subTitle: We shipped a large upgrade to our Unlock contract and the new locks ha
 authorName: Julien Genestoux
 publishDate: January 10, 2020
 description: We wanted to start the year with a big release, so we shipped a very large upgrade (the largest since June 2018) to our smart contracts. This new version brings a ton of new features which will eventually bubble up to the Unlock user interfaces (and beyond!).
-image: /static/images/blog/version-1-2/smart-contract-1-2.jpg
+image: /images/blog/version-1-2/smart-contract-1-2.jpg
 ---
 
 We wanted to start the year with a big release, so we shipped a very large upgrade (the largest since June 2018) to our smart contracts. This new version brings a ton of new features which will eventually bubble up to the Unlock user interfaces (and beyond!).
@@ -17,7 +17,7 @@ The `Unlock` contract is upgradable by its owner. This means we can add features
 
 If you want to explore Unlock, Etherscan provides a [great interface](https://etherscan.io/address/0x3d5409cce1d45233de1d4ebdee74b8e004abdd13#code).
 
-![Etherscan](/static/images/blog/version-1-2/etherscan.png)
+![Etherscan](/images/blog/version-1-2/etherscan.png)
 
 ## The Proxy
 

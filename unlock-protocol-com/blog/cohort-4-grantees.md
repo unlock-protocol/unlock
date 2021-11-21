@@ -4,12 +4,12 @@ subTitle: A web3 Discord alternative, memberships, DAO onboarding, and identity!
 authorName: Crystal Street
 publishDate: November 15, 2021
 description: Unlock Grantees Cohort 4 covers everything from easy crypto adoption for SaaS to Element integrations and everything in between!
-image: /static/images/blog/cohort-4/cohort-4.png
+image: /images/blog/cohort-4/cohort-4.png
 ---
 
 Cohort 4 of the Unlock Grantees are here and ready to push the protocol towards wider adoption by those who need it most! Cohort 4 covers everything from removing barriers to crypto entry for SaaS providers, to integrating with Element, making DAO participation more equitable for all — and so much more!
 
-![Cohort 4](/static/images/blog/cohort-4/cohort-4.png)
+![Cohort 4](/images/blog/cohort-4/cohort-4.png)
 
 
 Check out these brief introductions for each grantee, their project and how to find them on the Twitters so you can follow their progress. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal to join the next cohort! Our grant selection committee will be meeting soon to review the latest applications— so don't wait!

@@ -4,12 +4,12 @@ subTitle: Unlock is a sponsor for HackFS, and the Unlock community can vote on t
 authorName: Julien Genestoux
 publishDate: August 17, 2021
 description: At Unlock, we believe that hackers and makers will be building a better version of the web. For this reason, we are sponsors for HackFS, and we give our community the power to vote on the best projects!
-image: /static/images/blog/hackfs/hackfs.png
+image: /images/blog/hackfs/hackfs.png
 ---
 
 EthGlobal and Protocol Labs created [HackFS](https://hackfs.com/), a hackathon designed to enable hackers and makers to lay the foundation for a decentralized web! Unlock embraces this mission completely and decided to help accelerate this movement by sponsoring the hackathon!
 
-![HackFS](/static/images/blog/hackfs/hackfs.png)
+![HackFS](/images/blog/hackfs/hackfs.png)
 
 
 Hackathon teams began their work on July 30th and every team has submitted their projects for review by the judges. We're so excited to see that 17 teams chose Unlock Protocol to build their projects upon and all of their submissions are linked [on this Airtable](https://airtable.com/shrN4lIsh3yXQLQKh/tblfEgiZwI8Iog8ZK).

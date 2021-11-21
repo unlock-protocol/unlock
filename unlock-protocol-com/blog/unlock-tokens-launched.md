@@ -4,14 +4,14 @@ subTitle: Starting the decentralization of Unlock!
 authorName: Julien Genestoux
 publishDate: December 15, 2020
 description: As an open protocol for memberships, we want Unlock to belong to its users. Today we are introducing the protocol's native token.
-image: /static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
+image: /images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
 ---
 
 Unlock is a protocol. Like any other protocol, it should not belong to anyone but its community of users and adopters. Today, we're very excited to introduce Unlock Discount Tokens and start the journey toward a fully decentralized protocol, where users co-own the protocol, as well as earn rewards for their use!
 
 Don't forget to check the [step-by-step upgrades and deployments as documented on our wiki](https://github.com/unlock-protocol/unlock/wiki/The-Path-to-UDT!)!
 
-![Decentralizing Unlock](/static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
+![Decentralizing Unlock](/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
 # How does UDT work?
 
 The Unlock Discount Token (UDT) is an **optional** ERC20 token that exists to add incentives to actors who are willing to grow and use the Unlock Protocol and network as well as progressively give them control of future upgrades. The smart contract which mints UDT has been deployed to the Ethereum main network and can be found at [`0x90de74265...`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517).

@@ -4,7 +4,7 @@ subTitle: Integrating Unlock-Protocol into your Smart Contracts
 authorName: Nick Mancuso
 publishDate: October 31, 2019
 description: Unlock value-added features directly in your smart contract. Trivial to implement with endless opportunities. We show you how and discuss some reasons why this might be interesting to you.
-image: /static/images/blog/unlocking-smart-contracts/code.jpeg
+image: /images/blog/unlocking-smart-contracts/code.jpeg
 ---
 
 Smart contract developers can integrate with Unlock Protocol on-chain, allowing you to monetize features by selling Keys.
@@ -12,7 +12,7 @@ Smart contract developers can integrate with Unlock Protocol on-chain, allowing 
 Let’s clear up a little terminology first. ‘Unlock Protocol’ allows you to create ‘Locks’ for specific content or features. Users can then purchase a ‘Key’ to gain access to that content. Keys may expire, allowing you to offer a monthly subscription option, and they are NFTs enabling a second hand market if you choose. We’re adding new features all the time.
 
 <p style="text-align:center">
-	<img src="/static/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
+	<img src="/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
 </p>
 
 From your smart contract, you simply call `getHasValidKey` on the Lock to see if the user should gain access.

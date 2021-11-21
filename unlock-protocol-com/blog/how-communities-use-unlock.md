@@ -4,10 +4,10 @@ subtitle: Unlock can be a tool to create unique memberships for nearly any kind 
 authorName: Austin Robey
 publishDate: November 2, 2021
 description: Unlock can be a tool to create unique memberships for nearly any kind of member-based organization - from recognizing membership in a cooperative, to being an access pass for a social club, to being an organizing tool for a book club or investment DAO, there are several ways that Unlock Protocol can be leveraged.
-image: /static/images/blog/tokenized-memberships.jpg
+image: /images/blog/tokenized-memberships.jpg
 ---
 
-![How communities and clubs can use Unlock](/static/images/blog/tokenized-memberships.jpg)
+![How communities and clubs can use Unlock](/images/blog/tokenized-memberships.jpg)
 
 Unlock can be a tool to create unique memberships for nearly any kind of member-based organization - from recognizing membership in a cooperative, to being an access pass for a social club, to being an organizing tool for a book club or investment DAO, there are several ways that Unlock Protocol can be leveraged.
 

@@ -4,7 +4,7 @@ subTitle: We’re changing the business model for the web. It starts here, today
 authorName: Ben Werdmuller
 publishDate: January 25, 2019
 description: We’re changing the business model for the web. It starts here, today.
-image: /static/images/blog/announcingv0/paywalldemo.png
+image: /images/blog/announcingv0/paywalldemo.png
 ---
 [Targeted advertising was the original sin of the web](https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/). For years, the accepted business model for consumer startups was to grow exponentially at breakneck speed. Their services were optimized to lure users into spending as much time on them as possible, as regularly as possible: an addictive behavior euphemistically referred to as “engagement”. And because highly targeted advertisements were worth more, those same services were incentivized to collect as much intimate information about their users as possible.
 
@@ -28,11 +28,11 @@ Today we’re releasing our proof of concept for a decentralized paywall based o
 
 This first release is aimed at technical, blockchain-aware web publishers whose audiences are also already using decentralized apps. Each of these users has probably got [Metamask](https://metamask.io/) installed in their browser. They’re early adopters at the frontier of the decentralized web.
 
-![new lock interface](/static/images/blog/announcingv0/newlock.png)
+![new lock interface](/images/blog/announcingv0/newlock.png)
 
 These publishers can create a _lock_, and set a price for content that is protected by it, as well as how long customers will have access to it for. Then, using a few lines of code, they can embed an easy-to-use paywall which uses that lock anywhere on the web. Finally, users can buy a _key_ to unlock the lock at the price the publisher set, for the duration publishers allow.
 
-![paywall demo](/static/images/blog/announcingv0/paywalldemo.png)
+![paywall demo](/images/blog/announcingv0/paywalldemo.png)
 
 For members of their early-adopter audience, all it takes is one click and a confirmation from their cryptocurrency wallet, and they can access the content.
 

@@ -4,10 +4,10 @@ subTitle: Fun and useful ideas using the Unlock protocol.
 authorName: Sascha Mombartz
 publishDate: Nov 5, 2019
 description: We've put together a bunch of ideas for cool and fun projects that could be hacked on. Take the ideas, run with them, be inspired or do something completely different.
-image: /static/images/blog/hackathon-ideas/hero.jpg
+image: /images/blog/hackathon-ideas/hero.jpg
 ---
 
-![Ideas to hack on](/static/images/blog/hackathon-ideas/hero.jpg)
+![Ideas to hack on](/images/blog/hackathon-ideas/hero.jpg)
 
 We’re going to be at ETHWaterloo over the first November weekend and we thought it would be fun to give participants some inspiration into what they could do with Unlock. Obviously we’re open to all ideas and we’d love to hear about them – the ones below feel free to steal, borrow, change or just be inspired about what's possible. If you need any design help, to mockup complex flow, icons, logos or have UX challenges feel free to find me (Sascha) – I’m happy to help.
 

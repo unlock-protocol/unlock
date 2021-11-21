@@ -4,7 +4,7 @@ subTitle: We've put a lock on our own blog! Members can leave comments, read exc
 authorName: Julien Genestoux
 publishDate: July 24, 2019
 description: We've put a lock on our own blog! Members can leave comments, read exclusive content and will receive a Non Fungible Token.
-image: /static/images/blog/unlock-blog/hero.jpg
+image: /images/blog/unlock-blog/hero.jpg
 ---
 
 Unlock is a [protocol for memberships](/blog/protocol-for-membership). It helps creators monetize by selling access keys to their community - fans, supporters, or even simple users - by helping them deploy a lock and sell access keys to this lock (they can chose their currency, price, the duration of the keys and the number of keys they want to sell).
@@ -15,7 +15,7 @@ When integrating the lock on this blog, we decided to reflect the membership sta
 
 1. The lower bar at the bottom of every page. ⬇️ Since I am a member, mine shows this:
 
-![member bar](/static/images/blog/unlock-blog/member-bar.png)
+![member bar](/images/blog/unlock-blog/member-bar.png)
 
 2. On each post, __members__ can view and leave [comments](#comments).
 

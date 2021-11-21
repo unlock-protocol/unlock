@@ -4,7 +4,7 @@ subTitle: Manage your community auto-magically!
 authorName: Patrick Gallagher
 publishDate: March 29, 2021
 description: Thanks to the Unlock developer community, you can now use Unlock in Discord.
-image: /static/images/blog/swordy-bot-intro/thumbnail.png
+image: /images/blog/swordy-bot-intro/thumbnail.png
 ---
 
 > Guest written by Community builder Patrick Gallagher
@@ -13,7 +13,7 @@ Discord and Telegram are the best places for tech-savvy teams or communities to 
 
 To solve this, we built Swordy Bot. The bot is integrated with Unlock Protocol, so you can limit access to only community members who hold a specific Lock token (NFT). Best of all, its completely automated!
 
-![A few discord channels with locks](/static/images/blog/swordy-bot-intro/channels.png)
+![A few discord channels with locks](/images/blog/swordy-bot-intro/channels.png)
 
 If the user doesn't have the necessary Lock token in their wallet, they are directed to the Unlock Protocol app, where they can purchase one.
 
@@ -29,15 +29,15 @@ Step 1. Add the bot to your server at [swordybot.com](https://swordybot.com)
 
 Step 2. Add the requirements for a role using `!add-lock`
 
-<img src="/static/images/blog/swordy-bot-intro/add-lock.png" alt="A admin invoking the !add-lock command" height="100px"/>
+<img src="/images/blog/swordy-bot-intro/add-lock.png" alt="A admin invoking the !add-lock command" height="100px"/>
 
 Step 3. Users can get access using the `!unlock` command
 
-<img src="/static/images/blog/swordy-bot-intro/invoke.png" alt="A user invoking the !unlock command" height="100px"/>
+<img src="/images/blog/swordy-bot-intro/invoke.png" alt="A user invoking the !unlock command" height="100px"/>
 
 If successful you'll see a message like this, giving you some new roles:
 
-<img src="/static/images/blog/swordy-bot-intro/knighted.png" alt="A message from the bot that the user has been assigned roles" height="200px"/>
+<img src="/images/blog/swordy-bot-intro/knighted.png" alt="A message from the bot that the user has been assigned roles" height="200px"/>
 
 ## How I built it
 

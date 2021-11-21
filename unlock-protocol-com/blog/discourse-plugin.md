@@ -4,10 +4,10 @@ subTitle: And of course, at the same time, we introduce a plugin for Discourse!
 authorName: Julien Genestoux
 publishDate: June 22, 2021
 description: Discourse is an open-source Internet forum and mailing list management software application used by many communities around the web. You can now easily add locks to your Discourse forum!
-image: /static/images/blog/discourse/discourse.png
+image: /images/blog/discourse/discourse.png
 ---
 
-![discourse](/static/images/blog/discourse/discourse.png)
+![discourse](/images/blog/discourse/discourse.png)
 
 A few months ago, when we introduced the [Unlock Grants Program](/blog/token-grant-program), [Camille](https://twitter.com/CamilleBesse), a french growth hacker was one of the very first to apply so he could build an integration with Discourse! [Discourse](https://www.discourse.org/) is an ope-source Internet forum and mailing list management software application used by many communities around the web.
 

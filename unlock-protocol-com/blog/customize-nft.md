@@ -4,7 +4,7 @@ subTitle: Easily customize your membership's NFT!
 authorName: Julien Genestoux
 publishDate: July 6, 2021
 description: Unlock memberships are NFT, just like CryptoPunks, CryptoKitties or, Beeple's art. As a creator, you can customize them!
-image: /static/images/blog/unlock-nft/customize-nft.png
+image: /images/blog/unlock-nft/customize-nft.png
 ---
 
 Unlock memberships are Non-Fungible Tokens! We use the ERC-721 specification, exactly like [Cryptopunks](https://www.larvalabs.com/cryptopunks) or Beeples [first 5000 days](https://makersplace.com/beeple/5000-days/). This means that, exactly like any other NFT, Unlock memberships have an image, which can be customized by the lock's creator!

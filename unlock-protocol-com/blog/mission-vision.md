@@ -4,7 +4,7 @@ subTitle: We empower creators to capture the value they create for their communi
 authorName: Julien Genestoux
 publishDate: June 27, 2019
 description: Identifying Mission, Vision and Values informs business strategy and paints a holistic and accurate picture of a business.
-image: /static/images/blog/whatisunlock.jpg
+image: /images/blog/whatisunlock.jpg
 ---
 
 A recipe to go from zero to one cannot exist. Creating a company, a team, a product or a protocol require a lot of work and faith. Our goal is ambitious, but it can only be achieved an incredible amount of small steps (4000 [Pull Requests](https://github.com/unlock-protocol/unlock/pulls) as of Tuesday!).

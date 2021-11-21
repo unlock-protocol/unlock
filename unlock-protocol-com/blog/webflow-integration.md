@@ -4,9 +4,9 @@ subTitle: Why its awesome and how to integrate with Webflow
 authorName: Sascha Mombartz
 publishDate: May 26, 2021
 description: A surprisingly easy and powerful tutorial on how to integrate Unlock into Webflow and monetize your content.
-image: /static/images/blog/webflow-integration/webflow-integration-hero.png
+image: /images/blog/webflow-integration/webflow-integration-hero.png
 ---
-![Webflow](/static/images/blog/webflow-integration/webflow-home-hero.png)
+![Webflow](/images/blog/webflow-integration/webflow-home-hero.png)
 
 As a designer I love Webflow. It combines powerful design tools with no hassle CSS, responsive layouts and great cross-browser compatibility. All this lets the technical aspects fade into the background and lets me focus on the design and the user experience. On top of that it also offers a huge amount of flexibility and custom integrations.
 
@@ -15,7 +15,7 @@ When I looked into integrating Unlock I had a feeling it would be possible but I
 One thing you'll need for the configuration is a lock that you can create on the Unlock dashboard -- it's very straightforward. For more info check out this article in [our docs](https://docs.unlock-protocol.com/creators/deploying-lock).
 The integration process is straightforward: You start with embedding Unlock's paywall, configuration, event handler and trigger scripts and then adding a few lines of css to control the visibility. All of this is copy and pasting, and shouldn't take longer than 5 to 10 minutes. The final step is to add specific selectors/classes to your elements. Check out [the demo](https://unlock-integration.webflow.io/) and more detailed instructions below and [on the integration site](https://unlock-integration.webflow.io/instructions). You can also clone the project from the [showcase page](https://webflow.com/website/Integrating-Unlock).
 
-![Webflow Selector Panel Locked](/static/images/blog/webflow-integration/webflow-selector-locked.png)
+![Webflow Selector Panel Locked](/images/blog/webflow-integration/webflow-selector-locked.png)
 
 It starts to get really interesting when you start using it with dynamic and CMS content -- check out the [blog example](https://unlock-integration.webflow.io/blog) for that.
 
@@ -43,12 +43,12 @@ Let's look at two examples, one using native webflow elements the other using an
 **Public Element**
 This section is visible when the content is locked, hence it has the `locked` class set.
 
-![Webflow Selector Panel Locked](/static/images/blog/webflow-integration/webflow-selector-locked.png)
+![Webflow Selector Panel Locked](/images/blog/webflow-integration/webflow-selector-locked.png)
 
 **Private Element**
 This is for members only and needs to be unlocked, hence it has the `unlocked` class set
 
-![Webflow Selector Panel Locked](/static/images/blog/webflow-integration/webflow-selector-unlocked.png)
+![Webflow Selector Panel Locked](/images/blog/webflow-integration/webflow-selector-unlocked.png)
 
 ## 2. Checkout Initiation
 
@@ -84,7 +84,7 @@ You need to add the Paywall Script, Paywall Configuration, Event Handler and Unl
   (function(d, s) {
     var js = d.createElement(s),
       sc = d.getElementsByTagName(s)[0];
-    js.src = "https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
+    js.src = "https://paywall.unlock-protocol.com/unlock.latest.min.js";
     sc.parentNode.insertBefore(js, sc);
   }(document, "script"));
 </script>

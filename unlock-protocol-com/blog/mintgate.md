@@ -4,10 +4,10 @@ subTitle: Grantee Jennifer Tran is Integrating Unlock and Mintgate
 authorName: Crystal Street
 publishDate: September 17, 2021
 description: Expanding the reach and usability of the Unlock Protocol by integrating with Mintgate will help support the thriving community of creators running membership platforms.
-image: /static/images/blog/mintgate/unlockgrant-mintgate.jpg
+image: /images/blog/mintgate/unlockgrant-mintgate.jpg
 ---
 
-![mintgate](/static/images/blog/mintgate/unlockgrant-mintgate.jpg)
+![mintgate](/images/blog/mintgate/unlockgrant-mintgate.jpg)
 
 **Mintgate & Unlock Integration**
 

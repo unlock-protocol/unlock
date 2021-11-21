@@ -3,7 +3,7 @@ title: "Locking Glitch"
 authorName: Julien Genestoux
 publishDate: March 17, 2020
 description: Glitch is a modern web development tool which lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!
-image: /static/images/blog/locking-glitch/glitch.png
+image: /images/blog/locking-glitch/glitch.png
 latestUpdateDate: April 6, 2020
 ---
 
@@ -66,7 +66,7 @@ Let's now look at the `unlock.js` script. This script has several purposes:
 // Load Unlock
 var js = document.createElement("script")
 sc = document.getElementsByTagName("script")[0]
-js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js"
+js.src="https://paywall.unlock-protocol.com/unlock.latest.min.js"
 sc.parentNode.insertBefore(js, sc)
 ```
 

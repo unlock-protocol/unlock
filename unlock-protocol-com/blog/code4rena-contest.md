@@ -4,22 +4,22 @@ subTitle: Find bugs. Earn money.
 authorName: Christopher Carfi
 publishDate: November 17, 2021
 description: $50,000 in prizes for participants in the Unlock Protocol smart contract code audit contest, launched in conjunction with Code4rena.
-image: /static/images/blog/code4rena-contest/c4-logo.png
+image: /images/blog/code4rena-contest/c4-logo.png
 ---
 
 We’re partnering with [Code4rena](https://code423n4.com/), a platform for community-driven smart contract audits, on a 1-week smart contract audit contest starting **today**, November 17th. The contest runs through November 24th, with $50,000 in prizes!
 
-![Code4rena](/static/images/blog/code4rena-contest/c4-logo.png)
+![Code4rena](/images/blog/code4rena-contest/c4-logo.png)
 
 
 ## What is a smart contract audit contest?
 
-Code4rena's contests are not bug bounties — contests have guaranteed payouts for all legit findings. 
+Code4rena's contests are not bug bounties — contests have guaranteed payouts for all legit findings.
 
 From Code4rena's site:
 
 **Bug bounties:**
-- *Spec work.* No way to have confidence that the time invested will produce a payout. 
+- *Spec work.* No way to have confidence that the time invested will produce a payout.
 - *Dark forest.* Who knows how much competition there is right now? Or how mature the codebase is?
 - *Grow on your own.* Researchers have to proactively look for ways to learn and level up their skills.
 - *Paradox of choice.* So many projects have bounties. How does an auditor choose which to focus on?

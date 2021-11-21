@@ -3,7 +3,7 @@ title: "Making locks upgradeable"
 authorName: Clément Renaud
 publishDate: Nov 18, 2021
 description: "What are contract upgrades on Ethereum, and how we use, test and deploy them at Unlock"
-image: /static/images/blog/unlocking-smart-contracts/code.jpeg
+image: /images/blog/unlocking-smart-contracts/code.jpeg
 ---
 
 Blockchains like Ethereum exist to prevent recorded data from being altered. Once published, the content of a contract can not be changed. Only values stored by the contract itself can be updated (i.e. balance, owner, etc) but the code itself is immutable. However, the same address can still lead to different contracts. At Unlock, we are about to deploy the 10th version of our main contract but the [address](https://etherscan.io/address/0x3d5409cce1d45233de1d4ebdee74b8e004abdd13) never changed since day one. How are these upgrades made possible? black magic? blocks reorg?

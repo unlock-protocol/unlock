@@ -21,7 +21,7 @@ const NotAMember = ({ becomeMember }) => (
     <img
       style={{ width: '100%', padding: '8px' }}
       alt="members-only"
-      src="/static/images/illustrations/blurred.png"
+      src="/images/illustrations/blurred.png"
     />
     <Button onClick={becomeMember}>Unlock!</Button>
   </div>
@@ -39,7 +39,7 @@ const AMember = () => (
           <img
             alt="chanels"
             style={{ maxWidth: '64px' }}
-            src="/static/images/illustrations/members-channels.svg"
+            src="/images/illustrations/members-channels.svg"
           />
         </div>
         Join our members-only channels
@@ -51,7 +51,7 @@ const AMember = () => (
           <img
             alt="hoodie"
             style={{ maxWidth: '64px' }}
-            src="/static/images/illustrations/hoodie.png"
+            src="/images/illustrations/hoodie.png"
           />
         </div>
         Members-only merchandise
@@ -63,7 +63,7 @@ const AMember = () => (
           <img
             alt="blog"
             style={{ maxWidth: '64px' }}
-            src="/static/images/illustrations/blog-chatter.png"
+            src="/images/illustrations/blog-chatter.png"
           />
         </div>
         Comment on our blog

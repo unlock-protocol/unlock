@@ -4,9 +4,9 @@ subTitle: Livestream of the NFT Dev Meetup
 authorName: Sascha Mombartz
 publishDate: May 16, 2019
 description: More info and a livestream for registred participants.
-image: /static/images/blog/nftdevmeetup/hero.jpg
+image: /images/blog/nftdevmeetup/hero.jpg
 ---
-![Optimistic Unlocking in action.](/static/images/blog/nftdevmeetup/hero.jpg)
+![Optimistic Unlocking in action.](/images/blog/nftdevmeetup/hero.jpg)
 
 We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensus - did you see how packed the hallways were?
 

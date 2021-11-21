@@ -4,10 +4,10 @@ subTitle: Unlock is now available on Polygon!
 authorName: Julien Genestoux
 publishDate: June 21, 2021
 description: Unlock has been deployed to Polygon! You can now deploy your NFT memberships and earn UDT directly on one of the mosyt popular Ethereum sidechains.
-image: /static/images/blog/polygon/polygon.png
+image: /images/blog/polygon/polygon.png
 ---
 
-![polygon](/static/images/blog/polygon/polygon.png)
+![polygon](/images/blog/polygon/polygon.png)
 
 
 Unlock has been deployed to Polygon! As Ethereum's main net is increasingly crowded, we wanted to give the ability to creators to deploy their locks and memberships on other networks, such as [Polygon](https://polygon.technology/).
@@ -22,7 +22,7 @@ We're also very proud to say that, we wanted to allow our community to vote on t
 
 Once your wallet is configured for Polygon, [head over to your dashboard](https://app.unlock-protocol.com/dashboard) to deploy your first lock. Like always, you can set your own price, duration and the maximum number of members! You can also use any ERC20 as you would do on Ethereum's mainnet. You can also enable credit card payments on these locks for users who do not have a crypto wallet or do not have Matic tokens in their wallets.
 
-![polygon](/static/images/blog/polygon/dashboard-polygon.png)
+![polygon](/images/blog/polygon/dashboard-polygon.png)
 
 All of our front-end applications, and our credit card gateway are operational for Polygon! You should be able to just use them transparently as long as you configure them accordingly.
 

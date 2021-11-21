@@ -59,19 +59,7 @@ module.exports = {
     })
     return config
   },
-  exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
-    // Export robots.txt and humans.txt in non-dev environments
-    if (!dev && outDir) {
-      await copyFile(
-        join(dir, 'static', 'robots.txt'),
-        join(outDir, 'robots.txt')
-      )
-      await copyFile(
-        join(dir, 'static', 'humans.txt'),
-        join(outDir, 'humans.txt')
-      )
-    }
-
+  exportPathMap: async (defaultPathMap, { dir }) => {
     // Our statically-defined pages to export
     const pages = {
       '/': { page: '/home' },
@@ -84,6 +72,6 @@ module.exports = {
       '/developers': { page: '/developers' },
     }
 
-    return addBlogPagesToPageObject(resolve(dir, '..'), pages)
+    return addBlogPagesToPageObject(resolve(dir, '.'), pages)
   },
 }

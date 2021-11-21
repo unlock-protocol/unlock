@@ -42,11 +42,7 @@ const Post = ({ slug, post }) => {
             canonicalPath={permalink}
             image={image}
           />
-          <link
-            rel="alternate"
-            type="application/rss+xml"
-            href="/static/blog.rss"
-          />
+          <link rel="alternate" type="application/rss+xml" href="/blog.rss" />
         </Head>
         <BlogPost
           body={body}

@@ -4,7 +4,7 @@ subTitle: We're proud to announce that ETHGlobal is using Unlock's ticket applic
 authorName: Julien Genestoux
 publishDate: October 2, 2019
 description: We're proud to announce that ETHGlobal is using Unlock's ticket application for its ETHWaterloo hackathon, for crypto and non crypto users alike!
-image: /static/images/blog/ethwaterloo-tickets/ethwaterloo.png
+image: /images/blog/ethwaterloo-tickets/ethwaterloo.png
 ---
 
 [ETHGlobal](https://ethglobal.co/) runs Ethereum hackathons all around the world for people to learn and practice their Ethereum coding skills. One of their goals is to "onboard" hackers and engineers who are not yet familiar with Ethereum and don't already have a wallet or Ether. Yet, they rightfully live by their words and insist on using [Ethereum powered tickets](https://unlock-protocol.com/blog/introducing-tickets/)! By adding [user accounts](https://unlock-protocol.com/blog/unlock-user-accounts/) to our tickets app, Unlock is excited to deliver a great on-boarding experience! Here is how it works:
@@ -12,15 +12,15 @@ image: /static/images/blog/ethwaterloo-tickets/ethwaterloo.png
 1. A hacker who's never used Ethereum before applied and was accepted for [ETHWaterloo](https://ethwaterloo.com/)!
 2. They're sent to our [registration page](https://bit.ly/2ozn9iI). **Note: do NOT purchase a ticket if you have not been previously approved. Your funds will be lost and you will not be able to attend.**
 
-![Event Page](/static/images/blog/ethwaterloo-tickets/event-page.png)
+![Event Page](/images/blog/ethwaterloo-tickets/event-page.png)
 
 3. When clicking on the registration button, they're asked to pay 20 DAI which they does not have because they does not have a wallet. But, when clicking on the Purchase button, they're asked to login or sign up.
 
-![Sign in](/static/images/blog/ethwaterloo-tickets/sign-in.png)
+![Sign in](/images/blog/ethwaterloo-tickets/sign-in.png)
 
 4. After they created their account with email, password and credit card information, they're asked to pay with their credit card! Unlock will keep track of their unique Ethereum address.
 
-![Credit card](/static/images/blog/ethwaterloo-tickets/credit-card.png)
+![Credit card](/images/blog/ethwaterloo-tickets/credit-card.png)
 
 Once they confirm their credit card payment, Unlock will then perform a meta-transaction and pay the 20 DAI on their behalf so that the NFT is then assigned to their address.
 

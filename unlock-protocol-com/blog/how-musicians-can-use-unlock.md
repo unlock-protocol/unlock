@@ -4,7 +4,7 @@ subTitle: 'For musicians, Unlock Protocol enables many new ways to be supported 
 authorName: Austin Robey
 publishDate: September 13, 2021
 description: "For musicians, Unlock Protocol (and other Web 3.0 tooling) enables many new ways to be supported by their community."
-image: /static/images/blog/musicians-use-unlock/musician.jpg
+image: /images/blog/musicians-use-unlock/musician.jpg
 ---
 
 
@@ -16,7 +16,7 @@ It’s part of a web 3.0 future where creators are empowered to fully own the co
 
 Jack Spallone recently wrote a blog post about [31 Ideas For Music + Crypto](https://jack.mirror.xyz/CLVl8maTxlphqKP6eZ1oQ1CJJKT1mvQk7cSflu8g_Lg) which contains many ideas that could be achieved with Unlock Protocol. Here are some of them.
 
-![Musician](/static/images/blog/musicians-use-unlock/musician.jpg)
+![Musician](/images/blog/musicians-use-unlock/musician.jpg)
 
 ### NFTs as patronage
 

@@ -4,7 +4,7 @@ subTitle: We publish our ABI as npm modules
 authorName: Julien Genestoux
 publishDate: May 13, 2020
 description: We publish our ABI as npm modules
-image: /static/images/blog/unlock-abi-modules/npm-logo.png
+image: /images/blog/unlock-abi-modules/npm-logo.png
 ---
 
 # ABI

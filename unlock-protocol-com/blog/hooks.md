@@ -4,7 +4,7 @@ subTitle: The "callback" pattern is a very good way to customize a lock's behavi
 authorName: Julien Genestoux
 publishDate: May 27, 2020
 description: Our Public Lock contracts implements a hook pattern to let lock owners customize the behavior of their lock upon key purchases and key cancellations.
-image: /static/images/blog/hooks/settings-hooks.png
+image: /images/blog/hooks/settings-hooks.png
 ---
 
 Locks are primitives which manage access control. When a creator deploys a lock, they can integrate it with other primitives on the Ethereum chain, [such as any ERC20](https://unlock-protocol.com/blog/erc20-locks) (including stable coins or personal tokens).
@@ -13,7 +13,7 @@ When deploying them, a creator can customize their parameters (price and duratio
 
 Any lock manager (learn more about roles for locks) can point to a 3rd party contract which would implement the `ILockKeyPurchaseHook` [interface](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/interfaces/hooks/ILockKeyPurchaseHook.sol) and/or the `ILockKeyCancelHook` [interface](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/interfaces/hooks/ILockKeyCancelHook.sol). The first one is invoked when a key purchase is performed, while the second would be called when a key has been cancelled.
 
-![Setting hooks](/static/images/blog/hooks/settings-hooks.png)
+![Setting hooks](/images/blog/hooks/settings-hooks.png)
 
 # Key Purchase Hook
 

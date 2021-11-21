@@ -3,13 +3,13 @@ title: A big welcome to our cohort 3 grantees
 subTitle: More brilliant minds are bringing some amazing Unlock integrations to life!
 authorName: Crystal Street
 description: We're so excited to announce our third cohort of Unlock grantees! Please check out their projects and follow their progress!
-image: /static/images/blog/cohort-3/grant-program-sept-2021.png
+image: /images/blog/cohort-3/grant-program-sept-2021.png
 publishDate: October 13, 2021
 ---
 
 We’re so excited to announce the third cohort of grantees for the Unlock Protocol grant program! Our grant selection committee met at the beginning of September and selected a fabulous range of projects. From Notion integrations, creator portals, DAO support tools, lending protocols and more! The scope of these projects shows us all what’s possible with a little creativity and ingenuity.
 
-![Cohort 3](/static/images/blog/cohort-3/grant-program-sept-2021.png)
+![Cohort 3](/images/blog/cohort-3/grant-program-sept-2021.png)
 
 Here’s a quick introduction to each grantee, their project and how to find them on the Twitters so you can follow their progress. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal!
 

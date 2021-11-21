@@ -4,7 +4,7 @@ subTitle: Version 1-3 is now available
 authorName: Nick Mancuso
 publishDate: January 17, 2020
 description: Explaining what went wrong and why we released a new version so quickly after our last upgrade.
-image: /static/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg
+image: /images/blog/emergency-upgrade-1-3/code_vulnerability.jpg
 ---
 
 We recently noticed a vulnerability which if abused could have had bad consequences – but we caught it early and fixed it promptly. This post aims to explain the errors we made with our [most recent smart-contract update](https://unlock-protocol.com/blog/version-1-2/).
@@ -18,7 +18,7 @@ We fixed the second issue very quickly, so no worries there.  But funds are at r
 This only impacts locks created between Jan 6th until Jan 17th (locks created between the block #9227829 and the block #9295958). If you recently created a lock, please go to the Unlock dashboard to check if you are impacted. If the dashboard does not show a warning like the one below, **your lock is safe**.
 
 <p style="text-align:center">
-	<img src="/static/images/blog/emergency-upgrade-1-3/dashboard_warning.png" width="750px" alt="Dashboard warning">
+	<img src="/images/blog/emergency-upgrade-1-3/dashboard_warning.png" width="750px" alt="Dashboard warning">
 </p>
 
 So what happened?  Let’s start with the issue we were able to fix right away and then we’ll get to the juicy stuff.
@@ -103,7 +103,7 @@ You spend fake money and then are refunded with real money.  And if the lock own
 We fixed this by making all our custom initialize functions `internal` and tested to confirm that the remaining publicly accessible calls cannot be called multiple times.
 
 <p style="text-align:center">
-	<img src="/static/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg" width="400px" alt="Smart contracts">
+	<img src="/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg" width="400px" alt="Smart contracts">
 </p>
 
 So go to the dashboard to confirm your locks are not impacted.  There are very few at risk and nearly no funds for people to steal, but we need to ensure impacted locks are upgraded before you start to make sales.

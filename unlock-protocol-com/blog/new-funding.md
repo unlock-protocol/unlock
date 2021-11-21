@@ -3,13 +3,13 @@ title: We raised $4M!
 subTitle: We're accelerating as the protocol with a fresh cash infusion!
 authorName: Crystal Street
 description: We've got big news here at Unlock! We raised $4 million in venture funding from a handful of VC firms and DAOs along with angel investors from the crypto and media industries. Guess what are main focus for these funds are — supporting the rapid growth of the protocol!
-image: /static/images/blog/digital-cash/digitalcash.jpg
+image: /images/blog/digital-cash/digitalcash.jpg
 publishDate: Sept 28, 2021
 ---
 
 We've got big news here at Unlock! We raised $4 million in venture funding from a handful of VC firms and DAOs along with angel investors from the crypto and media industries. Guess what are main focus for these funds are— **supporting the rapid growth of the protocol**!
 
-![new funding](/static/images/blog/digital-cash/digitalcash.jpg)
+![new funding](/images/blog/digital-cash/digitalcash.jpg)
 
 
 Bringing our ultimate vision for Unlock to life requires community support, participate and ultimately— funding. That's why today's announcement means so much to us and we are so grateful.

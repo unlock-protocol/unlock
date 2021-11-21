@@ -92,7 +92,7 @@ export const HomeContent = ({ posts }) => {
           >
             <Illustration
               style={{ maxWidth: '330px' }}
-              src="/static/images/illustrations/banner-key.svg"
+              src="/images/illustrations/banner-key.svg"
             />{' '}
           </Column>
         </Columns>
@@ -138,7 +138,7 @@ export const HomeContent = ({ posts }) => {
           <Column>
             <Illustration
               style={{ maxHeight: '150px' }}
-              src="/static/images/illustrations/ecosystem.svg"
+              src="/images/illustrations/ecosystem.svg"
             />
             <H4>
               Your Content
@@ -165,7 +165,7 @@ export const HomeContent = ({ posts }) => {
           <Column>
             <Illustration
               style={{ maxHeight: '150px' }}
-              src="/static/images/illustrations/cryptoccard.svg"
+              src="/images/illustrations/cryptoccard.svg"
             />
             <H4>
               Accept Credit Cards &
@@ -194,7 +194,7 @@ export const HomeContent = ({ posts }) => {
           <Column>
             <Illustration
               style={{ maxHeight: '150px' }}
-              src="/static/images/illustrations/governance.svg"
+              src="/images/illustrations/governance.svg"
             />
             <H4>
               Community
@@ -255,7 +255,7 @@ export const HomeContent = ({ posts }) => {
             style={{ display: 'inline-block', margin: '8px' }}
             alt="twitter"
             width="24"
-            src="/static/images/illustrations/twitter.svg"
+            src="/images/illustrations/twitter.svg"
           />{' '}
           <a
             target="_blank"

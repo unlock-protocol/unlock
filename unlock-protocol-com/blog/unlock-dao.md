@@ -4,7 +4,7 @@ subTitle: Marching toward full decentralization
 authorName: Julien Genestoux
 publishDate: Sep 28, 2021
 description: As of today, our community can submit and vote on proposals, as well as spend some of the UDT treasury!
-image: /static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
+image: /images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
 ---
 
 From the beginning, our goal has been to build a **shared infrastructure**. The protocol itself should belong to its users and implementers, not to Unlock Inc. A few months ago, we released our governance token, [the Unlock Tokens](/blog/unlock-tokens-launched).
@@ -13,7 +13,7 @@ In the same way that new airline miles are created for every flight, new UDT are
 
 The purpose of these tokens is to **give control and power to the developers, creators and users** of the protocol. Today, we're announcing that we launched the Unlock DAO.
 
-![kale nixon](/static/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
+![kale nixon](/images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg)
 
 ## What is the Unlock DAO?
 

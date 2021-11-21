@@ -4,7 +4,7 @@ subTitle: Our friends at Scout have integrated Unlock on the Unlock dashboard. H
 authorName: Julien Genestoux
 publishDate: August 18, 2019
 description: Our friends at Scout have integrated Unlock on the Unlock dashboard. Here's how it works
-image: /static/images/blog/unlocking-scout/scout-cool.png
+image: /images/blog/unlocking-scout/scout-cool.png
 ---
 
 Unlock is a protocol for memberships. Members of a given community often have access to perks, content or features which are just for them. For example, members (and only them!) of our blog can read and leave comments.
@@ -19,11 +19,11 @@ For example, it provides a very useful dashboard to inspect the [state of the Ar
 
 Of course, they also added a [dashboard for Unlock](https://scout.cool/unlockprotocol/mainnet), where you can view the total number of locks deployed, the balances of Ether or DAI across all locks, and even all the latest key purchases.
 
-![Scout dashboard for Unlock](/static/images/blog/unlocking-scout/unlock-scout-dashboard.png)
+![Scout dashboard for Unlock](/images/blog/unlocking-scout/unlock-scout-dashboard.png)
 
 However, we only wanted to grant access to members of our community, so, unless you already have a valid key to our lock, here is what you'll see:
 
-![Scout is locked](/static/images/blog/unlocking-scout/scout-locked.png)
+![Scout is locked](/images/blog/unlocking-scout/scout-locked.png)
 <small>Click that button: it's free</small>
 
 We're very excited to see other web3 applications use Unlock to limit access to their content or features only to owners of keys for a given lock.

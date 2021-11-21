@@ -3,10 +3,10 @@ title: Credit Card Support
 authorName: Julien Genestoux
 publishDate: June 15, 2021
 description: We’re excited to announce that unlock now has ✨credit card✨ support, for all locks, on any network!
-image: /static/images/blog/unlock-credit-card/card-membership.png
+image: /images/blog/unlock-credit-card/card-membership.png
 ---
 
-![Unlock with credit card](/static/images/blog/unlock-credit-card/card-membership.png)
+![Unlock with credit card](/images/blog/unlock-credit-card/card-membership.png)
 
 We’re excited to announce that unlock now has ✨credit card✨ support! This means that if your customers don’t use crypto, they can still buy memberships and products right from your website!
 
@@ -27,21 +27,21 @@ Behind the scenes, we rely on [Stripe Connect](https://stripe.com/connect), whic
 
 The first step, if your lock is eligible, is to connect your lock to a Stripe account. For this, connect to the Unlock Dashboard. Then, click on the Credit Card button on your lock's toolbar.
 
-![enabling card](/static/images/blog/unlock-credit-card/enabling-card-payment.png)
+![enabling card](/images/blog/unlock-credit-card/enabling-card-payment.png)
 ‌
 Once the Credit Card pane is displayed, click on the "Connect Stripe" button. When clicking you will first be prompted to sign a message confirming that you own that lock (any lock manager can do that) and that you want to enable credit card payments for it. Once confirmed, you will be redirected to the Stripe Website, where you need to follow multiple steps, including connecting a bank account, and providing informations about your identity.
 
-![stripe connect](/static/images/blog/unlock-credit-card/stripe-connect.png)
+![stripe connect](/images/blog/unlock-credit-card/stripe-connect.png)
 ‌
 Once your application is completed, Stripe will redirect you back to the Unlock Dashboard. It may take a few days for Stripe to approve your application. Until then your lock won't be able to receive card payments.
 
-![stripe connected](/static/images/blog/unlock-credit-card/stripe-connected.png)
+![stripe connected](/images/blog/unlock-credit-card/stripe-connected.png)
 ‌
 ## Allow Key Granting
 ‌
 While you are waiting for Stripe's final approval, you can perform the last step: giving Unlock Inc. the ability to grant keys to users whose credit card payment has been successfully processed. Once Unlock Inc. has charged your member's card, we will then send them the NFT so that they can use it to prove their membership. In order to do this, we need a lock manager to grant us the permission to grant keys. This role can be revoked at any point (but this will disable credit card payments) and we do not receive any other permission or capability on your lock.
 
-![card enabled](/static/images/blog/unlock-credit-card/card-enabled.png)
+![card enabled](/images/blog/unlock-credit-card/card-enabled.png)
 ‌
 # Credit card Purchase flow
 If you use Unlock's paywall application, the credit card flow is directly integrated in the checkout experience. The following screenshots illustrate the user flow.
@@ -49,15 +49,15 @@ If you use Unlock's paywall application, the credit card flow is directly integr
 In this example, there is a single lock, whose price is 0.01Eth (or about $24.50 at time of writing). If they select Credit card, they need to complete this information. In order to allow them to re-identify themselves, this flow creates an account for them using their email and a password of their choice that they can use to login if they want to. Unlock Inc. does not store credit card numbers. Once their information was saved, they are prompted once last time to confirm the transaction.
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-<p><img src="/static/images/blog/unlock-credit-card/checkout.png" alt="checkout" width="230" height="auto"></p>
+<p><img src="/images/blog/unlock-credit-card/checkout.png" alt="checkout" width="230" height="auto"></p>
 
-<p><img src="/static/images/blog/unlock-credit-card/payment-method.png" alt="payment method" width="230" height="auto"></p>
+<p><img src="/images/blog/unlock-credit-card/payment-method.png" alt="payment method" width="230" height="auto"></p>
 
-<p><img src="/static/images/blog/unlock-credit-card/card-details.png" alt="card details" width="230" height="auto"></p>
+<p><img src="/images/blog/unlock-credit-card/card-details.png" alt="card details" width="230" height="auto"></p>
 
-<p><img src="/static/images/blog/unlock-credit-card/confirm-payment.png" alt="confirm card payment" width="230" height="auto"></p>
+<p><img src="/images/blog/unlock-credit-card/confirm-payment.png" alt="confirm card payment" width="230" height="auto"></p>
 
-<p><img src="/static/images/blog/unlock-credit-card/confirmed.png" alt="confirmed" width="230" height="auto">&zwnj;</p>
+<p><img src="/images/blog/unlock-credit-card/confirmed.png" alt="confirmed" width="230" height="auto">&zwnj;</p>
 
 </div>
 
