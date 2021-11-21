@@ -13,8 +13,6 @@ import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
 import logger from '../logger'
 
-const config = require('../../config/config')
-
 namespace MetadataController {
   export const evaluateLockOwnership = async (
     lockAddress: string,
@@ -49,9 +47,10 @@ namespace MetadataController {
   export const evaluateKeyOwnership = async (
     lockAddress: string,
     tokenId: number,
-    signeeAddress: string
+    signeeAddress: string,
+    network: number
   ) => {
-    const lock = new LockData(config.web3ProviderHost)
+    const lock = new LockData(networks[network].provider)
 
     return (
       signeeAddress.toLowerCase() ===
@@ -72,7 +71,12 @@ namespace MetadataController {
         return (
           !expiredSignature(signatureTime) &&
           ((await evaluateLockOwnership(address, req.signee, req.chain)) ||
-            (await evaluateKeyOwnership(address, tokenId, req.signee)))
+            (await evaluateKeyOwnership(
+              address,
+              tokenId,
+              req.signee,
+              req.chain
+            )))
         )
       }
       return false
