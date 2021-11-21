@@ -4,7 +4,7 @@ subTitle: Our Javascript API is very easy to integrate with React!
 authorName: Julien Genestoux
 publishDate: July 10, 2019
 description: Integrating Unlock with React is straighforward! Here's a quick tutorial on how to get there!
-image: /static/images/blog/react-integration/react-logo.png
+image: /images/blog/react-integration/react-logo.png
 latestUpdateDate: April 6, 2020
 ---
 
@@ -22,7 +22,7 @@ We do that by changing the `index.html` (main HTML template) of our application.
 <script> (function (d, s) {
     var js = d.createElement(s),
       sc = d.getElementsByTagName(s)[0];
-    js.src = "https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
+    js.src = "https://paywall.unlock-protocol.com/unlock.latest.min.js";
     sc.parentNode.insertBefore(js, sc);
   }(document, "script"));
 </script>
@@ -42,7 +42,7 @@ The snippet inserted above needs to know which lock are used on this page.  For 
         name: 'The Unlock Members lock',
       },
     },
-    icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
+    icon: 'https://unlock-protocol.com/images/svg/unlock-word-mark.svg',
     callToAction: {
       default:
         'Please Unlock things!',

@@ -4,12 +4,12 @@ subTitle: 'Dinner DAO: How to Have Your NFTs & Eat Them Too!'
 authorName: Amber Case
 publishDate: September 9, 2021
 description: "Unlock Grantee Austin Robey recently concocted one of the most practical applications of NFTs I’ve ever seen using Unlock’s protocol: Meeting IRL over a great meal."
-image: /static/images/blog/dinnerdao/dinnerdao.png
+image: /images/blog/dinnerdao/dinnerdao.png
 ---
 
 Unlock Grantee Austin Robey recently concocted one of the most practical applications of NFTs I’ve ever seen using Unlock’s protocol: Meeting IRL over a great meal.
 
-![DinnerDAO](/static/images/blog/dinnerdao/dinnerdao.png)
+![DinnerDAO](/images/blog/dinnerdao/dinnerdao.png)
 
 The first [Dinner DAO](https://mmm.page/dinnerdao.main)!
 
@@ -24,14 +24,14 @@ Here’s how the Dinner DAO works:
 * For the meal itself, one member pays the restaurant with USD through a Coinbase card; he or she is then reimbursed with from the Dinner DAO’s collective treasury.
 
 
-![DinnerDAO](/static/images/blog/dinnerdao/dashboard.png)
+![DinnerDAO](/images/blog/dinnerdao/dashboard.png)
 
 Building a lock and checkout page on Unlock!
 
 For Austin’s first Dinner DAO, his group shared a fantastic Mediterranean meal together at [Shoo Shoo Nolita](https://shooshoonolita.com/) in New York. I’m helping launch a Portland chapter, and Austin is expanding the DAO to other cities around the world.
 
 
-![DinnerDAO](/static/images/blog/dinnerdao/photo.jpg)
+![DinnerDAO](/images/blog/dinnerdao/photo.jpg)
 
 The very first Dinner Dao in New York!
 

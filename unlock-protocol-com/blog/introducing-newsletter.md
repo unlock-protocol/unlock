@@ -4,7 +4,7 @@ subTitle: Newsletters are memberships! Easily start collecting members with thei
 authorName: Julien Genestoux
 publishDate: December 12, 2019
 description: Unlock lets you easily collect email addresses from members to create your own paid-for mailing list, using Ethereum and Non Fungible Tokens
-image: /static/images/blog/introducing-newsletter/newsletter.jpg
+image: /images/blog/introducing-newsletter/newsletter.jpg
 ---
 
 There are many kinds of memberships. Going back to the origins of the internet, newsletters have always been a popular style of membership. Today, we're excited to show you how you can easily use a lock to create your own newsletter membership with Unlock!
@@ -45,6 +45,6 @@ After this, you can share the URL with anyone who you think should become a memb
 
 Later, once you want to email your users, just click on the `Members` icon on the lock in your dashboard. Once on that page, authenticate using your crypto wallet and you will see a list of members, along with their email addresses.
 
-![Newsletter Members](/static/images/blog/introducing-newsletter/defiant-members.png)
+![Newsletter Members](/images/blog/introducing-newsletter/defiant-members.png)
 
 As you can see the members page includes an export button which lets you download a CSV file. This file can then be imported in your email sending tool of choice!

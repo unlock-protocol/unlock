@@ -4,13 +4,13 @@ subTitle: Instead of ads following us around our access should.
 authorName: Sascha Mombartz
 publishDate: Feb 19, 2020
 description: Instead of ads following us around our access should.
-image: /static/images/blog/portability/hero.jpg
+image: /images/blog/portability/hero.jpg
 ---
 
-![Take it with you](/static/images/blog/portability/hero.jpg)
+![Take it with you](/images/blog/portability/hero.jpg)
 
 
-You’ve experienced this: You‘ve bought something (or just searched for it) and now you have ads for that or a similar item following you around. What’s happening is you have two services – the shop you bought from and the ad delivery network – that are talking to you but not each other, and that leads to a not so great user experience. 
+You’ve experienced this: You‘ve bought something (or just searched for it) and now you have ads for that or a similar item following you around. What’s happening is you have two services – the shop you bought from and the ad delivery network – that are talking to you but not each other, and that leads to a not so great user experience.
 
 A similar thing happens for subscriptions and memberships. A concrete example: I listen to The Daily, a NYTimes podcast, every day on Spotify. Annoyingly I have to listen to quite a lengthy segment that’s trying to convince me to subscribe to the Times – even though I’m a subscriber already.
 
