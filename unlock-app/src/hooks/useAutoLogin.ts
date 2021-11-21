@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { useAppStorage } from '../hooks/useAppStorage'
+import { useAppStorage } from './useAppStorage'
 import {
   useAuthenticateHandler,
   WalletProvider,

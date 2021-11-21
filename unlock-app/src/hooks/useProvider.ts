@@ -39,7 +39,7 @@ export const useProvider = (config: any) => {
     if (!getStorage('network') && network) {
       setStorage('network', network)
     }
-  }, [account, network, provider])
+  }, [account, network])
 
   const resetProvider = async (
     provider: ethers.providers.Provider,
