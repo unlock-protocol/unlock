@@ -109,7 +109,10 @@ const ConfirmedBody = styled(BaseLockBody)`
   }
 `
 
-export const LockContainer = styled.div`
+interface LockContainerProps {
+  selectable?: boolean
+}
+export const LockContainer = styled.div<LockContainerProps>`
   width: 100%;
   height: 72px;
   display: flex;
@@ -137,6 +140,9 @@ export const LockContainer = styled.div`
     return null
   }};
 `
+LockContainer.defaultProps = {
+  selectable: true,
+}
 
 const DisabledLockContainer = styled(LockContainer)`
   opacity: 0.5;
@@ -157,10 +163,6 @@ const SoldOut = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
-`
-
-const WrongNetwork = styled(NetworkName)`
-  color: var(--red);
 `
 
 export const InfoWrapper = styled.div`

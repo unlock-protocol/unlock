@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import { utils } from 'ethers'
 import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
 import { AuthenticationContext } from '../Authenticate'
