@@ -27,7 +27,6 @@
   "peerDependencies": {
     "ethers": "5.5.1"
   },
-  "browserslist": "> 0.25%, not dead",
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --fix"
