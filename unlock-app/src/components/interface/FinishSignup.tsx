@@ -29,7 +29,7 @@ export const FinishSignup = ({ emailAddress, onSuccess }: Props) => {
       } else {
         setSuccess(true)
       }
-    } catch (error) {
+    } catch (error: any) {
       setError('There was a problem creating your account')
     }
     setLoading(false)

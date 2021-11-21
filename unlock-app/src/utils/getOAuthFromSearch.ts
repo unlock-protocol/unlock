@@ -3,7 +3,7 @@ import { OAuthConfig } from '../unlockTypes'
 export default function getConfigFromSearch(
   search: any
 ): OAuthConfig | undefined {
-  const { client_id, redirect_uri, response_type, code, state } = search
+  const { client_id, redirect_uri, response_type, state } = search
   if (!client_id) {
     // No client id, no OAuth
     return undefined

@@ -30,7 +30,7 @@ export const SignUp = ({ onCancel, createAccount, showLogin }: SignUpProps) => {
     setLoading(true)
     try {
       await createAccount(email, password)
-    } catch (error) {
+    } catch (error: any) {
       setError(error)
     }
     setLoading(false)
@@ -68,9 +68,6 @@ SignUp.defaultProps = {
 
 const StyledForm = styled.form``
 
-const ErrorMessage = styled.p`
-  color: var(--red);
-`
 const LinkButton = styled.a`
   cursor: pointer;
 `

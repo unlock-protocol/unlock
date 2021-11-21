@@ -60,7 +60,7 @@ export const NewAccountCheckout = ({
     setError('')
     try {
       await createAccount(email, password, { card, token })
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       setError(error.message)
     }
