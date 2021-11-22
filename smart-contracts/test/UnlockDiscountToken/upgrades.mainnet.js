@@ -17,13 +17,13 @@ const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
 const upgradeContract = async () => {
   // prepare upgrade and deploy new contract implementation
   const deployer = await ethers.getSigner(deployerAddress)
-  const UnlockDiscountTokenV2 = await ethers.getContractFactory(
-    'UnlockDiscountTokenV2',
+  const UnlockDiscountTokenV3 = await ethers.getContractFactory(
+    'UnlockDiscountTokenV3',
     deployer
   )
   const newImpl = await upgrades.prepareUpgrade(
     UDTProxyContractAddress,
-    UnlockDiscountTokenV2,
+    UnlockDiscountTokenV3,
     {}
   )
 
@@ -83,7 +83,7 @@ const upgradeContract = async () => {
     })
   )
 
-  return UnlockDiscountTokenV2.attach(UDTProxyContractAddress)
+  return UnlockDiscountTokenV3.attach(UDTProxyContractAddress)
 }
 
 contract('UnlockDiscountToken (on mainnet)', async () => {
@@ -125,7 +125,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     // get UDT instance
     deployer = await ethers.getSigner(deployerAddress)
     const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV2',
+      'UnlockDiscountTokenV3',
       deployer
     )
 
@@ -250,59 +250,6 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
     })
   })
 
-  describe('initialize2()', () => {
-    it('reset pastTotalSupply properly', async () => {
-      // upgrade contract
-      udt = await upgradeContract()
-
-      const blockNumber = await ethers.provider.getBlockNumber()
-      await time.advanceBlock()
-      const supplyBefore = await udt.getPastTotalSupply(blockNumber)
-
-      const tx = await udt.initialize2()
-      const receipt = await tx.wait()
-      await time.advanceBlock()
-
-      const supplyAfter = await udt.getPastTotalSupply(receipt.blockNumber)
-      assert.isTrue(supplyBefore.lt(supplyAfter))
-
-      const totalSupply = await udt.totalSupply()
-      assert.isTrue(supplyAfter.eq(totalSupply))
-    })
-
-    it('sets domain separator', async () => {
-      const domainSeparatorBefore = await udt.DOMAIN_SEPARATOR()
-      assert.isTrue(domainSeparatorBefore.length !== 0)
-      // Note: Etherscan yields a different value, but Hardhat will still show a chain id of 31337 on mainnet forks, and this affects the DOMAIN_SEPARATOR
-      assert.equal(
-        domainSeparatorBefore,
-        '0x441b58d23170603d99a03316b633425cffa08ea4fd19bd4fa31bb12ff0c7113e'
-      )
-
-      // upgrade contract
-      udt = await upgradeContract()
-
-      const expectedDomain = {
-        name: await udt.name(),
-        version: '1',
-        chainId: await udt.provider.getNetwork().then(({ chainId }) => chainId),
-        verifyingContract: udt.address,
-      }
-
-      const tx = await udt.initialize2()
-      await tx.wait()
-
-      const domainSeparatorAfter = await udt.DOMAIN_SEPARATOR()
-      assert.notEqual(domainSeparatorBefore, domainSeparatorAfter)
-      assert.isTrue(domainSeparatorAfter.length !== 0)
-      assert.equal(
-        domainSeparatorAfter,
-        ethers.utils._TypedDataEncoder.hashDomain(expectedDomain)
-      )
-      assert.notEqual(domainSeparatorAfter, domainSeparatorBefore)
-    })
-  })
-
   describe('transfers', () => {
     it('should support transfer by permit', async () => {
       const [spender] = await ethers.getSigners()
@@ -310,7 +257,6 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       const permitter = ethers.Wallet.createRandom()
 
       udt = await upgradeContract()
-      await udt.initialize2()
       udt = udt.connect(spender)
 
       // Check approval
@@ -425,7 +371,6 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       it('delegation by signature', async () => {
         // make the upgrade
         udt = await upgradeContract()
-        await udt.initialize2()
 
         // Create a user
         const delegator = ethers.Wallet.createRandom()
