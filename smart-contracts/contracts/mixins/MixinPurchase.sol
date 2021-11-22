@@ -22,20 +22,22 @@ contract MixinPurchase is
 
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
 
-  uint8 private _gasRefundPercentage = 0; // default to 0
+  // default to 0%  
+  uint128 private _gasRefundBasisPoints = 0; 
 
   /**
-  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  * @dev Set a percentage as basis point (10000th) of the key price to be refunded to the sender on purchase
   */
-  function setGasRefundPercentage(uint8 _percent) external onlyLockManager {
-    _gasRefundPercentage = _percent;
+
+  function setGasRefundBasisPoints(uint128 _basisPoint) external onlyLockManager {
+    _gasRefundBasisPoints = _basisPoint;
   }
   
   /**
-  * @dev Returns percentage be refunded to the sender on purchase
+  * @dev Returns percentage as basis point (10000th) to be refunded to the sender on purchase
   */
-  function gasRefundPercentage() external view onlyLockManagerOrBeneficiary returns (uint8 percentage) {
-    return _gasRefundPercentage;
+  function gasRefundBasisPoints() external view onlyLockManagerOrBeneficiary returns (uint128 percentage) {
+    return _gasRefundBasisPoints;
   }
 
   /**
@@ -125,8 +127,8 @@ contract MixinPurchase is
     }
 
     // refund gas
-    if (_gasRefundPercentage != 0) {
-      uint toRefund = _gasRefundPercentage * pricePaid / 100;
+    if (_gasRefundBasisPoints != 0) {
+      uint toRefund = _gasRefundBasisPoints * pricePaid / BASIS_POINTS_DEN;
       if(tokenAddress != address(0)) {
         IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
         token.transferFrom(address(this), msg.sender, toRefund);
