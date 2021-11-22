@@ -215,12 +215,12 @@ interface IPublicLock
   /**
   * @dev Set a percentage of the key price to be refunded to the sender on purchase
   */
-  function setGasRefundPercentage(uint8 _percent) external;
+  function setGasRefundBasisPoints(uint128 _basisPoints) external;
   
   /**
   * @dev Returns percentage be refunded to the sender on purchase
   */
-  function gasRefundPercentage() external view returns (uint8 percentage);
+  function gasRefundBasisPoints() external view returns (uint128 basisPoints);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.

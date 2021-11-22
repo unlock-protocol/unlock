@@ -29,14 +29,14 @@ contract MixinPurchase is
   * @dev Set a percentage as basis point (10000th) of the key price to be refunded to the sender on purchase
   */
 
-  function setGasRefundBasisPoints(uint128 _basisPoint) external onlyLockManager {
-    _gasRefundBasisPoints = _basisPoint;
+  function setGasRefundBasisPoints(uint128 _basisPoints) external onlyLockManager {
+    _gasRefundBasisPoints = _basisPoints;
   }
   
   /**
   * @dev Returns percentage as basis point (10000th) to be refunded to the sender on purchase
   */
-  function gasRefundBasisPoints() external view returns (uint128 percentage) {
+  function gasRefundBasisPoints() external view returns (uint128 basisPoints) {
     return _gasRefundBasisPoints;
   }
 
