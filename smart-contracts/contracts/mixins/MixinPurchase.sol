@@ -36,7 +36,7 @@ contract MixinPurchase is
   /**
   * @dev Returns percentage as basis point (10000th) to be refunded to the sender on purchase
   */
-  function gasRefundBasisPoints() external view onlyLockManagerOrBeneficiary returns (uint128 percentage) {
+  function gasRefundBasisPoints() external view returns (uint128 percentage) {
     return _gasRefundBasisPoints;
   }
 
