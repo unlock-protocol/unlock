@@ -55,19 +55,14 @@ contract('Lock / GasRefund', (accounts) => {
           assert.equal(await lock.gasRefundBasisPoints(), 2500)
         })
 
-        it('can not be set if caller is not lock manager or beneficiary', async () => {
+        it('can not be set if caller is not lock manager', async () => {
           await truffleAssert.fails(
             lock.setGasRefundBasisPoints(2500, {
               from: accounts[3],
             }),
             'revert',
-            'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
+            'ONLY_LOCK_MANAGER'
           )
-        })
-
-        it('can be by set beneficiary', async () => {
-          await lock.setGasRefundBasisPoints(2500, { from: accounts[0] })
-          assert.equal(await lock.gasRefundBasisPoints(), 2500)
         })
 
         it('can set by lock manager', async () => {
