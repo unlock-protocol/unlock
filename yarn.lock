@@ -10697,6 +10697,7 @@ __metadata:
   resolution: "@unlock-protocol/networks@workspace:packages/networks"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/types": "workspace:^"
     typescript: 4.4.4
   languageName: unknown
   linkType: soft
@@ -10921,7 +10922,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/types@workspace:./packages/types, @unlock-protocol/types@workspace:packages/types":
+"@unlock-protocol/types@workspace:./packages/types, @unlock-protocol/types@workspace:^, @unlock-protocol/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:

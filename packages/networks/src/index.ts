@@ -1,4 +1,4 @@
-import { NetworkConfigs } from './types';
+import { NetworkConfigs } from '@unlock-protocol/types'
 
 import * as supportedNetworks from './networks';
 
