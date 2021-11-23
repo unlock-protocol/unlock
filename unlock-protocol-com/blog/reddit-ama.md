@@ -4,7 +4,7 @@ subTitle: Julien Genestoux and Amber Case answer Reddit's questions about Unlock
 authorName: James Au
 publishDate: September 24, 2021
 description: Unlock's CEO Julien Genestoux and adviser Amber Case answer Reddit's questions about Unlock
-image: /static/images/blog/reddit-ama/reddit-ama.png
+image: /images/blog/reddit-ama/reddit-ama.png
 ---
 
 ![reddit-ama](/static/images/blog/reddit-ama/reddit-ama.png)
