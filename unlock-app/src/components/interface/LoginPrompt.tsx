@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import styled from 'styled-components'
 import SvgComponents from './svg'
 
@@ -9,6 +9,7 @@ import {
   useAuthenticateHandler,
   WalletProvider,
 } from '../../hooks/useAuthenticateHandler'
+import { AuthenticationContext } from './Authenticate'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -27,18 +28,6 @@ export interface EthereumWindow extends Window {
   web3?: any
 }
 
-interface RpcType {
-  [network: string]: string
-}
-
-export const rpcForWalletConnect = (config: any) => {
-  const rpc: RpcType = {}
-  Object.keys(config.networks).forEach((key) => {
-    rpc[key] = config.networks[key].provider
-  })
-  return rpc
-}
-
 const LoginPrompt = ({
   children,
   unlockUserAccount,
@@ -51,13 +40,16 @@ const LoginPrompt = ({
   onProvider,
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
+  const { authenticate } = useContext(AuthenticationContext)
 
   const { injectedOrDefaultProvider } = useAuthenticate({
     injectedProvider,
     onProvider,
+    authenticate,
   })
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
+    authenticate,
   })
   const loginWithProvider = useCallback(async (key: WalletProvider) => {
     await authenticateWithProvider(key)

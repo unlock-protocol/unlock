@@ -1,13 +1,23 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import WalletLink from 'walletlink'
-import { AuthenticationContext } from '../components/interface/Authenticate'
-import { rpcForWalletConnect } from '../components/interface/LoginPrompt'
 import { ConfigContext } from '../utils/withConfig'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
   web3?: any
+}
+
+interface RpcType {
+  [network: string]: string
+}
+
+export const rpcForWalletConnect = (config: any) => {
+  const rpc: RpcType = {}
+  Object.keys(config.networks).forEach((key) => {
+    rpc[key] = config.networks[key].provider
+  })
+  return rpc
 }
 
 export const selectProvider = (config: any) => {
@@ -33,8 +43,8 @@ export const selectProvider = (config: any) => {
 
 interface AuthenticateProps {
   injectedProvider?: any | null
-  onProvider?: ((provider?: any) => void) | undefined
   authenticate?: (provider: any, messageToSign?: any) => Promise<any>
+  onProvider?: ((provider?: any) => void) | undefined
 }
 
 export function useAuthenticate({
@@ -42,17 +52,22 @@ export function useAuthenticate({
   onProvider,
   authenticate,
 }: AuthenticateProps) {
-  const authCtx = useContext(AuthenticationContext)
-  const authenticateFn = authenticate ?? authCtx?.authenticate
   const config = useContext(ConfigContext)
 
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
+
+  const onAuthenticate = useCallback(
+    async (provider, messageToSign = undefined) => {
+      if (authenticate) await authenticate(provider, messageToSign)
+    },
+    []
+  )
 
   const authenticateIfNotHandled = async (provider: any) => {
     if (onProvider) {
       await onProvider(provider)
     } else {
-      await authenticateFn(provider)
+      await onAuthenticate(provider)
     }
   }
 
@@ -87,5 +102,6 @@ export function useAuthenticate({
     handleWalletConnectProvider,
     handleCoinbaseWalletProvider,
     injectedOrDefaultProvider,
+    onAuthenticate,
   }
 }
