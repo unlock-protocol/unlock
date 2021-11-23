@@ -180,7 +180,7 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 
 ```js
 {
-  contractName, // the contract - ex. UnlockDiscountTokenV2
+  contractName, // the contract - ex. UnlockDiscountTokenV3
   functionName, // the function to be executed - ex. 'transfer'
   functionArgs, // args of the function - ex. [ 0x000, 10000 ]
   proposalName, // ex 'wire Worpdress plugin grant`

@@ -13,7 +13,7 @@ contract('Proposal Helper', () => {
   let udt
   let interface
   beforeEach(async () => {
-    udt = await ethers.getContractFactory('UnlockDiscountTokenV2')
+    udt = await ethers.getContractFactory('UnlockDiscountTokenV3')
     ;({ interface } = udt)
   })
 
@@ -58,7 +58,7 @@ contract('Proposal Helper', () => {
       const proposalName = 'Send some tokens to a grantee'
 
       const [to, value, calldata, proposalNameParsed] = await parseProposal({
-        contractName: 'UnlockDiscountTokenV2',
+        contractName: 'UnlockDiscountTokenV3',
         functionName: 'transfer',
         functionArgs: [
           tokenRecipientAddress,
