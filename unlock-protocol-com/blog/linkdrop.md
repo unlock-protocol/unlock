@@ -3,7 +3,7 @@ title: "Linkdrop: granting keys through links!"
 authorName: Julien Genestoux
 publishDate: October 9, 2019
 description: Linkdrop provides a simple mechanism which lets anyone create links to "claim" keys for free!
-image: /static/images/blog/linkdrop/linkdrop.png
+image: /images/blog/linkdrop/linkdrop.png
 ---
 
 In the blockchain world, one of the most potent distribution mechanisms is called **an airdrop**. It is a way for token creators to send their tokens to a large set of people, without requiring these recipients to perform transactions and pay fees themselves. Unfortunately it is often used as a vector for spam even though it is a very useful tool to boostrap a fairly wide adoption.

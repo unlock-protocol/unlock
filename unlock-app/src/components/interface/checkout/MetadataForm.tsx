@@ -51,7 +51,7 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
     try {
       await setUserMetadataData(lock.address, metadata, network)
       onSubmit(metadata)
-    } catch (error) {
+    } catch (error: any) {
       setError('We could not save your info, please try again.')
       setSubmittedForm(false)
     }

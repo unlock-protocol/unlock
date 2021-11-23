@@ -18,7 +18,7 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const walletWithProvider = new ethers.Wallet(
@@ -38,7 +38,7 @@ export default class Dispatcher {
 
   async hasFundsForTransaction(network: number) {
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
@@ -59,7 +59,7 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
-      networks[network].provider
+      networks[network].publicProvider
     )
 
     const walletWithProvider = new ethers.Wallet(

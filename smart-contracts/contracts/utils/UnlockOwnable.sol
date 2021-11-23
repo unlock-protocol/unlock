@@ -19,7 +19,7 @@ import '@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol';
  * but had to be included (instead of using the one in openzeppelin/contracts-upgradeable ) 
  * because the ______gap array length was 49 instead of 50
  */
-contract Ownable is Initializable, ContextUpgradeable {
+abstract contract UnlockOwnable is Initializable, ContextUpgradeable {
     address private _owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);

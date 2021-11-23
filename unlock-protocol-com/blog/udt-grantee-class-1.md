@@ -3,10 +3,10 @@ title: The First Class of Unlock Token Grantees!
 authorName: Amber Case
 publishDate: June 9, 2021
 description: We’re excited to announce our pioneering set of Unlock Token Grantees!  We’re looking forward to seeing how they apply Unlock in new ways.
-image: /static/images/blog/udt-grants-class-1.png
+image: /images/blog/udt-grants-class-1.png
 ---
 
-![udt grants](/static/images/blog/udt-grants-class-1.png)
+![udt grants](/images/blog/udt-grants-class-1.png)
 
 We’re excited to announce our pioneering set of Unlock Token Grantees!  We’re looking forward to seeing how they apply Unlock in new ways. You can [learn more about the grant program here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 

@@ -4,7 +4,7 @@ subTitle: Simplifying spending on Ethereum
 authorName: Nick Mancuso
 publishDate: January 31, 2020
 description: Calling contracts without having to get a specific ERC-20 token type first.
-image: /static/images/blog/unlocking-smart-contracts/code.jpeg
+image: /images/blog/unlocking-smart-contracts/code.jpeg
 ---
 
 Unlock Protocol enables content creators to sell keys which are NFTs used to gain access, unlock features, and/or display support for the creator.  The content creators choose the price and which currency they prefer. ETH is the native currency but the value is volatile. Many prefer to price things in USD by using an ERC-20 token such as DAI.
@@ -46,7 +46,7 @@ For Unlock’s use case, the contract calls we make are:
  - Call purchase on the lock contract to acquire a key which is sent directly to the user
 
 <p style="text-align:center">
-	<img src="/static/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
+	<img src="/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
 </p>
 
 Here’s [an example transaction](https://etherscan.io/tx/0x8c0e34bb009a13b4c35ba3bd6b96c6ed2b5807ac0e5da47f65350017b38f5450) where I use SwapAndCall to pay with ETH and buy a key priced at $1, in DAI.

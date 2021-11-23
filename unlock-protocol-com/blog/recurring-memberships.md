@@ -4,7 +4,7 @@ subTitle: The Unlock Protocol supports recurring memberships!
 authorName: Julien Genestoux
 publishDate: July 3, 2020
 description: Leveraring the ERC20 approach to allowances lets creators easily create a recurring membership!
-image: /static/images/blog/protocol-for-memberships.png
+image: /images/blog/protocol-for-memberships.png
 ---
 
 The most exciting aspects of Ethereum is its composability. For example, locks can use stable coins such as DAI or USDc for their pricing. These coins are both using the ERC20 token standard. Today we're showing how we leverage another characteristic of the ERC20 specification to make recurring memberships.
@@ -46,7 +46,7 @@ A user [approved the key purchaser](https://etherscan.io/tx/0x5d3fb6902a32726514
 
 Another user then [sent a transaction to the key purchaser](https://etherscan.io/tx/0xfd5f8dd28cd9f20da00435a562eda0171ecdfa21c8cb0f2367d888f407465aed) to perform the actual purchase. The Etherscan UI provides a good understanding of what happened.
 
-![key purchase](/static/images/blog/recurring-memberships/transaction.png)
+![key purchase](/images/blog/recurring-memberships/transaction.png)
 
 We can see 1.1 DAI transferred from the member's address, 1 DAI sent to the lock, 0.1 DAI sent to the sender.
 Additionally, a new NFT for the lock was minted and granted to the members!

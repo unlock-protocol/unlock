@@ -35,6 +35,8 @@ const LoadLock = ({
   }
   return (
     <Lock
+      hasOptimisticKey={false}
+      purchasePending={false}
       network={network}
       lock={lock}
       name={name}
@@ -64,6 +66,7 @@ export const Locks = ({
   return (
     <Wrapper>
       {Object.entries(locks).map(
+        // @ts-expect-error
         ([address, lockProps]: [string, LockProps]) => {
           return (
             <LoadLock

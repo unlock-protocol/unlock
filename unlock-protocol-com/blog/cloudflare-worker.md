@@ -4,7 +4,7 @@ subTitle: Or, how to put a lock on any website without changing its code!
 authorName: Julien Genestoux
 publishDate: March 31, 2020
 description: Cloudflare is a leading Content Delivery Network provider. Web sites and application can use Cloudflare to add a layer between consumers and their applications in order to increase delivery speed, reduce the impact of attacks... or, add an Unlock lock!
-image: /static/images/blog/cloudflare-workers/cloudflare-workers.png
+image: /images/blog/cloudflare-workers/cloudflare-workers.png
 ---
 
 As part of its CDN architecture, [Cloudflare](https://cloudflare.com) recently introduced the concept of "[Workers](https://workers.cloudflare.com/)"... These are lambda functions which get executed on every requests going through Cloudflare's CDN. It's very similar to the **middleware architecture** popularized in several HTTP frameworks such as ruby's [Rack](https://github.com/rack/rack) or Node.js's Express.
@@ -27,17 +27,17 @@ First, you would need to have a website and configure it so that it uses Cloudfl
 
 We then need to add a worker to the website. From the Cloudflare interface, click on "Workers".
 
-![workers](/static/images/blog/cloudflare-workers/workers.png)
+![workers](/images/blog/cloudflare-workers/workers.png)
 
 Then, click on *Manage Workers*. This page will let you deploy a worker. We have [created a worker](https://github.com/unlock-protocol/cloudflare-worker) that you can use as-is, but you are also welcome to fork this repo and modify it to match your needs.
 
-![create worker](/static/images/blog/cloudflare-workers/create-worker.png)
+![create worker](/images/blog/cloudflare-workers/create-worker.png)
 
 You can use the `wrangler` tool provided by the team at Cloudflare to deploy your own fork of the worker, but make sure you change its settings!
 
 Once the worker is deployed, you need to "hook" it to your website. This can be done by adding a _Route_ to your website's worker panel. In our case, we want any request to our website `unlock.community/*` to go through our worker.
 
-![hooking worker](/static/images/blog/cloudflare-workers/hooking-worker.png)
+![hooking worker](/images/blog/cloudflare-workers/hooking-worker.png)
 
 Once, this is done, you're all set! You have successfuly added a membership to your website so that only paying members are able to access its content.
 
@@ -64,7 +64,7 @@ const locksmithUri = 'https://locksmith.unlock-protocol.com/'
 // or support credit cards payments.
 // See https://docs.unlock-protocol.com/#configure-the-paywall
 const unlockConfig = {
-  icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
+  icon: 'https://app.unlock-protocol.com/images/svg/default.svg',
   persistentCheckout: true,
   locks: {
     "0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F": { }
@@ -136,7 +136,7 @@ async function handleRequest(request) {
   <script> (function(d, s) {
   var js = d.createElement(s),
   sc = d.getElementsByTagName(s)[0];
-  js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
+  js.src="https://paywall.unlock-protocol.com/unlock.latest.min.js";
   sc.parentNode.insertBefore(js, sc); }(document, "script"));
   </script>
   <script>

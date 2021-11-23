@@ -96,7 +96,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
     title: 'Unlock Blog',
     description: "News and updates from the Web's new business model.",
     site_url: `${unlockUrl}/blog`,
-    feed_url: `${unlockUrl}/static/blog.rss`,
+    feed_url: `${unlockUrl}/blog.rss`,
     generator: 'Unlock Blog Engine',
   })
 
@@ -113,7 +113,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
   })
 
   fs.writeFile(
-    join(baseDir, 'src', 'static', 'blog.rss'),
+    join(baseDir, 'public', 'blog.rss'),
     rssFeed.xml({ indent: true }),
     callback
   )
