@@ -54,7 +54,7 @@ contract('Proposal Helper', () => {
 
   describe('proposal parser', () => {
     it('encode correctly a function call', async () => {
-      const { address } = getDeployment(31337, 'UnlockDiscountTokenV2')
+      const { address } = getDeployment(31337, 'UnlockDiscountTokenV3')
       const proposalName = 'Send some tokens to a grantee'
 
       const [to, value, calldata, proposalNameParsed] = await parseProposal({
