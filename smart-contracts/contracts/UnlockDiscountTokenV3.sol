@@ -8,8 +8,9 @@ import './UnlockDiscountTokenV2.sol';
 * This smart contract implements the Unlock Discount Token
 */
 contract UnlockDiscountTokenV3 is UnlockDiscountTokenV2 {
+
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override {
-    // We block transfers to and from the xDAI bridge (tokens were stolen there and we don't want to allow them back)
+    // We block transfers to and from the xDAI bridge (tokens were stolen there on Nov 21st 2021 and we don't want to allow these tokens to return)
     require(from != 0x88ad09518695c6c3712AC10a214bE5109a655671, "Transfer from xDAI disabled");
     require(to != 0x88ad09518695c6c3712AC10a214bE5109a655671, "Transfer to xDAI disabled");
     return super._beforeTokenTransfer(from, to, amount);

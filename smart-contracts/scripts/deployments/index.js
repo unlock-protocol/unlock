@@ -70,7 +70,7 @@ async function main({
   if (udtAddress !== '0x0000000000000000000000000000000000000000') {
     // pre-mint some UDTs, then delegate mint caps to contract
     if (isLocalNet || premintAmount) {
-      const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+      const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
       udt = UDT.attach(udtAddress)
 
       udt = udt.connect(minter)
