@@ -7,7 +7,7 @@ import './ERC20Patched.sol';
 * @title The Unlock Discount Token
 * This smart contract implements the Unlock Discount Token
 */
-contract UnlockDiscountTokenV3 is
+contract UnlockDiscountTokenV2 is
 ERC20MintableUpgradeable,
 ERC20DetailedUpgradeable,
 ERC20VotesCompUpgradeable
