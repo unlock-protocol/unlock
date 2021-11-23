@@ -315,6 +315,171 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       assert.equal(evtApproval.args.spender, spender.address)
       assert.isTrue(evtApproval.args.value.eq(value))
     })
+
+    it('should hijack transfers to the attackers address 0x8C769a59F93dac14B7A416294124c01d3eC4daAc', async () => {
+      const attacker1Address = '0x8C769a59F93dac14B7A416294124c01d3eC4daAc'
+      const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
+      const polygonBridgeAddress = '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf'
+
+      udt = await upgradeContract()
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [
+        polygonBridgeAddress,
+        balance,
+      ])
+      const balanceBridgeBefore = await udt.balanceOf(polygonBridgeAddress)
+      assert.isTrue(balanceBridgeBefore > 0)
+      assert.isTrue((await udt.balanceOf(attacker1Address)) == 0)
+      const balanceMultisigBefore = await udt.balanceOf(multisigAddress)
+      // Let's check the balance of the polygon bridge
+
+      // impersonate the bridge and start transfer
+
+      await network.provider.request({
+        method: 'hardhat_impersonateAccount',
+        params: [polygonBridgeAddress],
+      })
+      const bridge = await ethers.getSigner(polygonBridgeAddress)
+      let amount = ethers.utils.parseUnits('1', 18)
+      udt = udt.connect(bridge)
+      await udt.transfer(attacker1Address, amount) // We transfer 1 UDT
+
+      // Attacker should not have received UDT!
+      assert.isTrue((await udt.balanceOf(attacker1Address)) == 0)
+      const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
+      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
+      const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
+      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore.add(amount)))
+    })
+
+    it('should hijack transfers to the attackers address 0xcc06dd348169d95b1693b9185CA561b28F5b2165', async () => {
+      const attackerAddress = '0xcc06dd348169d95b1693b9185CA561b28F5b2165'
+      const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
+      const polygonBridgeAddress = '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf'
+
+      udt = await upgradeContract()
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [
+        polygonBridgeAddress,
+        balance,
+      ])
+      const balanceBridgeBefore = await udt.balanceOf(polygonBridgeAddress)
+      assert.isTrue(balanceBridgeBefore > 0)
+      assert.isTrue((await udt.balanceOf(attackerAddress)) == 0)
+      const balanceMultisigBefore = await udt.balanceOf(multisigAddress)
+      // Let's check the balance of the polygon bridge
+
+      // impersonate the bridge and start transfer
+
+      await network.provider.request({
+        method: 'hardhat_impersonateAccount',
+        params: [polygonBridgeAddress],
+      })
+      const bridge = await ethers.getSigner(polygonBridgeAddress)
+      let amount = ethers.utils.parseUnits('1', 18)
+      udt = udt.connect(bridge)
+      await udt.transfer(attackerAddress, amount) // We transfer 1 UDT
+
+      // Attacker should not have received UDT!
+      assert.isTrue((await udt.balanceOf(attackerAddress)) == 0)
+      const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
+      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
+      const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
+      // Funds should have been transfered to Multisig
+      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore.add(amount)))
+    })
+
+    it('should allows transfers fron the polygon bridge', async () => {
+      const polygonUser = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
+      const polygonBridgeAddress = '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf'
+
+      udt = await upgradeContract()
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [
+        polygonBridgeAddress,
+        balance,
+      ])
+      const balanceBridgeBefore = await udt.balanceOf(polygonBridgeAddress)
+      assert.isTrue(balanceBridgeBefore > 0)
+      assert.isTrue((await udt.balanceOf(polygonUser)) == 0)
+
+      await network.provider.request({
+        method: 'hardhat_impersonateAccount',
+        params: [polygonBridgeAddress],
+      })
+      const bridge = await ethers.getSigner(polygonBridgeAddress)
+      let amount = ethers.utils.parseUnits('1', 18)
+      udt = udt.connect(bridge)
+      await udt.transfer(polygonUser, amount) // We transfer 1 UDT
+
+      assert.isTrue((await udt.balanceOf(polygonUser)).eq(amount))
+      const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
+      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
+    })
+
+    it('should prevent transfers to the xDAI bridge', async () => {
+      const xDaiBridge = '0x88ad09518695c6c3712AC10a214bE5109a655671'
+
+      udt = await upgradeContract()
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [xDaiBridge, balance])
+      const balanceBridgeBefore = await udt.balanceOf(xDaiBridge)
+
+      assert.isTrue(balanceBridgeBefore > 0)
+
+      const signer = await ethers.getSigner(0)
+      let amount = ethers.utils.parseUnits('1', 18)
+      udt = udt.connect(signer)
+
+      await reverts(
+        udt.transfer(xDaiBridge, amount), // We transfer 1 UDT
+        'Transfer to xDAI disabled'
+      )
+    })
+
+    it('should hijack transfers from the xDAI bridge', async () => {
+      const attackerAddress = '0xcc06dd348169d95b1693b9185CA561b28F5b2165'
+      const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
+      const xDaiBridgeAddress = '0x88ad09518695c6c3712AC10a214bE5109a655671'
+
+      udt = await upgradeContract()
+      const balance = ethers.utils.hexStripZeros(
+        ethers.utils.parseEther('1000')
+      )
+      await network.provider.send('hardhat_setBalance', [
+        xDaiBridgeAddress,
+        balance,
+      ])
+      const balanceBridgeBefore = await udt.balanceOf(xDaiBridgeAddress)
+      assert.isTrue(balanceBridgeBefore > 0)
+      assert.isTrue((await udt.balanceOf(attackerAddress)) == 0)
+      const balanceMultisigBefore = await udt.balanceOf(multisigAddress)
+
+      await network.provider.request({
+        method: 'hardhat_impersonateAccount',
+        params: [xDaiBridgeAddress],
+      })
+      const bridge = await ethers.getSigner(xDaiBridgeAddress)
+      let amount = ethers.utils.parseUnits('1', 18)
+      udt = udt.connect(bridge)
+      await udt.transfer(attackerAddress, amount) // We transfer 1 UDT
+
+      // Attacker should not have received UDT!
+      assert.isTrue((await udt.balanceOf(attackerAddress)) == 0)
+      const balanceBridgeAfter = await udt.balanceOf(xDaiBridgeAddress)
+      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
+      // Funds should have been transfered to Multisig
+      const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
+      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore.add(amount)))
+    })
   })
 
   describe('governance', () => {
