@@ -12,11 +12,11 @@ async function main() {
   )
   // eslint-disable-next-line no-console
   console.log(
-    'PUBLIC LOCK > Please verify it and call `npx hardhat set template` on the Unlock.'
+    'PUBLIC LOCK > Please verify it and call `yarn hardhat set:template`.'
   )
 
   // save deployment info
-  await addDeployment('Unlock', publicLock, false)
+  await addDeployment('PublicLock', publicLock, false)
 
   return publicLock.address
 }
