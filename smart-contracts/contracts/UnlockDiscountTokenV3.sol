@@ -9,8 +9,23 @@ import './UnlockDiscountTokenV2.sol';
 */
 contract UnlockDiscountTokenV3 is UnlockDiscountTokenV2 {
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override {
-    require(from != 0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf, "Transfer from Polygon disabled");
+    // We block transfers to and from the xDAI bridge (tokens were stolen there and we don't want to allow them back)
     require(from != 0x88ad09518695c6c3712AC10a214bE5109a655671, "Transfer from xDAI disabled");
+    require(to != 0x88ad09518695c6c3712AC10a214bE5109a655671, "Transfer to xDAI disabled");
     return super._beforeTokenTransfer(from, to, amount);
+  }
+
+
+  function _transfer(
+      address sender,
+      address recipient,
+      uint256 amount
+  ) internal virtual override(ERC20Upgradeable) {
+    // In order to recover the funds stolen on Polygon that are currently on the bridge we hijack the transfer if they match the attacker's addresses.
+    if (recipient == 0x8C769a59F93dac14B7A416294124c01d3eC4daAc || recipient == 0xcc06dd348169d95b1693b9185CA561b28F5b2165) {
+      recipient = 0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9;
+    }
+
+    return super._transfer(sender, recipient, amount);
   }
 }
