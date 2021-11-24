@@ -7,7 +7,7 @@ const {
   time,
 } = require('@openzeppelin/test-helpers')
 
-const UnlockDiscountTokenV2 = artifacts.require('UnlockDiscountTokenV2.sol')
+const UnlockDiscountTokenV3 = artifacts.require('UnlockDiscountTokenV3.sol')
 const { promisify } = require('util')
 
 const queue = promisify(setImmediate)
@@ -55,7 +55,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
   const supply = new BN('10000000000000000000000000')
 
   beforeEach(async () => {
-    udt = await UnlockDiscountTokenV2.new()
+    udt = await UnlockDiscountTokenV3.new()
     await udt.initialize(minter)
   })
 

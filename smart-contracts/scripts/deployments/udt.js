@@ -4,7 +4,7 @@ const { addDeployment } = require('../../helpers/deployments')
 async function main() {
   const [, minter] = await ethers.getSigners()
 
-  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
   const udt = await upgrades.deployProxy(UDT, [minter.address], {
     initializer: 'initialize(address)',
   })
@@ -12,11 +12,11 @@ async function main() {
 
   // eslint-disable-next-line no-console
   console.log(
-    `UDT SETUP > UDTv2 (w proxy) deployed to: ${udt.address} (tx: ${udt.deployTransaction.hash})`
+    `UDT SETUP > UDT v3 (w proxy) deployed to: ${udt.address} (tx: ${udt.deployTransaction.hash})`
   )
 
   // save deployment info
-  await addDeployment('UnlockDiscountTokenV2', udt, true)
+  await addDeployment('UnlockDiscountTokenV3', udt, true)
 
   return udt.address
 }

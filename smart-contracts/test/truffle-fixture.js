@@ -47,15 +47,15 @@ module.exports = async () => {
   // save deployment info
   await addDeployment('UnlockDiscountToken', token, true)
 
-  // 5. deploy UDT (v2)
-  const UDTv2 = await ethers.getContractFactory('UnlockDiscountTokenV2')
-  const tokenv2 = await upgrades.deployProxy(UDTv2, [minter.address], {
+  // 5. deploy UDT (v3)
+  const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
+  const tokenv3 = await upgrades.deployProxy(UDTv3, [minter.address], {
     initializer: 'initialize(address)',
   })
-  await tokenv2.deployed()
+  await tokenv3.deployed()
 
   // save deployment info
-  await addDeployment('UnlockDiscountTokenV2', tokenv2, true)
+  await addDeployment('UnlockDiscountTokenV3', tokenv3, true)
 
   // 5. deploy Gov
   const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
