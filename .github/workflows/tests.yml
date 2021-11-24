@@ -30,7 +30,7 @@ jobs:
             echo 'Run all tests'
             echo ::set-output name=changed::$TARGETS
           else 
-            changed=$(.github/actions/monorepo/check-changes.sh)
+            changed=$(.github/actions/monorepo/check-changes.sh ${{ github.ref_name }})
             echo ::set-output name=changed::$changed
           fi
           printf 'changed:%s\n' "${changed[@]}"

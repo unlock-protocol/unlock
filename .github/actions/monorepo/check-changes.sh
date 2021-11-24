@@ -4,14 +4,16 @@
 # Directories to be scannned should be passed as a stringified JSON array to env $TARGETS
 # 
 
+CURRENT_BRANCH=$1
+
 main() {
   targets=($(jq -r .[] <<< $TARGETS))
   changed=()
 
   for f in ${targets[@]}; do 
-    has_changed="$(scripts/monorepo.sh $f gh-actions)"
+    has_changed="$(scripts/monorepo.sh $f $CURRENT_BRANCH)"
     if [ "$has_changed" == "changed" ]; then
-      changed+="$f"
+      changed+=("$f")
     fi
   done
   if [ ${#changed[@]} -eq 0 ]; then
