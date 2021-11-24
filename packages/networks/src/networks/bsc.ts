@@ -1,4 +1,4 @@
-import { NetworkConfig } from '../types';
+import { NetworkConfig } from '@unlock-protocol/types';
 
 export const bsc: NetworkConfig = {
     publicProvider: 'https://bsc-dataseed.binance.org/',

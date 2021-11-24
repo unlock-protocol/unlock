@@ -1,4 +1,4 @@
-import { NetworkConfig } from '../types';
+import { NetworkConfig } from '@unlock-protocol/types';
 
 export const xdai: NetworkConfig = {
     publicProvider: 'https://rpc.xdaichain.com/',
