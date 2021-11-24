@@ -8,7 +8,7 @@
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
     "dev": "NODE_ENV=development yarn db:migrate && tsc-watch --onSuccess 'yarn start' --onFailure 'echo Beep! Compilation Failed'",
     "test": "yarn test:db:setup && yarn test:run",
-    "test:db:setup": "yarn run test:db:migrate && yarn run test:db:create && yarn run test:db:drop",
+    "test:db:setup": "yarn run test:db:drop && yarn run test:db:migrate && yarn run test:db:create",
     "test:db:create": "NODE_ENV=test yarn sequelize db:create",
     "test:db:migrate": "NODE_ENV=test yarn sequelize db:migrate",
     "test:db:drop": "NODE_ENV=test yarn sequelize db:drop",
