@@ -140,7 +140,7 @@ describe('Requesting Token Data', () => {
   })
 
   describe("when persisted data doesn't exist", () => {
-    it('returns wellformed data for Week in Ethereum News', async () => {
+    it.only('returns wellformed data for Week in Ethereum News', async () => {
       expect.assertions(2)
 
       const response = await request(app)
