@@ -24,7 +24,7 @@ export function useAuthenticateHandler({
     handleCoinbaseWalletProvider,
     handleWalletConnectProvider,
   } = useAuthenticate({ injectedProvider, authenticate })
-  const { setStorage } = useAppStorage()
+  const { setStorage, removeKey } = useAppStorage()
 
   const walletHandlers: {
     [key in WalletProvider]: (provider?: any) => Promise<any | void>
@@ -37,6 +37,10 @@ export function useAuthenticateHandler({
 
   const authenticateWithProvider = useCallback(
     async (provider: WalletProvider) => {
+      if (!walletHandlers[provider]) {
+        removeKey('provider')
+        return
+      }
       await walletHandlers[provider]()
       setStorage('provider', provider)
     },

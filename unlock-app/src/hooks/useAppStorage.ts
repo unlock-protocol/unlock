@@ -35,5 +35,6 @@ export function useAppStorage() {
     setStorage,
     getStorage,
     clearStorage,
+    removeKey,
   }
 }
