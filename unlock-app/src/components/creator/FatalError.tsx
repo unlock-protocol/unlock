@@ -32,7 +32,7 @@ export const DefaultError = ({
 
 export const FallbackError = () => (
   <DefaultError
-    illustration="/static/images/illustrations/error.svg"
+    illustration="/images/illustrations/error.svg"
     title="Fatal Error"
     critical
   >
@@ -78,7 +78,7 @@ const Message = styled.div`
 export const MissingAccount = () => (
   <DefaultError
     title="Need account"
-    illustration="/static/images/illustrations/wallet.svg"
+    illustration="/images/illustrations/wallet.svg"
     critical
   >
     <p>
@@ -91,7 +91,7 @@ export const MissingAccount = () => (
 export const ContractNotDeployed = () => (
   <DefaultError
     title="Unlock not deployed"
-    illustration="/static/images/illustrations/error.svg"
+    illustration="/images/illustrations/error.svg"
     critical
   >
     <p>The Unlock contract has not been deployed at the configured address.</p>
@@ -101,7 +101,7 @@ export const ContractNotDeployed = () => (
 export const NetworkNotSupported = () => (
   <DefaultError
     title="Network not supported"
-    illustration="/static/images/illustrations/network.svg"
+    illustration="/images/illustrations/network.svg"
     critical
   >
     <p>Unlock is currently not supported on this Ethereum network.</p>
@@ -111,7 +111,7 @@ export const NetworkNotSupported = () => (
 export const NotEnabledInProvider = () => (
   <DefaultError
     title="Not enabled in provider"
-    illustration="/static/images/illustrations/wallet.svg"
+    illustration="/images/illustrations/wallet.svg"
     critical
   >
     <p>You did not approve Unlock in your web3 wallet.</p>
@@ -125,7 +125,7 @@ export const WrongNetwork = ({ network }: WrongNetworkProps) => {
   return (
     <DefaultError
       title="Wrong network"
-      illustration="/static/images/illustrations/network.svg"
+      illustration="/images/illustrations/network.svg"
       critical
     >
       <p>

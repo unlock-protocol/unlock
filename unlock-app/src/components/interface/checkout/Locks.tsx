@@ -47,13 +47,13 @@ const LoadLock = ({
 }
 interface LocksProps {
   locks: any
-  network: number
+  network?: number
   setHasKey: (key: any) => void
   onSelected: (address: string) => void
 }
 
 interface LockProps {
-  network?: number
+  network: number
   name?: string
 }
 
@@ -71,6 +71,8 @@ export const Locks = ({
           return (
             <LoadLock
               setHasKey={setHasKey}
+              // @ts-expect-error one of the two will be defined!
+
               network={lockProps?.network || network}
               key={address}
               address={address}
@@ -84,7 +86,9 @@ export const Locks = ({
   )
 }
 
-Locks.defaultProps = {}
+Locks.defaultProps = {
+  network: 1,
+}
 
 const Wrapper = styled.div`
   margin-bottom: 24px;

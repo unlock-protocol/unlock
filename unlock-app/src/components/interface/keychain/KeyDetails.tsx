@@ -25,7 +25,7 @@ export const KeyDetails = () => {
     return (
       <DefaultError
         title="Could not retrieve keys"
-        illustration="/static/images/illustrations/error.svg"
+        illustration="/images/illustrations/error.svg"
         critical
       >
         {error.message}
@@ -52,7 +52,7 @@ export const NoKeys = () => {
   return (
     <DefaultError
       title="You don't have any keys yet"
-      illustration="/static/images/illustrations/key.svg"
+      illustration="/images/illustrations/key.svg"
       critical={false}
     >
       The Keychain lets you view and manage the keys that you own. As soon as

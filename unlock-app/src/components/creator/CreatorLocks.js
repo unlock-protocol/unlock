@@ -138,7 +138,7 @@ export const CreatorLocks = ({ formIsVisible, hideForm }) => {
       {locks.length === 0 && !loading && !formIsVisible && (
         <DefaultError
           title="Create a lock to get started"
-          illustration="/static/images/illustrations/lock.svg"
+          illustration="/images/illustrations/lock.svg"
           critical={false}
         >
           You have not created any locks yet. Create your first lock in seconds

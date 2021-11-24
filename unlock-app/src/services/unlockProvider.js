@@ -1,4 +1,4 @@
-import { providers } from 'ethers'
+import { ethers } from 'ethers'
 import * as sigUtil from 'eth-sig-util'
 import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from '../utils/accounts'
@@ -10,7 +10,7 @@ import EjectionRequest from '../structured_data/ejectionRequest'
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
-export default class UnlockProvider extends providers.JsonRpcProvider {
+export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
   constructor({ provider, id }) {
     super(provider, id)
     this.wallet = null

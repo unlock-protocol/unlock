@@ -101,7 +101,7 @@ const LoginPrompt = ({
   const handleCoinbaseWalletProvider = async () => {
     const walletLink = new WalletLink({
       appName: 'Unlock',
-      appLogoUrl: '/static/images/svg/default-lock-logo.svg',
+      appLogoUrl: '/images/svg/default-lock-logo.svg',
     })
 
     const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
