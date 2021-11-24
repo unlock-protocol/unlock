@@ -1,8 +1,8 @@
 import { NetworkConfig } from '../types';
 
 export const mainnet: NetworkConfig = {
-    // httpProvider: null, // we use the injected provider!
     id: 1,
+    publicProvider: 'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100', // Should we use Infura?
     provider:
         'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
     unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',

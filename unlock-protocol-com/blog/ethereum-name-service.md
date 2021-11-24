@@ -4,7 +4,7 @@ subTitle: We added support for Ethereum Name Service in the Unlock Dashboard
 authorName: Julien Genestoux
 publishDate: October 24, 2019
 description: Humans are not equiped to make sense of Ethereum addresses, the Ethereum Name Service makes it easy to recognize, remember and type addresses, in a fully decentralized way!
-image: /static/images/blog/ethereum-name-service/ethereum-name-service.png
+image: /images/blog/ethereum-name-service/ethereum-name-service.png
 ---
 
 In the Ethereum ecosystem, accounts are identified by addresses. These addresses are public keys which all start with `0x` followed by 42 hexadecimal 'digits'. It's a great unique identifier for machines, but, for most people, it is impossible to read, remember, recognize or even just type!
@@ -19,7 +19,7 @@ Our Dashboard shows addresses in several places: to tell the user their current 
 
 We're proud to announce that we now fully support the Ethereum Name Service! For every address displayed in the UI, if a reverse look up resolves to an existing ENS domain, we will show the ENS domain as you can see on the screenshot below!
 
-![Dashboard Lock](/static/images/blog/ethereum-name-service/ens-enabled.png)
+![Dashboard Lock](/images/blog/ethereum-name-service/ens-enabled.png)
 
 If you have not done so already, think about [registering your own ENS domain today](https://app.ens.domains/)!
 

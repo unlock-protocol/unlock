@@ -4,14 +4,14 @@ subTitle: Conference Tickets are short term memberships!
 authorName: Julien Genestoux
 publishDate: December 6, 2019
 description: The largest annual European Ethereum event focused on technology and community is using Unlock for its tickets!
-image: /static/images/blog/ethcc/ethcc.png
+image: /images/blog/ethcc/ethcc.png
 ---
 
 We are very proud and excited to announce that the [Ethereum Community Conference](https://ethcc.io/) is using Unlock to sell crypto tickets!
 
 The Ethereum Community Conference is the largest annual European Ethereum event focused on technology and community. It is organized by the great Ethereum France 🇫🇷 team and 2020's edition will be held between March 3rd and 5th!
 
-[![Get Ticket](/static/images/blog/ethcc/ticket.png)](https://ethcc.io/buy-tickets.html)
+[![Get Ticket](/images/blog/ethcc/ticket.png)](https://ethcc.io/buy-tickets.html)
 
 Like all other locks, the [ETHCC 2020 lock](https://etherscan.io/address/0x7fe9143379a59329afd7d25e52696a6f1db28d36) implements the ERC721 specification, which means that all tickets are Non Fungible Tokens! When we spoke with Marc and Bettina they told us that they needed to be able to collect attendees' information (email...) and we embarked on a crazy idea: storing that information inside of the NFT itself, as metadata!
 
@@ -39,7 +39,7 @@ Once the purchase transaction is final, like any other token, the token has its 
 
 As you can see, there is a field called `userMetadata`. By default, unless the call is authenticated, it is left empty... because this data is not public! However, if the metadata was retrieved by the EthCC team, then it would show the information I saved during the key purchase.
 
-![Attendee List](/static/images/blog/ethcc/attendee-list.png)
+![Attendee List](/images/blog/ethcc/attendee-list.png)
 
 Thanks to this feature, the EthCC team can easily list all attendees and their information, by just listing the key owners and their respective metadata. They can also export that list as CSV ;)
 

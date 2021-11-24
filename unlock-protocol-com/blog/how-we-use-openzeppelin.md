@@ -4,7 +4,7 @@ subTitle: Showcasing our usage of open-source tools.
 authorName: Nick Furfaro
 publishDate: February 24, 2020
 description: Openzeppelin provides the ethereum community an excellent assortment of reusable libraries and command-line tools. Here's how we use them at Unlock.
-image: /static/images/blog/zeplin.jpg
+image: /images/blog/zeplin.jpg
 ---
 
 ### What it is

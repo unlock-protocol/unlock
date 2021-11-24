@@ -16,7 +16,7 @@ const requiredVariables = [
   'SMTP_PASSWORD',
   'BASE64_WEDLOCKS_PRIVATE_KEY',
 ]
-requiredVariables.forEach(envVar => {
+requiredVariables.forEach((envVar) => {
   if (!process.env[envVar]) {
     console.error(`Environment variable ${envVar} is required.`)
     if (['dev', 'test'].indexOf(unlockEnv) === -1) {

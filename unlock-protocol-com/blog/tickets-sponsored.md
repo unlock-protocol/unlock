@@ -4,7 +4,7 @@ subTitle: Use our tickets application and receive up to $3,000 in sponsorships!
 authorName: Julien Genestoux
 publishDate: September 3, 2019
 description: Today, we're excited to announce a broad sponsorship effort for anyone who uses tickets to organize an Ethereum or Bitcoin related event for any event until December 31st 2019.
-image: /static/images/blog/sponsorship-events/ticket-sponsoring.jpg
+image: /images/blog/sponsorship-events/ticket-sponsoring.jpg
 ---
 
 Last month, we introduced [Unlock for tickets](/blog/introducing-tickets): a unique ethereum based ticketing application.

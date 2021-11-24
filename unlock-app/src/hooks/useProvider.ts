@@ -10,6 +10,12 @@ export interface EthereumWindow extends Window {
   ethereum: any
 }
 
+interface WatchAssetInterface {
+  address: string
+  symbol: string
+  image: string
+}
+
 /**
  * Initializes a provider passed
  * @param providerAdapter
@@ -189,7 +195,7 @@ export const useProvider = (config: any) => {
                 {
                   chainId: `0x${network.id.toString(16)}`,
                   chainName: network.name,
-                  rpcUrls: [network.provider],
+                  rpcUrls: [network.publicProvider],
                   nativeCurrency: network.nativeCurrency,
                 },
               ],
@@ -209,6 +215,22 @@ export const useProvider = (config: any) => {
     }
   }
 
+  const watchAsset = async ({
+    address,
+    symbol,
+    image,
+  }: WatchAssetInterface) => {
+    await provider.send('wallet_watchAsset', {
+      type: 'ERC20', // THIS IS A LIE, BUT AT LEAST WE CAN GET ADDED THERE!
+      options: {
+        address,
+        symbol,
+        decimals: 0,
+        image,
+      },
+    })
+  }
+
   return {
     loading,
     network,
@@ -221,6 +243,7 @@ export const useProvider = (config: any) => {
     connectProvider,
     disconnectProvider,
     error,
+    watchAsset,
     changeNetwork,
   }
 }

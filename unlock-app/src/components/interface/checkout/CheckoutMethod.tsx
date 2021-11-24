@@ -71,7 +71,7 @@ export const CheckoutMethod = ({
       )}
       {!isCreditCardEnabled && (
         <>
-          <MainChoice default={!isCreditCardEnabled} onClick={onWalletSelected}>
+          <MainChoice onClick={onWalletSelected}>
             <Icon>
               <Svg.Wallet />
             </Icon>
@@ -142,7 +142,11 @@ const MainChoice = styled(ActionButton).attrs({
   }
 `
 
-const SecondChoice = styled.a`
+interface SecondChoiceProps {
+  disabled?: boolean
+}
+
+const SecondChoice = styled.a<SecondChoiceProps>`
   display: flex;
   color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--blue)')};
   align-items: center;
@@ -161,3 +165,6 @@ const SecondChoice = styled.a`
     }
   }
 `
+SecondChoice.defaultProps = {
+  disabled: false,
+}

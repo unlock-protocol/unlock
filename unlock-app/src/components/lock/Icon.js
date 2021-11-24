@@ -184,11 +184,11 @@ export function Icon({ lock }) {
   const [imageSrc, setImageSrc] = useState(
     lock.address
       ? `${config.services.storage.host}/lock/${lock.address}/icon`
-      : '/static/images/svg/default-lock-logo.svg'
+      : '/images/svg/default-lock-logo.svg'
   )
 
   const handleError = () => {
-    setImageSrc('/static/images/svg/default-lock-logo.svg')
+    setImageSrc('/images/svg/default-lock-logo.svg')
   }
 
   return (

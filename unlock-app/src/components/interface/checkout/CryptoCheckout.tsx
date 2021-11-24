@@ -20,7 +20,7 @@ interface CryptoCheckoutProps {
   name: string
   closeModal: (success: boolean) => void
   setCardPurchase: () => void
-  redirectUri: string
+  redirectUri?: string
 }
 
 export const CryptoCheckout = ({
@@ -91,9 +91,10 @@ export const CryptoCheckout = ({
         })
         setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)
-        setTransactionPending(null)
-      } catch (error) {
-        if (error && error.code === 4001) {
+        setTransactionPending('')
+      } catch (error: any) {
+        console.error(error)
+        if (error?.code === 4001) {
           // eslint-disable-next-line no-alert
           alert('Please confirm the transaction in your wallet.')
         }
@@ -108,7 +109,7 @@ export const CryptoCheckout = ({
         try {
           const balance = await getTokenBalance(lock.currencyContractAddress)
           setCanAfford(userCanAffordKey(lock, balance))
-        } catch (error) {
+        } catch (error: any) {
           console.error(error)
         }
       }
@@ -215,7 +216,15 @@ export const CryptoCheckout = ({
 
 export default CryptoCheckout
 
-export const CheckoutButton = styled.div`
+CryptoCheckout.defaultProps = {
+  redirectUri: '',
+}
+
+interface CheckoutButtonProps {
+  disabled?: boolean
+}
+
+export const CheckoutButton = styled.div<CheckoutButtonProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -237,6 +246,10 @@ export const CheckoutButton = styled.div`
     color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--blue)')};
   }
 `
+
+CheckoutButton.defaultProps = {
+  disabled: false,
+}
 
 const LinkButton = styled.a`
   cursor: pointer;

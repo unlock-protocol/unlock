@@ -74,38 +74,28 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.16.0",
-    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "npm-check": "5.9.2"
+    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
   },
   "scripts": {
-    "dev": "next dev src",
-    "build": "next build src",
-    "deploy": "yarn build && next export src -o out",
+    "dev": "next dev",
+    "build": "next build",
+    "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "deploy-unlock-contract": "node scripts/deploy-unlock.js",
-    "start": "yarn build && NODE_ENV=production next start src --port ${PORT:=3000}",
+    "start": "yarn build && NODE_ENV=production next start --port ${PORT:=3000}",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "build-storybook": "build-storybook -c .storybook -o .out",
-    "ci": "yarn test && yarn lint",
-    "npm-check": "npm-check -u",
-    "tsc": "tsc"
+    "ci": "yarn test && yarn lint"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
   },
-  "nodemonConfig": {
-    "watch": [
-      "src/server.js"
-    ]
-  },
   "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
   ]
 }

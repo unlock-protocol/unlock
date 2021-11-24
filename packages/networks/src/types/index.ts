@@ -2,8 +2,9 @@ export interface NetworkConfig {
     id: number
     name: string
     provider: string
-    locksmithUri?: string
-    unlockAppUrl?: string
+    publicProvider: string
+    locksmithUri?: string // TODO: remove as this should not be network specific
+    unlockAppUrl?: string // TODO: remove as this should not be network specific
     blockTime?: number
     unlockAddress?: string
     subgraphURI?: string

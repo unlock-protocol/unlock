@@ -4,12 +4,12 @@ subTitle: Growing the team, to grow usage of the protocol!
 authorName: Amber Case
 publishDate: October 26, 2021
 description: We’re very excited to announce that Austin Robey is now Unlock’s Head of Growth! He’ll help us expand the use of our protocol within the indie music industry and beyond
-image: /static/images/blog/austin-robey.png
+image: /images/blog/austin-robey.png
 ---
 
 Hello, Unlock community! We’re very excited to announce that [Austin Robey](https://twitter.com/austinrobey_) is now Unlock’s Head of Growth. He’ll help us expand the use of our protocol within the indie music industry and beyond. Co-founder of [Ampled](https://twitter.com/ampl3d), a co-op support platform for musicians that’s among the first orgs to integrate Unlock, Austin is a recent recipient in our Token Grant program, and the founder of the fast-growing [Dinner DAO](https://unlock-protocol.com/blog/dinnerdao), along with being an active member of several DAOs, such as Seed Club and Forefront. Last month he wrote [a post on our blog](https://unlock-protocol.com/blog/how-musicians-can-use-unlock) detailing the many ways musicians can leverage Unlock to grow and maintain their fanbase.
 
-![Amber Case](/static/images/blog/austin-robey.png)
+![Amber Case](/images/blog/austin-robey.png)
 
 
 I first met Austin in my work as a Fellow studying web monetization with the [Mozilla Foundation](https://www.mozilla.org/en-US/). Since then he’s dived into Web3 technologies with impressive energy and passion to help Unlock work for independent creators. We also love his strong design background, with an architecture degree from Pratt, and an ongoing relationship as a designer with the New Museum of Contemporary Art in New York. So we can’t wait to see how he better connects Unlock with projects across many creative fields.

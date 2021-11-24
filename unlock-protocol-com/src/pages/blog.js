@@ -33,11 +33,7 @@ const Blog = ({ posts, page, totalPages }) => {
             description={description}
             canonicalPath="/blog"
           />
-          <link
-            rel="alternate"
-            type="application/rss+xml"
-            href="/static/blog.rss"
-          />
+          <link rel="alternate" type="application/rss+xml" href="/blog.rss" />
         </Head>
         <Title>Unlock Blog</Title>
         <BlogIndex posts={posts} />
@@ -77,7 +73,7 @@ const Blog = ({ posts, page, totalPages }) => {
             Or use our{' '}
             <a
               style={{ color: 'white', textDecoration: 'underline' }}
-              href="/static/blog.rss"
+              href="/blog.rss"
             >
               RSS feed
             </a>

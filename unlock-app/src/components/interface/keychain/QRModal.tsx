@@ -26,7 +26,6 @@ export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
     url.searchParams.append('sig', sig)
 
     // eslint-disable-next-line no-console
-    console.log(url.toString()) // easy debugging!
     return url.toString()
   }
 
