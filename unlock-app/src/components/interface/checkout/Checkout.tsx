@@ -226,7 +226,9 @@ export const Checkout = ({
     )
   } else if (state === 'crypto-checkout') {
     // Final step for the crypto checkout. We should save the metadata first!
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (!paywallConfig) {
+      content = <p>Missing paywall configuration. Please refresh this page</p>
+    } else if (paywallConfig?.metadataInputs && !savedMetadata) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
