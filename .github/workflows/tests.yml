@@ -19,7 +19,7 @@ jobs:
         "wedlocks",
         "unlock-app" 
         ]'
-      $FORCE_ALL_TESTS: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
+      FORCE_ALL_TESTS: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     steps:
       - uses: actions/checkout@v2
         with:
