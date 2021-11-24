@@ -13,7 +13,7 @@ main() {
   for f in ${targets[@]}; do 
     has_changed="$(scripts/monorepo.sh $f $CURRENT_BRANCH)"
     if [ "$has_changed" == "changed" ]; then
-      changed+="$f"
+      changed+=("$f")
     fi
   done
   if [ ${#changed[@]} -eq 0 ]; then
