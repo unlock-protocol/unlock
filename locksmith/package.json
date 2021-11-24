@@ -19,6 +19,7 @@
     "ci": "yarn lint && yarn test",
     "build": "tsc",
     "tsc": "tsc",
+    "clean": "rm -rf build",
     "dist": "yarn build && sh ./scripts/dist.sh",
     "fulfillment:prepare": "yarn build && node ./scripts/fulfillment_prepare",
     "authorize": "./scripts/authorize-lock"
