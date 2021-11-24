@@ -7,7 +7,7 @@ description: Unlock's CEO Julien Genestoux and adviser Amber Case answer Reddit'
 image: /images/blog/reddit-ama/reddit-ama.png
 ---
 
-![reddit-ama](/static/images/blog/reddit-ama/reddit-ama.png)
+![reddit-ama](/images/blog/reddit-ama/reddit-ama.png)
 
 Thanks to everyone who joined [the recent r/Cryptocurrency AMA](https://www.reddit.com/r/CryptoCurrency/comments/pu1xyc/im_the_founder_of_unlock_a_membership_protocol/) with our CEO Julien ([u/julien51](https://www.reddit.com/user/julien51/)) and adviser Amber ([u/Consistent__Patience](https://www.reddit.com/user/Consistent__Patience)), and to the excellent hosts for helping make it happen. Here’s some highlights, starting with the most high level questions, then getting into the weeds on various use cases, and technical/company questions.
 
