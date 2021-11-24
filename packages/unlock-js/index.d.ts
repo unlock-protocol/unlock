@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { providers, Wallet } from 'ethers'
-import { NetworkConfig, NetworkConfigs } from '@unlock-protocol/types'
+import { NetworkConfigs } from '@unlock-protocol/types'
 
 export interface PurchaseKeyParams {
   lockAddress: string
@@ -47,7 +47,7 @@ export interface KeyPayload {
 type Web3Provider = string | providers.Web3Provider
 
 export class Web3Service {
-  constructor(params: NetworkConfig)
+  constructor(params: NetworkConfigs)
   getTransaction: (
     transactionHash: string,
     network: number

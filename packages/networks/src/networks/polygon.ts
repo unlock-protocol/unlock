@@ -1,4 +1,4 @@
-import { NetworkConfig } from '../types';
+import { NetworkConfig } from '@unlock-protocol/types';
 
 export const polygon: NetworkConfig = {
     publicProvider: 'https://rpc-mainnet.maticvigil.com/',
