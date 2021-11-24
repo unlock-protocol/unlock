@@ -70,7 +70,7 @@ describe('updateDefaults', () => {
       LockMetaData: {
         name: 'An awesome Lock',
         description: 'we are chilling and such',
-        address: '0x95de5F777A3e283bFf0c47374998E10D8A2183C7',
+        address: '0x85de5F777A3e283bFf0c47374998E10D8A2183C7',
         owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
         image: 'http://image.location.url',
       },
