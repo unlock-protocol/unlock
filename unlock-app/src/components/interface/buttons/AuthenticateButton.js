@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { ActionButton } from './ActionButton'
-import { rpcForWalletConnect, selectProvider } from '../LoginPrompt'
+import { rpcForWalletConnect } from '../../../hooks/useAuthenticate'
 import { ConfigContext } from '../../../utils/withConfig'
 import Svg from '../svg'
 
