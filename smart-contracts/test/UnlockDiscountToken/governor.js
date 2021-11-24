@@ -74,11 +74,11 @@ contract('UnlockProtocolGovernor', () => {
     ])
     await timelock.deployed()
 
-    const UDTInfo = await getDeployment(31337, 'UnlockDiscountTokenV2')
+    const UDTInfo = await getDeployment(31337, 'UnlockDiscountTokenV3')
     const tokenAddress = UDTInfo.address
 
     const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV2'
+      'UnlockDiscountTokenV3'
     )
     udt = await UnlockDiscountToken.attach(tokenAddress)
 

@@ -12,12 +12,12 @@ const estimateGas = 252166 * 2
 
 // helper function
 const upgradeContract = async (contractAddress) => {
-  const UnlockDiscountTokenV2 = await ethers.getContractFactory(
-    'UnlockDiscountTokenV2'
+  const UnlockDiscountTokenV3 = await ethers.getContractFactory(
+    'UnlockDiscountTokenV3'
   )
   const updated = await upgrades.upgradeProxy(
     contractAddress,
-    UnlockDiscountTokenV2,
+    UnlockDiscountTokenV3,
     {}
   )
   return updated

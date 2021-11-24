@@ -24,7 +24,7 @@ async function main({ holderAddress, delegateAddress }) {
     ;[holder] = await ethers.getSigners()
   }
 
-  const { address, abi } = getDeployment(chainId, 'UnlockDiscountTokenV2')
+  const { address, abi } = getDeployment(chainId, 'UnlockDiscountTokenV3')
   const udt = await new ethers.Contract(address, abi, holder)
   const tx = await udt.delegate(delegateAddress)
 

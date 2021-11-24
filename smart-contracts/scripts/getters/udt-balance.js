@@ -9,7 +9,7 @@ async function main({ account }) {
   const { chainId } = await ethers.provider.getNetwork()
 
   // contract instance etc
-  const { address, abi } = getDeployment(chainId, 'UnlockDiscountTokenV2')
+  const { address, abi } = getDeployment(chainId, 'UnlockDiscountTokenV3')
   const udt = await ethers.getContractAt(abi, address)
 
   // eslint-disable-next-line no-console

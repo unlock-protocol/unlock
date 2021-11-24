@@ -46,7 +46,7 @@ const addUDT = async (recipientAddress, amount = 1000) => {
   // UDT contract
   const { address: udtAddress } = getDeployment(
     chainId,
-    'UnlockDiscountTokenV2'
+    'UnlockDiscountTokenV3'
   )
   const udtAmount = ethers.utils.parseEther(`${amount}`)
 

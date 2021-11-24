@@ -24,7 +24,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     await resetNodeState()
 
     // prepare proxy info
-    const proxyAddress = getProxyAddress(chainId, 'UnlockDiscountTokenV2')
+    const proxyAddress = getProxyAddress(chainId, 'UnlockDiscountTokenV3')
     // const proxyAdmin = getProxyAdminAddress({ network })
     // await impersonate(proxyAdmin)
 
@@ -32,7 +32,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     this.timeout(200000)
 
     const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV2'
+      'UnlockDiscountTokenV3'
     )
     const [, minter] = await ethers.getSigners()
     udt = await UnlockDiscountToken.attach(proxyAddress).connect(minter)

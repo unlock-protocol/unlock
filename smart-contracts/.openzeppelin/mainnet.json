@@ -962,115 +962,360 @@
             "contract": "ERC20Upgradeable",
             "label": "______gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts/ERC20Patched.sol:651"
+            "src": "contracts/ERC20Patched.sol:652"
           },
           {
             "contract": "MinterRoleUpgradeable",
             "label": "_minters",
             "type": "t_struct(Role)7_storage",
-            "src": "contracts/ERC20Patched.sol:1677"
+            "src": "contracts/ERC20Patched.sol:1678"
           },
           {
             "contract": "MinterRoleUpgradeable",
             "label": "______gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts/ERC20Patched.sol:1712"
+            "src": "contracts/ERC20Patched.sol:1713"
           },
           {
             "contract": "ERC20MintableUpgradeable",
             "label": "______gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts/ERC20Patched.sol:1751"
+            "src": "contracts/ERC20Patched.sol:1752"
           },
           {
             "contract": "ERC20DetailedUpgradeable",
             "label": "_name",
             "type": "t_string_storage",
-            "src": "contracts/ERC20Patched.sol:1716"
+            "src": "contracts/ERC20Patched.sol:1717"
           },
           {
             "contract": "ERC20DetailedUpgradeable",
             "label": "_symbol",
             "type": "t_string_storage",
-            "src": "contracts/ERC20Patched.sol:1717"
+            "src": "contracts/ERC20Patched.sol:1718"
           },
           {
             "contract": "ERC20DetailedUpgradeable",
             "label": "_decimals",
             "type": "t_uint8",
-            "src": "contracts/ERC20Patched.sol:1718"
+            "src": "contracts/ERC20Patched.sol:1719"
           },
           {
             "contract": "ERC20DetailedUpgradeable",
             "label": "______gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts/ERC20Patched.sol:1738"
+            "src": "contracts/ERC20Patched.sol:1739"
           },
           {
             "contract": "EIP712Upgradeable",
             "label": "_HASHED_NAME",
             "type": "t_bytes32",
-            "src": "contracts/ERC20Patched.sol:822"
+            "src": "contracts/ERC20Patched.sol:823"
           },
           {
             "contract": "EIP712Upgradeable",
             "label": "_HASHED_VERSION",
             "type": "t_bytes32",
-            "src": "contracts/ERC20Patched.sol:823"
+            "src": "contracts/ERC20Patched.sol:824"
           },
           {
             "contract": "EIP712Upgradeable",
             "label": "__gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts/ERC20Patched.sol:911"
+            "src": "contracts/ERC20Patched.sol:912"
           },
           {
             "contract": "ERC20PermitUpgradeable",
             "label": "_nonces",
             "type": "t_mapping(t_address,t_struct(Counter)1203_storage)",
-            "src": "contracts/ERC20Patched.sol:981"
+            "src": "contracts/ERC20Patched.sol:982"
           },
           {
             "contract": "ERC20PermitUpgradeable",
             "label": "_PERMIT_TYPEHASH",
             "type": "t_bytes32",
-            "src": "contracts/ERC20Patched.sol:984"
+            "src": "contracts/ERC20Patched.sol:985"
           },
           {
             "contract": "ERC20PermitUpgradeable",
             "label": "__gap",
             "type": "t_array(t_uint256)49_storage",
-            "src": "contracts/ERC20Patched.sol:1054"
+            "src": "contracts/ERC20Patched.sol:1055"
           },
           {
             "contract": "ERC20VotesUpgradeable",
             "label": "_delegates",
             "type": "t_mapping(t_address,t_address)",
-            "src": "contracts/ERC20Patched.sol:1388"
+            "src": "contracts/ERC20Patched.sol:1389"
           },
           {
             "contract": "ERC20VotesUpgradeable",
             "label": "_checkpoints",
             "type": "t_mapping(t_address,t_array(t_struct(Checkpoint)2008_storage)dyn_storage)",
-            "src": "contracts/ERC20Patched.sol:1389"
+            "src": "contracts/ERC20Patched.sol:1390"
           },
           {
             "contract": "ERC20VotesUpgradeable",
             "label": "_totalSupplyCheckpoints",
             "type": "t_array(t_struct(Checkpoint)2008_storage)dyn_storage",
-            "src": "contracts/ERC20Patched.sol:1390"
+            "src": "contracts/ERC20Patched.sol:1391"
           },
           {
             "contract": "ERC20VotesUpgradeable",
             "label": "__gap",
             "type": "t_array(t_uint256)47_storage",
-            "src": "contracts/ERC20Patched.sol:1611"
+            "src": "contracts/ERC20Patched.sol:1612"
           },
           {
             "contract": "ERC20VotesCompUpgradeable",
             "label": "__gap",
             "type": "t_array(t_uint256)50_storage",
-            "src": "contracts/ERC20Patched.sol:1662"
+            "src": "contracts/ERC20Patched.sol:1663"
+          }
+        ],
+        "types": {
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_address)": {
+            "label": "mapping(address => address)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_address,t_array(t_struct(Checkpoint)2008_storage)dyn_storage)": {
+            "label": "mapping(address => struct ERC20VotesUpgradeable.Checkpoint[])"
+          },
+          "t_array(t_struct(Checkpoint)2008_storage)dyn_storage": {
+            "label": "struct ERC20VotesUpgradeable.Checkpoint[]"
+          },
+          "t_struct(Checkpoint)2008_storage": {
+            "label": "struct ERC20VotesUpgradeable.Checkpoint",
+            "members": [
+              {
+                "label": "fromBlock",
+                "type": "t_uint32"
+              },
+              {
+                "label": "votes",
+                "type": "t_uint224"
+              }
+            ]
+          },
+          "t_uint32": {
+            "label": "uint32"
+          },
+          "t_uint224": {
+            "label": "uint224"
+          },
+          "t_array(t_uint256)47_storage": {
+            "label": "uint256[47]"
+          },
+          "t_mapping(t_address,t_struct(Counter)1203_storage)": {
+            "label": "mapping(address => struct CountersUpgradeable.Counter)"
+          },
+          "t_struct(Counter)1203_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_struct(Role)7_storage": {
+            "label": "struct Roles.Role",
+            "members": [
+              {
+                "label": "bearer",
+                "type": "t_mapping(t_address,t_bool)"
+              }
+            ]
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))"
+          }
+        }
+      }
+    },
+    "ff29041c6dd29f59e23b7732f6511869b9ca975fbb90c294a2eabe570ca3968b": {
+      "address": "0xb0C7bF7E8cC54670b462c5f668D56c897c1604d6",
+      "txHash": "0xd6499873c95461360d721d36b524a2e4805aae90a4019b8fae6bc381de23b4cd",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "contracts/ERC20Patched.sol:234"
+          },
+          {
+            "contract": "Initializable",
+            "label": "initializing",
+            "type": "t_bool",
+            "src": "contracts/ERC20Patched.sol:239"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:290"
+          },
+          {
+            "contract": "ERC20Upgradeable",
+            "label": "_balances",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "contracts/ERC20Patched.sol:326"
+          },
+          {
+            "contract": "ERC20Upgradeable",
+            "label": "_allowances",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "src": "contracts/ERC20Patched.sol:328"
+          },
+          {
+            "contract": "ERC20Upgradeable",
+            "label": "_totalSupply",
+            "type": "t_uint256",
+            "src": "contracts/ERC20Patched.sol:330"
+          },
+          {
+            "contract": "ERC20Upgradeable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:652"
+          },
+          {
+            "contract": "MinterRoleUpgradeable",
+            "label": "_minters",
+            "type": "t_struct(Role)7_storage",
+            "src": "contracts/ERC20Patched.sol:1678"
+          },
+          {
+            "contract": "MinterRoleUpgradeable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:1713"
+          },
+          {
+            "contract": "ERC20MintableUpgradeable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:1752"
+          },
+          {
+            "contract": "ERC20DetailedUpgradeable",
+            "label": "_name",
+            "type": "t_string_storage",
+            "src": "contracts/ERC20Patched.sol:1717"
+          },
+          {
+            "contract": "ERC20DetailedUpgradeable",
+            "label": "_symbol",
+            "type": "t_string_storage",
+            "src": "contracts/ERC20Patched.sol:1718"
+          },
+          {
+            "contract": "ERC20DetailedUpgradeable",
+            "label": "_decimals",
+            "type": "t_uint8",
+            "src": "contracts/ERC20Patched.sol:1719"
+          },
+          {
+            "contract": "ERC20DetailedUpgradeable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:1739"
+          },
+          {
+            "contract": "EIP712Upgradeable",
+            "label": "_HASHED_NAME",
+            "type": "t_bytes32",
+            "src": "contracts/ERC20Patched.sol:823"
+          },
+          {
+            "contract": "EIP712Upgradeable",
+            "label": "_HASHED_VERSION",
+            "type": "t_bytes32",
+            "src": "contracts/ERC20Patched.sol:824"
+          },
+          {
+            "contract": "EIP712Upgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:912"
+          },
+          {
+            "contract": "ERC20PermitUpgradeable",
+            "label": "_nonces",
+            "type": "t_mapping(t_address,t_struct(Counter)1203_storage)",
+            "src": "contracts/ERC20Patched.sol:982"
+          },
+          {
+            "contract": "ERC20PermitUpgradeable",
+            "label": "_PERMIT_TYPEHASH",
+            "type": "t_bytes32",
+            "src": "contracts/ERC20Patched.sol:985"
+          },
+          {
+            "contract": "ERC20PermitUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "contracts/ERC20Patched.sol:1055"
+          },
+          {
+            "contract": "ERC20VotesUpgradeable",
+            "label": "_delegates",
+            "type": "t_mapping(t_address,t_address)",
+            "src": "contracts/ERC20Patched.sol:1389"
+          },
+          {
+            "contract": "ERC20VotesUpgradeable",
+            "label": "_checkpoints",
+            "type": "t_mapping(t_address,t_array(t_struct(Checkpoint)2008_storage)dyn_storage)",
+            "src": "contracts/ERC20Patched.sol:1390"
+          },
+          {
+            "contract": "ERC20VotesUpgradeable",
+            "label": "_totalSupplyCheckpoints",
+            "type": "t_array(t_struct(Checkpoint)2008_storage)dyn_storage",
+            "src": "contracts/ERC20Patched.sol:1391"
+          },
+          {
+            "contract": "ERC20VotesUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)47_storage",
+            "src": "contracts/ERC20Patched.sol:1612"
+          },
+          {
+            "contract": "ERC20VotesCompUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/ERC20Patched.sol:1663"
           }
         ],
         "types": {
