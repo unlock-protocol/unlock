@@ -188,7 +188,7 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 }
 ```
 
-check [`./proposals/000-example.js`](./proposals/000-example.js) for an example.
+check [`./proposals/000-example.js`](./proposals/000-example.js) for an example
 
 2. Test you proposal locally
 
