@@ -10696,7 +10696,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/networks@workspace:packages/networks"
   dependencies:
-    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     typescript: 4.4.4
   languageName: unknown
@@ -10776,9 +10776,9 @@ __metadata:
     "@types/postmate": 1.5.2
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
-    "@unlock-protocol/networks": "workspace:./packages/networks"
-    "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    "@unlock-protocol/types": "workspace:./packages/types"
+    "@unlock-protocol/networks": "workspace:^"
+    "@unlock-protocol/tsconfig": "workspace:^"
+    "@unlock-protocol/types": "workspace:^"
     babel-jest: 27.3.1
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 1.13.3
@@ -10916,7 +10916,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/tsconfig@workspace:./packages/tsconfig, @unlock-protocol/tsconfig@workspace:packages/tsconfig":
+"@unlock-protocol/tsconfig@workspace:./packages/tsconfig, @unlock-protocol/tsconfig@workspace:^, @unlock-protocol/tsconfig@workspace:packages/tsconfig":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/tsconfig@workspace:packages/tsconfig"
   languageName: unknown
