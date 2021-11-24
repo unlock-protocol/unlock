@@ -20,7 +20,7 @@ interface CryptoCheckoutProps {
   name: string
   closeModal: (success: boolean) => void
   setCardPurchase: () => void
-  redirectUri: string
+  redirectUri?: string
 }
 
 export const CryptoCheckout = ({
@@ -215,6 +215,10 @@ export const CryptoCheckout = ({
 }
 
 export default CryptoCheckout
+
+CryptoCheckout.defaultProps = {
+  redirectUri: '',
+}
 
 interface CheckoutButtonProps {
   disabled?: boolean

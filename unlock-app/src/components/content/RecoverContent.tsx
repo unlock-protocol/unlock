@@ -84,7 +84,7 @@ export const RestoreAccount = ({
       setSuccess(true)
       // TODO: send email for confirmation
       // TODO: create new recovery key
-    } catch (error) {
+    } catch (error: any) {
       setError('There was an error resettings your password. Please try again.')
       console.error(error)
     }
@@ -153,7 +153,7 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
         ? query.recoveryKey[0]
         : query.recoveryKey
     )
-  } catch (error) {
+  } catch (error: any) {
     console.error('We could not parse the recovery key')
   }
 
