@@ -72,6 +72,7 @@ export const Locks = ({
             <LoadLock
               setHasKey={setHasKey}
               // @ts-expect-error one of the two will be defined!
+
               network={lockProps?.network || network}
               key={address}
               address={address}
@@ -85,7 +86,9 @@ export const Locks = ({
   )
 }
 
-Locks.defaultProps = {}
+Locks.defaultProps = {
+  network: 1,
+}
 
 const Wrapper = styled.div`
   margin-bottom: 24px;
