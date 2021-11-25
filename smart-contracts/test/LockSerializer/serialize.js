@@ -38,7 +38,7 @@ contract('LockSerializer', () => {
 
         const propNames = Object.keys(serialized)
           .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
-          .filter((k) => !['keyOwners'].includes(k)) // remove arrays
+          .filter((k) => !['keyOwners', 'expirationTimestamps'].includes(k)) // exclude arrays
         const values = await Promise.all(propNames.map((k) => lock[k]()))
 
         // assertions
@@ -62,19 +62,20 @@ contract('LockSerializer', () => {
         })
       })
     })
-    it('fetches all key owners', async () => {
-      const [, ...purchasers] = await ethers.getSigners()
+    describe('key ownership', () => {
+      let purchasers
+      let lock
       const keyPrice = ethers.utils.parseEther('0.01')
 
-      const lock = locks.FIRST
+      beforeEach(async () => {
+        lock = locks.FIRST
+        const [, ..._purchasers] = await ethers.getSigners()
+        const maxNumberOfKeys = await lock.maxNumberOfKeys()
+        purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
 
-      const maxNumberOfKeys = await lock.maxNumberOfKeys()
-
-      // purchases
-      await Promise.all(
-        purchasers
-          .slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
-          .map((purchaser) =>
+        // purchase keys
+        await Promise.all(
+          purchasers.map((purchaser) =>
             lock
               .connect(purchaser)
               .purchase(
@@ -85,13 +86,21 @@ contract('LockSerializer', () => {
                 { value: keyPrice }
               )
           )
-      )
+        )
+      })
 
-      const serialized = await serializer.serialize(lock.address)
-      assert.deepEqual(
-        serialized.keyOwners,
-        purchasers.slice(0, maxNumberOfKeys.toNumber()).map((p) => p.address)
-      )
+      it('contains all key owners', async () => {
+        const serialized = await serializer.serialize(lock.address)
+        assert.deepEqual(
+          serialized.keyOwners,
+          purchasers.map((p) => p.address)
+        )
+      })
+
+      it('containes key expirations', async () => {
+        const serialized = await serializer.serialize(lock.address)
+        assert.equal(serialized.expirationTimestamps.length, purchasers.length)
+      })
     })
   })
 })

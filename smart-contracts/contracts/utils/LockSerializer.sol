@@ -34,6 +34,7 @@ contract LockSerializer {
     uint numberOfOwners;
     uint256 totalSupply; 
     address[] keyOwners;
+    uint[] expirationTimestamps;
     // address lockCreator;
     // keyManagers //keyManagerOf
   }
@@ -117,6 +118,11 @@ contract LockSerializer {
     if (numberOfOwners > 0) {
      keyOwners = lock.getOwnersByPage(0, numberOfOwners);
     }
+    // expirations
+    uint[] memory expirationTimestamps = new uint[](keyOwners.length);
+    for (uint256 i = 0; i < keyOwners.length; i++) {
+      expirationTimestamps[i] = lock.keyExpirationTimestampFor(keyOwners[i]);
+    }
     
     Lock memory serializedLock = Lock(
       // keys
@@ -137,7 +143,8 @@ contract LockSerializer {
       // ownerhsip
       numberOfOwners,
       totalSupply,
-      keyOwners
+      keyOwners,
+      expirationTimestamps
     );
 
     return serializedLock;
