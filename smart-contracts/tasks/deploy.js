@@ -123,6 +123,12 @@ task('deploy:template', 'Deploy PublicLock contract').setAction(async () => {
   return await templateDeployer()
 })
 
+task('deploy:serializer', 'Deploy LockSerializer').setAction(async () => {
+  // eslint-disable-next-line global-require
+  const serializerDeployer = require('../scripts/deployments/serializer')
+  return await serializerDeployer()
+})
+
 task('deploy:governor', 'Deploy Governor Alpha contracts').setAction(
   async () => {
     // eslint-disable-next-line global-require
