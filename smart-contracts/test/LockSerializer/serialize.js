@@ -7,6 +7,7 @@ const getProxy = require('../helpers/proxy')
 contract('LockSerializer', () => {
   let serializer
   let unlock
+  let unlockAddress
   let PublicLock
   let beneficiary
   const locks = {}
@@ -28,6 +29,8 @@ contract('LockSerializer', () => {
     Object.keys(locksTruffle).forEach((k) => {
       locks[k] = PublicLock.attach(locksTruffle[k].address)
     })
+
+    unlockAddress = unlock.address
   })
 
   describe('serialize', () => {
@@ -101,6 +104,24 @@ contract('LockSerializer', () => {
         const serialized = await serializer.serialize(lock.address)
         assert.equal(serialized.expirationTimestamps.length, purchasers.length)
       })
+    })
+  })
+
+  describe('deploy', () => {
+    const salt = '0xffffffffffffffffffffffff'
+    it('deployed shoud be identical', async () => {
+      const lock = locks.FIRST
+      const serialized = await serializer.serialize(lock.address)
+
+      const newLockAddress = await serializer.deployLock(
+        unlockAddress,
+        serialized,
+        salt
+      )
+
+      const newLock = PublicLock.attach(newLockAddress)
+
+      assert.equal(await lock.name(), await newLock.name())
     })
   })
 })

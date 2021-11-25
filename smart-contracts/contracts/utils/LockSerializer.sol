@@ -3,6 +3,7 @@ pragma solidity ^0.8.2;
 
 import 'hardhat/console.sol';
 import '../interfaces/IPublicLock.sol';
+import '../interfaces/IUnlock.sol';
 
 contract LockSerializer {
 
@@ -148,6 +149,28 @@ contract LockSerializer {
     );
 
     return serializedLock;
+  }
+
+  function deployLock(address unlockAddress, Lock memory _lock, bytes12 _salt) public returns (address newLockAddress) {
+    IUnlock unlock = IUnlock(unlockAddress);
+
+    address lockAddress = unlock.createLock(
+      _lock.expirationDuration,
+      _lock.tokenAddress,
+      _lock.keyPrice,
+      _lock.maxNumberOfKeys,
+      _lock.name,
+      _salt
+    );
+
+    IPublicLock lock = IPublicLock(lockAddress);
+
+    // TODO: set multiple vars from _lock
+    // if(msg.sender != _lock.beneficiary) {
+    //   lock.updateBeneficiary(_lock.beneficiary);
+    // }
+
+    return lockAddress;
   }
 
 }
