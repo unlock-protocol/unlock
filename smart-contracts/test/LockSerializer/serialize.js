@@ -11,12 +11,10 @@ contract('LockSerializer', () => {
   let beneficiary
   const locks = {}
 
-  before(async () => {
+  beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     ;[, beneficiary] = await ethers.getSigners()
-  })
 
-  beforeEach(async () => {
     // deploy serializer
     const LockSerializer = await ethers.getContractFactory('LockSerializer')
     serializer = await LockSerializer.deploy()
@@ -38,10 +36,9 @@ contract('LockSerializer', () => {
         const lock = locks[id]
         const serialized = await serializer.serialize(lock.address)
 
-        // remove numbers from array index
-        const propNames = Object.keys(serialized).filter((k) =>
-          Number.isNaN(Number.parseInt(k))
-        )
+        const propNames = Object.keys(serialized)
+          .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
+          .filter((k) => !['keyOwners'].includes(k)) // remove arrays
         const values = await Promise.all(propNames.map((k) => lock[k]()))
 
         // assertions
@@ -65,26 +62,36 @@ contract('LockSerializer', () => {
         })
       })
     })
-    /*
     it('fetches all key owners', async () => {
-      const [, , purchaser] = await ethers.getSigners()
+      const [, ...purchasers] = await ethers.getSigners()
       const keyPrice = ethers.utils.parseEther('0.01')
 
       const lock = locks.FIRST
-      await lock
-        .connect(purchaser)
-        .purchase(
-          keyPrice.toString(),
-          purchaser.address,
-          web3.utils.padLeft(0, 40),
-          [],
-          { value: keyPrice }
-        )
+
+      const maxNumberOfKeys = await lock.maxNumberOfKeys()
+
+      // purchases
+      await Promise.all(
+        purchasers
+          .slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
+          .map((purchaser) =>
+            lock
+              .connect(purchaser)
+              .purchase(
+                keyPrice.toString(),
+                purchaser.address,
+                web3.utils.padLeft(0, 40),
+                [],
+                { value: keyPrice }
+              )
+          )
+      )
 
       const serialized = await serializer.serialize(lock.address)
-
-      assert.equal(serialized.keyOwners.indexOf(purchaser.address), -1)
+      assert.deepEqual(
+        serialized.keyOwners,
+        purchasers.slice(0, maxNumberOfKeys.toNumber()).map((p) => p.address)
+      )
     })
-    */
   })
 })
