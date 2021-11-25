@@ -10,16 +10,12 @@ contract LockSerializer {
 
   struct Lock {
       
-    // keys
+    // priceInfo
     uint expirationDuration;
     uint keyPrice;
     uint maxNumberOfKeys;
     address beneficiary;
 
-    // protocol
-    uint publicLockVersion;
-    address tokenAddress;
-    
     // fees
     uint256 freeTrialLength;
     uint256 refundPenaltyBasisPoints;
@@ -28,57 +24,120 @@ contract LockSerializer {
     // metadata
     string name;
     string symbol;
+    // string baseTokenURI; // private?
     
+    // protocol
+    uint publicLockVersion;
+    address tokenAddress;
+
     // ownerhsip
     uint numberOfOwners;
     uint256 totalSupply; 
-    
+    address[] keyOwners;
     // address lockCreator;
-    // string baseTokenURI; // private?
-    // keyOwners
     // keyManagers //keyManagerOf
+  }
+
+  // We split in multiple structs to avoid "Stack To Deep" solc
+  struct LockPriceInfo {
+    // fees
+    uint expirationDuration;
+    uint keyPrice;
+    uint maxNumberOfKeys;
+    address beneficiary;
+  }
+  
+  struct LockFees {
+    // fees
+    uint256 freeTrialLength;
+    uint256 refundPenaltyBasisPoints;
+    uint256 transferFeeBasisPoints;
+  }
+
+  struct LockMetadata {
+    // metadata
+    string name;
+    string symbol;
+    // string baseTokenURI; // private?
+  }
+
+  function serializePriceInfo(IPublicLock lock) public view returns (LockPriceInfo memory) {
+    uint expirationDuration = lock.expirationDuration();
+    uint keyPrice = lock.keyPrice();
+    uint maxNumberOfKeys = lock.maxNumberOfKeys();
+    address beneficiary = lock.beneficiary();
+    return LockPriceInfo(
+      expirationDuration,
+      keyPrice,
+      maxNumberOfKeys,
+      beneficiary
+    );
+  }
+  
+  function serializeFees(IPublicLock lock) public view returns (LockFees memory) {
+    uint256 freeTrialLength = lock.freeTrialLength();
+    uint256 refundPenaltyBasisPoints = lock.refundPenaltyBasisPoints();
+    uint256 transferFeeBasisPoints = lock.transferFeeBasisPoints();
+    return LockFees(
+      freeTrialLength,
+      refundPenaltyBasisPoints,
+      transferFeeBasisPoints
+    );
+  }
+  
+  function serializeMetadata(IPublicLock lock) public view returns (LockMetadata memory) {
+    string memory name = lock.name();
+    string memory symbol = lock.symbol();
+    return LockMetadata(
+      name,
+      symbol
+    );
   }
 
   function serialize(address lockAddress) public view returns (Lock memory) {
 
     IPublicLock lock = IPublicLock(lockAddress); 
     require( lock.isAlive() == true, "Disabled lock can not be serialized");
+    
+    LockMetadata memory metadata = serializeMetadata(lock);
+    LockFees memory fees = serializeFees(lock);
+    LockPriceInfo memory priceInfo = serializePriceInfo(lock);
 
-    // address lockCreator = lock.lockCreator();
-    uint expirationDuration = lock.expirationDuration();
-    address tokenAddress = lock.tokenAddress();
-    uint keyPrice = lock.keyPrice();
-    uint maxNumberOfKeys = lock.maxNumberOfKeys();
-
-    address beneficiary = lock.beneficiary();
+    // protocol
     uint publicLockVersion = lock.publicLockVersion();
-    string memory symbol = lock.symbol();
-    uint256 freeTrialLength = lock.freeTrialLength();
-    uint256 refundPenaltyBasisPoints = lock.refundPenaltyBasisPoints();
-    uint256 transferFeeBasisPoints = lock.transferFeeBasisPoints();
-    string memory name = lock.name();
+    address tokenAddress = lock.tokenAddress();
+
+    // ownership
+    // address lockCreator = lock.lockCreator();
     uint256 totalSupply = lock.totalSupply();
     uint numberOfOwners = lock.numberOfOwners();
-
+    
+    address[] memory keyOwners;
+    // TODO: pagination - how many addresses will overflow?
+    if (numberOfOwners > 0) {
+     keyOwners = lock.getOwnersByPage(0, numberOfOwners);
+    }
+    
     Lock memory serializedLock = Lock(
       // keys
-      expirationDuration,
-      keyPrice,
-      maxNumberOfKeys,
-      beneficiary,
+      priceInfo.expirationDuration,
+      priceInfo.keyPrice,
+      priceInfo.maxNumberOfKeys,
+      priceInfo.beneficiary,
+      // fees
+      fees.freeTrialLength,
+      fees.refundPenaltyBasisPoints,
+      fees.transferFeeBasisPoints,
+      // metadata
+      metadata.name,
+      metadata.symbol,
       // protocol
       publicLockVersion,
       tokenAddress,
-      // fees
-      freeTrialLength,
-      refundPenaltyBasisPoints,
-      transferFeeBasisPoints,
-      // metadata
-      name,
-      symbol,
       // ownerhsip
       numberOfOwners,
-      totalSupply
+      totalSupply,
+      keyOwners
     );
 
     return serializedLock;
