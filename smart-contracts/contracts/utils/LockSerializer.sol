@@ -2,7 +2,7 @@
 pragma solidity ^0.8.2;
 
 import 'hardhat/console.sol';
-import '../interfaces/IPublicLock.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '../interfaces/IUnlock.sol';
 
 contract LockSerializer {
@@ -63,7 +63,7 @@ contract LockSerializer {
     // string baseTokenURI; // private?
   }
 
-  function serializePriceInfo(IPublicLock lock) public view returns (LockPriceInfo memory) {
+  function serializePriceInfo(IPublicLockV8 lock) public view returns (LockPriceInfo memory) {
     uint expirationDuration = lock.expirationDuration();
     uint keyPrice = lock.keyPrice();
     uint maxNumberOfKeys = lock.maxNumberOfKeys();
@@ -76,7 +76,7 @@ contract LockSerializer {
     );
   }
   
-  function serializeFees(IPublicLock lock) public view returns (LockFees memory) {
+  function serializeFees(IPublicLockV8 lock) public view returns (LockFees memory) {
     uint256 freeTrialLength = lock.freeTrialLength();
     uint256 refundPenaltyBasisPoints = lock.refundPenaltyBasisPoints();
     uint256 transferFeeBasisPoints = lock.transferFeeBasisPoints();
@@ -87,7 +87,7 @@ contract LockSerializer {
     );
   }
   
-  function serializeMetadata(IPublicLock lock) public view returns (LockMetadata memory) {
+  function serializeMetadata(IPublicLockV8 lock) public view returns (LockMetadata memory) {
     string memory name = lock.name();
     string memory symbol = lock.symbol();
     return LockMetadata(
@@ -98,7 +98,7 @@ contract LockSerializer {
 
   function serialize(address lockAddress) public view returns (Lock memory) {
 
-    IPublicLock lock = IPublicLock(lockAddress); 
+    IPublicLockV8 lock = IPublicLockV8(lockAddress); 
     require( lock.isAlive() == true, "Disabled lock can not be serialized");
     
     LockMetadata memory metadata = serializeMetadata(lock);
@@ -115,14 +115,16 @@ contract LockSerializer {
     uint numberOfOwners = lock.numberOfOwners();
     
     address[] memory keyOwners;
-    // TODO: pagination - how many addresses will overflow?
-    if (numberOfOwners > 0) {
-     keyOwners = lock.getOwnersByPage(0, numberOfOwners);
+    if (lock.publicLockVersion() < 9 && numberOfOwners > 0) {
+      // TODO: pagination - how many addresses will overflow?
+      keyOwners = lock.getOwnersByPage(0, numberOfOwners);
     }
     // expirations
-    uint[] memory expirationTimestamps = new uint[](keyOwners.length);
-    for (uint256 i = 0; i < keyOwners.length; i++) {
-      expirationTimestamps[i] = lock.keyExpirationTimestampFor(keyOwners[i]);
+    uint[] memory expirationTimestamps = new uint[](numberOfOwners);
+    if(keyOwners.length != 0) {
+      for (uint256 i = 0; i < keyOwners.length; i++) {
+        expirationTimestamps[i] = lock.keyExpirationTimestampFor(keyOwners[i]);
+      }
     }
     
     Lock memory serializedLock = Lock(
@@ -163,7 +165,7 @@ contract LockSerializer {
       _salt
     );
 
-    IPublicLock lock = IPublicLock(lockAddress);
+    IPublicLockV8 lock = IPublicLockV8(lockAddress);
 
     // TODO: set multiple vars from _lock
     // if(msg.sender != _lock.beneficiary) {
