@@ -3,7 +3,6 @@ pragma solidity ^0.8.2;
 
 import 'hardhat/console.sol';
 import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
-import '../interfaces/IUnlock.sol';
 
 contract LockSerializer {
 
@@ -156,30 +155,4 @@ contract LockSerializer {
 
     return serializedLock;
   }
-
-  function deployLock(address unlockAddress, Lock memory _lock) public returns (address newLockAddress) {
-    
-    // console.log(unlockAddress, _lock);
-    IUnlock unlock = IUnlock(unlockAddress);
-
-    bytes memory data = abi.encodeWithSignature(
-      'initialize(address,uint256,address,uint256,uint256,string)',
-      _lock.beneficiary,
-      _lock.expirationDuration,
-      _lock.tokenAddress,
-      _lock.keyPrice,
-      _lock.maxNumberOfKeys,
-      _lock.name
-    );
-
-    // create new lock (w proxy)
-    address lockAddress = unlock.createLock(data);
-    emit LockCLoned(lockAddress);
-    
-    // apply lock settings 
-    IPublicLockV8 lock = IPublicLockV8(lockAddress);
-
-    return lockAddress;
-  }
-
 }
