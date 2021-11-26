@@ -4,6 +4,33 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
+const compareValues = async (serialized, lock) => {
+  const propNames = Object.keys(serialized)
+    .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
+    .filter((k) => !['keyOwners', 'expirationTimestamps'].includes(k)) // exclude arrays
+  const values = await Promise.all(propNames.map((k) => lock[k]()))
+
+  // assertions
+  propNames.forEach((k, i) => {
+    if (
+      ethers.BigNumber.isBigNumber(serialized[k]) &&
+      ethers.BigNumber.isBigNumber(values[i])
+    ) {
+      assert.equal(
+        serialized[k].eq(values[i]),
+        true,
+        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
+      )
+    } else {
+      assert.equal(
+        serialized[k],
+        values[i],
+        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
+      )
+    }
+  })
+}
+
 contract('LockSerializer', () => {
   let serializer
   let unlock
@@ -38,31 +65,7 @@ contract('LockSerializer', () => {
       Object.keys(locks).forEach(async (id) => {
         const lock = locks[id]
         const serialized = await serializer.serialize(lock.address)
-
-        const propNames = Object.keys(serialized)
-          .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
-          .filter((k) => !['keyOwners', 'expirationTimestamps'].includes(k)) // exclude arrays
-        const values = await Promise.all(propNames.map((k) => lock[k]()))
-
-        // assertions
-        propNames.forEach((k, i) => {
-          if (
-            ethers.BigNumber.isBigNumber(serialized[k]) &&
-            ethers.BigNumber.isBigNumber(values[i])
-          ) {
-            assert.equal(
-              serialized[k].eq(values[i]),
-              true,
-              `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-            )
-          } else {
-            assert.equal(
-              serialized[k],
-              values[i],
-              `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-            )
-          }
-        })
+        await compareValues(serialized, lock)
       })
     })
 
@@ -114,19 +117,19 @@ contract('LockSerializer', () => {
   })
 
   describe('deploy', () => {
-    const salt = '0xffffffffffffffffffffffff'
     it('deployed shoud be identical', async () => {
       const lock = locks.FIRST
       const serialized = await serializer.serialize(lock.address)
 
-      const newLockAddress = await serializer.deployLock(
-        unlockAddress,
-        serialized,
-        salt
-      )
+      // redeploy our lock
+      const tx = await serializer.deployLock(unlockAddress, serialized)
+      const { events } = await tx.wait()
+      const { args } = events.find(({ event }) => event === 'LockCLoned')
+      const { newLockAddress } = args
 
       const newLock = PublicLock.attach(newLockAddress)
-      assert.equal(await lock.name(), await newLock.name())
+      await compareValues(serialized, lock)
+      await compareValues(serialized, newLock)
     })
   })
 })
