@@ -5,33 +5,6 @@ const compareValues = require('./_compareValues')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-const compareValues = async (serialized, lock) => {
-  const propNames = Object.keys(serialized)
-    .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
-    .filter((k) => !['keyOwners', 'expirationTimestamps'].includes(k)) // exclude arrays
-  const values = await Promise.all(propNames.map((k) => lock[k]()))
-
-  // assertions
-  propNames.forEach((k, i) => {
-    if (
-      ethers.BigNumber.isBigNumber(serialized[k]) &&
-      ethers.BigNumber.isBigNumber(values[i])
-    ) {
-      assert.equal(
-        serialized[k].eq(values[i]),
-        true,
-        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-      )
-    } else {
-      assert.equal(
-        serialized[k],
-        values[i],
-        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-      )
-    }
-  })
-}
-
 contract('LockSerializer', () => {
   let serializer
   let unlock
