@@ -140,40 +140,6 @@ contract MixinKeys is
   }
 
   /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  */
-  function getOwnersByPage(uint _page, uint _pageSize)
-    public
-    view
-    returns (address[] memory)
-  {
-    uint pageSize = _pageSize;
-    uint _startIndex = _page * pageSize;
-    uint endOfPageIndex;
-
-    if (_startIndex + pageSize > owners.length) {
-      endOfPageIndex = owners.length;
-      pageSize = owners.length - _startIndex;
-    } else {
-      endOfPageIndex = (_startIndex + pageSize);
-    }
-
-    // new temp in-memory array to hold pageSize number of requested owners:
-    address[] memory ownersByPage = new address[](pageSize);
-    uint pageIndex = 0;
-
-    // Build the requested set of owners into a new temporary array:
-    for (uint i = _startIndex; i < endOfPageIndex; i++) {
-      ownersByPage[pageIndex] = owners[i];
-      pageIndex++;
-    }
-
-    return ownersByPage;
-  }
-
-  /**
    * Checks if the user has a non-expired key.
    */
   function getHasValidKey(

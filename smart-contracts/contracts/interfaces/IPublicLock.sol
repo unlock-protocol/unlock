@@ -126,13 +126,6 @@ interface IPublicLock
   function numberOfOwners() external view returns (uint);
 
   /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  */
-  function getOwnersByPage(uint _page, uint _pageSize) external view returns (address[] memory);
-
-  /**
    * Allows a Lock manager to assign a descriptive name for this Lock.
    * @param _lockName The new name for the lock
    * @dev Throws if called by other than a Lock manager
