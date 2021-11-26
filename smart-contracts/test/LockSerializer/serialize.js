@@ -1,40 +1,13 @@
 const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
+const compareValues = require('./_compareValues')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-const compareValues = async (serialized, lock) => {
-  const propNames = Object.keys(serialized)
-    .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
-    .filter((k) => !['keyOwners', 'expirationTimestamps'].includes(k)) // exclude arrays
-  const values = await Promise.all(propNames.map((k) => lock[k]()))
-
-  // assertions
-  propNames.forEach((k, i) => {
-    if (
-      ethers.BigNumber.isBigNumber(serialized[k]) &&
-      ethers.BigNumber.isBigNumber(values[i])
-    ) {
-      assert.equal(
-        serialized[k].eq(values[i]),
-        true,
-        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-      )
-    } else {
-      assert.equal(
-        serialized[k],
-        values[i],
-        `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
-      )
-    }
-  })
-}
-
 contract('LockSerializer', () => {
   let serializer
   let unlock
-  let unlockAddress
   let PublicLock
   let beneficiary
   const locks = {}
@@ -56,8 +29,6 @@ contract('LockSerializer', () => {
     Object.keys(locksTruffle).forEach((k) => {
       locks[k] = PublicLock.attach(locksTruffle[k].address)
     })
-
-    unlockAddress = unlock.address
   })
 
   describe('serialize', () => {
@@ -113,23 +84,6 @@ contract('LockSerializer', () => {
         const serialized = await serializer.serialize(lock.address)
         assert.equal(serialized.expirationTimestamps.length, purchasers.length)
       })
-    })
-  })
-
-  describe('deploy', () => {
-    it('deployed shoud be identical', async () => {
-      const lock = locks.FIRST
-      const serialized = await serializer.serialize(lock.address)
-
-      // redeploy our lock
-      const tx = await serializer.deployLock(unlockAddress, serialized)
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'LockCLoned')
-      const { newLockAddress } = args
-
-      const newLock = PublicLock.attach(newLockAddress)
-      await compareValues(serialized, lock)
-      await compareValues(serialized, newLock)
     })
   })
 })
