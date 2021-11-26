@@ -65,13 +65,19 @@ contract('LockSerializer', () => {
         })
       })
     })
+
     describe('key ownership', () => {
       let purchasers
       let lock
       const keyPrice = ethers.utils.parseEther('0.01')
 
-      beforeEach(async () => {
+      // eslint-disable-next-line func-names
+      beforeEach(async function () {
         lock = locks.FIRST
+        // skip as getKeyOwners has been removed on v9
+        if ((await lock.publicLockVersion()) <= 9) {
+          this.skip()
+        }
         const [, ..._purchasers] = await ethers.getSigners()
         const maxNumberOfKeys = await lock.maxNumberOfKeys()
         purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
@@ -120,7 +126,6 @@ contract('LockSerializer', () => {
       )
 
       const newLock = PublicLock.attach(newLockAddress)
-
       assert.equal(await lock.name(), await newLock.name())
     })
   })
