@@ -1,3 +1,8 @@
+interface PreviousDeploy {
+    unlockAddress: string,
+    startBlock?: number
+}
+
 export interface NetworkConfig {
     id: number
     name: string
@@ -27,6 +32,7 @@ export interface NetworkConfig {
         decimals: number
     },
     startBlock?: number
+    previousDeploys?: PreviousDeploy[]
 }
 
 export interface NetworkConfigs {
