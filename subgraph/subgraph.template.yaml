@@ -36,6 +36,39 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/mapping.ts
+  {{#previousDeploys}}
+  - kind: ethereum/contract
+    name: Contract-{{index}}
+    network: {{network}}
+    source:
+      address: "{{unlockAddress}}"
+      abi: Contract-{{index}}
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - NewLock
+        - NewTokenURI
+        - NewGlobalTokenSymbol
+        - OwnershipTransferred
+      abis:
+        - name: Contract-{{index}}
+          file: ./abis/Contract.json
+        - name: PublicLock
+          file: ./abis/PublicLock.json
+      eventHandlers:
+        - event: NewLock(indexed address,indexed address)
+          handler: handleNewLock
+        - event: NewTokenURI(string)
+          handler: handleNewTokenURI
+        - event: NewGlobalTokenSymbol(string)
+          handler: handleNewGlobalTokenSymbol
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/mapping.ts
+  {{/previousDeploys}}
 
 templates:
   - kind: ethereum/contract

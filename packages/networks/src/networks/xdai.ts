@@ -3,7 +3,7 @@ import { NetworkConfig } from '@unlock-protocol/types';
 export const xdai: NetworkConfig = {
     publicProvider: 'https://rpc.xdaichain.com/',
     provider: 'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
-    unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
+    unlockAddress: '0x8Ffbca1775af6e79480271b2C651Eec94ac414fc',
     id: 100,
     name: 'xDai',
     blockTime: 5000,
@@ -25,6 +25,11 @@ export const xdai: NetworkConfig = {
         symbol: 'xDai',
         decimals: 18,
     },
-    startBlock: 14521200,
+    startBlock: 19273300,
+    previousDeploys: [{
+        unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
+        startBlock: 14521200
+    }]
+
 }
 export default xdai
