@@ -43,3 +43,5 @@ With `subgraph.yaml` created, we should generate the associated code with the fo
 These command require the passing of the following command line arguments `--network` & `--environment`.
 
 * `yarn run deploy` - Deploy the latest subgraph code to the graph node
+
+Note: `polygon` is called `matic` in the graph. Please change the subgraph.yaml file manually.
