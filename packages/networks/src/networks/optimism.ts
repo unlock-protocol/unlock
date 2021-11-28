@@ -1,20 +1,20 @@
 import { NetworkConfig } from '../types';
 
-export const optimisticKovan: NetworkConfig = {
-    publicProvider: 'https://kovan.optimism.io',
+export const optimism: NetworkConfig = {
+    publicProvider: 'https://mainnet.optimism.io',
     provider:
-        'https://kovan.optimism.io',
+        'https://mainnet.optimism.io',
     unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
-    id: 69,
-    name: 'Optimistic Kovan',
+    id: 10,
+    name: 'Optimism',
     blockTime: 8000,
     subgraphURI:
         '',
     explorer: {
         name: 'Etherscan',
         urls: {
-            address: (address) => `https://kovan-optimistic.etherscan.io/address/${address}`,
-            transaction: (hash) => `https://kovan-optimistic.etherscan.io/tx/${hash}`,
+            address: (address) => `https://optimistic.etherscan.io/address/${address}`,
+            transaction: (hash) => `https://optimistic.etherscan.io/tx/${hash}`,
         },
     },
     requiredConfirmations: 12,
@@ -27,4 +27,4 @@ export const optimisticKovan: NetworkConfig = {
     },
 }
 
-export default optimisticKovan
+export default optimism

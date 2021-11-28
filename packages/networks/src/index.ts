@@ -11,3 +11,5 @@ Object.keys(supportedNetworks).forEach((networkName: string) => {
     const network = supportedNetworks[networkName]
     networks[network.id] = network
 })
+
+export default networks
