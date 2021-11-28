@@ -39,9 +39,10 @@ async function main({
     .configUnlock(
       udtAddress,
       wethAddress,
-      estimatedGasForPurchase || 0,
+      estimatedGasForPurchase || 200000,
       'KEY',
-      locksmithURI || `http://127.0.0.1:3000/api/key/${chainId}/`,
+      locksmithURI ||
+        `https://locksmith.unlock-protocol.com/api/key/${chainId}/`,
       chainId
     )
 
