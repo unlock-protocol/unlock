@@ -4,6 +4,5 @@ export * from './rinkeby';
 export * from './xdai';
 export * from './polygon';
 export * from './bsc';
-export * from './optimisticKovan';
 export * from './optimism';
 

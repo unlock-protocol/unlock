@@ -37,10 +37,6 @@ export const AuthenticationContext = createContext()
  * @returns
  */
 const Providers = ({ network, networkConfig, children }) => {
-  console.log({
-    networkConfig,
-    network,
-  })
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
