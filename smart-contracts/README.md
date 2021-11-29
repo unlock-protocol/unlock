@@ -247,6 +247,8 @@ yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --n
 ## Clone an existing locks
 
 ```
-# copy data of a lock locally
-yarn hardhat lock:clone --lock-address 0x... --deployer-address 0x... -- --network localhost
+yarn hardhat lock:clone --lock-address 0x84Ee59446F664c933b175fBB96c489ac2Ed76d31 /
+  --serializer-address 0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128 /
+  --unlock-address 0x071586BA1b380B00B793Cc336fe01106B0BFbE6D /
+  --network localhost 
 ```

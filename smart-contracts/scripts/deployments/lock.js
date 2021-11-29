@@ -2,6 +2,9 @@ const { ethers } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
 const createLockHash = require('../../test/helpers/createLockCalldata')
 
+const toBigNumber = (mayBN) =>
+  ethers.BigNumber.isBigNumber(mayBN) ? mayBN : ethers.BigNumber.from(mayBN)
+
 async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
   const [signer] = await ethers.getSigners()
   // get the right version of Unlock
@@ -63,11 +66,9 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
 
   if (
     (freeTrialLength &&
-      ethers.BigNumber.from(freeTrialLength).neq(
-        await lock.freeTrialLength()
-      )) ||
+      !toBigNumber(freeTrialLength).eq(await lock.freeTrialLength())) ||
     (refundPenaltyBasisPoints &&
-      ethers.BigNumber.from(refundPenaltyBasisPoints).neq(
+      !toBigNumber(refundPenaltyBasisPoints).eq(
         await lock.refundPenaltyBasisPoints()
       ))
   ) {
@@ -76,9 +77,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
 
   if (
     transferFeeBasisPoints &&
-    ethers.BigNumber.from(transferFeeBasisPoints).neq(
-      await lock.transferFeeBasisPoints()
-    )
+    !toBigNumber(transferFeeBasisPoints).eq(await lock.transferFeeBasisPoints())
   ) {
     lock.updateTransferFee(transferFeeBasisPoints)
   }
