@@ -26,7 +26,6 @@ async function main({
   locksmithURI,
 }) {
   let udt
-
   const [deployer, minter] = await ethers.getSigners()
 
   // fetch chain info
@@ -38,7 +37,6 @@ async function main({
   )
 
   log(`isLocalNet : ${isLocalNet}`)
-
   if (!unlockAddress) {
     // deploying Unlock with a transparent / upgradable proxy
     unlockAddress = await run('deploy:unlock')
@@ -70,7 +68,7 @@ async function main({
   if (udtAddress !== '0x0000000000000000000000000000000000000000') {
     // pre-mint some UDTs, then delegate mint caps to contract
     if (isLocalNet || premintAmount) {
-      const UDT = await ethers.getContractFactory('UnlockDiscountTokenV2')
+      const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
       udt = UDT.attach(udtAddress)
 
       udt = udt.connect(minter)
@@ -174,6 +172,7 @@ async function main({
     wethAddress,
     estimatedGasForPurchase,
     locksmithURI,
+    isLocalNet,
   })
 
   if (

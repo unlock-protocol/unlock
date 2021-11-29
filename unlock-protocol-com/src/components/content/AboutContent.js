@@ -48,7 +48,7 @@ Post.propTypes = {
 // const People = [
 //   {
 //     name: 'Julien Genestoux',
-//     picture: '/static/images/illustrations/julien.jpg',
+//     picture: '/images/illustrations/julien.jpg',
 //     personalLink: 'https://www.ouvre-boite.com/',
 //     linkedIn: 'https://www.linkedin.com/in/juliengenestoux/',
 //     bio: `I am an entrepreneur and a software engineer. I am a vocal web
@@ -58,7 +58,7 @@ Post.propTypes = {
 //   },
 //   {
 //     name: 'Sascha Mombartz',
-//     picture: '/static/images/illustrations/sascha.jpg',
+//     picture: '/images/illustrations/sascha.jpg',
 //     personalLink: 'http://mombartz.com/',
 //     linkedIn: 'https://www.linkedin.com/in/smombartz/',
 //     bio: `I am an artist and designer from no particular place. My work –

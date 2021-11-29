@@ -1,0 +1,38 @@
+name: Deployment
+on: 
+  push:
+    branches:
+      - master
+      - production
+
+jobs:
+  # heroku deploy 
+  deploy-locksmith-staging:    
+    if: contains(github.base_ref, 'master')
+    uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-staging
+  deploy-locksmith-production:    
+    if: contains(github.base_ref, 'production')
+    uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-production
+  # netlify deploys
+  deploy-unlock-app-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    with:
+      service: unlock-app
+  deploy-paywall-to-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    with:
+      service: paywall-app
+  deploy-newsletter-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    with:
+      service: "newsletter"
+  deploy-unlock-protocol-com-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    with:
+      service: "unlock-protocol-com"

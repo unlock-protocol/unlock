@@ -1,4 +1,3 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers, upgrades } = require('hardhat')
 const { copySync } = require('fs-extra')
 const { addDeployment } = require('../helpers/deployments')
@@ -34,10 +33,9 @@ module.exports = async () => {
   await addDeployment('PublicLock', publicLock)
 
   // 3. setting lock template
-  unlock.setLockTemplate(publicLock.address, {
-    from: unlockOwner.address,
-    gasLimit: constants.MAX_GAS,
-  })
+  const version = await publicLock.publicLockVersion()
+  await unlock.connect(unlockOwner).addLockTemplate(publicLock.address, version)
+  await unlock.connect(unlockOwner).setLockTemplate(publicLock.address)
 
   // 4. deploy UDT
   const UDT = await ethers.getContractFactory('UnlockDiscountToken')
@@ -49,15 +47,15 @@ module.exports = async () => {
   // save deployment info
   await addDeployment('UnlockDiscountToken', token, true)
 
-  // 5. deploy UDT (v2)
-  const UDTv2 = await ethers.getContractFactory('UnlockDiscountTokenV2')
-  const tokenv2 = await upgrades.deployProxy(UDTv2, [minter.address], {
+  // 5. deploy UDT (v3)
+  const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
+  const tokenv3 = await upgrades.deployProxy(UDTv3, [minter.address], {
     initializer: 'initialize(address)',
   })
-  await tokenv2.deployed()
+  await tokenv3.deployed()
 
   // save deployment info
-  await addDeployment('UnlockDiscountTokenV2', tokenv2, true)
+  await addDeployment('UnlockDiscountTokenV3', tokenv3, true)
 
   // 5. deploy Gov
   const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')

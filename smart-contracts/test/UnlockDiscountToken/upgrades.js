@@ -4,18 +4,20 @@ const { ethers, upgrades } = require('hardhat')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 
 const { getProxyAddress } = require('../../helpers/deployments')
+const createLockHash = require('../helpers/createLockCalldata')
+
 const Locks = require('../fixtures/locks')
 
 const estimateGas = 252166 * 2
 
 // helper function
 const upgradeContract = async (contractAddress) => {
-  const UnlockDiscountTokenV2 = await ethers.getContractFactory(
-    'UnlockDiscountTokenV2'
+  const UnlockDiscountTokenV3 = await ethers.getContractFactory(
+    'UnlockDiscountTokenV3'
   )
   const updated = await upgrades.upgradeProxy(
     contractAddress,
-    UnlockDiscountTokenV2,
+    UnlockDiscountTokenV3,
     {}
   )
   return updated
@@ -117,15 +119,15 @@ contract('UnlockDiscountToken upgrade', async () => {
       udt.connect(minter)
 
       // create lock
-      const tx = await unlock.createLock(
+      const args = [
         Locks.FIRST.expirationDuration.toFixed(),
         web3.utils.padLeft(0, 40),
         Locks.FIRST.keyPrice.toFixed(),
         Locks.FIRST.maxNumberOfKeys.toFixed(),
         Locks.FIRST.lockName,
-        // This ensures that the salt is unique even if we deploy locks multiple times
-        ethers.utils.randomBytes(12)
-      )
+      ]
+      const calldata = await createLockHash({ args })
+      const tx = await unlock.createLock(calldata)
 
       const { events } = await tx.wait()
       const evt = events.find((v) => v.event === 'NewLock')

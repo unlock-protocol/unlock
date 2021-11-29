@@ -3,7 +3,7 @@ title: r0se
 subTitle: New art project r0se launches with eco-friendly XDAI blockchain using Unlock.
 authorName: Patrick Gerard
 description: Artist uses XDAI blockchain and Unlock Protocol to explore new, inclusive ways of distributing their art to a global audience.
-image: /static/images/blog/rose.jpg
+image: /images/blog/rose.jpg
 publishDate: Apr 9, 2021
 ---
 

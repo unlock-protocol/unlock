@@ -11,7 +11,8 @@
         "prepublish": "yarn build"
     },
     "devDependencies": {
-        "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+        "@unlock-protocol/tsconfig": "workspace:^",
+        "@unlock-protocol/types": "workspace:^",
         "typescript": "4.4.4"
     },
     "files": [

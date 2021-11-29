@@ -59,7 +59,7 @@ storiesOf('Checkout', module)
   })
   .add('with a lock with a logo and a default CTA', () => {
     return render({
-      icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
+      icon: 'https://app.unlock-protocol.com/images/svg/default.svg',
       callToAction: {},
       network: 4,
       locks: {

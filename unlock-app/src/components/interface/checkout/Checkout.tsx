@@ -94,7 +94,7 @@ export const Checkout = ({
   const config = useContext(ConfigContext)
   const [state, setState] = useState('loading')
   const [showBack, setShowBack] = useState(false)
-  const [cardDetails, setCardDetails] = useState(null)
+  const [cardDetails, setCardDetails] = useState<any>(null)
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
@@ -206,7 +206,6 @@ export const Checkout = ({
     content = (
       <LogIn
         network={1} // We don't actually need a network here really.
-        embedded
         onProvider={onProvider}
         useWallet={() => setCheckoutState('wallet-picker')}
       />
@@ -227,7 +226,9 @@ export const Checkout = ({
     )
   } else if (state === 'crypto-checkout') {
     // Final step for the crypto checkout. We should save the metadata first!
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (!paywallConfig) {
+      content = <p>Missing paywall configuration. Please refresh this page</p>
+    } else if (paywallConfig?.metadataInputs && !savedMetadata) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
@@ -386,13 +387,19 @@ export const Checkout = ({
       </>
     )
   } else if (state === 'connect') {
-    content = (
-      <OAuthConnect
-        redirectUri={redirectUri}
-        closeModal={closeModal}
-        oAuthConfig={oAuthConfig}
-      />
-    )
+    if (!oAuthConfig || !redirectUri) {
+      content = (
+        <p>Your URL is missing the OAuth config or the redirect url. </p>
+      )
+    } else {
+      content = (
+        <OAuthConnect
+          redirectUri={redirectUri}
+          closeModal={closeModal}
+          oAuthConfig={oAuthConfig}
+        />
+      )
+    }
   } else if (state === 'loading') {
     // Maybe show an error if this is too long?
     content = <Loading />
@@ -474,5 +481,9 @@ const Prompt = styled.p`
     cursor: pointer;
   }
 `
+
+Checkout.defaultProps = {
+  paywallConfig: {},
+}
 
 const PublisherLogo = styled.img``

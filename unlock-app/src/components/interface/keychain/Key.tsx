@@ -7,6 +7,8 @@ import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
+import { AuthenticationContext } from '../Authenticate'
+import { ConfigContext } from '../../../utils/withConfig'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -41,6 +43,8 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const { lock, expiration, tokenURI, keyId } = ownedKey
   const walletService = useContext(WalletServiceContext)
   const wedlockService = useContext(WedlockServiceContext)
+  const { watchAsset } = useContext(AuthenticationContext)
+  const config = useContext(ConfigContext)
 
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
@@ -59,6 +63,33 @@ const Key = ({ ownedKey, account, network }: Props) => {
       signature,
     })
     setShowingQR(true)
+  }
+
+  const addToWallet = async () => {
+    watchAsset({
+      address: lock.address,
+      symbol: 'KEY',
+      image: `${config.services.storage.host}/lock/${lock.address}/icon`,
+    })
+  }
+
+  const viewOnOpenSea = async () => {
+    if (network === 137) {
+      window.open(
+        `https://opensea.io/assets/matic/${lock.address}/${keyId}`,
+        '_blank'
+      )
+    } else if (network === 1) {
+      window.open(
+        `https://opensea.io/assets/${lock.address}/${keyId}`,
+        '_blank'
+      )
+    } else if (network === 4) {
+      window.open(
+        `https://testnets.opensea.io/assets/${lock.address}/${keyId}`,
+        '_blank'
+      )
+    }
   }
 
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -94,8 +125,16 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
       />
       {error && <Error>{error}</Error>}
+      <ButtonAction type="button" onClick={addToWallet}>
+        Show in wallet
+      </ButtonAction>
+      {[1, 4, 137].indexOf(network) > -1 && (
+        <ButtonAction type="button" onClick={viewOnOpenSea}>
+          View on OpenSea
+        </ButtonAction>
+      )}
       <ButtonAction type="button" onClick={handleSignature}>
-        Confirm Ownership
+        Generate QR code
       </ButtonAction>
     </Box>
   )
@@ -185,6 +224,7 @@ const ButtonAction = styled.button`
   /* background: none; */
   border: none;
   padding: 5px;
+  margin: 2px;
   &:hover {
     color: #333;
     transition: color 100ms ease;

@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost'
 import PropTypes, { number } from 'prop-types'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
+import { useEffect } from 'react'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
@@ -22,6 +23,7 @@ import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
+import { useAutoLogin } from '../../hooks/useAutoLogin'
 
 const GraphServiceProvider = GraphServiceContext.Provider
 
@@ -104,6 +106,7 @@ export const Authenticate = ({
     disconnectProvider,
     isUnlockAccount,
     changeNetwork,
+    watchAsset,
   } = useProvider(config)
 
   const authenticate = async (provider, messageToSign) => {
@@ -119,6 +122,12 @@ export const Authenticate = ({
     disconnectProvider()
   }
 
+  const { tryAutoLogin, isLoading } = useAutoLogin({ authenticate })
+
+  useEffect(() => {
+    tryAutoLogin()
+  }, [])
+
   return (
     <AuthenticationContext.Provider
       value={{
@@ -131,6 +140,7 @@ export const Authenticate = ({
         isUnlockAccount,
         deAuthenticate,
         changeNetwork,
+        watchAsset,
       }}
     >
       {error && <p>{error}</p>}
@@ -143,7 +153,7 @@ export const Authenticate = ({
             email={email}
             encryptedPrivateKey={encryptedPrivateKey}
           >
-            {children}
+            {!isLoading ? children : <Loading />}
           </Providers>
         </WalletServiceContext.Provider>
       )}
