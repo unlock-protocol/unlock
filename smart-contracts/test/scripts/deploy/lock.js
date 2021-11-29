@@ -13,11 +13,10 @@ contract('LockSerializer', () => {
   const locks = {}
   // addresses
   let unlockOwner
-  let beneficiary
   let manager
 
   beforeEach(async () => {
-    ;[unlockOwner, beneficiary, manager] = await ethers.getSigners()
+    ;[unlockOwner, , manager] = await ethers.getSigners()
 
     // deploy unlock
     const Unlock = await ethers.getContractFactory(
@@ -28,7 +27,7 @@ contract('LockSerializer', () => {
     await unlock.deployed()
 
     // deploy template
-    const PublicLock = await ethers.getContractFactory(
+    PublicLock = await ethers.getContractFactory(
       PublicLockV8.abi,
       PublicLockV8.bytecode
     )
@@ -72,15 +71,12 @@ contract('LockSerializer', () => {
       const serialized = await serializer.serialize(lock.address)
 
       // redeploy our lock
-      const tx = await deployLock({
+      const newLockAddress = await deployLock({
         unlockAddress,
         unlockVersion: 9,
         serializedLock: serialized,
         salt: web3.utils.randomHex(12),
       })
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'LockCLoned')
-      const { newLockAddress } = args
 
       // make sure values are identical
       const newLock = PublicLock.attach(newLockAddress)
@@ -99,10 +95,12 @@ contract('LockSerializer', () => {
     const serialized = await serializer.serialize(lock.address)
 
     // redeploy our lock
-    const tx = await deployLock(unlockAddress, serialized)
-    const { events } = await tx.wait()
-    const { args } = events.find(({ event }) => event === 'LockCLoned')
-    const { newLockAddress } = args
+    const newLockAddress = await deployLock({
+      unlockAddress,
+      unlockVersion: 9,
+      serializedLock: serialized,
+      salt: web3.utils.randomHex(12),
+    })
 
     // make sure values are identical
     const newLock = PublicLock.attach(newLockAddress)

@@ -15,7 +15,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
   const { expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name } =
     serializedLock
 
-  const tx = unlock.createLock(
+  const tx = await unlock.createLock(
     // _lock.beneficiary,
     expirationDuration,
     tokenAddress,
@@ -25,17 +25,20 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
     salt
   )
 
-  const w = await tx.wait()
-  const { args } = w.events.find(({ event }) => event === 'NewLock')
+  // eslint-disable-next-line no-console
+  console.log('CLONE LOCK > creating a new lock...')
+
+  const { events, transactionHash } = await tx.wait()
+  const { args } = events.find(({ event }) => event === 'NewLock')
   const { newLockAddress } = args
 
   // eslint-disable-next-line no-console
   console.log(
-    `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${w.deployTransaction.hash})`
+    `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`
   )
 
-  // set lock
-  const publicLockVersion = await unlock.publicLockVersion()
+  // get versionof the original lock
+  const publicLockVersion = 8 // await unlock.publicLockVersion()
   const { abi: publicLockABI, bytecode: publicLockBytecode } =
     contracts[`PublicLockV${publicLockVersion}`]
   const PublicLock = await ethers.getContractFactory(
@@ -47,7 +50,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
   // check for default var
   if (
     serializedLock.freeTrialLength != 1000 ||
-    serializedLock.refundPenaltyBasisPoints != 1000
+    serializedLock.newLock != 1000
   ) {
     lock.updateRefundPenalty(
       serializedLock.freeTrialLength,
