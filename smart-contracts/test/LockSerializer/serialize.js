@@ -23,7 +23,6 @@ contract('LockSerializer', () => {
 
     // get locks (truffle version)
     const locksTruffle = await deployLocks(unlock, beneficiary.address)
-
     // parse locks for ethers
     PublicLock = await ethers.getContractFactory('PublicLock')
     Object.keys(locksTruffle).forEach((k) => {
