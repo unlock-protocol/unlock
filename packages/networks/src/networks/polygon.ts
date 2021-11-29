@@ -1,9 +1,10 @@
-import { NetworkConfig } from '../types';
+import { NetworkConfig } from '@unlock-protocol/types';
 
 export const polygon: NetworkConfig = {
+    publicProvider: 'https://rpc-mainnet.maticvigil.com/',
     provider:
         'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
-    unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
+    unlockAddress: '0x75f778379623155201B4dd7647907d3ABbDB6753',
     id: 137,
     name: 'Polygon',
     blockTime: 1000,
@@ -25,7 +26,11 @@ export const polygon: NetworkConfig = {
         symbol: 'MATIC',
         decimals: 18,
     },
-    startBlock: 15714206,
+    startBlock: 21844200,
+    previousDeploys: [{
+        unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
+        startBlock: 15714206
+    }]
 }
 
 export default polygon

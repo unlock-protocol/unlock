@@ -4,10 +4,10 @@ subTitle: Creators can chose any Ethereum based token when they sell keys to the
 authorName: Julien Genestoux
 publishDate: June 13, 2019
 description: 'A lot of the creators that we spoke with were concerned by the volatile nature of Ether when using it to price their keys: we needed to support stable coins. The ERC20 standard is a way to create tokens which are all compatible, even though they may have different implementations.'
-image: /static/images/blog/erc20-locks/hero.jpg
+image: /images/blog/erc20-locks/hero.jpg
 ---
 
-![Dashboard Lock](/static/images/blog/erc20-locks/use-dai.jpg)
+![Dashboard Lock](/images/blog/erc20-locks/use-dai.jpg)
 
 When creators deploy their locks using our dashboard, they can chose the following:
 
@@ -36,27 +36,27 @@ Now, nothing says that the MKR tokens, which are actively traded on several exch
 
 Head out to the [creator dashboard](https://unlock-protocol.com/) now and click on the _Create Lock_ Button:
 
-![Create a Lock](/static/images/blog/erc20-locks/create-lock.png)
+![Create a Lock](/images/blog/erc20-locks/create-lock.png)
 
 Then, select DAI as the currency when picking up a price:
 
-![Create a Lock](/static/images/blog/erc20-locks/select-dai.png)
+![Create a Lock](/images/blog/erc20-locks/select-dai.png)
 
 Choose how much you want to charge (you can still change that later, but not the currency...). And hit submit. Once that transaction has been mined, your lock has been deployed!
 
 Once you have embedded the lock on your page, your readers are offered the ability to Unlock it:
 
-![A DAI lock](/static/images/blog/erc20-locks/dai-lock.png)
+![A DAI lock](/images/blog/erc20-locks/dai-lock.png)
 
 When clicking on it, they are required to approve 2 transactions (the ERC20 could be a bit simpler... but we have ideas on how to solve that!):
 
 1. They need to approve the lock to withdraw some of their DAI (just the amount for the key purchase!):
 
-![Approve the ERC20 transfer](/static/images/blog/erc20-locks/approve-withdraw-erc20.png)
+![Approve the ERC20 transfer](/images/blog/erc20-locks/approve-withdraw-erc20.png)
 
 2. Actually purchase the key (the lock contract will withdraw the right ERC20 balance):
 
-![Purchasing the key](/static/images/blog/erc20-locks/purchase-key.png)
+![Purchasing the key](/images/blog/erc20-locks/purchase-key.png)
 
 Once the transaction as been confirmed, the customer will receive their non fungible token!
 

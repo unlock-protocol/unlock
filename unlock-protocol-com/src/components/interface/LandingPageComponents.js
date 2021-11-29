@@ -357,7 +357,7 @@ export const GrantsProgramBox = () => {
         >
           <Illustration
             style={{ maxWidth: '330px' }}
-            src="/static/images/illustrations/grants.svg"
+            src="/images/illustrations/grants.svg"
           />
         </Column>
       </Columns>

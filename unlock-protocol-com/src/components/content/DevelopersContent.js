@@ -47,7 +47,7 @@ export const DevelopersContent = () => {
               flex: '1',
             }}
           >
-            <CodeSnippet src="/static/images/illustrations/code-snippet.png" />{' '}
+            <CodeSnippet src="/images/illustrations/code-snippet.png" />{' '}
           </Column>
         </Columns>
         <ActionButtons>
@@ -159,7 +159,7 @@ export const DevelopersContent = () => {
                 }}
                 width="64"
                 alt="networks"
-                src="/static/images/illustrations/networks.svg"
+                src="/images/illustrations/networks.svg"
               />
 
               <p>
@@ -176,10 +176,7 @@ export const DevelopersContent = () => {
           <Column transposed>
             <Tutorial href="https://docs.unlock-protocol.com/creators/deploying-lock">
               <Illustration>
-                <img
-                  alt="space"
-                  src="/static/images/illustrations/space/1.png"
-                />
+                <img alt="space" src="/images/illustrations/space/1.png" />
                 <IconWrapper
                   style={{
                     backgroundColor: 'var(--brand)',
@@ -199,10 +196,7 @@ export const DevelopersContent = () => {
 
             <Tutorial href="https://docs.unlock-protocol.com/creators/enabling-credit-cards">
               <Illustration>
-                <img
-                  alt="space"
-                  src="/static/images/illustrations/space/2.png"
-                />
+                <img alt="space" src="/images/illustrations/space/2.png" />
                 <IconWrapper
                   style={{
                     backgroundColor: 'var(--brand)',
@@ -223,10 +217,7 @@ export const DevelopersContent = () => {
           <Column transposed>
             <Tutorial href="https://docs.unlock-protocol.com/creators/tutorials-1">
               <Illustration>
-                <img
-                  alt="space"
-                  src="/static/images/illustrations/space/3.png"
-                />
+                <img alt="space" src="/images/illustrations/space/3.png" />
                 <IconWrapper
                   style={{
                     backgroundColor: 'var(--brand)',
@@ -247,10 +238,7 @@ export const DevelopersContent = () => {
 
             <Tutorial href="https://www.unlockshowcase.com/">
               <Illustration>
-                <img
-                  alt="space"
-                  src="/static/images/illustrations/space/4.png"
-                />
+                <img alt="space" src="/images/illustrations/space/4.png" />
                 <IconWrapper
                   style={{
                     backgroundColor: 'var(--brand)',

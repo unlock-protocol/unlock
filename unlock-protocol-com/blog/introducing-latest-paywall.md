@@ -4,7 +4,7 @@ subTitle: Leaner, faster, and evergreen
 authorName: Christopher Nascone
 publishDate: April 8, 2020
 description: Unlock introduces a new paywall architecture in response to customer needs
-image: /static/images/blog/introducing-latest-paywall/paywall.png
+image: /images/blog/introducing-latest-paywall/paywall.png
 ---
 
 The Unlock Paywall has evolved substantially over the past year, from a more traditional paywall that blocked a page to a configurable and embeddable tool that enabled all kinds of memberships. Here's our latest release, crafted in direct response to our customers' needs and our own experience.

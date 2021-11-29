@@ -21,7 +21,9 @@ jobs:
       - checkout
       - run:
           name: Check for changes in repository
-          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
+          command: |
+            changed=$(scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH)
+            if [ "$changed" != "changed" ] && [ $CIRCLE_BRANCH != "master" ] && [ $CIRCLE_BRANCH != "production" ]; then circleci step halt; fi
       - run:
           name: Running << parameters.service >> tests
           command: scripts/tests.sh << parameters.service >>
@@ -38,7 +40,11 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
+          command: | 
+            changed=$(scripts/monorepo.sh locksmith $CIRCLE_BRANCH)
+            if [ "$changed" != "changed" ] && [ $CIRCLE_BRANCH != "master" ] && [ $CIRCLE_BRANCH != "production" ]; then 
+              circleci step halt;
+            fi
       - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
@@ -72,7 +78,11 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
+          command: | 
+            changed=$(scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH)
+            if [ "$changed" != "changed" ]; then 
+              circleci step halt;
+            fi
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh << parameters.service >> >> $BASH_ENV
@@ -82,56 +92,6 @@ jobs:
       - run:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" << parameters.service >> netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-paywall-aws:
-    executor: ubuntu_20-executor
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Set IS_FORKED_PR
-          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Deploy to AWS
-          command: scripts/deploy-aws.sh "$ENV_TARGET" paywall "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
-
-  deploy-locksmith-beanstalk:
-    docker:
-      - image: circleci/python:3.10.0
-    environment:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
-      - run:
-          name: Set IS_FORKED_PR
-          command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
-      - run:
-          name: Set ENV_TARGET
-          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
-      - run:
-          name: Installing deployment dependencies
-          working_directory: /
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python3-pip python3-dev build-essential
-            sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
-      - run:
-          name: Set GIT_COMMIT_DESC
-          command: echo 'export GIT_COMMIT_DESC=$(git log --format=%B -n 1 "$CIRCLE_SHA1")' >> $BASH_ENV
-      - run:
-          name: Deploy Locksmith to Beanstalk
-          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh
 
   build-and-deploy-to-heroku:
     executor: ubuntu_20-executor
@@ -148,8 +108,10 @@ jobs:
         type: string
     steps:
       - checkout
-    # - run:
-    #       command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
+      - run:
+          command: |
+            changed=$(scripts/monorepo.sh locksmith $CIRCLE_BRANCH)
+            if [ "$changed" != "changed" ]; then circleci step halt; fi
       - run:
           name: Show docker info
           command: |
@@ -213,7 +175,7 @@ workflows:
             - integration-tests
           filters:
             branches:
-              only: master 
+              only: master
       - build-and-deploy-to-heroku:
           name: "deploy-locksmith-production"
           service: locksmith
@@ -231,9 +193,6 @@ workflows:
       - deploy-to-netlify:
           name: "deploy-paywall-netlify"
           service: paywall-app
-          requires:
-            - integration-tests
-      - deploy-paywall-aws:
           requires:
             - integration-tests
       - deploy-to-netlify:
@@ -255,7 +214,7 @@ workflows:
               only: master
           requires:
             - integration-tests
-
+  
   prepare-prod-deploy:
     triggers:
       - schedule:

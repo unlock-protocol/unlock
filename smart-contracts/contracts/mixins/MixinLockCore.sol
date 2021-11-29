@@ -114,7 +114,7 @@ contract MixinLockCore is
   // The version number of the current implementation on this network
   function publicLockVersion(
   ) public pure
-    returns (uint)
+    returns (uint16)
   {
     return 9;
   }

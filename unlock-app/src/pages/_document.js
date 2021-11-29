@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
           <Fonts />
           {/* TODO remove line below when https://github.com/styled-components/styled-components/issues/2962 has been fixed */}
           <style>{globalStyle}</style>
-          <link rel="shortcut icon" href="/static/favicon.ico" />
+          <link rel="shortcut icon" href="/favicon.ico" />
           {this.props.styleTags}
         </Head>
         <body>

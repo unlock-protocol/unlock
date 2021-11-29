@@ -3,7 +3,7 @@ title: UDT Vulnerability Disclosure
 subTitle: Last week, we identified a serious vulnerability in the UDT contract. It is now fixed and has not been exploited.
 authorName: Julien Genestoux
 description: While working on debugging a signature issue in the UDT contract, we identified a critical vulnerability. This vulnerability was introduced in a UDT contract upgrade on August 2nd 2021 and discovered on October 14th around 1045AM ET. A patch was successfully deployed on the same day at about 1PM ET. The vulnerability was not exploited.
-image: https://unlock-protocol.com/static/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg
+image: https://unlock-protocol.com/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg
 publishDate: October 18, 2021
 ---
 

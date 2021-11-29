@@ -6,14 +6,21 @@ const path = require('path')
 const fs = require('fs-extra')
 const networksConfig = require('@unlock-protocol/networks')
 
-const templateValues = (network) => {
-  if (!networksConfig[network]) {
+const templateValues = (networkName) => {
+  if (!networksConfig[networkName]) {
+    console.error('Please specify network!')
     process.exit(1)
   }
+  const network = networksConfig[networkName]
   return {
-    network,
-    startBlock: networksConfig[network].startBlock,
-    unlockContractAddress: networksConfig[network].unlockAddress,
+    network: networkName,
+    startBlock: network.startBlock || 0,
+    unlockContractAddress: network.unlockAddress,
+    previousDeploys: (network.previousDeploys || []).map((details, index) => ({
+      ...details,
+      index,
+      network: networkName,
+    })),
   }
 }
 

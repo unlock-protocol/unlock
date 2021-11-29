@@ -57,4 +57,4 @@ are aware of the items included.
 ### Testing
 
 Tests can be run via `yarn test`. Please note that the project includes end-to-end tests that
-will require database access.
+will require database access

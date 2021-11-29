@@ -5,7 +5,7 @@ import { AuthenticationContext } from '../Authenticate'
 
 interface EnjoyYourMembershipProps {
   closeModal: (success: boolean, redirectUri: string, params?: any) => void
-  redirectUri: string
+  redirectUri?: string
 }
 
 export const EnjoyYourMembership = ({
@@ -21,18 +21,26 @@ export const EnjoyYourMembership = ({
 
   return (
     <EnjoyYourMembershipWrapper
-      onClick={() =>
-        closeModal(true, redirectUri, {
-          signature: signedMessage,
-        })
-      }
+      onClick={() => {
+        if (redirectUri) {
+          closeModal(true, redirectUri, {
+            signature: signedMessage,
+          })
+        } else {
+          window.close()
+        }
+      }}
     >
       {label}
     </EnjoyYourMembershipWrapper>
   )
 }
 
-export const EnjoyYourMembershipWrapper = styled(ActionButton).attrs({})`
+EnjoyYourMembership.defaultProps = {
+  redirectUri: '',
+}
+
+const EnjoyYourMembershipWrapper = styled(ActionButton).attrs({})`
   margin-top: 20px;
   width: 100%;
   height: 48px;
