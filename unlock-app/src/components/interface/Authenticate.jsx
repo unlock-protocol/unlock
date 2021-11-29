@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost'
 import PropTypes, { number } from 'prop-types'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
+import { useEffect } from 'react'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
@@ -23,7 +24,6 @@ import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
-import { useEffect } from 'react'
 
 const GraphServiceProvider = GraphServiceContext.Provider
 

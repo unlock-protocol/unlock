@@ -14,7 +14,7 @@ const templateValues = (networkName) => {
   const network = networksConfig[networkName]
   return {
     network: networkName,
-    startBlock: network.startBlock,
+    startBlock: network.startBlock || 0,
     unlockContractAddress: network.unlockAddress,
     previousDeploys: (network.previousDeploys || []).map((details, index) => ({
       ...details,
