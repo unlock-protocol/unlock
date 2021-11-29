@@ -41,6 +41,24 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
     tx = await unlock.createLock(calldata)
   }
 
+  let tx
+  if (unlockVersion < 9) {
+    tx = await unlock.createLock(
+      expirationDuration,
+      tokenAddress,
+      keyPrice,
+      maxNumberOfKeys,
+      name,
+      salt
+    )
+  } else {
+    const calldata = await createLockHash({
+      args: [expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name],
+      from: signer.address,
+    })
+    tx = await unlock.createLock(calldata)
+  }
+
   const { events, transactionHash } = await tx.wait()
   const { args } = events.find(({ event }) => event === 'NewLock')
   const { newLockAddress } = args
