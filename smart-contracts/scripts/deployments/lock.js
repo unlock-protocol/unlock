@@ -1,7 +1,9 @@
 const { ethers } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
+const createLockHash = require('../../test/helpers/createLockCalldata')
 
 async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
+  const [signer] = await ethers.getSigners()
   // get the right version of Unlock
   let Unlock
   if (!unlockVersion) {
@@ -15,18 +17,26 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
   const { expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name } =
     serializedLock
 
-  const tx = await unlock.createLock(
-    // _lock.beneficiary,
-    expirationDuration,
-    tokenAddress,
-    keyPrice,
-    maxNumberOfKeys,
-    name,
-    salt
-  )
-
   // eslint-disable-next-line no-console
   console.log('CLONE LOCK > creating a new lock...')
+
+  let tx
+  if (unlockVersion < 9) {
+    tx = await unlock.createLock(
+      expirationDuration,
+      tokenAddress,
+      keyPrice,
+      maxNumberOfKeys,
+      name,
+      salt
+    )
+  } else {
+    const calldata = await createLockHash({
+      args: [expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name],
+      from: signer.address,
+    })
+    tx = await unlock.createLock(calldata)
+  }
 
   const { events, transactionHash } = await tx.wait()
   const { args } = events.find(({ event }) => event === 'NewLock')
@@ -48,18 +58,29 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
   const lock = PublicLock.attach(newLockAddress)
 
   // check for default var
+  const { freeTrialLength, refundPenaltyBasisPoints, transferFeeBasisPoints } =
+    serializedLock
+
   if (
-    serializedLock.freeTrialLength != 1000 ||
-    serializedLock.newLock != 1000
+    (freeTrialLength &&
+      ethers.BigNumber.from(freeTrialLength).neq(
+        await lock.freeTrialLength()
+      )) ||
+    (refundPenaltyBasisPoints &&
+      ethers.BigNumber.from(refundPenaltyBasisPoints).neq(
+        await lock.refundPenaltyBasisPoints()
+      ))
   ) {
-    lock.updateRefundPenalty(
-      serializedLock.freeTrialLength,
-      serializedLock.refundPenaltyBasisPoints
-    )
+    lock.updateRefundPenalty(freeTrialLength, refundPenaltyBasisPoints)
   }
 
-  if (serializedLock.transferFeeBasisPoints != 1000) {
-    lock.updateTransferFee(serializedLock.transferFeeBasisPoints)
+  if (
+    transferFeeBasisPoints &&
+    ethers.BigNumber.from(transferFeeBasisPoints).neq(
+      await lock.transferFeeBasisPoints()
+    )
+  ) {
+    lock.updateTransferFee(transferFeeBasisPoints)
   }
 
   return newLockAddress
