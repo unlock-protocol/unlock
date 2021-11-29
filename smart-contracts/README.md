@@ -223,3 +223,30 @@ yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainne
 ```
 yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contracts/<Unlock|PublicLock>.sol
 ```
+
+## Handle locks
+
+### Deploy sample locks
+
+Once you have deployed the Unlock contract on localhost, you can try
+
+```
+yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
+```
+
+### Serialize existing lock
+
+```
+# deploy LockSerializer contract 
+yarn deploy:serializer --network localhost
+
+# copy data of a lock locally
+yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+
+## Clone an existing locks
+
+```
+# copy data of a lock locally
+yarn hardhat lock:clone --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
