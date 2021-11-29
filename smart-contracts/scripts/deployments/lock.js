@@ -18,7 +18,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
     serializedLock
 
   // eslint-disable-next-line no-console
-  console.log('CLONE LOCK > creating a new lock...')
+  console.log('LOCK DEPLOY > creating a new lock...')
 
   let tx
   if (unlockVersion < 9) {
@@ -44,7 +44,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
 
   // eslint-disable-next-line no-console
   console.log(
-    `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`
+    `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${transactionHash})`
   )
 
   // get versionof the original lock

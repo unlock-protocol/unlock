@@ -113,7 +113,6 @@ contract LockSerializer {
     address tokenAddress = lock.tokenAddress();
 
     // ownership
-    // address lockCreator = lock.lockCreator();
     uint256 totalSupply = lock.totalSupply();
     uint numberOfOwners = lock.numberOfOwners();
     
