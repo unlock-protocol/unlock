@@ -4,7 +4,7 @@ subTitle: Everyone who used Unlock before September 1st can join our DAO!
 authorName: Julien Genestoux
 publishDate: October 6, 2021
 description: Today, we're announcing a retro-active airdrop where anyone who contributed to Unlock's network can claim some ɄDT to join our governance
-image: /static/images/blog/airdrop/coin.png
+image: /images/blog/airdrop/coin.png
 ---
 
 Last week, we introduced the [Unlock DAO](/blog/unlock-dao) where anyone can contribute proposals and vote on these in order to collectively govern the protocol and its treasury. Today, we're excited to announce that we're going one step further by doing a **retro-active airdrop**: anyone who has contributed to Unlock before September 1st 2021 is eligible to receive some ɄDT.
@@ -13,7 +13,7 @@ We expect to distribute **up to 7,314 ɄDT**! Claim your tokens now at [https://
 
 <p style="
     text-align: center;
-"><img src="/static/images/blog/airdrop/coin.png" alt="Unlock DAO"></p>
+"><img src="/images/blog/airdrop/coin.png" alt="Unlock DAO"></p>
 
 # Rewarding past contributions
 

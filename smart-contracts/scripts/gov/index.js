@@ -34,7 +34,7 @@ async function main({ proposal }) {
 
     const { address: udtAddress, abi: udtAbi } = getDeployment(
       chainId,
-      'UnlockDiscountTokenV2'
+      'UnlockDiscountTokenV3'
     )
     const udt = await new ethers.Contract(udtAddress, udtAbi, holder)
 

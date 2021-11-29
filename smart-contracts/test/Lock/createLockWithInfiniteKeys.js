@@ -3,6 +3,7 @@ const { constants } = require('hardlydifficult-eth')
 
 const PublicLock = artifacts.require('PublicLock')
 const getProxy = require('../helpers/proxy')
+const createLockHash = require('../helpers/createLockCalldata')
 
 const unlockContract = artifacts.require('Unlock')
 
@@ -16,14 +17,15 @@ contract('Lock / createLockWithInfiniteKeys', () => {
   describe('Create a Lock with infinite keys', () => {
     let transaction
     before(async () => {
-      transaction = await unlock.createLock(
+      const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
-        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40), // token address
         web3.utils.toWei('1', 'ether'), // keyPrice: in wei
         constants.MAX_UINT, // maxNumberOfKeys
-        'Infinite Keys Lock',
-        '0x000000000000000000000000'
-      )
+        'Infinite Keys Lock', // name
+      ]
+      const calldata = await createLockHash({ args })
+      transaction = await unlock.createLock(calldata)
     })
 
     it('should have created the lock with an infinite number of keys', async () => {
@@ -41,14 +43,16 @@ contract('Lock / createLockWithInfiniteKeys', () => {
   describe('Create a Lock with 0 keys', () => {
     let transaction
     before(async () => {
-      transaction = await unlock.createLock(
+      const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         web3.utils.padLeft(0, 40),
         web3.utils.toWei('1', 'ether'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',
-        '0x000000000000000000000001'
-      )
+        // '0x000000000000000000000001',
+      ]
+      const calldata = await createLockHash({ args })
+      transaction = await unlock.createLock(calldata)
     })
 
     it('should have created the lock with 0 keys', async () => {

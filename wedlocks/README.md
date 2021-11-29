@@ -12,4 +12,4 @@ At the time of writing, Wedlocks requires the generation of a key pair to be uti
 The public key portion of the pair is expected to be utilized by the calling application. 
 
 The suggestion at this time is to utilize the code outlined [here](https://github.com/unlock-protocol/unlock/blob/master/wedlocks/src/__tests__/encrypter.test.js#L11). 
-This will be moved to a script.
+This will be moved to a script

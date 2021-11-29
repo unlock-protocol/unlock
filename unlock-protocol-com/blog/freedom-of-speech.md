@@ -4,9 +4,9 @@ subTitle: In a world where corporations control our conversations, removing midd
 authorName: Ben Werdmuller
 publishDate: October 15, 2018
 description: In a world where corporations control our conversations, removing middlemen is more important than ever.
-image: /static/images/blog/freedomofspeech/thisisforeveryone.jpg
+image: /images/blog/freedomofspeech/thisisforeveryone.jpg
 ---
-![this is for everyone](/static/images/blog/freedomofspeech/thisisforeveryone.jpg)
+![this is for everyone](/images/blog/freedomofspeech/thisisforeveryone.jpg)
 
 The web is in trouble. So what?
 

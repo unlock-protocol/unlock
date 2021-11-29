@@ -47,7 +47,7 @@ export const ClaimMembershipCheckout = ({
           config.networks[network].provider
         )
         try {
-          const result = await provider.waitForTransaction(hash)
+          await provider.waitForTransaction(hash)
           setKeyExpiration(Infinity) // Optimistic!
           setPurchasePending(false)
         } catch (e) {
@@ -83,7 +83,7 @@ export const ClaimMembershipCheckout = ({
         setError('Claim failed. Please try again.')
         setPurchasePending(false)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       setError('Claim failed. Please try again.')
       setPurchasePending(false)

@@ -4,7 +4,7 @@ subTitle: You can now embed locks from multiple chain in the same application!
 authorName: Julien Genestoux
 publishDate: May 11, 2021
 description: You can now embed locks from multiple chain in the same application! Also, you can customize the configuration for the checkout modal, independently of the paywall configuration!
-image: /static/images/blog/xdai/xdai.png
+image: /images/blog/xdai/xdai.png
 ---
 
 As transaction costs on Ethereum's mainnet keep sky-rocketing (it's a good thing!), like many other projects in the web3 space, we are exploring ways to provide a seamless experience in the Ethereum ecosystem, without the costs associated with a blockchain used heavily for large-value transactions. A few weeks ago, we launch the [Unlock Protocol on xDAI](/blog/xdai) and we're working on several more.

@@ -14,7 +14,8 @@ contract('Unlock / createLockClone2', (accounts) => {
     templateAddress = await unlock.publicLockAddress()
   })
 
-  describe('Deploy with Clone 2 with various salts', () => {
+  // eslint-disable-next-line jest/no-disabled-tests
+  describe.skip('Deploy with Clone 2 with various salts', () => {
     const testSalts = [
       '0x000000000000000000000000',
       '0x000000000000000000000001',

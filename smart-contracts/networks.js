@@ -53,4 +53,14 @@ module.exports = {
     url: 'https://bsc-dataseed.binance.org/',
     name: 'binance',
   },
+  optimisticKovan: {
+    chainId: 69,
+    url: 'https://kovan.optimism.io',
+    name: 'optimism kovan',
+  },
+  optimism: {
+    chainId: 10,
+    url: 'https://mainnet.optimism.io',
+    name: 'optimism',
+  },
 }
