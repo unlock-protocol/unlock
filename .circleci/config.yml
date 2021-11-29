@@ -40,9 +40,9 @@ jobs:
     steps:
       - checkout
       - run:
-          command: | 
+          command: |
             changed=$(scripts/monorepo.sh locksmith $CIRCLE_BRANCH)
-            if [ "$changed" != "changed" ] && [ $CIRCLE_BRANCH != "master" ] && [ $CIRCLE_BRANCH != "production" ]; then 
+            if [ "$changed" != "changed" ] && [ $CIRCLE_BRANCH != "master" ] && [ $CIRCLE_BRANCH != "production" ]; then
               circleci step halt;
             fi
       - run:
@@ -78,12 +78,6 @@ jobs:
     steps:
       - checkout
       - run:
-          command: | 
-            changed=$(scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH)
-            if [ "$changed" != "changed" ]; then 
-              circleci step halt;
-            fi
-      - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh << parameters.service >> >> $BASH_ENV
       - run:
@@ -108,10 +102,6 @@ jobs:
         type: string
     steps:
       - checkout
-      - run:
-          command: |
-            changed=$(scripts/monorepo.sh locksmith $CIRCLE_BRANCH)
-            if [ "$changed" != "changed" ]; then circleci step halt; fi
       - run:
           name: Show docker info
           command: |
@@ -214,7 +204,7 @@ workflows:
               only: master
           requires:
             - integration-tests
-  
+
   prepare-prod-deploy:
     triggers:
       - schedule:
