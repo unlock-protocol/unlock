@@ -6,7 +6,7 @@ const Locks = require('../../fixtures/locks')
 const deployLock = require('../../../scripts/deployments/lock')
 const compareValues = require('../../LockSerializer/_compareValues')
 
-contract('LockSerializer', () => {
+contract('Scripts/deploy:lock', () => {
   let serializer
   let unlockAddress
   let PublicLock
@@ -46,14 +46,15 @@ contract('LockSerializer', () => {
     // deploy locks
     await Promise.all(
       Object.keys(Locks).map(async (name) => {
-        const tx = await unlock.createLock(
+        const lockArgs = [
           Locks[name].expirationDuration.toFixed(),
           web3.utils.padLeft(0, 40),
           Locks[name].keyPrice.toFixed(),
           Locks[name].maxNumberOfKeys.toFixed(),
           Locks[name].lockName,
-          web3.utils.randomHex(12)
-        )
+          web3.utils.randomHex(12),
+        ]
+        const tx = await unlock.createLock(...lockArgs)
         const { events } = await tx.wait()
         const { args } = events.find((v) => v.event === 'NewLock')
         locks[name] = await PublicLock.attach(args.newLockAddress)
@@ -73,7 +74,7 @@ contract('LockSerializer', () => {
       // redeploy our lock
       const newLockAddress = await deployLock({
         unlockAddress,
-        unlockVersion: 9,
+        unlockVersion: 8,
         serializedLock: serialized,
         salt: web3.utils.randomHex(12),
       })
@@ -97,7 +98,7 @@ contract('LockSerializer', () => {
     // redeploy our lock
     const newLockAddress = await deployLock({
       unlockAddress,
-      unlockVersion: 9,
+      unlockVersion: 8,
       serializedLock: serialized,
       salt: web3.utils.randomHex(12),
     })
