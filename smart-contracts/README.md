@@ -252,3 +252,11 @@ yarn hardhat lock:clone --lock-address 0x84Ee59446F664c933b175fBB96c489ac2Ed76d3
   --unlock-address 0x071586BA1b380B00B793Cc336fe01106B0BFbE6D /
   --network localhost 
 ```
+
+## List lock managers 
+
+```
+yarn hardhat lock:managers --lock-address 0x06441a9ac376b80004c32f8f37b1f80a2135362c --network xdai
+LOCK > managers for the lock 'lido':
+[0]: 0x61e155fac2bb8e58fa8c5c01a21e0513cfe52fc4
+```
