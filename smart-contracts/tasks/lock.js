@@ -7,8 +7,14 @@ task('lock:serialize', 'Serialize a lock')
     // eslint-disable-next-line global-require
     const serializeLock = require('../scripts/lock/serialize')
     const serialized = await serializeLock({ lockAddress, serializerAddress })
+    const json = {}
+    Object.keys(serialized)
+      .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
+      .forEach((k) => {
+        json[k] = serialized[k]
+      })
     // eslint-disable-next-line no-console
-    console.log(JSON.stringify(serialized, null, 2))
+    console.log(JSON.stringify(json, null, 2))
   })
 
 task('lock:managers', 'List all managers for a lock')

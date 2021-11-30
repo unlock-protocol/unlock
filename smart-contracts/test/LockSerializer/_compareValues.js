@@ -1,9 +1,10 @@
 const { ethers } = require('hardhat')
 
 const compareValues = async (serialized, lock) => {
+  const arrays = ['keyOwners', 'expirationTimestamps', 'keyManagers']
   const propNames = Object.keys(serialized)
     .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
-    .filter((k) => !['keyOwners', 'expirationTimestamps'].includes(k)) // exclude arrays
+    .filter((k) => !arrays.includes(k)) // exclude arrays
   const values = await Promise.all(propNames.map((k) => lock[k]()))
 
   // assertions
