@@ -38,11 +38,11 @@ dataSources:
       file: ./src/mapping.ts
   {{#previousDeploys}}
   - kind: ethereum/contract
-    name: Contract-{{index}}
+    name: Contract{{index}}
     network: {{network}}
     source:
       address: "{{unlockAddress}}"
-      abi: Contract-{{index}}
+      abi: Contract{{index}}
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
@@ -54,7 +54,7 @@ dataSources:
         - NewGlobalTokenSymbol
         - OwnershipTransferred
       abis:
-        - name: Contract-{{index}}
+        - name: Contract{{index}}
           file: ./abis/Contract.json
         - name: PublicLock
           file: ./abis/PublicLock.json
