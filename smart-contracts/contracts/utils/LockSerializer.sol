@@ -121,10 +121,12 @@ contract LockSerializer {
     address[] memory keyManagers = new address[](totalSupply);
     uint[] memory expirationTimestamps = new uint[](totalSupply);
     
-    for (uint256 tokenId = 0; tokenId < totalSupply; tokenId++) {
-      keyOwners[tokenId] = lock.ownerOf(tokenId);
-      expirationTimestamps[tokenId] = lock.keyExpirationTimestampFor(keyOwners[tokenId]);
-      keyManagers[tokenId] = lock.keyManagerOf(tokenId);
+    // tokenId starts at 1, so totalSupply + 1 is needed
+    for (uint256 i = 0; i < totalSupply; i++) {
+      uint256 tokenId = i +1;
+      keyOwners[i] = lock.ownerOf(tokenId);
+      expirationTimestamps[i] = lock.keyExpirationTimestampFor(keyOwners[i]);
+      keyManagers[i] = lock.keyManagerOf(tokenId);
     }
 
     Lock memory serializedLock = Lock(
