@@ -38,9 +38,9 @@ contract LockSerializer {
     uint numberOfOwners;
     uint256 totalSupply; 
     address[] keyOwners;
+    address[] keyManagers;
     uint[] expirationTimestamps;
     // address lockCreator;
-    // keyManagers //keyManagerOf
   }
 
   // We split in multiple structs to avoid "Stack To Deep" solc
@@ -116,19 +116,17 @@ contract LockSerializer {
     uint256 totalSupply = lock.totalSupply();
     uint numberOfOwners = lock.numberOfOwners();
     
-    address[] memory keyOwners;
-    if (lock.publicLockVersion() < 9 && numberOfOwners > 0) {
-      // TODO: pagination - how many addresses will overflow?
-      keyOwners = lock.getOwnersByPage(0, numberOfOwners);
-    }
-    // expirations
-    uint[] memory expirationTimestamps = new uint[](numberOfOwners);
-    if(keyOwners.length != 0) {
-      for (uint256 i = 0; i < keyOwners.length; i++) {
-        expirationTimestamps[i] = lock.keyExpirationTimestampFor(keyOwners[i]);
-      }
-    }
+    // keys
+    address[] memory keyOwners = new address[](totalSupply);
+    address[] memory keyManagers = new address[](totalSupply);
+    uint[] memory expirationTimestamps = new uint[](totalSupply);
     
+    for (uint256 tokenId = 0; tokenId < totalSupply; tokenId++) {
+      keyOwners[tokenId] = lock.ownerOf(tokenId);
+      expirationTimestamps[tokenId] = lock.keyExpirationTimestampFor(keyOwners[tokenId]);
+      keyManagers[tokenId] = lock.keyManagerOf(tokenId);
+    }
+
     Lock memory serializedLock = Lock(
       // keys
       priceInfo.expirationDuration,
@@ -149,6 +147,7 @@ contract LockSerializer {
       numberOfOwners,
       totalSupply,
       keyOwners,
+      keyManagers,
       expirationTimestamps
     );
 
