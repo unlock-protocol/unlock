@@ -128,30 +128,28 @@ async function main({
       const { router, factory } = await run('deploy:uniswap', { wethAddress })
       uniswapRouterAddress = router
       uniswapFactoryAddress = factory
-    }
 
-    if (!uniswapRouterAddress) {
-      throw new Error(
-        'Missing uniswapRouterAddress. Cannot proceed. Please use --uniswap-router-address'
+      if (!uniswapRouterAddress) {
+        throw new Error(
+          'Missing uniswapRouterAddress. Cannot proceed. Please use --uniswap-router-address'
+        )
+      }
+
+      if (!uniswapFactoryAddress) {
+        throw new Error(
+          'Missing uniswapFactoryAddress. Cannot proceed. Please use --uniswap-factory-address'
+        )
+      }
+
+      // get uniswap instance
+      const Router = await ethers.getContractFactory(
+        UniswapV2Router02.abi,
+        UniswapV2Router02.bytecode
       )
-    }
+      const uniswapRouter = Router.attach(uniswapRouterAddress)
+      uniswapFactoryAddress = await uniswapRouter.factory()
 
-    if (!uniswapFactoryAddress) {
-      throw new Error(
-        'Missing uniswapFactoryAddress. Cannot proceed. Please use --uniswap-factory-address'
-      )
-    }
-
-    // get uniswap instance
-    const Router = await ethers.getContractFactory(
-      UniswapV2Router02.abi,
-      UniswapV2Router02.bytecode
-    )
-    const uniswapRouter = Router.attach(uniswapRouterAddress)
-    uniswapFactoryAddress = await uniswapRouter.factory()
-
-    // add liquidity
-    if (isLocalNet) {
+      // add liquidity
       const amountLiquidity = liquidity || '1000.0'
       await udt
         .connect(deployer)
@@ -171,7 +169,7 @@ async function main({
     }
 
     // deploy oracle if needed
-    if (!oracleAddress) {
+    if (uniswapFactoryAddress && !oracleAddress) {
       oracleAddress = await run('deploy:oracle', {
         uniswapFactoryAddress,
       })

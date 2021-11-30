@@ -77,6 +77,7 @@ require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
 require('./tasks/release')
+require('./tasks/transfer-ownership')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

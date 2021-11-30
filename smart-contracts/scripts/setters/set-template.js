@@ -20,6 +20,7 @@ async function main({ publicLockAddress, unlockAddress }) {
   const unlock = Unlock.attach(unlockAddress)
 
   const existingTemplate = await unlock.publicLockAddress()
+  console.log(existingTemplate)
 
   if (existingTemplate === ethers.utils.getAddress(publicLockAddress)) {
     console.log('UNLOCK SETUP > Template already set for PublicLock')
