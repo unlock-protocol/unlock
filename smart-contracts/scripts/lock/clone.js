@@ -27,6 +27,25 @@ async function main({
   })
 
   // eslint-disable-next-line no-console
+  console.log('CLONE LOCK > add key owners...')
+  const newLock = PublicLock.attach(newLockAddress)
+  const { keyOwners, expirationTimestamps, keyManagers } = serializedLock
+  const keyTx = await newLock.grantKeys(
+    keyOwners,
+    expirationTimestamps,
+    keyManagers
+  )
+  const { events: keyEvents } = await keyTx.wait()
+  const transfers = keyEvents.filter(({ event }) => event === 'Transfer')
+  const keyManagersChanges = keyEvents.filter(
+    ({ event }) => event === 'KeyManagerChanged'
+  )
+  // eslint-disable-next-line no-console
+  console.log(
+    `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`
+  )
+
+  // eslint-disable-next-line no-console
   console.log('CLONE LOCK > fetching managers...')
 
   // fetch managers from graph
@@ -36,7 +55,7 @@ async function main({
   if (managers.length) {
     // eslint-disable-next-line no-restricted-syntax
     const txs = Promise.all(
-      managers.map((manager) => lock.addLockManager(manager))
+      managers.map((manager) => newLock.addLockManager(manager))
     )
     const { events } = await txs.wait()
     const added = events.map(({ event }) => event.name === 'LockManagerAdded')
