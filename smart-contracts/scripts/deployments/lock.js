@@ -21,7 +21,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
     serializedLock
 
   // eslint-disable-next-line no-console
-  console.log('LOCK DEPLOY > creating a new lock...')
+  console.log(`LOCK DEPLOY > creating a new lock '${name}'...`)
 
   let tx
   if (unlockVersion < 9) {
