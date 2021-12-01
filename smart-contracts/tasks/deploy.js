@@ -32,6 +32,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
     'liquidity',
     'the amount of liquidity to be added to the WETH<>UDT pool'
   )
+  .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
   .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
   .addOptionalParam('locksmithURI', 'the URL locksmith to use in Unlock config')
   .addFlag('setTemplate', 'set the PublicLock instance in Unlock')
@@ -39,6 +40,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
     async (
       {
         unlockAddress,
+        unlockVersion,
         udtAddress,
         publicLockAddress,
         wethAddress,
@@ -65,6 +67,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
       const mainDeployer = require('../scripts/deployments')
       await mainDeployer({
         unlockAddress,
+        unlockVersion,
         udtAddress,
         publicLockAddress,
         wethAddress,
@@ -86,11 +89,13 @@ task('deploy:udt', 'Deploy Unlock Discount Token proxy').setAction(async () => {
   return await udtDeployer()
 })
 
-task('deploy:unlock', 'Deploy Unlock proxy').setAction(async () => {
-  // eslint-disable-next-line global-require
-  const unlockDeployer = require('../scripts/deployments/unlock')
-  return await unlockDeployer()
-})
+task('deploy:unlock', 'Deploy Unlock proxy')
+  .addOptionalParam('unlockVersion', 'the version of unlock to deploy')
+  .setAction(async ({ unlockVersion }) => {
+    // eslint-disable-next-line global-require
+    const unlockDeployer = require('../scripts/deployments/unlock')
+    return await unlockDeployer({ unlockVersion })
+  })
 
 task('deploy:weth', 'Deploy WETH contract').setAction(async () => {
   // eslint-disable-next-line global-require

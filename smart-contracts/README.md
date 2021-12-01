@@ -152,6 +152,12 @@ yarn hardhat set:unlock-oracle --oracle-address <xxx> \
 see `npx hardhat --help` for a list of all available tasks and deployments
 
 
+#### Deploy previous versions
+
+```
+yarn hardhat deploy:unlock --unlock-version 8
+```
+
 ### Update Unlock config
 
 ```
