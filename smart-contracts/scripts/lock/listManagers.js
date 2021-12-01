@@ -1,9 +1,6 @@
 const { ethers } = require('hardhat')
+const fetch = require('cross-fetch')
 const { getNetworkName } = require('../../helpers/network')
-
-const fetch = (...args) =>
-  // eslint-disable-next-line promise/prefer-await-to-then
-  import('node-fetch').then(({ default: fetch }) => fetch(...args))
 
 async function main({ lockAddress }) {
   const PublicLock = await ethers.getContractFactory('PublicLock')
