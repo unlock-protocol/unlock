@@ -24,7 +24,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
   console.log(`LOCK DEPLOY > creating a new lock '${name}'...`)
 
   let tx
-  if (unlockVersion < 9) {
+  if (unlockVersion < 10) {
     tx = await unlock.createLock(
       expirationDuration,
       tokenAddress,

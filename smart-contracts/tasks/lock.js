@@ -42,8 +42,8 @@ task('lock:samples', 'Deploy a sample lock')
     'unlockVersion',
     'The Unlock version to use to deploy the contract'
   )
-  .setAction(async ({ unlockAddress }) => {
+  .setAction(async ({ unlockAddress, unlockVersion }) => {
     // eslint-disable-next-line global-require
     const deploySampleLocks = require('../scripts/lock/samples')
-    await deploySampleLocks({ unlockAddress })
+    await deploySampleLocks({ unlockAddress, unlockVersion })
   })
