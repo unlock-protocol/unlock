@@ -36,13 +36,16 @@ export function useAuthenticateHandler({
   }
 
   const authenticateWithProvider = useCallback(
-    async (provider: WalletProvider) => {
-      if (!walletHandlers[provider]) {
+    async (providerType: WalletProvider, provider?: any) => {
+      if (!walletHandlers[providerType]) {
         removeKey('provider')
         return
       }
-      await walletHandlers[provider]()
-      setStorage('provider', provider)
+      await walletHandlers[providerType](provider)
+      // We can't autologin with Unlock accounts
+      if (providerType !== 'UNLOCK') {
+        setStorage('provider', providerType)
+      }
     },
     []
   )
