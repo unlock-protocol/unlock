@@ -23,6 +23,7 @@ import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
+import { useAutoLogin } from '../../hooks/useAutoLogin'
 
 const GraphServiceProvider = GraphServiceContext.Provider
 
@@ -121,6 +122,12 @@ export const Authenticate = ({
     disconnectProvider()
   }
 
+  const { tryAutoLogin, isLoading } = useAutoLogin({ authenticate })
+
+  useEffect(() => {
+    tryAutoLogin()
+  }, [])
+
   return (
     <AuthenticationContext.Provider
       value={{
@@ -146,7 +153,7 @@ export const Authenticate = ({
             email={email}
             encryptedPrivateKey={encryptedPrivateKey}
           >
-            {children}
+            {!isLoading ? children : <Loading />}
           </Providers>
         </WalletServiceContext.Provider>
       )}
