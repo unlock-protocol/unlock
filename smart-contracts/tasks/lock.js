@@ -28,12 +28,25 @@ task('lock:managers', 'List all managers for a lock')
 task('lock:clone', 'Redeploy an identical lock')
   .addParam('lockAddress', 'The lock address')
   .addParam('unlockAddress', 'The Unlock contract address')
+  .addParam('unlockVersion', 'The version of the Unlock contract')
   .addParam('serializerAddress', 'The LockSerializer contract address')
-  .setAction(async ({ lockAddress, serializerAddress, unlockAddress }) => {
-    // eslint-disable-next-line global-require
-    const cloneLock = require('../scripts/lock/clone')
-    await cloneLock({ lockAddress, serializerAddress, unlockAddress })
-  })
+  .setAction(
+    async ({
+      lockAddress,
+      serializerAddress,
+      unlockAddress,
+      unlockVersion,
+    }) => {
+      // eslint-disable-next-line global-require
+      const cloneLock = require('../scripts/lock/clone')
+      await cloneLock({
+        lockAddress,
+        serializerAddress,
+        unlockAddress,
+        unlockVersion,
+      })
+    }
+  )
 
 task('lock:samples', 'Deploy a sample lock')
   .addParam('unlockAddress', 'The Unlock contract address')
