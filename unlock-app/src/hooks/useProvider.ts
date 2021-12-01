@@ -1,9 +1,8 @@
 import { ethers } from 'ethers'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
-import { useAppStorage } from './useAppStorage'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -36,17 +35,6 @@ export const useProvider = (config: any) => {
   const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
     any | undefined
   >(undefined)
-  const { getStorage, setStorage, clearStorage } = useAppStorage()
-
-  useEffect(() => {
-    if (!getStorage('account') && account) {
-      setStorage('account', account)
-    }
-
-    if (!getStorage('network') && network) {
-      setStorage('network', network)
-    }
-  }, [account, network])
 
   const resetProvider = async (
     provider: ethers.providers.Provider,
@@ -157,7 +145,6 @@ export const useProvider = (config: any) => {
     setIsUnlockAccount(false)
     setEmail('')
     setEncryptedPrivateKey(null)
-    clearStorage()
     try {
       await provider.provider.close()
     } catch (error) {
