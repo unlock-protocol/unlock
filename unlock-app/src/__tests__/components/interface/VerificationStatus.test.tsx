@@ -6,7 +6,7 @@ import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 import signatureUtils from '../../../utils/signatures'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import { ConfigContext } from '../../../utils/withConfig'
-import { AuthenticationContext } from '../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 jest.mock('../../../utils/signatures', () => {
   return {

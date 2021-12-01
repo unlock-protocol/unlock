@@ -5,14 +5,11 @@ import {
   WalletProvider,
 } from './useAuthenticateHandler'
 
-interface AutoLogin {
-  authenticate: (provider: any, messageToSign?: any) => Promise<any>
-}
-export function useAutoLogin({ authenticate }: AutoLogin) {
+export function useAutoLogin() {
   const [isLoading, setLoading] = useState(false)
   const { getStorage } = useAppStorage()
 
-  const { authenticateWithProvider } = useAuthenticateHandler({ authenticate })
+  const { authenticateWithProvider } = useAuthenticateHandler({})
 
   const getAutoLoginData = useCallback((): Promise<
     [boolean, WalletProvider]

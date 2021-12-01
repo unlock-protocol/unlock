@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 import CreatorLock from './CreatorLock'
 import { LockRowGrid, PhoneLockRowGrid } from './LockStyles'

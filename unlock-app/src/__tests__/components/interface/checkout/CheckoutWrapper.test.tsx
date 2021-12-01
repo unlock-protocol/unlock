@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import CheckoutWrapper from '../../../../components/interface/checkout/CheckoutWrapper'
-import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../../contexts/AuthenticationContext'
 
 const renderWithContexts = (component: any) => {
   const account = '0x123'

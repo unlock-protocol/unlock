@@ -8,7 +8,7 @@ import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilters } from '../unlockTypes'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { GraphServiceContext } from '../utils/withGraphService'
-import { AuthenticationContext } from '../components/interface/Authenticate'
+import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { ConfigContext } from '../utils/withConfig'
 
 /**

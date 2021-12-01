@@ -3,7 +3,7 @@ import * as rtl from '@testing-library/react'
 import { ValidKey } from '../../../../components/interface/verification/Key'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import { pingPoap } from '../../../../utils/poap'
-import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../../contexts/AuthenticationContext'
 
 const network = 1337
 const authentication = { network }

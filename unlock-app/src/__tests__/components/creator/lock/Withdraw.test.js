@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 
 import { Withdraw } from '../../../../components/interface/buttons/lock/Withdraw'
-import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../../contexts/AuthenticationContext'
 
 const authentication = { network: 1492 }
 

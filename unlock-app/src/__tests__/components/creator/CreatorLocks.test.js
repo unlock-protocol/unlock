@@ -4,7 +4,7 @@ import hook from '../../../hooks/useLocks'
 
 import { CreatorLocks } from '../../../components/creator/CreatorLocks'
 import { ConfigContext } from '../../../utils/withConfig'
-import { AuthenticationContext } from '../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 jest.mock('../../../hooks/useLocks', () => {
   return {

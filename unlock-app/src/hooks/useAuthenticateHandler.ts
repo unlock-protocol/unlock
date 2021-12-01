@@ -12,18 +12,17 @@ enum WALLET_PROVIDER {
 export type WalletProvider = keyof typeof WALLET_PROVIDER
 interface AuthenticateHandler {
   injectedProvider?: any
-  authenticate?: (provider: any, messageToSign?: any) => Promise<any>
 }
+
 export function useAuthenticateHandler({
   injectedProvider,
-  authenticate,
 }: AuthenticateHandler) {
   const {
     handleInjectProvider,
     handleUnlockProvider,
     handleCoinbaseWalletProvider,
     handleWalletConnectProvider,
-  } = useAuthenticate({ injectedProvider, authenticate })
+  } = useAuthenticate({ injectedProvider })
   const { setStorage, removeKey } = useAppStorage()
 
   const walletHandlers: {
@@ -39,13 +38,13 @@ export function useAuthenticateHandler({
     async (providerType: WalletProvider, provider?: any) => {
       if (!walletHandlers[providerType]) {
         removeKey('provider')
-        return
       }
-      await walletHandlers[providerType](provider)
+      const connectedProvider = await walletHandlers[providerType](provider)
       // We can't autologin with Unlock accounts
       if (providerType !== 'UNLOCK') {
         setStorage('provider', providerType)
       }
+      return connectedProvider
     },
     []
   )

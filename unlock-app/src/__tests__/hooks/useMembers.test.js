@@ -12,7 +12,7 @@ import useMembers, {
   buildMembersWithMetadata,
 } from '../../hooks/useMembers'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
-import { AuthenticationContext } from '../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
 
 jest.mock('../../structured_data/keyMetadataTypedData')

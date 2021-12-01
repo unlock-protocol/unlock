@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 
 import Head from 'next/head'
 import PropTypes from 'prop-types'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'

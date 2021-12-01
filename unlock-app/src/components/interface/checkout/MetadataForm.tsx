@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
 import { Button, LoadingButton, Input, Label } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 
 interface Props {

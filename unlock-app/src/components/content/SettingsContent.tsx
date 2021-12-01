@@ -6,7 +6,7 @@ import AccountInfo from '../interface/user-account/AccountInfo'
 import { PaymentDetails } from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useCards } from '../../hooks/useCards'
 
 import Loading from '../interface/Loading'

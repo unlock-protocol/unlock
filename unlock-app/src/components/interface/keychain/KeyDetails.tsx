@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import styled from 'styled-components'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import keyHolderQuery from '../../../queries/keyHolder'
 import 'cross-fetch/polyfill'
 import { DefaultError } from '../../creator/FatalError'

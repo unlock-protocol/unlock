@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import Loading from '../Loading'
 import { Button, NeutralButton } from './FormStyles'
 

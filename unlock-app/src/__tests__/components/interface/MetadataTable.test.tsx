@@ -3,7 +3,7 @@ import * as rtl from '@testing-library/react'
 import { MetadataTable } from '../../../components/interface/MetadataTable'
 import { MemberFilters } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
-import { AuthenticationContext } from '../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 const metadata = [
   {

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import styled from 'styled-components'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 import { PaymentDetails } from '../user-account/PaymentDetails'
 import Loading from '../Loading'

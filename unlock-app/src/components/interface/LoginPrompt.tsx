@@ -1,15 +1,10 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import SvgComponents from './svg'
 
 import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
-import { useAuthenticate } from '../../hooks/useAuthenticate'
-import {
-  useAuthenticateHandler,
-  WalletProvider,
-} from '../../hooks/useAuthenticateHandler'
-import { AuthenticationContext } from './Authenticate'
+import { useAuthenticateHandler } from '../../hooks/useAuthenticateHandler'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -20,7 +15,6 @@ interface LoginPromptProps {
   backgroundColor?: string
   activeColor?: string
   injectedProvider?: any
-  onProvider?: (provider: any) => void
 }
 
 export interface EthereumWindow extends Window {
@@ -37,26 +31,12 @@ const LoginPrompt = ({
   backgroundColor,
   injectedProvider,
   activeColor,
-  onProvider,
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
-  const { authenticate } = useContext(AuthenticationContext)
 
-  const { injectedOrDefaultProvider } = useAuthenticate({
-    injectedProvider,
-    onProvider,
-    authenticate,
-  })
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
-    authenticate,
   })
-  const loginWithProvider = useCallback(
-    async (key: WalletProvider, provider?: any) => {
-      await authenticateWithProvider(key, provider)
-    },
-    []
-  )
 
   return (
     <Container embedded={!!embedded}>
@@ -69,8 +49,7 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            disabled={!injectedOrDefaultProvider}
-            onClick={() => loginWithProvider('METAMASK')}
+            onClick={() => authenticateWithProvider('METAMASK')}
           >
             <SvgComponents.Metamask />
             In browser wallet
@@ -79,7 +58,7 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            onClick={() => loginWithProvider('WALLET_CONNECT')}
+            onClick={() => authenticateWithProvider('WALLET_CONNECT')}
           >
             <SvgComponents.WalletConnect fill="var(--blue)" />
             WalletConnect
@@ -88,7 +67,7 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            onClick={() => loginWithProvider('COINBASE')}
+            onClick={() => authenticateWithProvider('COINBASE')}
           >
             <SvgComponents.CoinbaseWallet fill="var(--blue)" />
             Coinbase Wallet
@@ -116,7 +95,9 @@ const LoginPrompt = ({
           embedded={embedded}
           onCancel={onCancel}
           login
-          onProvider={(provider) => loginWithProvider('UNLOCK', provider)}
+          onProvider={(provider) =>
+            authenticateWithProvider('UNLOCK', provider)
+          }
           useWallet={() => setWalletToShow('')}
         />
       )}
@@ -132,7 +113,7 @@ const SubHeading = styled.h2`
   color: var(--darkgrey);
 `
 
-const Description = styled.p`
+const Description = styled.div`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 16px;

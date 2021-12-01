@@ -1,7 +1,8 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { useCallback, useContext } from 'react'
+import { useContext } from 'react'
 import WalletLink from 'walletlink'
 import { ConfigContext } from '../utils/withConfig'
+import { AuthenticationContext } from '../contexts/AuthenticationContext'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
@@ -43,47 +44,28 @@ export const selectProvider = (config: any) => {
 
 interface AuthenticateProps {
   injectedProvider?: any | null
-  authenticate?: (provider: any, messageToSign?: any) => Promise<any>
   onProvider?: ((provider?: any) => void) | undefined
 }
 
-export function useAuthenticate({
-  injectedProvider,
-  onProvider,
-  authenticate,
-}: AuthenticateProps) {
+export function useAuthenticate({ injectedProvider }: AuthenticateProps) {
   const config = useContext(ConfigContext)
+  const { authenticate } = useContext(AuthenticationContext)
 
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
-  const onAuthenticate = useCallback(
-    async (provider, messageToSign = undefined) => {
-      if (authenticate) await authenticate(provider, messageToSign)
-    },
-    []
-  )
-
-  const authenticateIfNotHandled = async (provider: any) => {
-    if (onProvider) {
-      await onProvider(provider)
-    } else {
-      await onAuthenticate(provider)
-    }
-  }
-
   const handleInjectProvider = async () => {
-    await authenticateIfNotHandled(injectedOrDefaultProvider)
+    return authenticate(injectedOrDefaultProvider)
   }
 
   const handleUnlockProvider = async (provider: any) => {
-    await authenticateIfNotHandled(provider)
+    return authenticate(provider)
   }
 
   const handleWalletConnectProvider = async () => {
     const walletConnectProvider = new WalletConnectProvider({
       rpc: rpcForWalletConnect(config),
     })
-    await authenticateIfNotHandled(walletConnectProvider)
+    return authenticate(walletConnectProvider)
   }
 
   const handleCoinbaseWalletProvider = async () => {
@@ -93,7 +75,7 @@ export function useAuthenticate({
     })
 
     const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
-    await authenticateIfNotHandled(ethereum)
+    return authenticate(ethereum)
   }
 
   return {
@@ -102,6 +84,6 @@ export function useAuthenticate({
     handleWalletConnectProvider,
     handleCoinbaseWalletProvider,
     injectedOrDefaultProvider,
-    onAuthenticate,
+    authenticate,
   }
 }
