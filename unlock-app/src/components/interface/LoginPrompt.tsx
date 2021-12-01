@@ -51,12 +51,9 @@ const LoginPrompt = ({
     injectedProvider,
     authenticate,
   })
-  const loginWithProvider = useCallback(
-    async (key: WalletProvider, provider?: any) => {
-      await authenticateWithProvider(key, provider)
-    },
-    []
-  )
+  const loginWithProvider = useCallback(async (key: WalletProvider) => {
+    await authenticateWithProvider(key)
+  }, [])
 
   return (
     <Container embedded={!!embedded}>
@@ -116,7 +113,7 @@ const LoginPrompt = ({
           embedded={embedded}
           onCancel={onCancel}
           login
-          onProvider={(provider) => loginWithProvider('UNLOCK', provider)}
+          onProvider={() => loginWithProvider('UNLOCK')}
           useWallet={() => setWalletToShow('')}
         />
       )}

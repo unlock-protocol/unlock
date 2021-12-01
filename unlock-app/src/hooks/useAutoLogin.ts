@@ -34,12 +34,7 @@ export function useAutoLogin({ authenticate }: AutoLogin) {
     setLoading(true)
     const [canAutoLogin, storedProvider] = await getAutoLoginData()
     if (canAutoLogin && storedProvider) {
-      try {
-        await authenticateWithProvider(storedProvider)
-      } catch (error: any) {
-        console.error('Autologin failed.')
-        console.error(error)
-      }
+      await authenticateWithProvider(storedProvider)
     }
     setLoading(false)
   }, [])
