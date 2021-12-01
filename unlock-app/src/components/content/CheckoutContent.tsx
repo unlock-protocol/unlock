@@ -5,8 +5,8 @@ import getOAuthFromSearch from '../../utils/getOAuthFromSearch'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
+import { selectProvider } from '../interface/LoginPrompt'
 import LocksContext from '../../contexts/LocksContext'
-import { selectProvider } from '../../hooks/useAuthenticate'
 
 interface CheckoutContentProps {
   query: any
