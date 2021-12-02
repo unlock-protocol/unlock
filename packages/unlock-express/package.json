@@ -10,7 +10,7 @@
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js ."
   },
   "dependencies": {
-    "ethers": "5.5.1"
+    "ethers": "5.5.2"
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
