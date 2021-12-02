@@ -89,7 +89,7 @@ export async function updateLockMigrationsLog(
 ) {
   LockMigrations.update(
     {
-      logs: fn('CONCAT', col('logs'), log),
+      logs: fn('CONCAT', col('logs'), '\n', log),
     },
     {
       where: {

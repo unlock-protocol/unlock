@@ -109,13 +109,11 @@ export default async function lockMigrate({
   const { args } = events.find(({ event }: any) => event === 'NewLock')
   const { newLockAddress } = args
 
-  // eslint-disable-next-line no-console
   migrateLogEvent.emit('migrateLock', {
     recordId,
     msg: `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`,
   })
 
-  // eslint-disable-next-line no-console
   migrateLogEvent.emit('migrateLock', {
     recordId,
     msg: 'CLONE LOCK > add key owners...',
@@ -136,13 +134,11 @@ export default async function lockMigrate({
   const keyManagersChanges = keyEvents.filter(
     ({ event }: any) => event === 'KeyManagerChanged'
   )
-  // eslint-disable-next-line no-console
   migrateLogEvent.emit('migrateLock', {
     recordId,
     msg: `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`,
   })
 
-  // eslint-disable-next-line no-console
   migrateLogEvent.emit('migrateLock', {
     recordId,
     msg: 'CLONE LOCK > fetching managers...',
@@ -150,18 +146,25 @@ export default async function lockMigrate({
 
   // fetch managers from graph
   if (subgraphURI) {
-    const managers = await listManagers({
-      lockAddress: newLockAddress,
-      subgraphURI,
-    })
+    let managers
+    try {
+      managers = await listManagers({
+        lockAddress: newLockAddress,
+        subgraphURI,
+      })
+    } catch (error: any) {
+      migrateLogEvent.emit('migrateLock', {
+        recordId,
+        msg: error.message,
+      })
+      managers = []
+    }
     if (managers.length) {
-      // eslint-disable-next-line no-console
       migrateLogEvent.emit('migrateLock', {
         recordId,
         msg: `LOCK > managers for the lock '${await newLock.name()}':`,
       })
       managers.forEach((account: string, i: number) => {
-        // eslint-disable-next-line no-console
         migrateLogEvent.emit('migrateLock', {
           recordId,
           msg: `[${i}]: ${account}`,
@@ -174,18 +177,17 @@ export default async function lockMigrate({
       const waits = await Promise.all(txs.map((tx: any) => tx.wait()))
       waits.forEach(({ events }) => {
         const evt = events.find((evt: any) => evt.event === 'LockManagerAdded')
-        // eslint-disable-next-line no-console
         migrateLogEvent.emit('migrateLock', {
           recordId,
           msg: `LOCK CLONE > ${evt.args.account} added as lock manager.`,
         })
       })
-    } else {
-      migrateLogEvent.emit('migrateLock', {
-        recordId,
-        msg: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
-      })
     }
+  } else {
+    migrateLogEvent.emit('migrateLock', {
+      recordId,
+      msg: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
+    })
   }
 
   // update the beneficiary

@@ -63,6 +63,7 @@ const lockMigrate = async (req, res) => {
     chain: chainId,
     migrated: false,
   })
+  const recordId = dbRecord.dataValues.id
 
   try {
     // init migrate process
@@ -70,12 +71,13 @@ const lockMigrate = async (req, res) => {
       lockAddress,
       unlockVersion,
       chainId,
-      recordId: dbRecord.dataValues.id,
+      recordId,
     })
 
     // update db on success
     dbRecord.update({
       newLockAddress,
+      migrated: true,
     })
 
     res.json({
@@ -83,10 +85,7 @@ const lockMigrate = async (req, res) => {
       newLockAddress,
     })
   } catch (error) {
-    dbRecord.update({
-      logs: error.message,
-      migrated: true
-    })
+    await updateLockMigrationsLog(recordId, error.message)
     res.status(503).json({
       error: error.message,
       migrated: false,
