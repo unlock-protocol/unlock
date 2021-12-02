@@ -19,6 +19,9 @@ module.exports = {
       logs: {
         type: Sequelize.TEXT,
       },
+      migrated: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
