@@ -1,9 +1,9 @@
-import { Table, Model, Column } from 'sequelize-typescript'
+import { Table, Model, Column, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'LockMigrations', timestamps: true })
 // eslint-disable-next-line import/prefer-default-export
-export class LockMigration extends Model<LockMigration> {
-  @Column({ primaryKey: true })
+export class LockMigrations extends Model<LockMigrations> {
+  @Column
   lockAddress!: string
 
   @Column
@@ -12,8 +12,11 @@ export class LockMigration extends Model<LockMigration> {
   @Column
   initiatedBy!: string
 
-  @Column
+  @Column(DataType.TEXT)
   logs!: string
+
+  @Column
+  migrated!: boolean
 
   @Column
   chain!: number
