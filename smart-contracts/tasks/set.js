@@ -89,6 +89,7 @@ task('set:unlock-config', 'Configure Unlock contract')
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )
+  .addOptionalParam('udtAddress', 'the address of an existing UDT contract')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam('estimatedGasForPurchase', 'gas estimate for buying a key')
   .addOptionalParam('locksmithURI', 'the locksmith URL to use in Unlock config')

@@ -1,15 +1,13 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import WalletLink from 'walletlink'
+import { ConfigContext } from '../../utils/withConfig'
 import SvgComponents from './svg'
 
+import { AuthenticationContext } from './Authenticate'
 import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
-import { useAuthenticate } from '../../hooks/useAuthenticate'
-import {
-  useAuthenticateHandler,
-  WalletProvider,
-} from '../../hooks/useAuthenticateHandler'
-import { AuthenticationContext } from './Authenticate'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -28,6 +26,39 @@ export interface EthereumWindow extends Window {
   web3?: any
 }
 
+export const selectProvider = (config: any) => {
+  let provider
+  if (config?.isServer) {
+    return null
+  }
+  const ethereumWindow: EthereumWindow = window
+
+  if (config?.env === 'test') {
+    // We set the provider to be the provider by the local eth node
+    provider = `http://${config.httpProvider}:8545`
+  } else if (ethereumWindow && ethereumWindow.ethereum) {
+    provider = ethereumWindow.ethereum
+  } else if (ethereumWindow.web3) {
+    // Legacy web3 wallet/browser (should we keep supporting?)
+    provider = ethereumWindow.web3.currentProvider
+  } else {
+    // TODO: Let's let the user pick one up from the UI (including the unlock provider!)
+  }
+  return provider
+}
+
+interface RpcType {
+  [network: string]: string
+}
+
+export const rpcForWalletConnect = (config: any) => {
+  const rpc: RpcType = {}
+  Object.keys(config.networks).forEach((key) => {
+    rpc[key] = config.networks[key].provider
+  })
+  return rpc
+}
+
 const LoginPrompt = ({
   children,
   unlockUserAccount,
@@ -39,21 +70,43 @@ const LoginPrompt = ({
   activeColor,
   onProvider,
 }: LoginPromptProps) => {
-  const [walletToShow, setWalletToShow] = useState('')
+  const config = useContext(ConfigContext)
   const { authenticate } = useContext(AuthenticationContext)
+  const [walletToShow, setWalletToShow] = useState('')
+  const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
-  const { injectedOrDefaultProvider } = useAuthenticate({
-    injectedProvider,
-    onProvider,
-    authenticate,
-  })
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-    authenticate,
-  })
-  const loginWithProvider = useCallback(async (key: WalletProvider) => {
-    await authenticateWithProvider(key)
-  }, [])
+  const authenticateIfNotHandled = async (provider: any) => {
+    if (onProvider) {
+      await onProvider(provider)
+    } else {
+      await authenticate(provider)
+    }
+  }
+
+  const handleInjectProvider = async () => {
+    await authenticateIfNotHandled(injectedOrDefaultProvider)
+  }
+
+  const handleUnlockProvider = async (provider: any) => {
+    await authenticateIfNotHandled(provider)
+  }
+
+  const handleWalletConnectProvider = async () => {
+    const walletConnectProvider = new WalletConnectProvider({
+      rpc: rpcForWalletConnect(config),
+    })
+    await authenticateIfNotHandled(walletConnectProvider)
+  }
+
+  const handleCoinbaseWalletProvider = async () => {
+    const walletLink = new WalletLink({
+      appName: 'Unlock',
+      appLogoUrl: '/images/svg/default-lock-logo.svg',
+    })
+
+    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
+    await authenticateIfNotHandled(ethereum)
+  }
 
   return (
     <Container embedded={!!embedded}>
@@ -67,7 +120,7 @@ const LoginPrompt = ({
             color={backgroundColor}
             activeColor={activeColor}
             disabled={!injectedOrDefaultProvider}
-            onClick={() => loginWithProvider('METAMASK')}
+            onClick={handleInjectProvider}
           >
             <SvgComponents.Metamask />
             In browser wallet
@@ -76,7 +129,7 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            onClick={() => loginWithProvider('WALLET_CONNECT')}
+            onClick={handleWalletConnectProvider}
           >
             <SvgComponents.WalletConnect fill="var(--blue)" />
             WalletConnect
@@ -85,7 +138,7 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            onClick={() => loginWithProvider('COINBASE')}
+            onClick={handleCoinbaseWalletProvider}
           >
             <SvgComponents.CoinbaseWallet fill="var(--blue)" />
             Coinbase Wallet
@@ -113,7 +166,7 @@ const LoginPrompt = ({
           embedded={embedded}
           onCancel={onCancel}
           login
-          onProvider={() => loginWithProvider('UNLOCK')}
+          onProvider={handleUnlockProvider}
           useWallet={() => setWalletToShow('')}
         />
       )}

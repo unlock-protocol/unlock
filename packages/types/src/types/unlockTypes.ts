@@ -23,6 +23,10 @@ export enum TransactionStatus {
 }
 /* eslint-enable no-unused-vars */
 
+export interface NetworkDeploy {
+  unlockAddress: string
+  startBlock: number
+}
 export interface NetworkConfig {
   id: number
   name: string
@@ -53,6 +57,7 @@ export interface NetworkConfig {
     decimals: number
   },
   startBlock?: number
+  previousDeploys?: NetworkDeploy[]
 }
 
 export interface NetworkConfigs {
