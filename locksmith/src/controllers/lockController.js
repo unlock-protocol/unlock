@@ -36,6 +36,25 @@ const lockGet = async (req, res) => {
   res.json(baseTokenData)
 }
 
+// init a migration for the lock
+const lockMigrate = async (req, res) => {
+  const { lockAddress } = req.params
+  const unlockVersion = req.query.unlockVersion || 9
+  const chainId = req.chain
+
+  try {
+    const { newLockAddress } = await lockMigrate({
+      lockAddress,
+      unlockVersion,
+      chainId,
+    })
+    res.json({ lockAddress, newLockAddress, migrate: true })
+  } catch (error) {
+    // TODO: handle error
+    res.send(403)
+  }
+}
+
 const lockOwnerGet = async (req, res) => {
   const locks = await getLocksByOwner(req.params.owner)
   return res.json({ locks })
@@ -174,6 +193,7 @@ const changeLockIcon = async (req, res) => {
 
 module.exports = {
   lockGet,
+  lockMigrate,
   lockOwnerGet,
   lockSave,
   lockOwnershipCheck,

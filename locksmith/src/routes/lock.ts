@@ -35,11 +35,15 @@ router.get(
 )
 router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
 
+router.post('/lock/:lockAddress/migrate', lockController.lockMigrate)
+
 router.get(
   '/lock/:lockAddress/stripe-connected',
   lockController.stripeConnected
 )
 
 router.get('/:owner/locks', lockController.lockOwnerGet)
+
+
 
 module.exports = router
