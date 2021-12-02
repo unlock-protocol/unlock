@@ -44,7 +44,6 @@ export const selectProvider = (config: any) => {
 
 interface AuthenticateProps {
   injectedProvider?: any | null
-  onProvider?: ((provider?: any) => void) | undefined
 }
 
 export function useAuthenticate({ injectedProvider }: AuthenticateProps) {

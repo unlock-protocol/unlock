@@ -3,10 +3,13 @@ import * as rtl from '@testing-library/react'
 import { ValidKey } from '../../../../components/interface/verification/Key'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import { pingPoap } from '../../../../utils/poap'
-import { AuthenticationContext } from '../../../../contexts/AuthenticationContext'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../../../contexts/AuthenticationContext'
 
 const network = 1337
-const authentication = { network }
+const authentication = { ...defaultValues, network }
 jest.mock('../../../../utils/poap')
 
 const ownerViewer = '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715'

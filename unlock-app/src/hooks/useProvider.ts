@@ -45,10 +45,7 @@ export const useProvider = (config: any) => {
     }
   }, [account, network])
 
-  const resetProvider = async (
-    provider: ethers.providers.Provider,
-    messageToSign?: string
-  ) => {
+  const resetProvider = async (provider: ethers.providers.Provider) => {
     setError('')
     try {
       const _walletService = new WalletService(config.networks)
@@ -98,11 +95,11 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const connectProvider = async (provider: any, messageToSign: string) => {
+  const connectProvider = async (provider: any) => {
     setLoading(true)
     let auth
     if (provider instanceof ethers.providers.Provider) {
-      auth = await resetProvider(provider, messageToSign)
+      auth = await resetProvider(provider)
     } else {
       if (provider.enable) {
         try {
@@ -116,17 +113,14 @@ export const useProvider = (config: any) => {
 
       if (provider.on) {
         provider.on('accountsChanged', () => {
-          resetProvider(
-            new ethers.providers.Web3Provider(provider),
-            messageToSign
-          )
+          resetProvider(new ethers.providers.Web3Provider(provider))
         })
 
         provider.on('chainChanged', () => {
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
-      auth = await resetProvider(ethersProvider, messageToSign)
+      auth = await resetProvider(ethersProvider)
     }
 
     setLoading(false)

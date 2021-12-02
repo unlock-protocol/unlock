@@ -96,6 +96,7 @@ export const Checkout = ({
   const [state, setState] = useState('loading')
   const [showBack, setShowBack] = useState(false)
   const [cardDetails, setCardDetails] = useState<any>(null)
+  const [signedMessage, setSignedMessage] = useState<string>('')
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
@@ -112,6 +113,7 @@ export const Checkout = ({
         let signedMessage
         if (paywallConfig?.messageToSign) {
           signedMessage = await signMessage(paywallConfig?.messageToSign)
+          setSignedMessage(signedMessage)
         }
         setHasKey(-1)
         emitUserInfo({
@@ -169,6 +171,10 @@ export const Checkout = ({
       const redirectUrl = new URL(redirectUri)
       if (!success) {
         redirectUrl.searchParams.append('error', 'access-denied')
+      }
+      // append the signature
+      if (signedMessage) {
+        redirectUrl.searchParams.append('signature', signedMessage)
       }
       if (queryParams) {
         for (const key in queryParams) {

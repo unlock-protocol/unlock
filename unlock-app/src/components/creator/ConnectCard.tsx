@@ -23,6 +23,7 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const config = useContext(ConfigContext)
 
   const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
+  // @ts-expect-error
   const { connectStripeToLock } = useAccount(account, walletNetwork)
 
   const connectStripe = async () => {

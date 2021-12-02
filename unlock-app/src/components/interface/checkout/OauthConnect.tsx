@@ -31,6 +31,7 @@ export const OAuthConnect = ({
   // TODO: add a timestamp to digest for increased security
   const digest = `Connecting my acccount to ${clientId}.`
 
+  // TODO: ARE WE USING THIS AT ALL?
   const onProvider = async (provider: any) => {
     const result = await authenticate(provider, digest)
     // Here we need to wait for the parent coponent to re-render because authenticate sets a bunch of things!
@@ -59,7 +60,6 @@ export const OAuthConnect = ({
         unlockUserAccount
         backgroundColor="var(--white)"
         activeColor="var(--offwhite)"
-        onProvider={onProvider}
       >
         Please connect to your account:
       </LoginPrompt>

@@ -16,7 +16,7 @@ export const KeyDetails = () => {
     variables: { address: account },
   })
 
-  if (!account) {
+  if (!account || !network) {
     return <LoginPrompt />
   }
 

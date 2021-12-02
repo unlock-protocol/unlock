@@ -12,7 +12,10 @@ import useMembers, {
   buildMembersWithMetadata,
 } from '../../hooks/useMembers'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
-import { AuthenticationContext } from '../../contexts/AuthenticationContext'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
 
 jest.mock('../../structured_data/keyMetadataTypedData')
@@ -78,7 +81,12 @@ const storageService = {
 const typedData = {}
 
 const wrapper = ({ children }) => (
-  <AuthenticationContext.Provider value={{ network: 1 }}>
+  <AuthenticationContext.Provider
+    value={{
+      ...defaultValues,
+      network: 1,
+    }}
+  >
     <ConfigContext.Provider
       value={{
         networks: {

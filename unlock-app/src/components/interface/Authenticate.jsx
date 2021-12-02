@@ -117,13 +117,13 @@ export const Authenticate = ({
     watchAsset,
   } = useProvider(config)
 
-  const authenticate = async (provider, messageToSign) => {
+  const authenticate = async (provider) => {
     if (!provider) {
       if (providerAdapter) {
-        return connectProvider(providerAdapter, messageToSign)
+        return connectProvider(providerAdapter)
       }
     }
-    return connectProvider(provider, messageToSign)
+    return connectProvider(provider)
   }
 
   const deAuthenticate = () => {

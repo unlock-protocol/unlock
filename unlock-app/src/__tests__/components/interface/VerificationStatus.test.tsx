@@ -6,7 +6,10 @@ import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 import signatureUtils from '../../../utils/signatures'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import { ConfigContext } from '../../../utils/withConfig'
-import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../../contexts/AuthenticationContext'
 
 jest.mock('../../../utils/signatures', () => {
   return {
@@ -41,7 +44,9 @@ const renderWithContexts = (children: any) => {
   const network = 1337
 
   return rtl.render(
-    <AuthenticationContext.Provider value={{ account, network }}>
+    <AuthenticationContext.Provider
+      value={{ ...defaultValues, account, network }}
+    >
       {children}
     </AuthenticationContext.Provider>
   )

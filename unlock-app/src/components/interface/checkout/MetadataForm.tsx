@@ -20,6 +20,7 @@ interface DefautltValues {
 
 export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is always defined in this component
   const { setUserMetadataData } = useAccount(account, network)
 
   const [error, setError] = useState('')

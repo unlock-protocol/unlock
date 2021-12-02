@@ -95,9 +95,6 @@ const LoginPrompt = ({
           embedded={embedded}
           onCancel={onCancel}
           login
-          onProvider={(provider) =>
-            authenticateWithProvider('UNLOCK', provider)
-          }
           useWallet={() => setWalletToShow('')}
         />
       )}
@@ -168,7 +165,6 @@ LoginPrompt.defaultProps = {
   backgroundColor: 'var(--offwhite)',
   activeColor: 'var(--white)',
   injectedProvider: null,
-  onProvider: null,
 }
 
 export default LoginPrompt
