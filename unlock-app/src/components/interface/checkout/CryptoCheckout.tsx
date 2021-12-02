@@ -48,6 +48,7 @@ export const CryptoCheckout = ({
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
+  // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
 
   const now = new Date().getTime() / 1000

@@ -30,6 +30,7 @@ export const NewAccountCheckout = ({
 }: NewAccountCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { createUserAccount } = useAccount(account, network)
   const [error, setError] = useState('')
   const { authenticateWithProvider } = useAuthenticateHandler({})

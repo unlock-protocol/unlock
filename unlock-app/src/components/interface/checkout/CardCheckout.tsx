@@ -12,6 +12,7 @@ interface CardCheckoutProps {
 
 export const CardCheckout = ({ network, handleCard }: CardCheckoutProps) => {
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { getCards } = useAccount(account, network)
   const [loading, setLoading] = useState(true)
 

@@ -108,7 +108,7 @@ export const Checkout = ({
 
   // When the account is changed, make sure we ping!
   useEffect(() => {
-    const handleUser = async (account: string) => {
+    const handleUser = async (account?: string) => {
       if (account) {
         let signedMessage
         if (paywallConfig?.messageToSign) {

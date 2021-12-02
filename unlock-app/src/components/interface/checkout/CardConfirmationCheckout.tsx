@@ -37,6 +37,7 @@ export const CardConfirmationCheckout = ({
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { chargeCard } = useAccount(account, network)
   const [purchasePending, setPurchasePending] = useState(false)
   const [keyExpiration, setKeyExpiration] = useState(0)

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -18,7 +18,7 @@ export const OAuthConnect = ({
   closeModal,
 }: OAuthConnectProps) => {
   const [allowed, setAllowed] = useState(false)
-  const { authenticate, account } = useContext(AuthenticationContext)
+  const { account, signMessage } = useContext(AuthenticationContext)
 
   const accessDenied = () => {
     closeModal(false, redirectUri)
@@ -26,32 +26,35 @@ export const OAuthConnect = ({
 
   const [showLogin, setShowLogin] = useState(false)
   const { clientId } = oAuthConfig
-  // What if the user has no account?
+  // What if the user has no account? TODO: allow for the user to signup!
 
   // TODO: add a timestamp to digest for increased security
   const digest = `Connecting my acccount to ${clientId}.`
 
-  // TODO: ARE WE USING THIS AT ALL?
-  const onProvider = async (provider: any) => {
-    const result = await authenticate(provider, digest)
-    // Here we need to wait for the parent coponent to re-render because authenticate sets a bunch of things!
-    if (result) {
-      setShowLogin(false)
-      console.log(
-        'Actually do not redirect just yet if there are memberships to purchase!'
-      )
+  // When the account is changed, make sure we ping!
+  useEffect(() => {
+    const handleUser = async (account?: string) => {
+      if (account) {
+        const signedMessage = await signMessage(digest)
+        setShowLogin(false)
+        console.log(
+          'Actually do not redirect just yet if there are memberships to purchase!'
+        )
 
-      const code = JSON.stringify({
-        d: digest,
-        s: result.signedMessage,
-      })
+        const code = JSON.stringify({
+          d: digest,
+          s: signedMessage,
+        })
 
-      closeModal(true, redirectUri, {
-        code: btoa(code),
-        state: oAuthConfig.state,
-      })
+        closeModal(true, redirectUri, {
+          code: btoa(code),
+          state: oAuthConfig.state,
+        })
+      }
     }
-  }
+    handleUser(account)
+  }, [account])
+
   if (showLogin) {
     return (
       <LoginPrompt

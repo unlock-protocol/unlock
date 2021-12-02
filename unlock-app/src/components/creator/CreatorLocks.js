@@ -19,6 +19,7 @@ import { ConfigContext } from '../../utils/withConfig'
 const BalanceWarning = () => {
   const config = useContext(ConfigContext)
   const { account, network } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
 
   const [balance, setBalance] = useState(-1) // default to negative balance so we do not show messages while loading
