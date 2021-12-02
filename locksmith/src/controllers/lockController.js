@@ -3,7 +3,8 @@ import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
-import { LockIcons } from '../models/lockIcons'
+import migrateLock, { migrateLogEvent } from '../utils/lockMigrate'
+import { LockIcons, LockMigrations } from '../models'
 
 import logger from '../logger'
 
@@ -11,7 +12,12 @@ const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
 const { getBaseTokenData } = require('../operations/metadataOperations')
 
-const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
+const {
+  getLockByAddress,
+  getLocksByOwner,
+  createLock,
+  updateLockMigrationsLog,
+} = lockOperations
 
 const lockSave = async (req, res) => {
   const { lock } = req.body.message
@@ -36,22 +42,55 @@ const lockGet = async (req, res) => {
   res.json(baseTokenData)
 }
 
-// init a migration for the lock
+migrateLogEvent.on('migrateLock', async ({ recordId, msg }) => {
+  console.log('migrateLogEvent', recordId, msg)
+  await updateLockMigrationsLog(recordId, msg)
+})
+
 const lockMigrate = async (req, res) => {
   const { lockAddress } = req.params
   const unlockVersion = req.query.unlockVersion || 9
   const chainId = req.chain
 
+  // TODO: make sure lock exists
+  // const databaseLock = await getLockByAddress(lockAddress)
+  // if (!databaseLock) res.send(404)
+
+  // record the migration in db
+  const dbRecord = await LockMigrations.create({
+    lockAddress,
+    // initiatedBy: msg.sender // TODO: get that info somewhere?
+    chain: chainId,
+    migrated: false,
+  })
+
   try {
-    const { newLockAddress } = await lockMigrate({
+    // init migrate process
+    const { newLockAddress } = await migrateLock({
       lockAddress,
       unlockVersion,
       chainId,
+      recordId: dbRecord.dataValues.id,
     })
-    res.json({ lockAddress, newLockAddress, migrate: true })
+
+    // update db on success
+    dbRecord.update({
+      newLockAddress,
+    })
+
+    res.json({
+      lockAddress,
+      newLockAddress,
+    })
   } catch (error) {
-    // TODO: handle error
-    res.send(403)
+    dbRecord.update({
+      logs: error.message,
+      migrated: true
+    })
+    res.status(503).json({
+      error: error.message,
+      migrated: false,
+    })
   }
 }
 

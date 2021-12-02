@@ -44,6 +44,4 @@ router.get(
 
 router.get('/:owner/locks', lockController.lockOwnerGet)
 
-
-
 module.exports = router

@@ -2,13 +2,19 @@ import { ethers, Wallet } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
 import { NetworkConfig } from '@unlock-protocol/types'
 import { networks } from '@unlock-protocol/networks'
+import EventEmitter from 'events'
 import listManagers from './lockManagers'
 
 interface LockClonerProps {
   lockAddress: string
   unlockVersion: Number
   chainId: number
+  recordId: number
 }
+
+class MigrateLogEventEmitter extends EventEmitter {}
+
+export const migrateLogEvent = new MigrateLogEventEmitter()
 
 // TODO: how to pass this safely?
 const mnemonic =
@@ -19,24 +25,39 @@ export default async function lockMigrate({
   lockAddress,
   unlockVersion,
   chainId,
+  recordId,
 }: LockClonerProps) {
   // super complicated parsing to make ts happy ;-)
   const [, network]: [string, NetworkConfig] = Object.entries(networks).find(
     ([, n]) => n.id === chainId
   ) as [string, NetworkConfig]
 
-  const rpc = new ethers.providers.JsonRpcProvider(network.provider)
-  console.log(`CLONE LOCK > cloning ${lockAddress} on ${network.name}...`)
+  let unlockAddress
+  let serializerAddress
+  let provider
+  let subgraphURI
+  if (chainId === 31337) {
+    serializerAddress = process.env.SERIALIZER_ADDRESS
+    unlockAddress = process.env.UNLOCK_ADDRESS
+    provider = 'http://eth-node:8545'
+    subgraphURI = 'http://graph-node:8000'
+  } else {
+    ;({ unlockAddress, serializerAddress, provider, subgraphURI } = network)
+  }
 
-  const signer = Wallet.fromMnemonic(mnemonic).connect(rpc)
-
-  const { unlockAddress, serializerAddress } = network
   if (!serializerAddress) {
     throw new Error(`Missing LockSerializer address for this chain: ${chainId}`)
   }
   if (!unlockAddress) {
     throw new Error(`Missing Unlock address for this chain: ${chainId}`)
   }
+  const rpc = new ethers.providers.JsonRpcProvider(provider)
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
+  })
+
+  const signer = Wallet.fromMnemonic(mnemonic).connect(rpc)
 
   // serialize
   const serializer = new ethers.Contract(
@@ -74,14 +95,6 @@ export default async function lockMigrate({
   let txLockCreate
   if (unlockVersion < 10) {
     const salt = ethers.utils.hexZeroPad(ethers.utils.randomBytes(12), 12)
-    console.log(
-      expirationDuration,
-      tokenAddress,
-      keyPrice,
-      maxNumberOfKeys,
-      name,
-      salt
-    )
     txLockCreate = await unlock.createLock(...lockArgs, salt)
   } else {
     // @ts-ignore
@@ -97,12 +110,16 @@ export default async function lockMigrate({
   const { newLockAddress } = args
 
   // eslint-disable-next-line no-console
-  console.log(
-    `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`
-  )
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`,
+  })
 
   // eslint-disable-next-line no-console
-  console.log('CLONE LOCK > add key owners...')
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: 'CLONE LOCK > add key owners...',
+  })
   const newLock = new ethers.Contract(
     newLockAddress,
     contracts.PublicLockV8.abi,
@@ -120,25 +137,35 @@ export default async function lockMigrate({
     ({ event }: any) => event === 'KeyManagerChanged'
   )
   // eslint-disable-next-line no-console
-  console.log(
-    `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`
-  )
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`,
+  })
 
   // eslint-disable-next-line no-console
-  console.log('CLONE LOCK > fetching managers...')
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: 'CLONE LOCK > fetching managers...',
+  })
 
   // fetch managers from graph
-  if (network.subgraphURI) {
+  if (subgraphURI) {
     const managers = await listManagers({
       lockAddress: newLockAddress,
-      subgraphURI: network.subgraphURI,
+      subgraphURI,
     })
     if (managers.length) {
       // eslint-disable-next-line no-console
-      console.log(`LOCK > managers for the lock '${await newLock.name()}':`)
+      migrateLogEvent.emit('migrateLock', {
+        recordId,
+        msg: `LOCK > managers for the lock '${await newLock.name()}':`,
+      })
       managers.forEach((account: string, i: number) => {
         // eslint-disable-next-line no-console
-        console.log(`[${i}]: ${account}`)
+        migrateLogEvent.emit('migrateLock', {
+          recordId,
+          msg: `[${i}]: ${account}`,
+        })
       })
 
       const txs = await Promise.all(
@@ -148,33 +175,47 @@ export default async function lockMigrate({
       waits.forEach(({ events }) => {
         const evt = events.find((evt: any) => evt.event === 'LockManagerAdded')
         // eslint-disable-next-line no-console
-        console.log(`LOCK CLONE > ${evt.args.account} added as lock manager.`)
+        migrateLogEvent.emit('migrateLock', {
+          recordId,
+          msg: `LOCK CLONE > ${evt.args.account} added as lock manager.`,
+        })
       })
     } else {
-      console.log(
-        'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.'
-      )
+      migrateLogEvent.emit('migrateLock', {
+        recordId,
+        msg: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
+      })
     }
   }
 
   // update the beneficiary
   const txBenef = await newLock.updateBeneficiary(beneficiary)
   await txBenef.wait()
-  console.log(`LOCK CLONE > ${beneficiary} set as beneficiary.`)
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: `LOCK CLONE > ${beneficiary} set as beneficiary.`,
+  })
 
   // update metadata
   if (symbol != 'UDT') {
     const txSymbol = await newLock.updateLockSymbol(symbol)
     await txSymbol.wait()
-    console.log(`LOCK CLONE > Symbol updated to '${symbol}'.`)
+    migrateLogEvent.emit('migrateLock', {
+      recordId,
+      msg: `LOCK CLONE > Symbol updated to '${symbol}'.`,
+    })
   }
 
   // TODO: tokenURI
+  // TODO: deactivate lock
 
   // remove ourselves as lockManagers
   const txRemoveUs = await newLock.renounceLockManager()
   await txRemoveUs.wait()
-  console.log('LOCK CLONE > Removed outselves as lock manager.')
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: 'LOCK CLONE > Removed Unlock as lock manager.',
+  })
 
   return {
     newLockAddress,
