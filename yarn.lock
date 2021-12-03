@@ -11405,7 +11405,7 @@ __metadata:
     jest-canvas-mock: 2.3.1
     jest-fetch-mock: 3.0.3
     jest-mock-axios: 4.4.1
-    jest-styled-components: 7.0.5
+    jest-styled-components: 7.0.8
     js-base64: 3.7.2
     next: 12.0.4
     node-forge: 0.10.0
@@ -11525,7 +11525,7 @@ __metadata:
     dotenv: 10.0.0
     eslint: 8.3.0
     jest: 27.4.3
-    jest-styled-components: 7.0.5
+    jest-styled-components: 7.0.8
     lint-staged: 12.1.2
     next: 12.0.4
     path-match: 1.2.4
@@ -28323,14 +28323,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-styled-components@npm:7.0.5":
-  version: 7.0.5
-  resolution: "jest-styled-components@npm:7.0.5"
+"jest-styled-components@npm:7.0.8":
+  version: 7.0.8
+  resolution: "jest-styled-components@npm:7.0.8"
   dependencies:
     css: ^3.0.0
   peerDependencies:
     styled-components: ">= 5"
-  checksum: fef9f261dd59d6d095c1bc43da5ba5faaf87ca73dff20ff10e38f70201c35c60f6347836581c087bab6a8b26de29adc4cd657fdf2a28cf98609b2452a7368549
+  checksum: 0fc3a71c54ece55b8fd4c8304a9db283acac97cdfd8350ff27ff3b0c3da8e798dca87c7ee5fc004b1b0577d632dec44ebea31750238b82395152c0f8a471ea7c
   languageName: node
   linkType: hard
 
