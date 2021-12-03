@@ -11129,7 +11129,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.33, @types/react@npm:>=16.14.8, @types/react@npm:>=16.9.11":
+"@types/react@npm:17.0.37":
+  version: 17.0.37
+  resolution: "@types/react@npm:17.0.37"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: e68b0d59aa69577fc6a6d654b25d5d8408625498f4c483f160b557fac21e840f6e8807cbde93e9f039949b6d624a019b1990d18499c1d65aecf3605c25e30242
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:>=16.14.8, @types/react@npm:>=16.9.11":
   version: 17.0.33
   resolution: "@types/react@npm:17.0.33"
   dependencies:
@@ -12033,7 +12044,7 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 16.11.6
     "@types/postmate": 1.5.2
-    "@types/react": 17.0.33
+    "@types/react": 17.0.37
     "@types/react-dom": 17.0.10
     "@types/styled-components": 5.1.16
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -12308,7 +12319,7 @@ __metadata:
     "@types/jest": 27.0.2
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
-    "@types/react": 17.0.33
+    "@types/react": 17.0.37
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.16
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -12443,7 +12454,7 @@ __metadata:
     "@testing-library/react": 12.1.2
     "@types/jest": 27.0.2
     "@types/next": 8.0.7
-    "@types/react": 17.0.33
+    "@types/react": 17.0.37
     "@types/styled-components": 5.1.16
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
