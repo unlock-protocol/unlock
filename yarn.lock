@@ -12155,7 +12155,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     babel-jest: 27.3.1
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 1.13.3
+    babel-plugin-styled-components: 2.0.2
     css-loader: 6.5.1
     dotenv: 10.0.0
     eslint: 8.1.0
@@ -12404,7 +12404,7 @@ __metadata:
     babel-jest: 27.4.2
     babel-loader: 8.2.3
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 1.13.3
+    babel-plugin-styled-components: 2.0.2
     babel-preset-react-app: 10.0.0
     cross-fetch: 3.1.4
     deep-object-diff: 1.1.0
@@ -12534,7 +12534,7 @@ __metadata:
     babel-jest: 27.3.1
     babel-loader: 8.2.3
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 1.13.3
+    babel-plugin-styled-components: 2.0.2
     babel-preset-react-app: 10.0.0
     dotenv: 10.0.0
     eslint: 8.1.0
@@ -15679,17 +15679,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-styled-components@npm:1.13.3":
-  version: 1.13.3
-  resolution: "babel-plugin-styled-components@npm:1.13.3"
+"babel-plugin-styled-components@npm:2.0.2":
+  version: 2.0.2
+  resolution: "babel-plugin-styled-components@npm:2.0.2"
   dependencies:
-    "@babel/helper-annotate-as-pure": ^7.15.4
-    "@babel/helper-module-imports": ^7.15.4
+    "@babel/helper-annotate-as-pure": ^7.16.0
+    "@babel/helper-module-imports": ^7.16.0
     babel-plugin-syntax-jsx: ^6.18.0
     lodash: ^4.17.11
   peerDependencies:
     styled-components: ">= 2"
-  checksum: 265520afd1c1e6633cd796446725b57f3d9eac6abb1d506c0399c34792f6f8a954865c2908cb24703fdf6c06aab8136e2a5098c53a0c7fb744bbdceaf3d5081b
+  checksum: 3de729e909506b8dda27567fa561aa2f50822f1151f0d321303790afa45ffc0698f0d6836b8c8fd5f24845f4e1b181f8c51532dd9c1fa7a15fa37033a445c137
   languageName: node
   linkType: hard
 
