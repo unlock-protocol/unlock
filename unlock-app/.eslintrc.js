@@ -27,14 +27,12 @@ const rulesToIgnore = [
   'no-restricted-syntax',
   'guard-for-in',
   'no-async-promise-executor',
+  'react/jsx-no-constructed-context-values',
   '@typescript-eslint/no-unused-vars',
 ]
 
 module.exports = {
-  extends: [
-    '@unlock-protocol/eslint-config', 
-    'plugin:react/recommended'
-  ],
+  extends: ['@unlock-protocol/eslint-config', 'plugin:react/recommended'],
   settings: {
     react: {
       version: 'detect',
