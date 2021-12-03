@@ -940,7 +940,7 @@ __metadata:
     "@unlock-protocol/unlock-js": 0.20.4
     cross-fetch: 3.1.4
     ethers: 5.5.2
-    hardhat: 2.6.7
+    hardhat: 2.7.0
     hardhat-erc1820: 0.1.0
   languageName: unknown
   linkType: soft
@@ -2231,9 +2231,9 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.6.7":
-  version: 2.6.7
-  resolution: "hardhat@npm:2.6.7"
+"hardhat@npm:2.7.0":
+  version: 2.7.0
+  resolution: "hardhat@npm:2.7.0"
   dependencies:
     "@ethereumjs/block": ^3.4.0
     "@ethereumjs/blockchain": ^5.4.0
@@ -2280,11 +2280,11 @@ fsevents@~2.3.2:
     stacktrace-parser: ^0.1.10
     true-case-path: ^2.2.1
     tsort: 0.0.1
-    uuid: ^3.3.2
+    uuid: ^8.3.2
     ws: ^7.4.6
   bin:
     hardhat: internal/cli/cli.js
-  checksum: d48dd07d45a9184d962dccb352d7733e54bd272ed675b8c806ab6f0c60730cfbac5e60d5c7a33c9da3e04c487ff0b564ee7b3eeec9e880863fe24a677ff1ce02
+  checksum: a299e86676bf1d7a5c322cf6a55e51b904f99547c3c42447d4716d20809fe925013579c0eded1e3e62d03945de3341450a48f7817183bd083a4825975d58614f
   languageName: node
   linkType: hard
 
@@ -4223,12 +4223,12 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-"uuid@npm:^3.3.2":
-  version: 3.4.0
-  resolution: "uuid@npm:3.4.0"
+"uuid@npm:^8.3.2":
+  version: 8.3.2
+  resolution: "uuid@npm:8.3.2"
   bin:
-    uuid: ./bin/uuid
-  checksum: 58de2feed61c59060b40f8203c0e4ed7fd6f99d42534a499f1741218a1dd0c129f4aa1de797bcf822c8ea5da7e4137aa3673431a96dae729047f7aca7b27866f
+    uuid: dist/bin/uuid
+  checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
   languageName: node
   linkType: hard
 
