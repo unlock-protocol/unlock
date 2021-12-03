@@ -11579,7 +11579,7 @@ __metadata:
     ts-jest: 27.0.7
     typescript: 4.5.2
     validator: 13.7.0
-    walletlink: 2.2.6
+    walletlink: 2.2.9
   languageName: unknown
   linkType: soft
 
@@ -43269,7 +43269,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"util@npm:0.12.4, util@npm:^0.12.0, util@npm:^0.12.4":
+"util@npm:0.12.4, util@npm:^0.12.0":
   version: 0.12.4
   resolution: "util@npm:0.12.4"
   dependencies:
@@ -43538,14 +43538,13 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"walletlink@npm:2.2.6":
-  version: 2.2.6
-  resolution: "walletlink@npm:2.2.6"
+"walletlink@npm:2.2.9":
+  version: 2.2.9
+  resolution: "walletlink@npm:2.2.9"
   dependencies:
     "@metamask/safe-event-emitter": 2.0.0
     bind-decorator: ^1.0.11
     bn.js: ^5.1.1
-    buffer: ^6.0.3
     clsx: ^1.1.0
     eth-block-tracker: 4.4.3
     eth-json-rpc-filters: 4.2.2
@@ -43556,8 +43555,7 @@ typescript@^3.8.3:
     preact: ^10.5.9
     rxjs: ^6.6.3
     stream-browserify: ^3.0.0
-    util: ^0.12.4
-  checksum: 6b48a878e7580b4754d74d0b3e6959698b5d3ac09b03ded57d712f715ed8caa34df574fb1d56d3b5921954b458226f1ae6437e22b6f52f7aa07ed9811ef2210f
+  checksum: 4964c865e6236abb0a323e646d9be560209f1ad4d56881c5d59e186fca915275f6960f9006ce09d89ac1b780c9a40a0ad3d76dfe273f335fcc1ef336a6098d4b
   languageName: node
   linkType: hard
 
