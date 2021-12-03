@@ -28,6 +28,7 @@ contract LockSerializer {
     // metadata
     string name;
     string symbol;
+    string[] tokenURIs;
     // string baseTokenURI; // private?
     
     // protocol
@@ -64,6 +65,7 @@ contract LockSerializer {
     string name;
     string symbol;
     // string baseTokenURI; // private?
+    string[] tokenURIs;
   }
 
   function serializePriceInfo(IPublicLockV8 lock) public view returns (LockPriceInfo memory) {
@@ -93,9 +95,19 @@ contract LockSerializer {
   function serializeMetadata(IPublicLockV8 lock) public view returns (LockMetadata memory) {
     string memory name = lock.name();
     string memory symbol = lock.symbol();
+
+    // get the baseTokenURI
+    uint totalSupply = lock.totalSupply();
+    
+    string[] memory tokenURIs = new string[](totalSupply);
+    for (uint256 i = 0; i < totalSupply; i++) {
+      tokenURIs[i] = lock.tokenURI(i+1);
+    }
+
     return LockMetadata(
       name,
-      symbol
+      symbol,
+      tokenURIs
     );
   }
 
@@ -142,6 +154,7 @@ contract LockSerializer {
       // metadata
       metadata.name,
       metadata.symbol,
+      metadata.tokenURIs,
       // protocol
       publicLockVersion,
       tokenAddress,

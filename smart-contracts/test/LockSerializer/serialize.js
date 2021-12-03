@@ -39,6 +39,43 @@ contract('LockSerializer', () => {
       })
     })
 
+    it.only('fetch the tokenURI properly', async () => {
+      const lock = locks.FIRST
+      const keyPrice = ethers.utils.parseEther('0.01')
+      const baseTokenURI = 'https://hahaha.com/'
+
+      const [, ..._purchasers] = await ethers.getSigners()
+      const maxNumberOfKeys = await lock.maxNumberOfKeys()
+      const purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
+
+      // purchase keys
+      await Promise.all(
+        purchasers.map((purchaser) =>
+          lock
+            .connect(purchaser)
+            .purchase(
+              keyPrice.toString(),
+              purchaser.address,
+              web3.utils.padLeft(0, 40),
+              [],
+              { value: keyPrice }
+            )
+        )
+      )
+
+      await lock.connect(beneficiary).setBaseTokenURI(baseTokenURI)
+      const serialized = await serializer.serialize(lock.address)
+      const tokensURI = Array(maxNumberOfKeys.toNumber())
+        .fill(0)
+        .map((ha, i) => `${baseTokenURI}${i + 1}`)
+      await assert.deepEqual(serialized.tokenURIs, tokensURI)
+
+      // extract tokenURI
+      tokensURI.forEach((uri, i) => {
+        uri
+      })
+    })
+
     describe('key ownership', () => {
       let purchasers
       let lock
