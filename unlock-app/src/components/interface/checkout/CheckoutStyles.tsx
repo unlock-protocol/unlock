@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { WordMarkLogo } from '../Logo'
 import SvgComponents from '../svg'

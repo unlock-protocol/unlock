@@ -5,7 +5,7 @@ import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { Heading, Description } from '../interface/SignupSuccess'
 import LoginPrompt from '../interface/LoginPrompt'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 export const LoginContent = () => {
   const { account } = useContext(AuthenticationContext)

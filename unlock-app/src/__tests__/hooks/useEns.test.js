@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
 import useEns from '../../hooks/useEns'
 import { ConfigContext } from '../../utils/withConfig'
-import { AuthenticationContext } from '../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 jest.mock('ethers')
 

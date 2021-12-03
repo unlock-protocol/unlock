@@ -8,7 +8,7 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import * as LockVariations from './LockVariations'
 import { useLock } from '../../../hooks/useLock'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../../utils/withConfig'
 
 interface LockProps {

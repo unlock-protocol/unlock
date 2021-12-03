@@ -59,9 +59,7 @@ describe('UseCards', () => {
 
       fetch.mockResponseOnce(JSON.stringify([]))
 
-      const { result, waitFor } = renderHook(() =>
-        UseCards.useCards(userAddress)
-      )
+      const { result, waitFor } = renderHook(() => UseCards.useCards())
 
       await waitFor(() => !!result.current.cards)
 
@@ -76,9 +74,7 @@ describe('UseCards', () => {
 
       fetch.mockRejectedValueOnce(new Error('fail'))
 
-      const { result, waitFor } = renderHook(() =>
-        UseCards.useCards(userAddress)
-      )
+      const { result, waitFor } = renderHook(() => UseCards.useCards())
 
       await waitFor(() => !!result.current.error)
 

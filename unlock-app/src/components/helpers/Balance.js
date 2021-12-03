@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import { ConfigContext } from '../../utils/withConfig'
-import { AuthenticationContext } from '../interface/Authenticate'
 
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import BalanceProvider from './BalanceProvider'
 
 /**

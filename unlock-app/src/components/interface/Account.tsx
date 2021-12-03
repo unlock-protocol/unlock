@@ -4,7 +4,9 @@ import Jazzicon from 'react-jazzicon'
 
 import Address from './Address'
 import Media from '../../theme/media'
-import { AuthenticationContext } from './Authenticate'
+
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
+
 import { ConfigContext } from '../../utils/withConfig'
 
 interface NetworkType {

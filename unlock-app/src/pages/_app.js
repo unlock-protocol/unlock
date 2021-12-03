@@ -23,8 +23,7 @@ class UnlockApp extends App {
     }
 
     if (!config.isServer) {
-      // if (config.env === 'prod' && config.tagManagerArgs) {
-      if (config.tagManagerArgs) {
+      if (config.env === 'prod' && config.tagManagerArgs) {
         TagManager.initialize(config.tagManagerArgs)
       }
 

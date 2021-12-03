@@ -1,13 +1,18 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import CheckoutWrapper from '../../../../components/interface/checkout/CheckoutWrapper'
-import { AuthenticationContext } from '../../../../components/interface/Authenticate'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../../../contexts/AuthenticationContext'
 
 const renderWithContexts = (component: any) => {
   const account = '0x123'
   const network = 1337
   return rtl.render(
-    <AuthenticationContext.Provider value={{ account, network }}>
+    <AuthenticationContext.Provider
+      value={{ ...defaultValues, account, network }}
+    >
       {component}
     </AuthenticationContext.Provider>
   )

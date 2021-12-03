@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useContext, useState, useEffect } from 'react'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { useAccount } from '../../hooks/useAccount'
@@ -23,6 +23,7 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const config = useContext(ConfigContext)
 
   const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
+  // @ts-expect-error
   const { connectStripeToLock } = useAccount(account, walletNetwork)
 
   const connectStripe = async () => {

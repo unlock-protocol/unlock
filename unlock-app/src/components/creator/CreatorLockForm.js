@@ -31,7 +31,7 @@ import {
   UNLIMITED_KEYS_COUNT,
   ONE_HUNDRED_YEARS_IN_SECONDS,
 } from '../../constants'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
   const config = useContext(ConfigContext)

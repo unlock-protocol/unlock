@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { useState, useEffect, useContext } from 'react'
-import { AuthenticationContext } from '../components/interface/Authenticate'
+import { AuthenticationContext } from '../contexts/AuthenticationContext'
+
 import { ConfigContext } from '../utils/withConfig'
 /**
  * This hook reverse resolves any Ethereum address using the Ethereum Name Service

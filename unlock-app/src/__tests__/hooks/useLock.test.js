@@ -11,7 +11,7 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionType } from '../../unlockTypes'
-import { AuthenticationContext } from '../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 const config = configure()
 const network = 1337

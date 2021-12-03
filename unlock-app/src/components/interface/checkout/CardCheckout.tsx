@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import styled from 'styled-components'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 import { PaymentDetails } from '../user-account/PaymentDetails'
 import Loading from '../Loading'
@@ -12,6 +12,7 @@ interface CardCheckoutProps {
 
 export const CardCheckout = ({ network, handleCard }: CardCheckoutProps) => {
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { getCards } = useAccount(account, network)
   const [loading, setLoading] = useState(true)
 

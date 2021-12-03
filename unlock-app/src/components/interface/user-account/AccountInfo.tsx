@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Item, SectionHeader, ItemValue, Grid } from './styles'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 export const AccountInfo = () => {
   const { account, email } = useContext(AuthenticationContext)

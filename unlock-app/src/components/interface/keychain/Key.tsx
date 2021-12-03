@@ -7,7 +7,8 @@ import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import { ConfigContext } from '../../../utils/withConfig'
 
 interface KeyBoxProps {

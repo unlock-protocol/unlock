@@ -10,15 +10,15 @@ import {
   Label,
   FormError,
 } from './checkout/FormStyles'
+import { useAuthenticateHandler } from '../../hooks/useAuthenticateHandler'
 
 interface LogInProps {
   onCancel?: () => void
-  onProvider: (provider: any) => void
   network: number
   useWallet?: () => void
 }
 
-const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
+const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
   const { retrieveUserAccount } = useAccount('', network)
   const [loginState, dispatch] = useReducer(
     (state: any, action: any) => {
@@ -45,6 +45,7 @@ const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
     }
   )
   const [submitted, setSubmitted] = useState(false)
+  const { authenticateWithProvider } = useAuthenticateHandler({})
 
   const { emailAddress, password, error } = loginState
 
@@ -57,7 +58,7 @@ const LogIn = ({ onProvider, onCancel, network, useWallet }: LogInProps) => {
 
     try {
       const unlockProvider = await retrieveUserAccount(emailAddress, password)
-      onProvider(unlockProvider)
+      authenticateWithProvider('UNLOCK', unlockProvider)
     } catch (e) {
       // TODO: password isn't the only thing that can go wrong here...
       console.error(e)

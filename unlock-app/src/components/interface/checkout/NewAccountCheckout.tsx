@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 import { PaymentDetails } from '../user-account/PaymentDetails'
 import { SignUp } from '../user-account/SignUp'
 import { Input, Label } from './FormStyles'
 import UnlockProvider from '../../../services/unlockProvider'
 import { ConfigContext } from '../../../utils/withConfig'
+import { useAuthenticateHandler } from '../../../hooks/useAuthenticateHandler'
 
 interface userData {
   name: string
@@ -18,7 +19,7 @@ interface NewAccountCheckoutProps {
   network: number
   showLogin: () => void
   askForCard: boolean
-  onAccountCreated: (provider: any, paymentDetails: any) => void
+  onAccountCreated: (paymentDetails: any) => void
 }
 
 export const NewAccountCheckout = ({
@@ -29,8 +30,10 @@ export const NewAccountCheckout = ({
 }: NewAccountCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { createUserAccount } = useAccount(account, network)
   const [error, setError] = useState('')
+  const { authenticateWithProvider } = useAuthenticateHandler({})
 
   const createAccount = async (email: string, password: string, data?: any) => {
     const { passwordEncryptedPrivateKey } = await createUserAccount(
@@ -45,7 +48,8 @@ export const NewAccountCheckout = ({
       emailAddress: email,
       password,
     })
-    onAccountCreated(unlockProvider, data)
+    authenticateWithProvider('UNLOCK', unlockProvider)
+    onAccountCreated(data)
   }
 
   if (!askForCard) {

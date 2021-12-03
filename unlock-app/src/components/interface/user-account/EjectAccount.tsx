@@ -15,7 +15,7 @@ import {
   OrderedList,
 } from './styles'
 import { EncryptedPrivateKey } from '../../../unlockTypes'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 export function EjectAccount() {
   const { encryptedPrivateKey } = useContext(AuthenticationContext)

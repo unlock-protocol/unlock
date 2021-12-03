@@ -6,7 +6,7 @@ import Svg from '../../svg'
 import Button from '../Button'
 import DisabledButton from '../DisabledButton'
 import UnlockPropTypes from '../../../../propTypes'
-import { AuthenticationContext } from '../../Authenticate'
+import { AuthenticationContext } from '../../../../contexts/AuthenticationContext'
 
 export const Withdraw = ({ withdraw, lock, ...props }) => {
   const { network } = useContext(AuthenticationContext)

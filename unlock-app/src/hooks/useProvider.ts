@@ -1,8 +1,9 @@
 import { ethers } from 'ethers'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
+import { useAppStorage } from './useAppStorage'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -27,19 +28,24 @@ export const useProvider = (config: any) => {
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
   const [account, setAccount] = useState<string | undefined>(undefined)
-  const [signedMessage, setSignedMessage] = useState<string | undefined>(
-    undefined
-  )
   const [email, setEmail] = useState<string | undefined>(undefined)
   const [isUnlockAccount, setIsUnlockAccount] = useState<boolean>(false)
   const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
     any | undefined
   >(undefined)
+  const { getStorage, setStorage, clearStorage } = useAppStorage()
 
-  const resetProvider = async (
-    provider: ethers.providers.Provider,
-    messageToSign?: string
-  ) => {
+  useEffect(() => {
+    if (!getStorage('account') && account) {
+      setStorage('account', account)
+    }
+
+    if (!getStorage('network') && network) {
+      setStorage('network', network)
+    }
+  }, [account, network])
+
+  const resetProvider = async (provider: ethers.providers.Provider) => {
     setError('')
     try {
       const _walletService = new WalletService(config.networks)
@@ -50,16 +56,6 @@ export const useProvider = (config: any) => {
       setNetwork(_network || undefined)
 
       const _account = await _walletService.getAccount()
-      let _signedMessage
-      if (messageToSign) {
-        // @ts-expect-error
-        _signedMessage = await _walletService.signMessage(
-          messageToSign,
-          'personal_sign'
-        )
-
-        setSignedMessage(_signedMessage)
-      }
       setWalletService(_walletService)
       setAccount(_account || undefined)
       // @ts-expect-error
@@ -67,7 +63,6 @@ export const useProvider = (config: any) => {
         return {
           network: _network,
           account: _account,
-          signedMessage: _signedMessage,
         }
       }
       // @ts-expect-error
@@ -79,7 +74,6 @@ export const useProvider = (config: any) => {
       return {
         network: _network,
         account: _account,
-        signedMessage: _signedMessage,
         // @ts-expect-error
         isUnlock: provider.isUnlock,
         // @ts-expect-error
@@ -101,11 +95,11 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const connectProvider = async (provider: any, messageToSign: string) => {
+  const connectProvider = async (provider: any) => {
     setLoading(true)
     let auth
     if (provider instanceof ethers.providers.Provider) {
-      auth = await resetProvider(provider, messageToSign)
+      auth = await resetProvider(provider)
     } else {
       if (provider.enable) {
         try {
@@ -119,17 +113,14 @@ export const useProvider = (config: any) => {
 
       if (provider.on) {
         provider.on('accountsChanged', () => {
-          resetProvider(
-            new ethers.providers.Web3Provider(provider),
-            messageToSign
-          )
+          resetProvider(new ethers.providers.Web3Provider(provider))
         })
 
         provider.on('chainChanged', () => {
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
-      auth = await resetProvider(ethersProvider, messageToSign)
+      auth = await resetProvider(ethersProvider)
     }
 
     setLoading(false)
@@ -145,6 +136,7 @@ export const useProvider = (config: any) => {
     setIsUnlockAccount(false)
     setEmail('')
     setEncryptedPrivateKey(null)
+    clearStorage()
     try {
       await provider.provider.close()
     } catch (error) {
@@ -218,11 +210,15 @@ export const useProvider = (config: any) => {
     })
   }
 
+  const signMessage = async (messageToSign: string) => {
+    return walletService.signMessage(messageToSign, 'personal_sign')
+  }
+
   return {
     loading,
     network,
     account,
-    signedMessage,
+    signMessage,
     email,
     isUnlockAccount,
     encryptedPrivateKey,

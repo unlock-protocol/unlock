@@ -3,7 +3,8 @@ import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { ConfigContext } from '../../../utils/withConfig'
 
-import { AuthenticationContext } from '../../interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
@@ -111,6 +112,7 @@ const AppStore = ({ lock }) => {
           network: lock.network,
         },
       },
+      messageToSign: 'Hello world',
       pessimistic: true,
       persistentCheckout: true,
       icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
