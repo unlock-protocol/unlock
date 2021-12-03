@@ -11113,12 +11113,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:17.0.10":
-  version: 17.0.10
-  resolution: "@types/react-dom@npm:17.0.10"
+"@types/react-dom@npm:17.0.11":
+  version: 17.0.11
+  resolution: "@types/react-dom@npm:17.0.11"
   dependencies:
     "@types/react": "*"
-  checksum: cc7d8d5b77ee2f3b989c107abd8ec0f2460ba1b1ee6e6d637124e1939594b5619fa4166ef0ea7632a69b68358e0b71aa618de446ccc416dcc0017175549da601
+  checksum: 4d5730dffbef86c887cecad7e3cecda424ce6a64d0b5441c63b5b015d48219868660a2bb1aa15e897e565ad8867fa6b885d4358b04e1c4e589ba4c07c3fda55c
   languageName: node
   linkType: hard
 
@@ -11968,7 +11968,7 @@ __metadata:
     eslint-config-prettier: 8.3.0
     eslint-config-standard: 16.0.3
     eslint-import-resolver-typescript: 2.5.0
-    eslint-plugin-import: 2.25.2
+    eslint-plugin-import: 2.25.3
     eslint-plugin-jest: 25.3.0
     eslint-plugin-jsx-a11y: 6.5.1
     eslint-plugin-mocha: 9.0.0
@@ -12123,7 +12123,7 @@ __metadata:
     "@types/node": 16.11.11
     "@types/postmate": 1.5.2
     "@types/react": 17.0.37
-    "@types/react-dom": 17.0.10
+    "@types/react-dom": 17.0.11
     "@types/styled-components": 5.1.16
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
@@ -12229,7 +12229,7 @@ __metadata:
     solium: 1.2.5
     truffle-assertions: 0.9.2
     web3: 1.6.1
-    web3-eth-abi: 1.6.0
+    web3-eth-abi: 1.6.1
   languageName: unknown
   linkType: soft
 
@@ -12467,7 +12467,7 @@ __metadata:
     eslint-config-prettier: 8.3.0
     eslint-config-standard: 16.0.3
     eslint-config-standard-react: 11.0.1
-    eslint-plugin-import: 2.25.2
+    eslint-plugin-import: 2.25.3
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-promise: 5.2.0
@@ -21583,7 +21583,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-module-utils@npm:^2.7.0":
+"eslint-module-utils@npm:^2.7.1":
   version: 2.7.1
   resolution: "eslint-module-utils@npm:2.7.1"
   dependencies:
@@ -21618,18 +21618,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:2.25.2":
-  version: 2.25.2
-  resolution: "eslint-plugin-import@npm:2.25.2"
+"eslint-plugin-import@npm:2.25.3":
+  version: 2.25.3
+  resolution: "eslint-plugin-import@npm:2.25.3"
   dependencies:
     array-includes: ^3.1.4
     array.prototype.flat: ^1.2.5
     debug: ^2.6.9
     doctrine: ^2.1.0
     eslint-import-resolver-node: ^0.3.6
-    eslint-module-utils: ^2.7.0
+    eslint-module-utils: ^2.7.1
     has: ^1.0.3
-    is-core-module: ^2.7.0
+    is-core-module: ^2.8.0
     is-glob: ^4.0.3
     minimatch: ^3.0.4
     object.values: ^1.1.5
@@ -21637,7 +21637,7 @@ __metadata:
     tsconfig-paths: ^3.11.0
   peerDependencies:
     eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
-  checksum: 4ca36e37faf72fb1ed25361ea8a6abbcc9daa65f3a9ac1dc0a660029000456e8c8b98a87b8cc2316541b13c6e5915df41d2dc4a1d7fe0729d9b72b9a3bd5b909
+  checksum: 8bdf4b1fafb0e5c8f57a1673f72d84307d32c06a23942990d198c8b32a85a5ae0098872d1ef5bf80d7dfe8ec542f6a671e3c5e706731a80b493c9015f7a147f5
   languageName: node
   linkType: hard
 
@@ -27447,7 +27447,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.7.0":
+"is-core-module@npm:^2.8.0":
   version: 2.8.0
   resolution: "is-core-module@npm:2.8.0"
   dependencies:
@@ -45396,16 +45396,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"web3-eth-abi@npm:1.6.0":
-  version: 1.6.0
-  resolution: "web3-eth-abi@npm:1.6.0"
-  dependencies:
-    "@ethersproject/abi": 5.0.7
-    web3-utils: 1.6.0
-  checksum: a44f63feacf506f6a44f9eddbd4389fed89525016c9b69312c707e8a38b16b95e25cf26aa23d5c3df0fc50ac6b1060e540a111b9e7b69b367e007f639094b4c6
-  languageName: node
-  linkType: hard
-
 "web3-eth-abi@npm:1.6.1":
   version: 1.6.1
   resolution: "web3-eth-abi@npm:1.6.1"
@@ -46825,21 +46815,6 @@ typescript@^3.8.3:
     randombytes: ^2.1.0
     utf8: 3.0.0
   checksum: 18398478065c8517568fedd68be977ee59d0d39a16c1e0a7746243cf22ff20333b3eaeb644cd6784a629cc7b5c50c3f76ebe8416b36801c052bef36f5ae1d76c
-  languageName: node
-  linkType: hard
-
-"web3-utils@npm:1.6.0":
-  version: 1.6.0
-  resolution: "web3-utils@npm:1.6.0"
-  dependencies:
-    bn.js: ^4.11.9
-    ethereum-bloom-filters: ^1.0.6
-    ethereumjs-util: ^7.1.0
-    ethjs-unit: 0.1.6
-    number-to-bn: 1.7.0
-    randombytes: ^2.1.0
-    utf8: 3.0.0
-  checksum: 7940be7145118f3a4ed3d32610a7d082e736a281871cd3aa359801efa2c52e762acd6d4f4e685069155a6b219cdda5898212f435d82e5de06fcf138283d0e7d1
   languageName: node
   linkType: hard
 
