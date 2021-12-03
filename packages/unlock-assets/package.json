@@ -31,7 +31,7 @@
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/addon-links": "6.3.12",
     "@storybook/react": "6.3.12",
-    "@svgr/cli": "5.5.0",
+    "@svgr/cli": "6.1.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.3",
     "eslint": "8.1.0",

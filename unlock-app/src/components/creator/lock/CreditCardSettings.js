@@ -2,7 +2,8 @@ import PropTypes from 'prop-types'
 import React, { useContext, useState, useEffect } from 'react'
 
 import styled from 'styled-components'
-import { AuthenticationContext } from '../../interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'

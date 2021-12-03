@@ -3,7 +3,10 @@ import * as rtl from '@testing-library/react'
 import { MetadataTable } from '../../../components/interface/MetadataTable'
 import { MemberFilters } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
-import { AuthenticationContext } from '../../../components/interface/Authenticate'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../../contexts/AuthenticationContext'
 
 const metadata = [
   {
@@ -34,7 +37,12 @@ const metadata = [
 
 const render = (component: any) => {
   return rtl.render(
-    <AuthenticationContext.Provider value={{ network: 1 }}>
+    <AuthenticationContext.Provider
+      value={{
+        ...defaultValues,
+        network: 1,
+      }}
+    >
       <ConfigContext.Provider
         value={{
           networks: {

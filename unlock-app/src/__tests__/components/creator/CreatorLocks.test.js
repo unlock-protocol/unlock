@@ -4,7 +4,10 @@ import hook from '../../../hooks/useLocks'
 
 import { CreatorLocks } from '../../../components/creator/CreatorLocks'
 import { ConfigContext } from '../../../utils/withConfig'
-import { AuthenticationContext } from '../../../components/interface/Authenticate'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../../contexts/AuthenticationContext'
 
 jest.mock('../../../hooks/useLocks', () => {
   return {
@@ -36,7 +39,9 @@ const renderWithContexts = (component) => {
 
   return rtl.render(
     <ConfigContext.Provider value={config}>
-      <AuthenticationContext.Provider value={{ account, network }}>
+      <AuthenticationContext.Provider
+        value={{ ...defaultValues, account, network }}
+      >
         {component}
       </AuthenticationContext.Provider>
     </ConfigContext.Provider>

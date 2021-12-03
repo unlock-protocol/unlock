@@ -5,7 +5,8 @@ import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import KeyDetails from '../interface/keychain/KeyDetails'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
+
 import LoginPrompt from '../interface/LoginPrompt'
 
 export const KeychainContent = () => {
