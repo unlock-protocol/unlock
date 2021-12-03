@@ -6,7 +6,7 @@ import AccountInfo from '../interface/user-account/AccountInfo'
 import { PaymentDetails } from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useCards } from '../../hooks/useCards'
 
 import Loading from '../interface/Loading'
@@ -14,21 +14,25 @@ import LoginPrompt from '../interface/LoginPrompt'
 
 export const PaymentSettings = () => {
   const { account } = useContext(AuthenticationContext)
-  const { cards, loading, saveCard, deleteCard, getCards } = useCards(account)
+  const { cards, loading, saveCard, deleteCard, getCards } = useCards()
 
   useEffect(() => {
     if (account) {
-      getCards()
+      getCards(account)
     }
   }, [account])
 
-  if (loading) {
+  if (loading || !account) {
     return <Loading />
   }
   if (cards.length > 0) {
-    return <PaymentMethods cards={cards} deleteCard={deleteCard} />
+    return (
+      <PaymentMethods cards={cards} deleteCard={() => deleteCard(account)} />
+    )
   }
-  return <PaymentDetails saveCard={(token: string) => saveCard(token)} />
+  return (
+    <PaymentDetails saveCard={(token: string) => saveCard(account, token)} />
+  )
 }
 
 export const SettingsContent = () => {
