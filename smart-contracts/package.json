@@ -42,7 +42,7 @@
     "hardhat-tracer": "1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.4",
     "hardlydifficult-ethereum-contracts": "0.11.1",
-    "lint-staged": "11.2.6",
+    "lint-staged": "12.1.2",
     "prettier": "2.4.1",
     "prompt": "1.2.0",
     "solhint": "3.3.6",
