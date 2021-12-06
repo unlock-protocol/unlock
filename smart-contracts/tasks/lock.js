@@ -25,14 +25,6 @@ task('lock:managers', 'List all managers for a lock')
     await listManagers({ lockAddress })
   })
 
-task('lock:managers', 'List all managers for a lock')
-  .addParam('lockAddress', 'The lock address')
-  .setAction(async ({ lockAddress }) => {
-    // eslint-disable-next-line global-require
-    const listManagers = require('../scripts/lock/listManagers')
-    await listManagers({ lockAddress })
-  })
-
 task('lock:clone', 'Redeploy an identical lock')
   .addParam('lockAddress', 'The lock address')
   .addParam('unlockAddress', 'The Unlock contract address')
