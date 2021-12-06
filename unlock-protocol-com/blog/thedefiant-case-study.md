@@ -1,9 +1,9 @@
 ---
 title: Newsletter Monetization at The Defiant | Unlock Case Study
-subTitle: When The Defiant was looking for a crypto-native way to monetize its content and newsletter subscriptions, it turned to the Ʉnlock Protocol.
+subTitle: When The Defiant was looking for a crypto-native way to monetize its content and newsletter subscriptions, it turned to the Unlock Protocol.
 authorName: Christopher Carfi
 publishDate: December 6, 2021
-description: When The Defiant was looking for a crypto-native way to monetize its content and newsletter subscriptions, it turned to the Ʉnlock Protocol.
+description: When The Defiant was looking for a crypto-native way to monetize its content and newsletter subscriptions, it turned to the Unlock Protocol.
 image: /images/blog/thedefiant-case-study/homepage-thedefiant-150h.png
 ---
 
