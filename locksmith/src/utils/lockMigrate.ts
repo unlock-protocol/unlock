@@ -77,6 +77,7 @@ export default async function lockMigrate({
     keyOwners,
     expirationTimestamps,
     keyManagers,
+    tokenURISample,
   } = serialized
 
   const lockArgs = [
@@ -208,8 +209,42 @@ export default async function lockMigrate({
     })
   }
 
-  // TODO: tokenURI
-  // TODO: deactivate lock
+  // tokenURI
+  try {
+    // check if is set to default or not
+    const tokenURI = new URL(tokenURISample)
+    if (!tokenURI.host.includes('unlock-protocol.com')) {
+      const totalSupply = keyOwners.length
+      const baseTokenURI = tokenURISample.slice(0, -`${totalSupply}`.length)
+      await newLock.setBaseTokenURI(baseTokenURI)
+      migrateLogEvent.emit('migrateLock', {
+        recordId,
+        msg: `LOCK CLONE > baseTokenURI updated to '${baseTokenURI}'.`,
+      })
+    }
+  } catch (error) {
+    migrateLogEvent.emit('migrateLock', {
+      recordId,
+      msg: `LOCK CLONE > baseTokenURI not set, using default. (ex. '${tokenURISample}').`,
+    })
+  }
+
+  if (symbol != 'UDT') {
+    const txSymbol = await newLock.updateLockSymbol(symbol)
+    await txSymbol.wait()
+    migrateLogEvent.emit('migrateLock', {
+      recordId,
+      msg: `LOCK CLONE > Symbol updated to '${symbol}'.`,
+    })
+  }
+
+  // disable lock
+  const txDisable = await newLock.disableLock()
+  await txDisable.wait()
+  migrateLogEvent.emit('migrateLock', {
+    recordId,
+    msg: 'LOCK CLONE > Origin lock has been disabled.',
+  })
 
   // remove ourselves as lockManagers
   const txRemoveUs = await newLock.renounceLockManager()
