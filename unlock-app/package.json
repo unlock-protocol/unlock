@@ -81,7 +81,7 @@
     "build": "next build",
     "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
-    "start": "yarn build && NODE_ENV=production next start --port ${PORT:=3000}",
+    "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
