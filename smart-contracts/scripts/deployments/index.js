@@ -16,6 +16,7 @@ async function main({
   premintAmount, // in ETH, must be a string
   liquidity, // in ETH, must be a string
   unlockAddress,
+  unlockVersion,
   udtAddress,
   publicLockAddress,
   wethAddress,
@@ -39,7 +40,7 @@ async function main({
   log(`isLocalNet : ${isLocalNet}`)
   if (!unlockAddress) {
     // deploying Unlock with a transparent / upgradable proxy
-    unlockAddress = await run('deploy:unlock')
+    unlockAddress = await run('deploy:unlock', { unlockVersion })
   }
 
   // deploying PublicLock
@@ -51,6 +52,7 @@ async function main({
   await run('set:template', {
     publicLockAddress,
     unlockAddress,
+    unlockVersion,
   })
 
   // deploy UDT

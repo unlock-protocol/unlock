@@ -36,6 +36,7 @@ export interface NetworkConfig {
   unlockAppUrl?: string // TODO: remove as this should not be network specific
   blockTime?: number
   unlockAddress?: string
+  serializerAddress?: string
   subgraphURI?: string
   explorer?: {
     name: string
