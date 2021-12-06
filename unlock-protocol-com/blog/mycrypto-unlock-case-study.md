@@ -4,7 +4,7 @@ subTitle: MyCrypto implemented Ʉnlock Protocol and turned "users" into "paying 
 authorName: Christopher Carfi
 publishDate: November 25, 2021
 description: MyCrypto implemented Ʉnlock Protocol and turned "users" into "paying users" for their open-source suite of Ethereum management tools.
-image: /images/blog/mycrypto-unlock-case-study/homepage-mycrypto-150h.png
+image: /images/blog/mycrypto-case-study/homepage-mycrypto-150h.png
 ---
 
 As a community-supported, free and open-source crypto tool suite, MyCrypto needed a solution to turn “users” into “paying users” to help fund future initiatives. In 2019, MyCrypto began looking for a way to offer MyCrypto memberships. 
@@ -13,4 +13,4 @@ MyCrypto envisioned a future where, when community members offered their financi
 
 [See the full case study](https://f.hubspotusercontent20.net/hubfs/19942922/MyCrypto%20-%20Unlock%20Case%20Study.pdf).
 
-[![MyCrypto thumbnail](/images/blog/mycrypto-unlock-case-study/mycrypto-thumbnail.png)](https://f.hubspotusercontent20.net/hubfs/19942922/MyCrypto%20-%20Unlock%20Case%20Study.pdf)
+[![MyCrypto thumbnail](/images/blog/mycrypto-case-study/mycrypto-thumbnail.png)](https://f.hubspotusercontent20.net/hubfs/19942922/MyCrypto%20-%20Unlock%20Case%20Study.pdf)
