@@ -177,7 +177,8 @@ interface IPublicLock
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
-    address _onKeyCancelHook
+    address _onKeyCancelHook,
+    address _onTokenURIHook
   ) external;
 
   /**
