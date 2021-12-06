@@ -39,41 +39,41 @@ contract('LockSerializer', () => {
       })
     })
 
-    it.only('fetch the tokenURI properly', async () => {
+    it('fetch a sample of the tokenURI properly', async () => {
       const lock = locks.FIRST
       const keyPrice = ethers.utils.parseEther('0.01')
       const baseTokenURI = 'https://hahaha.com/'
 
-      const [, ..._purchasers] = await ethers.getSigners()
-      const maxNumberOfKeys = await lock.maxNumberOfKeys()
-      const purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
+      const [, purchaser] = await ethers.getSigners()
 
-      // purchase keys
-      await Promise.all(
-        purchasers.map((purchaser) =>
-          lock
-            .connect(purchaser)
-            .purchase(
-              keyPrice.toString(),
-              purchaser.address,
-              web3.utils.padLeft(0, 40),
-              [],
-              { value: keyPrice }
-            )
+      // purchase a key
+      const tx = await lock
+        .connect(purchaser)
+        .purchase(
+          keyPrice.toString(),
+          purchaser.address,
+          web3.utils.padLeft(0, 40),
+          [],
+          { value: keyPrice }
         )
+      await tx.wait()
+
+      const totalSupply = await lock.totalSupply()
+
+      // default URI
+      const serialized = await serializer.serialize(lock.address)
+      await assert.equal(
+        serialized.tokenURISample,
+        `${lock.address.toLowerCase()}/${totalSupply}`
       )
 
+      // custom URI
       await lock.connect(beneficiary).setBaseTokenURI(baseTokenURI)
-      const serialized = await serializer.serialize(lock.address)
-      const tokensURI = Array(maxNumberOfKeys.toNumber())
-        .fill(0)
-        .map((ha, i) => `${baseTokenURI}${i + 1}`)
-      await assert.deepEqual(serialized.tokenURIs, tokensURI)
-
-      // extract tokenURI
-      tokensURI.forEach((uri, i) => {
-        uri
-      })
+      const serializedCustomBaseURI = await serializer.serialize(lock.address)
+      await assert.equal(
+        serializedCustomBaseURI.tokenURISample,
+        `${baseTokenURI}${totalSupply}`
+      )
     })
 
     describe('key ownership', () => {
@@ -84,10 +84,6 @@ contract('LockSerializer', () => {
       // eslint-disable-next-line func-names
       beforeEach(async function () {
         lock = locks.FIRST
-        // skip as getKeyOwners has been removed on v9
-        if ((await lock.publicLockVersion()) <= 9) {
-          this.skip()
-        }
         const [, ..._purchasers] = await ethers.getSigners()
         const maxNumberOfKeys = await lock.maxNumberOfKeys()
         purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert

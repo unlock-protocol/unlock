@@ -5,7 +5,7 @@ const compareValues = async (serialized, lock) => {
     'keyOwners',
     'expirationTimestamps',
     'keyManagers',
-    'tokenURIs',
+    'tokenURISample',
   ]
   const propNames = Object.keys(serialized)
     .filter((k) => Number.isNaN(Number.parseInt(k))) // remove numbers from array index
