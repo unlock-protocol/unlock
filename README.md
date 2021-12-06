@@ -1,4 +1,4 @@
-![Unlock](https://raw.githubusercontent.com/unlock-protocol/unlock/master/unlock-app/src/static/images/unlock-word-mark.png)
+![Unlock](/unlock-app/public/images/unlock-word-mark.png)
 
 ---
 
