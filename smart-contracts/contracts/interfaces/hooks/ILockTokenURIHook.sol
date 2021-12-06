@@ -9,11 +9,12 @@ interface ILockTokenURIHook
 {
   /**
    * @notice If the lock owner has registered an implementer
-   * then this hook is called with every key cancel.
+   * then this hook is called every time `tokenURI()` is called
    * @param lockAddress the address of the lock
    * @param operator the msg.sender issuing the call
    * @param keyId the id (tokenId) of the key (if applicable)
    * @param expirationTimestamp the key expiration timestamp
+   * @return the tokenURI
    */
   function tokenURI(
     address lockAddress,
