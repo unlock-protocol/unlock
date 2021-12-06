@@ -17,6 +17,9 @@ const rulesToIgnore = [
   'no-restricted-syntax',
   'no-else-return',
   'object-shorthand',
+  'import/no-import-module-exports',
+  'no-promise-executor-return',
+  'prefer-regex-literals',
 ]
 
 module.exports = {

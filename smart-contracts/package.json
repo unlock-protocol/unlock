@@ -33,18 +33,18 @@
     "debug": "4.3.3",
     "eslint": "8.1.0",
     "eslint-plugin-mocha": "9.0.0",
-    "eth-gas-reporter": "0.2.22",
+    "eth-gas-reporter": "0.2.23",
     "eth-sig-util": "2.5.4",
     "ethers": "5.5.2",
     "fs-extra": "10.0.0",
     "hardhat": "2.6.7",
     "hardhat-erc1820": "0.1.0",
-    "hardhat-gas-reporter": "1.0.4",
+    "hardhat-gas-reporter": "1.0.6",
     "hardhat-storage-layout": "0.1.6",
     "hardhat-tracer": "1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.4",
     "hardlydifficult-ethereum-contracts": "0.11.1",
-    "lint-staged": "11.2.6",
+    "lint-staged": "12.1.2",
     "prettier": "2.4.1",
     "prompt": "1.2.0",
     "solhint": "3.3.6",
@@ -54,7 +54,7 @@
   "devDependencies": {
     "chai": "4.3.4",
     "ethereum-waffle": "3.4.0",
-    "web3": "1.6.0"
+    "web3": "1.6.1"
   },
   "lint-staged": {
     "*.{js,ts}": [

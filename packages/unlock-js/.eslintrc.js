@@ -12,6 +12,8 @@ const rulesToIgnore = [
   'prefer-destructuring',
   'radix',
   'no-async-promise-executor',
+  'no-promise-executor-return',
+  'default-param-last',
   'prefer-promise-reject-errors',
   'prefer-const',
 ]

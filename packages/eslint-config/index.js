@@ -56,11 +56,13 @@ module.exports = {
     'standard/object-curly-even-spacing': 0,
     'standard/array-bracket-even-spacing': 0,
     'promise/prefer-await-to-then': 'warn',
+    'no-promise-executor-return' : 0,
     'jest/no-disabled-tests': 'warn',
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'error',
     'jest/prefer-expect-assertions': 'error',
     'react/jsx-props-no-spreading': 0, // TODO: consider changing to error to tighten things up
+    'react/function-component-definition': 'warn',
     'import/prefer-default-export': 'off',
     semi: ['error', 'never'],
     'import/extensions': [2, 'never'],
