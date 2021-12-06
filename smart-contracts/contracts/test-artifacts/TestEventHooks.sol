@@ -31,13 +31,6 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     address to,
     uint refund
   );
-  event OnTokenURI(
-    address lockAddress,
-    address operator,
-    uint256 tokenId,
-    uint expirationTimestamp,
-    string tokenURI
-  );
 
   uint public discount;
   bool public isPurchaseSupported;
