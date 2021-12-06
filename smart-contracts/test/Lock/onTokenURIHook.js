@@ -11,7 +11,7 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onKeyCancelHook', (accounts) => {
+contract('Lock / onTokenURIHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
   let tokenId
@@ -34,7 +34,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
     tokenId = await lock.getTokenIdFor.call(to)
   })
 
-  it('key cancels should log the hook event', async () => {
+  it('tokenURI should returns a custom value', async () => {
     const baseTokenURI = 'https://unlock-uri-hook.test/'
     const expirationTimestamp = await lock.keyExpirationTimestampFor(to)
     const tokenURI = `${baseTokenURI}${lock.address.toLowerCase()}/${accounts[3].toLowerCase()}/${expirationTimestamp}/${tokenId}`
