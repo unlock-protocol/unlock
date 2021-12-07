@@ -179,8 +179,8 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              Learn how MyCrypto turned users into paying users for
-              their open-source suite of Ethereum management tools.
+              Learn how MyCrypto turned users into paying users for their
+              open-source suite of Ethereum management tools.
             </p>
 
             <p style={{ marginTop: 'auto' }}>
@@ -208,8 +208,8 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              The Defiant implemented a crypto-native way to monetize
-              its content and newsletter subscriptions.
+              The Defiant implemented a crypto-native way to monetize its
+              content and newsletter subscriptions.
             </p>
             <p style={{ marginTop: 'auto' }}>
               →{' '}
@@ -245,7 +245,7 @@ export const HomeContent = ({ posts }) => {
               to take your members anywhere.
             </p>
             <p style={{ marginTop: 'auto' }}>
-              → {' '}
+              →{' '}
               <Link href="https://docs.unlock-protocol.com/creators/tutorials-1">
                 <a>See Tutorials</a>
               </Link>
