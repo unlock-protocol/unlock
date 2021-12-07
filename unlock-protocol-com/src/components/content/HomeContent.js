@@ -132,7 +132,7 @@ export const HomeContent = ({ posts }) => {
 
       <IntegrationsBox />
 
-       <Box padding="0" color="transparent">
+      <Box padding="0" color="transparent">
         <H3>Featured Implementations</H3>
         <Columns>
           <Column>
@@ -156,7 +156,7 @@ export const HomeContent = ({ posts }) => {
               NFT-based, token-gated access, they reached out to Unlock.
             </p>
             <p style={{ marginTop: 'auto' }}>
-              → {' '}
+              →{' '}
               <Link href="https://unlock-protocol.com/blog/mintgate-unlock-case-study">
                 <a>See Case Study</a>
               </Link>
@@ -221,7 +221,7 @@ export const HomeContent = ({ posts }) => {
         </Columns>
       </Box>
 
-       <Box padding="0" color="transparent">
+      <Box padding="0" color="transparent">
         <H3>Why Unlock?</H3>
         <Columns>
           <Column>
