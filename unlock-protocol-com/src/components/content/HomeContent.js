@@ -141,15 +141,11 @@ export const HomeContent = ({ posts }) => {
                 maxHeight: '150px',
                 maxWidth: '250px',
                 display: 'flex',
-                justifyContent: 'center',
+                alignSelf: 'center',
               }}
               src="/images/blog/mintgate-unlock-case-study/homepage-mintgate-150h.png"
             />
-            <H4>
-              MintGate token-gates links,
-              <br />
-              video, and more with Unlock
-            </H4>
+            <H4>MintGate token-gates links, video, and more with Unlock</H4>
             <p
               style={{
                 padding: '8px 0px',
@@ -158,7 +154,7 @@ export const HomeContent = ({ posts }) => {
               }}
             >
               When MintGate needed to pair their front-end design with
-              NFT-based, token-gated access, they reached out to Unlock.
+              NFT-based, token-gated access, they called Unlock.
             </p>
             <p style={{ marginTop: 'auto' }}>
               →{' '}
@@ -173,7 +169,7 @@ export const HomeContent = ({ posts }) => {
                 maxHeight: '150px',
                 maxWidth: '250px',
                 display: 'flex',
-                justifyContent: 'center',
+                alignSelf: 'center',
               }}
               src="/images/blog/mycrypto-case-study/homepage-mycrypto-150h.png"
             />
@@ -203,7 +199,7 @@ export const HomeContent = ({ posts }) => {
                 maxHeight: '150px',
                 maxWidth: '250px',
                 display: 'flex',
-                justifyContent: 'center',
+                alignSelf: 'center',
               }}
               src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
             />
