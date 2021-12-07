@@ -43,6 +43,7 @@ const lockGet = async (req, res) => {
 }
 
 migrateLogEvent.on('migrateLock', async ({ recordId, msg }) => {
+  // eslint-disable-next-line no-console
   console.log('migrateLogEvent', recordId, msg)
   await updateLockMigrationsLog(recordId, msg)
 })
