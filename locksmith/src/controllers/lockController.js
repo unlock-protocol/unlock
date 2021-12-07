@@ -58,7 +58,7 @@ const lockMigrate = async (req, res) => {
   // record the migration in db
   const dbRecord = await LockMigrations.create({
     lockAddress,
-    // initiatedBy: msg.sender // TODO: get that info somewhere?
+    initiatedBy: req.signee,
     chain: chainId,
     migrated: false,
   })
