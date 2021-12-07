@@ -167,13 +167,13 @@ export const HomeContent = ({ posts }) => {
               style={{
                 maxHeight: '150px',
                 maxWidth: '250px',
+                display: 'flex',
+                justifyContent: 'center',
               }}
               src="/images/blog/mycrypto-case-study/homepage-mycrypto-150h.png"
             />
             <H4>
-              MyCrypto opened up a
-              <br />
-              whole new revenue model
+              MyCrypto opened up an entirely new revenue model
             </H4>
             <p
               style={{
@@ -199,13 +199,13 @@ export const HomeContent = ({ posts }) => {
               style={{
                 maxHeight: '150px',
                 maxWidth: '250px',
+                display: 'flex',
+                justifyContent: 'center',
               }}
               src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
             />
             <H4>
-              Paid newsletter subscriptions
-              <br />
-              were a snap for The Defiant
+              Paid newsletter subscriptions were a snap for The Defiant
             </H4>
             <p
               style={{
