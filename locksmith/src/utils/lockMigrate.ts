@@ -37,8 +37,12 @@ export default async function lockMigrate({
     unlockAddress = process.env.UNLOCK_ADDRESS
     provider = 'http://eth-node:8545'
     subgraphURI = 'http://graph-node:8000'
-  } else {
+  } else if (chainId === 100 || chainId === 137) {
     ;({ unlockAddress, serializerAddress, provider, subgraphURI } = network)
+  } else {
+    throw new Error(
+      `Chain with id ${chainId} not supported (only Polygon & xDai)`
+    )
   }
 
   if (!serializerAddress) {
