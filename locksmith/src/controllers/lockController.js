@@ -52,9 +52,8 @@ const lockMigrate = async (req, res) => {
   const unlockVersion = req.query.unlockVersion || 9
   const chainId = req.chain
 
-  // TODO: make sure lock exists
-  // const databaseLock = await getLockByAddress(lockAddress)
-  // if (!databaseLock) res.send(404)
+  const databaseLock = await getLockByAddress(lockAddress)
+  if (!databaseLock) res.send(404, 'Missing lock')
 
   // record the migration in db
   const dbRecord = await LockMigrations.create({
