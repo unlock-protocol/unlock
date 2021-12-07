@@ -165,12 +165,12 @@ export const HomeContent = ({ posts }) => {
           <Column>
             <Illustration
               style={{ maxHeight: '150px' }}
-              src="/images/illustrations/cryptoccard.svg"
+              src="/images/blog/mycrypto-case-study/homepage-mycrypto-150h.png"
             />
             <H4>
-              Accept Credit Cards &
+              MyCrypto opened up a
               <br />
-              Crypto
+              whole new revenue model
             </H4>
             <p
               style={{
@@ -179,14 +179,14 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              Both FIAT and Web3 friendly, allow your customers to pay in the
-              currency they’re most comfortable with.
+              Learn how MyCrypto turned "users" into "paying users" for
+              their open-source suite of Ethereum management tools.
             </p>
 
             <p style={{ marginTop: 'auto' }}>
               →{' '}
-              <Link href="https://docs.unlock-protocol.com/creators/deploying-lock">
-                <a>Documentation</a>
+              <Link href="https://unlock-protocol.com/blog/mycrypto-unlock-case-study">
+                <a>See Case Study</a>
               </Link>
             </p>
           </Column>
@@ -194,12 +194,12 @@ export const HomeContent = ({ posts }) => {
           <Column>
             <Illustration
               style={{ maxHeight: '150px' }}
-              src="/images/illustrations/governance.svg"
+              src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
             />
             <H4>
-              Community
+              Paid newsletter subscriptions
               <br />
-              Owned & Governed
+              were a snap for The Defiant
             </H4>
             <p
               style={{
@@ -208,13 +208,13 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              Unlock is an open-source protocol. Developers and creators co-own
-              the protocol.
+              The Defiant implemented a crypto-native way to monetize
+              its content and newsletter subscriptions. Here's how.
             </p>
             <p style={{ marginTop: 'auto' }}>
               →{' '}
-              <Link href="https://vote.unlock-protocol.com/#/unlock-protocol.eth">
-                <a>Governance</a>
+              <Link href="https://unlock-protocol.com/blog/thedefiant-case-study">
+                <a>See Case Study</a>
               </Link>
             </p>
           </Column>
