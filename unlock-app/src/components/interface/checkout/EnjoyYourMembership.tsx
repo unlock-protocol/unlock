@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
-import { AuthenticationContext } from '../Authenticate'
 
 interface EnjoyYourMembershipProps {
   closeModal: (success: boolean, redirectUri: string, params?: any) => void
@@ -17,15 +16,12 @@ export const EnjoyYourMembership = ({
     const redirectUrl = new URL(redirectUri)
     label = `Go to ${redirectUrl.host}`
   }
-  const { signedMessage } = useContext(AuthenticationContext)
 
   return (
     <EnjoyYourMembershipWrapper
       onClick={() => {
         if (redirectUri) {
-          closeModal(true, redirectUri, {
-            signature: signedMessage,
-          })
+          closeModal(true, redirectUri, {})
         } else {
           window.close()
         }
