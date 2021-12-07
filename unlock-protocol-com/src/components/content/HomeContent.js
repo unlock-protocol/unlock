@@ -164,7 +164,10 @@ export const HomeContent = ({ posts }) => {
           </Column>
           <Column>
             <Illustration
-              style={{ maxHeight: '150px' }}
+              style={{
+                maxHeight: '150px',
+                maxWidth: '250px',
+              }}
               src="/images/blog/mycrypto-case-study/homepage-mycrypto-150h.png"
             />
             <H4>
@@ -193,7 +196,10 @@ export const HomeContent = ({ posts }) => {
 
           <Column>
             <Illustration
-              style={{ maxHeight: '150px' }}
+              style={{
+                maxHeight: '150px',
+                maxWidth: '250px',   
+              }}
               src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
             />
             <H4>
