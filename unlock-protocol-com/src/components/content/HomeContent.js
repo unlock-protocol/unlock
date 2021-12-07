@@ -172,9 +172,7 @@ export const HomeContent = ({ posts }) => {
               }}
               src="/images/blog/mycrypto-case-study/homepage-mycrypto-150h.png"
             />
-            <H4>
-              MyCrypto opened up an entirely new revenue model
-            </H4>
+            <H4>MyCrypto opened up an entirely new revenue model</H4>
             <p
               style={{
                 padding: '8px 0px',
@@ -204,9 +202,7 @@ export const HomeContent = ({ posts }) => {
               }}
               src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
             />
-            <H4>
-              Paid newsletter subscriptions were a snap for The Defiant
-            </H4>
+            <H4>Paid newsletter subscriptions were a snap for The Defiant</H4>
             <p
               style={{
                 padding: '8px 0px',
