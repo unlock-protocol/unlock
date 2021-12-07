@@ -4,6 +4,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 import { networks } from '@unlock-protocol/networks'
 import EventEmitter from 'events'
 import listManagers from './lockManagers'
+import { purchaserCredentials } from '../../config/config'
 
 interface LockClonerProps {
   lockAddress: string
@@ -15,11 +16,6 @@ interface LockClonerProps {
 class MigrateLogEventEmitter extends EventEmitter {}
 
 export const migrateLogEvent = new MigrateLogEventEmitter()
-
-// TODO: how to pass this safely?
-const mnemonic =
-  process.env.WALLET_MNEMONIC ||
-  'test test test test test test test test test test test junk'
 
 export default async function lockMigrate({
   lockAddress,
@@ -57,7 +53,7 @@ export default async function lockMigrate({
     msg: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
   })
 
-  const signer = Wallet.fromMnemonic(mnemonic).connect(rpc)
+  const signer = new Wallet(purchaserCredentials, rpc)
 
   // serialize
   const serializer = new ethers.Contract(
