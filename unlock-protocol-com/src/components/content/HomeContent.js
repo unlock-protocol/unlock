@@ -137,7 +137,12 @@ export const HomeContent = ({ posts }) => {
         <Columns>
           <Column>
             <Illustration
-              style={{ maxHeight: '150px' }}
+              style={{
+                maxHeight: '150px',
+                maxWidth: '250px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
               src="/images/blog/mintgate-unlock-case-study/homepage-mintgate-150h.png"
             />
             <H4>
