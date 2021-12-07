@@ -11,11 +11,10 @@ COMMIT=$3
 PUBLISH=$4
 
 if [ "$PUBLISH" = "true" ]; then
-  MESSAGE="Deploying $COMMIT to production. See logs below.";
+  MESSAGE="Deploying $COMMIT to production. See logs below."
 fi
-  # Package
-  UNLOCK_ENV="$DEPLOY_ENV" yarn deploy;
-  # And ship!
-  echo $MESSAGE
-  npx @fleekhq/fleek-cli site:deploy
-fi
+# Package
+UNLOCK_ENV="$DEPLOY_ENV" yarn deploy
+# And ship!
+echo $MESSAGE
+npx @fleekhq/fleek-cli site:deploy

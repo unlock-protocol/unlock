@@ -15,6 +15,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+      FLEEK_API_KEY: ${{ secrets.FLEEK_API_KEY }}
     steps:
       - uses: actions/checkout@v2
       - name: Check for changes in ${{ inputs.service }}
