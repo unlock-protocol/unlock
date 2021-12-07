@@ -1,4 +1,4 @@
-import styled from 'styled-components'.
+import styled from 'styled-components'
 import React from 'react'
 
 import Head from 'next/head'
@@ -132,18 +132,18 @@ export const HomeContent = ({ posts }) => {
 
       <IntegrationsBox />
 
-      <Box padding="0" color="transparent">
-        <H3>Why Unlock?</H3>
+       <Box padding="0" color="transparent">
+        <H3>Featured Implementations</H3>
         <Columns>
           <Column>
             <Illustration
               style={{ maxHeight: '150px' }}
-              src="/images/illustrations/ecosystem.svg"
+              src="/images/blog/mintgate-unlock-case-study/homepage-mintgate-150h.png"
             />
             <H4>
-              Your Content
+              MintGate token-gates links,
               <br />
-              Your community
+              video, and more with Unlock
             </H4>
             <p
               style={{
@@ -152,13 +152,13 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              Memberships are not tied to any platform, giving you the freedom
-              to take your members anywhere.
+              When MintGate needed to pair their front-end design with
+              NFT-based, token-gated access, they reached out to Unlock.
             </p>
             <p style={{ marginTop: 'auto' }}>
-              → {/* Replace with actual case studies links! */}
-              <Link href="https://docs.unlock-protocol.com/creators/tutorials-1">
-                <a>Case Studies</a>
+              → {' '}
+              <Link href="https://unlock-protocol.com/blog/mintgate-unlock-case-study">
+                <a>See Case Study</a>
               </Link>
             </p>
           </Column>
@@ -180,6 +180,95 @@ export const HomeContent = ({ posts }) => {
               }}
             >
               Both FIAT and Web3 friendly, allow your customers to pay in the
+              currency they’re most comfortable with.
+            </p>
+
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="https://docs.unlock-protocol.com/creators/deploying-lock">
+                <a>Documentation</a>
+              </Link>
+            </p>
+          </Column>
+
+          <Column>
+            <Illustration
+              style={{ maxHeight: '150px' }}
+              src="/images/illustrations/governance.svg"
+            />
+            <H4>
+              Community
+              <br />
+              Owned & Governed
+            </H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Unlock is an open-source protocol. Developers and creators co-own
+              the protocol.
+            </p>
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="https://vote.unlock-protocol.com/#/unlock-protocol.eth">
+                <a>Governance</a>
+              </Link>
+            </p>
+          </Column>
+        </Columns>
+      </Box>
+
+<Box padding="0" color="transparent">
+        <H3>Why Unlock?</H3>
+        <Columns>
+          <Column>
+            <Illustration
+              style={{ maxHeight: '150px' }}
+              src="/images/illustrations/ecosystem.svg"
+            />
+            <H4>
+              Your Content
+              <br />
+              Your Community
+            </H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Memberships are not tied to any platform, giving you the freedom
+              to take your members anywhere.
+            </p>
+            <p style={{ marginTop: 'auto' }}>
+              → {' '}
+              <Link href="https://docs.unlock-protocol.com/creators/tutorials-1">
+                <a>See Tutorials</a>
+              </Link>
+            </p>
+          </Column>
+          <Column>
+            <Illustration
+              style={{ maxHeight: '150px' }}
+              src="/images/illustrations/cryptoccard.svg"
+            />
+            <H4>
+              Accept Credit Cards &
+              <br />
+              Crypto
+            </H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Both fiat and web3 friendly, allow your customers to pay in the
               currency they’re most comfortable with.
             </p>
 
