@@ -179,7 +179,7 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              Learn how MyCrypto turned "users" into "paying users" for
+              Learn how MyCrypto turned users into paying users for
               their open-source suite of Ethereum management tools.
             </p>
 
@@ -209,7 +209,7 @@ export const HomeContent = ({ posts }) => {
               }}
             >
               The Defiant implemented a crypto-native way to monetize
-              its content and newsletter subscriptions. Here's how.
+              its content and newsletter subscriptions.
             </p>
             <p style={{ marginTop: 'auto' }}>
               →{' '}
@@ -221,7 +221,7 @@ export const HomeContent = ({ posts }) => {
         </Columns>
       </Box>
 
-<Box padding="0" color="transparent">
+       <Box padding="0" color="transparent">
         <H3>Why Unlock?</H3>
         <Columns>
           <Column>
