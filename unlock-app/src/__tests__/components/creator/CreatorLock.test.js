@@ -5,7 +5,7 @@ import configure from '../../../config'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
-import { AuthenticationContext } from '../../../components/interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 const Web3ServiceProvider = Web3ServiceContext.Provider
 jest.mock('next/router', () => ({

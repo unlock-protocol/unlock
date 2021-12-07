@@ -260,7 +260,7 @@ export const getCardConnected = async (
   return response.json()
 }
 
-export const useCards = (address: string) => {
+export const useCards = () => {
   const walletService: WalletService = useContext(WalletServiceContext)
   const config: Config = useContext(ConfigContext)
   const [cards, setCards] = useState<Card[]>([])
@@ -271,7 +271,7 @@ export const useCards = (address: string) => {
    * retrieves cards for an address
    * @param address
    */
-  const getCards = async () => {
+  const getCards = async (address: string) => {
     setLoading(true)
     try {
       const cards = await getCardsForAddress(config, walletService, address)
@@ -285,13 +285,14 @@ export const useCards = (address: string) => {
   /**
    * saves cards (stripe token) for an address
    * @param address
+   * @param stripeTokenId
    */
-  const saveCard = async (stripeTokenId: string) => {
+  const saveCard = async (address: string, stripeTokenId: string) => {
     setLoading(true)
     try {
       await saveCardsForAddress(config, walletService, address, stripeTokenId)
       // Refresh cards: TODO make locksmith return the cards
-      await getCards()
+      await getCards(address)
     } catch (e: any) {
       setError(e)
     }
@@ -301,7 +302,7 @@ export const useCards = (address: string) => {
   /**
    * Deletes a card for a user!
    */
-  const deleteCard = async () => {
+  const deleteCard = async (address: string) => {
     setLoading(true)
     try {
       const deleted = await deleteCardForAddress(config, walletService, address)

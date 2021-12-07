@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Lock } from './Lock'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import { useLock } from '../../../hooks/useLock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
@@ -39,6 +40,7 @@ export const CryptoCheckout = ({
     network: walletNetwork,
     account,
     changeNetwork,
+    isUnlockAccount,
   } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
   const [transactionPending, setTransactionPending] = useState<string>('')
@@ -46,6 +48,7 @@ export const CryptoCheckout = ({
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
+  // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
 
   const now = new Date().getTime() / 1000
@@ -131,12 +134,12 @@ export const CryptoCheckout = ({
 
       {!transactionPending && keyExpiration < now && (
         <>
-          <Prompt>Get your membership with</Prompt>
+          <Prompt>Get your membership with:</Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cryptoDisabled}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
-              {userIsOnWrongNetwork && !hasValidkey && (
+              {!isUnlockAccount && userIsOnWrongNetwork && !hasValidkey && (
                 <Warning>
                   Crypto wallet on wrong network.{' '}
                   <LinkButton onClick={connectToNetwork}>
@@ -145,24 +148,24 @@ export const CryptoCheckout = ({
                   .
                 </Warning>
               )}
-              {!userIsOnWrongNetwork && !hasValidkey && !canAfford && (
-                <Warning>Your balance is too low</Warning>
-              )}
+              {!isUnlockAccount &&
+                !userIsOnWrongNetwork &&
+                !hasValidkey &&
+                !canAfford && <Warning>Your balance is too low</Warning>}
             </CheckoutButton>
-            {isCreditCardEnabled && (
-              <CheckoutButton>
-                <Buttons.CreditCard
-                  lock={lock}
-                  backgroundColor="var(--blue)"
-                  fillColor="var(--white)"
-                  showLabel
-                  size="36px"
-                  disabled={cardDisabled}
-                  as="button"
-                  onClick={setCardPurchase}
-                />
-              </CheckoutButton>
-            )}
+
+            <CheckoutButton disabled={!isCreditCardEnabled}>
+              <Buttons.CreditCard
+                lock={lock}
+                backgroundColor="var(--blue)"
+                fillColor="var(--white)"
+                showLabel
+                size="36px"
+                disabled={cardDisabled}
+                as="button"
+                onClick={setCardPurchase}
+              />
+            </CheckoutButton>
 
             {canClaimAirdrop && (
               <CheckoutButton>
@@ -228,7 +231,7 @@ export const CheckoutButton = styled.div<CheckoutButtonProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  margin: 0px 20px;
   ${(props) =>
     props.disabled &&
     `

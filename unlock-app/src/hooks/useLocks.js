@@ -7,7 +7,7 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
-import { AuthenticationContext } from '../components/interface/Authenticate'
+import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { processTransaction } from './useLock'
 
 /**
