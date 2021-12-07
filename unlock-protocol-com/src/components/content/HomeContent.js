@@ -198,7 +198,7 @@ export const HomeContent = ({ posts }) => {
             <Illustration
               style={{
                 maxHeight: '150px',
-                maxWidth: '250px',   
+                maxWidth: '250px',
               }}
               src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
             />
