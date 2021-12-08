@@ -13,7 +13,7 @@ Today, the whole team is extremely excited to announce that we have deployed Unl
 
 Gas fees on the Ethereum mainnet have now been outrageously high for more than a year, moving Ethereum away from its target of being a "world computer" accessible to everyone with an internet connection. It also makes use cases like Unlock much harder to use: our membership NFT should work well for $1 as well as $10,000 memberships!
 
-Don't get us wrong: high gas fees are a good problem to have for the Ethereum community: they mean that demand for the very precious block space is much higher than the available supply.
+Don't get us wrong: high gas fees are a good problem to have for the Ethereum community. They mean that demand for the very precious block space is much higher than the available supply.
 
 That said, the community has realized this for a long time, and multiple "layer 2" have emerged. Vitalik Buterin [wrote many times](https://vitalik.ca/general/2021/12/06/endgame.html) about why he believes that "roll ups" are the way to scale beyond the limited block space, and we agree!
 
