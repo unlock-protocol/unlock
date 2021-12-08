@@ -6,9 +6,9 @@ module.exports = {
   testPathIgnorePatterns: ['<rootDir>/__tests__/test-helpers/'],
   coverageThreshold: {
     global: {
-      branches: 63,
-      functions: 73,
-      lines: 75,
+      branches: 60,
+      functions: 70,
+      lines: 69,
     },
   },
 }
