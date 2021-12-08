@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import Head from 'next/head'
+import styled from 'styled-components'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useLocks } from '../../hooks/useLocks'
 import Account from '../interface/Account'
@@ -34,12 +35,12 @@ const ButtonToUpgradeLock = function ({ lockAddress }) {
       {loading ? (
         <Loading />
       ) : (
-        <a
+        <Button
           href={lockUpgradeURL}
           onClick={(event) => upgradeLock(event, lockUpgradeURL)}
         >
-          Upgrade
-        </a>
+          Upgrade your lock
+        </Button>
       )}
     </p>
   )
@@ -56,7 +57,7 @@ export const UpgradeContent = function ({ query }: UpgradeContentProps) {
       <Account />
       {account && network ? (
         <p>
-          Hello lock <ButtonToUpgradeLock lockAddress={query.locks} />
+          <ButtonToUpgradeLock lockAddress={query.locks} />
         </p>
       ) : (
         <p>Please authentificate to upgrade this lock</p>
@@ -64,4 +65,18 @@ export const UpgradeContent = function ({ query }: UpgradeContentProps) {
     </Layout>
   )
 }
+
+const Button = styled.button`
+  cursor: pointer;
+  border: 3px solid #d8d8d8;
+  border-radius: 3px;
+  font-size: 1.3em;
+  background-color: transparent;
+  display: block;
+  padding: 10px 50px;
+  color: rgb(106, 106, 106);
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+`
 export default UpgradeContent
