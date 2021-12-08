@@ -1,5 +1,5 @@
 ---
-title: Unlock is availabl on Optimism
+title: Unlock is available on Optimism
 subTitle: The Ethereum world is moving to Layer 2, Unlock paves the way
 authorName: Julien Genestoux
 publishDate: Dec 8, 2021
