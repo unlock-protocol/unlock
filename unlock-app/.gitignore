@@ -22,5 +22,6 @@ yarn-error.log*
 
 # next builds
 /src/.next
+.next
 /out
 .next/cache/**

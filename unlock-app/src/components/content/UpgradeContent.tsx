@@ -23,7 +23,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
     if (typeof fetch !== 'undefined') {
       try {
         const response = await fetch(
-          `${config.networks[network].locksmith}/upgrade/${lockAddress}`,
+          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
           { method: 'POST' }
         )
         console.log(await response.json())
