@@ -105,7 +105,6 @@ export const CreatorLock = ({
 
   // Some sanitization of strings to display
   const name = lock.name || 'New Lock'
-
   const lockVersion = lock.publicLockVersion || '1'
 
   const edit = () => {
@@ -125,6 +124,19 @@ export const CreatorLock = ({
             rel="noopener noreferrer"
           >
             read this important message
+          </a>
+          .
+        </LockWarning>
+      )}
+      {lock.isCompromised && (
+        <LockWarning>
+          Your lock appears to be compromised, please{' '}
+          <a
+            href={`/upgrade?locks=${lock.address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            upgrade to a recent version
           </a>
           .
         </LockWarning>
