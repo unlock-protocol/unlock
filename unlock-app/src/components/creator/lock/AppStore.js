@@ -153,24 +153,6 @@ const AppStore = ({ lock }) => {
   return (
     <Wrapper>
       <Details>
-        {
-          lock.network === 100 || lock.network === 134 || lock.network === 4 // show on rinkeby for debug
-            ?
-            <Details>
-              <DetailTitle>Security Upgrade</DetailTitle>
-              <DetailBlock>
-                <p>
-                  We detected a security issue with your current lock
-                  that may lead to a loss of your lock and associated tokens.
-                  <br />
-                  Please <a href={`/upgrade?locks=${lock.address}`} >
-                    upgrade your lock
-                  </a> to a newer version to fix it.
-                </p>
-              </DetailBlock>
-            </Details>
-            : null
-        }
         <DetailTitle>Generate Purchase Addresses</DetailTitle>
         <p>
           Generate purchase addresses that you can share with your fans if you
