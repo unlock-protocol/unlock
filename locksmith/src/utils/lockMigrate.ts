@@ -200,7 +200,7 @@ export default async function lockMigrate({
   })
 
   // update metadata
-  if (symbol != 'UDT') {
+  if (symbol != 'KEY') {
     const txSymbol = await newLock.updateLockSymbol(symbol)
     await txSymbol.wait()
     migrateLogEvent.emit('migrateLock', {
