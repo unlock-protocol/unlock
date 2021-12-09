@@ -62,7 +62,7 @@ module.exports = {
     'jest/no-focused-tests': 'error',
     'jest/prefer-expect-assertions': 'error',
     'react/jsx-props-no-spreading': 0, // TODO: consider changing to error to tighten things up
-    'react/function-component-definition': 'warn',
+    'react/function-component-definition': 'off',
     'import/prefer-default-export': 'off',
     semi: ['error', 'never'],
     'import/extensions': [2, 'never'],
