@@ -20,6 +20,7 @@ describe('exportStatic', () => {
       '/keychain': { page: '/keychain' },
       '/login': { page: '/login' },
       '/signup': { page: '/signup' },
+      '/upgrade': { page: '/upgrade' },
       '/settings': { page: '/settings' },
       '/recover': { page: '/recover' },
       '/verification': { page: '/verification' },
