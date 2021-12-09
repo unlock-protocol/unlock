@@ -20,4 +20,7 @@ export class LockMigrations extends Model<LockMigrations> {
 
   @Column
   chain!: number
+
+  @Column
+  newChain!: number
 }

@@ -16,6 +16,12 @@ module.exports = {
       chain: {
         type: Sequelize.INTEGER,
       },
+      newChain: {
+        type: Sequelize.INTEGER,
+      },
+      initiatedBy: {
+        type: Sequelize.STRING,
+      },
       logs: {
         type: Sequelize.TEXT,
       },

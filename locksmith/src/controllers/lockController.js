@@ -55,7 +55,7 @@ const lockMigrate = async (req, res) => {
   const chainId = req.chain
 
   const databaseLock = await getLockByAddress(lockAddress)
-  if (!databaseLock) res.send(404, 'Missing lock')
+  if (!databaseLock) return res.send(404, 'Missing lock')
 
   // record the migration in db
   const dbRecord = await LockMigrations.create({
@@ -98,7 +98,7 @@ const lockMigrateStatus = async (req, res) => {
   const { lockAddress } = req.params
 
   const databaseLock = await getLockByAddress(lockAddress)
-  if (!databaseLock) res.send(404, 'Missing lock')
+  if (!databaseLock) return res.status(404).send('Missing lock')
 
   const lockMigration = await getLockMigrations(lockAddress)
   res.json(lockMigration)

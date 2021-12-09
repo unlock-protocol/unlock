@@ -84,11 +84,7 @@ export async function getKeyHolderMetadata(
 }
 
 export async function getLockMigrations(lockAddress: string) {
-  LockMigrations.findOne({
-    where: {
-      address: lockAddress,
-    },
-  })
+  LockMigrations.findOne({ where: { lockAddress } })
 }
 
 export async function updateLockMigrationsLog(
