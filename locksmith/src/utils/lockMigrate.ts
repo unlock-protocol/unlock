@@ -229,7 +229,7 @@ export default async function lockMigrate({
     })
   }
 
-  if (symbol != 'UDT') {
+  if (symbol != 'KEY') {
     const txSymbol = await newLock.updateLockSymbol(symbol)
     await txSymbol.wait()
     migrateLogEvent.emit('migrateLock', {
