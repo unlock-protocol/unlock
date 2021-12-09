@@ -20,7 +20,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
 
   const upgradeLock = async (event: any) => {
     event.preventDefault()
-    if (typeof fetch !== 'undefined') {
+    if (typeof fetch !== 'undefined' && network) {
       try {
         const response = await fetch(
           `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
@@ -31,6 +31,8 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
         console.log(error)
         setError('Fail to upgrade. Please refresh and try again.')
       }
+    } else {
+      setError('Network not set. aborting.')
     }
     return false
   }
