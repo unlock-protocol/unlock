@@ -17,6 +17,7 @@ const {
   getLocksByOwner,
   createLock,
   updateLockMigrationsLog,
+  getLockMigrations,
 } = lockOperations
 
 const lockSave = async (req, res) => {
@@ -91,6 +92,16 @@ const lockMigrate = async (req, res) => {
       migrated: false,
     })
   }
+}
+
+const lockMigrateStatus = async (req, res) => {
+  const { lockAddress } = req.params
+
+  const databaseLock = await getLockByAddress(lockAddress)
+  if (!databaseLock) res.send(404, 'Missing lock')
+
+  const lockMigration = await getLockMigrations(lockAddress)
+  res.json(lockMigration)
 }
 
 const lockOwnerGet = async (req, res) => {
@@ -232,6 +243,7 @@ const changeLockIcon = async (req, res) => {
 module.exports = {
   lockGet,
   lockMigrate,
+  lockMigrateStatus,
   lockOwnerGet,
   lockSave,
   lockOwnershipCheck,
