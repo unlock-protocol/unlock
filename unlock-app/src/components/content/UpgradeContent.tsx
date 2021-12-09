@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-import { useLocks } from '../../hooks/useLocks'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
-import Loading from '../interface/Loading'
+import { Heading, Instructions } from '../interface/FinishSignup'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 
@@ -13,41 +12,35 @@ interface UpgradeContentProps {
   query: any
 }
 
-const upgradeLock = async (event, lockUpgradeURL) => {
-  event.preventDefault()
-  console.log(lockUpgradeURL)
-  if (typeof fetch !== 'undefined') {
-    const response = await fetch(lockUpgradeURL, { method: 'POST' })
-    console.log(await response.json())
-  }
-  return false
-}
-
-const ButtonToUpgradeLock = function ({ lockAddress }) {
-  console.log(lockAddress)
+export const UpgradeContent = ({ query }: UpgradeContentProps) => {
   const { account, network } = useContext(AuthenticationContext)
-  const { loading, locks, addLock, error } = useLocks(account)
   const config: any = useContext(ConfigContext)
-  const lock = locks.find((d) => d.address === lockAddress)
-  const lockUpgradeURL = `${config.networks[network].locksmith}/upgrade/${lockAddress}`
-  return (
-    <p>
-      {loading ? (
-        <Loading />
-      ) : (
-        <Button
-          href={lockUpgradeURL}
-          onClick={(event) => upgradeLock(event, lockUpgradeURL)}
-        >
-          Upgrade your lock
-        </Button>
-      )}
-    </p>
-  )
-}
+  const [error, setError] = useState('')
+  const lockAddress = query.locks
 
-export const UpgradeContent = function ({ query }: UpgradeContentProps) {
-  const { account, network } = useContext(AuthenticationContext)
+  const upgradeLock = async (event: any) => {
+    event.preventDefault()
+    if (typeof fetch !== 'undefined') {
+      try {
+        const response = await fetch(
+          `${config.networks[network].locksmith}/upgrade/${lockAddress}`,
+          { method: 'POST' }
+        )
+        console.log(await response.json())
+      } catch (error: any) {
+        console.log(error)
+        setError('Fail to upgrade. Please refresh and try again.')
+      }
+    }
+    return false
+  }
+
+  useEffect(() => {
+    const url = new window.URL(window.location.href)
+    if (!url.searchParams.get('locks')) {
+      setError('Missing lock param!')
+    }
+  })
 
   return (
     <Layout title="Upgrade Lock">
@@ -55,12 +48,25 @@ export const UpgradeContent = function ({ query }: UpgradeContentProps) {
         <title>{pageTitle('Upgrade Lock')}</title>
       </Head>
       <Account />
-      {account && network ? (
+      <Heading>Upgrade your Lock</Heading>
+      <Instructions>
+        A new version of Unlock is available. Please click below to upgrade your
+        lock and fix existing security issues.
+      </Instructions>
+      <p>
+        Note: An identical lock with a new address will be created, containing
+        all existing content.{' '}
+        <b>
+          Once the migration has suceeded, please update your system with the
+          new lock address.
+        </b>
+      </p>
+      {error && <p>{error}</p>}
+      {!account && <p>Please authentificate to upgrade this lock</p>}
+      {account && !error && (
         <p>
-          <ButtonToUpgradeLock lockAddress={query.locks} />
+          <Button onClick={upgradeLock}>Upgrade your lock now</Button>
         </p>
-      ) : (
-        <p>Please authentificate to upgrade this lock</p>
       )}
     </Layout>
   )
@@ -69,11 +75,11 @@ export const UpgradeContent = function ({ query }: UpgradeContentProps) {
 const Button = styled.button`
   cursor: pointer;
   border: 3px solid #d8d8d8;
-  border-radius: 3px;
+  border-radius: 15px;
   font-size: 1.3em;
   background-color: transparent;
   display: block;
-  padding: 10px 50px;
+  padding: 10px 20px;
   color: rgb(106, 106, 106);
   margin-top: 20px;
   margin-left: auto;
