@@ -23,7 +23,7 @@ Over time, lower priced NFTs can grow in value, but only if the experience assoc
 
 The most powerful part of building on top of Unlock is that ContentRoom Creators will automatically have the ability to move across physical, online, and metaverse realms. For example, the ticket you buy to a physical concert could immediately give you access to a ContentRoom. In the ContentRoom, the artist you’re going to see would engage with concertgoers in the weeks leading up to the performance. Then when the time comes, you could show up to the concert with your NFT ticket to enter the venue. If you can’t make it in person, you might pop into Decentraland instead to gain access to a livestream party we’re hosting in the metaverse.
 
-The sweetest part is that Content Rooms gains these abilities simply because we’re built on Unlock. We didn’t need to spend time integrating into Decentraland or Discord — thanks to the other members of the [UnlockDAO](https://unlock-protocol.com/blog/unlock-dao) who did. Creators and Organizations using ContentRooms will benefit from their work and vice versa.
+The sweetest part is that Content Rooms gains these abilities simply because we’re built on Unlock. We didn’t need to spend time integrating into Decentraland or Discord — thanks to the other members of the [UnlockDAO](https://unlock-protocol.com/blog/unlock-dao) who did. Creators and organizations using Content Rooms will benefit from their work and vice versa.
 
 ## Reducing the friction to purchase
 
