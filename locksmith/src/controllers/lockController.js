@@ -1,9 +1,9 @@
 import parseDataUri from 'parse-data-uri'
+import { Worker } from 'worker_threads'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
-import migrateLock, { migrateLogEvent } from '../utils/lockMigrate'
 import { LockIcons, LockMigrations } from '../models'
 
 import logger from '../logger'
@@ -42,13 +42,6 @@ const lockGet = async (req, res) => {
 
   res.json(baseTokenData)
 }
-
-migrateLogEvent.on('migrateLock', async ({ recordId, msg }) => {
-  // eslint-disable-next-line no-console
-  console.log('migrateLogEvent', recordId, msg)
-  await updateLockMigrationsLog(recordId, msg)
-})
-
 // ?lockAddress
 // pass ?force=1 param to bypass unique check
 const lockMigrate = async (req, res) => {
@@ -80,32 +73,45 @@ const lockMigrate = async (req, res) => {
   })
   const recordId = dbRecord.dataValues.id
 
-  try {
-    // init migrate process
-    const { newLockAddress } = await migrateLock({
+  // spawn worker to migrate the lock
+  const worker = new Worker('../utils/lockMigrate', {
+    workerData: {
       lockAddress,
       unlockVersion,
       chainId,
       recordId,
-    })
+    },
+  })
 
-    // update db on success
+  worker.on('message', (migrationUpdate, { recordId, msg, newLockAddress }) => {
+    // eslint-disable-next-line no-console
+    console.log(migrationUpdate)
+    updateLockMigrationsLog(recordId, msg)
+    if (newLockAddress) {
+      dbRecord.update({
+        newLockAddress,
+        migrated: true,
+      })
+    }
+  })
+
+  worker.on('error', (error) => {
+    // eslint-disable-next-line no-console
+    console.log(error)
+    updateLockMigrationsLog(recordId, error.message)
     dbRecord.update({
-      newLockAddress,
-      migrated: true,
-    })
-
-    res.json({
-      lockAddress,
-      newLockAddress,
-    })
-  } catch (error) {
-    await updateLockMigrationsLog(recordId, error.message)
-    res.status(503).json({
-      error: error.message,
       migrated: false,
     })
-  }
+  })
+
+  worker.on('exit', (exitCode) => {
+    // eslint-disable-next-line no-console
+    console.log(`${exited with code} exitCode`)
+  })
+  res.json({
+    lockAddress,
+    message: 'Lock migration initiated.',
+  })
 }
 
 const lockMigrateStatus = async (req, res) => {
