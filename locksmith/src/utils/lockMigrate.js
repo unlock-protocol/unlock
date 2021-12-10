@@ -5,12 +5,6 @@ import { networks } from '@unlock-protocol/networks'
 import { parentPort, workerData } from 'worker_threads'
 import listManagers from './lockManagers'
 import { purchaserCredentials } from '../../config/config'
-// interface LockClonerProps {
-//   lockAddress: string
-//   unlockVersion: Number
-//   chainId: number
-//   recordId: number
-// }
 
 export async function migrateLock({
   lockAddress,
@@ -26,12 +20,7 @@ export async function migrateLock({
   let serializerAddress
   let provider
   let subgraphURI
-  if (chainId === 31337) {
-    serializerAddress = process.env.SERIALIZER_ADDRESS
-    unlockAddress = process.env.UNLOCK_ADDRESS
-    provider = 'http://eth-node:8545'
-    subgraphURI = 'http://graph-node:8000'
-  } else if (chainId === 100 || chainId === 137) {
+  if (chainId === 100 || chainId === 137 || chainId === 31337) {
     ;({ unlockAddress, serializerAddress, provider, subgraphURI } = network)
   } else {
     throw new Error(
@@ -260,11 +249,16 @@ export async function migrateLock({
   return newLockAddress
 }
 
-parentPort?.on('message', async (param) => {
+parentPort.on('message', (param) => {
   console.log(param)
   console.log(workerData)
   if (parentPort) {
-    const newLockAddress = await migrateLock(workerData)
-    parentPort.postMessage({ newLockAddress })
+    migrateLock(workerData)
+      .then((newLockAddress) => {
+        parentPort.postMessage({ newLockAddress })
+      })
+      .catch((error) => {
+        parentPort.postMessage({ error })
+      })
   }
 })
