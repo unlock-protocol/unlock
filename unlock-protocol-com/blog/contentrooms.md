@@ -30,4 +30,7 @@ In the short term, web3 is still really hard to understand for most people. It i
 Our vision is to make web3 friendly.
 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TEm82GVDYms" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 *Chris Cacace is the Founder and CEO of Countent Rooms and presented at Unlock's [Developer Meetup](https://youtu.be/s7w_MDmqeUQ?t=412).*
