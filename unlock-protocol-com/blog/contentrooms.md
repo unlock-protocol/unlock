@@ -15,7 +15,7 @@ The level of access Creators have to their following makes fandom feel more like
 
 ## NFTs as stores of Value
 
-NFTs are unique because they can transfer and hold value at any level. On a Layer2 Chain like Polygon, a single NFT Key can be minted from an Unlock Lock for a cost lower than a dollar (including gas!). Many are still not aware that NFTs can be bought and transferred at such low prices. Thanks to the KeyPurchaser function, we will make this pricing available for all users - whether they can “bridge Polygon” or not.
+NFTs are unique because they can transfer and hold value at any level. On a Layer2 chain like Polygon, a single NFT Key can be minted from an Unlock Lock for a cost lower than a dollar (including gas!). Many are still not aware that NFTs can be bought and transferred at such low prices. Thanks to the KeyPurchaser function, we will make this pricing available for all users - whether they can “bridge Polygon” or not.
 
 Over time, lower priced NFTs can grow in value, but only if the experience associated with it is memorable and the NFT keeps utility. Content Rooms’ goal is to help associate NFTs with incredible experiences and lifelong memories. Imagine if you bought one of twenty NFTs to a ContentRoom that Post Malone made early on in his career - and then he reopened the Room today. What might it be worth?
 
