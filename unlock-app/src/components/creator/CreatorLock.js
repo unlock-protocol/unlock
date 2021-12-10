@@ -136,7 +136,7 @@ export const CreatorLock = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            upgrade to a recent version
+            clone it to use a new version of Unlock.
           </a>
           .
         </LockWarning>
