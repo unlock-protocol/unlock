@@ -30,7 +30,7 @@ export const CloneContent = ({ query }: CloneContentProps) => {
     if (typeof fetch !== 'undefined' && network) {
       try {
         const response = await fetch(
-          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
+          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate?signee=${account}`,
           { method: 'POST' }
         )
         setLockMigration(await response.json())
