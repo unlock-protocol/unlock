@@ -16,6 +16,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
   const { account, network } = useContext(AuthenticationContext)
   const config: any = useContext(ConfigContext)
   const [error, setError] = useState('')
+  const [lockMigrations, setLockMigrations] = useState({})
   const lockAddress = query.locks
 
   const upgradeLock = async (event: any) => {
@@ -26,7 +27,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
           `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
           { method: 'POST' }
         )
-        console.log(await response.json())
+        setLockMigrations(await response.json())
       } catch (error: any) {
         console.log(error)
         setError('Fail to clone. Please refresh and try again.')
@@ -37,11 +38,27 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
     return false
   }
 
+  const fetchLockMigrations = async () => {
+    if (network) {
+      try {
+        const response = await fetch(
+          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
+          { method: 'GET' }
+        )
+        setLockMigrations(await response.json())
+      } catch (error: any) {
+        console.log(error)
+      }
+    }
+  }
+
   useEffect(() => {
     const url = new window.URL(window.location.href)
     if (!url.searchParams.get('locks')) {
       setError('Missing lock param!')
     }
+    // fetch lock
+    fetchLockMigrations().catch(console.error)
   })
 
   return (
@@ -68,6 +85,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
           <Button onClick={upgradeLock}>Clone your lock now</Button>
         </p>
       )}
+      {lockMigrations && <p>{lockMigrations}</p>}
     </Layout>
   )
 }
