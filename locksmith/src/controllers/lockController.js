@@ -17,7 +17,7 @@ const {
   getLocksByOwner,
   createLock,
   updateLockMigrationsLog,
-  getLockMigrations,
+  getLockMigration,
 } = lockOperations
 
 const lockSave = async (req, res) => {
@@ -49,13 +49,27 @@ migrateLogEvent.on('migrateLock', async ({ recordId, msg }) => {
   await updateLockMigrationsLog(recordId, msg)
 })
 
+// ?lockAddress
+// pass ?force=1 param to bypass unique check
 const lockMigrate = async (req, res) => {
-  const { lockAddress } = req.params
+  const { lockAddress, force } = req.params
   const unlockVersion = req.query.unlockVersion || 9
   const chainId = req.chain
 
   const databaseLock = await getLockByAddress(lockAddress)
   if (!databaseLock) return res.send(404, 'Missing lock')
+
+  const lockMigration = await getLockMigration(lockAddress)
+  if (lockMigration.success) {
+    return res.send(
+      401,
+      `Lock already migrated to ${lockMigration.newLockAddress}`
+    )
+  }
+
+  if (lockMigration && !force) {
+    return res.send(401, 'A migration is already ongoing')
+  }
 
   // record the migration in db
   const dbRecord = await LockMigrations.create({
@@ -100,7 +114,7 @@ const lockMigrateStatus = async (req, res) => {
   const databaseLock = await getLockByAddress(lockAddress)
   if (!databaseLock) return res.status(404).send('Missing lock')
 
-  const lockMigration = await getLockMigrations(lockAddress)
+  const lockMigration = await getLockMigration(lockAddress)
   res.json(lockMigration)
 }
 

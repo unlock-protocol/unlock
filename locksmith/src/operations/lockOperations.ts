@@ -83,8 +83,12 @@ export async function getKeyHolderMetadata(
   })
 }
 
-export async function getLockMigrations(lockAddress: string) {
-  LockMigrations.findOne({ where: { lockAddress } })
+// get latest lock migration record from DB
+export async function getLockMigration(lockAddress: string) {
+  LockMigrations.findOne({
+    where: { lockAddress },
+    order: ['createdAt', 'DESC'],
+  })
 }
 
 export async function updateLockMigrationsLog(
