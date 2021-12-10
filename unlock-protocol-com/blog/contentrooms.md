@@ -7,6 +7,8 @@ description: Content Rooms is a platform for Creators to connect with and moneti
 image: /images/blog/contentrooms-logo-510.png
 ---
 
+*Chris Cacace is the Founder and CEO of Countent Rooms and presented at Unlock's [Developer Meetup](https://youtu.be/s7w_MDmqeUQ?t=412).*
+
 [Content Rooms](https://www.contenrooms.com) is a platform for Creators to connect with and monetize their community. We enable Creators to build a subscription fanbase and host exclusive events that are protected using Unlock Protocol.
 
 The level of access Creators have to their following makes fandom feel more like friendship. This social phenomena is changing media as quickly as decentralization is changing the web. As Creators gain bigger followings, it’s important that they maintain control of their relationships. We’re using Unlock to empower both Fans and Creators to build and benefit from the value they generate together.
@@ -29,8 +31,4 @@ In the short term, web3 is still really hard to understand for most people. It i
 
 Our vision is to make web3 friendly.
 
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/TEm82GVDYms" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-*Chris Cacace is the Founder and CEO of Countent Rooms and presented at Unlock's [Developer Meetup](https://youtu.be/s7w_MDmqeUQ?t=412).*
