@@ -1,29 +1,26 @@
+// NB: keeping this file as JS (instead of TS) so it can be used as a node worker
 import { ethers, Wallet } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
-import { NetworkConfig } from '@unlock-protocol/types'
 import { networks } from '@unlock-protocol/networks'
 import { parentPort, workerData } from 'worker_threads'
 import listManagers from './lockManagers'
 import { purchaserCredentials } from '../../config/config'
-
-interface LockClonerProps {
-  lockAddress: string
-  unlockVersion: Number
-  chainId: number
-  recordId: number
-}
+// interface LockClonerProps {
+//   lockAddress: string
+//   unlockVersion: Number
+//   chainId: number
+//   recordId: number
+// }
 
 export async function migrateLock({
   lockAddress,
   unlockVersion,
   chainId,
   recordId,
-}: LockClonerProps) {
+}) {
   if (!parentPort) return
-  // super complicated parsing to make ts happy ;-)
-  const [, network]: [string, NetworkConfig] = Object.entries(networks).find(
-    ([, n]) => n.id === chainId
-  ) as [string, NetworkConfig]
+
+  const [, network] = Object.entries(networks).find(([, n]) => n.id === chainId)
 
   let unlockAddress
   let serializerAddress
@@ -86,8 +83,8 @@ export async function migrateLock({
   ]
 
   // get proper unlock
-  const { abi: unlockAbi } = contracts[`UnlockV${unlockVersion}` as keyof {}]
-  const unlock = new ethers.Contract(unlockAddress, unlockAbi, signer)
+  const { abi } = contracts[`UnlockV${unlockVersion}`]
+  const unlock = new ethers.Contract(unlockAddress, abi, signer)
 
   // create the new lock
   let txLockCreate
@@ -96,7 +93,7 @@ export async function migrateLock({
     txLockCreate = await unlock.createLock(...lockArgs, salt)
   } else {
     // @ts-ignore
-    const calldata = await unlockAbi.encodeFunctionData(
+    const calldata = await abi.encodeFunctionData(
       'initialize(address,uint256,address,uint256,uint256,string)',
       [signer.address, ...lockArgs]
     )
@@ -104,7 +101,7 @@ export async function migrateLock({
   }
   // gbet new lock address
   const { events, transactionHash } = await txLockCreate.wait()
-  const { args } = events.find(({ event }: any) => event === 'NewLock')
+  const { args } = events.find(({ event }) => event === 'NewLock')
   const { newLockAddress } = args
 
   parentPort.postMessage({
@@ -128,9 +125,9 @@ export async function migrateLock({
     keyManagers
   )
   const { events: keyEvents } = await keyTx.wait()
-  const transfers = keyEvents.filter(({ event }: any) => event === 'Transfer')
+  const transfers = keyEvents.filter(({ event }) => event === 'Transfer')
   const keyManagersChanges = keyEvents.filter(
-    ({ event }: any) => event === 'KeyManagerChanged'
+    ({ event }) => event === 'KeyManagerChanged'
   )
   parentPort.postMessage({
     recordId,
@@ -150,7 +147,7 @@ export async function migrateLock({
         lockAddress: newLockAddress,
         subgraphURI,
       })
-    } catch (error: any) {
+    } catch (error) {
       parentPort.postMessage({
         recordId,
         msg: error.message,
@@ -163,7 +160,7 @@ export async function migrateLock({
         msg: `LOCK > managers for the lock '${await newLock.name()}':`,
       })
       let msg = ''
-      managers.forEach((account: string, i: number) => {
+      managers.forEach((account, i) => {
         msg = `${msg}\n[${i}]: ${account}`
       })
       parentPort.postMessage({
@@ -172,12 +169,12 @@ export async function migrateLock({
       })
 
       const txs = await Promise.all(
-        managers.map((manager: string) => newLock.addLockManager(manager))
+        managers.map((manager) => newLock.addLockManager(manager))
       )
-      const waits = await Promise.all(txs.map((tx: any) => tx.wait()))
+      const waits = await Promise.all(txs.map((tx) => tx.wait()))
       msg = ''
       waits.forEach(({ events }) => {
-        const evt = events.find((evt: any) => evt.event === 'LockManagerAdded')
+        const evt = events.find((evt) => evt.event === 'LockManagerAdded')
         msg = `${msg}\n LOCK CLONE > ${evt.args.account} added as lock manager.`
       })
       parentPort.postMessage({

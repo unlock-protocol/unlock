@@ -49,11 +49,11 @@ const lockMigrate = async (req, res) => {
   const unlockVersion = req.query.unlockVersion || 9
   const chainId = req.chain
 
-  const databaseLock = await getLockByAddress(lockAddress)
-  if (!databaseLock) return res.send(404, 'Missing lock')
+  // const databaseLock = await getLockByAddress(lockAddress)
+  // if (!databaseLock) return res.send(404, 'Missing lock')
 
   const lockMigration = await getLockMigration(lockAddress)
-  if (lockMigration.success) {
+  if (lockMigration && lockMigration.success) {
     return res.send(
       401,
       `Lock already migrated to ${lockMigration.newLockAddress}`
@@ -74,7 +74,7 @@ const lockMigrate = async (req, res) => {
   const recordId = dbRecord.dataValues.id
 
   // spawn worker to migrate the lock
-  const worker = new Worker('../utils/lockMigrate', {
+  const worker = new Worker('../utils/lockMigrate.js', {
     workerData: {
       lockAddress,
       unlockVersion,
@@ -83,9 +83,10 @@ const lockMigrate = async (req, res) => {
     },
   })
 
-  worker.on('message', (migrationUpdate, { recordId, msg, newLockAddress }) => {
+  worker.on('message', (migrationUpdate) => {
     // eslint-disable-next-line no-console
     console.log(migrationUpdate)
+    const { recordId, msg, newLockAddress } = migrationUpdate
     updateLockMigrationsLog(recordId, msg)
     if (newLockAddress) {
       dbRecord.update({
@@ -106,8 +107,9 @@ const lockMigrate = async (req, res) => {
 
   worker.on('exit', (exitCode) => {
     // eslint-disable-next-line no-console
-    console.log(`${exited with code} exitCode`)
+    console.log(`exited with code ${exitCode}`)
   })
+
   res.json({
     lockAddress,
     message: 'Lock migration initiated.',

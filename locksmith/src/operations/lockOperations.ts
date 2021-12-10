@@ -87,7 +87,7 @@ export async function getKeyHolderMetadata(
 export async function getLockMigration(lockAddress: string) {
   LockMigrations.findOne({
     where: { lockAddress },
-    order: ['createdAt', 'DESC'],
+    order: [['createdAt', 'DESC']],
   })
 }
 
