@@ -55,7 +55,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
         We had to redeploy Unlock on {config.networks[network].name}. We strongly recommend that you clone your lock in order to use that new version of Unlock.
       </Instructions>
       <p>
-        Note: An identical lock with a new address will be created, containing
+        Note: An identical lock with a new address will be created, with all members in an identical state.
         all existing content.{' '}
         <b>
           Once the migration has suceeded, please update your system with the
