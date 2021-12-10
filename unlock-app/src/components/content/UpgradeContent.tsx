@@ -65,7 +65,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
       {!account && <p>Please authentificate to clone this lock</p>}
       {account && !error && (
         <p>
-          <Button onClick={upgradeLock}>Upgrade your lock now</Button>
+          <Button onClick={upgradeLock}>Clone your lock now</Button>
         </p>
       )}
     </Layout>
