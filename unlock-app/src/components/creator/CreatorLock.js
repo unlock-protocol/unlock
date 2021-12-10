@@ -107,6 +107,20 @@ export const CreatorLock = ({
   const name = lock.name || 'New Lock'
   const lockVersion = lock.publicLockVersion || '1'
 
+  // check if compromised (Nov 22nd, 2021 attack)
+  const compromisedContracts = {
+    100: '0x3C6e461341AdbF7C0947085e86B4A6f35Ff2F801',
+    137: '0x14bb3586ce2946e71b95fe00fc73dd30ed830863',
+    4: '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b', // for testing purposes only
+  }
+
+  // check if lock is using a past/unsupported version of Unlock contract
+  const isOutdated =
+    network.previousDeploy &&
+    network.previousDeploy
+      .map((d) => d.unlockAddress)
+      .includes(lock.unlockContractAddress)
+
   const edit = () => {
     setShowDrawer('')
     setEditing(!editing)
@@ -128,7 +142,7 @@ export const CreatorLock = ({
           .
         </LockWarning>
       )}
-      {lock.isCompromised && (
+      {isOutdated && (
         <LockWarning>
           Your lock was deployed on an older Unlock contract, please{' '}
           <a

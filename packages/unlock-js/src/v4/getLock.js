@@ -85,18 +85,7 @@ export default async function (address, provider) {
   }
   delete update.tokenAddress
 
-  // check if compromised (Nov 22nd, 2021 attack)
   if (update.unlockProtocol) {
-    const compromisedContracts = {
-      100: '0x3C6e461341AdbF7C0947085e86B4A6f35Ff2F801',
-      137: '0x14bb3586ce2946e71b95fe00fc73dd30ed830863',
-      4: '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b', // for testing purposes only
-    }
-
-    if (update.unlockProtocol === compromisedContracts[chainId]) {
-      update.isCompromised = true
-    }
-
     // rename to make it clearer
     update.unlockContractAddress = update.unlockProtocol
     delete update.unlockProtocol
