@@ -1,6 +1,6 @@
 ---
 title: Creators and their fans connect with Content Rooms
-subTitle: Online events that help build a sbscription fanbase
+subTitle: Online events that help build a subscription fanbase
 authorName: Chris Cacace
 publishDate: December 10, 2021
 description: Content Rooms is a platform for Creators to connect with and monetize their community that is powered by Unlock Protocol.
