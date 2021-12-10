@@ -42,6 +42,11 @@ export const HomeContent = ({ posts }) => {
         <OpenGraphTags />
       </Head>
 
+      <Banner 
+        title="This is an example banner" 
+        visibleTime={3000}
+      /Banner>
+          
       <Box hero color="var(--white)">
         <Columns>
           <Column>
