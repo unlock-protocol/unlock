@@ -52,7 +52,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
       <Account />
       <Heading>Upgrade your Lock</Heading>
       <Instructions>
-        A new version of Unlock is available. Please click below to upgrade your
+        We had to redeploy Unlock on {config.networks[network].name}. We strongly recommend that you clone your lock in order to use that new version of Unlock.
         lock and fix existing security issues.
       </Instructions>
       <p>
