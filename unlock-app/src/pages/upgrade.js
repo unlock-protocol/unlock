@@ -1,11 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import UpgradeContent from '../components/content/UpgradeContent'
+import CloneContent from '../components/content/CloneContent'
 
 const Upgrades = () => {
   const { query } = useRouter()
-  return <UpgradeContent query={query} />
+  return <CloneContent query={query} />
 }
 
 export default Upgrades
