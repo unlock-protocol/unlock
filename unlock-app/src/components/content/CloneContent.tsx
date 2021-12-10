@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
+import Loading from '../interface/Loading'
 import { Heading, Instructions } from '../interface/FinishSignup'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
@@ -16,21 +17,28 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   const { account, network } = useContext(AuthenticationContext)
   const config: any = useContext(ConfigContext)
   const [error, setError] = useState('')
-  const [lockMigrations, setLockMigrations] = useState({})
+  const [isCloning, setIsCloning] = useState(false)
+  const [lockMigration, setLockMigration] = useState({
+    success: false,
+    logs: [],
+  })
   const lockAddress = query.locks
 
   const cloneLock = async (event: any) => {
     event.preventDefault()
+    setIsCloning(true)
     if (typeof fetch !== 'undefined' && network) {
       try {
         const response = await fetch(
           `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
           { method: 'POST' }
         )
-        setLockMigrations(await response.json())
+        setLockMigration(await response.json())
+        setIsCloning(false)
       } catch (error: any) {
         console.log(error)
         setError('Fail to clone. Please refresh and try again.')
+        setIsCloning(false)
       }
     } else {
       setError('Network not set. aborting.')
@@ -38,14 +46,14 @@ export const CloneContent = ({ query }: CloneContentProps) => {
     return false
   }
 
-  const fetchLockMigrations = async () => {
+  const fetchLockMigration = async () => {
     if (network) {
       try {
         const response = await fetch(
           `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
           { method: 'GET' }
         )
-        setLockMigrations(await response.json())
+        setLockMigration(await response.json())
       } catch (error: any) {
         console.log(error)
       }
@@ -58,7 +66,7 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       setError('Missing lock param!')
     }
     // fetch lock
-    fetchLockMigrations().catch(console.error)
+    fetchLockMigration().catch(console.error)
   })
 
   return (
@@ -83,12 +91,34 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       </p>
       {error && <p>{error}</p>}
       {!account && <p>Please authentificate to clone this lock</p>}
-      {account && !error && (
+      {account && !error && !Object.keys(lockMigration).length && (
         <p>
           <Button onClick={cloneLock}>Clone your lock now</Button>
         </p>
       )}
-      {lockMigrations && <p>{lockMigrations}</p>}
+      {isCloning && <Loading />}
+      {Object.keys(lockMigration).length && !lockMigration.success && (
+        <div>
+          <h2>Migration ongoing...</h2>
+          <p>
+            <pre>{lockMigration.logs}</pre>
+          </p>
+          <p>
+            If you experience any problem during the migration, please reach our
+            for us at{' '}
+            <a href="mailto:hello@unlock-protocol.com">
+              hello@unlock-protocol.com
+            </a>{' '}
+            or on our Discord developer channel.
+          </p>
+        </div>
+      )}
+      {Object.keys(lockMigration).length && lockMigration.success && (
+        <p>
+          Migration successful! The new lock address is
+          <em>lockMigration.newAddress</em>
+        </p>
+      )}
     </Layout>
   )
 }
