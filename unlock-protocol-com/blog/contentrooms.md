@@ -1,3 +1,12 @@
+---
+title: UPDATE THIS
+subTitle: UPDATE THIS
+authorName: Chris Cacace
+publishDate: December 10, 2021
+description: UPDATE THIS
+image: /images/blog/UPDATETHIS/UPDATETHIS.PNG
+---
+
 Content Rooms is a platform for Creators to connect with and monetize their community. We enable Creators to build a subscription fanbase and host exclusive events that are protected using Unlock Protocol.
 
 The level of access Creators have to their following makes fandom feel more like friendship. This social phenomena is changing media as quickly as decentralization is changing the web. As Creators gain bigger followings, it’s important that they maintain control of their relationships. We’re using Unlock to empower both Fans and Creators to build and benefit from the value they generate together.
