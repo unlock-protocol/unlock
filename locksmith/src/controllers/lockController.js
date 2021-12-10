@@ -1,4 +1,5 @@
 import parseDataUri from 'parse-data-uri'
+import path from 'path'
 import { Worker } from 'worker_threads'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
@@ -74,7 +75,7 @@ const lockMigrate = async (req, res) => {
   const recordId = dbRecord.dataValues.id
 
   // spawn worker to migrate the lock
-  const worker = new Worker('../utils/lockMigrate.js', {
+  const worker = new Worker(path.join(__dirname, '/../utils/lockMigrate.js'), {
     workerData: {
       lockAddress,
       unlockVersion,
