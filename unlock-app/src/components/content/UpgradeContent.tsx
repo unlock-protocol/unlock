@@ -8,18 +8,18 @@ import { Heading, Instructions } from '../interface/FinishSignup'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 
-interface UpgradeContentProps {
+interface CloneContentProps {
   query: any
 }
 
-export const UpgradeContent = ({ query }: UpgradeContentProps) => {
+export const CloneContent = ({ query }: CloneContentProps) => {
   const { account, network } = useContext(AuthenticationContext)
   const config: any = useContext(ConfigContext)
   const [error, setError] = useState('')
   const [lockMigrations, setLockMigrations] = useState({})
   const lockAddress = query.locks
 
-  const upgradeLock = async (event: any) => {
+  const cloneLock = async (event: any) => {
     event.preventDefault()
     if (typeof fetch !== 'undefined' && network) {
       try {
@@ -62,9 +62,9 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
   })
 
   return (
-    <Layout title="Upgrade Lock">
+    <Layout title="Clone Lock">
       <Head>
-        <title>{pageTitle('Upgrade Lock')}</title>
+        <title>{pageTitle('Clone Lock')}</title>
       </Head>
       <Account />
       <Heading>Clone your Lock</Heading>
@@ -82,7 +82,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
       {!account && <p>Please authentificate to clone this lock</p>}
       {account && !error && (
         <p>
-          <Button onClick={upgradeLock}>Clone your lock now</Button>
+          <Button onClick={cloneLock}>Clone your lock now</Button>
         </p>
       )}
       {lockMigrations && <p>{lockMigrations}</p>}
@@ -103,4 +103,4 @@ const Button = styled.button`
   margin-left: auto;
   margin-right: auto;
 `
-export default UpgradeContent
+export default CloneContent
