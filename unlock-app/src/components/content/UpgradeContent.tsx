@@ -50,7 +50,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
         <title>{pageTitle('Upgrade Lock')}</title>
       </Head>
       <Account />
-      <Heading>Upgrade your Lock</Heading>
+      <Heading>Clone your Lock</Heading>
       <Instructions>
         We had to redeploy Unlock on {config.networks[network].name}. We strongly recommend that you clone your lock in order to use that new version of Unlock.
       </Instructions>
