@@ -29,7 +29,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
         console.log(await response.json())
       } catch (error: any) {
         console.log(error)
-        setError('Fail to upgrade. Please refresh and try again.')
+        setError('Fail to clone. Please refresh and try again.')
       }
     } else {
       setError('Network not set. aborting.')
