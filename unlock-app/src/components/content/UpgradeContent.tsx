@@ -62,7 +62,7 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
         </b>
       </p>
       {error && <p>{error}</p>}
-      {!account && <p>Please authentificate to upgrade this lock</p>}
+      {!account && <p>Please authentificate to clone this lock</p>}
       {account && !error && (
         <p>
           <Button onClick={upgradeLock}>Upgrade your lock now</Button>
