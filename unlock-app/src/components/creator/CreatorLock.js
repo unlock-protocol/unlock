@@ -130,7 +130,7 @@ export const CreatorLock = ({
       )}
       {lock.isCompromised && (
         <LockWarning>
-          Your lock appears to be compromised, please{' '}
+          Your lock was deployed on an older Unlock contract, please{' '}
           <a
             href={`/upgrade?locks=${lock.address}`}
             target="_blank"
