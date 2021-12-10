@@ -59,7 +59,6 @@ export const UpgradeContent = ({ query }: UpgradeContentProps) => {
         all existing content.{' '}
         <b>
           Once the migration has suceeded, please update your system with the
-          new lock address.
         </b>
       </p>
       {error && <p>{error}</p>}
