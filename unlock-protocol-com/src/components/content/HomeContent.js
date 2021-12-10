@@ -159,7 +159,7 @@ export const HomeContent = ({ posts }) => {
             <p style={{ marginTop: 'auto' }}>
               →{' '}
               <Link href="https://unlock-protocol.com/blog/mintgate-unlock-case-study">
-                <a>See Case Study</a>
+                <a>See Case Study.</a>
               </Link>
             </p>
           </Column>
@@ -188,7 +188,7 @@ export const HomeContent = ({ posts }) => {
             <p style={{ marginTop: 'auto' }}>
               →{' '}
               <Link href="https://unlock-protocol.com/blog/mycrypto-unlock-case-study">
-                <a>See Case Study</a>
+                <a>See Case Study.</a>
               </Link>
             </p>
           </Column>
@@ -217,7 +217,7 @@ export const HomeContent = ({ posts }) => {
             <p style={{ marginTop: 'auto' }}>
               →{' '}
               <Link href="https://unlock-protocol.com/blog/thedefiant-case-study">
-                <a>See Case Study</a>
+                <a>See Case Study.</a>
               </Link>
             </p>
           </Column>
