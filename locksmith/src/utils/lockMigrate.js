@@ -2,18 +2,13 @@
 import { ethers, Wallet } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
 import { networks } from '@unlock-protocol/networks'
-import { parentPort, workerData } from 'worker_threads'
 import listManagers from './lockManagers'
 import { purchaserCredentials } from '../../config/config'
 
-export async function migrateLock({
-  lockAddress,
-  unlockVersion,
-  chainId,
-  recordId,
-}) {
-  if (!parentPort) return
-
+export async function migrateLock(
+  { lockAddress, unlockVersion, chainId, recordId },
+  callback
+) {
   const [, network] = Object.entries(networks).find(([, n]) => n.id === chainId)
 
   let unlockAddress
@@ -35,7 +30,7 @@ export async function migrateLock({
     throw new Error(`Missing Unlock address for this chain: ${chainId}`)
   }
   const rpc = new ethers.providers.JsonRpcProvider(provider)
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
   })
@@ -93,12 +88,12 @@ export async function migrateLock({
   const { args } = events.find(({ event }) => event === 'NewLock')
   const { newLockAddress } = args
 
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`,
   })
 
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: 'CLONE LOCK > add key owners...',
   })
@@ -118,12 +113,12 @@ export async function migrateLock({
   const keyManagersChanges = keyEvents.filter(
     ({ event }) => event === 'KeyManagerChanged'
   )
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`,
   })
 
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: 'CLONE LOCK > fetching managers...',
   })
@@ -137,14 +132,14 @@ export async function migrateLock({
         subgraphURI,
       })
     } catch (error) {
-      parentPort.postMessage({
+      callback(null, {
         recordId,
         msg: error.message,
       })
       managers = []
     }
     if (managers.length) {
-      parentPort.postMessage({
+      callback(null, {
         recordId,
         msg: `LOCK > managers for the lock '${await newLock.name()}':`,
       })
@@ -152,7 +147,7 @@ export async function migrateLock({
       managers.forEach((account, i) => {
         msg = `${msg}\n[${i}]: ${account}`
       })
-      parentPort.postMessage({
+      callback(null, {
         recordId,
         msg,
       })
@@ -166,13 +161,13 @@ export async function migrateLock({
         const evt = events.find((evt) => evt.event === 'LockManagerAdded')
         msg = `${msg}\n LOCK CLONE > ${evt.args.account} added as lock manager.`
       })
-      parentPort.postMessage({
+      callback(null, {
         recordId,
         msg,
       })
     }
   } else {
-    parentPort.postMessage({
+    callback(null, {
       recordId,
       msg: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
     })
@@ -181,7 +176,7 @@ export async function migrateLock({
   // update the beneficiary
   const txBenef = await newLock.updateBeneficiary(beneficiary)
   await txBenef.wait()
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: `LOCK CLONE > ${beneficiary} set as beneficiary.`,
   })
@@ -190,7 +185,7 @@ export async function migrateLock({
   if (symbol != 'KEY') {
     const txSymbol = await newLock.updateLockSymbol(symbol)
     await txSymbol.wait()
-    parentPort.postMessage({
+    callback(null, {
       recordId,
       msg: `LOCK CLONE > Symbol updated to '${symbol}'.`,
     })
@@ -204,13 +199,13 @@ export async function migrateLock({
       const totalSupply = keyOwners.length
       const baseTokenURI = tokenURISample.slice(0, -`${totalSupply}`.length)
       await newLock.setBaseTokenURI(baseTokenURI)
-      parentPort.postMessage({
+      callback(null, {
         recordId,
         msg: `LOCK CLONE > baseTokenURI updated to '${baseTokenURI}'.`,
       })
     }
   } catch (error) {
-    parentPort.postMessage({
+    callback(null, {
       recordId,
       msg: `LOCK CLONE > baseTokenURI not set, using default. (ex. '${tokenURISample}').`,
     })
@@ -219,46 +214,34 @@ export async function migrateLock({
   if (symbol != 'KEY') {
     const txSymbol = await newLock.updateLockSymbol(symbol)
     await txSymbol.wait()
-    parentPort.postMessage({
+    callback(null, {
       recordId,
       msg: `LOCK CLONE > Symbol updated to '${symbol}'.`,
     })
   }
 
   // disable lock
-  const txDisable = await newLock.disableLock()
-  await txDisable.wait()
-  parentPort.postMessage({
-    recordId,
-    msg: 'LOCK CLONE > Origin lock has been disabled.',
-  })
+  // This will fail because we are not lock managers on the "old lock"
+  // TODO: prompt user to disable their old lock?
+  // const txDisable = await newLock.disableLock()
+  // await txDisable.wait()
+  // callback(null, {
+  //   recordId,
+  //   msg: 'LOCK CLONE > Origin lock has been disabled.',
+  // })
 
   // remove ourselves as lockManagers
   const txRemoveUs = await newLock.renounceLockManager()
   await txRemoveUs.wait()
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: 'LOCK CLONE > Removed Unlock as lock manager.',
   })
 
-  parentPort.postMessage({
+  callback(null, {
     recordId,
     msg: 'LOCK CLONE > Lock cloned successfully.',
   })
 
   return newLockAddress
 }
-
-parentPort.on('message', (param) => {
-  console.log(param)
-  console.log(workerData)
-  if (parentPort) {
-    migrateLock(workerData)
-      .then((newLockAddress) => {
-        parentPort.postMessage({ newLockAddress })
-      })
-      .catch((error) => {
-        parentPort.postMessage({ error })
-      })
-  }
-})

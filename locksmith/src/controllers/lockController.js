@@ -1,6 +1,5 @@
 import parseDataUri from 'parse-data-uri'
-import path from 'path'
-import { Worker } from 'worker_threads'
+import migrateLock from '../utils/lockMigrate'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
@@ -44,65 +43,6 @@ const lockGet = async (req, res) => {
   res.json(baseTokenData)
 }
 
-const setupMigrationWorker = ({
-  lockAddress,
-  unlockVersion,
-  chainId,
-  recordId,
-  dbRecord,
-}) => {
-  return new Promise((resolve, reject) => {
-    const worker = new Worker(
-      path.join(__dirname, '/../utils/lockMigrate.js'),
-      {
-        workerData: {
-          lockAddress,
-          unlockVersion,
-          chainId,
-          recordId,
-        },
-      }
-    )
-
-    worker.postMessage('startMigration')
-    worker.on('message', (migrationUpdate) => {
-      // eslint-disable-next-line no-console
-      const { recordId, msg, newLockAddress, error } = migrationUpdate
-      if (recordId && msg) {
-        updateLockMigrationsLog(recordId, msg)
-      }
-      if (error) {
-        dbRecord.update({
-          migrated: false,
-        })
-        reject(error)
-      }
-      if (newLockAddress) {
-        dbRecord.update({
-          newLockAddress,
-          migrated: true,
-        })
-        resolve({ newLockAddress })
-      }
-    })
-
-    worker.on('error', (error) => {
-      // eslint-disable-next-line no-console
-      console.log(error)
-      updateLockMigrationsLog(recordId, error.message)
-      dbRecord.update({
-        migrated: false,
-      })
-      reject(error)
-    })
-
-    worker.on('exit', (exitCode) => {
-      // eslint-disable-next-line no-console
-      console.log(`exited with code ${exitCode}`)
-    })
-  })
-}
-
 // ?lockAddress
 // pass ?force=1 param to bypass unique check
 const lockMigrate = async (req, res) => {
@@ -110,19 +50,16 @@ const lockMigrate = async (req, res) => {
   const unlockVersion = req.query.unlockVersion || 9
   const chainId = req.chain
 
-  // const databaseLock = await getLockByAddress(lockAddress)
-  // if (!databaseLock) return res.send(404, 'Missing lock')
-
   const lockMigration = await getLockMigration(lockAddress)
   if (lockMigration && lockMigration.success) {
     return res.send(
       401,
-      `Lock already migrated to ${lockMigration.newLockAddress}`
+      `Lock already migrated to ${lockMigration.newLockAddress}.`
     )
   }
 
   if (lockMigration && !force) {
-    return res.send(401, 'A migration is already ongoing')
+    return res.send(401, 'A migration is already ongoing.')
   }
 
   // record the migration in db
@@ -133,25 +70,42 @@ const lockMigrate = async (req, res) => {
     migrated: false,
   })
   const recordId = dbRecord.dataValues.id
-
-  // spawn worker to migrate the lock
-  setupMigrationWorker({
-    lockAddress,
-    unlockVersion,
-    chainId,
-    recordId,
-    dbRecord,
-  })
-    .then((newLockAddress) =>
-      res.json({
-        lockAddress,
+  // This is a promise but we won't await for it to resolve because it takes forever
+  // No memory leak: JS will garbage collect even if it does not "resolve".
+  migrateLock(
+    {
+      lockAddress,
+      unlockVersion,
+      chainId,
+      recordId,
+    },
+    (error, { message }) => {
+      updateLockMigrationsLog(recordId, message)
+      if (error) {
+        // "expected" error
+        const message = `Failed to migrate lock ${lockAddress}, ${chainId}. ${error.message}`
+        updateLockMigrationsLog(recordId, message)
+        logger.error(message, error)
+        dbRecord.update({
+          migrated: false,
+        })
+      }
+    }
+  )
+    .then((newLockAddress) => {
+      dbRecord.update({
         newLockAddress,
-        message: 'Lock migration initiated.',
+        migrated: true,
       })
-    )
-    .catch((e) => {
-      console.log(e)
-      res.status(500)
+    })
+    .catch((error) => {
+      // Unexpected error
+      const message = `Failed to migrate lock ${lockAddress}, ${chainId}. ${error.message}`
+      updateLockMigrationsLog(recordId, message)
+      logger.error(message, error)
+      dbRecord.update({
+        migrated: false,
+      })
     })
 
   res.json({
@@ -261,7 +215,7 @@ const lockIcon = async (req, res) => {
       }
     }
   } catch (e) {
-    console.error(`Could not serve icon for ${lockAddress}`)
+    logger.error(`Could not serve icon for ${lockAddress}`)
   } finally {
     const svg = lockIconUtils.lockIcon(lockAddress)
     res.setHeader('Content-Type', 'image/svg+xml')
