@@ -90,6 +90,7 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
   function tokenURI(
     address _lockAddress,
     address _operator,
+    address _owner,
     uint256 _tokenId,
     uint _expirationTimestamp
   ) external view returns(string memory) {
@@ -97,6 +98,7 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     string memory tokenId;
     string memory lockAddress = _lockAddress.address2Str();
     string memory operator = _operator.address2Str();
+    string memory owner = _owner.address2Str();
     string memory expirationTimestamp = _expirationTimestamp.uint2Str();
 
     if(_tokenId != 0) {
@@ -108,9 +110,13 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     return string(
       abi.encodePacked(
         baseURI,
-        lockAddress,
-        '/',
-        operator,
+        abi.encodePacked(
+          lockAddress,
+          '/',
+          owner,
+          '/',
+          operator
+        ),
         '/',
         expirationTimestamp,
         '/',

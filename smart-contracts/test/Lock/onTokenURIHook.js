@@ -37,7 +37,15 @@ contract('Lock / onTokenURIHook', (accounts) => {
   it('tokenURI should returns a custom value', async () => {
     const baseTokenURI = 'https://unlock-uri-hook.test/'
     const expirationTimestamp = await lock.keyExpirationTimestampFor(to)
-    const tokenURI = `${baseTokenURI}${lock.address.toLowerCase()}/${accounts[3].toLowerCase()}/${expirationTimestamp}/${tokenId}`
+    const params = [
+      lock.address.toLowerCase(), // lockAddress
+      to.toLowerCase(), // owner
+      accounts[3].toLowerCase(), // operator
+      expirationTimestamp, // expirationTimestamp
+      tokenId, // tokenId
+    ]
+
+    const tokenURI = `${baseTokenURI}${params.join('/')}`
     assert.equal(await lock.tokenURI(tokenId, { from: accounts[3] }), tokenURI)
   })
 
