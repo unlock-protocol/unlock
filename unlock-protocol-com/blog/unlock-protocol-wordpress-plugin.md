@@ -9,19 +9,9 @@ image: /images/blog/wordpress-plugin/unlock-wordpress.jpg
 
 ![Introducing the Unlock WordPress plugin.](/images/blog/wordpress-plugin/unlock-wordpress.jpg)
 
-## What is Unlock Protocol?
-
-Unlock is a decentralized and open-source web3 protocol for memberships that is maintained by its community. Unlock Protocol was originally created by [Unlock Inc.](https://docs.unlock-protocol.com/governance/frequently-asked-questions) Unlock's governance token is called ɄDT.
-
-In 2021, [the Unlock DAO was launched](https://unlock-protocol.com/blog/unlock-dao) to enable the community to drive future decision-making with respect to the protocol. The Unlock DAO is the decentralized organization of ɄDT token holders that govern and control the Unlock Protocol. Unlock Inc. is *one* of the stakeholders on the DAO, and we expect other organizations to emerge and eventually lead some efforts independently of Unlock Inc. 
-
-## About the Unlock Protocol WordPress plugin
-
-**What does the Unlock Protocol plugin do?**
+The [Unlock Protocol WordPress plugin](https://wordpress.org/plugins/unlock-protocol/) brings web3 to WordPress. 
 
 Unlock Protocol is a fundamental layer of web3, and uses NFTs to manage membership, access, and monetization. Unlock is used by websites and applications including [The Defiant](https://unlock-protocol.com/blog/thedefiant-case-study) (media and publishing), [MintGate](https://unlock-protocol.com/blog/mintgate-unlock-case-study) (token-gated access), [MyCrypto](https://unlock-protocol.com/blog/mycrypto-unlock-case-study) (blockchain tools), and many others.
-
-The [Unlock Protocol WordPress plugin](https://wordpress.org/plugins/unlock-protocol/) brings web3 to WordPress. 
 
 The plugin creates an Unlock Protocol block that can be used on WordPress posts and pages in the same manner as any other block. Creators can nest any "members-only" content they desire within the Unlock block. 
 
@@ -61,7 +51,7 @@ Once the block is configured, you can place other content blocks inside of it. S
 
 There is a demo site at [https://unlockwpdemo.com](https://unlockwpdemo.com). This demo site was built on top of the WordPress Twenty Twenty theme. Certain areas of the site, a fictitious site for the "UMoMA" modern art museum, are "members only" sections. To access these sections, the site visitor must "purchase" a key using the Unlock Protocol plugin. For this demonstration, the key is priced as "free," although the key "purchaser" will need to have a small amount of Polygon (Matic) in their crypto wallet to cover gas for the transaction. In a live site, the keys can be priced at any price, and can be perpetual or time-restricted (e.g. 30 days or any other length).
 
-**Want to check it out? You can install the latest version of the plugin from the [WordPress.org](http://WordPress.org) plugin repository today.**
+**Want to check it out? You can install the latest version of the plugin from the WordPress.org plugin repository today.**
 
 The plugin is here for installation or for download: [https://wordpress.org/plugins/unlock-protocol/](https://wordpress.org/plugins/unlock-protocol/) 
 
