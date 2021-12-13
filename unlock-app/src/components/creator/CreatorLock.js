@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import networks from '@unlock-protocol/networks'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
@@ -108,9 +109,12 @@ export const CreatorLock = ({
   const lockVersion = lock.publicLockVersion || '1'
 
   // check if lock is using a past/unsupported version of Unlock contract
+  console.log(network)
+  console.log(networks[network])
+  console.log(lock.unlockContractAddress)
   const isOutdated =
-    network.previousDeploy &&
-    network.previousDeploy
+    networks[network].previousDeploys &&
+    networks[network].previousDeploys
       .map((d) => d.unlockAddress)
       .includes(lock.unlockContractAddress)
 
