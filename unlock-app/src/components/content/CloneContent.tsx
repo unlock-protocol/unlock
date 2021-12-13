@@ -19,8 +19,10 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   const [error, setError] = useState('')
   const [isCloning, setIsCloning] = useState(false)
   const [lockMigration, setLockMigration] = useState({
-    success: false,
+    existing: false,
+    migrated: false,
     logs: [],
+    newLockAddress: null,
   })
   const lockAddress = query.locks
 
@@ -30,11 +32,14 @@ export const CloneContent = ({ query }: CloneContentProps) => {
     if (typeof fetch !== 'undefined' && network) {
       try {
         const response = await fetch(
-          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate?signee=${account}`,
+          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate?signee=${account}&chainId=${network}`,
           { method: 'POST' }
         )
-        setLockMigration(await response.json())
-        setIsCloning(false)
+        if (response.status === 200) {
+          setLockMigration({ ...lockMigration, existing: true })
+          // re-fetch result every 3s
+          // setInterval(() => fetchLockMigration(), 3000)
+        }
       } catch (error: any) {
         console.log(error)
         setError('Fail to clone. Please refresh and try again.')
@@ -47,13 +52,21 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   }
 
   const fetchLockMigration = async () => {
+    console.log('fetching lock migration...')
+    console.log('network')
     if (network) {
       try {
         const response = await fetch(
-          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate`,
+          `${config.networks[network].locksmith}/lock/${lockAddress}/migrate?chainId=${network}`,
           { method: 'GET' }
         )
-        setLockMigration(await response.json())
+        if (response.status === 200) {
+          const existingMigration = await response.json()
+          console.log(existingMigration)
+          setLockMigration({ existing: true, ...existingMigration })
+        } else if (response.status === 404) {
+          // no migration
+        }
       } catch (error: any) {
         console.log(error)
       }
@@ -66,7 +79,11 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       setError('Missing lock param!')
     }
     // fetch lock
-    fetchLockMigration().catch(console.error)
+    if (!lockMigration.existing) {
+      fetchLockMigration()
+        // eslint-disable-next-line promise/prefer-await-to-then
+        .catch(console.error)
+    }
   })
 
   return (
@@ -84,25 +101,22 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       </Instructions>
       <p>
         Note: An identical lock with a new address will be created, with all
-        members in an identical state. all existing content.{' '}
-        <b>
-          Once the migration has suceeded, please update your system with the
-        </b>
+        members in an identical state. all existing content. <br />
       </p>
       {error && <p>{error}</p>}
       {!account && <p>Please authentificate to clone this lock</p>}
-      {account && !error && !Object.keys(lockMigration).length && (
+      {account && !error && !lockMigration.existing && (
         <p>
           <Button onClick={cloneLock}>Clone your lock now</Button>
         </p>
       )}
       {isCloning && <Loading />}
-      {Object.keys(lockMigration).length && !lockMigration.success && (
+      {Object.keys(lockMigration).length && lockMigration.existing && (
         <div>
           <h2>Migration ongoing...</h2>
-          <p>
-            <pre>{lockMigration.logs}</pre>
-          </p>
+          <pre>
+            <code>{lockMigration.logs}</code>
+          </pre>
           <p>
             If you experience any problem during the migration, please reach our
             for us at{' '}
@@ -113,11 +127,14 @@ export const CloneContent = ({ query }: CloneContentProps) => {
           </p>
         </div>
       )}
-      {Object.keys(lockMigration).length && lockMigration.success && (
-        <p>
-          Migration successful! The new lock address is
-          <em>lockMigration.newAddress</em>
-        </p>
+      {Object.keys(lockMigration).length && lockMigration.migrated && (
+        <div>
+          <h4>
+            Migration successful! The new lock address is{' '}
+            <em>{lockMigration.newLockAddress}</em>
+          </h4>
+          <p>Please update your system with the new lock address.</p>
+        </div>
       )}
     </Layout>
   )
