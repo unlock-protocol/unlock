@@ -93,15 +93,15 @@ The plugin is here for installation or for download: [https://wordpress.org/plug
 
 ### Experience of a site visitor who does not have a key when visiting the post
 
-![Screen Shot 2021-12-08 at 2.44.38 PM.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Screen_Shot_2021-12-08_at_2.44.38_PM.png)
+![locked content](/images/blog/unlock-wordpress-plugin/unlock-wp-locked-content-min.png)
 
 ### Returning site visitors can log in with their crypto wallet
 
-![image-008.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/image-008.png)
+![loginto wordpress with crypto wallet](/images/blog/unlock-wordpress-plugin/unlock-wp-log-in-with-crypto-wallet-min.png)
 
 ### Visitor experience when a subscriber is logged in with their crypto wallet
 
-![Screen Shot 2021-12-08 at 4.12.28 PM.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Screen_Shot_2021-12-08_at_4.12.28_PM.png)
+![Screen Shot 2021-12-08 at 4.12.28 PM.png](/images/blog/unlock-wordpress-plugin/unlock-wp-member-content-min.png)
 
 ## Unlock WordPress plugin user manual v. 3.0.0
 
