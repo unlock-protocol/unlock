@@ -42,6 +42,10 @@ export const HomeContent = ({ posts }) => {
         <OpenGraphTags />
       </Head>
 
+      <Message closable type="info">
+        Unlock Protocol adds support for Optimism! <a href="https://unlock-protocol.com/blog/optimism">Learn more.</a>
+      </Message>
+
       <Box hero color="var(--white)">
         <Columns>
           <Column>
