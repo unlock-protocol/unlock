@@ -21,6 +21,8 @@ contract MixinPurchase is
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
 
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
+  
+  event MissingUnlock(address indexed lockAddress, address unlockAddress);
 
   // default to 0%  
   uint128 private _gasRefundBasisPoints = 0; 
@@ -98,14 +100,24 @@ contract MixinPurchase is
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
+    
     (uint inMemoryKeyPrice, uint discount, uint tokens) = _purchasePriceFor(_recipient, _referrer, _data);
     if (discount > 0)
     {
-      unlockProtocol.recordConsumedDiscount(discount, tokens);
+      try unlockProtocol.recordConsumedDiscount(discount, tokens) 
+      {} 
+      catch {
+        // emit missing unlock
+        emit MissingUnlock(address(this), address(unlockProtocol));
+      }
     }
 
-    // Record price without any tips
-    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer);
+    try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
+    {} 
+    catch {
+      // emit missing unlock
+      emit MissingUnlock(address(this), address(unlockProtocol));
+    }
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     uint pricePaid;
@@ -177,9 +189,17 @@ contract MixinPurchase is
 
     if(minKeyPrice > 0)
     {
-      (unlockDiscount, unlockTokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, minKeyPrice);
-      require(unlockDiscount <= minKeyPrice, 'INVALID_DISCOUNT_FROM_UNLOCK');
-      minKeyPrice -= unlockDiscount;
+      try unlockProtocol.computeAvailableDiscountFor(_recipient, minKeyPrice) 
+      returns (uint unlockDiscount, uint unlockTokens)
+      {
+        require(unlockDiscount <= minKeyPrice, 'INVALID_DISCOUNT_FROM_UNLOCK');
+        minKeyPrice -= unlockDiscount;
+      } catch {
+        // fail silently?
+        // adding an event will require writing to state
+        // also why wasnt this function returning anything?
+        // emit MissingUnlock(address(this), address(unlockProtocol));
+      }
     }
   }
 }
