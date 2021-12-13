@@ -3,9 +3,9 @@ import { useRouter } from 'next/router'
 
 import CloneContent from '../components/content/CloneContent'
 
-const Upgrades = () => {
+const Clone = () => {
   const { query } = useRouter()
   return <CloneContent query={query} />
 }
 
-export default Upgrades
+export default Clone
