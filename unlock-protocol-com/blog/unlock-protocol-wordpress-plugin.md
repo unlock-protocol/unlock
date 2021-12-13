@@ -97,24 +97,12 @@ The plugin is here for installation or for download: [https://wordpress.org/plug
 
 ### Returning site visitors can log in with their crypto wallet
 
-![loginto wordpress with crypto wallet](/images/blog/unlock-wordpress-plugin/unlock-wp-log-in-with-crypto-wallet-min.png)
+![login to wordpress with crypto wallet](/images/blog/unlock-wordpress-plugin/unlock-wp-log-in-with-crypto-wallet-min.png)
 
 ### Visitor experience when a subscriber is logged in with their crypto wallet
 
-![Screen Shot 2021-12-08 at 4.12.28 PM.png](/images/blog/unlock-wordpress-plugin/unlock-wp-member-content-min.png)
+![unlocked content for members](/images/blog/unlock-wordpress-plugin/unlock-wp-member-content-min.png)
 
-## Unlock WordPress plugin user manual v. 3.0.0
+## Unlock WordPress plugin documentation
 
-[Help Manual r1_1- Unlock Protocol v3-0-0.pdf](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Help_Manual_r1_1-_Unlock_Protocol_v3-0-0.pdf)
-
-## A note on upgrading from older versions of the plugin
-
-This version 3.0.0 is a complete rewrite of the plugin that integrates in WordPress in a much more "native" WordPress way. For example, it does server-side locking so that content is not just invisible but not rendered at all unless the logged in user is indeed an active member.
-
-To do this, it creates proper user accounts on the local WordPress database and associates them with a crypto wallet. These WordPress user accounts can be customized like any other WordPress user account with an updated avatar, nickname, etc.
-
-*Unfortunately, this means that the new plugin is not fully backward compatible with prior versions of the plugin.* 
-
-We strongly recommend that when you upgrade, you should review any existing posts or pages that use prior versions of the plugin to ensure they work as expected. The recommended approach is to first take the posts offline temporarily, upgrade the plugin, update each post and then return the posts to be online.
-
-We tried hard to maintain backward compatibility, but we could not find an easy way to achieve that. We apologize for the inconvenience and we now have a much more robust underlying architecture that will enable us to improve future versions of the plugin without breaking backward compatibility.
+See the [full documentation for the Unlock Protocol WordPress Plugin](https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin).
