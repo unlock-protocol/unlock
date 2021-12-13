@@ -55,15 +55,15 @@ There is a demo site at [https://unlockwpdemo.com](https://unlockwpdemo.com). Th
 
 The plugin is here for installation or for download: [https://wordpress.org/plugins/unlock-protocol/](https://wordpress.org/plugins/unlock-protocol/) 
 
-## Video of the Unlock Protocol WordPress plugin
+## Videos of the Unlock Protocol WordPress plugin
 
 ### Admin view of the experience
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/9qNeoJeZ6I8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/9qNeoJeZ6I8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 ### Member view of the experience
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GQGqhkz6ZUg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/GQGqhkz6ZUg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 ## Screenshots of the Unlock Protocol WordPress plugin
 
