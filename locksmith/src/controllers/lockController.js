@@ -46,11 +46,12 @@ const lockGet = async (req, res) => {
 // ?lockAddress
 // pass ?force=1 param to bypass unique check
 const lockMigrate = async (req, res) => {
-  const { lockAddress, force } = req.params
+  const { lockAddress } = req.params
+  const { force } = req.query
   const unlockVersion = req.query.unlockVersion || 9
-  const chainId = req.chain
+  const chainId = req.query.chainId || 31337
 
-  const lockMigration = await getLockMigration(lockAddress)
+  const lockMigration = await getLockMigration(lockAddress, chainId)
   if (lockMigration && lockMigration.success) {
     return res.send(
       401,
@@ -76,7 +77,7 @@ const lockMigrate = async (req, res) => {
     {
       lockAddress,
       unlockVersion,
-      chainId,
+      chainId: parseInt(chainId),
       recordId,
     },
     (error, { message }) => {
@@ -118,11 +119,9 @@ const lockMigrate = async (req, res) => {
 
 const lockMigrateStatus = async (req, res) => {
   const { lockAddress } = req.params
-
-  const databaseLock = await getLockByAddress(lockAddress)
-  if (!databaseLock) return res.status(404).send('Missing lock')
-
-  const lockMigration = await getLockMigration(lockAddress)
+  const chainId = req.query.chainId || 31337
+  const lockMigration = await getLockMigration(lockAddress, chainId)
+  if (lockMigration === null) return res.sendStatus(404)
   res.json(lockMigration)
 }
 

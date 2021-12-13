@@ -43,6 +43,7 @@ export default async function migrateLock(
   if (!unlockAddress) {
     throw new Error(`Missing Unlock address for this chain: ${chainId}`)
   }
+
   const rpc = new ethers.providers.JsonRpcProvider(provider)
   callback(null, {
     recordId,
