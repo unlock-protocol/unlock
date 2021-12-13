@@ -131,6 +131,7 @@ contract MixinLockMetadata is
       return onTokenURIHook.tokenURI(
         address(this),
         msg.sender,
+        tokenOwner,
         _tokenId,
         expirationTimestamp
         );
