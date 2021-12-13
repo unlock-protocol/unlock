@@ -6,7 +6,7 @@ interface listManagersProps {
 }
 
 // fetch all managers from the GRAPH
-export default async function ({
+export default async function listManagers({
   lockAddress,
   subgraphURI,
 }: listManagersProps) {
