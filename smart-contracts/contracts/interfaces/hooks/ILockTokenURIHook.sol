@@ -12,6 +12,7 @@ interface ILockTokenURIHook
    * then this hook is called every time `tokenURI()` is called
    * @param lockAddress the address of the lock
    * @param operator the msg.sender issuing the call
+   * @param owner the owner of the key for which we are retrieving the `tokenUri`
    * @param keyId the id (tokenId) of the key (if applicable)
    * @param expirationTimestamp the key expiration timestamp
    * @return the tokenURI
