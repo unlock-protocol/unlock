@@ -13,7 +13,6 @@ import {
  */
 export default async function (address, provider) {
   const contract = await this.getLockContract(address, provider)
-  const { chainId } = provider.network
   const attributes = {
     name: (x) => x,
     keyPrice: (x) => x,
@@ -28,11 +27,7 @@ export default async function (address, provider) {
     totalSupply: parseInt,
     tokenAddress: (x) => x,
     publicLockVersion: parseInt,
-  }
-
-  // fetch unlock contract address only on Polygon and Xdai (and rinkeby for testing)
-  if (chainId === 100 || chainId === 137 || chainId === 4) {
-    attributes.unlockProtocol = (x) => x
+    unlockProtocol: (x) => x,
   }
 
   // Let's load the current block to use to compare versions
