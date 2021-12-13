@@ -69,27 +69,27 @@ The plugin is here for installation or for download: [https://wordpress.org/plug
 
 ### Configuring the plugin: Networks
 
-![image-030.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/image-030.png)
+![admin network config](/images/blog/unlock-wordpress-plugin/unlock-wp-admin-networks-min.png)
 
 ### Configuring the plugin: Button colors
 
-![image-023.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/image-023.png)
+![admin button config](/images/blog/unlock-wordpress-plugin/unlock-wp-admin-button-colors-min.png)
 
 ### Adding an Unlock Protocol block to a post or page
 
-![Screen Shot 2021-12-08 at 2.40.51 PM.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Screen_Shot_2021-12-08_at_2.40.51_PM.png)
+![block menu](/images/blog/unlock-wordpress-plugin/unlock-wp-block-menu-min.png)
 
 ### Configuring the network and lock address for a specific block
 
-![Screen Shot 2021-12-08 at 2.43.21 PM.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Screen_Shot_2021-12-08_at_2.43.21_PM.png)
+![configuring unlock block](/images/blog/unlock-wordpress-plugin/unlock-wp-unlock-block-min.png)
 
 ### Embedding a nested image block inside the Unlock block
 
-![Screen Shot 2021-12-08 at 2.43.41 PM.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Screen_Shot_2021-12-08_at_2.43.41_PM.png)
+![embedding image content block](/images/blog/unlock-wordpress-plugin/unlock-wp-image-block-min.png)
 
 ### After embedding a nested image block within the Unlock block
 
-![Screen Shot 2021-12-08 at 2.44.06 PM.png](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/Screen_Shot_2021-12-08_at_2.44.06_PM.png)
+![embedded image content](/images/blog/unlock-wordpress-plugin/unlock-wp-admin-image-content-min.png)
 
 ### Experience of a site visitor who does not have a key when visiting the post
 
