@@ -25,6 +25,7 @@ const rulesToIgnore = [
   'array-callback-return',
   'prefer-destructuring',
   'default-case',
+  'react/jsx-no-useless-fragment',
 ]
 
 module.exports = {
