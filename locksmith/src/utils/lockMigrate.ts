@@ -1,14 +1,29 @@
 import { ethers, Wallet } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
 import { networks } from '@unlock-protocol/networks'
+import { NetworkConfig } from '@unlock-protocol/types'
 import listManagers from './lockManagers'
 import { purchaserCredentials } from '../../config/config'
 
+interface LockClonerProps {
+  lockAddress: string
+  unlockVersion: Number
+  chainId: number
+  recordId: number
+}
+
+interface LockClonerCallback {
+  (error: string | null, data: { recordId: number; message: string }): void
+}
+
 export default async function migrateLock(
-  { lockAddress, unlockVersion, chainId, recordId },
-  callback
+  { lockAddress, unlockVersion, chainId, recordId }: LockClonerProps,
+  callback: LockClonerCallback
 ) {
-  const [, network] = Object.entries(networks).find(([, n]) => n.id === chainId)
+  // super complicated parsing to make ts happy ;-)
+  const [, network]: [string, NetworkConfig] = Object.entries(networks).find(
+    ([, n]) => n.id === chainId
+  ) as [string, NetworkConfig]
 
   let unlockAddress
   let serializerAddress
@@ -66,7 +81,7 @@ export default async function migrateLock(
   ]
 
   // get proper unlock
-  const { abi } = contracts[`UnlockV${unlockVersion}`]
+  const { abi } = contracts[`UnlockV${unlockVersion}` as keyof {}]
   const unlock = new ethers.Contract(unlockAddress, abi, signer)
 
   // create the new lock
@@ -84,7 +99,9 @@ export default async function migrateLock(
   }
   // gbet new lock address
   const { events, transactionHash } = await txLockCreate.wait()
-  const { args } = events.find(({ event }) => event === 'NewLock')
+  const { args } = events.find(
+    ({ event }: { event: string }) => event === 'NewLock'
+  )
   const { newLockAddress } = args
 
   callback(null, {
@@ -108,9 +125,11 @@ export default async function migrateLock(
     keyManagers
   )
   const { events: keyEvents } = await keyTx.wait()
-  const transfers = keyEvents.filter(({ event }) => event === 'Transfer')
+  const transfers = keyEvents.filter(
+    ({ event }: { event: string }) => event === 'Transfer'
+  )
   const keyManagersChanges = keyEvents.filter(
-    ({ event }) => event === 'KeyManagerChanged'
+    ({ event }: { event: string }) => event === 'KeyManagerChanged'
   )
   callback(null, {
     recordId,
@@ -143,7 +162,7 @@ export default async function migrateLock(
         message: `LOCK > managers for the lock '${await newLock.name()}':`,
       })
       let message = ''
-      managers.forEach((account, i) => {
+      managers.forEach((account: string, i: number) => {
         message = `${message}\n[${i}]: ${account}`
       })
       callback(null, {
@@ -152,12 +171,14 @@ export default async function migrateLock(
       })
 
       const txs = await Promise.all(
-        managers.map((manager) => newLock.addLockManager(manager))
+        managers.map((manager: string) => newLock.addLockManager(manager))
       )
-      const waits = await Promise.all(txs.map((tx) => tx.wait()))
+      const waits = await Promise.all(txs.map((tx: any) => tx.wait()))
       message = ''
       waits.forEach(({ events }) => {
-        const evt = events.find((evt) => evt.event === 'LockManagerAdded')
+        const evt = events.find(
+          ({ event }: { event: string }) => event === 'LockManagerAdded'
+        )
         message = `${message}\n LOCK CLONE > ${evt.args.account} added as lock manager.`
       })
       callback(null, {
@@ -168,7 +189,8 @@ export default async function migrateLock(
   } else {
     callback(null, {
       recordId,
-      message: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
+      message:
+        'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
     })
   }
 
