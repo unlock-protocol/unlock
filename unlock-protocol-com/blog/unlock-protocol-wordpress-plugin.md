@@ -59,11 +59,11 @@ The plugin is here for installation or for download: [https://wordpress.org/plug
 
 ### Admin view of the experience
 
-[unlock-wp-movie-admin-view.mov](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/unlock-wp-movie-admin-view.mov)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9qNeoJeZ6I8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Member view of the experience
 
-[unlock-wp-movie-member-view.mov](Unlock%20Protocol%20WordPress%20Plugin%208c564d492d2c4a319c75596691dc8337/unlock-wp-movie-member-view.mov)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GQGqhkz6ZUg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Screenshots of the Unlock Protocol WordPress plugin
 
