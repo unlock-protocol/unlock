@@ -1,6 +1,10 @@
 {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
-    "outDir": "build"
-  }
+    "outDir": "build",
+    "useUnknownInCatchVariables": false
+  },
+  "exclude" : [
+    "build"
+  ]
 }

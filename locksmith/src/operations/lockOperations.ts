@@ -3,8 +3,8 @@ import Sequelize = require('sequelize')
 
 const models = require('../models')
 
-const { Op } = Sequelize
-const { Lock, UserTokenMetadata } = models
+const { Op, fn, col } = Sequelize
+const { Lock, UserTokenMetadata, LockMigrations } = models
 
 /**
  * Creates a lock. Normalizes addresses before saving.
@@ -81,4 +81,28 @@ export async function getKeyHolderMetadata(
       },
     },
   })
+}
+
+// get latest lock migration record from DB
+export async function getLockMigration(lockAddress: string, chain: number) {
+  return LockMigrations.findOne({
+    where: { lockAddress, chain },
+    order: [['createdAt', 'DESC']],
+  })
+}
+
+export async function updateLockMigrationsLog(
+  lockMigrationId: number,
+  log: string
+) {
+  LockMigrations.update(
+    {
+      logs: fn('CONCAT', col('logs'), '\n', log),
+    },
+    {
+      where: {
+        id: lockMigrationId,
+      },
+    }
+  )
 }
