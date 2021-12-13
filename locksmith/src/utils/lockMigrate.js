@@ -1,11 +1,10 @@
-// NB: keeping this file as JS (instead of TS) so it can be used as a node worker
 import { ethers, Wallet } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
 import { networks } from '@unlock-protocol/networks'
 import listManagers from './lockManagers'
 import { purchaserCredentials } from '../../config/config'
 
-export async function migrateLock(
+export default async function migrateLock(
   { lockAddress, unlockVersion, chainId, recordId },
   callback
 ) {
@@ -32,7 +31,7 @@ export async function migrateLock(
   const rpc = new ethers.providers.JsonRpcProvider(provider)
   callback(null, {
     recordId,
-    msg: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
+    message: `CLONE LOCK > cloning ${lockAddress} on ${network.name}...`,
   })
 
   const signer = new Wallet(purchaserCredentials, rpc)
@@ -90,12 +89,12 @@ export async function migrateLock(
 
   callback(null, {
     recordId,
-    msg: `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`,
+    message: `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`,
   })
 
   callback(null, {
     recordId,
-    msg: 'CLONE LOCK > add key owners...',
+    message: 'CLONE LOCK > add key owners...',
   })
   const newLock = new ethers.Contract(
     newLockAddress,
@@ -115,12 +114,12 @@ export async function migrateLock(
   )
   callback(null, {
     recordId,
-    msg: `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`,
+    message: `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`,
   })
 
   callback(null, {
     recordId,
-    msg: 'CLONE LOCK > fetching managers...',
+    message: 'CLONE LOCK > fetching managers...',
   })
 
   // fetch managers from graph
@@ -134,42 +133,42 @@ export async function migrateLock(
     } catch (error) {
       callback(null, {
         recordId,
-        msg: error.message,
+        message: error.message,
       })
       managers = []
     }
     if (managers.length) {
       callback(null, {
         recordId,
-        msg: `LOCK > managers for the lock '${await newLock.name()}':`,
+        message: `LOCK > managers for the lock '${await newLock.name()}':`,
       })
-      let msg = ''
+      let message = ''
       managers.forEach((account, i) => {
-        msg = `${msg}\n[${i}]: ${account}`
+        message = `${message}\n[${i}]: ${account}`
       })
       callback(null, {
         recordId,
-        msg,
+        message,
       })
 
       const txs = await Promise.all(
         managers.map((manager) => newLock.addLockManager(manager))
       )
       const waits = await Promise.all(txs.map((tx) => tx.wait()))
-      msg = ''
+      message = ''
       waits.forEach(({ events }) => {
         const evt = events.find((evt) => evt.event === 'LockManagerAdded')
-        msg = `${msg}\n LOCK CLONE > ${evt.args.account} added as lock manager.`
+        message = `${message}\n LOCK CLONE > ${evt.args.account} added as lock manager.`
       })
       callback(null, {
         recordId,
-        msg,
+        message,
       })
     }
   } else {
     callback(null, {
       recordId,
-      msg: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
+      message: 'Missing SubgraphURI. Can not fetch from The Graph on this network, sorry.',
     })
   }
 
@@ -178,7 +177,7 @@ export async function migrateLock(
   await txBenef.wait()
   callback(null, {
     recordId,
-    msg: `LOCK CLONE > ${beneficiary} set as beneficiary.`,
+    message: `LOCK CLONE > ${beneficiary} set as beneficiary.`,
   })
 
   // update metadata
@@ -187,7 +186,7 @@ export async function migrateLock(
     await txSymbol.wait()
     callback(null, {
       recordId,
-      msg: `LOCK CLONE > Symbol updated to '${symbol}'.`,
+      message: `LOCK CLONE > Symbol updated to '${symbol}'.`,
     })
   }
 
@@ -201,13 +200,13 @@ export async function migrateLock(
       await newLock.setBaseTokenURI(baseTokenURI)
       callback(null, {
         recordId,
-        msg: `LOCK CLONE > baseTokenURI updated to '${baseTokenURI}'.`,
+        message: `LOCK CLONE > baseTokenURI updated to '${baseTokenURI}'.`,
       })
     }
   } catch (error) {
     callback(null, {
       recordId,
-      msg: `LOCK CLONE > baseTokenURI not set, using default. (ex. '${tokenURISample}').`,
+      message: `LOCK CLONE > baseTokenURI not set, using default. (ex. '${tokenURISample}').`,
     })
   }
 
@@ -216,7 +215,7 @@ export async function migrateLock(
     await txSymbol.wait()
     callback(null, {
       recordId,
-      msg: `LOCK CLONE > Symbol updated to '${symbol}'.`,
+      message: `LOCK CLONE > Symbol updated to '${symbol}'.`,
     })
   }
 
@@ -227,7 +226,7 @@ export async function migrateLock(
   // await txDisable.wait()
   // callback(null, {
   //   recordId,
-  //   msg: 'LOCK CLONE > Origin lock has been disabled.',
+  //   message: 'LOCK CLONE > Origin lock has been disabled.',
   // })
 
   // remove ourselves as lockManagers
@@ -235,12 +234,12 @@ export async function migrateLock(
   await txRemoveUs.wait()
   callback(null, {
     recordId,
-    msg: 'LOCK CLONE > Removed Unlock as lock manager.',
+    message: 'LOCK CLONE > Removed Unlock as lock manager.',
   })
 
   callback(null, {
     recordId,
-    msg: 'LOCK CLONE > Lock cloned successfully.',
+    message: 'LOCK CLONE > Lock cloned successfully.',
   })
 
   return newLockAddress
