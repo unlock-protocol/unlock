@@ -9,7 +9,7 @@ import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
 import '../interfaces/hooks/ILockKeyCancelHook.sol';
 import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
-
+import '../interfaces/hooks/ILockBalanceOfHook.sol';
 
 /**
  * @title Mixin for core lock data and functions.
@@ -80,6 +80,7 @@ contract MixinLockCore is
 
   ILockKeyPurchaseHook public onKeyPurchaseHook;
   ILockKeyCancelHook public onKeyCancelHook;
+  ILockBalanceOfHook public onBalanceOfHook;
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
@@ -203,14 +204,17 @@ contract MixinLockCore is
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
-    address _onKeyCancelHook
+    address _onKeyCancelHook,
+    address _onBalanceOfHook
   ) external
     onlyLockManager()
   {
     require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
     require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
+    require(_onBalanceOfHook == address(0) || _onBalanceOfHook.isContract(), 'INVALID_ON_BALANCE_HOOK');
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
+    onBalanceOfHook = ILockBalanceOfHook(_onBalanceOfHook);
   }
 
   function totalSupply()

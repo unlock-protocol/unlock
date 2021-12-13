@@ -148,7 +148,16 @@ contract MixinKeys is
     public
     view
     returns (bool)
-  {
+  { 
+    // use hook if it exists
+    if(address(onBalanceOfHook) != address(0)) {
+      return onBalanceOfHook.hasValidKey(
+        address(this),
+        _keyOwner,
+        keyByOwner[_keyOwner].expirationTimestamp
+      );
+    }
+    
     return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
   }
 
