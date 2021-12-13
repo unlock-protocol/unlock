@@ -20,6 +20,7 @@ interface ILockTokenURIHook
   function tokenURI(
     address lockAddress,
     address operator,
+    address owner,
     uint256 keyId,
     uint expirationTimestamp
   ) external view returns(string memory);
