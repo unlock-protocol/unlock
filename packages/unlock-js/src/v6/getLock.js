@@ -13,7 +13,6 @@ import {
  */
 export default async function (address, provider) {
   const contract = await this.getLockContract(address, provider)
-  const { chainId } = provider.network
   const attributes = {
     name: (x) => x,
     keyPrice: (x) => x,
