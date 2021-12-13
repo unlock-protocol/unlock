@@ -1,3 +1,5 @@
+import 'rsuite/dist/rsuite.min.css'
+import Message from 'rsuite/Message'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -5,9 +7,17 @@ import Header from './Header'
 import Footer from './Footer'
 import Media from '../../theme/media'
 
-export default function Layout({ forContent, title, children }) {
+export const Layout = ({ forContent, title, children }) => {
+  // You can use JSX in the message
+  const message = ''
   return (
     <Container>
+      {message && (
+        <Message full showIcon closable type="info">
+          {message}
+        </Message>
+      )}
+
       <Page>
         <Header forContent={forContent} title={title} />
         <Content>{children}</Content>
@@ -28,6 +38,8 @@ Layout.defaultProps = {
   children: null,
   forContent: false,
 }
+
+export default Layout
 
 const Page = styled.div`
   max-width: 1080px;
