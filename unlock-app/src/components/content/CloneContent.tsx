@@ -52,8 +52,6 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   }
 
   const fetchLockMigration = async () => {
-    console.log('fetching lock migration...')
-    console.log('network')
     if (network) {
       try {
         const response = await fetch(
@@ -62,7 +60,6 @@ export const CloneContent = ({ query }: CloneContentProps) => {
         )
         if (response.status === 200) {
           const existingMigration = await response.json()
-          console.log(existingMigration)
           setLockMigration({ existing: true, ...existingMigration })
         } else if (response.status === 404) {
           // no migration
