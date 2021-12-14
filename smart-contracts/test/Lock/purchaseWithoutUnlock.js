@@ -1,27 +1,21 @@
-const { ethers } = require('hardhat')
+const { ethers, network } = require('hardhat')
+const { Manifest } = require('@openzeppelin/upgrades-core')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
-const { admin } = require('../../.openzeppelin/unknown-31337.json')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
-const Locks = require('../fixtures/locks')
 
-const keyPrice = web3.utils.toWei('0.01', 'ether')
+const keyPrice = ethers.utils.parseEther('0.01')
+let pastImpl
+let brokenImpl
+let proxyAdmin
 
 const breakUnlock = async (unlockAddress) => {
-  // set a broken Unlock contract implementation
-  const BrokenUnlock = await ethers.getContractFactory('TestEventHooks')
-  const broken = await BrokenUnlock.deploy()
-  await broken.deployTransaction.wait()
+  const upgradeTx = await proxyAdmin.upgrade(unlockAddress, brokenImpl)
+  await upgradeTx.wait()
+}
 
-  // make upgrade
-  const [unlockOwner] = await ethers.getSigners()
-  const proxyAdmin = await ethers.getContractAt(
-    ProxyAdmin.abi,
-    admin.address,
-    unlockOwner
-  )
-
-  const upgradeTx = await proxyAdmin.upgrade(unlockAddress, broken.address)
+const fixUnlock = async (unlockAddress) => {
+  const upgradeTx = await proxyAdmin.upgrade(unlockAddress, pastImpl)
   await upgradeTx.wait()
 }
 
@@ -29,24 +23,40 @@ contract('Lock / purchaseWithoutUnlock', () => {
   let unlock
   let lock
 
+  // setup proxy admin etc
+  before(async () => {
+    // deploy a random contract to break Unlock implementation
+    const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
+    const broken = await BrokenUnlock.deploy()
+    await broken.deployTransaction.wait()
+    brokenImpl = broken.address
+
+    // parse OZ manifest to get proxyAdmin address
+    const manifestParser = await Manifest.forNetwork(network.provider)
+    const { admin } = await manifestParser.read()
+
+    // upgrade proxy to broken contract
+    const [unlockOwner] = await ethers.getSigners()
+    proxyAdmin = await ethers.getContractAt(
+      ProxyAdmin.abi,
+      admin.address,
+      unlockOwner
+    )
+  })
+
   describe('purchase with a lock while Unlock is broken', () => {
     beforeEach(async () => {
       const chainId = 31337
       const unlockAddress = getProxyAddress(chainId, 'Unlock')
 
+      // parse unlock
       const [from] = await ethers.getSigners()
       const Unlock = await ethers.getContractFactory('Unlock')
       unlock = Unlock.attach(unlockAddress)
 
-      const lockName = 'FIRST'
+      // create a new lock
       const tokenAddress = web3.utils.padLeft(0, 40)
-      const args = [
-        Locks[lockName].expirationDuration.toFixed(),
-        tokenAddress,
-        Locks[lockName].keyPrice.toFixed(),
-        Locks[lockName].maxNumberOfKeys.toFixed(),
-        Locks[lockName].lockName,
-      ]
+      const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 100, 'Test lock']
 
       const calldata = await createLockHash({ args, from: from.address })
       const tx = await unlock.createLock(calldata)
@@ -58,8 +68,16 @@ contract('Lock / purchaseWithoutUnlock', () => {
       const PublicLock = await ethers.getContractFactory('PublicLock')
       lock = PublicLock.attach(newLockAddress)
 
-      // break it
+      // store past impl address
+      pastImpl = await proxyAdmin.getProxyImplementation(unlock.address)
+
+      // break Unlock
       await breakUnlock(unlock.address)
+    })
+
+    afterEach(async () => {
+      // restore previous state after each test
+      await fixUnlock(unlock.address)
     })
 
     it('should fire an event to notify Unlock has failed', async () => {
@@ -87,9 +105,8 @@ contract('Lock / purchaseWithoutUnlock', () => {
       assert.equal(missing.args.lockAddress, lock.address)
     })
 
-    it('should fail twice when discount hook is set', async () => {
+    it('should fail when discount hook is set', async () => {
       const [, buyer] = await ethers.getSigners()
-
       const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
       const testEventHooks = await TestEventHooks.deploy()
       await testEventHooks.deployTransaction.wait()
@@ -99,36 +116,24 @@ contract('Lock / purchaseWithoutUnlock', () => {
         testEventHooks.address,
         web3.utils.padLeft(0, 40)
       )
-
       // 50% discount
-      await testEventHooks.configure(true, keyPrice.div(2).toFixed())
-
+      await testEventHooks.configure(true, keyPrice.div(2))
       const tx = await lock
         .connect(buyer)
-        .purchase(
-          keyPrice.toString(),
-          buyer.address,
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice.toString(),
-          }
-        )
-      const { events } = await tx.wait()
+        .purchase(keyPrice, buyer.address, web3.utils.padLeft(0, 40), [], {
+          value: keyPrice,
+        })
 
       // make sure transfer happened
+      const { events } = await tx.wait()
       const transfer = events.find(({ event }) => event === 'Transfer')
       assert.equal(transfer.args.to, buyer.address)
       assert.equal(transfer.args.tokenId.eq(1), true)
 
+      // event has been fired
       const missing = events.find(({ event }) => event === 'MissingUnlock')
       assert.equal(missing.args.unlockAddress, unlock.address)
       assert.equal(missing.args.lockAddress, lock.address)
-
-      assert.equal(
-        events.filter(({ event }) => event === 'MissingUnlock').length,
-        2
-      )
     })
   })
 })
