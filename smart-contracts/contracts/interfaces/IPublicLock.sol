@@ -178,7 +178,8 @@ interface IPublicLock
   function setEventHooks(
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
-    address _onBalanceOfHook
+    address _onBalanceOfHook,
+    address _onTokenURIHook
   ) external;
 
   /**
@@ -212,6 +213,16 @@ interface IPublicLock
     address _referrer,
     bytes calldata _data
   ) external payable;
+
+  /**
+  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  */
+  function setGasRefundBasisPoints(uint128 _basisPoints) external;
+  
+  /**
+  * @dev Returns percentage be refunded to the sender on purchase
+  */
+  function gasRefundBasisPoints() external view returns (uint128 basisPoints);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
@@ -302,6 +313,8 @@ interface IPublicLock
   function onKeyCancelHook() external view returns(address);
   
   function onBalanceOfHook() external view returns(bool isValidKey);
+
+  function onTokenURIHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;
 

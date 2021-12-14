@@ -8,8 +8,7 @@ import CreatorLockStatus from './CreatorLockStatus'
 import Media from '../../../theme/media'
 import withConfig, { ConfigContext } from '../../../utils/withConfig'
 import { TransactionType, TransactionStatus } from '../../../unlockTypes'
-
-import { AuthenticationContext } from '../../interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
   const config = useContext(ConfigContext)
@@ -42,10 +41,12 @@ export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
         />
         <Buttons.Members href={membersPage} />
         <Buttons.AppStore as="button" action={toggleCode} />
-        <Buttons.Explorer
-          target="_blank"
-          href={config.networks[network].explorer.urls.address(lock.address)}
-        />
+        {config.networks[network].explorer && (
+          <Buttons.Explorer
+            target="_blank"
+            href={config.networks[network].explorer.urls.address(lock.address)}
+          />
+        )}
       </IconBar>
     </StatusBlock>
   )

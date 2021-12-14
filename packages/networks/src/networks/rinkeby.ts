@@ -1,10 +1,11 @@
-import { NetworkConfig } from '../types';
+import { NetworkConfig } from '@unlock-protocol/types';
 
 export const rinkeby: NetworkConfig = {
     publicProvider:'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
     provider:
         'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
     unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
+    serializerAddress: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
     id: 4,
     name: 'Rinkeby',
     blockTime: 8000,

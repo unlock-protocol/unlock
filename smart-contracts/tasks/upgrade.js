@@ -59,25 +59,19 @@ task('upgrade', 'Upgrade an existing contract with a new implementation')
 
 task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
   .addParam('contract', 'The contract path')
-  .setAction(async ({ contract }, { ethers }) => {
-    // get contract deployment info
-    const { contractName, networkName, proxyAddress } = await getDeploymentInfo(
-      {
-        ethers,
-        contract,
-      }
-    )
+  .addParam('proxy', 'The proxy contract address')
+  .setAction(async ({ contract, proxy }, { ethers }) => {
+    const { chainId } = await ethers.provider.getNetwork()
+    const networkName = getNetworkName(chainId)
 
     // eslint-disable-next-line no-console
-    console.log(
-      `Deploying new implementation of ${contractName} on ${networkName}...`
-    )
+    console.log(`Deploying new implementation ${contract} on ${networkName}.`)
 
     // eslint-disable-next-line global-require
     const prepareUpgrade = require('../scripts/upgrade/prepare')
-
+    const contractName = contract.split('/')[1].replace('.sol', '')
     await prepareUpgrade({
-      proxyAddress,
+      proxyAddress: proxy,
       contractName,
     })
   })

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 import UnlockPropTypes from '../../propTypes'
-import { AuthenticationContext } from '../interface/Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 import CreatorLock from './CreatorLock'
 import { LockRowGrid, PhoneLockRowGrid } from './LockStyles'
@@ -19,6 +19,7 @@ import { ConfigContext } from '../../utils/withConfig'
 const BalanceWarning = () => {
   const config = useContext(ConfigContext)
   const { account, network } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
 
   const [balance, setBalance] = useState(-1) // default to negative balance so we do not show messages while loading
@@ -138,7 +139,7 @@ export const CreatorLocks = ({ formIsVisible, hideForm }) => {
       {locks.length === 0 && !loading && !formIsVisible && (
         <DefaultError
           title="Create a lock to get started"
-          illustration="/static/images/illustrations/lock.svg"
+          illustration="/images/illustrations/lock.svg"
           critical={false}
         >
           You have not created any locks yet. Create your first lock in seconds
