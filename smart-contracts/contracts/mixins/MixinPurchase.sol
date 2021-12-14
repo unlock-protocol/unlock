@@ -102,16 +102,6 @@ contract MixinPurchase is
 
     
     (uint inMemoryKeyPrice, uint discount, uint tokens) = _purchasePriceFor(_recipient, _referrer, _data);
-    if (discount > 0)
-    {
-      try unlockProtocol.recordConsumedDiscount(discount, tokens) 
-      {} 
-      catch {
-        // emit missing unlock
-        emit MissingUnlock(address(this), address(unlockProtocol));
-      }
-    }
-
     try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
     {} 
     catch {
@@ -169,14 +159,13 @@ contract MixinPurchase is
   /**
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
-   * unlockDiscount and unlockTokens are the values returned from `computeAvailableDiscountFor`
    */
   function _purchasePriceFor(
     address _recipient,
     address _referrer,
     bytes memory _data
   ) internal view
-    returns (uint minKeyPrice, uint unlockDiscount, uint unlockTokens)
+    returns (uint minKeyPrice)
   {
     if(address(onKeyPurchaseHook) != address(0))
     {
@@ -186,20 +175,6 @@ contract MixinPurchase is
     {
       minKeyPrice = keyPrice;
     }
-
-    if(minKeyPrice > 0)
-    {
-      try unlockProtocol.computeAvailableDiscountFor(_recipient, minKeyPrice) 
-      returns (uint unlockDiscount, uint unlockTokens)
-      {
-        require(unlockDiscount <= minKeyPrice, 'INVALID_DISCOUNT_FROM_UNLOCK');
-        minKeyPrice -= unlockDiscount;
-      } catch {
-        // fail silently?
-        // adding an event will require writing to state
-        // also why wasnt this function returning anything?
-        // emit MissingUnlock(address(this), address(unlockProtocol));
-      }
-    }
+    return minKeyPrice;
   }
 }

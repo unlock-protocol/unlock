@@ -260,25 +260,6 @@ contract Unlock is
   }
 
   /**
-   * This function returns the discount available for a user, when purchasing a
-   * a key from a lock.
-   * This does not modify the state. It returns both the discount and the number of tokens
-   * consumed to grant that discount.
-   * TODO: actually implement this.
-   */
-  function computeAvailableDiscountFor(
-    address /* _purchaser */,
-    uint /* _keyPrice */
-  )
-    public
-    pure
-    returns (uint discount, uint tokens)
-  {
-    // TODO: implement me
-    return (0, 0);
-  }
-
-  /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
@@ -363,24 +344,6 @@ contract Unlock is
         }
       }
     }
-  }
-
-  /**
-   * This function will keep track of consumed discounts by a given user.
-   * It will also grant discount tokens to the creator who is granting the discount based on the
-   * amount of discount and compensation rate.
-   * This function is invoked by a previously deployed lock only.
-   */
-  function recordConsumedDiscount(
-    uint _discount,
-    uint /* _tokens */
-  )
-    public
-    onlyFromDeployedLock()
-  {
-    // TODO: implement me
-    totalDiscountGranted += _discount;
-    return;
   }
 
   // The version number of the current Unlock implementation on this network

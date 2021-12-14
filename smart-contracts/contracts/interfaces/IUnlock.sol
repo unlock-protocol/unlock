@@ -65,32 +65,6 @@ interface IUnlock
   )
     external;
 
-    /**
-   * This function will keep track of consumed discounts by a given user.
-   * It will also grant discount tokens to the creator who is granting the discount based on the
-   * amount of discount and compensation rate.
-   * This function is invoked by a previously deployed lock only.
-   */
-  function recordConsumedDiscount(
-    uint _discount,
-    uint _tokens // solhint-disable-line no-unused-vars
-  )
-    external;
-
-    /**
-   * This function returns the discount available for a user, when purchasing a
-   * a key from a lock.
-   * This does not modify the state. It returns both the discount and the number of tokens
-   * consumed to grant that discount.
-   */
-  function computeAvailableDiscountFor(
-    address _purchaser, // solhint-disable-line no-unused-vars
-    uint _keyPrice // solhint-disable-line no-unused-vars
-  )
-    external
-    view
-    returns(uint discount, uint tokens);
-
   // Function to read the globalTokenURI field.
   function globalBaseTokenURI()
     external
