@@ -27,10 +27,17 @@ contract('Lock / onTokenURIHook', (accounts) => {
       testEventHooks.address
     )
     const keyPrice = await lock.keyPrice()
-    await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      to,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
     tokenId = await lock.getTokenIdFor.call(to)
   })
 

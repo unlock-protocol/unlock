@@ -350,6 +350,7 @@ contract('Unlock / upgrades', async (accounts) => {
                       0,
                       keyOwner.address,
                       web3.utils.padLeft(0, 40),
+                      web3.utils.padLeft(0, 40),
                       [],
                       { value: keyPrice }
                     )
