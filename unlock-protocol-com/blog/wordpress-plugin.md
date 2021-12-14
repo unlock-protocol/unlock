@@ -1,5 +1,5 @@
 ---
-title: Wordpress Plugin
+title: WordPress Plugin
 subTitle: Adding a lock to your WordPress.org website has never been easier!
 authorName: Julien Genestoux
 publishDate: September 11, 2019
@@ -7,7 +7,7 @@ description: Wordpress.org is the most popular Content Management System. Adding
 image: /images/blog/wordpress-plugin/unlock-wordpress.jpg
 ---
 
-![Introducing the Unlock WordPress plugin.](/images/blog/wordpress-plugin/unlock-wordpress.jpg)
+**UPDATE DECEMBER 2021:** This plugin has been updated. [Learn about v3 of this plugin here](https://www.unlock-protocol.com/blog/unlock-protocol-wordpress-plugin).
 
 The world of publishing is [moving away from ads](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f) as the single way to monetize content. In the last 18 months, most of the largest and most influential publications in the US and Europe have been moving to what they call "direct consumer revenue." This is a great thing because it changes incentives from trying steal their users' attention (click bait, fake news, endless slideshows... etc) to creating value for their members.
 
