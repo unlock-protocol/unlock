@@ -15,6 +15,7 @@ cache/
 *.sol.rej
 *.ref 
 
+deployments/*
 deployments/hardhat
 deployments/localhost
 deployments/ganache
