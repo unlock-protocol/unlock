@@ -24,6 +24,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
     await lock.setEventHooks(
       constants.ZERO_ADDRESS,
       testEventHooks.address,
+      constants.ZERO_ADDRESS,
       constants.ZERO_ADDRESS
     )
     keyPrice = await lock.keyPrice()
@@ -49,6 +50,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       lock.setEventHooks(
         constants.ZERO_ADDRESS,
         accounts[1],
+        constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS
       ),
       'INVALID_ON_KEY_CANCEL_HOOK'

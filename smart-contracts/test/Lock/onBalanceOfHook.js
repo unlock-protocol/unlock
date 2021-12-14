@@ -32,7 +32,8 @@ contract('Lock / onBalanceOfHook', (accounts) => {
     await lock.setEventHooks(
       constants.ZERO_ADDRESS,
       constants.ZERO_ADDRESS,
-      testEventHooks.address
+      testEventHooks.address,
+      constants.ZERO_ADDRESS
     )
     assert.equal(await lock.getHasValidKey(to), false)
   })
@@ -42,7 +43,8 @@ contract('Lock / onBalanceOfHook', (accounts) => {
       lock.setEventHooks(
         constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS,
-        accounts[3]
+        accounts[3],
+        constants.ZERO_ADDRESS
       ),
       'INVALID_ON_BALANCEOF_HOOK'
     )
