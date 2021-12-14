@@ -27,6 +27,7 @@ export default async function (address, provider) {
     totalSupply: parseInt,
     tokenAddress: (x) => x,
     publicLockVersion: parseInt,
+    unlockProtocol: (x) => x,
   }
 
   // Let's load the current block to use to compare versions
@@ -78,6 +79,12 @@ export default async function (address, provider) {
     update.currencyContractAddress = update.tokenAddress
   }
   delete update.tokenAddress
+
+  if (update.unlockProtocol) {
+    // rename to make it clearer
+    update.unlockContractAddress = update.unlockProtocol
+    delete update.unlockProtocol
+  }
 
   return update
 }
