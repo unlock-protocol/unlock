@@ -100,7 +100,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
       assert.equal(transfer.args.to, buyer.address)
       assert.equal(transfer.args.tokenId.eq(1), true)
 
-      const missing = events.find(({ event }) => event === 'MissingUnlock')
+      const missing = events.find(({ event }) => event === 'UnlockCallFailed')
       assert.equal(missing.args.unlockAddress, unlock.address)
       assert.equal(missing.args.lockAddress, lock.address)
     })
@@ -131,7 +131,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
       assert.equal(transfer.args.tokenId.eq(1), true)
 
       // event has been fired
-      const missing = events.find(({ event }) => event === 'MissingUnlock')
+      const missing = events.find(({ event }) => event === 'UnlockCallFailed')
       assert.equal(missing.args.unlockAddress, unlock.address)
       assert.equal(missing.args.lockAddress, lock.address)
     })

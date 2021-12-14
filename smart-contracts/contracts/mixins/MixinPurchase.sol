@@ -22,7 +22,7 @@ contract MixinPurchase is
 
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
   
-  event MissingUnlock(address indexed lockAddress, address unlockAddress);
+  event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
   // default to 0%  
   uint128 private _gasRefundBasisPoints = 0; 
@@ -107,7 +107,7 @@ contract MixinPurchase is
     {} 
     catch {
       // emit missing unlock
-      emit MissingUnlock(address(this), address(unlockProtocol));
+      emit UnlockCallFailed(address(this), address(unlockProtocol));
     }
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
