@@ -101,7 +101,8 @@ contract MixinPurchase is
     }
 
     
-    (uint inMemoryKeyPrice, uint discount, uint tokens) = _purchasePriceFor(_recipient, _referrer, _data);
+    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
+
     try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
     {} 
     catch {
@@ -153,7 +154,7 @@ contract MixinPurchase is
   ) external view
     returns (uint minKeyPrice)
   {
-    (minKeyPrice, , ) = _purchasePriceFor(_recipient, _referrer, _data);
+    minKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
   }
 
   /**
