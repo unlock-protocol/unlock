@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import networks from '@unlock-protocol/networks'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
@@ -105,8 +106,15 @@ export const CreatorLock = ({
 
   // Some sanitization of strings to display
   const name = lock.name || 'New Lock'
-
   const lockVersion = lock.publicLockVersion || '1'
+
+  // check if lock is using a past/unsupported version of Unlock contract
+  const isOutdated =
+    networks[network] &&
+    networks[network].previousDeploys &&
+    networks[network].previousDeploys
+      .map((d) => d.unlockAddress)
+      .includes(lock.unlockContractAddress)
 
   const edit = () => {
     setShowDrawer('')
@@ -125,6 +133,19 @@ export const CreatorLock = ({
             rel="noopener noreferrer"
           >
             read this important message
+          </a>
+          .
+        </LockWarning>
+      )}
+      {isOutdated && (
+        <LockWarning>
+          Your lock was deployed on an older Unlock contract, please{' '}
+          <a
+            href={`/upgrade?locks=${lock.address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            clone it to use a new version of Unlock.
           </a>
           .
         </LockWarning>
