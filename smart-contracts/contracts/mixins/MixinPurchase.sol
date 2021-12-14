@@ -6,7 +6,6 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
 
-
 /**
  * @title Mixin for the purchase-related functions.
  * @author HardlyDifficult
@@ -20,6 +19,26 @@ contract MixinPurchase is
   MixinKeys
 {
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
+
+  event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
+
+  // default to 0%  
+  uint128 private _gasRefundBasisPoints = 0; 
+
+  /**
+  * @dev Set a percentage as basis point (10000th) of the key price to be refunded to the sender on purchase
+  */
+
+  function setGasRefundBasisPoints(uint128 _basisPoints) external onlyLockManager {
+    _gasRefundBasisPoints = _basisPoints;
+  }
+  
+  /**
+  * @dev Returns percentage as basis point (10000th) to be refunded to the sender on purchase
+  */
+  function gasRefundBasisPoints() external view returns (uint128 basisPoints) {
+    return _gasRefundBasisPoints;
+  }
 
   /**
   * @dev Purchase function
@@ -122,6 +141,19 @@ contract MixinPurchase is
     if(address(onKeyPurchaseHook) != address(0))
     {
       onKeyPurchaseHook.onKeyPurchase(msg.sender, _recipient, _referrer, _data, inMemoryKeyPrice, pricePaid);
+    }
+
+    // refund gas
+    if (_gasRefundBasisPoints != 0) {
+      uint toRefund = _gasRefundBasisPoints * pricePaid / BASIS_POINTS_DEN;
+      if(tokenAddress != address(0)) {
+        IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
+        token.transferFrom(address(this), msg.sender, toRefund);
+      } else {
+        (bool success, ) = msg.sender.call{value: toRefund}("");
+        require(success, "Refund failed.");
+      }
+      emit GasRefunded(msg.sender, toRefund, tokenAddress);
     }
   }
 

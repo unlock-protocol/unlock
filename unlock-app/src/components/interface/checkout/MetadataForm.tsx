@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
 import { Button, LoadingButton, Input, Label } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 
 interface Props {
@@ -20,6 +20,7 @@ interface DefautltValues {
 
 export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is always defined in this component
   const { setUserMetadataData } = useAccount(account, network)
 
   const [error, setError] = useState('')
@@ -51,7 +52,7 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
     try {
       await setUserMetadataData(lock.address, metadata, network)
       onSubmit(metadata)
-    } catch (error) {
+    } catch (error: any) {
       setError('We could not save your info, please try again.')
       setSubmittedForm(false)
     }

@@ -80,6 +80,7 @@ const addDeployment = async (contractName, instance, isProxy) => {
 
 const getDeployment = (chainId, contractName) => {
   // get ABI etc
+
   const deploymentFilePath = getDeploymentsFilePath(chainId, contractName)
   const { abi, address, implementationAddress } =
     fs.readJsonSync(deploymentFilePath)
@@ -117,7 +118,7 @@ const getProxyData = ({ networkName, contractName }) => {
     proxy = { address: '0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b' }
   } else {
     try {
-      const contractNameClean = contractName.replace('V2', '') // UDT v2 uses UDT v1 proxy
+      const contractNameClean = contractName.replace('V2', '').replace('V3', '') // UDT v2 uses UDT v1 proxy
       ;[proxy] = proxies[`unlock-protocol/${contractNameClean}`]
     } catch (error) {
       throw new Error(
@@ -129,7 +130,7 @@ const getProxyData = ({ networkName, contractName }) => {
 }
 
 const getProxyAddress = function getProxyAddress(chainId, contractName) {
-  const { address } = getDeployment(chainId, `${contractName}`)
+  const { address } = getDeployment(chainId, contractName)
   if (!address) {
     throw new Error(
       `The proxy address for ${contractName} was not found in the network manifest (chainId: ${chainId})`

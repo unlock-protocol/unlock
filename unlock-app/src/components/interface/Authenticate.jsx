@@ -1,5 +1,11 @@
 /* eslint react/prop-types: 0 */
-import React, { createContext, useContext, useState, useMemo } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react'
 import ApolloClient from 'apollo-boost'
 import PropTypes, { number } from 'prop-types'
 import { ApolloProvider } from '@apollo/react-hooks'
@@ -10,7 +16,7 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { GraphServiceContext } from '../../utils/withGraphService'
 import { GraphService } from '../../services/graphService'
-
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
 import {
@@ -22,19 +28,18 @@ import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
+import { useAutoLogin } from '../../hooks/useAutoLogin'
 
 const GraphServiceProvider = GraphServiceContext.Provider
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 
-export const AuthenticationContext = createContext()
-
 /**
  * Utility providers set to retrieve content based on network settings
  * @returns
  */
-const Providers = ({ network, networkConfig, children }) => {
+const Providers = ({ network, networkConfig, children, authenticate }) => {
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
@@ -57,12 +62,17 @@ const Providers = ({ network, networkConfig, children }) => {
     return new Web3Service(networkConfig)
   }, [networkConfig])
 
+  const { tryAutoLogin, isLoading } = useAutoLogin({ authenticate })
+
+  useEffect(() => {
+    tryAutoLogin()
+  }, [])
   return (
     <ApolloProvider client={apolloClient}>
       <StorageServiceProvider value={storageService}>
         <Web3ServiceProvider value={web3Service}>
           <GraphServiceProvider value={graphService}>
-            {children}
+            {isLoading ? <Loading /> : children}
           </GraphServiceProvider>
         </Web3ServiceProvider>
       </StorageServiceProvider>
@@ -95,7 +105,7 @@ export const Authenticate = ({
     error,
     loading,
     network,
-    signedMessage,
+    signMessage,
     account,
     email,
     encryptedPrivateKey,
@@ -107,13 +117,13 @@ export const Authenticate = ({
     watchAsset,
   } = useProvider(config)
 
-  const authenticate = async (provider, messageToSign) => {
+  const authenticate = async (provider) => {
     if (!provider) {
       if (providerAdapter) {
-        return connectProvider(providerAdapter, messageToSign)
+        return connectProvider(providerAdapter)
       }
     }
-    return connectProvider(provider, messageToSign)
+    return connectProvider(provider)
   }
 
   const deAuthenticate = () => {
@@ -123,7 +133,7 @@ export const Authenticate = ({
   return (
     <AuthenticationContext.Provider
       value={{
-        signedMessage,
+        signMessage,
         account,
         network,
         email,
@@ -144,6 +154,7 @@ export const Authenticate = ({
             account={account}
             email={email}
             encryptedPrivateKey={encryptedPrivateKey}
+            authenticate={authenticate}
           >
             {children}
           </Providers>

@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Lock } from './Lock'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import { useLock } from '../../../hooks/useLock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
@@ -20,7 +21,7 @@ interface CryptoCheckoutProps {
   name: string
   closeModal: (success: boolean) => void
   setCardPurchase: () => void
-  redirectUri: string
+  redirectUri?: string
 }
 
 export const CryptoCheckout = ({
@@ -39,6 +40,7 @@ export const CryptoCheckout = ({
     network: walletNetwork,
     account,
     changeNetwork,
+    isUnlockAccount,
   } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
   const [transactionPending, setTransactionPending] = useState<string>('')
@@ -46,6 +48,7 @@ export const CryptoCheckout = ({
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
+  // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
 
   const now = new Date().getTime() / 1000
@@ -91,9 +94,10 @@ export const CryptoCheckout = ({
         })
         setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)
-        setTransactionPending(null)
-      } catch (error) {
-        if (error && error.code === 4001) {
+        setTransactionPending('')
+      } catch (error: any) {
+        console.error(error)
+        if (error?.code === 4001) {
           // eslint-disable-next-line no-alert
           alert('Please confirm the transaction in your wallet.')
         }
@@ -108,7 +112,7 @@ export const CryptoCheckout = ({
         try {
           const balance = await getTokenBalance(lock.currencyContractAddress)
           setCanAfford(userCanAffordKey(lock, balance))
-        } catch (error) {
+        } catch (error: any) {
           console.error(error)
         }
       }
@@ -130,12 +134,12 @@ export const CryptoCheckout = ({
 
       {!transactionPending && keyExpiration < now && (
         <>
-          <Prompt>Get your membership with</Prompt>
+          <Prompt>Get your membership with:</Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cryptoDisabled}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
-              {userIsOnWrongNetwork && !hasValidkey && (
+              {!isUnlockAccount && userIsOnWrongNetwork && !hasValidkey && (
                 <Warning>
                   Crypto wallet on wrong network.{' '}
                   <LinkButton onClick={connectToNetwork}>
@@ -144,24 +148,24 @@ export const CryptoCheckout = ({
                   .
                 </Warning>
               )}
-              {!userIsOnWrongNetwork && !hasValidkey && !canAfford && (
-                <Warning>Your balance is too low</Warning>
-              )}
+              {!isUnlockAccount &&
+                !userIsOnWrongNetwork &&
+                !hasValidkey &&
+                !canAfford && <Warning>Your balance is too low</Warning>}
             </CheckoutButton>
-            {isCreditCardEnabled && (
-              <CheckoutButton>
-                <Buttons.CreditCard
-                  lock={lock}
-                  backgroundColor="var(--blue)"
-                  fillColor="var(--white)"
-                  showLabel
-                  size="36px"
-                  disabled={cardDisabled}
-                  as="button"
-                  onClick={setCardPurchase}
-                />
-              </CheckoutButton>
-            )}
+
+            <CheckoutButton disabled={!isCreditCardEnabled}>
+              <Buttons.CreditCard
+                lock={lock}
+                backgroundColor="var(--blue)"
+                fillColor="var(--white)"
+                showLabel
+                size="36px"
+                disabled={cardDisabled}
+                as="button"
+                onClick={setCardPurchase}
+              />
+            </CheckoutButton>
 
             {canClaimAirdrop && (
               <CheckoutButton>
@@ -215,11 +219,19 @@ export const CryptoCheckout = ({
 
 export default CryptoCheckout
 
-export const CheckoutButton = styled.div`
+CryptoCheckout.defaultProps = {
+  redirectUri: '',
+}
+
+interface CheckoutButtonProps {
+  disabled?: boolean
+}
+
+export const CheckoutButton = styled.div<CheckoutButtonProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  margin: 0px 20px;
   ${(props) =>
     props.disabled &&
     `
@@ -237,6 +249,10 @@ export const CheckoutButton = styled.div`
     color: ${(props) => (props.disabled ? 'var(--grey)' : 'var(--blue)')};
   }
 `
+
+CheckoutButton.defaultProps = {
+  disabled: false,
+}
 
 const LinkButton = styled.a`
   cursor: pointer;

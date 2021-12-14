@@ -1,10 +1,10 @@
-import { NetworkConfig } from '../types';
+import { NetworkConfig } from '@unlock-protocol/types';
 
 export const bsc: NetworkConfig = {
     publicProvider: 'https://bsc-dataseed.binance.org/',
     provider:
         'https://bsc-dataseed.binance.org/',
-    unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+    unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
     id: 56,
     name: 'Binance Smart Chain',
     blockTime: 1000,
@@ -26,7 +26,12 @@ export const bsc: NetworkConfig = {
         symbol: 'BNB',
         decimals: 18,
     },
-    startBlock: 12396000, // 12368889,
+    startBlock: 13079000, // 12368889,
+    previousDeploys: [{
+        unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+        startBlock: 12396000
+    }]
+
 }
 
 export default bsc

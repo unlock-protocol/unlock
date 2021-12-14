@@ -1,10 +1,10 @@
 ---
 title: It’s Time to Unlock The Web
-subTitle: The web needs a better business model — and we believe the technology is finally here to do it. 
+subTitle: The web needs a better business model — and we believe the technology is finally here to do it.
 authorName: Julien Genestoux
 publishDate: April 27, 2018
 description: The web needs a better business model — and we believe the technology is finally here to do it.
-image: /static/images/blog/itstimetounlocktheweb/unlocklegacy.jpg
+image: /images/blog/itstimetounlocktheweb/unlocklegacy.jpg
 ---
 It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
 
@@ -36,7 +36,7 @@ Now, I think the technology exists to make those systems. So that’s what I’m
 
 Unlock is meant to help creators find ways to monetize without relying on a middleman. It’s a protocol — and not a centralized platform that controls everything that happens on it. This time, though, it’s not about helping information spread faster, it’s about helping value spread more easily. It’s about taking back subscription and access from the domain of middlemen — from a million tiny silos and a handful of gigantic ones — and transforming it into a fundamental business model for the web.
 
-![unlock original logo](/static/images/blog/itstimetounlocktheweb/unlocklegacy.jpg)
+![unlock original logo](/images/blog/itstimetounlocktheweb/unlocklegacy.jpg)
 
 ## Here’s how it works.
 

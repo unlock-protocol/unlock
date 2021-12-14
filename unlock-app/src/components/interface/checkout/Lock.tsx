@@ -8,13 +8,13 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import * as LockVariations from './LockVariations'
 import { useLock } from '../../../hooks/useLock'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../../utils/withConfig'
 
 interface LockProps {
   lock: any
   setHasKey: (state: boolean) => void
-  onSelected: (lock: any) => void | null
+  onSelected: ((lock: any) => void) | null
   network: number
   name: string
   hasOptimisticKey: boolean
@@ -89,6 +89,7 @@ export const Lock = ({
       config.networks[network].baseCurrencySymbol,
       name
     ),
+    selectable: true, // by default!
   }
 
   if (loading) {

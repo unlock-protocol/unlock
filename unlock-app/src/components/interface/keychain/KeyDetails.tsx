@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import styled from 'styled-components'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import keyHolderQuery from '../../../queries/keyHolder'
 import 'cross-fetch/polyfill'
 import { DefaultError } from '../../creator/FatalError'
@@ -16,7 +16,7 @@ export const KeyDetails = () => {
     variables: { address: account },
   })
 
-  if (!account) {
+  if (!account || !network) {
     return <LoginPrompt />
   }
 
@@ -25,7 +25,7 @@ export const KeyDetails = () => {
     return (
       <DefaultError
         title="Could not retrieve keys"
-        illustration="/static/images/illustrations/error.svg"
+        illustration="/images/illustrations/error.svg"
         critical
       >
         {error.message}
@@ -52,7 +52,7 @@ export const NoKeys = () => {
   return (
     <DefaultError
       title="You don't have any keys yet"
-      illustration="/static/images/illustrations/key.svg"
+      illustration="/images/illustrations/key.svg"
       critical={false}
     >
       The Keychain lets you view and manage the keys that you own. As soon as

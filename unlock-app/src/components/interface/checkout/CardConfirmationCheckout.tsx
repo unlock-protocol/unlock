@@ -4,7 +4,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { Lock } from './Lock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 import { Button } from './FormStyles'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
@@ -37,6 +37,7 @@ export const CardConfirmationCheckout = ({
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { chargeCard } = useAccount(account, network)
   const [purchasePending, setPurchasePending] = useState(false)
   const [keyExpiration, setKeyExpiration] = useState(0)
@@ -46,10 +47,9 @@ export const CardConfirmationCheckout = ({
   const hasValidkey = keyExpiration > now && keyExpiration < Infinity
   const hasOptimisticKey = keyExpiration === Infinity
 
-  const totalPrice: number = Object.values(lock.fiatPricing.usd).reduce(
-    (s: number, x: number): number => s + x,
-    0
-  ) as number
+  const totalPrice: number = Object.values(
+    lock.fiatPricing.usd as number
+  ).reduce((s: number, x: number): number => s + x, 0) as number
   const fee = totalPrice - lock.fiatPricing.usd.keyPrice
   const formattedPrice = (totalPrice / 100).toFixed(2)
 
@@ -60,7 +60,7 @@ export const CardConfirmationCheckout = ({
           config.networks[network].provider
         )
         try {
-          const result = await provider.waitForTransaction(hash)
+          await provider.waitForTransaction(hash)
           setKeyExpiration(Infinity) // Optimistic!
           setPurchasePending(false)
         } catch (e) {
@@ -101,7 +101,7 @@ export const CardConfirmationCheckout = ({
         setError('Purchase failed. Please try again.')
         setPurchasePending(false)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       setError('Purchase failed. Please try again.')
       setPurchasePending(false)

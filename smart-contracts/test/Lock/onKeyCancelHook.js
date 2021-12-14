@@ -21,7 +21,11 @@ contract('Lock / onKeyCancelHook', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     testEventHooks = await TestEventHooks.new()
-    await lock.setEventHooks(constants.ZERO_ADDRESS, testEventHooks.address)
+    await lock.setEventHooks(
+      constants.ZERO_ADDRESS,
+      testEventHooks.address,
+      constants.ZERO_ADDRESS
+    )
     keyPrice = await lock.keyPrice()
     await lock.purchase(
       0,
@@ -49,7 +53,11 @@ contract('Lock / onKeyCancelHook', (accounts) => {
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
-      lock.setEventHooks(constants.ZERO_ADDRESS, accounts[1]),
+      lock.setEventHooks(
+        constants.ZERO_ADDRESS,
+        accounts[1],
+        constants.ZERO_ADDRESS
+      ),
       'INVALID_ON_KEY_CANCEL_HOOK'
     )
   })

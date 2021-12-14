@@ -4,9 +4,9 @@ subTitle: Now you can buy tickets to real-world events using Ethereum
 authorName: Ben Werdmuller
 publishDate: August 8, 2019
 description: Now you can buy tickets to real-world events using Ethereum and the Unlock Protocol.
-image: /static/images/blog/introducing-tickets/introducing-tickets.jpg
+image: /images/blog/introducing-tickets/introducing-tickets.jpg
 ---
-![introducing tickets](/static/images/blog/introducing-tickets/introducing-tickets.jpg)
+![introducing tickets](/images/blog/introducing-tickets/introducing-tickets.jpg)
 
 The Unlock Protocol isn't just a way to pay to access services on the internet.
 
@@ -22,14 +22,14 @@ You can buy a ticket to the [Berlin Open Source Salon](https://berlin.opensource
 [Visit the Unlock event page](https://tickets.unlock-protocol.com/event/0x98c0cbF0e9525f1a6975A51c9D5E8e063c034D6D),
 purchase a ticket, and then show your special QR code at the door. Your ticket will be validated on the blockchain.
 
-![Berlin Open Source Salon ticket page](/static/images/blog/introducing-tickets/boss-tickets.png)
+![Berlin Open Source Salon ticket page](/images/blog/introducing-tickets/boss-tickets.png)
 
 ## How tickets work with Unlock
 
 Every Unlock transaction - whether for content, an event, software licenses, or anything else - works by selling a _key_
 to a _lock_ using Ethereum. Tickets are no different.
 
-![Unlock ticket creation screen](/static/images/blog/introducing-tickets/create-an-event.png)
+![Unlock ticket creation screen](/images/blog/introducing-tickets/create-an-event.png)
 
 Once a lock has been created, creators have access to a number of ways to use it: different applications that sit on top of
 the Unlock Protocol. The ticketed event application allows you to save a date, title, description, and location for the

@@ -82,6 +82,11 @@ const networkMap = {
       graphNode: 'https://api.thegraph.com/deploy/',
       ipfs: 'https://api.thegraph.com/ipfs/',
     },
+    optimism: {
+      subgraph: 'unlock-protocol/optimism',
+      graphNode: 'https://api.thegraph.com/deploy/',
+      ipfs: 'https://api.thegraph.com/ipfs/',
+    },
   },
 }
 

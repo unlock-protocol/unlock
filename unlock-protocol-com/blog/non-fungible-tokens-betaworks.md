@@ -4,13 +4,13 @@ subTitle: Non Fungible are one of the largest emerging token categories in the c
 authorName: Julien Genestoux
 publishDate: June 23, 2019
 description: Non Fungible are one of the largest emerging token categories in the crypto asset world. We presented an intro to them at Betaworks Studios!
-image: /static/images/blog/non-fungible-tokens-betaworks/non-fongible-tokens-betaworks.png
+image: /images/blog/non-fungible-tokens-betaworks/non-fongible-tokens-betaworks.png
 membersOnly: |
   <div class="responsiveWrapper">
   <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSFvpySR7seFBpTHXp-Kj6Zh4lImruyZ38iUI2grCTeUh2ErngKCTpXRDMSrwxh4VqbVy6JaY2X8H7P/embed?start=false&loop=false&delayms=3000" frameBorder="0" width="960" height="569" allowFullScreen="true" mozallowFullScreen="true" webkitallowFullScreen="true"></iframe>
   </div>
 nonMembersOnly: |
-  <img src="/static/images/blog/non-fungible-tokens-betaworks/non-fongible-tokens-betaworks-locked.png" />
+  <img src="/images/blog/non-fungible-tokens-betaworks/non-fongible-tokens-betaworks-locked.png" />
 ---
 
 On June 21st, 2019, the team at [Betaworks Studios](https://betaworks-studios.com/) invited us to talk about Non Fungible Tokens.

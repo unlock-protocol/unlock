@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import UnlockPropTypes from '../../../propTypes'
 import withConfig, { ConfigContext } from '../../../utils/withConfig'
 
-import { AuthenticationContext } from '../../interface/Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 export function CreatorLockStatus({ hash, confirmations }) {
   const config = useContext(ConfigContext)

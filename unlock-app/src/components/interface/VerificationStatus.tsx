@@ -6,7 +6,7 @@ import { ActionButton } from './buttons/ActionButton'
 
 import Loading from './Loading'
 import { ValidKey, InvalidKey } from './verification/Key'
-import { AuthenticationContext } from './Authenticate'
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import LoginPrompt from './LoginPrompt'
 
 interface VerificationData {

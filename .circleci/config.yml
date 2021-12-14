@@ -21,7 +21,9 @@ jobs:
       - checkout
       - run:
           name: Check for changes in repository
-          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
+          command: |
+            changed=$(scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH)
+            if [ "$changed" != "changed" ] && [ $CIRCLE_BRANCH != "master" ] && [ $CIRCLE_BRANCH != "production" ]; then circleci step halt; fi
       - run:
           name: Running << parameters.service >> tests
           command: scripts/tests.sh << parameters.service >>
@@ -38,7 +40,11 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
+          command: |
+            changed=$(scripts/monorepo.sh locksmith $CIRCLE_BRANCH)
+            if [ "$changed" != "changed" ] && [ $CIRCLE_BRANCH != "master" ] && [ $CIRCLE_BRANCH != "production" ]; then
+              circleci step halt;
+            fi
       - run:
           name: Locksmith Tests
           command: scripts/tests.sh locksmith
@@ -72,8 +78,6 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh << parameters.service >> $CIRCLE_BRANCH
-      - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh << parameters.service >> >> $BASH_ENV
       - run:
@@ -98,8 +102,6 @@ jobs:
         type: string
     steps:
       - checkout
-      - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
           name: Show docker info
           command: |

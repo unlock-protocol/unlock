@@ -11,6 +11,7 @@ import { UserTokenMetadata } from './usertokenmetadata'
 import { StripeCustomer } from './stripeCustomer'
 import { StripeConnectLock } from './stripeConnectLock'
 import { LockIcons } from './lockIcons'
+import { LockMigrations } from './lockMigrations'
 import { Charge } from './charge'
 import logger from '../logger'
 
@@ -34,6 +35,7 @@ sequelize.addModels([
   StripeCustomer,
   StripeConnectLock,
   LockIcons,
+  LockMigrations,
   Charge,
 ])
 
@@ -53,3 +55,4 @@ export * from './stripeCustomer'
 export * from './stripeConnectLock'
 export * from './charge'
 export * from './lockIcons'
+export * from './lockMigrations'

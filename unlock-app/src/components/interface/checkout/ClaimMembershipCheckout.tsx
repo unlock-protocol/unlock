@@ -3,7 +3,8 @@ import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { Lock } from './Lock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import { useAccount } from '../../../hooks/useAccount'
 import { Button } from './FormStyles'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
@@ -31,6 +32,7 @@ export const ClaimMembershipCheckout = ({
 }: ClaimMembershipCheckoutProps) => {
   const config = useContext(ConfigContext)
   const { account } = useContext(AuthenticationContext)
+  // @ts-expect-error account is _always_ defined in this component
   const { claimMembershipFromLock } = useAccount(account, network)
   const [purchasePending, setPurchasePending] = useState(false)
   const [keyExpiration, setKeyExpiration] = useState(0)
@@ -47,7 +49,7 @@ export const ClaimMembershipCheckout = ({
           config.networks[network].provider
         )
         try {
-          const result = await provider.waitForTransaction(hash)
+          await provider.waitForTransaction(hash)
           setKeyExpiration(Infinity) // Optimistic!
           setPurchasePending(false)
         } catch (e) {
@@ -83,7 +85,7 @@ export const ClaimMembershipCheckout = ({
         setError('Claim failed. Please try again.')
         setPurchasePending(false)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       setError('Claim failed. Please try again.')
       setPurchasePending(false)

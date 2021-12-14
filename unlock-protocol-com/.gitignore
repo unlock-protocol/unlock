@@ -24,4 +24,4 @@ yarn-error.log*
 /out
 
 blog/blog.index
-src/static/blog.rss
+public/blog.rss

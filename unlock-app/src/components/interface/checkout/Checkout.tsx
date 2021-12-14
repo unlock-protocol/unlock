@@ -28,7 +28,8 @@ import {
   UserInfo,
   TransactionInfo,
 } from '../../../hooks/useCheckoutCommunication'
-import { AuthenticationContext } from '../Authenticate'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
 
@@ -87,14 +88,15 @@ export const Checkout = ({
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
   defaultState,
 }: CheckoutProps) => {
-  const { authenticate, account, isUnlockAccount, signedMessage } = useContext(
+  const { account, isUnlockAccount, signMessage } = useContext(
     AuthenticationContext
   )
   const [skipPaywallIcon, setSkipPaywallIcon] = useState(false)
   const config = useContext(ConfigContext)
   const [state, setState] = useState('loading')
   const [showBack, setShowBack] = useState(false)
-  const [cardDetails, setCardDetails] = useState(null)
+  const [cardDetails, setCardDetails] = useState<any>(null)
+  const [signedMessage, setSignedMessage] = useState<string>('')
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
@@ -106,13 +108,31 @@ export const Checkout = ({
 
   // When the account is changed, make sure we ping!
   useEffect(() => {
-    if (account) {
-      setHasKey(-1)
-      emitUserInfo({
-        address: account,
-        signedMessage,
-      })
+    const handleUser = async (account?: string) => {
+      if (account) {
+        let signedMessage
+        if (paywallConfig?.messageToSign) {
+          signedMessage = await signMessage(paywallConfig?.messageToSign)
+          setSignedMessage(signedMessage)
+        }
+        setHasKey(-1)
+        emitUserInfo({
+          address: account,
+          signedMessage,
+        })
+      }
+
+      if (selectedLock) {
+        if (!isUnlockAccount) {
+          setCheckoutState('crypto-checkout')
+        } else {
+          cardCheckoutOrClaim(selectedLock)
+        }
+      } else {
+        setCheckoutState(defaultState)
+      }
     }
+    handleUser(account)
   }, [account])
 
   const allowClose = !(!paywallConfig || paywallConfig?.persistentCheckout)
@@ -129,22 +149,6 @@ export const Checkout = ({
     }
     setState(state)
   }
-
-  const onProvider = async (provider: any) => {
-    const result = await authenticate(provider, paywallConfig?.messageToSign)
-    if (result) {
-      if (selectedLock) {
-        if (!provider.isUnlock) {
-          setCheckoutState('crypto-checkout')
-        } else {
-          cardCheckoutOrClaim(selectedLock)
-        }
-      } else {
-        setCheckoutState(defaultState)
-      }
-    }
-  }
-
   const web3Service = new Web3Service(config.networks)
 
   let content
@@ -167,6 +171,10 @@ export const Checkout = ({
       const redirectUrl = new URL(redirectUri)
       if (!success) {
         redirectUrl.searchParams.append('error', 'access-denied')
+      }
+      // append the signature
+      if (signedMessage) {
+        redirectUrl.searchParams.append('signature', signedMessage)
       }
       if (queryParams) {
         for (const key in queryParams) {
@@ -206,8 +214,6 @@ export const Checkout = ({
     content = (
       <LogIn
         network={1} // We don't actually need a network here really.
-        embedded
-        onProvider={onProvider}
         useWallet={() => setCheckoutState('wallet-picker')}
       />
     )
@@ -220,14 +226,15 @@ export const Checkout = ({
         injectedProvider={web3Provider}
         backgroundColor="var(--white)"
         activeColor="var(--offwhite)"
-        onProvider={onProvider}
       >
         <p>Select your crypto wallet of choice.</p>
       </LoginPrompt>
     )
   } else if (state === 'crypto-checkout') {
     // Final step for the crypto checkout. We should save the metadata first!
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (!paywallConfig) {
+      content = <p>Missing paywall configuration. Please refresh this page</p>
+    } else if (paywallConfig?.metadataInputs && !savedMetadata) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
@@ -314,9 +321,8 @@ export const Checkout = ({
         askForCard
         showLogin={() => setCheckoutState('login')}
         network={lockProps?.network || paywallConfig?.network}
-        onAccountCreated={async (unlockProvider, { card, token }) => {
+        onAccountCreated={async ({ card, token }) => {
           setCardDetails({ card, token })
-          await onProvider(unlockProvider)
           setCheckoutState('confirm-card-purchase')
         }}
       />
@@ -327,8 +333,7 @@ export const Checkout = ({
         askForCard={false}
         showLogin={() => setCheckoutState('login')}
         network={lockProps?.network || paywallConfig?.network}
-        onAccountCreated={async (unlockProvider) => {
-          await onProvider(unlockProvider)
+        onAccountCreated={async () => {
           setCheckoutState('claim-membership')
         }}
       />
@@ -386,13 +391,19 @@ export const Checkout = ({
       </>
     )
   } else if (state === 'connect') {
-    content = (
-      <OAuthConnect
-        redirectUri={redirectUri}
-        closeModal={closeModal}
-        oAuthConfig={oAuthConfig}
-      />
-    )
+    if (!oAuthConfig || !redirectUri) {
+      content = (
+        <p>Your URL is missing the OAuth config or the redirect url. </p>
+      )
+    } else {
+      content = (
+        <OAuthConnect
+          redirectUri={redirectUri}
+          closeModal={closeModal}
+          oAuthConfig={oAuthConfig}
+        />
+      )
+    }
   } else if (state === 'loading') {
     // Maybe show an error if this is too long?
     content = <Loading />
@@ -474,5 +485,9 @@ const Prompt = styled.p`
     cursor: pointer;
   }
 `
+
+Checkout.defaultProps = {
+  paywallConfig: {},
+}
 
 const PublisherLogo = styled.img``

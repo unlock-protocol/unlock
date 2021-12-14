@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import { ConfigContext } from '../../utils/withConfig'
-import { AuthenticationContext } from '../interface/Authenticate'
+
+import { AuthenticationContext } from '../../contexts/AuthenticationContext'
+
 import { useAccount } from '../../hooks/useAccount'
 import InlineModal from '../interface/InlineModal'
 import {
@@ -184,11 +186,11 @@ export function Icon({ lock }) {
   const [imageSrc, setImageSrc] = useState(
     lock.address
       ? `${config.services.storage.host}/lock/${lock.address}/icon`
-      : '/static/images/svg/default-lock-logo.svg'
+      : '/images/svg/default-lock-logo.svg'
   )
 
   const handleError = () => {
-    setImageSrc('/static/images/svg/default-lock-logo.svg')
+    setImageSrc('/images/svg/default-lock-logo.svg')
   }
 
   return (

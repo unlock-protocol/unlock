@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.20.4",
+  "version": "0.20.5",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -25,9 +25,8 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "ethers": "5.5.1"
+    "ethers": "5.5.2"
   },
-  "browserslist": "> 0.25%, not dead",
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --fix"
@@ -36,18 +35,18 @@
   "devDependencies": {
     "@babel/cli": "7.16.0",
     "@babel/core": "7.16.0",
-    "@babel/preset-env": "7.16.0",
+    "@babel/preset-env": "7.16.4",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "babel-jest": "27.3.1",
-    "eslint": "8.1.0",
-    "ethers": "5.5.1",
-    "jest": "27.3.1",
-    "lint-staged": "11.2.6",
-    "prettier": "2.4.1",
+    "babel-jest": "27.4.2",
+    "eslint": "8.3.0",
+    "ethers": "5.5.2",
+    "jest": "27.4.3",
+    "lint-staged": "12.1.2",
+    "prettier": "2.5.0",
     "ts-jest": "27.0.7",
-    "typescript": "4.4.4"
+    "typescript": "4.5.2"
   },
   "dependencies": {
     "@unlock-protocol/jest-config": "workspace:^",
