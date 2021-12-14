@@ -1,5 +1,5 @@
 ---
-title: Unlock Protocol Wordpress Plugin
+title: Unlock Protocol WordPress Plugin
 subTitle: The Unlock Protocol WordPress plugin brings web3 to WordPress
 authorName: Christopher Carfi
 publishDate: December 14, 2021
@@ -55,53 +55,66 @@ There is a demo site at [https://unlockwpdemo.com](https://unlockwpdemo.com). Th
 
 The plugin is here for installation or for download: [https://wordpress.org/plugins/unlock-protocol/](https://wordpress.org/plugins/unlock-protocol/) 
 
+
 ## Videos of the Unlock Protocol WordPress plugin
 
 ### Admin view of the experience
 
 <div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/9qNeoJeZ6I8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
+
 ### Member view of the experience
 
 <div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/GQGqhkz6ZUg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
+
 ## Screenshots of the Unlock Protocol WordPress plugin
+
 
 ### Configuring the plugin: Networks
 
 ![admin network config](/images/blog/unlock-wordpress-plugin/unlock-wp-admin-networks-min.png)
 
+
 ### Configuring the plugin: Button colors
 
 ![admin button config](/images/blog/unlock-wordpress-plugin/unlock-wp-admin-button-colors-min.png)
+
 
 ### Adding an Unlock Protocol block to a post or page
 
 ![block menu](/images/blog/unlock-wordpress-plugin/unlock-wp-block-menu-min.png)
 
+
 ### Configuring the network and lock address for a specific block
 
 ![configuring unlock block](/images/blog/unlock-wordpress-plugin/unlock-wp-unlock-block-min.png)
+
 
 ### Embedding a nested image block inside the Unlock block
 
 ![embedding image content block](/images/blog/unlock-wordpress-plugin/unlock-wp-image-block-min.png)
 
+
 ### After embedding a nested image block within the Unlock block
 
 ![embedded image content](/images/blog/unlock-wordpress-plugin/unlock-wp-admin-image-content-min.png)
+
 
 ### Experience of a site visitor who does not have a key when visiting the post
 
 ![locked content](/images/blog/unlock-wordpress-plugin/unlock-wp-locked-content-min.png)
 
+
 ### Returning site visitors can log in with their crypto wallet
 
 ![login to wordpress with crypto wallet](/images/blog/unlock-wordpress-plugin/unlock-wp-log-in-with-crypto-wallet-min.png)
 
+
 ### Visitor experience when a subscriber is logged in with their crypto wallet
 
 ![unlocked content for members](/images/blog/unlock-wordpress-plugin/unlock-wp-member-content-min.png)
+
 
 ## Unlock WordPress plugin documentation
 
