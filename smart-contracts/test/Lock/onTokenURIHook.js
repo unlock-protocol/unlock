@@ -11,10 +11,10 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onKeyCancelHook', (accounts) => {
+contract('Lock / onTokenURIHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
-  let keyPrice
+  let tokenId
 
   before(async () => {
     unlock = await getProxy(unlockContract)
@@ -23,35 +23,40 @@ contract('Lock / onKeyCancelHook', (accounts) => {
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       constants.ZERO_ADDRESS,
-      testEventHooks.address,
-      constants.ZERO_ADDRESS
+      constants.ZERO_ADDRESS,
+      testEventHooks.address
     )
-    keyPrice = await lock.keyPrice()
+    const keyPrice = await lock.keyPrice()
     await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
       from,
       value: keyPrice,
     })
-    const ID = await lock.getTokenIdFor.call(to)
-    await lock.cancelAndRefund(ID, { from: to })
+    tokenId = await lock.getTokenIdFor.call(to)
   })
 
-  it('key cancels should log the hook event', async () => {
-    const log = (await testEventHooks.getPastEvents('OnKeyCancel'))[0]
-      .returnValues
-    assert.equal(log.lock, lock.address)
-    assert.equal(log.operator, to)
-    assert.equal(log.to, to)
-    assert.notEqual(log.refund, 0)
+  it('tokenURI should returns a custom value', async () => {
+    const baseTokenURI = 'https://unlock-uri-hook.test/'
+    const expirationTimestamp = await lock.keyExpirationTimestampFor(to)
+    const params = [
+      lock.address.toLowerCase(), // lockAddress
+      to.toLowerCase(), // owner
+      accounts[3].toLowerCase(), // operator
+      expirationTimestamp, // expirationTimestamp
+      tokenId, // tokenId
+    ]
+
+    const tokenURI = `${baseTokenURI}${params.join('/')}`
+    assert.equal(await lock.tokenURI(tokenId, { from: accounts[3] }), tokenURI)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
       lock.setEventHooks(
         constants.ZERO_ADDRESS,
-        accounts[1],
-        constants.ZERO_ADDRESS
+        constants.ZERO_ADDRESS,
+        accounts[3]
       ),
-      'INVALID_ON_KEY_CANCEL_HOOK'
+      'INVALID_ON_TOKEN_URI_HOOK'
     )
   })
 })
