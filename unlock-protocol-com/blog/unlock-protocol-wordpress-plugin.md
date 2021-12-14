@@ -29,7 +29,7 @@ From the site visitor side, WordPress site visitors did not have a means to auth
 
 From the website owner and creator side, site owners and creators did not have a way to either provide member-specific content or to monetize that content without relying on the centralized mechanisms of legacy solutions. The Unlock Protocol plugin solves this as well.
 
-It's important to note that Unlock Protocol is built not only on the technology, but also the principles of web3. As such, any time a purchaser purchases a key using the Unlock Protocol plugin, not only do they get an NFT that provides access to exclusive content, but the key purchaser *also receives some amount of ɄDT, the protocol's governance token*. ɄDT holders can vote on proposals in the Unlock DAO, and literally have a vested interest in — and can help to set the future direction of — the protocol itself.
+It's important to note that Unlock Protocol is built not only on the technology, but also the principles of web3. As such, any time a purchaser purchases a key using the Unlock Protocol plugin, not only do they get an NFT that provides access to exclusive content, but the key purchaser *also receives some amount of UDT, the protocol's governance token*. UDT holders can vote on proposals in the Unlock DAO, and literally have a vested interest in — and can help to set the future direction of — the protocol itself.
 
 The Unlock Protocol enables a new business model for the web, gives creators the power to be compensated directly from their community, and enables creators and their community to connect directly as well as have direct say and influence into the future of the protocol. 
 
