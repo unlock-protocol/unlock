@@ -1,9 +1,9 @@
 ---
-title: Unlock Protocol WordPress Plugin
-subTitle: The Unlock Protocol WordPress plugin brings web3 to WordPress
+title: The Unlock Protocol WordPress plugin brings web3 to WordPress
+subTitle: Use NFTs to manage membership, access, and monetization with existing WordPress sites
 authorName: Christopher Carfi
 publishDate: December 14, 2021
-description: The Unlock Protocol WordPress plugin brings web3 to WordPress.
+description: Use Unlock Protocol to manage membership, access, and monetization with existing WordPress sites.
 image: /images/blog/wordpress-plugin/unlock-wordpress.jpg
 ---
 
