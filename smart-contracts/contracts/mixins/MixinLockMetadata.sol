@@ -123,6 +123,20 @@ contract MixinLockMetadata is
       tokenId = '';
     }
 
+    if(address(onTokenURIHook) != address(0))
+    {
+      address tokenOwner = ownerOf(_tokenId);
+      uint expirationTimestamp = keyExpirationTimestampFor(tokenOwner);
+
+      return onTokenURIHook.tokenURI(
+        address(this),
+        msg.sender,
+        tokenOwner,
+        _tokenId,
+        expirationTimestamp
+        );
+    }
+
     if(bytes(baseTokenURI).length == 0) {
       URI = unlockProtocol.globalBaseTokenURI();
       seperator = '/';
