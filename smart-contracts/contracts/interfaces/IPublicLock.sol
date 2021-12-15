@@ -317,6 +317,12 @@ interface IPublicLock
 
   function renounceLockManager() external;
 
+  /**
+   * @dev Change the maximum number of keys the lock can edit
+   * @param _maxNumberOfKeys uint the maximum number of keys
+   */
+  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
+
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
