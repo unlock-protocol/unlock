@@ -110,7 +110,10 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       {isCloning && <Loading />}
       {Object.keys(lockMigration).length && lockMigration.existing && (
         <div>
-          <h2>Migration ongoing...</h2>
+          <h2>
+            Migration ongoing...
+            <small>Please refresh the page for status update.</small>
+          </h2>
           <pre>
             <code>{lockMigration.logs}</code>
           </pre>
