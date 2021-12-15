@@ -141,11 +141,11 @@ export const CreatorLock = ({
         <LockWarning>
           Your lock was deployed on an older Unlock contract, please{' '}
           <a
-            href={`/upgrade?locks=${lock.address}`}
+            href={`/clone?locks=${lock.address}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            clone it to use a new version of Unlock.
+            clone it to use a new version of Unlock
           </a>
           .
         </LockWarning>

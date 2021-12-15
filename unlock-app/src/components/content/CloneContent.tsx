@@ -98,7 +98,7 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       </Instructions>
       <p>
         Note: An identical lock with a new address will be created, with all
-        members in an identical state. all existing content. <br />
+        members in an identical state. <br />
       </p>
       {error && <p>{error}</p>}
       {!account && <p>Please authentificate to clone this lock</p>}
