@@ -29,7 +29,12 @@ export default async function migrateLock(
   let serializerAddress
   let provider
   let subgraphURI
-  if (chainId === 100 || chainId === 137 || chainId === 31337) {
+  if (
+    chainId === 100 ||
+    chainId === 137 ||
+    chainId === 31337 ||
+    chainId === 4
+  ) {
     ;({ unlockAddress, serializerAddress, provider, subgraphURI } = network)
   } else {
     throw new Error(
@@ -147,7 +152,7 @@ export default async function migrateLock(
     let managers
     try {
       managers = await listManagers({
-        lockAddress: newLockAddress,
+        lockAddress,
         subgraphURI,
       })
     } catch (error) {
@@ -157,6 +162,10 @@ export default async function migrateLock(
       })
       managers = []
     }
+
+    // remove deployer from manager to prevent revert (he already have manager role)
+    managers = managers.filter((address: string) => address !== signer.address)
+
     if (managers.length) {
       callback(null, {
         recordId,
