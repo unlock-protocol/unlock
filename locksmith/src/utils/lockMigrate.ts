@@ -115,15 +115,21 @@ export default async function migrateLock(
     message: `CLONE LOCK > deployed to : ${newLockAddress} (tx: ${transactionHash})`,
   })
 
-  callback(null, {
-    recordId,
-    message: 'CLONE LOCK > add key owners...',
-  })
   const newLock = new ethers.Contract(
     newLockAddress,
     contracts.PublicLockV8.abi,
     signer
   )
+
+  callback(null, {
+    recordId,
+    message: `CLONE LOCK > lock ''${await newLock.name()}''`,
+  })
+
+  callback(null, {
+    recordId,
+    message: 'CLONE LOCK > add key owners...',
+  })
 
   const keyTx = await newLock.grantKeys(
     keyOwners,
@@ -169,7 +175,7 @@ export default async function migrateLock(
     if (managers.length) {
       callback(null, {
         recordId,
-        message: `LOCK > managers for the lock '${await newLock.name()}':`,
+        message: 'LOCK > adding managers to the lock ...',
       })
       let message = ''
       managers.forEach((account: string, i: number) => {
@@ -179,22 +185,18 @@ export default async function migrateLock(
         recordId,
         message,
       })
-
-      const txs = await Promise.all(
-        managers.map((manager: string) => newLock.addLockManager(manager))
-      )
-      const waits = await Promise.all(txs.map((tx: any) => tx.wait()))
-      message = ''
-      waits.forEach(({ events }) => {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const manager of managers) {
+        const tx = await newLock.addLockManager(manager)
+        const { events } = await tx.wait()
         const evt = events.find(
           ({ event }: { event: string }) => event === 'LockManagerAdded'
         )
-        message = `${message}\n LOCK CLONE > ${evt.args.account} added as lock manager.`
-      })
-      callback(null, {
-        recordId,
-        message,
-      })
+        callback(null, {
+          recordId,
+          message: `LOCK CLONE > ${evt.args.account} added as lock manager.`,
+        })
+      }
     }
   } else {
     callback(null, {
