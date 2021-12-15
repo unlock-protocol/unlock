@@ -5,7 +5,7 @@ export const polygon: NetworkConfig = {
     provider:
         'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
     unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
-    serializerAddress: '0xb94AB50Ef47EECcf71108d3eE350AA58177169B8',
+    serializerAddress: '0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9',
     id: 137,
     name: 'Polygon',
     blockTime: 1000,
