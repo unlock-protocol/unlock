@@ -46,7 +46,7 @@ contract('Lock / onBalanceOfHook', (accounts) => {
         accounts[3],
         constants.ZERO_ADDRESS
       ),
-      'INVALID_ON_BALANCEOF_HOOK'
+      'INVALID_ON_VALID_KEY_HOOK'
     )
   })
 })
