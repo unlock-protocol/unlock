@@ -13,4 +13,4 @@ When Chroma Signet wanted to enhance their offering and additionally offer a “
 
 [See the full case study](https://f.hubspotusercontent20.net/hubfs/19942922/Chroma%20Signet%20-%20Unlock%20Case%20Study.pdf).
 
-[![Chroma Signet thumbnail](/images/blog/mintgate-unlock-case-study/mintgate-thumbnail.png)](https://f.hubspotusercontent20.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf)
+[![Chroma Signet thumbnail](/images/blog/chroma-signet-unlock-case-study/chroma-signet-thumbnail.png)](https://f.hubspotusercontent20.net/hubfs/19942922/Chroma%20Signet%20-%20Unlock%20Case%20Study.pdf)
