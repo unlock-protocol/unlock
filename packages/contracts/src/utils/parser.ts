@@ -61,7 +61,6 @@ async function main () {
     }) => console.log(`import ${contractName}${versionNumber} from '${abiPath}' `))
     
     console.log("import LockSerializer from './abis/utils/LockSerializer.json'")
-
     console.log(`\n\n// exports`)
     
     exports.forEach(({
