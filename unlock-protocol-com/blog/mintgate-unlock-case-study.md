@@ -14,3 +14,5 @@ While MintGate focuses on the frontend experience, they rely on Unlock to provid
 [See the full case study](https://f.hubspotusercontent20.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf).
 
 [![MintGate thumbnail](/images/blog/mintgate-unlock-case-study/mintgate-thumbnail.png)](https://f.hubspotusercontent20.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf)
+
+video goes here
