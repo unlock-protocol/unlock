@@ -214,7 +214,7 @@ contract MixinLockCore is
   {
     require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
     require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
-    require(_onBalanceOfHook == address(0) || _onBalanceOfHook.isContract(), 'INVALID_ON_BALANCEOF_HOOK');
+    require(_onBalanceOfHook == address(0) || _onBalanceOfHook.isContract(), 'INVALID_ON_BALANCE_OF_HOOK');
     require(_onTokenURIHook == address(0) || _onTokenURIHook.isContract(), 'INVALID_ON_TOKEN_URI_HOOK');
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
