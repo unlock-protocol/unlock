@@ -1,8 +1,8 @@
 ---
-Chroma Signet Gets to Market Six Months Faster with Unlock | Unlock Case Study
+Chroma Signet Cuts Dev Time By 6 Months with Unlock | Unlock Case Study
 subTitle: Lightspeed creation of NFT-based digital twins for every instance of every product in the supply chain
 authorName: Christopher Carfi
-publishDate: November 5, 2021
+publishDate: November 1, 2021
 description: Chroma Signet uses Unlock Protocol and cuts six months off the dev time required to create NFT-based digital twins for every instance of every product in the supply chain.
 image: /images/blog/chroma-signet-unlock-case-study/chroma-signet-150h.png
 ---
