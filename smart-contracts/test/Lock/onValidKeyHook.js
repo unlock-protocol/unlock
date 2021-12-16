@@ -11,7 +11,7 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onBalanceOfHook', (accounts) => {
+contract('Lock / onValidKeyHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
 
@@ -35,7 +35,17 @@ contract('Lock / onBalanceOfHook', (accounts) => {
       testEventHooks.address,
       constants.ZERO_ADDRESS
     )
+    // still returns value
+    assert.equal(await lock.getHasValidKey(to), true)
+
+    // expired the key
+    await lock.expireAndRefundFor(to, 0)
     assert.equal(await lock.getHasValidKey(to), false)
+
+    // set custom value in hook
+    await testEventHooks.setSpecialMember(lock.address, to)
+    assert.equal(await lock.getHasValidKey(to), true)
+    assert.equal(await lock.balanceOf(to), 1)
   })
 
   it('cannot set the hook to a non-contract address', async () => {

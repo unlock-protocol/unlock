@@ -85,15 +85,30 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     emit OnKeyCancel(msg.sender, _operator, _to, _refund);
   }
 
+  // test case for valid key hook
+  mapping (address => address) specialMembers;
+  
+  function setSpecialMember(
+    address _lockAddress, 
+    address _specialMember
+  ) public {
+    specialMembers[_lockAddress] = _specialMember;
+  }
+
   function hasValidKey(
     address _lockAddress,
     address _from,
-    uint _expirationtimeStamp,
+    uint, // removed var name to silence "unused" warning
     bool _hasValidKey
   ) external view
     returns (bool isValidKey)
   { 
-    return _expirationtimeStamp < block.timestamp;
+    // special members should always have access to content, even when the key is expired
+    if(!_hasValidKey && (specialMembers[_lockAddress] == _from)) {
+      isValidKey = true;
+    } else {
+      isValidKey = _hasValidKey;
+    }
   }
 
   string public baseURI = 'https://unlock-uri-hook.test/';
