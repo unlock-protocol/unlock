@@ -1,5 +1,5 @@
 ---
-title: Chroma Signet Cuts Dev Time By 6 Months with Unlock | Unlock Case Study
+title: Chroma Signet Cuts Dev Time By 6 Months | Unlock Case Study
 subTitle: Lightspeed creation of NFT-based digital twins for every instance of every product in the supply chain
 authorName: Christopher Carfi
 publishDate: November 1, 2021
