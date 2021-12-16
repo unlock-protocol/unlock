@@ -133,6 +133,98 @@ export const HomeContent = ({ posts }) => {
       <IntegrationsBox />
 
       <Box padding="0" color="transparent">
+        <H3>Featured Implementations</H3>
+        <Columns>
+          <Column>
+            <Illustration
+              style={{
+                maxHeight: '150px',
+                maxWidth: '250px',
+                display: 'flex',
+                alignSelf: 'center',
+              }}
+              src="/images/blog/mintgate-unlock-case-study/homepage-mintgate-150h.png"
+            />
+            <H4>MintGate token-gates links, video, and more with Unlock</H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              When MintGate needed to pair their front-end design with
+              NFT-based, token-gated access, they called Unlock.
+            </p>
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="https://unlock-protocol.com/blog/mintgate-unlock-case-study">
+                <a>See Case Study</a>
+              </Link>
+            </p>
+          </Column>
+          <Column>
+            <Illustration
+              style={{
+                maxHeight: '150px',
+                maxWidth: '250px',
+                display: 'flex',
+                alignSelf: 'center',
+              }}
+              src="/images/blog/mycrypto-case-study/homepage-mycrypto-150h.png"
+            />
+            <H4>MyCrypto opened up an entirely new revenue model</H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              Learn how MyCrypto turned users into paying users for their
+              open-source suite of Ethereum management tools.
+            </p>
+
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="https://unlock-protocol.com/blog/mycrypto-unlock-case-study">
+                <a>See Case Study</a>
+              </Link>
+            </p>
+          </Column>
+
+          <Column>
+            <Illustration
+              style={{
+                maxHeight: '150px',
+                maxWidth: '250px',
+                display: 'flex',
+                alignSelf: 'center',
+              }}
+              src="/images/blog/thedefiant-case-study/homepage-thedefiant-150h.png"
+            />
+            <H4>Paid newsletter subscriptions were a snap for The Defiant</H4>
+            <p
+              style={{
+                padding: '8px 0px',
+                marginTop: '0px',
+                marginBottom: '4px',
+              }}
+            >
+              The Defiant implemented a crypto-native way to monetize its
+              content and newsletter subscriptions.
+            </p>
+            <p style={{ marginTop: 'auto' }}>
+              →{' '}
+              <Link href="https://unlock-protocol.com/blog/thedefiant-case-study">
+                <a>See Case Study</a>
+              </Link>
+            </p>
+          </Column>
+        </Columns>
+      </Box>
+
+      <Box padding="0" color="transparent">
         <H3>Why Unlock?</H3>
         <Columns>
           <Column>
@@ -143,7 +235,7 @@ export const HomeContent = ({ posts }) => {
             <H4>
               Your Content
               <br />
-              Your community
+              Your Community
             </H4>
             <p
               style={{
@@ -156,9 +248,9 @@ export const HomeContent = ({ posts }) => {
               to take your members anywhere.
             </p>
             <p style={{ marginTop: 'auto' }}>
-              → {/* Replace with actual case studies links! */}
+              →{' '}
               <Link href="https://docs.unlock-protocol.com/creators/tutorials-1">
-                <a>Case Studies</a>
+                <a>See Tutorials</a>
               </Link>
             </p>
           </Column>
@@ -179,7 +271,7 @@ export const HomeContent = ({ posts }) => {
                 marginBottom: '4px',
               }}
             >
-              Both FIAT and Web3 friendly, allow your customers to pay in the
+              Both fiat and web3 friendly, allow your customers to pay in the
               currency they’re most comfortable with.
             </p>
 

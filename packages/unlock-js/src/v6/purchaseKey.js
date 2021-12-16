@@ -77,8 +77,15 @@ export default async function (
   }
 
   // To get good estimates we need the gas price, because it matters in the actual execution
-  const gasPrice = await this.provider.getGasPrice()
-  purchaseForOptions.gasPrice = gasPrice
+  const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+    await this.provider.getFeeData()
+
+  if (maxFeePerGas && maxPriorityFeePerGas) {
+    purchaseForOptions.maxFeePerGas = maxFeePerGas
+    purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+  } else {
+    purchaseForOptions.gasPrice = gasPrice
+  }
 
   // Estimate gas. Bump by 30% because estimates are wrong
   if (!purchaseForOptions.gasLimit) {

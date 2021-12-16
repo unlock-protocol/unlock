@@ -1,6 +1,8 @@
 const { ethers } = require('hardhat')
 
-async function main({ publicLockAddress, unlockAddress }) {
+const CURRENT_VERSION = 10
+
+async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
   if (!publicLockAddress) {
     // eslint-disable-next-line no-console
     throw new Error(
@@ -13,8 +15,15 @@ async function main({ publicLockAddress, unlockAddress }) {
   }
 
   // get unlock instance
-  const Unlock = await ethers.getContractFactory('Unlock')
-  const unlock = Unlock.attach(unlockAddress)
+  let unlock
+  if (unlockVersion < CURRENT_VERSION) {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const contracts = require('@unlock-protocol/contracts')
+    const { abi } = contracts[`UnlockV${unlockVersion}`]
+    unlock = await ethers.getContractAt(abi, unlockAddress)
+  } else {
+    unlock = await ethers.getContractAt('Unlock', unlockAddress)
+  }
 
   const existingTemplate = await unlock.publicLockAddress()
 
@@ -27,10 +36,15 @@ async function main({ publicLockAddress, unlockAddress }) {
   // set lock template
   const publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
   const version = await publicLock.publicLockVersion()
-  // eslint-disable-next-line no-console
-  console.log(`LOCK TEMPLATE SETUP > Setting up PublicLock version ${version}`)
-  const txVersion = await unlock.addLockTemplate(publicLockAddress, version)
-  await txVersion.wait()
+
+  if (unlockVersion > 9) {
+    // eslint-disable-next-line no-console
+    console.log(
+      `LOCK TEMPLATE SETUP > Setting up PublicLock version ${version}`
+    )
+    const txVersion = await unlock.addLockTemplate(publicLockAddress, version)
+    await txVersion.wait()
+  }
 
   // set lock template
   const tx = await unlock.setLockTemplate(publicLockAddress)

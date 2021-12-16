@@ -152,6 +152,12 @@ yarn hardhat set:unlock-oracle --oracle-address <xxx> \
 see `npx hardhat --help` for a list of all available tasks and deployments
 
 
+#### Deploy previous versions
+
+```
+yarn hardhat deploy:unlock --unlock-version 8
+```
+
 ### Update Unlock config
 
 ```
@@ -222,4 +228,67 @@ yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainne
 
 ```
 yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contracts/<Unlock|PublicLock>.sol
+```
+
+## Handle locks
+
+### Deploy sample locks
+
+Once you have deployed the Unlock contract on localhost, you can try
+
+```
+yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
+```
+
+### Serialize existing lock
+
+```
+# deploy LockSerializer contract 
+yarn deploy:serializer --network localhost
+
+# copy data of a lock locally
+yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+
+## Clone an existing locks
+
+```
+# copy data of a lock locally
+yarn hardhat lock:clone --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+## Handle locks
+
+### Deploy sample locks
+
+Once you have deployed the Unlock contract on localhost, you can try
+
+```
+yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
+```
+
+### Serialize existing lock
+
+```
+# deploy LockSerializer contract 
+yarn deploy:serializer --network localhost
+
+# copy data of a lock locally
+yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
+```
+
+## Clone an existing locks
+
+```
+yarn hardhat lock:clone --lock-address 0x84Ee59446F664c933b175fBB96c489ac2Ed76d31 /
+  --serializer-address 0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128 /
+  --unlock-address 0x071586BA1b380B00B793Cc336fe01106B0BFbE6D /
+  --network localhost 
+```
+
+## List lock managers 
+
+```
+yarn hardhat lock:managers --lock-address 0x06441a9ac376b80004c32f8f37b1f80a2135362c --network xdai
+LOCK > managers for the lock 'lido':
+[0]: 0x61e155fac2bb8e58fa8c5c01a21e0513cfe52fc4
 ```
