@@ -178,7 +178,7 @@ interface IPublicLock
   function setEventHooks(
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
-    address _onBalanceOfHook,
+    address _onValidKeyHook,
     address _onTokenURIHook
   ) external;
 
@@ -312,7 +312,7 @@ interface IPublicLock
 
   function onKeyCancelHook() external view returns(address);
   
-  function onBalanceOfHook() external view returns(bool isValidKey);
+  function onValidKeyHook() external view returns(bool);
 
   function onTokenURIHook() external view returns(string memory);
 
