@@ -85,11 +85,11 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     emit OnKeyCancel(msg.sender, _operator, _to, _refund);
   }
 
-  
   function hasValidKey(
     address _lockAddress,
     address _from,
-    uint _expirationtimeStamp
+    uint _expirationtimeStamp,
+    bool _hasValidKey
   ) external view
     returns (bool isValidKey)
   { 
