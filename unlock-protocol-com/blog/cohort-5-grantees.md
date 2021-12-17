@@ -33,7 +33,7 @@ Dinner DAO represents a modern day dinner club that brings together members of t
 
 **Justin Holmes - Gymnasia**
 
-Gymnasia makes it possible for anyone to earn cryptocurrencies & NFT's by participating in virtual fitness challenges. They've also made it possible for the creators of those challenges and participants to earn passive income, in perpetuity. They'll be integrating Unlock to power specific aspects of their platform to help people earn and better understand the web3 ecosystem!
+Gymnasia makes it possible for anyone to earn cryptocurrencies & NFTs by participating in virtual fitness challenges. They've also made it possible for the creators of those challenges and participants to earn passive income, in perpetuity. They'll be integrating Unlock to power specific aspects of their platform to help people earn and better understand the web3 ecosystem!
 
 **Gaetan Renaudeau - Greweb Monthly Plots**
 
