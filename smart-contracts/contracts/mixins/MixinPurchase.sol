@@ -73,7 +73,12 @@ contract MixinPurchase is
       // refresh the cached value
       idTo = toKey.tokenId;
       _recordOwner(_recipient, idTo);
-      newTimeStamp = block.timestamp + expirationDuration;
+      // check for a non-expiring key
+      if (expirationDuration == type(uint).max) {
+        newTimeStamp = type(uint).max;
+      } else {
+        newTimeStamp = block.timestamp + expirationDuration;
+      }
       toKey.expirationTimestamp = newTimeStamp;
 
       // trigger event
@@ -83,13 +88,20 @@ contract MixinPurchase is
         idTo
       );
     } else if (toKey.expirationTimestamp > block.timestamp) {
+      // prevent re-purchase of a valid non-expiring key
+      require(expirationDuration != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
-      // This is an existing owner trying to renew their expired key
-      newTimeStamp = block.timestamp + expirationDuration;
+      // This is an existing owner trying to renew their expired or cancelled key
+      if(expirationDuration == type(uint).max) {
+        newTimeStamp = type(uint).max;
+      } else {
+        newTimeStamp = block.timestamp + expirationDuration;
+      }
       toKey.expirationTimestamp = newTimeStamp;
 
       // reset the key Manager to 0x00
