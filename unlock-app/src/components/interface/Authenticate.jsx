@@ -39,7 +39,13 @@ const Web3ServiceProvider = Web3ServiceContext.Provider
  * Utility providers set to retrieve content based on network settings
  * @returns
  */
-const Providers = ({ network, networkConfig, children, authenticate }) => {
+const Providers = ({
+  network,
+  networkConfig,
+  children,
+  authenticate,
+  skipAutoLogin,
+}) => {
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
@@ -62,11 +68,16 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
     return new Web3Service(networkConfig)
   }, [networkConfig])
 
-  const { tryAutoLogin, isLoading } = useAutoLogin({ authenticate })
+  const { tryAutoLogin, isLoading } = useAutoLogin({
+    authenticate,
+  })
 
+  console.log({ skipAutoLogin })
   useEffect(() => {
-    tryAutoLogin()
-  }, [])
+    if (!skipAutoLogin) {
+      tryAutoLogin()
+    }
+  }, [skipAutoLogin])
   return (
     <ApolloProvider client={apolloClient}>
       <StorageServiceProvider value={storageService}>
@@ -98,6 +109,7 @@ export const Authenticate = ({
   embedded,
   onAuthenticated,
   providerAdapter,
+  skipAutoLogin,
 }) => {
   const config = useContext(ConfigContext)
 
@@ -155,6 +167,7 @@ export const Authenticate = ({
             email={email}
             encryptedPrivateKey={encryptedPrivateKey}
             authenticate={authenticate}
+            skipAutoLogin={skipAutoLogin}
           >
             {children}
           </Providers>
@@ -174,6 +187,7 @@ Authenticate.propTypes = {
   onAuthenticated: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
   providerAdapter: PropTypes.object,
+  skipAutoLogin: PropTypes.bool,
 }
 
 Authenticate.defaultProps = {
@@ -184,6 +198,7 @@ Authenticate.defaultProps = {
   embedded: false,
   onAuthenticated: () => {},
   providerAdapter: null,
+  skipAutoLogin: false,
 }
 
 export default Authenticate
