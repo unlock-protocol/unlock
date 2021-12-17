@@ -1,53 +1,56 @@
 ---
-title: Let's celebrate our 4th Cohort of Unlock Grantees
-subTitle: A web3 Discord alternative, memberships, DAO onboarding, and identity!
+title: Cohort 5 Grantees have arrived!
+subTitle: And we are so grateful to have all of these amazing projects implementing the protocol!
 authorName: Crystal Street
-publishDate: November 15, 2021
-description: Unlock Grantees Cohort 4 covers everything from easy crypto adoption for SaaS to Element integrations and everything in between!
-image: /images/blog/cohort-4/cohort-4.png
+publishDate: December 17, 2021
+description: We're so excited to announce our fifth cohort of Unlock grantees! Please check out their projects and follow their progress!
+image: /images/blog/cohort-5/cohort-5.png
 ---
 
-Cohort 4 of the Unlock Grantees are here and ready to push the protocol towards wider adoption by those who need it most! Cohort 4 covers everything from removing barriers to crypto entry for SaaS providers, to integrating with Element, making DAO participation more equitable for all — and so much more!
+Cohort 5 is in the house and they are ready to launch their amazing ideas into the web3 ecosystem using the Unlock Protocol! And we're here to celebrate each and every fabulous vision of our grantees!
 
-![Cohort 4](/images/blog/cohort-4/cohort-4.png)
+![Cohort 5](/images/blog/cohort-5/cohort-5.png)
 
+Here’s a quick introduction to each grantee, their project and how to find them on the Twitters so you can support their projects. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal! 
 
-Check out these brief introductions for each grantee, their project and how to find them on the Twitters so you can follow their progress. If reading about these projects sparks your creation engine, simply click the link at the bottom of the article and submit your proposal to join the next cohort! Our grant selection committee will be meeting soon to review the latest applications— so don't wait!
+**Jenil Thakker - Coinvise**
 
-## David Layton - Unfurl
+[https://twitter.com/CoinviseCo](https://twitter.com/CoinviseCo)
 
-[https://www.linkedin.com/in/david-matthew-layton](https://www.linkedin.com/in/david-matthew-layton)
+Every time a member of a creator community claims a membership on Unlock, they'll be eligible to claim an airdrop on Coinvise. Coinvise is a platform of powerful tools for creators to build and operate tokenized communities.
 
-David Layton is creating Unfurl, an Open ID Connect Provider powered by Unlock Protocol. His goal is to make entry to cryptocurrency subscriptions as easy as possible for SaaS providers. He also successfully lead the Firebase integration of Unlock. Removing the friction for SaaS' entering the crypto space is a huge step towards mass adoption of web3 technology (and our protocol too)!
+**Andrew Berkowitz - Socialstack**
 
-## MJ Zilla - Element Integration
+[https://twitter.com/trysocialstack](https://twitter.com/trysocialstack)
 
-[https://twitter.com/_mecyver](https://twitter.com/_mecyver)
+Socialstack is an impact-driven toolkit to launch and manage a social token community. They're cultivating a curated community of impact-first brands, organizations, creators, and DAOs to launch on their platform and onboard their community into Web3. Socialstack is planning to implement Unlock's functionality into their CommunityOS dApp to enable communities to activate turnkey membership NFTs across all the platforms that Unlock enables, and provide their members with membership NFTs to purchase. Check out [their platform here.](https://www.socialstack.co/)
 
-MJ, aka Mecyver is working on an Element + Unlock integration. Providing a viable alternative to community building outside of Discord that utilizes our protocol to manage memberships will help support more adoption by creators! We're very excited to see a fresh integration for private and group chats that is also open-source and encrypted.
+**Blair Gardner - Dinner DAO**
 
-## Stephen Grinalds - Chisos Capital
+[https://twitter.com/dinner_dao](https://twitter.com/dinner_dao)
 
-[https://twitter.com/ChisosCapital](https://twitter.com/ChisosCapital)
+Dinner DAO represents a modern day dinner club that brings together members of the web3 community through IRL meals and events to bond, network, share stories, and extend the connections we're building as a community into the real world. Learn more about [Dinner DAO here.](https://dinnerdao.xyz/)
 
-Chisos Capital is utilizing Unlock to support their membership club and community of investors and entrepreneurs throughout their ecosystem.
+**Justin Holmes - Gymnasia**
 
-## Carlos Diaz-Padron and Gail Wilson - Metaphor
+Gymnasia makes it possible for anyone to earn cryptocurrencies & NFT's by participating in virtual fitness challenges. They've also made it possible for the creators of those challenges and participants to earn passive income, in perpetuity. They'll be integrating Unlock to power specific aspects of their platform to help people earn and better understand the web3 ecosystem!
 
-[https://twitter.com/the_carlosdp](https://twitter.com/the_carlosdp)
+**Gaetan Renaudeau - Greweb Monthly Plots**
 
-Carlos and Gail are working on an integration for Metaphor's DAO onboarding tool, with the intention of creating an easy method for joining a DAO.  This will allow members to bypass expensive, and often prohibitive, token ownership that normally powers DAO participation.
+[https://twitter.com/greweb](https://twitter.com/greweb)
 
-## Fanny Lakoubay - BAD 2.0 (Blockchain Art Directory)
+Gaetan is a generative artist and coder looking to integrate Unlock into various aspects of their NFT artwork. Be sure to check out their artwork [at this link!](https://greweb.me/plots)
 
-[https://twitter.com/badOG_xyz](https://twitter.com/badOG_xyz)
+**Micol Ap - VCA**
 
-Fanny is looking to incorporate Unlock into the existing BAD platform to help them elevate their mission and further embrace the full power of web3. BAD was originally built in 2017 to help serve as a directory for blockchain art. BAD is upping their game to better serve the blockchain art community which is hot right now!
+[https://twitter.com/verticalcrypto](https://twitter.com/verticalcrypto)
+
+The VCA Residency vision is to democratise the access to knowledge and give free educational programs dedicated to creators of all kinds interested in Crypto Art and the NFT ecosystem. VCA will integrate Unlock to power their memberships and access for participants in their ecosystem
 
 ### Are you ready to join our Grantees?
 
-We’re excited to have such fabulous projects in our grant program and are wishing our grantees all the best as they bring their visions to life. If you’d like to join our Discord to connect with our grantees about their projects or explore some ideas of your own, please [join us here](https://discord.gg/Ah6ZEJyTDp).
+We’re excited to have such insightful projects in our grant program and are wishing our grantees all the best as they bring their visions to life. If you’d like to join our Discord to connect with our grantees about their projects or explore some ideas of your own, please [join us here](https://discord.gg/Ah6ZEJyTDp).
 
 AND if you already have an idea for an integration using Unlock, please submit your project [proposal here](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22).
 
-Unlock Protocol is driven by and for our community. We’re here to help YOU build the future path of blockchain technology and together we’ll explore all that’s possible with community and decentralization as our core foundations. [Join the conversation](https://unlock.community/).
+Unlock Protocol is driven by and for our community. We’re here to help YOU build the future path of blockchain technology and together we’ll explore all that’s possible with community and decentralization as our core foundations. [Join the conversation.](https://unlock.community/)
