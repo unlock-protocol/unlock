@@ -187,6 +187,7 @@ Authenticate.propTypes = {
   onAuthenticated: PropTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
   providerAdapter: PropTypes.object,
+  skipAutoLogin: PropTypes.bool,
 }
 
 Authenticate.defaultProps = {
@@ -197,6 +198,7 @@ Authenticate.defaultProps = {
   embedded: false,
   onAuthenticated: () => {},
   providerAdapter: null,
+  skipAutoLogin: false,
 }
 
 export default Authenticate
