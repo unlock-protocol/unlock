@@ -307,4 +307,5 @@ contract MixinTransfer is
     return (retval == _ERC721_RECEIVED);
   }
 
+  uint256[1000] private __safe_upgrade_gap;
 }
