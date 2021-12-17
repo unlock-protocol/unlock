@@ -72,7 +72,6 @@ const Providers = ({
     authenticate,
   })
 
-  console.log({ skipAutoLogin })
   useEffect(() => {
     if (!skipAutoLogin) {
       tryAutoLogin()
