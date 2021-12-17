@@ -1,9 +1,10 @@
 import parseDataUri from 'parse-data-uri'
+import migrateLock from '../utils/lockMigrate'
 import stripeOperations from '../operations/stripeOperations'
 import LockOwnership from '../data/lockOwnership'
 import { evaluateLockOwnership } from './metadataController'
 import * as Normalizer from '../utils/normalizer'
-import { LockIcons } from '../models/lockIcons'
+import { LockIcons, LockMigrations } from '../models'
 
 import logger from '../logger'
 
@@ -11,7 +12,13 @@ const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../utils/lockIcon').default
 const { getBaseTokenData } = require('../operations/metadataOperations')
 
-const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
+const {
+  getLockByAddress,
+  getLocksByOwner,
+  createLock,
+  updateLockMigrationsLog,
+  getLockMigration,
+} = lockOperations
 
 const lockSave = async (req, res) => {
   const { lock } = req.body.message
@@ -34,6 +41,88 @@ const lockGet = async (req, res) => {
   )
 
   res.json(baseTokenData)
+}
+
+// ?lockAddress
+// pass ?force=1 param to bypass unique check
+const lockMigrate = async (req, res) => {
+  const { lockAddress } = req.params
+  const { force } = req.query
+  const unlockVersion = req.query.unlockVersion || 9
+  const chainId = req.query.chainId || 31337
+
+  const lockMigration = await getLockMigration(lockAddress, chainId)
+  if (lockMigration && lockMigration.success) {
+    return res.send(
+      401,
+      `Lock already migrated to ${lockMigration.newLockAddress}.`
+    )
+  }
+
+  if (lockMigration && !force) {
+    return res.send(401, 'A migration is already ongoing.')
+  }
+
+  // record the migration in db
+  const dbRecord = await LockMigrations.create({
+    lockAddress,
+    initiatedBy: req.signee,
+    chain: chainId,
+    migrated: false,
+  })
+  const recordId = dbRecord.dataValues.id
+  // This is a promise but we won't await for it to resolve because it takes forever
+  // No memory leak: JS will garbage collect even if it does not "resolve".
+  migrateLock(
+    {
+      lockAddress,
+      unlockVersion,
+      chainId: parseInt(chainId),
+      recordId,
+    },
+    (error, { message }) => {
+      updateLockMigrationsLog(recordId, message)
+      if (error) {
+        // "expected" error
+        const message = `Failed to migrate lock ${lockAddress}, ${chainId}. ${error.message}`
+        updateLockMigrationsLog(recordId, message)
+        logger.error(message, error)
+        dbRecord.update({
+          migrated: false,
+        })
+      }
+    }
+  )
+    // eslint-disable-next-line promise/prefer-await-to-then
+    .then((newLockAddress) => {
+      dbRecord.update({
+        newLockAddress,
+        migrated: true,
+      })
+    })
+    // eslint-disable-next-line promise/prefer-await-to-then
+    .catch((error) => {
+      // Unexpected error
+      const message = `Failed to migrate lock ${lockAddress}, ${chainId}. ${error.message}`
+      updateLockMigrationsLog(recordId, message)
+      logger.error(message, error)
+      dbRecord.update({
+        migrated: false,
+      })
+    })
+
+  res.json({
+    lockAddress,
+    message: 'Lock migration initiated.',
+  })
+}
+
+const lockMigrateStatus = async (req, res) => {
+  const { lockAddress } = req.params
+  const chainId = req.query.chainId || 31337
+  const lockMigration = await getLockMigration(lockAddress, chainId)
+  if (lockMigration === null) return res.sendStatus(404)
+  res.json(lockMigration)
 }
 
 const lockOwnerGet = async (req, res) => {
@@ -127,7 +216,7 @@ const lockIcon = async (req, res) => {
       }
     }
   } catch (e) {
-    console.error(`Could not serve icon for ${lockAddress}`)
+    logger.error(`Could not serve icon for ${lockAddress}`)
   } finally {
     const svg = lockIconUtils.lockIcon(lockAddress)
     res.setHeader('Content-Type', 'image/svg+xml')
@@ -174,6 +263,8 @@ const changeLockIcon = async (req, res) => {
 
 module.exports = {
   lockGet,
+  lockMigrate,
+  lockMigrateStatus,
   lockOwnerGet,
   lockSave,
   lockOwnershipCheck,

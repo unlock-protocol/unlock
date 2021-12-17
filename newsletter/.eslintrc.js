@@ -5,5 +5,7 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     'no-nested-ternary': 'off',
+    'react/no-invalid-html-attribute': 'off',
+    'react/function-component-definition': 'off',
   },
 }
