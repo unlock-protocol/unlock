@@ -13,4 +13,10 @@ const Checkout = () => {
   )
 }
 
+export async function getStaticProps() {
+  // Disabling auto login for the checkout page because it messes withe the need to sign a message for some implementations...
+  return {
+    props: { skipAutoLogin: true },
+  }
+}
 export default Checkout

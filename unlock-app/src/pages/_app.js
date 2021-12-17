@@ -71,7 +71,7 @@ The Unlock team
             <ProviderContext.Provider
               value={{ provider, setProvider: this.setProvider }}
             >
-              <Authenticate>
+              <Authenticate skipAutoLogin={pageProps.skipAutoLogin}>
                 <Component {...pageProps} />
               </Authenticate>
             </ProviderContext.Provider>
