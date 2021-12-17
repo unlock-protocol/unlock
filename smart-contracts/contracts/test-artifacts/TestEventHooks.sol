@@ -103,7 +103,7 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
   ) external view
     returns (bool isValidKey)
   { 
-    // special members should always have access to content, even when the key is expired
+    // special members should always have access to content, even when the key is expired or they don't have one
     if(!_hasValidKey && (specialMembers[_lockAddress] == _from)) {
       isValidKey = true;
     } else {
