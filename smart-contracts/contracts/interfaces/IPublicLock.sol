@@ -178,6 +178,7 @@ interface IPublicLock
   function setEventHooks(
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
+    address _onValidKeyHook,
     address _onTokenURIHook
   ) external;
 
@@ -311,11 +312,19 @@ interface IPublicLock
 
   function onKeyCancelHook() external view returns(address);
   
+  function onValidKeyHook() external view returns(bool);
+
   function onTokenURIHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;
 
   function renounceLockManager() external;
+
+  /**
+   * @dev Change the maximum number of keys the lock can edit
+   * @param _maxNumberOfKeys uint the maximum number of keys
+   */
+  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables

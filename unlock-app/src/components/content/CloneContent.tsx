@@ -83,6 +83,9 @@ export const CloneContent = ({ query }: CloneContentProps) => {
     }
   })
 
+  const existing = Object.keys(lockMigration).length && lockMigration.existing
+  const success = Object.keys(lockMigration).length && lockMigration.migrated
+
   return (
     <Layout title="Clone Lock">
       <Head>
@@ -90,27 +93,36 @@ export const CloneContent = ({ query }: CloneContentProps) => {
       </Head>
       <Account />
       <Heading>Clone your Lock</Heading>
-      <Instructions>
-        We had to redeploy Unlock{' '}
-        {network && `on ${config.networks[network].name}`}. We strongly
-        recommend that you clone your lock in order to use that new version of
-        Unlock.
-      </Instructions>
-      <p>
-        Note: An identical lock with a new address will be created, with all
-        members in an identical state. all existing content. <br />
-      </p>
+      {(!Object.keys(lockMigration).length || !success) && (
+        <div>
+          <Instructions>
+            We had to redeploy Unlock{' '}
+            {network && `on ${config.networks[network].name}`}. We strongly
+            recommend that you clone your lock in order to use that new version
+            of Unlock.
+          </Instructions>
+          <p>
+            Note: An identical lock with a new address will be created, with all
+            members in an identical state. <br />
+          </p>
+        </div>
+      )}
       {error && <p>{error}</p>}
       {!account && <p>Please authentificate to clone this lock</p>}
-      {account && !error && !lockMigration.existing && (
+      {account && !error && !existing && (
         <p>
           <Button onClick={cloneLock}>Clone your lock now</Button>
         </p>
       )}
       {isCloning && <Loading />}
-      {Object.keys(lockMigration).length && lockMigration.existing && (
+      {existing && !success && (
+        <h2>
+          Migration ongoing...
+          <small>Please refresh the page for status update.</small>
+        </h2>
+      )}
+      {existing && (
         <div>
-          <h2>Migration ongoing...</h2>
           <pre>
             <code>{lockMigration.logs}</code>
           </pre>
@@ -124,10 +136,10 @@ export const CloneContent = ({ query }: CloneContentProps) => {
           </p>
         </div>
       )}
-      {Object.keys(lockMigration).length && lockMigration.migrated && (
+      {success && (
         <div>
           <h4>
-            Migration successful! The new lock address is{' '}
+            Migration successful! <br /> The new lock address is{' '}
             <em>{lockMigration.newLockAddress}</em>
           </h4>
           <p>Please update your system with the new lock address.</p>

@@ -147,9 +147,19 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool)
-  {
-    return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+    returns (bool isValid)
+  { 
+    isValid = keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _keyOwner,
+        keyByOwner[_keyOwner].expirationTimestamp,
+        isValid
+      );
+    }    
   }
 
   /**
@@ -399,7 +409,7 @@ contract MixinKeys is
     return approved[_tokenId] == _user;
   }
 
-    /**
+  /**
    * @dev Function to clear current approval of a given token ID
    * @param _tokenId uint256 ID of the token to be transferred
    */
@@ -411,4 +421,13 @@ contract MixinKeys is
       approved[_tokenId] = address(0);
     }
   }
+
+  /**
+   * @dev Change the maximum number of keys the lock can edit
+   * @param _maxNumberOfKeys uint the maximum number of keys
+   */
+   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external onlyLockManager {
+     require (_maxNumberOfKeys > _totalSupply, "maxNumberOfKeys is smaller than existing supply");
+     maxNumberOfKeys = _maxNumberOfKeys;
+   }
 }

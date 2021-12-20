@@ -11,56 +11,52 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onKeyCancelHook', (accounts) => {
+contract('Lock / onValidKeyHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
-  let keyPrice
 
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    const keyPrice = await lock.keyPrice()
+    await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
+      from,
+      value: keyPrice,
+    })
+  })
+
+  it('hasValidKey should returns a custom value', async () => {
+    assert.equal(await lock.getHasValidKey(to), true)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       constants.ZERO_ADDRESS,
-      testEventHooks.address,
       constants.ZERO_ADDRESS,
+      testEventHooks.address,
       constants.ZERO_ADDRESS
     )
-    keyPrice = await lock.keyPrice()
-    await lock.purchase(
-      0,
-      to,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
-      [],
-      {
-        from,
-        value: keyPrice,
-      }
-    )
-    const ID = await lock.getTokenIdFor.call(to)
-    await lock.cancelAndRefund(ID, { from: to })
-  })
+    // still returns value
+    assert.equal(await lock.getHasValidKey(to), true)
 
-  it('key cancels should log the hook event', async () => {
-    const log = (await testEventHooks.getPastEvents('OnKeyCancel'))[0]
-      .returnValues
-    assert.equal(log.lock, lock.address)
-    assert.equal(log.operator, to)
-    assert.equal(log.to, to)
-    assert.notEqual(log.refund, 0)
+    // expired the key
+    await lock.expireAndRefundFor(to, 0)
+    assert.equal(await lock.getHasValidKey(to), false)
+
+    // set custom value in hook
+    await testEventHooks.setSpecialMember(lock.address, to)
+    assert.equal(await lock.getHasValidKey(to), true)
+    assert.equal(await lock.balanceOf(to), 1)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
       lock.setEventHooks(
         constants.ZERO_ADDRESS,
-        accounts[1],
         constants.ZERO_ADDRESS,
+        accounts[3],
         constants.ZERO_ADDRESS
       ),
-      'INVALID_ON_KEY_CANCEL_HOOK'
+      'INVALID_ON_VALID_KEY_HOOK'
     )
   })
 })
