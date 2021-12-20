@@ -89,7 +89,7 @@ contract MixinPurchase is
       );
     } else if (toKey.expirationTimestamp > block.timestamp) {
       // prevent re-purchase of a valid non-expiring key
-      require(expirationDuration != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+      require(toKey.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
 
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp + expirationDuration;
