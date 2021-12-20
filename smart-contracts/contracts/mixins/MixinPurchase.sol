@@ -79,9 +79,7 @@ contract MixinPurchase is
       toKey.expirationTimestamp = newTimeStamp;
 
       // set key manager
-      if(_keyManager != address(0)) {
-          _setKeyManagerOf(idTo, _keyManager);
-      }
+      _setKeyManagerOf(idTo, _keyManager);
 
       // trigger event
       emit Transfer(
@@ -95,9 +93,7 @@ contract MixinPurchase is
       toKey.expirationTimestamp = newTimeStamp;
 
       // set key manager
-      if(_keyManager != address(0) && keyManagerOf[idTo] != _keyManager) {
-          _setKeyManagerOf(idTo, _keyManager);
-      }
+      _setKeyManagerOf(idTo, _keyManager);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
@@ -105,12 +101,7 @@ contract MixinPurchase is
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
-      if(_keyManager != address(0) && keyManagerOf[idTo] != _keyManager) {
-          _setKeyManagerOf(idTo, _keyManager);
-      } else {
-        // reset the key Manager to 0x00
-        _setKeyManagerOf(idTo, address(0));
-      }
+      _setKeyManagerOf(idTo, _keyManager);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
