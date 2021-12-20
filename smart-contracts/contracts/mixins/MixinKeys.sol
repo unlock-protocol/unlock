@@ -147,9 +147,19 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool)
-  {
-    return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+    returns (bool isValid)
+  { 
+    isValid = keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _keyOwner,
+        keyByOwner[_keyOwner].expirationTimestamp,
+        isValid
+      );
+    }    
   }
 
   /**
