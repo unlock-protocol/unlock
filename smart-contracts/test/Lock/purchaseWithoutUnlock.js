@@ -115,6 +115,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
       await lock.setEventHooks(
         testEventHooks.address,
         web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40)
       )
       // 50% discount
