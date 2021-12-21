@@ -430,4 +430,15 @@ contract MixinKeys is
      require (_maxNumberOfKeys > _totalSupply, "maxNumberOfKeys is smaller than existing supply");
      maxNumberOfKeys = _maxNumberOfKeys;
    }
+
+   /**
+   * A function to change the default duration of each key in the lock
+   * @notice keys previously bought are unaffected by this change (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased 
+   * or zero (0) for a non-expiring key
+   */
+   function setExpirationDuration(uint _newExpirationDuration) external onlyLockManager {
+     expirationDuration = _newExpirationDuration;
+   }
 }
