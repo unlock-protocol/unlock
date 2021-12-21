@@ -21,6 +21,8 @@ contract MixinPurchase is
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
 
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
+  
+  event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
   // default to 0%  
   uint128 private _gasRefundBasisPoints = 0; 
@@ -110,14 +112,15 @@ contract MixinPurchase is
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
-    (uint inMemoryKeyPrice, uint discount, uint tokens) = _purchasePriceFor(_recipient, _referrer, _data);
-    if (discount > 0)
-    {
-      unlockProtocol.recordConsumedDiscount(discount, tokens);
-    }
+    
+    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
 
-    // Record price without any tips
-    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer);
+    try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
+    {} 
+    catch {
+      // emit missing unlock
+      emit UnlockCallFailed(address(this), address(unlockProtocol));
+    }
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     uint pricePaid;
@@ -163,20 +166,19 @@ contract MixinPurchase is
   ) external view
     returns (uint minKeyPrice)
   {
-    (minKeyPrice, , ) = _purchasePriceFor(_recipient, _referrer, _data);
+    minKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
   }
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
-   * unlockDiscount and unlockTokens are the values returned from `computeAvailableDiscountFor`
    */
   function _purchasePriceFor(
     address _recipient,
     address _referrer,
     bytes memory _data
   ) internal view
-    returns (uint minKeyPrice, uint unlockDiscount, uint unlockTokens)
+    returns (uint minKeyPrice)
   {
     if(address(onKeyPurchaseHook) != address(0))
     {
@@ -186,12 +188,6 @@ contract MixinPurchase is
     {
       minKeyPrice = keyPrice;
     }
-
-    if(minKeyPrice > 0)
-    {
-      (unlockDiscount, unlockTokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, minKeyPrice);
-      require(unlockDiscount <= minKeyPrice, 'INVALID_DISCOUNT_FROM_UNLOCK');
-      minKeyPrice -= unlockDiscount;
-    }
+    return minKeyPrice;
   }
 }
