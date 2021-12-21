@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
 
 interface EnjoyYourMembershipProps {
-  closeModal: (success: boolean, redirectUri: string, params?: any) => void
+  closeModal: (success: boolean, redirectUri?: string, params?: any) => void
   redirectUri?: string
 }
 
