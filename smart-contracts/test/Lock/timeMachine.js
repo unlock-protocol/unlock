@@ -80,7 +80,7 @@ contract('Lock / timeMachine', (accounts) => {
       timestampAfter = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      assert(timestampAfter.lte(expirationDuration.plus(Date.now())))
+      assert(timestampAfter.lte(expirationDuration.plus(Date.now() / 1000)))
     })
 
     it('should emit the ExpirationChanged event', async () => {
