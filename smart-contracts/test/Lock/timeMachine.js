@@ -26,7 +26,7 @@ contract('Lock / timeMachine', (accounts) => {
     await unlock.setLockTemplate((await TimeMachineMock.new()).address)
 
     const args = [
-      expirationDuration,
+      expirationDuration.toNumber(),
       web3.utils.padLeft(0, 40), // beneficiary
       web3.utils.toWei('0.01', 'ether'),
       11,
@@ -90,8 +90,8 @@ contract('Lock / timeMachine', (accounts) => {
       // The resulting timestamp should be larger than Date.now() - tooMuchTime + expirationDuration
       // It should in fact be Date.now() + expirationDuration (but there is maybe a few seconds difference because of latency)
       assert(
-        timestampAfter.lte(
-          new BigNumber(Date.now() / 1000)
+        timestampAfter.gte(
+          new BigNumber(Math.floor(Date.now() / 1000))
             .minus(tooMuchTime)
             .plus(expirationDuration)
         )
