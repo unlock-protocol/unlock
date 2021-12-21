@@ -47,6 +47,7 @@ contract('Lock / setExpirationDuration', () => {
         keyPrice.toString(),
         buyer.address,
         web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
         [],
         {
           value: keyPrice.toString(),
@@ -66,6 +67,7 @@ contract('Lock / setExpirationDuration', () => {
       .purchase(
         keyPrice.toString(),
         buyer2.address,
+        web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
         [],
         {
@@ -87,6 +89,7 @@ contract('Lock / setExpirationDuration', () => {
       .purchase(
         keyPrice.toString(),
         buyer.address,
+        web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
         [],
         {
