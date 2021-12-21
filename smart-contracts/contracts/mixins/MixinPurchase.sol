@@ -48,6 +48,7 @@ contract MixinPurchase is
   * @param _referrer address of the user making the referral
   * @param _keyManager optional address to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @notice when called for an existing and non-expired key, the `_keyManager` param will be ignored 
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
   * than keyPrice is approved for spending).
@@ -91,9 +92,6 @@ contract MixinPurchase is
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
-
-      // set key manager
-      _setKeyManagerOf(idTo, _keyManager);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
