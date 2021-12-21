@@ -26,8 +26,8 @@ contract('Lock / timeMachine', (accounts) => {
     await unlock.setLockTemplate((await TimeMachineMock.new()).address)
 
     const args = [
-      60 * 60 * 24 * 30, // 30 days
-      web3.utils.padLeft(0, 40),
+      expirationDuration,
+      web3.utils.padLeft(0, 40), // beneficiary
       web3.utils.toWei('0.01', 'ether'),
       11,
       'TimeMachineMockLock',
@@ -61,7 +61,7 @@ contract('Lock / timeMachine', (accounts) => {
       assert(timestampAfter.eq(timestampBefore.minus(1000)))
     })
 
-    it('should increase the time by the amount specified', async () => {
+    it('should increase the time by the amount specified if the key is not expired', async () => {
       timestampBefore = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
@@ -73,14 +73,29 @@ contract('Lock / timeMachine', (accounts) => {
       )
       assert(timestampAfter.eq(timestampBefore.plus(42)))
     })
-    it('should prevent overflow & maximise the time remaining', async () => {
-      tx = await lock.timeMachine(tokenId, tooMuchTime, true, {
+
+    it('should set the time remaining on expired keys by the time added', async () => {
+      // First we substract too much time
+      tx = await lock.timeMachine(tokenId, tooMuchTime, false, {
+        from: accounts[0],
+      })
+
+      // Then we add back some time (the normal duration)
+      tx = await lock.timeMachine(tokenId, expirationDuration, true, {
         from: accounts[0],
       })
       timestampAfter = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      assert(timestampAfter.lte(expirationDuration.plus(Date.now() / 1000)))
+      // The resulting timestamp should be larger than Date.now() - tooMuchTime + expirationDuration
+      // It should in fact be Date.now() + expirationDuration (but there is maybe a few seconds difference because of latency)
+      assert(
+        timestampAfter.lte(
+          new BigNumber(Date.now() / 1000)
+            .minus(tooMuchTime)
+            .plus(expirationDuration)
+        )
+      )
     })
 
     it('should emit the ExpirationChanged event', async () => {
