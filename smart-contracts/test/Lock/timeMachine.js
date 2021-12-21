@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -74,7 +75,7 @@ contract('Lock / timeMachine', (accounts) => {
       assert(timestampAfter.eq(timestampBefore.plus(42)))
     })
 
-    it('should set the time remaining on expired keys by the time added', async () => {
+    it('should set a new expiration ts from current date/blocktime', async () => {
       // First we substract too much time
       tx = await lock.timeMachine(tokenId, tooMuchTime, false, {
         from: accounts[0],
@@ -84,18 +85,15 @@ contract('Lock / timeMachine', (accounts) => {
       tx = await lock.timeMachine(tokenId, expirationDuration, true, {
         from: accounts[0],
       })
+
+      const { timestamp: now } = await ethers.provider.getBlock(
+        tx.receipt.blockNumber
+      )
+
       timestampAfter = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      // The resulting timestamp should be larger than Date.now() - tooMuchTime + expirationDuration
-      // It should in fact be Date.now() + expirationDuration (but there is maybe a few seconds difference because of latency)
-      assert(
-        timestampAfter.gte(
-          new BigNumber(Math.floor(Date.now() / 1000))
-            .minus(tooMuchTime)
-            .plus(expirationDuration)
-        )
-      )
+      assert(timestampAfter.eq(new BigNumber(now).plus(expirationDuration)))
     })
 
     it('should emit the ExpirationChanged event', async () => {
