@@ -20,11 +20,7 @@ export const EnjoyYourMembership = ({
   return (
     <EnjoyYourMembershipWrapper
       onClick={() => {
-        if (redirectUri) {
-          closeModal(true, redirectUri, {})
-        } else {
-          window.close()
-        }
+        closeModal(true, redirectUri, {})
       }}
     >
       {label}
