@@ -28,10 +28,17 @@ contract('Permissions / isKeyManager', (accounts) => {
     let tx = await unlock.createLock(calldata)
     lockAddress = tx.logs[0].args.newLockAddress
     lock = await KeyManagerMock.at(lockAddress)
-    await lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-      value: keyPrice.toFixed(),
-      from: accounts[1],
-    })
+    await lock.purchase(
+      0,
+      accounts[1],
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice.toFixed(),
+        from: accounts[1],
+      }
+    )
   })
 
   describe('confirming the key manager', () => {

@@ -193,9 +193,16 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       // Purchase a valid key for the referrer
       await lock.connect(referrer)
-      await lock.purchase(0, referrer.address, constants.ZERO_ADDRESS, [], {
-        value: await lock.keyPrice(),
-      })
+      await lock.purchase(
+        0,
+        referrer.address,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: await lock.keyPrice(),
+        }
+      )
 
       rate = await uniswapOracle.consult(
         udt.address,
@@ -231,6 +238,7 @@ contract('UnlockDiscountToken upgrade', async () => {
           0,
           keyBuyer.address,
           referrer.address,
+          web3.utils.padLeft(0, 40),
           [],
           {
             value: await lock.keyPrice(),
@@ -278,9 +286,16 @@ contract('UnlockDiscountToken upgrade', async () => {
         await unlock.resetTrackedValue(initialGdp.toString(), 0)
 
         lock.connect(keyBuyer)
-        await lock.purchase(0, keyBuyer.address, referrer.address, [], {
-          value: await lock.keyPrice(),
-        })
+        await lock.purchase(
+          0,
+          keyBuyer.address,
+          referrer.address,
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: await lock.keyPrice(),
+          }
+        )
       })
 
       it('referrer has some UDT now', async () => {

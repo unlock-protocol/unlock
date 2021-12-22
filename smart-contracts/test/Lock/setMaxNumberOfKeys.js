@@ -49,6 +49,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
                 keyPrice.toString(),
                 buyers[i].address,
                 web3.utils.padLeft(0, 40),
+                web3.utils.padLeft(0, 40),
                 [],
                 {
                   value: keyPrice.toString(),
@@ -67,6 +68,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
             keyPrice.toString(),
             buyers[11].address,
             web3.utils.padLeft(0, 40),
+            web3.utils.padLeft(0, 40),
             [],
             {
               value: keyPrice.toString(),
@@ -84,6 +86,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         .purchase(
           keyPrice.toString(),
           buyers[11].address,
+          web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
           [],
           {
@@ -110,6 +113,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
               .purchase(
                 keyPrice.toString(),
                 buyers[i].address,
+                web3.utils.padLeft(0, 40),
                 web3.utils.padLeft(0, 40),
                 [],
                 {

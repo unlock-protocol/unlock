@@ -88,6 +88,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
           keyPrice.toString(),
           buyer.address,
           web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           [],
           {
             value: keyPrice.toString(),
@@ -122,9 +123,16 @@ contract('Lock / purchaseWithoutUnlock', () => {
       await testEventHooks.configure(true, keyPrice.div(2))
       const tx = await lock
         .connect(buyer)
-        .purchase(keyPrice, buyer.address, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice,
-        })
+        .purchase(
+          keyPrice,
+          buyer.address,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice,
+          }
+        )
 
       // make sure transfer happened
       const { events } = await tx.wait()

@@ -16,10 +16,17 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    await lock.purchase(keyPrice, accounts[1], web3.utils.padLeft(0, 40), [], {
-      from: accounts[1],
-      value: keyPrice,
-    })
+    await lock.purchase(
+      keyPrice,
+      accounts[1],
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        from: accounts[1],
+        value: keyPrice,
+      }
+    )
   })
 
   it('grossNetworkProduct has a non-zero value after a purchase', async () => {
@@ -48,6 +55,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
         await lock.purchase(
           keyPrice,
           accounts[2],
+          web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
           [],
           {
@@ -79,6 +87,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
         await lock.purchase(
           keyPrice,
           accounts[2],
+          web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
           [],
           {

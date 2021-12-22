@@ -96,9 +96,16 @@ contract('Unlock / uniswapValue', (accounts) => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
         await token.approve(lock.address, keyPrice, { from: keyOwner })
-        await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
-          from: keyOwner,
-        })
+        await lock.purchase(
+          keyPrice,
+          keyOwner,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            from: keyOwner,
+          }
+        )
       })
 
       it('GDP went up by the expected ETH value', async () => {
@@ -135,9 +142,16 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         await token.approve(lock.address, keyPrice, { from: keyOwner })
 
-        await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
-          from: keyOwner,
-        })
+        await lock.purchase(
+          keyPrice,
+          keyOwner,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            from: keyOwner,
+          }
+        )
       })
 
       it('GDP did not change', async () => {
@@ -159,10 +173,17 @@ contract('Unlock / uniswapValue', (accounts) => {
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
-          from: keyOwner,
-          value: keyPrice,
-        })
+        await lock.purchase(
+          keyPrice,
+          keyOwner,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            from: keyOwner,
+            value: keyPrice,
+          }
+        )
       })
 
       it('GDP went up by the keyPrice', async () => {

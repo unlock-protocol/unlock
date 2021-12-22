@@ -20,9 +20,16 @@ contract('Lock / transferFee', (accounts) => {
     // TODO test using an ERC20 priced lock as well
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice.toFixed(),
-    })
+    await lock.purchase(
+      0,
+      keyOwner,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice.toFixed(),
+      }
+    )
   })
 
   it('has a default fee of 0%', async () => {
@@ -51,9 +58,16 @@ contract('Lock / transferFee', (accounts) => {
       const nowBefore = (await web3.eth.getBlock('latest')).timestamp
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await lock.purchase(0, accounts[8], web3.utils.padLeft(0, 40), [], {
-        value: keyPrice.toFixed(),
-      })
+      await lock.purchase(
+        0,
+        accounts[8],
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: keyPrice.toFixed(),
+        }
+      )
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)

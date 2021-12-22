@@ -63,6 +63,7 @@ contract('Lock / erc20', (accounts) => {
           keyPrice.toFixed(),
           keyOwner,
           web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           [],
           {
             from: keyOwner,
@@ -87,6 +88,7 @@ contract('Lock / erc20', (accounts) => {
         await lock.purchase(
           keyPrice.toFixed(),
           keyOwner3,
+          web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
           [],
           {
@@ -150,6 +152,7 @@ contract('Lock / erc20', (accounts) => {
           keyPrice.toFixed(),
           keyOwner,
           web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           [],
           {
             from: keyOwner,
@@ -157,9 +160,16 @@ contract('Lock / erc20', (accounts) => {
         )
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
-        await lock.purchase(keyPrice.toFixed(), keyOwner2, keyOwner, [], {
-          from: keyOwner2,
-        })
+        await lock.purchase(
+          keyPrice.toFixed(),
+          keyOwner2,
+          keyOwner,
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            from: keyOwner2,
+          }
+        )
 
         const balance = new BigNumber(await token.balanceOf(keyOwner2))
         assert.equal(balance.toFixed(), balanceBefore.minus(keyPrice).toFixed())
@@ -188,6 +198,7 @@ contract('Lock / erc20', (accounts) => {
           keyPrice.toFixed(),
           account,
           web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           [],
           {
             from: account,
@@ -205,6 +216,7 @@ contract('Lock / erc20', (accounts) => {
         lock.purchase(
           keyPrice.toFixed(),
           account,
+          web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
           [],
           {

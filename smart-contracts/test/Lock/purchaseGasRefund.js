@@ -86,6 +86,7 @@ contract('Lock / GasRefund', (accounts) => {
             keyPrice.toString(),
             accounts[2],
             tokenAddress,
+            web3.utils.padLeft(0, 40),
             [],
             {
               from: accounts[2],
@@ -142,6 +143,7 @@ contract('Lock / GasRefund', (accounts) => {
           tx = await lock.purchase(
             keyPrice.toString(),
             accounts[2],
+            web3.utils.padLeft(0, 40),
             web3.utils.padLeft(0, 40),
             [],
             {

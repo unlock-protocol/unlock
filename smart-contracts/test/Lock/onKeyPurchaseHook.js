@@ -34,10 +34,17 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
   it('can block purchases', async () => {
     await reverts(
-      lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
-        from,
-        value: keyPrice.toFixed(),
-      }),
+      lock.purchase(
+        0,
+        to,
+        constants.ZERO_ADDRESS,
+        constants.ZERO_ADDRESS,
+        dataField,
+        {
+          from,
+          value: keyPrice.toFixed(),
+        }
+      ),
       'PURCHASE_BLOCKED_BY_HOOK'
     )
   })
@@ -45,10 +52,17 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   describe('when enabled without discount', () => {
     beforeEach(async () => {
       await testEventHooks.configure(true, '0')
-      await lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
-        from,
-        value: keyPrice.toFixed(),
-      })
+      await lock.purchase(
+        0,
+        to,
+        constants.ZERO_ADDRESS,
+        constants.ZERO_ADDRESS,
+        dataField,
+        {
+          from,
+          value: keyPrice.toFixed(),
+        }
+      )
     })
 
     it('key sales should log the hook event', async () => {
@@ -64,10 +78,17 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
     it('Sanity check: cannot buy at half price', async () => {
       await reverts(
-        lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
-          from,
-          value: keyPrice.div(2).toFixed(),
-        }),
+        lock.purchase(
+          0,
+          to,
+          constants.ZERO_ADDRESS,
+          constants.ZERO_ADDRESS,
+          dataField,
+          {
+            from,
+            value: keyPrice.div(2).toFixed(),
+          }
+        ),
         'INSUFFICIENT_VALUE'
       )
     })
@@ -100,10 +121,17 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     })
 
     it('can buy at half price', async () => {
-      await lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
-        from,
-        value: keyPrice.div(2).toFixed(),
-      })
+      await lock.purchase(
+        0,
+        to,
+        constants.ZERO_ADDRESS,
+        constants.ZERO_ADDRESS,
+        dataField,
+        {
+          from,
+          value: keyPrice.div(2).toFixed(),
+        }
+      )
     })
   })
 
@@ -113,18 +141,32 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     })
 
     it('purchases are now free', async () => {
-      await lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
-        from,
-        value: '0',
-      })
+      await lock.purchase(
+        0,
+        to,
+        constants.ZERO_ADDRESS,
+        constants.ZERO_ADDRESS,
+        dataField,
+        {
+          from,
+          value: '0',
+        }
+      )
     })
 
     describe('can still send tips', () => {
       beforeEach(async () => {
-        await lock.purchase(0, to, constants.ZERO_ADDRESS, dataField, {
-          from,
-          value: '42',
-        })
+        await lock.purchase(
+          0,
+          to,
+          constants.ZERO_ADDRESS,
+          constants.ZERO_ADDRESS,
+          dataField,
+          {
+            from,
+            value: '42',
+          }
+        )
       })
 
       it('key sales should log the hook event', async () => {

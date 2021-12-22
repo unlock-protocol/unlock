@@ -90,10 +90,17 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     })
 
     // Purchase a valid key for the referrer
-    await lock.purchase(0, referrer, constants.ZERO_ADDRESS, [], {
-      from: referrer,
-      value: await lock.keyPrice(),
-    })
+    await lock.purchase(
+      0,
+      referrer,
+      constants.ZERO_ADDRESS,
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        from: referrer,
+        value: await lock.keyPrice(),
+      }
+    )
 
     rate = await uniswapOracle.consult(
       udt.address,
@@ -142,10 +149,17 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       await unlock.resetTrackedValue(web3.utils.toWei('1', 'wei'), 0, {
         from: protocolOwner,
       })
-      const tx = await lock.purchase(0, keyBuyer, referrer, [], {
-        from: keyBuyer,
-        value: await lock.keyPrice(),
-      })
+      const tx = await lock.purchase(
+        0,
+        keyBuyer,
+        referrer,
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          from: keyBuyer,
+          value: await lock.keyPrice(),
+        }
+      )
       const transaction = await web3.eth.getTransaction(tx.tx)
       // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
       gasSpent = new BigNumber(transaction.gasPrice).times(estimateGas)
@@ -194,10 +208,17 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         from: protocolOwner,
       })
 
-      await lock.purchase(0, keyBuyer, referrer, [], {
-        from: keyBuyer,
-        value: await lock.keyPrice(),
-      })
+      await lock.purchase(
+        0,
+        keyBuyer,
+        referrer,
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          from: keyBuyer,
+          value: await lock.keyPrice(),
+        }
+      )
     })
 
     it('referrer has some UDT now', async () => {

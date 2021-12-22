@@ -40,9 +40,16 @@ contract('Lock / timeMachine', (accounts) => {
     lock = await TimeMachineMock.at(lockAddress)
     // Change the fee to 5%
     await lock.updateTransferFee(500, { from: lockOwner })
-    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice.toFixed(),
-    })
+    await lock.purchase(
+      0,
+      keyOwner,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice.toFixed(),
+      }
+    )
   })
 
   describe('modifying the time remaining for a key', () => {

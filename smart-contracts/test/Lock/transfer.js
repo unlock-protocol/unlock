@@ -19,16 +19,30 @@ contract('Lock / transfer', (accounts) => {
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
 
-    await lock.purchase(0, singleKeyOwner, web3.utils.padLeft(0, 40), [], {
-      value: await lock.keyPrice(),
-      from: singleKeyOwner,
-    })
+    await lock.purchase(
+      0,
+      singleKeyOwner,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: await lock.keyPrice(),
+        from: singleKeyOwner,
+      }
+    )
 
     for (let i = 0; i < 2; i++) {
-      await lock.purchase(0, multipleKeyOwner, web3.utils.padLeft(0, 40), [], {
-        value: await lock.keyPrice(),
-        from: multipleKeyOwner,
-      })
+      await lock.purchase(
+        0,
+        multipleKeyOwner,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: await lock.keyPrice(),
+          from: multipleKeyOwner,
+        }
+      )
     }
   })
 

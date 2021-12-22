@@ -30,10 +30,17 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       const purchases = keyOwners.map((account) => {
-        return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice.toFixed(),
-          from: account,
-        })
+        return lock.purchase(
+          0,
+          account,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice.toFixed(),
+            from: account,
+          }
+        )
       })
       await Promise.all(purchases)
     })
@@ -46,10 +53,17 @@ contract('Permissions / KeyManager', (accounts) => {
 
     it('should not change KM when topping-up valid keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
-      await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
-        value: keyPrice.toFixed(),
-        from: keyOwner1,
-      })
+      await lock.purchase(
+        0,
+        keyOwner1,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: keyPrice.toFixed(),
+          from: keyOwner1,
+        }
+      )
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, keyManager)
     })
@@ -60,10 +74,17 @@ contract('Permissions / KeyManager', (accounts) => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       assert.equal(keyManagerBefore, accounts[9])
       await lock.expireAndRefundFor(keyOwner1, 0, { from: lockManager })
-      await lock.purchase(0, keyOwner1, web3.utils.padLeft(0, 40), [], {
-        value: keyPrice.toFixed(),
-        from: keyOwner1,
-      })
+      await lock.purchase(
+        0,
+        keyOwner1,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: keyPrice.toFixed(),
+          from: keyOwner1,
+        }
+      )
       assert.notEqual(iD, 0)
       keyManager = await lock.keyManagerOf.call(iD)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
@@ -76,10 +97,17 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       const purchases = keyOwners.map((account) => {
-        return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice.toFixed(),
-          from: account,
-        })
+        return lock.purchase(
+          0,
+          account,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice.toFixed(),
+            from: account,
+          }
+        )
       })
       await Promise.all(purchases)
       iD = await lock.getTokenIdFor.call(keyOwner3)
@@ -128,10 +156,17 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       const purchases = keyOwners.map((account) => {
-        return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice.toFixed(),
-          from: account,
-        })
+        return lock.purchase(
+          0,
+          account,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice.toFixed(),
+            from: account,
+          }
+        )
       })
       await Promise.all(purchases)
       iD = await lock.getTokenIdFor.call(keyOwner3)
@@ -195,10 +230,17 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       const purchases = keyOwners.map((account) => {
-        return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice.toFixed(),
-          from: account,
-        })
+        return lock.purchase(
+          0,
+          account,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice.toFixed(),
+            from: account,
+          }
+        )
       })
       await Promise.all(purchases)
       iD = await lock.getTokenIdFor.call(keyOwner3)
@@ -258,10 +300,17 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       const purchases = keyOwners.map((account) => {
-        return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-          value: keyPrice.toFixed(),
-          from: account,
-        })
+        return lock.purchase(
+          0,
+          account,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice.toFixed(),
+            from: account,
+          }
+        )
       })
       await Promise.all(purchases)
       iD = await lock.getTokenIdFor.call(keyOwner3)

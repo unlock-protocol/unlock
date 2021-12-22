@@ -20,10 +20,17 @@ contract('Lock / onValidKeyHook', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     const keyPrice = await lock.keyPrice()
-    await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      to,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
   })
 
   it('hasValidKey should returns a custom value', async () => {

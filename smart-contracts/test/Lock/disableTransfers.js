@@ -23,10 +23,17 @@ contract('Lock / disableTransfers', (accounts) => {
 
   before(async () => {
     lock = locks.FIRST
-    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
-      value: keyPrice.toFixed(),
-      from: keyOwner,
-    })
+    await lock.purchase(
+      0,
+      keyOwner,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: keyPrice.toFixed(),
+        from: keyOwner,
+      }
+    )
     // Change the fee to 100%
     await lock.updateTransferFee(10000)
   })
