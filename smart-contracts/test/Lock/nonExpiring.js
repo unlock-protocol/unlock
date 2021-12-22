@@ -3,7 +3,6 @@ const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 const { time } = require('@openzeppelin/test-helpers')
 const BigNumber = require('bignumber.js')
-const { network } = require('hardhat')
 
 const deployLocks = require('../helpers/deployLocks')
 
