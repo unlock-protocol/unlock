@@ -53,6 +53,7 @@ contract('LockSerializer', () => {
           keyPrice.toString(),
           purchaser.address,
           web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           [],
           { value: keyPrice }
         )
@@ -96,6 +97,7 @@ contract('LockSerializer', () => {
               .purchase(
                 keyPrice.toString(),
                 purchaser.address,
+                web3.utils.padLeft(0, 40),
                 web3.utils.padLeft(0, 40),
                 [],
                 { value: keyPrice }

@@ -11,22 +11,14 @@ let locks
 let unlock
 let testEventHooks
 
-contract('Lock / onTokenURIHook', (accounts) => {
+contract('Lock / onValidKeyHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
-  let tokenId
 
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    testEventHooks = await TestEventHooks.new()
-    await lock.setEventHooks(
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
-      testEventHooks.address
-    )
     const keyPrice = await lock.keyPrice()
     await lock.purchase(
       0,
@@ -39,22 +31,28 @@ contract('Lock / onTokenURIHook', (accounts) => {
         value: keyPrice,
       }
     )
-    tokenId = await lock.getTokenIdFor.call(to)
   })
 
-  it('tokenURI should returns a custom value', async () => {
-    const baseTokenURI = 'https://unlock-uri-hook.test/'
-    const expirationTimestamp = await lock.keyExpirationTimestampFor(to)
-    const params = [
-      lock.address.toLowerCase(), // lockAddress
-      to.toLowerCase(), // owner
-      accounts[3].toLowerCase(), // operator
-      expirationTimestamp, // expirationTimestamp
-      tokenId, // tokenId
-    ]
+  it('hasValidKey should returns a custom value', async () => {
+    assert.equal(await lock.getHasValidKey(to), true)
+    testEventHooks = await TestEventHooks.new()
+    await lock.setEventHooks(
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      testEventHooks.address,
+      constants.ZERO_ADDRESS
+    )
+    // still returns value
+    assert.equal(await lock.getHasValidKey(to), true)
 
-    const tokenURI = `${baseTokenURI}${params.join('/')}`
-    assert.equal(await lock.tokenURI(tokenId, { from: accounts[3] }), tokenURI)
+    // expired the key
+    await lock.expireAndRefundFor(to, 0)
+    assert.equal(await lock.getHasValidKey(to), false)
+
+    // set custom value in hook
+    await testEventHooks.setSpecialMember(lock.address, to)
+    assert.equal(await lock.getHasValidKey(to), true)
+    assert.equal(await lock.balanceOf(to), 1)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
@@ -62,10 +60,10 @@ contract('Lock / onTokenURIHook', (accounts) => {
       lock.setEventHooks(
         constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
-        accounts[3]
+        accounts[3],
+        constants.ZERO_ADDRESS
       ),
-      'INVALID_ON_TOKEN_URI_HOOK'
+      'INVALID_ON_VALID_KEY_HOOK'
     )
   })
 })
