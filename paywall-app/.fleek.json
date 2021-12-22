@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "a6d33efb-d728-4a94-800a-f445f3fa2b4f",
+    "team": "619b9be3-0557-4501-92c9-322f4f3bdefa",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "paywall"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "out",
+    "rootDir": ""
+  }
+}

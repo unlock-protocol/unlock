@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "236cb810-53cf-460c-981c-f90b20fc7492",
+    "team": "619b9be3-0557-4501-92c9-322f4f3bdefa",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "newsletter"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "out",
+    "rootDir": ""
+  }
+}

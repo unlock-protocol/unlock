@@ -6,6 +6,7 @@
     "build": "next build src",
     "deploy": "yarn run build && next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn run build && NODE_ENV=production node src/server.js",
     "test": "UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",

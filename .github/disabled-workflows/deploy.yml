@@ -6,7 +6,7 @@ on:
       - production
 
 jobs:
-  # heroku deploy 
+  # heroku deploys 
   deploy-locksmith-staging:    
     if: contains(github.base_ref, 'master')
     uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
@@ -19,6 +19,7 @@ jobs:
     with:
       service: locksmith
       app-name: unlock-locksmith-production
+
   # netlify deploys
   deploy-unlock-app-netlify:
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
@@ -34,5 +35,23 @@ jobs:
       service: "newsletter"
   deploy-unlock-protocol-com-netlify:
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    with:
+      service: "unlock-protocol-com"
+  
+  # Fleek deloys
+  deploy-paywall-to-fleek:
+    uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+    with:
+      service: paywall-app
+  deploy-unlock-app-fleek:
+    uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+    with:
+      service: unlock-app
+  deploy-newsletter-fleek:
+    uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+    with:
+      service: "newsletter"
+  deploy-unlock-protocol-com-fleek:
+    uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
     with:
       service: "unlock-protocol-com"

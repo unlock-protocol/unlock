@@ -53,6 +53,7 @@
     "build-blog": "node scripts/build-blog.js",
     "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "yarn build-blog && UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
