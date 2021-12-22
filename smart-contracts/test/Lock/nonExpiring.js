@@ -24,10 +24,6 @@ contract('Lock / non expiring', (accounts) => {
     unlock = await getProxy(unlockContract)
   })
 
-  after(async () => {
-    await network.provider.request({ method: 'hardhat_reset' })
-  })
-
   beforeEach(async () => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.NON_EXPIRING
