@@ -5,10 +5,10 @@ title: Web3jam Winners Deploying Unlock Protocol
 authorName: Crystal Street
 publishDate: December 21, 2021
 description: A few of last month’s EthGlobal web3jam Hackathon winners used the protocol to help power their projects over the finsh line and into the winner’s circle!
-image: /images/blog/contentrooms-logo-510.png
+image: /images/blog/web3jam/web3jam-card.png
 ---
 
-Last month, EthGlobal held another ground-breaking hackathon called web3jam to help further promote the creation of foundational tech for the next evolution of the web. and Unlock Protocol was also a sponsor of the event and we were blown away by the number of teams that integrated Unlock into their projects. Let’s take a minute to celebrate several winners of the hackathon who used our protocol to power their projects over the finish line and into the winner's circle!
+Last month, [EthGlobal held another ground-breaking hackathon called web3jam](https://jam.ethglobal.com/) to help further promote the creation of foundational tech for the next evolution of the web. Unlock Protocol was also a sponsor of the event and we were blown away by the number of teams that integrated Unlock into their projects. Let’s take a minute to celebrate several winners of the hackathon who used our protocol to power their projects over the finish line and into the winner's circle!
 
 [**Backer by Mark Carey**](http://unlockshowcase.com/project/backer)
 
@@ -31,6 +31,6 @@ We’re all about restoring the power and control to creators and Portals gets i
 
 **Adoption & Integration** 
 
-Approximately 17 teams worked with our protocol in some capacity in their projects and that gives us both hope in the future direction of web3 and some joy in the fact that so many teams saw what was possible with Unlock. While we’re still so early in the web3 world, we are very excited to see so much adoption of the protocol is in motion for the devs building the foundational elements of the next evolution of the web. 
+Approximately 17 teams worked with our protocol in some capacity in their projects and that gives us both hope in the future direction of web3 and joy in the fact that so many teams saw what was possible with Unlock. While we’re still so early in the web3 world, we are very excited to see so much adoption of the protocol is in motion for the devs building the foundational elements of the next evolution of the web. 
 
 A special thanks to EthGlobal for creating such powerful hackathons and for giving us an avenue to sponsor so many amazing projects. wagmi.
