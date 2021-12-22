@@ -1,7 +1,6 @@
 ---
 title: Web3jam Winners Deploying Unlock Protocol
-subTitle: Unlock Protocol is helping create web3 foundations by sponsoring events like EthGlobal’s web3jam 
-title: Web3jam Winners Deploying Unlock Protocol
+subTitle: Unlock Protocol is helping create web3 foundations by sponsoring EthGlobal web3jam 
 authorName: Crystal Street
 publishDate: December 21, 2021
 description: A few of last month’s EthGlobal web3jam Hackathon winners used the protocol to help power their projects over the finsh line and into the winner’s circle!
