@@ -18,10 +18,17 @@ contract('Lock / freeTrial', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.SECOND
     const purchases = keyOwners.map((account) => {
-      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-        value: keyPrice.toFixed(),
-        from: account,
-      })
+      return lock.purchase(
+        0,
+        account,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: keyPrice.toFixed(),
+          from: account,
+        }
+      )
     })
     await Promise.all(purchases)
   })
