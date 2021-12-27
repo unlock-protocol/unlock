@@ -72,8 +72,6 @@ In December, we went one step further with a **retro-active airdrop** to reward
 
 But more importantly, in order to claim their tokens, we're inviting airdrop recipients to delegate them to the address of their choice. Why? Our goal is to make sure that all new tokens claimed are accounted for when it comes to governance, while ensuring active participation in the Unlock DAO.
 
-![unlock dao](/images/blog/unlock-2021-review/unlockdao.png)
-
 In December, we also released an all-new update to our [Unlock Protocol WordPress plugin](https://unlock-protocol.com/blog/unlock-protocol-wordpress-plugin), bringing web3 to the 43% of the web that uses WordPress.
 
 ![wordpress](/images/blog/unlock-2021-review/wordpress.jpeg)
