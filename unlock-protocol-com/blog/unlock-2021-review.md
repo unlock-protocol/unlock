@@ -4,7 +4,7 @@ subTitle: A new DAO, new network support, new funding, and more
 authorName: Barbara Houdayer
 publishDate: December 27, 2021
 description: 2021 was a transformative year for Unlock Protocol with a new community DAO, support across multiple networks, $4M in new funding, and more.
-image: /images/blog/wordpress-plugin/unlock-wordpress.jpg
+image: /images/blog/unlock-2021-review/fireworks-min.jpg
 ---
 
 Looking back at everything that happened this year, 2021 will be remembered as the year Unlock Protocol really started to take off. This is a testament to our growing community, and if you’re reading this, it means you are part of it. Thank you!
