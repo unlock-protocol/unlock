@@ -9,7 +9,7 @@ image: /images/blog/unlock-2021-review/fireworks-min.jpg
 
 Looking back at everything that happened this year, 2021 will be remembered as the year Unlock Protocol really started to take off. This is a testament to our growing community, and if you’re reading this, it means you are part of it. Thank you!
 
-Back in January 2021, we couldn’t pretend we had a clear idea of where we would land come December, or that everything would happen according to plan. 
+Back in the global uncertainty of January 2021, it was difficult to predict exactly where we might land come December, or that everything would happen according to plan over the course of the year. 
 
 That said, key parts of our vision were clear. We wanted to continue on our mission to...
 
