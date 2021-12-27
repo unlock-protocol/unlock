@@ -30,13 +30,7 @@ So we started exploring “layer 2” options starting with xDAI support, which 
 
 Our path did not stop there; we now support 5 networks: in addition to the Ethereum mainnet, we currently support xDAI, Polygon, Binance Smart Chain, and the layer 2 roll-up Optimism. 
 
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled.png)
-
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%201.png)
-
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%202.png)
-
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%203.png)
+![five network logos](/images/blog/unlock-2021-review/5-network-logos.png)
 
 And to make these network options easily available to both developers and end users early on, we released a [multichain paywall](https://unlock-protocol.com/blog/multichain-support). It allows developers to choose which networks they want to make available while letting end users pick the one to use for payment. This is a way for the paywall application to connect to several locks at once, on different chains.
 
