@@ -42,7 +42,7 @@ We naturally opened the [Unlock Protocol Discord server](https://discord.com/inv
 
 Joining our Discord is a special experience, as one gets to “unlock” the server to access the different channels. How? By grabbing a free NFT-membership through the Unlock checkout! And we’re proud to say that it was built by one of our community members: Patrick Gallagher. The bot powering this experience — [Swordy Bot](https://swordybot.com/) — allows any community to design membership experiences and token gate their Discord server.
 
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%204.png)
+![swordy bot](/images/blog/unlock-2021-review/swordybot.png)
 
 In addition to the Discord server, we opened up [unlock.community](http://unlock.community) — our Discourse forum. This was built by another community member:  Camille Besse. Similar to our Discord experience, members can “unlock” access to specific categories in the forum by getting a free membership using their crypto wallet. Want to add a lock to your Discourse forum? Read [Camille’s tutorial](https://unlock.community/t/unlock-discourse-plugin/64).
 
@@ -50,17 +50,13 @@ One of the most exciting capabilities of the Unlock Protocol is that community m
 
 Unlock can power memberships that your community can use across all your platforms, everywhere on the web. 
 
-As our founder likes to say “...”
-
-@Julien Genestoux would you like to insert a quote about your vision for Unlock decentralized membership as the next Amazon Prime?
-
 **Summer: Credit card support and a funding announcement** 
 
 While the Unlock checkout allows users to authenticate and purchase NFT memberships using their crypto wallet, we didn’t want people who don’t use crypto to be left out. 
 
 In July, we released credit card support, powered by Stripe., through which community members can [buy NFT memberships with their credit card](https://unlock-protocol.com/blog/credit-card-nft). This means developers and creators can extend NFT memberships to users who don’t yet have a crypto wallet. 
 
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%205.png)
+![credit card](/images/blog/unlock-2021-review/creditcard.png)
 
 ![https://unlock-protocol.com/images/blog/unlock-credit-card/payment-method.png](https://unlock-protocol.com/images/blog/unlock-credit-card/payment-method.png)
 
