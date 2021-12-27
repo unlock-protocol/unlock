@@ -58,8 +58,6 @@ In July, we released credit card support, powered by Stripe., through which comm
 
 ![credit card](/images/blog/unlock-2021-review/creditcard.png)
 
-![https://unlock-protocol.com/images/blog/unlock-credit-card/payment-method.png](https://unlock-protocol.com/images/blog/unlock-credit-card/payment-method.png)
-
 July was also when the EthCC Paris conference finally took place, after being postponed in 2020. [Did you know participants who purchased their EthCC ticket with a crypto wallet used Unlock](https://twitter.com/ethcc/status/1233397647794483200)? Other conferences like [Liscon](https://liscon.org/!) also use Unlock to sell NFT tickets and manage attendees, with endless capabilities to design various levels of membership experiences (via crypto or fiat, thanks to our credit card support).
 
 Last but not least, we ended summer announcing a $4 million investment round from Betaworks, Cygni Labs, GMG Ventures (parent company of The Guardian), and Metacartel Ventures China, along with participation from early investors
@@ -74,7 +72,11 @@ In December, we went one step further with a **retro-active airdrop** to reward
 
 But more importantly, in order to claim their tokens, we're inviting airdrop recipients to delegate them to the address of their choice. Why? Our goal is to make sure that all new tokens claimed are accounted for when it comes to governance, while ensuring active participation in the Unlock DAO.
 
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%206.png)
+![unlock dao](/images/blog/unlock-2021-review/unlockdao.png)
+
+In December, we also released an all-new update to our [Unlock Protocol WordPress plugin](https://unlock-protocol.com/blog/unlock-protocol-wordpress-plugin), bringing web3 to the 43% of the web that uses WordPress.
+
+![wordpress](/images/blog/unlock-2021-review/wordpress.jpeg)
 
 Last but not least, to reward the most active implementers and community members of Unlock, we have launched our first monthly retroactive funding campaign in December 2021. 
 
@@ -94,7 +96,7 @@ To date, five cohorts of Grantees have already been selected, making it a total 
 - A [Firebase integration](https://unlock-protocol.com/blog/firebase-integration) that brings the power of Unlock to developers building Google apps.
 - [An embed of the Unlock checkout in Mintgate](https://unlock-protocol.com/blog/mintgate) (the low code token gated content platform) which allows creators to easily gate access to videos and while their fans can simply purchase access in crypto or fiat.
 
-![Untitled](Unlock%20Protocol%20year%20in%20review%202021%20e4c200b9787e465bb84b9b00dbaef846/Untitled%207.png)
+![decentraland](/images/blog/unlock-2021-review/decentraland.png)
 
 We’re amazed at seeing our community of Grantees create game-changing use cases for Unlock, creating documentation or helping extend the reach of the protocol. [Want to see what Grantees are building? Head over to the Unlock Showcase](https://www.unlockshowcase.com/). Created by Cohort 1 Grantee Kalidou Diagne, the showcase features a gallery of all projects built using Unlock Protocol. 
 
