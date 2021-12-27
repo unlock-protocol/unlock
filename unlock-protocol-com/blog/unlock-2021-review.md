@@ -44,7 +44,7 @@ And to make these network options easily available to both developers and end us
 
 Our next step was to set the building blocks of our community. We wanted to offer more places for developers, creators, and Unlock fans to connect and discuss their use of the protocol and their ideas to make it better. 
 
-We naturally opened the [Unlock Protocol Discord server](https://discord.com/invite/Ah6ZEJyTDp). It’s now gathering north of 1,650 members (have you joined us yet?). 
+We naturally opened the [Unlock Protocol Discord server](https://discord.com/invite/Ah6ZEJyTDp). It’s now a gathering place for over 1,650 members (have you joined us yet?). 
 
 Joining our Discord is a special experience, as one gets to “unlock” the server to access the different channels. How? By grabbing a free NFT-membership through the Unlock checkout! And we’re proud to say that it was built by one of our community members: Patrick Gallagher. The bot powering this experience — [Swordy Bot](https://swordybot.com/) — allows any community to design membership experiences and token gate their Discord server.
 
