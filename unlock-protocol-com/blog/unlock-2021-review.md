@@ -46,7 +46,7 @@ Joining our Discord is a special experience, as one gets to “unlock” the ser
 
 In addition to the Discord server, we opened up [unlock.community](http://unlock.community) — our Discourse forum. This was built by another community member:  Camille Besse. Similar to our Discord experience, members can “unlock” access to specific categories in the forum by getting a free membership using their crypto wallet. Want to add a lock to your Discourse forum? Read [Camille’s tutorial](https://unlock.community/t/unlock-discourse-plugin/64).
 
-One of the most exciting capabilities of the Unlock Protocol is that community membership natively work cross-platform. By using the same lock across our Discord server and our Discourse forum, new Unlock members get access to both. 
+One of the most exciting capabilities of the Unlock Protocol is that community membership natively works cross-platform. By using the same lock across our Discord server and our Discourse forum, new Unlock members get access to both. 
 
 Unlock can power memberships that your community can use across all your platforms, everywhere on the web. 
 
@@ -54,7 +54,7 @@ Unlock can power memberships that your community can use across all your platfor
 
 While the Unlock checkout allows users to authenticate and purchase NFT memberships using their crypto wallet, we didn’t want people who don’t use crypto to be left out. 
 
-In July, we released credit card support, powered by Stripe., through which community members can [buy NFT memberships with their credit card](https://unlock-protocol.com/blog/credit-card-nft). This means developers and creators can extend NFT memberships to users who don’t yet have a crypto wallet. 
+In July, we released credit card support, powered by Stripe, through which community members can [buy NFT memberships with their credit card](https://unlock-protocol.com/blog/credit-card-nft). This means developers and creators can extend NFT memberships to users who don’t yet have a crypto wallet. 
 
 ![credit card](/images/blog/unlock-2021-review/creditcard.png)
 
@@ -94,7 +94,7 @@ To date, five cohorts of Grantees have already been selected, making it a total 
 
 - A [Decentraland integration](https://unlock-protocol.com/blog/decentraland) that allows anyone to create unique in-world NFT memberships.
 - A [Firebase integration](https://unlock-protocol.com/blog/firebase-integration) that brings the power of Unlock to developers building Google apps.
-- [An embed of the Unlock checkout in Mintgate](https://unlock-protocol.com/blog/mintgate) (the low code token gated content platform) which allows creators to easily gate access to videos and while their fans can simply purchase access in crypto or fiat.
+- [An embed of the Unlock checkout in Mintgate](https://unlock-protocol.com/blog/mintgate) (the low code token gated content platform) which allows creators to easily gate access to videos and other content while their fans can simply purchase access in crypto or fiat.
 
 ![decentraland](/images/blog/unlock-2021-review/decentraland.png)
 
