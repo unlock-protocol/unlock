@@ -179,7 +179,13 @@ contract('Unlock (on mainnet)', async () => {
       )
       assert(expirationBefore.eq(0))
 
-      let purchaseTx = await publicLock.purchase(0, recipient, referrer, [])
+      let purchaseTx = await publicLock.purchase(
+        0,
+        recipient,
+        referrer,
+        web3.utils.padLeft(0, 40),
+        []
+      )
       await purchaseTx.wait()
 
       const expirationAfter = await publicLock.keyExpirationTimestampFor(

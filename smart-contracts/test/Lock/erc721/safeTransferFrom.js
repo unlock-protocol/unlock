@@ -22,10 +22,17 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
 
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
-    await lock.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-      value: web3.utils.toWei('0.01', 'ether'),
+    await lock.purchase(
+      0,
       from,
-    })
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: web3.utils.toWei('0.01', 'ether'),
+        from,
+      }
+    )
     ID = await lock.getTokenIdFor.call(from)
   })
 
@@ -38,10 +45,17 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   })
 
   it('should work if some data is passed in', async () => {
-    await lock.purchase(0, accounts[7], web3.utils.padLeft(0, 40), [], {
-      value: web3.utils.toWei('0.01', 'ether'),
-      from: accounts[7],
-    })
+    await lock.purchase(
+      0,
+      accounts[7],
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: web3.utils.toWei('0.01', 'ether'),
+        from: accounts[7],
+      }
+    )
     ID = await lock.getTokenIdFor.call(accounts[7])
     const method = 'safeTransferFrom(address,address,uint256,bytes)'
     await lock.methods[method](
@@ -59,10 +73,17 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    await lock.purchase(0, accounts[5], web3.utils.padLeft(0, 40), [], {
-      value: web3.utils.toWei('0.01', 'ether'),
-      from: accounts[5],
-    })
+    await lock.purchase(
+      0,
+      accounts[5],
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: web3.utils.toWei('0.01', 'ether'),
+        from: accounts[5],
+      }
+    )
     ID = await lock.getTokenIdFor.call(accounts[5])
     // A contract which does NOT implement onERC721Received:
     let nonCompliantContract = unlock.address
