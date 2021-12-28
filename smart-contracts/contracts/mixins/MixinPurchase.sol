@@ -21,6 +21,8 @@ contract MixinPurchase is
   event RenewKeyPurchase(address indexed owner, uint newExpiration);
 
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
+  
+  event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
   // default to 0%  
   uint128 private _gasRefundBasisPoints = 0; 
@@ -46,7 +48,9 @@ contract MixinPurchase is
   * (_value is ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _keyManager optional address to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @notice when called for an existing and non-expired key, the `_keyManager` param will be ignored 
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
   * than keyPrice is approved for spending).
@@ -55,6 +59,7 @@ contract MixinPurchase is
     uint256 _value,
     address _recipient,
     address _referrer,
+    address _keyManager,
     bytes calldata _data
   ) external payable
     onlyIfAlive
@@ -76,6 +81,9 @@ contract MixinPurchase is
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
+      // set key manager
+      _setKeyManagerOf(idTo, _keyManager);
+
       // trigger event
       emit Transfer(
         address(0), // This is a creation.
@@ -86,26 +94,27 @@ contract MixinPurchase is
       // This is an existing owner trying to extend their key
       newTimeStamp = toKey.expirationTimestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
+
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     } else {
       // This is an existing owner trying to renew their expired key
       newTimeStamp = block.timestamp + expirationDuration;
       toKey.expirationTimestamp = newTimeStamp;
 
-      // reset the key Manager to 0x00
-      _setKeyManagerOf(idTo, address(0));
+      _setKeyManagerOf(idTo, _keyManager);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
     }
 
-    (uint inMemoryKeyPrice, uint discount, uint tokens) = _purchasePriceFor(_recipient, _referrer, _data);
-    if (discount > 0)
-    {
-      unlockProtocol.recordConsumedDiscount(discount, tokens);
-    }
+    
+    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
 
-    // Record price without any tips
-    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer);
+    try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
+    {} 
+    catch {
+      // emit missing unlock
+      emit UnlockCallFailed(address(this), address(unlockProtocol));
+    }
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
     uint pricePaid;
@@ -151,20 +160,19 @@ contract MixinPurchase is
   ) external view
     returns (uint minKeyPrice)
   {
-    (minKeyPrice, , ) = _purchasePriceFor(_recipient, _referrer, _data);
+    minKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
   }
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
-   * unlockDiscount and unlockTokens are the values returned from `computeAvailableDiscountFor`
    */
   function _purchasePriceFor(
     address _recipient,
     address _referrer,
     bytes memory _data
   ) internal view
-    returns (uint minKeyPrice, uint unlockDiscount, uint unlockTokens)
+    returns (uint minKeyPrice)
   {
     if(address(onKeyPurchaseHook) != address(0))
     {
@@ -174,12 +182,6 @@ contract MixinPurchase is
     {
       minKeyPrice = keyPrice;
     }
-
-    if(minKeyPrice > 0)
-    {
-      (unlockDiscount, unlockTokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, minKeyPrice);
-      require(unlockDiscount <= minKeyPrice, 'INVALID_DISCOUNT_FROM_UNLOCK');
-      minKeyPrice -= unlockDiscount;
-    }
+    return minKeyPrice;
   }
 }

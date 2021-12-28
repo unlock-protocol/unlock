@@ -147,9 +147,19 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool)
-  {
-    return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+    returns (bool isValid)
+  { 
+    isValid = keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _keyOwner,
+        keyByOwner[_keyOwner].expirationTimestamp,
+        isValid
+      );
+    }    
   }
 
   /**
@@ -419,5 +429,16 @@ contract MixinKeys is
    function setMaxNumberOfKeys (uint _maxNumberOfKeys) external onlyLockManager {
      require (_maxNumberOfKeys > _totalSupply, "maxNumberOfKeys is smaller than existing supply");
      maxNumberOfKeys = _maxNumberOfKeys;
+   }
+
+   /**
+   * A function to change the default duration of each key in the lock
+   * @notice keys previously bought are unaffected by this change (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased 
+   * or zero (0) for a non-expiring key
+   */
+   function setExpirationDuration(uint _newExpirationDuration) external onlyLockManager {
+     expirationDuration = _newExpirationDuration;
    }
 }
