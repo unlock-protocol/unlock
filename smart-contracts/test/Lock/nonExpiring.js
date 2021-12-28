@@ -27,10 +27,17 @@ contract('Lock / non expiring', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.NON_EXPIRING
     keyPrice = await lock.keyPrice()
-    await lock.purchase(0, keyOwner, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      keyOwner,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
     keyId = await lock.getTokenIdFor.call(keyOwner)
   })
 
@@ -63,10 +70,17 @@ contract('Lock / non expiring', (accounts) => {
     describe('Purchase an active key', () => {
       it('should throw an error when re-purchasing an existing key', async () => {
         await reverts(
-          lock.purchase(0, keyOwner, constants.ZERO_ADDRESS, [], {
-            from,
-            value: keyPrice,
-          }),
+          lock.purchase(
+            0,
+            keyOwner,
+            constants.ZERO_ADDRESS,
+            constants.ZERO_ADDRESS,
+            [],
+            {
+              from,
+              value: keyPrice,
+            }
+          ),
           'A valid non-expiring key can not be purchased twice'
         )
       })
@@ -80,10 +94,17 @@ contract('Lock / non expiring', (accounts) => {
         assert.equal(await lock.balanceOf(keyOwner), 0)
 
         // purchase again
-        await lock.purchase(0, keyOwner, constants.ZERO_ADDRESS, [], {
-          from,
-          value: keyPrice,
-        })
+        await lock.purchase(
+          0,
+          keyOwner,
+          constants.ZERO_ADDRESS,
+          constants.ZERO_ADDRESS,
+          [],
+          {
+            from,
+            value: keyPrice,
+          }
+        )
 
         // key is active again
         assert.equal(await lock.getHasValidKey(keyOwner), true)
@@ -186,10 +207,17 @@ contract('Lock / non expiring', (accounts) => {
     const keyReceiver = accounts[3]
 
     // purchase a key
-    await lock.purchase(0, keyReceiver, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      keyReceiver,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
     // transfer fails
     await reverts(
       lock.transfer(keyReceiver, 1, { from: keyOwner }),
