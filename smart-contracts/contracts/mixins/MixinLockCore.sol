@@ -60,7 +60,6 @@ contract MixinLockCore is
 
   // Duration in seconds for which the keys are valid, after creation
   // should we take a smaller type use less gas?
-  // TODO: add support for a timestamp instead of duration
   uint public expirationDuration;
 
   // price in wei of the next key
@@ -109,7 +108,7 @@ contract MixinLockCore is
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
     beneficiary = _beneficiary;
-    expirationDuration = _expirationDuration;
+    expirationDuration = _expirationDuration == 0 ? type(uint).max : _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
   }
