@@ -240,4 +240,6 @@ contract MixinLockCore is
   {
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
+
+  uint256[1000] private __safe_upgrade_gap;
 }

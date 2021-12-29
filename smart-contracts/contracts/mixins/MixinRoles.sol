@@ -77,4 +77,6 @@ contract MixinRoles is AccessControlUpgradeable {
     revokeRole(KEY_GRANTER_ROLE, _granter);
     emit KeyGranterRemoved(_granter);
   }
+
+  uint256[1000] private __safe_upgrade_gap;
 }

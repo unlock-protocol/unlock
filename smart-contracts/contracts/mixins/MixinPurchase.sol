@@ -196,4 +196,6 @@ contract MixinPurchase is
     }
     return minKeyPrice;
   }
+
+  uint256[1000] private __safe_upgrade_gap;
 }
