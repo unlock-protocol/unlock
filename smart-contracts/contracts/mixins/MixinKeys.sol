@@ -441,4 +441,6 @@ contract MixinKeys is
    function setExpirationDuration(uint _newExpirationDuration) external onlyLockManager {
      expirationDuration = _newExpirationDuration;
    }
+   
+   uint256[1000] private __safe_upgrade_gap;
 }
