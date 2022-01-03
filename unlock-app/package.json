@@ -23,7 +23,7 @@
     "@types/qrcode.react": "1.0.2",
     "@types/react": "17.0.37",
     "@types/storybook__react": "4.0.2",
-    "@types/styled-components": "5.1.16",
+    "@types/styled-components": "5.1.19",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
