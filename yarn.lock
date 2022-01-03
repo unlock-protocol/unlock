@@ -12228,7 +12228,7 @@ __metadata:
     eslint-plugin-import: 2.25.3
     eslint-plugin-jest: 25.3.0
     eslint-plugin-jsx-a11y: 6.5.1
-    eslint-plugin-mocha: 9.0.0
+    eslint-plugin-mocha: 10.0.3
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-promise: 6.0.0
@@ -12521,7 +12521,7 @@ __metadata:
     cross-fetch: ^3.1.4
     debug: 4.3.3
     eslint: 8.4.1
-    eslint-plugin-mocha: 9.0.0
+    eslint-plugin-mocha: 10.0.3
     eth-gas-reporter: 0.2.23
     eth-sig-util: 2.5.4
     ethereum-waffle: 3.4.0
@@ -21943,15 +21943,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:9.0.0":
-  version: 9.0.0
-  resolution: "eslint-plugin-mocha@npm:9.0.0"
+"eslint-plugin-mocha@npm:10.0.3":
+  version: 10.0.3
+  resolution: "eslint-plugin-mocha@npm:10.0.3"
   dependencies:
     eslint-utils: ^3.0.0
     ramda: ^0.27.1
   peerDependencies:
     eslint: ">=7.0.0"
-  checksum: f33143815a998ed5057ca9b2e8f0dd2ca062dc311a046490a832ab84f9de0ecf1b933276bd9db3c84b34b315ba07ac68d586f468f98d424bbeb44e1505ba94e8
+  checksum: 8b1722d1c277618afa2ef734d2deb9f38b7352248233273d417f58e5e3374219037bcd72816622851528a971028793a827fd443618e045992d81ac9f62d0b137
   languageName: node
   linkType: hard
 

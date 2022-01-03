@@ -32,7 +32,7 @@
     "cross-fetch": "^3.1.4",
     "debug": "4.3.3",
     "eslint": "8.4.1",
-    "eslint-plugin-mocha": "9.0.0",
+    "eslint-plugin-mocha": "10.0.3",
     "eth-gas-reporter": "0.2.23",
     "eth-sig-util": "2.5.4",
     "ethers": "5.5.2",
