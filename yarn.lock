@@ -11204,10 +11204,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.11.11":
-  version: 16.11.11
-  resolution: "@types/node@npm:16.11.11"
-  checksum: 1c472bd63f23ca0e4effc96e6e0c693b83b027f613a1f41b6d1bd7791f65ce171a351e0a5c92575cb59e84ad0a930875397bfbbb91a7c925ddbbb558f7461af8
+"@types/node@npm:16.11.18":
+  version: 16.11.18
+  resolution: "@types/node@npm:16.11.18"
+  checksum: f2e615c5f1320552e240170991bc4f6317bb83e7b413ee95ecd44ac42f774eb6cfbbfd5a366f4d6e472c79396afbdc22699c65f1e959426c63c5e72fedd6139f
   languageName: node
   linkType: hard
 
@@ -12266,7 +12266,7 @@ __metadata:
     "@types/isomorphic-fetch": 0.0.35
     "@types/jest": 27.0.3
     "@types/nock": 10.0.3
-    "@types/node": 16.11.11
+    "@types/node": 16.11.18
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/sequelize": 4.28.10
@@ -12351,7 +12351,7 @@ __metadata:
     "@testing-library/jest-dom": 5.15.1
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
-    "@types/node": 16.11.11
+    "@types/node": 16.11.18
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     axios: 0.24.0
@@ -12379,7 +12379,7 @@ __metadata:
     "@babel/core": 7.16.0
     "@svgr/cli": 6.1.0
     "@types/next": 8.0.7
-    "@types/node": 16.11.11
+    "@types/node": 16.11.18
     "@types/postmate": 1.5.2
     "@types/react": 17.0.37
     "@types/react-dom": 17.0.11
