@@ -9821,14 +9821,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@svgr/cli@npm:6.1.0":
-  version: 6.1.0
-  resolution: "@svgr/cli@npm:6.1.0"
+"@svgr/cli@npm:6.1.2":
+  version: 6.1.2
+  resolution: "@svgr/cli@npm:6.1.2"
   dependencies:
-    "@svgr/core": ^6.1.0
-    "@svgr/plugin-jsx": ^6.1.0
-    "@svgr/plugin-prettier": ^6.0.0
-    "@svgr/plugin-svgo": ^6.1.0
+    "@svgr/core": ^6.1.2
+    "@svgr/plugin-jsx": ^6.1.2
+    "@svgr/plugin-prettier": ^6.1.2
+    "@svgr/plugin-svgo": ^6.1.2
     camelcase: ^6.2.0
     chalk: ^4.1.2
     commander: ^8.2.0
@@ -9836,18 +9836,18 @@ __metadata:
     glob: ^7.1.7
   bin:
     svgr: bin/svgr
-  checksum: 48e530220977f5c58932a1fecf214ad53203286b86e15b1f0e682c47a8e3c38007bc6d6b425b869a34be6a91d77586a063be8f738630fb4046d289dc3f697f09
+  checksum: 2e1ff5a0484bd1608fe74dc74e76c8869a64a2aa117b58c609b4fee7b487461b42c29b452957495b6c217e57725b1495ac683266977c59a1717db25502891ff3
   languageName: node
   linkType: hard
 
-"@svgr/core@npm:6.1.0, @svgr/core@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@svgr/core@npm:6.1.0"
+"@svgr/core@npm:6.1.2, @svgr/core@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@svgr/core@npm:6.1.2"
   dependencies:
-    "@svgr/plugin-jsx": ^6.1.0
+    "@svgr/plugin-jsx": ^6.1.2
     camelcase: ^6.2.0
     cosmiconfig: ^7.0.1
-  checksum: e876fe17282c747f4b6c35a1060078d3545fd479965044850a0c686b14acf178080463a03a2e855a264177c7e9e554523e941a6edc3d4092abc5b378eba320f7
+  checksum: 8169eb05c58b8c4b9bdc2937c3d4e238e3b35457ae1ea43db09b4e1bcf4c22a6f09c7de6f7a46df5a927726753a7cbf2b6ac64ffe8c0f21b8816cc9f97cd4f52
   languageName: node
   linkType: hard
 
@@ -9893,29 +9893,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@svgr/plugin-jsx@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@svgr/plugin-jsx@npm:6.1.0"
+"@svgr/plugin-jsx@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@svgr/plugin-jsx@npm:6.1.2"
   dependencies:
     "@babel/core": ^7.15.5
     "@svgr/babel-preset": ^6.1.0
     "@svgr/hast-util-to-babel-ast": ^6.0.0
     svg-parser: ^2.0.2
   peerDependencies:
-    "@svgr/core": ^6.0.0-alpha.0
-  checksum: b2bacecc083c7b9bec2dcf6d3aa23bbb9f0ef85d54b03a30515b273ec833e21cbcea6735ee063b14bfbdafc9a162949cd3dc0c407b7d0eb43b199715b54b9373
+    "@svgr/core": ^6.0.0
+  checksum: a02c2c5f6d72bd8526b41b213757e742218651e290835bc33e27e9057857fd6258149206cb64075c8a005e49dee5a721d4f1fb97f71569df20b76f971d98e44f
   languageName: node
   linkType: hard
 
-"@svgr/plugin-prettier@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@svgr/plugin-prettier@npm:6.0.0"
+"@svgr/plugin-prettier@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@svgr/plugin-prettier@npm:6.1.2"
   dependencies:
     deepmerge: ^4.2.2
     prettier: ^2.4.0
   peerDependencies:
-    "@svgr/core": ^6.0.0-alpha.0
-  checksum: e5adf6317ab60cec1030529f15e57e2a5f2d5a6c2135c0c53c09f263e9fe3ef71ae6d45788960c0ae90728bb265ad6a0c761166eb29f6c5fe747acc27540b213
+    "@svgr/core": ^6.0.0
+  checksum: 195f1823659e7c82f50bdf8c6c3d77081f4ebb9d2eb78d2e02361a9e34e8067bd6fac3120ce707369471907c1814e69f6fccc1420703d5e223014a1576611b89
   languageName: node
   linkType: hard
 
@@ -9930,16 +9930,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@svgr/plugin-svgo@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@svgr/plugin-svgo@npm:6.1.0"
+"@svgr/plugin-svgo@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@svgr/plugin-svgo@npm:6.1.2"
   dependencies:
     cosmiconfig: ^7.0.1
     deepmerge: ^4.2.2
     svgo: ^2.5.0
   peerDependencies:
-    "@svgr/core": ^6.0.0-alpha.0
-  checksum: bad7d3b634db0c55959f460a73c117653b3029b5905e5a5f199a7ef34f097cf00096ff7559a7dd3046aeab0245e631c40595824a1015915c27a27fd0b1e3f92e
+    "@svgr/core": ^6.0.0
+  checksum: b8c83d8f787dddf82dffa2654401acc336de02edda6334a125fdb5d60b23b85d551a82a701aadcf090c2fd7dd3f2cf78cf4a7deaa5f3edc35cce7f147cd7279c
   languageName: node
   linkType: hard
 
@@ -12384,7 +12384,7 @@ __metadata:
   resolution: "@unlock-protocol/paywall-app@workspace:paywall-app"
   dependencies:
     "@babel/core": 7.16.0
-    "@svgr/cli": 6.1.0
+    "@svgr/cli": 6.1.2
     "@types/next": 8.0.7
     "@types/node": 16.11.18
     "@types/postmate": 1.5.2
@@ -12728,7 +12728,7 @@ __metadata:
     "@storybook/addon-essentials": 6.4.7
     "@storybook/addon-links": 6.4.7
     "@storybook/react": 6.4.7
-    "@svgr/cli": 6.1.0
+    "@svgr/cli": 6.1.2
     babel-eslint: 10.1.0
     babel-loader: 8.2.3
     eslint: 8.6.0
