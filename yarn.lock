@@ -10392,17 +10392,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:4.17.26":
-  version: 4.17.26
-  resolution: "@types/express-serve-static-core@npm:4.17.26"
-  dependencies:
-    "@types/node": "*"
-    "@types/qs": "*"
-    "@types/range-parser": "*"
-  checksum: 064080c3c21136f9017e108559602ec5989ce90828d6ede6e3c375e5693a72500b3c06206cdc4a59496ae1ad8af1e282223efb3d79907233fc4811a2cf4d4392
-  languageName: node
-  linkType: hard
-
 "@types/express-serve-static-core@npm:^4.17.18, @types/express-serve-static-core@npm:^4.17.21, @types/express-serve-static-core@npm:^4.17.9":
   version: 4.17.24
   resolution: "@types/express-serve-static-core@npm:4.17.24"
@@ -11853,7 +11842,7 @@ __metadata:
     "@types/eth-sig-util": 2.1.1
     "@types/ethereumjs-util": 5.2.0
     "@types/express": 4.17.13
-    "@types/express-serve-static-core": 4.17.26
+    "@types/express-serve-static-core": 4.17.27
     "@types/isomorphic-fetch": 0.0.35
     "@types/jest": 27.4.0
     "@types/nock": 10.0.3
