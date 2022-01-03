@@ -12,9 +12,6 @@ module.exports = {
   entry: {
     handler: path.resolve(SRC_DIR, 'handler.js'),
   },
-  // aws-sdk is already available in the Node.js Lambda environment
-  // so it should not be included in function bundles
-  externals: ['aws-sdk'],
   output: {
     path: OUT_DIR,
     filename: '[name].js',
