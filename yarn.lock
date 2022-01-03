@@ -11617,14 +11617,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/styled-components@npm:5.1.16":
-  version: 5.1.16
-  resolution: "@types/styled-components@npm:5.1.16"
+"@types/styled-components@npm:5.1.19":
+  version: 5.1.19
+  resolution: "@types/styled-components@npm:5.1.19"
   dependencies:
     "@types/hoist-non-react-statics": "*"
     "@types/react": "*"
     csstype: ^3.0.2
-  checksum: 573a55f4bd2f054e7b0239eae1b9ab3e541bb7c607f23c01bd5035639c1fbe84431a616fc53513416427005e85a7b0fe360391ea51bf11c0ac09b543d825865d
+  checksum: ccd2baa6c980ad176650889f2fb286edbb57f5e2b74a01d80d349f751fa7fbdb4f21ed34a893a4c417cc5731c5f0174dba5d180c3a11954996d29c2818ecab13
   languageName: node
   linkType: hard
 
@@ -12390,7 +12390,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/react": 17.0.37
     "@types/react-dom": 17.0.11
-    "@types/styled-components": 5.1.16
+    "@types/styled-components": 5.1.19
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -12667,7 +12667,7 @@ __metadata:
     "@types/qrcode.react": 1.0.2
     "@types/react": 17.0.37
     "@types/storybook__react": 4.0.2
-    "@types/styled-components": 5.1.16
+    "@types/styled-components": 5.1.19
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -12801,7 +12801,7 @@ __metadata:
     "@types/jest": 27.0.3
     "@types/next": 8.0.7
     "@types/react": 17.0.37
-    "@types/styled-components": 5.1.16
+    "@types/styled-components": 5.1.19
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
