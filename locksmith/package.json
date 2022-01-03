@@ -90,7 +90,7 @@
     "@types/nock": "10.0.3",
     "@types/node": "16.11.11",
     "@types/request-promise-native": "1.0.18",
-    "@types/sequelize": "4.28.10",
+    "@types/sequelize": "4.28.11",
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.11",
     "@unlock-protocol/eslint-config": "workspace:^",
