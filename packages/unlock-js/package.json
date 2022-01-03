@@ -46,7 +46,7 @@
     "lint-staged": "12.1.2",
     "prettier": "2.5.0",
     "ts-jest": "27.1.2",
-    "typescript": "4.5.2"
+    "typescript": "4.5.4"
   },
   "dependencies": {
     "@unlock-protocol/jest-config": "workspace:^",
