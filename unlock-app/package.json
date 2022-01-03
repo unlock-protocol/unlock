@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-testing": "4.0.0",
-    "@babel/core": "7.16.0",
+    "@babel/core": "7.16.7",
     "@storybook/addon-actions": "6.4.9",
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addon-viewport": "6.4.9",
@@ -73,7 +73,7 @@
     "walletlink": "2.4.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "7.16.0",
+    "@babel/plugin-proposal-optional-chaining": "7.16.7",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
   },
   "scripts": {
