@@ -11115,7 +11115,7 @@ __metadata:
     eslint-plugin-react-hooks: 4.3.0
     eslint-plugin-standard: 4.1.0
     jest: 27.4.5
-    prettier: 2.5.0
+    prettier: 2.5.1
     typescript: 4.5.4
   languageName: unknown
   linkType: soft
@@ -11240,7 +11240,7 @@ __metadata:
     jest: 27.4.5
     jest-date-mock: 1.0.8
     next: 12.0.7
-    prettier: 2.5.0
+    prettier: 2.5.1
     prop-types: 15.8.0
     react: 17.0.2
     react-dom: 17.0.2
@@ -11278,7 +11278,7 @@ __metadata:
     nodemon: 2.0.15
     path-match: 1.2.4
     postmate: 1.5.2
-    prettier: 2.5.0
+    prettier: 2.5.1
     prop-types: 15.8.0
     react: 17.0.2
     react-dom: 17.0.2
@@ -11573,7 +11573,7 @@ __metadata:
     next: 12.0.7
     node-forge: 0.10.0
     postmate: 1.5.2
-    prettier: 2.5.0
+    prettier: 2.5.1
     prop-types: 15.8.0
     qrcode.react: 1.0.1
     react: 17.0.2
@@ -11616,7 +11616,7 @@ __metadata:
     gh-pages: 3.2.3
     microbundle-crl: 0.13.11
     npm-run-all: 4.1.5
-    prettier: 2.5.0
+    prettier: 2.5.1
     react: 17.0.2
     react-dom: 17.0.2
     react-scripts: 5.0.0
@@ -11633,7 +11633,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     eslint: 8.6.0
     ethers: 5.5.2
-    prettier: 2.5.0
+    prettier: 2.5.1
   languageName: unknown
   linkType: soft
 
@@ -11654,7 +11654,7 @@ __metadata:
     ethers: 5.5.2
     jest: 27.4.5
     lint-staged: 12.1.5
-    prettier: 2.5.0
+    prettier: 2.5.1
     ts-jest: 27.1.2
     typescript: 4.5.4
   peerDependencies:
@@ -11692,7 +11692,7 @@ __metadata:
     lint-staged: 12.1.5
     next: 12.0.7
     path-match: 1.2.4
-    prettier: 2.5.0
+    prettier: 2.5.1
     prop-types: 15.8.0
     raw-loader: 4.0.2
     react: 17.0.2
@@ -11731,7 +11731,7 @@ __metadata:
     node-forge: 0.10.0
     nodemailer: 6.7.2
     nodemon: 2.0.15
-    prettier: 2.5.0
+    prettier: 2.5.1
     ts-jest: 27.1.2
     typescript: 4.5.4
     webpack: 5.65.0
@@ -35294,15 +35294,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.5.0, prettier@npm:^2.2.1, prettier@npm:^2.4.0":
-  version: 2.5.0
-  resolution: "prettier@npm:2.5.0"
-  bin:
-    prettier: bin-prettier.js
-  checksum: aad1b35b73e7c14596d389d90977a83dad0db689ba5802a0ef319c357b7867f55b885db197972aa6a56c30f53088c9f8e0d7f7930ae074c275a4e9cbe091d21d
-  languageName: node
-  linkType: hard
-
 "prettier@npm:2.5.1":
   version: 2.5.1
   resolution: "prettier@npm:2.5.1"
@@ -35327,6 +35318,15 @@ fsevents@~2.1.1:
   bin:
     prettier: bin-prettier.js
   checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.2.1, prettier@npm:^2.4.0":
+  version: 2.5.0
+  resolution: "prettier@npm:2.5.0"
+  bin:
+    prettier: bin-prettier.js
+  checksum: aad1b35b73e7c14596d389d90977a83dad0db689ba5802a0ef319c357b7867f55b885db197972aa6a56c30f53088c9f8e0d7f7930ae074c275a4e9cbe091d21d
   languageName: node
   linkType: hard
 
@@ -42559,7 +42559,7 @@ typescript@^3.8.3:
     eslint: 8.6.0
     husky: 7.0.4
     lint-staged: 12.1.5
-    prettier: 2.5.0
+    prettier: 2.5.1
     typescript: 4.5.4
   languageName: unknown
   linkType: soft
