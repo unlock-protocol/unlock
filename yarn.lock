@@ -11963,7 +11963,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.5.0":
+"@typescript-eslint/parser@npm:5.8.1, @typescript-eslint/parser@npm:^5.5.0":
   version: 5.8.1
   resolution: "@typescript-eslint/parser@npm:5.8.1"
   dependencies:
@@ -12839,23 +12839,23 @@ __metadata:
     "@babel/core": 7.16.0
     "@babel/node": 7.16.0
     "@babel/preset-env": 7.16.4
-    "@typescript-eslint/parser": 5.5.0
+    "@typescript-eslint/parser": 5.8.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    aws-sdk: 2.1041.0
+    aws-sdk: 2.1048.0
     babel-eslint: 10.1.0
     babel-jest: 27.4.2
     babel-loader: 8.2.3
     dotenv: 10.0.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     jest: 27.4.3
     lint-staged: 12.1.2
     node-forge: 0.10.0
     nodemailer: 6.7.2
     nodemon: 2.0.15
     prettier: 2.5.0
-    ts-jest: 27.0.7
+    ts-jest: 27.1.2
     typescript: 4.5.2
-    webpack: 5.64.4
+    webpack: 5.65.0
     webpack-cli: 4.9.1
     winston: 3.3.3
   languageName: unknown
@@ -15338,6 +15338,23 @@ __metadata:
     uuid: 3.3.2
     xml2js: 0.4.19
   checksum: 297c24ad3571c23ee5f0a353d7d62836d7311ac3d42906783d0b4335285d1dea6f3459e0f1d1cc89e85f6b64632c76e8e531bcf4bde56a468035e422326edb76
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:2.1048.0":
+  version: 2.1048.0
+  resolution: "aws-sdk@npm:2.1048.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.15.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 3.3.2
+    xml2js: 0.4.19
+  checksum: 4c9b56b52b1530628f7fa4dd2e0ec9104d9a6fc7b8d9adc4441c7fbae5e8e1922718fe41c79b6cf65842c2f2d342c1db11b283bfe9cf1eff021cd8ea458c9817
   languageName: node
   linkType: hard
 
@@ -43174,6 +43191,40 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"ts-jest@npm:27.1.2":
+  version: 27.1.2
+  resolution: "ts-jest@npm:27.1.2"
+  dependencies:
+    bs-logger: 0.x
+    fast-json-stable-stringify: 2.x
+    jest-util: ^27.0.0
+    json5: 2.x
+    lodash.memoize: 4.x
+    make-error: 1.x
+    semver: 7.x
+    yargs-parser: 20.x
+  peerDependencies:
+    "@babel/core": ">=7.0.0-beta.0 <8"
+    "@types/jest": ^27.0.0
+    babel-jest: ">=27.0.0 <28"
+    esbuild: ~0.14.0
+    jest: ^27.0.0
+    typescript: ">=3.8 <5.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/jest":
+      optional: true
+    babel-jest:
+      optional: true
+    esbuild:
+      optional: true
+  bin:
+    ts-jest: cli.js
+  checksum: 2e7275f8a3545ec1340b37c458ace9244b5903e86861eb108beffff97d433f296c1254f76a41b573b1fe6245110b21bb62150bb88d55159f1dc7a929886535cb
+  languageName: node
+  linkType: hard
+
 "ts-loader@npm:9.2.6":
   version: 9.2.6
   resolution: "ts-loader@npm:9.2.6"
@@ -47249,7 +47300,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.64.4":
+"webpack@npm:5.65.0, webpack@npm:^5.64.4":
   version: 5.65.0
   resolution: "webpack@npm:5.65.0"
   dependencies:
