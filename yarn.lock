@@ -11284,7 +11284,7 @@ __metadata:
     copy-webpack-plugin: 10.2.0
     dotenv: 10.0.0
     eslint: 8.6.0
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     next: 12.0.7
     nodemon: 2.0.15
     path-match: 1.2.4
@@ -11424,7 +11424,7 @@ __metadata:
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     prettier: 2.5.1
     prompt: 1.2.0
     solhint: 3.3.6
@@ -11445,7 +11445,7 @@ __metadata:
     eslint: 8.1.0
     fs-extra: 10.0.0
     handlebars: 4.7.7
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     yargs: 17.1.1
   languageName: unknown
   linkType: soft
@@ -11664,7 +11664,7 @@ __metadata:
     eslint: 8.6.0
     ethers: 5.5.2
     jest: 27.4.5
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     prettier: 2.5.0
     ts-jest: 27.1.2
     typescript: 4.5.2
@@ -11700,7 +11700,7 @@ __metadata:
     eslint: 8.6.0
     jest: 27.4.5
     jest-styled-components: 7.0.8
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     next: 12.0.7
     path-match: 1.2.4
     prettier: 2.5.0
@@ -11738,7 +11738,7 @@ __metadata:
     dotenv: 10.0.0
     eslint: 8.6.0
     jest: 27.4.5
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     node-forge: 0.10.0
     nodemailer: 6.7.2
     nodemon: 2.0.15
@@ -18976,7 +18976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4.3.3":
+"debug@npm:4.3.3, debug@npm:^4.3.3":
   version: 4.3.3
   resolution: "debug@npm:4.3.3"
   dependencies:
@@ -20194,7 +20194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enquirer@npm:^2.3.0, enquirer@npm:^2.3.6":
+"enquirer@npm:^2.3.0":
   version: 2.3.6
   resolution: "enquirer@npm:2.3.6"
   dependencies:
@@ -29456,31 +29456,30 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:12.1.2":
-  version: 12.1.2
-  resolution: "lint-staged@npm:12.1.2"
+"lint-staged@npm:12.1.5":
+  version: 12.1.5
+  resolution: "lint-staged@npm:12.1.5"
   dependencies:
     cli-truncate: ^3.1.0
     colorette: ^2.0.16
     commander: ^8.3.0
-    debug: ^4.3.2
-    enquirer: ^2.3.6
+    debug: ^4.3.3
     execa: ^5.1.1
     lilconfig: 2.0.4
-    listr2: ^3.13.3
+    listr2: ^3.13.5
     micromatch: ^4.0.4
     normalize-path: ^3.0.0
-    object-inspect: ^1.11.0
+    object-inspect: ^1.11.1
     string-argv: ^0.3.1
-    supports-color: ^9.0.2
+    supports-color: ^9.2.1
     yaml: ^1.10.2
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: ec84ce4f74d0d8fe314bd0b62fb5e0be64af692d1876f68c457116faef61b4b3b79d72df7819c248bfbb20c46e88fbe994128e7351e84bec7048263e00199925
+  checksum: e4d64e97769faf45adad9898c843ed8ef495469fc3edef0b8daff834ddb504ab47e33579763f8d85cbba6db993bd5cd86ac0bcaf92f6fd7486d4fb9a5fe774c6
   languageName: node
   linkType: hard
 
-"listr2@npm:^3.13.3":
+"listr2@npm:^3.13.5":
   version: 3.13.5
   resolution: "listr2@npm:3.13.5"
   dependencies:
@@ -32406,6 +32405,13 @@ fsevents@~2.1.1:
   version: 1.11.0
   resolution: "object-inspect@npm:1.11.0"
   checksum: 8c64f89ce3a7b96b6925879ad5f6af71d498abc217e136660efecd97452991216f375a7eb47cb1cb50643df939bf0c7cc391567b7abc6a924d04679705e58e27
+  languageName: node
+  linkType: hard
+
+"object-inspect@npm:^1.11.1":
+  version: 1.12.0
+  resolution: "object-inspect@npm:1.12.0"
+  checksum: 2b36d4001a9c921c6b342e2965734519c9c58c355822243c3207fbf0aac271f8d44d30d2d570d450b2cc6f0f00b72bcdba515c37827d2560e5f22b1899a31cf4
   languageName: node
   linkType: hard
 
@@ -40706,7 +40712,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^9.0.2":
+"supports-color@npm:^9.2.1":
   version: 9.2.1
   resolution: "supports-color@npm:9.2.1"
   checksum: 8a2bfeb64c1512d21a1a998c1f64acdaa85cf1f6a101627286548f19785524b329d7b28d567a28fc2d708fc7aba32f4c82a9b224f76b30a337a39d3e53418ff7
@@ -42563,7 +42569,7 @@ typescript@^3.8.3:
     babel-plugin-polyfill-corejs2: 0.3.0
     eslint: 8.6.0
     husky: 7.0.4
-    lint-staged: 12.1.2
+    lint-staged: 12.1.5
     prettier: 2.5.0
     typescript: 4.5.2
   languageName: unknown
