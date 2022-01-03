@@ -32,10 +32,10 @@
         },
         {
             "minor": {
-                "groupName": "paywall"
+                "groupName": "paywall-app"
             },
             "matchPaths": [
-                "paywall/**"
+                "paywall-app/**"
             ]
         },
         {
@@ -43,7 +43,14 @@
                 "groupName": "smart-contracts"
             },
             "matchPaths": [
-                "smart-contracts/**",
+                "smart-contracts/**"
+            ]
+        },
+        {
+            "minor": {
+                "groupName": "smart-contracts-extensions"
+            },
+            "matchPaths": [
                 "smart-contract-extensions/**"
             ]
         },
@@ -53,14 +60,6 @@
             },
             "matchPaths": [
                 "unlock-app/**"
-            ]
-        },
-        {
-            "minor": {
-                "groupName": "unlock-js"
-            },
-            "matchPaths": [
-                "unlock-js/**"
             ]
         },
         {
@@ -114,21 +113,11 @@
                 "groupName": "unlock-js npm package"
             },
             "matchPackageNames": [
+                "@unlock-protocol/contracts",
                 "@unlock-protocol/unlock-js",
                 "@unlock-protocol/unlock-assets"
             ]
-        },
-        {
-            "schedule": [
-                "at any time"
-            ],
-            "minor": {
-                "groupName": "unlock-abi npm package"
-            },
-            "matchPackagePatterns": [
-                "unlock-abi-*"
-            ]
         }
     ],
-    "rebaseWhen": "behind-base-branch"
+    "rebaseWhen": "never"
 }
