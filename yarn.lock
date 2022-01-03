@@ -7611,10 +7611,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.3.3":
-  version: 4.3.3
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.3.3"
-  checksum: 08081761b6e92f858e6c50518eb8c728227832863ddffeb0288a36379fc121e26aac4084dd02260fdd990510b193b874946cf4096d0b0dcd31762eb1bed9947c
+"@openzeppelin/contracts-upgradeable@npm:4.4.1":
+  version: 4.4.1
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.4.1"
+  checksum: 8f563fc2724702c92948a760a35928c3fabccbf48b5b0d5ee9485e98ea529784026c9386660c4079b7077b198e682bfd0e075b15c8d69a0841e1426e10b91030
   languageName: node
   linkType: hard
 
@@ -12503,7 +12503,7 @@ __metadata:
     "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.4.1
-    "@openzeppelin/contracts-upgradeable": 4.3.3
+    "@openzeppelin/contracts-upgradeable": 4.4.1
     "@openzeppelin/hardhat-upgrades": 1.12.0
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
