@@ -12481,7 +12481,7 @@ __metadata:
     "@unlock-protocol/contracts": ^0.0.2
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-eslint: 10.1.0
-    bignumber.js: 9.0.1
+    bignumber.js: 9.0.2
     chai: 4.3.4
     eslint: 8.4.1
     eslint-config-prettier: 8.3.0
@@ -12523,7 +12523,7 @@ __metadata:
     babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
-    bignumber.js: 9.0.1
+    bignumber.js: 9.0.2
     chai: 4.3.4
     cross-fetch: ^3.1.4
     debug: 4.3.3
@@ -16642,6 +16642,13 @@ __metadata:
   version: 9.0.0
   resolution: "bignumber.js@npm:9.0.0"
   checksum: 51f37890bca58bded63720add832b1c4898cf5b8ad95b5d4d9c3e763c461163d0355d11d91b740b0216b02e4e8cbb02455b28ee32140b775d96a39bbd817fdf6
+  languageName: node
+  linkType: hard
+
+"bignumber.js@npm:9.0.2":
+  version: 9.0.2
+  resolution: "bignumber.js@npm:9.0.2"
+  checksum: 8637b71d0a99104b20413c47578953970006fec6b4df796b9dcfd9835ea9c402ea0e727eba9a5ca9f9a393c1d88b6168c5bbe0887598b708d4f8b4870ad62e1f
   languageName: node
   linkType: hard
 
