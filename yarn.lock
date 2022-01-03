@@ -12194,7 +12194,7 @@ __metadata:
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.0
     eslint: 8.6.0
-    eslint-config-airbnb: 19.0.2
+    eslint-config-airbnb: 19.0.4
     eslint-config-prettier: 8.3.0
     eslint-config-standard: 16.0.3
     eslint-import-resolver-typescript: 2.5.0
@@ -21748,9 +21748,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-airbnb@npm:19.0.2":
-  version: 19.0.2
-  resolution: "eslint-config-airbnb@npm:19.0.2"
+"eslint-config-airbnb@npm:19.0.4":
+  version: 19.0.4
+  resolution: "eslint-config-airbnb@npm:19.0.4"
   dependencies:
     eslint-config-airbnb-base: ^15.0.0
     object.assign: ^4.1.2
@@ -21759,9 +21759,9 @@ __metadata:
     eslint: ^7.32.0 || ^8.2.0
     eslint-plugin-import: ^2.25.3
     eslint-plugin-jsx-a11y: ^6.5.1
-    eslint-plugin-react: ^7.27.1
+    eslint-plugin-react: ^7.28.0
     eslint-plugin-react-hooks: ^4.3.0
-  checksum: 668d91fee4d8e1b7ecefc3844caed6bb77a72b29521dd9595a14abaebb8651439b831da792614b51e7913bbe3b6d20df03e76f52287ccf511dee1982460d3f71
+  checksum: 253178689c3c80eef2567e3aaf0612e18973bc9cf51d9be36074b5dd58210e8b6942200a424bcccbb81ac884e41303479ab09f251a2a97addc2de61efdc9576c
   languageName: node
   linkType: hard
 
