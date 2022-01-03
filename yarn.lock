@@ -5530,18 +5530,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethereumjs/block@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "@ethereumjs/block@npm:3.4.0"
-  dependencies:
-    "@ethereumjs/common": ^2.4.0
-    "@ethereumjs/tx": ^3.3.0
-    ethereumjs-util: ^7.1.0
-    merkle-patricia-tree: ^4.2.0
-  checksum: 678ae85824dadf3625d487aa7fe45f150b8edc09123d90ccf8c0695dcab1d9f5f6739915b89ceee0f547a2ff4bbf0c5863eef4194695d5ffe5f40c87cfc1b11e
-  languageName: node
-  linkType: hard
-
 "@ethereumjs/block@npm:^3.5.0, @ethereumjs/block@npm:^3.6.0":
   version: 3.6.0
   resolution: "@ethereumjs/block@npm:3.6.0"
@@ -5551,23 +5539,6 @@ __metadata:
     ethereumjs-util: ^7.1.3
     merkle-patricia-tree: ^4.2.2
   checksum: b7fa5b56992afb2b265f595c0e09f1d41aa18bcccb48895023b6775855ffb3647a3e2bd94d291fa16437c15ec8eac64a042465ac74879ff0c9916028fc038b1e
-  languageName: node
-  linkType: hard
-
-"@ethereumjs/blockchain@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "@ethereumjs/blockchain@npm:5.4.0"
-  dependencies:
-    "@ethereumjs/block": ^3.4.0
-    "@ethereumjs/common": ^2.4.0
-    "@ethereumjs/ethash": ^1.0.0
-    debug: ^2.2.0
-    ethereumjs-util: ^7.1.0
-    level-mem: ^5.0.1
-    lru-cache: ^5.1.1
-    rlp: ^2.2.4
-    semaphore-async-await: ^1.5.1
-  checksum: da9f1f32cce8aa7ce29b7269defd02946102a61dd04abc38cb715aa38240af0bb1958fc9c24b0ca3490abbbb97da91e53e70573b12a987f454b63900d0ec1af2
   languageName: node
   linkType: hard
 
@@ -5607,18 +5578,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethereumjs/ethash@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@ethereumjs/ethash@npm:1.0.0"
-  dependencies:
-    "@types/levelup": ^4.3.0
-    buffer-xor: ^2.0.1
-    ethereumjs-util: ^7.0.7
-    miller-rabin: ^4.0.0
-  checksum: 0a8a360224fad709c91a8c7b32fcd4adde47c89255bf2e87696f058b8e6def651c3ba7fe5abd2b6ffaf80e55f73cea90004338bdeb88c899549f73b11b51a0b4
-  languageName: node
-  linkType: hard
-
 "@ethereumjs/ethash@npm:^1.1.0":
   version: 1.1.0
   resolution: "@ethereumjs/ethash@npm:1.1.0"
@@ -5632,7 +5591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethereumjs/tx@npm:^3.2.1, @ethereumjs/tx@npm:^3.3.0":
+"@ethereumjs/tx@npm:^3.2.1":
   version: 3.3.0
   resolution: "@ethereumjs/tx@npm:3.3.0"
   dependencies:
@@ -5649,27 +5608,6 @@ __metadata:
     "@ethereumjs/common": ^2.6.0
     ethereumjs-util: ^7.1.3
   checksum: 381cbb872edb0ae83a56bf5d5657ac4f594f43ca0956b6577fb762840033081252345d67151d4feafde3f97caaab9a9826348780553c05d5a8ca2984259ad555
-  languageName: node
-  linkType: hard
-
-"@ethereumjs/vm@npm:^5.5.2":
-  version: 5.5.2
-  resolution: "@ethereumjs/vm@npm:5.5.2"
-  dependencies:
-    "@ethereumjs/block": ^3.4.0
-    "@ethereumjs/blockchain": ^5.4.0
-    "@ethereumjs/common": ^2.4.0
-    "@ethereumjs/tx": ^3.3.0
-    async-eventemitter: ^0.2.4
-    core-js-pure: ^3.0.1
-    debug: ^2.2.0
-    ethereumjs-util: ^7.1.0
-    functional-red-black-tree: ^1.0.1
-    mcl-wasm: ^0.7.1
-    merkle-patricia-tree: ^4.2.0
-    rustbn.js: ~0.2.0
-    util.promisify: ^1.0.1
-  checksum: 20a22c6ce986cfedf941a7051ab0dde19e488b725912464622515a9d32c325079e968347f4f5639105e92440df7207d9551a153fc7ea9883d64703d885c9fc3a
   languageName: node
   linkType: hard
 
@@ -8042,6 +7980,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@restart/hooks@npm:^0.4.5":
+  version: 0.4.5
+  resolution: "@restart/hooks@npm:0.4.5"
+  dependencies:
+    dequal: ^2.0.2
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: b589271f7ab293a994c448cdf0ffd81797907af7dc46cbe11ea0f1ea3e1f12affbfb2821c5aac50ff19f87b26a8357bd034ba4915569c91ad980bf1fabcb3d3f
+  languageName: node
+  linkType: hard
+
 "@restart/ui@npm:^0.2.3":
   version: 0.2.3
   resolution: "@restart/ui@npm:0.2.3"
@@ -8060,6 +8009,27 @@ __metadata:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
   checksum: 4357b273283e10372dc17ca1fec4d8c93a56ba628af7cf5f6661e5ddc34c1e56f7fc265fda738db3df38c606eb06e944ca23430aab47e41992d7e78c8d03a6ba
+  languageName: node
+  linkType: hard
+
+"@restart/ui@npm:^0.2.5":
+  version: 0.2.5
+  resolution: "@restart/ui@npm:0.2.5"
+  dependencies:
+    "@babel/runtime": ^7.13.16
+    "@popperjs/core": ^2.10.1
+    "@react-aria/ssr": ^3.0.1
+    "@restart/hooks": ^0.4.0
+    "@types/warning": ^3.0.0
+    dequal: ^2.0.2
+    dom-helpers: ^5.2.0
+    prop-types: ^15.7.2
+    uncontrollable: ^7.2.1
+    warning: ^4.0.3
+  peerDependencies:
+    react: ">=16.14.0"
+    react-dom: ">=16.14.0"
+  checksum: 9f150163211e2edc8b21a9f354e89b4a0ccb01d7bd5969e2e366a0b61dd1a1e39b88b0615125295c0150d3294ce5920336356bfb4f6bf0f8cd27861565ba150f
   languageName: node
   linkType: hard
 
@@ -12242,7 +12212,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     copyfiles: 2.4.1
     fs-extra: 10.0.0
-    hardhat: 2.7.0
+    hardhat: 2.8.0
     jest: 27.4.3
     typescript: 4.5.2
   languageName: unknown
@@ -12257,7 +12227,7 @@ __metadata:
     "@typescript-eslint/parser": 5.5.0
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     eslint-config-airbnb: 19.0.2
     eslint-config-prettier: 8.3.0
     eslint-config-standard: 16.0.3
@@ -12269,7 +12239,7 @@ __metadata:
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-promise: 6.0.0
-    eslint-plugin-react: 7.27.1
+    eslint-plugin-react: 7.28.0
     eslint-plugin-react-hooks: 4.3.0
     eslint-plugin-standard: 4.1.0
     jest: 27.4.3
@@ -12283,7 +12253,7 @@ __metadata:
   resolution: "@unlock-protocol/jest-config@workspace:packages/jest-config"
   dependencies:
     glob: 7.2.0
-    ts-jest: 27.0.7
+    ts-jest: 27.1.2
   peerDependencies:
     jest: 27.4.3
   languageName: unknown
@@ -12385,7 +12355,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/newsletter@workspace:newsletter"
   dependencies:
-    "@testing-library/jest-dom": 5.15.1
+    "@testing-library/jest-dom": 5.16.1
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
     "@types/node": 16.11.11
@@ -12394,17 +12364,17 @@ __metadata:
     axios: 0.24.0
     babel-jest: 27.4.2
     dotenv: 10.0.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     jest: 27.4.3
     jest-date-mock: 1.0.8
     next: 12.0.5
     prettier: 2.5.0
-    prop-types: 15.7.2
+    prop-types: 15.8.0
     react: 17.0.2
     react-dom: 17.0.2
     react-test-renderer: 17.0.2
     styled-components: 5.3.3
-    ts-jest: 27.0.7
+    ts-jest: 27.1.2
     typescript: 4.5.2
   languageName: unknown
   linkType: soft
@@ -12428,16 +12398,16 @@ __metadata:
     babel-loader: 8.2.3
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.0
-    copy-webpack-plugin: 10.0.0
+    copy-webpack-plugin: 10.2.0
     dotenv: 10.0.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     lint-staged: 12.1.2
     next: 12.0.5
     nodemon: 2.0.15
     path-match: 1.2.4
     postmate: 1.5.2
     prettier: 2.5.0
-    prop-types: 15.7.2
+    prop-types: 15.8.0
     react: 17.0.2
     react-dom: 17.0.2
     react-test-renderer: 17.0.2
@@ -12463,16 +12433,16 @@ __metadata:
     babel-plugin-styled-components: 2.0.2
     css-loader: 6.5.1
     dotenv: 10.0.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     jest: 27.4.3
     jest-fetch-mock: 3.0.3
     node-fetch: 3.1.0
     postmate: 1.5.2
     style-loader: 3.3.1
-    ts-jest: 27.0.7
+    ts-jest: 27.1.2
     ts-loader: 9.2.6
     typescript: 4.5.2
-    webpack: 5.64.4
+    webpack: 5.65.0
     webpack-cli: 4.9.1
   languageName: unknown
   linkType: soft
@@ -12481,14 +12451,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/purchase-url-builder@workspace:packages/paywall-config"
   dependencies:
-    "@testing-library/jest-dom": 5.15.1
+    "@testing-library/jest-dom": 5.16.1
     "@testing-library/react": 12.1.2
     "@testing-library/user-event": 13.5.0
     "@unlock-protocol/networks": "workspace:./packages/networks"
     bootstrap: 5.1.3
     formik: 2.2.9
     react: 17.0.2
-    react-bootstrap: 2.0.3
+    react-bootstrap: 2.1.0
     react-bootstrap-formik: 1.7.2
     react-dom: 17.0.2
     react-scripts: 5.0.0
@@ -12761,7 +12731,7 @@ __metadata:
     "@svgr/cli": 6.1.0
     babel-eslint: 10.1.0
     babel-loader: 8.2.3
-    eslint: 8.3.0
+    eslint: 8.6.0
     eslint-config-prettier: 8.3.0
     eslint-config-standard: 16.0.3
     eslint-config-standard-react: 11.0.1
@@ -12769,7 +12739,7 @@ __metadata:
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-promise: 6.0.0
-    eslint-plugin-react: 7.27.1
+    eslint-plugin-react: 7.28.0
     eslint-plugin-standard: 4.1.0
     gh-pages: 3.2.3
     microbundle-crl: 0.13.11
@@ -12789,7 +12759,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-express@workspace:packages/unlock-express"
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    eslint: 8.3.0
+    eslint: 8.6.0
     ethers: 5.5.2
     prettier: 2.5.0
   languageName: unknown
@@ -12808,12 +12778,12 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: 27.4.2
-    eslint: 8.3.0
+    eslint: 8.6.0
     ethers: 5.5.2
     jest: 27.4.3
     lint-staged: 12.1.2
     prettier: 2.5.0
-    ts-jest: 27.0.7
+    ts-jest: 27.1.2
     typescript: 4.5.2
   peerDependencies:
     ethers: 5.5.2
@@ -12826,7 +12796,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.16.0
     "@babel/plugin-proposal-optional-chaining": 7.16.0
-    "@testing-library/jest-dom": 5.15.1
+    "@testing-library/jest-dom": 5.16.1
     "@testing-library/react": 12.1.2
     "@types/jest": 27.0.3
     "@types/next": 8.0.7
@@ -12844,14 +12814,14 @@ __metadata:
     babel-plugin-styled-components: 2.0.2
     babel-preset-react-app: 10.0.0
     dotenv: 10.0.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     jest: 27.4.3
     jest-styled-components: 7.0.8
     lint-staged: 12.1.2
     next: 12.0.5
     path-match: 1.2.4
     prettier: 2.5.0
-    prop-types: 15.7.2
+    prop-types: 15.8.0
     raw-loader: 4.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -12862,7 +12832,7 @@ __metadata:
     rss: 1.2.2
     showdown-highlight: 2.1.8
     styled-components: 5.3.3
-    ts-jest: 27.0.7
+    ts-jest: 27.1.2
     typescript: 4.5.2
     yaml-front-matter: 4.1.1
   languageName: unknown
@@ -19096,9 +19066,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-webpack-plugin@npm:10.0.0":
-  version: 10.0.0
-  resolution: "copy-webpack-plugin@npm:10.0.0"
+"copy-webpack-plugin@npm:10.2.0":
+  version: 10.2.0
+  resolution: "copy-webpack-plugin@npm:10.2.0"
   dependencies:
     fast-glob: ^3.2.7
     glob-parent: ^6.0.1
@@ -19108,7 +19078,7 @@ __metadata:
     serialize-javascript: ^6.0.0
   peerDependencies:
     webpack: ^5.1.0
-  checksum: 70652af613b6bee93039c95daa72a68b0cdc4f66d3d861d9237b4b338968fb5c4fb1860c8424348c73d480975844887c9a0d9a2a57257c226a896b2348d2edcd
+  checksum: ae99dc42d0fbe4d7fc4a6a0902130c4420c7a2f27a995df55b4fcaa5c5aec371b4545609249f93e8db0f5b95daaed053e74f38d794ace1336f21886c29e2fddc
   languageName: node
   linkType: hard
 
@@ -22065,31 +22035,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:7.27.1":
-  version: 7.27.1
-  resolution: "eslint-plugin-react@npm:7.27.1"
-  dependencies:
-    array-includes: ^3.1.4
-    array.prototype.flatmap: ^1.2.5
-    doctrine: ^2.1.0
-    estraverse: ^5.3.0
-    jsx-ast-utils: ^2.4.1 || ^3.0.0
-    minimatch: ^3.0.4
-    object.entries: ^1.1.5
-    object.fromentries: ^2.0.5
-    object.hasown: ^1.1.0
-    object.values: ^1.1.5
-    prop-types: ^15.7.2
-    resolve: ^2.0.0-next.3
-    semver: ^6.3.0
-    string.prototype.matchall: ^4.0.6
-  peerDependencies:
-    eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
-  checksum: db1ce303b597ede0bc8873d3f575b05873b06a058162c80f76604c9096eee8f72f299d7f849a86ac2e59f269c196575e6bcfb1ef9d7cbb23f533d081bcc15ea0
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-react@npm:^7.27.1":
+"eslint-plugin-react@npm:7.28.0, eslint-plugin-react@npm:^7.27.1":
   version: 7.28.0
   resolution: "eslint-plugin-react@npm:7.28.0"
   dependencies:
@@ -23202,7 +23148,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereumjs-util@npm:^7.0.10, ethereumjs-util@npm:^7.0.2, ethereumjs-util@npm:^7.0.3, ethereumjs-util@npm:^7.0.7, ethereumjs-util@npm:^7.1.0":
+"ethereumjs-util@npm:^7.0.10, ethereumjs-util@npm:^7.0.2, ethereumjs-util@npm:^7.0.3, ethereumjs-util@npm:^7.1.0":
   version: 7.1.0
   resolution: "ethereumjs-util@npm:7.1.0"
   dependencies:
@@ -25998,63 +25944,6 @@ fsevents@~2.1.1:
     ethers: ^5.0.24
     hardhat: ^2.0.0
   checksum: 0e3f5085bab210748cc9f327a8734f25cb80edfe66044b99edc7ba60134c36eef4a27f23ed7dcdfafc2167970f484a11533831992bbd80efb730bdcfed2e86be
-  languageName: node
-  linkType: hard
-
-"hardhat@npm:2.7.0":
-  version: 2.7.0
-  resolution: "hardhat@npm:2.7.0"
-  dependencies:
-    "@ethereumjs/block": ^3.4.0
-    "@ethereumjs/blockchain": ^5.4.0
-    "@ethereumjs/common": ^2.4.0
-    "@ethereumjs/tx": ^3.3.0
-    "@ethereumjs/vm": ^5.5.2
-    "@ethersproject/abi": ^5.1.2
-    "@sentry/node": ^5.18.1
-    "@solidity-parser/parser": ^0.14.0
-    "@types/bn.js": ^5.1.0
-    "@types/lru-cache": ^5.1.0
-    abort-controller: ^3.0.0
-    adm-zip: ^0.4.16
-    ansi-escapes: ^4.3.0
-    chalk: ^2.4.2
-    chokidar: ^3.4.0
-    ci-info: ^2.0.0
-    debug: ^4.1.1
-    enquirer: ^2.3.0
-    env-paths: ^2.2.0
-    eth-sig-util: ^2.5.2
-    ethereum-cryptography: ^0.1.2
-    ethereumjs-abi: ^0.6.8
-    ethereumjs-util: ^7.1.0
-    find-up: ^2.1.0
-    fp-ts: 1.19.3
-    fs-extra: ^7.0.1
-    glob: ^7.1.3
-    https-proxy-agent: ^5.0.0
-    immutable: ^4.0.0-rc.12
-    io-ts: 1.10.4
-    lodash: ^4.17.11
-    merkle-patricia-tree: ^4.2.0
-    mnemonist: ^0.38.0
-    mocha: ^7.1.2
-    node-fetch: ^2.6.0
-    qs: ^6.7.0
-    raw-body: ^2.4.1
-    resolve: 1.17.0
-    semver: ^6.3.0
-    slash: ^3.0.0
-    solc: 0.7.3
-    source-map-support: ^0.5.13
-    stacktrace-parser: ^0.1.10
-    true-case-path: ^2.2.1
-    tsort: 0.0.1
-    uuid: ^8.3.2
-    ws: ^7.4.6
-  bin:
-    hardhat: internal/cli/cli.js
-  checksum: a299e86676bf1d7a5c322cf6a55e51b904f99547c3c42447d4716d20809fe925013579c0eded1e3e62d03945de3341450a48f7817183bd083a4825975d58614f
   languageName: node
   linkType: hard
 
@@ -37738,14 +37627,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-bootstrap@npm:2.0.3":
-  version: 2.0.3
-  resolution: "react-bootstrap@npm:2.0.3"
+"react-bootstrap@npm:2.1.0":
+  version: 2.1.0
+  resolution: "react-bootstrap@npm:2.1.0"
   dependencies:
     "@babel/runtime": ^7.14.0
-    "@restart/context": ^2.1.4
-    "@restart/hooks": ^0.3.26
-    "@restart/ui": ^0.2.3
+    "@restart/hooks": ^0.4.5
+    "@restart/ui": ^0.2.5
     "@types/invariant": ^2.2.33
     "@types/prop-types": ^15.7.3
     "@types/react": ">=16.14.8"
@@ -37762,7 +37650,7 @@ fsevents@~2.1.1:
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: 54a1a8191f66c6c475c575b565abe5ff67c6111dcbac84b402b82bfea702f683c117bd46290ec0931da56d66185b3887ae4cb13b61b90f83d15bfc092bccc2b0
+  checksum: 2b82a877c06646d7b58343f66b0c5e70c90ed08625e096bea06667a10ade456116b9bf15f749a0ef5a6850c3a4373807e121b8da549cd898380541ede24e629a
   languageName: node
   linkType: hard
 
@@ -44045,7 +43933,7 @@ typescript@^3.8.3:
     "@typescript-eslint/parser": 5.5.0
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.0
-    eslint: 8.3.0
+    eslint: 8.6.0
     husky: 7.0.4
     lint-staged: 12.1.2
     prettier: 2.5.0
@@ -44321,7 +44209,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"util.promisify@npm:^1.0.0, util.promisify@npm:^1.0.1":
+"util.promisify@npm:^1.0.0":
   version: 1.1.1
   resolution: "util.promisify@npm:1.1.1"
   dependencies:
