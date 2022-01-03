@@ -12306,7 +12306,7 @@ __metadata:
     isomorphic-fetch: 3.0.0
     jest: 27.4.3
     lodash.isequal: 4.5.0
-    multer: 1.4.3
+    multer: 1.4.4
     multer-s3: 2.10.0
     nock: 13.2.1
     node-mocks-http: 1.11.0
@@ -32756,9 +32756,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"multer@npm:1.4.3":
-  version: 1.4.3
-  resolution: "multer@npm:1.4.3"
+"multer@npm:1.4.4":
+  version: 1.4.4
+  resolution: "multer@npm:1.4.4"
   dependencies:
     append-field: ^1.0.0
     busboy: ^0.2.11
@@ -32768,7 +32768,7 @@ fsevents@~2.1.1:
     on-finished: ^2.3.0
     type-is: ^1.6.4
     xtend: ^4.0.0
-  checksum: bf1752a3ba402604601331a358633d11331c6889b3c7e9aaf195a55b0764639091b6efe7c1a12bbec0fef66751262e89b616a09305e2f9702db36070fc9670d0
+  checksum: b5550d250aeee9c4d630eaecd133af0899239f6b10cec4b448ddd0a808025b383520b8227198a8612f60c2cd2094bcb60de93d973084f889d4e40efe6dbd641e
   languageName: node
   linkType: hard
 
