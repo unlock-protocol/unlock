@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.16.0",
+    "@babel/core": "7.16.7",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@types/jest": "27.4.0",
@@ -45,7 +45,7 @@
     "yaml-front-matter": "4.1.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "7.16.0"
+    "@babel/plugin-proposal-optional-chaining": "7.16.7"
   },
   "scripts": {
     "dev": "yarn build && next dev -p 3002",
