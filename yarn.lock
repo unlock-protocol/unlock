@@ -12318,7 +12318,7 @@ __metadata:
     request: 2.88.2
     request-promise-native: 1.0.9
     run-script-os: 1.1.6
-    sequelize: 5.22.4
+    sequelize: 5.22.5
     sequelize-cli: 6.3.0
     sequelize-typescript: 1.1.0
     setimmediate: 1.0.5
@@ -40168,9 +40168,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"sequelize@npm:5.22.4":
-  version: 5.22.4
-  resolution: "sequelize@npm:5.22.4"
+"sequelize@npm:5.22.5":
+  version: 5.22.5
+  resolution: "sequelize@npm:5.22.5"
   dependencies:
     bluebird: ^3.5.0
     cls-bluebird: ^2.1.0
@@ -40184,10 +40184,10 @@ resolve@^2.0.0-next.3:
     semver: ^6.3.0
     sequelize-pool: ^2.3.0
     toposort-class: ^1.0.1
-    uuid: ^3.3.3
-    validator: ^10.11.0
+    uuid: ^8.3.2
+    validator: ^13.7.0
     wkx: ^0.4.8
-  checksum: 78ba70e0f1056d6c83c222f6261073601e0535b4ff54a8ae00ee40f3b1b2e8937a5e1859d56f5962c764b0f17e1fac240342d1528b358aa357a4dce545c173eb
+  checksum: 89a586d4316d7977530e09b66f8ec3c58d69f6ca29341a94e7c731b3e99a0341db3054f6f2eb1ef78af6ced914d725b1541e41990c10d3760d58051da42c4a7a
   languageName: node
   linkType: hard
 
@@ -44302,7 +44302,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"uuid@npm:^3.1.0, uuid@npm:^3.3.3, uuid@npm:^3.4.0":
+"uuid@npm:^3.1.0, uuid@npm:^3.4.0":
   version: 3.4.0
   resolution: "uuid@npm:3.4.0"
   bin:
@@ -44377,17 +44377,10 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"validator@npm:13.7.0":
+"validator@npm:13.7.0, validator@npm:^13.7.0":
   version: 13.7.0
   resolution: "validator@npm:13.7.0"
   checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
-  languageName: node
-  linkType: hard
-
-"validator@npm:^10.11.0":
-  version: 10.11.0
-  resolution: "validator@npm:10.11.0"
-  checksum: b945e5712af888fc5c984312cf9a7736d16a03f989556291d7984e5747efaaee6cdff671f6b0ef2630a6e2866a2728ab0f341877b878a9ffb8ad770dfcad7170
   languageName: node
   linkType: hard
 
