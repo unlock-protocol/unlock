@@ -6510,21 +6510,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-core-sdk@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@gnosis.pm/safe-core-sdk@npm:1.1.1"
+"@gnosis.pm/safe-core-sdk@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@gnosis.pm/safe-core-sdk@npm:1.2.0"
   dependencies:
     "@gnosis.pm/safe-core-sdk-types": ^0.1.1
-    "@gnosis.pm/safe-deployments": ^1.4.0
+    "@gnosis.pm/safe-deployments": ^1.5.0
     ethereumjs-util: ^7.1.3
-  checksum: 14f3599c01099bcf3ddc35e8a22aaad855ad2b908645cae1493acf6b07f168f9c04d09981e34de3eb268fd948a37d628b3326c7eb2307062e471de6cfc9f3f4b
+    semver: ^7.3.5
+  checksum: 9e8c95e053b807ecf93147479cd9356d7faea6a84484e09e98b714b7dec135750b51d2e0f45884ef4a017e2b55ba2b0d17e01857b8e90a8cfe146c6292ada363
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-deployments@npm:^1.4.0":
-  version: 1.5.0
-  resolution: "@gnosis.pm/safe-deployments@npm:1.5.0"
-  checksum: 1497f763478f2499e631f0c4f7ae0549afa123cc0048ca2c3c08c742b6a2c921db7899e531a7b081a60695694dc82e890868d688f2bc74252f0a3ff304634006
+"@gnosis.pm/safe-deployments@npm:^1.5.0":
+  version: 1.7.0
+  resolution: "@gnosis.pm/safe-deployments@npm:1.7.0"
+  checksum: fae6cc269f511d55446d057697edaddc7f7aa3d934507fdbe0ee334aaa39c3a6e382e34934c4e4c538d028248878f03deabc9f6be480f242ed9189ec235e5c1b
   languageName: node
   linkType: hard
 
@@ -12469,7 +12470,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
-    "@gnosis.pm/safe-core-sdk": 1.1.1
+    "@gnosis.pm/safe-core-sdk": 1.2.0
     "@nomiclabs/hardhat-ethers": 2.0.3
     "@nomiclabs/hardhat-etherscan": 2.1.8
     "@nomiclabs/hardhat-truffle5": 2.0.3
@@ -12493,7 +12494,7 @@ __metadata:
     chai: 4.3.4
     cross-fetch: 3.1.4
     debug: 4.3.3
-    eslint: 8.4.1
+    eslint: 8.6.0
     eslint-plugin-mocha: 10.0.3
     eth-gas-reporter: 0.2.23
     eth-sig-util: 2.5.4
