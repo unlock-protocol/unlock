@@ -15,7 +15,7 @@
     "babel-plugin-polyfill-corejs2": "0.3.0",
     "eslint": "8.6.0",
     "prettier": "2.5.0",
-    "typescript": "4.5.2"
+    "typescript": "4.5.4"
   },
   "devDependencies": {
     "husky": "7.0.4",
