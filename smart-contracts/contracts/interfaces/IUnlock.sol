@@ -21,7 +21,23 @@ interface IUnlock
   function proxyAdminAddress() external view;
 
   /**
-  * @notice Create lock
+  * @notice Create lock (legacy)
+  * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+  * @dev internally this call `createUpgradeableLock` and the `_salt` param is 
+  * not used and kept only for backwards copatibility
+  */
+  function createLock(
+    uint _expirationDuration,
+    address _tokenAddress,
+    uint _keyPrice,
+    uint _maxNumberOfKeys,
+    string calldata _lockName,
+    bytes12 // _salt
+  ) external returns(address);
+
+  /**
+  * @notice Create lock (default)
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param data bytes containing the call to initialize the lock template
   * @dev this call is passed as encoded function - for instance:
@@ -36,7 +52,7 @@ interface IUnlock
   *  );
   * @return address of the create lock
   */
-   function createLock(
+  function createUpgradeableLock(
     bytes memory data
   ) external returns(address);
 
