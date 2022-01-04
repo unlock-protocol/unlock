@@ -195,6 +195,37 @@ contract Unlock is
   /**
   * @notice Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+  * to know the lock's address before the transaction is mined.
+  * @dev internally this call `createUpgradeableLock` and the `_salt` param is 
+  * not used and kept only for backwards copatibility
+  */
+  function createLock(
+    uint _expirationDuration,
+    address _tokenAddress,
+    uint _keyPrice,
+    uint _maxNumberOfKeys,
+    string calldata _lockName,
+    bytes12 // _salt
+  ) public returns(address) {
+
+    bytes memory data = abi.encodeWithSignature(
+      'initialize(address,uint256,address,uint256,uint256,string)',
+      msg.sender,
+      _expirationDuration,
+      _tokenAddress,
+      _keyPrice,
+      _maxNumberOfKeys,
+      _lockName
+    );
+
+    return createUpgradeableLock(data);
+  }
+
+  /**
+  * @notice Create upgradeable lock
+  * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param data bytes containing the call to initialize the lock template
   * @dev this call is passed as encoded function - for instance:
   *  bytes memory data = abi.encodeWithSignature(
@@ -208,7 +239,7 @@ contract Unlock is
   *  );
   * @return address of the create lock
   */
-  function createLock(
+  function createUpgradeableLock(
     bytes memory data
   ) public returns(address)
   {
