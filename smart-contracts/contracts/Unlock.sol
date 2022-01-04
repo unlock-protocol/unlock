@@ -265,7 +265,7 @@ contract Unlock is
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
    */
-  function upgradeLock(address payable lockAddress, uint16 version) public returns(address) {
+  function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
 
     // check perms
@@ -278,6 +278,8 @@ contract Unlock is
 
     // make our upgrade
     address impl = _publicLockImpls[version];
+    require(impl != address(0), "this version number has no corresponding lock template");
+
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
 

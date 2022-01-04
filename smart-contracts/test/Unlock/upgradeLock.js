@@ -75,6 +75,14 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     )
   })
 
+  it('Should forbid upgrade if version is not set', async () => {
+    const [, creator] = await ethers.getSigners()
+    await reverts(
+      unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1),
+      'this version number has no corresponding lock template'
+    )
+  })
+
   it('Should upgrade a lock with a new template', async () => {
     const [, creator] = await ethers.getSigners()
     assert.equal(await unlock.publicLockLatestVersion(), currentVersion)
