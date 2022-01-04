@@ -69,7 +69,7 @@ exports.shouldCreateLock = (options) => {
         ]
         const calldata = await createLockHash({ args, from: accounts[0] })
         reverts(
-          unlock.createLockUpgradeable(calldata, {
+          unlock.createUpgradeableLock(calldata, {
             gas: 4000000,
           })
         )
