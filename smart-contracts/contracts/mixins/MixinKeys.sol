@@ -236,7 +236,7 @@ contract MixinKeys is
     if(keyManagerOf[_tokenId] != _keyManager) {
       keyManagerOf[_tokenId] = _keyManager;
       _clearApproval(_tokenId);
-      emit KeyManagerChanged(_tokenId, address(0));
+      emit KeyManagerChanged(_tokenId, _keyManager);
     }
   }
 
