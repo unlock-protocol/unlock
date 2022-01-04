@@ -103,7 +103,7 @@ contract MixinTransfer is
       idTo
     );
 
-    require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
+    require(_checkOnERC721Received(keyOwner, _to, idTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
 
   function transferFrom(
