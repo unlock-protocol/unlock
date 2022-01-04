@@ -23,9 +23,15 @@ interface IUnlock
   /**
   * @notice Create lock (legacy)
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
-  * @dev internally this call `createUpgradeableLock` and the `_salt` param is 
-  * not used and kept only for backwards copatibility
+  * @param _keyPrice the price of each key
+  * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
+  * @param _lockName the name of the lock
+  * @param _salt [deprec] -- kept only for backwards copatibility
+  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+  * to know the lock's address before the transaction is mined.
+  * @dev internally call `createUpgradeableLock`
   */
   function createLock(
     uint _expirationDuration,

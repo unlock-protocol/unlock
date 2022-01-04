@@ -193,7 +193,7 @@ contract Unlock is
   }
 
   /**
-  * @notice Create lock
+  * @notice Create lock (legacy)
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
