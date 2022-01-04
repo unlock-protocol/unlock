@@ -119,6 +119,7 @@ contract MixinTransfer is
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
+    require(_from != _recipient, 'TRANSFER_TO_SELF');
     uint fee = getTransferFee(_from, 0);
 
     Key storage fromKey = keyByOwner[_from];
