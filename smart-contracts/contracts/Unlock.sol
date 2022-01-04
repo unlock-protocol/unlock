@@ -366,10 +366,11 @@ contract Unlock is
    * @dev [DEPRECATED] only Kept for backwards compatibility
    */
   function recordConsumedDiscount(
-    uint _discount,
+    uint /* _discount */,
     uint /* _tokens */
   )
     public
+    view
     onlyFromDeployedLock()
   {
     return;
