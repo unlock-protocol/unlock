@@ -127,7 +127,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         Locks.FIRST.lockName,
       ]
       const calldata = await createLockHash({ args })
-      const tx = await unlock.createLock(calldata)
+      const tx = await unlock.createUpgradeableLock(calldata)
 
       const { events } = await tx.wait()
       const evt = events.find((v) => v.event === 'NewLock')

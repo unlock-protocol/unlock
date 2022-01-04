@@ -43,7 +43,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
       'A neat upgradeable lock!',
     ]
     const calldata = await createLockHash({ args, from: creator.address })
-    const tx = await unlock.createLock(calldata)
+    const tx = await unlock.createUpgradeableLock(calldata)
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')
     const { newLockAddress } = evt.args

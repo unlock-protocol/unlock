@@ -59,7 +59,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 100, 'Test lock']
 
       const calldata = await createLockHash({ args, from: from.address })
-      const tx = await unlock.createLock(calldata)
+      const tx = await unlock.createUpgradeableLock(calldata)
       const { events } = await tx.wait()
       const {
         args: { newLockAddress },
