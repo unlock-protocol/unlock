@@ -46,7 +46,7 @@ contract('Permissions / Beneficiary', (accounts) => {
     it('should not allow anyone else to update the beneficiary', async () => {
       await reverts(
         lock.updateBeneficiary(accounts[5], { from: notAuthorized }),
-        'ONLY_BENEFICIARY_OR_LOCKMANAGER'
+        'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
       )
     })
   })
