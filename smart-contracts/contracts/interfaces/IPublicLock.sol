@@ -210,6 +210,7 @@ interface IPublicLock
   * (_value is ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _keyManager optional address to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
@@ -220,6 +221,7 @@ interface IPublicLock
     uint256 _value,
     address _recipient,
     address _referrer,
+    address _keyManager,
     bytes calldata _data
   ) external payable;
 

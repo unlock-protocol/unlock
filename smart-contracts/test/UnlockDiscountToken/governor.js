@@ -29,7 +29,8 @@ contract('UnlockProtocolGovernor', () => {
     assert.equal(await gov.state(proposalId), 0) // Pending
 
     // wait for a block (default voting delay)
-    await time.advanceBlock()
+    const currentBlock = await ethers.provider.getBlockNumber()
+    await time.advanceBlockTo(currentBlock + 2)
 
     // now ready to receive votes
     assert.equal(await gov.state(proposalId), 1) // Active
@@ -40,7 +41,7 @@ contract('UnlockProtocolGovernor', () => {
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await time.advanceBlockTo(deadline.toNumber())
+    await time.advanceBlockTo(deadline.toNumber() + 1)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 

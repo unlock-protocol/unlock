@@ -1,6 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
+const { ethers, upgrades } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const Unlock = artifacts.require('Unlock.sol')
@@ -18,12 +19,29 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   let rate
 
   beforeEach(async () => {
-    unlock = await Unlock.new()
-    await unlock.initialize(protocolOwner)
+    const UnlockEthers = await ethers.getContractFactory('Unlock')
+    const proxyUnlock = await upgrades.deployProxy(
+      UnlockEthers,
+      [protocolOwner],
+      {
+        kind: 'transparent',
+        initializer: 'initialize(address)',
+      }
+    )
+    await proxyUnlock.deployed()
+    unlock = await Unlock.at(proxyUnlock.address)
+
     const lockTemplate = await PublicLock.new()
     await unlock.setLockTemplate(lockTemplate.address, { from: protocolOwner })
-    udt = await UnlockDiscountToken.new()
-    await udt.initialize(minter)
+
+    const UDTEthers = await ethers.getContractFactory('UnlockDiscountTokenV3')
+    const proxyUDT = await upgrades.deployProxy(UDTEthers, [minter], {
+      kind: 'transparent',
+      initializer: 'initialize(address)',
+    })
+    await proxyUDT.deployed()
+    udt = await UnlockDiscountToken.at(proxyUDT.address)
+
     lock = (await deployLocks(unlock, lockOwner)).FIRST
 
     // Deploy the exchange
