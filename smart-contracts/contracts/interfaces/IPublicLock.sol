@@ -29,7 +29,6 @@ interface IPublicLock
    * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
   // receive() external payable;
-  // fallback() external payable;
 
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);

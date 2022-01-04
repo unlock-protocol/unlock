@@ -1,7 +1,12 @@
 const BigNumber = require('bignumber.js')
+const { ethers } = require('hardhat')
+const { reverts } = require('truffle-assertions')
+
 const deployLocks = require('../helpers/deployLocks')
+const erc777abi = require('../helpers/ABIs/erc777.json')
 
 const unlockContract = artifacts.require('Unlock.sol')
+
 const getProxy = require('../helpers/proxy')
 
 let unlock
@@ -41,5 +46,12 @@ contract('Lock / Lock', (accounts) => {
     assert.equal(totalSupply.toFixed(), 0)
     assert.equal(numberOfOwners.toFixed(), 0)
     assert.equal(isAlive, true)
+  })
+
+  it('Should fail on unknown calls', async () => {
+    const [, recipient] = accounts
+    const lock = locks.FIRST
+    const mock777 = await ethers.getContractAt(erc777abi, lock.address)
+    await reverts(mock777.send(recipient, 1, '0x'))
   })
 })
