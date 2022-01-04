@@ -85,6 +85,15 @@ interface IPublicLock
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
+   * A function to change the default duration of each key in the lock
+   * @notice keys previously bought are unaffected by this change (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased 
+   * or zero (0) for a non-expiring key
+   */
+  function setExpirationDuration(uint _newExpirationDuration) external;
+
+  /**
    * A function which lets a Lock manager update the beneficiary account,
    * which receives funds on withdrawal.
    * @dev Throws if called by other than a Lock manager or beneficiary
@@ -118,7 +127,7 @@ interface IPublicLock
   function keyExpirationTimestampFor(
     address _keyOwner
   ) external view returns (uint timestamp);
-
+  
   /**
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than totalSupply.
@@ -178,6 +187,7 @@ interface IPublicLock
   function setEventHooks(
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
+    address _onValidKeyHook,
     address _onTokenURIHook
   ) external;
 
@@ -311,6 +321,8 @@ interface IPublicLock
 
   function onKeyCancelHook() external view returns(address);
   
+  function onValidKeyHook() external view returns(bool);
+
   function onTokenURIHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;

@@ -9,6 +9,7 @@ import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
 import '../interfaces/hooks/ILockKeyCancelHook.sol';
 import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
+import '../interfaces/hooks/ILockValidKeyHook.sol';
 import '../interfaces/hooks/ILockTokenURIHook.sol';
 
 /**
@@ -59,7 +60,6 @@ contract MixinLockCore is
 
   // Duration in seconds for which the keys are valid, after creation
   // should we take a smaller type use less gas?
-  // TODO: add support for a timestamp instead of duration
   uint public expirationDuration;
 
   // price in wei of the next key
@@ -80,6 +80,7 @@ contract MixinLockCore is
 
   ILockKeyPurchaseHook public onKeyPurchaseHook;
   ILockKeyCancelHook public onKeyCancelHook;
+  ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
 
   // Ensure that the Lock has not sold all of its keys.
@@ -107,7 +108,7 @@ contract MixinLockCore is
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
     beneficiary = _beneficiary;
-    expirationDuration = _expirationDuration;
+    expirationDuration = _expirationDuration == 0 ? type(uint).max : _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
   }
@@ -205,16 +206,19 @@ contract MixinLockCore is
   function setEventHooks(
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
+    address _onValidKeyHook,
     address _onTokenURIHook
   ) external
     onlyLockManager()
   {
     require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
     require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
+    require(_onValidKeyHook == address(0) || _onValidKeyHook.isContract(), 'INVALID_ON_VALID_KEY_HOOK');
     require(_onTokenURIHook == address(0) || _onTokenURIHook.isContract(), 'INVALID_ON_TOKEN_URI_HOOK');
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
+    onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
   }
 
   function totalSupply()
@@ -236,4 +240,6 @@ contract MixinLockCore is
   {
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
+
+  uint256[1000] private __safe_upgrade_gap;
 }

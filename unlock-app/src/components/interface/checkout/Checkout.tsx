@@ -184,6 +184,8 @@ export const Checkout = ({
         }
       }
       window.location.href = redirectUrl.toString()
+    } else {
+      window.location.href = '/keychain'
     }
   }
 

@@ -32,17 +32,32 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
   before(async () => {
     await Promise.all([
-      locks.FIRST.purchase(0, accountWithKey, web3.utils.padLeft(0, 40), [], {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from: accountWithKey,
-      }),
-      locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-        value: web3.utils.toWei('0.01', 'ether'),
+      locks.FIRST.purchase(
+        0,
+        accountWithKey,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: web3.utils.toWei('0.01', 'ether'),
+          from: accountWithKey,
+        }
+      ),
+      locks.FIRST.purchase(
+        0,
         from,
-      }),
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: web3.utils.toWei('0.01', 'ether'),
+          from,
+        }
+      ),
       locks.FIRST.purchase(
         0,
         accountWithExpiredKey,
+        web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
         [],
         {
@@ -53,6 +68,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       locks.FIRST.purchase(
         0,
         accountWithKeyApproved,
+        web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
         [],
         {
@@ -122,10 +138,17 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         // First let's make sure from has a key!
         let fromExpirationTimestamp
         let ID
-        await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.01', 'ether'),
+        await locks.FIRST.purchase(
+          0,
           from,
-        })
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: web3.utils.toWei('0.01', 'ether'),
+            from,
+          }
+        )
         // Get the tokenID
         ID = await locks.FIRST.getTokenIdFor.call(from)
         // Let's check the expiration date for that key
@@ -155,10 +178,17 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       let receiverKeyOriginalTimestamp
 
       before(async () => {
-        await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.01', 'ether'),
+        await locks.FIRST.purchase(
+          0,
           from,
-        })
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: web3.utils.toWei('0.01', 'ether'),
+            from,
+          }
+        )
 
         ID = await locks.FIRST.getTokenIdFor.call(from)
 
@@ -246,10 +276,17 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     describe('when the key owner is the sender', () => {
       before(async () => {
         // first, let's purchase a brand new key that we can transfer
-        await locks.FIRST.purchase(0, from, web3.utils.padLeft(0, 40), [], {
-          value: web3.utils.toWei('0.01', 'ether'),
+        await locks.FIRST.purchase(
+          0,
           from,
-        })
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: web3.utils.toWei('0.01', 'ether'),
+            from,
+          }
+        )
         ID = await locks.FIRST.getTokenIdFor.call(from)
         keyExpiration = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
@@ -288,6 +325,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           0,
           from,
           web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -299,6 +337,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           locks['SINGLE KEY'].purchase(
             0,
             accounts[8],
+            web3.utils.padLeft(0, 40),
             web3.utils.padLeft(0, 40),
             [],
             {
@@ -323,9 +362,16 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
   })
 
   it('can transfer a FREE key', async () => {
-    await locks.FREE.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-      from: accounts[1],
-    })
+    await locks.FREE.purchase(
+      0,
+      accounts[1],
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        from: accounts[1],
+      }
+    )
     let ID = await locks.FREE.getTokenIdFor.call(accounts[1])
     await locks.FREE.transferFrom(accounts[1], accounts[2], ID, {
       from: accounts[1],

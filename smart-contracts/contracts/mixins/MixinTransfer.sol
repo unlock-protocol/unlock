@@ -146,6 +146,7 @@ contract MixinTransfer is
 
       _recordOwner(_recipient, _tokenId);
     } else {
+      require(expirationDuration != type(uint).max, 'Recipient already owns a non-expiring key');
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
       toKey.expirationTimestamp = fromKey.expirationTimestamp + previousExpiration - block.timestamp;
@@ -307,4 +308,5 @@ contract MixinTransfer is
     return (retval == _ERC721_RECEIVED);
   }
 
+  uint256[1000] private __safe_upgrade_gap;
 }
