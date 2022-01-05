@@ -14,8 +14,8 @@ interface DrawerInterface {
  * @param param0
  * @returns
  */
-export const Drawer = ({isOpen, setIsOpen, children, title}: DrawerInterface) => {
-  return <Transition.Root show={isOpen} as={React.Fragment}>
+export const Drawer = ({isOpen, setIsOpen, children, title}: DrawerInterface) => (
+  <Transition.Root show={isOpen} as={React.Fragment}>
       <Dialog as="div" className="fixed inset-0 overflow-hidden" onClose={setIsOpen}>
         <div className="absolute inset-0 overflow-hidden">
           <Transition.Child
@@ -40,14 +40,29 @@ export const Drawer = ({isOpen, setIsOpen, children, title}: DrawerInterface) =>
               leaveTo="translate-x-full"
             >
               <div className="relative w-screen max-w-md">
-              <Close
-                onClick={setIsOpen}
-              />
-
-                <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
-                  <div className="px-4 sm:px-6">
-                  {title && <Dialog.Title className="text-lg font-medium text-gray-900">{title}</Dialog.Title>}
+                <Transition.Child
+                  as={React.Fragment}
+                  enter="ease-in-out duration-500"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in-out duration-500"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+              >
+                  <div className="absolute top-0 right-0 h-12 w-12 p-4">
+                    <Close size="16px" onClick={() => setIsOpen(false)} />
                   </div>
+                </Transition.Child>
+              <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
+
+
+
+                <div className="px-4 sm:px-6">
+                  {title && <Dialog.Title className="text-lg font-medium text-gray-900">{title}</Dialog.Title>}
+                </div>
+
+
+
                   <div className="mt-6 relative flex-1 px-4 sm:px-6">
                     {children}
                   </div>
@@ -58,7 +73,6 @@ export const Drawer = ({isOpen, setIsOpen, children, title}: DrawerInterface) =>
         </div>
       </Dialog>
     </Transition.Root>
-
-}
+)
 
 export default Drawer
