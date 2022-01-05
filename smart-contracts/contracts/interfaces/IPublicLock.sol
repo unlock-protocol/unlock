@@ -29,7 +29,6 @@ interface IPublicLock
    * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
   // receive() external payable;
-  // fallback() external payable;
 
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
@@ -210,6 +209,7 @@ interface IPublicLock
   * (_value is ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _keyManager optional address to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
@@ -220,18 +220,21 @@ interface IPublicLock
     uint256 _value,
     address _recipient,
     address _referrer,
+    address _keyManager,
     bytes calldata _data
   ) external payable;
 
   /**
-  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  * @param _gasRefundValue price in wei or token in smallest price unit
+  * @dev Set the value to be refunded to the sender on purchase
   */
-  function setGasRefundBasisPoints(uint128 _basisPoints) external;
+  function setGasRefundValue(uint256 _gasRefundValue) external;
   
   /**
-  * @dev Returns percentage be refunded to the sender on purchase
+  * _gasRefundValue price in wei or token in smallest price unit
+  * @dev Returns the value/rpice to be refunded to the sender on purchase
   */
-  function gasRefundBasisPoints() external view returns (uint128 basisPoints);
+  function gasRefundValue() external view returns (uint256 _gasRefundValue);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.

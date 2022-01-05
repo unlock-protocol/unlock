@@ -56,6 +56,8 @@ contract MixinTransfer is
     require(_to != address(0), 'INVALID_ADDRESS');
     address keyOwner = _ownerOf[_tokenId];
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
+    require(keyOwner != _to, 'TRANSFER_TO_SELF');
+
     Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
     uint idTo = toKey.tokenId;
@@ -103,7 +105,7 @@ contract MixinTransfer is
       idTo
     );
 
-    require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
+    require(_checkOnERC721Received(keyOwner, _to, idTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
 
   function transferFrom(
@@ -119,6 +121,7 @@ contract MixinTransfer is
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
+    require(_from != _recipient, 'TRANSFER_TO_SELF');
     uint fee = getTransferFee(_from, 0);
 
     Key storage fromKey = keyByOwner[_from];

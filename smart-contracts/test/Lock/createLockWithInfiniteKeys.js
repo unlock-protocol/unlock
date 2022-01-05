@@ -25,7 +25,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         'Infinite Keys Lock', // name
       ]
       const calldata = await createLockHash({ args })
-      transaction = await unlock.createLock(calldata)
+      transaction = await unlock.createUpgradeableLock(calldata)
     })
 
     it('should have created the lock with an infinite number of keys', async () => {
@@ -52,7 +52,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         // '0x000000000000000000000001',
       ]
       const calldata = await createLockHash({ args })
-      transaction = await unlock.createLock(calldata)
+      transaction = await unlock.createUpgradeableLock(calldata)
     })
 
     it('should have created the lock with 0 keys', async () => {

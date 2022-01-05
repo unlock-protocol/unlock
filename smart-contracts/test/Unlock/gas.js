@@ -20,7 +20,7 @@ contract('Unlock / gas', (accounts) => {
       'Gas Test Lock',
     ]
     const calldata = await createLockHash({ args, from: accounts[0] })
-    let tx = await unlock.createLock(calldata)
+    let tx = await unlock.createUpgradeableLock(calldata)
     createLockGas = new BigNumber(tx.receipt.gasUsed)
   })
 

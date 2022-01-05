@@ -194,8 +194,8 @@ contract MixinLockCore is
   function updateBeneficiary(
     address payable _beneficiary
   ) external
+    onlyLockManagerOrBeneficiary()
   {
-    require(msg.sender == beneficiary || isLockManager(msg.sender), 'ONLY_BENEFICIARY_OR_LOCKMANAGER');
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
   }
