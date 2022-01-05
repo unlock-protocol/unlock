@@ -5694,6 +5694,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@headlessui/react@npm:1.4.2":
+  version: 1.4.2
+  resolution: "@headlessui/react@npm:1.4.2"
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 28c36204430365190c05cbd48235f8239897360c8d55189583c03868fe640b171051238a8672a501b441de79281bb08285966105bfeb4534ca0e612382dcd41f
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.6.0":
   version: 0.6.0
   resolution: "@humanwhocodes/config-array@npm:0.6.0"
@@ -11422,6 +11432,7 @@ __metadata:
     "@apollo/react-testing": 4.0.0
     "@babel/core": 7.16.7
     "@babel/plugin-proposal-optional-chaining": 7.16.7
+    "@headlessui/react": 1.4.2
     "@storybook/addon-actions": 6.4.9
     "@storybook/addon-knobs": 6.4.0
     "@storybook/addon-viewport": 6.4.9
@@ -11448,6 +11459,7 @@ __metadata:
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.7.0
     apollo-boost: 0.4.9
+    autoprefixer: 10.4.1
     axios: 0.24.0
     babel-eslint: 10.1.0
     babel-jest: 27.4.5
@@ -11472,6 +11484,7 @@ __metadata:
     js-base64: 3.7.2
     next: 12.0.7
     node-forge: 0.10.0
+    postcss: 8.4.5
     postmate: 1.5.2
     prettier: 2.5.1
     prop-types: 15.8.0
@@ -11484,6 +11497,7 @@ __metadata:
     react-test-renderer: 17.0.2
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.3
+    tailwindcss: 3.0.10
     ts-jest: 27.1.2
     typescript: 4.5.4
     validator: 13.7.0
@@ -14061,7 +14075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.0":
+"autoprefixer@npm:10.4.1, autoprefixer@npm:^10.4.0":
   version: 10.4.1
   resolution: "autoprefixer@npm:10.4.1"
   dependencies:
@@ -35031,6 +35045,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"postcss@npm:8.4.5, postcss@npm:^8.1.6, postcss@npm:^8.3.5, postcss@npm:^8.4.4":
+  version: 8.4.5
+  resolution: "postcss@npm:8.4.5"
+  dependencies:
+    nanoid: ^3.1.30
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.1
+  checksum: b78abdd89c10f7b48f4bdcd376104a19d6e9c7495ab521729bdb3df315af6c211360e9f06887ad3bc0ab0f61a04b91d68ea11462997c79cced58b9ccd66fac07
+  languageName: node
+  linkType: hard
+
 "postcss@npm:^6.0.1":
   version: 6.0.23
   resolution: "postcss@npm:6.0.23"
@@ -35060,17 +35085,6 @@ fsevents@~2.1.1:
     picocolors: ^0.2.1
     source-map: ^0.6.1
   checksum: 4ac793f506c23259189064bdc921260d869a115a82b5e713973c5af8e94fbb5721a5cc3e1e26840500d7e1f1fa42a209747c5b1a151918a9bc11f0d7ed9048e3
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.1.6, postcss@npm:^8.3.5, postcss@npm:^8.4.4":
-  version: 8.4.5
-  resolution: "postcss@npm:8.4.5"
-  dependencies:
-    nanoid: ^3.1.30
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.1
-  checksum: b78abdd89c10f7b48f4bdcd376104a19d6e9c7495ab521729bdb3df315af6c211360e9f06887ad3bc0ab0f61a04b91d68ea11462997c79cced58b9ccd66fac07
   languageName: node
   linkType: hard
 
@@ -40783,6 +40797,40 @@ resolve@^2.0.0-next.3:
     slice-ansi: ^2.1.0
     string-width: ^3.0.0
   checksum: 9e35d3efa788edc17237eef8852f8e4b9178efd65a7d115141777b2ee77df4b7796c05f4ed3712d858f98894ac5935a481ceeb6dcb9895e2f67a61cce0e63b6c
+  languageName: node
+  linkType: hard
+
+"tailwindcss@npm:3.0.10":
+  version: 3.0.10
+  resolution: "tailwindcss@npm:3.0.10"
+  dependencies:
+    arg: ^5.0.1
+    chalk: ^4.1.2
+    chokidar: ^3.5.2
+    color-name: ^1.1.4
+    cosmiconfig: ^7.0.1
+    detective: ^5.2.0
+    didyoumean: ^1.2.2
+    dlv: ^1.1.3
+    fast-glob: ^3.2.7
+    glob-parent: ^6.0.2
+    is-glob: ^4.0.3
+    normalize-path: ^3.0.0
+    object-hash: ^2.2.0
+    postcss-js: ^3.0.3
+    postcss-load-config: ^3.1.0
+    postcss-nested: 5.0.6
+    postcss-selector-parser: ^6.0.7
+    postcss-value-parser: ^4.2.0
+    quick-lru: ^5.1.1
+    resolve: ^1.20.0
+  peerDependencies:
+    autoprefixer: ^10.0.2
+    postcss: ^8.0.9
+  bin:
+    tailwind: lib/cli.js
+    tailwindcss: lib/cli.js
+  checksum: 40e7515bdd957d7abbd47ab46e7b9d3530175b1f25e99af7dd2b5656d0f06ba61371f78faf5a8430219217b0e9db76fedd11a3a79ab5a635bd023b106445961e
   languageName: node
   linkType: hard
 
