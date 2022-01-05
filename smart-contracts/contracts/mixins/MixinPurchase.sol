@@ -24,22 +24,22 @@ contract MixinPurchase is
   
   event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
-  // default to 0%  
-  uint128 private _gasRefundBasisPoints = 0; 
+  // default to 0 
+  uint256 private _gasRefundValue = 0; 
 
   /**
-  * @dev Set a percentage as basis point (10000th) of the key price to be refunded to the sender on purchase
+  * @dev Set the value/price to be refunded to the sender on purchase
   */
 
-  function setGasRefundBasisPoints(uint128 _basisPoints) external onlyLockManager {
-    _gasRefundBasisPoints = _basisPoints;
+  function setGasRefundValue(uint256 _refundValue) external onlyLockManager {
+    _gasRefundValue = _refundValue;
   }
   
   /**
-  * @dev Returns percentage as basis point (10000th) to be refunded to the sender on purchase
+  * @dev Returns value/price to be refunded to the sender on purchase
   */
-  function gasRefundBasisPoints() external view returns (uint128 basisPoints) {
-    return _gasRefundBasisPoints;
+  function gasRefundValue() external view returns (uint256 _refundValue) {
+    return _gasRefundValue;
   }
 
   /**
@@ -148,16 +148,15 @@ contract MixinPurchase is
     }
 
     // refund gas
-    if (_gasRefundBasisPoints != 0) {
-      uint toRefund = _gasRefundBasisPoints * pricePaid / BASIS_POINTS_DEN;
+    if (_gasRefundValue != 0) {
       if(tokenAddress != address(0)) {
         IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-        token.transferFrom(address(this), msg.sender, toRefund);
+        token.transferFrom(address(this), msg.sender, _gasRefundValue);
       } else {
-        (bool success, ) = msg.sender.call{value: toRefund}("");
+        (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
         require(success, "Refund failed.");
       }
-      emit GasRefunded(msg.sender, toRefund, tokenAddress);
+      emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
     }
   }
 
