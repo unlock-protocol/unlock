@@ -21,19 +21,21 @@ contract('Lock / owners', (accounts) => {
 
   before(() => {
     // Purchase keys!
-    return Promise.all([1,2,3,4].map( d =>
-      lock.purchase(
-        0,
-        accounts[d],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: lock.params.keyPrice.toFixed(),
-          from: accounts[0],
-        }
+    return Promise.all(
+      [1, 2, 3, 4].map((d) =>
+        lock.purchase(
+          0,
+          accounts[d],
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: lock.params.keyPrice.toFixed(),
+            from: accounts[0],
+          }
+        )
       )
-    ))
+    )
   })
 
   it('should have the right number of keys', async () => {
@@ -48,7 +50,7 @@ contract('Lock / owners', (accounts) => {
 
   it('should allow for access to an individual key owner', async () => {
     const keyIds = [0, 1, 2, 3]
-    const owners = await Promise.all(keyIds.map(d => lock.owners.call(d)))
+    const owners = await Promise.all(keyIds.map((d) => lock.owners.call(d)))
     assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
   })
 
@@ -113,9 +115,8 @@ contract('Lock / owners', (accounts) => {
   })
 
   // test case proofing https://github.com/code-423n4/2021-11-unlock-findings/issues/120
-  describe.only('after a transfer to a existing owner, buying a key again for someone who already owns it', () => {
+  describe('after a transfer to a existing owner, buying a key again for someone who already owns it', () => {
     it('should preserve the right number of owners', async () => {
-
       // initial state
       const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       const prevKeyId = await lock.getTokenIdFor.call(accounts[4])
@@ -130,7 +131,7 @@ contract('Lock / owners', (accounts) => {
       assert.equal((await lock.getTokenIdFor.call(accounts[4])).toString(), '0')
 
       // someone buys a key again for the previous owner
-      const tx = await lock.purchase(
+      await lock.purchase(
         0,
         accounts[4],
         web3.utils.padLeft(0, 40),
@@ -142,7 +143,7 @@ contract('Lock / owners', (accounts) => {
         }
       )
       assert.equal((await lock.getTokenIdFor.call(accounts[4])).toNumber(), 5)
-      
+
       // number of owners should be left unchanged
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
