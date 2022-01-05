@@ -56,6 +56,8 @@ contract MixinTransfer is
     require(_to != address(0), 'INVALID_ADDRESS');
     address keyOwner = _ownerOf[_tokenId];
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
+    require(keyOwner != _to, 'TRANSFER_TO_SELF');
+
     Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
     uint idTo = toKey.tokenId;
