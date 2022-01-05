@@ -11,6 +11,7 @@ import { WedlockServiceContext } from '../contexts/WedlocksContext'
 import WedlockService from '../services/wedlockService'
 import ProviderContext from '../contexts/ProviderContext'
 import Authenticate from '../components/interface/Authenticate'
+import '../../src/index.css'
 
 const config = configure()
 const wedlockService = new WedlockService(config.services.wedlocks.host)
