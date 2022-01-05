@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-
+import Close from './buttons/layout/Close'
 
 interface DrawerInterface {
   isOpen: boolean
@@ -40,6 +40,9 @@ export const Drawer = ({isOpen, setIsOpen, children, title}: DrawerInterface) =>
               leaveTo="translate-x-full"
             >
               <div className="relative w-screen max-w-md">
+              <Close
+                onClick={setIsOpen}
+              />
 
                 <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
                   <div className="px-4 sm:px-6">
