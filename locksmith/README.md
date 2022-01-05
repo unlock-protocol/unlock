@@ -3,24 +3,18 @@
 Locksmith is a backend service that prvovides some services in the context of Unlock.
 None of these services are required to use the core-protocol.
 Among these services, locksmith provides the following:
-* NFT metadata hosting
-* membership metadata hosting
-* Unlock accounts
+
+- NFT metadata hosting
+- membership metadata hosting
+- Unlock accounts
+
 ## Getting Started
 
-### Running in Development
+### Configure Database
 
-Locksmith utilizes SQLite to make it easy to get up and running. Upon startup
-the local database will be created and unprocessed migrations will be run.
+Locksmith uses postgres under the hood.
 
-You can start Locksmith in development with the following command: `yarn dev`.
-
-### Running in Production
-
-Locksmith's suggested production datastore is [Postgres](https://www.postgresql.org/),
-and will require access to a running instance.
-
-You can configure your connection details in a few ways. Here are the suggested methods:
+You can spin up a local instance of postgres using docker by running `docker run --name locksmith-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -d postgres` or go with a traditional install or hosting provider.
 
 1. Configure environment variables (Locksmith will recognize these placed in
    an `.env.dev.local` file at the root of the monorepo)
@@ -37,11 +31,9 @@ You can configure your connection details in a few ways. Here are the suggested 
    psql -c "create user {DATASBASE USER NAME} with password '{PASSWORD}';" -U postgres
    ```
 
-2. If your configuration needs are more demanding than this, further configuration
-   can be established by modifying the storage configuration file `config/config.js`.
+### Running Locksmith
 
-Once configured, you will be able to start the application. `yarn dev` or `yarn start`
-will suffice depending on your needs for running Locksmith.
+For running in production, use `yarn start` otherwise `yarn dev` which will restart the server on file changes.
 
 ### Persistence Information
 
