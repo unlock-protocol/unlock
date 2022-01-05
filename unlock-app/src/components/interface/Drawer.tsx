@@ -11,8 +11,6 @@ interface DrawerInterface {
 
 /**
  * A side drawer component
- * @param param0
- * @returns
  */
 export const Drawer = ({
   isOpen,
