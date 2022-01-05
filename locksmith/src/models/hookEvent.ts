@@ -1,0 +1,30 @@
+import { Table, Column, Model, AllowNull, DataType } from 'sequelize-typescript'
+
+@Table({ tableName: 'HookEvents', timestamps: true })
+// eslint-disable-next-line import/prefer-default-export
+export class HookEvent extends Model<HookEvent> {
+  @Column({ primaryKey: true, autoIncrement: true })
+  eventId!: number
+
+  @Column
+  network!: string
+
+  @Column
+  lock!: string
+
+  @AllowNull(true)
+  @Column
+  key?: string
+
+  @Column
+  hookId!: number
+
+  @Column({ type: DataType.JSON })
+  body!: any
+
+  @Column
+  state!: string
+
+  @Column
+  attempts!: number
+}
