@@ -91,6 +91,20 @@ contract('Lock / shareKey', (accounts) => {
           'INVALID_ADDRESS'
         )
       })
+
+      it('should abort if the key owner', async () => {
+        await reverts(
+          lock.shareKey(
+            keyOwners[0],
+            await lock.getTokenIdFor.call(keyOwners[0]),
+            1000,
+            {
+              from: keyOwners[0],
+            }
+          ),
+          'TRANSFER_TO_SELF'
+        )
+      })
     })
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
