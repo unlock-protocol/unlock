@@ -225,14 +225,16 @@ interface IPublicLock
   ) external payable;
 
   /**
-  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  * @param _gasRefundValue price in wei or token in smallest price unit
+  * @dev Set the value to be refunded to the sender on purchase
   */
-  function setGasRefundBasisPoints(uint128 _basisPoints) external;
+  function setGasRefundValue(uint256 _gasRefundValue) external;
   
   /**
-  * @dev Returns percentage be refunded to the sender on purchase
+  * _gasRefundValue price in wei or token in smallest price unit
+  * @dev Returns the value/rpice to be refunded to the sender on purchase
   */
-  function gasRefundBasisPoints() external view returns (uint128 basisPoints);
+  function gasRefundValue() external view returns (uint256 _gasRefundValue);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
