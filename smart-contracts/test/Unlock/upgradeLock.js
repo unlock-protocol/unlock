@@ -43,7 +43,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
       'A neat upgradeable lock!',
     ]
     const calldata = await createLockHash({ args, from: creator.address })
-    const tx = await unlock.createLock(calldata)
+    const tx = await unlock.createUpgradeableLock(calldata)
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')
     const { newLockAddress } = evt.args
@@ -72,6 +72,14 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     await reverts(
       unlock.connect(creator).upgradeLock(lock.address, 135),
       'version error: only +1 increments are allowed'
+    )
+  })
+
+  it('Should forbid upgrade if version is not set', async () => {
+    const [, creator] = await ethers.getSigners()
+    await reverts(
+      unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1),
+      'this version number has no corresponding lock template'
     )
   })
 

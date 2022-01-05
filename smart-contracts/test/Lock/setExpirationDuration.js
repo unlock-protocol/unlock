@@ -22,7 +22,7 @@ contract('Lock / setExpirationDuration', () => {
     const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
     const calldata = await createLockHash({ args, from: from.address })
-    const tx = await unlock.createLock(calldata)
+    const tx = await unlock.createUpgradeableLock(calldata)
     const { events } = await tx.wait()
     const {
       args: { newLockAddress },

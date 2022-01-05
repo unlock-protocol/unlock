@@ -25,7 +25,7 @@ contract('Permissions / isKeyManager', (accounts) => {
     ]
 
     const calldata = await createLockHash({ args, from: lockCreator })
-    let tx = await unlock.createLock(calldata)
+    let tx = await unlock.createUpgradeableLock(calldata)
     lockAddress = tx.logs[0].args.newLockAddress
     lock = await KeyManagerMock.at(lockAddress)
     await lock.purchase(

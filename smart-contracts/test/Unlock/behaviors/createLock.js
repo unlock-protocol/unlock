@@ -24,7 +24,9 @@ exports.shouldCreateLock = (options) => {
           'New Lock',
         ]
         const calldata = await createLockHash({ args, from: accounts[0] })
-        transaction = await unlock.createLock(calldata, { gas: 6000000 })
+        transaction = await unlock.createUpgradeableLock(calldata, {
+          gas: 6000000,
+        })
         evt = transaction.logs.find((v) => v.event === 'NewLock')
       })
 
@@ -67,7 +69,7 @@ exports.shouldCreateLock = (options) => {
         ]
         const calldata = await createLockHash({ args, from: accounts[0] })
         reverts(
-          unlock.createLock(calldata, {
+          unlock.createUpgradeableLock(calldata, {
             gas: 4000000,
           })
         )

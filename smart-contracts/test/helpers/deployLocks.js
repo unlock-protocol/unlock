@@ -18,7 +18,7 @@ module.exports = async function deployLocks(
         Locks[name].lockName,
       ]
       const calldata = await createLockHash({ args, from })
-      const tx = await unlock.createLock(calldata)
+      const tx = await unlock.createUpgradeableLock(calldata)
       const evt = tx.logs.find((v) => v.event === 'NewLock')
       const lock = await PublicLock.at(evt.args.newLockAddress)
       locks[name] = lock
