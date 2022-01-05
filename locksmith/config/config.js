@@ -13,14 +13,7 @@ const config = {
   logging: false,
 }
 
-// Heroku sets DATABASE_URL
-if (process.env.DATABASE_URL) {
-  const databaseConfigUrl = new urlParser.URL(process.env.DATABASE_URL)
-  config.database.username = databaseConfigUrl.username
-  config.database.password = databaseConfigUrl.password
-  config.database.host = databaseConfigUrl.hostname
-  config.database.database = databaseConfigUrl.pathname.substring(1)
-
+if (Boolean(process.env.ON_HEROKU)) {
   // Heroku needs this:
   config.database.ssl = true
   config.database.dialectOptions = {
@@ -29,6 +22,15 @@ if (process.env.DATABASE_URL) {
       rejectUnauthorized: false,
     },
   }
+}
+
+// Database URL
+if (process.env.DATABASE_URL) {
+  const databaseConfigUrl = new urlParser.URL(process.env.DATABASE_URL)
+  config.database.username = databaseConfigUrl.username
+  config.database.password = databaseConfigUrl.password
+  config.database.host = databaseConfigUrl.hostname
+  config.database.database = databaseConfigUrl.pathname.substring(1)
 } else {
   config.database.username = process.env.DB_USERNAME
   config.database.password = process.env.DB_PASSWORD
