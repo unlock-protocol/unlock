@@ -27,6 +27,8 @@ const now = new Date().getTime()
 
 /**
  * https://stackoverflow.com/questions/30166338/setting-value-of-datetime-local-from-date
+ * The `datetime-local` input fields takes a string in a specific format
+ * so we format it for it to be used there.
  * @param date
  * @returns
  */
