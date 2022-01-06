@@ -13,6 +13,8 @@ import { StripeConnectLock } from './stripeConnectLock'
 import { LockIcons } from './lockIcons'
 import { LockMigrations } from './lockMigrations'
 import { Charge } from './charge'
+import { Hook } from './hook'
+import { HookEvent } from './hookEvent'
 import logger from '../logger'
 
 const config = require('../../config/sequelize.config')
@@ -23,6 +25,8 @@ logger.info(`Connecting to database, ${JSON.stringify(config)}`)
 const sequelize = new Sequelize(config)
 
 sequelize.addModels([
+  Hook,
+  HookEvent,
   User,
   UserReference,
   Lock,
@@ -56,3 +60,5 @@ export * from './stripeConnectLock'
 export * from './charge'
 export * from './lockIcons'
 export * from './lockMigrations'
+export * from './hook'
+export * from './hookEvent'

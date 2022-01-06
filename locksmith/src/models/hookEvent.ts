@@ -4,7 +4,7 @@ import { Table, Column, Model, AllowNull, DataType } from 'sequelize-typescript'
 // eslint-disable-next-line import/prefer-default-export
 export class HookEvent extends Model<HookEvent> {
   @Column({ primaryKey: true, autoIncrement: true })
-  eventId!: number
+  id!: number
 
   @Column
   network!: string
