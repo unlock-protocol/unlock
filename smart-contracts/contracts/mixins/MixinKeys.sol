@@ -340,8 +340,16 @@ contract MixinKeys is
   ) internal
   {
     if (ownerOf(_tokenId) != _keyOwner) {
-      // TODO: this may include duplicate entries
-      owners.push(_keyOwner);
+      // make sure we don't add to owners list if a key was previously owned
+      bool isAlreadyRecorded = false;
+      for (uint256 i = 0; i < owners.length; i++) {
+        if(_keyOwner == owners[i]) {
+          isAlreadyRecorded = true;
+        }
+      }
+      if(isAlreadyRecorded == false) {
+        owners.push(_keyOwner);
+      }
       // We register the owner of the tokenID
       _ownerOf[_tokenId] = _keyOwner;
     }
