@@ -6,7 +6,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
 
-const { HARDHAT_VM_ERROR } = errorMessages
+const { HARDHAT_VM_ERROR, VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 let unlock
 let lock
@@ -124,5 +124,12 @@ contract('Lock / transfer', (accounts) => {
       const actual = await lock.getHasValidKey(destination)
       assert.equal(actual, true)
     })
+  })
+
+  it('reverts when attempting to transfer to self', async () => {
+    await reverts(
+      lock.transfer(singleKeyOwner, 1, { from: singleKeyOwner }),
+      `${VM_ERROR_REVERT_WITH_REASON} 'TRANSFER_TO_SELF'`
+    )
   })
 })

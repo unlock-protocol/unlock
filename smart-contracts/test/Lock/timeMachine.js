@@ -34,7 +34,7 @@ contract('Lock / timeMachine', (accounts) => {
       'TimeMachineMockLock',
     ]
     const calldata = await createLockHash({ args, from: lockOwner })
-    let tx = await unlock.createLock(calldata)
+    let tx = await unlock.createUpgradeableLock(calldata)
     lockAddress = tx.logs[0].args.newLockAddress
 
     lock = await TimeMachineMock.at(lockAddress)
