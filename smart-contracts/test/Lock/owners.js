@@ -67,7 +67,7 @@ contract('Lock / owners', (accounts) => {
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       let ID = await lock.getTokenIdFor.call(accounts[1])
-      await lock.transferFrom(accounts[1], accounts[3], ID, {
+      await lock.transferFrom(accounts[1], accounts[5], ID, {
         from: accounts[1],
       })
     })
@@ -84,7 +84,7 @@ contract('Lock / owners', (accounts) => {
 
     it('should fail if I transfer from the same account again', async () => {
       await reverts(
-        lock.transferFrom(accounts[1], accounts[3], accounts[1], {
+        lock.transferFrom(accounts[1], accounts[5], accounts[1], {
           from: accounts[1],
         }),
         'KEY_NOT_VALID'
