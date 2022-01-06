@@ -97,9 +97,9 @@ const parseData = (modifier) => {
 const bytecodes = parseData(d => d.bytecode)
 const deployedBytecodes = parseData(d => d.deployedBytecode)
 const parsedAbis = parseData(
-  ({ contractName, abi, deployedBytecode }) => ({
+  ({ contractName, signatures, deployedBytecode }) => ({
     contractName,
-    abi,
+    abi: signatures,
     bytecodeHash: ethers.utils.sha256(deployedBytecode)
 }))
 
