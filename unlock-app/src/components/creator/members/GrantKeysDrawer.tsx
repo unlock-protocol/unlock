@@ -211,7 +211,7 @@ export const GrantKeysDrawer = ({
   setIsOpen,
   lockAddresses,
 }: GrantKeysDrawerInterface) => {
-  const { network } = useContext(AuthenticationContext) // TODO: use the actual lock network instead of the currently connected network
+  const { network, account } = useContext(AuthenticationContext) // TODO: use the actual lock network instead of the currently connected network
 
   const web3Service = useContext(Web3ServiceContext)
   const [locks, setLocks] = useState<any>({})
@@ -225,6 +225,20 @@ export const GrantKeysDrawer = ({
         lockAddresses.map(async (address: string) => {
           locks[address] = await web3Service.getLock(address, network)
           locks[address].address = address // FIXME getLock does not set address on the lock object...
+
+          // Look if the current user can grant keys
+          locks[address].canGrant = await web3Service.isLockManager(
+            address,
+            account,
+            network
+          )
+          if (!locks[address].canGrant) {
+            locks[address].canGrant = await web3Service.isKeyGranter(
+              address,
+              account,
+              network
+            )
+          }
         })
       )
       setLock(locks[lockAddresses[0]])
@@ -247,9 +261,9 @@ export const GrantKeysDrawer = ({
   return (
     <Drawer title="Airdrop Keys" isOpen={isOpen} setIsOpen={setIsOpen}>
       <p className="mb-6">
-        As a lock manager you can grant keys to any address. You can also set a
-        custom expiration date as well as a custom key manager for this specific
-        key.
+        As a lock manager or key granter you can grant keys to any address. You
+        can also set a custom expiration date as well as a custom key manager
+        for this specific key.
       </p>
 
       <div className="flex flex-wrap -mx-3 mb-6">
@@ -266,7 +280,12 @@ export const GrantKeysDrawer = ({
         </div>
       </div>
 
-      {lock && <GrantKeyForm onGranted={handleGranted} lock={lock} />}
+      {lock?.canGrant && <GrantKeyForm onGranted={handleGranted} lock={lock} />}
+      {!lock?.canGrant && (
+        <p className="text-xs -mt-4 text-[#f24c15]">
+          Please check that you are a lock manager or key granter for this lock.
+        </p>
+      )}
     </Drawer>
   )
 }
