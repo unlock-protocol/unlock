@@ -6,6 +6,7 @@
  */
 const fs = require('fs-extra');
 import path from 'path'
+import { ContractAbi } from '@unlock-protocol/types'
 import { getAbiPaths } from './files'
 
 const keysToKeep = [
@@ -18,15 +19,7 @@ const keysToKeep = [
   "updatedAt"
 ]
 
-export interface ContractAbi {
-  contractName: string;
-  abi: Array<{}>;
-  bytecode : string;
-  deployedBytecode : string;
-  compiler : string;
-  schemaVersion : string;
-  updatedAt : string;
-}
+
 
 async function main() {
   
