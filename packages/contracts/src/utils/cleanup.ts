@@ -1,3 +1,9 @@
+/**
+ * This script is used to keep only required data in contracts ABI files 
+ * and remove anything added by Truffle or other building systems.
+ * 
+ * The file can be called directly with `yarn abi:cleanup`
+ */
 const fs = require('fs-extra');
 import path from 'path'
 import { getAbiPaths } from './files'
@@ -22,7 +28,6 @@ export interface ContractAbi {
   updatedAt : string;
 }
 
-// remove unused data
 async function main() {
   
   const paths = await getAbiPaths()

@@ -5,7 +5,7 @@
     "scripts": {
         "clean": "rm -rf dist",
         "test": "jest",
-        "cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
+        "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
         "build": "yarn build:index && yarn build:dist",
         "build:dist": "yarn clean && tsc && yarn contracts:copy",
         "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
