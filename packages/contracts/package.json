@@ -5,6 +5,7 @@
     "scripts": {
         "clean": "rm -rf dist",
         "test": "jest",
+        "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
         "build": "yarn build:index && yarn build:dist",
         "build:dist": "yarn clean && tsc && yarn contracts:copy",
         "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
@@ -12,6 +13,7 @@
     },
     "devDependencies": {
         "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
+        "@unlock-protocol/types": "workspace:^",
         "copyfiles": "2.4.1",
         "fs-extra": "10.0.0",
         "hardhat": "2.8.0",

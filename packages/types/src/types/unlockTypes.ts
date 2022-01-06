@@ -64,6 +64,16 @@ export interface NetworkConfigs {
   [networkId: string]: NetworkConfig
 }
 
+export interface ContractAbi {
+  contractName: string;
+  abi: Array<{}>;
+  bytecode: string;
+  deployedBytecode: string;
+  compiler: string;
+  schemaVersion: string;
+  updatedAt: string;
+}
+
 export interface Transaction {
   status: TransactionStatus
   confirmations: number
