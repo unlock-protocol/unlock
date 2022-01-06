@@ -345,6 +345,7 @@ contract MixinKeys is
       for (uint256 i = 0; i < owners.length; i++) {
         if(_keyOwner == owners[i]) {
           isAlreadyRecorded = true;
+          break; 
         }
       }
       if(isAlreadyRecorded == false) {
