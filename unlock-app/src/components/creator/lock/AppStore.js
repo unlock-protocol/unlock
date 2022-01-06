@@ -12,6 +12,7 @@ import {
   Input,
   Button as FormButton,
 } from '../../interface/checkout/FormStyles'
+import { useAlert } from '../../../contexts/AlertContext'
 
 const Integration = ({ name, icon, href }) => (
   <App>
@@ -42,6 +43,7 @@ const AppStore = ({ lock }) => {
   const { network } = useContext(AuthenticationContext)
   const [redirectUri, setRedirectUri] = useState('')
   const [checkoutUrl, setCheckoutUrl] = useState('')
+  const openAlert = useAlert()
 
   const integrations = {
     wordpress: {
@@ -102,7 +104,7 @@ const AppStore = ({ lock }) => {
   const copyToClipboard = async () => {
     await navigator?.clipboard?.writeText(checkoutUrl)
     // eslint-disable-next-line no-alert
-    alert('URL Copied to your clipboard')
+    openAlert({ message: 'URL Copied to your clipboard' })
   }
 
   const generateUrl = async () => {

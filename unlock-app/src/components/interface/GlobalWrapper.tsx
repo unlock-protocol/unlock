@@ -5,7 +5,9 @@ import { WedlockServiceContext } from '../../contexts/WedlocksContext'
 import WedlockService from '../../services/wedlockService'
 import { ConfigContext } from '../../utils/withConfig'
 import ProviderContext from '../../contexts/ProviderContext'
+import AlertContext from '../../contexts/AlertContext'
 import Authenticate from './Authenticate'
+import Alert from './Alert'
 
 const config = configure()
 const wedlockService = new WedlockService(config.services.wedlocks.host)
@@ -17,6 +19,22 @@ interface GlobalWrapperProps {
 
 export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
+  const [isAlertOpen, setAlertOpen] = useState(false)
+  const [alertTitle, setAlertTitle] = useState('')
+  const [alertText, setAlertText] = useState('')
+
+  interface openAlertInterface {
+    title?: string
+    message: string
+  }
+
+  const openAlert = ({ title, message }: openAlertInterface) => {
+    if (title) {
+      setAlertTitle(title)
+    }
+    setAlertText(message)
+    setAlertOpen(true)
+  }
 
   useEffect(() => {
     /* eslint-disable no-console */
@@ -44,15 +62,23 @@ The Unlock team
   return (
     <>
       <GlobalStyle />
-      <ConfigContext.Provider value={config}>
-        <WedlockServiceContext.Provider value={wedlockService}>
-          <ProviderContext.Provider value={{ provider, setProvider }}>
-            <Authenticate skipAutoLogin={pageProps.skipAutoLogin}>
-              {children}
-            </Authenticate>
-          </ProviderContext.Provider>
-        </WedlockServiceContext.Provider>
-      </ConfigContext.Provider>
+      <AlertContext.Provider value={{ openAlert }}>
+        <Alert
+          isOpen={isAlertOpen}
+          setIsOpen={setAlertOpen}
+          text={alertText}
+          title={alertTitle}
+        />
+        <ConfigContext.Provider value={config}>
+          <WedlockServiceContext.Provider value={wedlockService}>
+            <ProviderContext.Provider value={{ provider, setProvider }}>
+              <Authenticate skipAutoLogin={pageProps.skipAutoLogin}>
+                {children}
+              </Authenticate>
+            </ProviderContext.Provider>
+          </WedlockServiceContext.Provider>
+        </ConfigContext.Provider>
+      </AlertContext.Provider>
     </>
   )
 }
