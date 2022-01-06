@@ -1,5 +1,5 @@
 import express from 'express'
-
+import hookRouter from './hook'
 const transactionRouter = require('./transaction')
 const lockRouter = require('./lock')
 const userRouter = require('./user')
@@ -9,6 +9,7 @@ const priceRouter = require('./price')
 const metadataRouter = require('./metadata')
 const authRouter = require('./auth')
 const healthCheckRouter = require('./health')
+
 const config = require('../../config/config')
 
 const router = express.Router({ mergeParams: true })
@@ -38,6 +39,7 @@ router.use('/api/key/:chain([0-9]{1,6})/', metadataRouter)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
+router.use('/api/hooks', hookRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
