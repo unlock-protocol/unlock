@@ -31,16 +31,15 @@ const networks = {
 }
 
 // Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
-// starting w v10 and upgradeable locks, we will have several PublicLock versions 
+// starting w v10 and upgradeable locks, we will have several PublicLock versions
 const versions = {
-  'v4': ['v4'], 
+  v4: ['v4'],
   // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  'v7': ['v7'], 
-  'v8': ['v8'], 
-  'v9': ['v8'],
-  //'v10' : ['v9', 'v10', etc]
+  v7: ['v7'],
+  v8: ['v8'],
+  v9: ['v8'],
+  // 'v10' : ['v9', 'v10', etc]
 }
-
 
 describe.each(Object.keys(versions))('%s', (versionName) => {
   let walletService
@@ -72,48 +71,50 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
   })
 
   if (['v4'].indexOf(versionName) === -1) {
-    
-    describe.each(versions[versionName])('configuration using PublicLock %s', (publicLockVersion) => {
-      let publicLockTemplateAddress
-      it('should be able to deploy the lock contract template', async () => {
-        expect.assertions(2)
-        publicLockTemplateAddress = await walletService.deployTemplate(
-          publicLockVersion,
-          (error, hash) => {
-            if (error) {
-              throw error
+    describe.each(versions[versionName])(
+      'configuration using PublicLock %s',
+      (publicLockVersion) => {
+        let publicLockTemplateAddress
+        it('should be able to deploy the lock contract template', async () => {
+          expect.assertions(2)
+          publicLockTemplateAddress = await walletService.deployTemplate(
+            publicLockVersion,
+            (error, hash) => {
+              if (error) {
+                throw error
+              }
+              expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
             }
-            expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-          }
-        )
-        expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
-      })
+          )
+          expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
+        })
 
-      it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
-        expect.assertions(2)
-        let transactionHash
-        const receipt = await walletService.configureUnlock(
-          {
-            publicLockTemplateAddress,
-            globalTokenSymbol: 'TESTK',
-            globalBaseTokenURI:
-              'https://locksmith.unlock-protocol.com/api/key/',
-            unlockDiscountToken: ZERO,
-            wrappedEth: ZERO,
-            estimatedGasForPurchase: 0,
-            chainId,
-          },
-          (error, hash) => {
-            if (error) {
-              throw error
+        it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
+          expect.assertions(2)
+          let transactionHash
+          const receipt = await walletService.configureUnlock(
+            {
+              publicLockTemplateAddress,
+              globalTokenSymbol: 'TESTK',
+              globalBaseTokenURI:
+                'https://locksmith.unlock-protocol.com/api/key/',
+              unlockDiscountToken: ZERO,
+              wrappedEth: ZERO,
+              estimatedGasForPurchase: 0,
+              chainId,
+            },
+            (error, hash) => {
+              if (error) {
+                throw error
+              }
+              transactionHash = hash
             }
-            transactionHash = hash
-          }
-        )
-        expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-        expect(receipt.transactionHash).toEqual(transactionHash)
-      })
-    }) 
+          )
+          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          expect(receipt.transactionHash).toEqual(transactionHash)
+        })
+      }
+    )
   }
 
   if (locks[versionName].length) {
