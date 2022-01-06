@@ -12,13 +12,13 @@ describe('useEns', () => {
     ethers.providers.JsonRpcProvider = jest.fn(() => {
       return {
         lookupAddress: () => {
-          return 'julien.unlock-protocol.eth'
+          return 'julien51.eth'
         },
       }
     })
   })
 
-  it('should yield the name if there one', async () => {
+  it('should yield the name if there is one', async () => {
     expect.assertions(2)
     const wrapper = ({ children }) => (
       <AuthenticationContext.Provider value={{ network: 1 }}>
@@ -26,7 +26,7 @@ describe('useEns', () => {
           value={{
             networks: {
               1: {
-                provider: 'http://provider',
+                publicProvider: 'http://provider',
               },
             },
           }}
@@ -36,11 +36,13 @@ describe('useEns', () => {
       </AuthenticationContext.Provider>
     )
     const { result, waitForNextUpdate } = renderHook(
-      () => useEns({ address: '0xabc' }),
+      () => useEns('0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'),
       { wrapper }
     )
 
-    expect(result.current.address).toBe('0xabc')
+    expect(result.current.address).toBe(
+      '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'
+    )
     await waitForNextUpdate()
     expect(result.current).toBe('julien.unlock-protocol.eth')
   })

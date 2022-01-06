@@ -15,6 +15,7 @@ import {
   Button,
 } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP } from '../../../constants'
+import { getAddressForName } from '../../../hooks/useEns'
 
 interface GrantKeyFormProps {
   lock: Lock
@@ -59,7 +60,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     register,
     reset,
     formState: { errors },
+    setValue,
   } = useForm({
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
     defaultValues,
   })
 
@@ -119,6 +123,19 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     setLoading(false)
   }
 
+  const addressFieldChanged = (name: string) => {
+    return async (event: any) => {
+      const address = await getAddressForName(event.target.value)
+      if (address) {
+        // @ts-expect-error
+        return setValue(name, address, {
+          shouldValidate: true,
+          shouldDirty: true,
+        })
+      }
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg">
       <div className="flex flex-wrap -mx-3 mb-6">
@@ -130,6 +147,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             placeholder="0x..."
             {...register('recipient', {
               required: true,
+              onChange: addressFieldChanged('recipient'),
               pattern: ACCOUNT_REGEXP,
             })}
           />
@@ -161,7 +179,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             id="grid-key-manager"
             type="text"
             placeholder="0x..."
-            {...register('keyManager', { pattern: ACCOUNT_REGEXP })}
+            {...register('keyManager', {
+              pattern: ACCOUNT_REGEXP,
+              onChange: addressFieldChanged('keyManager'),
+            })}
           />
           {errors.keyManager && (
             <p className="text-xs -mt-4 text-[#f24c15]">
