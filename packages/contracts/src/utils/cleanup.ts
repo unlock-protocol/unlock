@@ -31,7 +31,6 @@ export interface ContractAbi {
 async function main() {
   
   const paths = await getAbiPaths()
-  console.log(paths)
   paths.flat().forEach(abiPath => {
     
     const abiFullPath = path.resolve('src', abiPath)
@@ -57,7 +56,7 @@ async function main() {
         updatedAt,
       }
       console.log('Replacing by a smaller ', abiPath)
-      fs.writeJsonSync(abiFullPath, lighter)
+      fs.writeJsonSync(abiFullPath, lighter, { spaces: 2 })
     }
   })
 }
