@@ -13,6 +13,7 @@ import PublicLockV8 from './abis/PublicLock/PublicLockV8.json'
 import PublicLockV9 from './abis/PublicLock/PublicLockV9.json' 
 import UnlockV0 from './abis/Unlock/UnlockV0.json' 
 import UnlockV1 from './abis/Unlock/UnlockV1.json' 
+import UnlockV10 from './abis/Unlock/UnlockV10.json' 
 import UnlockV2 from './abis/Unlock/UnlockV2.json' 
 import UnlockV3 from './abis/Unlock/UnlockV3.json' 
 import UnlockV4 from './abis/Unlock/UnlockV4.json' 
@@ -39,6 +40,7 @@ export {PublicLockV8}
 export {PublicLockV9}
 export {UnlockV0}
 export {UnlockV1}
+export {UnlockV10}
 export {UnlockV2}
 export {UnlockV3}
 export {UnlockV4}
