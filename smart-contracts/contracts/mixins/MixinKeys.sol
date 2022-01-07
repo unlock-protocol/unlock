@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
 
-
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
  * standard.
@@ -31,7 +30,6 @@ contract MixinKeys is
   );
 
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
-
 
   // Keys
   // Each owner can have at most exactly one key
@@ -68,7 +66,7 @@ contract MixinKeys is
   // which is reset on transfer.
   mapping (address => mapping (address => bool)) private managerToOperatorApproved;
 
-    // Ensure that the caller is the keyManager of the key
+  // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
   // for ownership of that key
   modifier onlyKeyManagerOrApproved(
@@ -339,21 +337,16 @@ contract MixinKeys is
     uint _tokenId
   ) internal
   {
-    if (ownerOf(_tokenId) != _keyOwner) {
-      // make sure we don't add to owners list if a key was previously owned
-      bool isAlreadyRecorded = false;
-      for (uint256 i = 0; i < owners.length; i++) {
-        if(_keyOwner == owners[i]) {
-          isAlreadyRecorded = true;
-          break; 
-        }
-      }
-      if(isAlreadyRecorded == false) {
-        owners.push(_keyOwner);
-      }
-      // We register the owner of the tokenID
-      _ownerOf[_tokenId] = _keyOwner;
+
+    // check expiration ts should be set to know if owner had previously registered a key 
+    Key memory key = keyByOwner[_keyOwner];
+    if(key.expirationTimestamp == 0 ) {
+      owners.push(_keyOwner);
     }
+
+    // We register the owner of the tokenID
+    _ownerOf[_tokenId] = _keyOwner;
+
   }
 
   /**

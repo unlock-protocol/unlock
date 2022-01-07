@@ -79,7 +79,7 @@ contract('Lock / owners', (accounts) => {
 
     it('should have the right number of owners', async () => {
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1))
+      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1).toFixed())
     })
 
     it('should fail if I transfer from the same account again', async () => {
@@ -115,20 +115,31 @@ contract('Lock / owners', (accounts) => {
   })
 
   // test case proofing https://github.com/code-423n4/2021-11-unlock-findings/issues/120
-  describe('after a transfer to a existing owner, buying a key again for someone who already owns it', () => {
+  describe('after a transfer to a existing owner, buying a key again for someone who already owned one', () => {
     it('should preserve the right number of owners', async () => {
       // initial state
       const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       const prevKeyId = await lock.getTokenIdFor.call(accounts[4])
+      const totalSupplyBefore = new BigNumber(await lock.totalSupply.call())
 
-      // add key manager
-      await lock.setKeyManagerOf(prevKeyId, accounts[9], { from: accounts[4] })
-
-      // manager transfers the key
+      // transfer the key
       await lock.transferFrom(accounts[4], accounts[3], prevKeyId, {
-        from: accounts[9],
+        from: accounts[4],
       })
       assert.equal((await lock.getTokenIdFor.call(accounts[4])).toString(), '0')
+      
+      // supply unchanged
+      const totalSupplyAfter = new BigNumber(await lock.totalSupply.call())
+      assert.equal(
+        totalSupplyBefore.toFixed(), 
+        totalSupplyAfter.toFixed()
+        )
+      
+      // number of owners is identical
+      assert.equal(
+        numberOfOwners.toFixed(), 
+        (new BigNumber(await lock.numberOfOwners.call())).toFixed()
+      )
 
       // someone buys a key again for the previous owner
       await lock.purchase(
@@ -139,7 +150,7 @@ contract('Lock / owners', (accounts) => {
         [],
         {
           value: lock.params.keyPrice.toFixed(),
-          from: accounts[9],
+          from: accounts[4],
         }
       )
       assert.equal((await lock.getTokenIdFor.call(accounts[4])).toNumber(), 5)
