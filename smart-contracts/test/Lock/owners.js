@@ -127,18 +127,15 @@ contract('Lock / owners', (accounts) => {
         from: accounts[4],
       })
       assert.equal((await lock.getTokenIdFor.call(accounts[4])).toString(), '0')
-      
+
       // supply unchanged
       const totalSupplyAfter = new BigNumber(await lock.totalSupply.call())
-      assert.equal(
-        totalSupplyBefore.toFixed(), 
-        totalSupplyAfter.toFixed()
-        )
-      
+      assert.equal(totalSupplyBefore.toFixed(), totalSupplyAfter.toFixed())
+
       // number of owners is identical
       assert.equal(
-        numberOfOwners.toFixed(), 
-        (new BigNumber(await lock.numberOfOwners.call())).toFixed()
+        numberOfOwners.toFixed(),
+        new BigNumber(await lock.numberOfOwners.call()).toFixed()
       )
 
       // someone buys a key again for the previous owner
