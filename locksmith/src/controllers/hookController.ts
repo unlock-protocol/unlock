@@ -18,6 +18,8 @@ export function createHookHandler(topic: string) {
     const [hook, created] = await Hook.findOrCreate<Hook>({
       where: {
         topic,
+        network,
+        lock,
         callback: req.body.callback,
       },
       defaults: {
