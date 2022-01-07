@@ -6,6 +6,7 @@ import WedlockService from '../../services/wedlockService'
 import { ConfigContext } from '../../utils/withConfig'
 import ProviderContext from '../../contexts/ProviderContext'
 import Authenticate from './Authenticate'
+import { CONSOLE_MESSAGE } from '../../constants'
 
 const config = configure()
 const wedlockService = new WedlockService(config.services.wedlocks.host)
@@ -19,24 +20,7 @@ export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
   useEffect(() => {
     /* eslint-disable no-console */
-    console.info(`
-*********************************************************************
-Thanks for checking out Unlock!
-
-We're building the missing payments layer for the web: a protocol
-which enables creators to monetize their content with a few lines of
-code in a fully decentralized way.
-
-We would love your help.
-
-Jobs: https://unlock-protocol.com/jobs
-
-Get in touch: hello@unlock-protocol.com
-
-Love,
-
-The Unlock team
-*********************************************************************`)
+    console.info(CONSOLE_MESSAGE)
     /* eslint-enable no-console */
   }, [])
 
