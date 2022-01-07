@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import Close from './buttons/layout/Close'
 
 interface AlertInterface {
   isOpen: boolean
@@ -48,12 +49,15 @@ export const Alert = ({ isOpen, setIsOpen, text, title }: AlertInterface) => (
           leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         >
           <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+            <div className="absolute top-0 right-0 w-12 h-12 p-4">
+              <Close size="16px" onClick={() => setIsOpen(false)} />
+            </div>
+            <div className="px-4 pt-5 pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   {title && (
                     <Dialog.Title
-                      as="h3"
+                      as="h2"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
                       {title}
@@ -64,15 +68,6 @@ export const Alert = ({ isOpen, setIsOpen, text, title }: AlertInterface) => (
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
-              <button
-                type="button"
-                className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                onClick={() => setIsOpen(false)}
-              >
-                Close
-              </button>
             </div>
           </div>
         </Transition.Child>

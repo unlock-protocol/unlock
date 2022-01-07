@@ -10,9 +10,9 @@ interface openAlertInterface {
  * @returns
  */
 export const useAlert = () => {
-  const [isOpen, setIsOpen] = useState(true)
-  const [title, setTitle] = useState('Title of the Alert')
-  const [text, setText] = useState('Body of the Alert')
+  const [isOpen, setIsOpen] = useState(false)
+  const [title, setTitle] = useState('')
+  const [text, setText] = useState('')
 
   const openAlert = ({ title, body }: openAlertInterface) => {
     if (title) {
