@@ -12,7 +12,8 @@ import {
   Input,
   Button as FormButton,
 } from '../../interface/checkout/FormStyles'
-import { useAlert } from '../../../contexts/AlertContext'
+import Alert from '../../interface/Alert'
+import { useAlert } from '../../../hooks/useAlert'
 
 const Integration = ({ name, icon, href }) => (
   <App>
@@ -43,7 +44,7 @@ const AppStore = ({ lock }) => {
   const { network } = useContext(AuthenticationContext)
   const [redirectUri, setRedirectUri] = useState('')
   const [checkoutUrl, setCheckoutUrl] = useState('')
-  const openAlert = useAlert()
+  const { openAlert, alertProps } = useAlert()
 
   const integrations = {
     wordpress: {
@@ -103,8 +104,7 @@ const AppStore = ({ lock }) => {
 
   const copyToClipboard = async () => {
     await navigator?.clipboard?.writeText(checkoutUrl)
-    // eslint-disable-next-line no-alert
-    openAlert({ message: 'URL Copied to your clipboard' })
+    openAlert({ body: 'URL Copied to your clipboard' })
   }
 
   const generateUrl = async () => {
@@ -153,6 +153,8 @@ const AppStore = ({ lock }) => {
 
   return (
     <Wrapper>
+      <Alert {...alertProps} />
+
       <Details>
         <DetailTitle>Generate Purchase Addresses</DetailTitle>
         <p>
