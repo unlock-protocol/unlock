@@ -16,6 +16,8 @@ import {
 } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
+import useAlert from '../../../hooks/useAlert'
+import Alert from '../../interface/Alert'
 
 interface GrantKeyFormProps {
   lock: Lock
@@ -44,6 +46,7 @@ const formatDate = (date: Date) => {
 const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const { account, network } = useContext(AuthenticationContext)
   const config: any = useContext(ConfigContext)
+  const { openAlert, alertProps } = useAlert()
 
   const walletService = useContext(WalletServiceContext)
   const web3Service = useContext(Web3ServiceContext)
@@ -91,9 +94,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           network
         )
       if (existingExpiration > new Date().getTime() / 1000) {
-        alert(
-          'This address already owns a valid key. You cannot grant them a new one.'
-        )
+        openAlert({
+          title: 'Error',
+          body: 'This address already owns a valid key. You cannot grant them a new one.',
+        })
         onGranted(false)
       } else {
         await walletService.grantKey(
@@ -105,7 +109,11 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           },
           (error: any, hash: string) => {
             if (error) {
-              alert('There was an error granting the key. Please try again')
+              console.error(error)
+              openAlert({
+                title: 'Error',
+                body: 'There was an error and the key could not be granted. Please refresh the page and try again.',
+              })
             }
             if (hash) {
               setTransaction(hash)
@@ -117,9 +125,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
       onGranted(true)
     } catch (error) {
       console.error(error)
-      alert(
-        'There was an error and the transaction could not be sent. Please refresh the page and try again.'
-      )
+      openAlert({
+        title: 'Error',
+        body: 'There was an error and the transaction could not be sent. Please refresh the page and try again.',
+      })
       setTransaction('')
     }
     setLoading(false)
@@ -139,8 +148,9 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg">
-      <div className="flex flex-wrap -mx-3 mb-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-screen-lg">
+      <Alert {...alertProps} />
+      <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
           <Label htmlFor="grid-recipient">Recipient</Label>
           <Input
@@ -160,7 +170,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           )}
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-6">
+      <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
           <Label htmlFor="grid-expiration">Expiration</Label>
           <Input
@@ -168,13 +178,13 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             type="datetime-local"
             {...register('expiration')}
           />
-          <p className="text-xs italic -mt-4">
+          <p className="-mt-4 text-xs italic">
             This is pre-filled based on the default duration of your lock.
           </p>
         </div>
       </div>
 
-      <div className="flex flex-wrap -mx-3 mb-6">
+      <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
           <Label htmlFor="grid-key-manager">Key Manager</Label>
           <Input
@@ -193,7 +203,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           )}
 
           {!errors.keyManager && (
-            <p className="text-xs italic -mt-4">
+            <p className="-mt-4 text-xs italic">
               If set the key manager has the transfer and cancellation rights
               for the recipient&apos;s key. If you leave empty, your address
               will be set as manager.
@@ -235,6 +245,7 @@ export const GrantKeysDrawer = ({
   lockAddresses,
 }: GrantKeysDrawerInterface) => {
   const { network, account } = useContext(AuthenticationContext) // TODO: use the actual lock network instead of the currently connected network
+  const { openAlert, alertProps } = useAlert()
 
   const web3Service = useContext(Web3ServiceContext)
   const [locks, setLocks] = useState<any>({})
@@ -276,20 +287,24 @@ export const GrantKeysDrawer = ({
 
   const handleGranted = (granted: boolean) => {
     if (granted) {
-      alert('The key was successfuly granted!')
+      openAlert({
+        title: 'Success!',
+        message: 'The key was successfuly granted!',
+      })
       setIsOpen(false)
     }
   }
 
   return (
     <Drawer title="Airdrop Keys" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Alert {...alertProps} />
       <p className="mb-6">
         As a lock manager or key granter you can grant keys to any address. You
         can also set a custom expiration date as well as a custom key manager
         for this specific key.
       </p>
 
-      <div className="flex flex-wrap -mx-3 mb-6">
+      <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
           <Label htmlFor="grid-lock">Lock</Label>
 
