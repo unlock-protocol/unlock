@@ -11,6 +11,11 @@ interface AlertInterface {
 
 /**
  * An alert component
+ * Usage: Import both the `Alert` component and `useAlert` hook into your own components.
+ * Hook:
+ * const { openAlert, alertProps } = useAlert()
+ * Render:
+ * <Alert {...alertProps} />
  */
 export const Alert = ({ isOpen, setIsOpen, text, title }: AlertInterface) => (
   <Transition.Root show={isOpen} as={React.Fragment}>
