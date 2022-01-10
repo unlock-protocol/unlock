@@ -11062,7 +11062,10 @@ __metadata:
     "@types/fs-extra": ^5.0.4
     "@types/mocha": ^5.2.6
     "@types/node": ^8.10.38
+    "@unlock-protocol/eslint-config": "workspace:^"
+    "@unlock-protocol/tsconfig": "workspace:^"
     chai: ^4.2.0
+    eslint: ^8.6.0
     hardhat: ^2.0.0
     mocha: ^7.1.2
     prettier: 2.0.5
@@ -21154,7 +21157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.6.0, eslint@npm:^8.3.0":
+"eslint@npm:8.6.0, eslint@npm:^8.3.0, eslint@npm:^8.6.0":
   version: 8.6.0
   resolution: "eslint@npm:8.6.0"
   dependencies:

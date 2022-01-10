@@ -15,8 +15,8 @@
     "hardhat-plugin"
   ],
   "scripts": {
-    "lint:fix": "prettier --write 'src/**/*.{js,ts}' 'test/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json",
-    "lint": "tslint --config tslint.json --project tsconfig.json",
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
     "test": "mocha --exit --recursive 'test/**/*.test.ts'",
     "build": "tsc",
     "watch": "tsc -w",
@@ -45,5 +45,10 @@
   },
   "peerDependencies": {
     "hardhat": "2.8.0"
+  },
+  "dependencies": {
+    "@unlock-protocol/eslint-config": "workspace:^",
+    "@unlock-protocol/tsconfig": "workspace:^",
+    "eslint": "^8.6.0"
   }
 }

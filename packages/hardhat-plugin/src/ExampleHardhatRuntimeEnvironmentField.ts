@@ -1,5 +1,5 @@
 export class ExampleHardhatRuntimeEnvironmentField {
-  public sayHello() {
-    return "hello";
+  public static sayHello() {
+    return 'hello'
   }
 }

@@ -1,12 +1,12 @@
-import { extendConfig, extendEnvironment } from "hardhat/config";
-import { lazyObject } from "hardhat/plugins";
-import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-import path from "path";
+import { extendConfig, extendEnvironment } from 'hardhat/config'
+import { lazyObject } from 'hardhat/plugins'
+import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
+import path from 'path'
 
-import { ExampleHardhatRuntimeEnvironmentField } from "./ExampleHardhatRuntimeEnvironmentField";
+import { ExampleHardhatRuntimeEnvironmentField } from './ExampleHardhatRuntimeEnvironmentField'
 // This import is needed to let the TypeScript compiler know that it should include your type
 // extensions in your npm package's types file.
-import "./type-extensions";
+import './type-extensions'
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
@@ -22,28 +22,26 @@ extendConfig(
     // executing this function ensures that the `config` object is in a valid
     // state for its type, including its extensions. For example, you may
     // need to apply a default value, like in this example.
-    const userPath = userConfig.paths?.newPath;
+    const userPath = userConfig.paths?.newPath
 
-    let newPath: string;
+    let newPath: string
     if (userPath === undefined) {
-      newPath = path.join(config.paths.root, "newPath");
+      newPath = path.join(config.paths.root, 'newPath')
+    } else if (path.isAbsolute(userPath)) {
+      newPath = userPath
     } else {
-      if (path.isAbsolute(userPath)) {
-        newPath = userPath;
-      } else {
-        // We resolve relative paths starting from the project's root.
-        // Please keep this convention to avoid confusion.
-        newPath = path.normalize(path.join(config.paths.root, userPath));
-      }
+      // We resolve relative paths starting from the project's root.
+      // Please keep this convention to avoid confusion.
+      newPath = path.normalize(path.join(config.paths.root, userPath))
     }
 
-    config.paths.newPath = newPath;
+    config.paths.newPath = newPath
   }
-);
+)
 
 extendEnvironment((hre) => {
   // We add a field to the Hardhat Runtime Environment here.
   // We use lazyObject to avoid initializing things until they are actually
   // needed.
-  hre.example = lazyObject(() => new ExampleHardhatRuntimeEnvironmentField());
-});
+  hre.example = lazyObject(() => new ExampleHardhatRuntimeEnvironmentField())
+})
