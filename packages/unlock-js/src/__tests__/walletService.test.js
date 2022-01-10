@@ -2,9 +2,7 @@
 import WalletService from '../walletService'
 
 import PublicLockVersions from '../PublicLock'
-import LockVersions from '../Unlock'
-
-console.log(PublicLockVersions)
+import UnlockVersions from '../Unlock'
 
 let walletService
 
@@ -117,20 +115,28 @@ describe('WalletService (ethers)', () => {
         expect(r).toBe(result)
       }
     )
-
+    
     // for each supported version, let's make sure it implements all methods
-    it.each((Object.keys(PublicLockVersions)))(
-      'should implement all the required methods',
-      (versionNumber) => {
-        expect.assertions(4)
-        const version = PublicLockVersions[versionNumber]
-        versionSpecificUnlockMethods.forEach((method) => {
-          expect(version[method]).toBeInstanceOf(Function)
+    describe.only('version-specific methods', () => {
+      it.each((Object.keys(UnlockVersions)))(
+        'should implement all the required methods',
+        (versionNumber) => {
+          expect.assertions(versionSpecificUnlockMethods.length)
+          const version = UnlockVersions[versionNumber]
+          versionSpecificUnlockMethods.forEach((method) => {
+            expect(version[method]).toBeInstanceOf(Function)
+          })
         })
-      })
-      // LockVersions
-      // versionSpecificLockMethods.forEach((method) => {
-      //   expect(version[method]).toBeInstanceOf(Function)
-      // })
+      
+      it.each((Object.keys(PublicLockVersions)))(
+        'should implement all the required methods',
+        (versionNumber) => {
+          expect.assertions(versionSpecificLockMethods.length)
+          const version = PublicLockVersions[versionNumber]
+          versionSpecificLockMethods.forEach((method) => {
+            expect(version[method]).toBeInstanceOf(Function)
+          })
+        })
+    })
   })
 })
