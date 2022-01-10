@@ -45,8 +45,8 @@ export const useEns = (address) => {
     setName(await getNameOrAddressForAddress(_address))
   }
 
-  useEffect(() => {
-    getNameForAddress(address)
+  useEffect(async () => {
+    await getNameForAddress(address)
   }, [address])
 
   return name
