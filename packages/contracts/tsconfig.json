@@ -10,6 +10,7 @@
     },
     "exclude" : [
         "deprec",
-        "test"
+        "test",
+        "dist"
     ]
 }

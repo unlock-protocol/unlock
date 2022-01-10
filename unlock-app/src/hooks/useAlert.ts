@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-interface openAlertInterface {
+interface OpenAlertInterface {
   title?: string
   body: string
 }
@@ -14,7 +14,7 @@ export const useAlert = () => {
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
 
-  const openAlert = ({ title, body }: openAlertInterface) => {
+  const openAlert = ({ title, body }: OpenAlertInterface) => {
     if (title) {
       setTitle(title)
     }

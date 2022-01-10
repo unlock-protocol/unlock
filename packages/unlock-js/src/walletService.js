@@ -135,8 +135,8 @@ export default class WalletService extends UnlockService {
    */
   async deployTemplate(version, callback) {
     const factory = new ethers.ContractFactory(
-      abis[version].PublicLock.abi,
-      bytecode[version].PublicLock,
+      abis.PublicLock[version].abi,
+      bytecode.PublicLock[version],
       this.signer
     )
 
@@ -169,8 +169,8 @@ export default class WalletService extends UnlockService {
     // First, deploy the contract
 
     const factory = new ethers.ContractFactory(
-      abis[version].Unlock.abi,
-      bytecode[version].Unlock,
+      abis.Unlock[version].abi,
+      bytecode.Unlock[version],
       this.signer
     )
     const unlockContract = await factory.deploy()
