@@ -115,7 +115,7 @@ describe('WalletService (ethers)', () => {
         expect(r).toBe(result)
       }
     )
-    
+
     // for each supported version, let's make sure it implements all methods
     describe('version-specific methods', () => {
       it.each(Object.keys(UnlockVersions))(
