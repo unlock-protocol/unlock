@@ -1,12 +1,9 @@
 import Web3Service from '../web3Service'
 
-import v4 from '../v4'
-import v6 from '../v6'
-import v7 from '../v7'
-import v8 from '../v8'
-import v9 from '../v9'
+import PublicLockVersions from '../PublicLock'
+import LockVersions from '../Unlock'
 
-const supportedVersions = [v4, v6, v7, v8, v9]
+const supportedVersions = Object.keys(LockVersions)
 
 const host = process.env.CI ? 'eth-node' : '127.0.0.1'
 const port = 8545
