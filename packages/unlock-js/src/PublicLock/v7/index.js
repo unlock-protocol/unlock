@@ -14,8 +14,10 @@ const { shareKey, initializeTemplate, withdrawFromLock, updateKeyPrice } = v6
 
 export default {
   version: 'v7',
-  Unlock: abis.v7.Unlock,
-  PublicLock: abis.v7.PublicLock,
+  Unlock: abis.Unlock.v7,
+  PublicLock: abis.PublicLock.v7,
+  createLock,
+  getLock,
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,

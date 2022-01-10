@@ -15,12 +15,12 @@ export default async function deploy(
   let Contract
   if (typeof Unlock === 'string') {
     const version = Unlock
-    if (!abis[version]) {
+    if (!abis.Unlock[version]) {
       throw new Error(`Contract version "${Unlock}" does not seem to exist`)
     }
     Contract = {
-      abi: abis[version].Unlock.abi,
-      bytecode: bytecode[version].Unlock,
+      abi: abis.Unlock[version].abi,
+      bytecode: bytecode.Unlock[version],
     }
   } else {
     Contract = Unlock

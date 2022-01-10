@@ -10,8 +10,10 @@ import shareKey from './shareKey'
 
 export default {
   version: 'v6',
-  Unlock: abis.v6.Unlock,
-  PublicLock: abis.v6.PublicLock,
+  Unlock: abis.Unlock.v6,
+  PublicLock: abis.PublicLock.v6,
+  createLock,
+  getLock,
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,

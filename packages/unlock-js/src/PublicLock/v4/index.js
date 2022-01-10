@@ -13,7 +13,7 @@ export default {
   withdrawFromLock,
   isLockManager,
   version: 'v4',
-  Unlock: abis.v4.Unlock,
-  PublicLock: abis.v4.PublicLock,
+  Unlock: abis.Unlock.v4,
+  PublicLock: abis.PublicLock.v4,
   cancelAndRefund,
 }
