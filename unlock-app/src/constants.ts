@@ -113,3 +113,22 @@ export const WALLET_ENCRYPTION_OPTIONS = {
     N: 1 << 13,
   },
 }
+
+export const CONSOLE_MESSAGE = `
+*********************************************************************
+Thanks for checking out Unlock!
+
+We're building the missing payments layer for the web: a protocol
+which enables creators to monetize their content with a few lines of
+code in a fully decentralized way.
+
+We would love your help.
+
+Jobs: https://unlock-protocol.com/jobs
+
+Get in touch: hello@unlock-protocol.com
+
+Love,
+
+The Unlock team
+*********************************************************************`
