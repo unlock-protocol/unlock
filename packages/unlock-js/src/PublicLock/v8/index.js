@@ -21,8 +21,6 @@ export default {
   version: 'v8',
   Unlock: abis.Unlock.v8,
   PublicLock: abis.PublicLock.v8,
-  createLock,
-  getLock,
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
