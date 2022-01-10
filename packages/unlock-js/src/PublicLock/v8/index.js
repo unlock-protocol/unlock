@@ -15,6 +15,7 @@ const {
   expireAndRefundFor,
   cancelAndRefund,
   shareKey,
+  getLock,
 } = v7
 
 export default {
@@ -25,6 +26,7 @@ export default {
   updateKeyPrice,
   purchaseKey,
   grantKey,
+  getLock,
   withdrawFromLock,
   isLockManager,
   isKeyGranter,

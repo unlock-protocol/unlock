@@ -7,6 +7,7 @@ import initializeTemplate from './initializeTemplate'
 import isLockManager from './isLockManager'
 import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
+import getLock from './getLock'
 
 export default {
   version: 'v6',
@@ -15,6 +16,7 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  getLock,
   grantKey,
   withdrawFromLock,
   isLockManager,

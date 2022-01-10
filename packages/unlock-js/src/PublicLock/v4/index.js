@@ -5,11 +5,13 @@ import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
 import isLockManager from './isLockManager'
 import cancelAndRefund from './cancelAndRefund'
+import getLock from './getLock'
 
 export default {
   purchaseKey,
   grantKey,
   updateKeyPrice,
+  getLock,
   withdrawFromLock,
   isLockManager,
   version: 'v4',

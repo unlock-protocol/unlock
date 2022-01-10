@@ -7,6 +7,7 @@ import addKeyGranter from './addKeyGranter'
 import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
+import getLock from './getLock'
 
 import v6 from '../v6'
 
@@ -19,6 +20,7 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  getLock,
   grantKey,
   withdrawFromLock,
   isLockManager,
