@@ -5,13 +5,12 @@ import Drawer from '../../interface/Drawer'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
-import { ConfigContext } from '../../../utils/withConfig'
 
 import {
   Input,
   Label,
   Select,
-  LoadingButton,
+  TransactionPendingButton,
   Button,
 } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP } from '../../../constants'
@@ -45,7 +44,6 @@ const formatDate = (date: Date) => {
  */
 const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const { account, network } = useContext(AuthenticationContext)
-  const config: any = useContext(ConfigContext)
   const { openAlert, alertProps } = useAlert()
 
   const walletService = useContext(WalletServiceContext)
@@ -213,21 +211,8 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
       </div>
 
       {!loading && <Button type="submit">Grant Key</Button>}
-      {loading && (
-        <LoadingButton>
-          Transaction Mining{' '}
-          {transaction && (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={config.networks[network].explorer.urls.transaction(
-                transaction
-              )}
-            >
-              ↗
-            </a>
-          )}
-        </LoadingButton>
+      {loading && network && (
+        <TransactionPendingButton network={network} transaction={transaction} />
       )}
     </form>
   )
@@ -289,7 +274,7 @@ export const GrantKeysDrawer = ({
     if (granted) {
       openAlert({
         title: 'Success!',
-        message: 'The key was successfuly granted!',
+        body: 'The key was successfuly granted!',
       })
       setIsOpen(false)
     }
