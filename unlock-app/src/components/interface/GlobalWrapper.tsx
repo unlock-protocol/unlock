@@ -25,9 +25,9 @@ export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
   }, [])
 
   return (
-    children && (
-      <>
-        <GlobalStyle />
+    <>
+      <GlobalStyle />
+      {children && (
         <ConfigContext.Provider value={config}>
           <WedlockServiceContext.Provider value={wedlockService}>
             <ProviderContext.Provider value={{ provider, setProvider }}>
@@ -37,8 +37,8 @@ export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
             </ProviderContext.Provider>
           </WedlockServiceContext.Provider>
         </ConfigContext.Provider>
-      </>
-    )
+      )}
+    </>
   )
 }
 
