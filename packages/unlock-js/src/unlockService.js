@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 
 import PublicLockVersions from './PublicLock'
-import LockVersions from './Unlock'
+import UnlockVersions from './Unlock'
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
