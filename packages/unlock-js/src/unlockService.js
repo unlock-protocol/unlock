@@ -60,11 +60,14 @@ export default class UnlockService {
       this.versionForAddress[contractAddress] = version
     }
 
-    const contractName = versionRetrievalMethodName.includes('PublicLock') ? 'PublicLock' : 'Unlock'
+    const contractName = versionRetrievalMethodName.includes('PublicLock')
+      ? 'PublicLock'
+      : 'Unlock'
 
     if (contractName === 'PublicLock') {
       return PublicLockVersions[`v${version}`]
-    } else if (contractName === 'Unlock'){
+    }
+    if (contractName === 'Unlock') {
       return UnlockVersions[`v${version}`]
     }
 
@@ -75,7 +78,11 @@ export default class UnlockService {
 
   async unlockContractAbiVersion(address, provider) {
     // Get the contract address from the provider's netwrk?
-    return this.contractAbiVersion(address, '_getUnlockVersionFromContract', provider)
+    return this.contractAbiVersion(
+      address,
+      '_getUnlockVersionFromContract',
+      provider
+    )
   }
 
   /**

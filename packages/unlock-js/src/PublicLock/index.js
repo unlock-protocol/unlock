@@ -7,5 +7,5 @@ export default {
   v4,
   v6,
   v7,
-  v8
+  v8,
 }

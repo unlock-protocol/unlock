@@ -74,7 +74,7 @@ describe('Web3Service', () => {
     it.each(Object.keys(PublicLockVersions))(
       'should implement all the required methods',
       (versionNumber) => {
-        expect.assertions(versionSpecificLockMethods.length)
+        expect.assertions(1)
         const version = PublicLockVersions[versionNumber]
         versionSpecificLockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)

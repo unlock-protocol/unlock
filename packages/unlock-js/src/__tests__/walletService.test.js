@@ -115,28 +115,30 @@ describe('WalletService (ethers)', () => {
         expect(r).toBe(result)
       }
     )
-    
+
     // for each supported version, let's make sure it implements all methods
-    describe.only('version-specific methods', () => {
-      it.each((Object.keys(UnlockVersions)))(
+    describe('version-specific methods', () => {
+      it.each(Object.keys(UnlockVersions))(
         'should implement all the required methods',
         (versionNumber) => {
-          expect.assertions(versionSpecificUnlockMethods.length)
+          expect.assertions(1)
           const version = UnlockVersions[versionNumber]
           versionSpecificUnlockMethods.forEach((method) => {
             expect(version[method]).toBeInstanceOf(Function)
           })
-        })
-      
-      it.each((Object.keys(PublicLockVersions)))(
+        }
+      )
+
+      it.each(Object.keys(PublicLockVersions))(
         'should implement all the required methods',
         (versionNumber) => {
-          expect.assertions(versionSpecificLockMethods.length)
+          expect.assertions(3)
           const version = PublicLockVersions[versionNumber]
           versionSpecificLockMethods.forEach((method) => {
             expect(version[method]).toBeInstanceOf(Function)
           })
-        })
+        }
+      )
     })
   })
 })

@@ -7,5 +7,5 @@ export default {
   createLock,
   version: 'v7',
   Unlock: abis.Unlock.v7,
-  PublicLock: abis.PublicLock.v7
+  PublicLock: abis.PublicLock.v7,
 }
