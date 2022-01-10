@@ -23,6 +23,7 @@
     "@types/postmate": "1.5.2",
     "@types/qrcode.react": "1.0.2",
     "@types/react": "17.0.38",
+    "@types/react-gtm-module": "2.0.1",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.19",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
