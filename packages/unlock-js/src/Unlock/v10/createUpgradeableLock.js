@@ -37,8 +37,8 @@ async function _getCreateLockCalldata({
   lockName,
   lockCreator,
 }) {
-  const { interface } = await this.getUnlockContract()
-  const calldata = await interface.encodeFunctionData(
+  const unlock = await this.getUnlockContract()
+  const calldata = await unlock.interface.encodeFunctionData(
     'initialize(address,uint256,address,uint256,uint256,string)',
     [
       lockCreator, // creator
