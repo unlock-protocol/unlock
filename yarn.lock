@@ -11506,7 +11506,7 @@ __metadata:
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
     next: 12.0.7
-    node-forge: 0.10.0
+    node-forge: 1.0.0
     postcss: 8.4.5
     postmate: 1.5.2
     prettier: 2.5.1
@@ -11665,7 +11665,7 @@ __metadata:
     eslint: 8.6.0
     jest: 27.4.5
     lint-staged: 12.1.5
-    node-forge: 0.10.0
+    node-forge: 1.0.0
     nodemailer: 6.7.2
     nodemon: 2.0.15
     prettier: 2.5.1
@@ -31868,7 +31868,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-forge@npm:0.10.0, node-forge@npm:^0.10.0":
+"node-forge@npm:1.0.0":
+  version: 1.0.0
+  resolution: "node-forge@npm:1.0.0"
+  checksum: 222464a66227687393b4a3b86d3438b9026a65e42ec312e829f7f864fa87c8960169a878cba54ce98b80b156562e3871d3bba4c5d0d8aba1989a474eb3a82261
+  languageName: node
+  linkType: hard
+
+"node-forge@npm:^0.10.0":
   version: 0.10.0
   resolution: "node-forge@npm:0.10.0"
   checksum: 5aa6dc9922e424a20ef101d2f517418e2bc9cfc0255dd22e0701c0fad1568445f510ee67f6f3fcdf085812c4ca1b847b8ba45683b34776828e41f5c1794e42e1
