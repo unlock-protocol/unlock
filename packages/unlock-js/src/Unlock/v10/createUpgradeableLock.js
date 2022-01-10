@@ -24,7 +24,7 @@ async function _getKeyPrice(lock, provider) {
 }
 
 /**
- * Create the calldata (in bytes) describing the params required to call `createLock` 
+ * Create the calldata (in bytes) describing the params required to call `createLock`
  * @param {*} args
  * @param {*} from
  * @param {*} signature
@@ -35,19 +35,18 @@ async function _getCreateLockCalldata({
   decimalKeyPrice,
   maxNumberOfKeys,
   lockName,
-  lockCreator
+  lockCreator,
 }) {
-
   const { interface } = await this.getUnlockContract()
   const calldata = await interface.encodeFunctionData(
-    'initialize(address,uint256,address,uint256,uint256,string)', 
+    'initialize(address,uint256,address,uint256,uint256,string)',
     [
       lockCreator, // creator
       expirationDuration,
       currencyContractAddress,
       decimalKeyPrice,
       maxNumberOfKeys,
-      lockName
+      lockName,
     ]
   )
   return calldata
@@ -60,7 +59,6 @@ async function _getCreateLockCalldata({
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (lock, lockCreator, callback) {
-
   const unlockContract = await this.getUnlockContract()
   let { maxNumberOfKeys, expirationDuration } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -77,14 +75,12 @@ export default async function (lock, lockCreator, callback) {
     currencyContractAddress,
     decimalKeyPrice,
     maxNumberOfKeys,
-    lockName, 
-    lockCreator 
+    lockName,
+    lockCreator,
   })
 
   // send the create tx
-  const transactionPromise = unlockContract.createUpgradeableLock(
-    calldata
-  )
+  const transactionPromise = unlockContract.createUpgradeableLock(calldata)
 
   const hash = await this._handleMethodCall(transactionPromise)
   if (callback) {

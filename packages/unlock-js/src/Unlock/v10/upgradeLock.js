@@ -1,4 +1,3 @@
-
 /**
  * Creates a lock on behalf of the user, using version v17
  * @param {string} lockAddress the address of the existing (upgradeable) lock
@@ -6,11 +5,11 @@
  * @param {function} callback invoked with the upgrade transaction hash
  */
 export default async function (lockAddress, lockVersion, callback) {
-
-  if (typeof lockVersion !== 'number') throw Error('lockVersion should be a number')
+  if (typeof lockVersion !== 'number')
+    throw Error('lockVersion should be a number')
 
   const unlockContract = await this.getUnlockContract()
-  
+
   // send the upgrade tx
   const transactionPromise = unlockContract.upgradeLock(
     lockAddress,
@@ -37,5 +36,4 @@ export default async function (lockAddress, lockVersion, callback) {
 
   // There was no UpgradeLock log (transaction failed?)
   return null
-
 }
