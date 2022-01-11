@@ -82,8 +82,10 @@ export async function isValidHubIntent(hub: z.infer<typeof Hub>) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        ...hub,
-        challenge,
+        hub: {
+          ...hub,
+          challenge,
+        },
       }),
     })
 
@@ -124,7 +126,7 @@ export async function subscriptionHandler(req: SignedRequest, res: Response) {
   try {
     const hub = await Hub.parseAsync(req.body.hub)
     const hook = await subscribe(hub, req.params)
-    return res.status(200).json(hook)
+    return res.status(200).json(hook?.toJSON())
   } catch (error) {
     return res.status(500).send(error.message)
   }
