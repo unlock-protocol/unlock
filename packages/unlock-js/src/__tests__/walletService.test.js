@@ -1,12 +1,8 @@
 /* eslint jest/no-identical-title: 0 */
-import v4 from '../v4'
-import v6 from '../v6'
-import v7 from '../v7'
-import v8 from '../v8'
-import v9 from '../v9'
 import WalletService from '../walletService'
 
-const supportedVersions = [v4, v6, v7, v8, v9]
+import PublicLockVersions from '../PublicLock'
+import UnlockVersions from '../Unlock'
 
 let walletService
 
@@ -121,17 +117,28 @@ describe('WalletService (ethers)', () => {
     )
 
     // for each supported version, let's make sure it implements all methods
-    it.each(supportedVersions)(
-      'should implement all the required methods',
-      (version) => {
-        expect.assertions(4)
-        versionSpecificUnlockMethods.forEach((method) => {
-          expect(version[method]).toBeInstanceOf(Function)
-        })
-        versionSpecificLockMethods.forEach((method) => {
-          expect(version[method]).toBeInstanceOf(Function)
-        })
-      }
-    )
+    describe('version-specific methods', () => {
+      it.each(Object.keys(UnlockVersions))(
+        'should implement all the required methods',
+        (versionNumber) => {
+          expect.assertions(1)
+          const version = UnlockVersions[versionNumber]
+          versionSpecificUnlockMethods.forEach((method) => {
+            expect(version[method]).toBeInstanceOf(Function)
+          })
+        }
+      )
+
+      it.each(Object.keys(PublicLockVersions))(
+        'should implement all the required methods',
+        (versionNumber) => {
+          expect.assertions(3)
+          const version = PublicLockVersions[versionNumber]
+          versionSpecificLockMethods.forEach((method) => {
+            expect(version[method]).toBeInstanceOf(Function)
+          })
+        }
+      )
+    })
   })
 })

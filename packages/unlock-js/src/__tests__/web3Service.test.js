@@ -1,12 +1,6 @@
 import Web3Service from '../web3Service'
 
-import v4 from '../v4'
-import v6 from '../v6'
-import v7 from '../v7'
-import v8 from '../v8'
-import v9 from '../v9'
-
-const supportedVersions = [v4, v6, v7, v8, v9]
+import PublicLockVersions from '../PublicLock'
 
 const host = process.env.CI ? 'eth-node' : '127.0.0.1'
 const port = 8545
@@ -77,10 +71,11 @@ describe('Web3Service', () => {
     )
 
     // for each supported version, let's make sure it implements all methods
-    it.each(supportedVersions)(
+    it.each(Object.keys(PublicLockVersions))(
       'should implement all the required methods',
-      (version) => {
+      (versionNumber) => {
         expect.assertions(1)
+        const version = PublicLockVersions[versionNumber]
         versionSpecificLockMethods.forEach((method) => {
           expect(version[method]).toBeInstanceOf(Function)
         })
