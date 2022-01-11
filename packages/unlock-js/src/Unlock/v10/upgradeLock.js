@@ -1,5 +1,6 @@
 /**
- * Creates a lock on behalf of the user, using version v17
+ * Upgrade an existing lock to a higher version
+ * @notice The version number can only be incremented by 1
  * @param {string} lockAddress the address of the existing (upgradeable) lock
  * @param {number} lockVersion the version number to upgrade the lock
  * @param {function} callback invoked with the upgrade transaction hash
