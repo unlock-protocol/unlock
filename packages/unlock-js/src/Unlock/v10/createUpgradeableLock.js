@@ -25,14 +25,19 @@ async function _getKeyPrice(lock, provider) {
 
 /**
  * Create the calldata (in bytes) describing the params required to call `createLock`
- * @param {*} args
- * @param {*} from
- * @param {*} signature
+ * @param {number} expirationDuration expiration duration of the lock (in seconds). Use 0 for
+ * infinite duration
+ * @param {string} currencyContractAddress the ERC20 token to be used for this lock. Leave blank or use
+ * zero address for ETH
+ * @param {number} keyPrice the price of each key (using max decimals for the token)
+ * @param {number} maxNumberOfKeys the limit number of keys to be issued on this lock
+ * @param {string} lockName the name of the lock
+ * @param {string} lockCreator the address to assign the lock to
  */
 async function _getCreateLockCalldata({
   expirationDuration,
   currencyContractAddress,
-  decimalKeyPrice,
+  keyPrice,
   maxNumberOfKeys,
   lockName,
   lockCreator,
@@ -44,7 +49,7 @@ async function _getCreateLockCalldata({
       lockCreator, // creator
       expirationDuration,
       currencyContractAddress,
-      decimalKeyPrice,
+      keyPrice,
       maxNumberOfKeys,
       lockName,
     ]
