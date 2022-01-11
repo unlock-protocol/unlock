@@ -21,7 +21,29 @@ interface IUnlock
   function proxyAdminAddress() external view;
 
   /**
-  * @notice Create lock
+  * @notice Create lock (legacy)
+  * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+  * @param _keyPrice the price of each key
+  * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
+  * @param _lockName the name of the lock
+  * param _salt [deprec] -- kept only for backwards copatibility
+  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+  * to know the lock's address before the transaction is mined.
+  * @dev internally call `createUpgradeableLock`
+  */
+  function createLock(
+    uint _expirationDuration,
+    address _tokenAddress,
+    uint _keyPrice,
+    uint _maxNumberOfKeys,
+    string calldata _lockName,
+    bytes12 // _salt
+  ) external returns(address);
+
+  /**
+  * @notice Create lock (default)
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param data bytes containing the call to initialize the lock template
   * @dev this call is passed as encoded function - for instance:
@@ -36,7 +58,7 @@ interface IUnlock
   *  );
   * @return address of the create lock
   */
-   function createLock(
+  function createUpgradeableLock(
     bytes memory data
   ) external returns(address);
 
@@ -66,6 +88,8 @@ interface IUnlock
     external;
 
     /**
+   * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
+   * @dev [DEPRECATED] Kept for backwards compatibility
    * This function will keep track of consumed discounts by a given user.
    * It will also grant discount tokens to the creator who is granting the discount based on the
    * amount of discount and compensation rate.
@@ -78,6 +102,8 @@ interface IUnlock
     external;
 
     /**
+   * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
+   * @dev [DEPRECATED] Kept for backwards compatibility
    * This function returns the discount available for a user, when purchasing a
    * a key from a lock.
    * This does not modify the state. It returns both the discount and the number of tokens

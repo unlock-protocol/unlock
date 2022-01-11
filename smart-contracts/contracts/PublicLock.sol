@@ -67,10 +67,6 @@ contract PublicLock is
    */
   receive() external payable {}
   
-  
-  // TODO: what should be done here?
-  fallback() external payable {}
-
   /**
    Overrides
   */

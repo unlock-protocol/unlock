@@ -146,7 +146,9 @@ contract('Unlock / upgrades', async (accounts) => {
                   'UpgradeTestingLock',
                 ]
                 const calldata = await createLockHash({ args })
-                lockTx = await unlock.connect(lockOwner).createLock(calldata)
+                lockTx = await unlock
+                  .connect(lockOwner)
+                  .createUpgradeableLock(calldata)
               } else if (versionNumber >= 5) {
                 // Version 5 introduced `create2`, requiring a salt
                 lockTx = await unlock.connect(lockOwner).createLock(
@@ -336,7 +338,9 @@ contract('Unlock / upgrades', async (accounts) => {
                       'After-Upgrade Lock',
                     ]
                     const calldata = await createLockHash({ args })
-                    const lockLatestTx = await unlock.createLock(calldata)
+                    const lockLatestTx = await unlock.createUpgradeableLock(
+                      calldata
+                    )
 
                     const { events } = await lockLatestTx.wait()
                     const evt = events.find(({ event }) => event === 'NewLock')
@@ -349,6 +353,7 @@ contract('Unlock / upgrades', async (accounts) => {
                     await lockLatest.purchase(
                       0,
                       keyOwner.address,
+                      web3.utils.padLeft(0, 40),
                       web3.utils.padLeft(0, 40),
                       [],
                       { value: keyPrice }

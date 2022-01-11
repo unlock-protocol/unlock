@@ -24,13 +24,21 @@ contract('Lock / onKeyCancelHook', (accounts) => {
     await lock.setEventHooks(
       constants.ZERO_ADDRESS,
       testEventHooks.address,
+      constants.ZERO_ADDRESS,
       constants.ZERO_ADDRESS
     )
     keyPrice = await lock.keyPrice()
-    await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      to,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
     const ID = await lock.getTokenIdFor.call(to)
     await lock.cancelAndRefund(ID, { from: to })
   })
@@ -49,6 +57,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       lock.setEventHooks(
         constants.ZERO_ADDRESS,
         accounts[1],
+        constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS
       ),
       'INVALID_ON_KEY_CANCEL_HOOK'

@@ -25,7 +25,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
       const calldata = await createLockHash({ args, from: from.address })
-      const tx = await unlock.createLock(calldata)
+      const tx = await unlock.createUpgradeableLock(calldata)
       const { events } = await tx.wait()
       const {
         args: { newLockAddress },
@@ -49,6 +49,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
                 keyPrice.toString(),
                 buyers[i].address,
                 web3.utils.padLeft(0, 40),
+                web3.utils.padLeft(0, 40),
                 [],
                 {
                   value: keyPrice.toString(),
@@ -67,6 +68,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
             keyPrice.toString(),
             buyers[11].address,
             web3.utils.padLeft(0, 40),
+            web3.utils.padLeft(0, 40),
             [],
             {
               value: keyPrice.toString(),
@@ -84,6 +86,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         .purchase(
           keyPrice.toString(),
           buyers[11].address,
+          web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
           [],
           {
@@ -110,6 +113,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
               .purchase(
                 keyPrice.toString(),
                 buyers[i].address,
+                web3.utils.padLeft(0, 40),
                 web3.utils.padLeft(0, 40),
                 [],
                 {

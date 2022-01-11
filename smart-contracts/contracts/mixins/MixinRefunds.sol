@@ -138,6 +138,12 @@ contract MixinRefunds is
     returns (uint refund)
   {
     Key storage key = keyByOwner[_keyOwner];
+
+    // return entire purchased price if key is non-expiring
+    if(expirationDuration == type(uint).max) {
+      return keyPrice;
+    }
+
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     if(timeRemaining + freeTrialLength >= expirationDuration) {
@@ -157,4 +163,6 @@ contract MixinRefunds is
       }
     }
   }
+
+  uint256[1000] private __safe_upgrade_gap;
 }

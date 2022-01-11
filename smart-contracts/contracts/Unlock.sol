@@ -193,7 +193,42 @@ contract Unlock is
   }
 
   /**
-  * @notice Create lock
+  * @notice Create lock (legacy)
+  * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+  * @param _keyPrice the price of each key
+  * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
+  * @param _lockName the name of the lock
+  * param _salt [deprec] -- kept only for backwards copatibility
+  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+  * to know the lock's address before the transaction is mined.
+  * @dev internally call `createUpgradeableLock`
+  */
+  function createLock(
+    uint _expirationDuration,
+    address _tokenAddress,
+    uint _keyPrice,
+    uint _maxNumberOfKeys,
+    string calldata _lockName,
+    bytes12 // _salt
+  ) public returns(address) {
+
+    bytes memory data = abi.encodeWithSignature(
+      'initialize(address,uint256,address,uint256,uint256,string)',
+      msg.sender,
+      _expirationDuration,
+      _tokenAddress,
+      _keyPrice,
+      _maxNumberOfKeys,
+      _lockName
+    );
+
+    return createUpgradeableLock(data);
+  }
+
+  /**
+  * @notice Create upgradeable lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param data bytes containing the call to initialize the lock template
   * @dev this call is passed as encoded function - for instance:
@@ -208,7 +243,7 @@ contract Unlock is
   *  );
   * @return address of the create lock
   */
-  function createLock(
+  function createUpgradeableLock(
     bytes memory data
   ) public returns(address)
   {
@@ -234,7 +269,7 @@ contract Unlock is
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
    */
-  function upgradeLock(address payable lockAddress, uint16 version) public returns(address) {
+  function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
 
     // check perms
@@ -247,6 +282,8 @@ contract Unlock is
 
     // make our upgrade
     address impl = _publicLockImpls[version];
+    require(impl != address(0), "this version number has no corresponding lock template");
+
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
 
@@ -260,11 +297,8 @@ contract Unlock is
   }
 
   /**
-   * This function returns the discount available for a user, when purchasing a
-   * a key from a lock.
-   * This does not modify the state. It returns both the discount and the number of tokens
-   * consumed to grant that discount.
-   * TODO: actually implement this.
+   * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
+   * @dev [DEPRECATED] Kept for backwards compatibility
    */
   function computeAvailableDiscountFor(
     address /* _purchaser */,
@@ -274,7 +308,6 @@ contract Unlock is
     pure
     returns (uint discount, uint tokens)
   {
-    // TODO: implement me
     return (0, 0);
   }
 
@@ -366,20 +399,17 @@ contract Unlock is
   }
 
   /**
-   * This function will keep track of consumed discounts by a given user.
-   * It will also grant discount tokens to the creator who is granting the discount based on the
-   * amount of discount and compensation rate.
-   * This function is invoked by a previously deployed lock only.
+   * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
+   * @dev [DEPRECATED] only Kept for backwards compatibility
    */
   function recordConsumedDiscount(
-    uint _discount,
+    uint /* _discount */,
     uint /* _tokens */
   )
     public
+    view
     onlyFromDeployedLock()
   {
-    // TODO: implement me
-    totalDiscountGranted += _discount;
     return;
   }
 

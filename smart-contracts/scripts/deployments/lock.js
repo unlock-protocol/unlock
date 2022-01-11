@@ -38,7 +38,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
       args: [expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name],
       from: signer.address,
     })
-    tx = await unlock.createLock(calldata)
+    tx = await unlock.createUpgradeableLock(calldata)
   }
 
   const { events, transactionHash } = await tx.wait()
