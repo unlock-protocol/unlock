@@ -1,0 +1,50 @@
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
+
+const { subtask, task } = require('hardhat/config')
+const { HARDHAT_NETWORK_NAME } = require('hardhat/plugins')
+const { runCLI } = require('jest')
+const process = require('process')
+const jestConfig = require('./jest.config')
+// const chalk = require('chalk')
+
+const TASK_JEST = 'test:jest'
+const TASK_JEST_RUN_TESTS = 'jest:run'
+
+subtask(TASK_JEST_RUN_TESTS).setAction(async () => {
+  const testFailures = await new Promise((resolve, reject) => {
+    return runCLI(jestConfig, [process.cwd()])
+      .then((result) => resolve(result))
+      .catch((error) => reject(error))
+  })
+  return testFailures.results
+})
+
+task(TASK_JEST, 'Runs jest tests')
+  .addFlag('noCompile', "Don't compile before running this task")
+  .setAction(async ({ watch, noCompile }, { run, network }) => {
+    if (!noCompile) {
+      await run('compile')
+    }
+
+    const testFailures = await run(TASK_JEST_RUN_TESTS, { watch })
+
+    if (network.name === HARDHAT_NETWORK_NAME) {
+      const stackTracesFailures = await network.provider.send(
+        'hardhat_getStackTraceFailuresCount'
+      )
+
+      if (stackTracesFailures !== 0) {
+        console.warn(
+          `Failed to generate ${stackTracesFailures} stack trace(s). Run Hardhat with --verbose to learn more.`
+        )
+      }
+    }
+
+    process.exitCode = testFailures
+    return testFailures
+  })
+module.exports = {
+  solidity: '0.8.0',
+}
