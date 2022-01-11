@@ -1,11 +1,9 @@
-// eslint-disable-next-line import/no-unresolved
-import { Response } from 'express-serve-static-core'
+import { Response, Request } from 'express'
 import { networks } from '@unlock-protocol/networks'
 import * as z from 'zod'
 import fetch from 'cross-fetch'
 import crypto from 'crypto'
 import logger from '../logger'
-import { SignedRequest } from '../types'
 import { Hook } from '../models'
 
 const Hub = z.object({
@@ -122,7 +120,7 @@ export function getSupportedNetwork(network: string) {
   return networks[network]
 }
 
-export async function subscriptionHandler(req: SignedRequest, res: Response) {
+export async function subscriptionHandler(req: Request, res: Response) {
   try {
     const hub = await Hub.parseAsync(req.body.hub)
     const hook = await subscribe(hub, req.params)
