@@ -131,16 +131,18 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     }
     setLoading(false)
   }
-
   const addressFieldChanged = (name: string) => {
-    return async (event: any) => {
+    return async (event: React.ChangeEvent<HTMLInputElement>) => {
       const address = await getAddressForName(event.target.value)
       if (address) {
-        // @ts-expect-error
-        return setValue(name, address, {
-          shouldValidate: true,
-          shouldDirty: true,
-        })
+        return setValue(
+          name as 'recipient' | 'expiration' | 'keyManager',
+          address,
+          {
+            shouldValidate: true,
+            shouldDirty: true,
+          }
+        )
       }
     }
   }
@@ -266,7 +268,7 @@ export const GrantKeysDrawer = ({
     loadLocks(lockAddresses)
   }, [lockAddresses.join('')])
 
-  const handleLockChanged = (evt: any) => {
+  const handleLockChanged = (evt: React.ChangeEvent<HTMLSelectElement>) => {
     setLock(locks[evt.target.value])
   }
 

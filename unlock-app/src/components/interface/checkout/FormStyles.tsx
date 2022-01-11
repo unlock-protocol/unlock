@@ -99,7 +99,7 @@ export const LoadingButton = ({ children, ...props }: LoadingButtonProps) => (
 
 interface TransactionPendingButtonProps {
   network: number
-  transaction: any
+  transaction: string
 }
 
 export const TransactionPendingButton = ({

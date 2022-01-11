@@ -5,7 +5,7 @@ import useEns from '../../../hooks/useEns'
 
 export const AccountInfo = () => {
   const { account, email } = useContext(AuthenticationContext)
-  const name = useEns(account)
+  const name = useEns(account || '')
 
   return (
     <Grid>

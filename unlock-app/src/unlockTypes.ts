@@ -110,7 +110,7 @@ export enum KeyStatus {
 }
 
 export interface Lock {
-  canGrant?: any
+  canGrant?: boolean
   name: string
   address: string
   keyPrice: string

@@ -1,14 +1,17 @@
 import { ethers } from 'ethers'
-import { useState, useEffect, useContext } from 'react'
-import { AuthenticationContext } from '../contexts/AuthenticationContext'
+import { useState, useEffect } from 'react'
 import configure from '../config'
 
 const config = configure()
+// @ts-expect-error (TODO: define type for config.networks)
+const publicProvider = config.networks[1].publicProvider
 
-export const getNameOrAddressForAddress = async (address) => {
+export const getNameOrAddressForAddress = async (
+  address: string
+): Promise<string> => {
   try {
     const result = await new ethers.providers.JsonRpcProvider(
-      config.networks[1].publicProvider
+      publicProvider
     ).lookupAddress(address)
     if (result) {
       return result
@@ -21,16 +24,16 @@ export const getNameOrAddressForAddress = async (address) => {
   }
 }
 
-export const getAddressForName = async (name) => {
+export const getAddressForName = async (name: string): Promise<string> => {
   try {
     const result = await new ethers.providers.JsonRpcProvider(
-      config.networks[1].publicProvider
+      publicProvider
     ).resolveName(name)
-    return result
+    return result || ''
   } catch (error) {
     // Resolution failed. So be it, we'll show the 0x address
     console.error(`We could not resolve ENS for ${name}`)
-    return null
+    return ''
   }
 }
 
@@ -38,15 +41,15 @@ export const getAddressForName = async (name) => {
  * This hook reverse resolves any Ethereum address using the Ethereum Name Service
  * @param {*} address
  */
-export const useEns = (address) => {
+export const useEns = (address: string) => {
   const [name, setName] = useState(address)
 
-  const getNameForAddress = async (_address) => {
+  const getNameForAddress = async (_address: string) => {
     setName(await getNameOrAddressForAddress(_address))
   }
 
-  useEffect(async () => {
-    await getNameForAddress(address)
+  useEffect(() => {
+    getNameForAddress(address)
   }, [address])
 
   return name
