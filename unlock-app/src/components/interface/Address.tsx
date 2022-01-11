@@ -3,7 +3,7 @@ import React from 'react'
 import useEns from '../../hooks/useEns'
 
 export interface AddressProps {
-  address?: string
+  address: string
   className?: string
   id?: string
 }

@@ -1,47 +1,45 @@
-import React from 'react'
-import { renderHook } from '@testing-library/react-hooks'
 import { ethers } from 'ethers'
-import useEns from '../../hooks/useEns'
-import { ConfigContext } from '../../utils/withConfig'
-import { AuthenticationContext } from '../../contexts/AuthenticationContext'
+import {
+  getNameOrAddressForAddress,
+  getAddressForName,
+} from '../../hooks/useEns'
 
 jest.mock('ethers')
 
-describe('useEns', () => {
+describe('getNameOrAddressForAddress', () => {
   beforeAll(() => {
     ethers.providers.JsonRpcProvider = jest.fn(() => {
       return {
         lookupAddress: () => {
-          return 'julien.unlock-protocol.eth'
+          return 'julien51.eth'
         },
       }
     })
   })
 
-  it('should yield the name if there one', async () => {
-    expect.assertions(2)
-    const wrapper = ({ children }) => (
-      <AuthenticationContext.Provider value={{ network: 1 }}>
-        <ConfigContext.Provider
-          value={{
-            networks: {
-              1: {
-                provider: 'http://provider',
-              },
-            },
-          }}
-        >
-          {children}
-        </ConfigContext.Provider>
-      </AuthenticationContext.Provider>
+  it('should yield the name if there is one', async () => {
+    expect.assertions(1)
+    const name = await getNameOrAddressForAddress(
+      '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'
     )
-    const { result, waitForNextUpdate } = renderHook(
-      () => useEns({ address: '0xabc' }),
-      { wrapper }
-    )
+    expect(name).toEqual('julien51.eth')
+  })
+})
 
-    expect(result.current.address).toBe('0xabc')
-    await waitForNextUpdate()
-    expect(result.current).toBe('julien.unlock-protocol.eth')
+describe('getAddressForName', () => {
+  beforeAll(() => {
+    ethers.providers.JsonRpcProvider = jest.fn(() => {
+      return {
+        resolveName: () => {
+          return '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'
+        },
+      }
+    })
+  })
+
+  it('should yield the name if there is one', async () => {
+    expect.assertions(1)
+    const name = await getAddressForName('julien51.eth')
+    expect(name).toEqual('0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E')
   })
 })

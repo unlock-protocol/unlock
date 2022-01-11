@@ -13,6 +13,11 @@ import { MetadataTable } from '../interface/MetadataTable'
 import Loading from '../interface/Loading'
 import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
+import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
+import {
+  CreateLockButton,
+  AccountWrapper,
+} from '../interface/buttons/ActionButton'
 
 interface FilterProps {
   value: string
@@ -71,6 +76,7 @@ interface MembersContentProps {
 export const MembersContent = ({ query }: MembersContentProps) => {
   const [filter, setFilter] = useState<string>(MemberFilters.ACTIVE)
   const { account } = useContext(AuthenticationContext)
+  const [isOpen, setIsOpen] = useState(false)
 
   let lockAddresses: string[] = []
   if (query.locks) {
@@ -92,11 +98,24 @@ export const MembersContent = ({ query }: MembersContentProps) => {
       <Head>
         <title>{pageTitle('Members')}</title>
       </Head>
+
+      <GrantKeysDrawer
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        lockAddresses={lockAddresses}
+      />
+
       <BrowserOnly>
         {!account && <LoginPrompt />}
         {account && (
           <>
-            <Account />
+            <AccountWrapper>
+              <Account />
+              <GrantButton onClick={() => setIsOpen(!isOpen)}>
+                Airdrop Keys
+              </GrantButton>
+            </AccountWrapper>
+
             <Filters>
               Show{' '}
               <Filter
@@ -110,6 +129,7 @@ export const MembersContent = ({ query }: MembersContentProps) => {
                 setFilter={setFilter}
               />
             </Filters>
+
             <MetadataTableWrapper
               page={page}
               lockAddresses={lockAddresses}
@@ -175,6 +195,8 @@ const MetadataTableWrapper = ({
 }
 
 MetadataTableWrapper.defaultProps = {}
+
+const GrantButton = styled(CreateLockButton)``
 
 const Message = styled.p`
   color: var(--grey);

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Svg from '../svg'
+import { ConfigContext } from '../../../utils/withConfig'
 
 export const Form = styled.form``
 
@@ -95,6 +96,33 @@ export const LoadingButton = ({ children, ...props }: LoadingButtonProps) => (
     <Svg.Loading title="loading" alt="loading" />
   </Button>
 )
+
+interface TransactionPendingButtonProps {
+  network: number
+  transaction: string
+}
+
+export const TransactionPendingButton = ({
+  network,
+  transaction,
+  ...props
+}: TransactionPendingButtonProps) => {
+  const config: any = useContext(ConfigContext)
+  return (
+    <LoadingButton {...props}>
+      Transaction Mining{' '}
+      {transaction && (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={config.networks[network].explorer.urls.transaction(transaction)}
+        >
+          ↗
+        </a>
+      )}
+    </LoadingButton>
+  )
+}
 
 export const LinkButton = styled.a`
   cursor: pointer;
