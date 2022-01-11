@@ -32,16 +32,18 @@ const networks = {
 
 // Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
 // starting w v10 and upgradeable locks, we will have several PublicLock versions
-const versions = {
-  v4: ['v4'],
+const UnlockVersions = [
+  'v4',
   // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  v7: ['v7'],
-  v8: ['v8'],
-  v9: ['v8'],
-  // 'v10' : ['v9', 'v10', etc]
-}
+  'v7',
+  'v8',
+  'v9',
+  'v10',
+]
 
-describe.each(Object.keys(versions))('%s', (versionName) => {
+const PublicLockVersions = Object.keys(locks)
+
+describe.each(UnlockVersions)('Unlock %s', (versionName) => {
   let walletService
   let web3Service
 
@@ -71,7 +73,7 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
   })
 
   if (['v4'].indexOf(versionName) === -1) {
-    describe.each(versions[versionName])(
+    describe.each(PublicLockVersions)(
       'configuration using PublicLock %s',
       (publicLockVersion) => {
         let publicLockTemplateAddress
@@ -117,9 +119,9 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
     )
   }
 
-  if (locks[versionName].length) {
+  describe.each(PublicLockVersions)('using PublicLock %s', (lockVersion) => {
     describe.each(
-      locks[versionName].map((lock, index) => [index, lock.name, lock])
+      locks[lockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
       let lock
       let expectedLockAddress
