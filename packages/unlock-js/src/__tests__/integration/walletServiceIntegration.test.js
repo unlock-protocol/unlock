@@ -2,10 +2,9 @@ import { ethers } from 'ethers'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
-import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import { ZERO } from '../../constants'
 
-const host = process.env.CI ? 'eth-node' : '127.0.0.1'
+const host = '127.0.0.1'
 const port = 8545
 const chainId = 31337
 
@@ -127,14 +126,6 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
       let lockCreationHash
 
       beforeAll(async () => {
-        if (lockParams.currencyContractAddress) {
-          // Let's wait for erc20Address to be deployed
-          await waitForContractDeployed(
-            walletService.provider,
-            lockParams.currencyContractAddress
-          )
-        }
-
         expectedLockAddress = await web3Service.generateLockAddress(
           accounts[0],
           lockParams,
