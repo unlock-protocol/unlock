@@ -12,13 +12,13 @@ const decimals = 18
  * @param {*} providerUrl
  */
 const deploy = async (provider, signer) => {
-  let factory = new ethers.ContractFactory(
+  const factory = await ethers.getContractFactory(
     testErc20Token.abi,
     testErc20Token.bytecode,
     signer
   )
 
-  let erc20Contract = await factory.deploy()
+  const erc20Contract = await factory.deploy()
   await erc20Contract.deployed()
 
   return erc20Contract.address
