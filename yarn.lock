@@ -10276,7 +10276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-gtm-module@npm:^2.0.1":
+"@types/react-gtm-module@npm:2.0.1":
   version: 2.0.1
   resolution: "@types/react-gtm-module@npm:2.0.1"
   checksum: cd57eece80d80453e79b16c977e13d51dc22c19af69a16ac6ea1eda01ab471f4dbe46ce80ce04ef13a0ecd0082372addec4c2e394978d1ce7fe86dbda4dfb922
@@ -11471,7 +11471,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
     "@types/react": 17.0.38
-    "@types/react-gtm-module": ^2.0.1
+    "@types/react-gtm-module": 2.0.1
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.19
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -13904,7 +13904,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
