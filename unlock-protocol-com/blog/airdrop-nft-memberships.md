@@ -3,7 +3,7 @@ title: Airdrop for NFT Memberships
 subTitle: How to easily grant access to token-gated communities
 authorName: Julien Genestoux
 publishDate: January 11, 2022
-description: Creators have multiple options to airdrop memberships to their fans so they can become members have receive the NFT in their wallets
+description: Creators have multiple options to airdrop memberships to their fans so they can become members and receive the NFT in their wallets
 image: /images/blog/airdrop-nft-memberships/dashboard.gif
 ---
 
