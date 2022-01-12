@@ -22,13 +22,8 @@ subtask(TASK_JEST_RUN_TESTS).setAction(async () => {
   return testFailures.results
 })
 
-task(TASK_JEST, 'Runs jest tests')
-  .addFlag('noCompile', "Don't compile before running this task")
-  .setAction(async ({ watch, noCompile }, { run, network }) => {
-    if (!noCompile) {
-      await run('compile')
-    }
-
+task(TASK_JEST, 'Runs jest tests').setAction(
+  async ({ watch }, { run, network }) => {
     const testFailures = await run(TASK_JEST_RUN_TESTS, { watch })
 
     if (network.name === HARDHAT_NETWORK_NAME) {
@@ -45,7 +40,8 @@ task(TASK_JEST, 'Runs jest tests')
 
     process.exitCode = testFailures
     return testFailures
-  })
+  }
+)
 module.exports = {
   solidity: '0.8.0',
 }
