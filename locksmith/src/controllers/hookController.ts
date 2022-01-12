@@ -16,11 +16,12 @@ const Hub = z.object({
 
 const EXPIRATION_SECONDS_LIMIT = 86400 * 90
 
-export function getExpiration(leaseSeconds: number = 864000) {
-  if (leaseSeconds > EXPIRATION_SECONDS_LIMIT) {
+export function getExpiration(leaseSeconds?: number) {
+  const limit = leaseSeconds ?? 864000
+  if (limit > EXPIRATION_SECONDS_LIMIT) {
     throw new Error("Lease seconds can't be greater than 90 days")
   }
-  return new Date(Date.now() + leaseSeconds * 1000)
+  return new Date(Date.now() + limit * 1000)
 }
 
 export async function subscribe(
@@ -42,7 +43,9 @@ export async function subscribe(
       )
     }
 
-    const expiration = getExpiration(hub.lease_seconds)
+    const expiration = hub.lease_seconds
+      ? getExpiration(hub.lease_seconds)
+      : getExpiration()
 
     const createdHook = await Hook.create({
       expiration,
