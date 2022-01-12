@@ -126,6 +126,9 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
       let lockCreationHash
 
       beforeAll(async () => {
+            const { isERC20 } = lockParams
+            lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
+
         expectedLockAddress = await web3Service.generateLockAddress(
           accounts[0],
           lockParams,
