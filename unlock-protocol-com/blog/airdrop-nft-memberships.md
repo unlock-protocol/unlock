@@ -11,7 +11,7 @@ Creators can easily deploy their membership contracts (called Locks) using the U
 
 Memberships can then be purchased directly by the fans. This happens by calling the [`purchase` function](https://docs.unlock-protocol.com/developers/smart-contracts/lock-api#purchase) on the Lock contract. In practice, this function can actually be called with another recipient's address, in order for them to receive the NFT (instead of the buyer).
 
-However, in a lot of cases, creators may want to "give away" or **airdrop NFT memberships** for free to some of their users. Here are example of why this is useful:
+However, in a lot of cases, creators may want to "give away" or **airdrop NFT memberships** for free to some of their users. Here are examples of why this is useful:
 
 - This is how our [credit card](/blog/credit-card-nft) flow works: the NFT is paid "off chain" via a credit card transaction, and _granted_ on chain (technically, no on-chain payment happens).
 - Someone might want to give a "limited time" trial. For example, my [personal blog](https://ouvre-boite.com) has a membership of its own, where NFTs expire after 1 year, but where anyone who [follows me on Twitter](https://twitter.com/julien51) [can claim a 30 minute](https://claim-ouvre-boite-membership.herokuapp.com/) trial!
