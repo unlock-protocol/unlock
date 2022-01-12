@@ -5,6 +5,8 @@ import locks from '../helpers/fixtures/locks'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 
+const chainId = 31337
+
 // This test suite will do the following:
 // For each version of the Unlock contract
 // 1. Deploy it
@@ -18,6 +20,12 @@ import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 jest.setTimeout(300000)
 
 let accounts
+const networks = {
+  [chainId]: {
+    provider: 'http://localhost:8545',
+  },
+}
+
 // Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
 // starting w v10 and upgradeable locks, we will have several PublicLock versions
 const versions = {
@@ -27,12 +35,6 @@ const versions = {
   v8: ['v8'],
   v9: ['v8'],
   // 'v10' : ['v9', 'v10', etc]
-}
-const chainId = 31337
-const networks = {
-  [chainId]: {
-    provider: 'http://localhost:8545',
-  },
 }
 
 describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
