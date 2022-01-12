@@ -25,7 +25,7 @@ Once your lock is deployed, you can head out to the members page.
 
 ![Dashboard](/images/blog/airdrop-nft-memberships/dashboard.png)
 
-On that page you will see the list of all the members on your lock. You can also see a button that lets you airdrop NFT: click on it!
+On that page you will see the list of all the members on your lock. You can also see a button that lets you airdrop an NFT: click on it!
 
 ![Members Page](/images/blog/airdrop-nft-memberships/members-page.png)
 
