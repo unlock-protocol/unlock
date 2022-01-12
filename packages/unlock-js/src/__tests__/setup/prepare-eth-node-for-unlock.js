@@ -5,12 +5,6 @@ const { WalletService } = require('../../../lib/index')
 const Erc20 = require('./deploy-erc20')
 const Ether = require('./transfer')
 
-const users = ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2']
-
-const log = () => {
-  // console.log(`HARDHAT SETUP > ${message}`)
-}
-
 // IMPORTANT NOTE
 // All non-unlock related deployments and transactions should be done with a signer
 // that is not `0` so that we keep the nonces manageable.
@@ -29,19 +23,18 @@ async function main() {
     walletService.provider,
     await walletService.provider.getSigner(3)
   )
-  log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
 
   // We then transfer some ERC20 tokens to some users
+  const users = await ethers.getSigners()
   await Promise.all(
-    users.map(async (user) => {
+    users.slice(0, 3).map(async ({ address: userAddress }) => {
       await Erc20.transfer(
         walletService.provider,
         await walletService.provider.getSigner(3),
         erc20Address,
-        user,
+        userAddress,
         '500'
       )
-      log(`TRANSFERED 500 ERC20 (${erc20Address}) to ${user}`)
       return Promise.resolve()
     })
   )
@@ -54,7 +47,8 @@ async function main() {
     '0xa3056617a6f63478ca68a890c0d28b42f4135ae4',
     '0.000000000000000001'
   )
-  log('NODE READY FOR UNLOCK')
+
+  return erc20Address
 }
 
 // execute as standalone
