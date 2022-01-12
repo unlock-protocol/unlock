@@ -607,8 +607,6 @@ describe.each(UnlockVersions)('Unlock %s', (versionName) => {
               resolve()
             }, 5000)
           )
-
-          console.log(key)
         })
 
         it('should have a key and allow the member to cancel it and get a refund', async () => {
@@ -750,5 +748,5 @@ describe.each(UnlockVersions)('Unlock %s', (versionName) => {
         })
       }
     })
-  }
+  })
 })
