@@ -14,6 +14,10 @@ const Hub = z.object({
   secret: z.string().optional(),
 })
 
+export function getExpiration(leaseSeconds: number) {
+  return new Date(Date.now() + leaseSeconds * 1000)
+}
+
 export async function subscribe(
   hub: z.infer<typeof Hub>,
   params: Record<string, string>
@@ -34,12 +38,8 @@ export async function subscribe(
       logger.error(intentError)
       throw intentError
     }
-
-    const expiration = new Date()
-    expiration.setSeconds(
-      expiration.getSeconds() + (hub.lease_seconds ?? 60 * 60 * 24 * 30)
-    )
-
+    // 10 days by default
+    const expiration = getExpiration(hub.lease_seconds || 864000)
     const createdHook = await Hook.create({
       expiration,
       topic: hub.topic,
@@ -53,15 +53,24 @@ export async function subscribe(
     return createdHook
   }
 
-  // If changing mode, reconfirm the intent and update
-  if (hook?.mode !== hub.mode) {
+  // If changing mode or lease, reconfirm the intent and update
+  if (hook?.mode !== hub.mode || hub.lease_seconds) {
     hook.mode = hub.mode
+
+    const expiration = hub.lease_seconds
+      ? getExpiration(hub.lease_seconds)
+      : hook.expiration
+
+    hook.expiration = expiration
+
     const check = isValidHubIntent(hub)
+
     if (!check) {
-      logger.error(
+      const error = new Error(
         `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
       )
-      return
+      logger.error(error)
+      throw error
     }
     const updatedHook = await hook.save()
     return updatedHook
@@ -133,6 +142,7 @@ export async function subscriptionHandler(req: Request, res: Response) {
     // We send the accepted request to the subscriber and then validate the intent of the subscriber as well as persist the subscription.
     res.status(202).send('Accepted')
     await subscribe(hub, req.params)
+    return
   } catch (error) {
     // We respond with the error if we cannot subscribe or there is an error in the subscriber request.
     return res.status(500).send({
