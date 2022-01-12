@@ -6,7 +6,7 @@
   "scripts": {
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
-    "dev": "NODE_ENV=development yarn db:migrate && tsc-watch --onSuccess 'yarn start' --onFailure 'echo Beep! Compilation Failed'",
+    "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js server.js",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
     "test:db:create": "NODE_ENV=test yarn sequelize db:create",
@@ -108,7 +108,7 @@
     "run-script-os": "1.1.6",
     "supertest": "6.1.6",
     "ts-jest": "27.1.2",
-    "tsc-watch": "4.6.0",
+    "ts-node-dev": "^1.1.8",
     "typescript": "4.5.4"
   },
   "files": [

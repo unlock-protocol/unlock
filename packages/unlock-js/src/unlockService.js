@@ -1,10 +1,7 @@
 import { ethers } from 'ethers'
 
-import v4 from './v4'
-import v6 from './v6'
-import v7 from './v7'
-import v8 from './v8'
-import v9 from './v9'
+import PublicLockVersions from './PublicLock'
+import UnlockVersions from './Unlock'
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -53,6 +50,7 @@ export default class UnlockService {
   async contractAbiVersion(address, versionRetrievalMethodName, provider) {
     const contractAddress = address.toLowerCase()
     let version = this.versionForAddress[contractAddress]
+
     if (version === undefined) {
       // This was not memo-ized
       version = await this[versionRetrievalMethodName](
@@ -61,24 +59,16 @@ export default class UnlockService {
       )
       this.versionForAddress[contractAddress] = version
     }
-    if (version === 4) {
-      return v4
-    }
 
-    if (version === 6) {
-      return v6
-    }
+    const contractName = versionRetrievalMethodName.includes('PublicLock')
+      ? 'PublicLock'
+      : 'Unlock'
 
-    if (version === 7) {
-      return v7
+    if (contractName === 'PublicLock') {
+      return PublicLockVersions[`v${version}`]
     }
-
-    if (version === 8) {
-      return v8
-    }
-
-    if (version === 9) {
-      return v9
+    if (contractName === 'Unlock') {
+      return UnlockVersions[`v${version}`]
     }
 
     throw new Error(
@@ -88,7 +78,11 @@ export default class UnlockService {
 
   async unlockContractAbiVersion(address, provider) {
     // Get the contract address from the provider's netwrk?
-    return this.contractAbiVersion(address, '_getVersionFromContract', provider)
+    return this.contractAbiVersion(
+      address,
+      '_getUnlockVersionFromContract',
+      provider
+    )
   }
 
   /**
@@ -127,7 +121,7 @@ export default class UnlockService {
    * Private method, which given an address will query the unlock contract to get its version
    * @param {*} address
    */
-  async _getVersionFromContract(address, provider) {
+  async _getUnlockVersionFromContract(address, provider) {
     const contract = new ethers.Contract(
       address,
       ['function unlockVersion() view returns (uint8)'],
