@@ -1,14 +1,10 @@
-import { ethers } from 'ethers'
+import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { ZERO } from '../../constants'
+import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 
-const host = '127.0.0.1'
-const port = 8545
-const chainId = 31337
-
-const provider = `http://${host}:${port}`
 // This test suite will do the following:
 // For each version of the Unlock contract
 // 1. Deploy it
@@ -22,13 +18,6 @@ const provider = `http://${host}:${port}`
 jest.setTimeout(300000)
 
 let accounts
-
-const networks = {
-  31337: {
-    provider,
-  },
-}
-
 // Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
 // starting w v10 and upgradeable locks, we will have several PublicLock versions
 const versions = {
@@ -39,16 +28,31 @@ const versions = {
   v9: ['v8'],
   // 'v10' : ['v9', 'v10', etc]
 }
+const chainId = 31337
+const networks = {
+  [chainId]: {
+    provider: 'http://localhost:8545',
+  },
+}
 
-describe.each(Object.keys(versions))('%s', (versionName) => {
+describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
   let walletService
   let web3Service
+  let ERC20Address
 
   beforeAll(async () => {
+    // deploy ERC20 and set balances
+    ERC20Address = await nodeSetup()
+
+    const [signer] = await ethers.getSigners()
+    const ethersProvider = signer.provider
+
+    // pass hardhat ethers provider
+    networks[chainId].ethersProvider = ethersProvider
+
     walletService = new WalletService(networks)
 
-    let signer = new ethers.providers.JsonRpcProvider(provider, chainId)
-    await walletService.connect(signer)
+    await walletService.connect(ethersProvider, signer)
 
     const unlockAddress = await walletService.deployUnlock(versionName)
     networks[chainId].unlockAddress = unlockAddress
@@ -126,8 +130,8 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
       let lockCreationHash
 
       beforeAll(async () => {
-            const { isERC20 } = lockParams
-            lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
+        const { isERC20 } = lockParams
+        lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
 
         expectedLockAddress = await web3Service.generateLockAddress(
           accounts[0],
@@ -250,7 +254,6 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
         let transactionHash
         beforeAll(async () => {
           keyGrantee = accounts[7]
-
           keyBefore = await web3Service.getKeyByLockForOwner(
             lockAddress,
             keyGrantee,
@@ -599,8 +602,6 @@ describe.each(Object.keys(versions))('%s', (versionName) => {
               resolve()
             }, 5000)
           )
-
-          console.log(key)
         })
 
         it('should have a key and allow the member to cancel it and get a refund', async () => {
