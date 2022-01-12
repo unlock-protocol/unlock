@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
 
-
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
  * standard.
@@ -31,7 +30,6 @@ contract MixinKeys is
   );
 
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
-
 
   // Keys
   // Each owner can have at most exactly one key
@@ -68,7 +66,7 @@ contract MixinKeys is
   // which is reset on transfer.
   mapping (address => mapping (address => bool)) private managerToOperatorApproved;
 
-    // Ensure that the caller is the keyManager of the key
+  // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
   // for ownership of that key
   modifier onlyKeyManagerOrApproved(
@@ -147,9 +145,19 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool)
-  {
-    return keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+    returns (bool isValid)
+  { 
+    isValid = keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _keyOwner,
+        keyByOwner[_keyOwner].expirationTimestamp,
+        isValid
+      );
+    }    
   }
 
   /**
@@ -226,7 +234,7 @@ contract MixinKeys is
     if(keyManagerOf[_tokenId] != _keyManager) {
       keyManagerOf[_tokenId] = _keyManager;
       _clearApproval(_tokenId);
-      emit KeyManagerChanged(_tokenId, address(0));
+      emit KeyManagerChanged(_tokenId, _keyManager);
     }
   }
 
@@ -329,12 +337,16 @@ contract MixinKeys is
     uint _tokenId
   ) internal
   {
-    if (ownerOf(_tokenId) != _keyOwner) {
-      // TODO: this may include duplicate entries
+
+    // check expiration ts should be set to know if owner had previously registered a key 
+    Key memory key = keyByOwner[_keyOwner];
+    if(key.expirationTimestamp == 0 ) {
       owners.push(_keyOwner);
-      // We register the owner of the tokenID
-      _ownerOf[_tokenId] = _keyOwner;
     }
+
+    // We register the owner of the tokenID
+    _ownerOf[_tokenId] = _keyOwner;
+
   }
 
   /**
@@ -420,4 +432,17 @@ contract MixinKeys is
      require (_maxNumberOfKeys > _totalSupply, "maxNumberOfKeys is smaller than existing supply");
      maxNumberOfKeys = _maxNumberOfKeys;
    }
+
+   /**
+   * A function to change the default duration of each key in the lock
+   * @notice keys previously bought are unaffected by this change (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased 
+   * or zero (0) for a non-expiring key
+   */
+   function setExpirationDuration(uint _newExpirationDuration) external onlyLockManager {
+     expirationDuration = _newExpirationDuration;
+   }
+   
+   uint256[1000] private __safe_upgrade_gap;
 }

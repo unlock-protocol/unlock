@@ -38,10 +38,17 @@ contract('Lock / shareKey', (accounts) => {
   before(async () => {
     lock = locks.FIRST
     const purchases = keyOwners.map((account) => {
-      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
-        value: keyPrice.toFixed(),
-        from: account,
-      })
+      return lock.purchase(
+        0,
+        account,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: keyPrice.toFixed(),
+          from: account,
+        }
+      )
     })
     await Promise.all(purchases)
   })
@@ -82,6 +89,20 @@ contract('Lock / shareKey', (accounts) => {
             }
           ),
           'INVALID_ADDRESS'
+        )
+      })
+
+      it('should abort if the key owner', async () => {
+        await reverts(
+          lock.shareKey(
+            keyOwners[0],
+            await lock.getTokenIdFor.call(keyOwners[0]),
+            1000,
+            {
+              from: keyOwners[0],
+            }
+          ),
+          'TRANSFER_TO_SELF'
         )
       })
     })

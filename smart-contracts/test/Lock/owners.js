@@ -21,24 +21,21 @@ contract('Lock / owners', (accounts) => {
 
   before(() => {
     // Purchase keys!
-    return Promise.all([
-      lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-        value: lock.params.keyPrice.toFixed(),
-        from: accounts[0],
-      }),
-      lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
-        value: lock.params.keyPrice.toFixed(),
-        from: accounts[0],
-      }),
-      lock.purchase(0, accounts[3], web3.utils.padLeft(0, 40), [], {
-        value: lock.params.keyPrice.toFixed(),
-        from: accounts[0],
-      }),
-      lock.purchase(0, accounts[4], web3.utils.padLeft(0, 40), [], {
-        value: lock.params.keyPrice.toFixed(),
-        from: accounts[0],
-      }),
-    ])
+    return Promise.all(
+      [1, 2, 3, 4].map((d) =>
+        lock.purchase(
+          0,
+          accounts[d],
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: lock.params.keyPrice.toFixed(),
+            from: accounts[0],
+          }
+        )
+      )
+    )
   })
 
   it('should have the right number of keys', async () => {
@@ -52,13 +49,8 @@ contract('Lock / owners', (accounts) => {
   })
 
   it('should allow for access to an individual key owner', async () => {
-    const owners = await Promise.all([
-      lock.owners.call(0),
-      lock.owners.call(1),
-      lock.owners.call(2),
-      lock.owners.call(3),
-    ])
-
+    const keyIds = [0, 1, 2, 3]
+    const owners = await Promise.all(keyIds.map((d) => lock.owners.call(d)))
     assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
   })
 
@@ -87,7 +79,7 @@ contract('Lock / owners', (accounts) => {
 
     it('should have the right number of owners', async () => {
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1))
+      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1).toFixed())
     })
 
     it('should fail if I transfer from the same account again', async () => {
@@ -117,6 +109,50 @@ contract('Lock / owners', (accounts) => {
     })
 
     it('should have the right number of owners', async () => {
+      const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
+      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
+    })
+  })
+
+  // test case proofing https://github.com/code-423n4/2021-11-unlock-findings/issues/120
+  describe('after a transfer to a existing owner, buying a key again for someone who already owned one', () => {
+    it('should preserve the right number of owners', async () => {
+      // initial state
+      const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
+      const prevKeyId = await lock.getTokenIdFor.call(accounts[4])
+      const totalSupplyBefore = new BigNumber(await lock.totalSupply.call())
+
+      // transfer the key
+      await lock.transferFrom(accounts[4], accounts[3], prevKeyId, {
+        from: accounts[4],
+      })
+      assert.equal((await lock.getTokenIdFor.call(accounts[4])).toString(), '0')
+
+      // supply unchanged
+      const totalSupplyAfter = new BigNumber(await lock.totalSupply.call())
+      assert.equal(totalSupplyBefore.toFixed(), totalSupplyAfter.toFixed())
+
+      // number of owners is identical
+      assert.equal(
+        numberOfOwners.toFixed(),
+        new BigNumber(await lock.numberOfOwners.call()).toFixed()
+      )
+
+      // someone buys a key again for the previous owner
+      await lock.purchase(
+        0,
+        accounts[4],
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: lock.params.keyPrice.toFixed(),
+          from: accounts[4],
+        }
+      )
+      assert.equal((await lock.getTokenIdFor.call(accounts[4])).toNumber(), 5)
+
+      // number of owners should be left unchanged
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
     })

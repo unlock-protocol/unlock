@@ -30,7 +30,7 @@
   "author": "HardlyDifficult",
   "license": "MIT",
   "dependencies": {
-    "@nomiclabs/hardhat-truffle5": "2.0.2",
+    "@nomiclabs/hardhat-truffle5": "2.0.3",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.4.1",
     "@openzeppelin/test-helpers": "0.5.15",
@@ -40,7 +40,7 @@
     "@unlock-protocol/contracts": "^0.0.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-eslint": "10.1.0",
-    "bignumber.js": "9.0.1",
+    "bignumber.js": "9.0.2",
     "chai": "4.3.4",
     "eslint": "8.4.1",
     "eslint-config-prettier": "8.3.0",
