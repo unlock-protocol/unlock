@@ -7,8 +7,8 @@ const Ether = require('./transfer')
 
 const users = ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2']
 
-const log = (message) => {
-  console.log(`HARDHAT SETUP > ${message}`)
+const log = () => {
+  // console.log(`HARDHAT SETUP > ${message}`)
 }
 
 // IMPORTANT NOTE
