@@ -43,9 +43,7 @@ export async function subscribe(
       )
     }
 
-    const expiration = hub.lease_seconds
-      ? getExpiration(hub.lease_seconds)
-      : getExpiration()
+    const expiration = getExpiration(hub.lease_seconds)
 
     const createdHook = await Hook.create({
       expiration,
