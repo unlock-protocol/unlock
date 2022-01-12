@@ -1,14 +1,9 @@
 /* eslint-disable no-console */
-const h = require('hardhat')
 const { ethers } = require('hardhat')
 const { WalletService } = require('../../../lib/index')
 
 const Erc20 = require('./deploy-erc20')
 const Ether = require('./transfer')
-
-const host = process.env.HTTP_PROVIDER_HOST || '127.0.0.1'
-const port = process.env.HTTP_PROVIDER_PORT || 8545
-let providerURL = `http://${host}:${port}`
 
 const users = ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2']
 
@@ -24,15 +19,10 @@ const log = (message) => {
 async function main() {
   // Instantiate the walletService
   const walletService = new WalletService({
-    31337: {
-      providerURL,
-    },
+    31337: {},
   })
 
-  // We connect to a local node and we expect the node to have unlocked accounts
-  // which can be used to send transactions
-  const provider = new ethers.providers.JsonRpcProvider(providerURL)
-  await walletService.connect(provider)
+  await walletService.connect(ethers.provider)
 
   // Deploy an ERC20
   const erc20Address = await Erc20.deploy(
@@ -40,6 +30,7 @@ async function main() {
     await walletService.provider.getSigner(3)
   )
   log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
+
   // We then transfer some ERC20 tokens to some users
   await Promise.all(
     users.map(async (user) => {
