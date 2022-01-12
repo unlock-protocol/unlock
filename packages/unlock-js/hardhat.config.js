@@ -8,7 +8,6 @@ const { HARDHAT_NETWORK_NAME } = require('hardhat/plugins')
 const { runCLI } = require('jest')
 const process = require('process')
 const jestConfig = require('./jest.config')
-// const chalk = require('chalk')
 
 const TASK_JEST = 'test:jest'
 const TASK_JEST_RUN_TESTS = 'jest:run'
