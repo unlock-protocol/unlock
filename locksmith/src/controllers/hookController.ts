@@ -122,10 +122,25 @@ export function getSupportedNetwork(network: string) {
 
 export async function subscriptionHandler(req: Request, res: Response) {
   try {
+    // We check the hub schema here to make sure the subscriber is sending us the correct data.
     const hub = await Hub.parseAsync(req.body.hub)
-    const hook = await subscribe(hub, req.params)
-    return res.status(200).json(hook?.toJSON())
+    // We check the network here to make sure the subscriber is sending to the right network endpoint.
+    const network = getSupportedNetwork(req.params.network)
+    if (!network) {
+      res.status(400).send('Unsupported network')
+      return
+    }
+    // We send the accepted request to the subscriber and then validate the intent of the subscriber as well as persist the subscription.
+    res.status(202).send('Accepted')
+    await subscribe(hub, req.params)
   } catch (error) {
-    return res.status(500).send(error.message)
+    // We respond with the error if we cannot subscribe or there is an error in the subscriber request.
+    return res.status(500).send({
+      hub: {
+        mode: req.body.hub.mode,
+        topic: req.body.hub.topic,
+        reason: error.message,
+      },
+    })
   }
 }
