@@ -6,7 +6,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
 
-const { HARDHAT_VM_ERROR } = errorMessages
+const { HARDHAT_VM_ERROR, VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 let unlock
 let lock
@@ -19,16 +19,30 @@ contract('Lock / transfer', (accounts) => {
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
 
-    await lock.purchase(0, singleKeyOwner, web3.utils.padLeft(0, 40), [], {
-      value: await lock.keyPrice(),
-      from: singleKeyOwner,
-    })
+    await lock.purchase(
+      0,
+      singleKeyOwner,
+      web3.utils.padLeft(0, 40),
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: await lock.keyPrice(),
+        from: singleKeyOwner,
+      }
+    )
 
     for (let i = 0; i < 2; i++) {
-      await lock.purchase(0, multipleKeyOwner, web3.utils.padLeft(0, 40), [], {
-        value: await lock.keyPrice(),
-        from: multipleKeyOwner,
-      })
+      await lock.purchase(
+        0,
+        multipleKeyOwner,
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: await lock.keyPrice(),
+          from: multipleKeyOwner,
+        }
+      )
     }
   })
 
@@ -110,5 +124,12 @@ contract('Lock / transfer', (accounts) => {
       const actual = await lock.getHasValidKey(destination)
       assert.equal(actual, true)
     })
+  })
+
+  it('reverts when attempting to transfer to self', async () => {
+    await reverts(
+      lock.transfer(singleKeyOwner, 1, { from: singleKeyOwner }),
+      `${VM_ERROR_REVERT_WITH_REASON} 'TRANSFER_TO_SELF'`
+    )
   })
 })

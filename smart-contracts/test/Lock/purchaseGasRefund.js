@@ -8,8 +8,8 @@ const unlockContract = artifacts.require('Unlock.sol')
 
 let unlock
 let locks
-const keyPrice = web3.utils.toWei('0.01', 'ether')
-const gasRefundAmount = new BN(keyPrice * 0.25)
+const keyPrice = web3.utils.toWei('0.05', 'ether')
+const gasRefundAmount = new BN(web3.utils.toWei('0.01', 'ether'))
 
 // test for ERC20 and ETH
 const scenarios = [true, false]
@@ -49,15 +49,15 @@ contract('Lock / GasRefund', (accounts) => {
         )
       })
 
-      describe('gas refund basis point', () => {
+      describe('gas refund value', () => {
         it('get set properly', async () => {
-          await lock.setGasRefundBasisPoints(2500)
-          assert.equal(await lock.gasRefundBasisPoints(), 2500)
+          await lock.setGasRefundValue(gasRefundAmount)
+          assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
         })
 
         it('can not be set if caller is not lock manager', async () => {
           await truffleAssert.fails(
-            lock.setGasRefundBasisPoints(2500, {
+            lock.setGasRefundValue(gasRefundAmount, {
               from: accounts[3],
             }),
             'revert',
@@ -65,10 +65,10 @@ contract('Lock / GasRefund', (accounts) => {
           )
         })
 
-        it('can set by lock manager', async () => {
+        it('can be set by lock manager', async () => {
           await lock.addLockManager(accounts[5], { from: accounts[0] })
-          await lock.setGasRefundBasisPoints(2500, { from: accounts[5] })
-          assert.equal(await lock.gasRefundBasisPoints(), 2500)
+          await lock.setGasRefundValue(gasRefundAmount, { from: accounts[5] })
+          assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
         })
       })
 
@@ -76,7 +76,7 @@ contract('Lock / GasRefund', (accounts) => {
         // test with both ETH and ERC20
         beforeEach(async () => {
           // set gasRefund
-          await lock.setGasRefundBasisPoints(2500)
+          await lock.setGasRefundValue(gasRefundAmount)
 
           userBalanceBefore = isErc20
             ? await testToken.balanceOf(accounts[2])
@@ -86,6 +86,7 @@ contract('Lock / GasRefund', (accounts) => {
             keyPrice.toString(),
             accounts[2],
             tokenAddress,
+            web3.utils.padLeft(0, 40),
             [],
             {
               from: accounts[2],
@@ -103,7 +104,7 @@ contract('Lock / GasRefund', (accounts) => {
           } = evt.args
 
           assert.equal(receiver, accounts[2])
-          assert.equal(refundedAmount.toNumber(), keyPrice * 0.25)
+          assert.equal(refundedAmount.eq(gasRefundAmount), true)
           assert.equal(refundedTokenAddress, tokenAddress)
         })
 
@@ -119,12 +120,13 @@ contract('Lock / GasRefund', (accounts) => {
           const gasPrice = new BN(_gasPrice)
           const gas = gasPrice.mul(gasUsed)
 
+          const refund = new BN(keyPrice).sub(gasRefundAmount)
           const expected = isErc20
-            ? // buy a key, get a .25 refund
-              userBalanceBefore.sub(new BN(keyPrice * 0.75))
+            ? // buy a key, get a refund
+              userBalanceBefore.sub(refund)
             : userBalanceBefore
-                // buy a key, get a .25 refund
-                .sub(new BN(keyPrice * 0.75))
+                // buy a key, get a refund
+                .sub(refund)
                 .sub(gas) // pay for the gas
 
           assert.equal(userBalanceAfter.eq(expected), true)
@@ -142,6 +144,7 @@ contract('Lock / GasRefund', (accounts) => {
           tx = await lock.purchase(
             keyPrice.toString(),
             accounts[2],
+            web3.utils.padLeft(0, 40),
             web3.utils.padLeft(0, 40),
             [],
             {

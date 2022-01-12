@@ -24,13 +24,21 @@ contract('Lock / onTokenURIHook', (accounts) => {
     await lock.setEventHooks(
       constants.ZERO_ADDRESS,
       constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
       testEventHooks.address
     )
     const keyPrice = await lock.keyPrice()
-    await lock.purchase(0, to, constants.ZERO_ADDRESS, [], {
-      from,
-      value: keyPrice,
-    })
+    await lock.purchase(
+      0,
+      to,
+      constants.ZERO_ADDRESS,
+      constants.ZERO_ADDRESS,
+      [],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
     tokenId = await lock.getTokenIdFor.call(to)
   })
 
@@ -52,6 +60,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
       lock.setEventHooks(
+        constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS,
         accounts[3]
