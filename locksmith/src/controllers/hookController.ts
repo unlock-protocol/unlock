@@ -14,7 +14,12 @@ const Hub = z.object({
   secret: z.string().optional(),
 })
 
-export function getExpiration(leaseSeconds: number) {
+const EXPIRATION_SECONDS_LIMIT = 86400 * 90
+
+export function getExpiration(leaseSeconds: number = 864000) {
+  if (leaseSeconds > EXPIRATION_SECONDS_LIMIT) {
+    throw new Error("Lease seconds can't be greater than 90 days")
+  }
   return new Date(Date.now() + leaseSeconds * 1000)
 }
 
@@ -30,16 +35,15 @@ export async function subscribe(
   })
 
   if (!hook) {
-    const check = isValidHubIntent(hub)
+    const check = await isValidHubIntent(hub)
     if (!check) {
-      const intentError = new Error(
+      throw new Error(
         `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
       )
-      logger.error(intentError)
-      throw intentError
     }
-    // 10 days by default
-    const expiration = getExpiration(hub.lease_seconds || 864000)
+
+    const expiration = getExpiration(hub.lease_seconds)
+
     const createdHook = await Hook.create({
       expiration,
       topic: hub.topic,
@@ -53,29 +57,27 @@ export async function subscribe(
     return createdHook
   }
 
-  // If changing mode or lease, reconfirm the intent and update
-  if (hook?.mode !== hub.mode || hub.lease_seconds) {
+  if (hook.mode !== hub.mode) {
     hook.mode = hub.mode
-
-    const expiration = hub.lease_seconds
-      ? getExpiration(hub.lease_seconds)
-      : hook.expiration
-
-    hook.expiration = expiration
-
-    const check = isValidHubIntent(hub)
-
-    if (!check) {
-      const error = new Error(
-        `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
-      )
-      logger.error(error)
-      throw error
-    }
-    const updatedHook = await hook.save()
-    return updatedHook
   }
 
+  if (hub.lease_seconds) {
+    hook.expiration = getExpiration(hub.lease_seconds)
+  }
+
+  if (hub.secret) {
+    hook.secret = hub.secret
+  }
+
+  const check = await isValidHubIntent(hub)
+
+  if (!check) {
+    throw new Error(
+      `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
+    )
+  }
+
+  await hook.save()
   return hook
 }
 
@@ -144,6 +146,7 @@ export async function subscriptionHandler(req: Request, res: Response) {
     await subscribe(hub, req.params)
     return
   } catch (error) {
+    logger.error(error)
     // We respond with the error if we cannot subscribe or there is an error in the subscriber request.
     return res.status(500).send({
       hub: {
