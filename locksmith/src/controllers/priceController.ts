@@ -1,5 +1,5 @@
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
-import KeyPricer from '../utils/keyPricer'
+import KeyPricer, { MAX_GRANT_COST } from '../utils/keyPricer'
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import { SignedRequest } from '../types'
 import { getStripeConnectForLock } from '../operations/stripeOperations'
@@ -31,7 +31,7 @@ namespace PriceController {
       if (
         pricing.keyPrice !== undefined &&
         pricing.keyPrice === 0 &&
-        costToGrant < 500
+        costToGrant < MAX_GRANT_COST
       ) {
         // If it costs less than a half a 1ct, then we can grant the key for free!
         return res.json({
