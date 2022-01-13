@@ -18,12 +18,13 @@ subtask(TASK_JEST_RUN_TESTS).setAction(async () => {
       .then((result) => resolve(result))
       .catch((error) => reject(error))
   })
+
   return testFailures.results
 })
 
 task(TASK_JEST, 'Runs jest tests').setAction(
   async ({ watch }, { run, network }) => {
-    const testFailures = await run(TASK_JEST_RUN_TESTS, { watch })
+    const testResults = await run(TASK_JEST_RUN_TESTS, { watch })
 
     if (network.name === HARDHAT_NETWORK_NAME) {
       const stackTracesFailures = await network.provider.send(
@@ -36,9 +37,8 @@ task(TASK_JEST, 'Runs jest tests').setAction(
         )
       }
     }
-
-    process.exitCode = testFailures
-    return testFailures
+    const exit = testResults.success ? 1 : 0
+    process.exit(exit)
   }
 )
 module.exports = {
