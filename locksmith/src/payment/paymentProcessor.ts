@@ -119,6 +119,8 @@ export class PaymentProcessor {
         metadata: {
           lock,
           userAddress,
+          network,
+          maxPrice,
         },
         application_fee_amount: pricing.unlockServiceFee,
       },
