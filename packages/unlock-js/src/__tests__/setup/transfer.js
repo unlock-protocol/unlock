@@ -1,4 +1,4 @@
-const ethers = require('ethers')
+const { ethers } = require('hardhat')
 
 /**
  * This function transfers amount Eth to the recipient.
