@@ -14,6 +14,16 @@ const Hub = z.object({
   secret: z.string().optional(),
 })
 
+const EXPIRATION_SECONDS_LIMIT = 86400 * 90
+
+export function getExpiration(leaseSeconds?: number) {
+  const limit = leaseSeconds ?? 864000
+  if (limit > EXPIRATION_SECONDS_LIMIT) {
+    throw new Error("Lease seconds can't be greater than 90 days")
+  }
+  return new Date(Date.now() + limit * 1000)
+}
+
 export async function subscribe(
   hub: z.infer<typeof Hub>,
   params: Record<string, string>
@@ -26,19 +36,14 @@ export async function subscribe(
   })
 
   if (!hook) {
-    const check = isValidHubIntent(hub)
+    const check = await isValidHubIntent(hub)
     if (!check) {
-      const intentError = new Error(
+      throw new Error(
         `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
       )
-      logger.error(intentError)
-      throw intentError
     }
 
-    const expiration = new Date()
-    expiration.setSeconds(
-      expiration.getSeconds() + (hub.lease_seconds ?? 60 * 60 * 24 * 30)
-    )
+    const expiration = getExpiration(hub.lease_seconds)
 
     const createdHook = await Hook.create({
       expiration,
@@ -53,20 +58,27 @@ export async function subscribe(
     return createdHook
   }
 
-  // If changing mode, reconfirm the intent and update
-  if (hook?.mode !== hub.mode) {
+  if (hook.mode !== hub.mode) {
     hook.mode = hub.mode
-    const check = isValidHubIntent(hub)
-    if (!check) {
-      logger.error(
-        `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
-      )
-      return
-    }
-    const updatedHook = await hook.save()
-    return updatedHook
   }
 
+  if (hub.lease_seconds) {
+    hook.expiration = getExpiration(hub.lease_seconds)
+  }
+
+  if (hub.secret) {
+    hook.secret = hub.secret
+  }
+
+  const check = await isValidHubIntent(hub)
+
+  if (!check) {
+    throw new Error(
+      `Subscriber failed to confirm intent for callback: ${hub.callback} on topic: ${hub.topic}.`
+    )
+  }
+
+  await hook.save()
   return hook
 }
 
@@ -122,10 +134,27 @@ export function getSupportedNetwork(network: string) {
 
 export async function subscriptionHandler(req: Request, res: Response) {
   try {
+    // We check the hub schema here to make sure the subscriber is sending us the correct data.
     const hub = await Hub.parseAsync(req.body.hub)
-    const hook = await subscribe(hub, req.params)
-    return res.status(200).json(hook?.toJSON())
+    // We check the network here to make sure the subscriber is sending to the right network endpoint.
+    const network = getSupportedNetwork(req.params.network)
+    if (!network) {
+      res.status(400).send('Unsupported network')
+      return
+    }
+    // We send the accepted request to the subscriber and then validate the intent of the subscriber as well as persist the subscription.
+    res.status(202).send('Accepted')
+    await subscribe(hub, req.params)
+    return
   } catch (error) {
-    return res.status(500).send(error.message)
+    logger.error(error)
+    // We respond with the error if we cannot subscribe or there is an error in the subscriber request.
+    return res.status(500).send({
+      hub: {
+        mode: req.body.hub.mode,
+        topic: req.body.hub.topic,
+        reason: error.message,
+      },
+    })
   }
 }
