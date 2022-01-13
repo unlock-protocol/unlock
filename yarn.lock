@@ -11464,6 +11464,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-cron@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@types/node-cron@npm:3.0.1"
+  checksum: c93887daef8064b92122c3baf5a3f058bafb70a600f432665dd2684ef8539f7796fd731b3b35b54daad7faef88f87b56fc3236b8e69ce021a364ba2e8f30e51e
+  languageName: node
+  linkType: hard
+
 "@types/node-fetch@npm:*":
   version: 3.0.3
   resolution: "@types/node-fetch@npm:3.0.3"
@@ -12482,6 +12489,7 @@ __metadata:
     "@types/jest": 27.4.0
     "@types/nock": 10.0.3
     "@types/node": 16.11.18
+    "@types/node-cron": ^3.0.1
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/sequelize": 4.28.11
@@ -12524,9 +12532,12 @@ __metadata:
     multer: 1.4.4
     multer-s3: 2.10.0
     nock: 13.2.1
+    node-cron: ^3.0.0
     node-mocks-http: 1.11.0
     nodemon: 2.0.15
+    p-retry: 4.6.1
     parse-data-uri: 0.2.0
+    path-to-regexp: ^6.2.0
     pg: 8.7.1
     random-words: 1.1.1
     reflect-metadata: 0.1.13
@@ -15360,7 +15371,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
+  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
   languageName: node
   linkType: hard
 
@@ -33300,6 +33311,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"moment-timezone@npm:^0.5.31":
+  version: 0.5.34
+  resolution: "moment-timezone@npm:0.5.34"
+  dependencies:
+    moment: ">= 2.9.0"
+  checksum: 12a1d3d52e4ba509cf1fa36bbda59d898a08fa80ab35f6c358747e93aec1f07e617cec647eaf2e8acf5f9132e581d4704d34a9edffa9a80c5cd04bf23b277595
+  languageName: node
+  linkType: hard
+
 "moment@npm:>= 2.9.0, moment@npm:^2.24.0":
   version: 2.29.1
   resolution: "moment@npm:2.29.1"
@@ -33913,6 +33933,15 @@ fsevents@~2.1.1:
   dependencies:
     node-gyp: latest
   checksum: 31fb22d674648204f8dd94167eb5aac896c841b84a9210d614bf5d97c74ef059cc6326389cf0c54d2086e35312938401d4cc82e5fcd679202503eb8ac84814f8
+  languageName: node
+  linkType: hard
+
+"node-cron@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "node-cron@npm:3.0.0"
+  dependencies:
+    moment-timezone: ^0.5.31
+  checksum: acae07d835f74636ec2bf598ffadf6b89aa2eae036671bffad336371b28fb1eefb11870912c965bb351cd958d4b62f9fa9b28cf922b5f681459ea4878837ffcf
   languageName: node
   linkType: hard
 
@@ -35069,7 +35098,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"p-retry@npm:^4.5.0":
+"p-retry@npm:4.6.1, p-retry@npm:^4.5.0":
   version: 4.6.1
   resolution: "p-retry@npm:4.6.1"
   dependencies:
@@ -35512,6 +35541,13 @@ fsevents@~2.1.1:
   dependencies:
     isarray: 0.0.1
   checksum: 709f6f083c0552514ef4780cb2e7e4cf49b0cc89a97439f2b7cc69a608982b7690fb5d1720a7473a59806508fc2dae0be751ba49f495ecf89fd8fbc62abccbcd
+  languageName: node
+  linkType: hard
+
+"path-to-regexp@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "path-to-regexp@npm:6.2.0"
+  checksum: a6aca74d2d6e2e7594d812f653cf85e9cb5054d3a8d80f099722a44ef6ad22639b02078e5ea83d11db16321c3e4359e3f1ab0274fa78dad0754a6e53f630b0fc
   languageName: node
   linkType: hard
 
