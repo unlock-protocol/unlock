@@ -111,7 +111,6 @@ export const CardConfirmationCheckout = ({
   const handleHasKey = (key: any) => {
     setKeyExpiration(key.expiration)
   }
-
   if (!lock.fiatPricing?.creditCardEnabled) {
     return (
       <Wrapper>
