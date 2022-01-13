@@ -29,15 +29,15 @@ const networks = {
 // Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
 // starting w v10 and upgradeable locks, we will have several PublicLock versions
 const UnlockVersions = [
-  'v4',
+  // 'v4',
   // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  'v7',
-  'v8',
+  // 'v7',
+  // 'v8',
   'v9',
   // 'v10',
 ]
 
-const PublicLockVersions = Object.keys(locks)
+const PublicLockVersions = ['v7', 'v8'] // Object.keys(locks)
 
 describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
   let walletService
@@ -134,10 +134,23 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
       let lockCreationHash
 
       beforeAll(async () => {
+        // here we need to setup unlock template properly
+        const unlock = await walletService.getUnlockContract()
+
+        // deploy the relevant template
+        const templateAddress = await walletService.deployTemplate(
+          publicLockVersion
+        )
+
+        // set the right template in Unlock
+        const tx = await unlock.setLockTemplate(templateAddress)
+        await tx.wait()
+
+        // parse erc20
         const { isERC20 } = lockParams
         lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
 
-        // unique name to avoid getting same lock address
+        // unique Lock name to avoid conflicting addresses
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
         expectedLockAddress = await web3Service.generateLockAddress(
