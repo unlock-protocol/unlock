@@ -26,23 +26,26 @@ const networks = {
   },
 }
 
-// Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
-// starting w v10 and upgradeable locks, we will have several PublicLock versions
+// Unlock versions to test
 const UnlockVersions = [
-  // 'v4',
+  'v4',
   // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
   'v7',
   'v8',
   'v9',
-  'v10',
+  // 'v10',
 ]
-
-const PublicLockVersions = Object.keys(locks)
 
 describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
   let ERC20Address
+
+  // Unlock v4 can only interact w PublicLock v4
+  const PublicLockVersions =
+    unlockVersion === 'v4'
+      ? ['v4']
+      : Object.keys(locks).filter((v) => v !== 'v4')
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
@@ -126,7 +129,9 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
 
   describe.each(PublicLockVersions)('using Lock %s', (publicLockVersion) => {
     describe.each(
-      locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
+      locks[publicLockVersion]
+        .map((lock, index) => [index, lock.name, lock])
+        .filter((d) => d[0] < 1)
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
       let lock
       let expectedLockAddress
@@ -134,17 +139,19 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
       let lockCreationHash
 
       beforeAll(async () => {
-        // here we need to setup unlock template properly
-        const unlock = await walletService.getUnlockContract()
+        if (publicLockVersion !== 'v4') {
+          // here we need to setup unlock template properly
+          const unlock = await walletService.getUnlockContract()
 
-        // deploy the relevant template
-        const templateAddress = await walletService.deployTemplate(
-          publicLockVersion
-        )
-        // set the right template in Unlock
-        const tx = await unlock.setLockTemplate(templateAddress)
-        await tx.wait()
+          // deploy the relevant template
+          const templateAddress = await walletService.deployTemplate(
+            publicLockVersion
+          )
 
+          // set the right template in Unlock
+          const tx = await unlock.setLockTemplate(templateAddress)
+          await tx.wait()
+        }
         // parse erc20
         const { isERC20 } = lockParams
         lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
@@ -167,6 +174,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
             lockCreationHash = hash
           }
         )
+
         lock = await web3Service.getLock(lockAddress, chainId)
       })
 
@@ -358,6 +366,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
         beforeAll(async () => {
           keyPurchaser = accounts[0] // This is the default in walletService
           keyOwner = accounts[5]
+
           if (lock.currencyContractAddress === null) {
             // Get the ether balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getAddressBalance(
