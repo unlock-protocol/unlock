@@ -31,13 +31,13 @@ const networks = {
 const UnlockVersions = [
   // 'v4',
   // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  // 'v7',
-  // 'v8',
+  'v7',
+  'v8',
   'v9',
-  // 'v10',
+  'v10',
 ]
 
-const PublicLockVersions = ['v7', 'v8'] // Object.keys(locks)
+const PublicLockVersions = Object.keys(locks)
 
 describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
   let walletService
@@ -141,7 +141,6 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
         const templateAddress = await walletService.deployTemplate(
           publicLockVersion
         )
-
         // set the right template in Unlock
         const tx = await unlock.setLockTemplate(templateAddress)
         await tx.wait()
