@@ -9,7 +9,7 @@ export class HookEvent extends Model<HookEvent> {
   network!: string
 
   @Column
-  lock!: string
+  lock?: string
 
   @AllowNull(true)
   @Column
@@ -23,6 +23,9 @@ export class HookEvent extends Model<HookEvent> {
 
   @Column
   state!: string
+
+  @Column
+  lastError?: string
 
   @Column
   attempts!: number
