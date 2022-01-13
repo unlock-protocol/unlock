@@ -1,4 +1,5 @@
 const rulesToIgnore = [
+  'import/no-extraneous-dependencies',
   'no-underscore-dangle',
   'no-param-reassign',
   'class-methods-use-this',
