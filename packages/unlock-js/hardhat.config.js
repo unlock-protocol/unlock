@@ -37,7 +37,7 @@ task(TASK_JEST, 'Runs jest tests').setAction(
         )
       }
     }
-    const exit = testResults.success ? 1 : 0
+    const exit = testResults.success ? 0 : 1
     process.exit(exit)
   }
 )
