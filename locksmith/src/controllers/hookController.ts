@@ -3,6 +3,7 @@ import { networks } from '@unlock-protocol/networks'
 import * as z from 'zod'
 import fetch from 'cross-fetch'
 import crypto from 'crypto'
+import html from 'html-template-tag'
 import logger from '../logger'
 import { Hook } from '../models'
 
@@ -139,8 +140,7 @@ export async function subscriptionHandler(req: Request, res: Response) {
     // We check the network here to make sure the subscriber is sending to the right network endpoint.
     const network = getSupportedNetwork(req.params.network)
     if (!network) {
-      res.status(400).send('Unsupported network')
-      return
+      return res.status(400).send('Unsupported network')
     }
     // We send the accepted request to the subscriber and then validate the intent of the subscriber as well as persist the subscription.
     res.status(202).send('Accepted')
@@ -156,5 +156,48 @@ export async function subscriptionHandler(req: Request, res: Response) {
         reason: error.message,
       },
     })
+  }
+}
+
+export function publisherHandler(req: Request, res: Response) {
+  try {
+    const network = getSupportedNetwork(req.params.network)
+    if (!network) {
+      return res.status(400).send('Unsupported network')
+    }
+
+    const url = new URL(req.originalUrl, `${req.protocol}://${req.hostname}`)
+    const links = [
+      {
+        rel: 'self',
+        href: url.toString(),
+      },
+      {
+        rel: 'hub',
+        href: url.toString(),
+      },
+    ]
+    res.setHeader(
+      'Link',
+      links.map((item) => `<${item.href}>; rel="${item.rel}"`)
+    )
+
+    const htmlResponse = html`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          ${links
+            .map((item) => `<link rel="${item.rel}" href="${item.href}">`)
+            .join('\n')}
+        </head>
+        <body>
+          ...
+        </body>
+      </html>
+    `
+    return res.status(200).send(htmlResponse)
+  } catch (error) {
+    logger.error(error)
+    return res.status(500).send(error.message)
   }
 }
