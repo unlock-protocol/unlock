@@ -158,7 +158,13 @@ const configureUnlock = (config, app) => {
       redirectUri.searchParams.append(param, searchParams[param])
     }
     redirectUri.searchParams.append('originalUrl', req.originalUrl)
-    return res.redirect(buildCheckoutUrl(paywallConfig, redirectUri.toString()))
+    const checkoutUrlRedirect = buildCheckoutUrl(
+      paywallConfig,
+      redirectUri.toString()
+    )
+    // This allows Javascript Fetch to be able to read from the body since it does not yield the `Location` in case of redirect...
+    res.send(checkoutUrlRedirect)
+    return res.redirect(checkoutUrlRedirect)
   }
 
   // Returns the middleware
