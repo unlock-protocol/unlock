@@ -6412,7 +6412,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:^2.0.4":
+"@nomiclabs/hardhat-ethers@npm:2.0.4":
   version: 2.0.4
   resolution: "@nomiclabs/hardhat-ethers@npm:2.0.4"
   peerDependencies:
@@ -13023,16 +13023,16 @@ __metadata:
     "@babel/cli": 7.16.7
     "@babel/core": 7.16.7
     "@babel/preset-env": 7.16.7
-    "@nomiclabs/hardhat-ethers": ^2.0.4
+    "@nomiclabs/hardhat-ethers": 2.0.4
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    babel-jest: ^27.4.6
+    babel-jest: 27.4.6
     eslint: 8.6.0
     ethers: 5.5.2
-    hardhat: ^2.8.2
+    hardhat: 2.8.2
     jest: 27.4.5
     lint-staged: 12.1.5
     prettier: 2.5.1
@@ -15371,7 +15371,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
@@ -15937,6 +15937,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-jest@npm:27.4.6":
+  version: 27.4.6
+  resolution: "babel-jest@npm:27.4.6"
+  dependencies:
+    "@jest/transform": ^27.4.6
+    "@jest/types": ^27.4.2
+    "@types/babel__core": ^7.1.14
+    babel-plugin-istanbul: ^6.1.1
+    babel-preset-jest: ^27.4.0
+    chalk: ^4.0.0
+    graceful-fs: ^4.2.4
+    slash: ^3.0.0
+  peerDependencies:
+    "@babel/core": ^7.8.0
+  checksum: fc839d5e8788170e68c8cbde9466fdf1c4fc740a947ba0728e1933ade7ad6fe744c9276d86207f093b64e9cf72a1fdd756fbc44c21034282f01832338e7a8a80
+  languageName: node
+  linkType: hard
+
 "babel-jest@npm:^27.4.2":
   version: 27.4.2
   resolution: "babel-jest@npm:27.4.2"
@@ -15952,24 +15970,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.8.0
   checksum: a0843be04f7f46c563464865913c25663c22983eff31b5f706a35940a2bec230d907a05dc5bdd9198f0252c267b68196777fa37997ccf550dbcfbdddb000ccf5
-  languageName: node
-  linkType: hard
-
-"babel-jest@npm:^27.4.6":
-  version: 27.4.6
-  resolution: "babel-jest@npm:27.4.6"
-  dependencies:
-    "@jest/transform": ^27.4.6
-    "@jest/types": ^27.4.2
-    "@types/babel__core": ^7.1.14
-    babel-plugin-istanbul: ^6.1.1
-    babel-preset-jest: ^27.4.0
-    chalk: ^4.0.0
-    graceful-fs: ^4.2.4
-    slash: ^3.0.0
-  peerDependencies:
-    "@babel/core": ^7.8.0
-  checksum: fc839d5e8788170e68c8cbde9466fdf1c4fc740a947ba0728e1933ade7ad6fe744c9276d86207f093b64e9cf72a1fdd756fbc44c21034282f01832338e7a8a80
   languageName: node
   linkType: hard
 
@@ -26786,7 +26786,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat@npm:^2.8.2":
+"hardhat@npm:2.8.2":
   version: 2.8.2
   resolution: "hardhat@npm:2.8.2"
   dependencies:
