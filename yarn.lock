@@ -12526,6 +12526,7 @@ __metadata:
     express-winston: 4.2.0
     graphql: 15.8.0
     graphql-tag: 2.12.6
+    html-template-tag: ^4.0.0
     isomorphic-fetch: 3.0.0
     jest: 27.4.5
     lodash.isequal: 4.5.0
@@ -12557,6 +12558,7 @@ __metadata:
     winston: 3.3.3
     winston-sentry-log: 1.0.24
     yargs: 17.3.1
+    zod: ^3.11.6
   languageName: unknown
   linkType: soft
 
@@ -27358,6 +27360,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"html-es6cape@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "html-es6cape@npm:2.0.0"
+  checksum: c47b0fff25db186732374e4d8ac9bf12c54058107a15ba8feb5c0bcb6b07575f551f2e02ee3f57078235475641b084e0bce586aae93b3fa7e7fdd51b392ce6a2
+  languageName: node
+  linkType: hard
+
 "html-escaper@npm:^2.0.0":
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
@@ -27403,6 +27412,15 @@ fsevents@~2.1.1:
   version: 3.1.0
   resolution: "html-tags@npm:3.1.0"
   checksum: 67587f2d4022390d7bc34b1313773ecb0b0e0c79fb331aa3e20023eb4c862c7188a1ff775d126fcd75f4e4f08f956666a1c57688c4d24d85a77f9d4b1a42f345
+  languageName: node
+  linkType: hard
+
+"html-template-tag@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "html-template-tag@npm:4.0.0"
+  dependencies:
+    html-es6cape: ^2.0.0
+  checksum: 643bbfeb3714cb845db8a17b84404288b778b8d767fdd25707859188d6f5e63dbcca89d6ab8e1e304d29682f3793bf5f5ddcf80c1f57d4df6ef8e13a40b42718
   languageName: node
   linkType: hard
 
@@ -49637,6 +49655,13 @@ typescript@^3.8.3:
   version: 0.8.15
   resolution: "zen-observable@npm:0.8.15"
   checksum: b7289084bc1fc74a559b7259faa23d3214b14b538a8843d2b001a35e27147833f4107590b1b44bf5bc7f6dfe6f488660d3a3725f268e09b3925b3476153b7821
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.11.6":
+  version: 3.11.6
+  resolution: "zod@npm:3.11.6"
+  checksum: 044ac416450f179a0c88240f27849d2886c777cebade42df10e5f04125b0265cec82d9bd741a7dcb11796b2ea88b32c86be7d36932a4bed6af57002560359db1
   languageName: node
   linkType: hard
 
