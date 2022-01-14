@@ -1,5 +1,9 @@
 const ethers = require('ethers')
 const keyExpirationFor = require('./src/keyExpirationFor')
+
+const unlockCheckoutBaseUrl = new URL(
+  'https://app.unlock-protocol.com/checkout'
+)
 /**
  * Main function that yields the middleware
  * @param {*} config
@@ -87,11 +91,13 @@ const configureUnlock = (config, app) => {
    * @returns
    */
   const buildCheckoutUrl = (paywallConfig, redirectUri) => {
-    const baseUrl = new URL('https://app.unlock-protocol.com/checkout')
-    baseUrl.searchParams.append('redirectUri', redirectUri)
-    baseUrl.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
+    unlockCheckoutBaseUrl.searchParams.append('redirectUri', redirectUri)
+    unlockCheckoutBaseUrl.searchParams.append(
+      'paywallConfig',
+      JSON.stringify(paywallConfig)
+    )
 
-    return baseUrl.toString()
+    return unlockCheckoutBaseUrl
   }
 
   /**
@@ -127,7 +133,7 @@ const configureUnlock = (config, app) => {
    * Middeware function, which redirects user to purchase membership if applicable.
    * @returns
    */
-  const membersOnly = () => async (req, res, next) => {
+  const membersOnly = (unauthenticatedHander) => async (req, res, next) => {
     const ethereumAddress = await config.getUserEthereumAddress(req)
     const paywallConfig = await config.yieldPaywallConfig(req)
     if (!paywallConfig.messageToSign) {
@@ -158,7 +164,19 @@ const configureUnlock = (config, app) => {
       redirectUri.searchParams.append(param, searchParams[param])
     }
     redirectUri.searchParams.append('originalUrl', req.originalUrl)
-    return res.redirect(buildCheckoutUrl(paywallConfig, redirectUri.toString()))
+    const checkoutUrlRedirect = buildCheckoutUrl(
+      paywallConfig,
+      redirectUri.toString()
+    )
+
+    // If we have a handler, let's use it!
+    if (unauthenticatedHander) {
+      return unauthenticatedHander(checkoutUrlRedirect, req, res, next)
+    }
+
+    // This allows Javascript Fetch to be able to read from the body since it does not yield the `Location` in case of redirect...
+    res.send(checkoutUrlRedirect.toString())
+    return res.redirect(checkoutUrlRedirect.toString())
   }
 
   // Returns the middleware

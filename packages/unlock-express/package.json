@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-express",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "public": true,
   "publishConfig": {
     "access": "public",
