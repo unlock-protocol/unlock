@@ -182,16 +182,17 @@ export function publisherHandler(req: Request, res: Response) {
       links.map((item) => `<${item.href}>; rel="${item.rel}"`)
     )
 
-    const htmlResponse = html`
+    const htmlResponse = `
       <!DOCTYPE html>
       <html>
         <head>
           ${links
-            .map((item) => `<link rel="${item.rel}" href="${item.href}">`)
-            .join('\n')}
+            .map((item) => html`<link rel="${item.rel}" href="${item.href}" />`)
+            .join('')}
         </head>
         <body>
-          ...
+           To subscribe to our topic, make a POST request to this endpoint with the valid hub payload.
+           The link to hub is also included in the head and headers.
         </body>
       </html>
     `
