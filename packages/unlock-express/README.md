@@ -3,6 +3,7 @@
 An express plugin to add Locks to express applications. This enables server-side locking of resources/routes in order to make sure only actual (paying) members can access/view them.
 
 [More details in our docs](https://docs.unlock-protocol.com/developers/tutorials/backend-locking-with-express.js).
+
 # Usage
 
 Install:
@@ -68,6 +69,8 @@ app.get('/members', membersOnly(), (req, res) => {
   ...
 })
 ```
+
+The `membersOnly()` middleware will handle ensuring that the current visitor is authentitcated AND has access to the resource based on the config set above. If not, by default it will redirect the user so they authenticate. Optionnaly you can pass an express handler to `membersOnly` that will be called with the redirect URL, the request, response and next arguments if you want to manually handle redirects.
 
 Additionally the plugin config exports to other functions: `hasValidMembership` and `buildCheckoutUrl` that can be used to respectively check if a address has any valid membership for a specific paywall config, and build a checkout URL for a paywall config.
 

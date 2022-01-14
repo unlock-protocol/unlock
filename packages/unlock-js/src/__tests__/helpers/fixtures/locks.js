@@ -8,21 +8,21 @@ export default {
       keyPrice: '0.1',
       maxNumberOfKeys: 100,
       name: 'My Lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',
       maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       name: 'Unlimited Keys lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 10,
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9', // ERC20 deployed in docker container
+      isERC20: true,
     },
   ],
   v6: [
@@ -31,21 +31,21 @@ export default {
       keyPrice: '0.1',
       maxNumberOfKeys: 100,
       name: 'My Lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',
       maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       name: 'Unlimited Keys lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 10,
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9', // ERC20 deployed in docker container
+      isERC20: true,
     },
   ],
   v7: [
@@ -54,21 +54,21 @@ export default {
       keyPrice: '0.1',
       maxNumberOfKeys: 100,
       name: 'My Lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',
       maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       name: 'Unlimited Keys lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 10,
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9', // ERC20 deployed in docker container
+      isERC20: true,
     },
   ],
   v8: [
@@ -77,21 +77,21 @@ export default {
       keyPrice: '0.1',
       maxNumberOfKeys: 100,
       name: 'My Lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 30,
       keyPrice: '0.1',
       maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       name: 'Unlimited Keys lock',
-      currencyContractAddress: null,
+      isERC20: false,
     },
     {
       expirationDuration: 60 * 60 * 24 * 10,
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9', // ERC20 deployed in docker container
+      isERC20: true,
     },
   ],
   v9: [
