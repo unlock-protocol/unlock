@@ -189,7 +189,8 @@ export const Checkout = ({
       }
       window.location.href = redirectUrl.toString()
     } else {
-      window.location.href = '/keychain'
+      // This will only work if the tab is the "main" tab.
+      window.close()
     }
   }
 
