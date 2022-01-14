@@ -9,6 +9,6 @@ export default {
   configureUnlock,
   createLock,
   upgradeLock,
-  version: 'v9',
+  version: 'v10',
   Unlock: abis.Unlock.v10,
 }
