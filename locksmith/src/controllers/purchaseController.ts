@@ -4,7 +4,7 @@ import {
   getStripeCustomerIdForAddress,
   createStripeCustomer,
 } from '../operations/stripeOperations'
-import KeyPricer from '../utils/keyPricer'
+import KeyPricer, { MAX_GRANT_COST } from '../utils/keyPricer'
 
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import PaymentProcessor from '../payment/paymentProcessor'
@@ -97,8 +97,7 @@ namespace PurchaseController {
     }
 
     const costToGrant = await pricer.gasFee(network, 1000)
-    // grant only if cost is less than $0.01
-    if (costToGrant >= 1000) {
+    if (costToGrant >= MAX_GRANT_COST) {
       return res.status(500).send('Gas fees too high!')
     }
 

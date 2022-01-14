@@ -1,25 +1,24 @@
 /* eslint-disable no-console */
 const path = require('path')
-const ethers = require('ethers')
-let fs = require('fs')
+const { ethers } = require('hardhat')
+let fs = require('fs-extra')
 
-let testErc20Token = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'TestErc20Token.json'), 'utf8')
+const testErc20Token = fs.readJSONSync(
+  path.join(__dirname, 'TestErc20Token.json')
 )
 const decimals = 18
-
 /**
  * A method which deploys an ERC20 contract
  * @param {*} providerUrl
  */
 const deploy = async (provider, signer) => {
-  let factory = new ethers.ContractFactory(
+  const factory = await ethers.getContractFactory(
     testErc20Token.abi,
     testErc20Token.bytecode,
     signer
   )
 
-  let erc20Contract = await factory.deploy()
+  const erc20Contract = await factory.deploy()
   await erc20Contract.deployed()
 
   return erc20Contract.address

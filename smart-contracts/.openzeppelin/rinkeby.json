@@ -916,6 +916,195 @@
           }
         }
       }
+    },
+    "40837cf6c6e1da5aad49105025cb6c7edf0834bb1b32b97a1777d722dde2b548": {
+      "address": "0x3E25924b97A275B4004896a1794b671BeCBEEA2C",
+      "txHash": "0x96c040db0538cbac1593849294e74b5d7604de785137097f72361d6dd9eddb13",
+      "layout": {
+        "storage": [
+          {
+            "contract": "UnlockInitializable",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "contracts/utils/UnlockInitializable.sol:39"
+          },
+          {
+            "contract": "UnlockInitializable",
+            "label": "initializing",
+            "type": "t_bool",
+            "src": "contracts/utils/UnlockInitializable.sol:44"
+          },
+          {
+            "contract": "UnlockContextUpgradeable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/utils/UnlockContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "UnlockOwnable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "contracts/utils/UnlockOwnable.sol:23"
+          },
+          {
+            "contract": "UnlockOwnable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "contracts/utils/UnlockOwnable.sol:86"
+          },
+          {
+            "contract": "Unlock",
+            "label": "grossNetworkProduct",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:63"
+          },
+          {
+            "contract": "Unlock",
+            "label": "totalDiscountGranted",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:65"
+          },
+          {
+            "contract": "Unlock",
+            "label": "locks",
+            "type": "t_mapping(t_address,t_struct(LockBalances)9015_storage)",
+            "src": "contracts/Unlock.sol:68"
+          },
+          {
+            "contract": "Unlock",
+            "label": "globalBaseTokenURI",
+            "type": "t_string_storage",
+            "src": "contracts/Unlock.sol:72"
+          },
+          {
+            "contract": "Unlock",
+            "label": "globalTokenSymbol",
+            "type": "t_string_storage",
+            "src": "contracts/Unlock.sol:76"
+          },
+          {
+            "contract": "Unlock",
+            "label": "publicLockAddress",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:79"
+          },
+          {
+            "contract": "Unlock",
+            "label": "uniswapOracles",
+            "type": "t_mapping(t_address,t_contract(IUniswapOracle)23729)",
+            "src": "contracts/Unlock.sol:83"
+          },
+          {
+            "contract": "Unlock",
+            "label": "weth",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:86"
+          },
+          {
+            "contract": "Unlock",
+            "label": "udt",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:89"
+          },
+          {
+            "contract": "Unlock",
+            "label": "estimatedGasForPurchase",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:92"
+          },
+          {
+            "contract": "Unlock",
+            "label": "chainId",
+            "type": "t_uint256",
+            "src": "contracts/Unlock.sol:95"
+          },
+          {
+            "contract": "Unlock",
+            "label": "proxyAdminAddress",
+            "type": "t_address",
+            "src": "contracts/Unlock.sol:98"
+          },
+          {
+            "contract": "Unlock",
+            "label": "proxyAdmin",
+            "type": "t_contract(ProxyAdmin)7791",
+            "src": "contracts/Unlock.sol:99"
+          },
+          {
+            "contract": "Unlock",
+            "label": "_publicLockVersions",
+            "type": "t_mapping(t_address,t_uint16)",
+            "src": "contracts/Unlock.sol:102"
+          },
+          {
+            "contract": "Unlock",
+            "label": "_publicLockImpls",
+            "type": "t_mapping(t_uint16,t_address)",
+            "src": "contracts/Unlock.sol:103"
+          },
+          {
+            "contract": "Unlock",
+            "label": "publicLockLatestVersion",
+            "type": "t_uint16",
+            "src": "contracts/Unlock.sol:104"
+          }
+        ],
+        "types": {
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_struct(LockBalances)9015_storage)": {
+            "label": "mapping(address => struct Unlock.LockBalances)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_struct(LockBalances)9015_storage": {
+            "label": "struct Unlock.LockBalances",
+            "members": [
+              {
+                "label": "deployed",
+                "type": "t_bool"
+              },
+              {
+                "label": "totalSales",
+                "type": "t_uint256"
+              },
+              {
+                "label": "yieldedDiscountTokens",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_mapping(t_address,t_contract(IUniswapOracle)23729)": {
+            "label": "mapping(address => contract IUniswapOracle)"
+          },
+          "t_contract(IUniswapOracle)23729": {
+            "label": "contract IUniswapOracle"
+          },
+          "t_contract(ProxyAdmin)7791": {
+            "label": "contract ProxyAdmin"
+          },
+          "t_mapping(t_address,t_uint16)": {
+            "label": "mapping(address => uint16)"
+          },
+          "t_uint16": {
+            "label": "uint16"
+          },
+          "t_mapping(t_uint16,t_address)": {
+            "label": "mapping(uint16 => address)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
     }
   }
 }
