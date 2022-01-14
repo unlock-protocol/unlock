@@ -11,6 +11,9 @@ const baseStripeFee = 30
 const stripePercentage = 0.029
 const ZERO = ethers.constants.AddressZero
 export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
+
+export const MAX_GRANT_COST = 1000 // Maximum price we're willing to pay to grant keys! (1000 => 1ct)
+
 export default class KeyPricer {
   readOnlyEthereumService: any
 
