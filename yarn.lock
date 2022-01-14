@@ -12823,7 +12823,9 @@ __metadata:
     postcss: ^8.4.5
     react: ^17.0.2
     react-dom: ^17.0.2
+    react-icons: ^4.3.1
     storybook-builder-vite: ^0.1.13
+    tailwind-merge: ^1.2.0
     tailwindcss: ^3.0.13
     typescript: ^4.4.4
     vite: ^2.7.2
@@ -27063,6 +27065,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"hashlru@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "hashlru@npm:2.3.0"
+  checksum: 38b3559e6fb9d19fa731edc52d8d7e72cd378f708dcb01cecd4a6ba0c52f06d7d06d6277249f5c43d9915d8dda9be31adad768a379eef188db213c3f2b09278d
+  languageName: node
+  linkType: hard
+
 "hast-to-hyperscript@npm:^9.0.0":
   version: 9.0.1
   resolution: "hast-to-hyperscript@npm:9.0.1"
@@ -38676,6 +38685,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react-icons@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "react-icons@npm:4.3.1"
+  peerDependencies:
+    react: "*"
+  checksum: 2cc608acdd3e906aa3aaee290b8398220639677c949382d86e554020e5dab6a9f1ed7484418aa5272cb5c5c018e1fc9a323d433d901697a76530029f9ecb1263
+  languageName: node
+  linkType: hard
+
 "react-input-autosize@npm:^3.0.0":
   version: 3.0.0
   resolution: "react-input-autosize@npm:3.0.0"
@@ -43120,6 +43138,15 @@ resolve@^2.0.0-next.3:
     slice-ansi: ^2.1.0
     string-width: ^3.0.0
   checksum: 9e35d3efa788edc17237eef8852f8e4b9178efd65a7d115141777b2ee77df4b7796c05f4ed3712d858f98894ac5935a481ceeb6dcb9895e2f67a61cce0e63b6c
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "tailwind-merge@npm:1.2.0"
+  dependencies:
+    hashlru: ^2.3.0
+  checksum: 811fbb6bfd1c396516ffb30e63addb40e0d4aaf8e30be971f3710a936dd5ddcf739e1704df33defc0490f38eaf08dbea6118197ffd5d45e45eaef565729ffb38
   languageName: node
   linkType: hard
 
