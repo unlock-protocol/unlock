@@ -2,7 +2,7 @@ import React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IconButton } from '../IconButton/IconButton'
 import { AiOutlineClose as CloseIcon } from 'react-icons/ai'
-interface AlertInterface {
+interface AlertProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   text: string
@@ -17,7 +17,7 @@ interface AlertInterface {
  * Render:
  * <Alert {...alertProps} />
  */
-export const Alert = ({ isOpen, setIsOpen, text, title }: AlertInterface) => (
+export const Alert = ({ isOpen, setIsOpen, text, title }: AlertProps) => (
   <Transition.Root show={isOpen} as={React.Fragment}>
     <Dialog
       as="div"
