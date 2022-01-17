@@ -257,7 +257,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       it('amount minted for referrer ~= gas spent', async () => {
         // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
         assert.equal(
-          new BigNumber(await udt.balanceOf(referrer.address))
+          new BigNumber((await udt.balanceOf(referrer.address)).toString())
             .shiftedBy(-18) // shift UDT balance
             .times(rate)
             .shiftedBy(-18) // shift the rate
@@ -268,7 +268,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       it('amount minted for dev ~= gas spent * 20%', async () => {
         assert.equal(
-          new BigNumber(await udt.balanceOf(await unlock.owner()))
+          new BigNumber((await udt.balanceOf(await unlock.owner())).toString())
             .shiftedBy(-18) // shift UDT balance
             .times(rate)
             .shiftedBy(-18) // shift the rate
