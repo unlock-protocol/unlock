@@ -355,7 +355,8 @@ contract Unlock is
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice) * (125 * 10 ** 18) / 100 / udtPrice;
+          uint baseFee = block.basefee != 0 ? block.basefee : 10;
+          uint tokensToDistribute = (estimatedGasForPurchase * baseFee) * (125 * 10 ** 18) / 100 / udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           uint maxTokens = 0;
