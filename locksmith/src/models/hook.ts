@@ -24,9 +24,6 @@ export class Hook extends Model<Hook> {
   @Column
   mode!: 'subscribe' | 'unsubscribe'
 
-  @Validate({
-    isUrl: true,
-  })
   @Column
   callback!: string
 
