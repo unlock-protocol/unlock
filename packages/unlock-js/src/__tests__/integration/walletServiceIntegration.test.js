@@ -5,6 +5,7 @@ import locks from '../helpers/fixtures/locks'
 import { deployUnlock, configureUnlock, deployTemplate } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
+import UnlockVersions from '../../Unlock'
 
 const chainId = 31337
 
@@ -28,16 +29,11 @@ const networks = {
 }
 
 // Unlock versions to test
-const UnlockVersions = [
-  'v4',
-  // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  'v7',
-  'v8',
-  'v9',
-  // 'v10',
-]
+const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+)
 
-describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
+describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
   let ERC20Address
