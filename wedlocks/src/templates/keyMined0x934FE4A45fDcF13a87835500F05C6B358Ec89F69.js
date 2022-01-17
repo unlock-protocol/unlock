@@ -1,7 +1,7 @@
 export default {
-    subject: () => 'Your are going to EthCC!',
-    text: (params) =>
-      `Hello!
+  subject: () => 'Your are going to EthCC!',
+  text: (params) =>
+    `Hello!
   
 Your NFT ticket to EthCC has been sent to your wallet! Congrats!
 For now, there is not much else you need to do. It should be visible on any NFT marketplace, but you can also see it in your Unlock key-chain:
@@ -16,5 +16,4 @@ If you have any questions , please email us at hello@unlock-protocol.com.
 The Unlock and EthCC teams!
 
 `,
-  }
-  
+}

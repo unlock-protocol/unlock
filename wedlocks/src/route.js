@@ -14,11 +14,11 @@ import encrypter from './encrypter'
 // }
 export const route = (args, callback) => {
   let template = templates[args.template]
-  
-  if(!template && args.failoverTemplate) {
+
+  if (!template && args.failoverTemplate) {
     template = templates[args.failoverTemplate]
   }
-  
+
   if (!template) {
     return callback(new Error('Missing template'))
   }

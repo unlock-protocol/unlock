@@ -17,5 +17,5 @@ export default {
   confirmEvent,
   keyOwnership,
   keyMined,
-  keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69
+  keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69,
 }
