@@ -354,8 +354,10 @@ contract Unlock is
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
+          // base fee is set to 100 GWEI for chains that does not support block.basefee
+          uint baseFee = block.basefee != 0 ? block.basefee : 100;
+
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint baseFee = block.basefee != 0 ? block.basefee : 10;
           uint tokensToDistribute = (estimatedGasForPurchase * baseFee) * (125 * 10 ** 18) / 100 / udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
