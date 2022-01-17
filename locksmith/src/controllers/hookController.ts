@@ -15,7 +15,7 @@ const Hub = z.object({
   secret: z.string().optional(),
 })
 
-const EXPIRATION_SECONDS_LIMIT = 86400 * 90
+export const EXPIRATION_SECONDS_LIMIT = 86400 * 90
 
 export function getExpiration(leaseSeconds?: number) {
   const limit = leaseSeconds ?? 864000
