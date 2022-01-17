@@ -16,6 +16,7 @@ import { Charge } from './charge'
 import logger from '../logger'
 import { Hook } from './hook'
 import { HookEvent } from './hookEvent'
+import { HookNotifier } from './hookNotifier'
 
 const config = require('../../config/sequelize.config')
 
@@ -41,6 +42,7 @@ sequelize.addModels([
   Charge,
   Hook,
   HookEvent,
+  HookNotifier,
 ])
 
 User.removeAttribute('id')
@@ -62,3 +64,4 @@ export * from './lockIcons'
 export * from './lockMigrations'
 export * from './hook'
 export * from './hookEvent'
+export * from './hookNotifier'
