@@ -19,10 +19,10 @@ export const resolvers = {
       new KeyPurchase().getKeyPurchases(network),
     // eslint-disable-next-line no-unused-vars
     keys: (_root: any, args: any, network: number) =>
-      new Key().getKeys(args, network),
+      new Key(network).getKeys(args),
     // eslint-disable-next-line no-unused-vars
-    key: async (_root: any, args: any, _context: any, _info: any) =>
-      new Key().getKey(args.id),
+    key: async (_root: any, args: any, network: number, _info: any) =>
+      new Key(network).getKey(args.id),
     keyHolders: async (_root: any, args: any, network: number) =>
       new KeyHolder().get(args.where.address, network),
   },

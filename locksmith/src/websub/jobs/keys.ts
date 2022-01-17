@@ -10,13 +10,14 @@ export async function notifyOfKeys(hooks: Hook[]) {
     return TOPIC_KEYS.test(path)
   })
 
-  const keySource = new Key()
-  const networkToLocksMap = await networkMapToFnResult((network) =>
-    keySource.getKeys({ first: 25 }, Number(network))
-  )
+  const networkToLocksMap = await networkMapToFnResult((network) => {
+    const keySource = new Key(Number(network))
+    return keySource.getKeys({ first: 25 })
+  })
+
   for (const hook of subscribed) {
     const data = networkToLocksMap
-      .get(hook.network)
+      .get(Number(hook.network))
       .filter((key: any) => key.lock.id === hook.lock)
     notifyHook(hook, data)
   }

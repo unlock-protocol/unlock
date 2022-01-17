@@ -3,13 +3,15 @@ import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import networks from '@unlock-protocol/networks'
 
 export class Key extends GraphQLDataSource {
-  async getKeys(args: any, network: number) {
+  constructor(public network: number) {
+    super()
     this.baseURL = networks[network].subgraphURI
-    const queryPredicate = args.first ? `(first: ${args.first})` : ''
+  }
 
+  async getKeys(args: any) {
     const keysQuery = gql`
       query Keys($first: Int) {
-        keys${queryPredicate}{
+        keys(first: $first) {
           id
           lock {
             id
