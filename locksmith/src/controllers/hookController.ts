@@ -93,7 +93,7 @@ export async function validHubIntent(hub: z.infer<typeof Hub>) {
     }),
   })
 
-  const json = await result.json()
+  const { hub: json } = await result.json()
 
   if (!result.ok) {
     throw new Error("Subscriber didn't confirm intent.")

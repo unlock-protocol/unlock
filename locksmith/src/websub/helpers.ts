@@ -45,12 +45,15 @@ export async function networkMapToFnResult<T = unknown>(
   run: (network: string) => Promise<T>
 ) {
   const items = await Promise.allSettled(
-    Object.keys(networks).map(async (network) => {
-      return {
-        network,
-        data: await run(network),
-      }
-    })
+    Object.keys(networks)
+      // We don't run this on the localhost network
+      .filter((network) => networks[network].id !== 31337)
+      .map(async (network) => {
+        return {
+          network,
+          data: await run(network),
+        }
+      })
   )
   const map = new Map<string, T>()
 
