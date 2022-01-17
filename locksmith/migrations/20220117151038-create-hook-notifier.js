@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       network: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       sentKeyIds: {
