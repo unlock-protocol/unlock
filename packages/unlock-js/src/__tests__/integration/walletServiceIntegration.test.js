@@ -45,7 +45,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
   const PublicLockVersions =
     unlockVersion === 'v4'
       ? ['v4']
-      : Object.keys(locks).filter((v) => v !== 'v4')
+      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
@@ -129,9 +129,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
 
   describe.each(PublicLockVersions)('using Lock %s', (publicLockVersion) => {
     describe.each(
-      locks[publicLockVersion]
-        .map((lock, index) => [index, lock.name, lock])
-        .filter((d) => d[0] < 1)
+      locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
       let lock
       let expectedLockAddress
