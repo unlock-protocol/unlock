@@ -153,7 +153,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     let gasSpent
 
     beforeEach(async () => {
-      const tx = await lock.purchase(
+      const { blockNumber } = await lock.purchase(
         0,
         keyBuyer,
         referrer,
@@ -164,9 +164,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
           value: await lock.keyPrice(),
         }
       )
-      const transaction = await web3.eth.getTransaction(tx.tx)
+
+      const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
       // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
-      gasSpent = new BigNumber(transaction.gasPrice).times(estimateGas)
+      gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
     })
 
     it('referrer has some UDT now', async () => {
