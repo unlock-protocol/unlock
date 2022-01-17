@@ -11,16 +11,10 @@ module.exports = {
       network: {
         type: Sequelize.INTEGER,
       },
-      lastSentKeyIds: {
+      sentKeyIds: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
-      lastSentLockIds: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-      },
-      keyIds: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-      },
-      lockIds: {
+      sentLockIds: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
       createdAt: {
