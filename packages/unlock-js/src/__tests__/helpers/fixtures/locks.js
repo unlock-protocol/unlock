@@ -94,7 +94,7 @@ export default {
       isERC20: true,
     },
   ],
-  v9: [
-    // v9 is not available for publicLock yet
-  ],
+  // v9 is not available for publicLock yet
+  // v9: [
+  // ],
 }

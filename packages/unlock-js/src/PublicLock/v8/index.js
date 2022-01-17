@@ -1,6 +1,5 @@
 import abis from '../../abis'
 import keyManagerOf from './keyManagerOf'
-import purchaseKey from './purchaseKey'
 
 import v7 from '../v7'
 
@@ -16,6 +15,7 @@ const {
   cancelAndRefund,
   shareKey,
   getLock,
+  purchaseKey,
 } = v7
 
 export default {
