@@ -7,13 +7,18 @@ import encrypter from './encrypter'
 // This function loads the template and performs the actual email sending
 // args: {
 //  template: templateName string
-//  recipient: email aderess string
+//  failoverTemplate: failoverTemplate string
+//  recipient: email address string
 //  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
 //  attachments: array of attachements as data-uri strings (nodemailer will handle them)
 // }
 export const route = (args, callback) => {
-  const template = templates[args.template]
-
+  let template = templates[args.template]
+  
+  if(!template && args.failoverTemplate) {
+    template = templates[args.failoverTemplate]
+  }
+  
   if (!template) {
     return callback(new Error('Missing template'))
   }
