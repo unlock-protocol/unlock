@@ -6,6 +6,7 @@ import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
+import keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69 from './keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69'
 
 export default {
   confirmEmail,
@@ -16,4 +17,5 @@ export default {
   confirmEvent,
   keyOwnership,
   keyMined,
+  keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69
 }
