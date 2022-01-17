@@ -1,19 +1,19 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'HookNotifiers', timestamps: true })
 export class HookNotifier extends Model<HookNotifier> {
   @Column({ primaryKey: true, autoIncrement: false })
   network!: number
 
-  @Column
+  @Column(DataType.ARRAY(DataType.STRING))
   lastSentKeyIds: string[] = []
 
-  @Column
+  @Column(DataType.ARRAY(DataType.STRING))
   lastSentLockIds: string[] = []
 
-  @Column
+  @Column(DataType.ARRAY(DataType.STRING))
   keyIds: string[] = []
 
-  @Column
+  @Column(DataType.ARRAY(DataType.STRING))
   lockIds: string[] = []
 }
