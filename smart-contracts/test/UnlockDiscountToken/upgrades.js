@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers, upgrades } = require('hardhat')
+const { ethers, upgrades, network } = require('hardhat')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 
 const { getProxyAddress } = require('../../helpers/deployments')
@@ -234,7 +234,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       beforeEach(async () => {
         // buy a key
         lock.connect(keyBuyer)
-        const tx = await lock.purchase(
+        const { blockNumber } = await lock.purchase(
           0,
           keyBuyer.address,
           referrer.address,
@@ -245,7 +245,8 @@ contract('UnlockDiscountToken upgrade', async () => {
           }
         )
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
-        gasSpent = new BigNumber(tx.gasPrice).times(estimateGas)
+        const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
+        gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
       })
 
       it('referrer has some UDT now', async () => {
@@ -284,6 +285,11 @@ contract('UnlockDiscountToken upgrade', async () => {
         // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
         const initialGdp = (await lock.keyPrice()).mul(40000)
         await unlock.resetTrackedValue(initialGdp.toString(), 0)
+
+        const baseFeePerGas = 1000000000 // in gwei
+        await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
+          ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+        ])
 
         lock.connect(keyBuyer)
         await lock.purchase(
