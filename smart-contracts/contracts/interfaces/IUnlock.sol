@@ -220,9 +220,7 @@ interface IUnlock
    * @dev this helper can be wrapped in try/catch statement to avoid 
    * revert in networks where EIP-1559 is not implemented
    */
-  function networkBaseFee() external view returns (uint) {
-    return block.basefee;
-  }
+  function networkBaseFee() external view returns (uint);
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns(uint16);
