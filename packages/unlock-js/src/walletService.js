@@ -126,31 +126,6 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Deploys a new template for locks
-   * It's a regular lock, but it will never work (purchase function fails)
-   * It just used as template whose address is fed into configUnlock to deploy
-   * locks through a proxy (keeping gas prices much lower)
-   * @param {*} version
-   * @param {*} callback
-   */
-  async deployTemplate(version, callback) {
-    const factory = new ethers.ContractFactory(
-      abis.PublicLock[version].abi,
-      bytecode.PublicLock[version],
-      this.signer
-    )
-
-    const contract = await factory.deploy()
-
-    if (callback) {
-      callback(null, contract.deployTransaction.hash)
-    }
-    await contract.deployed()
-
-    return contract.address
-  }
-
-  /**
    *  Then we need to call initialize on it. This is critical because otherwise anyone can claim it and then self-destruct it, killing all locks which use the same contract after this.
    * @param {*} params
    * @param {*} callback
