@@ -369,9 +369,11 @@ contract Unlock is
             // no assigned value
             if(_basefee == 0) {
               baseFee = 100;
+            } else {
+              baseFee = _basefee;
             }
           } catch {
-            // block.basefee not supported support
+            // block.basefee not supported
             baseFee = 100;
           }
 
