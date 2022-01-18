@@ -17,6 +17,8 @@ NFTpay allows you to create blockchain-hosted invoices that are hosted for free 
 
 The team used Unlock to create an Ethereum based paywall where a user chooses an eEthereum wallet as the checkout method of choice. [Visit this link if you’d like to learn more](https://showcase.ethglobal.com/nfthack2022/nftpay) about the project and see the team’s amazing demo! 
 
+[![NFTPay thumbnail](/images/blog/nfthack-jan22/nftpay-min.png)](https://showcase.ethglobal.com/nfthack2022/nftpay)
+
 ### Second Prize Winner— NFTResy
 
 NFTResy is a ticketing dApp that allows customers to select and reserve seats for restaurants, concerts, gatherings, and even Metaverse events. The end goal of the NFTResy team is to simply make ticketing easier by using NFTs powered by Unlock. We love that goal! 
@@ -25,11 +27,15 @@ Since the tickets are built as NFTs, they can also be re-sold on platforms like 
 
 NFTResy aims to develop in 2 different ways: real-life, and Metaverse. [Please visit this link to see the demo](https://showcase.ethglobal.com/nfthack2022/nftresy) and learn more about the ultimate vision of the team. 
 
-### Joint Prize Winner (with Livepeer)— Got It
+[![NFTResy thumbnail](/images/blog/nfthack-jan22/nftresy-min.png)](https://showcase.ethglobal.com/nfthack2022/nftresy)
+
+### Joint Prize Winner (with [Livepeer](https://livepeer.com/))— Got It
 
 Got It is an NFT-based ecosystem to help broadcasters better engage with their audiences. Got It is a censorship-resistant video live streaming service with membership-only access options powered by Livepeer, IPFS, and Unlock. 
 
 Be sure to [head over to the Got It team’s showcase page](https://showcase.ethglobal.com/nfthack2022/got-it) to watch their demo and to better understand and support their big vision for reshaping sectors of the media industry! 
+
+[![Got It thumbnail](/images/blog/nfthack-jan22/gotit-min.png)](https://showcase.ethglobal.com/nfthack2022/got-it)
 
 ### **LetterLoops Unlocked!**
 
