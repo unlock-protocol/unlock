@@ -1,6 +1,4 @@
 const BigNumber = require('bignumber.js')
-
-const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
