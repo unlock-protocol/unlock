@@ -312,6 +312,15 @@ contract Unlock is
   }
 
   /**
+   * Helper to get the network mining basefee as introduced in EIP-1559
+   * @dev this helper can be wrapped in try/catch statement to avoid 
+   * revert in networks where EIP-1559 is not implemented
+   */
+  function networkBaseFee() external view returns (uint) {
+    return block.basefee;
+  }
+
+  /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
@@ -354,8 +363,17 @@ contract Unlock is
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
-          // base fee is set to 100 GWEI for chains that does not support block.basefee
-          uint baseFee = block.basefee != 0 ? block.basefee : 100;
+          // base fee default to 100 GWEI for chains that does 
+          uint baseFee;
+          try this.networkBaseFee() returns (uint _basefee) {
+            // no assigned value
+            if(_basefee == 0) {
+              baseFee = 100;
+            }
+          } catch {
+            // block.basefee not supported support
+            baseFee = 100;
+          }
 
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
           uint tokensToDistribute = (estimatedGasForPurchase * baseFee) * (125 * 10 ** 18) / 100 / udtPrice;

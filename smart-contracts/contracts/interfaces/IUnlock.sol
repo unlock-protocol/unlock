@@ -215,6 +215,15 @@ interface IUnlock
   // The approx amount of gas required to purchase a key
   function estimatedGasForPurchase() external view returns(uint);
 
+  /**
+   * Helper to get the network mining basefee as introduced in EIP-1559
+   * @dev this helper can be wrapped in try/catch statement to avoid 
+   * revert in networks where EIP-1559 is not implemented
+   */
+  function networkBaseFee() external view returns (uint) {
+    return block.basefee;
+  }
+
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns(uint16);
 
