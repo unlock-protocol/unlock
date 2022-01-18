@@ -5,10 +5,10 @@ import abis from '../../abis'
  * Configures the Unlock contract by setting its params:
  * @param {*} callback
  */
-export default (unlockAddress, version, params, callback) => {
+export default async (unlockAddress, version, params, callback) => {
   const abi = abis.Unlock[version].abi
-  const unlock = ethers.getContractAt(unlockAddress, abi)
-  return getConfigure(version)(unlock, params, callback)
+  const unlock = await ethers.getContractAt(abi, unlockAddress)
+  return await getConfigure(version)(unlock, params, callback)
 }
 
 function getConfigure(version) {
