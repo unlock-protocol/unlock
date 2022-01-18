@@ -137,15 +137,6 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Configures the Unlock contract by setting its params:
-   * @param {*} callback
-   */
-  async configureUnlock(params, callback) {
-    const version = await this.unlockContractAbiVersion()
-    return version.configureUnlock.bind(this)(params, callback)
-  }
-
-  /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can keep track of it from the application
    * TODO: retrieve the keyPrice, erc20Address from chain when applicable
