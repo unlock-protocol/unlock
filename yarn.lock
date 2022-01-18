@@ -6556,10 +6556,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.4.1":
-  version: 4.4.1
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.4.1"
-  checksum: 8f563fc2724702c92948a760a35928c3fabccbf48b5b0d5ee9485e98ea529784026c9386660c4079b7077b198e682bfd0e075b15c8d69a0841e1426e10b91030
+"@openzeppelin/contracts-upgradeable@npm:4.4.2":
+  version: 4.4.2
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.4.2"
+  checksum: 016cf7b22381a1e482206bf3f9a9ee29f7a317bafefff5aab56c7184b7fc22100b54ec02aa0c3d0f24526e277d7a9a0b858d2912d702b3279bc08a6f5707db55
   languageName: node
   linkType: hard
 
@@ -6577,10 +6577,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.4.1":
-  version: 4.4.1
-  resolution: "@openzeppelin/contracts@npm:4.4.1"
-  checksum: 87ee7ebe8e6493fc4d657b05c5ddb5f254b73bf55d80c25a790f8e74087b6d90c0a6ec504fe45949c27501f73bca7d64129aad29488707a2c9b5afdb035966df
+"@openzeppelin/contracts@npm:4.4.2":
+  version: 4.4.2
+  resolution: "@openzeppelin/contracts@npm:4.4.2"
+  checksum: 5c6be7bfe757c6a43eb5b24aa9c61a79deaed9de4bc5f59356b35f5519b0fb340f4da8b4df99588bded5e6b6a773fc54961917a1c657063247c1763f9752bd0e
   languageName: node
   linkType: hard
 
@@ -12694,7 +12694,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-truffle5": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.4.1
+    "@openzeppelin/contracts": 4.4.2
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.7.0
@@ -12730,8 +12730,8 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.3
     "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.4.1
-    "@openzeppelin/contracts-upgradeable": 4.4.1
+    "@openzeppelin/contracts": 4.4.2
+    "@openzeppelin/contracts-upgradeable": 4.4.2
     "@openzeppelin/hardhat-upgrades": 1.12.0
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0

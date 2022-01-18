@@ -42,20 +42,21 @@ export async function notifyHook(hook: Hook, body: unknown) {
 }
 
 export async function networkMapToFnResult<T = unknown>(
-  run: (network: string) => Promise<T>
+  run: (network: number) => Promise<T>
 ) {
   const items = await Promise.allSettled(
-    Object.keys(networks)
+    Object.values(networks)
       // We don't run this on the localhost network
-      .filter((network) => networks[network].id !== 31337)
+      .filter((network) => network.id !== 31337)
       .map(async (network) => {
+        const networkId = network.id
         return {
-          network,
-          data: await run(network),
+          network: networkId,
+          data: await run(networkId),
         }
       })
   )
-  const map = new Map<string, T>()
+  const map = new Map<number, T>()
 
   for (const item of items) {
     if (item.status === 'fulfilled') {
