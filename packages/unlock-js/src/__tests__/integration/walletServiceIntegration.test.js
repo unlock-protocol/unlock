@@ -2,7 +2,7 @@ import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
-import { deployUnlock, configureUnlock } from '../helpers'
+import { deployUnlock, configureUnlock, deployTemplate } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 
@@ -59,7 +59,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
     networks[chainId].ethersProvider = ethersProvider
 
     // deploy Unlock
-    const unlockAddress = await deployUnlock(unlockVersion, signer)
+    const unlockAddress = await deployUnlock(unlockVersion)
     networks[chainId].unlockAddress = unlockAddress
 
     walletService = new WalletService(networks)
@@ -88,7 +88,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
         let publicLockTemplateAddress
         it('should be able to deploy the lock contract template', async () => {
           expect.assertions(2)
-          publicLockTemplateAddress = await walletService.deployTemplate(
+          publicLockTemplateAddress = await deployTemplate(
             publicLockVersion,
             (error, hash) => {
               if (error) {
@@ -106,6 +106,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
           const { unlockAddress } = walletService
           const receipt = await configureUnlock(
             unlockAddress,
+            unlockVersion,
             {
               publicLockTemplateAddress,
               globalTokenSymbol: 'TESTK',
@@ -145,9 +146,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
           const unlock = await walletService.getUnlockContract()
 
           // deploy the relevant template
-          const templateAddress = await walletService.deployTemplate(
-            publicLockVersion
-          )
+          const templateAddress = await deployTemplate(publicLockVersion)
 
           // set the right template in Unlock
           const tx = await unlock.setLockTemplate(templateAddress)

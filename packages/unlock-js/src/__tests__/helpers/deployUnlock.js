@@ -6,7 +6,9 @@ import bytecode from '../../bytecode'
  * Deploys the unlock contract and initializes it.
  * This will call the callback twice, once for each transaction
  */
-export default async (version, signer, callback) => {
+export default async (version, callback) => {
+  const [signer] = await ethers.getSigners()
+
   // First, deploy the contract
   const Unlock = await ethers.getContractFactory(
     abis.Unlock[version].abi,

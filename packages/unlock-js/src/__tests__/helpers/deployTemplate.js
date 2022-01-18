@@ -11,10 +11,11 @@ import bytecode from '../../bytecode'
  * @param {*} callback
  */
 export default async (version, callback) => {
+  const [signer] = await ethers.getSigners()
   const factory = await ethers.getContractFactory(
     abis.PublicLock[version].abi,
     bytecode.PublicLock[version],
-    this.signer
+    signer
   )
 
   const contract = await factory.deploy()
