@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers, upgrades } = require('hardhat')
+const { ethers, network, upgrades } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const Unlock = artifacts.require('Unlock.sol')
@@ -13,6 +13,7 @@ let udt
 let lock
 
 const estimateGas = 252166 * 2
+const baseFeePerGas = 1000000000 // in gwei
 
 contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
@@ -153,7 +154,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     let gasSpent
 
     beforeEach(async () => {
-      const tx = await lock.purchase(
+      const { blockNumber } = await lock.purchase(
         0,
         keyBuyer,
         referrer,
@@ -164,9 +165,12 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
           value: await lock.keyPrice(),
         }
       )
-      const transaction = await web3.eth.getTransaction(tx.tx)
+
+      const { baseFeePerGas: baseFeePerGasBlock } =
+        await ethers.provider.getBlock(blockNumber)
+
       // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
-      gasSpent = new BigNumber(transaction.gasPrice).times(estimateGas)
+      gasSpent = new BigNumber(baseFeePerGasBlock.toString()).times(estimateGas)
     })
 
     it('referrer has some UDT now', async () => {
@@ -209,7 +213,11 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         from: protocolOwner,
       })
 
-      await lock.purchase(
+      await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
+        ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+      ])
+
+      const { blockNumber } = await lock.purchase(
         0,
         keyBuyer,
         referrer,
@@ -220,6 +228,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
           value: await lock.keyPrice(),
         }
       )
+
+      const { baseFeePerGas: baseFeePerGasBlock } =
+        await ethers.provider.getBlock(blockNumber)
+      assert(baseFeePerGasBlock.eq(baseFeePerGas))
     })
 
     it('referrer has some UDT now', async () => {
