@@ -2,7 +2,7 @@ import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
-import deployUnlock from '../helpers/deployUnlock'
+import { deployUnlock, configureUnlock } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 
@@ -103,7 +103,9 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
         it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
           expect.assertions(2)
           let transactionHash
-          const receipt = await walletService.configureUnlock(
+          const { unlockAddress } = walletService
+          const receipt = await configureUnlock(
+            unlockAddress,
             {
               publicLockTemplateAddress,
               globalTokenSymbol: 'TESTK',
