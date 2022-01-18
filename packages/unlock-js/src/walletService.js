@@ -1,9 +1,5 @@
-import { ethers } from 'ethers'
 import UnlockService from './unlockService'
 import utils from './utils'
-
-const bytecode = require('./bytecode').default
-const abis = require('./abis').default
 
 /**
  * This service interacts with the user's wallet.
