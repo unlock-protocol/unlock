@@ -4,7 +4,7 @@ subTitle: Hacking NFTs using Unlock at the latest ETHGlobal Hackathon
 authorName: Crystal Street
 publishDate: January 17, 2022
 description: ETHGlobal’s latest hackathon, NFTHack 2022 brought forward some fabulous opportunities for teams to deploy Unlock Protocol — and win prizes!
-image: /images/blog/nfthack-jan22/nfthack.jpg
+image: /images/blog/nfthack-jan22/nfthack.png
 ---
 
 Whenever we get the call to step into the ETHGlobal Hackathons, our team gets almost giddy at the possibilities. Of course, we have our visions for deploying Unlock in ALL the places, but we love to see the innovation and creativity that flows from the hackers participating in these events. Such collaborations from a decentralized viewpoint really do show what’s possible with this ground-breaking technology.
