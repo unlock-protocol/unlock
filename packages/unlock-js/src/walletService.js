@@ -162,39 +162,6 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Deploys the unlock contract and initializes it.
-   * This will call the callback twice, once for each transaction
-   */
-  async deployUnlock(version, callback) {
-    // First, deploy the contract
-
-    const factory = new ethers.ContractFactory(
-      abis.Unlock[version].abi,
-      bytecode.Unlock[version],
-      this.signer
-    )
-    const unlockContract = await factory.deploy()
-
-    if (callback) {
-      callback(null, unlockContract.deployTransaction.hash)
-    }
-
-    await unlockContract.deployed()
-
-    // Let's now run the initialization
-    const address = await this.signer.getAddress()
-    const writableUnlockContract = unlockContract.connect(this.signer)
-    const transaction = await writableUnlockContract.initialize(address)
-
-    if (callback) {
-      callback(null, transaction.hash)
-    }
-    await this.provider.waitForTransaction(transaction.hash)
-    this.unlockAddress = unlockContract.address
-    return unlockContract.address
-  }
-
-  /**
    * Configures the Unlock contract by setting its params:
    * @param {*} callback
    */

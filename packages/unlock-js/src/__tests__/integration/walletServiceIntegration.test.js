@@ -2,6 +2,7 @@ import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
+import deployUnlock from '../helpers/deployUnlock'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 
@@ -57,13 +58,13 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
     // pass hardhat ethers provider
     networks[chainId].ethersProvider = ethersProvider
 
+    // deploy Unlock
+    const unlockAddress = await deployUnlock(unlockVersion, signer)
+    networks[chainId].unlockAddress = unlockAddress
+
     walletService = new WalletService(networks)
 
     await walletService.connect(ethersProvider, signer)
-
-    const unlockAddress = await walletService.deployUnlock(unlockVersion)
-    networks[chainId].unlockAddress = unlockAddress
-
     web3Service = new Web3Service(networks)
 
     accounts = await walletService.provider.listAccounts()
