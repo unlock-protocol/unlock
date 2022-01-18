@@ -1,7 +1,7 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('HookNotifiers', {
+    await queryInterface.createTable('ProcessedHookItems', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,11 +12,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      sentKeyIds: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+      type: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
-      sentLockIds: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+      objectId: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +31,6 @@ module.exports = {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('HookNotifiers')
+    await queryInterface.dropTable('ProcessedHookItems')
   },
 }
