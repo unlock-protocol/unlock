@@ -6556,10 +6556,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.4.1":
-  version: 4.4.1
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.4.1"
-  checksum: 8f563fc2724702c92948a760a35928c3fabccbf48b5b0d5ee9485e98ea529784026c9386660c4079b7077b198e682bfd0e075b15c8d69a0841e1426e10b91030
+"@openzeppelin/contracts-upgradeable@npm:4.4.2":
+  version: 4.4.2
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.4.2"
+  checksum: 016cf7b22381a1e482206bf3f9a9ee29f7a317bafefff5aab56c7184b7fc22100b54ec02aa0c3d0f24526e277d7a9a0b858d2912d702b3279bc08a6f5707db55
   languageName: node
   linkType: hard
 
@@ -6577,10 +6577,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.4.1":
-  version: 4.4.1
-  resolution: "@openzeppelin/contracts@npm:4.4.1"
-  checksum: 87ee7ebe8e6493fc4d657b05c5ddb5f254b73bf55d80c25a790f8e74087b6d90c0a6ec504fe45949c27501f73bca7d64129aad29488707a2c9b5afdb035966df
+"@openzeppelin/contracts@npm:4.4.2":
+  version: 4.4.2
+  resolution: "@openzeppelin/contracts@npm:4.4.2"
+  checksum: 5c6be7bfe757c6a43eb5b24aa9c61a79deaed9de4bc5f59356b35f5519b0fb340f4da8b4df99588bded5e6b6a773fc54961917a1c657063247c1763f9752bd0e
   languageName: node
   linkType: hard
 
@@ -12526,6 +12526,7 @@ __metadata:
     express-winston: 4.2.0
     graphql: 15.8.0
     graphql-tag: 2.12.6
+    html-template-tag: ^4.0.0
     isomorphic-fetch: 3.0.0
     jest: 27.4.5
     lodash.isequal: 4.5.0
@@ -12557,6 +12558,7 @@ __metadata:
     winston: 3.3.3
     winston-sentry-log: 1.0.24
     yargs: 17.3.1
+    zod: ^3.11.6
   languageName: unknown
   linkType: soft
 
@@ -12692,7 +12694,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-truffle5": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.4.1
+    "@openzeppelin/contracts": 4.4.2
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.7.0
@@ -12728,8 +12730,8 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.3
     "@nomiclabs/hardhat-waffle": 2.0.1
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.4.1
-    "@openzeppelin/contracts-upgradeable": 4.4.1
+    "@openzeppelin/contracts": 4.4.2
+    "@openzeppelin/contracts-upgradeable": 4.4.2
     "@openzeppelin/hardhat-upgrades": 1.12.0
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
@@ -12821,7 +12823,9 @@ __metadata:
     postcss: ^8.4.5
     react: ^17.0.2
     react-dom: ^17.0.2
+    react-icons: ^4.3.1
     storybook-builder-vite: ^0.1.13
+    tailwind-merge: ^1.2.0
     tailwindcss: ^3.0.13
     typescript: ^4.4.4
     vite: ^2.7.2
@@ -15371,7 +15375,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
+  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
   languageName: node
   linkType: hard
 
@@ -27061,6 +27065,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"hashlru@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "hashlru@npm:2.3.0"
+  checksum: 38b3559e6fb9d19fa731edc52d8d7e72cd378f708dcb01cecd4a6ba0c52f06d7d06d6277249f5c43d9915d8dda9be31adad768a379eef188db213c3f2b09278d
+  languageName: node
+  linkType: hard
+
 "hast-to-hyperscript@npm:^9.0.0":
   version: 9.0.1
   resolution: "hast-to-hyperscript@npm:9.0.1"
@@ -27349,6 +27360,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"html-es6cape@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "html-es6cape@npm:2.0.0"
+  checksum: c47b0fff25db186732374e4d8ac9bf12c54058107a15ba8feb5c0bcb6b07575f551f2e02ee3f57078235475641b084e0bce586aae93b3fa7e7fdd51b392ce6a2
+  languageName: node
+  linkType: hard
+
 "html-escaper@npm:^2.0.0":
   version: 2.0.2
   resolution: "html-escaper@npm:2.0.2"
@@ -27394,6 +27412,15 @@ fsevents@~2.1.1:
   version: 3.1.0
   resolution: "html-tags@npm:3.1.0"
   checksum: 67587f2d4022390d7bc34b1313773ecb0b0e0c79fb331aa3e20023eb4c862c7188a1ff775d126fcd75f4e4f08f956666a1c57688c4d24d85a77f9d4b1a42f345
+  languageName: node
+  linkType: hard
+
+"html-template-tag@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "html-template-tag@npm:4.0.0"
+  dependencies:
+    html-es6cape: ^2.0.0
+  checksum: 643bbfeb3714cb845db8a17b84404288b778b8d767fdd25707859188d6f5e63dbcca89d6ab8e1e304d29682f3793bf5f5ddcf80c1f57d4df6ef8e13a40b42718
   languageName: node
   linkType: hard
 
@@ -38658,6 +38685,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react-icons@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "react-icons@npm:4.3.1"
+  peerDependencies:
+    react: "*"
+  checksum: 2cc608acdd3e906aa3aaee290b8398220639677c949382d86e554020e5dab6a9f1ed7484418aa5272cb5c5c018e1fc9a323d433d901697a76530029f9ecb1263
+  languageName: node
+  linkType: hard
+
 "react-input-autosize@npm:^3.0.0":
   version: 3.0.0
   resolution: "react-input-autosize@npm:3.0.0"
@@ -43102,6 +43138,15 @@ resolve@^2.0.0-next.3:
     slice-ansi: ^2.1.0
     string-width: ^3.0.0
   checksum: 9e35d3efa788edc17237eef8852f8e4b9178efd65a7d115141777b2ee77df4b7796c05f4ed3712d858f98894ac5935a481ceeb6dcb9895e2f67a61cce0e63b6c
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "tailwind-merge@npm:1.2.0"
+  dependencies:
+    hashlru: ^2.3.0
+  checksum: 811fbb6bfd1c396516ffb30e63addb40e0d4aaf8e30be971f3710a936dd5ddcf739e1704df33defc0490f38eaf08dbea6118197ffd5d45e45eaef565729ffb38
   languageName: node
   linkType: hard
 
@@ -49610,6 +49655,13 @@ typescript@^3.8.3:
   version: 0.8.15
   resolution: "zen-observable@npm:0.8.15"
   checksum: b7289084bc1fc74a559b7259faa23d3214b14b538a8843d2b001a35e27147833f4107590b1b44bf5bc7f6dfe6f488660d3a3725f268e09b3925b3476153b7821
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.11.6":
+  version: 3.11.6
+  resolution: "zod@npm:3.11.6"
+  checksum: 044ac416450f179a0c88240f27849d2886c777cebade42df10e5f04125b0265cec82d9bd741a7dcb11796b2ea88b32c86be7d36932a4bed6af57002560359db1
   languageName: node
   linkType: hard
 
