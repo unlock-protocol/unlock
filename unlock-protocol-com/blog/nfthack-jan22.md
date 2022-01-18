@@ -13,9 +13,9 @@ As a sponsor for the NFTHack 2022, we were able to participate in the judging of
 
 ### First Prize Winner— NFTpay
 
-NFTpay allows you to create blockchain-hosted invoices that are hosted for free using IPFS and can be fulfilled with crypto or credit card payments. Receipts are auto-hosted as NFT's with no chance of losing an attachment or document showing the time and receipt of purchase. Receipt and time of purchase are forever retained on Ethereum's network. 
+NFTpay allows you to create blockchain-hosted invoices that are hosted for free using IPFS and can be fulfilled with crypto or credit card payments. Receipts are auto-hosted as NFTs with no chance of losing an attachment or document showing the time and receipt of purchase. Receipt and time of purchase are forever retained on Ethereum's network. 
 
-The team used Unlock to create an Ethereum based paywall where a user chooses an eEthereum wallet as the checkout method of choice. [Visit this link if you’d like to learn more](https://showcase.ethglobal.com/nfthack2022/nftpay) about the project and see the team’s amazing demo! 
+The team used Unlock to create an Ethereum based paywall where a user chooses an Ethereum wallet as the checkout method of choice. [Visit this link if you’d like to learn more](https://showcase.ethglobal.com/nfthack2022/nftpay) about the project and see the team’s amazing demo! 
 
 [![NFTPay thumbnail](/images/blog/nfthack-jan22/nftpay-min.png)](https://showcase.ethglobal.com/nfthack2022/nftpay)
 
@@ -45,25 +45,25 @@ LetterLoops is a quiz game that uses dialectic graph networks to re-imagine huma
 
 ### Graffiti Mint
 
-A Dapp to digitize and mint street art from IRL graffiti events. Graffiti Mint helps to digitize, mint, and monetize graffiti events. It integrates ERC1155 NFTs for 4-tier season passes for event supporters and ERC751 contracts to mint street art made in graffiti events at city parks as NFTs. 
+A Dapp to digitize and mint street art from IRL graffiti events. Graffiti Mint helps to digitize, mint, and monetize graffiti events. It integrates ERC1155 NFTs for 4-tier season passes for event supporters and ERC721 contracts to mint street art made in graffiti events at city parks as NFTs. 
 
 [Head over to their showcase page](https://showcase.ethglobal.com/nfthack2022/graffiti-mint) and take a few minutes to see this creative project in action!
 
 ### Exclusive EveNFT
 
-Dapp created for events like wedding websites where guests can mint party gifts after the event on Polygon. Exclusive EveNFT is working to create a decentralized event website that could serve as membership and allow the host to send gifts to participants after the event.  and theknot, use just pure email addresses for giving guests access to these event sites.
+Dapp created for events like wedding websites where guests can mint party gifts after the event on Polygon. Exclusive EveNFT is working to create a decentralized event website that could serve as membership and allow the host to send gifts to participants after the event.
 
 Learn more about the project and [their big vision at this link.](https://showcase.ethglobal.com/nfthack2022/exclusive-evenft) 
 
 ### Member Only Event
 
-Member Only Event is a Dapp that allows group members to access online events and join discussions. The team aims to build a decentralized application that can interact with a membership NFT contract, and implement members' only access to exclusive content and events.
+Member Only Event is a dapp that allows group members to access online events and join discussions. The team aims to build a decentralized application that can interact with a membership NFT contract, and implement members' only access to exclusive content and events.
 
 Learn more about the project’s ultimate vision and [see their demo at this link.](https://showcase.ethglobal.com/nfthack2022/member-only-event)
 
 ### Real Meta Key
 
-Real Meta Key enables users to support public goods and crypto brands through stream payments, get NFT as rewards. The special NFT can be used to collect additional rewards such as activation codes and is powered by Unlock. 
+Real Meta Key enables users to support public goods and crypto brands through stream payments and get NFT as rewards. The special NFT can be used to collect additional rewards such as activation codes and is powered by Unlock. 
 
 The project details, including how it was built, [can be found on their showcase page.](https://showcase.ethglobal.com/nfthack2022/real-meta-key)
 
