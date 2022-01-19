@@ -1,17 +1,29 @@
 import { WebhookClient, MessageEmbed } from 'discord.js'
 import express from 'express'
 import type { Request, Response, NextFunction } from 'express'
+import crypto from 'crypto'
 import { config } from './config'
 
 const webhookClient = new WebhookClient(config)
+const port = process.env.PORT || 4040
 
 const app = express()
 app.use(express.json())
 
 const websubMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body?.hub?.mode === 'subscribe' && req.body?.hub?.challenge) {
+  if (req.body?.hub?.challenge) {
     res.json(req.body)
   } else {
+    if (req.headers['x-hub-signature']) {
+      const signature = req.headers['x-hub-signature']
+      const hash = crypto.createHmac('sha256', config.signKey)
+      const digest = hash.update(JSON.stringify(req.body)).digest('hex')
+      if (digest === signature) {
+        next()
+      } else {
+        return
+      }
+    }
     next()
   }
 }
@@ -53,7 +65,7 @@ app.post('/callback/keys', websubMiddleware, (req) => {
   })
 })
 
-app.listen(4040, () => {
+app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log('Listening for websub requests on port 4000')
 })
