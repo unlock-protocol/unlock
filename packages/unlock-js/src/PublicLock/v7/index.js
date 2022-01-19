@@ -1,5 +1,4 @@
 import abis from '../../abis'
-import purchaseKey from './purchaseKey'
 import grantKey from './grantKey'
 import isLockManager from './isLockManager'
 import isKeyGranter from './isKeyGranter'
@@ -11,7 +10,13 @@ import getLock from './getLock'
 
 import v6 from '../v6'
 
-const { shareKey, initializeTemplate, withdrawFromLock, updateKeyPrice } = v6
+const {
+  shareKey,
+  initializeTemplate,
+  withdrawFromLock,
+  updateKeyPrice,
+  purchaseKey,
+} = v6
 
 export default {
   version: 'v7',

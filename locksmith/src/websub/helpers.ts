@@ -2,6 +2,21 @@ import { networks } from '@unlock-protocol/networks'
 import pRetry from 'p-retry'
 import { Hook, HookEvent } from '../models'
 
+const notify = (hook: Hook, body: unknown) => async () => {
+  const response = await fetch(hook.callback, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    throw new Error(`${response.status} - ${response.statusText}`)
+  }
+  return response.json()
+}
+
 export async function notifyHook(hook: Hook, body: unknown) {
   const hookEvent = new HookEvent()
   hookEvent.network = hook.network
@@ -9,22 +24,11 @@ export async function notifyHook(hook: Hook, body: unknown) {
   hookEvent.lock = hook.lock
   hookEvent.state = 'pending'
   hookEvent.attempts = 0
-  const notify = async () => {
-    const response = await fetch(hook.callback, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
+  hookEvent.body = JSON.stringify(body)
 
-    if (!response.ok) {
-      throw new Error(`${response.status} - ${response.statusText}`)
-    }
-    return response.json()
-  }
+  await hookEvent.save()
 
-  const result = await pRetry(notify, {
+  const result = await pRetry(notify(hook, body), {
     onFailedAttempt(error: Error) {
       hookEvent.attempts += 1
       hookEvent.state = 'failed'
@@ -35,28 +39,27 @@ export async function notifyHook(hook: Hook, body: unknown) {
   })
 
   if (result) {
-    hookEvent.body = JSON.stringify(body)
     hookEvent.state = 'success'
     hookEvent.save()
   }
 }
 
 export async function networkMapToFnResult<T = unknown>(
-  run: (network: string) => Promise<T>
+  run: (network: number) => Promise<T>
 ) {
   const items = await Promise.allSettled(
-    Object.keys(networks)
+    Object.values(networks)
       // We don't run this on the localhost network
-      .filter((network) => networks[network].id !== 31337)
+      .filter((network) => network.id !== 31337)
       .map(async (network) => {
+        const networkId = network.id
         return {
-          network,
-          data: await run(network),
+          network: networkId,
+          data: await run(networkId),
         }
       })
   )
-  const map = new Map<string, T>()
-
+  const map = new Map<number, T>()
   for (const item of items) {
     if (item.status === 'fulfilled') {
       const { network, data } = item.value
