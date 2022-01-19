@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -30,7 +29,6 @@ interface IPublicLockV9
    * @dev This is okay to use even if the lock is priced in ERC-20 tokens
    */
   // receive() external payable;
-  // fallback() external payable;
 
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
@@ -41,7 +39,7 @@ interface IPublicLockV9
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
   */
-  function publicLockVersion() external pure returns (uint);
+  function publicLockVersion() external pure returns (uint16);
 
   /**
   * @notice Used to disable lock before migrating keys and/or destroying contract.
@@ -86,6 +84,15 @@ interface IPublicLockV9
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
+   * A function to change the default duration of each key in the lock
+   * @notice keys previously bought are unaffected by this change (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased 
+   * or zero (0) for a non-expiring key
+   */
+  function setExpirationDuration(uint _newExpirationDuration) external;
+
+  /**
    * A function which lets a Lock manager update the beneficiary account,
    * which receives funds on withdrawal.
    * @dev Throws if called by other than a Lock manager or beneficiary
@@ -119,7 +126,7 @@ interface IPublicLockV9
   function keyExpirationTimestampFor(
     address _keyOwner
   ) external view returns (uint timestamp);
-
+  
   /**
    * Public function which returns the total number of unique owners (both expired
    * and valid).  This may be larger than totalSupply.
@@ -178,7 +185,9 @@ interface IPublicLockV9
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
-    address _onKeyCancelHook
+    address _onKeyCancelHook,
+    address _onValidKeyHook,
+    address _onTokenURIHook
   ) external;
 
   /**
@@ -200,6 +209,7 @@ interface IPublicLockV9
   * (_value is ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _keyManager optional address to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
@@ -210,8 +220,21 @@ interface IPublicLockV9
     uint256 _value,
     address _recipient,
     address _referrer,
+    address _keyManager,
     bytes calldata _data
   ) external payable;
+
+  /**
+  * @param _gasRefundValue price in wei or token in smallest price unit
+  * @dev Set the value to be refunded to the sender on purchase
+  */
+  function setGasRefundValue(uint256 _gasRefundValue) external;
+  
+  /**
+  * _gasRefundValue price in wei or token in smallest price unit
+  * @dev Returns the value/rpice to be refunded to the sender on purchase
+  */
+  function gasRefundValue() external view returns (uint256 _gasRefundValue);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
@@ -300,10 +323,20 @@ interface IPublicLockV9
   function onKeyPurchaseHook() external view returns(address);
 
   function onKeyCancelHook() external view returns(address);
+  
+  function onValidKeyHook() external view returns(bool);
+
+  function onTokenURIHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;
 
   function renounceLockManager() external;
+
+  /**
+   * @dev Change the maximum number of keys the lock can edit
+   * @param _maxNumberOfKeys uint the maximum number of keys
+   */
+  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
@@ -319,8 +352,6 @@ interface IPublicLockV9
   function keyPrice() external view returns (uint256 );
 
   function maxNumberOfKeys() external view returns (uint256 );
-
-  function owners(uint256 ) external view returns (address );
 
   function refundPenaltyBasisPoints() external view returns (uint256 );
 
