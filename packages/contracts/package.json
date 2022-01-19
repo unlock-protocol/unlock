@@ -9,6 +9,7 @@
         "build": "yarn build:index && yarn build:dist",
         "build:dist": "yarn clean && tsc && yarn contracts:copy",
         "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
+        "ci": "yarn test",
         "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist"
     },
     "devDependencies": {
