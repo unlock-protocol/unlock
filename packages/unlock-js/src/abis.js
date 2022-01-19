@@ -558,7 +558,8 @@ const abis = {
         "function chainId() view returns (uint256)",
         "function computeAvailableDiscountFor(address,uint256) pure returns (uint256 discount,uint256 tokens)",
         "function configUnlock(address _udt,address _weth,uint256 _estimatedGasForPurchase,string _symbol,string _URI,uint256 _chainId)",
-        "function createLock(bytes data) returns (address)",
+        "function createLock(uint256 _expirationDuration,address _tokenAddress,uint256 _keyPrice,uint256 _maxNumberOfKeys,string _lockName,bytes12) returns (address)",
+        "function createUpgradeableLock(bytes data) returns (address)",
         "function estimatedGasForPurchase() view returns (uint256)",
         "function getGlobalBaseTokenURI() view returns (string)",
         "function getGlobalTokenSymbol() view returns (string)",
@@ -589,7 +590,7 @@ const abis = {
         "function upgradeLock(address lockAddress,uint16 version) returns (address)",
         "function weth() view returns (address)"
       ],
-      "bytecodeHash": "0x6809c717c8c974353a7c1e7ff4e87d18a8e74323d6dc03d5001f4a8833032fb9"
+      "bytecodeHash": "0x81e49b5cc6f523a46b17d6d6b3658eb34eab85dee56a711bdb06f66358002555"
     }
   }
 }
