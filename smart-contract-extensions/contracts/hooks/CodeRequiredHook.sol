@@ -3,7 +3,7 @@ pragma solidity 0.8.2;
 
 import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
 import '@unlock-protocol/contracts/dist/PublicLock/ILockKeyPurchaseHookV7.sol';
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '../mixins/LockRoles.sol';
 
 
@@ -24,7 +24,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
    * @notice Allows the lock manager to add one or more codes.
    */
   function addCodes(
-    IPublicLockV9 _lock,
+    IPublicLockV8 _lock,
     address[] calldata _codeAddresses
   ) external
     onlyLockManager(_lock)
@@ -40,7 +40,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
    * @notice Allows the lock manager to remove one or more codes.
    */
   function removeCodes(
-    IPublicLockV9 _lock,
+    IPublicLockV8 _lock,
     address[] calldata _codeAddresses
   ) external
     onlyLockManager(_lock)
@@ -63,7 +63,7 @@ contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
   ) external override view
     returns (uint minKeyPrice)
   {
-    return IPublicLockV9(msg.sender).keyPrice();
+    return IPublicLockV8(msg.sender).keyPrice();
   }
 
   /**

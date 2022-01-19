@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.2;
 
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '../mixins/LockRoles.sol';
 
 contract ExternalRefund is LockRoles
 {
-  IPublicLockV9 public lock;
+  IPublicLockV8 public lock;
   mapping(address => bool) public refundee;
   uint256 public refundAmount;
   IERC20 public baseToken;
@@ -18,7 +18,7 @@ contract ExternalRefund is LockRoles
     uint _amount
   );
 
-  constructor(IPublicLockV9 _lockAddress, uint256 _refundAmount, IERC20 _token)
+  constructor(IPublicLockV8 _lockAddress, uint256 _refundAmount, IERC20 _token)
   {
     lock = _lockAddress;
     refundAmount = _refundAmount;

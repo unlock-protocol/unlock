@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.2;
 
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 
 
@@ -10,11 +10,11 @@ import '@openzeppelin/contracts/access/Ownable.sol';
  */
 contract MutableLock is Ownable
 {
-  IPublicLockV9 public lock;
+  IPublicLockV8 public lock;
 
   uint public callCounter;
 
-  function setLock(IPublicLockV9 _lockAddress) public onlyOwner
+  function setLock(IPublicLockV8 _lockAddress) public onlyOwner
   {
     lock = _lockAddress;
   }

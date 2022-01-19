@@ -4,7 +4,7 @@ pragma solidity 0.8.2;
 import './KeyPurchaser.sol';
 import './utils/Clone2Factory.sol';
 import './utils/Clone2Probe.sol';
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 
 /**
  * @notice A factory for creating keyPurchasers.
@@ -35,7 +35,7 @@ contract KeyPurchaserFactory
   }
 
   function _getClone2Salt(
-    IPublicLockV9 _lock,
+    IPublicLockV8 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -52,7 +52,7 @@ contract KeyPurchaserFactory
    * @dev This works whether or not the keyPurchaser has actually been deployed yet.
    */
   function getExpectedAddress(
-    IPublicLockV9 _lock,
+    IPublicLockV8 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
@@ -72,7 +72,7 @@ contract KeyPurchaserFactory
    * @dev See KeyPurchaser for a description of the other params.
    */
   function deployKeyPurchaser(
-    IPublicLockV9 _lock,
+    IPublicLockV8 _lock,
     uint _maxKeyPrice,
     uint _renewWindow,
     uint _renewMinFrequency,
