@@ -29,9 +29,15 @@ describe('HookController', () => {
 
       expect(expiration2).toBe(expectedExpiration2)
 
-      expect(() => {
-        controller.getExpiration(controller.options.leaseSeconds.limit + 1)
-      }).toBe(controller.options.leaseSeconds.limit)
+      const expiration3 = controller
+        .getExpiration(controller.options.leaseSeconds.limit + 1)
+        .getTime()
+
+      const expectedExpiration3 = controller
+        .getExpiration(controller.options.leaseSeconds.limit)
+        .getTime()
+
+      expect(expiration3).toBe(expectedExpiration3)
     })
 
     it('getLeaseSeconds', () => {
