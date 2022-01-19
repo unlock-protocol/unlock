@@ -12,6 +12,7 @@ jobs:
         "locksmith",
         "packages/unlock-js",
         "packages/paywall",
+        "packages/contracts",
         "newsletter",
         "smart-contracts",
         "smart-contract-extensions",
