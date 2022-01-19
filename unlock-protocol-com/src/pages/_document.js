@@ -26,7 +26,7 @@ export default class MyDocument extends Document {
             href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.2/build/styles/default.min.css"
           />
 
-          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.ico" />
           {this.props.styleTags}
         </Head>
         <body>
