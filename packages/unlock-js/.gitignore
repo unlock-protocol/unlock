@@ -9,4 +9,4 @@ coverage/
 cache
 src/__tests__/contracts
 src/__tests__/artifacts
-src/__tests__
+.openzeppelin/unknown-31337.json

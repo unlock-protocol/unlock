@@ -43,7 +43,15 @@ task(TASK_JEST, 'Runs jest tests').setAction(
   }
 )
 module.exports = {
-  solidity: '0.8.2',
+  solidity: {
+    version: '0.8.2',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 10,
+      },
+    },
+  },
   paths: {
     sources: './src/__tests__/contracts',
     artifacts: './src/__tests__/artifacts',
