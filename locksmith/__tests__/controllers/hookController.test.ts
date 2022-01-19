@@ -68,7 +68,7 @@ describe('HookController', () => {
           },
         })
 
-      expect(response2.status).toBe(400)
+      expect(response2.status).toBe(404)
       expect(response2.text).toBe('Unsupported Network')
 
       const response3 = await request(app)

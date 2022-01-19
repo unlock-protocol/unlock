@@ -39,7 +39,7 @@ export class HookController {
   async handle(request: SubscribeRequest, response: Response) {
     const network = this.getNetwork(request.params.network)
     if (!network) {
-      return response.status(400).send('Unsupported Network')
+      return response.status(404).send('Unsupported Network')
     }
     const result = await Hub.safeParseAsync(request.body.hub)
     if (!result.success) {
