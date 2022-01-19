@@ -16,7 +16,7 @@
     "build-cjs": "BABEL_ENV=cjs npx babel src --ignore src/__tests__ --out-dir lib",
     "build:abis": "node ./scripts/compressAbi.js",
     "build": "yarn clean && yarn build:abis && yarn build-cjs && yarn build-esm",
-    "clean": "rm -rf lib/ && rm -rf esm/",
+    "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -b 1"
