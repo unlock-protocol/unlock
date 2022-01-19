@@ -1,14 +1,23 @@
 import { networks } from '@unlock-protocol/networks'
 import pRetry from 'p-retry'
+import crypto from 'crypto'
 import { Hook, HookEvent } from '../models'
 
 const notify = (hook: Hook, body: unknown) => async () => {
+  const headers = new Headers()
+  const bodyString = JSON.stringify(body)
+  headers.append('Content-Type', 'application/json')
+  if (hook.secret) {
+    const signature = crypto
+      .createHmac('sha256', hook.secret)
+      .update(bodyString)
+      .digest('hex')
+    headers.append('X-Hub-Signature', `sha256=${signature}`)
+  }
   const response = await fetch(hook.callback, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: headers,
     method: 'POST',
-    body: JSON.stringify(body),
+    body: bodyString,
   })
 
   if (!response.ok) {
