@@ -15,7 +15,7 @@ describe('OpenGraphTags', () => {
     ).toBe(PAGE_DESCRIPTION)
     expect(
       tags.container.querySelector("meta[property='og:image']").content
-    ).toBe('https://unlock-protocol.com/images/pages/png/simple.png')
+    ).toBe('https://unlock-protocol.com/images/pages/png/unlock-protocol-ogimage.png')
     expect(
       tags.container.querySelector("meta[property='og:type']").content
     ).toBe('website')
