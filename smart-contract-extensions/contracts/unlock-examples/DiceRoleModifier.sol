@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.2;
 
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 
 
 /**
@@ -9,10 +9,10 @@ import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
  */
 contract DiceRoleModifier
 {
-  IPublicLockV9 public lock;
+  IPublicLockV8 public lock;
   event Roll(uint256 value);
 
-  constructor(IPublicLockV9 _lockAddress)
+  constructor(IPublicLockV8 _lockAddress)
   {
     lock = _lockAddress;
   }
