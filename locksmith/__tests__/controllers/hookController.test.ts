@@ -31,7 +31,19 @@ describe('HookController', () => {
 
       expect(() => {
         controller.getExpiration(controller.options.leaseSeconds.limit + 1)
-      }).toThrow("Lease seconds can't be greater than 90 days")
+      }).toBe(controller.options.leaseSeconds.limit)
+    })
+
+    it('getLeaseSeconds', () => {
+      expect.assertions(2)
+
+      const leaseSeconds = controller.getLeaseSeconds()
+      expect(leaseSeconds).toBe(controller.options.leaseSeconds.default)
+
+      const leaseSeconds2 = controller.getLeaseSeconds(
+        controller.options.leaseSeconds.limit
+      )
+      expect(leaseSeconds2).toBe(controller.options.leaseSeconds.limit)
     })
 
     it('getNetwork', () => {

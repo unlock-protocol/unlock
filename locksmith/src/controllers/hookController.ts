@@ -67,11 +67,17 @@ export class HookController {
 
   // Create an expiration date based on lease_seconds
   getExpiration(leaseSeconds?: number) {
+    const limit = this.getLeaseSeconds(leaseSeconds)
+    return new Date(Date.now() + limit * 1000)
+  }
+
+  // Get the correct lease seconds
+  getLeaseSeconds(leaseSeconds?: number) {
     const limit = leaseSeconds ?? this.options.leaseSeconds.default
     if (limit > this.options.leaseSeconds.limit) {
-      throw new Error("Lease seconds can't be greater than 90 days")
+      return this.options.leaseSeconds.limit
     }
-    return new Date(Date.now() + limit * 1000)
+    return limit
   }
 
   // Get the correct network config based on id
@@ -92,6 +98,7 @@ export class HookController {
     const body = {
       hub: {
         ...hub,
+        lease_seconds: this.getLeaseSeconds(hub.lease_seconds),
         challenge,
       },
     }
