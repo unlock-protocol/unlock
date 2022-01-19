@@ -1,4 +1,5 @@
 import abis from '../../abis'
+import purchaseKey from './purchaseKey'
 import v8 from '../v8'
 
 const {
@@ -13,7 +14,6 @@ const {
   cancelAndRefund,
   shareKey,
   getLock,
-  purchaseKey,
   keyManagerOf,
 } = v8
 
