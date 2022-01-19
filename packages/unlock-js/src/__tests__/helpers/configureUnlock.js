@@ -1,12 +1,13 @@
 import { ethers } from 'hardhat'
-import abis from '../../abis'
+import * as abis from '@unlock-protocol/contracts'
 
 /**
  * Configures the Unlock contract by setting its params:
  * @param {*} callback
  */
 export default async (unlockAddress, version, params, callback) => {
-  const abi = abis.Unlock[version].abi
+  const { abi } = abis[`Unlock${version.toUpperCase()}`]
+
   const unlock = await ethers.getContractAt(abi, unlockAddress)
   return await getConfigure(version)(unlock, params, callback)
 }
