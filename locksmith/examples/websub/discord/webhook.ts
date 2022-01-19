@@ -15,8 +15,9 @@ const websubMiddleware = (req: Request, res: Response, next: NextFunction) => {
     res.json(req.body)
   } else {
     if (req.headers['x-hub-signature']) {
-      const signature = req.headers['x-hub-signature']
-      const hash = crypto.createHmac('sha256', config.signKey)
+      const signHeader = req.headers['x-hub-signature'] as string
+      const [algorithm, signature] = signHeader.split('=')
+      const hash = crypto.createHmac(algorithm, config.signKey)
       const digest = hash.update(JSON.stringify(req.body)).digest('hex')
       if (digest === signature) {
         next()
