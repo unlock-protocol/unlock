@@ -34,23 +34,12 @@ module.exports = {
       })
 
       await queryInterface.addIndex('ProcessedHookItems', {
-        fields: ['createdAt'],
-        transaction,
-      })
-
-      await queryInterface.addIndex('ProcessedHookItems', {
-        fields: ['type'],
-        transaction,
-      })
-
-      await queryInterface.addIndex('ProcessedHookItems', {
         fields: ['network'],
         transaction,
       })
 
-      // Unique index for joint network and objectId
       await queryInterface.addIndex('ProcessedHookItems', {
-        fields: ['network', 'objectId'],
+        fields: ['objectId'],
         unique: true,
         transaction,
       })
