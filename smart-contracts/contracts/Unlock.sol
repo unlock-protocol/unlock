@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.7;
 
 /**
  * @title The Unlock contract
@@ -27,18 +27,18 @@ pragma solidity ^0.8.2;
  *  b. Keeping track of GNP
  */
 
-import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
 import '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
 import '@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol';
 import 'hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol';
 import './utils/UnlockOwnable.sol';
+import './utils/UnlockInitializable.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
-  Initializable,
+  UnlockInitializable,
   UnlockOwnable
 {
 
@@ -312,6 +312,15 @@ contract Unlock is
   }
 
   /**
+   * Helper to get the network mining basefee as introduced in EIP-1559
+   * @dev this helper can be wrapped in try/catch statement to avoid 
+   * revert in networks where EIP-1559 is not implemented
+   */
+  function networkBaseFee() external view returns (uint) {
+    return block.basefee;
+  }
+
+  /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.
    * The number of discount tokens granted is based on the value of the referal,
@@ -354,8 +363,22 @@ contract Unlock is
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
+          // base fee default to 100 GWEI for chains that does 
+          uint baseFee;
+          try this.networkBaseFee() returns (uint _basefee) {
+            // no assigned value
+            if(_basefee == 0) {
+              baseFee = 100;
+            } else {
+              baseFee = _basefee;
+            }
+          } catch {
+            // block.basefee not supported
+            baseFee = 100;
+          }
+
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice) * (125 * 10 ** 18) / 100 / udtPrice;
+          uint tokensToDistribute = (estimatedGasForPurchase * baseFee) * (125 * 10 ** 18) / 100 / udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           uint maxTokens = 0;

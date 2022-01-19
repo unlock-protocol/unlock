@@ -9,6 +9,6 @@ module.exports = {
     '<rootDir>/src/__tests__/setup/',
   ],
   transform: {
-    '^.+\\.js$': 'babel-jest',
+    '^.+\\.js?$': require.resolve('./jest.transform.js'),
   },
 }

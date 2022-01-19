@@ -98,7 +98,16 @@ services:
       - ./${UNLOCK_ENV}.env
     depends_on:
       - eth-node
-
+  
+  contracts: # Container for @unlock-protocol/contracts
+    image: contracts
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: packages/contracts
+    env_file:
+      - ./${UNLOCK_ENV}.env
 
   wedlocks: # Container for wedlocks
     image: wedlocks

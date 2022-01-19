@@ -1,6 +1,4 @@
 const BigNumber = require('bignumber.js')
-
-const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -46,19 +44,6 @@ contract('Lock / owners', (accounts) => {
   it('should have the right number of owners', async () => {
     const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
     assert.equal(numberOfOwners.toFixed(), 4)
-  })
-
-  it('should allow for access to an individual key owner', async () => {
-    const keyIds = [0, 1, 2, 3]
-    const owners = await Promise.all(keyIds.map((d) => lock.owners.call(d)))
-    assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
-  })
-
-  it('should fail to access to an individual key owner when out of bounds', async () => {
-    await truffleAssert.fails(
-      lock.owners.call(6),
-      'Transaction reverted without a reason string'
-    )
   })
 
   describe('after a transfer to a new address', () => {

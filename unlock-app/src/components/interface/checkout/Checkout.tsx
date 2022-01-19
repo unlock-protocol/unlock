@@ -100,7 +100,6 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
-
   // state change
   useEffect(() => {
     setState(defaultState)
@@ -124,7 +123,12 @@ export const Checkout = ({
 
       if (selectedLock) {
         if (!isUnlockAccount) {
-          setCheckoutState('crypto-checkout')
+          // Check if we have card details.
+          if (cardDetails) {
+            setCheckoutState('confirm-card-purchase')
+          } else {
+            setCheckoutState('crypto-checkout')
+          }
         } else {
           cardCheckoutOrClaim(selectedLock)
         }
@@ -185,7 +189,8 @@ export const Checkout = ({
       }
       window.location.href = redirectUrl.toString()
     } else {
-      window.location.href = '/keychain'
+      // This will only work if the tab is the "main" tab.
+      window.close()
     }
   }
 
@@ -211,7 +216,6 @@ export const Checkout = ({
   }
 
   const lockProps = selectedLock && paywallConfig?.locks[selectedLock.address]
-
   if (state === 'login') {
     content = (
       <LogIn

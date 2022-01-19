@@ -1,0 +1,48 @@
+{
+  "name": "@unlock-protocol/ui",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
+  "exports": {
+    "*": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "tailwind-merge": "^1.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@mdx-js/preact": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@storybook/addon-actions": "^6.5.0-alpha.13",
+    "@storybook/addon-docs": "^6.5.0-alpha.13",
+    "@storybook/addon-essentials": "^6.5.0-alpha.13",
+    "@storybook/addon-links": "^6.5.0-alpha.13",
+    "@storybook/react": "^6.5.0-alpha.13",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@vitejs/plugin-react": "^1.0.7",
+    "autoprefixer": "^10.4.2",
+    "babel-loader": "^8.2.3",
+    "postcss": "^8.4.5",
+    "storybook-builder-vite": "^0.1.13",
+    "tailwindcss": "^3.0.13",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2"
+  }
+}
