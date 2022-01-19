@@ -64,5 +64,4 @@ task('release', 'Release a new version of the contract')
         `Solidity contract for ${contractName} flattened at: ${solPath}`
       )
     }
-
   })
