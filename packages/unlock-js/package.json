@@ -10,7 +10,7 @@
     "url": "https://github.com/unlock-protocol/unlock.git"
   },
   "scripts": {
-    "test": "hardhat test:jest",
+    "test": "yarn build && hardhat test:jest",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build-esm": "BABEL_ENV=esm npx babel src --ignore src/__tests__ --out-dir esm",
     "build-cjs": "BABEL_ENV=cjs npx babel src --ignore src/__tests__ --out-dir lib",

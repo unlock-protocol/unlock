@@ -1,9 +1,5 @@
-import { ethers } from 'ethers'
 import UnlockService from './unlockService'
 import utils from './utils'
-
-const bytecode = require('./bytecode').default
-const abis = require('./abis').default
 
 /**
  * This service interacts with the user's wallet.
@@ -126,31 +122,6 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Deploys a new template for locks
-   * It's a regular lock, but it will never work (purchase function fails)
-   * It just used as template whose address is fed into configUnlock to deploy
-   * locks through a proxy (keeping gas prices much lower)
-   * @param {*} version
-   * @param {*} callback
-   */
-  async deployTemplate(version, callback) {
-    const factory = new ethers.ContractFactory(
-      abis.PublicLock[version].abi,
-      bytecode.PublicLock[version],
-      this.signer
-    )
-
-    const contract = await factory.deploy()
-
-    if (callback) {
-      callback(null, contract.deployTransaction.hash)
-    }
-    await contract.deployed()
-
-    return contract.address
-  }
-
-  /**
    *  Then we need to call initialize on it. This is critical because otherwise anyone can claim it and then self-destruct it, killing all locks which use the same contract after this.
    * @param {*} params
    * @param {*} callback
@@ -159,48 +130,6 @@ export default class WalletService extends UnlockService {
     if (!params.templateAddress) throw new Error('Missing templateAddress')
     const version = await this.lockContractAbiVersion(params.templateAddress)
     return version.initializeTemplate.bind(this)(params, callback)
-  }
-
-  /**
-   * Deploys the unlock contract and initializes it.
-   * This will call the callback twice, once for each transaction
-   */
-  async deployUnlock(version, callback) {
-    // First, deploy the contract
-
-    const factory = new ethers.ContractFactory(
-      abis.Unlock[version].abi,
-      bytecode.Unlock[version],
-      this.signer
-    )
-    const unlockContract = await factory.deploy()
-
-    if (callback) {
-      callback(null, unlockContract.deployTransaction.hash)
-    }
-
-    await unlockContract.deployed()
-
-    // Let's now run the initialization
-    const address = await this.signer.getAddress()
-    const writableUnlockContract = unlockContract.connect(this.signer)
-    const transaction = await writableUnlockContract.initialize(address)
-
-    if (callback) {
-      callback(null, transaction.hash)
-    }
-    await this.provider.waitForTransaction(transaction.hash)
-    this.unlockAddress = unlockContract.address
-    return unlockContract.address
-  }
-
-  /**
-   * Configures the Unlock contract by setting its params:
-   * @param {*} callback
-   */
-  async configureUnlock(params, callback) {
-    const version = await this.unlockContractAbiVersion()
-    return version.configureUnlock.bind(this)(params, callback)
   }
 
   /**

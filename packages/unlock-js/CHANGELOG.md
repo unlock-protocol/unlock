@@ -1,5 +1,7 @@
 # Changes
 
+# 0.20.5
+- remove `deployUnlock`, `configureUnlock` and `deployTemplate` from walletService
 # 0.20.4
 - @unlock-protocol/networks is a dev dependency
 
