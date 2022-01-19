@@ -14,7 +14,7 @@ export const pageTitle = (title) => {
 export const PAGE_DESCRIPTION =
   'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
 
-export const PAGE_DEFAULT_IMAGE = '/images/pages/png/simple.png'
+export const PAGE_DEFAULT_IMAGE = '/images/pages/png/unlock-protocol-ogimage.png'
 
 export const MAX_DEVICE_WIDTHS = {
   PHONE: 736,
