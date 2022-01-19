@@ -3,6 +3,7 @@ import express from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import crypto from 'crypto'
 import { config } from './config'
+import { chunk } from './util'
 
 const webhookClient = new WebhookClient(config)
 const port = process.env.PORT || 4040
@@ -29,7 +30,7 @@ const websubMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-app.post('/callback/locks', websubMiddleware, (req) => {
+app.post('/callback/locks', websubMiddleware, async (req) => {
   const embeds: MessageEmbed[] = []
   const locks: any[] = req.body?.data
   if (!locks.length) {
@@ -42,12 +43,15 @@ app.post('/callback/locks', websubMiddleware, (req) => {
     embeds.push(embed)
   }
 
-  webhookClient.send({
-    embeds: embeds,
-  })
+  // Sequential update of 5 key embeds per message if there are too many.
+  for (const ems of chunk(embeds, 5)) {
+    await webhookClient.send({
+      embeds: ems,
+    })
+  }
 })
 
-app.post('/callback/keys', websubMiddleware, (req) => {
+app.post('/callback/keys', websubMiddleware, async (req) => {
   const embeds: MessageEmbed[] = []
   const keys: any[] = req.body?.data
   if (!keys.length) {
@@ -61,9 +65,12 @@ app.post('/callback/keys', websubMiddleware, (req) => {
     embeds.push(embed)
   }
 
-  webhookClient.send({
-    embeds: embeds,
-  })
+  // Sequential update of 5 key embeds per message if there are too many.
+  for (const ems of chunk(embeds, 5)) {
+    await webhookClient.send({
+      embeds: ems,
+    })
+  }
 })
 
 app.listen(port, () => {
