@@ -2,6 +2,7 @@
  * @type import('hardhat/config').HardhatUserConfig
  */
 require('@nomiclabs/hardhat-ethers')
+require('@openzeppelin/hardhat-upgrades')
 
 const { subtask, task } = require('hardhat/config')
 const { HARDHAT_NETWORK_NAME } = require('hardhat/plugins')
@@ -42,5 +43,9 @@ task(TASK_JEST, 'Runs jest tests').setAction(
   }
 )
 module.exports = {
-  solidity: '0.8.0',
+  solidity: '0.8.2',
+  paths: {
+    sources: './src/__tests__/contracts',
+    artifacts: './src/__tests__/artifacts',
+  },
 }
