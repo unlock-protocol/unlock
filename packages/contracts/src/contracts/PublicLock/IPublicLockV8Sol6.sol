@@ -6,7 +6,7 @@ pragma solidity ^0.6.0;
  */
 
 
-contract IPublicLockV8Sol6
+interface IPublicLockV8Sol6
 {
 
 // See indentationissue description here:
@@ -39,7 +39,7 @@ contract IPublicLockV8Sol6
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
   */
-  function publicLockVersion() public pure returns (uint);
+  function publicLockVersion() external pure returns (uint);
 
   /**
   * @notice Gets the current balance of the account provided.
@@ -443,12 +443,12 @@ contract IPublicLockV8Sol6
   /**
      * @dev Returns the number of NFTs in `owner`'s account.
      */
-    function balanceOf(address _owner) public view returns (uint256 balance);
+    function balanceOf(address _owner) external view returns (uint256 balance);
 
     /**
      * @dev Returns the owner of the NFT specified by `tokenId`.
      */
-    function ownerOf(uint256 tokenId) public view returns (address _owner);
+    function ownerOf(uint256 tokenId) external view returns (address _owner);
 
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
@@ -462,7 +462,7 @@ contract IPublicLockV8Sol6
      * - If the caller is not `from`, it must be have been allowed to move this
      * NFT by either {approve} or {setApprovalForAll}.
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
+    function safeTransferFrom(address from, address to, uint256 tokenId) external;
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
      * another (`to`).
@@ -471,26 +471,26 @@ contract IPublicLockV8Sol6
      * - If the caller is not `from`, it must be approved to move this NFT by
      * either {approve} or {setApprovalForAll}.
      */
-    function transferFrom(address from, address to, uint256 tokenId) public;
-    function approve(address to, uint256 tokenId) public;
+    function transferFrom(address from, address to, uint256 tokenId) external;
+    function approve(address to, uint256 tokenId) external;
 
     /**
     * @notice Get the approved address for a single NFT
     * @dev Throws if `_tokenId` is not a valid NFT.
     * @param _tokenId The NFT to find the approved address for
-    * @return The approved address for this NFT, or the zero address if there is none
+    * @return operator The approved address for this NFT, or the zero address if there is none
     */
-    function getApproved(uint256 _tokenId) public view returns (address operator);
+    function getApproved(uint256 _tokenId) external view returns (address operator);
 
-    function setApprovalForAll(address operator, bool _approved) public;
-    function isApprovedForAll(address _owner, address operator) public view returns (bool);
+    function setApprovalForAll(address operator, bool _approved) external;
+    function isApprovedForAll(address _owner, address operator) external view returns (bool);
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) external;
 
-    function totalSupply() public view returns (uint256);
-    function tokenOfOwnerByIndex(address _owner, uint256 index) public view returns (uint256 tokenId);
+    function totalSupply() external view returns (uint256);
+    function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
 
-    function tokenByIndex(uint256 index) public view returns (uint256);
+    function tokenByIndex(uint256 index) external view returns (uint256);
 
 
 
