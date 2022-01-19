@@ -43,9 +43,9 @@ contract MixinKeys is
   // merging this with totalSupply into an array instead.
   mapping (uint => address) internal _ownerOf;
 
-  // Addresses of owners are also stored in an array.
-  // Addresses are never removed by design to avoid abuses around referals
-  address[] public owners;
+  // Keep track of the total number of unique owners for this lock (both expired and valid).
+  // This may be larger than totalSupply
+  uint public numberOfOwners;
 
   // A given key has both an owner and a manager.
   // If keyManager == address(0) then the key owner is also the manager
@@ -185,17 +185,8 @@ contract MixinKeys is
     return keyByOwner[_keyOwner].expirationTimestamp;
   }
 
-  /**
-   * Public function which returns the total number of unique owners (both expired
-   * and valid).  This may be larger than totalSupply.
-   */
-  function numberOfOwners()
-    public
-    view
-    returns (uint)
-  {
-    return owners.length;
-  }
+  
+  
 
   // Returns the owner of a given tokenId
   function ownerOf(
@@ -341,7 +332,7 @@ contract MixinKeys is
     // check expiration ts should be set to know if owner had previously registered a key 
     Key memory key = keyByOwner[_keyOwner];
     if(key.expirationTimestamp == 0 ) {
-      owners.push(_keyOwner);
+      numberOfOwners++;
     }
 
     // We register the owner of the tokenID

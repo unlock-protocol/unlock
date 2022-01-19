@@ -353,8 +353,6 @@ interface IPublicLock
 
   function maxNumberOfKeys() external view returns (uint256 );
 
-  function owners(uint256 ) external view returns (address );
-
   function refundPenaltyBasisPoints() external view returns (uint256 );
 
   function tokenAddress() external view returns (address );
