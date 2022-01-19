@@ -145,7 +145,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           // deploy the relevant template
           const templateAddress = await deployTemplate(publicLockVersion)
 
-          if (publicLockVersion !== 'v10') {
+          if (unlockVersion !== 'v10') {
             // set the right template in Unlock
             const tx = await unlock.setLockTemplate(templateAddress)
             await tx.wait()
