@@ -1,8 +1,8 @@
 import { networks } from '@unlock-protocol/networks'
-// import request from 'supertest'
+import request from 'supertest'
 import { HookController } from '../../src/controllers/hookController'
 
-// const app = require('../../src/app')
+const app = require('../../src/app')
 
 describe('HookController', () => {
   const controller = new HookController({
@@ -38,6 +38,49 @@ describe('HookController', () => {
       expect.assertions(2)
       expect(controller.getNetwork('1')).toBe(networks['1'])
       expect(controller.getNetwork('24242')).toBe(undefined)
+    })
+  })
+
+  describe('hookController Endpoints', () => {
+    it('Subscribe endpoint', async () => {
+      expect.assertions(4)
+      const response = await request(app)
+        .post('/api/hooks/4/locks')
+        .set('Accept', 'json')
+        .send({
+          hub: {
+            topic: 'http://localhost:4000/api/hooks/4/locks',
+            callback: 'http://localhost:4000/callback',
+            mode: 'subscribe',
+          },
+        })
+
+      expect(response.text).toBe('Accepted')
+
+      const response2 = await request(app)
+        .post('/api/hooks/7424782/locks')
+        .set('Accept', 'json')
+        .send({
+          hub: {
+            topic: 'http://localhost:4000/api/hooks/4/locks',
+            callback: 'http://localhost:4000/callback',
+            mode: 'subscribe',
+          },
+        })
+
+      expect(response2.status).toBe(400)
+      expect(response2.text).toBe('Unsupported Network')
+
+      const response3 = await request(app)
+        .post('/api/hooks/4/locks')
+        .set('Accept', 'json')
+        .send({
+          hub: {
+            topic: 'http://localhost:4000/api/hooks/4/locks',
+            // Missing fields
+          },
+        })
+      expect(response3.status).toBe(400)
     })
   })
 })
