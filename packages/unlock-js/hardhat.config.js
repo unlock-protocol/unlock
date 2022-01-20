@@ -44,7 +44,7 @@ task(TASK_JEST, 'Runs jest tests').setAction(
 )
 module.exports = {
   solidity: {
-    version: '0.8.2',
+    version: '0.8.7',
     settings: {
       optimizer: {
         enabled: true,
