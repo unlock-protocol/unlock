@@ -1,7 +1,7 @@
 import { networkMapToFnResult, createSignature } from '../../src/websub/helpers'
 
-describe('Test networkMapFnResult', () => {
-  it('should succeed', async () => {
+describe('Test helpers', () => {
+  it('networkMapFnResult', async () => {
     expect.assertions(1)
     expect.assertions(2)
     const map = await networkMapToFnResult((network) => {
