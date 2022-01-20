@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node'
-import crypto from 'crypto'
 import { rest } from 'msw'
+import { createSignature } from '../../src/websub/helpers'
 
 const handlers = [
   rest.post('http://localhost:4000/callback', (req, res, ctx) => {
@@ -10,10 +10,11 @@ const handlers = [
     }
 
     const [algo, hash] = signature.split('=')
-    const computedHash = crypto
-      .createHmac(algo, 'websub')
-      .update(JSON.stringify(req.body))
-      .digest('hex')
+    const computedHash = createSignature({
+      content: String(req.body),
+      algorithm: algo,
+      secret: 'secret',
+    })
 
     if (hash !== computedHash) {
       return res(ctx.status(400), ctx.text('Invalid signature'))
