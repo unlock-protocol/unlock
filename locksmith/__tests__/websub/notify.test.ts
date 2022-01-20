@@ -16,7 +16,7 @@ describe('Test notify helpers', () => {
       hook.secret = 'websub'
       const fn = notify(hook, { test: true })
       const response = await fn()
-      expect(response.status).toBe(200)
+      expect(response.ok).toBe(true)
     })
 
     it('should result in error with signature mismatch', async () => {

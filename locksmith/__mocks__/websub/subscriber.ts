@@ -5,15 +5,17 @@ import { createSignature } from '../../src/websub/helpers'
 const handlers = [
   rest.post('http://localhost:4000/callback', (req, res, ctx) => {
     const signature = req.headers.get('x-hub-signature')
+
     if (!signature) {
       return res(ctx.status(400), ctx.text('Missing signature'))
     }
 
     const [algo, hash] = signature.split('=')
+
     const computedHash = createSignature({
-      content: String(req.body),
+      content: JSON.stringify(req.body),
       algorithm: algo,
-      secret: 'secret',
+      secret: 'websub',
     })
 
     if (hash !== computedHash) {

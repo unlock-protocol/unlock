@@ -11,7 +11,7 @@ export const notify = (hook: Hook, body: unknown) => async () => {
   if (hook.secret) {
     const algorithm = 'sha256'
     const signature = createSignature({
-      content: content,
+      content,
       algorithm,
       secret: hook.secret,
     })
