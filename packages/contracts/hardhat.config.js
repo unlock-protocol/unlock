@@ -2,6 +2,8 @@
  * @type import('hardhat/config').HardhatUserConfig
  */
 
+require('./task/exportAbis')
+
 const settings = {
   optimizer: {
     enabled: true,
