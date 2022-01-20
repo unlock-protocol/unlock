@@ -96,7 +96,7 @@ export default async function (
       data,
       purchaseForOptions
     )
-    purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+    purchaseForOptions.gasLimit = gasLimit.mul(14).div(10).toNumber()
   }
 
   const transactionPromise = lockContract.purchase(
