@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.2;
 
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '../mixins/LockRoles.sol';
 
 
 contract LockRolesMock is LockRoles
 {
   function onlyLockManagerMock(
-    IPublicLockV9 _lock
+    IPublicLockV8 _lock
   ) external
     onlyLockManager(_lock)
   {
@@ -16,7 +16,7 @@ contract LockRolesMock is LockRoles
   }
 
   function onlyKeyGranterOrManagerMock(
-    IPublicLockV9 _lock
+    IPublicLockV8 _lock
   ) external
     onlyKeyGranterOrManager(_lock)
   {
