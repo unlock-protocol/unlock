@@ -10,8 +10,8 @@ export class Key extends GraphQLDataSource {
 
   async getKeys(args: any) {
     const keysQuery = gql`
-      query Keys($first: Int) {
-        keys(first: $first) {
+      query Keys($first: Int, $skip: Int) {
+        keys(first: $first, skip: $skip) {
           id
           lock {
             id
@@ -34,7 +34,7 @@ export class Key extends GraphQLDataSource {
 
     try {
       const response = await this.query(keysQuery, {
-        variables: { first: args.first },
+        variables: { first: args.first, skip: args.skip },
       })
       return response.data.keys
     } catch (error) {

@@ -10,8 +10,8 @@ export class Lock extends GraphQLDataSource {
 
   async getLocks(args: any) {
     const LocksQuery = gql`
-      query Locks($first: Int) {
-        locks(first: $first) {
+      query Locks($first: Int, $skip: Int) {
+        locks(first: $first, skip: $skip) {
           id
           address
           name
@@ -43,7 +43,7 @@ export class Lock extends GraphQLDataSource {
 
     try {
       const response = await this.query(LocksQuery, {
-        variables: { first: args.first },
+        variables: { first: args.first, skip: args.skip },
       })
       return response.data.locks
     } catch (error) {
