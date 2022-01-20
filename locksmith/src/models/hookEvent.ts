@@ -18,6 +18,9 @@ export class HookEvent extends Model<HookEvent> {
   @Column
   hookId!: number
 
+  @Column
+  topic!: string
+
   @Column({ type: DataType.JSON })
   body!: any
 
