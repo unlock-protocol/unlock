@@ -1,18 +1,19 @@
 import { networks } from '@unlock-protocol/networks'
 import pRetry from 'p-retry'
 import crypto from 'crypto'
+import fetch from 'cross-fetch'
 import { Hook, HookEvent } from '../models'
 
-const notify = (hook: Hook, body: unknown) => async () => {
-  const headers = new Headers()
+export const notify = (hook: Hook, body: unknown) => async () => {
+  const headers: Record<string, string> = {}
   const bodyString = JSON.stringify(body)
-  headers.append('Content-Type', 'application/json')
+  headers['Content-Type'] = 'application/json'
   if (hook.secret) {
     const signature = crypto
       .createHmac('sha256', hook.secret)
       .update(bodyString)
       .digest('hex')
-    headers.append('X-Hub-Signature', `sha256=${signature}`)
+    headers['X-Hub-Signature'] = `sha256=${signature}`
   }
   const response = await fetch(hook.callback, {
     headers: headers,
@@ -23,7 +24,7 @@ const notify = (hook: Hook, body: unknown) => async () => {
   if (!response.ok) {
     throw new Error(`${response.status} - ${response.statusText}`)
   }
-  return response.json()
+  return response
 }
 
 export async function notifyHook(hook: Hook, body: unknown) {
