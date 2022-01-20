@@ -17,4 +17,15 @@ describe('Test notify function', () => {
     const response = await fn()
     expect(response.status).toBe(200)
   })
+
+  it('should throw with signature mismatch', async () => {
+    expect.assertions(1)
+    const hook = new Hook()
+    hook.callback = 'http://localhost:4000/callback'
+    // Change signature here
+    hook.secret = 'websu'
+    const fn = notify(hook, { test: true })
+    const response = await fn()
+    expect(response.ok).toBe(false)
+  })
 })

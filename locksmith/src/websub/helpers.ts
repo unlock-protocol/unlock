@@ -21,9 +21,6 @@ export const notify = (hook: Hook, body: unknown) => async () => {
     body: bodyString,
   })
 
-  if (!response.ok) {
-    throw new Error(`${response.status} - ${response.statusText}`)
-  }
   return response
 }
 
@@ -38,15 +35,26 @@ export async function notifyHook(hook: Hook, body: unknown) {
   // Save the pending state in database
   await hookEvent.save()
 
-  const result = await pRetry(notify(hook, body), {
-    onFailedAttempt(error: Error) {
-      hookEvent.attempts += 1
-      hookEvent.state = 'failed'
-      hookEvent.lastError = error.message
-      hookEvent.save()
+  const result = await pRetry(
+    async () => {
+      const fn = notify(hook, body)
+      const response = await fn()
+      const content = await response.text()
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${content}`)
+      }
+      return content
     },
-    retries: 3,
-  })
+    {
+      onFailedAttempt(error: Error) {
+        hookEvent.attempts += 1
+        hookEvent.state = 'failed'
+        hookEvent.lastError = error.message
+        hookEvent.save()
+      },
+      retries: 3,
+    }
+  )
 
   if (result) {
     hookEvent.state = 'success'
@@ -55,7 +63,7 @@ export async function notifyHook(hook: Hook, body: unknown) {
 }
 
 export async function networkMapToFnResult<T = unknown>(
-  run: (network: number) => Promise<T>
+  run: (network: number) => Promise<T> | T
 ) {
   const items = await Promise.allSettled(
     Object.values(networks).map(async (network) => {
