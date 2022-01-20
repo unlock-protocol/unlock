@@ -6,22 +6,41 @@ import { Hook, HookEvent } from '../models'
 
 export const notify = (hook: Hook, body: unknown) => async () => {
   const headers: Record<string, string> = {}
-  const bodyString = JSON.stringify(body)
+  const content = JSON.stringify(body)
   headers['Content-Type'] = 'application/json'
   if (hook.secret) {
-    const signature = crypto
-      .createHmac('sha256', hook.secret)
-      .update(bodyString)
-      .digest('hex')
-    headers['X-Hub-Signature'] = `sha256=${signature}`
+    const algorithm = 'sha256'
+    const signature = createSignature({
+      content: content,
+      algorithm,
+      secret: hook.secret,
+    })
+    headers['X-Hub-Signature'] = `${algorithm}=${signature}`
   }
   const response = await fetch(hook.callback, {
     headers: headers,
     method: 'POST',
-    body: bodyString,
+    body: content,
   })
 
   return response
+}
+
+interface CreateSignatureOptions {
+  content: string
+  secret: string
+  algorithm: string
+}
+export function createSignature({
+  secret,
+  content,
+  algorithm,
+}: CreateSignatureOptions) {
+  const signature = crypto
+    .createHmac(algorithm, secret)
+    .update(content)
+    .digest('hex')
+  return signature
 }
 
 export async function notifyHook(hook: Hook, body: unknown) {

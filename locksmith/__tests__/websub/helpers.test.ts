@@ -1,4 +1,4 @@
-import { networkMapToFnResult } from '../../src/websub/helpers'
+import { networkMapToFnResult, createSignature } from '../../src/websub/helpers'
 
 describe('Test networkMapFnResult', () => {
   it('should succeed', async () => {
@@ -10,5 +10,23 @@ describe('Test networkMapFnResult', () => {
 
     expect(map.get(1)).toBe(1)
     expect(map.get(5)).toBe(undefined)
+  })
+
+  it('Create signature test', () => {
+    expect.assertions(1)
+
+    const sig1 = createSignature({
+      secret: 'secret',
+      content: 'content',
+      algorithm: 'sha256',
+    })
+
+    const sig2 = createSignature({
+      secret: 'secret',
+      content: 'content',
+      algorithm: 'sha256',
+    })
+
+    expect(sig1).toBe(sig2)
   })
 })
