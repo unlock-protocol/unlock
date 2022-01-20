@@ -60,7 +60,10 @@ task('upgrade', 'Upgrade an existing contract with a new implementation')
 task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
   .addParam('contract', 'The contract path')
   .addParam('proxy', 'The proxy contract address')
-  .setAction(async ({ contract, proxy }, { ethers }) => {
+  .setAction(async ({ contract, proxy }, { ethers, run }) => {
+    // first compile latest version
+    await run('compile')
+
     const { chainId } = await ethers.provider.getNetwork()
     const networkName = getNetworkName(chainId)
 
