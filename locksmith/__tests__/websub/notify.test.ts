@@ -1,6 +1,11 @@
 import { subscriberServer } from '../../__mocks__/websub/subscriber'
 import { notify } from '../../src/websub/helpers'
-import { Hook } from '../../src/models'
+import { Hook, HookEvent } from '../../src/models'
+
+const notifyHook = jest.fn()
+
+// eslint-disable-next-line
+notifyHook.mockImplementation(() => new HookEvent())
 
 beforeAll(() => subscriberServer.listen())
 
@@ -27,5 +32,14 @@ describe('Test notify function', () => {
     const fn = notify(hook, { test: true })
     const response = await fn()
     expect(response.ok).toBe(false)
+  })
+})
+
+describe('Test notify hook function', () => {
+  it('Test notify hook function', async () => {
+    expect.assertions(1)
+    const hook = new Hook()
+    const body = { test: true }
+    expect(notifyHook.call(hook, body)).toBeInstanceOf(HookEvent)
   })
 })

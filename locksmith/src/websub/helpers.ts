@@ -31,6 +31,7 @@ export async function notifyHook(hook: Hook, body: unknown) {
   hookEvent.lock = hook.lock
   hookEvent.state = 'pending'
   hookEvent.attempts = 0
+  hookEvent.topic = hook.topic
   hookEvent.body = JSON.stringify(body)
   // Save the pending state in database
   await hookEvent.save()
@@ -60,6 +61,8 @@ export async function notifyHook(hook: Hook, body: unknown) {
     hookEvent.state = 'success'
     hookEvent.save()
   }
+
+  return hookEvent
 }
 
 export async function networkMapToFnResult<T = unknown>(
