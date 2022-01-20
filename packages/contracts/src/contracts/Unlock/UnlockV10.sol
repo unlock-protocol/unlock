@@ -1,279 +1,8 @@
 // Sources flattened with hardhat v2.8.0 https://hardhat.org
+
+// File @openzeppelin/contracts/proxy/Proxy.sol@v4.4.2
+
 // SPDX-License-Identifier: MIT
-
-// File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.4.1
-// OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
-
-pragma solidity ^0.8.0;
-
-/**
- * @dev Collection of functions related to the address type
- */
-library AddressUpgradeable {
-    /**
-     * @dev Returns true if `account` is a contract.
-     *
-     * [IMPORTANT]
-     * ====
-     * It is unsafe to assume that an address for which this function returns
-     * false is an externally-owned account (EOA) and not a contract.
-     *
-     * Among others, `isContract` will return false for the following
-     * types of addresses:
-     *
-     *  - an externally-owned account
-     *  - a contract in construction
-     *  - an address where a contract will be created
-     *  - an address where a contract lived, but was destroyed
-     * ====
-     */
-    function isContract(address account) internal view returns (bool) {
-        // This method relies on extcodesize, which returns 0 for contracts in
-        // construction, since the code is only stored at the end of the
-        // constructor execution.
-
-        uint256 size;
-        assembly {
-            size := extcodesize(account)
-        }
-        return size > 0;
-    }
-
-    /**
-     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
-     * `recipient`, forwarding all available gas and reverting on errors.
-     *
-     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
-     * of certain opcodes, possibly making contracts go over the 2300 gas limit
-     * imposed by `transfer`, making them unable to receive funds via
-     * `transfer`. {sendValue} removes this limitation.
-     *
-     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
-     *
-     * IMPORTANT: because control is transferred to `recipient`, care must be
-     * taken to not create reentrancy vulnerabilities. Consider using
-     * {ReentrancyGuard} or the
-     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
-     */
-    function sendValue(address payable recipient, uint256 amount) internal {
-        require(address(this).balance >= amount, "Address: insufficient balance");
-
-        (bool success, ) = recipient.call{value: amount}("");
-        require(success, "Address: unable to send value, recipient may have reverted");
-    }
-
-    /**
-     * @dev Performs a Solidity function call using a low level `call`. A
-     * plain `call` is an unsafe replacement for a function call: use this
-     * function instead.
-     *
-     * If `target` reverts with a revert reason, it is bubbled up by this
-     * function (like regular Solidity function calls).
-     *
-     * Returns the raw returned data. To convert to the expected return value,
-     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions[`abi.decode`].
-     *
-     * Requirements:
-     *
-     * - `target` must be a contract.
-     * - calling `target` with `data` must not revert.
-     *
-     * _Available since v3.1._
-     */
-    function functionCall(address target, bytes memory data) internal returns (bytes memory) {
-        return functionCall(target, data, "Address: low-level call failed");
-    }
-
-    /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`], but with
-     * `errorMessage` as a fallback revert reason when `target` reverts.
-     *
-     * _Available since v3.1._
-     */
-    function functionCall(
-        address target,
-        bytes memory data,
-        string memory errorMessage
-    ) internal returns (bytes memory) {
-        return functionCallWithValue(target, data, 0, errorMessage);
-    }
-
-    /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
-     * but also transferring `value` wei to `target`.
-     *
-     * Requirements:
-     *
-     * - the calling contract must have an ETH balance of at least `value`.
-     * - the called Solidity function must be `payable`.
-     *
-     * _Available since v3.1._
-     */
-    function functionCallWithValue(
-        address target,
-        bytes memory data,
-        uint256 value
-    ) internal returns (bytes memory) {
-        return functionCallWithValue(target, data, value, "Address: low-level call with value failed");
-    }
-
-    /**
-     * @dev Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}[`functionCallWithValue`], but
-     * with `errorMessage` as a fallback revert reason when `target` reverts.
-     *
-     * _Available since v3.1._
-     */
-    function functionCallWithValue(
-        address target,
-        bytes memory data,
-        uint256 value,
-        string memory errorMessage
-    ) internal returns (bytes memory) {
-        require(address(this).balance >= value, "Address: insufficient balance for call");
-        require(isContract(target), "Address: call to non-contract");
-
-        (bool success, bytes memory returndata) = target.call{value: value}(data);
-        return verifyCallResult(success, returndata, errorMessage);
-    }
-
-    /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
-     * but performing a static call.
-     *
-     * _Available since v3.3._
-     */
-    function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {
-        return functionStaticCall(target, data, "Address: low-level static call failed");
-    }
-
-    /**
-     * @dev Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],
-     * but performing a static call.
-     *
-     * _Available since v3.3._
-     */
-    function functionStaticCall(
-        address target,
-        bytes memory data,
-        string memory errorMessage
-    ) internal view returns (bytes memory) {
-        require(isContract(target), "Address: static call to non-contract");
-
-        (bool success, bytes memory returndata) = target.staticcall(data);
-        return verifyCallResult(success, returndata, errorMessage);
-    }
-
-    /**
-     * @dev Tool to verifies that a low level call was successful, and revert if it wasn't, either by bubbling the
-     * revert reason using the provided one.
-     *
-     * _Available since v4.3._
-     */
-    function verifyCallResult(
-        bool success,
-        bytes memory returndata,
-        string memory errorMessage
-    ) internal pure returns (bytes memory) {
-        if (success) {
-            return returndata;
-        } else {
-            // Look for revert reason and bubble it up if present
-            if (returndata.length > 0) {
-                // The easiest way to bubble the revert reason is using memory via assembly
-
-                assembly {
-                    let returndata_size := mload(returndata)
-                    revert(add(32, returndata), returndata_size)
-                }
-            } else {
-                revert(errorMessage);
-            }
-        }
-    }
-}
-
-
-// File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.4.1
-// OpenZeppelin Contracts v4.4.1 (proxy/utils/Initializable.sol)
-
-pragma solidity ^0.8.0;
-
-/**
- * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed
- * behind a proxy. Since a proxied contract can't have a constructor, it's common to move constructor logic to an
- * external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer
- * function so it can only be called once. The {initializer} modifier provided by this contract will have this effect.
- *
- * TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as
- * possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}.
- *
- * CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure
- * that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.
- *
- * [CAUTION]
- * ====
- * Avoid leaving a contract uninitialized.
- *
- * An uninitialized contract can be taken over by an attacker. This applies to both a proxy and its implementation
- * contract, which may impact the proxy. To initialize the implementation contract, you can either invoke the
- * initializer manually, or you can include a constructor to automatically mark it as initialized when it is deployed:
- *
- * [.hljs-theme-light.nopadding]
- * ```
- * /// @custom:oz-upgrades-unsafe-allow constructor
- * constructor() initializer {}
- * ```
- * ====
- */
-abstract contract Initializable {
-    /**
-     * @dev Indicates that the contract has been initialized.
-     */
-    bool private _initialized;
-
-    /**
-     * @dev Indicates that the contract is in the process of being initialized.
-     */
-    bool private _initializing;
-
-    /**
-     * @dev Modifier to protect an initializer function from being invoked twice.
-     */
-    modifier initializer() {
-        // If the contract is initializing we ignore whether _initialized is set in order to support multiple
-        // inheritance patterns, but we only do this in the context of a constructor, because in other contexts the
-        // contract may have been reentered.
-        require(_initializing ? _isConstructor() : !_initialized, "Initializable: contract is already initialized");
-
-        bool isTopLevelCall = !_initializing;
-        if (isTopLevelCall) {
-            _initializing = true;
-            _initialized = true;
-        }
-
-        _;
-
-        if (isTopLevelCall) {
-            _initializing = false;
-        }
-    }
-
-    /**
-     * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the
-     * {initializer} modifier, directly or indirectly.
-     */
-    modifier onlyInitializing() {
-        require(_initializing, "Initializable: contract is not initializing");
-        _;
-    }
-
-    function _isConstructor() private view returns (bool) {
-        return !AddressUpgradeable.isContract(address(this));
-    }
-}
-
-
-// File @openzeppelin/contracts/proxy/Proxy.sol@v4.4.1
 // OpenZeppelin Contracts v4.4.1 (proxy/Proxy.sol)
 
 pragma solidity ^0.8.0;
@@ -361,7 +90,9 @@ abstract contract Proxy {
 }
 
 
-// File @openzeppelin/contracts/proxy/beacon/IBeacon.sol@v4.4.1
+// File @openzeppelin/contracts/proxy/beacon/IBeacon.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/beacon/IBeacon.sol)
 
 pragma solidity ^0.8.0;
@@ -379,7 +110,9 @@ interface IBeacon {
 }
 
 
-// File @openzeppelin/contracts/utils/Address.sol@v4.4.1
+// File @openzeppelin/contracts/utils/Address.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
 
 pragma solidity ^0.8.0;
@@ -598,7 +331,9 @@ library Address {
 }
 
 
-// File @openzeppelin/contracts/utils/StorageSlot.sol@v4.4.1
+// File @openzeppelin/contracts/utils/StorageSlot.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/StorageSlot.sol)
 
 pragma solidity ^0.8.0;
@@ -684,7 +419,9 @@ library StorageSlot {
 }
 
 
-// File @openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol@v4.4.1
+// File @openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/ERC1967/ERC1967Upgrade.sol)
 
 pragma solidity ^0.8.2;
@@ -878,7 +615,9 @@ abstract contract ERC1967Upgrade {
 }
 
 
-// File @openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol@v4.4.1
+// File @openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/ERC1967/ERC1967Proxy.sol)
 
 pragma solidity ^0.8.0;
@@ -911,7 +650,9 @@ contract ERC1967Proxy is Proxy, ERC1967Upgrade {
 }
 
 
-// File @openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol@v4.4.1
+// File @openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/transparent/TransparentUpgradeableProxy.sol)
 
 pragma solidity ^0.8.0;
@@ -1036,7 +777,9 @@ contract TransparentUpgradeableProxy is ERC1967Proxy {
 }
 
 
-// File @openzeppelin/contracts/utils/Context.sol@v4.4.1
+// File @openzeppelin/contracts/utils/Context.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -1062,7 +805,9 @@ abstract contract Context {
 }
 
 
-// File @openzeppelin/contracts/access/Ownable.sol@v4.4.1
+// File @openzeppelin/contracts/access/Ownable.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
@@ -1138,7 +883,9 @@ abstract contract Ownable is Context {
 }
 
 
-// File @openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol@v4.4.1
+// File @openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/transparent/ProxyAdmin.sol)
 
 pragma solidity ^0.8.0;
@@ -1220,6 +967,8 @@ contract ProxyAdmin is Ownable {
 
 
 // File hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol@v1.1.4
+
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0;
 
 interface IUniswapOracle
@@ -1245,7 +994,285 @@ interface IUniswapOracle
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.4.1
+// File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
+// OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
+
+pragma solidity ^0.8.0;
+
+/**
+ * @dev Collection of functions related to the address type
+ */
+library AddressUpgradeable {
+    /**
+     * @dev Returns true if `account` is a contract.
+     *
+     * [IMPORTANT]
+     * ====
+     * It is unsafe to assume that an address for which this function returns
+     * false is an externally-owned account (EOA) and not a contract.
+     *
+     * Among others, `isContract` will return false for the following
+     * types of addresses:
+     *
+     *  - an externally-owned account
+     *  - a contract in construction
+     *  - an address where a contract will be created
+     *  - an address where a contract lived, but was destroyed
+     * ====
+     */
+    function isContract(address account) internal view returns (bool) {
+        // This method relies on extcodesize, which returns 0 for contracts in
+        // construction, since the code is only stored at the end of the
+        // constructor execution.
+
+        uint256 size;
+        assembly {
+            size := extcodesize(account)
+        }
+        return size > 0;
+    }
+
+    /**
+     * @dev Replacement for Solidity's `transfer`: sends `amount` wei to
+     * `recipient`, forwarding all available gas and reverting on errors.
+     *
+     * https://eips.ethereum.org/EIPS/eip-1884[EIP1884] increases the gas cost
+     * of certain opcodes, possibly making contracts go over the 2300 gas limit
+     * imposed by `transfer`, making them unable to receive funds via
+     * `transfer`. {sendValue} removes this limitation.
+     *
+     * https://diligence.consensys.net/posts/2019/09/stop-using-soliditys-transfer-now/[Learn more].
+     *
+     * IMPORTANT: because control is transferred to `recipient`, care must be
+     * taken to not create reentrancy vulnerabilities. Consider using
+     * {ReentrancyGuard} or the
+     * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
+     */
+    function sendValue(address payable recipient, uint256 amount) internal {
+        require(address(this).balance >= amount, "Address: insufficient balance");
+
+        (bool success, ) = recipient.call{value: amount}("");
+        require(success, "Address: unable to send value, recipient may have reverted");
+    }
+
+    /**
+     * @dev Performs a Solidity function call using a low level `call`. A
+     * plain `call` is an unsafe replacement for a function call: use this
+     * function instead.
+     *
+     * If `target` reverts with a revert reason, it is bubbled up by this
+     * function (like regular Solidity function calls).
+     *
+     * Returns the raw returned data. To convert to the expected return value,
+     * use https://solidity.readthedocs.io/en/latest/units-and-global-variables.html?highlight=abi.decode#abi-encoding-and-decoding-functions[`abi.decode`].
+     *
+     * Requirements:
+     *
+     * - `target` must be a contract.
+     * - calling `target` with `data` must not revert.
+     *
+     * _Available since v3.1._
+     */
+    function functionCall(address target, bytes memory data) internal returns (bytes memory) {
+        return functionCall(target, data, "Address: low-level call failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`], but with
+     * `errorMessage` as a fallback revert reason when `target` reverts.
+     *
+     * _Available since v3.1._
+     */
+    function functionCall(
+        address target,
+        bytes memory data,
+        string memory errorMessage
+    ) internal returns (bytes memory) {
+        return functionCallWithValue(target, data, 0, errorMessage);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * but also transferring `value` wei to `target`.
+     *
+     * Requirements:
+     *
+     * - the calling contract must have an ETH balance of at least `value`.
+     * - the called Solidity function must be `payable`.
+     *
+     * _Available since v3.1._
+     */
+    function functionCallWithValue(
+        address target,
+        bytes memory data,
+        uint256 value
+    ) internal returns (bytes memory) {
+        return functionCallWithValue(target, data, value, "Address: low-level call with value failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCallWithValue-address-bytes-uint256-}[`functionCallWithValue`], but
+     * with `errorMessage` as a fallback revert reason when `target` reverts.
+     *
+     * _Available since v3.1._
+     */
+    function functionCallWithValue(
+        address target,
+        bytes memory data,
+        uint256 value,
+        string memory errorMessage
+    ) internal returns (bytes memory) {
+        require(address(this).balance >= value, "Address: insufficient balance for call");
+        require(isContract(target), "Address: call to non-contract");
+
+        (bool success, bytes memory returndata) = target.call{value: value}(data);
+        return verifyCallResult(success, returndata, errorMessage);
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-}[`functionCall`],
+     * but performing a static call.
+     *
+     * _Available since v3.3._
+     */
+    function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {
+        return functionStaticCall(target, data, "Address: low-level static call failed");
+    }
+
+    /**
+     * @dev Same as {xref-Address-functionCall-address-bytes-string-}[`functionCall`],
+     * but performing a static call.
+     *
+     * _Available since v3.3._
+     */
+    function functionStaticCall(
+        address target,
+        bytes memory data,
+        string memory errorMessage
+    ) internal view returns (bytes memory) {
+        require(isContract(target), "Address: static call to non-contract");
+
+        (bool success, bytes memory returndata) = target.staticcall(data);
+        return verifyCallResult(success, returndata, errorMessage);
+    }
+
+    /**
+     * @dev Tool to verifies that a low level call was successful, and revert if it wasn't, either by bubbling the
+     * revert reason using the provided one.
+     *
+     * _Available since v4.3._
+     */
+    function verifyCallResult(
+        bool success,
+        bytes memory returndata,
+        string memory errorMessage
+    ) internal pure returns (bytes memory) {
+        if (success) {
+            return returndata;
+        } else {
+            // Look for revert reason and bubble it up if present
+            if (returndata.length > 0) {
+                // The easiest way to bubble the revert reason is using memory via assembly
+
+                assembly {
+                    let returndata_size := mload(returndata)
+                    revert(add(32, returndata), returndata_size)
+                }
+            } else {
+                revert(errorMessage);
+            }
+        }
+    }
+}
+
+
+// File contracts/utils/UnlockInitializable.sol
+
+// SPDX-License-Identifier: MIT
+// OpenZeppelin Contracts v4.4.1 (proxy/utils/Initializable.sol)
+
+pragma solidity ^0.8.0;
+
+/**
+ * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed
+ * behind a proxy. Since proxied contracts do not make use of a constructor, it's common to move constructor logic to an
+ * external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer
+ * function so it can only be called once. The {initializer} modifier provided by this contract will have this effect.
+ *
+ * TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as
+ * possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}.
+ *
+ * CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure
+ * that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.
+ *
+ * [CAUTION]
+ * ====
+ * Avoid leaving a contract uninitialized.
+ *
+ * An uninitialized contract can be taken over by an attacker. This applies to both a proxy and its implementation
+ * contract, which may impact the proxy. To initialize the implementation contract, you can either invoke the
+ * initializer manually, or you can include a constructor to automatically mark it as initialized when it is deployed:
+ *
+ * [.hljs-theme-light.nopadding]
+ * ```
+ * /// @custom:oz-upgrades-unsafe-allow constructor
+ * constructor() initializer {}
+ * ```
+ * ====
+ */
+abstract contract UnlockInitializable {
+    /**
+     * @dev Indicates that the contract has been initialized.
+     */
+    bool private initialized;
+
+    /**
+     * @dev Indicates that the contract is in the process of being initialized.
+     */
+    bool private initializing;
+
+    /**
+     * @dev Modifier to protect an initializer function from being invoked twice.
+     */
+    modifier initializer() {
+        // If the contract is initializing we ignore whether initialized is set in order to support multiple
+        // inheritance patterns, but we only do this in the context of a constructor, because in other contexts the
+        // contract may have been reentered.
+        require(initializing ? _isConstructor() : !initialized, "Initializable: contract is already initialized");
+
+        bool isTopLevelCall = !initializing;
+        if (isTopLevelCall) {
+            initializing = true;
+            initialized = true;
+        }
+
+        _;
+
+        if (isTopLevelCall) {
+            initializing = false;
+        }
+    }
+
+    /**
+     * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the
+     * {initializer} modifier, directly or indirectly.
+     */
+    modifier onlyInitializing() {
+        require(initializing, "Initializable: contract is not initializing");
+        _;
+    }
+
+    function _isConstructor() private view returns (bool) {
+        return !AddressUpgradeable.isContract(address(this));
+    }
+}
+
+
+// File contracts/utils/UnlockContextUpgradeable.sol
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -1260,7 +1287,7 @@ pragma solidity ^0.8.0;
  *
  * This contract is only required for intermediate, library-like contracts.
  */
-abstract contract ContextUpgradeable is Initializable {
+abstract contract UnlockContextUpgradeable is UnlockInitializable {
     function __Context_init() internal onlyInitializing {
         __Context_init_unchained();
     }
@@ -1274,11 +1301,13 @@ abstract contract ContextUpgradeable is Initializable {
     function _msgData() internal view virtual returns (bytes calldata) {
         return msg.data;
     }
-    uint256[50] private __gap;
+    uint256[50] private ______gap;
 }
 
 
 // File contracts/utils/UnlockOwnable.sol
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.3.2 (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
@@ -1297,7 +1326,7 @@ pragma solidity ^0.8.0;
  * but had to be included (instead of using the one in openzeppelin/contracts-upgradeable ) 
  * because the ______gap array length was 49 instead of 50
  */
-abstract contract UnlockOwnable is Initializable, ContextUpgradeable {
+abstract contract UnlockOwnable is UnlockInitializable, UnlockContextUpgradeable {
     address private _owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
@@ -1366,6 +1395,8 @@ abstract contract UnlockOwnable is Initializable, ContextUpgradeable {
 
 
 // File contracts/interfaces/IPublicLock.sol
+
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1592,14 +1623,16 @@ interface IPublicLock
   ) external payable;
 
   /**
-  * @dev Set a percentage of the key price to be refunded to the sender on purchase
+  * @param _gasRefundValue price in wei or token in smallest price unit
+  * @dev Set the value to be refunded to the sender on purchase
   */
-  function setGasRefundBasisPoints(uint128 _basisPoints) external;
+  function setGasRefundValue(uint256 _gasRefundValue) external;
   
   /**
-  * @dev Returns percentage be refunded to the sender on purchase
+  * _gasRefundValue price in wei or token in smallest price unit
+  * @dev Returns the value/rpice to be refunded to the sender on purchase
   */
-  function gasRefundBasisPoints() external view returns (uint128 basisPoints);
+  function gasRefundValue() external view returns (uint256 _gasRefundValue);
 
   /**
    * @notice returns the minimum price paid for a purchase with these params.
@@ -1717,8 +1750,6 @@ interface IPublicLock
   function keyPrice() external view returns (uint256 );
 
   function maxNumberOfKeys() external view returns (uint256 );
-
-  function owners(uint256 ) external view returns (address );
 
   function refundPenaltyBasisPoints() external view returns (uint256 );
 
@@ -1845,6 +1876,8 @@ interface IPublicLock
 
 
 // File contracts/interfaces/IMintableERC20.sol
+
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
 
 interface IMintableERC20
@@ -1857,7 +1890,9 @@ interface IMintableERC20
 
 
 // File contracts/Unlock.sol
-pragma solidity ^0.8.2;
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
 
 /**
  * @title The Unlock contract
@@ -1894,7 +1929,7 @@ pragma solidity ^0.8.2;
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
-  Initializable,
+  UnlockInitializable,
   UnlockOwnable
 {
 
@@ -2049,7 +2084,42 @@ contract Unlock is
   }
 
   /**
-  * @notice Create lock
+  * @notice Create lock (legacy)
+  * This deploys a lock for a creator. It also keeps track of the deployed lock.
+  * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
+  * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+  * @param _keyPrice the price of each key
+  * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
+  * @param _lockName the name of the lock
+  * param _salt [deprec] -- kept only for backwards copatibility
+  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+  * to know the lock's address before the transaction is mined.
+  * @dev internally call `createUpgradeableLock`
+  */
+  function createLock(
+    uint _expirationDuration,
+    address _tokenAddress,
+    uint _keyPrice,
+    uint _maxNumberOfKeys,
+    string calldata _lockName,
+    bytes12 // _salt
+  ) public returns(address) {
+
+    bytes memory data = abi.encodeWithSignature(
+      'initialize(address,uint256,address,uint256,uint256,string)',
+      msg.sender,
+      _expirationDuration,
+      _tokenAddress,
+      _keyPrice,
+      _maxNumberOfKeys,
+      _lockName
+    );
+
+    return createUpgradeableLock(data);
+  }
+
+  /**
+  * @notice Create upgradeable lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param data bytes containing the call to initialize the lock template
   * @dev this call is passed as encoded function - for instance:
@@ -2064,7 +2134,7 @@ contract Unlock is
   *  );
   * @return address of the create lock
   */
-  function createLock(
+  function createUpgradeableLock(
     bytes memory data
   ) public returns(address)
   {
@@ -2090,7 +2160,7 @@ contract Unlock is
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
    */
-  function upgradeLock(address payable lockAddress, uint16 version) public returns(address) {
+  function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
 
     // check perms
@@ -2103,6 +2173,8 @@ contract Unlock is
 
     // make our upgrade
     address impl = _publicLockImpls[version];
+    require(impl != address(0), "this version number has no corresponding lock template");
+
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
 
@@ -2128,6 +2200,15 @@ contract Unlock is
     returns (uint discount, uint tokens)
   {
     return (0, 0);
+  }
+
+  /**
+   * Helper to get the network mining basefee as introduced in EIP-1559
+   * @dev this helper can be wrapped in try/catch statement to avoid 
+   * revert in networks where EIP-1559 is not implemented
+   */
+  function networkBaseFee() external view returns (uint) {
+    return block.basefee;
   }
 
   /**
@@ -2173,8 +2254,22 @@ contract Unlock is
           // Get the value of 1 UDT (w/ 18 decimals) in ETH
           uint udtPrice = udtOracle.updateAndConsult(udt, 10 ** 18, weth);
 
+          // base fee default to 100 GWEI for chains that does 
+          uint baseFee;
+          try this.networkBaseFee() returns (uint _basefee) {
+            // no assigned value
+            if(_basefee == 0) {
+              baseFee = 100;
+            } else {
+              baseFee = _basefee;
+            }
+          } catch {
+            // block.basefee not supported
+            baseFee = 100;
+          }
+
           // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
-          uint tokensToDistribute = (estimatedGasForPurchase * tx.gasprice) * (125 * 10 ** 18) / 100 / udtPrice;
+          uint tokensToDistribute = (estimatedGasForPurchase * baseFee) * (125 * 10 ** 18) / 100 / udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
           uint maxTokens = 0;
