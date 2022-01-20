@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers, upgrades } = require('hardhat')
+const { ethers, upgrades, network } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const Unlock = artifacts.require('Unlock.sol')
@@ -167,7 +167,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       await unlock.resetTrackedValue(web3.utils.toWei('1', 'wei'), 0, {
         from: protocolOwner,
       })
-      const tx = await lock.purchase(
+      const { blockNumber } = await lock.purchase(
         0,
         keyBuyer,
         referrer,
@@ -178,9 +178,10 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           value: await lock.keyPrice(),
         }
       )
-      const transaction = await web3.eth.getTransaction(tx.tx)
-      // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
-      gasSpent = new BigNumber(transaction.gasPrice).times(estimateGas)
+
+      const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
+      // using estimatedGas instead of the actual gas used so this test does  not regress as other features are implemented
+      gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
     })
 
     it('referrer has some UDT now', async () => {
@@ -225,6 +226,11 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       await unlock.resetTrackedValue(web3.utils.toWei('500', 'ether'), 0, {
         from: protocolOwner,
       })
+
+      const baseFeePerGas = 1000000000 // in gwei
+      await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
+        ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+      ])
 
       await lock.purchase(
         0,

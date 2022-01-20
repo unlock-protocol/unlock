@@ -1,10 +1,25 @@
 # Wedlocks
 
 Wedlocks is the email sending service for Unlock.
-This is intended to be deployed as an AWS lambda function.
+This is intended to be deployed as an AWS lambda function (or similar).
 For that purpose we use webpack to build a single js file.
 
 For local dev, we have a local server running which "mimicks" requests sent to lambda.
+
+## API
+
+There is a single API:
+
+```
+POST http://localhost:1337
+```
+
+With the paywload sent as a JSON body. The payload needs to include the following:
+* template
+* recipient address
+* params (key/values used in the template)
+
+Check WedlockService in `unlock-app` for more details.
 
 ## Setup for Local Development
 
