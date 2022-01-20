@@ -144,15 +144,15 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           // deploy the relevant template
           const templateAddress = await deployTemplate(publicLockVersion)
 
-          if (unlockVersion !== 'v10') {
-            // set the right template in Unlock
-            const tx = await unlock.setLockTemplate(templateAddress)
-            await tx.wait()
-          } else {
-            // lets upgrade unlock
+          if (unlockVersion === 'v10') {
+            // prepare unlock for upgradeable locks
             const versionNumber = parseInt(publicLockVersion.replace('v', ''))
             await unlock.addLockTemplate(templateAddress, versionNumber)
           }
+
+          // set the right template in Unlock
+          const tx = await unlock.setLockTemplate(templateAddress)
+          await tx.wait()
         }
         // parse erc20
         const { isERC20 } = lockParams
