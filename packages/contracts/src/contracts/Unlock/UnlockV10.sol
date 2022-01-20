@@ -1,7 +1,8 @@
 // Sources flattened with hardhat v2.8.0 https://hardhat.org
-// SPDX-License-Identifier: MIT
 
 // File @openzeppelin/contracts/proxy/Proxy.sol@v4.4.2
+
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/Proxy.sol)
 
 pragma solidity ^0.8.0;
@@ -91,6 +92,7 @@ abstract contract Proxy {
 
 // File @openzeppelin/contracts/proxy/beacon/IBeacon.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/beacon/IBeacon.sol)
 
 pragma solidity ^0.8.0;
@@ -110,6 +112,7 @@ interface IBeacon {
 
 // File @openzeppelin/contracts/utils/Address.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
 
 pragma solidity ^0.8.0;
@@ -330,6 +333,7 @@ library Address {
 
 // File @openzeppelin/contracts/utils/StorageSlot.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/StorageSlot.sol)
 
 pragma solidity ^0.8.0;
@@ -417,6 +421,7 @@ library StorageSlot {
 
 // File @openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/ERC1967/ERC1967Upgrade.sol)
 
 pragma solidity ^0.8.2;
@@ -612,6 +617,7 @@ abstract contract ERC1967Upgrade {
 
 // File @openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/ERC1967/ERC1967Proxy.sol)
 
 pragma solidity ^0.8.0;
@@ -646,6 +652,7 @@ contract ERC1967Proxy is Proxy, ERC1967Upgrade {
 
 // File @openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/transparent/TransparentUpgradeableProxy.sol)
 
 pragma solidity ^0.8.0;
@@ -772,6 +779,7 @@ contract TransparentUpgradeableProxy is ERC1967Proxy {
 
 // File @openzeppelin/contracts/utils/Context.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -799,6 +807,7 @@ abstract contract Context {
 
 // File @openzeppelin/contracts/access/Ownable.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
@@ -876,6 +885,7 @@ abstract contract Ownable is Context {
 
 // File @openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/transparent/ProxyAdmin.sol)
 
 pragma solidity ^0.8.0;
@@ -958,6 +968,7 @@ contract ProxyAdmin is Ownable {
 
 // File hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol@v1.1.4
 
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0;
 
 interface IUniswapOracle
@@ -985,6 +996,7 @@ interface IUniswapOracle
 
 // File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.4.2
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
 
 pragma solidity ^0.8.0;
@@ -1178,6 +1190,7 @@ library AddressUpgradeable {
 
 // File contracts/utils/UnlockInitializable.sol
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/utils/Initializable.sol)
 
 pragma solidity ^0.8.0;
@@ -1259,6 +1272,7 @@ abstract contract UnlockInitializable {
 
 // File contracts/utils/UnlockContextUpgradeable.sol
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -1293,6 +1307,7 @@ abstract contract UnlockContextUpgradeable is UnlockInitializable {
 
 // File contracts/utils/UnlockOwnable.sol
 
+// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.3.2 (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
@@ -1381,6 +1396,7 @@ abstract contract UnlockOwnable is UnlockInitializable, UnlockContextUpgradeable
 
 // File contracts/interfaces/IPublicLock.sol
 
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1861,6 +1877,7 @@ interface IPublicLock
 
 // File contracts/interfaces/IMintableERC20.sol
 
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
 
 interface IMintableERC20
@@ -1874,6 +1891,7 @@ interface IMintableERC20
 
 // File contracts/Unlock.sol
 
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
 /**
