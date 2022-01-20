@@ -12,6 +12,7 @@
         "deprec",
         "test",
         "dist",
+        "task",
         "hardhat.config.js"
     ]
 }
