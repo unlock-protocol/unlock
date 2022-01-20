@@ -11,7 +11,7 @@ ${params.keychainUrl}
 Once we get closer to the date of the event, we will send you instructions on how to make sure you can easily check-in.
 In the meantime, please, join a dedicated Spkz lounger for EthCC attendees!
   
-If you have any questions , please email us at hello@unlock-protocol.com.
+If you have any questions, email us at hello@unlock-protocol.com.
   
 The Unlock and EthCC teams!
 
