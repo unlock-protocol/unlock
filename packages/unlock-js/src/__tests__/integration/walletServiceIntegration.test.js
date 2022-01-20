@@ -185,7 +185,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
       })
 
-      if (['v4'].indexOf(unlockVersion) === -1) {
+      if (['v4', 'v10'].indexOf(unlockVersion) === -1) {
         it('should have deployed a lock at the expected address', async () => {
           expect.assertions(1)
           expect(lockAddress).toEqual(expectedLockAddress)
