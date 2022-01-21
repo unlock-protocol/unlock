@@ -63,7 +63,12 @@ export default async function (lock, callback) {
   const parser = unlockContract.interface
   const newLockEvent = receipt.logs
     .map((log) => {
-      return parser.parseLog(log)
+      try {
+        // ignore events that we can not parse
+        return parser.parseLog(log)
+      } catch {
+        return {}
+      }
     })
     .filter((event) => event.name === 'NewLock')[0]
 
