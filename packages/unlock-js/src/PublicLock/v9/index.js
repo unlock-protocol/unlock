@@ -18,9 +18,9 @@ const {
 } = v8
 
 export default {
-  version: 'v8',
-  Unlock: abis.Unlock.v8,
-  PublicLock: abis.PublicLock.v8,
+  version: 'v9',
+  Unlock: abis.Unlock.v9,
+  PublicLock: abis.PublicLock.v9,
   grantKey,
   updateKeyPrice,
   withdrawFromLock,
