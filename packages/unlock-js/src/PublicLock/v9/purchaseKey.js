@@ -37,6 +37,10 @@ export default async function (
     referrer = ZERO
   }
 
+  if (!keyManager) {
+    keyManager = ZERO
+  }
+
   if (!data) {
     data = []
   }
