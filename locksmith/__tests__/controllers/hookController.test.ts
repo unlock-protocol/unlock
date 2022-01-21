@@ -76,7 +76,7 @@ describe('HookController', () => {
 
   describe('updateHook', () => {
     it("should update or create a hook if it doesn't exit", async () => {
-      expect.assertions(9)
+      expect.assertions(8)
 
       const spyOn = jest
         .spyOn(controller, 'updateHook')
@@ -111,12 +111,6 @@ describe('HookController', () => {
       expect(value.mode).toBe('unsubscribe')
       expect(value.topic).toBe('http://localhost:5000')
       expect(value.callback).toBe('http://localhost:5000')
-      const expiration1 = value.expiration.getTime()
-      const expiration2 = controller
-        .getExpiration(controller.options.leaseSeconds.default)
-        .getTime()
-      expect(expiration1).toBeLessThanOrEqual(expiration2)
-
       expect(spyOn).toHaveBeenCalled()
 
       const value2 = await controller.updateHook({
@@ -133,13 +127,15 @@ describe('HookController', () => {
           },
         },
       } as SubscribeRequest)
-      const expiration3 = value.expiration.getTime()
-      const expiration4 = controller.getExpiration(45000).getTime()
       expect(value2).toBeInstanceOf(Hook)
       expect(value2.mode).toBe('subscribe')
-      expect(expiration3).toBe(expiration4)
+
+      expect(() =>
+        controller.updateHook({ params: {} } as SubscribeRequest)
+      ).toThrowError()
     })
   })
+
   describe('hookController Endpoints', () => {
     it('Subscribe endpoint', async () => {
       expect.assertions(4)

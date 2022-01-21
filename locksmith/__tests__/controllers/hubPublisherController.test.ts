@@ -1,4 +1,5 @@
 import request from 'supertest'
+// import { HubPublisherController } from '../../src/controllers/hubPublisherController'
 
 const app = require('../../src/app')
 
@@ -19,4 +20,16 @@ describe('HubPublisherController', () => {
       expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
     })
   })
+
+  // describe('HubPublisherController Methods', () => {
+  //   const controller = new HubPublisherController()
+  //   it('template function working', () => {
+  //     expect.assertions(1)
+  //     const value = controller.template({
+  //       links: [{ rel: 'self', href: 'http://localhost:5000' }],
+  //     })
+
+  //     expect(typeof value).toBe('string')
+  //   })
+  // })
 })
