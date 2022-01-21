@@ -5,6 +5,7 @@ import locks from '../helpers/fixtures/locks'
 import { deployUnlock, configureUnlock, deployTemplate } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
+import UnlockVersions from '../../Unlock'
 
 const chainId = 31337
 
@@ -28,16 +29,11 @@ const networks = {
 }
 
 // Unlock versions to test
-const UnlockVersions = [
-  'v4',
-  // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  'v7',
-  'v8',
-  'v9',
-  // 'v10',
-]
+const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+)
 
-describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
+describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
   let ERC20Address
@@ -148,6 +144,12 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
           // deploy the relevant template
           const templateAddress = await deployTemplate(publicLockVersion)
 
+          if (unlockVersion === 'v10') {
+            // prepare unlock for upgradeable locks
+            const versionNumber = parseInt(publicLockVersion.replace('v', ''))
+            await unlock.addLockTemplate(templateAddress, versionNumber)
+          }
+
           // set the right template in Unlock
           const tx = await unlock.setLockTemplate(templateAddress)
           await tx.wait()
@@ -183,7 +185,7 @@ describe.each(UnlockVersions)('Unlock %s', (unlockVersion) => {
         expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
       })
 
-      if (['v4'].indexOf(unlockVersion) === -1) {
+      if (['v4', 'v10'].indexOf(unlockVersion) === -1) {
         it('should have deployed a lock at the expected address', async () => {
           expect.assertions(1)
           expect(lockAddress).toEqual(expectedLockAddress)

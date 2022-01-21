@@ -6629,6 +6629,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/hardhat-upgrades@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.13.0"
+  dependencies:
+    "@openzeppelin/upgrades-core": ^1.11.0
+    chalk: ^4.1.0
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    hardhat: ^2.0.2
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 674e3ff333dfeda39c95b472dffa6cbd0eb55bdbfa3b04433fb231fa60ea40e4dec0f326003bbdd2aede2ffc7ae3a7a937f5bf8efaa3e226b3f36ac72d6b935e
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/test-environment@npm:0.1.3":
   version: 0.1.3
   resolution: "@openzeppelin/test-environment@npm:0.1.3"
@@ -6698,6 +6713,22 @@ __metadata:
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
   checksum: d5bc3003c125d76ed2a9473363378b22ff34133ea26926922869817f33b5fbf7f887207533ce5b46e225d09f3714bf8f237edb00f3ac14bc03276805a2d50d05
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.11.0"
+  dependencies:
+    bn.js: ^5.1.2
+    cbor: ^8.0.0
+    chalk: ^4.1.0
+    compare-versions: ^4.0.0
+    debug: ^4.1.1
+    ethereumjs-util: ^7.0.3
+    proper-lockfile: ^4.1.1
+    solidity-ast: ^0.4.15
+  checksum: b2e9c848539cb99e93a4f93470dc90376eeb61cc7841870dc2c10b0a501bbdea6b687c3779ecf207a9e7c298df80892615ac1ba3cb12ac316f4b44af0e48f858
   languageName: node
   linkType: hard
 
@@ -13102,6 +13133,7 @@ __metadata:
     "@babel/core": 7.16.7
     "@babel/preset-env": 7.16.7
     "@nomiclabs/hardhat-ethers": 2.0.4
+    "@openzeppelin/hardhat-upgrades": ^1.13.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
@@ -19266,6 +19298,13 @@ __metadata:
   version: 3.6.0
   resolution: "compare-versions@npm:3.6.0"
   checksum: 7492a50cdaa2c27f5254eee7c4b38856e1c164991bab3d98d7fd067fe4b570d47123ecb92523b78338be86aa221668fd3868bfe8caa5587dc3ebbe1a03d52b5d
+  languageName: node
+  linkType: hard
+
+"compare-versions@npm:^4.0.0":
+  version: 4.1.3
+  resolution: "compare-versions@npm:4.1.3"
+  checksum: 54460756ab2d62f8a9d672db249b248fec7ca41c3e8ed242925e2f2257793ad3e83cecb2cdfd60b46a3aabc962a3a4cbf37a4b928c8f30517822d2bde937a3d1
   languageName: node
   linkType: hard
 

@@ -95,10 +95,7 @@ services:
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
-      - ./${UNLOCK_ENV}.env
-    depends_on:
-      - eth-node
-  
+      - ./${UNLOCK_ENV}.env  
   contracts: # Container for @unlock-protocol/contracts
     image: contracts
     build:
