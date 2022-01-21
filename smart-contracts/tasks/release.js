@@ -40,25 +40,28 @@ task('release', 'Release a new version of the contract')
     )
 
     // make sure we dont erase anything
-    if (await fs.pathExists(abiPath))
-      throw new Error(`File ${abiPath} already exists.`)
+    if (await fs.pathExists(abiPath)) {
+      // eslint-disable-next-line no-console
+      console.log(`File ${abiPath} already exists.`)
+    } else {
+      // write files
+      const artifact = await hre.artifacts.readArtifact(contractName)
+      await fs.writeJSON(abiPath, artifact, { spaces: 2 })
+      // eslint-disable-next-line no-console
+      console.log(`Artifact for ${contractName} at: ${abiPath}`)
+    }
 
-    if (await fs.pathExists(solPath))
-      throw new Error(`File ${solPath} already exists.`)
+    if (await fs.pathExists(solPath)) {
+      // eslint-disable-next-line no-console
+      console.log(`File ${solPath} already exists.`)
+    } else {
+      // flatten the contract
+      // NB: this uses a shell child process bcz hardhat flatten output only to stdout
+      exec(`hardhat flatten ${contract} > ${solPath}`)
 
-    // write files
-    const artifact = await hre.artifacts.readArtifact(contractName)
-    await fs.writeJSON(abiPath, artifact, { spaces: 2 })
-
-    // eslint-disable-next-line no-console
-    console.log(`Artifact for ${contractName} at: ${abiPath}`)
-
-    // flatten the contract
-    // NB: this uses a shell child process bcz hardhat flatten output only to stdout
-    exec(`hardhat flatten ${contract} > ${solPath}`)
-
-    // eslint-disable-next-line no-console
-    console.log(
-      `Solidity contract for ${contractName} flattened at: ${solPath}`
-    )
+      // eslint-disable-next-line no-console
+      console.log(
+        `Solidity contract for ${contractName} flattened at: ${solPath}`
+      )
+    }
   })
