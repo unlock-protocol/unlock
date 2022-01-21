@@ -94,7 +94,27 @@ export default {
       isERC20: true,
     },
   ],
-  // v9 is not available for publicLock yet
-  // v9: [
-  // ],
+  v9: [
+    {
+      expirationDuration: 60 * 60 * 24 * 30,
+      keyPrice: '0.1',
+      maxNumberOfKeys: 100,
+      name: 'My Lock',
+      isERC20: false,
+    },
+    {
+      expirationDuration: 60 * 60 * 24 * 30,
+      keyPrice: '0.1',
+      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      name: 'Unlimited Keys lock',
+      isERC20: false,
+    },
+    {
+      expirationDuration: 60 * 60 * 24 * 10,
+      keyPrice: '1',
+      maxNumberOfKeys: 100,
+      name: 'ERC20 lock',
+      isERC20: true,
+    },
+  ],
 }

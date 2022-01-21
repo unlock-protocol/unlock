@@ -67,7 +67,7 @@ export default async function (lock, callback) {
   const newLockEvent = logs
     .map((log) => {
       try {
-        // ignore proxyAdmin events that we can not parse
+        // ignore events that we can not parse
         return parser.parseLog(log)
       } catch {
         return {}
