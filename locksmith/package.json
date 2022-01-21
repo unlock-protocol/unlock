@@ -111,6 +111,7 @@
     "eslint": "8.6.0",
     "eslint-config-standard": "16.0.3",
     "jest": "27.4.5",
+    "msw": "^0.36.5",
     "nock": "13.2.1",
     "node-mocks-http": "1.11.0",
     "nodemon": "2.0.15",
