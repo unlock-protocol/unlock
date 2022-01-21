@@ -1,6 +1,4 @@
-import fs from 'fs-extra'
-import path from 'path'
-import { ethers, run, upgrades } from 'hardhat'
+import { ethers, upgrades } from 'hardhat'
 import * as abis from '@unlock-protocol/contracts'
 
 /**
@@ -16,30 +14,8 @@ export default async (version, callback) => {
   // starting with v10, openzeppelin requires to use upgradeable pattern to initialize the contract
   if (versionNumber >= 10) {
     const unlockName = `UnlockV${versionNumber}`
-    // have to copy contract files over to make oz-upgrades happy
-    const unlockSourcePath = require.resolve(
-      `@unlock-protocol/contracts/dist/Unlock/${unlockName}.sol`
-    )
 
-    // dests
-    const contractPath = path.resolve(
-      `./src/__tests__/contracts/${unlockName}.sol`
-    )
-    const artifactPath = path.resolve(
-      `./src/__tests__/artifacts/${unlockName}.sol`
-    )
-
-    // remove existing contracts if any
-    await fs.remove(contractPath)
-    await fs.remove(artifactPath)
-
-    // copy contract source  over
-    await fs.copy(unlockSourcePath, path.resolve(contractPath))
-
-    // re-compile contract using hardhat
-    await run('compile')
-
-    // get compiled contract
+    // get contract
     const Unlock = await ethers.getContractFactory(
       `src/__tests__/contracts/${unlockName}.sol:Unlock`
     )

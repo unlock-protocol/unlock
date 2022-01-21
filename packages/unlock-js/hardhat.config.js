@@ -25,6 +25,14 @@ subtask(TASK_JEST_RUN_TESTS).setAction(async () => {
 
 task(TASK_JEST, 'Runs jest tests').setAction(
   async ({ watch }, { run, network }) => {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const preCompile = require('./scripts/preCompile')
+
+    // pre-compile latest Unlock contract to be used by OZ upgrades
+    await preCompile({
+      unlockName: 'UnlockV10',
+    })
+
     const testResults = await run(TASK_JEST_RUN_TESTS, { watch })
 
     if (network.name === HARDHAT_NETWORK_NAME) {
