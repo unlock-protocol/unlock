@@ -18,5 +18,11 @@ describe('HubPublisherController', () => {
       expect(response.headers.link.split(',').length).toBe(2)
       expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
     })
+
+    it('Should error if not found network', async () => {
+      expect.assertions(1)
+      const response = await request(app).get('/api/hooks/2435/locks')
+      expect(response.status).toBe(404)
+    })
   })
 })
