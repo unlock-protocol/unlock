@@ -1,5 +1,4 @@
 import request from 'supertest'
-// import { HubPublisherController } from '../../src/controllers/hubPublisherController'
 
 const app = require('../../src/app')
 
@@ -19,17 +18,11 @@ describe('HubPublisherController', () => {
       expect(response.headers.link.split(',').length).toBe(2)
       expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
     })
+
+    it('Should error if not found network', async () => {
+      expect.assertions(1)
+      const response = await request(app).get('/api/hooks/2435/locks')
+      expect(response.status).toBe(404)
+    })
   })
-
-  // describe('HubPublisherController Methods', () => {
-  //   const controller = new HubPublisherController()
-  //   it('template function working', () => {
-  //     expect.assertions(1)
-  //     const value = controller.template({
-  //       links: [{ rel: 'self', href: 'http://localhost:5000' }],
-  //     })
-
-  //     expect(typeof value).toBe('string')
-  //   })
-  // })
 })
