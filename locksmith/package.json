@@ -24,8 +24,7 @@
     "fulfillment:prepare": "yarn build && node ./scripts/fulfillment_prepare",
     "authorize": "./scripts/authorize-lock",
     "websub:start": "yarn build && node -r ./src/utils/envLoader.js ./build/src/websub/server.js",
-    "websub:dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js ./src/websub/server.ts",
-    "websub:example:discord": "ts-node-dev -r ./src/utils/envLoader.js ./examples/websub/discord/webhook.ts"
+    "websub:dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js ./src/websub/server.ts"
   },
   "lint-staged": {
     "*.{js,ts}": [
@@ -52,7 +51,6 @@
     "color-scheme": "1.0.1",
     "cors": "2.8.5",
     "cross-fetch": "3.1.4",
-    "discord.js": "^13.6.0",
     "dotenv": "10.0.0",
     "eth-sig-util": "2.5.4",
     "ethereumjs-util": "6.2.1",

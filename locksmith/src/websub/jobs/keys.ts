@@ -19,6 +19,6 @@ export async function notifyOfKeys(hooks: Hook[]) {
     const data = networkToLocksMap
       .get(Number(hook.network))
       .filter((key: any) => key.lock.id === hook.lock)
-    notifyHook(hook, { data })
+    notifyHook(hook, data)
   }
 }
