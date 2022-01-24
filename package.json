@@ -33,8 +33,7 @@
     "newsletter",
     "paywall",
     "paywall-app",
-    "wedlocks",
-    "websub-discord"
+    "wedlocks"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
