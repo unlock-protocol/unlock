@@ -95,10 +95,16 @@ services:
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
+      - ./${UNLOCK_ENV}.env  
+  contracts: # Container for @unlock-protocol/contracts
+    image: contracts
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: packages/contracts
+    env_file:
       - ./${UNLOCK_ENV}.env
-    depends_on:
-      - eth-node
-
 
   wedlocks: # Container for wedlocks
     image: wedlocks

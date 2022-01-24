@@ -1,5 +1,11 @@
 # Changes
 
+# 0.20.6
+- Bumped gas limit to be 40% higher than estimate
+
+# 0.20.5
+- remove `deployUnlock`, `configureUnlock` and `deployTemplate` from walletService
+
 # 0.20.4
 - @unlock-protocol/networks is a dev dependency
 
