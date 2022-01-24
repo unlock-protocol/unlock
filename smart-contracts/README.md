@@ -292,3 +292,21 @@ yarn hardhat lock:managers --lock-address 0x06441a9ac376b80004c32f8f37b1f80a2135
 LOCK > managers for the lock 'lido':
 [0]: 0x61e155fac2bb8e58fa8c5c01a21e0513cfe52fc4
 ```
+
+## Verify contracts
+
+Contracts can be verified contracts on Xdai, Polygon and BSC using the command line.
+
+```
+# xdai
+export BLOCKSCOUT_API_KEY=<xxx>
+yarn hardhat verify <address> --network xdai
+
+# polygon
+export POLYGONSCAN_API_KEY=<xxx>
+yarn hardhat verify <address> --network polygon
+
+# bsc
+export BSCSCAN_API_KEY=<xxx>
+yarn hardhat verify <address> --network binance
+```
