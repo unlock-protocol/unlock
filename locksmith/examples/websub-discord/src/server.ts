@@ -1,8 +1,7 @@
 import { WebhookClient, MessageEmbed } from 'discord.js'
 import express from 'express'
-import { networks } from '@unlock-protocol/networks'
 import { config } from './config'
-import { chunk, NETWORK_COLOR } from './util'
+import { chunk, NETWORK_COLOR, networks } from './util'
 import { createWebsubMiddleware } from './middleware'
 
 const port = process.env.PORT || 4000
@@ -30,7 +29,7 @@ app.post('/callback/locks', websubMiddleware, async (req) => {
     if (network) {
       embed.addField('network', network.name)
 
-      const explorerURL = network.explorer?.urls?.address?.(lock.address)
+      const explorerURL = network.explorer.urls.address(lock.address)
       if (explorerURL) {
         embed.setURL(explorerURL)
       }
@@ -65,7 +64,7 @@ app.post('/callback/keys', websubMiddleware, async (req) => {
     if (network) {
       embed.addField('network', network.name)
 
-      const explorerURL = network.explorer?.urls?.address?.(key.lock.address)
+      const explorerURL = network.explorer.urls.address(key.lock.address)
       if (explorerURL) {
         embed.setURL(explorerURL)
       }
