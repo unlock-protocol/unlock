@@ -97,6 +97,7 @@ export async function networkMapToFnResult<T = unknown>(
     })
   )
   const map = new Map<number, T>()
+
   for (const item of items) {
     if (item.status === 'fulfilled') {
       const { network, data } = item.value

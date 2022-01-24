@@ -1,5 +1,5 @@
 {
-  "name": "discord",
+  "name": "websub-discord",
   "packageManager": "yarn@3.1.0-rc.7",
   "dependencies": {
     "discord.js": "^13.6.0",

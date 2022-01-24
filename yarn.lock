@@ -21282,17 +21282,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord@workspace:locksmith/examples/websub_discord":
-  version: 0.0.0-use.local
-  resolution: "discord@workspace:locksmith/examples/websub_discord"
-  dependencies:
-    discord.js: ^13.6.0
-    dotenv: ^14.2.0
-    express: ^4.17.2
-    ts-node-dev: ^1.1.8
-  languageName: unknown
-  linkType: soft
-
 "dlv@npm:^1.1.3":
   version: 1.1.3
   resolution: "dlv@npm:1.1.3"
@@ -48826,6 +48815,17 @@ typescript@^3.8.3:
   checksum: 8a0ce6d79cc1334bb6ea0d607f0092f3d32700b4dd19e4d5540f2a85f3b50e1f8110da0e4716737056584dde70bbebcb40bbd94bbb437d7468c71abfbfa077d8
   languageName: node
   linkType: hard
+
+"websub-discord@workspace:locksmith/examples/websub_discord":
+  version: 0.0.0-use.local
+  resolution: "websub-discord@workspace:locksmith/examples/websub_discord"
+  dependencies:
+    discord.js: ^13.6.0
+    dotenv: ^14.2.0
+    express: ^4.17.2
+    ts-node-dev: ^1.1.8
+  languageName: unknown
+  linkType: soft
 
 "whatwg-encoding@npm:^1.0.5":
   version: 1.0.5
