@@ -404,6 +404,7 @@ export const Checkout = ({
     } else {
       content = (
         <OAuthConnect
+          message={paywallConfig?.messageToSign}
           redirectUri={redirectUri}
           closeModal={closeModal}
           oAuthConfig={oAuthConfig}
