@@ -1,6 +1,7 @@
 import { Lock } from '../../graphql/datasource'
 import { Hook } from '../../models'
 import { TOPIC_LOCKS } from '../topics'
+
 import { networkMapToFnResult, notifyHook } from '../helpers'
 
 export async function notifyOfLocks(hooks: Hook[]) {
