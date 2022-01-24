@@ -20,19 +20,25 @@ app.post('/callback/locks', websubMiddleware, async (req) => {
   const embeds: MessageEmbed[] = []
   const locks: any[] = req.body?.data
   const network = networks[req.body?.network]
+  const networkColor = NETWORK_COLOR[network.id]
+
   if (!locks.length) {
     return
   }
+
   for (const lock of locks) {
     const embed = new MessageEmbed()
     if (network) {
-      const networkColor = NETWORK_COLOR[network.id]
-      embed.setColor(networkColor)
       embed.addField('network', network.name)
+
       const explorerURL = network.explorer?.urls?.address?.(lock.address)
       if (explorerURL) {
         embed.setURL(explorerURL)
       }
+    }
+
+    if (network && networkColor) {
+      embed.setColor(networkColor)
     }
 
     embed.setTitle(`New Lock (${lock.id})`)
@@ -50,6 +56,8 @@ app.post('/callback/keys', websubMiddleware, async (req) => {
   const embeds: MessageEmbed[] = []
   const keys: any[] = req.body?.data
   const network = networks[req.body?.network]
+  const networkColor = NETWORK_COLOR[network.id]
+
   if (!keys.length) {
     return
   }
@@ -57,14 +65,18 @@ app.post('/callback/keys', websubMiddleware, async (req) => {
   for (const key of keys) {
     const embed = new MessageEmbed()
     if (network) {
-      const networkColor = NETWORK_COLOR[network.id]
-      embed.setColor(networkColor)
       embed.addField('network', network.name)
+
       const explorerURL = network.explorer?.urls?.address?.(key.lock.address)
       if (explorerURL) {
         embed.setURL(explorerURL)
       }
     }
+
+    if (network && networkColor) {
+      embed.setColor(networkColor)
+    }
+
     embed.setTitle(`New key (${key.id})`)
     embed.addField('lock', key.lock.address)
     embeds.push(embed)
