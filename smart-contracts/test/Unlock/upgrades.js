@@ -201,9 +201,6 @@ contract('Unlock / upgrades', async (accounts) => {
                 if (versionNumber === 2) {
                   // version 2 had a bug: we forgot to bump the lock version
                   assert.equal(version, 1)
-                } else if (versionNumber === 9) {
-                  // unlock 9 uses lock 8
-                  assert.equal(version, 8)
                 } else {
                   assert.equal(version, versionNumber)
                 }
@@ -225,7 +222,11 @@ contract('Unlock / upgrades', async (accounts) => {
               })
 
               it('Key is owned', async () => {
-                if (versionNumber >= 1) {
+                if (versionNumber >= 9) {
+                  // isKeyOwner was remove in unlock v10
+                  const isOwned = await lock.balanceOf(keyOwner.address)
+                  assert.equal(isOwned.toNumber() > 0, true)
+                } else if (versionNumber >= 1) {
                   // isKeyOwner was introduced in v1
                   const id = await lock.getTokenIdFor(keyOwner.address)
                   const isOwned = await lock.isKeyOwner(id, keyOwner.address)
@@ -274,12 +275,15 @@ contract('Unlock / upgrades', async (accounts) => {
                 })
 
                 it('Key is still owned', async () => {
-                  // console.log(keyOwner)
-                  const id = await lock.getTokenIdFor(keyOwner.address)
-                  if (versionNumber >= 1) {
+                  if (versionNumber >= 9) {
+                    // isKeyOwner was remove in unlock v10
+                    const isOwned = await lock.balanceOf(keyOwner.address)
+                    assert.equal(isOwned.toNumber() > 0, true)
+                  } else if (versionNumber >= 1) {
+                    const id = await lock.getTokenIdFor(keyOwner.address)
                     // isKeyOwner was introduced in v1
-                    const bool = await lock.isKeyOwner(id, keyOwner.address)
-                    assert.equal(bool, true)
+                    const isOwned = await lock.isKeyOwner(id, keyOwner.address)
+                    assert.equal(isOwned, true)
                   }
                 })
 
@@ -397,6 +401,21 @@ contract('Unlock / upgrades', async (accounts) => {
         })
       }
       async function purchaseKey(lock) {
+        if (versionNumber >= 9) {
+          // Lock Version 9 (used by Unlock v10) added keyManager to purchase
+          return await lock
+            .connect(lockOwner)
+            .purchase(
+              0,
+              keyOwner.address,
+              web3.utils.padLeft(0, 40),
+              web3.utils.padLeft(0, 40),
+              [],
+              {
+                value: keyPrice,
+              }
+            )
+        }
         if (versionNumber >= 5) {
           // Version 5 renamed to purchase, added keyPrice, referrer, and data
           return await lock
