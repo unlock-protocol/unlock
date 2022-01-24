@@ -21,7 +21,7 @@ describe('HookController', () => {
 
       const expiration = controller.getExpiration().getTime()
       const expectedExpiration = new Date(Date.now() + 864000 * 1000).getTime()
-      expect(expiration).toBe(expectedExpiration)
+      expect(expiration).toBeLessThanOrEqual(expectedExpiration)
 
       const expiration2 = controller
         .getExpiration(controller.options.leaseSeconds.limit)
@@ -31,7 +31,7 @@ describe('HookController', () => {
         Date.now() + controller.options.leaseSeconds.limit * 1000
       ).getTime()
 
-      expect(expiration2).toBe(expectedExpiration2)
+      expect(expiration2).toBeLessThanOrEqual(expectedExpiration2)
 
       const expiration3 = controller
         .getExpiration(controller.options.leaseSeconds.limit + 1)
@@ -41,7 +41,7 @@ describe('HookController', () => {
         .getExpiration(controller.options.leaseSeconds.limit)
         .getTime()
 
-      expect(expiration3).toBe(expectedExpiration3)
+      expect(expiration3).toBeLessThanOrEqual(expectedExpiration3)
     })
 
     it('getLeaseSeconds', () => {

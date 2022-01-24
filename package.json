@@ -33,7 +33,8 @@
     "newsletter",
     "paywall",
     "paywall-app",
-    "wedlocks"
+    "wedlocks",
+    "locksmith/examples/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
