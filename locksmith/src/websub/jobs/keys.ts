@@ -1,13 +1,9 @@
 import { Op } from 'sequelize'
+import { networks } from '@unlock-protocol/networks'
 import { Key } from '../../graphql/datasource'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS } from '../topics'
-
-import {
-  networkMapToFnResult,
-  notifyHook,
-  filterHooksByTopic,
-} from '../helpers'
+import { notifyHook, filterHooksByTopic } from '../helpers'
 
 const FETCH_LIMIT = 25
 
@@ -33,44 +29,49 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
   return unprocessedKeys
 }
 
-async function fetchAllUnprocessedKeys(network: number) {
+async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
   let page = 0
-  const items = []
-
   while (true) {
     const keys = await fetchUnprocessedKeys(network, page)
+
     // If empty, break the loop and return as there are no more new keys to process.
     if (!keys.length) {
       break
     }
-    items.push(keys)
-    page += 1
-  }
-  return items.flat()
-}
 
-export async function notifyOfKeys(hooks: Hook[]) {
-  const subscribedHooks = filterHooksByTopic(hooks, TOPIC_KEYS)
-  const networkToKeys = await networkMapToFnResult(fetchAllUnprocessedKeys)
+    await Promise.all(
+      hooks.map(async (hook) => {
+        const data = keys.filter((key: any) => key.lock.id === hook.lock)
+        const hookEvent = await notifyHook(hook, {
+          data,
+          network,
+        })
+        return hookEvent
+      })
+    )
 
-  for (const subscribedHook of subscribedHooks) {
-    const networkId = Number(subscribedHook.network)
-
-    const data = networkToKeys
-      .get(networkId)!
-      .filter((key: any) => key.lock.id === subscribedHook.lock)
-
-    await notifyHook(subscribedHook, { data, network: networkId })
-  }
-
-  for (const [network, processedKeys] of networkToKeys.entries()) {
-    const processedHookItems = processedKeys.map((key: any) => {
+    const processedHookItems = keys.map((key: any) => {
       return {
         network,
         type: 'key',
         objectId: key.id,
       }
     })
+
     await ProcessedHookItem.bulkCreate(processedHookItems)
+
+    page += 1
+  }
+}
+
+export async function notifyOfKeys(hooks: Hook[]) {
+  const subscribedHooks = filterHooksByTopic(hooks, TOPIC_KEYS)
+  for (const network of Object.values(networks)) {
+    if (network.id !== 31337) {
+      const hooksFilteredByNetwork = subscribedHooks.filter(
+        (hook) => Number(hook.network) === network.id
+      )
+      await notifyHooksOfAllUnprocessedKeys(hooksFilteredByNetwork, network.id)
+    }
   }
 }
