@@ -17,26 +17,18 @@ export const OAuthConnect = ({
   redirectUri,
   closeModal,
 }: OAuthConnectProps) => {
-  const [allowed, setAllowed] = useState(false)
-  const { account, signMessage } = useContext(AuthenticationContext)
+  const { account, signMessage, isUnlockAccount } = useContext(AuthenticationContext)
+  const [showSignMessage, setShowSignMessage] = useState(false)
 
-  const accessDenied = () => {
-    closeModal(false, redirectUri)
-  }
-
-  const [showLogin, setShowLogin] = useState(false)
   const { clientId } = oAuthConfig
-  // What if the user has no account? TODO: allow for the user to signup!
 
-  // TODO: add a timestamp to digest for increased security
   const digest = `Connecting my acccount to ${clientId}.`
 
-  // When the account is changed, make sure we ping!
   useEffect(() => {
     const handleUser = async (account?: string) => {
       if (account) {
+        setShowSignMessage(!isUnlockAccount)
         const signedMessage = await signMessage(digest)
-        setShowLogin(false)
         console.log(
           'Actually do not redirect just yet if there are memberships to purchase!'
         )
@@ -55,39 +47,32 @@ export const OAuthConnect = ({
     handleUser(account)
   }, [account])
 
-  if (showLogin) {
-    return (
-      <LoginPrompt
-        embedded
-        showTitle={false}
-        unlockUserAccount
-        backgroundColor="var(--white)"
-        activeColor="var(--offwhite)"
-      >
-        <p>
-          Please connect to your account:
-        </p>
-      </LoginPrompt>
-    )
+  if (showSignMessage) {
+    return <>
+    <p>Please check your wallet to sign a message that will authenticate you.</p>
+    <p>You will be redirected to {clientId} after that.</p>
+    </>
   }
 
-  const onAllowed = () => {
-    setAllowed(true)
-    setShowLogin(true)
-  }
+  return (
+    <LoginPrompt
+      embedded
+      showTitle={false}
+      unlockUserAccount
+      backgroundColor="var(--white)"
+      activeColor="var(--offwhite)"
+    >
+      <p>
+        The application {clientId} wants to identify you and access your
+        membership status. 
+      </p>
+      <p>
+        Please connect to your wallet, or <a>create an account</a>.
+      </p>
+    </LoginPrompt>
+  )
 
-  if (!allowed || !account) {
-    return (
-      <>
-        <p>
-          The application {clientId} wants to identify you and access your
-          membership status.
-        </p>
-        <Button onClick={onAllowed}>Allow</Button>
-        <NeutralButton onClick={accessDenied}>Deny</NeutralButton>
-      </>
-    )
-  }
+
 
   // We should probably have redireccted!
   return <Loading />
