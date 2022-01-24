@@ -6615,17 +6615,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.12.0":
-  version: 1.12.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.12.0"
+"@openzeppelin/hardhat-upgrades@npm:1.12.1":
+  version: 1.12.1
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.12.1"
   dependencies:
     "@openzeppelin/upgrades-core": ^1.10.0
+    chalk: ^4.1.0
   peerDependencies:
     "@nomiclabs/hardhat-ethers": ^2.0.0
     hardhat: ^2.0.2
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 48eb6848cbb6a4dbf9650cc5e172fa1703e83a9ef5f04fae79caa0c52f875291fb43ab9ed90c5506a4d481e9d19bb17109eeb59be69dd8ad0a413e45c5c31f80
+  checksum: a037c502ef0dd163354ba9abb6099ed9964c533aa21cd07532972360c9fa9a088402921ddb25b93b584d0b3f6b9253ae367a5f26620703d1356ea7610912d210
   languageName: node
   linkType: hard
 
@@ -12837,7 +12838,7 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.4.2
     "@openzeppelin/contracts-upgradeable": 4.4.2
-    "@openzeppelin/hardhat-upgrades": 1.12.0
+    "@openzeppelin/hardhat-upgrades": 1.12.1
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@openzeppelin/upgrades-core": 1.10.0
@@ -15488,7 +15489,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
