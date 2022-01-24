@@ -64,7 +64,9 @@ export const OAuthConnect = ({
         backgroundColor="var(--white)"
         activeColor="var(--offwhite)"
       >
-        Please connect to your account:
+        <p>
+          Please connect to your account:
+        </p>
       </LoginPrompt>
     )
   }
