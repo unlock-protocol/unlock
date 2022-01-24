@@ -42,11 +42,22 @@ const settings = {
 const networks = getHardhatNetwork()
 
 // Etherscan api for verification
-const etherscan = process.env.ETHERSCAN_API_KEY
-  ? {
-      apiKey: process.env.ETHERSCAN_API_KEY,
-    }
-  : {}
+const etherscan = {
+  apiKey: {
+    // xdai requires only placeholder api key
+    xdai: 'api-key',
+  },
+}
+
+if (process.env.ETHERSCAN_API_KEY) {
+  ;['mainnet', 'ropsten', 'rinkeby', 'goerli', 'kovan'].forEach(
+    // eslint-disable-next-line no-return-assign
+    (netName) => (etherscan.apiKey[netName] = process.env.ETHERSCAN_API_KEY)
+  )
+}
+if (process.env.POLYGONSCAN_API_KEY) {
+  etherscan.apiKey.polygon = process.env.POLYGONSCAN_API_KEY
+}
 
 // add mainnet fork -- if API key is present
 if (process.env.RUN_MAINNET_FORK) {
