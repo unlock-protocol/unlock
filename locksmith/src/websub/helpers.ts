@@ -106,3 +106,10 @@ export async function networkMapToFnResult<T = unknown>(
   }
   return map
 }
+
+export function filterHooksByTopic(hooks: Hook[], topic: RegExp) {
+  return hooks.filter((hook) => {
+    const path = new URL(hook.topic).pathname
+    return topic.test(path)
+  })
+}
