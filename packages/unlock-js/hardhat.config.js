@@ -2,6 +2,7 @@
  * @type import('hardhat/config').HardhatUserConfig
  */
 require('@nomiclabs/hardhat-ethers')
+require('@openzeppelin/hardhat-upgrades')
 
 const { subtask, task } = require('hardhat/config')
 const { HARDHAT_NETWORK_NAME } = require('hardhat/plugins')
@@ -18,12 +19,21 @@ subtask(TASK_JEST_RUN_TESTS).setAction(async () => {
       .then((result) => resolve(result))
       .catch((error) => reject(error))
   })
+
   return testFailures.results
 })
 
 task(TASK_JEST, 'Runs jest tests').setAction(
   async ({ watch }, { run, network }) => {
-    const testFailures = await run(TASK_JEST_RUN_TESTS, { watch })
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const preCompile = require('./scripts/preCompile')
+
+    // pre-compile latest Unlock contract to be used by OZ upgrades
+    await preCompile({
+      unlockName: 'UnlockV10',
+    })
+
+    const testResults = await run(TASK_JEST_RUN_TESTS, { watch })
 
     if (network.name === HARDHAT_NETWORK_NAME) {
       const stackTracesFailures = await network.provider.send(
@@ -36,11 +46,22 @@ task(TASK_JEST, 'Runs jest tests').setAction(
         )
       }
     }
-
-    process.exitCode = testFailures
-    return testFailures
+    const exit = testResults.success ? 0 : 1
+    process.exit(exit)
   }
 )
 module.exports = {
-  solidity: '0.8.0',
+  solidity: {
+    version: '0.8.7',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 10,
+      },
+    },
+  },
+  paths: {
+    sources: './src/__tests__/contracts',
+    artifacts: './src/__tests__/artifacts',
+  },
 }

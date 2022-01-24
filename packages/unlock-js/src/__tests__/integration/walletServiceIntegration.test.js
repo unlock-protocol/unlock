@@ -2,8 +2,10 @@ import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
+import { deployUnlock, configureUnlock, deployTemplate } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
+import UnlockVersions from '../../Unlock'
 
 const chainId = 31337
 
@@ -26,21 +28,21 @@ const networks = {
   },
 }
 
-// Versions are specified as `unlock version => [ corresponding PublicLock versions to test against ]`
-// starting w v10 and upgradeable locks, we will have several PublicLock versions
-const versions = {
-  v4: ['v4'],
-  // 'v6' is disabled it required erc1820 package which is not supported beyond node 10.
-  v7: ['v7'],
-  v8: ['v8'],
-  v9: ['v8'],
-  // 'v10' : ['v9', 'v10', etc]
-}
+// Unlock versions to test
+const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+)
 
-describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
+describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
   let ERC20Address
+
+  // Unlock v4 can only interact w PublicLock v4
+  const PublicLockVersions =
+    unlockVersion === 'v4'
+      ? ['v4']
+      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
@@ -52,13 +54,13 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
     // pass hardhat ethers provider
     networks[chainId].ethersProvider = ethersProvider
 
+    // deploy Unlock
+    const unlockAddress = await deployUnlock(unlockVersion)
+    networks[chainId].unlockAddress = unlockAddress
+
     walletService = new WalletService(networks)
 
     await walletService.connect(ethersProvider, signer)
-
-    const unlockAddress = await walletService.deployUnlock(versionName)
-    networks[chainId].unlockAddress = unlockAddress
-
     web3Service = new Web3Service(networks)
 
     accounts = await walletService.provider.listAccounts()
@@ -72,17 +74,17 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
   it('should return the right version for unlockContractAbiVersion', async () => {
     expect.assertions(1)
     const abiVersion = await walletService.unlockContractAbiVersion()
-    expect(abiVersion.version).toEqual(versionName)
+    expect(abiVersion.version).toEqual(unlockVersion)
   })
 
-  if (['v4'].indexOf(versionName) === -1) {
-    describe.each(versions[versionName])(
+  if (['v4'].indexOf(unlockVersion) === -1) {
+    describe.each(PublicLockVersions)(
       'configuration using PublicLock %s',
       (publicLockVersion) => {
         let publicLockTemplateAddress
         it('should be able to deploy the lock contract template', async () => {
           expect.assertions(2)
-          publicLockTemplateAddress = await walletService.deployTemplate(
+          publicLockTemplateAddress = await deployTemplate(
             publicLockVersion,
             (error, hash) => {
               if (error) {
@@ -97,7 +99,10 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
           expect.assertions(2)
           let transactionHash
-          const receipt = await walletService.configureUnlock(
+          const { unlockAddress } = walletService
+          const receipt = await configureUnlock(
+            unlockAddress,
+            unlockVersion,
             {
               publicLockTemplateAddress,
               globalTokenSymbol: 'TESTK',
@@ -122,9 +127,9 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
     )
   }
 
-  if (locks[versionName].length) {
+  describe.each(PublicLockVersions)('using Lock %s', (publicLockVersion) => {
     describe.each(
-      locks[versionName].map((lock, index) => [index, lock.name, lock])
+      locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
       let lock
       let expectedLockAddress
@@ -132,8 +137,29 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
       let lockCreationHash
 
       beforeAll(async () => {
+        if (publicLockVersion !== 'v4') {
+          // here we need to setup unlock template properly
+          const unlock = await walletService.getUnlockContract()
+
+          // deploy the relevant template
+          const templateAddress = await deployTemplate(publicLockVersion)
+
+          if (unlockVersion === 'v10') {
+            // prepare unlock for upgradeable locks
+            const versionNumber = parseInt(publicLockVersion.replace('v', ''))
+            await unlock.addLockTemplate(templateAddress, versionNumber)
+          }
+
+          // set the right template in Unlock
+          const tx = await unlock.setLockTemplate(templateAddress)
+          await tx.wait()
+        }
+        // parse erc20
         const { isERC20 } = lockParams
         lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
+
+        // unique Lock name to avoid conflicting addresses
+        lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
         expectedLockAddress = await web3Service.generateLockAddress(
           accounts[0],
@@ -150,6 +176,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
             lockCreationHash = hash
           }
         )
+
         lock = await web3Service.getLock(lockAddress, chainId)
       })
 
@@ -158,7 +185,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
       })
 
-      if (['v4'].indexOf(versionName) === -1) {
+      if (['v4', 'v10'].indexOf(unlockVersion) === -1) {
         it('should have deployed a lock at the expected address', async () => {
           expect.assertions(1)
           expect(lockAddress).toEqual(expectedLockAddress)
@@ -170,7 +197,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         const lockVersion = await web3Service.lockContractAbiVersion(
           lockAddress
         )
-        expect(lockVersion.version).toEqual(versionName)
+        expect(lockVersion.version).toEqual(publicLockVersion)
       })
 
       it('should have deployed the right lock name', () => {
@@ -316,7 +343,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
           ).toBeLessThan(60)
         })
 
-        if (['v4', 'v6'].indexOf(versionName) == -1) {
+        if (['v4', 'v6'].indexOf(publicLockVersion) == -1) {
           it('should have set the right keyManager', async () => {
             expect.assertions(1)
             const keyManager = await web3Service.keyManagerOf(
@@ -341,6 +368,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         beforeAll(async () => {
           keyPurchaser = accounts[0] // This is the default in walletService
           keyOwner = accounts[5]
+
           if (lock.currencyContractAddress === null) {
             // Get the ether balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getAddressBalance(
@@ -621,7 +649,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         })
       })
 
-      if (['v4', 'v6'].indexOf(versionName) === -1) {
+      if (['v4', 'v6'].indexOf(publicLockVersion) === -1) {
         const keyGranter = '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0'
         describe('keyGranter', () => {
           it('should not have key granter role for random address', async () => {
@@ -690,7 +718,7 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         })
       }
 
-      if (['v4'].indexOf(versionName) == -1) {
+      if (['v4'].indexOf(publicLockVersion) == -1) {
         describe('shareKey', () => {
           it('should allow a member to share their key with another one', async () => {
             expect.assertions(4)
@@ -745,5 +773,5 @@ describe.each(Object.keys(versions))('Unlock %s', (versionName) => {
         })
       }
     })
-  }
+  })
 })
