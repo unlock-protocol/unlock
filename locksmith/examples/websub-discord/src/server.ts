@@ -1,7 +1,8 @@
 import { WebhookClient, MessageEmbed } from 'discord.js'
 import express from 'express'
+import { networks } from '@unlock-protocol/networks'
 import { config } from './config'
-import { chunk } from './util'
+import { chunk, NETWORK_COLOR } from './util'
 import { createWebsubMiddleware } from './middleware'
 
 const port = process.env.PORT || 4000
@@ -18,13 +19,23 @@ app.use(express.json())
 app.post('/callback/locks', websubMiddleware, async (req) => {
   const embeds: MessageEmbed[] = []
   const locks: any[] = req.body?.data
+  const network = networks[req.body?.network]
   if (!locks.length) {
     return
   }
   for (const lock of locks) {
     const embed = new MessageEmbed()
-    embed.setTitle('New Lock')
-    embed.addField('Lock ID', lock.id)
+    if (network) {
+      const networkColor = NETWORK_COLOR[network.id]
+      embed.setColor(networkColor)
+      embed.addField('network', network.name)
+      const explorerURL = network.explorer?.urls?.address?.(lock.address)
+      if (explorerURL) {
+        embed.setURL(explorerURL)
+      }
+    }
+
+    embed.setTitle(`New Lock (${lock.id})`)
     embeds.push(embed)
   }
 
@@ -38,15 +49,24 @@ app.post('/callback/locks', websubMiddleware, async (req) => {
 app.post('/callback/keys', websubMiddleware, async (req) => {
   const embeds: MessageEmbed[] = []
   const keys: any[] = req.body?.data
-
+  const network = networks[req.body?.network]
   if (!keys.length) {
     return
   }
 
   for (const key of keys) {
     const embed = new MessageEmbed()
-    embed.setTitle('New Key')
-    embed.addField('Key Id', key.id)
+    if (network) {
+      const networkColor = NETWORK_COLOR[network.id]
+      embed.setColor(networkColor)
+      embed.addField('network', network.name)
+      const explorerURL = network.explorer?.urls?.address?.(key.lock.address)
+      if (explorerURL) {
+        embed.setURL(explorerURL)
+      }
+    }
+    embed.setTitle(`New key (${key.id})`)
+    embed.addField('lock', key.lock.address)
     embeds.push(embed)
   }
 

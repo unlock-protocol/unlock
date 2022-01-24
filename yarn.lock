@@ -48816,10 +48816,11 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"websub-discord@workspace:locksmith/examples/websub_discord":
+"websub-discord@workspace:locksmith/examples/websub-discord":
   version: 0.0.0-use.local
-  resolution: "websub-discord@workspace:locksmith/examples/websub_discord"
+  resolution: "websub-discord@workspace:locksmith/examples/websub-discord"
   dependencies:
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     discord.js: ^13.6.0
     dotenv: ^14.2.0
     express: ^4.17.2
