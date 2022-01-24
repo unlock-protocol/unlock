@@ -58,6 +58,12 @@ if (process.env.ETHERSCAN_API_KEY) {
 if (process.env.POLYGONSCAN_API_KEY) {
   etherscan.apiKey.polygon = process.env.POLYGONSCAN_API_KEY
 }
+if (process.env.BSCSCAN_API_KEY) {
+  etherscan.apiKey.bsc = process.env.BSCSCAN_API_KEY
+}
+if (process.env.ARBISCAN_API_KEY) {
+  etherscan.apiKey.arbitrum = process.env.ARBISCAN_API_KEY
+}
 
 // add mainnet fork -- if API key is present
 if (process.env.RUN_MAINNET_FORK) {
