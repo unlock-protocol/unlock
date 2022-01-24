@@ -150,7 +150,7 @@ contract Unlock is
     _deployProxyAdmin();
   }
 
-  function initializeProxyAdmin() public {
+  function initializeProxyAdmin() public onlyOwner {
     require(proxyAdminAddress == address(0), "ProxyAdmin already deployed");
     _deployProxyAdmin();
   }
