@@ -1,4 +1,3 @@
-import { networks } from '@unlock-protocol/networks'
 import pRetry from 'p-retry'
 import crypto from 'crypto'
 import fetch from 'cross-fetch'
