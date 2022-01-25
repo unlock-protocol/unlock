@@ -84,29 +84,6 @@ export async function notifyHook(hook: Hook, body: unknown) {
   return hookEvent
 }
 
-export async function networkMapToFnResult<T = unknown>(
-  run: (network: number) => Promise<T> | T
-) {
-  const items = await Promise.allSettled(
-    Object.values(networks).map(async (network) => {
-      const networkId = network.id
-      return {
-        network: networkId,
-        data: await run(networkId),
-      }
-    })
-  )
-  const map = new Map<number, T>()
-
-  for (const item of items) {
-    if (item.status === 'fulfilled') {
-      const { network, data } = item.value
-      map.set(network, data)
-    }
-  }
-  return map
-}
-
 export function filterHooksByTopic(hooks: Hook[], topic: RegExp) {
   return hooks.filter((hook) => {
     const path = new URL(hook.topic).pathname
