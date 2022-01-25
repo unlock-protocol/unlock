@@ -1,24 +1,77 @@
+import { Op } from 'sequelize'
+import { networks } from '@unlock-protocol/networks'
 import { Key } from '../../graphql/datasource'
-import { Hook } from '../../models'
+import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS } from '../topics'
+import { notifyHook, filterHooksByTopic } from '../helpers'
 
-import { networkMapToFnResult, notifyHook } from '../helpers'
+const FETCH_LIMIT = 25
+
+async function fetchUnprocessedKeys(network: number, page = 0) {
+  const keySource = new Key(network)
+  const keys = await keySource.getKeys({
+    first: FETCH_LIMIT,
+    skip: page ? page * FETCH_LIMIT : 0,
+  })
+
+  const keyIds = keys.map((key: any) => key.id)
+  const processedKeys = await ProcessedHookItem.findAll({
+    where: {
+      objectId: {
+        [Op.in]: keyIds,
+      },
+    },
+  })
+
+  const unprocessedKeys = keys.filter(
+    (key: any) => !processedKeys.find((item) => item.objectId === key.id)
+  )
+  return unprocessedKeys
+}
+
+async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
+  let page = 0
+  while (true) {
+    const keys = await fetchUnprocessedKeys(network, page)
+
+    // If empty, break the loop and return as there are no more new keys to process.
+    if (!keys.length) {
+      break
+    }
+
+    await Promise.all(
+      hooks.map(async (hook) => {
+        const data = keys.filter((key: any) => key.lock.id === hook.lock)
+        const hookEvent = await notifyHook(hook, {
+          data,
+          network,
+        })
+        return hookEvent
+      })
+    )
+
+    const processedHookItems = keys.map((key: any) => {
+      return {
+        network,
+        type: 'key',
+        objectId: key.id,
+      }
+    })
+
+    await ProcessedHookItem.bulkCreate(processedHookItems)
+
+    page += 1
+  }
+}
 
 export async function notifyOfKeys(hooks: Hook[]) {
-  const subscribed = hooks.filter((hook) => {
-    const path = new URL(hook.topic).pathname
-    return TOPIC_KEYS.test(path)
-  })
-
-  const networkToLocksMap = await networkMapToFnResult((network) => {
-    const keySource = new Key(Number(network))
-    return keySource.getKeys({ first: 25 })
-  })
-
-  for (const hook of subscribed) {
-    const data = networkToLocksMap
-      .get(Number(hook.network))
-      .filter((key: any) => key.lock.id === hook.lock)
-    notifyHook(hook, data)
+  const subscribedHooks = filterHooksByTopic(hooks, TOPIC_KEYS)
+  for (const network of Object.values(networks)) {
+    if (network.id !== 31337) {
+      const hooksFilteredByNetwork = subscribedHooks.filter(
+        (hook) => Number(hook.network) === network.id
+      )
+      await notifyHooksOfAllUnprocessedKeys(hooksFilteredByNetwork, network.id)
+    }
   }
 }
