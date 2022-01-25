@@ -15,7 +15,7 @@ export async function notifyOfLocks(hooks: Hook[]) {
     return lockSource.getLocks({ first: 25 })
   })
   for (const hook of subscribed) {
-    const data = networkToLocksMap.get(Number(hook.network))
+    const data = networkToLocksMap.get(hook.network)
     notifyHook(hook, data)
   }
 }

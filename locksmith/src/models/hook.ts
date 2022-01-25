@@ -6,7 +6,7 @@ export class Hook extends Model<Hook> {
   id!: number
 
   @Column
-  network!: string
+  network!: number
 
   @Column
   topic!: string
