@@ -1,73 +1,80 @@
 import { Op } from 'sequelize'
+import { networks } from '@unlock-protocol/networks'
 import { Lock } from '../../graphql/datasource'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_LOCKS } from '../topics'
+import { notifyHook, filterHooksByTopic } from '../helpers'
 
-import { networkMapToFnResult, notifyHook } from '../helpers'
+const FETCH_LIMIT = 25
 
-const FIRST_LIMIT = 50
-
-export async function fetchUnprocessedLocks(network: number) {
+async function fetchUnprocessedLocks(network: number, page = 0) {
   const lockSource = new Lock(network)
-  let page = 0
-  const items = []
+  const locks = await lockSource.getLocks({
+    first: FETCH_LIMIT,
+    skip: page ? page * FETCH_LIMIT : 0,
+  })
 
-  while (true) {
-    const locks = await lockSource.getLocks({
-      first: FIRST_LIMIT,
-      skip: page ? page * FIRST_LIMIT : 0,
-    })
-
-    const lockIds = locks.map((lock: any) => lock.id)
-
-    const processedLocks = await ProcessedHookItem.findAll({
-      where: {
-        objectId: {
-          [Op.in]: lockIds,
-        },
+  const lockIds = locks.map((lock: any) => lock.id)
+  const processedLocks = await ProcessedHookItem.findAll({
+    where: {
+      objectId: {
+        [Op.in]: lockIds,
       },
-      order: [['id', 'DESC']],
-    })
+    },
+  })
 
-    const onlyUnprocessed = locks.filter(
-      (lock: any) => !processedLocks.find((item) => item.objectId === lock.id)
-    )
+  const unprocessedLocks = locks.filter(
+    (lock: any) => !processedLocks.find((item) => item.objectId === lock.id)
+  )
+  return unprocessedLocks
+}
 
-    items.push(onlyUnprocessed)
+async function notifyHooksOfAllUnprocessedLocks(
+  hooks: Hook[],
+  network: number
+) {
+  let page = 0
+  while (true) {
+    const locks = await fetchUnprocessedLocks(network, page)
 
-    if (!onlyUnprocessed.length || onlyUnprocessed.length < locks.length) {
+    // If empty, break the loop and return as there are no more new locks to process.
+    if (!locks.length) {
       break
     }
 
-    page += 1
-  }
-  return items.flat()
-}
+    await Promise.all(
+      hooks.map(async (hook) => {
+        const data = locks
+        const hookEvent = await notifyHook(hook, {
+          data,
+          network,
+        })
+        return hookEvent
+      })
+    )
 
-export async function processNewLocks(network: number) {
-  const results = await fetchUnprocessedLocks(network)
-
-  await ProcessedHookItem.bulkCreate(
-    results.map((lock: any) => {
+    const processedHookItems = locks.map((lock: any) => {
       return {
-        type: 'lock',
         network,
+        type: 'lock',
         objectId: lock.id,
       }
     })
-  )
-  return results
+
+    await ProcessedHookItem.bulkCreate(processedHookItems)
+
+    page += 1
+  }
 }
 
 export async function notifyOfLocks(hooks: Hook[]) {
-  const subscribed = hooks.filter((hook) => {
-    const path = new URL(hook.topic).pathname
-    return TOPIC_LOCKS.test(path)
-  })
-
-  const networkToLocksMap = await networkMapToFnResult(processNewLocks)
-  for (const hook of subscribed) {
-    const data = networkToLocksMap.get(Number(hook.network))
-    notifyHook(hook, data)
+  const subscribedHooks = filterHooksByTopic(hooks, TOPIC_LOCKS)
+  for (const network of Object.values(networks)) {
+    if (network.id !== 31337) {
+      const hooksFilteredByNetwork = subscribedHooks.filter(
+        (hook) => Number(hook.network) === network.id
+      )
+      await notifyHooksOfAllUnprocessedLocks(hooksFilteredByNetwork, network.id)
+    }
   }
 }
