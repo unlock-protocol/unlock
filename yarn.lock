@@ -12638,6 +12638,7 @@ __metadata:
     multer: 1.4.4
     multer-s3: 2.10.0
     nock: 13.2.1
+    node-abort-controller: ^3.0.1
     node-cron: ^3.0.0
     node-mocks-http: 1.11.0
     nodemon: 2.0.15
@@ -34153,6 +34154,13 @@ fsevents@~2.1.1:
     lodash.set: ^4.3.2
     propagate: ^2.0.0
   checksum: b401fb8143ca88095ee34c715e2806eda2813dace4f4c4798961ad961c18003d1529f4507a79c429d2c3c768e136632ee19ee9ebfef71f0cb022df152594df1d
+  languageName: node
+  linkType: hard
+
+"node-abort-controller@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "node-abort-controller@npm:3.0.1"
+  checksum: 2b3d75c65249fea99e8ba22da3a8bc553f034f44dd12f5f4b38b520f718b01c88718c978f0c24c2a460fc01de9a80b567028f547b94440cb47adeacfeb82c2ee
   languageName: node
   linkType: hard
 
