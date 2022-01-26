@@ -25,14 +25,14 @@ jobs:
     uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
     with:
       service: locksmith-websub
-      app-name: unlock-locksmith-websub-staging
+      app-name: locksmith-websub-staging
   
   deploy-locksmith-websub-production:    
     if: contains(github.base_ref, 'production')
     uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
     with:
       service: locksmith-websub
-      app-name: unlock-locksmith-websub-production
+      app-name: locksmith-websub-production
   # netlify deploys
   deploy-unlock-app-netlify:
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
