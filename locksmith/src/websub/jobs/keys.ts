@@ -66,12 +66,20 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
 
 export async function notifyOfKeys(hooks: Hook[]) {
   const subscribedHooks = filterHooksByTopic(hooks, TOPIC_KEYS)
+  const tasks: Promise<void>[] = []
+
   for (const network of Object.values(networks)) {
     if (network.id !== 31337) {
       const hooksFilteredByNetwork = subscribedHooks.filter(
         (hook) => hook.network === network.id
       )
-      await notifyHooksOfAllUnprocessedKeys(hooksFilteredByNetwork, network.id)
+      const task = notifyHooksOfAllUnprocessedKeys(
+        hooksFilteredByNetwork,
+        network.id
+      )
+      tasks.push(task)
     }
   }
+
+  await Promise.allSettled(tasks)
 }
