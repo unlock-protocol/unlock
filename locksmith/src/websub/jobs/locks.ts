@@ -72,7 +72,7 @@ export async function notifyOfLocks(hooks: Hook[]) {
   for (const network of Object.values(networks)) {
     if (network.id !== 31337) {
       const hooksFilteredByNetwork = subscribedHooks.filter(
-        (hook) => Number(hook.network) === network.id
+        (hook) => hook.network === network.id
       )
       await notifyHooksOfAllUnprocessedLocks(hooksFilteredByNetwork, network.id)
     }

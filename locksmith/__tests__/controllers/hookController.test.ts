@@ -87,7 +87,7 @@ describe('HookController', () => {
           hook.mode = mode
           hook.topic = topic
           hook.callback = callback
-          hook.network = network
+          hook.network = Number(network)
           hook.lock = lock
           hook.expiration = controller.getExpiration(lease_seconds)
           return Promise.resolve(hook)

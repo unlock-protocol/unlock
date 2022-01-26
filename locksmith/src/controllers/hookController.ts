@@ -130,7 +130,7 @@ export class HookController {
       where: {
         callback: hub.callback,
         topic: hub.topic,
-        network,
+        network: Number(network),
       },
     })
 
@@ -160,7 +160,7 @@ export class HookController {
     const { network, lock } = request.params
     const { hub } = request.body
     const hook = new Hook()
-    hook.network = network
+    hook.network = Number(network)
     hook.topic = hub.topic
     hook.callback = hub.callback
     hook.mode = hub.mode
