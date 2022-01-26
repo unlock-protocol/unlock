@@ -14,8 +14,12 @@ describe('Test notify helpers', () => {
       const hook = new Hook()
       hook.callback = 'http://localhost:4000/callback'
       hook.secret = 'websub'
-      const fn = notify(hook, { test: true })
-      const response = await fn()
+      const response = await notify({
+        hook,
+        body: {
+          test: true,
+        },
+      })
       expect(response.ok).toBe(true)
     })
 
@@ -25,8 +29,12 @@ describe('Test notify helpers', () => {
       hook.callback = 'http://localhost:4000/callback'
       // Change signature here
       hook.secret = 'websu'
-      const fn = notify(hook, { test: true })
-      const response = await fn()
+      const response = await notify({
+        hook,
+        body: {
+          test: true,
+        },
+      })
       expect(response.ok).toBe(false)
     })
 
@@ -34,8 +42,12 @@ describe('Test notify helpers', () => {
       expect.assertions(1)
       const hook = new Hook()
       hook.callback = 'http://localhost:4000/callback'
-      const fn = notify(hook, { test: true })
-      const response = await fn()
+      const response = await notify({
+        hook,
+        body: {
+          test: true,
+        },
+      })
       expect(response.ok).toBe(false)
     })
   })

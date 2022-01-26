@@ -1,12 +1,26 @@
-import { networks } from '@unlock-protocol/networks'
 import pRetry from 'p-retry'
 import crypto from 'crypto'
 import fetch from 'cross-fetch'
+import { AbortController } from 'node-abort-controller'
+import { setTimeout, clearTimeout } from 'timers'
 import { Hook, HookEvent } from '../models'
+import { logger } from '../logger'
 
-export const notify = (hook: Hook, body: unknown) => async () => {
+interface NotifyOptions {
+  timeout?: number
+  hook: Hook
+  body: unknown
+}
+
+export async function notify({ timeout = 500, hook, body }: NotifyOptions) {
   const headers: Record<string, string> = {}
   const content = JSON.stringify(body)
+  const ac = new AbortController()
+
+  const abortTimeout = setTimeout(() => {
+    ac.abort()
+  }, timeout)
+
   headers['Content-Type'] = 'application/json'
   if (hook.secret) {
     const algorithm = 'sha256'
@@ -21,7 +35,10 @@ export const notify = (hook: Hook, body: unknown) => async () => {
     headers: headers,
     method: 'POST',
     body: content,
+    signal: ac.signal,
   })
+
+  clearTimeout(abortTimeout)
 
   return response
 }
@@ -52,59 +69,45 @@ export async function notifyHook(hook: Hook, body: unknown) {
   hookEvent.attempts = 0
   hookEvent.topic = hook.topic
   hookEvent.body = JSON.stringify(body)
+
   // Save the pending state in database
   await hookEvent.save()
 
-  const result = await pRetry(
-    async () => {
-      const fn = notify(hook, body)
-      const response = await fn()
-      const content = await response.text()
-      if (!response.ok) {
-        throw new Error(`${response.status}: ${content}`)
-      }
-      return content
-    },
-    {
-      onFailedAttempt(error: Error) {
-        hookEvent.attempts += 1
-        hookEvent.state = 'failed'
-        hookEvent.lastError = error.message
-        hookEvent.save()
+  try {
+    await pRetry(
+      async () => {
+        const response = await notify({
+          hook,
+          body,
+          timeout: 500,
+        })
+
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response
       },
-      retries: 3,
-    }
-  )
-
-  if (result) {
-    hookEvent.state = 'success'
-    hookEvent.save()
-  }
-
-  return hookEvent
-}
-
-export async function networkMapToFnResult<T = unknown>(
-  run: (network: number) => Promise<T> | T
-) {
-  const items = await Promise.allSettled(
-    Object.values(networks).map(async (network) => {
-      const networkId = network.id
-      return {
-        network: networkId,
-        data: await run(networkId),
+      {
+        async onFailedAttempt(error: Error) {
+          hookEvent.attempts += 1
+          hookEvent.state = 'failed'
+          hookEvent.lastError = error.message
+          await hookEvent.save()
+        },
+        retries: 3,
+        minTimeout: 100,
+        maxRetryTime: 1000,
+        maxTimeout: 200,
       }
-    })
-  )
-  const map = new Map<number, T>()
+    )
 
-  for (const item of items) {
-    if (item.status === 'fulfilled') {
-      const { network, data } = item.value
-      map.set(network, data)
-    }
+    hookEvent.state = 'success'
+    await hookEvent.save()
+    return hookEvent
+  } catch (error) {
+    logger.error(error.message)
+    return hookEvent
   }
-  return map
 }
 
 export function filterHooksByTopic(hooks: Hook[], topic: RegExp) {
