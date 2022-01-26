@@ -15488,7 +15488,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
@@ -18125,61 +18125,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30000844, caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001125, caniuse-lite@npm:^1.0.30001202, caniuse-lite@npm:^1.0.30001228, caniuse-lite@npm:^1.0.30001259":
-  version: 1.0.30001260
-  resolution: "caniuse-lite@npm:1.0.30001260"
-  dependencies:
-    nanocolors: ^0.1.0
-  checksum: a3a61073204636e02bc3972bfdcd8b3c3a2fb56f29b5ffa95fad7e5a01e2eece2ed92f1246728185992618a04f9221cbd83ddd96d2ef68083353d55ffe660e29
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001157":
-  version: 1.0.30001164
-  resolution: "caniuse-lite@npm:1.0.30001164"
-  checksum: 601cb9a93d5224655f544313fec2abd0795eb19689307f30823eca1976e250bea9aaa276e6781c7f1c5ab7f26cea1ebde679da5844cb561b3ef34a66cd5b0607
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001219":
-  version: 1.0.30001243
-  resolution: "caniuse-lite@npm:1.0.30001243"
-  checksum: 912cf885036847a8b6972cd65170d9f355a08b08cfd6b06bcaa8de965755ee5b35a4bbe4eb73844aac313a42e2038ae0971a5b4c9b94d631db2f073c906ce1d6
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001251":
-  version: 1.0.30001252
-  resolution: "caniuse-lite@npm:1.0.30001252"
-  checksum: 0d25a2795ca224c1a689b08fe37a5dc6c4c79d80720f927bf7df70ed30c1b1b62c3cc51429eac01902d3fc298d9531b85efec331c2a051e42615c76fa348f118
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001271":
-  version: 1.0.30001274
-  resolution: "caniuse-lite@npm:1.0.30001274"
-  checksum: 75790d021edbc68dbb36c0bc63255fad1e7aa3986039e685d10340e7e9a37147b0ddedaba22cf6c52b3657cca794ed41af88045ad5cce79084e9361e95f1c5d4
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001280":
-  version: 1.0.30001284
-  resolution: "caniuse-lite@npm:1.0.30001284"
-  checksum: 67196113186dc38dc579b8d28c660ab45465594d4bb55a4e263779525ed3c3ed208d369775469faf706e9f68ef7071b14e4890c197406d79c8b936f6fabac458
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001286, caniuse-lite@npm:^1.0.30001291, caniuse-lite@npm:^1.0.30001294":
-  version: 1.0.30001294
-  resolution: "caniuse-lite@npm:1.0.30001294"
-  checksum: 4e22649ef83781afbe6c81d6112ceac23c3ba29f91597ca1c14d323d5bfb646571edeb17436e76a29b07c8e9d75468655a2098a3e13dcc1438db47ff46fbb3ad
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001297":
-  version: 1.0.30001299
-  resolution: "caniuse-lite@npm:1.0.30001299"
-  checksum: c770f60ebf3e0cc8043ba4db0ebec12d7a595a6b50cb4437c3c5c55b04de9d2413f711f2828be761e8c37bb46b927a8abe6b199b8f0ffc1a34af0ebdee84be27
+"caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30000844, caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001125, caniuse-lite@npm:^1.0.30001157, caniuse-lite@npm:^1.0.30001202, caniuse-lite@npm:^1.0.30001219, caniuse-lite@npm:^1.0.30001228, caniuse-lite@npm:^1.0.30001251, caniuse-lite@npm:^1.0.30001259, caniuse-lite@npm:^1.0.30001271, caniuse-lite@npm:^1.0.30001280, caniuse-lite@npm:^1.0.30001286, caniuse-lite@npm:^1.0.30001291, caniuse-lite@npm:^1.0.30001294, caniuse-lite@npm:^1.0.30001297":
+  version: 1.0.30001301
+  resolution: "caniuse-lite@npm:1.0.30001301"
+  checksum: 0e359f2c682bed35521902ce7fc91136c485de4c1e1e33272d6fbb7cdf77178df7649960a9b69ce9da12022aadd7a0037b3c9b3594c41146d58216654dc9a236
   languageName: node
   linkType: hard
 
@@ -33922,7 +33871,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nanocolors@npm:^0.1.0, nanocolors@npm:^0.1.5":
+"nanocolors@npm:^0.1.5":
   version: 0.1.12
   resolution: "nanocolors@npm:0.1.12"
   checksum: 2ce58f57006ddd1d2680d05fe21f54d858db8ba81bd13381598ddc546f7637e33c4407da2ea7da40ea1c96794250e7c14a4d00358b48eeae4d917d6a92bafe4c

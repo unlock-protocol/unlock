@@ -113,9 +113,9 @@ const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
       <Description>
         {onCancel && <LinkButton onClick={onCancel}>Cancel</LinkButton>}
         {useWallet && (
-          <>
-            Use <LinkButton onClick={useWallet}> crypto wallet</LinkButton>
-          </>
+          <p>
+            Use <LinkButton onClick={useWallet}>crypto wallet</LinkButton>
+          </p>
         )}
       </Description>
     </Container>

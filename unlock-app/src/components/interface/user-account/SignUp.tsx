@@ -31,7 +31,7 @@ export const SignUp = ({ onCancel, createAccount, showLogin }: SignUpProps) => {
     try {
       await createAccount(email, password)
     } catch (error: any) {
-      setError(error)
+      setError(error.message)
     }
     setLoading(false)
   }
@@ -41,18 +41,23 @@ export const SignUp = ({ onCancel, createAccount, showLogin }: SignUpProps) => {
       <Label>Email</Label>
       <Input
         autoComplete="username"
+        placeholder="Enter your email"
         {...register('email', { required: true })}
       />
       <Label>Set a password</Label>
       <Input
         autoComplete="new-password"
         type="password"
+        placeholder="Choose a password"
         {...register('password', { required: true })}
       />
       {loading && <LoadingButton>Saving</LoadingButton>}
       {!loading && <Button type="submit">Save</Button>}
       {onCancel && <NeutralButton onClick={onCancel}>Cancel</NeutralButton>}
-      {error && (
+      {error && error !== 'ACCOUNT_ALREADY_EXISTS' && (
+        <>There was an error trying to create your account. Please try again.</>
+      )}
+      {error && error === 'ACCOUNT_ALREADY_EXISTS' && (
         <>
           An account with this email already exists,{' '}
           <LinkButton onClick={() => showLogin()}>please login</LinkButton>.

@@ -51,7 +51,8 @@ export const isValidIcon = (icon) => {
     !isDataURI(icon)
   ) {
     log('The paywall config\'s "icon" property is not a valid URL.')
-    return false
+    // Icon failure is not a huge deal.
+    return true
   }
   return true
 }

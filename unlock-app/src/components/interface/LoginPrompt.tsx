@@ -44,7 +44,7 @@ const LoginPrompt = ({
         <>
           {showTitle && <SubHeading>Connect a wallet</SubHeading>}
 
-          {children && <Description>{children}</Description>}
+          {children}
 
           <WalletButton
             color={backgroundColor}
@@ -108,14 +108,6 @@ const SubHeading = styled.h2`
   line-height: 42px;
   font-weight: 300;
   color: var(--darkgrey);
-`
-
-const Description = styled.div`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 16px;
-  color: var(--darkgrey);
-  margin: 5px;
 `
 
 const WalletButton = styled(ActionButton).attrs({

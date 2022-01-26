@@ -2,91 +2,148 @@ import React, { useState, useContext, useEffect } from 'react'
 import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import UnlockProvider from '../../../services/unlockProvider'
 
-import Loading from '../Loading'
-import { Button, NeutralButton } from './FormStyles'
+import { SignUp } from '../user-account/SignUp'
+import useAccount from '../../../hooks/useAccount'
+import { ConfigContext } from '../../../utils/withConfig'
+import { useAuthenticateHandler } from '../../../hooks/useAuthenticateHandler'
+import { LinkButton } from './FormStyles'
 
 interface OAuthConnectProps {
   oAuthConfig: OAuthConfig
   redirectUri: string
   closeModal: (success: boolean, url: string, queryString?: any) => void
+  message?: string
+}
+
+const formatMessageToSign = (
+  clientId: string,
+  address: string,
+  message: string
+): string => {
+  const nonce = Math.random().toString(36).substring(2, 10)
+  const issuedAt = new Date().toISOString()
+  return `
+${clientId} wants you to sign in with your Ethereum account:
+${address}
+
+${message ? `${message}x\n` : ''}URI: https://app.unlock-protocol.com/login
+Version: 1
+Nonce: ${nonce}
+Issued At: ${issuedAt}
+`
 }
 
 export const OAuthConnect = ({
   oAuthConfig,
   redirectUri,
+  message,
   closeModal,
 }: OAuthConnectProps) => {
-  const [allowed, setAllowed] = useState(false)
-  const { account, signMessage } = useContext(AuthenticationContext)
-
-  const accessDenied = () => {
-    closeModal(false, redirectUri)
-  }
-
-  const [showLogin, setShowLogin] = useState(false)
+  const { account, signMessage, isUnlockAccount } = useContext(
+    AuthenticationContext
+  )
+  const [showSignMessage, setShowSignMessage] = useState(false)
+  const [showSignup, setShowSignup] = useState(false)
   const { clientId } = oAuthConfig
-  // What if the user has no account? TODO: allow for the user to signup!
+  const { createUserAccount } = useAccount(account || '', 1)
+  const config = useContext(ConfigContext)
+  const { authenticateWithProvider } = useAuthenticateHandler({})
 
-  // TODO: add a timestamp to digest for increased security
-  const digest = `Connecting my acccount to ${clientId}.`
-
-  // When the account is changed, make sure we ping!
   useEffect(() => {
     const handleUser = async (account?: string) => {
+      console.log({ isUnlockAccount })
       if (account) {
-        const signedMessage = await signMessage(digest)
-        setShowLogin(false)
-        console.log(
-          'Actually do not redirect just yet if there are memberships to purchase!'
-        )
+        setShowSignMessage(!isUnlockAccount)
+        const digest = formatMessageToSign(clientId, account, message || '')
 
-        const code = JSON.stringify({
-          d: digest,
-          s: signedMessage,
-        })
+        try {
+          const signedMessage = await signMessage(digest)
 
-        closeModal(true, redirectUri, {
-          code: btoa(code),
-          state: oAuthConfig.state,
-        })
+          const code = JSON.stringify({
+            d: digest,
+            s: signedMessage,
+          })
+
+          closeModal(true, redirectUri, {
+            code: btoa(code),
+            state: oAuthConfig.state,
+          })
+        } catch (error) {
+          console.error(error)
+          closeModal(false, redirectUri)
+        }
       }
     }
     handleUser(account)
   }, [account])
 
-  if (showLogin) {
-    return (
-      <LoginPrompt
-        embedded
-        showTitle={false}
-        unlockUserAccount
-        backgroundColor="var(--white)"
-        activeColor="var(--offwhite)"
-      >
-        Please connect to your account:
-      </LoginPrompt>
+  const createAccount = async (email: string, password: string) => {
+    const { passwordEncryptedPrivateKey } = await createUserAccount(
+      email,
+      password
     )
+    const unlockProvider = new UnlockProvider(config.networks[1])
+
+    await unlockProvider.connect({
+      key: passwordEncryptedPrivateKey,
+      emailAddress: email,
+      password,
+    })
+    authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onAllowed = () => {
-    setAllowed(true)
-    setShowLogin(true)
-  }
-
-  if (!allowed || !account) {
+  if (showSignup && !account) {
     return (
       <>
+        <h1>Sign-up</h1>
+        <SignUp
+          createAccount={createAccount}
+          showLogin={() => setShowSignup(false)}
+        />
         <p>
-          The application {clientId} wants to identify you and access your
-          membership status.
+          Use{' '}
+          <LinkButton onClick={() => setShowSignup(false)}>
+            crypto wallet
+          </LinkButton>
         </p>
-        <Button onClick={onAllowed}>Allow</Button>
-        <NeutralButton onClick={accessDenied}>Deny</NeutralButton>
       </>
     )
   }
 
-  // We should probably have redireccted!
-  return <Loading />
+  if (showSignMessage && account) {
+    return (
+      <>
+        <p>Check your wallet to sign a message that will authenticate you.</p>
+        <p>You will be redirected to {clientId} after that.</p>
+      </>
+    )
+  }
+
+  return (
+    <LoginPrompt
+      embedded
+      showTitle={false}
+      unlockUserAccount
+      backgroundColor="var(--white)"
+      activeColor="var(--offwhite)"
+    >
+      <p>
+        The application {clientId} wants to identify you and access your
+        membership status.
+      </p>
+      <p>
+        Connect to your wallet, or{' '}
+        <LinkButton onClick={() => setShowSignup(true)}>
+          create an account
+        </LinkButton>
+        .
+      </p>
+    </LoginPrompt>
+  )
+}
+
+OAuthConnect.defaultProps = {
+  message: '',
 }
