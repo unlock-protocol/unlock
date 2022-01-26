@@ -78,7 +78,6 @@ export const DashboardContent = () => {
           >
             Learn more about wallets
           </a>
-          .{' '}
         </LoginPrompt>
       )}
       {account && (
