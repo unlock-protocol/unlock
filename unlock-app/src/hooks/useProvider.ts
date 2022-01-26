@@ -71,7 +71,7 @@ export const useProvider = (config: any) => {
           network: _network,
           account: _account,
         }
-      } 
+      }
       setAccount(_account || undefined)
       return {
         network: _network,
