@@ -149,7 +149,19 @@ services:
       - 8080:8080
     depends_on:
       - postgres
-
+  locksmith-websub:
+    image: locksmith
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: locksmith
+    env_file:
+      - ././${UNLOCK_ENV}.env
+      - ./integration-locksmith.env
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn websub:start'
+    depends_on:
+      - postgres
   #############
   # Overrides #
   #############

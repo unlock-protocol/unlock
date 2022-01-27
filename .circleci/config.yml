@@ -175,6 +175,24 @@ workflows:
           filters:
             branches:
               only: production # deploy in production
+      - build-and-deploy-to-heroku:
+          name: "deploy-locksmith-websub-staging"
+          service: locksmith-websub
+          app-name: locksmith-websub-staging
+          requires:
+            - integration-tests
+          filters:
+            branches:
+              only: master
+      - build-and-deploy-to-heroku:
+          name: "deploy-locksmith-websub-production"
+          service: locksmith-websub
+          app-name: locksmith-websub-production
+          requires:
+            - integration-tests
+          filters:
+            branches:
+              only: production # deploy in production
       -  deploy-to-netlify:
           name: "deploy-unlock-app-netlify"
           service: "unlock-app"
