@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-set -eu
+set -e
 
 # two args
 SERVICE=$1
 HEROKU_APP_NAME=$2
+BUILD_DIRECTORY=$1
+
+# if build directory argument provided, use it instead
+if [ -n "${3}" ]; then
+    BUILD_DIRECTORY=$3
+fi
+
+echo "Using $BUILD_DIRECTORY as build directory"
 
 echo "Deploying $SERVICE to Heroku $HEROKU_APP_NAME ..."
 
