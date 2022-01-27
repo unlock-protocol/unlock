@@ -66,15 +66,11 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
       userAddress: Normalizer.ethereumAddress(key.owner.address),
     },
   })
-
-  if (userTokenMetadataRecord?.data?.userMetadata?.protected?.email) {
-    await sendEmail(
-      `keyMined-${key.owner.address}`,
-      'keyMined',
-      userTokenMetadataRecord.data.userMetadata.protected.email,
-      {
-        keychainUrl: '',
-      }
-    )
+  const recipient =
+    userTokenMetadataRecord?.data?.userMetadata?.protected?.email
+  if (recipient) {
+    await sendEmail(`keyMined-${key.owner.address}`, 'keyMined', recipient, {
+      keychainUrl: '',
+    })
   }
 }
