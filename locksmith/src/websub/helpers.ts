@@ -91,14 +91,6 @@ export async function notifyHook(hook: Hook, body: unknown) {
       (event) => event.state !== 'success'
     )
 
-    // If three attempts were not successful, unsubscribe the hook and return the pending event
-    if (checkBadHealth) {
-      logger.warn(`Unsubscribing hook (${hook.id}) due to being unresponsive.`)
-      hook.mode = 'unsubscribe'
-      await hook.save()
-      return hookEvent
-    }
-
     await pRetry(
       async () => {
         const response = await notify({
@@ -118,6 +110,11 @@ export async function notifyHook(hook: Hook, body: unknown) {
           hookEvent.state = 'failed'
           hookEvent.lastError = error.message
           await hookEvent.save()
+          if (checkBadHealth) {
+            throw new pRetry.AbortError(
+              `Not retrying because hook: ${hook.id} has not been very responsive.`
+            )
+          }
         },
         retries: 3,
         minTimeout: 100,
