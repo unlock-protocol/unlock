@@ -70,7 +70,8 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
     userTokenMetadataRecord?.data?.userMetadata?.protected?.email
   if (recipient) {
     await sendEmail(`keyMined-${key.owner.address}`, 'keyMined', recipient, {
-      keychainUrl: '',
+      lockName: key.lock.name,
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
     })
   }
 }
