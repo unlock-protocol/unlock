@@ -40,19 +40,17 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
       break
     }
 
-    // Notify all new keys to wedlocks!
-    await notifyNewKeysToWedlocks(keys)
-
-    await Promise.all(
-      hooks.map(async (hook) => {
+    await await Promise.all([
+      notifyNewKeysToWedlocks(keys), // send emails when applicable!
+      ...hooks.map(async (hook) => {
         const data = keys.filter((key: any) => key.lock.id === hook.lock)
         const hookEvent = await notifyHook(hook, {
           data,
           network,
         })
         return hookEvent
-      })
-    )
+      }),
+    ])
 
     const processedHookItems = keys.map((key: any) => {
       return {
