@@ -8,6 +8,9 @@ import {
 jest.mock('cross-fetch')
 
 describe('Wedlocks operations', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
   describe('notifyNewKeyToWedlocks', () => {
     it('should notify wedlocks if there is an email metadata', async () => {
       expect.assertions(1)
@@ -33,17 +36,35 @@ describe('Wedlocks operations', () => {
         },
       })
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world"},"attachments":[]}',
+        body: '{"template":"keyMined-0xowner","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"keychainUrl":""},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
     })
 
+    it('should not notify wedlocks if there is no metadata', async () => {
+      expect.assertions(1)
+
+      const lockAddress = '0xanotherlock'
+      const ownerAddress = '0xanotherowner'
+
+      await notifyNewKeyToWedlocks({
+        lock: {
+          address: lockAddress,
+        },
+        owner: {
+          address: ownerAddress,
+        },
+      })
+      expect(fetch).not.toHaveBeenCalled()
+    })
+
     it('should not notify wedlocks if there is no email metadata', async () => {
       expect.assertions(1)
 
-      const lockAddress = '0xlock'
-      const ownerAddress = '0xowner'
+      const lockAddress = '0xanotherlock'
+      const ownerAddress = '0xanotherowner'
+
       await addMetadata({
         chain: 1,
         tokenAddress: lockAddress,
@@ -54,6 +75,7 @@ describe('Wedlocks operations', () => {
           },
         },
       })
+
       await notifyNewKeyToWedlocks({
         lock: {
           address: lockAddress,

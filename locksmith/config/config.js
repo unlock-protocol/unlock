@@ -2,6 +2,7 @@ const urlParser = require('url')
 
 const config = {
   database: {
+    logging: false,
     dialect: 'postgres', // sequelize v4 needs this
   },
   stripeSecret: process.env.STRIPE_SECRET,

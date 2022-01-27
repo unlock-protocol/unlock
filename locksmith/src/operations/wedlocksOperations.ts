@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch'
+import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../../config/config'
 
@@ -59,17 +60,18 @@ export const notifyNewKeysToWedlocks = async (keys: any[]) => {
  * @param key
  */
 export const notifyNewKeyToWedlocks = async (key: any) => {
-  const UserTokenMetadataRecord = await UserTokenMetadata.findOne({
+  const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
-      tokenAddress: key.lock.address,
-      userAddress: key.owner.address,
+      tokenAddress: Normalizer.ethereumAddress(key.lock.address),
+      userAddress: Normalizer.ethereumAddress(key.owner.address),
     },
   })
-  if (UserTokenMetadataRecord?.data?.userMetadata?.protected?.email) {
+
+  if (userTokenMetadataRecord?.data?.userMetadata?.protected?.email) {
     await sendEmail(
       `keyMined-${key.owner.address}`,
       'keyMined',
-      UserTokenMetadataRecord.data.userMetadata.protected.email,
+      userTokenMetadataRecord.data.userMetadata.protected.email,
       {
         keychainUrl: '',
       }
