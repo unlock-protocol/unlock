@@ -25,6 +25,7 @@ jobs:
     uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
     with:
       service: locksmith-websub
+      build-dir: locksmith
       app-name: locksmith-websub-staging
   
   deploy-locksmith-websub-production:    
@@ -32,6 +33,7 @@ jobs:
     uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
     with:
       service: locksmith-websub
+      build-dir: locksmith
       app-name: locksmith-websub-production
   # netlify deploys
   deploy-unlock-app-netlify:
