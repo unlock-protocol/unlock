@@ -26,6 +26,7 @@ jobs:
     with:
       service: locksmith-websub
       build-dir: locksmith
+      container-type: worker
       app-name: locksmith-websub-staging
   
   deploy-locksmith-websub-production:    
@@ -34,6 +35,7 @@ jobs:
     with:
       service: locksmith-websub
       build-dir: locksmith
+      container-type: worker
       app-name: locksmith-websub-production
   # netlify deploys
   deploy-unlock-app-netlify:

@@ -4,11 +4,17 @@ set -e
 # two args
 SERVICE=$1
 HEROKU_APP_NAME=$2
+HEROKU_CONTAINER_TYPE=web
 BUILD_DIRECTORY=$1
 
-# if build directory argument provided, use it instead
+# if container type is provided, use it instead of default
 if [ -n "${3}" ]; then
-    BUILD_DIRECTORY=$3
+    HEROKU_CONTAINER_TYPE=$3
+fi
+
+# if build directory argument provided, use it instead
+if [ -n "${4}" ]; then
+    BUILD_DIRECTORY=$4
 fi
 
 echo "Using $BUILD_DIRECTORY as build directory"
@@ -33,7 +39,7 @@ docker push registry.heroku.com/$HEROKU_APP_NAME/web
 heroku container:login
 
 # release on heroku 
-heroku container:release -a $HEROKU_APP_NAME web
+heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE
 
 # migrate the database
 heroku run --app $HEROKU_APP_NAME yarn db:migrate
