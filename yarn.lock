@@ -9534,7 +9534,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:^4.1.7":
+"@types/chai@npm:^4.3.0":
   version: 4.3.0
   resolution: "@types/chai@npm:4.3.0"
   checksum: 3e393e094263db65df28a0123dc13f342937c1bab6cd173eae913d593c5b9a16b555713a08c34863a1fbf079aa7222b96197c70380a5c130549d6b2f6845a989
@@ -11058,7 +11058,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@types/chai": ^4.1.7
+    "@types/chai": ^4.3.0
     "@types/fs-extra": ^5.0.4
     "@types/mocha": ^5.2.6
     "@types/node": ^8.10.38

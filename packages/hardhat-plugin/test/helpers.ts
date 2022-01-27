@@ -1,21 +1,21 @@
-import { resetHardhatContext } from "hardhat/plugins-testing";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import path from "path";
+import { resetHardhatContext } from 'hardhat/plugins-testing'
+import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import path from 'path'
 
-declare module "mocha" {
+declare module 'mocha' {
   interface Context {
-    hre: HardhatRuntimeEnvironment;
+    hre: HardhatRuntimeEnvironment
   }
 }
 
 export function useEnvironment(fixtureProjectName: string) {
-  beforeEach("Loading hardhat environment", function () {
-    process.chdir(path.join(__dirname, "fixture-projects", fixtureProjectName));
+  beforeEach(function () {
+    process.chdir(path.join(__dirname, 'fixture-projects', fixtureProjectName))
+    // eslint-disable-next-line global-require
+    this.hre = require('hardhat')
+  })
 
-    this.hre = require("hardhat");
-  });
-
-  afterEach("Resetting hardhat", function () {
-    resetHardhatContext();
-  });
+  afterEach(function () {
+    resetHardhatContext()
+  })
 }

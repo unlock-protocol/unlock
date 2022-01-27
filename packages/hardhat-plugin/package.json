@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "lint:fix": "yarn lint --fix",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/ test/",
     "test": "mocha --exit --recursive 'test/**/*.test.ts'",
     "build": "tsc",
     "watch": "tsc -w",
@@ -29,7 +29,7 @@
     "README.md"
   ],
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@types/chai": "^4.3.0",
     "@types/fs-extra": "^5.0.4",
     "@types/mocha": "^5.2.6",
     "@types/node": "^8.10.38",
