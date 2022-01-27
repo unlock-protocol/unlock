@@ -16,6 +16,7 @@ const rulesToIgnore = [
   'func-names',
   'import/extensions',
   'jest/prefer-expect-assertions',
+  'import/no-extraneous-dependencies',
 ]
 
 module.exports = {

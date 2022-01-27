@@ -5,15 +5,11 @@ import './type-extensions'
 
 import { TASK_DEPLOY_LOCK } from './constants'
 
-import { deployLock } from './lock'
+import { UnlockHRE } from './Unlock'
 import { deployLockTask } from './tasks'
 
 extendEnvironment((hre) => {
-  hre.unlock = lazyObject(() => {
-    return {
-      deployLock,
-    }
-  })
+  hre.unlock = lazyObject(() => new UnlockHRE())
 })
 
 task(TASK_DEPLOY_LOCK)

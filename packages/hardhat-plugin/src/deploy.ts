@@ -1,13 +1,20 @@
-import type { Contract, providers, Signer } from 'ethers'
+import type { providers } from 'ethers'
 import type { HardhatRuntimeEnvironment, FactoryOptions } from 'hardhat/types'
 
 export async function deployContract(
   contractName: string,
   constructorArguments: any[],
-  { ethers }: HardhatRuntimeEnvironment,
+  { ethers, network }: HardhatRuntimeEnvironment,
   confirmations: number = 5,
-  options: FactoryOptions = {}
+  options: FactoryOptions = {},
+  deploymentOptions: providers.TransactionRequest = {}
 ): Promise<string> {
+  if (
+    deploymentOptions.gasLimit === undefined &&
+    typeof network.config.gas === 'number'
+  ) {
+    deploymentOptions.gasLimit = network.config.gas
+  }
   if (options.signer === undefined) {
     if (process.env.WALLET_PRIVATE_KEY === undefined) {
       throw new Error('No wallet or signer defined for deployment.')
@@ -22,21 +29,4 @@ export async function deployContract(
   const contract = await factory.deploy(...constructorArguments)
   await contract.deployTransaction.wait(confirmations)
   return contract.address
-}
-
-export async function hardhatDeployContract(
-  hre: HardhatRuntimeEnvironment,
-  signer: Signer,
-  contractJSON: any,
-  args: any[] = [],
-  overrideOptions: providers.TransactionRequest = {}
-): Promise<Contract> {
-  if (
-    overrideOptions.gasLimit === undefined &&
-    typeof hre.network.config.gas === 'number'
-  ) {
-    overrideOptions.gasLimit = hre.network.config.gas
-  }
-
-  return deployContract(signer, contractJSON, args, overrideOptions)
 }

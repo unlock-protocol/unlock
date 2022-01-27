@@ -33,7 +33,10 @@
     "@types/fs-extra": "^5.0.4",
     "@types/mocha": "^5.2.6",
     "@types/node": "^8.10.38",
+    "@unlock-protocol/eslint-config": "workspace:^",
+    "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "^4.2.0",
+    "eslint": "^8.6.0",
     "hardhat": "^2.0.0",
     "mocha": "^7.1.2",
     "prettier": "2.0.5",
@@ -44,12 +47,9 @@
     "typescript": "^4.0.3"
   },
   "peerDependencies": {
-    "hardhat": "2.8.0"
+    "hardhat": "3.0.0"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.4",
-    "@unlock-protocol/eslint-config": "workspace:^",
-    "@unlock-protocol/tsconfig": "workspace:^",
-    "eslint": "^8.6.0"
+    "@nomiclabs/hardhat-ethers": "2.0.3"
   }
 }
