@@ -11,6 +11,10 @@ on:
         description: "The Heroku app name to which the application should be deployed"
         type: string
         required: true
+      build-dir:
+        description: 'The build directory to use. By default, it will use name of the service as build directory.'
+        type: string
+        required: false
 
 jobs:
   deploy-to-heroku:
@@ -31,4 +35,4 @@ jobs:
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
-          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }}
+          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.build-dir }}
