@@ -24,7 +24,8 @@
     "fulfillment:prepare": "yarn build && node ./scripts/fulfillment_prepare",
     "authorize": "./scripts/authorize-lock",
     "websub:start": "yarn build && node -r ./src/utils/envLoader.js ./build/src/websub/server.js",
-    "websub:dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js ./src/websub/server.ts"
+    "websub:dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js ./src/websub/server.ts",
+    "websub:prod": "cd build && node -r ./src/utils/envLoader ./src/websub/server.js"
   },
   "lint-staged": {
     "*.{js,ts}": [
