@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import fetch from 'cross-fetch'
 import { AbortController } from 'node-abort-controller'
 import { setTimeout, clearTimeout } from 'timers'
+import { Op } from 'sequelize'
 import { Hook, HookEvent } from '../models'
 import { logger } from '../logger'
 
@@ -70,10 +71,26 @@ export async function notifyHook(hook: Hook, body: unknown) {
   hookEvent.topic = hook.topic
   hookEvent.body = JSON.stringify(body)
 
-  // Save the pending state in database
-  await hookEvent.save()
-
   try {
+    // Save the pending state in database
+    await hookEvent.save()
+
+    // Get last 3 HookEvents created after last hook update.
+    const previousHookEventsForCurrentHook = await HookEvent.findAll({
+      where: {
+        hookId: hook.id,
+        updatedAt: {
+          [Op.gte]: hook.updatedAt,
+        },
+      },
+      order: [['createdAt', 'DESC']],
+      limit: 3,
+    })
+
+    const checkBadHealth = previousHookEventsForCurrentHook.every(
+      (event) => event.state !== 'success'
+    )
+
     await pRetry(
       async () => {
         const response = await notify({
@@ -93,6 +110,11 @@ export async function notifyHook(hook: Hook, body: unknown) {
           hookEvent.state = 'failed'
           hookEvent.lastError = error.message
           await hookEvent.save()
+          if (checkBadHealth) {
+            throw new pRetry.AbortError(
+              `Not retrying because hook: ${hook.id} has not been very responsive.`
+            )
+          }
         },
         retries: 3,
         minTimeout: 100,
