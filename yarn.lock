@@ -12601,6 +12601,7 @@ __metadata:
     "@types/mocha": ^5.2.6
     "@types/node": ^8.10.38
     "@unlock-protocol/eslint-config": "workspace:^"
+    "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: ^4.2.0
     eslint: ^8.6.0

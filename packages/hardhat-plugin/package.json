@@ -50,6 +50,7 @@
     "hardhat": "3.0.0"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "2.0.3"
+    "@nomiclabs/hardhat-ethers": "2.0.3",
+    "@unlock-protocol/networks": "workspace:^"
   }
 }

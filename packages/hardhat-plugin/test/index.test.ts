@@ -1,6 +1,8 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from 'chai'
 
+import networks from '@unlock-protocol/networks'
+
 import { useEnvironment } from './helpers'
 import { UnlockHRE } from '../src/Unlock'
 
@@ -12,6 +14,9 @@ describe('Unlock Hardhat plugin', function () {
       assert.instanceOf(this.hre.unlock, UnlockHRE)
     })
 
+    it('should export unlock networks info', function () {
+      assert.deepEqual(this.hre.unlock.networks, networks)
+    })
     it('The example filed should say hello', function () {
       assert.equal(this.hre.unlock.deployLock(), 'hello')
     })
