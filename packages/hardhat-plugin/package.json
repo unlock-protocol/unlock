@@ -47,6 +47,7 @@
     "hardhat": "2.8.0"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "eslint": "^8.6.0"
