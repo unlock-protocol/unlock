@@ -124,7 +124,12 @@ export const Checkout = ({
 
       if (selectedLock) {
         if (!isUnlockAccount) {
-          setCheckoutState('crypto-checkout')
+          // Check if we have card details.
+          if (cardDetails) {
+            setCheckoutState('confirm-card-purchase')
+          } else {
+            setCheckoutState('crypto-checkout')
+          }
         } else {
           cardCheckoutOrClaim(selectedLock)
         }
@@ -142,7 +147,7 @@ export const Checkout = ({
   }
 
   const setCheckoutState = (state: string) => {
-    if (!state) {
+    if (!state || state === 'connect' || state === 'loading') {
       setShowBack(false)
     } else {
       setShowBack(true)
@@ -185,7 +190,8 @@ export const Checkout = ({
       }
       window.location.href = redirectUrl.toString()
     } else {
-      window.location.href = '/keychain'
+      // This will only work if the tab is the "main" tab.
+      window.close()
     }
   }
 
@@ -211,7 +217,6 @@ export const Checkout = ({
   }
 
   const lockProps = selectedLock && paywallConfig?.locks[selectedLock.address]
-
   if (state === 'login') {
     content = (
       <LogIn
@@ -400,6 +405,7 @@ export const Checkout = ({
     } else {
       content = (
         <OAuthConnect
+          message={paywallConfig?.messageToSign}
           redirectUri={redirectUri}
           closeModal={closeModal}
           oAuthConfig={oAuthConfig}

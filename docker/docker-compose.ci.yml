@@ -95,10 +95,16 @@ services:
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
+      - ./${UNLOCK_ENV}.env  
+  contracts: # Container for @unlock-protocol/contracts
+    image: contracts
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: packages/contracts
+    env_file:
       - ./${UNLOCK_ENV}.env
-    depends_on:
-      - eth-node
-
 
   wedlocks: # Container for wedlocks
     image: wedlocks
@@ -143,7 +149,19 @@ services:
       - 8080:8080
     depends_on:
       - postgres
-
+  locksmith-websub:
+    image: locksmith-websub
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: locksmith
+    env_file:
+      - ././${UNLOCK_ENV}.env
+      - ./integration-locksmith.env
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn websub:start'
+    depends_on:
+      - postgres
   #############
   # Overrides #
   #############

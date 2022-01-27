@@ -4,3 +4,9 @@
 
 coverage/
 *.tgz
+
+# hardhat 
+cache
+src/__tests__/contracts
+src/__tests__/artifacts
+.openzeppelin/unknown-31337.json

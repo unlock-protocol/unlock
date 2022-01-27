@@ -100,6 +100,10 @@ jobs:
       app-name:
         description: "The Heroku app name to which the application should be deployed"
         type: string
+      build-dir:
+        description: "The build directory to use. By default, it will use name of the service as build directory"
+        type: string
+        default: ""
     steps:
       - checkout
       - run:
@@ -109,7 +113,7 @@ jobs:
       - run:
           name: Build container & deploy to heroku
           command: |
-            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >>
+            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >> << parameters.build-dir >>
 
   open-prod-pull-request:
     executor: ubuntu_20-executor
@@ -170,6 +174,26 @@ workflows:
           name: "deploy-locksmith-production"
           service: locksmith
           app-name: unlock-locksmith-production
+          requires:
+            - integration-tests
+          filters:
+            branches:
+              only: production # deploy in production
+      - build-and-deploy-to-heroku:
+          name: "deploy-locksmith-websub-staging"
+          service: locksmith-websub
+          build-dir: locksmith
+          app-name: locksmith-websub-staging
+          requires:
+            - integration-tests
+          filters:
+            branches:
+              only: master
+      - build-and-deploy-to-heroku:
+          name: "deploy-locksmith-websub-production"
+          service: locksmith-websub
+          build-dir: locksmith
+          app-name: locksmith-websub-production
           requires:
             - integration-tests
           filters:
