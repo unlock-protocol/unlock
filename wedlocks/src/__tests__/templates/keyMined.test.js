@@ -23,8 +23,8 @@ describe('keyMined', () => {
     ).toBe(
       `Hello!
 
-A new key (#1337) to the lock "Ethereal NYC 202" was just mined for you!
-It has been added to your Unlock keychain, where you can view it and, if needed, print it!
+A new key to the lock "Ethereal NYC 202" was just mined for you!
+It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
 
 Check out your keychain: https://app.unlock-protocol.com/keychain
 

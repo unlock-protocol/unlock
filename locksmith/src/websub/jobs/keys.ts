@@ -4,6 +4,7 @@ import { Key } from '../../graphql/datasource'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
+import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
 
 const FETCH_LIMIT = 25
 
@@ -39,16 +40,17 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
       break
     }
 
-    await Promise.all(
-      hooks.map(async (hook) => {
+    await await Promise.allSettled([
+      notifyNewKeysToWedlocks(keys), // send emails when applicable!
+      ...hooks.map(async (hook) => {
         const data = keys.filter((key: any) => key.lock.id === hook.lock)
         const hookEvent = await notifyHook(hook, {
           data,
           network,
         })
         return hookEvent
-      })
-    )
+      }),
+    ])
 
     const processedHookItems = keys.map((key: any) => {
       return {
