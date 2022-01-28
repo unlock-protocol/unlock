@@ -23,7 +23,7 @@ However, the minimal proxy approach did not allow for upgrades. We wanted all lo
 
 - [**Airdrop NFT keys directly from the Unlock dashboard**](https://unlock-protocol.com/blog/airdrop-nft-memberships) — A lock owner can grant keys directly from the dashboard to their members
 - **Non expiring memberships** — Memberships can be set to never expire
-- I**ncrease the number of keys on a lock** — A lock manager can increase the number of keys on a lock even after it was created
+- **Increase the number of keys on a lock** — A lock manager can increase the number of keys on a lock even after it was created
 - **Offer gas refund from locks** — A lock manager can allocate a “gas refund” to be paid to the person submitting a purchase transaction
 
 ## New tools for Developers
