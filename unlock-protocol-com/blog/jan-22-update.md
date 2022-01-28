@@ -13,7 +13,7 @@ The Unlock team — heck, the whole Unlock community — are constantly finding 
 
 ## You can now upgrade Unlock smart contracts
 
-When you deploy a lock with Unlock, a new instance of the PublicLock contract (ERC-721) is created with the parameters you defined (name, token, etc). In Solidity, several patterns exist to deploy a contract from another contract. The previous version of Unlock was using a Minimal Proxy (EIP-1167). Instead of deploying the entire contract for each new lock created, a small proxy is deployed just to hold the data and forward calls to a main instance that deals with all the incoming data. That would save a potentially significant amount of gas when deploying a new lock instance.
+When you deploy a lock with Unlock, a new instance of the PublicLock contract (ERC-721) is created with the parameters you defined (name, token, etc). In Solidity, several patterns exist to deploy a contract from another contract. The previous version of Unlock was using a Minimal Proxy (EIP-1167). Instead of deploying the entire contract for each new lock created, a small proxy is deployed just to hold the data and forward calls to a main instance that deals with all the incoming data. That would potentially save a significant amount of gas when deploying a new lock instance.
 
 However, the minimal proxy approach did not allow for upgrades. We wanted all locks to benefit from the latest features available, so we implemented a mechanism to deploy a full proxy from a contract and allow users to upgrade their locks when new features were released.
 
