@@ -3,8 +3,8 @@ export default {
   text: (params) =>
     `Hello!
 
-A new key (#${params.keyId}) to the lock "${params.lockName}" was just mined for you!
-It has been added to your Unlock keychain, where you can view it and, if needed, print it!
+A new key to the lock "${params.lockName}" was just mined for you!
+It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
 
 Check out your keychain: ${params.keychainUrl}
 

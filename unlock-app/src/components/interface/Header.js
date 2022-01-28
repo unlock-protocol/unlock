@@ -62,16 +62,14 @@ const Header = ({ forContent, title }) => {
           </a>
         </Link>
       ) : (
-        <Title>
-          <LogoContainer>
-            <Link href="/">
-              <a>
-                <RoundedLogo size="30px" />
-              </a>
-            </Link>
-          </LogoContainer>
+        <h1 className="flex items-center gap-4 text-2xl text-gray-500">
+          <Link href="/">
+            <a>
+              <RoundedLogo size="30px" />
+            </a>
+          </Link>
           {title}
-        </Title>
+        </h1>
       )}
       <AppButtons>
         {onAppPage &&
@@ -124,15 +122,6 @@ const TopHeader = styled.header`
     grid-template-rows: ${(props) =>
       props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
-  `};
-`
-
-const Title = styled.h1`
-  color: var(--grey);
-  ${Media.phone`
-    display: grid;
-    grid-gap: 0;
-    grid-template-columns: 50px auto;
   `};
 `
 
