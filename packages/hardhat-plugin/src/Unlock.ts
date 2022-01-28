@@ -1,14 +1,17 @@
 /* eslint-disable class-methods-use-this */
-
 import networks from '@unlock-protocol/networks'
 // import contracts from '@unlock-protocol/contracts'
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { NetworksConfig } from 'hardhat/types'
+import { NetworksConfig, Network } from 'hardhat/types'
 
 export class UnlockHRE {
   networks: NetworkConfigs
 
-  constructor(availableNetworks: NetworksConfig) {
+  provider: Network['provider']
+
+  constructor(availableNetworks: NetworksConfig, network: Network) {
+    this.provider = network.provider
+
     this.networks = Object.keys(availableNetworks)
       .map((netName) => availableNetworks[netName])
       .filter(({ chainId }) => chainId)
@@ -23,9 +26,9 @@ export class UnlockHRE {
       }, {})
   }
 
-  // public getChainId = async () => {
-  //   return await hre.network.provider.send('eth_chainId')
-  // }
+  public getChainId = async () => {
+    return await this.provider.send('eth_chainId')
+  }
 
   public deployLock() {
     console.log('lets deploy')

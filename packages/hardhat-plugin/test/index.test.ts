@@ -22,6 +22,12 @@ describe('Unlock Hardhat plugin', function () {
     it('The example filed should say hello', function () {
       assert.equal(this.hre.unlock.deployLock(), 'hello')
     })
+
+    describe('getChainId()', function () {
+      it('should return chain ID', async function () {
+        assert.equal(await this.hre.unlock.getChainId(), 31337)
+      })
+    })
   })
 })
 
