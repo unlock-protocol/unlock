@@ -36,7 +36,7 @@ However, the minimal proxy approach did not allow for upgrades. We wanted all lo
 
 Ok, you’ll be glad you read down this far. This is kind of like the after-credits scene in the MCU movies. But — instead of Nick Fury, you get a look at some of the kick-ass stuff that members of the Unlock community have launched over the past couple of weeks. Check it:
 
-[Croissant](http://twitter.com/croissant) has launched BakeryDAO with a thundering Twitter thread...
+[Croissant](http://twitter.com/croissanteth) has launched BakeryDAO with a thundering Twitter thread...
 
 [![Croissant](https://unlock-protocol.com/images/blog/jan-22-update/1-min.png)](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
 
