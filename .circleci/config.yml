@@ -108,6 +108,10 @@ jobs:
         description: "The build directory to use. By default, it will use name of the service as build directory"
         type: string
         default: ""
+      command:
+        description: "The command to start the container with"
+        type: string
+        default: ""
     steps:
       - checkout
       - run:
@@ -117,7 +121,7 @@ jobs:
       - run:
           name: Build container & deploy to heroku
           command: |
-            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >> << parameters.container-type >> << parameters.build-dir >>
+            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >> << parameters.container-type >> << parameters.command >> << parameters.build-dir >>
 
   open-prod-pull-request:
     executor: ubuntu_20-executor
@@ -187,6 +191,7 @@ workflows:
           name: "deploy-locksmith-websub-staging"
           service: locksmith-websub
           build-dir: locksmith
+          command: "yarn websub:prod"
           app-name: locksmith-websub-staging
           container-type: worker
           requires:
@@ -198,6 +203,7 @@ workflows:
           name: "deploy-locksmith-websub-production"
           service: locksmith-websub
           build-dir: locksmith
+          command: "yarn websub:prod"
           app-name: locksmith-websub-production
           container-type: worker
           requires:
