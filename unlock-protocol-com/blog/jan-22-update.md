@@ -50,8 +50,7 @@ Ok, you’ll be glad you read down this far. This is kind of like the after-cred
 
 [The Willow Tree](http://twitter.com/twtdao) has launched their membership for bridging web3 and rave culture (and their site design is off the charts)...
 
-[![TWT](https://unlock-protocol.com/images/blog/jan-22-update/4-min.png)](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
-(https://twitter.com/twtdao/status/1485996222003433477?s=20)
+[![TWT](https://unlock-protocol.com/images/blog/jan-22-update/4-min.png)](https://twitter.com/twtdao/status/1485996222003433477?s=20)
 
 [CDAA](http://twitter.com/plannerdao) is one of the first projects we have seen using utility NFTs as the basis for industry certification and on-chain credentials for digital asset advisors...amazing...
 
