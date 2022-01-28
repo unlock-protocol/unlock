@@ -14,7 +14,7 @@ if [ -n "${3}" ]; then
 fi
 
 # if command to run is provided, use it instead.
-if [ -n "${4}"]; then 
+if [ -n "${4}" ]; then 
     COMMAND=$4
 fi
 
@@ -24,6 +24,8 @@ if [ -n "${5}" ]; then
 fi
 
 echo "Using $BUILD_DIRECTORY as build directory"
+
+echo "Using $COMMAND as the start command for container"
 
 echo "Deploying $SERVICE to Heroku $HEROKU_APP_NAME ..."
 
@@ -35,7 +37,7 @@ then
 fi
 
 # build image
-docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/web --build-arg BUILD_DIR=$BUILD_DIRECTORY --build-arg COMMAND=$COMMAND .
+docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE --build-arg COMMAND="$COMMAND" --build-arg BUILD_DIR="$BUILD_DIRECTORY" .
 
 # push image to Heroku registry
 docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
