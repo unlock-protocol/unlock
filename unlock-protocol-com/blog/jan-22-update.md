@@ -17,11 +17,11 @@ When you deploy a lock with Unlock, a new instance of the PublicLock contract (E
 
 However, the minimal proxy approach did not allow for upgrades. We wanted all locks to benefit from the latest features available, so we implemented a mechanism to deploy a full proxy from a contract and allow users to upgrade their locks when new features were released.
 
-[Here is a deep dive behind what this means for implementers of Unlock]([https://unlock-protocol.com/blog/upgradeable-patterns](https://unlock-protocol.com/blog/upgradeable-patterns).
+[Here is a deep dive behind what this means for implementers of Unlock](https://unlock-protocol.com/blog/upgradeable-patterns).
 
 ## New capabilities for Creators
 
-- [**Airdrop NFT keys directly from the Unlock dashboard**]([https://unlock-protocol.com/blog/airdrop-nft-memberships](https://unlock-protocol.com/blog/airdrop-nft-memberships) — A lock owner can grant keys directly from the dashboard to their members
+- [**Airdrop NFT keys directly from the Unlock dashboard**](https://unlock-protocol.com/blog/airdrop-nft-memberships) — A lock owner can grant keys directly from the dashboard to their members
 - **Non expiring memberships** — Memberships can be set to never expire
 - I**ncrease the number of keys on a lock** — A lock manager can increase the number of keys on a lock even after it was created
 - **Offer gas refund from locks** — A lock manager can allocate a “gas refund” to be paid to the person submitting a purchase transaction
