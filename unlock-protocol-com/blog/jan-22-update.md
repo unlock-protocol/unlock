@@ -38,6 +38,13 @@ Ok, you’ll be glad you read down this far. This is kind of like the after-cred
 
 [Croissant](http://twitter.com/croissant) has launched BakeryDAO with a thundering Twitter thread...
 
+{::options parse_block_html="false" /}
+
+<div class="center">
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Ever since I started to get a large following on Twitter, I have been trying to refrain from dropping lots of alpha irresponsibly…<br><br>I am always wary of promoting any small projects, aware of the impact I may have.<br><br>Today, however. That’s not going to be the case… <a href="https://t.co/YupYr5pfEs">pic.twitter.com/YupYr5pfEs</a></p>&mdash; croissant (@CroissantEth) <a href="https://twitter.com/CroissantEth/status/1486387648457580546?ref_src=twsrc%5Etfw">January 26, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
 [https://twitter.com/CroissantEth/status/1486387648457580546?s=20](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
 
 [ETHAnglia](http://twitter.com/ethanglia) is bringing web3 to the East of England...
