@@ -4,7 +4,7 @@ name: Unlock Test Suite
 jobs:
   monorepo-changes:
     runs-on: ubuntu-latest
-    name: "Check for changes in monorepo"
+    name: 'Check for changes in monorepo'
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}
     env:
@@ -13,19 +13,18 @@ jobs:
         "packages/unlock-js",
         "packages/paywall",
         "packages/contracts",
-        "newsletter",
         "smart-contracts",
         "smart-contract-extensions",
         "unlock-protocol-com",
         "wedlocks",
-        "unlock-app" 
+        "unlock-app"
         ]'
       FORCE_ALL_TESTS: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Check which folders should run tests"
+      - name: 'Check which folders should run tests'
         run: |
           if [ -z ${FORCE_ALL_TESTS} ]; then
             echo 'Run all tests'
@@ -37,7 +36,7 @@ jobs:
           printf 'changed:%s\n' "${changed[@]}"
         shell: bash
         id: check-changes
-    
+
   unit-tests:
     needs: monorepo-changes
     name: Tests ${{ matrix.target }}
@@ -53,7 +52,7 @@ jobs:
       DB_NAME: locksmith_test
       DB_HOSTNAME: db
     strategy:
-      matrix: 
+      matrix:
         target: ${{fromJson( needs.monorepo-changes.outputs.changed )}}
     steps:
       - uses: actions/checkout@v2

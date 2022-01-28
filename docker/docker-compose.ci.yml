@@ -1,6 +1,5 @@
 version: '3.2'
 services:
-
   eth-node: # hardhat node
     image: eth-node
     build:
@@ -75,18 +74,6 @@ services:
     ports:
       - 3001:3001
 
-  newsletter: # Container for the newsletter application
-    image: newsletter
-    build:
-      context: ../
-      target: dev
-      args:
-        BUILD_DIR: newsletter
-    env_file:
-      - ./${UNLOCK_ENV}.env
-    ports:
-      - 3003:3003
-
   unlock-js: # Container for Unlockjs
     image: unlock-js
     build:
@@ -95,7 +82,7 @@ services:
       args:
         BUILD_DIR: packages/unlock-js
     env_file:
-      - ./${UNLOCK_ENV}.env  
+      - ./${UNLOCK_ENV}.env
   contracts: # Container for @unlock-protocol/contracts
     image: contracts
     build:

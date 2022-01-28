@@ -15,7 +15,7 @@ jobs:
       BLOCKTIME: 0
     parameters:
       service:
-        description: "The sub-repository where the application should be tested"
+        description: 'The sub-repository where the application should be tested'
         type: string
     steps:
       - checkout
@@ -73,7 +73,7 @@ jobs:
       BUILDKIT_PROGRESS: plain
     parameters:
       service:
-        description: "The service/sub-repository to deploy"
+        description: 'The service/sub-repository to deploy'
         type: string
     steps:
       - checkout
@@ -95,15 +95,15 @@ jobs:
       BUILDKIT_PROGRESS: plain
     parameters:
       service:
-        description: "The service/app to build"
+        description: 'The service/app to build'
         type: string
       app-name:
-        description: "The Heroku app name to which the application should be deployed"
+        description: 'The Heroku app name to which the application should be deployed'
         type: string
       build-dir:
-        description: "The build directory to use. By default, it will use name of the service as build directory"
+        description: 'The build directory to use. By default, it will use name of the service as build directory'
         type: string
-        default: ""
+        default: ''
     steps:
       - checkout
       - run:
@@ -130,28 +130,25 @@ workflows:
     jobs:
       - locksmith-tests
       - run-tests:
-          name: "unlock-js-tests"
+          name: 'unlock-js-tests'
           service: packages/unlock-js
       - run-tests:
-          name: "paywall-lib-tests"
+          name: 'paywall-lib-tests'
           service: packages/paywall
       - run-tests:
-          name: "newsletter-tests"
-          service: newsletter
-      - run-tests:
-          name: "smart-contracts-tests"
+          name: 'smart-contracts-tests'
           service: smart-contracts
       - run-tests:
-          name: "smart-contracts-extensions-tests"
+          name: 'smart-contracts-extensions-tests'
           service: smart-contract-extensions
       - run-tests:
-          name: "unlock-protocol-com-tests"
+          name: 'unlock-protocol-com-tests'
           service: unlock-protocol-com
       - run-tests:
-          name: "wedlocks-tests"
+          name: 'wedlocks-tests'
           service: wedlocks
       - run-tests:
-          name: "unlock-app-tests"
+          name: 'unlock-app-tests'
           service: unlock-app
       - integration-tests:
           requires:
@@ -160,9 +157,8 @@ workflows:
             - locksmith-tests
             - paywall-lib-tests
             - wedlocks-tests
-            - newsletter-tests
       - build-and-deploy-to-heroku:
-          name: "deploy-locksmith-staging"
+          name: 'deploy-locksmith-staging'
           service: locksmith
           app-name: unlock-locksmith-staging
           requires:
@@ -171,7 +167,7 @@ workflows:
             branches:
               only: master
       - build-and-deploy-to-heroku:
-          name: "deploy-locksmith-production"
+          name: 'deploy-locksmith-production'
           service: locksmith
           app-name: unlock-locksmith-production
           requires:
@@ -180,7 +176,7 @@ workflows:
             branches:
               only: production # deploy in production
       - build-and-deploy-to-heroku:
-          name: "deploy-locksmith-websub-staging"
+          name: 'deploy-locksmith-websub-staging'
           service: locksmith-websub
           build-dir: locksmith
           app-name: locksmith-websub-staging
@@ -190,7 +186,7 @@ workflows:
             branches:
               only: master
       - build-and-deploy-to-heroku:
-          name: "deploy-locksmith-websub-production"
+          name: 'deploy-locksmith-websub-production'
           service: locksmith-websub
           build-dir: locksmith
           app-name: locksmith-websub-production
@@ -199,30 +195,24 @@ workflows:
           filters:
             branches:
               only: production # deploy in production
-      -  deploy-to-netlify:
-          name: "deploy-unlock-app-netlify"
-          service: "unlock-app"
+      - deploy-to-netlify:
+          name: 'deploy-unlock-app-netlify'
+          service: 'unlock-app'
           requires:
             - integration-tests
       - deploy-to-netlify:
-          name: "deploy-paywall-netlify"
+          name: 'deploy-paywall-netlify'
           service: paywall-app
           requires:
             - integration-tests
       - deploy-to-netlify:
-          name: "deploy-newsletter-netlify"
-          service: "newsletter"
+          name: 'deploy-unlock-protocol-com-netlify'
+          service: 'unlock-protocol-com'
           requires:
             - integration-tests
       - deploy-to-netlify:
-          name: "deploy-unlock-protocol-com-netlify"
-          service: "unlock-protocol-com"
-          requires:
-            - integration-tests
-      - deploy-to-netlify:
-          service: "wedlocks"
-          name:
-            "deploy-wedlocks-netlify"
+          service: 'wedlocks'
+          name: 'deploy-wedlocks-netlify'
           filters:
             branches:
               only: master
