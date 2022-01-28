@@ -33,7 +33,7 @@ docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME
 
 # push image to Heroku registry
 docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
-docker push registry.heroku.com/$HEROKU_APP_NAME/web
+docker push registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE
 
 #make sure we are logged in
 heroku container:login
