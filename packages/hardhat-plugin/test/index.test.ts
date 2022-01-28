@@ -14,22 +14,33 @@ describe('Unlock Hardhat plugin', function () {
       assert.instanceOf(this.hre.unlock, UnlockHRE)
     })
 
-    it('should export unlock networks info', function () {
-      assert.deepEqual(this.hre.unlock.networks, networks)
+    it('should store networks info', function () {
+      assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
+      assert.deepEqual(this.hre.unlock.networks['31337'], networks['31337'])
     })
+
     it('The example filed should say hello', function () {
       assert.equal(this.hre.unlock.deployLock(), 'hello')
     })
   })
 })
 
-describe('Unit tests examples', function () {
-  describe('UnlockHardhatRuntimeEnvironment', function () {
-    describe('sayHello', function () {
-      it('Should say hello', function () {
-        const field = new UnlockHRE()
-        assert.equal(field.deployLock(), 'hello')
-      })
-    })
-  })
-})
+// describe('Unit tests examples', function () {
+//   describe('UnlockHardhatRuntimeEnvironment', function () {
+//     describe('constructor', function () {
+//       it('should store chainId correctly', function () {
+//         const unlock = new UnlockHRE({ chainId: 1 })
+//         assert.deepEqual(unlock.chainId, 1)
+//       })
+
+//       it('should store network info', function () {
+//         const unlock = new UnlockHRE(1)
+//         assert.deepEqual(unlock.network, networks[1])
+//       })
+
+//       it('should throw if network is unknown', function () {
+//         assert.throws(() => new UnlockHRE(11563))
+//       })
+//     })
+//   })
+// })
