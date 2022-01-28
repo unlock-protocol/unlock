@@ -1,5 +1,5 @@
 ---
-title: Unlock Protocol product updates for January 2022
+title: Unlock Protocol Product Updates for January 2022
 subTitle: Upgradable contracts, new capabilities for creators and developers
 authorName: Christopher Carfi
 publishDate: January 27, 2022
