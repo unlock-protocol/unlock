@@ -4,7 +4,7 @@ subTitle: Upgradable contracts, new capabilities for creators and developers
 authorName: Crystal Street
 publishDate: January 27, 2022
 description: Unlock's January 2022 release adds upgradable contracts, NFT airdrop support, and over a dozen other new capabilities for creators and developers.
-image: /images/blog/jan22-product-update/rocket-with-unlock-logo.png
+image: /images/blog/jan-22-update/rocket-with-unlock-logo.png
 ---
 
 The Unlock Protocol team has been on a 🚀 ride of BUIDLing as we blast into 2022! First, there is a major new release of the underlying Unlock smart contract — the engine that powers Unlock — as well as a whole smorgasbord of new capabilities that add power and flexibility to the protocol. 
