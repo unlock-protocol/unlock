@@ -38,29 +38,23 @@ Ok, you’ll be glad you read down this far. This is kind of like the after-cred
 
 [Croissant](http://twitter.com/croissant) has launched BakeryDAO with a thundering Twitter thread...
 
-{::options parse_block_html="false" /}
-
-<div class="center">
-
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Ever since I started to get a large following on Twitter, I have been trying to refrain from dropping lots of alpha irresponsibly…<br><br>I am always wary of promoting any small projects, aware of the impact I may have.<br><br>Today, however. That’s not going to be the case… <a href="https://t.co/YupYr5pfEs">pic.twitter.com/YupYr5pfEs</a></p>&mdash; croissant (@CroissantEth) <a href="https://twitter.com/CroissantEth/status/1486387648457580546?ref_src=twsrc%5Etfw">January 26, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</div>
-
-[https://twitter.com/CroissantEth/status/1486387648457580546?s=20](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
+[![Croissant](https://unlock-protocol.com/images/blog/jan-22-update/1-min.png)](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
 
 [ETHAnglia](http://twitter.com/ethanglia) is bringing web3 to the East of England...
 
-[https://twitter.com/ETHAnglia/status/1484517935796400128?s=20](https://twitter.com/ETHAnglia/status/1484517935796400128?s=20)
+[![ETHAnglia](https://unlock-protocol.com/images/blog/jan-22-update/2-min.png)](https://twitter.com/ETHAnglia/status/1484517935796400128?s=20)
 
 [WPOptimizers](http://twitter.com/YoRaulGonzalez) 🇪🇸 has created a membership site for optimizing WordPress, the open-source content management system that powers 43% of the web...
 
-[https://twitter.com/YoRaulGonzalez/status/1483756404947181571?s=20](https://twitter.com/YoRaulGonzalez/status/1483756404947181571?s=20)
+[![WPOptimizers](https://unlock-protocol.com/images/blog/jan-22-update/3-min.png)](https://twitter.com/YoRaulGonzalez/status/1483756404947181571?s=20)
 
 [The Willow Tree](http://twitter.com/twtdao) has launched their membership for bridging web3 and rave culture (and their site design is off the charts)...
 
-[https://twitter.com/twtdao/status/1485996222003433477?s=20](https://twitter.com/twtdao/status/1485996222003433477?s=20)
+[![TWT](https://unlock-protocol.com/images/blog/jan-22-update/4-min.png)](https://twitter.com/CroissantEth/status/1486387648457580546?s=20)
+(https://twitter.com/twtdao/status/1485996222003433477?s=20)
 
 [CDAA](http://twitter.com/plannerdao) is one of the first projects we have seen using utility NFTs as the basis for industry certification and on-chain credentials for digital asset advisors...amazing...
 
-[https://twitter.com/PlannerDAO/status/1480991827209641988?s=20](https://twitter.com/PlannerDAO/status/1480991827209641988?s=20)
+[![CDAA](https://unlock-protocol.com/images/blog/jan-22-update/5-min.png)](https://twitter.com/PlannerDAO/status/1480991827209641988?s=20)
 
 Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.com/invite/Ah6ZEJyTDp). #protip
