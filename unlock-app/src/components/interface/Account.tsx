@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
-
-import Address from './Address'
 import Media from '../../theme/media'
 
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -36,80 +34,46 @@ export function Account() {
 
   return (
     <AccountWrapper>
-      <AccountDetails>
-        <DoubleHeightCell disabled={!account}>
-          <UserIcon seed={iconSeed} />
-        </DoubleHeightCell>
-        <Label>
-          <NetworkInfo title="To change network, switch in your wallet of choice and refresh the page">
+      <AccountDetails className="items-center">
+        {iconSeed && <UserIcon seed={iconSeed} />}
+        <div className="grid gap-2">
+          <div className="font-mono text-xs"> {account}</div>
+          <Label>
             {!network && <p>Not connected</p>}
             {network && (
-              <NetworkSelect onChange={networkSelected} value={network}>
-                {Object.keys(networks).map((networkId) => {
-                  return (
-                    <Network network={networks[networkId]} key={networkId} />
-                  )
-                })}
-              </NetworkSelect>
+              <div className="grid space-y-2">
+                <select
+                  className="px-2 py-1 text-black bg-white border rounded"
+                  onChange={networkSelected}
+                  value={network}
+                >
+                  {Object.keys(networks).map((networkId) => {
+                    return (
+                      <Network network={networks[networkId]} key={networkId} />
+                    )
+                  })}
+                </select>
+                <button
+                  className="px-2 py-1 font-sans font-bold text-white bg-red-500 rounded"
+                  type="button"
+                  onClick={deAuthenticate}
+                >
+                  Disconnect
+                </button>
+              </div>
             )}
-            {network && (
-              <DisconnectButton type="button" onClick={deAuthenticate}>
-                Disconnect
-              </DisconnectButton>
-            )}
-          </NetworkInfo>
-        </Label>
-        <DoubleHeightCell />
-        <DoubleHeightCell />
-        <DoubleHeightCell />
-        <DoubleHeightCell />
-        <DoubleHeightCell />
-        <DoubleHeightCell />
-        <UserAddress id="UserAddress" address={account} />
+          </Label>
+        </div>
       </AccountDetails>
     </AccountWrapper>
   )
 }
-
-const NetworkSelect = styled.select`
-  cursor: pointer;
-  border: none;
-  border-radius: 3px;
-  background-color: transparent;
-  color: rgb(106, 106, 106);
-
-  /* height: 48px;
-  width: 100%;
-  border: thin var(--lightgrey) solid;
-  border-radius: 4px;
-  background-color: var(--lightgrey);
-  font-size: 16px;
-  padding: 0 8px;
-  color: var(--darkgrey);
-  margin-bottom: 16px;
-  appearance: none; */
-`
-
-const DisconnectButton = styled.button`
-  cursor: pointer;
-  border: 1px solid var(--grey);
-  border-radius: 3px;
-  background-color: transparent;
-  color: rgb(106, 106, 106);
-`
 
 const UserIcon = styled(Jazzicon).attrs({
   diameter: 40,
 })``
 
 export default Account
-const NetworkInfo = styled.span`
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-  text-transform: none;
-`
 
 const AccountWrapper = styled.section``
 const AccountDetails = styled.div`
@@ -124,35 +88,9 @@ const AccountDetails = styled.div`
   `};
 `
 
-interface DoubleHeightCellProps {
-  disabled?: boolean
-}
-
-const DoubleHeightCell = styled.div<DoubleHeightCellProps>`
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  align-self: start;
-  font-size: 24px;
-  align-content: start;
-  ${Media.phone`
-    height: 0px;
-  `};
-  ${({ disabled }) => disabled && 'filter: grayscale(1); opacity: 0.3'}
-`
-
 const Label = styled.div`
   font-weight: 100;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 8px;
-`
-
-const UserAddress = styled(Address)`
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
 `
