@@ -26,6 +26,8 @@ jobs:
     with:
       service: locksmith-websub
       build-dir: locksmith
+      command: "yarn websub:prod"
+      container-type: worker
       app-name: locksmith-websub-staging
 
   deploy-locksmith-websub-production:
@@ -34,6 +36,8 @@ jobs:
     with:
       service: locksmith-websub
       build-dir: locksmith
+      command: "yarn websub:prod"
+      container-type: worker
       app-name: locksmith-websub-production
   # netlify deploys
   deploy-unlock-app-netlify:
