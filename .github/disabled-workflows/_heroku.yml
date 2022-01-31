@@ -43,4 +43,4 @@ jobs:
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
-          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.container-type }} ${{ inputs.command }} ${{ inputs.build-dir }}
+          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.container-type }} "${{ inputs.command }}" ${{ inputs.build-dir }}
