@@ -6,7 +6,7 @@ export class HookEvent extends Model<HookEvent> {
   id!: number
 
   @Column
-  network!: string
+  network!: number
 
   @Column
   lock?: string

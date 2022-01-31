@@ -1,12 +1,27 @@
-import { networks } from '@unlock-protocol/networks'
 import pRetry from 'p-retry'
 import crypto from 'crypto'
 import fetch from 'cross-fetch'
+import { AbortController } from 'node-abort-controller'
+import { setTimeout, clearTimeout } from 'timers'
+import { Op } from 'sequelize'
 import { Hook, HookEvent } from '../models'
+import { logger } from '../logger'
 
-export const notify = (hook: Hook, body: unknown) => async () => {
+interface NotifyOptions {
+  timeout?: number
+  hook: Hook
+  body: unknown
+}
+
+export async function notify({ timeout = 500, hook, body }: NotifyOptions) {
   const headers: Record<string, string> = {}
   const content = JSON.stringify(body)
+  const ac = new AbortController()
+
+  const abortTimeout = setTimeout(() => {
+    ac.abort()
+  }, timeout)
+
   headers['Content-Type'] = 'application/json'
   if (hook.secret) {
     const algorithm = 'sha256'
@@ -21,7 +36,10 @@ export const notify = (hook: Hook, body: unknown) => async () => {
     headers: headers,
     method: 'POST',
     body: content,
+    signal: ac.signal,
   })
+
+  clearTimeout(abortTimeout)
 
   return response
 }
@@ -52,57 +70,71 @@ export async function notifyHook(hook: Hook, body: unknown) {
   hookEvent.attempts = 0
   hookEvent.topic = hook.topic
   hookEvent.body = JSON.stringify(body)
-  // Save the pending state in database
-  await hookEvent.save()
 
-  const result = await pRetry(
-    async () => {
-      const fn = notify(hook, body)
-      const response = await fn()
-      const content = await response.text()
-      if (!response.ok) {
-        throw new Error(`${response.status}: ${content}`)
-      }
-      return content
-    },
-    {
-      onFailedAttempt(error: Error) {
-        hookEvent.attempts += 1
-        hookEvent.state = 'failed'
-        hookEvent.lastError = error.message
-        hookEvent.save()
+  try {
+    // Save the pending state in database
+    await hookEvent.save()
+
+    // Get last 3 HookEvents created after last hook update.
+    const previousHookEventsForCurrentHook = await HookEvent.findAll({
+      where: {
+        hookId: hook.id,
+        updatedAt: {
+          [Op.gte]: hook.updatedAt,
+        },
       },
-      retries: 3,
-    }
-  )
+      order: [['createdAt', 'DESC']],
+      limit: 3,
+    })
 
-  if (result) {
+    const checkBadHealth = previousHookEventsForCurrentHook.every(
+      (event) => event.state !== 'success'
+    )
+
+    await pRetry(
+      async () => {
+        const response = await notify({
+          hook,
+          body,
+          timeout: 500,
+        })
+
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response
+      },
+      {
+        async onFailedAttempt(error: Error) {
+          hookEvent.attempts += 1
+          hookEvent.state = 'failed'
+          hookEvent.lastError = error.message
+          await hookEvent.save()
+          if (checkBadHealth) {
+            throw new pRetry.AbortError(
+              `Not retrying because hook: ${hook.id} has not been very responsive.`
+            )
+          }
+        },
+        retries: 3,
+        minTimeout: 100,
+        maxRetryTime: 1000,
+        maxTimeout: 200,
+      }
+    )
+
     hookEvent.state = 'success'
-    hookEvent.save()
+    await hookEvent.save()
+    return hookEvent
+  } catch (error) {
+    logger.error(error.message)
+    return hookEvent
   }
-
-  return hookEvent
 }
 
-export async function networkMapToFnResult<T = unknown>(
-  run: (network: number) => Promise<T> | T
-) {
-  const items = await Promise.allSettled(
-    Object.values(networks).map(async (network) => {
-      const networkId = network.id
-      return {
-        network: networkId,
-        data: await run(networkId),
-      }
-    })
-  )
-  const map = new Map<number, T>()
-
-  for (const item of items) {
-    if (item.status === 'fulfilled') {
-      const { network, data } = item.value
-      map.set(network, data)
-    }
-  }
-  return map
+export function filterHooksByTopic(hooks: Hook[], topic: RegExp) {
+  return hooks.filter((hook) => {
+    const path = new URL(hook.topic).pathname
+    return topic.test(path)
+  })
 }

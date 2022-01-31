@@ -100,6 +100,7 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
+
   // state change
   useEffect(() => {
     setState(defaultState)
@@ -146,7 +147,7 @@ export const Checkout = ({
   }
 
   const setCheckoutState = (state: string) => {
-    if (!state) {
+    if (!state || state === 'connect' || state === 'loading') {
       setShowBack(false)
     } else {
       setShowBack(true)
@@ -404,6 +405,7 @@ export const Checkout = ({
     } else {
       content = (
         <OAuthConnect
+          message={paywallConfig?.messageToSign}
           redirectUri={redirectUri}
           closeModal={closeModal}
           oAuthConfig={oAuthConfig}
