@@ -36,8 +36,15 @@ export function Account() {
     <AccountWrapper>
       <AccountDetails className="items-center">
         {iconSeed && <UserIcon seed={iconSeed} />}
-        <div className="grid gap-2">
-          <div className="font-mono text-xs"> {account}</div>
+        <div className="grid gap-2 w-44">
+          <div
+            style={{
+              wordWrap: 'break-word',
+            }}
+            className="font-mono text-xs w-44 word-wrap"
+          >
+            {account}
+          </div>
           <Label>
             {!network && <p>Not connected</p>}
             {network && (
