@@ -57,20 +57,22 @@ export const useProvider = (config: any) => {
 
       const _account = await _walletService.getAccount()
       setWalletService(_walletService)
-      setAccount(_account || undefined)
       // @ts-expect-error
       if (!provider.isUnlock) {
+        // @ts-expect-error
+        setIsUnlockAccount(provider.isUnlock)
+        // @ts-expect-error
+        setEmail(provider.emailAddress)
+        // @ts-expect-error
+        setEncryptedPrivateKey(provider.passwordEncryptedPrivateKey)
+        // Doing this last because usually consuming components will change their behavior based on it
+        setAccount(_account || undefined)
         return {
           network: _network,
           account: _account,
         }
       }
-      // @ts-expect-error
-      setIsUnlockAccount(provider.isUnlock)
-      // @ts-expect-error
-      setEmail(provider.emailAddress)
-      // @ts-expect-error
-      setEncryptedPrivateKey(provider.passwordEncryptedPrivateKey)
+      setAccount(_account || undefined)
       return {
         network: _network,
         account: _account,
