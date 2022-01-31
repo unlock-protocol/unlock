@@ -123,6 +123,8 @@ FROM node:12-alpine as prod
 
 ARG BUILD_DIR
 ARG PORT
+ARG COMMAND="yarn prod"
+ENV COMMAND=${COMMAND}
 
 USER root
 RUN mkdir /app
@@ -135,4 +137,5 @@ COPY --from=build --chown=node /home/node/app .
 
 # start command
 EXPOSE $PORT
-CMD ["yarn", "prod"]
+
+CMD $COMMAND

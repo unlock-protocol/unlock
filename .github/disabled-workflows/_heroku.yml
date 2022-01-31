@@ -11,6 +11,14 @@ on:
         description: "The Heroku app name to which the application should be deployed"
         type: string
         required: true
+      container-type: 
+        description: "The Heroku container type to use to deploy."
+        type: string
+        required: false
+      command: 
+        description: "The start command to run the container with"
+        type: string
+        required: false
       build-dir:
         description: 'The build directory to use. By default, it will use name of the service as build directory.'
         type: string
@@ -35,4 +43,4 @@ jobs:
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
-          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.build-dir }}
+          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.container-type }} ${{ inputs.command }} ${{ inputs.build-dir }}
