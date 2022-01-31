@@ -36,12 +36,12 @@ export function Account() {
     <AccountWrapper>
       <AccountDetails className="items-center">
         {iconSeed && <UserIcon seed={iconSeed} />}
-        <div className="grid gap-2 w-44">
+        <div className="grid gap-2 w-[155px]">
           <div
             style={{
               wordWrap: 'break-word',
             }}
-            className="font-mono text-xs w-44 word-wrap"
+            className="font-mono text-xs w-[155px] word-wrap"
           >
             {account}
           </div>
@@ -61,7 +61,7 @@ export function Account() {
                   })}
                 </select>
                 <button
-                  className="px-2 py-1 font-sans font-bold text-white bg-red-500 rounded"
+                  className="px-2 py-1 text-gray-900 bg-gray-200 rounded"
                   type="button"
                   onClick={deAuthenticate}
                 >
