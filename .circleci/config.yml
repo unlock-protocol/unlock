@@ -121,7 +121,7 @@ jobs:
       - run:
           name: Build container & deploy to heroku
           command: |
-            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >> << parameters.container-type >> << parameters.command >> << parameters.build-dir >>
+            sh ./scripts/heroku.sh << parameters.service >> << parameters.app-name >> << parameters.container-type >> "<< parameters.command >>" << parameters.build-dir >>
 
   open-prod-pull-request:
     executor: ubuntu_20-executor
