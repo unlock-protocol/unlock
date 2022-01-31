@@ -1,5 +1,6 @@
 import abis from '../../abis'
 import purchaseKey from './purchaseKey'
+import setMaxNumberOfKeys from './setMaxNumberOfKeys'
 import v8 from '../v8'
 
 const {
@@ -34,4 +35,5 @@ export default {
   getLock,
   purchaseKey,
   keyManagerOf,
+  setMaxNumberOfKeys,
 }
