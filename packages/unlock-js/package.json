@@ -32,9 +32,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.16.7",
-    "@babel/core": "7.16.7",
-    "@babel/preset-env": "7.16.7",
+    "@babel/cli": "7.16.8",
+    "@babel/core": "7.16.12",
+    "@babel/preset-env": "7.16.11",
     "@nomiclabs/hardhat-ethers": "2.0.4",
     "@openzeppelin/hardhat-upgrades": "^1.13.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
