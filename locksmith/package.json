@@ -97,7 +97,7 @@
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "27.4.0",
     "@types/nock": "10.0.3",
-    "@types/node": "16.11.18",
+    "@types/node": "16.11.21",
     "@types/node-cron": "^3.0.1",
     "@types/request-promise-native": "1.0.18",
     "@types/sequelize": "4.28.11",
