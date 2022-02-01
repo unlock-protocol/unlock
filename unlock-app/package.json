@@ -79,7 +79,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "autoprefixer": "10.4.2",
     "postcss": "8.4.6",
-    "tailwindcss": "3.0.10"
+    "tailwindcss": "3.0.18"
   },
   "scripts": {
     "dev": "next dev",
