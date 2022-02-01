@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.20.6",
+  "version": "0.21.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -18,8 +18,7 @@
     "build": "yarn clean && yarn build:abis && yarn build-cjs && yarn build-esm",
     "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
     "ci": "yarn test && yarn lint",
-    "prepublishOnly": "yarn build",
-    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\" -b 1"
+    "prepublishOnly": "yarn build"
   },
   "author": "Unlock Inc",
   "license": "MIT",
