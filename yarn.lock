@@ -11083,10 +11083,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/file-saver@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@types/file-saver@npm:2.0.4"
-  checksum: 508865c5088771b3f07fcc2ca6f496b59593c7d16830914313ef94c81ca259570c77e39c385d2c8c5febe525cbd0d1938fb6adb7278246df24b556375678966e
+"@types/file-saver@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@types/file-saver@npm:2.0.5"
+  checksum: a31d6ee2abf99598647139f8f35b37b6e1bacf6c7ddf05c66651b9b0e6e53381aa0e8ed13f37faa6e496e0eb1da87c97e6c70fd589d5b83b0c95c57cb64ce92a
   languageName: node
   linkType: hard
 
@@ -12893,7 +12893,7 @@ __metadata:
     "@testing-library/react": 12.1.2
     "@testing-library/react-hooks": 7.0.2
     "@types/eth-sig-util": 2.1.1
-    "@types/file-saver": 2.0.4
+    "@types/file-saver": 2.0.5
     "@types/jest": 27.4.0
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
