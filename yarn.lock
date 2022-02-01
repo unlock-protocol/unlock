@@ -13132,6 +13132,7 @@ __metadata:
     jest-styled-components: 7.0.8
     lint-staged: 12.1.5
     next: 12.0.9
+    next-seo: ^5.0.0
     path-match: 1.2.4
     postcss: ^8.4.5
     prettier: 2.5.1
@@ -33846,6 +33847,17 @@ fsevents@~2.1.1:
   version: 2.1.0
   resolution: "nested-error-stacks@npm:2.1.0"
   checksum: 206ee736f9eb83489cc093d43e7d3024255ec93c66a31eaee58ca14d5ad9d925d813494725dcf5dec264e70cd8430167b7f82a2d00b0dd099f83c78d9ca650fd
+  languageName: node
+  linkType: hard
+
+"next-seo@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "next-seo@npm:5.0.0"
+  peerDependencies:
+    next: ^8.1.1-canary.54 || >=9.0.0
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: 2f17714196137b9dc3caa73d06bfe418ef7e74dbd9814b4099be63307a52708709317055bef5fa4b4676dd606ed69bef5f1df3b61c1b85c09702c979b7baebd1
   languageName: node
   linkType: hard
 
