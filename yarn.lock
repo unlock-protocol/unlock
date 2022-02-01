@@ -6179,7 +6179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mswjs/cookies@npm:^0.1.6":
+"@mswjs/cookies@npm:^0.1.7":
   version: 0.1.7
   resolution: "@mswjs/cookies@npm:0.1.7"
   dependencies:
@@ -12537,7 +12537,7 @@ __metadata:
     isomorphic-fetch: 3.0.0
     jest: 27.4.5
     lodash.isequal: 4.5.0
-    msw: ^0.36.5
+    msw: 0.36.8
     multer: 1.4.4
     multer-s3: 2.10.0
     nock: 13.2.1
@@ -33295,11 +33295,11 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"msw@npm:^0.36.5":
-  version: 0.36.5
-  resolution: "msw@npm:0.36.5"
+"msw@npm:0.36.8":
+  version: 0.36.8
+  resolution: "msw@npm:0.36.8"
   dependencies:
-    "@mswjs/cookies": ^0.1.6
+    "@mswjs/cookies": ^0.1.7
     "@mswjs/interceptors": ^0.12.7
     "@open-draft/until": ^1.0.3
     "@types/cookie": ^0.4.1
@@ -33313,7 +33313,7 @@ fsevents@~2.1.1:
     inquirer: ^8.2.0
     is-node-process: ^1.0.1
     js-levenshtein: ^1.1.6
-    node-fetch: ^2.6.1
+    node-fetch: ^2.6.7
     path-to-regexp: ^6.2.0
     statuses: ^2.0.0
     strict-event-emitter: ^0.2.0
@@ -33321,7 +33321,7 @@ fsevents@~2.1.1:
     yargs: ^17.3.0
   bin:
     msw: cli/index.js
-  checksum: 2c1b679a27631ae6349f3b0e379694dc4772c12bfb19eb71be934ab3a22924cf6b79bc320832650fd5efe60c5cbfe59376edc8b08fbc39086def1752e10accf0
+  checksum: 3a5935692bab92f17b3b15444a590ceceb8e952706372396a25bd1567d60bca71a42c28e6ebba1ae8ebbdccc91a4e0a0061f87ffbf09928952911f8cb7c6731f
   languageName: node
   linkType: hard
 
@@ -33941,6 +33941,20 @@ fsevents@~2.1.1:
   version: 2.6.2
   resolution: "node-fetch@npm:2.6.2"
   checksum: de367eae1dfbc0e12283c1cf92256ea7fba7eac8655e2e51ebb217727162396fc6cf24689ef9fc6accf075e3991e2ffaa061f7cfaa958215329649b2297ff06d
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
   languageName: node
   linkType: hard
 
