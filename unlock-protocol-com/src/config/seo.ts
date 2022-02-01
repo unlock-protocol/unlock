@@ -33,15 +33,16 @@ export const SOCIAL_URL = {
 interface SEOProps {
   title?: string
   description?: string
-  image?: string
-  url?: string
+  imagePath?: string
+  path?: string
 }
 
 export function customizeSEO(options: SEOProps): NextSeoProps {
-  const images = options.image
-    ? [{ url: `${baseUrl}/images/${options.image}` }]
+  const images = options.imagePath
+    ? [{ url: `${baseUrl}/images/${options.imagePath}` }]
     : DEFAULT_SEO.openGraph?.images
-  const url = options.url
+  const path = options.path ?? '/'
+  const url = new URL(path, baseUrl).toString()
   return {
     ...DEFAULT_SEO,
     ...options,
