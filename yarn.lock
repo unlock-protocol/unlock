@@ -7267,9 +7267,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@restart/ui@npm:^0.2.5":
-  version: 0.2.5
-  resolution: "@restart/ui@npm:0.2.5"
+"@restart/ui@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@restart/ui@npm:1.0.1"
   dependencies:
     "@babel/runtime": ^7.13.16
     "@popperjs/core": ^2.10.1
@@ -7284,7 +7284,7 @@ __metadata:
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: 9f150163211e2edc8b21a9f354e89b4a0ccb01d7bd5969e2e366a0b61dd1a1e39b88b0615125295c0150d3294ce5920336356bfb4f6bf0f8cd27861565ba150f
+  checksum: ed96f4ff66f1252389ee2d6307c983830a65e2f2478b5a279b6ed8312f6eaf3f8c6e867f6ce0db2395edec0003080018c7adf55f27001c2f65351d918c995cdb
   languageName: node
   linkType: hard
 
@@ -12954,7 +12954,7 @@ __metadata:
     bootstrap: 5.1.3
     formik: 2.2.9
     react: 17.0.2
-    react-bootstrap: 2.1.0
+    react-bootstrap: 2.1.2
     react-bootstrap-formik: 1.7.2
     react-dom: 17.0.2
     react-scripts: 5.0.0
@@ -38686,13 +38686,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-bootstrap@npm:2.1.0":
-  version: 2.1.0
-  resolution: "react-bootstrap@npm:2.1.0"
+"react-bootstrap@npm:2.1.2":
+  version: 2.1.2
+  resolution: "react-bootstrap@npm:2.1.2"
   dependencies:
     "@babel/runtime": ^7.14.0
     "@restart/hooks": ^0.4.5
-    "@restart/ui": ^0.2.5
+    "@restart/ui": ^1.0.1
     "@types/invariant": ^2.2.33
     "@types/prop-types": ^15.7.3
     "@types/react": ">=16.14.8"
@@ -38709,7 +38709,7 @@ fsevents@~2.1.1:
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: 2b82a877c06646d7b58343f66b0c5e70c90ed08625e096bea06667a10ade456116b9bf15f749a0ef5a6850c3a4373807e121b8da549cd898380541ede24e629a
+  checksum: 68abcd9dfbd15966884f2cf24aad2e9f803f0ef977b7bb646f4a345ed5ec99a309262e6ded72f341a982129a593c019be535c0e2a0e05f7ccafdf4efcf69341e
   languageName: node
   linkType: hard
 
