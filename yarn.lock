@@ -13197,7 +13197,7 @@ __metadata:
     babel-plugin-styled-components: 2.0.2
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
-    deep-object-diff: 1.1.0
+    deep-object-diff: 1.1.7
     dotenv: 10.0.0
     eslint: 8.6.0
     eth-sig-util: 2.5.4
@@ -20879,7 +20879,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-object-diff@npm:1.1.0, deep-object-diff@npm:^1.1.0":
+"deep-object-diff@npm:1.1.7":
+  version: 1.1.7
+  resolution: "deep-object-diff@npm:1.1.7"
+  checksum: 543fb1ae87b138ad260691e6949e72bf7dc144825084b7ad1886bb725d2ace1c19ed1ef1280f1116243e86bf2c6b942f45c670958b1468f644613f28c5dc97ea
+  languageName: node
+  linkType: hard
+
+"deep-object-diff@npm:^1.1.0":
   version: 1.1.0
   resolution: "deep-object-diff@npm:1.1.0"
   checksum: 4e7c1b7cd214312f4b94de62be765899f887c9e95cf6320b1d4df6bb7b861db0dff6b180fa1947a0db2eb56c902d64c20e285d49b316da2bfafed1a44ed3c232
