@@ -6922,6 +6922,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/hardhat-upgrades@npm:1.13.0":
+  version: 1.13.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.13.0"
+  dependencies:
+    "@openzeppelin/upgrades-core": ^1.11.0
+    chalk: ^4.1.0
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    hardhat: ^2.0.2
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 674e3ff333dfeda39c95b472dffa6cbd0eb55bdbfa3b04433fb231fa60ea40e4dec0f326003bbdd2aede2ffc7ae3a7a937f5bf8efaa3e226b3f36ac72d6b935e
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/hardhat-upgrades@npm:1.14.0":
   version: 1.14.0
   resolution: "@openzeppelin/hardhat-upgrades@npm:1.14.0"
@@ -6934,21 +6949,6 @@ __metadata:
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
   checksum: 694c9678aedf2c40478e433a969ead9c3431916f60d4519d615d1488ade3b5712da2eba966f32eb168831e60bf49cb598ccd22270c7980afaada6491fa296ede
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/hardhat-upgrades@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.13.0"
-  dependencies:
-    "@openzeppelin/upgrades-core": ^1.11.0
-    chalk: ^4.1.0
-  peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    hardhat: ^2.0.2
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 674e3ff333dfeda39c95b472dffa6cbd0eb55bdbfa3b04433fb231fa60ea40e4dec0f326003bbdd2aede2ffc7ae3a7a937f5bf8efaa3e226b3f36ac72d6b935e
   languageName: node
   linkType: hard
 
@@ -11957,7 +11957,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:^3.0.1":
+"@types/node-cron@npm:3.0.1":
   version: 3.0.1
   resolution: "@types/node-cron@npm:3.0.1"
   checksum: c93887daef8064b92122c3baf5a3f058bafb70a600f432665dd2684ef8539f7796fd731b3b35b54daad7faef88f87b56fc3236b8e69ce021a364ba2e8f30e51e
@@ -12162,7 +12162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:17.0.11, @types/react-dom@npm:^17.0.10":
+"@types/react-dom@npm:17.0.11":
   version: 17.0.11
   resolution: "@types/react-dom@npm:17.0.11"
   dependencies:
@@ -12225,7 +12225,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.38, @types/react@npm:^17.0.33":
+"@types/react@npm:17.0.38":
   version: 17.0.38
   resolution: "@types/react@npm:17.0.38"
   dependencies:
@@ -12953,10 +12953,10 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
-    chai: ^4.3.4
+    chai: 4.3.4
     copyfiles: 2.4.1
-    fs-extra: ^10.0.0
-    hardhat: ^2.8.2
+    fs-extra: 10.0.0
+    hardhat: 2.8.2
     typescript: 4.5.5
   languageName: unknown
   linkType: soft
@@ -13017,7 +13017,7 @@ __metadata:
     "@types/jest": 27.4.0
     "@types/nock": 10.0.3
     "@types/node": 16.11.21
-    "@types/node-cron": ^3.0.1
+    "@types/node-cron": 3.0.1
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/sequelize": 4.28.11
@@ -13054,7 +13054,7 @@ __metadata:
     express-winston: 4.2.0
     graphql: 15.8.0
     graphql-tag: 2.12.6
-    html-template-tag: ^4.0.0
+    html-template-tag: 4.0.0
     isomorphic-fetch: 3.0.0
     jest: 27.4.7
     lodash.isequal: 4.5.0
@@ -13062,13 +13062,13 @@ __metadata:
     multer: 1.4.4
     multer-s3: 2.10.0
     nock: 13.2.2
-    node-abort-controller: ^3.0.1
-    node-cron: ^3.0.0
+    node-abort-controller: 3.0.1
+    node-cron: 3.0.0
     node-mocks-http: 1.11.0
     nodemon: 2.0.15
     p-retry: 4.6.1
     parse-data-uri: 0.2.0
-    path-to-regexp: ^6.2.0
+    path-to-regexp: 6.2.0
     pg: 8.7.1
     random-words: 1.1.2
     reflect-metadata: 0.1.13
@@ -13082,13 +13082,13 @@ __metadata:
     stripe: 8.201.0
     supertest: 6.2.2
     ts-jest: 27.1.3
-    ts-node-dev: ^1.1.8
+    ts-node-dev: 1.1.8
     typescript: 4.5.5
     unlock-abi-1-1: 1.1.1
     winston: 3.5.1
     winston-sentry-log: 1.0.24
     yargs: 17.3.1
-    zod: ^3.11.6
+    zod: 3.11.6
   languageName: unknown
   linkType: soft
 
@@ -13124,7 +13124,7 @@ __metadata:
     copy-webpack-plugin: 10.2.4
     dotenv: 15.0.0
     eslint: 8.8.0
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     next: 12.0.10
     nodemon: 2.0.15
     path-match: 1.2.4
@@ -13264,7 +13264,7 @@ __metadata:
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     prettier: 2.5.1
     prompt: 1.2.1
     solhint: 3.3.6
@@ -13285,7 +13285,7 @@ __metadata:
     eslint: 8.8.0
     fs-extra: 10.0.0
     handlebars: 4.7.7
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     yargs: 17.3.1
   languageName: unknown
   linkType: soft
@@ -13311,25 +13311,25 @@ __metadata:
   dependencies:
     "@babel/core": 7.16.12
     "@mdx-js/preact": 2.0.0
-    "@mdx-js/react": ^1.6.22
+    "@mdx-js/react": 1.6.22
     "@storybook/addon-actions": 6.5.0-alpha.31
     "@storybook/addon-docs": 6.5.0-alpha.31
     "@storybook/addon-essentials": 6.5.0-alpha.31
     "@storybook/addon-links": 6.5.0-alpha.31
     "@storybook/react": 6.5.0-alpha.31
-    "@types/react": ^17.0.33
-    "@types/react-dom": ^17.0.10
-    "@vitejs/plugin-react": ^1.0.7
-    autoprefixer: ^10.4.2
-    babel-loader: ^8.2.3
+    "@types/react": 17.0.38
+    "@types/react-dom": 17.0.11
+    "@vitejs/plugin-react": 1.1.4
+    autoprefixer: 10.4.2
+    babel-loader: 8.2.3
     postcss: 8.4.6
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-icons: ^4.3.1
+    react: 17.0.2
+    react-dom: 17.0.2
+    react-icons: 4.3.1
     storybook-builder-vite: 0.1.14
-    tailwind-merge: ^1.2.0
+    tailwind-merge: 1.2.0
     tailwindcss: 3.0.18
-    typescript: 4.5.5
+    typescript: 4.5.4
     vite: 2.7.13
   languageName: unknown
   linkType: soft
@@ -13530,7 +13530,7 @@ __metadata:
     "@babel/core": 7.16.12
     "@babel/preset-env": 7.16.11
     "@nomiclabs/hardhat-ethers": 2.0.4
-    "@openzeppelin/hardhat-upgrades": ^1.13.0
+    "@openzeppelin/hardhat-upgrades": 1.13.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
@@ -13615,7 +13615,7 @@ __metadata:
     dotenv: 15.0.0
     eslint: 8.8.0
     jest: 27.4.7
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     node-forge: 1.2.1
     nodemailer: 6.7.2
     nodemon: 2.0.15
@@ -13628,7 +13628,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vitejs/plugin-react@npm:^1.0.7, @vitejs/plugin-react@npm:^1.0.8":
+"@vitejs/plugin-react@npm:1.1.4, @vitejs/plugin-react@npm:^1.0.8":
   version: 1.1.4
   resolution: "@vitejs/plugin-react@npm:1.1.4"
   dependencies:
@@ -16053,7 +16053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:10.4.2, autoprefixer@npm:^10.4.2":
+"autoprefixer@npm:10.4.2":
   version: 10.4.2
   resolution: "autoprefixer@npm:10.4.2"
   dependencies:
@@ -18599,7 +18599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:4.3.4, chai@npm:^4.2.0, chai@npm:^4.3.4":
+"chai@npm:4.3.4, chai@npm:^4.2.0":
   version: 4.3.4
   resolution: "chai@npm:4.3.4"
   dependencies:
@@ -27211,7 +27211,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.8.2, hardhat@npm:^2.8.2":
+"hardhat@npm:2.8.2":
   version: 2.8.2
   resolution: "hardhat@npm:2.8.2"
   dependencies:
@@ -27850,7 +27850,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"html-template-tag@npm:^4.0.0":
+"html-template-tag@npm:4.0.0":
   version: 4.0.0
   resolution: "html-template-tag@npm:4.0.0"
   dependencies:
@@ -32385,9 +32385,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:12.3.2":
-  version: 12.3.2
-  resolution: "lint-staged@npm:12.3.2"
+"lint-staged@npm:12.3.3":
+  version: 12.3.3
+  resolution: "lint-staged@npm:12.3.3"
   dependencies:
     cli-truncate: ^3.1.0
     colorette: ^2.0.16
@@ -32404,7 +32404,7 @@ fsevents@~2.1.1:
     yaml: ^1.10.2
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 35cab689dfc967ff95afeeaa7be7d1e19a131f36eeac9ac1d80240e0b20108286ce04f2d6bdf0b77fdf58db3ca5313bcbf2667dc6017335e604ff455caf69e33
+  checksum: a9147eb5def6345622d1b772d5920b1282808738abf53e6034d8da2d21d6baf80135ea22f799bf4092867a3dba13cd875493b8e32e47f3b4574e4e8871a0aa8e
   languageName: node
   linkType: hard
 
@@ -34857,7 +34857,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-abort-controller@npm:^3.0.1":
+"node-abort-controller@npm:3.0.1":
   version: 3.0.1
   resolution: "node-abort-controller@npm:3.0.1"
   checksum: 2b3d75c65249fea99e8ba22da3a8bc553f034f44dd12f5f4b38b520f718b01c88718c978f0c24c2a460fc01de9a80b567028f547b94440cb47adeacfeb82c2ee
@@ -34873,7 +34873,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-cron@npm:^3.0.0":
+"node-cron@npm:3.0.0":
   version: 3.0.0
   resolution: "node-cron@npm:3.0.0"
   dependencies:
@@ -36499,19 +36499,19 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"path-to-regexp@npm:6.2.0, path-to-regexp@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "path-to-regexp@npm:6.2.0"
+  checksum: a6aca74d2d6e2e7594d812f653cf85e9cb5054d3a8d80f099722a44ef6ad22639b02078e5ea83d11db16321c3e4359e3f1ab0274fa78dad0754a6e53f630b0fc
+  languageName: node
+  linkType: hard
+
 "path-to-regexp@npm:^1.0.0":
   version: 1.8.0
   resolution: "path-to-regexp@npm:1.8.0"
   dependencies:
     isarray: 0.0.1
   checksum: 709f6f083c0552514ef4780cb2e7e4cf49b0cc89a97439f2b7cc69a608982b7690fb5d1720a7473a59806508fc2dae0be751ba49f495ecf89fd8fbc62abccbcd
-  languageName: node
-  linkType: hard
-
-"path-to-regexp@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "path-to-regexp@npm:6.2.0"
-  checksum: a6aca74d2d6e2e7594d812f653cf85e9cb5054d3a8d80f099722a44ef6ad22639b02078e5ea83d11db16321c3e4359e3f1ab0274fa78dad0754a6e53f630b0fc
   languageName: node
   linkType: hard
 
@@ -39487,7 +39487,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: soft
 
-"react-dom@npm:17.0.2, react-dom@npm:^17.0.2":
+"react-dom@npm:17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
   dependencies:
@@ -39601,7 +39601,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-icons@npm:^4.3.1":
+"react-icons@npm:4.3.1":
   version: 4.3.1
   resolution: "react-icons@npm:4.3.1"
   peerDependencies:
@@ -39947,7 +39947,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: soft
 
-"react@npm:17.0.2, react@npm:^17.0.2":
+"react@npm:17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:
@@ -44053,7 +44053,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^1.2.0":
+"tailwind-merge@npm:1.2.0":
   version: 1.2.0
   resolution: "tailwind-merge@npm:1.2.0"
   dependencies:
@@ -45039,7 +45039,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-node-dev@npm:^1.1.8":
+"ts-node-dev@npm:1.1.8":
   version: 1.1.8
   resolution: "ts-node-dev@npm:1.1.8"
   dependencies:
@@ -45366,6 +45366,16 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+typescript@4.5.4:
+  version: 4.5.4
+  resolution: "typescript@npm:4.5.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 59f3243f9cd6fe3161e6150ff6bf795fc843b4234a655dbd938a310515e0d61afd1ac942799e7415e4334255e41c2c49b7dd5d9fd38a17acd25a6779ca7e0961
+  languageName: node
+  linkType: hard
+
 typescript@4.5.5:
   version: 4.5.5
   resolution: "typescript@npm:4.5.5"
@@ -45383,6 +45393,16 @@ typescript@^3.8.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 46c842e2cd4797b88b66ef06c9c41dd21da48b95787072ccf39d5f2aa3124361bc4c966aa1c7f709fae0509614d76751455b5231b12dbb72eb97a31369e1ff92
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@4.5.4#~builtin<compat/typescript>":
+  version: 4.5.4
+  resolution: "typescript@patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=ddd1e8"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 270255355c3236076dbbd0900ff0b7b159fac7e6a95f9ed8c59f57361c7dace9f1fbffd3b5eb21377c7f636027382ad89eb64b2acfbcd9e08574f04cfc75ca3d
   languageName: node
   linkType: hard
 
@@ -50550,7 +50570,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.11.6":
+"zod@npm:3.11.6":
   version: 3.11.6
   resolution: "zod@npm:3.11.6"
   checksum: 044ac416450f179a0c88240f27849d2886c777cebade42df10e5f04125b0265cec82d9bd741a7dcb11796b2ea88b32c86be7d36932a4bed6af57002560359db1
