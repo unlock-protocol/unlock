@@ -13025,7 +13025,7 @@ __metadata:
     debug: 4.3.3
     eslint: 8.6.0
     eslint-plugin-mocha: 10.0.3
-    eth-gas-reporter: 0.2.23
+    eth-gas-reporter: 0.2.24
     eth-sig-util: 2.5.4
     ethereum-waffle: 3.4.0
     ethers: 5.5.2
@@ -23614,7 +23614,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-gas-reporter@npm:0.2.23, eth-gas-reporter@npm:^0.2.23":
+"eth-gas-reporter@npm:0.2.24":
+  version: 0.2.24
+  resolution: "eth-gas-reporter@npm:0.2.24"
+  dependencies:
+    "@ethersproject/abi": ^5.0.0-beta.146
+    "@solidity-parser/parser": ^0.14.0
+    cli-table3: ^0.5.0
+    colors: 1.4.0
+    ethereumjs-util: 6.2.0
+    ethers: ^4.0.40
+    fs-readdir-recursive: ^1.1.0
+    lodash: ^4.17.14
+    markdown-table: ^1.1.3
+    mocha: ^7.1.1
+    req-cwd: ^2.0.0
+    request: ^2.88.0
+    request-promise-native: ^1.0.5
+    sha1: ^1.1.1
+    sync-request: ^6.0.0
+  peerDependencies:
+    "@codechecks/client": ^0.1.0
+  peerDependenciesMeta:
+    "@codechecks/client":
+      optional: true
+  checksum: f906e475f66f5ebcd37b7fe3b5df7e6cabfcfd6b0a336b60ec5b57e723ff346e6702fa8993ee6443c5d4d70877487eda257c425e9b50f409ad8f904d6e839e55
+  languageName: node
+  linkType: hard
+
+"eth-gas-reporter@npm:^0.2.23":
   version: 0.2.23
   resolution: "eth-gas-reporter@npm:0.2.23"
   dependencies:
