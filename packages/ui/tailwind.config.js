@@ -1,9 +1,14 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: ['./lib/**/*.{tsx,jsx,ts,js}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
-        // Primary Blue Dark
+        // Primar Blue Dark
         'brand-dark': '#020207',
         // Dark Gray
         'brand-gray': '#535353',
@@ -13,6 +18,8 @@ module.exports = {
         'brand-secondary': '#FF6771',
         // Primary blue
         'brand-ui-primary': '#603DEB',
+        // Primar Blue Dark
+        'brand-ui-secondary': '#020207',
       },
     },
   },

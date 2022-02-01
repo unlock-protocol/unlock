@@ -1,6 +1,8 @@
 import { Button } from './Button'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { FaLock as LockIcon } from 'react-icons/fa'
+import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
+
 export default {
   component: Button,
   title: 'Button',
@@ -8,18 +10,34 @@ export default {
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
 
-export const Primary = Template.bind({})
+export const PrimaryButton = Template.bind({})
 
-Primary.args = {
-  children: 'Lock Button',
-  leftIcon: <LockIcon size={12} />,
+PrimaryButton.args = {
+  children: 'Connect',
+  iconLeft: <LockIcon size={12} />,
 }
 
+export const SecondaryButton = Template.bind({})
 
-export const ButtonWithRightIcon = Template.bind({})
+SecondaryButton.args = {
+  children: 'Create Lock',
+  size: 'large',
+  variant: 'secondary',
+  iconLeft: <LockIcon size={14} />,
+}
 
-ButtonWithRightIcon.args = {
-  children: 'Button with right icon',
-  size:"large",
-  rightIcon: <LockIcon size={14} />,
+export const DisabledButton = Template.bind({})
+
+DisabledButton.args = {
+  children: 'Disabled',
+  disabled: true,
+  iconRight: <LockIcon size={12} />,
+}
+
+export const LoadingButton = Template.bind({})
+
+LoadingButton.args = {
+  children: 'Loading Locks...',
+  disabled: true,
+  iconRight: <SpinnerIcon className='animate-spin motion-reduce:invisible' size={18} />,
 }
