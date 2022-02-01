@@ -13453,25 +13453,25 @@ __metadata:
     "@babel/core": 7.16.12
     "@babel/node": 7.16.8
     "@babel/preset-env": 7.16.11
-    "@typescript-eslint/parser": 5.8.1
+    "@typescript-eslint/parser": 5.10.2
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    aws-sdk: 2.1048.0
+    aws-sdk: 2.1066.0
     babel-eslint: 10.1.0
     babel-jest: 27.4.5
     babel-loader: 8.2.3
     dotenv: 10.0.0
-    eslint: 8.6.0
+    eslint: 8.8.0
     jest: 27.4.5
-    lint-staged: 12.1.5
-    node-forge: 1.0.0
+    lint-staged: 12.3.2
+    node-forge: 1.2.1
     nodemailer: 6.7.2
     nodemon: 2.0.15
     prettier: 2.5.1
     ts-jest: 27.1.3
     typescript: 4.5.4
-    webpack: 5.65.0
+    webpack: 5.68.0
     webpack-cli: 4.9.2
-    winston: 3.3.3
+    winston: 3.5.1
   languageName: unknown
   linkType: soft
 
@@ -15863,6 +15863,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"async@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "async@npm:3.2.3"
+  checksum: c4bee57ab2249af3dc83ca3ef9acfa8e822c0d5e5aa41bae3eaf7f673648343cd64ecd7d26091ffd357f3f044428b17b5f00098494b6cf8b6b3e9681f0636ca1
+  languageName: node
+  linkType: hard
+
 "async@npm:~1.0.0":
   version: 1.0.0
   resolution: "async@npm:1.0.0"
@@ -15981,6 +15988,23 @@ __metadata:
     uuid: 3.3.2
     xml2js: 0.4.19
   checksum: 4c9b56b52b1530628f7fa4dd2e0ec9104d9a6fc7b8d9adc4441c7fbae5e8e1922718fe41c79b6cf65842c2f2d342c1db11b283bfe9cf1eff021cd8ea458c9817
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:2.1066.0":
+  version: 2.1066.0
+  resolution: "aws-sdk@npm:2.1066.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.16.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 3.3.2
+    xml2js: 0.4.19
+  checksum: 5ed48ddd14fa01478222d989be06d75a9a3d7521a5bb9324547f745fbde8ee760836c80c6ee9678449b591c67e1d447671ed16ab36583a3a6266c4fc6ba6eb7c
   languageName: node
   linkType: hard
 
@@ -30671,6 +30695,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"jmespath@npm:0.16.0":
+  version: 0.16.0
+  resolution: "jmespath@npm:0.16.0"
+  checksum: 2d602493a1e4addfd1350ac8c9d54b1b03ed09e305fd863bab84a4ee1f52868cf939dd1a08c5cdea29ce9ba8f86875ebb458b6ed45dab3e1c3f2694503fb2fd9
+  languageName: node
+  linkType: hard
+
 "js-base64@npm:3.7.2":
   version: 3.7.2
   resolution: "js-base64@npm:3.7.2"
@@ -32309,6 +32340,19 @@ fsevents@~2.1.1:
     ms: ^2.1.1
     triple-beam: ^1.3.0
   checksum: 07319bfd50dacf69a4a3bc81cd6f5fab2f52d247ba5d2d2df99141f6b62f787f7fbb0353046650da90329d4030f265632d5f995706612ed9cb2c70281866007e
+  languageName: node
+  linkType: hard
+
+"logform@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "logform@npm:2.3.2"
+  dependencies:
+    colors: 1.4.0
+    fecha: ^4.2.0
+    ms: ^2.1.1
+    safe-stable-stringify: ^1.1.0
+    triple-beam: ^1.3.0
+  checksum: e4ccf22a1355c6f03b635d6b7905d5ac2d75fca8e6d5bf33a801793c654764138d584fec03411b13bffecaafa0003a70e6cf4f2f0af62d0e324d62622921405a
   languageName: node
   linkType: hard
 
@@ -34374,6 +34418,13 @@ fsevents@~2.1.1:
   version: 1.0.0
   resolution: "node-forge@npm:1.0.0"
   checksum: 222464a66227687393b4a3b86d3438b9026a65e42ec312e829f7f864fa87c8960169a878cba54ce98b80b156562e3871d3bba4c5d0d8aba1989a474eb3a82261
+  languageName: node
+  linkType: hard
+
+"node-forge@npm:1.2.1":
+  version: 1.2.1
+  resolution: "node-forge@npm:1.2.1"
+  checksum: af4f88c3f69362359f35f6a9e231b35c96d906eeb6e976fb92742afe7fcdd76439dc22b41ce3755389d171f6320756ec7505bdfa7b252466c091b8c519a22674
   languageName: node
   linkType: hard
 
@@ -40795,6 +40846,20 @@ resolve@^2.0.0-next.3:
   dependencies:
     ret: ~0.1.10
   checksum: 9a8bba57c87a841f7997b3b951e8e403b1128c1a4fd1182f40cc1a20e2d490593d7c2a21030fadfea320c8e859219019e136f678c6689ed5960b391b822f01d5
+  languageName: node
+  linkType: hard
+
+"safe-stable-stringify@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "safe-stable-stringify@npm:1.1.1"
+  checksum: e32a30720e8a2e3043b8b96733f015c1aa7a21a5a328074ce917b8afe4d26b4308c186c74fa92131e5f794b1efc63caa32defafceaa2981accaaedbc8b2c861c
+  languageName: node
+  linkType: hard
+
+"safe-stable-stringify@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "safe-stable-stringify@npm:2.3.1"
+  checksum: a0a0bad0294c3e2a9d1bf3cf2b1096dfb83c162d09a5e4891e488cce082120bd69161d2a92aae7fc48255290f17700decae9c89a07fe139794e61b5c8b411377
   languageName: node
   linkType: hard
 
@@ -48708,6 +48773,13 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"webpack-sources@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "webpack-sources@npm:3.2.3"
+  checksum: 989e401b9fe3536529e2a99dac8c1bdc50e3a0a2c8669cbafad31271eadd994bc9405f88a3039cd2e29db5e6d9d0926ceb7a1a4e7409ece021fe79c37d9c4607
+  languageName: node
+  linkType: hard
+
 "webpack-virtual-modules@npm:^0.2.2":
   version: 0.2.2
   resolution: "webpack-virtual-modules@npm:0.2.2"
@@ -48821,6 +48893,43 @@ typescript@^3.8.3:
   bin:
     webpack: bin/webpack.js
   checksum: 221ab8ccd440cb678269e86689704bbef81cf41393eb266625873e30c6980ffaa055bb1a7d14bf9fc0f5a2e6f03d15d068cbb995bc876757c01a4ca27fd2870c
+  languageName: node
+  linkType: hard
+
+"webpack@npm:5.68.0":
+  version: 5.68.0
+  resolution: "webpack@npm:5.68.0"
+  dependencies:
+    "@types/eslint-scope": ^3.7.0
+    "@types/estree": ^0.0.50
+    "@webassemblyjs/ast": 1.11.1
+    "@webassemblyjs/wasm-edit": 1.11.1
+    "@webassemblyjs/wasm-parser": 1.11.1
+    acorn: ^8.4.1
+    acorn-import-assertions: ^1.7.6
+    browserslist: ^4.14.5
+    chrome-trace-event: ^1.0.2
+    enhanced-resolve: ^5.8.3
+    es-module-lexer: ^0.9.0
+    eslint-scope: 5.1.1
+    events: ^3.2.0
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.2.9
+    json-parse-better-errors: ^1.0.2
+    loader-runner: ^4.2.0
+    mime-types: ^2.1.27
+    neo-async: ^2.6.2
+    schema-utils: ^3.1.0
+    tapable: ^2.1.1
+    terser-webpack-plugin: ^5.1.3
+    watchpack: ^2.3.1
+    webpack-sources: ^3.2.3
+  peerDependenciesMeta:
+    webpack-cli:
+      optional: true
+  bin:
+    webpack: bin/webpack.js
+  checksum: ac6efd861a0bfb35d8a467fba0d87f905ef6e1a9a9f7e3db42ea459cf191268094cedd025d3eb36a1464e2208a0c193f3f4a92531ba58850246f3c6b8f210b03
   languageName: node
   linkType: hard
 
@@ -49116,6 +49225,17 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"winston-transport@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "winston-transport@npm:4.4.2"
+  dependencies:
+    logform: ^2.3.2
+    readable-stream: ^3.4.0
+    triple-beam: ^1.2.0
+  checksum: 1f1732d12f4e28d7cd0be110482035b3a3647f8ed07d681e9b79b4b2e168aaa34d91a3bbe9c7374d8df2ef9d6fd38f4add70d66798930d4c7cebb555ff8496f9
+  languageName: node
+  linkType: hard
+
 "winston@npm:2.x":
   version: 2.4.5
   resolution: "winston@npm:2.4.5"
@@ -49144,6 +49264,24 @@ typescript@^3.8.3:
     triple-beam: ^1.3.0
     winston-transport: ^4.4.0
   checksum: 89a0a8db4e577d0df2bee8af67a751663fb80aaa782750b5a0a151a6bf97074dd0eb7c81780e196197735b851c12ea9c176952128fc51fae07a8a5ddba82913a
+  languageName: node
+  linkType: hard
+
+"winston@npm:3.5.1":
+  version: 3.5.1
+  resolution: "winston@npm:3.5.1"
+  dependencies:
+    "@dabh/diagnostics": ^2.0.2
+    async: ^3.2.3
+    is-stream: ^2.0.0
+    logform: ^2.3.2
+    one-time: ^1.0.0
+    readable-stream: ^3.4.0
+    safe-stable-stringify: ^2.3.1
+    stack-trace: 0.0.x
+    triple-beam: ^1.3.0
+    winston-transport: ^4.4.2
+  checksum: 12253f1644c46f90b36b8e675f397b29f862778c6a76cce11ad901c35d7a9b556fe371bfd0c22e180f6aa2e23d7a726a6f4ec1eec637dac3fe76390a0cd5ed09
   languageName: node
   linkType: hard
 
