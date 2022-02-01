@@ -24,7 +24,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "ethers": "5.5.2"
+    "ethers": "5.5.4"
   },
   "lint-staged": {
     "*.{js,ts}": [
@@ -42,7 +42,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "babel-jest": "27.4.6",
     "eslint": "8.6.0",
-    "ethers": "5.5.2",
+    "ethers": "5.5.4",
     "hardhat": "2.8.2",
     "jest": "27.4.5",
     "lint-staged": "12.1.5",
