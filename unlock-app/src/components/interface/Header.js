@@ -62,10 +62,10 @@ const Header = ({ forContent, title }) => {
           </a>
         </Link>
       ) : (
-        <h1 className="flex items-center gap-4 text-2xl text-gray-500">
+        <h1 className="flex items-center gap-4 text-xl font-bold">
           <Link href="/">
             <a>
-              <RoundedLogo size="30px" />
+              <RoundedLogo size="40px" />
             </a>
           </Link>
           {title}

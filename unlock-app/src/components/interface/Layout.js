@@ -21,7 +21,7 @@ export default function Layout({ forContent, title, children }) {
   }
 
   return (
-    <div className="flex px-4 mx-auto md:max-w-screen-lg lg:max-w-screen-xl">
+    <div className="flex p-4 mx-auto md:max-w-screen-lg lg:max-w-screen-xl">
       <Content>
         <Header forContent={forContent} title={title} />
         {!termsAccepted && <Terms setTermsAccepted={saveTermsAccepted} />}
