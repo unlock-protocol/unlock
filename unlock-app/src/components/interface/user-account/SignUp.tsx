@@ -11,8 +11,8 @@ import {
 } from '../checkout/FormStyles'
 
 interface SignupFormInterface {
-  email: string
-  password: string
+  email?: string
+  password?: string
 }
 
 interface SignUpProps {
@@ -27,6 +27,9 @@ export const SignUp = ({ onCancel, createAccount, showLogin }: SignUpProps) => {
   const { register, handleSubmit } = useForm()
 
   const onSubmit = async ({ email, password }: SignupFormInterface) => {
+    if (!email || !password) {
+      return false
+    }
     setLoading(true)
     try {
       await createAccount(email, password)
