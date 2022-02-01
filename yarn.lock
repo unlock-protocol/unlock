@@ -6587,16 +6587,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.3"
-  peerDependencies:
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: bfe355ecadd829e61bd83153238566829a5b8dd370e52e7e2b501ace70827c828d2dd9d5b36d55f99dfb3f7f441a53a8810fcd80b77ef617c0559e8bb2e515f8
-  languageName: node
-  linkType: hard
-
 "@nomiclabs/hardhat-ethers@npm:2.0.4":
   version: 2.0.4
   resolution: "@nomiclabs/hardhat-ethers@npm:2.0.4"
@@ -13074,7 +13064,7 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@gnosis.pm/safe-core-sdk": 2.0.0
-    "@nomiclabs/hardhat-ethers": 2.0.3
+    "@nomiclabs/hardhat-ethers": 2.0.4
     "@nomiclabs/hardhat-etherscan": 3.0.0
     "@nomiclabs/hardhat-truffle5": 2.0.3
     "@nomiclabs/hardhat-waffle": 2.0.2
