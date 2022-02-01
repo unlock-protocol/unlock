@@ -117,7 +117,7 @@
     "nodemon": "2.0.15",
     "run-script-os": "1.1.6",
     "supertest": "6.1.6",
-    "ts-jest": "27.1.2",
+    "ts-jest": "27.1.3",
     "ts-node-dev": "^1.1.8",
     "typescript": "4.5.4"
   },
