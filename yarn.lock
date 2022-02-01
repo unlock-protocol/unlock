@@ -12987,7 +12987,7 @@ __metadata:
     hardlydifficult-eth: 1.1.4
     jest-specific-snapshot: 5.0.0
     prettier: 2.5.1
-    solidity-coverage: 0.7.17
+    solidity-coverage: 0.7.18
     solium: 1.2.5
     truffle-assertions: 0.9.2
     web3: 1.6.1
@@ -13041,7 +13041,7 @@ __metadata:
     prettier: 2.5.1
     prompt: 1.2.0
     solhint: 3.3.6
-    solidity-coverage: 0.7.17
+    solidity-coverage: 0.7.18
     truffle-assertions: 0.9.2
     web3: 1.6.1
   languageName: unknown
@@ -41953,9 +41953,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"solidity-coverage@npm:0.7.17":
-  version: 0.7.17
-  resolution: "solidity-coverage@npm:0.7.17"
+"solidity-coverage@npm:0.7.18":
+  version: 0.7.18
+  resolution: "solidity-coverage@npm:0.7.18"
   dependencies:
     "@solidity-parser/parser": ^0.13.2
     "@truffle/provider": ^0.2.24
@@ -41978,7 +41978,7 @@ resolve@^2.0.0-next.3:
     web3-utils: ^1.3.0
   bin:
     solidity-coverage: plugins/bin.js
-  checksum: 8bc04823943483ad84457d52a6c046dadfd861ef9cf4d0864cfaecf882d33fd26a73120f05f01b2ac14a0c62e93ced0dbd2908c85840c0c86b06b200e89a5519
+  checksum: f0ae865e355776cb34877fe49c1a83ea093862b2ac2aef32a8e0fc6ee258836d1c407e4dace0262b769a33da65ed930cf309d2bc15b31166ea86ad25f9e110f9
   languageName: node
   linkType: hard
 
