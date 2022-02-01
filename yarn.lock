@@ -12609,7 +12609,7 @@ __metadata:
     path-match: 1.2.4
     postmate: 1.5.2
     prettier: 2.5.1
-    prop-types: 15.8.0
+    prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2
     react-test-renderer: 17.0.2
@@ -12937,7 +12937,7 @@ __metadata:
     postcss: 8.4.5
     postmate: 1.5.2
     prettier: 2.5.1
-    prop-types: 15.8.0
+    prop-types: 15.8.1
     qrcode.react: 1.0.1
     react: 17.0.2
     react-dom: 17.0.2
@@ -13060,7 +13060,7 @@ __metadata:
     next: 12.0.9
     path-match: 1.2.4
     prettier: 2.5.1
-    prop-types: 15.8.0
+    prop-types: 15.8.1
     raw-loader: 4.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -37658,14 +37658,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.8.0":
-  version: 15.8.0
-  resolution: "prop-types@npm:15.8.0"
+"prop-types@npm:15.8.1":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
   dependencies:
     loose-envify: ^1.4.0
     object-assign: ^4.1.1
     react-is: ^16.13.1
-  checksum: d8d51cf55d70cab207dd1e80df2dc093b8288a4519598a28d25d32d6e02319b2fd66712caa979040451656185f7393341185b0b081158520557aa4cbdcaa4b3a
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
   languageName: node
   linkType: hard
 
