@@ -737,13 +737,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.3"
+"@nomiclabs/hardhat-ethers@npm:2.0.4":
+  version: 2.0.4
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.4"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: bfe355ecadd829e61bd83153238566829a5b8dd370e52e7e2b501ace70827c828d2dd9d5b36d55f99dfb3f7f441a53a8810fcd80b77ef617c0559e8bb2e515f8
+  checksum: 46b01edde014f5484c38ab199531e6a742d93a1a5fd60576fed97231a1ce325607c7ead6b6be8fd7b64aff55daa0a388c691b45a69cb63ae28db4087f281f573
   languageName: node
   linkType: hard
 
@@ -944,7 +944,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.0.3
+    "@nomiclabs/hardhat-ethers": 2.0.4
     "@unlock-protocol/unlock-abi-9": 1.0.0
     "@unlock-protocol/unlock-js": 0.20.4
     cross-fetch: 3.1.5
