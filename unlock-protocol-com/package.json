@@ -21,7 +21,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.2",
     "babel-preset-react-app": "10.0.1",
-    "dotenv": "10.0.0",
+    "dotenv": "15.0.0",
     "eslint": "8.6.0",
     "jest": "27.4.7",
     "jest-styled-components": "7.0.8",
