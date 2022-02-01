@@ -23,7 +23,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "copy-webpack-plugin": "10.2.4",
     "dotenv": "10.0.0",
-    "lint-staged": "12.3.2",
+    "lint-staged": "12.3.3",
     "next": "12.0.10",
     "path-match": "1.2.4",
     "postmate": "1.5.2",

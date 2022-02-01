@@ -12725,7 +12725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:5.8.1, @typescript-eslint/parser@npm:^5.5.0":
+"@typescript-eslint/parser@npm:^5.5.0":
   version: 5.8.1
   resolution: "@typescript-eslint/parser@npm:5.8.1"
   dependencies:
@@ -13124,7 +13124,7 @@ __metadata:
     copy-webpack-plugin: 10.2.4
     dotenv: 10.0.0
     eslint: 8.8.0
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     next: 12.0.10
     nodemon: 2.0.15
     path-match: 1.2.4
@@ -13264,7 +13264,7 @@ __metadata:
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     prettier: 2.5.1
     prompt: 1.2.1
     solhint: 3.3.6
@@ -13285,7 +13285,7 @@ __metadata:
     eslint: 8.8.0
     fs-extra: 10.0.0
     handlebars: 4.7.7
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     yargs: 17.3.1
   languageName: unknown
   linkType: soft
@@ -13615,7 +13615,7 @@ __metadata:
     dotenv: 10.0.0
     eslint: 8.8.0
     jest: 27.4.7
-    lint-staged: 12.3.2
+    lint-staged: 12.3.3
     node-forge: 1.2.1
     nodemailer: 6.7.2
     nodemon: 2.0.15
@@ -32378,9 +32378,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:12.3.2":
-  version: 12.3.2
-  resolution: "lint-staged@npm:12.3.2"
+"lint-staged@npm:12.3.3":
+  version: 12.3.3
+  resolution: "lint-staged@npm:12.3.3"
   dependencies:
     cli-truncate: ^3.1.0
     colorette: ^2.0.16
@@ -32397,7 +32397,7 @@ fsevents@~2.1.1:
     yaml: ^1.10.2
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 35cab689dfc967ff95afeeaa7be7d1e19a131f36eeac9ac1d80240e0b20108286ce04f2d6bdf0b77fdf58db3ca5313bcbf2667dc6017335e604ff455caf69e33
+  checksum: a9147eb5def6345622d1b772d5920b1282808738abf53e6034d8da2d21d6baf80135ea22f799bf4092867a3dba13cd875493b8e32e47f3b4574e4e8871a0aa8e
   languageName: node
   linkType: hard
 
@@ -34982,13 +34982,6 @@ fsevents@~2.1.1:
   version: 2.6.2
   resolution: "node-fetch@npm:2.6.2"
   checksum: de367eae1dfbc0e12283c1cf92256ea7fba7eac8655e2e51ebb217727162396fc6cf24689ef9fc6accf075e3991e2ffaa061f7cfaa958215329649b2297ff06d
-  languageName: node
-  linkType: hard
-
-"node-forge@npm:1.0.0":
-  version: 1.0.0
-  resolution: "node-forge@npm:1.0.0"
-  checksum: 222464a66227687393b4a3b86d3438b9026a65e42ec312e829f7f864fa87c8960169a878cba54ce98b80b156562e3871d3bba4c5d0d8aba1989a474eb3a82261
   languageName: node
   linkType: hard
 
