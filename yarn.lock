@@ -13042,7 +13042,7 @@ __metadata:
     color-scheme: 1.0.1
     cors: 2.8.5
     cross-fetch: 3.1.5
-    dotenv: 10.0.0
+    dotenv: 15.0.0
     eslint: 8.8.0
     eslint-config-standard: 16.0.3
     eth-sig-util: 2.5.4
@@ -13122,7 +13122,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 10.2.4
-    dotenv: 10.0.0
+    dotenv: 15.0.0
     eslint: 8.8.0
     lint-staged: 12.3.3
     next: 12.0.10
@@ -13155,7 +13155,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.2
     css-loader: 6.5.1
-    dotenv: 10.0.0
+    dotenv: 15.0.0
     eslint: 8.6.0
     jest: 27.4.7
     jest-fetch-mock: 3.0.3
@@ -13440,7 +13440,7 @@ __metadata:
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
-    dotenv: 10.0.0
+    dotenv: 15.0.0
     eslint: 8.8.0
     eth-sig-util: 2.5.4
     ethereumjs-utils: 5.2.5
@@ -13573,7 +13573,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.2
     babel-preset-react-app: 10.0.1
-    dotenv: 10.0.0
+    dotenv: 15.0.0
     eslint: 8.6.0
     jest: 27.4.7
     jest-styled-components: 7.0.8
@@ -13612,7 +13612,7 @@ __metadata:
     babel-eslint: 10.1.0
     babel-jest: 27.4.6
     babel-loader: 8.2.3
-    dotenv: 10.0.0
+    dotenv: 15.0.0
     eslint: 8.8.0
     jest: 27.4.7
     lint-staged: 12.3.3
@@ -21753,7 +21753,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:10.0.0, dotenv@npm:^10.0.0":
+"dotenv@npm:15.0.0":
+  version: 15.0.0
+  resolution: "dotenv@npm:15.0.0"
+  checksum: be5d852b2ad1708780e7038481c0687ce4bb9edf354d439872511e966a5f28c083f296e1d1c182256d695bfdd67e320382eb3b0f2e9d83efa3615cd1757257ab
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^10.0.0":
   version: 10.0.0
   resolution: "dotenv@npm:10.0.0"
   checksum: f412c5fe8c24fbe313d302d2500e247ba8a1946492db405a4de4d30dd0eb186a88a43f13c958c5a7de303938949c4231c56994f97d05c4bc1f22478d631b4005
