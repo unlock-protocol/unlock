@@ -12898,7 +12898,7 @@ __metadata:
     msw: 0.36.8
     multer: 1.4.4
     multer-s3: 2.10.0
-    nock: 13.2.1
+    nock: 13.2.2
     node-abort-controller: ^3.0.1
     node-cron: ^3.0.0
     node-mocks-http: 1.11.0
@@ -34314,15 +34314,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nock@npm:13.2.1":
-  version: 13.2.1
-  resolution: "nock@npm:13.2.1"
+"nock@npm:13.2.2":
+  version: 13.2.2
+  resolution: "nock@npm:13.2.2"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     lodash.set: ^4.3.2
     propagate: ^2.0.0
-  checksum: b401fb8143ca88095ee34c715e2806eda2813dace4f4c4798961ad961c18003d1529f4507a79c429d2c3c768e136632ee19ee9ebfef71f0cb022df152594df1d
+  checksum: cc1bf6e4bbf2fb0a540aa7d5f82788a6fb2490034083ed89242becc0ff1bfb391bfd3c7a7a9c0f24dec9c085426f66441765756b279a7dd608e4630586f9cb0d
   languageName: node
   linkType: hard
 
