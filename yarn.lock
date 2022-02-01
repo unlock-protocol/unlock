@@ -12549,7 +12549,7 @@ __metadata:
     parse-data-uri: 0.2.0
     path-to-regexp: ^6.2.0
     pg: 8.7.1
-    random-words: 1.1.1
+    random-words: 1.1.2
     reflect-metadata: 0.1.13
     request: 2.88.2
     request-promise-native: 1.0.9
@@ -38114,12 +38114,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"random-words@npm:1.1.1":
-  version: 1.1.1
-  resolution: "random-words@npm:1.1.1"
-  dependencies:
-    mocha: ^7.1.1
-  checksum: e6268c8ef70e15bd9d4ceede4a3542f74e513a55c3f4e277c45a8b266622db1189faaf708732b17db62cede5cf228c3024e35a641113d5eda487166d6902cb28
+"random-words@npm:1.1.2":
+  version: 1.1.2
+  resolution: "random-words@npm:1.1.2"
+  checksum: 3692ec439a983046541efa6a26801a6cd900650b6bfd305e4d57f3f1f28ff5937778514545e020ec486c981e227a7b703f8db3f6b7a9adce519252ed86b60146
   languageName: node
   linkType: hard
 
