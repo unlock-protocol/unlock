@@ -55,7 +55,7 @@
     "dotenv": "10.0.0",
     "eth-sig-util": "2.5.4",
     "ethereumjs-util": "6.2.1",
-    "ethers": "5.5.2",
+    "ethers": "5.5.4",
     "express": "4.17.2",
     "express-jwt": "6.1.0",
     "express-list-endpoints": "6.0.0",
