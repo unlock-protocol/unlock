@@ -5971,7 +5971,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.4.3":
+"@headlessui/react@npm:1.4.3, @headlessui/react@npm:^1.4.3":
   version: 1.4.3
   resolution: "@headlessui/react@npm:1.4.3"
   peerDependencies:
@@ -13197,6 +13197,7 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@babel/core": 7.16.12
+    "@headlessui/react": ^1.4.3
     "@mdx-js/preact": 2.0.0
     "@mdx-js/react": 2.0.0
     "@storybook/addon-actions": 6.5.0-alpha.31
@@ -13210,11 +13211,11 @@ __metadata:
     autoprefixer: 10.4.2
     babel-loader: 8.2.3
     postcss: 8.4.6
-    react: 17.0.2
-    react-dom: 17.0.2
-    react-icons: 4.3.1
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    react-icons: ^4.3.1
     storybook-builder-vite: 0.1.14
-    tailwind-merge: 1.2.0
+    tailwind-merge: ^1.2.0
     tailwindcss: 3.0.18
     typescript: 4.5.4
     vite: 2.7.13
@@ -39330,7 +39331,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: soft
 
-"react-dom@npm:17.0.2":
+"react-dom@npm:17.0.2, react-dom@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
   dependencies:
@@ -39444,7 +39445,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-icons@npm:4.3.1":
+"react-icons@npm:^4.3.1":
   version: 4.3.1
   resolution: "react-icons@npm:4.3.1"
   peerDependencies:
@@ -39790,7 +39791,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: soft
 
-"react@npm:17.0.2":
+"react@npm:17.0.2, react@npm:^17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:
@@ -43887,7 +43888,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:1.2.0":
+"tailwind-merge@npm:^1.2.0":
   version: 1.2.0
   resolution: "tailwind-merge@npm:1.2.0"
   dependencies:
