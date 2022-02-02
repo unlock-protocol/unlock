@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.16.12",
+    "@radix-ui/react-avatar": "^0.1.3",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@types/jest": "27.4.0",
