@@ -25,8 +25,10 @@ const SIZE_STYLES: SizeStyleProp = {
 }
 
 const VARIANTS_STYLES: Record<Variant, string> = {
-  primary: 'bg-brand-ui-primary  transition ease-in-out duration-300 hover:bg-brand-dark text-white disabled:hover:bg-brand-ui-primary disabled:hover:bg-opacity-75',
-  secondary: 'bg-white transition ease-in-out duration-300 text-brand-dark [box-shadow:0px_8px_30px_0px_rgba(0,_0,_0,_0.08)] hover:[box-shadow:0px_0px_10px_0px_rgba(183,_19,_255,_0.1)] disabled:hover:[box-shadow:0px_8px_30px_0px_rgba(0,_0,_0,_0.08)] disabled:hover:bg-opacity-75',
+  primary:
+    'bg-brand-ui-primary  transition ease-in-out duration-300 hover:bg-brand-dark text-white disabled:hover:bg-brand-ui-primary disabled:hover:bg-opacity-75',
+  secondary:
+    'bg-white transition ease-in-out duration-300 text-brand-dark [box-shadow:0px_8px_30px_0px_rgba(0,_0,_0,_0.08)] hover:[box-shadow:0px_0px_10px_0px_rgba(183,_19,_255,_0.1)] disabled:hover:[box-shadow:0px_8px_30px_0px_rgba(0,_0,_0,_0.08)] disabled:hover:bg-opacity-75',
 }
 
 export const Button = forwardRef(
@@ -42,7 +44,7 @@ export const Button = forwardRef(
     const buttonClass = twMerge(
       'rounded-full flex font-semibold items-center gap-2 disabled:bg-opacity-75  disabled:cursor-not-allowed',
       SIZE_STYLES[size],
-      VARIANTS_STYLES[variant],
+      VARIANTS_STYLES[variant]
     )
     return (
       <button className={buttonClass} {...restProps} ref={ref}>

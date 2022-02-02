@@ -5971,7 +5971,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.4.3":
+"@headlessui/react@npm:1.4.3, @headlessui/react@npm:^1.4.3":
   version: 1.4.3
   resolution: "@headlessui/react@npm:1.4.3"
   peerDependencies:
@@ -13197,6 +13197,7 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@babel/core": 7.16.12
+    "@headlessui/react": ^1.4.3
     "@mdx-js/preact": 2.0.0
     "@mdx-js/react": 2.0.0
     "@storybook/addon-actions": 6.5.0-alpha.31
@@ -13210,6 +13211,7 @@ __metadata:
     autoprefixer: 10.4.2
     babel-loader: 8.2.3
     postcss: 8.4.6
+    prism-react-renderer: ^1.2.1
     react: 17.0.2
     react-dom: 17.0.2
     react-icons: 4.3.1
@@ -38365,6 +38367,15 @@ fsevents@~2.1.1:
   bin:
     printj: ./bin/printj.njs
   checksum: 1c0c66844545415e339356ad62009cdc467819817b1e0341aba428087a1414d46b84089edb4e77ef24705829f8aae6349724b9c7bd89d8690302b2de7a89b315
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "prism-react-renderer@npm:1.2.1"
+  peerDependencies:
+    react: ">=0.14.9"
+  checksum: 66cab3d9f9f18ff5db222df74e1f326262ad093202f855ef2bd9e8001fef21b92f2242a2292caa77c36a517a7f379620417b421eaa320405deb6ecb27c18ee5e
   languageName: node
   linkType: hard
 
