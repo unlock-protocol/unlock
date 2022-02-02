@@ -6,7 +6,7 @@ import type { providers } from 'ethers'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
 
-import { UNLOCK_LATEST_VERSION } from './constants'
+import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
 import { deployContract } from './deploy'
 
 export class UnlockHRE {
@@ -78,5 +78,27 @@ export class UnlockHRE {
     console.log(`UNLOCK > deployed to : ${unlockAddress}`)
 
     return unlockAddress
+  }
+
+  public deployPublicLock = async (
+    version = PUBLIC_LOCK_LATEST_VERSION,
+    confirmations: number = 5,
+    deploymentOptions: providers.TransactionRequest = {}
+  ) => {
+    const signer = await this.getSigner()
+    const publicLockAddress = await deployContract(
+      this,
+      'PublicLock',
+      version,
+      [],
+      signer,
+      confirmations,
+      deploymentOptions
+    )
+
+    // eslint-disable-next-line no-console
+    console.log(`PUBLICLOCK > deployed to : ${publicLockAddress}`)
+
+    return publicLockAddress
   }
 }
