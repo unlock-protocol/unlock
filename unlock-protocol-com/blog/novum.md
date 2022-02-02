@@ -7,7 +7,7 @@ description: A full stack option to create an entirely new and interactive sign 
 image: /images/blog/novum-ogimage.png
 ---
 
-
+![Novum](/images/blog/novum-ogimage.png)
 
 Seeing the innovation from the teams integrating Unlock Protocol never ceases to amaze us. What brings us even more joy, if that’s even possible, is to see a team build an amazing integration and then keep making that integration even more stunning. Such is the case with Novum Insights. 
 
