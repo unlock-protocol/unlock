@@ -1,5 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import networks from '@unlock-protocol/networks'
+import { ethers } from 'ethers'
+
 // import contracts from '@unlock-protocol/contracts'
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { NetworksConfig, Network } from 'hardhat/types'
@@ -26,8 +28,11 @@ export class UnlockHRE {
       }, {})
   }
 
-  public getChainId = async () => {
-    return await this.provider.send('eth_chainId')
+  public getChainId = async () => await this.provider.send('eth_chainId')
+
+  public getNetworkInfo = async () => {
+    const chainId = ethers.BigNumber.from(await this.getChainId()).toString()
+    return networks[chainId]
   }
 
   public deployLock() {

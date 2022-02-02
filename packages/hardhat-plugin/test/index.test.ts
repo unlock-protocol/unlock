@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from 'chai'
 
@@ -26,6 +27,15 @@ describe('Unlock Hardhat plugin', function () {
     describe('getChainId()', function () {
       it('should return chain ID', async function () {
         assert.equal(await this.hre.unlock.getChainId(), 31337)
+      })
+    })
+
+    describe('getNetworkInfo()', function () {
+      it('should return the network json', async function () {
+        assert.deepEqual(
+          await this.hre.unlock.getNetworkInfo(),
+          networks['31337']
+        )
       })
     })
   })
