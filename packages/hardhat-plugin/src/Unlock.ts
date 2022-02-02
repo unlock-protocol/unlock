@@ -1,21 +1,32 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable class-methods-use-this, import/no-cycle */
 import networks from '@unlock-protocol/networks'
-import { ethers } from 'ethers'
+import { BigNumber } from 'ethers'
+import type { providers } from 'ethers'
 
-// import contracts from '@unlock-protocol/contracts'
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { NetworksConfig, Network } from 'hardhat/types'
+import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
+
+import { UNLOCK_LATEST_VERSION } from './constants'
+import { deployContract } from './deploy'
 
 export class UnlockHRE {
   networks: NetworkConfigs
 
+  network: Network
+
   provider: Network['provider']
 
-  constructor(availableNetworks: NetworksConfig, network: Network) {
-    this.provider = network.provider
+  ethers: HardhatRuntimeEnvironment['ethers']
 
-    this.networks = Object.keys(availableNetworks)
-      .map((netName) => availableNetworks[netName])
+  constructor({ ethers, network, config }: HardhatRuntimeEnvironment) {
+    // store HRE
+    this.provider = network.provider
+    this.network = network
+    this.ethers = ethers
+
+    // parse network info
+    this.networks = Object.keys(config.networks)
+      .map((netName) => config.networks[netName])
       .filter(({ chainId }) => chainId)
       .reduce((acc, { chainId }) => {
         if (chainId !== undefined) {
@@ -31,12 +42,41 @@ export class UnlockHRE {
   public getChainId = async () => await this.provider.send('eth_chainId')
 
   public getNetworkInfo = async () => {
-    const chainId = ethers.BigNumber.from(await this.getChainId()).toString()
+    const chainId = BigNumber.from(await this.getChainId()).toString()
     return networks[chainId]
   }
 
-  public deployLock() {
-    console.log('lets deploy')
-    return 'hello'
+  public getSigner = async () => {
+    if (process.env.WALLET_PRIVATE_KEY !== undefined) {
+      return new this.ethers.Wallet(
+        process.env.WALLET_PRIVATE_KEY,
+        this.ethers.provider
+      )
+    }
+
+    const [defaultSigner] = await this.ethers.getSigners()
+    return defaultSigner
+  }
+
+  public deployUnlock = async (
+    version = UNLOCK_LATEST_VERSION,
+    confirmations: number = 5,
+    deploymentOptions: providers.TransactionRequest = {}
+  ) => {
+    const signer = await this.getSigner()
+    const unlockAddress = await deployContract(
+      this,
+      'Unlock',
+      version,
+      [],
+      signer,
+      confirmations,
+      deploymentOptions
+    )
+
+    // eslint-disable-next-line no-console
+    console.log(`UNLOCK > deployed to : ${unlockAddress}`)
+
+    return unlockAddress
   }
 }

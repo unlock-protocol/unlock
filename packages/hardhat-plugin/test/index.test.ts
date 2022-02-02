@@ -20,10 +20,6 @@ describe('Unlock Hardhat plugin', function () {
       assert.deepEqual(this.hre.unlock.networks['31337'], networks['31337'])
     })
 
-    it('The example filed should say hello', function () {
-      assert.equal(this.hre.unlock.deployLock(), 'hello')
-    })
-
     describe('getChainId()', function () {
       it('should return chain ID', async function () {
         assert.equal(await this.hre.unlock.getChainId(), 31337)
@@ -36,6 +32,14 @@ describe('Unlock Hardhat plugin', function () {
           await this.hre.unlock.getNetworkInfo(),
           networks['31337']
         )
+      })
+    })
+
+    describe('deployUnlock()', function () {
+      it('Should deploy the Unlock contract', async function () {
+        const unlockAddress = await this.hre.unlock.deployUnlock(9, 1)
+        assert.isTrue(unlockAddress.includes('0x'))
+        assert.equal(typeof unlockAddress, 'string')
       })
     })
   })

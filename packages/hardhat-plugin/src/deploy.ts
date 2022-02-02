@@ -1,12 +1,16 @@
-import type { providers } from 'ethers'
-import type { HardhatRuntimeEnvironment, FactoryOptions } from 'hardhat/types'
+/* eslint-disable import/no-cycle */
+import type { providers, Signer } from 'ethers'
+import * as contracts from '@unlock-protocol/contracts'
+
+import { UnlockHRE } from './Unlock'
 
 export async function deployContract(
+  { ethers, network }: UnlockHRE,
   contractName: string,
+  versionNumber: number,
   constructorArguments: any[],
-  { ethers, network }: HardhatRuntimeEnvironment,
+  signer?: Signer,
   confirmations: number = 5,
-  options: FactoryOptions = {},
   deploymentOptions: providers.TransactionRequest = {}
 ): Promise<string> {
   if (
@@ -15,17 +19,18 @@ export async function deployContract(
   ) {
     deploymentOptions.gasLimit = network.config.gas
   }
-  if (options.signer === undefined) {
-    if (process.env.WALLET_PRIVATE_KEY === undefined) {
-      throw new Error('No wallet or signer defined for deployment.')
-    }
-    options.signer = new ethers.Wallet(
-      process.env.WALLET_PRIVATE_KEY,
-      ethers.provider
+
+  // check contract exists
+  const contractVersion = `${contractName}V${versionNumber}`
+  if (!Object.keys(contracts).includes(contractVersion)) {
+    throw Error(
+      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
     )
   }
 
-  const factory = await ethers.getContractFactory(contractName, options)
+  const { bytecode, abi } = contracts[contractVersion as keyof {}]
+
+  const factory = await ethers.getContractFactory(abi, bytecode, signer)
   const contract = await factory.deploy(...constructorArguments)
   await contract.deployTransaction.wait(confirmations)
   return contract.address
