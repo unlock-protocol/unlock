@@ -13426,7 +13426,6 @@ __metadata:
     "@unlock-protocol/types": "workspace:./packages/types"
     babel-jest: 27.4.6
     eslint: 8.8.0
-    ethers: 5.5.4
     hardhat: 2.8.2
     jest: 27.4.7
     lint-staged: 12.3.3

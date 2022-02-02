@@ -1,5 +1,9 @@
 # Changes
 
+# 0.21.1
+
+- Fixed dependencies in package.json
+
 # 0.21.0
 
 - Updated docs
