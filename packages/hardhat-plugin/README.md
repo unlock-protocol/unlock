@@ -21,11 +21,16 @@ Or if you are using TypeScript, in your `hardhat.config.ts`:
 import "@unlock-protocol/hardhat-plugin";
 ```
 
-## Tasks
-
-Here goes the list of tasks provided by the plugin
-
 ## Configuration
+
+### Signer
+
+By default, the first hardhat accounts will be used.  
+You can also pass a private key as follow by exporting `WALLET_PRIVATE_KEY` to the environment
+
+```
+export WALLET_PRIVATE_KEY=xxx
+```
 
 ## Usage
 
@@ -33,3 +38,13 @@ There are no additional steps you need to take for this plugin to work.
 
 Install it and access ethers through the Hardhat Runtime Environment anywhere
 you need it (tasks, scripts, tests, etc).
+
+```js
+import { unlock } from 'hardhat'
+
+// deploy the protocol contract
+await unlock.deployUnlock()
+
+// deploy the template
+await unlock.deployPublicLock()
+```
