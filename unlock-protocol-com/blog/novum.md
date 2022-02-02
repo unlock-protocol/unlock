@@ -1,9 +1,9 @@
 ---
 title: Novum Insights Elevates the NFT-Based Authentication Experience
-subTitle: A full stack option to create an entirely new and interactive sign in experience for your community
+subTitle: A full stack option to create an entirely new and interactive sign-in experience for your community
 authorName: Crystal Street
 publishDate: February 2, 2022
-description: A full stack option to create an entirely new and interactive sign in experience for your community.
+description: A full stack option to create an entirely new and interactive sign-in experience for your community.
 image: /images/blog/novum-ogimage.png
 ---
 
