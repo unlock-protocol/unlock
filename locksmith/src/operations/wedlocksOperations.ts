@@ -2,6 +2,7 @@ import fetch from 'cross-fetch'
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../../config/config'
+import { logger } from '../logger'
 
 type Params = {
   [key: string]: any
@@ -69,6 +70,11 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
   const recipient =
     userTokenMetadataRecord?.data?.userMetadata?.protected?.email
   if (recipient) {
+    logger.info('Notifying wedlock for new key', {
+      recipient,
+      lock: key.lock.address,
+      keyId: key.keyId,
+    })
     await sendEmail(`keyMined-${key.owner.address}`, 'keyMined', recipient, {
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',

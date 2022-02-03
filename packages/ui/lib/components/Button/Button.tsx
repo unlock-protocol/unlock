@@ -14,7 +14,6 @@ interface Props
   size?: Size
   iconRight?: ReactNode
   iconLeft?: ReactNode
-  label: string
   variant?: Variant
 }
 
