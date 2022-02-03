@@ -3,10 +3,11 @@ pragma solidity 0.8.2;
 
 import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
+import 'hardhat/console.sol';
 
 contract Erc721TokenUriHook {
   
-  mapping(address => address) nftAddresses;
+  mapping(address => address) public nftAddresses;
 
   function createMapping(
     address _lockAddress, 
@@ -14,6 +15,9 @@ contract Erc721TokenUriHook {
   ) 
   external 
   {
+    require(_lockAddress != address(0), 'Lock address can not be zero');
+    require(_nftAddress != address(0), 'ERC721 address can not be zero');
+
     // make sure lock manager
     IPublicLockV9 lock = IPublicLockV9(_lockAddress);
     require(lock.isLockManager(msg.sender), 'Caller does not have the LockManager role');
@@ -26,15 +30,19 @@ contract Erc721TokenUriHook {
     address _lockAddress,
     address _keyOwner,
     uint256, // _expirationTimestamp,
-    bool // isValidKey
+    bool isValidKey
   ) 
   external view
   returns (bool)
   {
+    if (isValidKey) return true;
 
+    // get nft contract 
     address nftAddress = nftAddresses[_lockAddress];
-    IERC721 nft = IERC721(nftAddress);
+    if(nftAddress == address(0)) return false;
 
+    // get nft balance
+    IERC721 nft = IERC721(nftAddress);
     return nft.balanceOf(_keyOwner) > 0;
   }
 
