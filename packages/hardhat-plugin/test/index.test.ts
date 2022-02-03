@@ -6,6 +6,11 @@ import networks from '@unlock-protocol/networks'
 
 import { useEnvironment } from './helpers'
 import { UnlockHRE } from '../src/Unlock'
+import type { UnlockProtocolContracts } from '../src/Unlock'
+import {
+  UNLOCK_LATEST_VERSION,
+  PUBLIC_LOCK_LATEST_VERSION,
+} from '../src/constants'
 
 /**
  * Takes in a function and checks for error
@@ -82,6 +87,7 @@ describe('Unlock Hardhat plugin', function () {
         const unlock = await this.hre.unlock.deployUnlock(undefined, 1)
         assert.isTrue(unlock.address.includes('0x'))
         assert.equal(typeof unlock.address, 'string')
+        assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
       })
 
       it('Should fail if number version doesnt exist', async function () {
@@ -98,6 +104,40 @@ describe('Unlock Hardhat plugin', function () {
         const publicLock = await this.hre.unlock.deployPublicLock(undefined, 1)
         assert.isTrue(publicLock.address.includes('0x'))
         assert.equal(typeof publicLock.address, 'string')
+      })
+    })
+
+    describe('deployProtocol()', function () {
+      let protocol: UnlockProtocolContracts
+      this.beforeEach(async function () {
+        protocol = await this.hre.unlock.deployProtocol(undefined, undefined, 1)
+      })
+      it('Should deploy the PublicLock contract', async function () {
+        const { publicLock } = protocol
+        assert.isTrue(publicLock.address.includes('0x'))
+        assert.equal(typeof publicLock.address, 'string')
+      })
+      it('Should deploy the Unlock contract', async function () {
+        const { unlock } = protocol
+        assert.isTrue(unlock.address.includes('0x'))
+        assert.equal(typeof unlock.address, 'string')
+      })
+      it('Should set the template correctly', async function () {
+        const { unlock, publicLock } = protocol
+        assert.equal(await unlock.publicLockAddress(), publicLock.address)
+        assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
+        assert.equal(
+          await unlock.publicLockImpls(PUBLIC_LOCK_LATEST_VERSION),
+          publicLock.address
+        )
+        assert.equal(
+          await unlock.publicLockVersions(publicLock.address),
+          PUBLIC_LOCK_LATEST_VERSION
+        )
+        assert.equal(
+          await unlock.publicLockLatestVersion(),
+          PUBLIC_LOCK_LATEST_VERSION
+        )
       })
     })
   })

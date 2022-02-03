@@ -1,19 +1,36 @@
 /* eslint-disable import/no-cycle */
-import type { providers, Signer, Contract } from 'ethers'
+import type { providers, Signer, Contract, ContractFactory } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
 
 import fs from 'fs-extra'
 import path from 'path'
 
-import { UnlockHRE } from './Unlock'
+import { UnlockHRE } from '../Unlock'
 
-export async function deployContract(
-  { ethers, network }: UnlockHRE,
+export async function getContractFactory(
+  { ethers }: UnlockHRE,
   contractName: string,
   versionNumber: number,
+  signer?: Signer
+): Promise<ContractFactory> {
+  // make sure contract exists
+  const contractVersion = `${contractName}V${versionNumber}`
+  if (!Object.keys(contracts).includes(contractVersion)) {
+    throw Error(
+      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
+    )
+  }
+  // get bytecode
+  const { bytecode, abi } = contracts[contractVersion as keyof {}]
+  const factory = await ethers.getContractFactory(abi, bytecode, signer)
+  return factory
+}
+
+export async function deployContract(
+  { network }: UnlockHRE,
+  factory: ContractFactory,
   constructorArguments: any[],
-  signer?: Signer,
   confirmations: number = 5,
   deploymentOptions: providers.TransactionRequest = {}
 ): Promise<Contract> {
@@ -24,17 +41,6 @@ export async function deployContract(
     deploymentOptions.gasLimit = network.config.gas
   }
 
-  // check contract exists
-  const contractVersion = `${contractName}V${versionNumber}`
-  if (!Object.keys(contracts).includes(contractVersion)) {
-    throw Error(
-      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
-    )
-  }
-
-  const { bytecode, abi } = contracts[contractVersion as keyof {}]
-
-  const factory = await ethers.getContractFactory(abi, bytecode, signer)
   const contract = await factory.deploy(...constructorArguments)
   await contract.deployTransaction.wait(confirmations)
   return contract
@@ -83,7 +89,7 @@ export async function deployUpgreadableContract(
   await run(TASK_COMPILE)
 
   // delete .sol file now that we have artifact
-  // await fs.remove(contractPath)
+  await fs.remove(contractPath)
 
   // get factory
   const qualified = `contracts/unlock/${contractName}V${versionNumber}.sol:${contractName}`

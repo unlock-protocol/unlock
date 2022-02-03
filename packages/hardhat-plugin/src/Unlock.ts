@@ -8,7 +8,16 @@ import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { HardhatUpgrades } from '@openzeppelin/hardhat-upgrades'
 
 import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
-import { deployContract, deployUpgreadableContract } from './deploy'
+import {
+  getContractFactory,
+  deployContract,
+  deployUpgreadableContract,
+} from './deploy'
+
+export interface UnlockProtocolContracts {
+  unlock: Contract
+  publicLock: Contract
+}
 
 export class UnlockHRE {
   networks: NetworkConfigs
@@ -104,12 +113,17 @@ export class UnlockHRE {
     deploymentOptions: providers.TransactionRequest = {}
   ) => {
     const signer = await this.getSigner()
-    const publicLock: Contract = await deployContract(
+    const PublicLock = await getContractFactory(
       this,
       'PublicLock',
       version,
+      signer
+    )
+
+    const publicLock: Contract = await deployContract(
+      this,
+      PublicLock,
       [],
-      signer,
       confirmations,
       deploymentOptions
     )
@@ -125,7 +139,7 @@ export class UnlockHRE {
     lockVersion = PUBLIC_LOCK_LATEST_VERSION,
     confirmations: number = 5,
     deploymentOptions: providers.TransactionRequest = {}
-  ) => {
+  ): Promise<UnlockProtocolContracts> => {
     const signer = await this.getSigner()
 
     // 1. deploy Unlock
@@ -136,7 +150,7 @@ export class UnlockHRE {
     )
 
     // 2. deploy PublicLock template
-    const publicLock = await this.deployUnlock(
+    const publicLock = await this.deployPublicLock(
       lockVersion,
       confirmations,
       deploymentOptions
@@ -146,5 +160,10 @@ export class UnlockHRE {
     const version = await publicLock.publicLockVersion()
     await unlock.connect(signer).addLockTemplate(publicLock.address, version)
     await unlock.connect(signer).setLockTemplate(publicLock.address)
+
+    return {
+      unlock,
+      publicLock,
+    }
   }
 }
