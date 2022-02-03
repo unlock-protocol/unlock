@@ -5,6 +5,7 @@ import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_KEYS } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
 import { notifyNewKeysToWedlocks } from '../../operations/wedlocksOperations'
+import { logger } from '../../logger'
 
 const FETCH_LIMIT = 25
 
@@ -39,6 +40,9 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
     if (!keys.length) {
       break
     }
+    logger.info('Found new keys', {
+      keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+    })
 
     await await Promise.allSettled([
       notifyNewKeysToWedlocks(keys), // send emails when applicable!
