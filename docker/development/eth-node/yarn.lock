@@ -946,7 +946,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.4
     "@unlock-protocol/unlock-abi-9": 1.0.0
-    "@unlock-protocol/unlock-js": 0.20.4
+    "@unlock-protocol/unlock-js": 0.21.1
     cross-fetch: 3.1.5
     ethers: 5.5.4
     hardhat: 2.8.0
@@ -961,12 +961,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/unlock-js@npm:0.20.4":
-  version: 0.20.4
-  resolution: "@unlock-protocol/unlock-js@npm:0.20.4"
+"@unlock-protocol/unlock-js@npm:0.21.1":
+  version: 0.21.1
+  resolution: "@unlock-protocol/unlock-js@npm:0.21.1"
   peerDependencies:
-    ethers: 5.4.6
-  checksum: f83fe2d10b9e3dd3bb176539229762ef60d57e9fd7e357567720af26eba73770e929db09e8ec389f0ba7bdf1316dabd3549d6872832a36fba6c0ed8c074a57ad
+    ethers: 5.5.4
+  checksum: 53587d9b4ba224f43a36ad5365dc4dcd7c378e15b69d4184f8f5cb3aefbe11726df4cf3c43889f19ff6e87a4a33271db30f09e5f6284f4530426be70ce492576
   languageName: node
   linkType: hard
 
