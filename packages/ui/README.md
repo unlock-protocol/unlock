@@ -16,22 +16,21 @@ Then do a `yarn install`. This will link the package.
 
 ### Usage
 
-You will need to import the relevant css file in your index component. For nextjs, that is `_app.{tsx,jsx,js,ts}` in pages.
+You will need to import the relevant css file in your index component. For nextjs, that is `_app.{tsx,jsx,js,ts}` in pages. See example in `packages/ui/src/main.tsx`.
 
 ```ts
-import '@unlock-protocol/ui/dist/index.css'
+import '@unlock-protocol/ui/dist/style.css'
 ```
 
 Afterwards, you can import any of the components directly from `@unlock-protocol/ui`
 
 ```tsx
-import type { NextPage } from "next"
-import { Button } from "@unlock-protocol/ui";
+import type { NextPage } from 'next'
+import { Button } from '@unlock-protocol/ui'
 
 const Index: NextPage = () => {
-    return <Button> Hello, from Index page </Button>
+  return <Button> Hello, from Index page </Button>
 }
-
 ```
 
 ## Development
