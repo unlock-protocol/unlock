@@ -5,7 +5,7 @@ import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol';
 import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import 'hardhat/console.sol';
 
-contract Erc721TokenUriHook {
+contract ERC721BalanceOfHook {
   
   mapping(address => address) public nftAddresses;
 

@@ -3,7 +3,7 @@ const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const Erc721TokenUriHook = artifacts.require('Erc721TokenUriHook')
+const Erc721TokenUriHook = artifacts.require('ERC721BalanceOfHook')
 const TestERC721 = artifacts.require('TestERC721')
 const getProxy = require('../helpers/proxy')
 
@@ -12,7 +12,7 @@ let unlock
 let hook
 let nft
 
-contract('Erc721TokenUriHook', (accounts) => {
+contract('ERC721BalanceOfHook', (accounts) => {
   const from = accounts[1]
   const nftOwner = accounts[2]
   const keyOwner = accounts[3]
