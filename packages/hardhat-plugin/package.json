@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.3",
+    "@openzeppelin/hardhat-upgrades": "^1.14.0",
     "@unlock-protocol/networks": "workspace:^"
   }
 }

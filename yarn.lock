@@ -6645,6 +6645,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/hardhat-upgrades@npm:^1.14.0":
+  version: 1.14.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.14.0"
+  dependencies:
+    "@openzeppelin/upgrades-core": ^1.12.0
+    chalk: ^4.1.0
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    hardhat: ^2.0.2
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 694c9678aedf2c40478e433a969ead9c3431916f60d4519d615d1488ade3b5712da2eba966f32eb168831e60bf49cb598ccd22270c7980afaada6491fa296ede
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/test-environment@npm:0.1.3":
   version: 0.1.3
   resolution: "@openzeppelin/test-environment@npm:0.1.3"
@@ -6730,6 +6745,22 @@ __metadata:
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
   checksum: b2e9c848539cb99e93a4f93470dc90376eeb61cc7841870dc2c10b0a501bbdea6b687c3779ecf207a9e7c298df80892615ac1ba3cb12ac316f4b44af0e48f858
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.12.0"
+  dependencies:
+    bn.js: ^5.1.2
+    cbor: ^8.0.0
+    chalk: ^4.1.0
+    compare-versions: ^4.0.0
+    debug: ^4.1.1
+    ethereumjs-util: ^7.0.3
+    proper-lockfile: ^4.1.1
+    solidity-ast: ^0.4.15
+  checksum: c1e3418921a10f68ceffed60b8c9c2882e59929ab8a9e6bfb097a778a39c4b176c542594f8284b3989872e372a843d8b4c2f4c553d9ce48f232ee34edb0e6458
   languageName: node
   linkType: hard
 
@@ -12596,6 +12627,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.3
+    "@openzeppelin/hardhat-upgrades": ^1.14.0
     "@types/chai": ^4.3.0
     "@types/fs-extra": ^5.0.4
     "@types/mocha": ^5.2.6

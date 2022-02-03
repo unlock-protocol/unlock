@@ -5,24 +5,41 @@ import type { providers } from 'ethers'
 
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
+import type { HardhatUpgrades } from '@openzeppelin/hardhat-upgrades'
 
 import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
-import { deployContract } from './deploy'
+import { deployContract, deployUpgreadableContract } from './deploy'
 
 export class UnlockHRE {
   networks: NetworkConfigs
 
   network: Network
 
+  upgrades: HardhatUpgrades
+
   provider: Network['provider']
 
   ethers: HardhatRuntimeEnvironment['ethers']
 
-  constructor({ ethers, network, config }: HardhatRuntimeEnvironment) {
+  run: HardhatRuntimeEnvironment['run']
+
+  contractsFolder: string
+
+  constructor({
+    ethers,
+    network,
+    config,
+    upgrades,
+    run,
+  }: HardhatRuntimeEnvironment) {
     // store HRE
     this.provider = network.provider
     this.network = network
     this.ethers = ethers
+    this.upgrades = upgrades
+    this.run = run
+
+    this.contractsFolder = config.paths.sources
 
     // parse network info
     this.networks = Object.keys(config.networks)
@@ -64,11 +81,12 @@ export class UnlockHRE {
     deploymentOptions: providers.TransactionRequest = {}
   ) => {
     const signer = await this.getSigner()
-    const unlockAddress = await deployContract(
+    const unlockAddress = await deployUpgreadableContract(
       this,
       'Unlock',
       version,
-      [],
+      'initialize(address)',
+      [signer.address],
       signer,
       confirmations,
       deploymentOptions

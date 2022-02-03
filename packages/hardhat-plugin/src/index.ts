@@ -1,4 +1,5 @@
 import '@nomiclabs/hardhat-ethers'
+import '@openzeppelin/hardhat-upgrades'
 import { task, extendEnvironment } from 'hardhat/config'
 import { lazyObject } from 'hardhat/plugins'
 import './type-extensions'
