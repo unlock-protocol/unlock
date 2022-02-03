@@ -11,7 +11,12 @@ export class Lock extends GraphQLDataSource {
   async getLocks(args: any) {
     const LocksQuery = gql`
       query Locks($first: Int, $skip: Int) {
-        locks(first: $first, skip: $skip) {
+        locks(
+          first: $first
+          skip: $skip
+          orderBy: creationBlock
+          orderDirection: desc
+        ) {
           id
           address
           name
