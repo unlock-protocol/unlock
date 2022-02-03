@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this, import/no-cycle */
 import networks from '@unlock-protocol/networks'
 import { BigNumber } from 'ethers'
-import type { providers } from 'ethers'
+import type { providers, Contract } from 'ethers'
 
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
@@ -81,7 +81,7 @@ export class UnlockHRE {
     deploymentOptions: providers.TransactionRequest = {}
   ) => {
     const signer = await this.getSigner()
-    const unlockAddress = await deployUpgreadableContract(
+    const unlock: Contract = await deployUpgreadableContract(
       this,
       'Unlock',
       version,
@@ -93,9 +93,9 @@ export class UnlockHRE {
     )
 
     // eslint-disable-next-line no-console
-    console.log(`UNLOCK > deployed to : ${unlockAddress}`)
+    console.log(`UNLOCK > deployed to : ${unlock.address}`)
 
-    return unlockAddress
+    return unlock
   }
 
   public deployPublicLock = async (
@@ -104,7 +104,7 @@ export class UnlockHRE {
     deploymentOptions: providers.TransactionRequest = {}
   ) => {
     const signer = await this.getSigner()
-    const publicLockAddress = await deployContract(
+    const publicLock: Contract = await deployContract(
       this,
       'PublicLock',
       version,
@@ -115,8 +115,36 @@ export class UnlockHRE {
     )
 
     // eslint-disable-next-line no-console
-    console.log(`PUBLICLOCK > deployed to : ${publicLockAddress}`)
+    console.log(`PUBLICLOCK > deployed to : ${publicLock.address}`)
 
-    return publicLockAddress
+    return publicLock
+  }
+
+  public deployProtocol = async (
+    unlockVersion = UNLOCK_LATEST_VERSION,
+    lockVersion = PUBLIC_LOCK_LATEST_VERSION,
+    confirmations: number = 5,
+    deploymentOptions: providers.TransactionRequest = {}
+  ) => {
+    const signer = await this.getSigner()
+
+    // 1. deploy Unlock
+    const unlock = await this.deployUnlock(
+      unlockVersion,
+      confirmations,
+      deploymentOptions
+    )
+
+    // 2. deploy PublicLock template
+    const publicLock = await this.deployUnlock(
+      lockVersion,
+      confirmations,
+      deploymentOptions
+    )
+
+    // 3. setting lock template
+    const version = await publicLock.publicLockVersion()
+    await unlock.connect(signer).addLockTemplate(publicLock.address, version)
+    await unlock.connect(signer).setLockTemplate(publicLock.address)
   }
 }

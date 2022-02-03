@@ -79,9 +79,9 @@ describe('Unlock Hardhat plugin', function () {
 
     describe('deployUnlock()', function () {
       it('Should deploy the Unlock contract', async function () {
-        const unlockAddress = await this.hre.unlock.deployUnlock(undefined, 1)
-        assert.isTrue(unlockAddress.includes('0x'))
-        assert.equal(typeof unlockAddress, 'string')
+        const unlock = await this.hre.unlock.deployUnlock(undefined, 1)
+        assert.isTrue(unlock.address.includes('0x'))
+        assert.equal(typeof unlock.address, 'string')
       })
 
       it('Should fail if number version doesnt exist', async function () {
@@ -95,12 +95,9 @@ describe('Unlock Hardhat plugin', function () {
 
     describe('deployPublicLock()', function () {
       it('Should deploy the Unlock contract', async function () {
-        const publicLockAddress = await this.hre.unlock.deployPublicLock(
-          undefined,
-          1
-        )
-        assert.isTrue(publicLockAddress.includes('0x'))
-        assert.equal(typeof publicLockAddress, 'string')
+        const publicLock = await this.hre.unlock.deployPublicLock(undefined, 1)
+        assert.isTrue(publicLock.address.includes('0x'))
+        assert.equal(typeof publicLock.address, 'string')
       })
     })
   })
