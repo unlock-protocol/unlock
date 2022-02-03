@@ -649,6 +649,35 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         })
       })
 
+      // Test only on lock v9 and above.
+      if (['v9'].indexOf(publicLockVersion) !== -1) {
+        describe('setMaxNumberOfKeys', () => {
+          let oldMaxNumberOfKeys
+
+          beforeAll(async () => {
+            oldMaxNumberOfKeys = lock.maxNumberOfKeys
+            await walletService.setMaxNumberOfKeys(
+              {
+                lockAddress,
+                maxNumberOfKeys: parseFloat(200).toString(),
+              },
+              (error) => {
+                if (error) {
+                  throw error
+                }
+              }
+            )
+            lock = await web3Service.getLock(lockAddress, chainId)
+          })
+
+          it('Check if setMaxNumberOfKeys updated the maxNumberOfKeys', () => {
+            expect.assertions(2)
+            expect(oldMaxNumberOfKeys).not.toBe(lock.maxNumberOfKeys)
+            expect(lock.maxNumberOfKeys).toBe(200)
+          })
+        })
+      }
+
       if (['v4', 'v6'].indexOf(publicLockVersion) === -1) {
         const keyGranter = '0x8Bf9b48D4375848Fb4a0d0921c634C121E7A7fd0'
         describe('keyGranter', () => {

@@ -1,30 +1,51 @@
 # Changes
 
+# 0.21.1
+
+- Fixed dependencies in package.json
+
+# 0.21.0
+
+- Updated docs
+- Updated dependencies
+- Add setMaxNumberOfKeys support
+- add support for publicLock v9
+- add new Unlock v10 upgradeable logic
+
 # 0.20.6
+
 - Bumped gas limit to be 40% higher than estimate
 
 # 0.20.5
+
 - remove `deployUnlock`, `configureUnlock` and `deployTemplate` from walletService
 
 # 0.20.4
+
 - @unlock-protocol/networks is a dev dependency
 
 # 0.20.3
+
 - Adding forced estimate for gas which includes gas price because it matters for execution
 
 # 0.20.2
+
 - Adding forced estimate for gas
 
 # 0.20.0
+
 - removed metadata functions (breaking change)
 
 # 0.19.3
+
 - Removed hard coded gas amounts when applicable
 
 # 0.19.2
+
 - Updated API calls to locksmith to add chain
 
 # 0.19.1
+
 - removed erc1820 to remove scrypt so we ccan support newer node versions
 
 # 0.19.0
@@ -33,6 +54,7 @@
 - better inheritance pattern
 - removed dev dependencies
 - Removed limitation in node version
+
 # 0.18.2
 
 - Adding way to get the contract in web3Service (`lockContract(lockAddress, network)`)
@@ -41,6 +63,7 @@
 # 0.18.1
 
 Fixed grantKey when timestamp was not supplied.
+
 # 0.18.0
 
 Now using Ethers 5!
@@ -57,6 +80,7 @@ Now using Ethers 5!
 # 0.16.3
 
 - Fixing unlockAddress in walletService
+
 # 0.16.2
 
 - WalletService sets the unlock contract address based on connected network
@@ -69,6 +93,7 @@ Now using Ethers 5!
 # 0.16
 
 - Breaking change: support for multichains.
+
 # 0.15.2
 
 - Typescript definition fix
@@ -80,15 +105,19 @@ Now using Ethers 5!
 # 0.15.0
 
 - various API changes
+
 # 0.14.0
 
 - fixing approvals for ERC20 key purchases
+
 # 0.13.3
 
 - Updating types for key purchase function
+
 # 0.13.2
 
 - Bumping default gas prices for key purchases
+
 # 0.13.1
 
 - Adding referrer for v6, v7 and v8
