@@ -36,13 +36,24 @@ export const sendEmail = async (
     params,
     attachments,
   }
-  return fetch(config.services.wedlocks, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  })
+  try {
+    const response = await fetch(config.services.wedlocks, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+    if (response.status === 200) {
+      logger.info(
+        'Wedlocks returned unexpected status code',
+        response.status,
+        await response.text()
+      )
+    }
+  } catch (error: any) {
+    logger.error(error)
+  }
 }
 
 /**
@@ -67,6 +78,7 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
       userAddress: Normalizer.ethereumAddress(key.owner.address),
     },
   })
+
   const recipient =
     userTokenMetadataRecord?.data?.userMetadata?.protected?.email
   if (recipient) {
