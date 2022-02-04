@@ -183,7 +183,7 @@ export function Navigation() {
           >
             Creators
           </Link>
-          <Button> Connect </Button>
+          <Button variant="outlined-primary"> Connect Wallet </Button>
         </div>
       </nav>
     </header>
