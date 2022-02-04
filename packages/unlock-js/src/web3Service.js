@@ -203,8 +203,9 @@ export default class Web3Service extends UnlockService {
       lock,
       this.providerForNetwork(network)
     )
-
-    return await lockContract.getHasValidKey(owner)
+    const hasKey = await lockContract.getHasValidKey(owner)
+    console.log({ hasKey })
+    return hasKey
   }
 
   /**

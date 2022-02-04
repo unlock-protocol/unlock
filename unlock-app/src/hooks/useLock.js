@@ -290,6 +290,11 @@ export const useLock = (lockFromProps, network) => {
     return web3Service.getKeyByLockForOwner(lock.address, owner, network)
   }
 
+  const getHasValidKey = (owner) => {
+    console.log('CHECK NOW!')
+    return web3Service.getHasValidKey(lock.address, owner, network)
+  }
+
   const getCreditCardPricing = async () => {
     try {
       const fiatPricing = await getFiatPricing(config, lock.address, network)
@@ -391,6 +396,7 @@ export const useLock = (lockFromProps, network) => {
     withdraw,
     purchaseKey,
     getKeyForAccount,
+    getHasValidKey,
     error,
     getCreditCardPricing,
     isStripeConnected,

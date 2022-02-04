@@ -44,7 +44,8 @@ export const CryptoCheckout = ({
   } = useContext(AuthenticationContext)
   const { purchaseKey } = useLock(lock, network)
   const [transactionPending, setTransactionPending] = useState<string>('')
-  const [keyExpiration, setKeyExpiration] = useState(0)
+  const [hasValidKey, setHasValidKey] = useState(false)
+  const [hasOptimisticKey, setHasOptimisicKey] = useState(false)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
@@ -52,19 +53,13 @@ export const CryptoCheckout = ({
   const { getTokenBalance } = useAccount(account, network)
 
   const now = new Date().getTime() / 1000
-  const hasValidkey = keyExpiration > now && keyExpiration < Infinity
-  const hasOptimisticKey = keyExpiration === Infinity
   const cryptoDisabled =
-    userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
-  const cardDisabled = hasValidkey || hasOptimisticKey
+    userIsOnWrongNetwork || hasValidKey || hasOptimisticKey || !canAfford
+  const cardDisabled = hasValidKey || hasOptimisticKey
   const canClaimAirdrop =
     lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled
   const isCreditCardEnabled =
     lock.fiatPricing?.creditCardEnabled && !canClaimAirdrop
-
-  const handleHasKey = (key: any) => {
-    setKeyExpiration(key.expiration)
-  }
 
   const connectToNetwork = () => {
     changeNetwork(networks[network])
@@ -86,13 +81,13 @@ export const CryptoCheckout = ({
             hash,
           })
           if (!paywallConfig.pessimistic) {
-            setKeyExpiration(Infinity) // Optimistic!
+            setHasOptimisicKey(true) // Optimistic!
             setPurchasePending(false)
           } else {
             setTransactionPending(hash)
           }
         })
-        setKeyExpiration(Infinity) // We should actually get the real expiration
+        setHasValidKey(true) // We should actually get the real expiration
         setPurchasePending(false)
         setTransactionPending('')
       } catch (error: any) {
@@ -126,20 +121,20 @@ export const CryptoCheckout = ({
         network={network}
         lock={lock}
         name={name}
-        setHasKey={handleHasKey}
+        setHasKey={setHasValidKey}
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
       />
 
-      {!transactionPending && keyExpiration < now && (
+      {!transactionPending && !hasValidKey && (
         <>
           <Prompt>Get your membership with:</Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cryptoDisabled}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
-              {!isUnlockAccount && userIsOnWrongNetwork && !hasValidkey && (
+              {!isUnlockAccount && userIsOnWrongNetwork && !hasValidKey && (
                 <Warning>
                   Crypto wallet on wrong network.{' '}
                   <LinkButton onClick={connectToNetwork}>
@@ -150,7 +145,7 @@ export const CryptoCheckout = ({
               )}
               {!isUnlockAccount &&
                 !userIsOnWrongNetwork &&
-                !hasValidkey &&
+                !hasValidKey &&
                 !canAfford && <Warning>Your balance is too low</Warning>}
             </CheckoutButton>
 
@@ -198,7 +193,7 @@ export const CryptoCheckout = ({
           ! This should take a few seconds :)
         </Message>
       )}
-      {hasValidkey && (
+      {hasValidKey && (
         <>
           <Message>You already have a valid membership for this lock!</Message>
           <EnjoyYourMembership

@@ -274,6 +274,7 @@ export const LoadingLock = ({ address, network }: LoadingLockProps) => {
     </LockContainer>
   )
 }
+
 export const SoldOutLock = ({
   network,
   address,
@@ -335,7 +336,7 @@ export const PurchaseableLock = ({
         />
         <QuantityAndDuration>
           {formattedKeysAvailable !== 'Unlimited' && (
-            <span>{formattedKeysAvailable} Left</span>
+            <span>{formattedKeysAvailable} left</span>
           )}
           <span>{formattedDuration}</span>
         </QuantityAndDuration>
@@ -370,7 +371,7 @@ export const ProcessingLock = ({
         />
         <QuantityAndDuration>
           {formattedKeysAvailable !== 'Unlimited' && (
-            <span>{formattedKeysAvailable} Left</span>
+            <span>{formattedKeysAvailable} left</span>
           )}
           <span>{formattedDuration}</span>
         </QuantityAndDuration>
@@ -409,7 +410,7 @@ export const ConfirmedLock = ({
         />
         <QuantityAndDuration>
           {formattedKeysAvailable !== 'Unlimited' && (
-            <span>{formattedKeysAvailable} Left</span>
+            <span>{formattedKeysAvailable} left</span>
           )}
           <span>{formattedDuration}</span>
         </QuantityAndDuration>

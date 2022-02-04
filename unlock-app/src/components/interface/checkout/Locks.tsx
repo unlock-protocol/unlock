@@ -7,7 +7,7 @@ import { LoadingLock } from './LockVariations'
 interface LoadLockProps {
   address: string
   network: number
-  setHasKey: (key: any) => void
+  setHasKey: (hasKey: boolean) => void
   name: string
   onSelected: (lock: any) => void
 }
