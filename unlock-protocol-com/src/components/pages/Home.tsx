@@ -1,4 +1,5 @@
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
+import { Navigation } from '../interface/Navigation'
 
 const UNLOCK_MARKETING_POINTS = [
   'Create memberships and sell access NFTs in minutes',
@@ -8,7 +9,7 @@ const UNLOCK_MARKETING_POINTS = [
 
 function ConnectSection() {
   return (
-    <div className="flex flex-col-reverse items-center gap-6 py-12 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
+    <div className="flex flex-col-reverse items-center gap-6 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
       <div className="w-full">
         <div className="w-full space-y-4 break-words">
           <h1 className="text-4xl font-bold sm:text-5xl">
@@ -35,7 +36,7 @@ function ConnectSection() {
       </div>
 
       <div className="w-full max-w-[380px]">
-        <div className="w-full bg-white bg-opacity-60 rounded-3xl [box-shadow:0px_8px_30px_0px_rgba(0,0,0,0.08)]">
+        <div className="w-full bg-white bg-shadow-and-glass rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
             <p className="font-bold">Tales of Ronin</p>
             <p className="font-mono text-sm font-bold text-brand-ui-primary">
@@ -72,16 +73,16 @@ function ConnectSection() {
 
 function HowUnlockWorkSection() {
   return (
-    <div className="grid w-full gap-4 py-12">
+    <div className="grid w-full gap-4">
       <div className="grid justify-center w-full space-y-4 text-center">
         <h2 className="text-4xl font-bold sm:text-5xl"> How Unlock works </h2>
         <p className="text-lg sm:text-xl text-brand-gray">
           Create your own membership program without code or chaos.
         </p>
       </div>
-      <ol className="flex flex-col gap-6 py-4 sm:items-stretch sm:flex-row">
+      <ol className="grid justify-center gap-6 py-6 sm:grid-flow-col">
         <li className="grid">
-          <div className="bg-white w-full sm:min-w-[300px] max-w-[400px] bg-opacity-70 [box-shadow:0px_8px_30px_0px_rgba(0,0,0,0.08)] rounded-3xl p-8">
+          <div className="bg-white w-full sm:min-w-[300px] max-w-[400px] bg-shadow-and-glass  rounded-3xl p-8">
             <div className="flex justify-center">
               <svg
                 className="not-sr-only"
@@ -115,7 +116,7 @@ function HowUnlockWorkSection() {
           </div>
         </li>
         <li className="grid">
-          <div className="bg-white w-full sm:min-w-[300px] max-w-[400px] bg-opacity-70 [box-shadow:0px_8px_30px_0px_rgba(0,0,0,0.08)] rounded-3xl p-8">
+          <div className="bg-white w-full sm:min-w-[300px] max-w-[400px] bg-shadow-and-glass  rounded-3xl p-8">
             <div className="flex justify-center">
               <svg
                 className="not-sr-only"
@@ -179,7 +180,7 @@ function HowUnlockWorkSection() {
           </div>
         </li>
         <li className="grid">
-          <div className="bg-white w-full sm:min-w-[300px] max-w-[400px] bg-opacity-70 [box-shadow:0px_8px_30px_0px_rgba(0,0,0,0.08)] rounded-3xl p-8">
+          <div className="bg-white w-full sm:min-w-[300px] max-w-[400px] bg-shadow-and-glass  rounded-3xl p-8">
             <div className="flex justify-center">
               <svg
                 className="not-sr-only"
@@ -219,9 +220,18 @@ function HowUnlockWorkSection() {
 
 export function Home() {
   return (
-    <div className="max-w-screen-lg p-4 mx-auto">
-      <ConnectSection />
-      <HowUnlockWorkSection />
+    <div>
+      <Navigation />
+      <div className="max-w-screen-lg p-4 mx-auto">
+        <div className="grid gap-8 py-24 sm:gap-24">
+          <div>
+            <ConnectSection />
+          </div>
+          <div>
+            <HowUnlockWorkSection />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
