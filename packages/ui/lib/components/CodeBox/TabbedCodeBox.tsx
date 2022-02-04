@@ -20,7 +20,7 @@ export function TabbedCodeBox({ blocks }: Props) {
       style={{
         backgroundColor: UnlockPrismTheme.plain.backgroundColor,
       }}
-      className="p-4 sm:p-8 rounded-xl"
+      className="w-full p-4 sm:p-8 rounded-3xl"
     >
       <Tab.Group>
         <Tab.List className="flex justify-between w-full border rounded-xl">

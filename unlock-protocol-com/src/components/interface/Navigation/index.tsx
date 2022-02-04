@@ -82,7 +82,7 @@ export function Navigation() {
     <header className="fixed top-0 left-0 right-0 z-10 bg-brand-primary">
       <nav className="flex items-center justify-between max-w-screen-lg px-4 mx-auto">
         <div>
-          <Link aria-label="Unlock">
+          <Link href="/" aria-label="Unlock">
             <UnlockNavigationLogo />
           </Link>
         </div>
