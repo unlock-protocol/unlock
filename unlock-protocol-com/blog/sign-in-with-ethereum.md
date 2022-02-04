@@ -9,7 +9,7 @@ image: /images/blog/sign-in-ethereum/sign-in-ethereum.gif
 
 We believe **everyone's online identity should not be tied to a platform**. Users must be able to authenticate using an identity that they fully own and control.
 
-There are two ways to think about physical wallets: as an objects that stores bills and coins but also as an object where identity cards, driving licenses and membership cards live. In the web3 space, we focus too much on the wallet as _cash holder_ and not enough on the wallet as _identity holder_, even though, in pratice, the private keys that power them are what enables the cash transfers through transaction signing.
+There are two ways to think about physical wallets: as an object that stores bills and coins but also as an object where identity cards, driving licenses and membership cards live. In the web3 space, we focus too much on the wallet as _cash holder_ and not enough on the wallet as _identity holder_, even though, in pratice, the private keys that power them are what enables the cash transfers through transaction signing.
 
 Until now, it was often quite complicated for applications (both web and native) to prompt the user for their wallet address, in order to identify them. As there exists many types of wallets (browser extensions, mobile applications, or even fully "hosted" web apps), it means that asking the user to connect their wallet requires the implementation of multiple API and approaches. Dealing with "injected" objects in the DOM is not trivial and limited to web applications...
 
