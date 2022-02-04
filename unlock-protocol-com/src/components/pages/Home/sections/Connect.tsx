@@ -1,5 +1,5 @@
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
-
+import { Button } from '@unlock-protocol/ui'
 const UNLOCK_MARKETING_POINTS = [
   'Create memberships and sell access NFTs in minutes',
   'Token-gating, memberships, ticketing, and more',
@@ -8,7 +8,7 @@ const UNLOCK_MARKETING_POINTS = [
 
 export function Connect() {
   return (
-    <div className="flex flex-col-reverse items-center gap-6 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
+    <div className="flex flex-col-reverse items-center gap-4 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
       <div className="w-full">
         <div className="w-full space-y-4 break-words">
           <h1 className="text-4xl font-bold sm:text-5xl">
@@ -31,6 +31,10 @@ export function Connect() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="flex items-center gap-4">
+          <Button> Get Started </Button>
+          <Button variant="secondary"> Connect Wallet </Button>
         </div>
       </div>
 
