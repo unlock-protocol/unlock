@@ -1,4 +1,5 @@
 import { Navigation } from '../../interface/Navigation'
+import { Footer } from '../../interface/Footer'
 import { Connect } from './sections/Connect'
 import { Developer } from './sections/Developer'
 import { Steps } from './sections/Steps'
@@ -18,6 +19,7 @@ export function Home() {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

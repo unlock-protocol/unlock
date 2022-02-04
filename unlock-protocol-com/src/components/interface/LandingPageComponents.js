@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Media from '../../theme/media'
 import Svg from './svg'
-import { OptInForm } from './OptInForm'
+import { EmailSubscriptionForm } from '../forms/EmailSubscription'
 
 export const H1 = styled.h1`
   font-size: 48px;
@@ -373,7 +373,7 @@ export const SignupBox = ({ children }) => {
         We&apos;ll send you fresh news about our platform, including new
         features and opportunities for the community.
       </p>
-      <OptInForm />
+      <EmailSubscriptionForm />
       {children}
     </Box>
   )
