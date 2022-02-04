@@ -1,4 +1,4 @@
-export const keyExpirationTimestampFor = async (
+export const hasValidKey = async (
   provider: string,
   lock: string,
   userAddress: string
@@ -8,7 +8,7 @@ export const keyExpirationTimestampFor = async (
     params: [
       {
         to: lock,
-        data: `0xabdf82ce000000000000000000000000${userAddress.substring(2)}`,
+        data: `0x6d8ea5b4000000000000000000000000${userAddress.substring(2)}`,
       },
       'latest',
     ],
@@ -29,17 +29,14 @@ export const keyExpirationTimestampFor = async (
       return 0
     }
     const { result } = await response.json()
-    if (parseInt(result, 16) > Number.MAX_SAFE_INTEGER) {
-      // This will cover cases of locks returning NO_SUCH_KEY or `HAS_NEVER_OWNED_KEY` which are strings and much larger than Number.MAX_SAFE_INTEGER
-      return 0
-    }
-    return parseInt(result, 16) || 0
+
+    return parseInt(result, 16) === 1
   } catch (error: any) {
     console.error(
-      `Error fetching timestamp for ${userAddress} on ${lock}: ${error}`
+      `Error fetching hasValidKey for ${userAddress} on ${lock}: ${error}`
     )
-    return 0
+    return false
   }
 }
 
-export default keyExpirationTimestampFor
+export default hasValidKey

@@ -1,5 +1,5 @@
 const ethers = require('ethers')
-const keyExpirationFor = require('./src/keyExpirationFor')
+const hasValidKey = require('./src/hasValidKey')
 
 const unlockCheckoutBaseUrl = new URL(
   'https://app.unlock-protocol.com/checkout'
@@ -116,17 +116,15 @@ const configureUnlock = (config, app) => {
           throw new Error(`No provider configured for network ${network}`)
         }
         // Query chain (using balanceOf)
-        return keyExpirationFor(
+        return hasValidKey(
           config.providers[network],
           lockAddress,
           ethereumAddress
         )
       }
     )
-    const exirations = await Promise.all(promises)
-    return !!exirations.find(
-      (expiration) => expiration * 1000 > new Date().getTime()
-    )
+    const validMemberships = await Promise.all(promises)
+    return !!validMemberships.find((validMembership) => validMembership)
   }
 
   /**
@@ -175,7 +173,7 @@ const configureUnlock = (config, app) => {
     }
 
     // This allows Javascript Fetch to be able to read from the body since it does not yield the `Location` in case of redirect...
-    res.send(checkoutUrlRedirect.toString())
+    // res.send(checkoutUrlRedirect.toString())
     return res.redirect(checkoutUrlRedirect.toString())
   }
 

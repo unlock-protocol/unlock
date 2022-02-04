@@ -3,7 +3,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 
-const configureUnlock = require('@unlock-protocol/unlock-express')
+const configureUnlock = require('../index')
 
 const app = express()
 const port = 3000

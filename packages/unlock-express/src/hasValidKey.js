@@ -1,19 +1,19 @@
 const https = require('https')
 /**
- * Wrapper around keyExpirationFor
+ * Wrapper around hasValidKey
  * @param {*} provider
  * @param {*} lock
  * @param {*} userAddress
  * @returns
  */
-async function keyExpirationFor(provider, lock, userAddress) {
+async function hasValidKey(provider, lock, userAddress) {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify({
       method: 'eth_call',
       params: [
         {
           to: lock,
-          data: `0xabdf82ce000000000000000000000000${userAddress.substring(2)}`,
+          data: `0x6d8ea5b4000000000000000000000000${userAddress.substring(2)}`,
         },
         'latest',
       ],
@@ -58,4 +58,4 @@ async function keyExpirationFor(provider, lock, userAddress) {
   })
 }
 
-module.exports = keyExpirationFor
+module.exports = hasValidKey
