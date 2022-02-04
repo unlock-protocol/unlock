@@ -193,6 +193,21 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Return true of the user is considered to have a valid membership
+   * @param {*} lock
+   * @param {*} owner
+   * @param {*} network
+   */
+  async getHasValidKey(lock, owner, network) {
+    const lockContract = await this.getLockContract(
+      lock,
+      this.providerForNetwork(network)
+    )
+
+    return await lockContract.getHasValidKey(owner)
+  }
+
+  /**
    * Returns the key expiration to the lock by the account.
    * @private
    * @param {PropTypes.string} lock

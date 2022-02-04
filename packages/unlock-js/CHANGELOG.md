@@ -1,5 +1,9 @@
 # Changes
 
+# 0.21.2
+
+- Introduced getHasValidKey in web3Service
+
 # 0.21.1
 
 - Fixed dependencies in package.json

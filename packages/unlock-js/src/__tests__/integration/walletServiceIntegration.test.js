@@ -503,6 +503,14 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
+
+        it('should yield true to show the user has a valid key', async () => {
+          expect.assertions(2)
+          expect(await web3Service.getHasValidKey(
+            key.lock,
+            owner,
+            chainId
+          )).toEqual(true)
       })
 
       describe('withdrawFromLock', () => {
