@@ -175,6 +175,41 @@ export class UnlockHRE {
     }
   }
 
+  public configUnlock = async ({
+    udtAddress,
+    wethAddress,
+    locksmithURI,
+    chainId,
+      estimatedGasForPurchase,
+    symbol,
+  }: UnlockConfigArgs): Promise<UnlockConfigArgs> => {
+    const unlock = await this.getUnlock()
+    if (!udtAddress) udtAddress = await unlock.udt()
+    if (!wethAddress) wethAddress = await unlock.weth()
+    if (!chainId) chainId = await this.getChainId()
+    if (!estimatedGasForPurchase)
+      estimatedGasForPurchase = await unlock.estimatedGasForPurchase()
+    if (!symbol) symbol = 'KEY'
+    if (!locksmithURI) locksmithURI = await unlock.globalBaseTokenURI()
+
+    await unlock.configUnlock(
+      udtAddress,
+      wethAddress,
+      estimatedGasForPurchase,
+      symbol,
+      locksmithURI,
+      chainId
+    )
+    return {
+      udtAddress,
+      wethAddress,
+      estimatedGasForPurchase,
+      symbol,
+      locksmithURI,
+      chainId,
+    }
+  }
+
   public getUnlock = async (versionNumber = UNLOCK_LATEST_VERSION) => {
     if (this.unlock) return this.unlock
     const chainId = await this.getChainId()
