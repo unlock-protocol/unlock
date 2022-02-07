@@ -2,10 +2,10 @@
 import networks from '@unlock-protocol/networks'
 import { BigNumber } from 'ethers'
 import type { providers, Contract } from 'ethers'
-import { NetworkConfigs } from '@unlock-protocol/types'
 
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { HardhatUpgrades } from '@openzeppelin/hardhat-upgrades'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
 import {
@@ -14,6 +14,21 @@ import {
   deployUpgreadableContract,
 } from './deploy'
 import { getContractAbi } from './utils'
+
+// used to make type optional
+type PartialPick<T, K extends keyof T> = {
+  [P in K]?: T[P]
+}
+
+// make network info optional
+export type UnlockNetworkConfig = PartialPick<
+  NetworkConfig,
+  'id' | 'name' | 'provider' | 'publicProvider' | 'unlockAddress'
+>
+
+export interface UnlockNetworkConfigs {
+  [networkId: string]: UnlockNetworkConfig
+}
 
 export interface UnlockProtocolContracts {
   unlock: Contract
@@ -38,7 +53,7 @@ export interface UnlockConfigArgs {
 }
 
 export class UnlockHRE {
-  networks: NetworkConfigs
+  networks: UnlockNetworkConfigs
 
   network: Network
 
