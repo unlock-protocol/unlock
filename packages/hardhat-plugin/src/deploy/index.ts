@@ -1,12 +1,13 @@
 /* eslint-disable import/no-cycle */
 import type { providers, Signer, Contract, ContractFactory } from 'ethers'
-import * as contracts from '@unlock-protocol/contracts'
+
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
 
 import fs from 'fs-extra'
 import path from 'path'
 
 import { UnlockHRE } from '../Unlock'
+import { getContractAbi, contractExists } from '../utils'
 
 export async function getContractFactory(
   { ethers }: UnlockHRE,
@@ -14,15 +15,7 @@ export async function getContractFactory(
   versionNumber: number,
   signer?: Signer
 ): Promise<ContractFactory> {
-  // make sure contract exists
-  const contractVersion = `${contractName}V${versionNumber}`
-  if (!Object.keys(contracts).includes(contractVersion)) {
-    throw Error(
-      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
-    )
-  }
-  // get bytecode
-  const { bytecode, abi } = contracts[contractVersion as keyof {}]
+  const { bytecode, abi } = getContractAbi(contractName, versionNumber)
   const factory = await ethers.getContractFactory(abi, bytecode, signer)
   return factory
 }
@@ -64,12 +57,7 @@ export async function deployUpgreadableContract(
   }
 
   // check contract exists
-  const contractVersion = `${contractName}V${versionNumber}`
-  if (!Object.keys(contracts).includes(contractVersion)) {
-    throw Error(
-      `Contract '${contractVersion}' is not in present in @unlock-protocol/contracts`
-    )
-  }
+  contractExists(contractName, versionNumber)
 
   // need to copy .sol for older versions from contracts package
   const contractPath = path.resolve(

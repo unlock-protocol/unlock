@@ -2,8 +2,8 @@
 import networks from '@unlock-protocol/networks'
 import { BigNumber } from 'ethers'
 import type { providers, Contract } from 'ethers'
-
 import { NetworkConfigs } from '@unlock-protocol/types'
+
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { HardhatUpgrades } from '@openzeppelin/hardhat-upgrades'
 
@@ -13,6 +13,7 @@ import {
   deployContract,
   deployUpgreadableContract,
 } from './deploy'
+import { getContractAbi } from './utils'
 
 export interface UnlockProtocolContracts {
   unlock: Contract
@@ -33,6 +34,8 @@ export class UnlockHRE {
   run: HardhatRuntimeEnvironment['run']
 
   contractsFolder: string
+
+  unlock?: Contract
 
   constructor({
     ethers,
@@ -65,7 +68,10 @@ export class UnlockHRE {
       }, {})
   }
 
-  public getChainId = async () => await this.provider.send('eth_chainId')
+  public getChainId = async () => {
+    const hexChainId = await this.provider.send('eth_chainId')
+    return BigNumber.from(hexChainId).toNumber()
+  }
 
   public getNetworkInfo = async () => {
     const chainId = BigNumber.from(await this.getChainId()).toString()
@@ -104,6 +110,8 @@ export class UnlockHRE {
     // eslint-disable-next-line no-console
     console.log(`UNLOCK > deployed to : ${unlock.address}`)
 
+    // set unlock in class
+    this.unlock = unlock
     return unlock
   }
 
@@ -165,5 +173,18 @@ export class UnlockHRE {
       unlock,
       publicLock,
     }
+  }
+
+  public getUnlock = async (versionNumber = UNLOCK_LATEST_VERSION) => {
+    if (this.unlock) return this.unlock
+    const chainId = await this.getChainId()
+    const { unlockAddress } = this.networks[chainId]
+    if (unlockAddress) {
+      const { abi } = getContractAbi('Unlock', versionNumber)
+      const unlock = await this.ethers.getContractAt(abi, unlockAddress)
+      this.unlock = unlock
+      return unlock
+    }
+    throw new Error('Could not fetch the Unlock contract')
   }
 }

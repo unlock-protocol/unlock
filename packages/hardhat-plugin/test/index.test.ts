@@ -140,6 +140,23 @@ describe('Unlock Hardhat plugin', function () {
         )
       })
     })
+
+    describe('getUnlock()', function () {
+      it('Should retrieve the Unlock contract instance', async function () {
+        const unlock = await this.hre.unlock.deployUnlock(undefined, 1)
+        const unlockGet = await this.hre.unlock.getUnlock()
+        assert.equal(typeof unlock, typeof unlockGet)
+        assert.equal(unlock.address, unlockGet.address)
+        assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
+      })
+      it('Should throw if the Unlock contract is not defined', async function () {
+        await expectThrowsAsync(
+          this.hre.unlock.getUnlock,
+          [],
+          'Could not fetch the Unlock contract'
+        )
+      })
+    })
   })
 })
 
