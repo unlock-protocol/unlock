@@ -127,6 +127,14 @@ contract Unlock is
     address publicLockAddress
   );
 
+  event GNPChanged(
+    uint grossNetworkProduct,
+    uint _valueInETH,
+    address tokenAddress,
+    uint value,
+    address lock
+  );
+  
   event ResetTrackedValue(
     uint grossNetworkProduct,
     uint totalDiscountGranted
@@ -350,7 +358,13 @@ contract Unlock is
         valueInETH = _value;
       }
 
-      grossNetworkProduct = grossNetworkProduct + valueInETH;
+      updateGrossNetworkProduct(
+        valueInETH,
+        tokenAddress,
+        _value,
+        msg.sender // lockAddress
+      );
+
       // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
 
@@ -419,6 +433,28 @@ contract Unlock is
         }
       }
     }
+  }
+
+  /**
+   * Update the GNP by a new value. 
+   * Emits an event to simply tracking
+   */
+  function updateGrossNetworkProduct(
+    uint _valueInETH,
+    address _tokenAddress,
+    uint _value,
+    address _lock
+  ) internal {
+    // increase GNP
+    grossNetworkProduct = grossNetworkProduct + _valueInETH;
+
+    emit GNPChanged(
+      grossNetworkProduct,
+      _valueInETH,
+      _tokenAddress,
+      _value,
+      _lock
+    );
   }
 
   /**
