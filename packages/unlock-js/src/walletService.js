@@ -294,4 +294,13 @@ export default class WalletService extends UnlockService {
       callback(error, null)
     }
   }
+
+  async setMaxNumberOfKeys(params = {}, callback) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setMaxNumberOfKeys) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setMaxNumberOfKeys.bind(this)(params, callback)
+  }
 }

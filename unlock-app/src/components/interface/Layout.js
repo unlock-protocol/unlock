@@ -21,16 +21,7 @@ export default function Layout({ forContent, title, children }) {
   }
 
   return (
-    <Container>
-      <Left>
-        {!forContent && (
-          <Link href="/">
-            <a>
-              <RoundedLogo />
-            </a>
-          </Link>
-        )}
-      </Left>
+    <div className="flex p-4 mx-auto md:max-w-screen-lg lg:max-w-screen-xl">
       <Content>
         <Header forContent={forContent} title={title} />
         {!termsAccepted && <Terms setTermsAccepted={saveTermsAccepted} />}
@@ -38,7 +29,7 @@ export default function Layout({ forContent, title, children }) {
         {forContent && <Footer />}
       </Content>
       <Right />
-    </Container>
+    </div>
   )
 }
 
@@ -75,16 +66,6 @@ const Terms = withConfig(({ setTermsAccepted, config }) => {
   )
 })
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
-  ${Media.phone`
-    display: flex;
-    padding-left: 6px;
-    padding-right: 6px;
-  `};
-`
-
 const TermsModal = styled(MessageBox)`
   padding: 16px;
   display: grid;
@@ -99,16 +80,6 @@ const TermsModal = styled(MessageBox)`
 
 const TermsButton = styled(ActionButton)`
   height: 45px;
-`
-
-const Left = styled.div`
-  display: grid;
-  align-items: start;
-  height: 24px;
-
-  ${Media.phone`
-    display: none;
-  `};
 `
 
 const Right = styled.div`
