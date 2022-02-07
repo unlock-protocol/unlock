@@ -1,19 +1,9 @@
-import { NetworkConfig } from '@unlock-protocol/types'
 import 'hardhat/types/config'
 import 'hardhat/types/runtime'
 
-import { UnlockHRE } from './Unlock'
+// eslint-disable-next-line import/no-cycle
+import { UnlockHRE, UnlockNetworkConfigs } from './Unlock'
 
-interface UnlockNetworkConfig extends NetworkConfig {
-  id?: number
-  name?: string
-  provider?: string
-  publicProvider?: string
-}
-
-interface UnlockNetworkConfigs {
-  [networkId: string]: UnlockNetworkConfig
-}
 declare module 'hardhat/types/config' {
   export interface HardhatUserConfig {
     unlock?: UnlockNetworkConfigs

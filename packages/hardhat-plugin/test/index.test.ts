@@ -1,4 +1,4 @@
-/* eslint-disable prefer-arrow-callback */
+/* eslint-disable prefer-arrow-callback, func-names */
 // tslint:disable-next-line no-implicit-dependencies
 import { assert, expect } from 'chai'
 import type { Contract } from 'ethers'
@@ -225,11 +225,8 @@ describe('Unlock Hardhat plugin', function () {
 
       it('Should create a new lock w correct params', async function () {
         const { FIRST } = locks
-        const {
-          lock,
-          transactionHash,
-          lockAddress,
-        } = await this.hre.unlock.createLock(FIRST)
+        const { lock, transactionHash, lockAddress } =
+          await this.hre.unlock.createLock(FIRST)
 
         assert.equal(await lockAddress, lock.address)
         assert.equal(typeof transactionHash, 'string')

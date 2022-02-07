@@ -9,24 +9,18 @@ const publicLock = {
 }
 
 export const locks = {
-  FIRST: Object.assign({}, publicLock, {}),
-  SECOND: Object.assign({}, publicLock, {}),
-  'SINGLE KEY': Object.assign({}, publicLock, {
-    maxNumberOfKeys: 1,
-  }),
-  NAMED: Object.assign({}, publicLock, {
-    name: 'Custom Named Lock',
-  }),
-  FREE: Object.assign({}, publicLock, {
-    keyPrice: 0,
-  }),
-  SHORT: Object.assign({}, publicLock, {
+  FIRST: { ...publicLock },
+  SECOND: { ...publicLock },
+  'SINGLE KEY': { ...publicLock, maxNumberOfKeys: 1 },
+  NAMED: { ...publicLock, name: 'Custom Named Lock' },
+  FREE: { ...publicLock, keyPrice: 0 },
+  SHORT: {
+    ...publicLock,
     expirationDuration: 5, // 5 seconds
-  }),
-  ERC20: Object.assign({}, publicLock, {
-    currencyContractAddress: constants.AddressZero,
-  }),
-  NON_EXPIRING: Object.assign({}, publicLock, {
+  },
+  ERC20: { ...publicLock, currencyContractAddress: constants.AddressZero },
+  NON_EXPIRING: {
+    ...publicLock,
     expirationDuration: 0, // indicates that the lock should not expired
-  }),
+  },
 }

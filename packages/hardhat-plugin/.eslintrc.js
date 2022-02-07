@@ -1,21 +1,7 @@
 const rulesToIgnore = [
-  'no-underscore-dangle',
-  'no-param-reassign',
-  'no-use-before-define',
-  'no-plusplus',
-  'no-await-in-loop',
-  'radix',
-  'prefer-destructuring',
-  'no-shadow',
-  'no-loop-func',
-  'eqeqeq',
-  'no-useless-concat',
-  'prefer-const',
-  'no-return-await',
-  'prefer-object-spread',
-  'func-names',
   'import/extensions',
   'jest/prefer-expect-assertions',
+  'no-param-reassign',
   'import/no-extraneous-dependencies',
 ]
 
@@ -37,8 +23,6 @@ module.exports = {
   },
   rules: {
     'mocha/no-exclusive-tests': 'error',
-    ...rulesToIgnore.reduce((obj, rule) => {
-      return { ...obj, [rule]: 'off' }
-    }, {}),
+    ...rulesToIgnore.reduce((obj, rule) => ({ ...obj, [rule]: 'off' }), {}),
   },
 }

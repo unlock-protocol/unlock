@@ -21,7 +21,7 @@ extendEnvironment((hre) => {
 // add unlock networks to config
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
-    config.unlock = Object.assign({}, networks, userConfig.unlock)
+    config.unlock = { ...networks, ...userConfig.unlock }
   }
 )
 
