@@ -23,6 +23,29 @@ import "@unlock-protocol/hardhat-plugin";
 
 ## Configuration
 
+### Networks
+
+Info about already deployed Unlock contracts (on mainnet, rinkeby, optimism, bsc,xdai/gnosis, etc.) are added to the `unlock` param of the hardhat config. You can pass custom info about your own Unlock deployments directly in `hardhat.config.js` - following the `NetworkConfig` type in `@unlock-protocol/types`.
+
+#### Config example 
+
+```js
+import "@unlock-protocol/hardhat-plugin";
+
+const config: HardhatUserConfig = {
+  solidity: '0.8.7',
+  unlock: {
+    31337: {
+      name: 'Custom Localhost Name',
+    },
+    12345: {
+      name: 'My New Network',
+      unlockAddress: '0x...', // your own unlock deployment address
+    },
+  },
+}
+```
+
 ### Signer
 
 By default, the first hardhat accounts will be used.  
@@ -31,6 +54,7 @@ You can also pass a private key as follow by exporting `WALLET_PRIVATE_KEY` to t
 ```
 export WALLET_PRIVATE_KEY=xxx
 ```
+
 
 ## Usage
 
