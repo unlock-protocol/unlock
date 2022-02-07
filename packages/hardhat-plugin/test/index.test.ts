@@ -12,6 +12,8 @@ import {
   PUBLIC_LOCK_LATEST_VERSION,
 } from '../src/constants'
 
+import { locks } from './fixtures'
+
 /**
  * Takes in a function and checks for error
  * @param {Function} method - The function to check
@@ -122,6 +124,11 @@ describe('Unlock Hardhat plugin', function () {
         assert.isTrue(unlock.address.includes('0x'))
         assert.equal(typeof unlock.address, 'string')
       })
+      it('Should set the Unlock owner correctly', async function () {
+        const [defaultSigner] = await this.hre.ethers.getSigners()
+        const { unlock } = protocol
+        assert.equal((await unlock.owner()).address, defaultSigner.address)
+      })
       it('Should set the template correctly', async function () {
         const { unlock, publicLock } = protocol
         assert.equal(await unlock.publicLockAddress(), publicLock.address)
@@ -155,6 +162,31 @@ describe('Unlock Hardhat plugin', function () {
           [],
           'Could not fetch the Unlock contract'
         )
+      })
+    })
+
+    describe('createLock()', function () {
+      this.beforeEach(async function () {
+        await this.hre.unlock.deployProtocol(undefined, undefined, 1)
+      })
+
+      it('Should create a new lock w correct params', async function () {
+        const { FIRST } = locks
+        const {
+          lock,
+          transactionHash,
+          lockAddress,
+        } = await this.hre.unlock.createLock(FIRST)
+        assert.equal(await lockAddress, lock.address)
+        assert.equal(typeof transactionHash, 'string')
+        assert.equal(await lock.publicLockVersion(), PUBLIC_LOCK_LATEST_VERSION)
+        assert.equal(await lock.name(), FIRST.name)
+        assert.equal(
+          (await lock.keyPrice()).toString(),
+          FIRST.keyPrice.toString()
+        )
+        assert.equal(await lock.maxNumberOfKeys(), FIRST.maxNumberOfKeys)
+        assert.equal(await lock.expirationDuration(), FIRST.expirationDuration)
       })
     })
   })

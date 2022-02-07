@@ -20,6 +20,23 @@ export interface UnlockProtocolContracts {
   publicLock: Contract
 }
 
+export interface LockArgs {
+  name: string
+  keyPrice: string | number | BigNumber
+  expirationDuration: number
+  currencyContractAddress: string | null
+  maxNumberOfKeys?: number
+}
+
+export interface UnlockConfigArgs {
+  udtAddress?: string | null
+  wethAddress?: string | null
+  locksmithURI?: string
+  chainId?: number
+  estimatedGasForPurchase?: number
+  symbol?: string
+}
+
 export class UnlockHRE {
   networks: NetworkConfigs
 
@@ -180,7 +197,7 @@ export class UnlockHRE {
     wethAddress,
     locksmithURI,
     chainId,
-      estimatedGasForPurchase,
+    estimatedGasForPurchase,
     symbol,
   }: UnlockConfigArgs): Promise<UnlockConfigArgs> => {
     const unlock = await this.getUnlock()
@@ -221,5 +238,56 @@ export class UnlockHRE {
       return unlock
     }
     throw new Error('Could not fetch the Unlock contract')
+  }
+
+  public getLock = async (
+    lockAddress: string,
+    versionNumber = PUBLIC_LOCK_LATEST_VERSION
+  ) => {
+    if (!lockAddress) {
+      throw new Error('Missing lock address')
+    }
+    const { abi } = getContractAbi('PublicLock', versionNumber)
+    const lock = await this.ethers.getContractAt(abi, lockAddress)
+    return lock
+  }
+
+  public createLock = async ({
+    name,
+    keyPrice,
+    expirationDuration,
+    currencyContractAddress,
+    maxNumberOfKeys,
+  }: LockArgs): Promise<{
+    lock: Contract
+    lockAddress: string
+    transactionHash: string
+  }> => {
+    const unlock = await this.getUnlock()
+
+    // create2 legacy, currently unused but required
+    const salt = '0x000000000000000000000001'
+
+    const args = [
+      expirationDuration,
+      currencyContractAddress || this.ethers.constants.AddressZero,
+      keyPrice,
+      maxNumberOfKeys,
+      name,
+      salt,
+    ]
+
+    const tx = await unlock.createLock(...args)
+    const { events, transactionHash } = await tx.wait()
+    const {
+      args: { newLockAddress },
+    } = events.find(({ event }: any) => event === 'NewLock')
+
+    const lock = await this.getLock(newLockAddress)
+    return {
+      lock,
+      lockAddress: newLockAddress,
+      transactionHash,
+    }
   }
 }
