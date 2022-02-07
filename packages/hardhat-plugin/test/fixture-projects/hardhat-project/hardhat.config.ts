@@ -16,6 +16,15 @@ const config: HardhatUserConfig = {
     settings,
   },
   defaultNetwork: 'hardhat',
+  unlock: {
+    31337: {
+      name: 'Custom Localhost Name',
+    },
+    12345: {
+      name: 'New Network',
+      id: 12345,
+    },
+  },
 }
 
 export default config

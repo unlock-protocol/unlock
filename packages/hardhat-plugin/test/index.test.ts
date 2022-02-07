@@ -2,7 +2,7 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert, expect } from 'chai'
 
-import networks from '@unlock-protocol/networks'
+import { networks } from '@unlock-protocol/networks'
 
 import { useEnvironment } from './helpers'
 import { UnlockHRE } from '../src/Unlock'
@@ -143,17 +143,24 @@ describe('Unlock Hardhat plugin', function () {
   })
 })
 
-describe.only('HardhatConfig unlock extension', function () {
+describe('HardhatConfig unlock extension', function () {
   useEnvironment('hardhat-project')
 
   it('Should add existing unlock networks to the config', function () {
     assert.isTrue(Object.keys(this.hre.config).includes('unlock'))
     assert.deepEqual(
-      Object.keys(this.hre.config.unlock),
-      Object.keys(networks.default)
+      Object.keys(this.hre.config.unlock).sort(),
+      [...Object.keys(networks), '12345'].sort()
     )
   })
 
+  it('Should allow user to configure exsiting network', function () {
+    assert.equal(this.hre.config.unlock['31337'].name, 'Custom Localhost Name')
+  })
+
   it('Should allow user to pass a new network', function () {
+    assert.isTrue(Object.keys(this.hre.config.unlock).includes('12345'))
+    assert.equal(this.hre.config.unlock['12345'].name, 'New Network')
+    assert.equal(this.hre.config.unlock['12345'].id, 12345)
   })
 })
