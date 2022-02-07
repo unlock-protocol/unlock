@@ -28,10 +28,10 @@ export interface NetworkDeploy {
   startBlock: number
 }
 export interface NetworkConfig {
-  id: number
-  name: string
-  provider: string
-  publicProvider: string
+  id?: number
+  name?: string
+  provider?: string
+  publicProvider?: string
   locksmithUri?: string // TODO: remove as this should not be network specific
   unlockAppUrl?: string // TODO: remove as this should not be network specific
   blockTime?: number
