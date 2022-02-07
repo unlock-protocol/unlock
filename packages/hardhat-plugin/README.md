@@ -66,7 +66,7 @@ you need it (tasks, scripts, tests, etc).
 ```js
 import { unlock } from 'hardhat'
 
-// deploy the protocol contract
+// deploy the Unlock contract
 await unlock.deployUnlock()
 
 // deploy the template

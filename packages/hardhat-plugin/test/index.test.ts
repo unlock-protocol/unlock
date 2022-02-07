@@ -6,14 +6,18 @@ import type { Contract } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
 
 import { useEnvironment } from './helpers'
-import { UnlockHRE } from '../src/Unlock'
+import { LockArgs, UnlockHRE } from '../src/Unlock'
 import type { UnlockProtocolContracts } from '../src/Unlock'
 import {
   UNLOCK_LATEST_VERSION,
   PUBLIC_LOCK_LATEST_VERSION,
+  TASK_CREATE_LOCK,
 } from '../src/constants'
-
 import { locks } from './fixtures'
+
+const privateKey =
+  '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a'
+const signerFromPrivateKey = '0x15d34aaf54267db7d7c367839aaf71a00a2c6a65'
 
 /**
  * Takes in a function and checks for error
@@ -37,6 +41,13 @@ const expectThrowsAsync = async (
   } else {
     expect(err).to.be.an('Error')
   }
+}
+const isIdenticalLock = async (lock: Contract, lockArgs: LockArgs) => {
+  assert.equal(await lock.publicLockVersion(), PUBLIC_LOCK_LATEST_VERSION)
+  assert.equal(await lock.name(), lockArgs.name)
+  assert.equal((await lock.keyPrice()).toString(), lockArgs.keyPrice.toString())
+  assert.equal(await lock.maxNumberOfKeys(), lockArgs.maxNumberOfKeys)
+  assert.equal(await lock.expirationDuration(), lockArgs.expirationDuration)
 }
 
 describe('Unlock Hardhat plugin', function () {
@@ -76,11 +87,10 @@ describe('Unlock Hardhat plugin', function () {
         )
       })
       it('should parse mnemonic', async function () {
-        process.env.WALLET_PRIVATE_KEY =
-          '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a'
+        process.env.WALLET_PRIVATE_KEY = privateKey
         assert.equal(
           (await this.hre.unlock.getSigner()).address.toLowerCase(),
-          '0x15d34aaf54267db7d7c367839aaf71a00a2c6a65'
+          signerFromPrivateKey
         )
       })
     })
@@ -126,9 +136,11 @@ describe('Unlock Hardhat plugin', function () {
         assert.equal(typeof unlock.address, 'string')
       })
       it('Should set the Unlock owner correctly', async function () {
-        const [defaultSigner] = await this.hre.ethers.getSigners()
         const { unlock } = protocol
-        assert.equal(await unlock.owner(), defaultSigner.address)
+        assert.equal(
+          (await unlock.owner()).toLowerCase(),
+          signerFromPrivateKey.toLowerCase()
+        )
       })
       it('Should set the template correctly', async function () {
         const { unlock, publicLock } = protocol
@@ -178,16 +190,10 @@ describe('Unlock Hardhat plugin', function () {
           transactionHash,
           lockAddress,
         } = await this.hre.unlock.createLock(FIRST)
+
         assert.equal(await lockAddress, lock.address)
         assert.equal(typeof transactionHash, 'string')
-        assert.equal(await lock.publicLockVersion(), PUBLIC_LOCK_LATEST_VERSION)
-        assert.equal(await lock.name(), FIRST.name)
-        assert.equal(
-          (await lock.keyPrice()).toString(),
-          FIRST.keyPrice.toString()
-        )
-        assert.equal(await lock.maxNumberOfKeys(), FIRST.maxNumberOfKeys)
-        assert.equal(await lock.expirationDuration(), FIRST.expirationDuration)
+        isIdenticalLock(lock, FIRST)
       })
     })
 
@@ -205,16 +211,7 @@ describe('Unlock Hardhat plugin', function () {
           await lockGet.publicLockVersion(),
           PUBLIC_LOCK_LATEST_VERSION
         )
-        assert.equal(await lockGet.name(), FIRST.name)
-        assert.equal(
-          (await lockGet.keyPrice()).toString(),
-          FIRST.keyPrice.toString()
-        )
-        assert.equal(await lockGet.maxNumberOfKeys(), FIRST.maxNumberOfKeys)
-        assert.equal(
-          await lockGet.expirationDuration(),
-          FIRST.expirationDuration
-        )
+        isIdenticalLock(lock, FIRST)
       })
     })
   })
@@ -239,5 +236,21 @@ describe('HardhatConfig unlock extension', function () {
     assert.isTrue(Object.keys(this.hre.config.unlock).includes('12345'))
     assert.equal(this.hre.config.unlock['12345'].name, 'New Network')
     assert.equal(this.hre.config.unlock['12345'].id, 12345)
+  })
+})
+
+describe('Tasks', function () {
+  describe('create-lock', function () {
+    useEnvironment('hardhat-project')
+    this.beforeEach(async function () {
+      await this.hre.unlock.deployProtocol(undefined, undefined, 1)
+    })
+    it('Should create a lock from command line args', async function () {
+      const { FIRST } = locks
+      const lockAddress: string = await this.hre.run(TASK_CREATE_LOCK, FIRST)
+      const lock = await this.hre.unlock.getLock(lockAddress)
+      assert.equal(lockAddress, lock.address)
+      isIdenticalLock(lock, FIRST)
+    })
   })
 })

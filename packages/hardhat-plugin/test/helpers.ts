@@ -15,7 +15,7 @@ export function useEnvironment(fixtureProjectName: string) {
     this.hre = require('hardhat')
   })
 
-  afterEach(function () {
+  afterEach('Resetting hardhat', () => {
     resetHardhatContext()
   })
 }

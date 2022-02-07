@@ -5,7 +5,7 @@ import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
 import { lazyObject } from 'hardhat/plugins'
 import './type-extensions'
 
-import { TASK_DEPLOY_LOCK } from './constants'
+import { TASK_CREATE_LOCK } from './constants'
 
 import { UnlockHRE } from './Unlock'
 import { deployLockTask } from './tasks'
@@ -24,6 +24,6 @@ extendConfig(
     config.unlock = Object.assign({}, networks, userConfig.unlock)
   }
 )
-task(TASK_DEPLOY_LOCK)
+task(TASK_CREATE_LOCK)
   .addParam('name', 'The name of your lock')
   .setAction(deployLockTask)
