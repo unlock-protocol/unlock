@@ -2,8 +2,8 @@ const { constants, utils } = require('ethers')
 
 const publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days
-  currencyContractAddress: null,
-  keyPrice: utils.parseEther('.1'), // in wei
+  currencyContractAddress: constants.AddressZero,
+  keyPrice: utils.parseEther('.001').toNumber(), // in wei
   maxNumberOfKeys: 10,
   name: 'Unlock-Protocol Lock',
 }

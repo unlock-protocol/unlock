@@ -227,17 +227,25 @@ export class UnlockHRE {
     }
   }
 
+  public setUnlock = async (
+    unlockAddress: string | undefined,
+    versionNumber = UNLOCK_LATEST_VERSION
+  ) => {
+    if (!unlockAddress) throw new Error('Missing Unlock contract address')
+
+    const { abi } = getContractAbi('Unlock', versionNumber)
+    const unlock = await this.ethers.getContractAt(abi, unlockAddress)
+    this.unlock = unlock
+    return unlock
+  }
+
   public getUnlock = async (versionNumber = UNLOCK_LATEST_VERSION) => {
     if (this.unlock) return this.unlock
     const chainId = await this.getChainId()
     const { unlockAddress } = this.networks[chainId]
-    if (unlockAddress) {
-      const { abi } = getContractAbi('Unlock', versionNumber)
-      const unlock = await this.ethers.getContractAt(abi, unlockAddress)
-      this.unlock = unlock
-      return unlock
-    }
-    throw new Error('Could not fetch the Unlock contract')
+    if (!unlockAddress) throw new Error('Could not fetch the Unlock contract')
+    const unlock = await this.setUnlock(unlockAddress, versionNumber)
+    return unlock
   }
 
   public getLock = async (

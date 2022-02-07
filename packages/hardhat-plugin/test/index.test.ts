@@ -103,11 +103,51 @@ describe('Unlock Hardhat plugin', function () {
         assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
       })
 
+      it('Should set the contract in HRE', async function () {
+        await this.hre.unlock.deployUnlock(undefined, 1)
+        assert.isTrue(Object.keys(this.hre.unlock).includes('unlock'))
+        if (this.hre.unlock.unlock) {
+          assert.equal(
+            await this.hre.unlock.unlock.unlockVersion(),
+            UNLOCK_LATEST_VERSION
+          )
+        }
+      })
+
       it('Should fail if number version doesnt exist', async function () {
         await expectThrowsAsync(
           this.hre.unlock.deployUnlock,
           [135, 1],
           "Contract 'UnlockV135' is not in present in @unlock-protocol/contracts"
+        )
+      })
+    })
+
+    describe('setUnlock()', function () {
+      it('Should set the Unlock contract to a given address', async function () {
+        const unlock = await this.hre.unlock.deployUnlock(undefined, 1)
+        assert.isTrue(Object.keys(this.hre.unlock).includes('unlock'))
+
+        // remove existing unlock instance from class
+        this.hre.unlock.unlock = undefined
+        await expectThrowsAsync(
+          this.hre.unlock.getUnlock,
+          [],
+          'Could not fetch the Unlock contract'
+        )
+
+        // add it back
+        await this.hre.unlock.setUnlock(unlock.address)
+        const unlockAgain = await this.hre.unlock.getUnlock()
+        assert.equal(await unlockAgain.address, unlock.address)
+        assert.equal(await unlockAgain.unlockVersion(), UNLOCK_LATEST_VERSION)
+      })
+
+      it('Should fail if contract does not exist', async function () {
+        await expectThrowsAsync(
+          this.hre.unlock.setUnlock,
+          [],
+          'Missing Unlock contract address'
         )
       })
     })
@@ -240,7 +280,7 @@ describe('HardhatConfig unlock extension', function () {
 })
 
 describe('Tasks', function () {
-  describe('create-lock', function () {
+  describe(TASK_CREATE_LOCK, function () {
     useEnvironment('hardhat-project')
     this.beforeEach(async function () {
       await this.hre.unlock.deployProtocol(undefined, undefined, 1)
