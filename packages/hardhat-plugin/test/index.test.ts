@@ -143,10 +143,17 @@ describe('Unlock Hardhat plugin', function () {
   })
 })
 
-describe.only('HardhatConfig extension', function () {
+describe.only('HardhatConfig unlock extension', function () {
   useEnvironment('hardhat-project')
 
-  it('Should add unlock networks to the config', function () {
-    assert.equal(Object.keys(this.hre.config.unlock), Object.keys(networks))
+  it('Should add existing unlock networks to the config', function () {
+    assert.isTrue(Object.keys(this.hre.config).includes('unlock'))
+    assert.deepEqual(
+      Object.keys(this.hre.config.unlock),
+      Object.keys(networks.default)
+    )
+  })
+
+  it('Should allow user to pass a new network', function () {
   })
 })
