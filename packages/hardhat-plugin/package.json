@@ -18,6 +18,7 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/ test/",
     "test": "mocha --exit --recursive 'test/**/*.test.ts'",
+    "ci": "yarn lint && yarn test",
     "build": "yarn networks && tsc",
     "watch": "tsc -w",
     "prepublishOnly": "npm run build",
