@@ -1,6 +1,7 @@
 /* eslint-disable prefer-arrow-callback */
 // tslint:disable-next-line no-implicit-dependencies
 import { assert, expect } from 'chai'
+import type { Contract } from 'ethers'
 
 import { networks } from '@unlock-protocol/networks'
 
@@ -127,7 +128,7 @@ describe('Unlock Hardhat plugin', function () {
       it('Should set the Unlock owner correctly', async function () {
         const [defaultSigner] = await this.hre.ethers.getSigners()
         const { unlock } = protocol
-        assert.equal((await unlock.owner()).address, defaultSigner.address)
+        assert.equal(await unlock.owner(), defaultSigner.address)
       })
       it('Should set the template correctly', async function () {
         const { unlock, publicLock } = protocol
@@ -187,6 +188,33 @@ describe('Unlock Hardhat plugin', function () {
         )
         assert.equal(await lock.maxNumberOfKeys(), FIRST.maxNumberOfKeys)
         assert.equal(await lock.expirationDuration(), FIRST.expirationDuration)
+      })
+    })
+
+    describe('getLock()', function () {
+      let lock: Contract
+      const { FIRST } = locks
+      this.beforeEach(async function () {
+        await this.hre.unlock.deployProtocol(undefined, undefined, 1)
+        ;({ lock } = await this.hre.unlock.createLock(FIRST))
+      })
+
+      it('Should retrieve a lock w correct params', async function () {
+        const lockGet = await this.hre.unlock.getLock(lock.address)
+        assert.equal(
+          await lockGet.publicLockVersion(),
+          PUBLIC_LOCK_LATEST_VERSION
+        )
+        assert.equal(await lockGet.name(), FIRST.name)
+        assert.equal(
+          (await lockGet.keyPrice()).toString(),
+          FIRST.keyPrice.toString()
+        )
+        assert.equal(await lockGet.maxNumberOfKeys(), FIRST.maxNumberOfKeys)
+        assert.equal(
+          await lockGet.expirationDuration(),
+          FIRST.expirationDuration
+        )
       })
     })
   })
