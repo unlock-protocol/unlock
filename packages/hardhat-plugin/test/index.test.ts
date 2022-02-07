@@ -143,22 +143,10 @@ describe('Unlock Hardhat plugin', function () {
   })
 })
 
-// describe('Unit tests examples', function () {
-//   describe('UnlockHardhatRuntimeEnvironment', function () {
-//     describe('constructor', function () {
-//       it('should store chainId correctly', function () {
-//         const unlock = new UnlockHRE({ chainId: 1 })
-//         assert.deepEqual(unlock.chainId, 1)
-//       })
+describe.only('HardhatConfig extension', function () {
+  useEnvironment('hardhat-project')
 
-//       it('should store network info', function () {
-//         const unlock = new UnlockHRE(1)
-//         assert.deepEqual(unlock.network, networks[1])
-//       })
-
-//       it('should throw if network is unknown', function () {
-//         assert.throws(() => new UnlockHRE(11563))
-//       })
-//     })
-//   })
-// })
+  it('Should add unlock networks to the config', function () {
+    assert.equal(Object.keys(this.hre.config.unlock), Object.keys(networks))
+  })
+})
