@@ -95,12 +95,17 @@ export const CreatorLock = ({
   }
 
   const updateLock = (newLock) => {
-    updateKeyPrice(newLock.keyPrice, () => {
-      setEditing(false)
-    })
-    updateMaxNumberOfKeys(newLock.maxNumberOfKeys, () => {
-      setEditing(false)
-    })
+    if (newLock.keyPrice !== lock.keyPrice) {
+      updateKeyPrice(newLock.keyPrice, () => {
+        setEditing(false)
+      })
+    }
+
+    if (newLock.maxNumberOfKeys !== lock.maxNumberOfKeys) {
+      updateMaxNumberOfKeys(newLock.maxNumberOfKeys, () => {
+        setEditing(false)
+      })
+    }
 
     // TODO: support other changes?
   }
