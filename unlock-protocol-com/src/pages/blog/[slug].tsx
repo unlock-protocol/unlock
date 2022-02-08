@@ -1,25 +1,24 @@
-import {
-  getPosts,
-  BLOG_PATH,
-  getPost,
-  PostType,
-  PostsIndexType,
-} from '../../utils/posts'
-import { chunk } from '../../utils/chunk'
 import { BLOG_PAGE_SIZE } from '../../config/constants'
 import type { NextPage, GetStaticProps, GetStaticPaths } from 'next'
 import path from 'path'
 import { PostsIndex } from '../../components/pages/Blog'
 import { Post } from '../../components/pages/Blog/Post'
-import { MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { serialize } from 'next-mdx-remote/serialize'
+import {
+  markdownToHtml,
+  getPosts,
+  BLOG_PATH,
+  getPost,
+  PostType,
+  PostsIndexType,
+  chunk,
+} from '../../utils'
 interface PostsIndexProps extends PostsIndexType {
   type: 'postsIndex'
 }
 
 interface PostProps extends PostType {
   type: 'post'
-  source: MDXRemoteSerializeResult
+  html: string
 }
 
 type Props = PostProps | PostsIndexProps
@@ -72,13 +71,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     }
   } else {
     const post = await getPost(`${slug}.md`, BLOG_PATH)
-    const source = await serialize(post.content, {
-      scope: post.frontMatter as unknown as Record<string, unknown>,
-    })
+    const html = await markdownToHtml(post.content)
     return {
       props: {
         type: 'post',
-        source,
+        html,
         ...post,
       },
     }

@@ -1,13 +1,10 @@
 import type { PostType } from '../../../utils/posts'
 import { MarketingLayout } from '../../layout/MarketingLayout'
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
 export interface Props extends PostType {
-  source: MDXRemoteSerializeResult
+  html: string
 }
 
-const components = {}
-
-export function Post({ frontMatter, source }: Props) {
+export function Post({ frontMatter, html }: Props) {
   const publishedDate = new Date(frontMatter.publishDate).toLocaleDateString()
   return (
     <MarketingLayout>
@@ -27,9 +24,10 @@ export function Post({ frontMatter, source }: Props) {
               </div>
             </div>
           </header>
-          <div className="prose sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate ">
-            <MDXRemote {...source} components={components} />
-          </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: html }}
+            className="prose sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate "
+          />
         </div>
       </article>
     </MarketingLayout>
