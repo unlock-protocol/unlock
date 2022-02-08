@@ -64,13 +64,14 @@ const Submit = ({ active, submit }: SubmitProps) => {
     return (
       <button
         type="button"
-        className="bg-[#74ce63] text-white flex justify-center w-full p-1 font-medium rounded hover:bg-[#59c245]"
+        disabled={submitted}
+        className="bg-[#74ce63] text-white flex justify-center w-full p-1 font-medium rounded hover:bg-[#59c245] disabled:hover:bg-[#74ce63] disabled:cursor-not-allowed"
         onClick={() => {
           setSubmitted(true)
           submit()
         }}
       >
-        Send Email
+        {submitted ? 'Sent!' : 'Send Email'}
       </button>
     )
   }
@@ -80,7 +81,7 @@ const Submit = ({ active, submit }: SubmitProps) => {
       type="button"
       className="flex justify-center w-full p-1 font-medium bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-200 disabled:opacity-75 disabled:cursor-not-allowed"
     >
-      {submitted ? 'Sent Email!' : 'Send Email'}
+      Send Email
     </button>
   )
 }
