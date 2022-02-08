@@ -59,19 +59,4 @@ module.exports = {
     })
     return config
   },
-  exportPathMap: async (defaultPathMap, { dir }) => {
-    // Our statically-defined pages to export
-    const pages = {
-      '/': { page: '/home' },
-      '/about': { page: '/about' },
-      '/jobs': { page: '/jobs' },
-      '/terms': { page: '/terms' },
-      '/privacy': { page: '/privacy' },
-      '/blog': { page: '/blog' },
-      '/membership': { page: '/membership' },
-      '/developers': { page: '/developers' },
-    }
-
-    return addBlogPagesToPageObject(resolve(dir, '.'), pages)
-  },
 }

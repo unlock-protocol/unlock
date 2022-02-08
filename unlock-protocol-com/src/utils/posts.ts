@@ -34,7 +34,12 @@ export async function getPosts(baseDirectoryPath: string): Promise<PostType[]> {
       return post
     })
   )
-  return posts
+  return posts.sort((a, b) => {
+    return (
+      new Date(b.frontMatter.publishDate).getTime() -
+      new Date(a.frontMatter.publishDate).getTime()
+    )
+  })
 }
 
 export interface PostFrontMatter {

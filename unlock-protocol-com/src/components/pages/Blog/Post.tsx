@@ -1,24 +1,37 @@
-import { FaArrowAltCircleDown } from 'react-icons/fa'
 import type { PostType } from '../../../utils/posts'
 import { MarketingLayout } from '../../layout/MarketingLayout'
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
+export interface Props extends PostType {
+  source: MDXRemoteSerializeResult
+}
 
-export interface Props extends PostType {}
+const components = {}
 
-export function Post({ frontMatter }: Props) {
+export function Post({ frontMatter, source }: Props) {
   const publishedDate = new Date(frontMatter.publishDate).toLocaleDateString()
   return (
     <MarketingLayout>
-      <FaArrowAltCircleDown>
-        <header>
-          <h1 className="text-xl font-bold sm:text-3xl">{frontMatter.title}</h1>
-          <p className="text-lg text-brand-gray"> {frontMatter.description} </p>
-          <div className="text-base text-brand-gray">
-            By <span> {frontMatter.authorName} </span> on{' '}
-            <time dateTime={publishedDate}>{publishedDate}</time>
+      <article>
+        <div className="max-w-screen-md mx-auto">
+          <header className="py-4 space-y-2">
+            <h1 className="text-3xl font-bold sm:text-5xl">
+              {frontMatter.title}
+            </h1>
+            <div className="space-y-1">
+              <p className="text-lg sm:text-xl text-brand-gray">
+                {frontMatter.description}
+              </p>
+              <div className="text-base text-brand-gray">
+                By <span> {frontMatter.authorName} </span> on{' '}
+                <time dateTime={publishedDate}>{publishedDate}</time>
+              </div>
+            </div>
+          </header>
+          <div className="prose sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate ">
+            <MDXRemote {...source} components={components} />
           </div>
-        </header>
-        <div className="prose"></div>
-      </FaArrowAltCircleDown>
+        </div>
+      </article>
     </MarketingLayout>
   )
 }

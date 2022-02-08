@@ -31,6 +31,7 @@
     "jest-styled-components": "7.0.8",
     "lint-staged": "12.3.3",
     "next": "12.0.10",
+    "next-mdx-remote": "^3.0.8",
     "next-seo": "^5.0.0",
     "path-match": "1.2.4",
     "prettier": "2.5.1",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.16.7",
+    "@tailwindcss/typography": "^0.5.1",
     "autoprefixer": "^10.4.2",
     "eslint-config-next": "12.0.10",
     "gray-matter": "^4.0.3",
