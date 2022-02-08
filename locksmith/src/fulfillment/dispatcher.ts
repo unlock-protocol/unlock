@@ -1,5 +1,6 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import logger from '../logger'
 
 const { ethers } = require('ethers')
 const config = require('../../config/config')
@@ -47,7 +48,20 @@ export default class Dispatcher {
 
     const balance = await provider.getBalance(wallet.address)
 
-    return balance > gasPrice.mul(GAS_COST)
+    if (balance < gasPrice.mul(GAS_COST)) {
+      logger.warn(
+        `Purchaser ${
+          wallet.address
+        } does not have enough coins (${ethers.utils.formatUnits(
+          balance,
+          '18'
+        )}) to pay for gas (${ethers.utils.formatUnits(
+          gasPrice.mul(GAS_COST)
+        )}) on ${network}`
+      )
+    }
+
+    return balance >= gasPrice.mul(GAS_COST)
   }
 
   async purchaseKey(

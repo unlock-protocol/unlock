@@ -56,9 +56,9 @@ namespace PurchaseController {
       network
     )
     if (!hasEnoughToPayForGas) {
-      return res
-        .status(400)
-        .send({ error: 'Purchaser does not have enough to pay for gas' })
+      return res.status(400).send({
+        error: `Purchaser does not have enough to pay for gas on ${network}`,
+      })
     }
 
     try {
