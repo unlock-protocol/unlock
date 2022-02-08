@@ -80,7 +80,7 @@ const NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
 export function Navigation() {
   return (
     <header className="fixed top-0 left-0 right-0 z-10 bg-brand-primary">
-      <nav className="flex items-center justify-between max-w-screen-lg px-4 mx-auto">
+      <nav className="flex items-center justify-between max-w-screen-lg px-6 mx-auto">
         <div>
           <Link href="/" aria-label="Unlock">
             <UnlockTextIcon className="not-sr-only" />

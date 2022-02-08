@@ -1,6 +1,8 @@
 import path from 'path'
-import { readdir, readFile } from 'fs/promises'
+import fs from 'fs'
 import matter from 'gray-matter'
+
+const { readFile, readdir } = fs.promises
 
 export const BLOG_PATH = path.join(process.cwd(), 'blog')
 export const POST_EXTENTION_REGEX = /\.md?$/
