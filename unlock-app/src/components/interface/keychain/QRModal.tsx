@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import InlineModal from '../InlineModal'
-import { Input, SubmitButton, DisabledButton } from '../user-account/styles'
+import { Input } from '../user-account/styles'
 
 interface Props {
   active: boolean
@@ -60,20 +60,28 @@ interface SubmitProps {
 }
 const Submit = ({ active, submit }: SubmitProps) => {
   const [submitted, setSubmitted] = useState(false)
-  if (submitted) {
-    return <DisabledButton>Sent!</DisabledButton>
-  }
   if (active) {
     return (
-      <SubmitButton
+      <button
+        type="button"
+        disabled={submitted}
+        className="bg-[#74ce63] text-white flex justify-center w-full p-1 font-medium rounded hover:bg-[#59c245] disabled:hover:bg-[#74ce63] disabled:cursor-not-allowed"
         onClick={() => {
           setSubmitted(true)
           submit()
         }}
       >
-        Send Email
-      </SubmitButton>
+        {submitted ? 'Sent!' : 'Send Email'}
+      </button>
     )
   }
-  return <DisabledButton>Send Email</DisabledButton>
+  return (
+    <button
+      disabled={submitted}
+      type="button"
+      className="flex justify-center w-full p-1 font-medium bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-200 disabled:opacity-75 disabled:cursor-not-allowed"
+    >
+      Send Email
+    </button>
+  )
 }
