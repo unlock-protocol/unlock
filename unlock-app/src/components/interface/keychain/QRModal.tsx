@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import InlineModal from '../InlineModal'
-import { Input, SubmitButton, DisabledButton } from '../user-account/styles'
+import { Input } from '../user-account/styles'
 
 interface Props {
   active: boolean

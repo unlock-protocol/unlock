@@ -232,19 +232,6 @@ const FieldValue = styled.div`
   color: #333333;
 `
 
-const ButtonAction = styled.button`
-  cursor: pointer;
-  font: inherit;
-  align-self: end;
-  /* background: none; */
-  border: none;
-  padding: 5px;
-  margin: 2px;
-  &:hover {
-    color: #333;
-    transition: color 100ms ease;
-  }
-`
 const Error = styled.p`
   color: var(--red);
 `
