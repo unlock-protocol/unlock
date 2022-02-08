@@ -21,6 +21,7 @@
     "ci": "yarn build && yarn lint && yarn test",
     "build": "yarn networks && tsc",
     "watch": "tsc -w",
+    "clean": "rm -rf dist test/fixture-projects/hardhat-project/.openzeppelin test/fixture-projects/hardhat-project/artifacts test/fixture-projects/hardhat-project/cache test/fixture-projects/hardhat-project/contracts",
     "prepublishOnly": "npm run build",
     "networks": "node scripts/parseNetworks.js"
   },
