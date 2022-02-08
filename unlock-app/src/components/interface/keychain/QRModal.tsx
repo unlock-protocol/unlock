@@ -60,20 +60,27 @@ interface SubmitProps {
 }
 const Submit = ({ active, submit }: SubmitProps) => {
   const [submitted, setSubmitted] = useState(false)
-  if (submitted) {
-    return <DisabledButton>Sent!</DisabledButton>
-  }
   if (active) {
     return (
-      <SubmitButton
+      <button
+        type="button"
+        className="bg-[#74ce63] text-white flex justify-center w-full p-1 font-medium rounded hover:bg-[#59c245]"
         onClick={() => {
           setSubmitted(true)
           submit()
         }}
       >
         Send Email
-      </SubmitButton>
+      </button>
     )
   }
-  return <DisabledButton>Send Email</DisabledButton>
+  return (
+    <button
+      disabled={submitted}
+      type="button"
+      className="flex justify-center w-full p-1 font-medium bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-200 disabled:opacity-75 disabled:cursor-not-allowed"
+    >
+      {submitted ? 'Sent Email!' : 'Send Email'}
+    </button>
+  )
 }

@@ -126,17 +126,31 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
       />
       {error && <Error>{error}</Error>}
-      <ButtonAction type="button" onClick={addToWallet}>
-        Show in wallet
-      </ButtonAction>
-      {[1, 4, 137].indexOf(network) > -1 && (
-        <ButtonAction type="button" onClick={viewOnOpenSea}>
-          View on OpenSea
-        </ButtonAction>
-      )}
-      <ButtonAction type="button" onClick={handleSignature}>
-        Generate QR code
-      </ButtonAction>
+      <div className="grid gap-2">
+        <button
+          className="p-1 bg-gray-200 rounded hover:bg-gray-300"
+          type="button"
+          onClick={addToWallet}
+        >
+          Show in wallet
+        </button>
+        {[1, 4, 137].indexOf(network) > -1 && (
+          <button
+            className="p-1 bg-gray-200 rounded hover:bg-gray-300"
+            type="button"
+            onClick={viewOnOpenSea}
+          >
+            View on OpenSea
+          </button>
+        )}
+        <button
+          className="p-1 bg-gray-200 rounded hover:bg-gray-300"
+          type="button"
+          onClick={handleSignature}
+        >
+          Generate QR code
+        </button>
+      </div>
     </Box>
   )
 }

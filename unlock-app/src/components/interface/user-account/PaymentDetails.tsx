@@ -113,9 +113,13 @@ export const Form = ({
       {renderChildren && renderChildren({ register })}
       {loading && <LoadingButton>Saving</LoadingButton>}
       {!loading && (
-        <Button type="submit" disabled={!stripe}>
+        <button
+          className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-2 font-medium rounded hover:bg-[#59c245]"
+          type="submit"
+          disabled={!stripe}
+        >
           {buttonLabel}
-        </Button>
+        </button>
       )}
       {renderError && <ErrorMessage>{renderError({})}</ErrorMessage>}
       {onCancel && <NeutralButton onClick={onCancel}>Cancel</NeutralButton>}
