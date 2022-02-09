@@ -5,3 +5,7 @@ export const EMAIL_SUBSCRIPTION_FORM = {
 
 // Configure the number of posts to show at once
 export const BLOG_PAGE_SIZE = 10
+
+export const UNLOCK_LINKS = {
+  docs: 'https://docs.unlock-protocol.com/unlock/',
+}
