@@ -69,7 +69,7 @@ export function Developer() {
           </div>
           <div>
             <Button>
-              <Link href={UNLOCK_LINKS.docs}>Visit our docs</Link>{' '}
+              <Link href={UNLOCK_LINKS.developers}>Visit our docs</Link>
             </Button>
           </div>
         </div>

@@ -22,11 +22,6 @@ export function Public() {
               Our mission is to create a protocol that belongs to the users,
               creators and builders – not Unlock Inc.
             </p>
-            <div>
-              <Link className="text-brand-gray hover:underline" href="/">
-                Read more
-              </Link>
-            </div>
           </div>
         </div>
         <div className="py-6">
@@ -45,7 +40,7 @@ export function Public() {
           </ul>
         </div>
         <Button>
-          <Link href={UNLOCK_LINKS.docs}>Visit our docs</Link>{' '}
+          <Link href={UNLOCK_LINKS.governance}>Read on governance </Link>
         </Button>
       </div>
 
