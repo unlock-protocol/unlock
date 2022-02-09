@@ -1,11 +1,11 @@
 /* eslint-disable prefer-arrow-callback, func-names */
 // tslint:disable-next-line no-implicit-dependencies
-import { assert, expect } from 'chai'
+import { assert } from 'chai'
 import type { Contract } from 'ethers'
 
 import { networks } from '@unlock-protocol/networks'
 
-import { useEnvironment } from './helpers'
+import { useEnvironment, expectThrowsAsync } from './helpers'
 import { LockArgs, UnlockHRE } from '../src/Unlock'
 import type { UnlockProtocolContracts } from '../src/Unlock'
 import {
@@ -19,29 +19,6 @@ const privateKey =
   '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a'
 const signerFromPrivateKey = '0x15d34aaf54267db7d7c367839aaf71a00a2c6a65'
 
-/**
- * Takes in a function and checks for error
- * @param {Function} method - The function to check
- * @param {any[]} params - The array of function parameters
- * @param {string} message - Optional message to match with error message
- */
-const expectThrowsAsync = async (
-  method: Function,
-  params: any[],
-  message?: string
-) => {
-  let err: unknown | null = null
-  try {
-    await method(...params)
-  } catch (error) {
-    err = error
-  }
-  if (err instanceof Error) {
-    expect(err.message).to.be.equal(message)
-  } else {
-    expect(err).to.be.an('Error')
-  }
-}
 const isIdenticalLock = async (lock: Contract, lockArgs: LockArgs) => {
   assert.equal(await lock.publicLockVersion(), PUBLIC_LOCK_LATEST_VERSION)
   assert.equal(await lock.name(), lockArgs.name)
