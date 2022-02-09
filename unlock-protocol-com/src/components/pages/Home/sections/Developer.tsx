@@ -1,14 +1,20 @@
 import { TabbedCodeBox, Button } from '@unlock-protocol/ui'
+import { UNLOCK_LINKS } from '../../../../config/constants'
+import { Link } from '../../../helpers/Link'
 
 const CODE_BLOCKS: React.ComponentProps<typeof TabbedCodeBox>['blocks'] = [
   {
     code: `
 <script>
-  (function(d, s) {
-    var js = d.createElement(s),
-      sc = d.getElementsByTagName(s)[0];
-      js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
-    sc.parentNode.insertBefore(js, sc); }(document, "script"));
+  function loadUnlock(node, script) {
+    const js = node.createElement(script);
+    const sc = d.getElementsByTagName(script)[0];
+    
+    js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js";  
+    sc.parentNode.insertBefore(js, sc);
+  }
+
+  loadUnlock(document, "script");
 </script>
     
 <script>
@@ -26,9 +32,7 @@ const app = express()
 
 const { membersOnly } = configureUnlock({
   async yieldPaywallConfig() {
-    return {
-      // ...paywall config
-    }
+    return {}
   }
   async getUserEthereumAddress(req) {
     return req.cookies.userAddress
@@ -39,10 +43,7 @@ const { membersOnly } = configureUnlock({
 }
 }, app)
 
-// Members only page
-app.get('/members', membersOnly(), (req, res) => {
-  res.send('Secret stuff! <a href="/logout">logout</a>')
-})
+app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href="/logout">logout</a>'))
     `.trim(),
     lang: 'javascript',
     name: 'Backend',
@@ -51,7 +52,7 @@ app.get('/members', membersOnly(), (req, res) => {
 
 export function Developer() {
   return (
-    <div className="grid items-center gap-8 sm:grid-flow-col">
+    <div className="grid items-center justify-between gap-8 sm:grid-flow-col">
       <div>
         <div className="grid gap-4 sm:gap-6 max-w-[350px]">
           <header>
@@ -67,7 +68,9 @@ export function Developer() {
             </p>
           </div>
           <div>
-            <Button> Check out docs </Button>
+            <Button>
+              <Link href={UNLOCK_LINKS.developers}>Visit our docs</Link>
+            </Button>
           </div>
         </div>
       </div>
