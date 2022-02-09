@@ -185,9 +185,8 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
                   : lockInForm.maxNumberOfKeys
               }
               required={isNew}
-              disabled={!isNew}
             />
-            {isNew && lockInForm.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
+            {lockInForm.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
               <LockLabelUnlimited onClick={handleUnlimitedClick}>
                 Unlimited
               </LockLabelUnlimited>
