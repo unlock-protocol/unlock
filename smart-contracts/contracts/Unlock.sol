@@ -132,7 +132,7 @@ contract Unlock is
     uint _valueInETH,
     address tokenAddress,
     uint value,
-    address lock
+    address lockAddress
   );
   
   event ResetTrackedValue(
