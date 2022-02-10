@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
       - name: 'Check which folders should run tests'
         run: |
-          if [ ! -z ${FORCE_ALL_TESTS} ]; then
+	  if [ "${FORCE_ALL_TESTS}" == "true" ]; then
             echo 'Run all tests'
             echo ::set-output name=changed::$TARGETS
           else 
