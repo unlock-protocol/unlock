@@ -51,27 +51,22 @@ export function EmailSubscriptionForm({ portalId, formGuid }: Props) {
   }
 
   return (
-    <form
-      className="sm:min-w-[420px]"
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
-      <div className="flex justify-between w-full gap-2 py-2 pl-4 pr-2 rounded-full sm:pl-6 bg-brand-gray">
+    <form onSubmit={handleSubmit}>
+      <div className="flex justify-between w-full gap-2 p-1 rounded-3xl bg-brand-gray">
         <input
           type="email"
           placeholder="Type your email here"
           name="email"
-          className="text-sm rounded outline-none bg-brand-gray"
+          className="block border-none rounded-3xl bg-brand-gray focus:border-none focus:ring-0"
           value={email}
           disabled={confirm}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <div>
-          <Button disabled={confirm} variant="secondary" type="submit">
-            {confirm ? 'Subscribed' : 'Sign Up'}
-          </Button>
-        </div>
+
+        <Button disabled={confirm} variant="secondary" type="submit">
+          {confirm ? 'Subscribed' : 'Sign Up'}
+        </Button>
       </div>
     </form>
   )

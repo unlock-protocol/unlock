@@ -61,7 +61,7 @@ export function Developer() {
             </h3>
           </header>
           <div>
-            <p className="text-brand-gray">
+            <p className="text-lg sm:text-xl text-brand-gray">
               We&apos;re a protocol - not a platform. We&apos;re free,
               community-owned, and possess limitless opportunities for
               customization.

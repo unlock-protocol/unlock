@@ -28,8 +28,10 @@ export function Connect() {
                 }`}
                 key={index}
               >
-                <BulletPointIcon className="fill-brand-ui-primary" />
-                {text}
+                <div>
+                  <BulletPointIcon className="fill-brand-ui-primary" />
+                </div>
+                <p>{text}</p>
               </li>
             ))}
           </ul>
