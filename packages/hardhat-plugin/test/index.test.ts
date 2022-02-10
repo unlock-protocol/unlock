@@ -223,11 +223,8 @@ describe('Unlock Hardhat plugin', function () {
 
       it('Should create a new lock w correct params', async function () {
         const { FIRST } = locks
-        const {
-          lock,
-          transactionHash,
-          lockAddress,
-        } = await this.hre.unlock.createLock(FIRST)
+        const { lock, transactionHash, lockAddress } =
+          await this.hre.unlock.createLock(FIRST)
 
         assert.equal(await lockAddress, lock.address)
         assert.equal(typeof transactionHash, 'string')
