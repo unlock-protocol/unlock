@@ -28,6 +28,9 @@ export const DEFAULT_SEO: DefaultSeoProps = {
 export const SOCIAL_URL = {
   twitter: 'https://twitter.com/UnlockProtocol',
   github: 'https://github.com/unlock-protocol',
+  discourse: 'https://unlock.community/',
+  discord: 'https://discord.com/invite/Ah6ZEJyTDp',
+  snapshot: 'https://snapshot.org/#/unlock-protocol.eth',
 }
 
 interface SEOProps {
