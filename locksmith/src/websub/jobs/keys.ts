@@ -38,13 +38,14 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
 
     // If empty, break the loop and return as there are no more new keys to process.
     if (!keys.length) {
+      logger.info('No new keys for', { network })
       break
     }
     logger.info('Found new keys', {
-      keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+      keys: keys.map((key: any) => [network, key.lock.address, key.keyId]),
     })
 
-    await await Promise.allSettled([
+    await Promise.allSettled([
       notifyNewKeysToWedlocks(keys), // send emails when applicable!
       ...hooks.map(async (hook) => {
         const data = keys.filter((key: any) => key.lock.id === hook.lock)
