@@ -37,7 +37,19 @@ describe('Unlock Hardhat plugin', function () {
 
     it('should store networks info', function () {
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
-      assert.deepEqual(this.hre.unlock.networks['31337'], networks['31337'])
+      assert.equal(
+        this.hre.unlock.networks['31337'].name,
+        'Custom Localhost Name'
+      )
+      assert.equal(this.hre.unlock.networks['31337'].id, networks['31337'].id)
+      assert.equal(
+        this.hre.unlock.networks['31337'].subgraphURI,
+        networks['31337'].subgraphURI
+      )
+      assert.equal(
+        this.hre.unlock.networks['31337'].locksmithUri,
+        networks['31337'].locksmithUri
+      )
     })
 
     describe('getChainId()', function () {
@@ -48,9 +60,18 @@ describe('Unlock Hardhat plugin', function () {
 
     describe('getNetworkInfo()', function () {
       it('should return the network json', async function () {
-        assert.deepEqual(
-          await this.hre.unlock.getNetworkInfo(),
-          networks['31337']
+        assert.equal(
+          this.hre.unlock.networks['31337'].name,
+          'Custom Localhost Name'
+        )
+        assert.equal(this.hre.unlock.networks['31337'].id, networks['31337'].id)
+        assert.equal(
+          this.hre.unlock.networks['31337'].subgraphURI,
+          networks['31337'].subgraphURI
+        )
+        assert.equal(
+          this.hre.unlock.networks['31337'].locksmithUri,
+          networks['31337'].locksmithUri
         )
       })
     })
@@ -202,8 +223,11 @@ describe('Unlock Hardhat plugin', function () {
 
       it('Should create a new lock w correct params', async function () {
         const { FIRST } = locks
-        const { lock, transactionHash, lockAddress } =
-          await this.hre.unlock.createLock(FIRST)
+        const {
+          lock,
+          transactionHash,
+          lockAddress,
+        } = await this.hre.unlock.createLock(FIRST)
 
         assert.equal(await lockAddress, lock.address)
         assert.equal(typeof transactionHash, 'string')

@@ -7,7 +7,7 @@ import './type-extensions'
 
 import { TASK_CREATE_LOCK, TASK_DEPLOY_PROTOCOL } from './constants'
 
-import { UnlockHRE } from './Unlock'
+import { UnlockHRE, UnlockNetworkConfigs } from './Unlock'
 import { deployLockTask } from './tasks'
 import networks from './networks.json'
 
@@ -21,7 +21,27 @@ extendEnvironment((hre) => {
 // add unlock networks to config
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
-    config.unlock = { ...networks, ...userConfig.unlock }
+    const { unlock } = userConfig
+    const merged: UnlockNetworkConfigs = networks
+    // merge configs
+    if (unlock) {
+      Object.entries(unlock).forEach(([key]) => {
+        if (key) {
+          // new network in user config
+          if (!merged[key as keyof {}]) {
+            Object.assign(networks, { [key]: unlock[key] })
+          } else {
+            // existing network in both configs
+            merged[key as keyof UnlockNetworkConfigs] = {
+              ...Object(networks[key as keyof {}]),
+              ...unlock[key],
+            }
+          }
+        }
+      })
+    }
+    config.unlock = merged
+    return config
   }
 )
 

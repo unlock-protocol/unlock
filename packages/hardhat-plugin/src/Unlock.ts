@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this, import/no-cycle */
-import networks from '@unlock-protocol/networks'
 import { BigNumber } from 'ethers'
 import type { providers, Contract } from 'ethers'
 
@@ -23,7 +22,12 @@ type PartialPick<T, K extends keyof T> = {
 // make network info optional
 export type UnlockNetworkConfig = PartialPick<
   NetworkConfig,
-  'id' | 'name' | 'provider' | 'publicProvider' | 'unlockAddress'
+  | 'id'
+  | 'name'
+  | 'subgraphURI'
+  | 'locksmithUri'
+  | 'unlockAddress'
+  | 'serializerAddress'
 >
 
 export interface UnlockNetworkConfigs {
@@ -93,7 +97,7 @@ export class UnlockHRE {
         if (chainId !== undefined) {
           return {
             ...acc,
-            [chainId]: networks[chainId],
+            [chainId]: config.unlock[chainId],
           }
         }
         return acc
@@ -107,7 +111,7 @@ export class UnlockHRE {
 
   public getNetworkInfo = async () => {
     const chainId = BigNumber.from(await this.getChainId()).toString()
-    return networks[chainId]
+    return this.networks[chainId]
   }
 
   public getSigner = async () => {
