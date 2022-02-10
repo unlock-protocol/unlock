@@ -6,20 +6,19 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        mono: ['Roboto Mono', ...defaultTheme.fontFamily.mono],
       },
       colors: {
-        // Primar Blue Dark
-        'brand-dark': '#020207',
-        // Dark Gray
-        'brand-gray': '#535353',
-        // Beige
-        'brand-primary': '#FFF7E8',
-        // Reddish
-        'brand-secondary': '#FF6771',
-        // Primary blue
-        'brand-ui-primary': '#603DEB',
-        // Primar Blue Dark
-        'brand-ui-secondary': '#020207',
+        brand: {
+          dark: '#020207',
+          gray: '#535353',
+          primary: '#FFF7E8',
+          secondary: '#FF6771',
+          ui: {
+            primary: '#603DEB',
+            secondary: '#020207',
+          },
+        },
       },
     },
   },
