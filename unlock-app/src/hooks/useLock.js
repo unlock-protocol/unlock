@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect, useReducer } from 'react'
+import * as ethers from 'ethers'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
@@ -10,6 +11,7 @@ import { getFiatPricing, getCardConnected } from './useCards'
 import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { StorageService } from '../services/storageService'
 import LocksContext from '../contexts/LocksContext'
+import { UNLIMITED_KEYS_COUNT } from '../constants'
 /**
  * Event handler
  * @param {*} hash
@@ -64,6 +66,44 @@ export const processTransaction = async (
       transactions: remainingTransactions,
     })
   }
+}
+
+/**
+ * Function called to set the maxNumberOfKeys of a lock
+ */
+
+export function setMaxNumberOfKeysOnLock({
+  web3Service,
+  walletService,
+  config,
+  lock,
+  maxNumberOfKeys,
+  setLock,
+  callback,
+}) {
+  walletService.setMaxNumberOfKeys(
+    {
+      lockAddress: lock.address,
+      maxNumberOfKeys,
+    },
+    async (error, tHash) => {
+      if (error) {
+        throw error
+      }
+      lock.maxNumberOfKeys = maxNumberOfKeys
+
+      processTransaction(
+        'setMaxNumberOfKeys',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        tHash,
+        walletService.networkId
+      )
+      return callback(tHash)
+    }
+  )
 }
 
 /**
@@ -389,6 +429,24 @@ export const useLock = (lockFromProps, network) => {
     return response.status === 202
   }
 
+  function updateMaxNumberOfKeys(maxNumberOfKeys, callback) {
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      setMaxNumberOfKeysOnLock({
+        web3Service,
+        walletService,
+        config,
+        lock,
+        maxNumberOfKeys:
+          maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+            ? ethers.constants.MaxUint256
+            : maxNumberOfKeys,
+        setLock,
+        callback,
+      })
+    }
+  }
   return {
     getLock,
     lock,
@@ -403,6 +461,7 @@ export const useLock = (lockFromProps, network) => {
     isLockManager,
     getKeyData,
     markAsCheckedIn,
+    updateMaxNumberOfKeys,
   }
 }
 

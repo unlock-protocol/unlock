@@ -25,4 +25,12 @@ Once the user has signed the message, they are optionally redirected back to the
 
 Our implementation also includes handling for users who do not have their own crypto wallet installed already, through our [Unlock accounts](https://docs.unlock-protocol.com/unlock/creators/unlock-accounts), which means that it's an easy way to let all users authenticate against your application!
 
-Authencation is one of the core steps for any application that wants to [token-gate](https://docs.unlock-protocol.com/unlock/developers/building-token-gated-applications) content or features. We're
+Authentication is one of the core steps for any application that wants to [token-gate](https://docs.unlock-protocol.com/unlock/developers/building-token-gated-applications) content or features. Unlock's implementation of Sign in with Ethereum works all across web3, and works for:
+
+- Web applications
+- Native applications
+- All types of wallets
+- Through [WalletConnect](https://walletconnect.com/)
+- And even for users without a wallet
+
+Unlock makes it trivial for all apps to monetize with their own membership!
