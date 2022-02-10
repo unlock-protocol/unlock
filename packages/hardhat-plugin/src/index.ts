@@ -46,7 +46,7 @@ extendConfig(
 )
 
 // TASKS
-task(TASK_CREATE_LOCK)
+task(TASK_CREATE_LOCK, 'Create a lock')
   .addParam('name', 'The name of your lock')
   .addParam(
     'keyPrice',
@@ -71,7 +71,7 @@ task(TASK_CREATE_LOCK)
   )
   .setAction(deployLockTask)
 
-task(TASK_DEPLOY_PROTOCOL)
+task(TASK_DEPLOY_PROTOCOL, 'Deploy and set the entire Unlock Protocol')
   .addOptionalParam(
     'unlockVersion',
     'The version number of the Unlock contract (default to latest)'
