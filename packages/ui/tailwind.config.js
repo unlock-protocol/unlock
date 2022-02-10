@@ -1,4 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const typography = require('@tailwindcss/typography')
+const forms = require('@tailwindcss/forms')
+const lineClamp = require('@tailwindcss/line-clamp')
+const aspectRatio = require('@tailwindcss/aspect-ratio')
 
 module.exports = {
   content: ['./lib/**/*.{tsx,jsx,ts,js}'],
@@ -22,5 +26,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [typography, forms, aspectRatio, lineClamp],
 }
