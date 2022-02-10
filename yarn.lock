@@ -12972,6 +12972,7 @@ __metadata:
     "@types/fs-extra": ^5.0.4
     "@types/mocha": ^5.2.6
     "@types/node": ^8.10.38
+    "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
