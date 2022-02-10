@@ -23,12 +23,12 @@ export function TabbedCodeBox({ blocks }: Props) {
       className="w-full p-4 sm:p-8 rounded-3xl"
     >
       <Tab.Group>
-        <Tab.List className="flex justify-between w-full border rounded-xl">
+        <Tab.List className="flex justify-between w-full">
           {blocks.map((item, index) => (
             <Tab
               className={({ selected }) =>
                 twMerge(
-                  'w-full p-2.5 text-white font-medium opacity-90 hover:opacity-100 hover:bg-white hover:text-brand-dark',
+                  'w-full p-2.5 border border-white text-white font-medium opacity-90 hover:opacity-100 hover:bg-white hover:text-brand-dark',
                   selected && 'bg-white text-brand-dark opacity-100',
                   !index && 'rounded-l-xl',
                   index === blocks.length - 1 && 'rounded-r-xl'
