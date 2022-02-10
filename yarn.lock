@@ -7140,13 +7140,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polka/url@npm:^1.0.0-next.20":
-  version: 1.0.0-next.21
-  resolution: "@polka/url@npm:1.0.0-next.21"
-  checksum: c7654046d38984257dd639eab3dc770d1b0340916097b2fac03ce5d23506ada684e05574a69b255c32ea6a144a957c8cd84264159b545fca031c772289d88788
-  languageName: node
-  linkType: hard
-
 "@popperjs/core@npm:^2.10.1":
   version: 2.10.2
   resolution: "@popperjs/core@npm:2.10.2"
@@ -13405,7 +13398,6 @@ __metadata:
     tsup: ^5.11.13
     typescript: 4.5.4
     vite: 2.7.13
-    vite-plugin-static-copy: ^0.2.0
   peerDependencies:
     "@headlessui/react": ^1.4.3
     react: ^17.0.2
@@ -35068,13 +35060,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"mrmime@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "mrmime@npm:1.0.0"
-  checksum: 2c72a40942af7c53bc97d1e9e9c5cb0e6541d18f736811c3a1b46fa2a2b2362480d687daa8ae8372523acaacd82426a4f7ce34b0bf1825ea83b3983e8cb91afd
-  languageName: node
-  linkType: hard
-
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -43216,17 +43201,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"sirv@npm:^1.0.19":
-  version: 1.0.19
-  resolution: "sirv@npm:1.0.19"
-  dependencies:
-    "@polka/url": ^1.0.0-next.20
-    mrmime: ^1.0.0
-    totalist: ^1.0.0
-  checksum: c943cfc61baf85f05f125451796212ec35d4377af4da90ae8ec1fa23e6d7b0b4d9c74a8fbf65af83c94e669e88a09dc6451ba99154235eead4393c10dda5b07c
-  languageName: node
-  linkType: hard
-
 "sisteransi@npm:^1.0.5":
   version: 1.0.5
   resolution: "sisteransi@npm:1.0.5"
@@ -45728,13 +45702,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"totalist@npm:^1.0.0":
-  version: 1.1.0
-  resolution: "totalist@npm:1.1.0"
-  checksum: dfab80c7104a1d170adc8c18782d6c04b7df08352dec452191208c66395f7ef2af7537ddfa2cf1decbdcfab1a47afbbf0dec6543ea191da98c1c6e1599f86adc
-  languageName: node
-  linkType: hard
-
 "touch@npm:^3.1.0":
   version: 3.1.0
   resolution: "touch@npm:3.1.0"
@@ -47556,20 +47523,6 @@ typescript@^3.8.3:
     "@mdx-js/mdx": "*"
     vite: "*"
   checksum: 8419ab5fe30d8593e45ed2c4870c51907aa3d0bdc62cd8324fd6b0b067469a2736b6ce8dc242542b8e0088955218272840ab5afa2d9bcd2ec968cfadd35beb98
-  languageName: node
-  linkType: hard
-
-"vite-plugin-static-copy@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "vite-plugin-static-copy@npm:0.2.0"
-  dependencies:
-    chalk: ^4.1.2
-    fast-glob: ^3.2.7
-    fs-extra: ^10.0.0
-    sirv: ^1.0.19
-  peerDependencies:
-    vite: ^2.6.14
-  checksum: e8cec4ffa7218fb3ffd11f3188ff8d6eee568406ddffe5639703deeb580b610dc3fa564a00b1c67026287084837ebf3df1fb398b2b02b0841d1161d1d0dd0e93
   languageName: node
   linkType: hard
 
