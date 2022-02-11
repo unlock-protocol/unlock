@@ -147,7 +147,7 @@ describe('CreatorLock', () => {
     expect(wrapper.queryByText('1/10')).not.toBeNull()
   })
 
-  it.only('should display infinite keys correctly', () => {
+  it('should display infinite keys correctly', () => {
     expect.assertions(1)
     const wrapper = renderWithContexts(
       <CreatorLock network={31337} lock={unlimitedlock} updateLock={() => {}} />
