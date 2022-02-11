@@ -22,7 +22,7 @@ jest.mock('next/router', () => ({
 export const renderWithContexts = (component) => {
   const config = {
     networks: {
-      1492: {
+      31337: {
         explorer: {
           urls: {
             address: () => '',
@@ -36,7 +36,7 @@ export const renderWithContexts = (component) => {
       },
     },
   }
-  const authentication = { network: 1492 }
+  const authentication = { network: 31337 }
   return rtl.render(
     <Web3ServiceProvider value={web3Service}>
       <ConfigContext.Provider value={config}>
@@ -58,6 +58,8 @@ const lock = {
   keyPrice: '0.1',
   balance: '1',
   expirationDuration: 100,
+  network: 31337,
+  publicLockVersion: 5,
 }
 const keylock = {
   address: '0x1234567890',
@@ -67,6 +69,8 @@ const keylock = {
   outstandingKeys: 1,
   maxNumberOfKeys: 10,
   expirationDuration: 100,
+  network: 31337,
+  publicLockVersion: 5,
 }
 const unlimitedlock = {
   address: '0x1234567890',
@@ -77,6 +81,8 @@ const unlimitedlock = {
   maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
   unlimitedKeys: true,
   expirationDuration: 100,
+  network: 31337,
+  publicLockVersion: 5,
 }
 
 const transaction = {
@@ -95,7 +101,7 @@ describe('CreatorLock', () => {
   it('should show integration tab when the button is clicked', () => {
     expect.assertions(2)
     const wrapper = renderWithContexts(
-      <CreatorLock network={1337} lock={lock} updateLock={() => {}} />
+      <CreatorLock network={31337} lock={lock} updateLock={() => {}} />
     )
 
     expect(
@@ -123,7 +129,7 @@ describe('CreatorLock', () => {
   it.skip('should open the edit form when the button is clicked', () => {
     expect.assertions(0)
     const wrapper = renderWithContexts(
-      <CreatorLock network={1337} lock={lock} updateLock={() => {}} />
+      <CreatorLock network={31337} lock={lock} updateLock={() => {}} />
     )
 
     const editButton = wrapper.getByTitle('Edit')
@@ -135,7 +141,7 @@ describe('CreatorLock', () => {
   it('should display the correct number of keys', () => {
     expect.assertions(1)
     const wrapper = renderWithContexts(
-      <CreatorLock network={1337} lock={keylock} updateLock={() => {}} />
+      <CreatorLock network={31337} lock={keylock} updateLock={() => {}} />
     )
 
     expect(wrapper.queryByText('1/10')).not.toBeNull()
@@ -144,7 +150,7 @@ describe('CreatorLock', () => {
   it('should display infinite keys correctly', () => {
     expect.assertions(1)
     const wrapper = renderWithContexts(
-      <CreatorLock network={1337} lock={unlimitedlock} updateLock={() => {}} />
+      <CreatorLock network={31337} lock={unlimitedlock} updateLock={() => {}} />
     )
 
     expect(wrapper.queryByText('1/∞')).not.toBeNull()
