@@ -1,17 +1,12 @@
-import type { ReactNode, ButtonHTMLAttributes, ForwardedRef } from 'react'
+import type { ReactNode, ForwardedRef } from 'react'
 import type { SizeStyleProp, Size } from '../../types'
 import { twMerge } from 'tailwind-merge'
-import { forwardRef, Fragment } from 'react'
-import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
+import { forwardRef } from 'react'
+import { Box, Props as BoxProps } from '../Box/Box'
 
 type Variant = 'primary' | 'secondary' | 'outlined-primary'
 
-interface Props
-  extends Omit<
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    'size' | 'ref' | 'className'
-  > {
-  size?: Size
+interface Props extends BoxProps {
   iconRight?: ReactNode
   iconLeft?: ReactNode
   variant?: Variant
@@ -40,19 +35,22 @@ export const Button = forwardRef(
       variant = 'primary',
       iconLeft,
       iconRight,
+      className,
+      as = 'button',
       ...restProps
     } = props
     const buttonClass = twMerge(
       'rounded-full flex font-semibold items-center gap-2 disabled:bg-opacity-75  disabled:cursor-not-allowed',
       SIZE_STYLES[size],
-      VARIANTS_STYLES[variant]
+      VARIANTS_STYLES[variant],
+      className
     )
     return (
-      <button className={buttonClass} {...restProps} ref={ref}>
+      <Box as={as} className={buttonClass} {...restProps} ref={ref}>
         {iconLeft}
         <span> {children}</span>
         {iconRight}
-      </button>
+      </Box>
     )
   }
 )

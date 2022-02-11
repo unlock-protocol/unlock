@@ -1,10 +1,12 @@
 import type { AllHTMLAttributes, ElementType } from 'react'
 import { createElement, forwardRef } from 'react'
+import { Size } from '../../types'
 
 type HTMLProps = Omit<AllHTMLAttributes<HTMLElement>, 'as'>
 
-interface Props extends HTMLProps {
+export interface Props extends Omit<HTMLProps, 'size'> {
   as?: ElementType
+  size?: Size
 }
 
 export const Box = forwardRef<HTMLElement, Props>(

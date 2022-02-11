@@ -46,7 +46,7 @@ export function Steps() {
       <ol className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
         {UNLOCK_STEPS.map(({ title, Icon, points }, index) => (
           <li
-            className="grid gap-4 max-w-[350px] p-8 bg-shadow-and-glass rounded-3xl"
+            className="grid gap-4 max-w-[350px] p-8 glass-pane rounded-3xl"
             key={index}
           >
             <div className="flex justify-center">

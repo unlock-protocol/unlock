@@ -103,7 +103,7 @@ export function Navigation() {
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute w-screen max-w-xl px-4 mt-3 transform -translate-x-1/2 z-100 left-1/2">
-                    <div className="bg-shadow-and-glass rounded-3xl">
+                    <div className="glass-pane rounded-3xl">
                       <div className="grid p-4">
                         <header className="flex gap-2 pb-6 items-base">
                           <div>
