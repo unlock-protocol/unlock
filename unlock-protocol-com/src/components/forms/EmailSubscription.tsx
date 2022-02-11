@@ -52,12 +52,12 @@ export function EmailSubscriptionForm({ portalId, formGuid }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex justify-between w-full gap-2 p-1 rounded-3xl bg-brand-gray">
+      <div className="flex justify-between gap-2 p-1 rounded-3xl bg-brand-gray">
         <input
           type="email"
           placeholder="Type your email here"
           name="email"
-          className="block border-none rounded-3xl bg-brand-gray focus:border-none focus:ring-0"
+          className="w-[200px] sm:w-[300px]  border-none rounded-3xl bg-brand-gray focus:border-none focus:ring-0"
           value={email}
           disabled={confirm}
           onChange={(e) => setEmail(e.target.value)}

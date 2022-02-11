@@ -9,7 +9,7 @@ const SECTIONS = [Connect, Steps, Developer, Public]
 export function Home() {
   return (
     <MarketingLayout>
-      <div className="grid gap-8 sm:gap-24">
+      <div className="grid gap-y-8 sm:gap-y-12 md:gap-y-18">
         {SECTIONS.map((Section, index) => (
           <div key={index}>
             <Section />

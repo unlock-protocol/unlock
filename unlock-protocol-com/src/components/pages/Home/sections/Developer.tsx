@@ -76,7 +76,7 @@ export function Developer() {
       </div>
 
       <div className="grid">
-        <div className="min-w-[380px] max-w-[500px]">
+        <div className="min-w-[350px] max-w-[500px]">
           <TabbedCodeBox blocks={CODE_BLOCKS} />
         </div>
       </div>

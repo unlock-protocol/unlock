@@ -36,13 +36,13 @@ export function Connect() {
             ))}
           </ul>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center gap-4 sm:justify-start">
           <Button> Get Started </Button>
           <Button variant="secondary"> Connect Wallet </Button>
         </div>
       </div>
 
-      <div className="w-full max-w-[380px]">
+      <div className="w-full max-w-[350px] sm:max-w-sm">
         <div className="w-full bg-white bg-shadow-and-glass rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
             <p className="font-bold">Tales of Ronin</p>
