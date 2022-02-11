@@ -181,7 +181,7 @@ export class UnlockHRE {
   public deployProtocol = async (
     unlockVersion = UNLOCK_LATEST_VERSION,
     lockVersion = PUBLIC_LOCK_LATEST_VERSION,
-    confirmations: number = 5,
+    confirmations: number = 1, // default to 1, as this is mostly for use on local dev
     deploymentOptions: providers.TransactionRequest = {}
   ): Promise<UnlockProtocolContracts> => {
     const signer = await this.getSigner()
