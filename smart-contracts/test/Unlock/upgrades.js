@@ -42,8 +42,12 @@ contract('Unlock / upgrades', async (accounts) => {
       const pastUnlockPath = require.resolve(
         `@unlock-protocol/contracts/dist/Unlock/UnlockV${versionNumber}.sol`
       )
+
       const pastPublicLockPath = require.resolve(
-        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
+        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${
+          // decouple contracts versions after v10
+          versionNumber === 10 ? 9 : versionNumber
+        }.sol`
       )
 
       before(async function copyAndBuildContract() {
