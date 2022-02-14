@@ -43,10 +43,10 @@ export function Steps() {
           Create your own membership program without code or chaos.
         </p>
       </div>
-      <ol className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      <ol className="grid justify-center gap-6 sm:grid-cols-2 md:grid-cols-3">
         {UNLOCK_STEPS.map(({ title, Icon, points }, index) => (
           <li
-            className="grid gap-4 max-w-[350px] p-8 glass-pane rounded-3xl"
+            className="grid gap-4 max-w-[340px] p-8 glass-pane rounded-3xl"
             key={index}
           >
             <div className="flex justify-center">
