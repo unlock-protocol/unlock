@@ -1,5 +1,9 @@
 # Changes
 
+# 0.21.2
+
+- Better support for locks with infinite duration
+
 # 0.21.1
 
 - Fixed dependencies in package.json
