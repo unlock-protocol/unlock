@@ -10,9 +10,9 @@ interface ActionButtonProps {
 }
 
 export const ActionButton = styled.button<ActionButtonProps>`
-  height: 40px;
-  padding-left: 25px !important;
-  padding-right: 25px !important;
+  height: 60px;
+  padding-left: 15px;
+  padding-right: 15px;
   font-size: 16px;
 
   color: ${(props) =>
@@ -26,9 +26,7 @@ export const ActionButton = styled.button<ActionButtonProps>`
   border: 2px solid;
 
   border-color: ${(props) =>
-    props.disabled
-      ? 'var(--grey) !important'
-      : props.borderColor || 'var(--green) !important'};
+    props.disabled ? 'var(--grey)' : props.borderColor || 'var(--green) '};
 
   background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : props.color || 'var(--green)'};
@@ -36,18 +34,18 @@ export const ActionButton = styled.button<ActionButtonProps>`
   &:hover {
     color: ${(props) =>
       props.disabled
-        ? 'var(--white) !important'
-        : props.fontActiveColor || 'var(--white) !important'};
+        ? 'var(--white) '
+        : props.fontActiveColor || 'var(--white) '};
 
     border-color: ${(props) =>
       props.disabled
         ? 'var(--grey)'
-        : props.activeBorderColor || 'var(--activegreen) !important'};
+        : props.activeBorderColor || 'var(--activegreen) '};
 
     background-color: ${(props) =>
       props.disabled
         ? 'var(--grey)'
-        : props.activeColor || 'var(--activegreen) !important'};
+        : props.activeColor || 'var(--activegreen) '};
   }
 `
 
