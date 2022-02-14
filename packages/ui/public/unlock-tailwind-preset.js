@@ -3,6 +3,7 @@ const typography = require('@tailwindcss/typography')
 const forms = require('@tailwindcss/forms')
 const lineClamp = require('@tailwindcss/line-clamp')
 const aspectRatio = require('@tailwindcss/aspect-ratio')
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   content: ['./lib/**/*.{tsx,jsx,ts,js}'],
@@ -26,5 +27,19 @@ module.exports = {
       },
     },
   },
-  plugins: [typography, forms, aspectRatio, lineClamp],
+  plugins: [
+    typography,
+    forms,
+    aspectRatio,
+    lineClamp,
+    plugin(function ({ addUtilities, theme }) {
+      addUtilities({
+        '.glass-pane': {
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          boxShadow: '0px 8px 30px rgba(0, 0, 0, 0.08)',
+          backdropFilter: 'blur(50px)',
+        },
+      })
+    }),
+  ],
 }

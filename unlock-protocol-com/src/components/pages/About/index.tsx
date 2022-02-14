@@ -28,17 +28,14 @@ export function About({ updates }: Props) {
         <div className="grid gap-8">
           <div className="grid gap-6 sm:grid-cols-2">
             {ABOUT_POINTS.map((text, index) => (
-              <div
-                key={index}
-                className="w-full p-8 bg-shadow-and-glass rounded-3xl"
-              >
+              <div key={index} className="w-full p-8 glass-pane rounded-3xl">
                 <div>
                   <p>{text}</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="w-full p-8 bg-shadow-and-glass rounded-3xl">
+          <div className="w-full p-8 glass-pane rounded-3xl">
             <div className="space-y-8">
               <header className="grid space-y-2 text-center justify-items-center">
                 <h2 className="text-xl font-semibold sm:text-3xl">

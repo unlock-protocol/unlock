@@ -5,5 +5,5 @@ interface Props {
 }
 
 export function CenteredColumn({ children }: Props) {
-  return <div className="max-w-screen-lg mx-auto">{children}</div>
+  return <div className="max-w-screen-lg mx-auto ">{children}</div>
 }
