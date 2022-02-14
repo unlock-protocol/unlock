@@ -11,7 +11,6 @@ import {
   Label,
   Select,
   TransactionPendingButton,
-  Button,
 } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
