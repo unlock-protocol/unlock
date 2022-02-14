@@ -3,8 +3,9 @@ import { Developer } from './sections/Developer'
 import { Steps } from './sections/Steps'
 import { MarketingLayout } from '../../layout/MarketingLayout'
 import { Public } from './sections/Public'
+import { Community } from './sections/Community'
 
-const SECTIONS = [Connect, Steps, Developer, Public]
+const SECTIONS = [Connect, Steps, Developer, Public, Community]
 
 export function Home() {
   return (
