@@ -1,0 +1,14 @@
+{
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDirs": ["./src", "./test"],
+    "resolveJsonModule": true,
+    "noImplicitReturns": false
+  },
+  "exclude": ["dist", "node_modules"],
+  "include": [
+    "./test",
+    "./src"
+  ]
+}
