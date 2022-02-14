@@ -3,7 +3,7 @@ import { Popover, Transition, Disclosure } from '@headlessui/react'
 import { Button } from '@unlock-protocol/ui'
 import React, { Fragment } from 'react'
 import { MdFormatListBulleted as BulletedListIcon } from 'react-icons/md'
-import { FaHeartbeat as HeartBeatIcon } from 'react-icons/fa'
+import { FaGithub as GithubIcon } from 'react-icons/fa'
 import { FiLifeBuoy as LifeBuoyIcon, FiCode as CodeIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { UnlockTextIcon } from '../../icons'
@@ -25,38 +25,38 @@ interface NavigationalLinkWithIcon extends NavigationLink {
 const DEVELOPER_NAVIGATION_INTEGRATIONS: NavigationLink[] = [
   {
     name: 'WordPress',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
   },
   {
-    name: 'Webflow',
-    href: '',
+    name: 'Discord',
+    href: 'https://guild.xyz',
   },
   {
     name: 'Shopify',
-    href: '',
+    href: 'https://github.com/pwagner/unlock-shopify-app',
   },
   {
     name: 'Discourse',
-    href: '',
+    href: 'https://unlock.community/t/unlock-discourse-plugin/64',
   },
 ]
 
 const DEVELOPER_NAVIGATION_RECIPES: NavigationLink[] = [
   {
     name: 'Making a custom login',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum',
   },
   {
     name: 'Webhooks',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/locksmith/webhooks',
   },
   {
     name: 'Create your own API',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
   },
   {
-    name: 'Manage keys',
-    href: '',
+    name: 'Manage Contracts',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/smart-contracts',
   },
 ]
 
@@ -64,22 +64,22 @@ const DEVELOPER_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
   {
     name: 'API Reference',
     Icon: BulletedListIcon,
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
   },
   {
-    name: 'API Status',
-    Icon: HeartBeatIcon,
-    href: '',
+    name: 'Github',
+    Icon: GithubIcon,
+    href: 'https://github.com/unlock-protocol/unlock',
   },
   {
     name: 'Support',
     Icon: LifeBuoyIcon,
-    href: '',
+    href: 'mailto:hello@unlock-protocol.com?subject=Hello%2C%20I%20want%20help%20with',
   },
   {
-    name: 'Changelong',
+    name: 'Roadmap',
     Icon: CodeIcon,
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/governance/roadmap',
   },
 ]
 
@@ -181,7 +181,6 @@ function DeveloperPopover() {
 
 function Desktop() {
   const link = 'text-brand-gray hover:text-black'
-
   return (
     <div className="items-center hidden gap-6 sm:flex">
       <DeveloperPopover />
@@ -210,52 +209,62 @@ function Mobile() {
             <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-xl">
               For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
             </Disclosure.Button>
-            <div className={`${open ? 'grid' : 'hidden'}`}>
-              <div className="p-6 space-y-4">
-                <div>
-                  <p className="text-xs font-bold uppercase ">Integrations</p>
-                  <nav className="grid gap-1 pt-2">
-                    {DEVELOPER_NAVIGATION_INTEGRATIONS.map((item, index) => (
-                      <Link
-                        className="text-sm text-brand-gray hover:text-brand-dark"
-                        key={index}
-                        href={item.href}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </nav>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-150"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-125"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Disclosure.Panel>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase ">Integrations</p>
+                    <nav className="grid gap-1 pt-2">
+                      {DEVELOPER_NAVIGATION_INTEGRATIONS.map((item, index) => (
+                        <Link
+                          className="text-sm text-brand-gray hover:text-brand-dark"
+                          key={index}
+                          href={item.href}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </nav>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase ">Recipes</p>
+                    <nav className="grid gap-1 pt-2">
+                      {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
+                        <Link
+                          className="text-sm text-brand-gray hover:text-brand-dark"
+                          key={index}
+                          href={item.href}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </nav>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-bold uppercase ">Recipes</p>
-                  <nav className="grid gap-1 pt-2">
-                    {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
+                <div className="p-4 m-2 space-y-2 bg-white rounded-3xl">
+                  {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
+                    ({ name, href, Icon }, index) => (
                       <Link
-                        className="text-sm text-brand-gray hover:text-brand-dark"
+                        href={href}
                         key={index}
-                        href={item.href}
+                        className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
                       >
-                        {item.name}
+                        <Icon className="text-lg not-sr-only text-brand-ui-primary" />
+                        {name}
                       </Link>
-                    ))}
-                  </nav>
+                    )
+                  )}
                 </div>
-              </div>
-              <div className="p-4 m-2 space-y-2 bg-white rounded-3xl">
-                {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
-                  ({ name, href, Icon }, index) => (
-                    <Link
-                      href={href}
-                      key={index}
-                      className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
-                    >
-                      <Icon className="text-lg not-sr-only text-brand-ui-primary" />
-                      {name}
-                    </Link>
-                  )
-                )}
-              </div>
-            </div>
+              </Disclosure.Panel>
+            </Transition>
           </div>
         )}
       </Disclosure>
@@ -296,7 +305,16 @@ export function Navigation() {
               <Desktop />
             </div>
           </div>
-          <Mobile />
+          <Transition
+            enter="transition ease-out duration-200"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-175"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Mobile />
+          </Transition>
         </>
       )}
     </Disclosure>
