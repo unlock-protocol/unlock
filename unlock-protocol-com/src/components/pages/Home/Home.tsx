@@ -4,8 +4,9 @@ import { Steps } from './sections/Steps'
 import { MarketingLayout } from '../../layout/MarketingLayout'
 import { Public } from './sections/Public'
 import { Community } from './sections/Community'
+import { Recipes } from './sections/Recipe'
 
-const SECTIONS = [Connect, Steps, Developer, Public, Community]
+const SECTIONS = [Connect, Steps, Developer, Recipes, Public, Community]
 
 export function Home() {
   return (
