@@ -37,7 +37,7 @@ export async function generateFeed(posts: PostType[]) {
       id: url,
       link: url,
       description: post.frontMatter.subTitle,
-      content: post.content,
+      content: post.htmlContent,
       author: [
         {
           name: post.frontMatter.authorName,
