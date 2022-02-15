@@ -11,7 +11,12 @@ export class Key extends GraphQLDataSource {
   async getKeys(args: any) {
     const keysQuery = gql`
       query Keys($first: Int, $skip: Int) {
-        keys(first: $first, skip: $skip) {
+        keys(
+          first: $first
+          skip: $skip
+          orderBy: createdAt
+          orderDirection: desc
+        ) {
           id
           lock {
             id

@@ -15,15 +15,14 @@ import { NoPhone, Phone } from '../../theme/media'
 import withConfig from '../../utils/withConfig'
 import { useLock } from '../../hooks/useLock'
 import Svg from '../interface/svg'
-
 import {
   LockPanel,
   LockAddress,
   LockDivider,
   LockDuration,
   LockKeys,
-  LockName,
   LockRow,
+  LockName,
   DoubleHeightCell,
   BalanceContainer,
   LockWarning,
@@ -42,8 +41,8 @@ BalanceOnLock.propTypes = {
   attribute: PropTypes.string.isRequired,
 }
 
-const LockKeysNumbers = ({ lock }) => (
-  <LockKeys>
+const LockKeysNumbers = ({ lock, edit }) => (
+  <LockKeys className="flex">
     {lock.outstandingKeys !== null &&
     lock.maxNumberOfKeys !== null &&
     typeof lock.outstandingKeys !== 'undefined' &&
@@ -54,11 +53,15 @@ const LockKeysNumbers = ({ lock }) => (
             : lock.maxNumberOfKeys
         }`
       : ' - '}
+    <InlineButton type="button" onClick={() => edit(lock.address)}>
+      <Svg.Edit name="Edit" />
+    </InlineButton>
   </LockKeys>
 )
 
 LockKeysNumbers.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  edit: PropTypes.func.isRequired,
 }
 
 export const CreatorLock = ({
@@ -71,7 +74,10 @@ export const CreatorLock = ({
     showIntegrations ? 'embed-coded' : ''
   )
   const [editing, setEditing] = useState(false)
-  const { lock, updateKeyPrice, withdraw } = useLock(lockFromProps, network)
+  const { lock, updateKeyPrice, updateMaxNumberOfKeys, withdraw } = useLock(
+    lockFromProps,
+    network
+  )
 
   useEffect(() => {
     if (query.stripe && lock.address == query.lock) {
@@ -88,9 +94,18 @@ export const CreatorLock = ({
   }
 
   const updateLock = (newLock) => {
-    updateKeyPrice(newLock.keyPrice, () => {
-      setEditing(false)
-    })
+    if (newLock.keyPrice !== lock.keyPrice) {
+      updateKeyPrice(newLock.keyPrice, () => {
+        setEditing(false)
+      })
+    }
+
+    if (newLock.maxNumberOfKeys !== lock.maxNumberOfKeys) {
+      updateMaxNumberOfKeys(newLock.maxNumberOfKeys, () => {
+        setEditing(false)
+      })
+    }
+
     // TODO: support other changes?
   }
 
@@ -123,7 +138,7 @@ export const CreatorLock = ({
 
   // https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability
   return (
-    <LockRow>
+    <LockRow className="pb-2">
       {lockVersion === 5 && (
         <LockWarning>
           Your lock is vulnerable, please{' '}
@@ -161,11 +176,17 @@ export const CreatorLock = ({
         <LockName>
           {name}
           <LockAddress address={!lock.pending && lock.address} />
+          {lock && (
+            <div className="flex items-center gap-2 py-1 text-gray-400">
+              <span className="text-xs">v{lock.publicLockVersion}</span>
+              <span className="text-xs">{networks[lock.network].name}</span>
+            </div>
+          )}
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
-        <LockKeysNumbers lock={lock} />
+        <LockKeysNumbers edit={edit} lock={lock} />
         <KeyPrice>
           <BalanceOnLock lock={lock} attribute="keyPrice" />
           <InlineButton type="button" onClick={() => edit(lock.address)}>
