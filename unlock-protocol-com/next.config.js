@@ -46,17 +46,16 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
     )
   }
 })
-module.exports = {
+
+const nextConfig = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({
       test: /\.md$/,
       use: 'raw-loader',
     })
-    config.module.rules.push({
-      test: /blog\.index/,
-      use: 'raw-loader',
-    })
     return config
   },
 }
+
+module.exports = nextConfig

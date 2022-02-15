@@ -281,10 +281,10 @@ function Mobile() {
 
 export function Navigation() {
   return (
-    <Disclosure as="nav" className="fixed z-10 w-full ">
+    <Disclosure as="nav" className="fixed z-10 w-full bg-brand-primary">
       {({ open }) => (
         <>
-          <div className="max-w-screen-lg px-6 py-4 mx-auto bg-brand-primary">
+          <div className="max-w-screen-lg px-6 py-4 mx-auto ">
             <div className="flex items-center justify-between">
               <Link href="/">
                 <UnlockTextIcon />
