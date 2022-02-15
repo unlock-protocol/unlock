@@ -7,7 +7,7 @@ import TagManager from 'react-gtm-module'
 import { MembershipContext } from '../../membershipContext'
 import Membership from './Membership'
 import GlobalStyle from '../../theme/globalStyle'
-import paywallConfig from '../../paywallConfig'
+import paywallConfig from '../../config/paywallConfig'
 
 const config = getConfig().publicRuntimeConfig
 

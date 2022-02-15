@@ -40,7 +40,7 @@ export const Button = forwardRef(
       ...restProps
     } = props
     const buttonClass = twMerge(
-      'rounded-full flex font-semibold items-center gap-2 disabled:bg-opacity-75  disabled:cursor-not-allowed',
+      'rounded-full flex justify-center cursor-pointer font-semibold items-center gap-2 disabled:bg-opacity-75  disabled:cursor-not-allowed',
       SIZE_STYLES[size],
       VARIANTS_STYLES[variant],
       className

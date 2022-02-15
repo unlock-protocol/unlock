@@ -42,7 +42,7 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="w-full max-w-[350px] sm:max-w-sm">
+      <div className="w-full max-w-[350px] sm:max-w-sm justify-center flex">
         <div className="w-full bg-white glass-pane rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
             <p className="font-bold">Tales of Ronin</p>

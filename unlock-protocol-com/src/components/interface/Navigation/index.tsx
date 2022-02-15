@@ -1,12 +1,18 @@
 import { Link } from '../../helpers/Link'
-import { Popover, Transition } from '@headlessui/react'
+import { Popover, Transition, Disclosure } from '@headlessui/react'
 import { Button } from '@unlock-protocol/ui'
-import React, { Fragment, SVGProps } from 'react'
+import React, { Fragment } from 'react'
 import { MdFormatListBulleted as BulletedListIcon } from 'react-icons/md'
-import { FaHeartbeat as HeartBeatIcon } from 'react-icons/fa'
+import { FaGithub as GithubIcon } from 'react-icons/fa'
 import { FiLifeBuoy as LifeBuoyIcon, FiCode as CodeIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { UnlockTextIcon } from '../../icons'
+import { FilesIcon } from '../../icons/Util'
+import {
+  AiOutlineDown as DownIcon,
+  AiOutlineUp as UpIcon,
+} from 'react-icons/ai'
+import { HiX as XIcon, HiMenu as MenuIcon } from 'react-icons/hi'
 interface NavigationLink {
   name: string
   href: string
@@ -16,218 +22,301 @@ interface NavigationalLinkWithIcon extends NavigationLink {
   Icon: IconType
 }
 
-const NAVIGATION_INTEGRATIONS: NavigationLink[] = [
+const DEVELOPER_NAVIGATION_INTEGRATIONS: NavigationLink[] = [
   {
     name: 'WordPress',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
   },
   {
-    name: 'Webflow',
-    href: '',
+    name: 'Discord',
+    href: 'https://guild.xyz',
   },
   {
     name: 'Shopify',
-    href: '',
+    href: 'https://github.com/pwagner/unlock-shopify-app',
   },
   {
     name: 'Discourse',
-    href: '',
+    href: 'https://unlock.community/t/unlock-discourse-plugin/64',
   },
 ]
 
-const NAVIGATION_RECIPES: NavigationLink[] = [
+const DEVELOPER_NAVIGATION_RECIPES: NavigationLink[] = [
   {
     name: 'Making a custom login',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum',
   },
   {
     name: 'Webhooks',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/locksmith/webhooks',
   },
   {
     name: 'Create your own API',
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
   },
   {
-    name: 'Manage keys',
-    href: '',
+    name: 'Manage Contracts',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/smart-contracts',
   },
 ]
 
-const NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
+const DEVELOPER_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
   {
     name: 'API Reference',
     Icon: BulletedListIcon,
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
   },
   {
-    name: 'API Status',
-    Icon: HeartBeatIcon,
-    href: '',
+    name: 'Github',
+    Icon: GithubIcon,
+    href: 'https://github.com/unlock-protocol/unlock',
   },
   {
     name: 'Support',
     Icon: LifeBuoyIcon,
-    href: '',
+    href: 'mailto:hello@unlock-protocol.com?subject=Hello%2C%20I%20want%20help%20with',
   },
   {
-    name: 'Changelong',
+    name: 'Roadmap',
     Icon: CodeIcon,
-    href: '',
+    href: 'https://docs.unlock-protocol.com/unlock/governance/roadmap',
   },
 ]
 
-export function Navigation() {
+function DeveloperPopover() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-10 px-6 bg-brand-primary">
-      <nav className="flex items-center justify-between max-w-screen-lg mx-auto">
-        <div>
-          <Link href="/" aria-label="Unlock">
-            <UnlockTextIcon className="not-sr-only" />
-          </Link>
-        </div>
-        <div className="flex items-center gap-6 p-4 ">
-          <Popover className="relative">
-            {({}) => (
-              <>
-                <Popover.Button className="text-brand-gray hover:text-brand-dark">
-                  Devs
-                </Popover.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-200"
-                  enterFrom="opacity-0 translate-y-1"
-                  enterTo="opacity-100 translate-y-0"
-                  leave="transition ease-in duration-150"
-                  leaveFrom="opacity-100 translate-y-0"
-                  leaveTo="opacity-0 translate-y-1"
-                >
-                  <Popover.Panel className="absolute w-screen max-w-xl px-4 mt-3 transform -translate-x-1/2 z-100 left-1/2">
-                    <div className="glass-pane rounded-3xl">
-                      <div className="grid p-4">
-                        <header className="flex gap-2 pb-6 items-base">
-                          <div>
-                            <FilesIcon className="not-sr-only" />
-                          </div>
-                          <div className="space-y-1">
-                            <p className="text-sm font-bold"> Documentation </p>
-                            <p className="text-sm text-brand-gray">
-                              Your starting point for the integration of Unlock
-                              into other platforms
-                            </p>
-                          </div>
-                        </header>
-                        <div className="flex justify-between max-w-[400px] pl-8">
-                          <div>
-                            <p className="text-xs font-bold uppercase ">
-                              Integrations
-                            </p>
-                            <nav className="grid gap-1 pt-2">
-                              {NAVIGATION_INTEGRATIONS.map((item, index) => (
-                                <Link
-                                  className="text-sm text-brand-gray hover:text-brand-dark"
-                                  key={index}
-                                  href={item.href}
-                                >
-                                  {item.name}
-                                </Link>
-                              ))}
-                            </nav>
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold uppercase ">
-                              Recipes
-                            </p>
-                            <nav className="grid gap-1 pt-2">
-                              {NAVIGATION_RECIPES.map((item, index) => (
-                                <Link
-                                  className="text-sm text-brand-gray hover:text-brand-dark"
-                                  key={index}
-                                  href={item.href}
-                                >
-                                  {item.name}
-                                </Link>
-                              ))}
-                            </nav>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-2">
-                        <div className="grid grid-cols-2 gap-4 p-4 bg-white rounded-3xl">
-                          {NAVIGATION_BOTTOM_ITEMS.map(
-                            ({ name, href, Icon }, index) => (
-                              <Link
-                                href={href}
-                                key={index}
-                                className="flex gap-2 text-sm font-medium"
-                              >
-                                <Icon className="text-lg not-sr-only text-brand-ui-primary" />
-                                {name}
-                              </Link>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Popover.Panel>
-                </Transition>
-              </>
-            )}
-          </Popover>
-          <Link className="text-brand-gray hover:text-brand-dark" href="/about">
-            About
-          </Link>
-          <Link
-            className="text-brand-gray hover:text-brand-dark"
-            href="/creators"
+    <Popover className="relative">
+      {({ open }) => (
+        <>
+          <Popover.Button
+            className={`hover:text-brand-dark ${
+              open ? 'text-black' : 'text-brand-gray'
+            }`}
           >
-            Creators
-          </Link>
-          <Button variant="outlined-primary"> Connect Wallet </Button>
-        </div>
-      </nav>
-    </header>
+            Devs
+          </Popover.Button>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 translate-y-1"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-1"
+          >
+            <Popover.Panel className="absolute w-screen max-w-xl px-4 mt-3 transform -translate-x-1/2 z-100 left-1/2">
+              <div className="glass-pane rounded-3xl">
+                <div className="grid p-4">
+                  <header className="flex gap-2 pb-6 items-base">
+                    <div>
+                      <FilesIcon className="not-sr-only" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-bold"> Documentation </p>
+                      <p className="text-sm text-brand-gray">
+                        Your starting point for the integration of Unlock into
+                        other platforms
+                      </p>
+                    </div>
+                  </header>
+                  <div className="flex justify-between max-w-[400px] pl-8">
+                    <div>
+                      <p className="text-xs font-bold uppercase ">
+                        Integrations
+                      </p>
+                      <nav className="grid gap-1 pt-2">
+                        {DEVELOPER_NAVIGATION_INTEGRATIONS.map(
+                          (item, index) => (
+                            <Link
+                              className="text-sm text-brand-gray hover:text-brand-dark"
+                              key={index}
+                              href={item.href}
+                            >
+                              {item.name}
+                            </Link>
+                          )
+                        )}
+                      </nav>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase ">Recipes</p>
+                      <nav className="grid gap-1 pt-2">
+                        {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
+                          <Link
+                            className="text-sm text-brand-gray hover:text-brand-dark"
+                            key={index}
+                            href={item.href}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-2">
+                  <div className="grid grid-cols-2 gap-1 p-4 bg-white rounded-3xl">
+                    {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
+                      ({ name, href, Icon }, index) => (
+                        <Link
+                          href={href}
+                          key={index}
+                          className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
+                        >
+                          <Icon className="text-lg not-sr-only text-brand-ui-primary" />
+                          {name}
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Popover.Panel>
+          </Transition>
+        </>
+      )}
+    </Popover>
   )
 }
 
-function FilesIcon(props: SVGProps<SVGSVGElement>) {
+function Desktop() {
+  const link = 'text-brand-gray hover:text-black'
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M15.75 21H5.25C5.05109 21 4.86032 20.921 4.71967 20.7803C4.57902 20.6397 4.5 20.4489 4.5 20.25V6.75C4.5 6.55109 4.57902 6.36032 4.71967 6.21967C4.86032 6.07902 5.05109 6 5.25 6H12.75L16.5 9.75V20.25C16.5 20.4489 16.421 20.6397 16.2803 20.7803C16.1397 20.921 15.9489 21 15.75 21Z"
-        stroke="#603DEB"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M7.5 6V3.75C7.5 3.55109 7.57902 3.36032 7.71967 3.21967C7.86032 3.07902 8.05109 3 8.25 3H15.75L19.5 6.75V17.25C19.5 17.4489 19.421 17.6397 19.2803 17.7803C19.1397 17.921 18.9489 18 18.75 18H16.5"
-        stroke="#603DEB"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.25 14.25H12.75"
-        stroke="#603DEB"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8.25 17.25H12.75"
-        stroke="#603DEB"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <div className="items-center hidden gap-6 sm:flex">
+      <DeveloperPopover />
+      <Link className={link} href="/about">
+        About
+      </Link>
+      <Link
+        className={link}
+        href="https://docs.unlock-protocol.com/unlock/creators/faq"
+      >
+        Creators
+      </Link>
+      <Button variant="outlined-primary" as={Link}>
+        Connect Wallet
+      </Button>
+    </div>
+  )
+}
+
+function Mobile() {
+  return (
+    <Disclosure.Panel className="mx-4 space-y-1 sm:hidden rounded-xl glass-pane">
+      <Disclosure>
+        {({ open }) => (
+          <div>
+            <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-xl">
+              For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
+            </Disclosure.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-150"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-125"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Disclosure.Panel>
+                <div className="p-6 space-y-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase ">Integrations</p>
+                    <nav className="grid gap-1 pt-2">
+                      {DEVELOPER_NAVIGATION_INTEGRATIONS.map((item, index) => (
+                        <Link
+                          className="text-sm text-brand-gray hover:text-brand-dark"
+                          key={index}
+                          href={item.href}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </nav>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase ">Recipes</p>
+                    <nav className="grid gap-1 pt-2">
+                      {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
+                        <Link
+                          className="text-sm text-brand-gray hover:text-brand-dark"
+                          key={index}
+                          href={item.href}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </nav>
+                  </div>
+                </div>
+                <div className="p-4 m-2 space-y-2 bg-white rounded-3xl">
+                  {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
+                    ({ name, href, Icon }, index) => (
+                      <Link
+                        href={href}
+                        key={index}
+                        className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
+                      >
+                        <Icon className="text-lg not-sr-only text-brand-ui-primary" />
+                        {name}
+                      </Link>
+                    )
+                  )}
+                </div>
+              </Disclosure.Panel>
+            </Transition>
+          </div>
+        )}
+      </Disclosure>
+      <div className="grid gap-4 p-4 bg-white rounded-xl">
+        <Link href="/about"> About us </Link>
+        <Link href="https://docs.unlock-protocol.com/unlock/creators/faq">
+          Creators
+        </Link>
+        <Button>Connect Wallet</Button>
+      </div>
+    </Disclosure.Panel>
+  )
+}
+
+export function Navigation() {
+  return (
+    <Disclosure as="nav" className="fixed z-10 w-full ">
+      {({ open }) => (
+        <>
+          <div className="max-w-screen-lg px-6 py-4 mx-auto bg-brand-primary">
+            <div className="flex items-center justify-between">
+              <Link href="/">
+                <UnlockTextIcon />
+              </Link>
+              <div className="sm:hidden">
+                <Disclosure.Button className="inline-flex items-center justify-center">
+                  <span className="sr-only">Open main menu</span>
+                  {open ? (
+                    <XIcon
+                      className="block w-6 h-6 fill-brand-ui-primary"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <MenuIcon className="block w-6 h-6" aria-hidden="true" />
+                  )}
+                </Disclosure.Button>
+              </div>
+              <Desktop />
+            </div>
+          </div>
+          <Transition
+            enter="transition ease-out duration-200"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-175"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Mobile />
+          </Transition>
+        </>
+      )}
+    </Disclosure>
   )
 }
