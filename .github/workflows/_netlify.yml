@@ -41,12 +41,13 @@ jobs:
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ steps.set_target.outputs.target }}"
           echo "::set-output name=site_id::${PREFIX^^}_SITE_ID"
           echo "::set-output name=auth_token::${PREFIX^^}_AUTH_TOKEN"
-      - name: Show Netlify script params
+      - name: Export secrets to env
         run: |
-          export ${{ steps.set_prefix.outputs.site_id }}="${{ secrets[steps.set_prefix.outputs.site_id] }}"
-          echo ${{ steps.set_prefix.outputs.site_id }}
-          echo "${{ steps.set_target.outputs.target }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ steps.is_forked.outputs.is_forked }}"
+          echo "${{ steps.set_prefix.outputs.site_id }}=${{ secrets[steps.set_prefix.outputs.site_id] }}" >> $GITHUB_ENV
       - name: Deploy to Netlify
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
+          # show args
+          echo "${{ steps.set_target.outputs.target }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ steps.is_forked.outputs.is_forked }}"
+          # run command
           scripts/deploy.sh ${{ steps.set_target.outputs.target }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ steps.is_forked.outputs.is_forked }}
