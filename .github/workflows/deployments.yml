@@ -57,6 +57,10 @@ jobs:
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
     with:
       service: 'unlock-protocol-com'
+  deploy-wedlocks-netlify:
+    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    with:
+      service: 'wedlocks'
 
   # Fleek deloys
   # deploy-paywall-to-fleek:
