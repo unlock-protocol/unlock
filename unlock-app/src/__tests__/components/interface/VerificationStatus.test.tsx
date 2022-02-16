@@ -5,6 +5,7 @@ import { VerificationStatus } from '../../../components/interface/VerificationSt
 import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 import signatureUtils from '../../../utils/signatures'
 import { WalletServiceContext } from '../../../utils/withWalletService'
+import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { ConfigContext } from '../../../utils/withConfig'
 import {
   AuthenticationContext,
@@ -24,15 +25,17 @@ const account = {
   balance: '0',
 }
 
+const lock = {
+  address: '0x123abc',
+  name: 'Lock Around the Clock',
+  expirationDuration: '123456',
+  tokenAddress: 'a token address',
+  price: '5',
+  owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
+}
+
 const ownedKey: OwnedKey = {
-  lock: {
-    address: '0x123abc',
-    name: 'Lock Around the Clock',
-    expirationDuration: '123456',
-    tokenAddress: 'a token address',
-    price: '5',
-    owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
-  },
+  lock,
   tokenURI: '',
   expiration: '12345678',
   id: 'an id',
@@ -42,12 +45,18 @@ const ownedKey: OwnedKey = {
 const renderWithContexts = (children: any) => {
   const account = '0x123'
   const network = 1337
-
+  const Web3ServiceContextProvider = Web3ServiceContext.Provider
+  const web3Service = {
+    getKeyByLockForOwner: jest.fn(() => ownedKey),
+    getLock: jest.fn(() => lock),
+  }
   return rtl.render(
     <AuthenticationContext.Provider
       value={{ ...defaultValues, account, network }}
     >
-      {children}
+      <Web3ServiceContextProvider value={web3Service}>
+        {children}
+      </Web3ServiceContextProvider>
     </AuthenticationContext.Provider>
   )
 }

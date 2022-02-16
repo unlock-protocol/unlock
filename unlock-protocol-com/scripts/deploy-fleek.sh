@@ -20,4 +20,4 @@ fi
 UNLOCK_ENV="$DEPLOY_ENV" yarn deploy
 # And ship!
 echo $MESSAGE
-npx @fleekhq/fleek-cli site:deploy
+npx -y @fleekhq/fleek-cli site:deploy

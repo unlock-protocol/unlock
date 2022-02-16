@@ -23,10 +23,18 @@ class MockWeb3Service extends EventEmitter {
 
 let mockWeb3Service
 
-const mockWalletService = {}
+const mockWalletService = {
+  networkId: 1337,
+}
 const mockStorageService = {}
 const mockGraphService = {}
-const mockConfig = {}
+const mockConfig = {
+  networks: {
+    1337: {
+      blockTime: 2,
+    },
+  },
+}
 
 const ownerAddress = '0xlockOwner'
 const lockAddress = '0xlockAddress'
