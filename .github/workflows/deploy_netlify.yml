@@ -89,4 +89,4 @@ jobs:
           # show args
           echo "${{ needs.check_changes.outputs.target_env }} ${{ matrix.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ needs.check_changes.outputs.is_forked  }}"
           # run command
-          scripts/deploy.sh ${{ steps.set_target.outputs.target_env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ needs.check_changes.outputs.is_forked  }}
+          scripts/deploy.sh ${{ needs.check_changes.outputs.target_env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ needs.check_changes.outputs.is_forked  }}
