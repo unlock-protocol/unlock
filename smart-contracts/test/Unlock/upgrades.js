@@ -31,7 +31,7 @@ contract('Unlock / upgrades', async (accounts) => {
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
   for (
-    let versionNumber = 8;
+    let versionNumber = 0;
     versionNumber < LATEST_UNLOCK_VERSION;
     versionNumber++
   ) {
@@ -212,7 +212,11 @@ contract('Unlock / upgrades', async (accounts) => {
                   // version 2 had a bug: we forgot to bump the lock version
                   assert.equal(version, 1)
                 } else {
-                  assert.equal(version, versionNumber)
+                  assert.equal(
+                    version,
+                    // see - decouple contracts versions after v10
+                    versionNumber === 10 ? 9 : versionNumber
+                  )
                 }
               }
             })
@@ -259,6 +263,12 @@ contract('Unlock / upgrades', async (accounts) => {
                   await publicLockLatestTemplate.deployed()
 
                   // set template
+                  if (
+                    (await unlock.proxyAdminAddress()) ===
+                    ethers.constants.AddressZero
+                  ) {
+                    await unlock.initializeProxyAdmin()
+                  }
                   const version =
                     await publicLockLatestTemplate.publicLockVersion()
                   await unlock.addLockTemplate(
