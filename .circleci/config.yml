@@ -207,29 +207,29 @@ workflows:
           filters:
             branches:
               only: production # deploy in production
-      - deploy-to-netlify:
-          name: 'deploy-unlock-app-netlify'
-          service: 'unlock-app'
-          requires:
-            - integration-tests
-      - deploy-to-netlify:
-          name: 'deploy-paywall-netlify'
-          service: paywall-app
-          requires:
-            - integration-tests
-      - deploy-to-netlify:
-          name: 'deploy-unlock-protocol-com-netlify'
-          service: 'unlock-protocol-com'
-          requires:
-            - integration-tests
-      - deploy-to-netlify:
-          service: 'wedlocks'
-          name: 'deploy-wedlocks-netlify'
-          filters:
-            branches:
-              only: master
-          requires:
-            - integration-tests
+      # - deploy-to-netlify:
+      #     name: 'deploy-unlock-app-netlify'
+      #     service: 'unlock-app'
+      #     requires:
+      #       - integration-tests
+      # - deploy-to-netlify:
+      #     name: 'deploy-paywall-netlify'
+      #     service: paywall-app
+      #     requires:
+      #       - integration-tests
+      # - deploy-to-netlify:
+      #     name: 'deploy-unlock-protocol-com-netlify'
+      #     service: 'unlock-protocol-com'
+      #     requires:
+      #       - integration-tests
+      # - deploy-to-netlify:
+      #     service: 'wedlocks'
+      #     name: 'deploy-wedlocks-netlify'
+      #     filters:
+      #       branches:
+      #         only: master
+      #     requires:
+      #       - integration-tests
 
   prepare-prod-deploy:
     triggers:
