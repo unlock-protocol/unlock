@@ -7,6 +7,16 @@ on:
         description: "The list of services/sub-repositories concerned (as a stringified array)"
         type: string
         required: true
+    outputs:
+      changed:
+        description: "The list of services that have changed"
+        value: ${{ jobs.check_changes.outputs.changed }}
+      target_env:
+        description: "The target environment (staging/prod)"
+        value: ${{ jobs.check_changes.outputs.target_env }}
+      is_forked:
+        description: "Check if repo is a fork"
+        value: ${{ jobs.check_changes.outputs.is_forked }}
 
 jobs:
   check_changes:
