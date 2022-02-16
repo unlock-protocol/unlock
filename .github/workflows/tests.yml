@@ -1,4 +1,9 @@
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - master
+      - production
+  pull_request:
 
 name: Unlock Test Suite
 jobs:
@@ -25,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set env.BRANCH'
+      - name: 'Set GIT_BRANCH in env'
         id: branch_name
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
