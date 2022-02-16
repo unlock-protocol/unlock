@@ -1,4 +1,4 @@
-name: Deployments
+name: Netlify Deployments
 
 on:
   pull_request:
@@ -67,6 +67,7 @@ jobs:
       matrix:
         service: ${{fromJson( needs.check_changes.outputs.changed )}}
     steps:
+      - uses: actions/checkout@v2
       - name: Parse secrets prefix
         id: set_prefix
         run: |
@@ -78,9 +79,11 @@ jobs:
           echo "::set-output name=test_secret::HELLO"
       - name: Export secrets to env
         run: |
-          echo "${{ steps.set_prefix.outputs.test_secret }}=$TEST_SECRET" >> $GITHUB_ENV
+          echo "${{ steps.set_prefix.outputs.site_id }}=$SITE_ID" >> $GITHUB_ENV
+          echo "${{ steps.set_prefix.outputs.auth_token }}=$AUTH_TOKEN" >> $GITHUB_ENV
         env:
-          TEST_SECRET: ${{ secrets[ steps.set_prefix.outputs.test_secret ] }}
+          SITE_ID: ${{ secrets[ steps.set_prefix.outputs.site_id ] }}
+          AUTH_TOKEN: ${{ secrets[ steps.set_prefix.outputs.auth_token ] }}
       - name: Deploy to Netlify
         run: |
           # show args
