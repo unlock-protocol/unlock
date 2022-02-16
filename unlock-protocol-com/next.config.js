@@ -54,6 +54,10 @@ const nextConfig = {
       test: /\.md$/,
       use: 'raw-loader',
     })
+    config.module.rules.push({
+      test: /blog\.index/,
+      use: 'raw-loader',
+    })
     return config
   },
 }
