@@ -36,9 +36,10 @@ jobs:
       - name: Parse secrets prefix
         id: set_prefix
         run: |
-          PREFIX="${{ inputs.service }}_NETLIFY_${{ steps.set_target.outputs.target }}"
-          SITE_ID="${$PREFIX^^}_SITE_ID"
-          AUTH_TOKEN="${$PREFIX^^}_AUTH_TOKEN"
+          UNDERSCORE_SERVICE="${${{ inputs.service }}//-/_}"
+          PREFIX="${UNDERSCORE_SERVICE}_NETLIFY_${{ steps.set_target.outputs.target }}"
+          SITE_ID="${PREFIX^^}_SITE_ID"
+          AUTH_TOKEN="${PREFIX^^}_AUTH_TOKEN"
           echo "::set-output name=site_id::$SITE_ID"
           echo "::set-output name=auth_token::$AUTH_TOKEN"
       - name: Show Netlify script params
