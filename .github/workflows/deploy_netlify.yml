@@ -73,7 +73,7 @@ jobs:
         run: |
           SERVICE_NAME="${{ matrix.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
-          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ steps.set_target.outputs.target }}"
+          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ needs.check_changes.outputs.target_env }}"
           echo "::set-output name=site_id::${PREFIX^^}_SITE_ID"
           echo "::set-output name=auth_token::${PREFIX^^}_AUTH_TOKEN"
           echo "::set-output name=test_secret::HELLO"
