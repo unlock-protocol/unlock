@@ -25,9 +25,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Set env.BRANCH'
+        id: branch_name
+        run: |
+          # Short name for current branch. For PRs, use target branch (base ref)
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
       - name: 'Check which folders should run tests'
         run: |
-          if [ "${FORCE_ALL_TESTS}" == "true" ]; then
+          if [ "${FORCE_ALL_TESTS}" == "true"] || ["${GIT_BRANCH}" == "master"] || ["${GIT_BRANCH}" == "production" ]; then
             echo 'Run all tests'
             echo ::set-output name=changed::$TARGETS
           else 
