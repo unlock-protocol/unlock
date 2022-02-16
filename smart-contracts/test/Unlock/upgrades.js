@@ -31,7 +31,7 @@ contract('Unlock / upgrades', async (accounts) => {
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
   for (
-    let versionNumber = 0;
+    let versionNumber = 8;
     versionNumber < LATEST_UNLOCK_VERSION;
     versionNumber++
   ) {
@@ -261,7 +261,6 @@ contract('Unlock / upgrades', async (accounts) => {
                   // set template
                   const version =
                     await publicLockLatestTemplate.publicLockVersion()
-                  await unlock.initializeProxyAdmin()
                   await unlock.addLockTemplate(
                     publicLockLatestTemplate.address,
                     version
@@ -372,12 +371,6 @@ contract('Unlock / upgrades', async (accounts) => {
                       [],
                       { value: keyPrice }
                     )
-                  })
-
-                  it('this version and latest version have different PublicLock version numbers', async () => {
-                    // ignore last version
-                    const version = await lockLatest.publicLockVersion()
-                    assert.notEqual(version, versionNumber)
                   })
 
                   it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
