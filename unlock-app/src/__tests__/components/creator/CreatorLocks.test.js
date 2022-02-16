@@ -4,6 +4,8 @@ import hook from '../../../hooks/useLocks'
 
 import { CreatorLocks } from '../../../components/creator/CreatorLocks'
 import { ConfigContext } from '../../../utils/withConfig'
+import { Web3ServiceContext } from '../../../utils/withWeb3Service'
+
 import {
   AuthenticationContext,
   defaultValues,
@@ -15,7 +17,7 @@ jest.mock('../../../hooks/useLocks', () => {
       return {
         loading: false,
         locks: mockLocks,
-        addLock: () => {},
+        addLock: () => { },
         error: null,
       }
     }),
@@ -37,12 +39,18 @@ const renderWithContexts = (component) => {
     },
   }
 
+  const web3Service = {
+    getAddressBalance: jest.fn(() => '123.45')
+  }
+
   return rtl.render(
     <ConfigContext.Provider value={config}>
       <AuthenticationContext.Provider
         value={{ ...defaultValues, account, network }}
       >
-        {component}
+        <Web3ServiceContext.Provider value={web3Service}>
+          {component}
+        </Web3ServiceContext.Provider>
       </AuthenticationContext.Provider>
     </ConfigContext.Provider>
   )
@@ -114,7 +122,7 @@ describe('CreatorLocks', () => {
       return {
         loading: false,
         locks: [],
-        addLock: () => {},
+        addLock: () => { },
         error: null,
       }
     })
@@ -123,9 +131,9 @@ describe('CreatorLocks', () => {
       <CreatorLocks
         account={account}
         loading={loading}
-        createLock={() => {}}
+        createLock={() => { }}
         formIsVisible={false}
-        hideForm={() => {}}
+        hideForm={() => { }}
       />
     )
     expect(wrapper.getByText('Create a lock to get started')).not.toBeNull()
@@ -137,7 +145,7 @@ describe('CreatorLocks', () => {
       return {
         loading: true,
         locks: mockLocks,
-        addLock: () => {},
+        addLock: () => { },
         error: null,
       }
     })
@@ -146,9 +154,9 @@ describe('CreatorLocks', () => {
       <CreatorLocks
         account={account}
         loading={loading}
-        createLock={() => {}}
+        createLock={() => { }}
         formIsVisible={false}
-        hideForm={() => {}}
+        hideForm={() => { }}
       />
     )
     expect(wrapper.getByText('loading')).not.toBeNull()

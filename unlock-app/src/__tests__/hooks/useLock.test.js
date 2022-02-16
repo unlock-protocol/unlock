@@ -14,11 +14,13 @@ import { TransactionType } from '../../unlockTypes'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 const config = configure()
-const network = 1337
+const networkId = 31337
 const mockWeb3Service = {
   getTransaction: jest.fn(),
 }
-const mockWalletService = {}
+const mockWalletService = {
+  networkId,
+}
 const propsLock = {
   address: '0xLock',
   name: 'My Lock',
@@ -31,10 +33,10 @@ describe('useLock', () => {
     jest.clearAllMocks()
     jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === LocksContext) {
-        return { locks: {}, addLock: () => {} }
+        return { locks: {}, addLock: () => { } }
       }
       if (context === AuthenticationContext) {
-        return { network }
+        return { network: networkId }
       }
       if (context === Web3ServiceContext) {
         return mockWeb3Service
@@ -60,8 +62,8 @@ describe('useLock', () => {
       address: propsLock.address,
     }
     const newKeyPrice = '123'
-    const setLock = jest.fn(() => {})
-    const callback = jest.fn(() => {})
+    const setLock = jest.fn(() => { })
+    const callback = jest.fn(() => { })
     const hash = '0xtransaction'
 
     beforeEach(() => {
@@ -102,7 +104,7 @@ describe('useLock', () => {
       )
       expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
         hash,
-        undefined
+        networkId
       )
     })
 
