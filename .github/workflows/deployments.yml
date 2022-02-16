@@ -52,7 +52,7 @@ jobs:
     with:
       service: unlock-app
   deploy-paywall-to-netlify:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: ./.github/workflows/_netlify.yml
     with:
       service: paywall-app
