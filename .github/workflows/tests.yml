@@ -33,7 +33,7 @@ jobs:
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
       - name: 'Check which folders should run tests'
         run: |
-          if [ "${FORCE_ALL_TESTS}" == "true"] || ["${GIT_BRANCH}" == "master"] || ["${GIT_BRANCH}" == "production" ]; then
+          if [ "${FORCE_ALL_TESTS}" == "true" ] || [ "${GIT_BRANCH}" == "master" ] || [ "${GIT_BRANCH}" == "production" ]; then
             echo 'Run all tests'
             echo ::set-output name=changed::$TARGETS
           else 
