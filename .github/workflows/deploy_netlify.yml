@@ -1,6 +1,7 @@
 name: Netlify Deployments
 
 on:
+  pull_request:
   workflow_run:
     workflows: ["Unlock Test Suite"]
     types:
@@ -11,7 +12,7 @@ on:
 
 jobs:
   check_changes:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: ./.github/workflows/_check.yml
     with:
       targets: '[
