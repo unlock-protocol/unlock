@@ -31,6 +31,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Set GIT_BRANCH in env'
+        if: github.event_name != 'pull_request'
         id: branch_name
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
