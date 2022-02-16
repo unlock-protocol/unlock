@@ -26,11 +26,11 @@ jobs:
       - name: Check if forked PR
         id: is_forked
         run: |
-          echo "::set-output name=is_forked::$(${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}})
+          echo "::set-output name=is_forked::${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}}
       - name: Set target environment
         id: set_target
         run: |
-          echo "::set-output name=target::$(${{ contains(github.base_ref, 'production') || inputs.service == 'unlock-protocol-com' }} && 'prod' || 'staging')"
+          echo "::set-output name=target::${{ contains(github.base_ref, 'production') && 'prod' || 'staging' }}"
       - name: Deploy to Netlify
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
