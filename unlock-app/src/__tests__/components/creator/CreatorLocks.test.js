@@ -17,7 +17,7 @@ jest.mock('../../../hooks/useLocks', () => {
       return {
         loading: false,
         locks: mockLocks,
-        addLock: () => { },
+        addLock: () => {},
         error: null,
       }
     }),
@@ -40,7 +40,7 @@ const renderWithContexts = (component) => {
   }
 
   const web3Service = {
-    getAddressBalance: jest.fn(() => '123.45')
+    getAddressBalance: jest.fn(() => '123.45'),
   }
 
   return rtl.render(
@@ -122,7 +122,7 @@ describe('CreatorLocks', () => {
       return {
         loading: false,
         locks: [],
-        addLock: () => { },
+        addLock: () => {},
         error: null,
       }
     })
@@ -131,9 +131,9 @@ describe('CreatorLocks', () => {
       <CreatorLocks
         account={account}
         loading={loading}
-        createLock={() => { }}
+        createLock={() => {}}
         formIsVisible={false}
-        hideForm={() => { }}
+        hideForm={() => {}}
       />
     )
     expect(wrapper.getByText('Create a lock to get started')).not.toBeNull()
@@ -145,7 +145,7 @@ describe('CreatorLocks', () => {
       return {
         loading: true,
         locks: mockLocks,
-        addLock: () => { },
+        addLock: () => {},
         error: null,
       }
     })
@@ -154,9 +154,9 @@ describe('CreatorLocks', () => {
       <CreatorLocks
         account={account}
         loading={loading}
-        createLock={() => { }}
+        createLock={() => {}}
         formIsVisible={false}
-        hideForm={() => { }}
+        hideForm={() => {}}
       />
     )
     expect(wrapper.getByText('loading')).not.toBeNull()

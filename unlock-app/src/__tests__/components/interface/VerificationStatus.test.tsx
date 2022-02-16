@@ -25,7 +25,6 @@ const account = {
   balance: '0',
 }
 
-
 const lock = {
   address: '0x123abc',
   name: 'Lock Around the Clock',
@@ -34,7 +33,6 @@ const lock = {
   price: '5',
   owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
 }
-
 
 const ownedKey: OwnedKey = {
   lock,
@@ -50,7 +48,7 @@ const renderWithContexts = (children: any) => {
   const Web3ServiceContextProvider = Web3ServiceContext.Provider
   const web3Service = {
     getKeyByLockForOwner: jest.fn(() => ownedKey),
-    getLock: jest.fn(() => lock)
+    getLock: jest.fn(() => lock),
   }
   return rtl.render(
     <AuthenticationContext.Provider

@@ -33,7 +33,7 @@ describe('useLock', () => {
     jest.clearAllMocks()
     jest.spyOn(React, 'useContext').mockImplementation((context) => {
       if (context === LocksContext) {
-        return { locks: {}, addLock: () => { } }
+        return { locks: {}, addLock: () => {} }
       }
       if (context === AuthenticationContext) {
         return { network: networkId }
@@ -62,8 +62,8 @@ describe('useLock', () => {
       address: propsLock.address,
     }
     const newKeyPrice = '123'
-    const setLock = jest.fn(() => { })
-    const callback = jest.fn(() => { })
+    const setLock = jest.fn(() => {})
+    const callback = jest.fn(() => {})
     const hash = '0xtransaction'
 
     beforeEach(() => {
