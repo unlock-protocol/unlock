@@ -10,7 +10,7 @@ on:
       
 jobs:
   deploy-to-netlify:
-    name: Deploy ${{ input.service }} on Netlify
+    name: Deploy ${{ inputs.service }} on Netlify
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
@@ -24,12 +24,14 @@ jobs:
         shell: bash
         id: check_changes
       - name: Check if forked PR
+        id: is_forked
         run: |
           echo "::set-output name=is_forked::$(${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}})
       - name: Set target environment
+        id: set_target
         run: |
-          echo "::set-output name=target::$(${{ contains(github.base_ref, 'production') || input.service == 'unlock-protocol-com' }} && 'prod' || 'staging')"
+          echo "::set-output name=target::$(${{ contains(github.base_ref, 'production') || inputs.service == 'unlock-protocol-com' }} && 'prod' || 'staging')"
       - name: Deploy to Netlify
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
-          scripts/deploy.sh ${{ outputs.target }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ outputs.is_forked }}
+          scripts/deploy.sh ${{ steps.set_target.outputs.target }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ steps.is_forked.outputs.is_forked }}
