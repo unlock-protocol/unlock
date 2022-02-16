@@ -20,8 +20,6 @@ jobs:
       target_env: ${{ steps.set_target.outputs.target }}
       is_forked: ${{ steps.is_forked.outputs.is_forked }}
     env:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
       TARGETS: '[
         "unlock-protocol-com",
         "paywall-app",
@@ -65,6 +63,9 @@ jobs:
     name: Deploy ${{ matrix.target }} on Netlify ${{ needs.check_changes.outputs.target_env }}
     runs-on: ubuntu-latest
     if: ${{ needs.check_changes.outputs.changed != '[]' }} && ${{ needs.check_changes.outputs.is_forked == false }}
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
     strategy:
       matrix:
         service: ${{fromJson( needs.check_changes.outputs.changed )}}
