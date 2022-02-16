@@ -65,7 +65,7 @@ jobs:
     if: ${{ needs.check_changes.outputs.changed != '[]' }} && ${{ needs.check_changes.outputs.is_forked == false }}
     strategy:
       matrix:
-        service: ${{fromJson( needs.monorepo-changes.outputs.changed )}}
+        service: ${{fromJson( needs.check_changes.outputs.changed )}}
     steps:
       - name: Parse secrets prefix
         id: set_prefix
