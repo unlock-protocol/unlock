@@ -1,6 +1,7 @@
 name: Deployments
 
 on:
+  pull_request:
   workflow_run:
     workflows: ["Unlock Test Suite"]
     types:
