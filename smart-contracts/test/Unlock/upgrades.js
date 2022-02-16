@@ -3,6 +3,10 @@ const { ethers, upgrades, run } = require('hardhat')
 const fs = require('fs-extra')
 const path = require('path')
 const createLockHash = require('../helpers/createLockCalldata')
+const {
+  LATEST_UNLOCK_VERSION,
+  LATEST_PUBLIC_LOCK_VERSION,
+} = require('../helpers/constants')
 
 // files path
 const contractsPath = path.resolve(
@@ -21,14 +25,16 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-const versionsCount = 11
 let unlock
-
 contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
-  for (let versionNumber = 0; versionNumber < versionsCount; versionNumber++) {
+  for (
+    let versionNumber = 0;
+    versionNumber < LATEST_UNLOCK_VERSION;
+    versionNumber++
+  ) {
     // skip the missing contracts (with flattening problems to be solved)
     if (versionNumber === 2 || versionNumber === 5) versionNumber++
 
@@ -107,7 +113,7 @@ contract('Unlock / upgrades', async (accounts) => {
         assert.equal(owner, unlockOwner.address)
       })
 
-      if (versionsCount && versionNumber <= versionsCount) {
+      if (versionNumber <= LATEST_UNLOCK_VERSION) {
         describe('Complete PublicLock configuration if require', () => {
           let publicLock
           let publicLockTemplate
@@ -270,7 +276,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
                 it('latest version number is correct', async () => {
                   const version = await await unlock.unlockVersion()
-                  assert.equal(version, versionsCount)
+                  assert.equal(version, LATEST_UNLOCK_VERSION)
                 })
 
                 it('Key id still set', async () => {
@@ -369,11 +375,9 @@ contract('Unlock / upgrades', async (accounts) => {
                   })
 
                   it('this version and latest version have different PublicLock version numbers', async () => {
-                    if (versionNumber !== versionsCount - 1) {
-                      // ignore last version
-                      const version = await lockLatest.publicLockVersion()
-                      assert.notEqual(await version, versionNumber)
-                    }
+                    // ignore last version
+                    const version = await lockLatest.publicLockVersion()
+                    assert.notEqual(version, versionNumber)
                   })
 
                   it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
@@ -396,7 +400,7 @@ contract('Unlock / upgrades', async (accounts) => {
                     const publicLockVersion = await (
                       await lockLatest.publicLockVersion()
                     ).toString()
-                    assert.equal(publicLockVersion, versionsCount - 1)
+                    assert.equal(publicLockVersion, LATEST_PUBLIC_LOCK_VERSION)
                   })
                 })
               })
