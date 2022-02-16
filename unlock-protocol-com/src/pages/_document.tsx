@@ -21,18 +21,6 @@ export default function Document() {
           type="application/atom+xml"
           title="Blog Atom Feed"
         />
-        <link
-          rel="alternate"
-          href="blog.xml"
-          type="application/rss+xml"
-          title="Blog RSS Feed"
-        />
-        <link
-          rel="alternate"
-          href="blog.json"
-          type="application/json"
-          title="Blog JSON feed"
-        />
       </Head>
       <body>
         <Main />

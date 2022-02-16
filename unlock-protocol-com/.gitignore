@@ -26,5 +26,3 @@ yarn-error.log*
 blog/blog.index
 public/blog.xml
 public/blog.rss
-public/blog.json
-public/blog.atom

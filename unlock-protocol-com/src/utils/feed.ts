@@ -52,7 +52,5 @@ export async function generateFeed(posts: PostType[]) {
     })
   }
 
-  await writeFile(path.join('public', 'blog.json'), feed.json1())
-  await writeFile(path.join('public', 'blog.xml'), feed.rss2())
-  await writeFile(path.join('public', 'blog.atom'), feed.atom1())
+  await writeFile(path.join('public', 'blog.xml'), feed.atom1())
 }
