@@ -13,20 +13,20 @@ jobs:
   # heroku deploys
   # deploy-locksmith-staging:
   #   if: contains(github.base_ref, 'master')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith
   #     app-name: unlock-locksmith-staging
   # deploy-locksmith-production:
   #   if: contains(github.base_ref, 'production')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith
   #     app-name: unlock-locksmith-production
 
   # deploy-locksmith-websub-staging:
   #   if: contains(github.base_ref, 'master')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith-websub
   #     build-dir: locksmith
@@ -36,7 +36,7 @@ jobs:
 
   # deploy-locksmith-websub-production:
   #   if: contains(github.base_ref, 'production')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith-websub
   #     build-dir: locksmith
@@ -47,35 +47,35 @@ jobs:
   # netlify deploys
   deploy-unlock-app-netlify:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-app
   deploy-paywall-to-netlify:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    uses: ./.github/workflows/_netlify.yml
     with:
       service: paywall-app
   deploy-unlock-protocol-com-netlify:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    uses: ./.github/workflows/_netlify.yml
     with:
       service: 'unlock-protocol-com'
   deploy-wedlocks-netlify:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
+    uses: ./.github/workflows/_netlify.yml
     with:
       service: 'wedlocks'
 
   # Fleek deloys
   # deploy-paywall-to-fleek:
-  #   uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+  #   uses: ./.github/workflows/_fleek.yml
   #   with:
   #     service: paywall-app
   # deploy-unlock-app-fleek:
-  #   uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+  #   uses: ./.github/workflows/_fleek.yml
   #   with:
   #     service: unlock-app
   # deploy-unlock-protocol-com-fleek:
-  #   uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+  #   uses: ./.github/workflows/_fleek.yml
   #   with:
   #     service: 'unlock-protocol-com'

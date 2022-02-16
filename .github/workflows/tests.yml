@@ -1,4 +1,9 @@
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - master
+      - production
+  pull_request:
 
 name: Unlock Test Suite
 jobs:
@@ -25,7 +30,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set env.BRANCH'
+      - name: 'Set GIT_BRANCH in env'
+        if: github.event_name != 'pull_request'
         id: branch_name
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
@@ -33,7 +39,7 @@ jobs:
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
       - name: 'Check which folders should run tests'
         run: |
-          if [ "${FORCE_ALL_TESTS}" == "true"] || ["${GIT_BRANCH}" == "master"] || ["${GIT_BRANCH}" == "production" ]; then
+          if [ "${FORCE_ALL_TESTS}" == "true" ] || [ "${GIT_BRANCH}" == "master" ] || [ "${GIT_BRANCH}" == "production" ]; then
             echo 'Run all tests'
             echo ::set-output name=changed::$TARGETS
           else 
