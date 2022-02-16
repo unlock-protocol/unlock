@@ -8,18 +8,18 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.16.7",
-    "@typescript-eslint/eslint-plugin": "5.8.1",
-    "@typescript-eslint/parser": "5.8.1",
+    "@babel/core": "7.16.12",
+    "@typescript-eslint/eslint-plugin": "5.10.2",
+    "@typescript-eslint/parser": "5.10.2",
     "babel-eslint": "10.1.0",
-    "babel-plugin-polyfill-corejs2": "0.3.0",
-    "eslint": "8.6.0",
+    "babel-plugin-polyfill-corejs2": "0.3.1",
+    "eslint": "8.8.0",
     "prettier": "2.5.1",
-    "typescript": "4.5.4"
+    "typescript": "4.5.5"
   },
   "devDependencies": {
     "husky": "7.0.4",
-    "lint-staged": "12.1.5"
+    "lint-staged": "12.3.3"
   },
   "workspaces": [
     "packages/**",
@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts}'",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui}'",
     "packages:clean": "yarn packages --parallel run clean",
     "packages:build": "yarn packages --topological-dev run build",
     "packages:publish": "yarn packages --no-private npm publish ",

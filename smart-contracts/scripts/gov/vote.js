@@ -32,7 +32,9 @@ async function main({ voter, proposalId }) {
     // make sure proposal state is active
     const state = await getProposalState(proposalId)
     if (state === 'Pending') {
-      await time.advanceBlock()
+      // wait for a block (default voting delay)
+      const currentBlock = await ethers.provider.getBlockNumber()
+      await time.advanceBlockTo(currentBlock + 2)
     }
   }
 
