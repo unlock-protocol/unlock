@@ -26,7 +26,7 @@ jobs:
       - name: Check if forked PR
         id: is_forked
         run: |
-          echo "::set-output name=is_forked::${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}}
+          echo "::set-output name=is_forked::${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}}"
       - name: Set target environment
         id: set_target
         run: |
