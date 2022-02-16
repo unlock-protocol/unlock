@@ -62,19 +62,19 @@
     ]
   },
   "scripts": {
-    "test": "yarn hardhat test",
+    "test": "hardhat test",
     "clean": "rm -rf artifacts",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code",
     "lintFix": "yarn lint:contracts --fix && yarn lint:code --fix",
-    "coverage": "yarn hardhat coverage",
+    "coverage": "hardhat coverage",
     "dev": "yarn lint && yarn build && yarn test",
     "ci": "yarn lint && yarn test",
     "build": "hardhat compile",
-    "verify": "yarn hardhat verify",
-    "hardhat": "yarn hardhat",
-    "deploy-all": "yarn hardhat deploy"
+    "verify": "hardhat verify",
+    "hardhat": "hardhat",
+    "deploy-all": "hardhat deploy"
   },
   "author": "",
   "license": "ISC"
