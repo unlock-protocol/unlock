@@ -2,7 +2,7 @@ name: Deployments
 
 on:
   workflow_run:
-    workflows: ["tests"]
+    workflows: ["Unlock Test Suite"]
     types:
       - completed
     branches:
@@ -46,18 +46,22 @@ jobs:
 
   # netlify deploys
   deploy-unlock-app-netlify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
     with:
       service: unlock-app
   deploy-paywall-to-netlify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
     with:
       service: paywall-app
   deploy-unlock-protocol-com-netlify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
     with:
       service: 'unlock-protocol-com'
   deploy-wedlocks-netlify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: unlock-protocol/unlock/.github/workflows/_netlify.yml@gh-actions
     with:
       service: 'wedlocks'
