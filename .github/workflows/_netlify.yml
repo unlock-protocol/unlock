@@ -31,6 +31,9 @@ jobs:
         id: set_target
         run: |
           echo "::set-output name=target::${{ contains(github.base_ref, 'production') && 'prod' || 'staging' }}"
+      - name: Show Netlify script params
+        run: |
+          echo "${{ steps.set_target.outputs.target }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ steps.is_forked.outputs.is_forked }}"
       - name: Deploy to Netlify
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
