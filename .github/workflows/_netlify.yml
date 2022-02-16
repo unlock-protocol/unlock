@@ -33,8 +33,20 @@ jobs:
         id: set_target
         run: |
           echo "::set-output name=target::${{ contains(github.base_ref, 'production') && 'prod' || 'staging' }}"
+      - name: Parse secrets prefix
+        id: set_prefix
+        run: |
+          PREFIX="${{ inputs.service }}_NETLIFY_${{ steps.set_target.outputs.target }}"
+          SITE_ID="${$PREFIX^^}_SITE_ID"
+          AUTH_TOKEN="${$PREFIX^^}_AUTH_TOKEN"
+          echo "::set-output name=site_id::$SITE_ID"
+          echo "::set-output name=auth_token::$AUTH_TOKEN"
       - name: Show Netlify script params
         run: |
+          PREFIX="${{ inputs.service }}_NETLIFY_${{ steps.set_target.outputs.target }}"
+          UPCASE_PREFIX="${$PREFIX^^}"
+          export ${{ steps.set_prefix.outputs.site_id }}="${{ secrets[steps.set_prefix.outputs.site_id] }}"
+          echo ${{ steps.set_prefix.outputs.site_id }}
           echo "${{ steps.set_target.outputs.target }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ steps.is_forked.outputs.is_forked }}"
       - name: Deploy to Netlify
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
