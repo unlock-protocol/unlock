@@ -43,7 +43,9 @@ jobs:
           echo "::set-output name=auth_token::${PREFIX^^}_AUTH_TOKEN"
       - name: Export secrets to env
         run: |
-          echo "${{ steps.set_prefix.outputs.site_id }}=${{ secrets[steps.set_prefix.outputs.site_id] }}" >> $GITHUB_ENV
+          echo "${{ steps.set_prefix.outputs.site_id }}=$SITE_ID >> $GITHUB_ENV
+        env:
+          SITE_ID: ${{ secrets[steps.set_prefix.outputs.site_id] }}
       - name: Deploy to Netlify
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
