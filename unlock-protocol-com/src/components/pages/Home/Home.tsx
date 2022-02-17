@@ -1,23 +1,35 @@
 import { Connect } from './sections/Connect'
 import { Developer } from './sections/Developer'
 import { Steps } from './sections/Steps'
-import { MarketingLayout } from '../../layout/MarketingLayout'
 import { Public } from './sections/Public'
 import { Community } from './sections/Community'
 import { Recipes } from './sections/Recipe'
-
-const SECTIONS = [Connect, Steps, Developer, Recipes, Public, Community]
+import { Layout } from '../../layout/DefaultLayout'
+import { CenteredColumn } from '../../layout/Columns'
 
 export function Home() {
   return (
-    <MarketingLayout>
-      <div className="grid gap-y-8 sm:gap-y-12 md:gap-y-18">
-        {SECTIONS.map((Section, index) => (
-          <div key={index}>
-            <Section />
-          </div>
-        ))}
+    <Layout>
+      <div className="pt-16 pb-8">
+        <CenteredColumn className="px-6 py-8 sm:py-16">
+          <Connect />
+        </CenteredColumn>
+        <CenteredColumn className="px-6 py-16 sm:py-20">
+          <Steps />
+        </CenteredColumn>
+        <CenteredColumn className="px-6 py-8 sm:py-20">
+          <Developer />
+        </CenteredColumn>
+        <div className="py-4">
+          <Recipes />
+        </div>
+        <CenteredColumn className="px-6 py-8 sm:py-16">
+          <Public />
+        </CenteredColumn>
+        <CenteredColumn className="px-6 py-16">
+          <Community />
+        </CenteredColumn>
       </div>
-    </MarketingLayout>
+    </Layout>
   )
 }

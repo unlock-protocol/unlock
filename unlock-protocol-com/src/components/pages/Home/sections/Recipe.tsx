@@ -4,7 +4,8 @@ import {
 } from 'react-icons/fa'
 import { Link } from '../../../helpers/Link'
 import { AirdropIcon, NFTTicketIcon } from '../../../icons/Util'
-
+import useEmblaCarousel from 'embla-carousel-react'
+import { CenteredColumn } from '../../../layout/Columns'
 export const UNLOCK_RECIPES = [
   {
     Icon: WordpressIcon,
@@ -29,26 +30,42 @@ export const UNLOCK_RECIPES = [
 ]
 
 export function Recipes() {
+  const [viewportRef] = useEmblaCarousel({
+    dragFree: true,
+    slidesToScroll: 1,
+    containScroll: 'trimSnaps',
+  })
   return (
-    <div className="space-y-2">
-      <header className="flex justify-between">
-        <h2 className="font-bold text-xl sm:text-3xl"> Recipes </h2>
-        <Link> Explore more recipes </Link>
-      </header>
-      <div className="flex gap-6 py-6 overflow-x-scroll max-w-xs md:max-w-4xl lg:max-w-screen-lg">
-        {UNLOCK_RECIPES.map(({ Icon, text, href }, index) => (
-          <Link key={index} href={href}>
-            <div className="glass-pane rounded-3xl p-6 flex flex-col h-48 w-64 justify-between">
-              <div>
-                <Icon className="fill-brand-ui-primary" size={40} />
-              </div>
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium"> {text}</h3>
-              </div>
-            </div>
+    <>
+      <CenteredColumn as="header" className="px-6">
+        <div className="flex items-center justify-between pl-1">
+          <h2 className="text-xl font-bold sm:text-3xl"> Recipes </h2>
+          <Link
+            href="https://docs.unlock-protocol.com/unlock/creators/tutorials-1"
+            className="text-sm font-medium uppercase text-brand-ui-primary sm:text-base"
+          >
+            Explore more recipes {'->'}
           </Link>
-        ))}
+        </div>
+      </CenteredColumn>
+      <div className="relative max-w-sm mx-auto md:max-w-3xl lg:pl-16 xl:pl-52 2xl:pl-96 2xl:ml-20 lg:max-w-none">
+        <div className="overflow-hidden cursor-move" ref={viewportRef}>
+          <div className="flex gap-8 p-8 ml-8 select-none">
+            {UNLOCK_RECIPES.map(({ Icon, text, href }, index) => (
+              <Link key={index} href={href}>
+                <div className="flex flex-col justify-between w-64 p-6 h-52 glass-pane rounded-3xl">
+                  <div>
+                    <Icon className="fill-brand-ui-primary" size={40} />
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-medium"> {text}</h3>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

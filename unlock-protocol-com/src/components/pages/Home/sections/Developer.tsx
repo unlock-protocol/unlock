@@ -1,6 +1,7 @@
 import { TabbedCodeBox, Button } from '@unlock-protocol/ui'
 import { UNLOCK_LINKS } from '../../../../config/constants'
 import { Link } from '../../../helpers/Link'
+import { CenteredColumn } from '../../../layout/Columns'
 
 const CODE_BLOCKS: React.ComponentProps<typeof TabbedCodeBox>['blocks'] = [
   {
@@ -52,34 +53,36 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 
 export function Developer() {
   return (
-    <div className="grid items-center justify-between gap-8 sm:grid-flow-col">
-      <div>
-        <div className="grid gap-4 sm:gap-6 max-w-[350px]">
-          <header>
-            <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">
-              You&apos;re a dev? We got this.
-            </h3>
-          </header>
-          <div>
-            <p className="text-lg sm:text-xl text-brand-gray">
-              We&apos;re a protocol - not a platform. We&apos;re free,
-              community-owned, and possess limitless opportunities for
-              customization.
-            </p>
-          </div>
-          <div>
-            <Button>
-              <Link href={UNLOCK_LINKS.developers}>Visit our docs</Link>
-            </Button>
+    <CenteredColumn>
+      <div className="grid items-center justify-between gap-8 sm:grid-flow-col">
+        <div>
+          <div className="grid gap-4 sm:gap-6 max-w-[350px]">
+            <header>
+              <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">
+                You&apos;re a dev? We got this.
+              </h3>
+            </header>
+            <div>
+              <p className="text-lg sm:text-xl text-brand-gray">
+                We&apos;re a protocol - not a platform. We&apos;re free,
+                community-owned, and possess limitless opportunities for
+                customization.
+              </p>
+            </div>
+            <div>
+              <Button>
+                <Link href={UNLOCK_LINKS.developers}>Visit our docs</Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="grid">
-        <div className="min-w-[330px] max-w-[450px]">
-          <TabbedCodeBox blocks={CODE_BLOCKS} />
+        <div className="grid">
+          <div className="min-w-[330px] max-w-[450px]">
+            <TabbedCodeBox blocks={CODE_BLOCKS} />
+          </div>
         </div>
       </div>
-    </div>
+    </CenteredColumn>
   )
 }
