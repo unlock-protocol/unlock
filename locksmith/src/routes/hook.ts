@@ -20,10 +20,15 @@ router.post('/:network/locks/:lock/keys', (req, res) =>
   hookController.handle(req, res)
 )
 
+router.post('/:network/keys', (req, res) => hookController.handle(req, res))
+
 router.get('/:network/locks', (req, res) =>
   hubPublisherController.handle(req, res)
 )
 router.get('/:network/locks/:lock/keys', (req, res) =>
+  hubPublisherController.handle(req, res)
+)
+router.get('/:network/keys', (req, res) =>
   hubPublisherController.handle(req, res)
 )
 
@@ -31,6 +36,10 @@ router.head('/:network/locks', (req, res) =>
   hubPublisherController.handle(req, res)
 )
 router.head('/:network/locks/:lock/keys', (req, res) =>
+  hubPublisherController.handle(req, res)
+)
+
+router.head('/:network/keys', (req, res) =>
   hubPublisherController.handle(req, res)
 )
 
