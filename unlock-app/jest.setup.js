@@ -7,7 +7,7 @@ import 'jest-styled-components'
 jest.doMock('next/config', () => {
   const mockConfig = require('./next.config')
   return jest.fn(() => ({
-    publicRuntimeConfig : mockConfig.publicRuntimeConfig
+    publicRuntimeConfig: mockConfig.publicRuntimeConfig
   })
 })
 

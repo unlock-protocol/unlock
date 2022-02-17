@@ -4,6 +4,7 @@ import { Lock } from '../../graphql/datasource'
 import { Hook, ProcessedHookItem } from '../../models'
 import { TOPIC_LOCKS } from '../topics'
 import { notifyHook, filterHooksByTopic } from '../helpers'
+import { logger } from '../../logger'
 
 const FETCH_LIMIT = 25
 
@@ -39,8 +40,13 @@ async function notifyHooksOfAllUnprocessedLocks(
 
     // If empty, break the loop and return as there are no more new locks to process.
     if (!locks.length) {
+      logger.info('No new locks for', { network })
       break
     }
+
+    logger.info('Found new locks', {
+      locks: locks.map((lock: any) => [network, lock.id]),
+    })
 
     await Promise.all(
       hooks.map(async (hook) => {
