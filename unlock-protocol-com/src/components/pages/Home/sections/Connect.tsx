@@ -1,7 +1,8 @@
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
 import { BulletPointIcon } from '../../../icons'
-const UNLOCK_MARKETING_POINTS = [
+
+const UNLOCK_BENEFITS = [
   'Create memberships and sell access NFTs in minutes',
   'Token-gating, memberships, ticketing, and more',
   'Open-source, community governed',
@@ -19,12 +20,12 @@ export function Connect() {
             For creative communities and the humans who build them
           </p>
         </div>
-        <div className="py-8">
+        <div className="py-6">
           <ul>
-            {UNLOCK_MARKETING_POINTS.map((text, index) => (
+            {UNLOCK_BENEFITS.map((text, index) => (
               <li
                 className={`border-t border-brand-gray py-4 items-center flex gap-4 ${
-                  !UNLOCK_MARKETING_POINTS[index + 1] && 'border-b'
+                  !UNLOCK_BENEFITS[index + 1] && 'border-b'
                 }`}
                 key={index}
               >
