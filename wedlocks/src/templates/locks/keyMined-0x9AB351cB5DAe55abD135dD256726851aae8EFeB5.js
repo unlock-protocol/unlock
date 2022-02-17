@@ -15,4 +15,3 @@ If you have any questions, email us at tickets@ethereum-france.com
 The EthCC team! 🤘
 `,
 }
-
