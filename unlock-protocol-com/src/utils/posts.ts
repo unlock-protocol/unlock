@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import matter from 'gray-matter'
+import { markdownToHtml } from './markdown'
 
 const { readFile, readdir } = fs.promises
 
@@ -15,10 +16,12 @@ export async function getPost(
   const post = await readFile(postFileAbsolutePath, 'utf-8')
   const { content, data } = matter(post)
   const slug = postFilePath.replace(POST_EXTENTION_REGEX, '')
+  const htmlContent = await markdownToHtml(content)
   return {
     content,
     filePath: postFilePath,
     slug,
+    htmlContent,
     frontMatter: data as PostFrontMatter,
   }
 }
@@ -56,6 +59,7 @@ export interface PostType {
   content: string
   filePath: string
   slug: string
+  htmlContent: string
 }
 
 export interface PostsIndexType {

@@ -1,10 +1,10 @@
 import type { PostType } from '../../../utils/posts'
 import { MarketingLayout } from '../../layout/MarketingLayout'
 export interface Props extends PostType {
-  html: string
+  htmlContent: string
 }
 
-export function Post({ frontMatter, html }: Props) {
+export function Post({ frontMatter, htmlContent }: Props) {
   const publishedDate = new Date(frontMatter.publishDate).toLocaleDateString()
   return (
     <MarketingLayout>
@@ -25,7 +25,7 @@ export function Post({ frontMatter, html }: Props) {
             </div>
           </header>
           <div
-            dangerouslySetInnerHTML={{ __html: html }}
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
             className="prose sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate "
           />
         </div>

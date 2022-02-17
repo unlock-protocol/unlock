@@ -4,7 +4,6 @@ import path from 'path'
 import { PostsIndex } from '../../components/pages/Blog'
 import { Post } from '../../components/pages/Blog/Post'
 import {
-  markdownToHtml,
   getPosts,
   BLOG_PATH,
   getPost,
@@ -18,7 +17,6 @@ interface PostsIndexProps extends PostsIndexType {
 
 interface PostProps extends PostType {
   type: 'post'
-  html: string
 }
 
 type Props = PostProps | PostsIndexProps
@@ -71,11 +69,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     }
   } else {
     const post = await getPost(`${slug}.md`, BLOG_PATH)
-    const html = await markdownToHtml(post.content)
+
     return {
       props: {
         type: 'post',
-        html,
         ...post,
       },
     }

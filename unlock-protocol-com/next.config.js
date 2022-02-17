@@ -2,11 +2,7 @@
 const dotenv = require('dotenv')
 const path = require('path')
 const fs = require('fs')
-const { join, resolve } = require('path')
 const { promisify } = require('util')
-const { addBlogPagesToPageObject } = require('./src/utils/blog')
-
-const copyFile = promisify(fs.copyFile)
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
