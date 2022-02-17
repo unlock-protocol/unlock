@@ -46,22 +46,13 @@ jobs:
             ${{ env.cache-name }}-
       - name: Restore docker
         run: .github/actions/docker-cache/restore.sh ${{ runner.temp }}/docker_cache/cache.tar
-      - name: Parse secrets prefix
-        id: set_prefix
-        run: |
+      - name: "Export secrets to env"
+        id: filter_secrets
+        run: | 
           SERVICE_NAME="${{ matrix.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ needs.check_changes.outputs.target_env }}"
-          echo "::set-output name=site_id::${PREFIX^^}_SITE_ID"
-          echo "::set-output name=auth_token::${PREFIX^^}_AUTH_TOKEN"
-          echo "::set-output name=test_secret::HELLO"
-      - name: Export secrets to env
-        run: |
-          echo "${{ steps.set_prefix.outputs.site_id }}=$SITE_ID" >> $GITHUB_ENV
-          echo "${{ steps.set_prefix.outputs.auth_token }}=$AUTH_TOKEN" >> $GITHUB_ENV
-        env:
-          SITE_ID: ${{ secrets[ steps.set_prefix.outputs.site_id ] }}
-          AUTH_TOKEN: ${{ secrets[ steps.set_prefix.outputs.auth_token ] }}
+          bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' ${PREFIX^^}
       - name: Deploy to Netlify
         run: |
           # show args
