@@ -48,14 +48,14 @@ export function Recipes() {
           </Link>
         </div>
       </CenteredColumn>
-      <div className="relative max-w-sm mx-auto md:max-w-3xl lg:pl-16 xl:pl-52 2xl:pl-96 2xl:ml-20 lg:max-w-none">
+      <div className="relative mx-auto lg:max-w-screen-lg max-w-fit">
         <div className="overflow-hidden cursor-move" ref={viewportRef}>
           <div className="flex gap-8 p-8 ml-8 select-none">
             {UNLOCK_RECIPES.map(({ Icon, text, href }, index) => (
               <Link key={index} href={href}>
-                <div className="flex flex-col justify-between w-64 p-6 h-52 glass-pane rounded-3xl">
+                <div className="flex flex-col justify-between p-6 w-72 h-52 glass-pane rounded-3xl">
                   <div>
-                    <Icon className="fill-brand-ui-primary" size={40} />
+                    <Icon className="fill-brand-ui-primary" size={48} />
                   </div>
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium"> {text}</h3>

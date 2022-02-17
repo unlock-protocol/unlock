@@ -54,9 +54,9 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 export function Developer() {
   return (
     <CenteredColumn>
-      <div className="grid items-center justify-between gap-8 sm:grid-flow-col">
+      <div className="flex flex-col justify-between gap-8 sm:items-center sm:flex-row sm:grid-flow-col">
         <div>
-          <div className="grid gap-4 sm:gap-6 max-w-[350px]">
+          <div className="flex flex-col gap-4 sm:gap-6 max-w-[350px]">
             <header>
               <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">
                 You&apos;re a dev? We got this.
@@ -77,8 +77,8 @@ export function Developer() {
           </div>
         </div>
 
-        <div className="grid">
-          <div className="min-w-[330px] max-w-[450px]">
+        <div>
+          <div className="max-w-fit sm:max-w-lg">
             <TabbedCodeBox blocks={CODE_BLOCKS} />
           </div>
         </div>
