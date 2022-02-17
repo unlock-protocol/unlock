@@ -28,7 +28,7 @@ async function main({ proposal }) {
     const deadline = await gov.proposalDeadline(proposalId)
     const currentBlock = await ethers.provider.getBlockNumber()
     if (currentBlock < deadline) {
-      await time.advanceBlockTo(deadline.toNumber())
+      await time.advanceBlockTo(deadline.toNumber() + 1)
       // eslint-disable-next-line no-console
       console.log(
         `GOV QUEUE > closing voting period (advancing to block #${deadline.toNumber()})`

@@ -42,7 +42,8 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
     )
   }
 })
-module.exports = {
+
+const nextConfig = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({
@@ -56,3 +57,5 @@ module.exports = {
     return config
   },
 }
+
+module.exports = nextConfig

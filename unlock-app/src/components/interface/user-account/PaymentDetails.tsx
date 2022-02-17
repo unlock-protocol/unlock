@@ -113,7 +113,7 @@ export const Form = ({
       {loading && <LoadingButton>Saving</LoadingButton>}
       {!loading && (
         <button
-          className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-2 font-medium rounded hover:bg-[#59c245]"
+          className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-3 font-medium rounded hover:bg-[#59c245]"
           type="submit"
           disabled={!stripe}
         >
