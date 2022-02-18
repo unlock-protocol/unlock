@@ -1,4 +1,3 @@
-const BigNumber = require('bignumber.js')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -13,7 +12,6 @@ contract('Lock / uniqueTokenIds', (accounts) => {
   let keyOwner1 = accounts[1]
   let keyOwner2 = accounts[2]
   const keyOwners = [keyOwner1, keyOwner2, accounts[3], accounts[4]]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
   before(async () => {
     unlock = await getProxy(unlockContract)
