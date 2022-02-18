@@ -1,7 +1,6 @@
 name: "Heroku Deployments"
 
 on:
-  pull_request:
   workflow_run:
     workflows: ["Unlock Test Suite"]
     types:
@@ -11,41 +10,39 @@ on:
       - production
 
 jobs:
-
-  # heroku deploys
   deploy-locksmith-staging:
-    # if: contains(github.base_ref, 'master')
+    if: contains(github.base_ref, 'master')
     uses: ./.github/workflows/_heroku.yml
     with:
       service: locksmith
       app-name: unlock-locksmith-staging
 
-  # deploy-locksmith-production:
-  #   if: contains(github.base_ref, 'production')
-  #   uses: ./.github/workflows/_heroku.yml
-  #   with:
-  #     service: locksmith
-  #     app-name: unlock-locksmith-production
+  deploy-locksmith-production:
+    if: contains(github.base_ref, 'production')
+    uses: ./.github/workflows/_heroku.yml
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-production
 
-  # deploy-locksmith-websub-staging:
-  #   if: contains(github.base_ref, 'master')
-  #   uses: ./.github/workflows/_heroku.yml
-  #   with:
-  #     service: locksmith-websub
-  #     build-dir: locksmith
-  #     command: "yarn websub:prod"
-  #     container-type: worker
-  #     app-name: locksmith-websub-staging
+  deploy-locksmith-websub-staging:
+    if: contains(github.base_ref, 'master')
+    uses: ./.github/workflows/_heroku.yml
+    with:
+      service: locksmith-websub
+      build-dir: locksmith
+      command: "yarn websub:prod"
+      container-type: worker
+      app-name: locksmith-websub-staging
 
-  # deploy-locksmith-websub-production:
-  #   if: contains(github.base_ref, 'production')
-  #   uses: ./.github/workflows/_heroku.yml
-  #   with:
-  #     service: locksmith-websub
-  #     build-dir: locksmith
-  #     command: "yarn websub:prod"
-  #     container-type: worker
-  #     app-name: locksmith-websub-production
+  deploy-locksmith-websub-production:
+    if: contains(github.base_ref, 'production')
+    uses: ./.github/workflows/_heroku.yml
+    with:
+      service: locksmith-websub
+      build-dir: locksmith
+      command: "yarn websub:prod"
+      container-type: worker
+      app-name: locksmith-websub-production
 
   # Fleek deloys
   # deploy-paywall-to-fleek:
