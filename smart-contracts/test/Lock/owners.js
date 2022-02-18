@@ -17,16 +17,17 @@ contract('Lock / owners', (accounts) => {
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
-  before(() => {
+  before(async () => {
+    const keyOwners = accounts.slice(1, 5)
     // Purchase keys!
     await lock.purchase(
       0,
-      accounts.slice(1, 4),
-      [1, 2, 3, 4].map(() => web3.utils.padLeft(0, 40)),
-      [1, 2, 3, 4].map(() => web3.utils.padLeft(0, 40)),
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
       [],
       {
-        value: (lock.params.keyPrice * 4).toFixed(),
+        value: (lock.params.keyPrice * keyOwners.length).toFixed(),
         from: accounts[0],
       }
     )
