@@ -1,4 +1,4 @@
-name: Deployments
+name: "Heroku Deployments"
 
 on:
   pull_request:
@@ -15,21 +15,21 @@ jobs:
   # heroku deploys
   deploy-locksmith-staging:
     # if: contains(github.base_ref, 'master')
-    uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+    uses: ./.github/workflows/_heroku.yml
     with:
       service: locksmith
       app-name: unlock-locksmith-staging
 
   # deploy-locksmith-production:
   #   if: contains(github.base_ref, 'production')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith
   #     app-name: unlock-locksmith-production
 
   # deploy-locksmith-websub-staging:
   #   if: contains(github.base_ref, 'master')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith-websub
   #     build-dir: locksmith
@@ -39,7 +39,7 @@ jobs:
 
   # deploy-locksmith-websub-production:
   #   if: contains(github.base_ref, 'production')
-  #   uses: unlock-protocol/unlock/.github/workflows/_heroku.yml@gh-actions
+  #   uses: ./.github/workflows/_heroku.yml
   #   with:
   #     service: locksmith-websub
   #     build-dir: locksmith
@@ -49,14 +49,14 @@ jobs:
 
   # Fleek deloys
   # deploy-paywall-to-fleek:
-  #   uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+  #   uses: ./.github/workflows/_fleek.yml
   #   with:
   #     service: paywall-app
   # deploy-unlock-app-fleek:
-  #   uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+  #   uses: ./.github/workflows/_fleek.yml
   #   with:
   #     service: unlock-app
   # deploy-unlock-protocol-com-fleek:
-  #   uses: unlock-protocol/unlock/.github/workflows/_fleek.yml@gh-actions
+  #   uses: ./.github/workflows/_fleek.yml
   #   with:
   #     service: 'unlock-protocol-com'
