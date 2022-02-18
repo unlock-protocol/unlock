@@ -18,9 +18,9 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     lock = locks.FIRST
     await lock.purchase(
       keyPrice,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         from: accounts[1],
@@ -54,9 +54,9 @@ contract('Unlock / resetTrackedValue', (accounts) => {
       beforeEach(async () => {
         await lock.purchase(
           keyPrice,
-          accounts[2],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[2]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             from: accounts[2],
@@ -86,9 +86,9 @@ contract('Unlock / resetTrackedValue', (accounts) => {
       beforeEach(async () => {
         await lock.purchase(
           keyPrice,
-          accounts[2],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[2]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             from: accounts[2],
