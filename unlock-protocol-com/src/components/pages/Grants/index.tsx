@@ -95,7 +95,7 @@ const UNLOCK_PAST_COHORTS = [
     name: 'Unlock Firebase Plugin',
     avatarURL: '/images/marketing/grants/david-layton.png',
     by: 'David Layton',
-    text: 'Firebase plugin for unlock to allow anyone using firebase to quickly tokengate parts of their app.',
+    text: 'Firebase plugin for unlock to allow anyone using firebase to quickly token-gate parts of their app.',
   },
   {
     name: 'Dinner DAO',
@@ -107,13 +107,13 @@ const UNLOCK_PAST_COHORTS = [
     name: 'Tales of Ronin',
     avatarURL: '/images/marketing/grants/caroline.png',
     by: 'Carolin',
-    text: 'A NFT Artist who uses Unlock to tokengate their story writing. Members can vote on the story. ',
+    text: 'A NFT Artist who uses Unlock to token-gate their story writing. Members can vote on the story. ',
   },
   {
     name: 'Decentraland',
     avatarURL: '/images/marketing/grants/henry-hoffman.png',
     by: 'Henry Hoffman',
-    text: 'Unlock Decentraland Integration allow you to token-gate access to digital spaces in Decentraland and also allow visitors to purchase memberships in order to join.',
+    text: 'Unlock Decentraland Integration allow you to token-gate access to digital spaces and sell memberships in Decentraland ',
   },
 ]
 
@@ -134,7 +134,7 @@ export function Grants() {
           <Button
             as={Link}
             href={UNLOCK_GRANT_APPLICATION_LINK}
-            iconLeft={<UnlockIcon className="fill-white" size={16} />}
+            iconLeft={<UnlockIcon key={1} className="fill-white" size={16} />}
           >
             Apply to Unlock Grant Program
           </Button>
@@ -165,9 +165,12 @@ export function Grants() {
 
       <section className="pt-12 space-y-12">
         <header className="flex flex-col items-center justify-center space-y-1">
-          <h3 className="text-xl font-bold sm:text-3xl"> Meet our Grantees </h3>
+          <h3 className="text-xl font-bold sm:text-3xl">
+            Check out projects from our grantees
+          </h3>
           <p className="text-lg text-center sm:text-xl text-brand-gray">
-            Some of the folks who have built amazing things with Unlock.{' '}
+            Some amazing applications built using Unlock with support of our
+            grant program.
           </p>
         </header>
         <div className="space-y-8">
@@ -241,13 +244,16 @@ export function Grants() {
       <section className="pt-16">
         <header className="flex flex-col items-center justify-center pb-8 space-y-1 text-center">
           <h3 className="text-xl font-bold sm:text-3xl">
-            Meet some folks from our previuos cohort
+            Meet folks from our previous cohorts
           </h3>
         </header>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {UNLOCK_PAST_COHORTS.map(({ by, text, name, avatarURL }, index) => (
-            <div className="p-6 space-y-4 glass-pane rounded-3xl" key={index}>
-              <header className="flex flex-col items-center justify-center text-center">
+            <div
+              className="p-6 space-y-4 text-center glass-pane rounded-3xl"
+              key={index}
+            >
+              <header className="flex flex-col items-center justify-center ">
                 <img
                   className="w-20 mb-6 rounded-full"
                   src={avatarURL}
@@ -255,7 +261,7 @@ export function Grants() {
                 />
                 <div>
                   <h4 className="font-semibold"> {name} </h4>
-                  <p className="text-brand-gray"> {by} </p>
+                  <p className=" text-brand-gray"> {by} </p>
                 </div>
               </header>
               <p>{text}</p>
@@ -333,7 +339,7 @@ export function Grants() {
             <Button
               as={Link}
               href={UNLOCK_GRANT_APPLICATION_LINK}
-              iconLeft={<UnlockIcon className="fill-white" size={16} />}
+              iconLeft={<UnlockIcon key={1} className="fill-white" size={16} />}
             >
               Apply to Unlock Grant Program
             </Button>
