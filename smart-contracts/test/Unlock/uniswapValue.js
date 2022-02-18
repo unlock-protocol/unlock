@@ -153,9 +153,9 @@ contract('Unlock / uniswapValue', (accounts) => {
         await token.approve(lock.address, keyPrice, { from: keyOwner })
         tx = await lock.purchase(
           keyPrice,
-          keyOwner,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [keyOwner],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             from: keyOwner,
@@ -223,9 +223,9 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         tx = await lock.purchase(
           keyPrice,
-          keyOwner,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [keyOwner],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             from: keyOwner,
@@ -273,9 +273,9 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         tx = await lock.purchase(
           keyPrice,
-          keyOwner,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [keyOwner],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             from: keyOwner,

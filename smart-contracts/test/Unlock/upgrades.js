@@ -375,9 +375,9 @@ contract('Unlock / upgrades', async (accounts) => {
                     // Buy Key
                     await lockLatest.purchase(
                       0,
-                      keyOwner.address,
-                      web3.utils.padLeft(0, 40),
-                      web3.utils.padLeft(0, 40),
+                      [keyOwner.address],
+                      [web3.utils.padLeft(0, 40)],
+                      [web3.utils.padLeft(0, 40)],
                       [],
                       { value: keyPrice }
                     )
@@ -412,6 +412,21 @@ contract('Unlock / upgrades', async (accounts) => {
         })
       }
       async function purchaseKey(lock) {
+        if (versionNumber >= 11) {
+          // Lock Version 11 multiple purchases
+          return await lock
+            .connect(lockOwner)
+            .purchase(
+              0,
+              [keyOwner.address],
+              [web3.utils.padLeft(0, 40)],
+              [web3.utils.padLeft(0, 40)],
+              [],
+              {
+                value: keyPrice,
+              }
+            )
+        }
         if (versionNumber >= 9) {
           // Lock Version 9 (used by Unlock v10) added keyManager to purchase
           return await lock
