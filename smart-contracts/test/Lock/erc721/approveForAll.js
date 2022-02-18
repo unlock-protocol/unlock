@@ -23,9 +23,9 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
     before(async () => {
       await lock.purchase(
         0,
-        owner,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [owner],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: web3.utils.toWei('0.01', 'ether'),

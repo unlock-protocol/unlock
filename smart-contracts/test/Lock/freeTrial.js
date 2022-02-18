@@ -17,20 +17,17 @@ contract('Lock / freeTrial', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.SECOND
-    const purchases = keyOwners.map((account) => {
-      return lock.purchase(
-        0,
-        account,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: keyPrice.toFixed(),
-          from: account,
-        }
-      )
-    })
-    await Promise.all(purchases)
+    await lock.purchase(
+      0,
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      [],
+      {
+        value: (keyPrice * keyOwners.length).toFixed(),
+        from: keyOwners[1],
+      }
+    )
   })
 
   it('No free trial by default', async () => {

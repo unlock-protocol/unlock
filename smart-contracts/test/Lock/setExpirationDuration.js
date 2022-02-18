@@ -45,9 +45,9 @@ contract('Lock / setExpirationDuration', () => {
       .connect(buyer)
       .purchase(
         keyPrice.toString(),
-        buyer.address,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [buyer.address],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: keyPrice.toString(),
@@ -66,9 +66,9 @@ contract('Lock / setExpirationDuration', () => {
       .connect(buyer2)
       .purchase(
         keyPrice.toString(),
-        buyer2.address,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [buyer2.address],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: keyPrice.toString(),
@@ -88,9 +88,9 @@ contract('Lock / setExpirationDuration', () => {
       .connect(buyer)
       .purchase(
         keyPrice.toString(),
-        buyer.address,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [buyer.address],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: keyPrice.toString(),

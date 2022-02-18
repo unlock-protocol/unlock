@@ -19,20 +19,16 @@ contract('Lock / owners', (accounts) => {
 
   before(() => {
     // Purchase keys!
-    return Promise.all(
-      [1, 2, 3, 4].map((d) =>
-        lock.purchase(
-          0,
-          accounts[d],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: lock.params.keyPrice.toFixed(),
-            from: accounts[0],
-          }
-        )
-      )
+    await lock.purchase(
+      0,
+      accounts.slice(1, 4),
+      [1, 2, 3, 4].map(() => web3.utils.padLeft(0, 40)),
+      [1, 2, 3, 4].map(() => web3.utils.padLeft(0, 40)),
+      [],
+      {
+        value: (lock.params.keyPrice * 4).toFixed(),
+        from: accounts[0],
+      }
     )
   })
 
@@ -126,9 +122,9 @@ contract('Lock / owners', (accounts) => {
       // someone buys a key again for the previous owner
       await lock.purchase(
         0,
-        accounts[4],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [accounts[4]],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: lock.params.keyPrice.toFixed(),

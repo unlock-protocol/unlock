@@ -156,18 +156,15 @@ contract('Lock / withdraw', (accounts) => {
 })
 
 async function purchaseKeys(accounts) {
-  const purchases = [accounts[1], accounts[2]].map((account) => {
-    return lock.purchase(
-      0,
-      account,
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
-      [],
-      {
-        value: price,
-        from: account,
-      }
-    )
-  })
-  await Promise.all(purchases)
+  await lock.purchase(
+    0,
+    [accounts[1], accounts[2]],
+    [1, 2].map(() => web3.utils.padLeft(0, 40)),
+    [1, 2].map(() => web3.utils.padLeft(0, 40)),
+    [],
+    {
+      value: price * 2,
+      from: accounts[1],
+    }
+  )
 }

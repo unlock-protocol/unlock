@@ -21,9 +21,9 @@ contract('Lock / purchaseFor', (accounts) => {
       await reverts(
         locks.FIRST.purchase(
           0,
-          accounts[0],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[0]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.0001', 'ether'),
@@ -41,9 +41,9 @@ contract('Lock / purchaseFor', (accounts) => {
     it('should fail if we reached the max number of keys', async () => {
       await locks['SINGLE KEY'].purchase(
         0,
-        accounts[0],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [accounts[0]],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -52,9 +52,9 @@ contract('Lock / purchaseFor', (accounts) => {
       await reverts(
         locks['SINGLE KEY'].purchase(
           0,
-          accounts[1],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[1]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -68,9 +68,9 @@ contract('Lock / purchaseFor', (accounts) => {
     it('should trigger an event when successful', async () => {
       const tx = await locks.FIRST.purchase(
         0,
-        accounts[2],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [accounts[2]],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -88,9 +88,9 @@ contract('Lock / purchaseFor', (accounts) => {
       it('should expand the validity by the default key duration', async () => {
         await locks.SECOND.purchase(
           0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[4]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -102,9 +102,9 @@ contract('Lock / purchaseFor', (accounts) => {
         // Purchase a new one
         const newKeyTx = await locks.SECOND.purchase(
           0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[4]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -134,9 +134,9 @@ contract('Lock / purchaseFor', (accounts) => {
       it('should expand the validity by the default key duration', async () => {
         await locks.FIRST.purchase(
           0,
-          accounts[1],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[1]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -148,9 +148,9 @@ contract('Lock / purchaseFor', (accounts) => {
         assert(firstExpiration.gt(0))
         tx2 = await locks.FIRST.purchase(
           0,
-          accounts[1],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[1]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -195,9 +195,9 @@ contract('Lock / purchaseFor', (accounts) => {
         numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners.call())
         return locks.FIRST.purchase(
           0,
-          accounts[0],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[0]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -244,9 +244,9 @@ contract('Lock / purchaseFor', (accounts) => {
     it('can purchase a free key', async () => {
       const tx = await locks.FREE.purchase(
         0,
-        accounts[2],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [accounts[2]],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         []
       )
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -260,9 +260,9 @@ contract('Lock / purchaseFor', (accounts) => {
       before(async () => {
         await locks.SHORT.purchase(
           0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[4]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -278,9 +278,9 @@ contract('Lock / purchaseFor', (accounts) => {
         // Purchase a new one
         tx = await locks.SHORT.purchase(
           0,
-          accounts[4],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [accounts[4]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),

@@ -86,9 +86,9 @@ contract('Lock / purchaseWithoutUnlock', () => {
         .connect(buyer)
         .purchase(
           keyPrice.toString(),
-          buyer.address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [buyer.address],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: keyPrice.toString(),
@@ -125,9 +125,9 @@ contract('Lock / purchaseWithoutUnlock', () => {
         .connect(buyer)
         .purchase(
           keyPrice,
-          buyer.address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [buyer.address],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: keyPrice,
