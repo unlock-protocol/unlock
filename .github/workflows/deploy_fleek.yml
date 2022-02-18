@@ -1,0 +1,24 @@
+name: "Fleek Deployments"
+
+on:
+  workflow_run:
+    workflows: ["Unlock Test Suite"]
+    types:
+      - completed
+    branches:
+      - master
+      - production
+
+jobs:
+  deploy-paywall-to-fleek:
+    uses: ./.github/workflows/_fleek.yml
+    with:
+      service: paywall-app
+  deploy-unlock-app-fleek:
+    uses: ./.github/workflows/_fleek.yml
+    with:
+      service: unlock-app
+  deploy-unlock-protocol-com-fleek:
+    uses: ./.github/workflows/_fleek.yml
+    with:
+      service: 'unlock-protocol-com'
