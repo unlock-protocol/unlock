@@ -21,9 +21,9 @@ contract('Lock / transfer', (accounts) => {
 
     await lock.purchase(
       0,
-      singleKeyOwner,
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [singleKeyOwner],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         value: await lock.keyPrice(),
@@ -31,19 +31,17 @@ contract('Lock / transfer', (accounts) => {
       }
     )
 
-    for (let i = 0; i < 2; i++) {
-      await lock.purchase(
-        0,
-        multipleKeyOwner,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: await lock.keyPrice(),
-          from: multipleKeyOwner,
-        }
-      )
-    }
+    await lock.purchase(
+      0,
+      [multipleKeyOwner, multipleKeyOwner],
+      [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+      [],
+      {
+        value: (await lock.keyPrice()) * 2,
+        from: multipleKeyOwner,
+      }
+    )
   })
 
   describe('full transfer of single key', () => {

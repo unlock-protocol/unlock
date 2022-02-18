@@ -36,9 +36,9 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     await reverts(
       lock.purchase(
         0,
-        to,
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
+        [to],
+        [constants.ZERO_ADDRESS],
+        [constants.ZERO_ADDRESS],
         dataField,
         {
           from,
@@ -54,9 +54,9 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       await testEventHooks.configure(true, '0')
       await lock.purchase(
         0,
-        to,
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
+        [to],
+        [constants.ZERO_ADDRESS],
+        [constants.ZERO_ADDRESS],
         dataField,
         {
           from,
@@ -80,9 +80,9 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       await reverts(
         lock.purchase(
           0,
-          to,
-          constants.ZERO_ADDRESS,
-          constants.ZERO_ADDRESS,
+          [to],
+          [constants.ZERO_ADDRESS],
+          [constants.ZERO_ADDRESS],
           dataField,
           {
             from,
@@ -143,9 +143,9 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     it('purchases are now free', async () => {
       await lock.purchase(
         0,
-        to,
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
+        [to],
+        [constants.ZERO_ADDRESS],
+        [constants.ZERO_ADDRESS],
         dataField,
         {
           from,
@@ -158,9 +158,9 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       beforeEach(async () => {
         await lock.purchase(
           0,
-          to,
-          constants.ZERO_ADDRESS,
-          constants.ZERO_ADDRESS,
+          [to],
+          [constants.ZERO_ADDRESS],
+          [constants.ZERO_ADDRESS],
           dataField,
           {
             from,

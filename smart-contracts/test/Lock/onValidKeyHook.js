@@ -22,9 +22,9 @@ contract('Lock / onValidKeyHook', (accounts) => {
     const keyPrice = await lock.keyPrice()
     await lock.purchase(
       0,
-      to,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      [to],
+      [constants.ZERO_ADDRESS],
+      [constants.ZERO_ADDRESS],
       [],
       {
         from,

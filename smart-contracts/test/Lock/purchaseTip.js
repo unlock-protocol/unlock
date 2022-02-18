@@ -45,9 +45,9 @@ contract('Lock / purchaseTip', (accounts) => {
         beforeEach(async () => {
           await lock.purchase(
             keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
             [],
             {
               from: accounts[2],
@@ -68,9 +68,9 @@ contract('Lock / purchaseTip', (accounts) => {
         beforeEach(async () => {
           await lock.purchase(
             tip.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
             [],
             {
               from: accounts[2],
@@ -92,9 +92,9 @@ contract('Lock / purchaseTip', (accounts) => {
         beforeEach(async () => {
           await lock.purchase(
             keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
             [],
             {
               from: accounts[2],
@@ -120,9 +120,9 @@ contract('Lock / purchaseTip', (accounts) => {
           beforeEach(async () => {
             await lock.purchase(
               0,
-              accounts[2],
-              web3.utils.padLeft(0, 40),
-              web3.utils.padLeft(0, 40),
+              [accounts[2]],
+              [web3.utils.padLeft(0, 40)],
+              [web3.utils.padLeft(0, 40)],
               [],
               {
                 from: accounts[2],
@@ -149,9 +149,9 @@ contract('Lock / purchaseTip', (accounts) => {
           await truffleAssert.fails(
             lock.purchase(
               1,
-              accounts[2],
-              web3.utils.padLeft(0, 40),
-              web3.utils.padLeft(0, 40),
+              [accounts[2]],
+              [web3.utils.padLeft(0, 40)],
+              [web3.utils.padLeft(0, 40)],
               [],
               {
                 from: accounts[2],

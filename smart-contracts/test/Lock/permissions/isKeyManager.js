@@ -30,9 +30,9 @@ contract('Permissions / isKeyManager', (accounts) => {
     lock = await KeyManagerMock.at(lockAddress)
     await lock.purchase(
       0,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         value: keyPrice.toFixed(),

@@ -16,19 +16,18 @@ contract('Lock / erc721 / approve', (accounts) => {
 
     // Buy test keys for each account
     const keyPrice = await lock.keyPrice()
-    for (let i = 0; i < 5; i++) {
-      await lock.purchase(
-        0,
-        accounts[i],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: keyPrice.toString(),
-          from: accounts[i],
-        }
-      )
-    }
+    const keyOwners = accounts.slice(0, 5)
+    await lock.purchase(
+      0,
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      [],
+      {
+        value: (keyPrice * keyOwners.length).toString(),
+        from: accounts[0],
+      }
+    )
   })
 
   it('tokenByIndex is a no-op', async () => {
