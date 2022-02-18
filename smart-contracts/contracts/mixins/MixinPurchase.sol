@@ -65,8 +65,8 @@ contract MixinPurchase is
     onlyIfAlive
     notSoldOut
   {
-    require(_recipients.length != _referrers.length, 'INVALID_REFERRERS_LENGTH');
-    require(_recipients.length != _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
+    require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
+    require(_recipients.length == _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
 
     uint totalPriceToPay;
 
