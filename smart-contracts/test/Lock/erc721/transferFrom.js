@@ -44,7 +44,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       [],
       {
-        value: web3.utils.toWei(0.01 * keyOwners.length, 'ether'),
+        value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
         from,
       }
     )

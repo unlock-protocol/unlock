@@ -31,7 +31,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         [],
         {
-          value: keyPrice.mul(keyOwners.length).toFixed(),
+          value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
           from: accounts[0],
         }
       )
@@ -47,24 +47,13 @@ contract('Lock / uniqueTokenIds', (accounts) => {
       // repurchase keys
       await lock.purchase(
         0,
-        [keyOwner1],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [keyOwner1, keyOwner2],
+        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
         [],
         {
-          value: keyPrice.toFixed(),
+          value: web3.utils.toWei(`${0.01 * 2}`, 'ether'),
           from: keyOwner1,
-        }
-      )
-      await lock.purchase(
-        0,
-        [keyOwner2],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
-        [],
-        {
-          value: keyPrice.toFixed(),
-          from: keyOwner2,
         }
       )
 

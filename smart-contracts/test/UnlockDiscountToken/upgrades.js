@@ -195,9 +195,9 @@ contract('UnlockDiscountToken upgrade', async () => {
       await lock.connect(referrer)
       await lock.purchase(
         0,
-        referrer.address,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [referrer.address],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: await lock.keyPrice(),
@@ -236,9 +236,9 @@ contract('UnlockDiscountToken upgrade', async () => {
         lock.connect(keyBuyer)
         const { blockNumber } = await lock.purchase(
           0,
-          keyBuyer.address,
-          referrer.address,
-          web3.utils.padLeft(0, 40),
+          [keyBuyer.address],
+          [referrer.address],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: await lock.keyPrice(),
@@ -294,9 +294,9 @@ contract('UnlockDiscountToken upgrade', async () => {
         lock.connect(keyBuyer)
         await lock.purchase(
           0,
-          keyBuyer.address,
-          referrer.address,
-          web3.utils.padLeft(0, 40),
+          [keyBuyer.address],
+          [referrer.address],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: await lock.keyPrice(),
