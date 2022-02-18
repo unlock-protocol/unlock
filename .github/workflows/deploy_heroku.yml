@@ -43,17 +43,3 @@ jobs:
       command: "yarn websub:prod"
       container-type: worker
       app-name: locksmith-websub-production
-
-  # Fleek deloys
-  # deploy-paywall-to-fleek:
-  #   uses: ./.github/workflows/_fleek.yml
-  #   with:
-  #     service: paywall-app
-  # deploy-unlock-app-fleek:
-  #   uses: ./.github/workflows/_fleek.yml
-  #   with:
-  #     service: unlock-app
-  # deploy-unlock-protocol-com-fleek:
-  #   uses: ./.github/workflows/_fleek.yml
-  #   with:
-  #     service: 'unlock-protocol-com'
