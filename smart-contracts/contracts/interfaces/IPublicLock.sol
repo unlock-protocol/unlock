@@ -88,7 +88,7 @@ interface IPublicLock
    * @notice keys previously bought are unaffected by this change (i.e.
    * existing keys timestamps are not recalculated/updated)
    * @param _newExpirationDuration the new amount of time for each key purchased 
-   * or zero (0) for a non-expiring key
+   * or type(uint).max for a non-expiring key
    */
   function setExpirationDuration(uint _newExpirationDuration) external;
 
