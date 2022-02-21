@@ -53,7 +53,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     describe('After purchase', () => {
       beforeEach(async () => {
         await lock.purchase(
-          keyPrice,
+          [keyPrice],
           [accounts[2]],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -85,7 +85,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     describe('After purchase', () => {
       beforeEach(async () => {
         await lock.purchase(
-          keyPrice,
+          [keyPrice],
           [accounts[2]],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],

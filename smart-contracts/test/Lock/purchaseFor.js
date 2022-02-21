@@ -40,7 +40,7 @@ contract('Lock / purchaseFor', (accounts) => {
 
     it('should fail if we reached the max number of keys', async () => {
       await locks['SINGLE KEY'].purchase(
-        0,
+        [],
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
@@ -67,7 +67,7 @@ contract('Lock / purchaseFor', (accounts) => {
 
     it('should trigger an event when successful', async () => {
       const tx = await locks.FIRST.purchase(
-        0,
+        [],
         [accounts[2]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
@@ -243,7 +243,7 @@ contract('Lock / purchaseFor', (accounts) => {
 
     it('can purchase a free key', async () => {
       const tx = await locks.FREE.purchase(
-        0,
+        [],
         [accounts[2]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],

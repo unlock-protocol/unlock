@@ -152,7 +152,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         await token.approve(lock.address, keyPrice, { from: keyOwner })
         tx = await lock.purchase(
-          keyPrice,
+          [keyPrice],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -222,7 +222,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         await token.approve(lock.address, keyPrice, { from: keyOwner })
 
         tx = await lock.purchase(
-          keyPrice,
+          [keyPrice],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -272,7 +272,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
         tx = await lock.purchase(
-          keyPrice,
+          [keyPrice],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],

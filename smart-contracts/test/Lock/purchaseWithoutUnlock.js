@@ -124,7 +124,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
       const tx = await lock
         .connect(buyer)
         .purchase(
-          keyPrice,
+          [keyPrice],
           [buyer.address],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
