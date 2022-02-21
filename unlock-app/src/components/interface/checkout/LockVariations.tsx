@@ -297,7 +297,7 @@ export const SoldOutLock = ({
         />
         <QuantityAndDuration>
           <SoldOut>Sold Out</SoldOut>
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Cross />
       </DisabledLockBody>
@@ -337,7 +337,7 @@ export const PurchaseableLock = ({
           {formattedKeysAvailable !== 'Unlimited' && (
             <span>{formattedKeysAvailable} Left</span>
           )}
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Cart />
         <Arrow />
@@ -372,7 +372,7 @@ export const ProcessingLock = ({
           {formattedKeysAvailable !== 'Unlimited' && (
             <span>{formattedKeysAvailable} Left</span>
           )}
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Ellipsis />
       </BaseLockBody>
@@ -411,7 +411,7 @@ export const ConfirmedLock = ({
           {formattedKeysAvailable !== 'Unlimited' && (
             <span>{formattedKeysAvailable} Left</span>
           )}
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Checkmark />
       </ConfirmedBody>
