@@ -44,7 +44,7 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with exact value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            keyPrice.toString(),
+            [keyPrice.toString()],
             [accounts[2]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
@@ -91,7 +91,7 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with ETH tip > value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            keyPrice.toString(),
+            [keyPrice.toString()],
             [accounts[2]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],

@@ -29,7 +29,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
 
   it('should return 1 if the user has a non expired key', async () => {
     await locks.FIRST.purchase(
-      0,
+      [],
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
@@ -45,7 +45,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
 
   it('should return 0 if the user has an expired key', async () => {
     await locks.FIRST.purchase(
-      0,
+      [],
       [accounts[5]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
@@ -64,7 +64,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
 
   it('should return 0 after a user transfers their key', async () => {
     await locks.FIRST.purchase(
-      0,
+      [],
       [accounts[6]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],

@@ -60,7 +60,7 @@ contract('Lock / erc20', (accounts) => {
     describe('users can purchase keys', () => {
       beforeEach(async () => {
         await lock.purchase(
-          keyPrice.toFixed(),
+          [keyPrice.toFixed()],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -86,7 +86,7 @@ contract('Lock / erc20', (accounts) => {
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
         await lock.purchase(
-          keyPrice.toFixed(),
+          [keyPrice.toFixed()],
           [keyOwner3],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -149,7 +149,7 @@ contract('Lock / erc20', (accounts) => {
       it('purchaseForFrom works as well', async () => {
         // The referrer needs a valid key for this test
         await lock.purchase(
-          keyPrice.toFixed(),
+          [keyPrice.toFixed()],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -161,7 +161,7 @@ contract('Lock / erc20', (accounts) => {
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
         await lock.purchase(
-          keyPrice.toFixed(),
+          [keyPrice.toFixed()],
           [keyOwner2],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
@@ -195,7 +195,7 @@ contract('Lock / erc20', (accounts) => {
       })
       await reverts(
         lock.purchase(
-          keyPrice.toFixed(),
+          [keyPrice.toFixed()],
           [account],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -214,7 +214,7 @@ contract('Lock / erc20', (accounts) => {
       })
       await reverts(
         lock.purchase(
-          keyPrice.toFixed(),
+          [keyPrice.toFixed()],
           [account],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],

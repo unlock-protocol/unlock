@@ -83,7 +83,7 @@ contract('Lock / GasRefund', (accounts) => {
             : new BN(await web3.eth.getBalance(accounts[2]))
 
           tx = await lock.purchase(
-            keyPrice.toString(),
+            [keyPrice.toString()],
             [accounts[2]],
             [tokenAddress],
             [web3.utils.padLeft(0, 40)],
@@ -142,7 +142,7 @@ contract('Lock / GasRefund', (accounts) => {
             : new BN(await web3.eth.getBalance(accounts[2]))
 
           tx = await lock.purchase(
-            keyPrice.toString(),
+            [keyPrice.toString()],
             [accounts[2]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],

@@ -35,7 +35,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   it('can block purchases', async () => {
     await reverts(
       lock.purchase(
-        0,
+        [],
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -157,7 +157,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     describe('can still send tips', () => {
       beforeEach(async () => {
         await lock.purchase(
-          0,
+          [],
           [to],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],
