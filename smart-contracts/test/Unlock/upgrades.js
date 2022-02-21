@@ -417,7 +417,7 @@ contract('Unlock / upgrades', async (accounts) => {
           return await lock
             .connect(lockOwner)
             .purchase(
-              0,
+              [],
               [keyOwner.address],
               [web3.utils.padLeft(0, 40)],
               [web3.utils.padLeft(0, 40)],

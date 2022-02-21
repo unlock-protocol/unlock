@@ -55,14 +55,14 @@ contract('Lock / purchaseForFrom', (accounts) => {
 
     it('can purchaseForFrom a free key', async () => {
       await locks.FREE.purchase(
-        0,
+        [],
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
         []
       )
       const tx = await locks.FREE.purchase(
-        0,
+        [],
         [accounts[2]],
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],
