@@ -52,7 +52,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
     before(async () => {
       for (let i = 1; i < 5; i++) {
         await lock.purchase(
-          0,
+          [],
           [accounts[i]],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],

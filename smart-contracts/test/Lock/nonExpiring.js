@@ -71,7 +71,7 @@ contract('Lock / non expiring', (accounts) => {
       it('should throw an error when re-purchasing an existing key', async () => {
         await reverts(
           lock.purchase(
-            0,
+            [],
             [keyOwner],
             [constants.ZERO_ADDRESS],
             [constants.ZERO_ADDRESS],
@@ -95,7 +95,7 @@ contract('Lock / non expiring', (accounts) => {
 
         // purchase again
         await lock.purchase(
-          0,
+          [],
           [keyOwner],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],

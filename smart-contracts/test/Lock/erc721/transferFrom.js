@@ -38,7 +38,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       accountWithKeyApproved,
     ]
     await locks.FIRST.purchase(
-      0,
+      [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -110,7 +110,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         let fromExpirationTimestamp
         let ID
         await locks.FIRST.purchase(
-          0,
+          [],
           [from],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -150,7 +150,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
       before(async () => {
         await locks.FIRST.purchase(
-          0,
+          [],
           [from],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -248,7 +248,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       before(async () => {
         // first, let's purchase a brand new key that we can transfer
         await locks.FIRST.purchase(
-          0,
+          [],
           [from],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -293,7 +293,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       before(async () => {
         // first we create a lock with only 1 key
         await locks['SINGLE KEY'].purchase(
-          0,
+          [],
           [from],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -306,7 +306,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         // confirm that the lock is sold out
         await reverts(
           locks['SINGLE KEY'].purchase(
-            0,
+            [],
             [accounts[8]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
@@ -334,7 +334,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
   it('can transfer a FREE key', async () => {
     await locks.FREE.purchase(
-      0,
+      [],
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],

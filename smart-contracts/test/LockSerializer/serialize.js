@@ -50,7 +50,7 @@ contract('LockSerializer', () => {
       const tx = await lock
         .connect(purchaser)
         .purchase(
-          keyPrice.toString(),
+          [keyPrice.toString()],
           [purchaser.address],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
@@ -91,7 +91,7 @@ contract('LockSerializer', () => {
 
         // purchase keys
         await lock.connect(purchasers[0]).purchase(
-          0,
+          [],
           purchasers.map((p) => p.address),
           purchasers.map(() => web3.utils.padLeft(0, 40)),
           purchasers.map(() => web3.utils.padLeft(0, 40)),

@@ -157,7 +157,7 @@ contract('Lock / withdraw', (accounts) => {
 
 async function purchaseKeys(accounts) {
   await lock.purchase(
-    0,
+    [],
     [accounts[1], accounts[2]],
     [1, 2].map(() => web3.utils.padLeft(0, 40)),
     [1, 2].map(() => web3.utils.padLeft(0, 40)),

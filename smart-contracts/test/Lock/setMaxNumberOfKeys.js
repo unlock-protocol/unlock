@@ -57,7 +57,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         lock
           .connect(buyers[11])
           .purchase(
-            0,
+            [],
             [buyers[11].address],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
@@ -76,7 +76,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx2 = await lock
         .connect(buyers[11])
         .purchase(
-          0,
+          [],
           [buyers[11].address],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
