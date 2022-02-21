@@ -44,8 +44,8 @@ contract MixinPurchase is
 
   /**
   * @dev Purchase function
-  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
-  * (_value is ignored when using ETH)
+  * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_values is ignored when using ETH)
   * @param _recipients array of addresses of the recipients of the purchased key
   * @param _referrers array of addresses of the users making the referral
   * @param _keyManagers optional array of addresses to grant managing rights to a specific address on creation
@@ -56,7 +56,7 @@ contract MixinPurchase is
   * than keyPrice is approved for spending).
   */
   function purchase(
-    uint256 _value,
+    uint256[] memory _values,
     address[] memory _recipients,
     address[] memory _referrers,
     address[] memory _keyManagers,
@@ -130,6 +130,10 @@ contract MixinPurchase is
       uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
+      if(tokenAddress == address(0)) {
+        require(inMemoryKeyPrice >= _values[i], 'INSUFFICIENT_ERC20_VALUE');
+      }
+
       // call Unlock contract to record GNP
       try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrers[i]) 
       {} 
@@ -138,6 +142,8 @@ contract MixinPurchase is
         emit UnlockCallFailed(address(this), address(unlockProtocol));
       }
 
+      uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
+
       if(address(onKeyPurchaseHook) != address(0)) {
         onKeyPurchaseHook.onKeyPurchase(
           msg.sender, 
@@ -145,17 +151,17 @@ contract MixinPurchase is
           _referrers[i], 
           _data, 
           inMemoryKeyPrice, 
-          0 // tokenAddress == address(0) ? _value : msg.value
+          pricePaid
         );
       }
     }
 
-    // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+    // transfer the ERC20 tokens
     if(tokenAddress != address(0)) {
-      require(totalPriceToPay >= _value, 'INSUFFICIENT_VALUE');
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-      token.transferFrom(msg.sender, address(this), _value);
+      token.transferFrom(msg.sender, address(this), totalPriceToPay);
     } else {
+      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       require(totalPriceToPay >= msg.value, 'INSUFFICIENT_VALUE');
     }
 
