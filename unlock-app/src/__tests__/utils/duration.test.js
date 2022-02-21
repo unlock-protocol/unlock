@@ -45,7 +45,7 @@ describe('durations', () => {
     })
   })
 
-  it.only('should return the right durations in English', () => {
+  it('should return the right durations in English', () => {
     expect.assertions(6)
     expect(durationsAsTextFromSeconds(0)).toEqual('')
     expect(durationsAsTextFromSeconds(0.5)).toEqual('')
