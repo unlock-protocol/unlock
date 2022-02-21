@@ -30,8 +30,11 @@ async function _getKeyPrice(lock, provider) {
  */
 export default async function (lock, callback) {
   const unlockContract = await this.getUnlockContract()
-  let { maxNumberOfKeys } = lock
+  let { maxNumberOfKeys, expirationDuration } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
+    maxNumberOfKeys = ETHERS_MAX_UINT
+  }
+  if (expirationDuration === -1) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
 
@@ -47,7 +50,7 @@ export default async function (lock, callback) {
     .substring(0, 26) // 2+24
 
   const transactionPromise = unlockContract.createLock(
-    lock.expirationDuration,
+    expirationDuration,
     currencyContractAddress,
     decimalKeyPrice,
     maxNumberOfKeys,

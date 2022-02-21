@@ -28,6 +28,9 @@ export default {
   isInfiniteKeys: (value) => {
     return ethers.BigNumber.from(value).eq(ethers.constants.MaxUint256)
   },
+  isInfiniteDuration: (value) => {
+    return ethers.BigNumber.from(value).eq(ethers.constants.MaxUint256)
+  },
   toNumber: (value) => {
     return ethers.BigNumber.from(value).toNumber()
   },

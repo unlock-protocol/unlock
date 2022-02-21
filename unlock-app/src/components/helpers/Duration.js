@@ -4,6 +4,7 @@ import {
   durationsAsTextFromSeconds,
   secondsAsDays,
 } from '../../utils/durations'
+import { MAX_UINT } from '../../constants'
 
 /**
  * Component which shows a duration, rounded to next day if `round` is `true`
@@ -12,6 +13,9 @@ import {
 export function Duration({ seconds, round }) {
   if (seconds === null) {
     return <span> - </span>
+  }
+  if (seconds === -1) {
+    return <span>Forever</span>
   }
   const days = secondsAsDays(seconds)
   const roundedSeconds = days * secondsInADay
