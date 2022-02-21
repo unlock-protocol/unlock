@@ -130,7 +130,7 @@ contract MixinPurchase is
       uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
-      if(tokenAddress == address(0)) {
+      if(tokenAddress != address(0)) {
         require(inMemoryKeyPrice >= _values[i], 'INSUFFICIENT_ERC20_VALUE');
       }
 
