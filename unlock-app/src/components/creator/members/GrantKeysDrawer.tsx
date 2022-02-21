@@ -11,7 +11,6 @@ import {
   Label,
   Select,
   TransactionPendingButton,
-  Button,
 } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
@@ -212,7 +211,14 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
         </div>
       </div>
 
-      {!loading && <Button type="submit">Grant Key</Button>}
+      {!loading && (
+        <button
+          className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-3 font-medium rounded hover:bg-[#59c245]"
+          type="submit"
+        >
+          Grant Key
+        </button>
+      )}
       {loading && network && (
         <TransactionPendingButton network={network} transaction={transaction} />
       )}

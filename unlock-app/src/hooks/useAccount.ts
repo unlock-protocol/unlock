@@ -6,7 +6,6 @@ import { StorageService } from '../services/storageService'
 import { WalletServiceContext } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
 import { generateKeyHolderMetadataPayload } from '../structured_data/keyHolderMetadata'
-
 import WedlockServiceContext from '../contexts/WedlocksContext'
 import {
   generateTypedData,
