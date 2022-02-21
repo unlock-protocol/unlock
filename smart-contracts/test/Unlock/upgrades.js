@@ -374,7 +374,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
                     // Buy Key
                     await lockLatest.purchase(
-                      0,
+                      [],
                       [keyOwner.address],
                       [web3.utils.padLeft(0, 40)],
                       [web3.utils.padLeft(0, 40)],
@@ -432,7 +432,7 @@ contract('Unlock / upgrades', async (accounts) => {
           return await lock
             .connect(lockOwner)
             .purchase(
-              [],
+              0,
               [keyOwner.address],
               web3.utils.padLeft(0, 40),
               web3.utils.padLeft(0, 40),
@@ -446,7 +446,7 @@ contract('Unlock / upgrades', async (accounts) => {
           // Version 5 renamed to purchase, added keyPrice, referrer, and data
           return await lock
             .connect(lockOwner)
-            .purchase([], [keyOwner.address], [web3.utils.padLeft(0, 40)], [], {
+            .purchase(0, [keyOwner.address], [web3.utils.padLeft(0, 40)], [], {
               value: keyPrice,
             })
         }
