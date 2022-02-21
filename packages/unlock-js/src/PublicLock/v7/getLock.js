@@ -20,7 +20,7 @@ export default async function (address, provider) {
       if (utils.isInfiniteDuration(value)) {
         return -1
       }
-      return parseInt(value)
+      return parseInt(value, 10)
     },
     maxNumberOfKeys: (value) => {
       if (utils.isInfiniteKeys(value)) {
