@@ -79,7 +79,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     it('Sanity check: cannot buy at half price', async () => {
       await reverts(
         lock.purchase(
-          0,
+          [],
           [to],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],
