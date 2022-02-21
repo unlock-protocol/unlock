@@ -41,7 +41,7 @@ contract('Lock / timeMachine', (accounts) => {
     // Change the fee to 5%
     await lock.updateTransferFee(500, { from: lockOwner })
     await lock.purchase(
-      0,
+      [],
       [keyOwner],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],

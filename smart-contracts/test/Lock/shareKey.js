@@ -38,7 +38,7 @@ contract('Lock / shareKey', (accounts) => {
   before(async () => {
     lock = locks.FIRST
     await lock.purchase(
-      0,
+      [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),

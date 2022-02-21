@@ -53,7 +53,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     beforeEach(async () => {
       await testEventHooks.configure(true, '0')
       await lock.purchase(
-        0,
+        [],
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -122,7 +122,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
     it('can buy at half price', async () => {
       await lock.purchase(
-        0,
+        [],
         to,
         constants.ZERO_ADDRESS,
         constants.ZERO_ADDRESS,
@@ -142,7 +142,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
     it('purchases are now free', async () => {
       await lock.purchase(
-        0,
+        [],
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],

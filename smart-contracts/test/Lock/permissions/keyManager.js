@@ -30,7 +30,7 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -51,7 +51,7 @@ contract('Permissions / KeyManager', (accounts) => {
     it('should not change KM when topping-up valid keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.purchase(
-        0,
+        [],
         [keyOwner1],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
@@ -72,7 +72,7 @@ contract('Permissions / KeyManager', (accounts) => {
       assert.equal(keyManagerBefore, accounts[9])
       await lock.expireAndRefundFor(keyOwner1, 0, { from: lockManager })
       await lock.purchase(
-        0,
+        [],
         [keyOwner1],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
@@ -94,7 +94,7 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -150,7 +150,7 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -221,7 +221,7 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -288,7 +288,7 @@ contract('Permissions / KeyManager', (accounts) => {
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),

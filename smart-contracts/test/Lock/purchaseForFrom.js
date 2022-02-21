@@ -16,7 +16,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('should succeed', async () => {
       const lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         [accounts[0]],
         [accounts[1]],
         [web3.utils.padLeft(0, 40)],
@@ -32,7 +32,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('should succeed', async () => {
       const lock = locks.FIRST
       await lock.purchase(
-        0,
+        [],
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
@@ -42,7 +42,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
         }
       )
       await lock.purchase(
-        0,
+        [],
         [accounts[1]],
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],

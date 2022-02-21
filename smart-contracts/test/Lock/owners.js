@@ -21,7 +21,7 @@ contract('Lock / owners', (accounts) => {
     const keyOwners = accounts.slice(1, 5)
     // Purchase keys!
     await lock.purchase(
-      0,
+      [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -122,7 +122,7 @@ contract('Lock / owners', (accounts) => {
 
       // someone buys a key again for the previous owner
       await lock.purchase(
-        0,
+        [],
         [accounts[4]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],

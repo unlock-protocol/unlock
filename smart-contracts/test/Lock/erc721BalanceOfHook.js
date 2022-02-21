@@ -70,7 +70,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
-        0,
+        [],
         [keyOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -86,7 +86,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
-        0,
+        [],
         [keyOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -119,7 +119,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
-        0,
+        [],
         [nftOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -135,7 +135,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
-        0,
+        [],
         [nftOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -161,7 +161,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
-        0,
+        [],
         [keyOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
@@ -177,7 +177,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
-        0,
+        [],
         [keyOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],

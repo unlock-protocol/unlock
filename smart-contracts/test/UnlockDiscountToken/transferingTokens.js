@@ -109,7 +109,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
 
     // Purchase a valid key for the referrer
     await lock.purchase(
-      0,
+      [],
       [referrer],
       [constants.ZERO_ADDRESS],
       [web3.utils.padLeft(0, 40)],
@@ -168,7 +168,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         from: protocolOwner,
       })
       const { blockNumber } = await lock.purchase(
-        0,
+        [],
         [keyBuyer],
         [referrer],
         [web3.utils.padLeft(0, 40)],
@@ -233,7 +233,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       ])
 
       await lock.purchase(
-        0,
+        [],
         [keyBuyer],
         [referrer],
         [web3.utils.padLeft(0, 40)],
