@@ -123,9 +123,9 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     it('can buy at half price', async () => {
       await lock.purchase(
         [],
-        to,
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
+        [to],
+        [constants.ZERO_ADDRESS],
+        [constants.ZERO_ADDRESS],
         dataField,
         {
           from,

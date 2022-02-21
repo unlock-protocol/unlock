@@ -67,7 +67,7 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with tip', () => {
         beforeEach(async () => {
           await lock.purchase(
-            tip.toString(),
+            [tip.toString()],
             [accounts[2]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
@@ -119,7 +119,7 @@ contract('Lock / purchaseTip', (accounts) => {
         describe('purchase with unspecified ETH tip', () => {
           beforeEach(async () => {
             await lock.purchase(
-              0,
+              [],
               [accounts[2]],
               [web3.utils.padLeft(0, 40)],
               [web3.utils.padLeft(0, 40)],
@@ -148,7 +148,7 @@ contract('Lock / purchaseTip', (accounts) => {
         it('should fail if value is less than keyPrice', async () => {
           await truffleAssert.fails(
             lock.purchase(
-              1,
+              [1],
               [accounts[2]],
               [web3.utils.padLeft(0, 40)],
               [web3.utils.padLeft(0, 40)],
