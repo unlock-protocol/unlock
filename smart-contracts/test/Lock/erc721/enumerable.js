@@ -18,7 +18,7 @@ contract('Lock / erc721 / approve', (accounts) => {
     const keyPrice = await lock.keyPrice()
     const keyOwners = accounts.slice(0, 5)
     await lock.purchase(
-      0,
+      [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),

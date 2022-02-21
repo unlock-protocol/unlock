@@ -21,7 +21,7 @@ contract('Lock / transferFee', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.purchase(
-      0,
+      [],
       [keyOwner],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
@@ -59,7 +59,7 @@ contract('Lock / transferFee', (accounts) => {
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
       await lock.purchase(
-        0,
+        [],
         [accounts[8]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],

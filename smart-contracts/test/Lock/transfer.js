@@ -20,7 +20,7 @@ contract('Lock / transfer', (accounts) => {
     lock = locks.OWNED
 
     await lock.purchase(
-      0,
+      [],
       [singleKeyOwner],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
@@ -32,7 +32,7 @@ contract('Lock / transfer', (accounts) => {
     )
 
     await lock.purchase(
-      0,
+      [],
       [multipleKeyOwner, multipleKeyOwner],
       [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],

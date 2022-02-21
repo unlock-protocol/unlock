@@ -23,7 +23,7 @@ contract('Lock / disableLock', (accounts) => {
     locks = await deployLocks(unlock, lockOwner)
     lock = locks.FIRST
     await lock.purchase(
-      0,
+      [],
       [keyOwner, keyOwner2, keyOwner3],
       [
         web3.utils.padLeft(0, 40),

@@ -25,7 +25,7 @@ contract('Lock / getHasValidKey', (accounts) => {
   describe('after purchase', () => {
     before(async () => {
       await lock.purchase(
-        0,
+        [],
         [account],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],

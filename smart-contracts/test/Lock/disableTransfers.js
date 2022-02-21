@@ -24,7 +24,7 @@ contract('Lock / disableTransfers', (accounts) => {
   before(async () => {
     lock = locks.FIRST
     await lock.purchase(
-      0,
+      [],
       [keyOwner],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],

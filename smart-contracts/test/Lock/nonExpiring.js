@@ -28,7 +28,7 @@ contract('Lock / non expiring', (accounts) => {
     lock = locks.NON_EXPIRING
     keyPrice = await lock.keyPrice()
     await lock.purchase(
-      0,
+      [],
       [keyOwner],
       [constants.ZERO_ADDRESS],
       [constants.ZERO_ADDRESS],
@@ -208,7 +208,7 @@ contract('Lock / non expiring', (accounts) => {
 
     // purchase a key
     await lock.purchase(
-      0,
+      [],
       [keyReceiver],
       [constants.ZERO_ADDRESS],
       [constants.ZERO_ADDRESS],

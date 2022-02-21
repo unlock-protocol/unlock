@@ -23,7 +23,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
     it('re-purchasing 2 expired keys should not duplicate tokenIDs', async () => {
       // buy some keys
       await lock.purchase(
-        0,
+        [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -44,7 +44,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
       await Promise.all(keyExpirations)
       // repurchase keys
       await lock.purchase(
-        0,
+        [],
         [keyOwner1, keyOwner2],
         [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],

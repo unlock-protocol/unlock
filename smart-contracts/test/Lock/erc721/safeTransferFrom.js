@@ -23,7 +23,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
     await lock.purchase(
-      0,
+      [],
       [from],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
@@ -46,7 +46,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
 
   it('should work if some data is passed in', async () => {
     await lock.purchase(
-      0,
+      [],
       [accounts[7]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
@@ -74,7 +74,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
     await lock.purchase(
-      0,
+      [],
       [accounts[5]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
