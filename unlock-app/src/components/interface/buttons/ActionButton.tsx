@@ -26,7 +26,7 @@ export const ActionButton = styled.button<ActionButtonProps>`
   border: 2px solid;
 
   border-color: ${(props) =>
-    props.disabled ? 'var(--grey)' : props.borderColor || 'var(--green)'};
+    props.disabled ? 'var(--grey)' : props.borderColor || 'var(--green) '};
 
   background-color: ${(props) =>
     props.disabled ? 'var(--grey)' : props.color || 'var(--green)'};
@@ -34,18 +34,18 @@ export const ActionButton = styled.button<ActionButtonProps>`
   &:hover {
     color: ${(props) =>
       props.disabled
-        ? 'var(--white)'
-        : props.fontActiveColor || 'var(--white)'};
+        ? 'var(--white) '
+        : props.fontActiveColor || 'var(--white) '};
 
     border-color: ${(props) =>
       props.disabled
         ? 'var(--grey)'
-        : props.activeBorderColor || 'var(--activegreen)'};
+        : props.activeBorderColor || 'var(--activegreen) '};
 
     background-color: ${(props) =>
       props.disabled
         ? 'var(--grey)'
-        : props.activeColor || 'var(--activegreen)'};
+        : props.activeColor || 'var(--activegreen) '};
   }
 `
 

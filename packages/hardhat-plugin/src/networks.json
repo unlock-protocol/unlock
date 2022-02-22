@@ -1,0 +1,161 @@
+{
+  "1": {
+    "id": 1,
+    "unlockAddress": "0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13",
+    "name": "Ethereum",
+    "blockTime": 8000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock",
+    "explorer": {
+      "name": "Etherscan",
+      "urls": {}
+    },
+    "erc20": {
+      "symbol": "DAI",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+    },
+    "requiredConfirmations": 12,
+    "baseCurrencySymbol": "Eth",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "Eth",
+      "decimals": 18
+    },
+    "startBlock": 7120795
+  },
+  "4": {
+    "unlockAddress": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
+    "serializerAddress": "0x1bd356194d97297F77e081fFFAB97b57297E93e4",
+    "id": 4,
+    "name": "Rinkeby",
+    "blockTime": 8000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby",
+    "explorer": {
+      "name": "Etherscan",
+      "urls": {}
+    },
+    "requiredConfirmations": 12,
+    "erc20": {
+      "symbol": "WEE",
+      "address": "0xaFF4481D10270F50f203E0763e2597776068CBc5"
+    },
+    "baseCurrencySymbol": "Eth",
+    "locksmithUri": "https://rinkeby.locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "Rinkeby Eth",
+      "symbol": "Eth",
+      "decimals": 18
+    },
+    "startBlock": 3530008
+  },
+  "10": {
+    "unlockAddress": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
+    "id": 10,
+    "name": "Optimism",
+    "blockTime": 8000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism",
+    "explorer": {
+      "name": "Etherscan",
+      "urls": {}
+    },
+    "requiredConfirmations": 12,
+    "baseCurrencySymbol": "Eth",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "Eth",
+      "symbol": "Eth",
+      "decimals": 18
+    }
+  },
+  "56": {
+    "unlockAddress": "0xeC83410DbC48C7797D2f2AFe624881674c65c856",
+    "id": 56,
+    "name": "Binance Smart Chain",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc",
+    "explorer": {
+      "name": "BscScan",
+      "urls": {}
+    },
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "BNB",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "BNB",
+      "symbol": "BNB",
+      "decimals": 18
+    },
+    "startBlock": 13079000,
+    "previousDeploys": [
+      {
+        "unlockAddress": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
+        "startBlock": 12396000
+      }
+    ]
+  },
+  "100": {
+    "unlockAddress": "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
+    "serializerAddress": "0x646E373EAf8a4AEc31Bf62B7Fd6fB59296d6CdA9",
+    "id": 100,
+    "name": "xDai",
+    "blockTime": 5000,
+    "requiredConfirmations": 12,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai",
+    "explorer": {
+      "name": "Blockscout",
+      "urls": {}
+    },
+    "erc20": null,
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "baseCurrencySymbol": "xDai",
+    "nativeCurrency": {
+      "name": "xDAI",
+      "symbol": "xDai",
+      "decimals": 18
+    },
+    "startBlock": 19338700,
+    "previousDeploys": [
+      {
+        "unlockAddress": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+        "startBlock": 14521200
+      }
+    ]
+  },
+  "137": {
+    "unlockAddress": "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
+    "serializerAddress": "0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9",
+    "id": 137,
+    "name": "Polygon",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon",
+    "explorer": {
+      "name": "Polygonscan",
+      "urls": {}
+    },
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "Matic",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "Matic",
+      "symbol": "MATIC",
+      "decimals": 18
+    },
+    "startBlock": 21986688,
+    "previousDeploys": [
+      {
+        "unlockAddress": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+        "startBlock": 15714206
+      }
+    ]
+  },
+  "31337": {
+    "id": 31337,
+    "name": "localhost",
+    "locksmithUri": "http://127.0.0.1:8080",
+    "unlockAppUrl": "http://0.0.0.0:3000",
+    "subgraphURI": "http://localhost:8000/subgraphs/name/unlock-protocol/unlock",
+    "serializerAddress": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1"
+  }
+}
