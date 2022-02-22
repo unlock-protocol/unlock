@@ -13,7 +13,7 @@ interface NotifyOptions {
   body: unknown
 }
 
-export async function notify({ timeout = 500, hook, body }: NotifyOptions) {
+export async function notify({ timeout = 1000, hook, body }: NotifyOptions) {
   const headers: Record<string, string> = {}
   const content = JSON.stringify(body)
   const ac = new AbortController()
@@ -96,10 +96,10 @@ export async function notifyHook(hook: Hook, body: unknown) {
         const response = await notify({
           hook,
           body,
-          timeout: 500,
         })
 
         if (!response.ok) {
+          logger.error(`${hook.id}: ${response.statusText}`)
           throw new Error(response.statusText)
         }
         return response
@@ -109,6 +109,7 @@ export async function notifyHook(hook: Hook, body: unknown) {
           hookEvent.attempts += 1
           hookEvent.state = 'failed'
           hookEvent.lastError = error.message
+          logger.error(`${hook.id}: ${error.message}`)
           await hookEvent.save()
           if (checkBadHealth) {
             throw new pRetry.AbortError(
