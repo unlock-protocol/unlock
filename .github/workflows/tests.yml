@@ -1,3 +1,5 @@
+name: Unlock Test Suite
+
 on: 
   push:
     branches:
@@ -5,7 +7,6 @@ on:
       - production
   pull_request:
 
-name: Unlock Test Suite
 jobs:
   monorepo-changes:
     runs-on: ubuntu-latest

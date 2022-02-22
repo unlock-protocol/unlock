@@ -16,7 +16,7 @@ npm installed to run.
 Static pages use [NextJS](https://nextjs.org/) and as such contain two components:
 
  * A page file in `src/pages/` that displays the page
- * A React component in `src/components/` that contains page text.
+ * A React component in `src/components/` that contains page text
  
 In addition, the blog contains markdown source files in `blog/` that are cached
 as HTML components on launch.
