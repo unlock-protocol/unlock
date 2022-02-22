@@ -13046,7 +13046,6 @@ __metadata:
     apollo-server-express: 2.25.3
     aws-sdk: 2.1066.0
     babel-jest: 27.4.6
-    body-parser: 1.19.1
     color-scheme: 1.0.1
     cors: 2.8.5
     cross-fetch: 3.1.5
