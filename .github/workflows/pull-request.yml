@@ -7,7 +7,7 @@ jobs:
   # run all tests if PR contains the 'run-all-tests' tag 
   run-all-tests:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
-    uses: ./.github/workflows/_run-all-tests.yml
+    uses: ./.github/workflows/_tests.yml
   
   # check which folder changed in the repo
   check-changes:
