@@ -4,7 +4,7 @@ subTitle: One artist’s childhood dream comes to life through NFTs as both memb
 authorName: Crystal Street
 publishDate: February 21, 2022
 description: In the hands of a visionary artist, Unlock Protocol helped @littlefortunes create a stunning work of art that is also living, breathing fantasy story written in collaboration by the Tales of Ronin NFT collectors.
-image: /images/blog/talesofronin/tales-of-ronin-min.jpeg
+image: /images/blog/talesofronin/tales-of-ronin-cover-min.jpeg
 ---
 
 *As an open-source protocol, we take the tools we’ve built and place them in the hands of creators and developers and hope something beautiful emerges. In the late fall of 2021, Caroline aka [@littlefortunes](https://twitter.com/littlefortunes) joined our Discord with a brilliant idea, a ton of passion, and the determination to find solutions for the project she was building. She took her idea, integrated Unlock, and launched an initial rare NFT collection that sold out in 24 hours. An amazing accomplishment in itself, but what she’s created with her artistic brilliance and perseverance deserves a deeper examination.*
