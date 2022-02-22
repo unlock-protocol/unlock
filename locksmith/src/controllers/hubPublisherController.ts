@@ -57,7 +57,7 @@ export class HubPublisherController {
               .join('')}
           </head>
           <body>
-             To subscribe to our topic, make a POST request to this endpoint with valid hub payload. Links are included in the header and head of the responses as per the <a href="https://www.w3.org/TR/websub/"> websubhub </a>
+             To subscribe to our topic, make a POST request to this endpoint with valid hub payload. Links are included in the header and head of the responses as per the <a href="https://www.w3.org/TR/websub/"> websub </a> w3 spec.
           </body>
         </html>
       `
