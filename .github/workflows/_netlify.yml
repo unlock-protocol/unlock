@@ -56,7 +56,7 @@ jobs:
         shell: bash
         id: check_changes
         env:
-          TARGETS: '[ ${{ inputs.service }} ]'
+          TARGETS: '[ "${{ inputs.service }}" ]'
   
   deploy-netlify:
     if: ${{ needs.check-changes.outputs.changed != '[]' }}
