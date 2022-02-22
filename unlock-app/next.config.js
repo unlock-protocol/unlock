@@ -11,15 +11,31 @@ dotenv.config({
 })
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
+const staging = {
+  locksmithHost: 'https://rinkeby.locksmith.unlock-protocol.com',
+  unlockStaticUrl: 'https://unlock-protocol.com',
+  unlockAppUrl: 'https://staging-app.unlock-protocol.com',
+  paywallUrl: 'https://staging-paywall.unlock-protocol.com',
+}
+
+const production = {
+  locksmithHost: 'https://locksmith.unlock-protocol.com',
+  unlockStaticUrl: 'https://unlock-protocol.com',
+  unlockAppUrl: 'https://app.unlock-protocol.com',
+  paywallUrl: 'https://paywall.unlock-protocol.com',
+}
+
+const envConfig = unlockEnv === 'prod' ? production : staging
+
 const requiredConfigVariables = {
   unlockEnv,
-  paywallUrl: process.env.PAYWALL_URL,
-  locksmithHost: process.env.LOCKSMITH_URI,
-  wedlocksUri: process.env.WEDLOCKS_URI,
-  unlockStaticUrl: process.env.UNLOCK_STATIC_URL,
   base64WedlocksPublicKey: process.env.BASE64_WEDLOCKS_PUBLIC_KEY,
   stripeApiKey: process.env.STRIPE_KEY,
+  wedlocksUri:
+    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
+  ...envConfig,
 }
+
 const optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
 }
