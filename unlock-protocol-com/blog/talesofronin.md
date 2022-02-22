@@ -9,7 +9,7 @@ image: /images/blog/talesofronin/tales-of-ronin-cover-min.jpeg
 
 *As an open-source protocol, we take the tools we’ve built and place them in the hands of creators and developers and hope something beautiful emerges. In the late fall of 2021, Caroline aka [@littlefortunes](https://twitter.com/littlefortunes) joined our Discord with a brilliant idea, a ton of passion, and the determination to find solutions for the project she was building. She took her idea, integrated Unlock, and launched an initial rare NFT collection that sold out in 24 hours. An amazing accomplishment in itself, but what she’s created with her artistic brilliance and perseverance deserves a deeper examination.*
 
-## And so begins our story with Tales of Ronin
+### And so begins our story with Tales of Ronin
 
 Caroline began writing fantasy books at the age of 10. Over the course of several years, she wrote four books, ranging from 100 to 400 pages.
 
@@ -21,7 +21,7 @@ Enter web3 and the opportunity that NFTs provide for artists like Caroline. **He
 
 Caroline wanted to create a community project where **participants could collectively write a fantasy novel using NFTs** and her main character, Ronin. Caroline used NFTs as an artistic expression **and** as tokens of community membership,  brought this vision to life, and created an entire movement around her artwork.
 
-## Bringing Ronin to Life
+### Bringing Ronin to Life
 
 *[Tales of Ronin](https://www.talesofronin.com/)* was originally intended as a PFP project with her red panda character creation. While creating the various elements of the project, Caroline launched a daily NFT show where she talks about all things NFTs with her growing community. After just 12 days of running her show, Red Lion News contacted her and offered to sponsor her show. Seeing the potential that the NFT space was already providing, Caroline decided to lean into this new adventure with her show, building her project on the side while also running her graphic design agency.
 
@@ -33,7 +33,7 @@ As she was solidifying the main character's design, Caroline decided to explore 
 
 Community members can vote on the different aspects of the story, such as battles or quests, that are relevant to their participation in the creation process. She even mentions that she hopes the community forms relationships while crafting the story together that reach beyond web3 and into real life.
 
-## Empowering Artists & Creators
+### Empowering Artists & Creators
 
 One of the most inspiring aspects of the web3 space, and NFTs in particular, is the fact that creators can now resurrect passions and artistic endeavors that were placed on hold when "putting food on the table" outweighed the drive to create art.
 
