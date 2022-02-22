@@ -56,7 +56,7 @@ jobs:
   deploy-netlify:
     name: "Deploy on Netlify"
     needs: check-changes-for-netlify
-    uses: ./.github/workflows/_check.yml
+    uses: ./.github/workflows/_netlify.yml
     with:
       changed: ${{ needs.check-changes-for-netlify.outputs.changed }}
       target_env: ${{ needs.check-changes-for-netlify.outputs.target_env }}
