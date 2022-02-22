@@ -33,7 +33,7 @@ As she was solidifying the main character's design, Caroline decided to explore 
 
 Community members can vote on the different aspects of the story, such as battles or quests, that are relevant to their participation in the creation process. She even mentions that she hopes the community forms relationships while crafting the story together that reach beyond web3 and into real life.
 
-### Empowering Artists & Creators
+### Empowering Artists and Creators
 
 One of the most inspiring aspects of the web3 space, and NFTs in particular, is the fact that creators can now resurrect passions and artistic endeavors that were placed on hold when "putting food on the table" outweighed the drive to create art.
 
