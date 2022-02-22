@@ -73,7 +73,7 @@ describe('HookController', () => {
 
   describe('updateHook', () => {
     it("should update or create a hook if it doesn't exit", async () => {
-      expect.assertions(8)
+      expect.assertions(7)
 
       const spyOn = jest
         .spyOn(controller, 'updateHook')
@@ -107,7 +107,7 @@ describe('HookController', () => {
 
       const value2 = await controller.updateHook(
         {
-          mode: 'unsubscribe',
+          mode: 'subscribe',
           topic: 'http://localhost:5000',
           callback: 'http://localhost:5000',
           lease_seconds: 40000,
@@ -116,51 +116,60 @@ describe('HookController', () => {
       )
       expect(value2).toBeInstanceOf(Hook)
       expect(value2.mode).toBe('subscribe')
-
-      expect(() => controller.updateHook({} as any, {})).toThrowError()
     })
   })
 
   describe('hookController Endpoints', () => {
-    it('Subscribe endpoint', async () => {
-      expect.assertions(4)
-      const response = await request(app)
-        .post('/api/hooks/4/locks')
-        .set('Accept', 'json')
-        .send({
-          hub: {
-            topic: 'http://localhost:4000/api/hooks/4/locks',
-            callback: 'http://localhost:4000/callback',
-            mode: 'subscribe',
-          },
-        })
+    describe('Subscribe endpoint', () => {
+      it('subscribe', async () => {
+        expect.assertions(1)
+        const response = await request(app)
+          .post('/api/hooks/4/locks')
+          .type('form')
+          .send({
+            'hub.topic': 'http://localhost:4000/api/hooks/4/locks',
+            'hub.callback': 'http://localhost:4000/callback',
+            'hub.mode': 'subscribe',
+          })
+        expect(response.text).toBe('Accepted')
+      })
 
-      expect(response.text).toBe('Accepted')
+      it('subscribe with unsupported network', async () => {
+        expect.assertions(2)
+        const response2 = await request(app)
+          .post('/api/hooks/7424782/locks')
+          .type('form')
+          .send({
+            'hub.topic': 'http://localhost:4000/api/hooks/245/locks',
+            'hub.callback': 'http://localhost:4000/callback',
+            'hub.mode': 'subscribe',
+          })
 
-      const response2 = await request(app)
-        .post('/api/hooks/7424782/locks')
-        .set('Accept', 'json')
-        .send({
-          hub: {
-            topic: 'http://localhost:4000/api/hooks/4/locks',
-            callback: 'http://localhost:4000/callback',
-            mode: 'subscribe',
-          },
-        })
+        expect(response2.status).toBe(404)
+        expect(response2.text).toBe('Unsupported Network')
+      })
 
-      expect(response2.status).toBe(404)
-      expect(response2.text).toBe('Unsupported Network')
+      it('subscription request should reject with wrong content type', async () => {
+        expect.assertions(1)
+        const response3 = await request(app)
+          .post('/api/hooks/4/locks')
+          .type('json')
+          .send({})
 
-      const response3 = await request(app)
-        .post('/api/hooks/4/locks')
-        .set('Accept', 'json')
-        .send({
-          hub: {
-            topic: 'http://localhost:4000/api/hooks/4/locks',
-            // Missing fields
-          },
-        })
-      expect(response3.status).toBe(400)
+        expect(response3.status).toBe(415)
+      })
+
+      it('subscription request should fail with invalid form body', async () => {
+        expect.assertions(1)
+        const response2 = await request(app)
+          .post('/api/hooks/4/locks')
+          .type('form')
+          .send({
+            'hub.topic': 'http://localhost:4000/api/hooks/4/locks',
+            'hub.mode': 'subscribe',
+          })
+        expect(response2.status).toBe(400)
+      })
     })
   })
 })
