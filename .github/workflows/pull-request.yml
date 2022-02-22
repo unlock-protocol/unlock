@@ -47,12 +47,49 @@ jobs:
       service: unlock-protocol-com
       target-env: staging
     secrets:
-      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
-      AUTH_TOKEN: haha # ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_KEY }}
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_KEY }}
+      UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
   
-  # deploy-paywall-app
-  # deploy-wedlocks
-  # deploy-unlock-app
+  deploy-paywall-app:
+    if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: paywall-app
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
+
+  deploy-wedlocks:
+    if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: wedlocks
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_AUTH_TOKEN }}
+      SMTP_HOST : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
+      SMTP_USERNAME : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
+      SMTP_PASSWORD : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
+      BASE64_WEDLOCKS_PRIVATE_KEY : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
+
+  deploy-unlock-app:
+    if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: unlock-app
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
+      BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
+      STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
+  
     
 
   
