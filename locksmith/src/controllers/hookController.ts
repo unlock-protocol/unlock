@@ -56,6 +56,7 @@ export class HookController {
       response.status(202).send('Accepted')
       try {
         await this.verifySubscriber(hub)
+        logger.info(`Subscription intent confirmed for ${hub.topic}`)
         await this.updateHook(hub, request.params)
         return
       } catch (error) {
@@ -103,9 +104,9 @@ export class HookController {
       String(this.getLeaseSeconds(hub.lease_seconds!))
     )
     callbackEndpoint.searchParams.set('hub.mode', hub.mode)
+    callbackEndpoint.searchParams.set('hub.secret', hub.secret!)
 
     const result = await fetch(callbackEndpoint.toString())
-
     if (!result.ok) {
       throw new Error('Failed to confirm subscription intent')
     }
