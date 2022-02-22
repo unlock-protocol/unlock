@@ -41,7 +41,7 @@ jobs:
   # Netlify Deployments
   deploy-unlock-protocol-com:
     if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
-    needs: run-tests
+    # needs: run-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-protocol-com
