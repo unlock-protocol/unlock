@@ -67,6 +67,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
+      - uses: actions/checkout@v2
       - name: Cache docker
         uses: actions/cache@v2
         if: github.event_name != 'schedule'
