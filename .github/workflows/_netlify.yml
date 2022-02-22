@@ -19,7 +19,7 @@ on:
 
 jobs:
   deploy-netlify:
-    name: Deploy ${{ matrix.target }} on Netlify ${{ inputs.target_env }}
+    name: Deploy ${{ matrix.target }} on Netlify ${{ inputs.target-env }}
     runs-on: ubuntu-latest
     if: ${{ inputs.changed != '[]' }}
     env:
@@ -47,13 +47,13 @@ jobs:
         run: | 
           SERVICE_NAME="${{ matrix.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
-          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target_env }}"
+          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
           bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' ${PREFIX^^}
       - name: Deploy to Netlify
         run: |
           # show args
-          echo "${{ inputs.target_env }} ${{ matrix.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
+          echo "${{ inputs.target-env }} ${{ matrix.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
           # run command
-          scripts/deploy.sh ${{ inputs.target_env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
+          scripts/deploy.sh ${{ inputs.target-env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
       - name: Backup docker
         run: .github/actions/docker-cache/backup.sh ${{ runner.temp }}/docker_cache/cache.tar

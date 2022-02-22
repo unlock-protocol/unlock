@@ -59,7 +59,7 @@ jobs:
     uses: ./.github/workflows/_netlify.yml
     with:
       changed: ${{ needs.check-changes-for-netlify.outputs.changed }}
-      target_env: ${{ needs.check-changes-for-netlify.outputs.target_env }}
+      target-env: staging
 
   
 
