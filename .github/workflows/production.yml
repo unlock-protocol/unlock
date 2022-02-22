@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-all-tests:
-    uses: ./.github/workflows/_run-all-tests.yml
+    uses: ./.github/workflows/_tests.yml
 
   deploy-locksmith-production:
     needs: run-all-tests
