@@ -1,0 +1,27 @@
+name: "Staging / master branch"
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run-all-tests:
+    uses: ./.github/workflows/_run-all-tests.yml
+
+  deploy-locksmith-staging:
+    needs: run-all-tests
+    uses: ./.github/workflows/tasks/_heroku.yml
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-staging
+
+  deploy-locksmith-websub-staging:
+    needs: run-all-tests
+    uses: ./.github/workflows/tasks/_heroku.yml
+    with:
+      service: locksmith-websub
+      build-dir: locksmith
+      command: "yarn websub:prod"
+      container-type: worker
+      app-name: locksmith-websub-staging

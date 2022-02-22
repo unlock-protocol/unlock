@@ -1,0 +1,66 @@
+name: Unlock Test Suite
+
+on:
+  workflow_call:
+    inputs:
+      changed:
+        description: "The services/apps that changed (JSON array stringified)"
+        type: string
+        required: true      
+
+jobs:
+  unit-tests:
+    name: Unit Tests ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    if: ${{ inputs.changed != '[]' }}
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
+      # below env vars are just used by locksmith
+      DB_USERNAME: locksmith_test
+      DB_PASSWORD: password
+      DB_NAME: locksmith_test
+      DB_HOSTNAME: db
+    strategy:
+      matrix:
+        target: ${{fromJson( inputs.changed )}}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache docker
+        uses: actions/cache@v2
+        if: github.event_name != 'schedule'
+        env:
+          cache-name: docker-cache-${{ matrix.target }}
+        with:
+          path: ${{ runner.temp }}/docker_cache
+          key: ${{ env.cache-name }}-${{ github.run_number }}
+          restore-keys: |
+            ${{ env.cache-name }}-
+      - name: Restore docker
+        run: .github/actions/docker-cache/restore.sh ${{ runner.temp }}/docker_cache/cache.tar
+      - name: Running ${{ matrix.target }} tests
+        run: ./scripts/tests.sh ${{ matrix.target }}
+        shell: bash
+      - name: Backup docker
+        run: .github/actions/docker-cache/backup.sh ${{ runner.temp }}/docker_cache/cache.tar
+
+  integration-tests:
+    name: Integration Tests
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Integration Tests
+        run: scripts/integration-tests.sh
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: /tmp/screenshots
+      - name: Log failing tests
+        if: ${{ failure() }}
+        run: ./scripts/docker-compose-log.sh

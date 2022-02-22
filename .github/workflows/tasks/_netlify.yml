@@ -1,34 +1,32 @@
 name: Netlify Deployments
 
 on:
-  workflow_run:
-    workflows: [Unlock Test Suite]
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      changed:
+        description: "The services/apps that changed (JSON array stringified)"
+        type: string
+        required: true    
+      target-env:
+        description: "The target environment (staging/production)"
+        type: string
+        required: true    
+      is_forked:
+        description: "That PR is a fork (or not)"
+        type: string
+        default: "false"
 
 jobs:
-  check_changes:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    uses: ./.github/workflows/_check.yml
-    with:
-      targets: '[
-        "unlock-protocol-com",
-        "paywall-app",
-        "wedlocks",
-        "unlock-app"
-        ]'
-
   deploy-netlify:
-    needs: check_changes
-    name: Deploy ${{ matrix.target }} on Netlify ${{ needs.check_changes.outputs.target_env }}
+    name: Deploy ${{ matrix.target }} on Netlify ${{ inputs.target_env }}
     runs-on: ubuntu-latest
-    if: ${{ needs.check_changes.outputs.changed != '[]' && needs.check_changes.outputs.is_forked == 'false' }}
+    if: ${{ inputs.changed != '[]' }}
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     strategy:
       matrix:
-        service: ${{fromJson( needs.check_changes.outputs.changed )}}
+        service: ${{fromJson( inputs.changed )}}
     steps:
       - uses: actions/checkout@v2
       - name: Cache docker
@@ -48,13 +46,13 @@ jobs:
         run: | 
           SERVICE_NAME="${{ matrix.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
-          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ needs.check_changes.outputs.target_env }}"
+          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target_env }}"
           bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' ${PREFIX^^}
       - name: Deploy to Netlify
         run: |
           # show args
-          echo "${{ needs.check_changes.outputs.target_env }} ${{ matrix.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ needs.check_changes.outputs.is_forked  }}"
+          echo "${{ inputs.target_env }} ${{ matrix.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
           # run command
-          scripts/deploy.sh ${{ needs.check_changes.outputs.target_env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ needs.check_changes.outputs.is_forked  }}
+          scripts/deploy.sh ${{ inputs.target_env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
       - name: Backup docker
         run: .github/actions/docker-cache/backup.sh ${{ runner.temp }}/docker_cache/cache.tar

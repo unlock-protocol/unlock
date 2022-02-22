@@ -1,0 +1,27 @@
+name: "Production Branch"
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  run-all-tests:
+    uses: ./.github/workflows/_run-all-tests.yml
+
+  deploy-locksmith-production:
+    needs: run-all-tests
+    uses: ./.github/workflows/tasks/_heroku.yml
+    with:
+      service: locksmith
+      app-name: unlock-locksmith-production
+
+  deploy-locksmith-websub-production:
+    needs: run-all-tests
+    uses: ./.github/workflows/tasks/_heroku.yml
+    with:
+      service: locksmith-websub
+      build-dir: locksmith
+      command: "yarn websub:prod"
+      container-type: worker
+      app-name: locksmith-websub-production
