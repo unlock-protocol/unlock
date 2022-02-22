@@ -11,14 +11,14 @@ jobs:
 
   deploy-locksmith-staging:
     needs: run-all-tests
-    uses: ./.github/workflows/tasks/_heroku.yml
+    uses: ./.github/workflows/_heroku.yml
     with:
       service: locksmith
       app-name: unlock-locksmith-staging
 
   deploy-locksmith-websub-staging:
     needs: run-all-tests
-    uses: ./.github/workflows/tasks/_heroku.yml
+    uses: ./.github/workflows/_heroku.yml
     with:
       service: locksmith-websub
       build-dir: locksmith

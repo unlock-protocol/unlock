@@ -31,7 +31,7 @@ jobs:
   run-tests:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.changed != '[]' }}
-    uses: ./.github/workflows/tasks/_tests.yml
+    uses: ./.github/workflows/_tests.yml
     with:
       changed: ${{fromJson( needs.check-changes.outputs.changed )}}
 
@@ -39,7 +39,7 @@ jobs:
   check-changes-for-netlify:
     if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
     needs: run-tests
-    uses: ./.github/workflows/tasks/_check.yml
+    uses: ./.github/workflows/_check.yml
     with:
       targets:  '[
         "unlock-protocol-com",
@@ -51,7 +51,7 @@ jobs:
   # deploy the netlify drafts if needed
   deploy-netlify:
     needs: check-changes-for-netlify
-    uses: ./.github/workflows/tasks/_check.yml
+    uses: ./.github/workflows/_check.yml
     with:
       changed: ${{ needs.check-changes-for-netlify.outputs.changed }}
       target_env: ${{ needs.check-changes-for-netlify.outputs.target_env }}

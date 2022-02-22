@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-all-tests:
-    uses: ./.github/workflows/tasks/_tests.yml
+    uses: ./.github/workflows/_tests.yml
     with:
       changed: '[
         "locksmith",
