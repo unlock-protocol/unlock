@@ -12,7 +12,7 @@ jobs:
   
   # check which folder changed in the repo
   check-changes:
-    name: "Check for changes in monorepo"
+    # name: "Check for changes in monorepo"
     if: ${{ ! contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     uses: ./.github/workflows/_check.yml
     with:
@@ -32,7 +32,7 @@ jobs:
   # run tests for folders that have changed
   run-tests:
     needs: check-changes
-    name: "Run the tests"
+    # name: "Run the tests"
     if: ${{ needs.check-changes.outputs.changed != '[]' }}
     uses: ./.github/workflows/_tests.yml
     with:
@@ -41,7 +41,7 @@ jobs:
   # check which netlify app folder has changed
   check-changes-for-netlify:
     if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
-    name: "Check changes on Netlify folders"
+    # name: "Check changes on Netlify folders"
     needs: run-tests
     uses: ./.github/workflows/_check.yml
     with:
@@ -54,7 +54,7 @@ jobs:
   
   # deploy the netlify drafts if needed
   deploy-netlify:
-    name: "Deploy on Netlify"
+    # name: "Deploy on Netlify"
     needs: check-changes-for-netlify
     uses: ./.github/workflows/_netlify.yml
     with:
