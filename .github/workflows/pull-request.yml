@@ -48,7 +48,7 @@ jobs:
       target-env: staging
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
-      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_KEY }}
+      AUTH_TOKEN: haha # ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_KEY }}
   
   # deploy-paywall-app
   # deploy-wedlocks

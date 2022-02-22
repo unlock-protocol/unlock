@@ -17,10 +17,28 @@ on:
         required: false 
         default: "false"
     secrets:
+      # all netlify deployments
       SITE_ID:
         required: true
       AUTH_TOKEN:
         required: true
+      # unlock-app only
+      BASE64_WEDLOCKS_PUBLIC_KEY:
+        required: false
+      STRIPE_KEY:
+        required: false
+      UNLOCK_GA_ID:
+        required: false
+      # wedlocks only
+      SMTP_HOST:
+        required: false
+      SMTP_USERNAME:
+        required: false
+      SMTP_PASSWORD:
+        required: false
+      BASE64_WEDLOCKS_PRIVATE_KEY:
+        required: false
+
 
 jobs:
   deploy-netlify:
@@ -60,7 +78,8 @@ jobs:
           SERVICE_NAME="${{ matrix.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
-          echo "${PREFIX}_SITE_ID"=${{ secrets.SITE_ID }} >> $GITHUB_ENV
+          echo "${PREFIX}"
+          bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' ${PREFIX^^}
       - name: Deploy to Netlify
         run: |
           # show args
