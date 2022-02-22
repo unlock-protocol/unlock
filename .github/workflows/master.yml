@@ -15,6 +15,9 @@ jobs:
     with:
       service: locksmith
       app-name: unlock-locksmith-staging
+    secrets:
+      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   deploy-locksmith-websub-staging:
     needs: run-all-tests
@@ -25,3 +28,6 @@ jobs:
       command: "yarn websub:prod"
       container-type: worker
       app-name: locksmith-websub-staging
+    secrets:
+      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

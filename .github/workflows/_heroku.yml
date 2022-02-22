@@ -23,6 +23,11 @@ on:
         description: 'The build directory to use. By default, it will use name of the service as build directory.'
         type: string
         required: false
+    secrets:
+      HEROKU_EMAIL:
+        required: true
+      HEROKU_API_KEY:
+        required: true
 
 jobs:
   deploy-to-heroku:
@@ -44,3 +49,7 @@ jobs:
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
           sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.container-type }} "${{ inputs.command }}" ${{ inputs.build-dir }}
+        env:
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        
