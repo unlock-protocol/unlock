@@ -2,7 +2,7 @@ name: Netlify Deployments
 
 on:
   workflow_run:
-    workflows: ["Unlock Test Suite"]
+    workflows: [Unlock Test Suite]
     types:
       - completed
 
