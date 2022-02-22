@@ -14,6 +14,7 @@ on:
       is_forked:
         description: "That PR is a fork (or not)"
         type: string
+        required: false 
         default: "false"
 
 jobs:
