@@ -3,8 +3,8 @@ name: Netlify Deployments
 on:
   workflow_call:
     inputs:
-      changed:
-        description: "The services/apps that changed (JSON array stringified)"
+      service:
+        description: "The service/app to deploy"
         type: string
         required: true    
       target-env:
@@ -16,25 +16,35 @@ on:
         type: string
         required: false 
         default: "false"
+    secrets:
+      SITE_ID:
+        required: true
+      AUTH_TOKEN:
+        required: true
 
 jobs:
   deploy-netlify:
-    name: Deploy ${{ matrix.target }} on Netlify ${{ inputs.target-env }}
+    name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target_env }}
     runs-on: ubuntu-latest
-    if: ${{ inputs.changed != '[]' }}
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-    strategy:
-      matrix:
-        service: ${{fromJson( inputs.changed )}}
     steps:
       - uses: actions/checkout@v2
+      - name: Check for changes in ${{ inputs.service }}
+        run: |
+          changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          echo "::set-output name=changed::$changed"
+        shell: bash
+        id: check_changes
+      - name: No changes detected (cancelling)
+        if: ${{ steps.check_changes.outputs.changed != 'changed' }}
+        uses: andymckay/cancel-action@0.2
       - name: Cache docker
         uses: actions/cache@v2
         if: github.event_name != 'schedule'
         env:
-          cache-name: docker-cache-${{ matrix.target }}
+          cache-name: docker-cache-${{ inputs.service }}
         with:
           path: ${{ runner.temp }}/docker_cache
           key: ${{ env.cache-name }}-${{ github.run_number }}
@@ -48,12 +58,12 @@ jobs:
           SERVICE_NAME="${{ matrix.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
-          bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' ${PREFIX^^}
+          echo "${PREFIX}_SITE_ID"=${{ secrets.SITE_ID }} >> $GITHUB_ENV
       - name: Deploy to Netlify
         run: |
           # show args
-          echo "${{ inputs.target-env }} ${{ matrix.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
+          echo "${{ inputs.target_env }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
           # run command
-          scripts/deploy.sh ${{ inputs.target-env }} ${{ matrix.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
+          scripts/deploy.sh ${{ inputs.target_env }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
       - name: Backup docker
         run: .github/actions/docker-cache/backup.sh ${{ runner.temp }}/docker_cache/cache.tar

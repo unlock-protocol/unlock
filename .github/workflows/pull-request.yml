@@ -6,7 +6,7 @@ on:
 jobs:
   # run all tests if PR contains the 'run-all-tests' tag 
   run-all-tests:
-    name: "Run all tests"
+    # name: "Run all tests"
     if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     uses: ./.github/workflows/_tests.yml
   
@@ -38,29 +38,21 @@ jobs:
     with:
       changed: ${{ needs.check-changes.outputs.changed }}
 
-  # check which netlify app folder has changed
-  check-changes-for-netlify:
+  # Netlify Deployments
+  deploy-unlock-protocol-com:
     if: ${{ needs.check-changes.outputs.is_forked == 'false' }}
-    # name: "Check changes on Netlify folders"
     needs: run-tests
-    uses: ./.github/workflows/_check.yml
-    with:
-      targets:  '[
-        "unlock-protocol-com",
-        "paywall-app",
-        "wedlocks",
-        "unlock-app"
-        ]'
-  
-  # deploy the netlify drafts if needed
-  deploy-netlify:
-    # name: "Deploy on Netlify"
-    needs: check-changes-for-netlify
     uses: ./.github/workflows/_netlify.yml
     with:
-      changed: ${{ needs.check-changes-for-netlify.outputs.changed }}
+      service: unlock-protocol-com
       target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_KEY }}
+  
+  # deploy-paywall-app
+  # deploy-wedlocks
+  # deploy-unlock-app
+    
 
   
-
-            
