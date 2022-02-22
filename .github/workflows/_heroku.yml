@@ -39,6 +39,8 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Check for changes in ${{ inputs.service }}
         run: |
           changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
