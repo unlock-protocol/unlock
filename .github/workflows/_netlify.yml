@@ -41,12 +41,10 @@ on:
 
 
 jobs:
-  deploy-netlify:
-    name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target-env }}
+  check-changes:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
+    outputs:
+      changed: ${{ steps.check_changes.outputs.changed }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -57,9 +55,18 @@ jobs:
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
-      - name: No changes detected (cancelling)
-        if: ${{ steps.check_changes.outputs.changed != 'changed' }}
-        uses: andymckay/cancel-action@0.2
+        env:
+          TARGETS: '[ ${{ inputs.service }} ]'
+  
+  deploy-netlify:
+    if: ${{ needs.check-changes.outputs.changed != '[]' }}
+    name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target-env }}
+    runs-on: ubuntu-latest
+    needs: check-changes
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
       - name: Cache docker
         uses: actions/cache@v2
         if: github.event_name != 'schedule'
