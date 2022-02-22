@@ -13,6 +13,19 @@ jobs:
   check-changes:
     if: ${{ ! contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
     uses: ./.github/workflows/_check.yml
+    with:
+      targets: '[
+          "locksmith",
+          "packages/unlock-js",
+          "packages/paywall",
+          "packages/contracts",
+          "packages/hardhat-plugin",
+          "smart-contracts",
+          "smart-contract-extensions",
+          "unlock-protocol-com",
+          "wedlocks",
+          "unlock-app"
+          ]'   
 
   # run tests for folders that have changed
   run-tests:
