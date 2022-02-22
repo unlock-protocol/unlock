@@ -8,6 +8,7 @@ import useMetadata from '../../../hooks/useMetadata'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import { MAX_UINT } from '../../../constants'
 
 import { ConfigContext } from '../../../utils/withConfig'
 
@@ -20,6 +21,7 @@ interface KeyBoxProps {
 
 const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
+  console.log(expiration)
   return (
     <KeyContent>
       <LockIcon src={metadata.image} width="40" />
@@ -27,8 +29,12 @@ const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
         <LockName>{lock.name}</LockName>
         <FieldLabel>Token ID</FieldLabel>
         <FieldValue>{keyId}</FieldValue>
-        <FieldLabel>Valid Until</FieldLabel>
-        <FieldValue>{expirationAsDate(expiration)}</FieldValue>
+        {expiration !== MAX_UINT && (
+          <>
+            <FieldLabel>Valid Until</FieldLabel>
+            <FieldValue>{expirationAsDate(expiration)}</FieldValue>
+          </>
+        )}
       </KeyInfo>
     </KeyContent>
   )
