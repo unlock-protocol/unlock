@@ -52,14 +52,13 @@ jobs:
       - name: Check for changes in ${{ inputs.service }}
         run: |
           changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          echo $changed
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
-        env:
-          TARGETS: '[ "${{ inputs.service }}" ]'
   
   deploy-netlify:
-    if: ${{ needs.check-changes.outputs.changed != '[]' }}
+    if: ${{ needs.check-changes.outputs.changed == 'changed' }}
     name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target-env }}
     runs-on: ubuntu-latest
     needs: check-changes
