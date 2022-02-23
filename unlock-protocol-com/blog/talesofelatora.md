@@ -3,7 +3,7 @@ title: A Community Unlocks the Tales of Elatora
 subTitle: One artist’s childhood dream comes to life through NFTs as both memberships and art
 authorName: Crystal Street
 publishDate: February 21, 2022
-description: In the hands of a visionary artist, Unlock Protocol helped @littlefortunes create a stunning work of art that is also living, breathing fantasy story written in collaboration by the Tales of Ronin NFT collectors.
+description: In the hands of a visionary artist, Unlock Protocol helped @littlefortunes create a stunning work of art that is also living, breathing fantasy story written in collaboration by the Tales of Elatora NFT collectors.
 image: /images/blog/talesofronin/tales-of-ronin-cover-min.jpeg
 ---
 
