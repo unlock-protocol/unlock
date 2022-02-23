@@ -38,7 +38,7 @@ jobs:
     with:
       changed: ${{ needs.check-changes.outputs.changed }}
 
-  # Netlify Deployments
+  # Netlify Deployments (run as drafts, unpublished to main URL)
   deploy-unlock-protocol-com:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
     needs: run-tests
@@ -62,21 +62,6 @@ jobs:
       SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
-  deploy-wedlocks:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      service: wedlocks
-      target-env: staging
-    secrets:
-      SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_AUTH_TOKEN }}
-      SMTP_HOST : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
-      SMTP_USERNAME : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
-      SMTP_PASSWORD : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
-      BASE64_WEDLOCKS_PRIVATE_KEY : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
-
   deploy-unlock-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     needs: run-tests
@@ -90,6 +75,20 @@ jobs:
       BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
       STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
   
-    
+  # redeploy only on master (from previous circle)
+  # deploy-wedlocks:
+  #   if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+  #   needs: run-tests
+  #   uses: ./.github/workflows/_netlify.yml
+  #   with:
+  #     service: wedlocks
+  #     target-env: staging
+  #   secrets:
+  #     SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SITE_ID }}
+  #     AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_AUTH_TOKEN }}
+  #     SMTP_HOST : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
+  #     SMTP_USERNAME : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
+  #     SMTP_PASSWORD : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
+  #     BASE64_WEDLOCKS_PRIVATE_KEY : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}    
 
   
