@@ -12,17 +12,24 @@ dotenv.config({
 
 // TODO renames these: URLs need to be URLs, hosts need to be hosts... etc
 const staging = {
-  locksmithHost: 'https://rinkeby.locksmith.unlock-protocol.com',
-  unlockStaticUrl: 'https://unlock-protocol.com',
-  unlockAppUrl: 'https://staging-app.unlock-protocol.com',
-  paywallUrl: 'https://staging-paywall.unlock-protocol.com',
+  paywallUrl:
+    process.env.PAYWALL_URL || 'https://staging-paywall.unlock-protocol.com',
+  locksmithHost:
+    process.env.LOCKSMITH_URI ||
+    'https://rinkeby.locksmith.unlock-protocol.com',
+  unlockStaticUrl:
+    process.env.UNLOCK_STATIC_URL || 'https://unlock-protocol.com',
+  wedlocksUri:
+    process.env.WEDLOCKS_URI ||
+    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
 
 const production = {
   locksmithHost: 'https://locksmith.unlock-protocol.com',
   unlockStaticUrl: 'https://unlock-protocol.com',
-  unlockAppUrl: 'https://app.unlock-protocol.com',
   paywallUrl: 'https://paywall.unlock-protocol.com',
+  wedlocksUri:
+    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
 
 const envConfig = unlockEnv === 'prod' ? production : staging
@@ -31,8 +38,6 @@ const requiredConfigVariables = {
   unlockEnv,
   base64WedlocksPublicKey: process.env.BASE64_WEDLOCKS_PUBLIC_KEY,
   stripeApiKey: process.env.STRIPE_KEY,
-  wedlocksUri:
-    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
   ...envConfig,
 }
 
