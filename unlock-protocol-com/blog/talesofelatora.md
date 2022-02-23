@@ -9,7 +9,7 @@ image: /images/blog/talesofronin/tales-of-ronin-cover-min.jpeg
 
 *As an open-source protocol, we take the tools we’ve built and place them in the hands of creators and developers and hope something beautiful emerges. In the late fall of 2021, Caroline aka [@littlefortunes](https://twitter.com/littlefortunes) joined our Discord with a brilliant idea, a ton of passion, and the determination to find solutions for the project she was building. She took her idea, integrated Unlock, and launched an initial rare NFT collection that sold out in 24 hours. An amazing accomplishment in itself, but what she’s created with her artistic brilliance and perseverance deserves a deeper examination.*
 
-### And so begins our story with the Tales of Elatora
+## And so begins our story with the Tales of Elatora
 
 Caroline began writing fantasy books at the age of 10. Over the course of several years, she wrote four books, ranging from 100 to 400 pages.
 
@@ -21,7 +21,7 @@ Enter web3 and the opportunity that NFTs provide for artists like Caroline. **He
 
 Caroline wanted to create a community project where **participants could collectively write a fantasy novel using NFTs** and her main character, Ronin. Caroline used NFTs as an artistic expression **and** as tokens of community membership,  brought this vision to life, and created an entire movement around her artwork.
 
-### Bringing Tales of Elatora to Life
+## Bringing Tales of Elatora to Life
 
 *[Tales of Elatora](https://www.talesofelatora.com/)* was originally intended as a PFP project with her red panda character creation. While creating the various elements of the project, Caroline launched a daily NFT show where she talks about all things NFTs with her growing community. After just 12 days of running her show, Red Lion News contacted her and offered to sponsor her show. Seeing the potential that the NFT space was already providing, Caroline decided to lean into this new adventure with her show, building her project on the side while also running her graphic design agency.
 
@@ -29,11 +29,11 @@ As she was solidifying the main character's design, Caroline decided to explore 
 
 *Tales of Elatora* uses Unlock Protocol to create specialized membership tiers that enable collectors to participate in various aspects of the story creation process. The community itself gathers on Discord, where a token-gated Discord bot gives members access to various parts of the story-building process based on the type of NFT in their wallet.
 
->When asked about the possible future storylines of Tales of Elatora, Caroline gave us the following insights. "We're thinking of different sorts of quests that people can go on and with their NFT, what I, for example, would like, is say that there's going to be a specific battle than maybe before because we're going to divide a world based in two factions. So people also choose their faction. That's why we'll have two Unlock contracts." 
+>We're thinking of different sorts of quests that people can go on **with** their NFT. - @littlefortunes 
 
 Community members can vote on the different aspects of the story, such as battles or quests, that are relevant to their participation in the creation process. She even mentions that she hopes the community forms relationships while crafting the story together that reach beyond web3 and into real life.
 
-### Empowering Artists and Creators
+## Empowering Artists and Creators
 
 One of the most inspiring aspects of the web3 space, and NFTs in particular, is the fact that creators can now resurrect passions and artistic endeavors that were placed on hold when "putting food on the table" outweighed the drive to create art.
 
