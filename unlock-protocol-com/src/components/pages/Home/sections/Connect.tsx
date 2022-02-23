@@ -1,5 +1,6 @@
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
+import { Link } from '../../../helpers/Link'
 import { BulletPointIcon } from '../../../icons'
 
 const UNLOCK_BENEFITS = [
@@ -38,7 +39,9 @@ export function Connect() {
           </ul>
         </div>
         <div className="flex items-center justify-center gap-4 sm:justify-start">
-          <Button> Get Started </Button>
+          <Button href="#get-started" as={Link}>
+            Get Started
+          </Button>
           <Button variant="secondary"> Connect Wallet </Button>
         </div>
       </div>

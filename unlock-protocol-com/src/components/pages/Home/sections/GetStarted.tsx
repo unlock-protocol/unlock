@@ -10,7 +10,7 @@ import {
 export function GetStarted() {
   const { isMember, becomeMember } = useMembership()
   return (
-    <div className="flex flex-col gap-6 px-6 ">
+    <div id="get-started" className="flex flex-col gap-6">
       <div className="w-full space-y-4 break-words md:w-3/4 lg:w-1/2">
         <h1 className="text-4xl font-bold sm:text-5xl">Try it yourself</h1>
         <div className="space-y-2">

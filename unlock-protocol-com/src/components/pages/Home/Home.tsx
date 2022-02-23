@@ -24,7 +24,7 @@ export function Home() {
         <div className="py-4">
           <Recipes />
         </div>
-        <CenteredColumn>
+        <CenteredColumn className="px-6 py-8 sm:py-12">
           <GetStarted />
         </CenteredColumn>
         <CenteredColumn className="px-6 py-8 sm:py-16">
