@@ -41,6 +41,7 @@ jobs:
   # Netlify Deployments
   deploy-unlock-protocol-com:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
+    needs: run-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-protocol-com
