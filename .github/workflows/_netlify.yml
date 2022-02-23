@@ -86,7 +86,6 @@ jobs:
           UPCASE_SERVICE="${SERVICE_NAME^^}"
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
           PREFIX="${PREFIX^^}" # uppercase
-          echo "${PREFIX}"
           bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' $PREFIX
       - name: Deploy to Netlify
         run: |
