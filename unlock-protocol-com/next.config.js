@@ -1,12 +1,8 @@
 /* eslint no-console: 0 */
 const dotenv = require('dotenv')
 const path = require('path')
-const fs = require('fs')
-const { join, resolve } = require('path')
-const { promisify } = require('util')
+const { resolve } = require('path')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
-
-const copyFile = promisify(fs.copyFile)
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
@@ -21,15 +17,27 @@ if (unlockEnv === 'prod') {
   }
 }
 
-// NOTE: do not set defaults here!
+// set default values
+const staging = {
+  unlockEnv:
+    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com',
+  urlBase: process.env.URL_BASE || 'https://staging.unlock-protocol.com',
+}
+
+const prod = {
+  unlockEnv: 'https://app.unlock-protocol.com',
+  urlBase: 'https://unlock-protocol.com',
+}
+
+const envConfig = unlockEnv === 'prod' ? prod : staging
+
 // This is a mechanism to ensure that we do not deploy code with missing/wrong
 // environment variables
 const requiredConfigVariables = {
   unlockEnv,
   googleAnalyticsId,
-  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
-  unlockApp: process.env.UNLOCK_APP,
   tagManagerArgs,
+  ...envConfig,
 }
 
 Object.keys(requiredConfigVariables).forEach((configVariableName) => {
