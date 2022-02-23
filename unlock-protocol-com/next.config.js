@@ -19,13 +19,13 @@ if (unlockEnv === 'prod') {
 
 // set default values
 const staging = {
-  unlockEnv:
+  unlockApp:
     process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com',
-  urlBase: process.env.URL_BASE || 'https://staging.unlock-protocol.com',
+  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
 }
 
 const prod = {
-  unlockEnv: 'https://app.unlock-protocol.com',
+  unlockApp: 'https://app.unlock-protocol.com',
   urlBase: 'https://unlock-protocol.com',
 }
 
