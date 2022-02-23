@@ -1,15 +1,19 @@
 import { UnlockTextIcon } from '../../icons'
 import { Link } from '../../helpers/Link'
 import { EmailSubscriptionForm } from '../../forms/EmailSubscription'
-import { EMAIL_SUBSCRIPTION_FORM } from '../../../config/constants'
-
+import {
+  EMAIL_SUBSCRIPTION_FORM,
+  UNLOCK_LINKS,
+} from '../../../config/constants'
+import { SOCIAL_URL } from '../../../config/seo'
+import { unlockConfig } from '../../../config/unlock'
 type LinkType = Record<'name' | 'href', string>
 
 const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
   App: [
     {
       name: 'Creator Dashboard',
-      href: '/',
+      href: unlockConfig.appURL!,
     },
     {
       name: 'Memberships',
@@ -19,23 +23,23 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
   Community: [
     {
       name: 'Discord',
-      href: '',
+      href: SOCIAL_URL.discord,
     },
     {
       name: 'Forum',
-      href: '',
+      href: SOCIAL_URL.discourse,
     },
     {
       name: 'Goverance',
-      href: '/',
+      href: SOCIAL_URL.snapshot,
     },
     {
       name: 'Github',
-      href: '',
+      href: SOCIAL_URL.github,
     },
     {
       name: 'Twitter',
-      href: '',
+      href: SOCIAL_URL.twitter,
     },
   ],
   Navigation: [
@@ -57,7 +61,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
     },
     {
       name: 'Docs',
-      href: '',
+      href: UNLOCK_LINKS.docs,
     },
   ],
 }

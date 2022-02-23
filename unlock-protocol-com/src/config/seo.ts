@@ -1,7 +1,7 @@
 import type { DefaultSeoProps, NextSeoProps } from 'next-seo'
 import { unlockConfig } from './unlock'
 
-const { baseURL } = unlockConfig
+export const { baseURL } = unlockConfig
 
 export const DEFAULT_SEO: DefaultSeoProps = {
   title: 'Unlock',
