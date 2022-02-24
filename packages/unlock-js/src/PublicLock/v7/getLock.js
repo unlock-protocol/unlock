@@ -16,7 +16,12 @@ export default async function (address, provider) {
   const attributes = {
     name: (x) => x,
     keyPrice: (x) => x,
-    expirationDuration: parseInt,
+    expirationDuration: (value) => {
+      if (utils.isInfiniteDuration(value)) {
+        return -1
+      }
+      return parseInt(value, 10)
+    },
     maxNumberOfKeys: (value) => {
       if (utils.isInfiniteKeys(value)) {
         return UNLIMITED_KEYS_COUNT
