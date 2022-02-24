@@ -9,7 +9,7 @@ image: /images/blog/websub.png
 
 As developers integrate the Unlock Protocol in their applications, we are getting many feature requests to add APIs and tools that would make their lives easier.
 
-![Webflow](/images/blog/websub.png)
+![Websub](/images/blog/websub.png)
 
 Today, we're excited to announce our [WebSub endpoints](https://docs.unlock-protocol.com/unlock/developers/locksmith/webhooks)!
 
