@@ -9,6 +9,9 @@ image: /images/blog/talesofronin/tales-of-ronin-cover-min.jpeg
 
 *As an open-source protocol, we take the tools we’ve built and place them in the hands of creators and developers and hope something beautiful emerges. In the late fall of 2021, Caroline aka [@littlefortunes](https://twitter.com/littlefortunes) joined our Discord with a brilliant idea, a ton of passion, and the determination to find solutions for the project she was building. She took her idea, integrated Unlock, and launched an initial rare NFT collection that sold out in 24 hours. An amazing accomplishment in itself, but what she’s created with her artistic brilliance and perseverance deserves a deeper examination.*
 
+![Tales of Elatora](/images/blog/talesofronin/tales-of-ronin-cover-min.jpeg)
+
+
 ## And so begins our story with the Tales of Elatora
 
 Caroline began writing fantasy books at the age of 10. Over the course of several years, she wrote four books, ranging from 100 to 400 pages.
