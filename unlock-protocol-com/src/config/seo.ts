@@ -1,6 +1,7 @@
 import type { DefaultSeoProps, NextSeoProps } from 'next-seo'
+import { unlockConfig } from './unlock'
 
-export const baseUrl = 'https://unlock-protocol.com'
+export const { baseURL } = unlockConfig
 
 export const DEFAULT_SEO: DefaultSeoProps = {
   title: 'Unlock',
@@ -9,11 +10,11 @@ export const DEFAULT_SEO: DefaultSeoProps = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: baseUrl,
+    url: baseURL,
     site_name: 'unlock-protocol',
     images: [
       {
-        url: `${baseUrl}/images/unlock.png`,
+        url: `${baseURL}/images/unlock.png`,
         alt: 'unlock-protocol',
       },
     ],
@@ -42,10 +43,10 @@ interface SEOProps {
 
 export function customizeSEO(options: SEOProps): NextSeoProps {
   const images = options.imagePath
-    ? [{ url: `${baseUrl}/images/${options.imagePath}` }]
+    ? [{ url: `${baseURL}/images/${options.imagePath}` }]
     : DEFAULT_SEO.openGraph?.images
   const path = options.path ?? '/'
-  const url = new URL(path, baseUrl).toString()
+  const url = new URL(path, baseURL).toString()
   return {
     ...DEFAULT_SEO,
     ...options,

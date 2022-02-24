@@ -13870,6 +13870,7 @@ __metadata:
     tailwindcss: ^3.0.18
     ts-jest: 27.1.3
     typescript: 4.5.5
+    use-local-storage: ^2.3.6
     vitest: ^0.3.6
     yaml-front-matter: 4.1.1
   languageName: unknown
@@ -47919,6 +47920,15 @@ typescript@^3.8.3:
     "@types/react":
       optional: true
   checksum: f0cb3a49119e14ed46db8a946b1aa17b838b8834c8a652bde314877ede6057c55b50654a97ee802597a5839c070180195e58ea3a756b7c33db7f540642f0ddea
+  languageName: node
+  linkType: hard
+
+"use-local-storage@npm:^2.3.6":
+  version: 2.3.6
+  resolution: "use-local-storage@npm:2.3.6"
+  peerDependencies:
+    react: ">=16.8.1"
+  checksum: e040b2344a087d2e562182fa92e05a14aa97620cca721da35a30bfa6671d88883a6317037be937159b88ee96bcfaaa76ff24f4f0f93a951702f9ebe30b57cdd6
   languageName: node
   linkType: hard
 

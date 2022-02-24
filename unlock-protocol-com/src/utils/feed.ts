@@ -1,12 +1,11 @@
 import { Feed } from 'feed'
 import type { PostType } from './posts'
-import { baseUrl, SOCIAL_URL } from '../config/seo'
-import fs from 'fs'
+import { baseURL, SOCIAL_URL } from '../config/seo'
+import { writeFile } from 'fs/promises'
 import path from 'path'
-const { writeFile } = fs.promises
 
 export async function generateFeed(posts: PostType[]) {
-  const siteURL = baseUrl
+  const siteURL = baseURL!
   const date = new Date()
 
   const feed = new Feed({

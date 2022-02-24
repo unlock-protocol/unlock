@@ -6,6 +6,7 @@ import { Community } from './sections/Community'
 import { Recipes } from './sections/Recipe'
 import { Layout } from '../../layout/DefaultLayout'
 import { CenteredColumn } from '../../layout/Columns'
+import { GetStarted } from './sections/GetStarted'
 
 export function Home() {
   return (
@@ -23,6 +24,9 @@ export function Home() {
         <div className="py-4">
           <Recipes />
         </div>
+        <CenteredColumn className="px-6 py-8 sm:py-12">
+          <GetStarted />
+        </CenteredColumn>
         <CenteredColumn className="px-6 py-8 sm:py-16">
           <Public />
         </CenteredColumn>
