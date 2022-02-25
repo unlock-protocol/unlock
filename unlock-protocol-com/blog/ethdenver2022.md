@@ -42,7 +42,7 @@ Another talk that sucked me in was [Glen Weyl’s]([https://twitter.com/glenweyl
 
 One slide that resonated explored “Ideologies of the Future: Corporate Libertarianism, Synthetic Technocracy & Digital Democracy.” He then spoke of the plurality of funding in relation to communities in the web3 ecosystem and he [published a deeper blog post](https://www.radicalxchange.org/media/blog/political-ideologies-for-the-21st-century/) about this very topic the day before his talk. Take a moment to watch his presentation because there are some profound theories and concepts we should explore as we build technology and web3 communities.
 
-<iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/MsMsL5v2-Ls" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/MsMsL5v2-Ls" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 ![cstreet_unlockblog_2.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_2.jpg)
