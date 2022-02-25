@@ -108,7 +108,13 @@ contract MixinPurchase is
         require(toKey.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
 
         // This is an existing owner trying to extend their key
-        newTimeStamp = toKey.expirationTimestamp + expirationDuration;
+        if(expirationDuration == type(uint).max) {
+          // We check for infinite duration in case there was a change
+          newTimeStamp = type(uint).max;
+        } else {
+          newTimeStamp = toKey.expirationTimestamp + expirationDuration;
+        }
+        
         toKey.expirationTimestamp = newTimeStamp;
 
         emit RenewKeyPurchase(_recipient, newTimeStamp);
