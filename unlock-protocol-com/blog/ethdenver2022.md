@@ -4,24 +4,24 @@ subTitle: Technology created by the web3 community supports our collective human
 authorName: Crystal Street
 publishDate: February 25, 2022
 description: Unlock recently attended ETHDenver to meet our community IRL, explore the next evolution of the web and place our fingers on the pulse of web3.
-image: /images/blog/ethdenver2022/tbd
+image: /images/blog/ethdenver2022/ethdenver-cover-min.jpg
 ---
 
 Last week a plethora of web3 builders, artists, creators, and enthusiasts descended upon Denver for the ETHDenver conference. And some of the Unlock crew (the US-based part of the team) gathered IRL and met so many of our amazing community members. This was my first ETHDenver event and I was blown away at **the energy of the Ethereum community and how many powerful conversations were in the collective discourse dedicated to solving serious societal issues** with technology, preparing the innovation needed to power our human journey into a more peaceful and just experience and the soft skills of community building.
 
-![cstreet_unlockblog_6.jpg](ETHDenver%20%2023279/cstreet_unlockblog_6.jpg)
+![cstreet_unlockblog_6.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_6.jpg)
 
 We kicked off our ETHDenver adventure by throwing a happy hour with our friends at Mintgate. And as fate would have it, as our event was starting, the skies opened up and a big old beautiful snowstorm smacked right into Denver. We were blown away at how many amazing community members braved the weather to join us for drinks and powerful conversations. 
 
 Every person I spoke with had **an intriguing project, either in motion or in their thought bubble, that involved membership NFTs and token gating.** Seeing and hearing all the possibilities with our protocol in the hands of our community members, and getting to finally meet so many of our locksmiths IRL was a lovely way to kick off the events of the week.
 
-![cstreet_unlockblog_010.jpg](ETHDenver%20%2023279/cstreet_unlockblog_010.jpg)
+![cstreet_unlockblog_010.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_010.jpg)
 
 ## Beyond Finance
 
 Despite the snow and a never-ending stream of long lines, I was able to slip into the Schelling Point event at the very start of my first day at ETHDenver. While the venue itself was chaotic and the speakers were in the midst of that chaos, I was able to attend some talks that truly reinforced my belief in what’s possible with the technology that powers web3.
 
-![cstreet_unlockblog_5.jpg](ETHDenver%20%2023279/cstreet_unlockblog_5.jpg)
+![cstreet_unlockblog_5.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_5.jpg)
 
 One talk that resonated was *Policy Proposals for Non Dystopian Crypto Protocols* by [Nathan Schneider]([https://twitter.com/ntnsndr](https://twitter.com/ntnsndr)) from the University of Colorado Boulder. Nathan spoke deeply, as deep as one can in 20 minutes, about governance and moving beyond blockchain as just a financial instrument. His slides placed some profound questions and premises into the community right from the start of Schelling Point.
 
@@ -35,7 +35,7 @@ If you are at all interested in governance and the future of decentralized commu
 
 [Embed the videos if possible]  https://www.youtube.com/watch?v=ROnYDEwnY04&list=PLvTrX8LNPbPlryx_S85pZPfH9yD7qcPsg&index=7
 
-![cstreet_unlockblog_1.jpg](ETHDenver%20%2023279/cstreet_unlockblog_1.jpg)
+![cstreet_unlockblog_1.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_1.jpg)
 
 Another talk that sucked me in was [Glen Weyl’s]([https://twitter.com/glenweyl](https://twitter.com/glenweyl)) presentation titled *Plurality*. He began by talking about **the notion of public freedom and moments where “the practices of a community have the chance to set a pattern for the whole way that social life works.”** He also placed some highly intellectual premises into the discourse on how we can begin to look at the different sectors of the ecosystem and avoid the mistakes made in past technological movements. 
 
@@ -43,7 +43,7 @@ One slide that resonated explored “Ideologies of the Future: Corporate Liberta
 
 [https://www.youtube.com/watch?v=MsMsL5v2-Ls&list=PLvTrX8LNPbPlryx_S85pZPfH9yD7qcPsg&index=5](https://www.youtube.com/watch?v=MsMsL5v2-Ls&list=PLvTrX8LNPbPlryx_S85pZPfH9yD7qcPsg&index=5)
 
-![cstreet_unlockblog_2.jpg](ETHDenver%20%2023279/cstreet_unlockblog_2.jpg)
+![cstreet_unlockblog_2.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_2.jpg)
 
 ## The Softer Side of Community
 
@@ -77,12 +77,12 @@ If you manage, build or have a protocol, project, or business powered by a commu
 
 https://www.youtube.com/watch?v=ysaIeVbSDCo&list=PLvTrX8LNPbPlryx_S85pZPfH9yD7qcPsg&index=23
 
-![cstreet_unlockblog_4.jpg](ETHDenver%20%2023279/cstreet_unlockblog_4.jpg)
+![cstreet_unlockblog_4.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_4.jpg)
 
 ## Our Collective Narratives
 
 What surprised me most about ETHDenver was the sheer number of speakers placing these same types of questions into our ecosystem’s collective conversations. **While the context varied, many speakers put forth visions that stretched beyond tokenomics and technicalities and touched the humanity on the other side of the technology.** And I was inspired to hear so many of the narratives presented on stage weaving their way through the individual conversations happening at coffeeshop, NFT art parties, community dinners, and while standing in lines. So many lines.
 
-![cstreet_unlockblog_8.jpg](ETHDenver%20%2023279/cstreet_unlockblog_8.jpg)
+![cstreet_unlockblog_8.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_8.jpg)
 
 I believe these conversations are necessary to avoid repeating the mistakes of web2 as we build out the web3 infrastructure. **We have the opportunity, as both technologists and humans, to ensure that our technology is grounded in equality and justice.** And while I was already hopeful about the trajectory of this technology before my time in Denver, I now harbor even more hope and vision about what is possible because so many passionate and brilliant minds are addressing the issues of our time through such powerful and decentralized technologies.
