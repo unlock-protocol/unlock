@@ -5,41 +5,29 @@ const { resolve } = require('path')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
-const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
 
-let tagManagerArgs
-if (unlockEnv === 'prod') {
-  tagManagerArgs = {
-    tagManagerArgs,
-  }
-}
-
 const dev = {
-  gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID || '0',
-  tagManagerArgs: {
-    gaTmId: process.env.NEXT_PUBLIC_UNLOCK_GA_TM_ID || '0',
-  },
+  googleAnalyticsId: process.env.UNLOCK_GA_ID || '0',
+  tagManagerArgs: {},
+  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
   unlockApp:
-    process.env.NEXT_PUBLIC_URL_BASE || 'https://staging.unlock-protocol.com',
-  appURL:
-    process.env.NEXT_PUBLIC_UNLOCK_APP_URL ||
+    process.env.UNLOCK_APP ||
     'https://staging-app.unlock-protocol.com/dashboard',
 }
 
 const staging = {
-  gaId: '0',
+  googleAnalyticsId: '0',
   tagManagerArgs: {},
-  unlockApp:
-    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com',
-  urlBase: process.env.URL_BASE || 'https://staging.unlock-protocol.com',
+  unlockApp: 'https://staging-app.unlock-protocol.com',
+  urlBase: 'https://staging.unlock-protocol.com',
 }
 
 const production = {
   // keeping that line for legacy support
-  gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID || '0',
+  googleAnalyticsId: process.env.UNLOCK_GA_ID || '0',
   tagManagerArgs: {
     gtmId: 'GTM-ND2KDWB',
   },
@@ -63,8 +51,6 @@ const unlockConfig = getUnlockConfig(unlockEnv)
 // environment variables
 const requiredConfigVariables = {
   unlockEnv,
-  googleAnalyticsId,
-  tagManagerArgs,
   ...unlockConfig,
 }
 
