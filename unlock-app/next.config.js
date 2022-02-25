@@ -23,6 +23,7 @@ const dev = {
     process.env.WEDLOCKS_URI ||
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
+
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
   locksmithHost: 'https://rinkeby.locksmith.unlock-protocol.com',
@@ -38,6 +39,7 @@ const production = {
   wedlocksUri:
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
+
 function getUnlockConfig(environment) {
   switch (environment) {
     case 'prod':
