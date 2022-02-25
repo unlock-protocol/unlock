@@ -147,7 +147,7 @@ contract('Unlock / upgrades', async (accounts) => {
               // Create Lock
               let lockTx
 
-              if (versionNumber >= 10) {
+              if (versionNumber >= 11) {
                 const args = [
                   60 * 60 * 24, // expirationDuration 1 day
                   web3.utils.padLeft(0, 40), // token address
@@ -433,7 +433,7 @@ contract('Unlock / upgrades', async (accounts) => {
             .connect(lockOwner)
             .purchase(
               0,
-              [keyOwner.address],
+              keyOwner.address,
               web3.utils.padLeft(0, 40),
               web3.utils.padLeft(0, 40),
               [],
@@ -446,7 +446,7 @@ contract('Unlock / upgrades', async (accounts) => {
           // Version 5 renamed to purchase, added keyPrice, referrer, and data
           return await lock
             .connect(lockOwner)
-            .purchase(0, [keyOwner.address], [web3.utils.padLeft(0, 40)], [], {
+            .purchase(0, keyOwner.address, web3.utils.padLeft(0, 40), [], {
               value: keyPrice,
             })
         }
