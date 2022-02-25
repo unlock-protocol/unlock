@@ -23,7 +23,7 @@ as HTML components on launch.
 
 ## Getting Started
 
- 1. Make sure you have installed required libraries by running `yarn`.
+ 1. Make sure you have installed required libraries by running `yarn`
  2. To launch the static site, run `yarn dev` at the command line while inside
     this sub-repository. This will both compile the NextJS source and the blog
-    markdown files.
+    markdown files

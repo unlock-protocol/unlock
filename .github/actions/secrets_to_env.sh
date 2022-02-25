@@ -1,10 +1,10 @@
 #!/bin/bash
-# Filter GitHub secrets and export them to ENV
+# Export all GitHub secrets as prefixed ENV
 
 secrets=$1
-prefix=$2 # used to filter
+prefix=$2 
 
-jq -r 'to_entries | .[] | select( .key | contains("'$prefix'")) | "\(.key) \(.value)\t"' <<< "$secrets" | 
+jq -r 'to_entries | .[] | "\(.key) \(.value)\t"' <<< "$secrets" | 
 while read -r key value; do
-  echo $key'='$value >> $GITHUB_ENV
+  echo "${prefix}_${key}"=$value >> $GITHUB_ENV
 done
