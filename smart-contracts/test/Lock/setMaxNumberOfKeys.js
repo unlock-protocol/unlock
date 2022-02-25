@@ -41,9 +41,9 @@ contract('Lock / setMaxNumberOfKeys', () => {
       // buy 10 key
       const tx = await lock.connect(buyers[0]).purchase(
         [],
-        buyers.map((b) => b.address),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map((b) => b.address),
+        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
         [],
         {
           value: keyPrice.mul(buyers.length).toString(),
