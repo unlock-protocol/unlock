@@ -1,3 +1,12 @@
+---
+title: ETHDenver 2022 | Exploring the Evolution of web3
+subTitle: Technology created by the web3 community supports our collective human experience as we adapt our communities for a decentralized future
+authorName: Crystal Street
+publishDate: February 25, 2022
+description: Unlock recently attended ETHDenver to meet our community IRL, explore the next evolution of the web and place our fingers on the pulse of web3.
+image: /images/blog/ethdenver2022/tbd
+---
+
 Last week a plethora of web3 builders, artists, creators, and enthusiasts descended upon Denver for the ETHDenver conference. And some of the Unlock crew (the US-based part of the team) gathered IRL and met so many of our amazing community members. This was my first ETHDenver event and I was blown away at **the energy of the Ethereum community and how many powerful conversations were in the collective discourse dedicated to solving serious societal issues** with technology, preparing the innovation needed to power our human journey into a more peaceful and just experience and the soft skills of community building.
 
 ![cstreet_unlockblog_6.jpg](ETHDenver%20%2023279/cstreet_unlockblog_6.jpg)
