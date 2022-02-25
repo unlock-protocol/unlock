@@ -78,7 +78,7 @@ Here are my favorite points from her slides:
 
 If you manage, build or have a protocol, project, or business powered by a community, **please take a moment and watch Beth’s presentation.**
 
-<iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/ysaIeVbSDCo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/ysaIeVbSDCo" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 ![cstreet_unlockblog_4.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_4.jpg)
