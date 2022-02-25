@@ -35,7 +35,7 @@ jobs:
    # Netlify Deployments (on staging)
   deploy-unlock-protocol-com:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
-    needs: run-tests
+    needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-protocol-com
@@ -47,7 +47,7 @@ jobs:
   
   deploy-paywall-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: paywall-app
@@ -58,7 +58,7 @@ jobs:
 
   deploy-wedlocks:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: wedlocks
@@ -73,7 +73,7 @@ jobs:
 
   deploy-unlock-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-app
