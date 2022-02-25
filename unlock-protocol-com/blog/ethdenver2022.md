@@ -33,7 +33,7 @@ One talk that resonated was *Policy Proposals for Non Dystopian Crypto Protocols
 
 If you are at all interested in governance and the future of decentralized community building, please take a few minutes and [watch Nathan’s presentation.](https://www.youtube.com/watch?v=ROnYDEwnY04&list=PLvTrX8LNPbPlryx_S85pZPfH9yD7qcPsg&index=7)
 
-<iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/ROnYDEwnY04" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/ROnYDEwnY04" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 ![cstreet_unlockblog_1.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_1.jpg)
