@@ -89,11 +89,11 @@ function DeveloperPopover() {
       {({ open }) => (
         <>
           <Popover.Button
-            className={`hover:text-brand-dark ${
+            className={`hover:text-brand-dark flex items-center gap-2 ${
               open ? 'text-black' : 'text-brand-gray'
             }`}
           >
-            Devs
+            Devs {open ? <UpIcon size={12} /> : <DownIcon size={12} />}
           </Popover.Button>
           <Transition
             as={Fragment}
@@ -107,11 +107,11 @@ function DeveloperPopover() {
             <Popover.Panel className="absolute w-screen max-w-xl px-4 mt-3 transform -translate-x-1/2 z-100 left-1/2">
               <div className="glass-pane rounded-3xl">
                 <div className="grid p-4">
-                  <header className="flex gap-2 pb-6 items-base">
+                  <header className="flex gap-x-4 pb-6 items-base">
                     <div>
                       <FilesIcon className="not-sr-only" />
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex flex-col">
                       <p className="text-sm font-bold"> Documentation </p>
                       <p className="text-sm text-brand-gray">
                         Your starting point for the integration of Unlock into
@@ -202,86 +202,94 @@ function Desktop() {
 
 function Mobile() {
   return (
-    <Disclosure.Panel className="mx-4 space-y-1 sm:hidden rounded-xl glass-pane">
-      <Disclosure>
-        {({ open }) => (
-          <div>
-            <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-xl">
-              For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
-            </Disclosure.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-150"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-125"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Disclosure.Panel>
-                <div className="p-6 space-y-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase ">Integrations</p>
-                    <nav className="grid gap-1 pt-2">
-                      {DEVELOPER_NAVIGATION_INTEGRATIONS.map((item, index) => (
-                        <Link
-                          className="text-sm text-brand-gray hover:text-brand-dark"
-                          key={index}
-                          href={item.href}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </nav>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase ">Recipes</p>
-                    <nav className="grid gap-1 pt-2">
-                      {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
-                        <Link
-                          className="text-sm text-brand-gray hover:text-brand-dark"
-                          key={index}
-                          href={item.href}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </nav>
-                  </div>
-                </div>
-                <div className="p-4 m-2 space-y-2 bg-white rounded-3xl">
-                  {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
-                    ({ name, href, Icon }, index) => (
-                      <Link
-                        href={href}
-                        key={index}
-                        className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
-                      >
-                        <Icon className="text-lg not-sr-only text-brand-ui-primary" />
-                        {name}
-                      </Link>
-                    )
-                  )}
-                </div>
-              </Disclosure.Panel>
-            </Transition>
+    <div className="relative w-full flex justify-center">
+      <Disclosure.Panel className="absolute px-4 space-y-1 sm:hidden w-full max-w-lg">
+        <div className="glass-pane space-y-2 rounded-xl">
+          <Disclosure>
+            {({ open }) => (
+              <>
+                <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-xl">
+                  For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
+                </Disclosure.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-150"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-125"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Disclosure.Panel>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <p className="text-xs font-bold uppercase ">
+                          Integrations
+                        </p>
+                        <nav className="grid gap-1 pt-2">
+                          {DEVELOPER_NAVIGATION_INTEGRATIONS.map(
+                            (item, index) => (
+                              <Link
+                                className="text-sm text-brand-gray hover:text-brand-dark"
+                                key={index}
+                                href={item.href}
+                              >
+                                {item.name}
+                              </Link>
+                            )
+                          )}
+                        </nav>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold uppercase ">Recipes</p>
+                        <nav className="grid gap-1 pt-2">
+                          {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
+                            <Link
+                              className="text-sm text-brand-gray hover:text-brand-dark"
+                              key={index}
+                              href={item.href}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </nav>
+                      </div>
+                    </div>
+                    <div className="p-4 m-2 space-y-2 bg-white rounded-3xl">
+                      {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
+                        ({ name, href, Icon }, index) => (
+                          <Link
+                            href={href}
+                            key={index}
+                            className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
+                          >
+                            <Icon className="text-lg not-sr-only text-brand-ui-primary" />
+                            {name}
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  </Disclosure.Panel>
+                </Transition>
+              </>
+            )}
+          </Disclosure>
+          <div className="flex flex-col gap-4 p-4 bg-white rounded-xl">
+            <Link href="/about"> About us </Link>
+            <Link href="https://docs.unlock-protocol.com/unlock/creators/faq">
+              Creators
+            </Link>
+            <Button>Connect Wallet</Button>
           </div>
-        )}
-      </Disclosure>
-      <div className="grid gap-4 p-4 bg-white rounded-xl">
-        <Link href="/about"> About us </Link>
-        <Link href="https://docs.unlock-protocol.com/unlock/creators/faq">
-          Creators
-        </Link>
-        <Button>Connect Wallet</Button>
-      </div>
-    </Disclosure.Panel>
+        </div>
+      </Disclosure.Panel>
+    </div>
   )
 }
 
 export function Navigation() {
   return (
-    <Disclosure as="nav" className="fixed z-10 w-full bg-brand-primary">
+    <Disclosure as="nav" className="sticky top-0 z-10 w-full bg-brand-primary">
       {({ open }) => (
         <>
           <div className="max-w-screen-lg px-6 py-4 mx-auto ">

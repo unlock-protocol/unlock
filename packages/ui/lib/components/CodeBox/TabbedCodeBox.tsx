@@ -20,7 +20,7 @@ export function TabbedCodeBox({ blocks }: Props) {
       style={{
         backgroundColor: UnlockPrismTheme.plain.backgroundColor,
       }}
-      className="w-full p-4 sm:p-8 rounded-3xl"
+      className="relative p-4 sm:p-8 rounded-3xl"
     >
       <Tab.Group>
         <Tab.List className="flex justify-between w-full">
@@ -28,8 +28,8 @@ export function TabbedCodeBox({ blocks }: Props) {
             <Tab
               className={({ selected }) =>
                 twMerge(
-                  'w-full p-2.5 border border-white text-white font-medium opacity-90 hover:opacity-100 hover:bg-white hover:text-brand-dark',
-                  selected && 'bg-white text-brand-dark opacity-100',
+                  'w-full p-2.5 border border-white text-white font-medium opacity-90 hover:opacity-100 hover:bg-white hover:text-brand-ui-primary',
+                  selected && 'bg-white text-brand-ui-primary opacity-100',
                   !index && 'rounded-l-xl',
                   index === blocks.length - 1 && 'rounded-r-xl'
                 )

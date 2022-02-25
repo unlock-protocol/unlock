@@ -1,6 +1,5 @@
 import { PostType } from '../../../utils'
 import { Link } from '../../helpers/Link'
-import { MarketingLayout } from '../../layout/MarketingLayout'
 import { SOCIAL_URL } from '../../../config/seo'
 import { Button } from '@unlock-protocol/ui'
 
@@ -16,7 +15,7 @@ export interface Props {
 
 export function About({ updates }: Props) {
   return (
-    <MarketingLayout>
+    <div className="max-w-5xl p-6 mx-auto">
       <div className="space-y-4">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold sm:text-4xl"> About </h1>
@@ -25,7 +24,7 @@ export function About({ updates }: Props) {
             streamline membership benefits for online communities.
           </p>
         </header>
-        <div className="grid gap-8">
+        <main className="grid gap-8">
           <div className="grid gap-6 sm:grid-cols-2">
             {ABOUT_POINTS.map((text, index) => (
               <div key={index} className="w-full p-8 glass-pane rounded-3xl">
@@ -89,8 +88,8 @@ export function About({ updates }: Props) {
               </div>
             </div>
           )}
-        </div>
+        </main>
       </div>
-    </MarketingLayout>
+    </div>
   )
 }

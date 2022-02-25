@@ -64,7 +64,7 @@
     "vitest": "^0.3.6"
   },
   "scripts": {
-    "dev": "yarn build && next dev -p 3002",
+    "dev": "next dev -p 3002",
     "build": "next build",
     "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",

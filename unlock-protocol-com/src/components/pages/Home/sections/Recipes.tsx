@@ -5,7 +5,7 @@ import {
 import { Link } from '../../../helpers/Link'
 import { AirdropIcon, NFTTicketIcon } from '../../../icons/Util'
 import useEmblaCarousel from 'embla-carousel-react'
-import { CenteredColumn } from '../../../layout/Columns'
+
 export const UNLOCK_RECIPES = [
   {
     Icon: WordpressIcon,
@@ -36,21 +36,19 @@ export function Recipes() {
     containScroll: 'trimSnaps',
   })
   return (
-    <>
-      <CenteredColumn as="header" className="px-6">
-        <div className="flex items-center justify-between pl-1">
-          <h2 className="text-xl font-bold sm:text-3xl"> Recipes </h2>
-          <Link
-            href="https://docs.unlock-protocol.com/unlock/creators/tutorials-1"
-            className="text-sm font-medium uppercase text-brand-ui-primary sm:text-base"
-          >
-            Explore more recipes {'->'}
-          </Link>
-        </div>
-      </CenteredColumn>
-      <div className="relative mx-auto lg:max-w-screen-lg max-w-fit">
+    <section className="max-w-5xl py-6 mx-auto">
+      <header className="flex items-center justify-between px-6">
+        <h2 className="text-xl font-bold sm:text-3xl"> Recipes </h2>
+        <Link
+          href="https://docs.unlock-protocol.com/unlock/creators/tutorials-1"
+          className="text-sm font-medium uppercase text-brand-ui-primary sm:text-base"
+        >
+          Explore more recipes {'->'}
+        </Link>
+      </header>
+      <div className="relative max-w-fit sm:px-6">
         <div className="overflow-hidden cursor-move" ref={viewportRef}>
-          <div className="flex gap-8 p-8 ml-8 select-none">
+          <div className="flex gap-8 p-8 ml-4 select-none">
             {UNLOCK_RECIPES.map(({ Icon, text, href }, index) => (
               <Link key={index} href={href}>
                 <div className="flex flex-col justify-between p-6 w-72 h-52 glass-pane rounded-3xl">
@@ -66,6 +64,8 @@ export function Recipes() {
           </div>
         </div>
       </div>
-    </>
+    </section>
   )
 }
+
+export default Recipes

@@ -1,9 +1,9 @@
 import type { GetStaticProps, NextPage } from 'next'
-import { CenteredColumn } from '../components/layout/Columns'
+import { NextSeo } from 'next-seo'
 import { Layout } from '../components/layout/DefaultLayout'
 import Privacy from '../components/pages/Privacy.md'
 import { markdownToHtml } from '../utils'
-
+import { routes } from '../config/routes'
 interface Props {
   content: string
 }
@@ -11,18 +11,21 @@ interface Props {
 const PrivacyPage: NextPage<Props> = ({ content }) => {
   return (
     <Layout>
-      <CenteredColumn>
-        <div className="pt-24 px-6 pb-8">
-          <article>
-            <main
-              className="prose prose-slate max-w-none"
-              dangerouslySetInnerHTML={{
-                __html: content,
-              }}
-            ></main>
-          </article>
-        </div>
-      </CenteredColumn>
+      <NextSeo
+        title={routes.privacy.seo.title}
+        description={routes.privacy.seo.description}
+        openGraph={routes.privacy.seo.openGraph}
+      />
+      <div className="max-w-5xl p-6 mx-auto">
+        <article>
+          <main
+            className="prose prose-slate max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: content,
+            }}
+          ></main>
+        </article>
+      </div>
     </Layout>
   )
 }

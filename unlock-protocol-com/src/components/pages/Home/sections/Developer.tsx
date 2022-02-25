@@ -1,7 +1,6 @@
 import { TabbedCodeBox, Button } from '@unlock-protocol/ui'
 import { UNLOCK_LINKS } from '../../../../config/constants'
 import { Link } from '../../../helpers/Link'
-import { CenteredColumn } from '../../../layout/Columns'
 
 const CODE_BLOCKS: React.ComponentProps<typeof TabbedCodeBox>['blocks'] = [
   {
@@ -53,36 +52,29 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 
 export function Developer() {
   return (
-    <CenteredColumn>
-      <div className="flex flex-col justify-between gap-8 sm:items-center sm:flex-row sm:grid-flow-col">
+    <section className="flex max-w-5xl mx-auto p-6 flex-col justify-center sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
+      <div className="flex flex-col gap-4 sm:gap-6 max-w-sm">
+        <header>
+          <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">
+            You&apos;re a dev? We got this.
+          </h3>
+        </header>
         <div>
-          <div className="flex flex-col gap-4 sm:gap-6 max-w-[350px]">
-            <header>
-              <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">
-                You&apos;re a dev? We got this.
-              </h3>
-            </header>
-            <div>
-              <p className="text-lg sm:text-xl text-brand-gray">
-                We&apos;re a protocol - not a platform. We&apos;re free,
-                community-owned, and possess limitless opportunities for
-                customization.
-              </p>
-            </div>
-            <div>
-              <Button>
-                <Link href={UNLOCK_LINKS.developers}>Visit our docs</Link>
-              </Button>
-            </div>
-          </div>
+          <p className="text-lg sm:text-xl text-brand-gray">
+            We&apos;re a protocol - not a platform. We&apos;re free,
+            community-owned, and possess limitless opportunities for
+            customization.
+          </p>
         </div>
-
         <div>
-          <div className="max-w-fit sm:max-w-lg">
-            <TabbedCodeBox blocks={CODE_BLOCKS} />
-          </div>
+          <Button>
+            <Link href={UNLOCK_LINKS.developers}>Visit our docs</Link>
+          </Button>
         </div>
       </div>
-    </CenteredColumn>
+      <div className="max-w-lg">
+        <TabbedCodeBox blocks={CODE_BLOCKS} />
+      </div>
+    </section>
   )
 }

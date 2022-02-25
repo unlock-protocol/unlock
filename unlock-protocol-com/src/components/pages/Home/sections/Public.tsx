@@ -5,13 +5,13 @@ import { UNLOCK_LINKS } from '../../../../config/constants'
 
 const PUBLIC_MARKETING_POINTS = [
   'Connect with a passionate community',
-  'Determine the protocol’s future',
+  "Determine the protocol's future",
   'Help build the web3 foundation',
 ]
 
 export function Public() {
   return (
-    <div className="flex flex-col-reverse items-center gap-4 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
+    <section className="flex flex-col-reverse items-center gap-6 justify-between sm:flex-row max-w-5xl mx-auto p-6">
       <div className="w-full">
         <div className="w-full space-y-4 break-words">
           <h1 className="text-4xl font-bold sm:text-5xl">
@@ -20,7 +20,7 @@ export function Public() {
           <div className="space-y-2">
             <p className="text-lg sm:text-xl text-brand-gray ">
               Our mission is to create a protocol that belongs to the users,
-              creators and builders – not Unlock Inc.
+              creators and builders - not Unlock Inc.
             </p>
           </div>
         </div>
@@ -47,6 +47,6 @@ export function Public() {
       <div className="w-full ">
         <img alt="Unlock Community" src="/images/marketing/community.png" />
       </div>
-    </div>
+    </section>
   )
 }

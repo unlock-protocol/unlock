@@ -1,5 +1,4 @@
 import { Link } from '../../helpers/Link'
-import { MarketingLayout } from '../../layout/MarketingLayout'
 import { Button } from '@unlock-protocol/ui'
 
 import {
@@ -23,6 +22,7 @@ import {
 } from 'react-icons/si'
 import { DecentralLand } from '../../icons/Brand'
 import { SOCIAL_URL } from '../../../config/seo'
+import useEmblaCarousel from 'embla-carousel-react'
 
 export const DEVELOPER_RECIPES = [
   {
@@ -124,7 +124,7 @@ export interface Props {}
 
 export function Developers({}: Props) {
   return (
-    <MarketingLayout>
+    <div className="max-w-5xl p-6 mx-auto">
       <div className="space-y-4">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold sm:text-4xl">
@@ -134,19 +134,25 @@ export function Developers({}: Props) {
             Build applications with customizable membership NFTs.
           </p>
         </header>
-        <div className="py-4 space-y-12">
+        <main className="py-4 space-y-12">
           <HowUnlockWorks />
           <RecipeSection />
           <CommunitySection />
           <GrantSection />
           <GotStuckSection />
-        </div>
+        </main>
       </div>
-    </MarketingLayout>
+    </div>
   )
 }
 
 function RecipeSection() {
+  const [viewportRef] = useEmblaCarousel({
+    dragFree: true,
+    slidesToScroll: 1,
+    containScroll: 'trimSnaps',
+  })
+
   return (
     <div className="space-y-4">
       <header>
@@ -155,20 +161,26 @@ function RecipeSection() {
           Learn how to develop with unlock.
         </p>
       </header>
-      <div className="flex flex-col gap-6 py-6 overflow-x-auto sm:flex-row">
-        {DEVELOPER_RECIPES.map(({ Icon, title, description, href }, index) => (
-          <Link key={index} href={href}>
-            <div className="block h-full p-4 space-y-4 border-2 border-transparent sm:w-72 glass-pane rounded-xl hover:border-brand-ui-primary">
-              <div>
-                <Icon className="fill-brand-ui-primary" size={40} />
-              </div>
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium"> {title}</h3>
-                <p className="text-brand-gray"> {description}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+      <div className="relative max-w-fit">
+        <div className="overflow-hidden cursor-move" ref={viewportRef}>
+          <div className="flex gap-8 p-6 ml-4 select-none">
+            {DEVELOPER_RECIPES.map(
+              ({ Icon, title, description, href }, index) => (
+                <Link key={index} href={href}>
+                  <div className="block h-full p-6 space-y-4 border-2 border-transparent sm:w-72 glass-pane rounded-3xl ">
+                    <div>
+                      <Icon className="fill-brand-ui-primary" size={40} />
+                    </div>
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium"> {title}</h3>
+                      <p className="text-brand-gray"> {description}</p>
+                    </div>
+                  </div>
+                </Link>
+              )
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

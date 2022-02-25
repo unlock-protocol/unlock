@@ -11,7 +11,7 @@ const UNLOCK_BENEFITS = [
 
 export function Connect() {
   return (
-    <div className="flex flex-col-reverse items-center gap-4 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
+    <section className="flex p-6 flex-col-reverse items-center sm:flex-row max-w-5xl mx-auto gap-6 sm:gap-x-16">
       <div className="w-full">
         <div className="w-full space-y-4 break-words">
           <h1 className="text-4xl font-bold sm:text-5xl">
@@ -46,7 +46,7 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="w-full max-w-[350px] sm:max-w-sm justify-center flex">
+      <div className="w-full max-w-fit sm:max-w-sm justify-center flex">
         <div className="w-full bg-white glass-pane rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
             <p className="font-bold">Tales of Ronin</p>
@@ -78,6 +78,6 @@ export function Connect() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

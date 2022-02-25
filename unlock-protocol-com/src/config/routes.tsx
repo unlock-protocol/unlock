@@ -3,7 +3,6 @@ import type { DefaultSeoProps } from 'next-seo'
 
 export interface Route {
   label: string
-  path: string
   seo: DefaultSeoProps
 }
 
@@ -14,37 +13,36 @@ export interface Routes {
 export const routes: Routes = {
   home: {
     label: 'Home',
-    path: '/',
     seo: DEFAULT_SEO,
   },
   privacy: {
     label: 'Privacy',
-    path: '/privacy',
     seo: customizeSEO({
+      path: '/privacy',
       title: 'Privacy Policy',
       description: 'Privacy policy of our site.',
     }),
   },
   terms: {
     label: 'Terms',
-    path: '/terms',
     seo: customizeSEO({
+      path: '/terms',
       title: 'Terms of Service',
       description: 'Terms and conditions of our site.',
     }),
   },
   blog: {
     label: 'Blog',
-    path: '/blog',
     seo: customizeSEO({
+      path: '/blog',
       title: 'Unlock Blog',
       description: 'News and updates from the Unlock team.',
     }),
   },
   about: {
     label: 'About',
-    path: '/about',
     seo: customizeSEO({
+      path: '/about',
       title: 'Unlock Team',
       description:
         "We're a small, smart and nimble team of coders and designers with a vision for a better and fairer way to monetize content.",
@@ -52,8 +50,8 @@ export const routes: Routes = {
   },
   developers: {
     label: 'Developers',
-    path: '/developers',
     seo: customizeSEO({
+      path: '/developers',
       title: 'Developers',
       description:
         'Learn about unlock protocol, integrations, and membership nfts.',
@@ -61,18 +59,28 @@ export const routes: Routes = {
   },
   jobs: {
     label: 'Jobs',
-    path: '/jobs',
     seo: customizeSEO({
       title: 'Work At Unlock',
+      path: '/jobs',
       description:
         "We're looking for world-class engineers who want to fix the web forever.",
     }),
   },
   membership: {
     label: 'Membership',
-    path: '/membership',
     seo: customizeSEO({
+      path: '/membership',
       title: 'Membership',
+      description: 'Get your unlock protocol membership today!',
+    }),
+  },
+  grants: {
+    label: 'grants',
+    seo: customizeSEO({
+      path: '/grants',
+      title: 'Unlock Grant Program',
+      description:
+        'Apply for Unlock Grant Program to receive UDT tokens, technical and promotional support.',
     }),
   },
 }

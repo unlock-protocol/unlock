@@ -7,10 +7,11 @@ import {
   FaDiscourse as DiscourseIcon,
   FaTwitter as TwitterIcon,
 } from 'react-icons/fa'
+
 export function GetStarted() {
   const { isMember, becomeMember } = useMembership()
   return (
-    <div id="get-started" className="flex flex-col gap-6">
+    <div id="get-started" className="space-y-6 max-w-5xl mx-auto p-6">
       <div className="w-full space-y-4 break-words md:w-3/4 lg:w-1/2">
         <h1 className="text-4xl font-bold sm:text-5xl">Try it yourself</h1>
         <div className="space-y-2">
@@ -25,21 +26,21 @@ export function GetStarted() {
           <div>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Button
-                iconLeft={<DiscordIcon size={18} />}
+                iconLeft={<DiscordIcon key={1} size={18} />}
                 href={SOCIAL_URL.discord}
                 as={Link}
               >
                 Join Discord
               </Button>
               <Button
-                iconLeft={<DiscourseIcon size={18} />}
+                iconLeft={<DiscourseIcon key={2} size={18} />}
                 href={SOCIAL_URL.discourse}
                 as={Link}
               >
                 Join Discouse
               </Button>
               <Button
-                iconLeft={<TwitterIcon size={18} />}
+                iconLeft={<TwitterIcon key={3} size={18} />}
                 href={SOCIAL_URL.twitter}
                 as={Link}
               >
