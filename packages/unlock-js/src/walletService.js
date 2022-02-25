@@ -305,7 +305,14 @@ export default class WalletService extends UnlockService {
   }
 
   async setExpirationDuration(params = {}, callback) {
-    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.lockAddress) {
+      throw new Error('Missing lockAddress')
+    }
+
+    if (params.expirationDuration && params.expirationDuration < 1) {
+      throw new Error('Expiration duration must be greater than 0')
+    }
+
     const version = await this.lockContractAbiVersion(params.lockAddress)
     if (!version.setExpirationDuration) {
       throw new Error('Lock version not supported')
