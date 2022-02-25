@@ -13,23 +13,51 @@ dotenv.config({
 let tagManagerArgs
 if (unlockEnv === 'prod') {
   tagManagerArgs = {
-    gtmId: 'GTM-ND2KDWB',
+    tagManagerArgs,
   }
 }
 
-// set default values
-const staging = {
+const dev = {
+  gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID || '0',
+  tagManagerArgs: {
+    gaTmId: process.env.NEXT_PUBLIC_UNLOCK_GA_TM_ID || '0',
+  },
   unlockApp:
-    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com',
-  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
+    process.env.NEXT_PUBLIC_URL_BASE || 'https://staging.unlock-protocol.com',
+  appURL:
+    process.env.NEXT_PUBLIC_UNLOCK_APP_URL ||
+    'https://staging-app.unlock-protocol.com/dashboard',
 }
 
-const prod = {
+const staging = {
+  gaId: '0',
+  tagManagerArgs: {},
+  unlockApp:
+    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com',
+  urlBase: process.env.URL_BASE || 'https://staging.unlock-protocol.com',
+}
+
+const production = {
+  // keeping that line for legacy support
+  gaId: process.env.NEXT_PUBLIC_UNLOCK_GA_ID || '0',
+  tagManagerArgs: {
+    gtmId: 'GTM-ND2KDWB',
+  },
   unlockApp: 'https://app.unlock-protocol.com',
   urlBase: 'https://unlock-protocol.com',
 }
 
-const envConfig = unlockEnv === 'prod' ? prod : staging
+function getUnlockConfig(environment) {
+  switch (environment) {
+    case 'prod':
+      return production
+    case 'staging':
+      return staging
+    default:
+      return dev
+  }
+}
+const unlockConfig = getUnlockConfig(unlockEnv)
 
 // This is a mechanism to ensure that we do not deploy code with missing/wrong
 // environment variables
@@ -37,7 +65,7 @@ const requiredConfigVariables = {
   unlockEnv,
   googleAnalyticsId,
   tagManagerArgs,
-  ...envConfig,
+  ...unlockConfig,
 }
 
 Object.keys(requiredConfigVariables).forEach((configVariableName) => {
