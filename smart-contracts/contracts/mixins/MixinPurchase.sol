@@ -131,7 +131,7 @@ contract MixinPurchase is
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       if(tokenAddress != address(0)) {
-        require(inMemoryKeyPrice >= _values[i], 'INSUFFICIENT_ERC20_VALUE');
+        require(inMemoryKeyPrice <= _values[i], 'INSUFFICIENT_ERC20_VALUE');
       }
 
       // call Unlock contract to record GNP
@@ -162,7 +162,7 @@ contract MixinPurchase is
       token.transferFrom(msg.sender, address(this), totalPriceToPay);
     } else {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      require(totalPriceToPay >= msg.value, 'INSUFFICIENT_VALUE');
+      require(totalPriceToPay <= msg.value, 'INSUFFICIENT_VALUE');
     }
 
     // refund gas
