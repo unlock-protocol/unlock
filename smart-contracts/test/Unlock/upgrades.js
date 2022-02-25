@@ -31,8 +31,8 @@ contract('Unlock / upgrades', async (accounts) => {
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
   for (
-    let versionNumber = 0;
-    versionNumber < LATEST_UNLOCK_VERSION;
+    let versionNumber = 7;
+    versionNumber < 9;
     versionNumber++
   ) {
     // skip the missing contracts (with flattening problems to be solved)
@@ -52,7 +52,7 @@ contract('Unlock / upgrades', async (accounts) => {
       const pastPublicLockPath = require.resolve(
         `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${
           // decouple contracts versions after v10
-          versionNumber === 10 ? 9 : versionNumber
+          versionNumber >= 10 ? 9 : versionNumber
         }.sol`
       )
 

@@ -36,7 +36,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         [],
         {
-          value: keyPrice.toFixed(),
+          value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],
         }
       )
@@ -100,7 +100,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         [],
         {
-          value: keyPrice.toFixed(),
+          value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],
         }
       )
@@ -156,7 +156,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         [],
         {
-          value: keyPrice.toFixed(),
+          value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],
         }
       )
@@ -227,7 +227,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         [],
         {
-          value: keyPrice.toFixed(),
+          value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],
         }
       )
@@ -294,7 +294,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         [],
         {
-          value: keyPrice.toFixed(),
+          value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],
         }
       )
