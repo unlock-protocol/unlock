@@ -96,7 +96,7 @@ contract('LockSerializer', () => {
           purchasers.map(() => web3.utils.padLeft(0, 40)),
           purchasers.map(() => web3.utils.padLeft(0, 40)),
           [],
-          { value: keyPrice }
+          { value: keyPrice.mul(purchasers.length) }
         )
       })
 

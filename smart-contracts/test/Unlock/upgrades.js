@@ -31,8 +31,8 @@ contract('Unlock / upgrades', async (accounts) => {
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
   for (
-    let versionNumber = 7;
-    versionNumber < 9;
+    let versionNumber = 0;
+    versionNumber < LATEST_UNLOCK_VERSION;
     versionNumber++
   ) {
     // skip the missing contracts (with flattening problems to be solved)
