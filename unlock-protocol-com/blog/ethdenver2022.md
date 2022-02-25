@@ -61,7 +61,7 @@ The presentation titled *Coordinating Work in Web3 & Beyond* by [Pooja Shah]([ht
 
 Her talk is relevant for managers and founders working with decentralized ecosystems, such as DAOs, and trying to build or adapt older systems of work organizational structures that will support the unique characteristics of the web3 community.
 
-<iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/Web77iQLbfs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/Web77iQLbfs" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 I was particularly impressed by a presentation from [Beth McCarthy]([https://twitter.com/ontologymachine](https://twitter.com/ontologymachine)) called *Building Regenerative Culture*. I loved her talk so much I photographed almost every slide and spoke with her after the presentation. **She touched on the care work of community building and addressing cultural debt in a community.**
