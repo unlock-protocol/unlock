@@ -260,7 +260,7 @@ contract('Lock / purchaseFor', (accounts) => {
     describe('can re-purchase an expired key', () => {
       let tx
 
-      before(async () => {
+      beforeEach(async () => {
         await locks.SHORT.purchase(
           [],
           [accounts[4]],
@@ -307,6 +307,18 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should emit the RenewKeyPurchase event', async () => {
+        // Purchase a new one
+        tx = await locks.SHORT.purchase(
+          [],
+          [accounts[4]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [],
+          {
+            value: web3.utils.toWei('0.01', 'ether'),
+          }
+        )
+
         let duration = new BigNumber(
           await locks.SHORT.expirationDuration.call()
         )

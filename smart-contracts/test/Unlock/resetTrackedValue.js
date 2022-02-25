@@ -17,7 +17,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.purchase(
-      keyPrice,
+      [keyPrice],
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
