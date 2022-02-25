@@ -11,7 +11,7 @@ let unlock
 let locks
 
 contract('Lock / purchaseFor', (accounts) => {
-  before(async () => {
+  beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
@@ -188,12 +188,11 @@ contract('Lock / purchaseFor', (accounts) => {
       let balance
       let now
 
-      before(async () => {
+      beforeEach(async () => {
         balance = new BigNumber(await web3.eth.getBalance(locks.FIRST.address))
         totalSupply = new BigNumber(await locks.FIRST.totalSupply.call())
-        now = parseInt(new Date().getTime() / 1000)
         numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners.call())
-        return locks.FIRST.purchase(
+        const newKeyTx = await locks.FIRST.purchase(
           [],
           [accounts[0]],
           [web3.utils.padLeft(0, 40)],
@@ -203,6 +202,10 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
+        const transferBlock = await ethers.provider.getBlock(
+          newKeyTx.receipt.blockNumber
+        )
+        now = transferBlock.timestamp
       })
 
       it('should have the right expiration timestamp for the key', async () => {
