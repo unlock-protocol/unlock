@@ -35,6 +35,7 @@ If you are at all interested in governance and the future of decentralized commu
 
 <iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/ROnYDEwnY04" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+
 ![cstreet_unlockblog_1.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_1.jpg)
 
 Another talk that sucked me in was [Glen Weyl’s]([https://twitter.com/glenweyl](https://twitter.com/glenweyl)) presentation titled *Plurality*. He began by talking about **the notion of public freedom and moments where “the practices of a community have the chance to set a pattern for the whole way that social life works.”** He also placed some highly intellectual premises into the discourse on how we can begin to look at the different sectors of the ecosystem and avoid the mistakes made in past technological movements. 
@@ -42,6 +43,7 @@ Another talk that sucked me in was [Glen Weyl’s]([https://twitter.com/glenweyl
 One slide that resonated explored “Ideologies of the Future: Corporate Libertarianism, Synthetic Technocracy & Digital Democracy.” He then spoke of the plurality of funding in relation to communities in the web3 ecosystem and he [published a deeper blog post](https://www.radicalxchange.org/media/blog/political-ideologies-for-the-21st-century/) about this very topic the day before his talk. Take a moment to watch his presentation because there are some profound theories and concepts we should explore as we build technology and web3 communities.
 
 <iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/MsMsL5v2-Ls" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 ![cstreet_unlockblog_2.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_2.jpg)
 
@@ -61,6 +63,7 @@ Her talk is relevant for managers and founders working with decentralized ecosys
 
 <iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/Web77iQLbfs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+
 I was particularly impressed by a presentation from [Beth McCarthy]([https://twitter.com/ontologymachine](https://twitter.com/ontologymachine)) called *Building Regenerative Culture*. I loved her talk so much I photographed almost every slide and spoke with her after the presentation. **She touched on the care work of community building and addressing cultural debt in a community.**
 
 Here are my favorite points from her slides:
@@ -76,6 +79,7 @@ Here are my favorite points from her slides:
 If you manage, build or have a protocol, project, or business powered by a community, **please take a moment and watch Beth’s presentation.**
 
 <iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/ysaIeVbSDCo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 ![cstreet_unlockblog_4.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_4.jpg)
 
