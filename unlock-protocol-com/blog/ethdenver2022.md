@@ -20,7 +20,7 @@ Every person I spoke with had **an intriguing project, either in motion or in th
 
 ## Beyond Finance
 
-<p>![cstreet_unlockblog_5.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_5.jpg)</p>
+![cstreet_unlockblog_5.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_5.jpg)
 
 Despite the snow and a never-ending stream of long lines, I was able to slip into the Schelling Point event at the very start of my first day at ETHDenver. While the venue itself was chaotic and the speakers were in the midst of that chaos, I was able to attend some talks that truly reinforced my belief in what’s possible with the technology that powers web3.
 
@@ -46,7 +46,7 @@ One slide that resonated explored “Ideologies of the Future: Corporate Liberta
 
 ## The Softer Side of Community
 
-<p>![cstreet_unlockblog_4.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_4.jpg)</p>
+![cstreet_unlockblog_4.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_4.jpg)
 
 Community building was a prominent theme for many of the speakers and adapting traditional community-building methodology from web2 for a decentralized community structure like DAOs was a common narrative of ETHDenver. As a community builder, I’m obviously biased to the importance of this topic, and I was inspired to see the speakers talking about **the nuanced soft skills of holding space for community members and fostering positive environments so innovation and collaboration can occur.** I repeatedly heard speakers addressing the health of the community hinging on these often immeasurable, but necessary, soft skills.
 
@@ -82,8 +82,8 @@ If you manage, build or have a protocol, project, or business powered by a commu
 
 ## Our Collective Narratives
 
-<p>What surprised me most about ETHDenver was the sheer number of speakers placing these same types of questions into our ecosystem’s collective conversations. **While the context varied, many speakers put forth visions that stretched beyond tokenomics and technicalities and touched the humanity on the other side of the technology.** And I was inspired to hear so many of the narratives presented on stage weaving their way through the individual conversations happening at coffeeshop, NFT art parties, community dinners, and while standing in lines. So many lines.</p>
+What surprised me most about ETHDenver was the sheer number of speakers placing these same types of questions into our ecosystem’s collective conversations. **While the context varied, many speakers put forth visions that stretched beyond tokenomics and technicalities and touched the humanity on the other side of the technology.** And I was inspired to hear so many of the narratives presented on stage weaving their way through the individual conversations happening at coffeeshop, NFT art parties, community dinners, and while standing in lines. So many lines.
 
-<p>![cstreet_unlockblog_8.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_8.jpg)</p>
+![cstreet_unlockblog_8.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_8.jpg)
 
 I believe these conversations are necessary to avoid repeating the mistakes of web2 as we build out the web3 infrastructure. **We have the opportunity, as both technologists and humans, to ensure that our technology is grounded in equality and justice.** And while I was already hopeful about the trajectory of this technology before my time in Denver, I now harbor even more hope and vision about what is possible because so many passionate and brilliant minds are addressing the issues of our time through such powerful and decentralized technologies.
