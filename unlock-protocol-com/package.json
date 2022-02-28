@@ -71,7 +71,7 @@
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "vitest run",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/",
+    "lint": "next lint",
     "ci": "yarn test && yarn lint"
   },
   "lint-staged": {

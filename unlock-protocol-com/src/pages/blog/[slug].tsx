@@ -15,7 +15,6 @@ import { Layout } from '../../components/layout/DefaultLayout'
 import { NextSeo } from 'next-seo'
 import { routes } from '../../config/routes'
 import { unlockConfig } from '../../config/unlock'
-import { slug } from '../../propTypes'
 interface PostsIndexProps extends PostsIndexType {
   type: 'postsIndex'
 }
@@ -55,7 +54,10 @@ const PostPage: NextPage<Props> = (props) => {
             ],
             description: props.frontMatter.description,
             title: props.frontMatter.title,
-            url: new URL(`/blog/${slug}`, unlockConfig.baseURL).toString(),
+            url: new URL(
+              `/blog/${props.slug}`,
+              unlockConfig.baseURL
+            ).toString(),
           }}
         />
         <Post {...props} />

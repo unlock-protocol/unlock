@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { chunk } from '../utils/chunk'
 import { getPosts, BLOG_PATH } from '../utils/posts'
+
 describe('Test utilts', () => {
   describe('Test chunk', () => {
     it('Should create proper chunks of an array', () => {
