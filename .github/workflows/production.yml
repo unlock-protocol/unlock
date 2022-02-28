@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/_tests.yml
 
   deploy-locksmith-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
@@ -20,6 +21,7 @@ jobs:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   deploy-locksmith-websub-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
@@ -34,7 +36,7 @@ jobs:
 
   # Netlify Deployments
   deploy-unlock-protocol-com-production:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
+    if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
@@ -46,7 +48,7 @@ jobs:
       UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_UNLOCK_GA_ID }}
   
   deploy-paywall-app-production:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
@@ -57,7 +59,7 @@ jobs:
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_AUTH_TOKEN }}
 
   deploy-unlock-app-production:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
