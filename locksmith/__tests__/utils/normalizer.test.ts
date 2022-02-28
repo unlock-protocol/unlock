@@ -18,4 +18,17 @@ describe('Normalizer', () => {
       ).toEqual('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
     })
   })
+
+  describe('toLowerCaseKeys', () => {
+    it('returns object with lowercase keys', () => {
+      expect.assertions(1)
+      expect(
+        Normalizer.toLowerCaseKeys({
+          Email: 'test',
+        })
+      ).toEqual({
+        email: 'test',
+      })
+    })
+  })
 })
