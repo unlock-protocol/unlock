@@ -61,6 +61,9 @@ export const sendEmail = async (
  * @param keys
  */
 export const notifyNewKeysToWedlocks = async (keys: any[]) => {
+  logger.info('Notifying following keys to wedlock', {
+    keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+  })
   for (const key of keys) {
     await notifyNewKeyToWedlocks(key)
   }
@@ -78,9 +81,15 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
       userAddress: Normalizer.ethereumAddress(key.owner.address),
     },
   })
-
+  logger.info(
+    'Found the relevant token metadata',
+    userTokenMetadataRecord?.data
+  )
   const recipient =
     userTokenMetadataRecord?.data?.userMetadata?.protected?.email
+
+  logger.info(`Sending ${recipient} key: ${key.lock.address}-${key.keyId}`)
+
   if (recipient) {
     logger.info('Notifying wedlock for new key', {
       recipient,
