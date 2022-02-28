@@ -2,7 +2,7 @@
 title: Websub
 subTitle: Enabling subscriptions to new locks and new keys!
 authorName: Julien Genestoux
-publishDate: Feb 22, 2022
+publishDate: Feb 28, 2022
 description: WebSub is a W3C protocol that provides a common mechanism for communication between publishers of any kind of Web content and their subscribers, based on HTTP web hooks.
 image: /images/blog/websub.png
 ---
