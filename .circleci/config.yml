@@ -66,6 +66,27 @@ jobs:
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
+  deploy-to-netlify:
+    executor: ubuntu_20-executor
+    environment:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    parameters:
+      service:
+        description: 'The service/sub-repository to deploy'
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh << parameters.service >> >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh "$ENV_TARGET" << parameters.service >> netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
   build-and-deploy-to-heroku:
     executor: ubuntu_20-executor
     environment:
@@ -186,6 +207,29 @@ workflows:
           filters:
             branches:
               only: production # deploy in production
+      - deploy-to-netlify:
+          name: 'deploy-unlock-app-netlify'
+          service: 'unlock-app'
+          requires:
+            - integration-tests
+      - deploy-to-netlify:
+          name: 'deploy-paywall-netlify'
+          service: paywall-app
+          requires:
+            - integration-tests
+      - deploy-to-netlify:
+          name: 'deploy-unlock-protocol-com-netlify'
+          service: 'unlock-protocol-com'
+          requires:
+            - integration-tests
+      - deploy-to-netlify:
+          service: 'wedlocks'
+          name: 'deploy-wedlocks-netlify'
+          filters:
+            branches:
+              only: master
+          requires:
+            - integration-tests
 
   prepare-prod-deploy:
     triggers:

@@ -13,6 +13,60 @@ let locks
 let lock
 let token
 
+const decodeGNPEvent = (tx) => {
+  // decode log manually (truffle issue)
+  const debugLog = tx.receipt.rawLogs[1]
+  const eventABI = [
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'grossNetworkProduct',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'valueInETH',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'address',
+      name: 'tokenAddress',
+      type: 'address',
+    },
+    {
+      indexed: false,
+      internalType: 'uint256',
+      name: 'value',
+      type: 'uint256',
+    },
+    {
+      indexed: false,
+      internalType: 'address',
+      name: 'lockAddress',
+      type: 'address',
+    },
+  ]
+
+  const decoded = web3.eth.abi.decodeLog(
+    eventABI,
+    debugLog.data,
+    debugLog.topics
+  )
+
+  const { grossNetworkProduct, valueInETH, tokenAddress, value, lockAddress } =
+    decoded
+
+  return {
+    grossNetworkProduct,
+    valueInETH,
+    tokenAddress,
+    value,
+    lockAddress,
+  }
+}
+
 contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
@@ -91,12 +145,13 @@ contract('Unlock / uniswapValue', (accounts) => {
 
     describe('Purchase key', () => {
       let gdpBefore
+      let tx
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
         await token.approve(lock.address, keyPrice, { from: keyOwner })
-        await lock.purchase(
+        tx = await lock.purchase(
           keyPrice,
           keyOwner,
           web3.utils.padLeft(0, 40),
@@ -119,6 +174,29 @@ contract('Unlock / uniswapValue', (accounts) => {
             .toFixed(5)
         )
       })
+
+      it('a GDP tracking event has been emitted', async () => {
+        const {
+          grossNetworkProduct,
+          valueInETH,
+          tokenAddress,
+          value,
+          lockAddress,
+        } = decodeGNPEvent(tx)
+
+        const gdp = new BigNumber(await unlock.grossNetworkProduct())
+
+        assert.equal(gdp.toString(), grossNetworkProduct)
+        assert.equal(
+          new BigNumber(web3.utils.toWei('0.00006', 'ether'))
+            .shiftedBy(-18)
+            .toFixed(5),
+          new BigNumber(valueInETH).shiftedBy(-18).toFixed(5)
+        )
+        assert.equal(token.address, tokenAddress)
+        assert.equal(keyPrice, value)
+        assert.equal(lockAddress, lock.address)
+      })
     })
   })
 
@@ -136,13 +214,14 @@ contract('Unlock / uniswapValue', (accounts) => {
 
     describe('Purchase key', () => {
       let gdpBefore
+      let tx
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
         await token.approve(lock.address, keyPrice, { from: keyOwner })
 
-        await lock.purchase(
+        tx = await lock.purchase(
           keyPrice,
           keyOwner,
           web3.utils.padLeft(0, 40),
@@ -158,6 +237,24 @@ contract('Unlock / uniswapValue', (accounts) => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
         assert.equal(gdp.toFixed(), gdpBefore.toFixed())
       })
+
+      it('a GDP tracking event has been emitted', async () => {
+        const {
+          grossNetworkProduct,
+          valueInETH,
+          tokenAddress,
+          value,
+          lockAddress,
+        } = decodeGNPEvent(tx)
+
+        const gdp = new BigNumber(await unlock.grossNetworkProduct())
+
+        assert.equal(gdp.toString(), grossNetworkProduct)
+        assert.equal(0, valueInETH)
+        assert.equal(token.address, tokenAddress)
+        assert.equal(keyPrice, value)
+        assert.equal(lockAddress, lock.address)
+      })
     })
   })
 
@@ -169,11 +266,12 @@ contract('Unlock / uniswapValue', (accounts) => {
 
     describe('Purchase key', () => {
       let gdpBefore
+      let tx
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await lock.purchase(
+        tx = await lock.purchase(
           keyPrice,
           keyOwner,
           web3.utils.padLeft(0, 40),
@@ -189,6 +287,24 @@ contract('Unlock / uniswapValue', (accounts) => {
       it('GDP went up by the keyPrice', async () => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
         assert.equal(gdp.toFixed(), gdpBefore.plus(keyPrice).toFixed())
+      })
+
+      it('a GDP tracking event has been emitted', async () => {
+        const {
+          grossNetworkProduct,
+          valueInETH,
+          tokenAddress,
+          value,
+          lockAddress,
+        } = decodeGNPEvent(tx)
+
+        const gdp = new BigNumber(await unlock.grossNetworkProduct())
+
+        assert.equal(gdp.toString(), grossNetworkProduct)
+        assert.equal(keyPrice, valueInETH)
+        assert.equal(web3.utils.padLeft(0, 40), tokenAddress)
+        assert.equal(keyPrice, value)
+        assert.equal(lockAddress, lock.address)
       })
     })
   })
