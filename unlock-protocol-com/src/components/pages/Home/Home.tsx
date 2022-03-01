@@ -4,9 +4,8 @@ import { Steps } from './sections/Steps'
 import { Public } from './sections/Public'
 import { Community } from './sections/Community'
 import { GetStarted } from './sections/GetStarted'
-import dynamic from 'next/dynamic'
-
-const Recipes = dynamic(() => import('./sections/Recipes'))
+import { Projects } from './sections/Projects'
+import { Recipes } from './sections/Recipes'
 
 export function Home() {
   return (
@@ -15,6 +14,7 @@ export function Home() {
       <Steps />
       <Developer />
       <Recipes />
+      <Projects />
       <GetStarted />
       <Public />
       <Community />
