@@ -13504,7 +13504,7 @@ __metadata:
     p-retry: 4.6.1
     parse-data-uri: 0.2.0
     path-to-regexp: 6.2.0
-    pg: 8.7.1
+    pg: 8.7.3
     random-words: 1.1.2
     reflect-metadata: 0.1.13
     request: 2.88.2
@@ -38081,12 +38081,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.4.1":
-  version: 3.4.1
-  resolution: "pg-pool@npm:3.4.1"
+"pg-pool@npm:^3.5.1":
+  version: 3.5.1
+  resolution: "pg-pool@npm:3.5.1"
   peerDependencies:
     pg: ">=8.0"
-  checksum: 50d68bd99a5c7ca32ad93ba97462528d6a8df87c5cf5a0743a3f0946bc57be82a45025e67eb8a6e522ed25316747864e5ce043339577a71f8f430e1364da2727
+  checksum: 42833c25f18fee41a1b2d955978f1403e93164762a7e57d3a870429103d302f1899b393ab021bb8144272037eb3f13bdb9f16a4c4afaa3efd3d2c3689738038f
   languageName: node
   linkType: hard
 
@@ -38110,14 +38110,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"pg@npm:8.7.1":
-  version: 8.7.1
-  resolution: "pg@npm:8.7.1"
+"pg@npm:8.7.3":
+  version: 8.7.3
+  resolution: "pg@npm:8.7.3"
   dependencies:
     buffer-writer: 2.0.0
     packet-reader: 1.0.0
     pg-connection-string: ^2.5.0
-    pg-pool: ^3.4.1
+    pg-pool: ^3.5.1
     pg-protocol: ^1.5.0
     pg-types: ^2.1.0
     pgpass: 1.x
@@ -38126,7 +38126,7 @@ fsevents@~2.1.1:
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: 3a17d9a73df9c9f5f99400751144f9d5e8dbe1948ca44f5b5eecb2166ad78cab36d070c2a97438cd3a5d1d083e70af1d3e0aad4554a45fe74b77d98ed4487242
+  checksum: d0e7040967779b9ccea16897f099510bcaf6bc86f77a6d8fa7e293c24d8bd2fd2ec46d99d6d1adc9be4cc8f254aa909361346b693088c1ba4501414f7afb2fe3
   languageName: node
   linkType: hard
 
