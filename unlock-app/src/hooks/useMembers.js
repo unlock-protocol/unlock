@@ -67,7 +67,7 @@ export const buildMembersWithMetadata = (lockWithKeys, storedMetadata) => {
       member = {
         token: key.keyId,
         lockName: lockWithKeys.name,
-        expiration: expirationAsDate(parseInt(key.expiration)),
+        expiration: expirationAsDate(key.expiration),
         keyholderAddress: keyOwner,
       }
     }
