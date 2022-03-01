@@ -62,7 +62,7 @@ export function Projects() {
   const [viewportRef, embla] = useEmblaCarousel({
     dragFree: true,
     containScroll: 'trimSnaps',
-    slidesToScroll: 2,
+    slidesToScroll: 1,
   })
 
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
@@ -108,7 +108,7 @@ export function Projects() {
           </div>
         </div>
       </header>
-      <div className="overflow-hidden cursor-move" ref={viewportRef}>
+      <div className="w-full overflow-hidden cursor-move" ref={viewportRef}>
         <div className="flex gap-8 p-8 ml-4 select-none">
           {UNLOCK_PROJECTS.map(
             ({ href, coverClass, title, text, published }, index) => {
