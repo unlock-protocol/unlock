@@ -13056,7 +13056,7 @@ __metadata:
     ethereumjs-util: 6.2.1
     ethers: 5.5.4
     express: 4.17.2
-    express-jwt: 6.1.0
+    express-jwt: 6.1.1
     express-list-endpoints: 6.0.0
     express-winston: 4.2.0
     graphql: 15.8.0
@@ -25104,15 +25104,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-jwt@npm:6.1.0":
-  version: 6.1.0
-  resolution: "express-jwt@npm:6.1.0"
+"express-jwt@npm:6.1.1":
+  version: 6.1.1
+  resolution: "express-jwt@npm:6.1.1"
   dependencies:
     async: ^1.5.0
     express-unless: ^1.0.0
     jsonwebtoken: ^8.1.0
-    lodash.set: ^4.0.0
-  checksum: 0c5a4ee4aa3f9917fdb672f7e556a68eb5c69db47dee622b88050ff75eac75bbe5a8ae8d8da06ca50f6b9ad8c5992375b319ec2ecd630f900694c961488c0070
+    lodash: ^4.17.21
+  checksum: 91b3da4c2bb080a2c3d125327a492f6f2b90a55c3b0fbdf51c78e979b636a6c94cb73fd2dbcebbdd5eedd9dcfe858f2b4ea4ce9c1285e60547f246546d31d9c1
   languageName: node
   linkType: hard
 
@@ -33082,7 +33082,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lodash.set@npm:^4.0.0, lodash.set@npm:^4.3.2":
+"lodash.set@npm:^4.3.2":
   version: 4.3.2
   resolution: "lodash.set@npm:4.3.2"
   checksum: a9122f49eef9f2d0fc9061a33d87f8e5b8c6b23d46e8b9e9ce1529d3588d79741bd1145a3abdfa3b13082703e65af27ff18d8a07bfc22b9be32f3fc36f763f70
