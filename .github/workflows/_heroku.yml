@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
       - name: Check for changes in ${{ inputs.service }}
         run: |
-          if  [ -z "${{ inputs.bypass_diff_check }}" ]; then:
+          if  [ -z "${{ inputs.bypass_diff_check }}" ]; then
             changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
           else 
             changed="changed"
