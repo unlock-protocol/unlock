@@ -13371,7 +13371,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
   dependencies:
-    "@babel/core": 7.16.12
+    "@babel/core": 7.17.5
     "@typescript-eslint/eslint-plugin": 5.10.2
     "@typescript-eslint/parser": 5.10.2
     babel-eslint: 10.1.0
@@ -13744,7 +13744,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@babel/core": 7.16.12
+    "@babel/core": 7.17.5
     "@headlessui/react": ^1.4.3
     "@mdx-js/preact": 2.0.0
     "@mdx-js/react": 2.0.0
@@ -13917,7 +13917,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-assets@workspace:packages/unlock-assets"
   dependencies:
-    "@babel/core": 7.16.12
+    "@babel/core": 7.17.5
     "@storybook/addon-actions": 6.4.17
     "@storybook/addon-essentials": 6.4.17
     "@storybook/addon-links": 6.4.17
@@ -13963,8 +13963,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-js@workspace:packages/unlock-js"
   dependencies:
-    "@babel/cli": 7.16.8
-    "@babel/core": 7.16.12
+    "@babel/cli": 7.17.6
+    "@babel/core": 7.17.5
     "@babel/preset-env": 7.16.11
     "@nomiclabs/hardhat-ethers": 2.0.4
     "@openzeppelin/hardhat-upgrades": 1.14.0
@@ -13990,7 +13990,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
-    "@babel/core": 7.16.12
+    "@babel/core": 7.17.5
     "@babel/plugin-proposal-optional-chaining": 7.16.7
     "@testing-library/jest-dom": 5.16.1
     "@testing-library/react": 12.1.2
@@ -47565,7 +47565,7 @@ typescript@^3.8.3:
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
   dependencies:
-    "@babel/core": 7.16.12
+    "@babel/core": 7.17.5
     "@typescript-eslint/eslint-plugin": 5.10.2
     "@typescript-eslint/parser": 5.10.2
     babel-eslint: 10.1.0
