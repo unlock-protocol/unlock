@@ -6,7 +6,7 @@ export interface Props extends PostType {
 export function Post({ frontMatter, htmlContent }: Props) {
   const publishedDate = new Date(frontMatter.publishDate).toLocaleDateString()
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6">
       <article>
         <header className="py-4 space-y-2">
           <h1 className="text-3xl font-bold sm:text-5xl">

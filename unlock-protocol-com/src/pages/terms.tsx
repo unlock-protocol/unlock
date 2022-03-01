@@ -16,7 +16,7 @@ const TermsPage: NextPage<Props> = ({ content }) => {
         description={routes.terms.seo.description}
         openGraph={routes.terms.seo.openGraph}
       />
-      <div className="max-w-5xl p-6 mx-auto">
+      <div className="max-w-6xl p-6 mx-auto">
         <article>
           <main
             className="prose prose-slate max-w-none"

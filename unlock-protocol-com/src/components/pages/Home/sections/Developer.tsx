@@ -52,7 +52,7 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 
 export function Developer() {
   return (
-    <section className="flex max-w-5xl mx-auto p-6 flex-col justify-center sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
+    <section className="flex max-w-6xl mx-auto p-6 flex-col justify-center sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
       <div className="flex flex-col gap-4 sm:gap-6 max-w-sm">
         <header>
           <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">

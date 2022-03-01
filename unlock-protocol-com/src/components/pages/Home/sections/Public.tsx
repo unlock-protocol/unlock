@@ -11,8 +11,8 @@ const PUBLIC_MARKETING_POINTS = [
 
 export function Public() {
   return (
-    <section className="flex flex-col-reverse items-center gap-6 justify-between sm:flex-row max-w-5xl mx-auto p-6">
-      <div className="w-full">
+    <section className="flex flex-col-reverse items-center justify-between max-w-6xl gap-6 px-6 py-12 mx-auto sm:flex-row">
+      <div className="max-w-lg">
         <div className="w-full space-y-4 break-words">
           <h1 className="text-4xl font-bold sm:text-5xl">
             We&apos;re building a public good together
@@ -44,7 +44,7 @@ export function Public() {
         </Button>
       </div>
 
-      <div className="w-full ">
+      <div className="max-w-lg">
         <img alt="Unlock Community" src="/images/marketing/community.png" />
       </div>
     </section>

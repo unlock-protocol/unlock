@@ -82,8 +82,8 @@ export function Projects() {
   }, [embla, onSelect])
 
   return (
-    <section className="max-w-5xl p-6 mx-auto">
-      <header>
+    <section className="max-w-6xl py-12 mx-auto sm:py-24">
+      <header className="px-6">
         <div className="flex items-center justify-between pl-1">
           <h2 className="text-xl font-bold sm:text-3xl">
             Explore Active Projects
@@ -108,40 +108,42 @@ export function Projects() {
           </div>
         </div>
       </header>
-      <div className="w-full overflow-hidden cursor-move" ref={viewportRef}>
-        <div className="flex gap-8 p-8 ml-4 select-none">
-          {UNLOCK_PROJECTS.map(
-            ({ href, coverClass, title, text, published }, index) => {
-              const date = new Date(published)
-              const textDate = date.toLocaleDateString('default', {
-                month: 'long',
-                year: 'numeric',
-              })
-              return (
-                <Link key={index} href={href}>
-                  <div className="relative flex flex-col overflow-hidden w-72 group h-96 rounded-3xl">
-                    <div
-                      style={{
-                        backgroundPosition: 'center',
-                      }}
-                      className={twMerge(
-                        'object-cover h-full w-full absolute group-hover:transition-all',
-                        coverClass
-                      )}
-                    >
-                      <div className="absolute z-10 flex flex-col justify-end h-full p-8 text-white">
-                        <time className="text-sm" dateTime={textDate}>
-                          {textDate}
-                        </time>
-                        <h4 className="text-xl font-bold"> {title} </h4>
-                        <p className="hidden group-hover:block"> {text} </p>
+      <div className="sm:px-6">
+        <div className="w-full overflow-hidden cursor-move" ref={viewportRef}>
+          <div className="flex gap-8 p-6 ml-4 select-none">
+            {UNLOCK_PROJECTS.map(
+              ({ href, coverClass, title, text, published }, index) => {
+                const date = new Date(published)
+                const textDate = date.toLocaleDateString('default', {
+                  month: 'long',
+                  year: 'numeric',
+                })
+                return (
+                  <Link key={index} href={href}>
+                    <div className="relative flex flex-col overflow-hidden w-72 group h-96 rounded-3xl">
+                      <div
+                        style={{
+                          backgroundPosition: 'center',
+                        }}
+                        className={twMerge(
+                          'object-cover h-full w-full absolute group-hover:transition-all',
+                          coverClass
+                        )}
+                      >
+                        <div className="absolute z-10 flex flex-col justify-end h-full p-8 text-white">
+                          <time className="text-sm" dateTime={textDate}>
+                            {textDate}
+                          </time>
+                          <h4 className="text-xl font-bold"> {title} </h4>
+                          <p className="hidden group-hover:block"> {text} </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              )
-            }
-          )}
+                  </Link>
+                )
+              }
+            )}
+          </div>
         </div>
       </div>
     </section>

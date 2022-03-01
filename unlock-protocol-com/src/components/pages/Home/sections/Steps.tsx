@@ -36,17 +36,17 @@ const UNLOCK_STEPS = [
 
 export function Steps() {
   return (
-    <section className="space-y-6 p-6 max-w-5xl mx-auto">
+    <section className="max-w-6xl px-6 py-12 mx-auto space-y-6 sm:py-32">
       <div className="grid justify-center w-full space-y-4 text-center">
         <h2 className="text-4xl font-bold sm:text-5xl"> How Unlock works </h2>
         <p className="text-lg sm:text-xl text-brand-gray">
           Create your own membership program without code or chaos.
         </p>
       </div>
-      <ol className="grid sm:grid-cols-2 justify-center gap-4 md:grid-cols-3">
+      <ol className="grid justify-center gap-8 sm:grid-cols-2 md:grid-cols-3">
         {UNLOCK_STEPS.map(({ title, Icon, points }, index) => (
           <li
-            className="space-y-4 p-8 sm:max-w-xs glass-pane rounded-3xl"
+            className="p-8 space-y-6 sm:max-w-sm glass-pane rounded-3xl"
             key={index}
           >
             <div className="flex justify-center">

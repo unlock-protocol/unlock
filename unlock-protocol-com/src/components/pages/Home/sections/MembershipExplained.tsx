@@ -10,7 +10,7 @@ export const UNLOCK_MEMBERSHIP_BENEFITS = [
 
 export function MembershipExplained() {
   return (
-    <section className="grid items-center justify-center max-w-5xl gap-6 p-6 mx-auto md:grid-cols-2 sm:flex-row sm:gap-x-16">
+    <section className="grid items-center justify-center max-w-6xl gap-6 p-6 mx-auto md:grid-cols-2 sm:flex-row sm:gap-x-16">
       <div className="w-full">
         <video muted autoPlay loop className="object-fit pointer-none">
           <source src="/videos/marketing/membership.webm" type="video/webm" />

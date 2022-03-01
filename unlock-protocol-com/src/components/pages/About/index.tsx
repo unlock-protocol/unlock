@@ -15,7 +15,7 @@ export interface Props {
 
 export function About({ updates }: Props) {
   return (
-    <div className="max-w-5xl p-6 mx-auto">
+    <div className="max-w-6xl p-6 mx-auto">
       <div className="space-y-4">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold sm:text-4xl"> About </h1>

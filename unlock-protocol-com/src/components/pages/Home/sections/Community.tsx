@@ -4,12 +4,12 @@ import { SOCIAL_URL } from '../../../../config/seo'
 
 export function Community() {
   return (
-    <section className="flex flex-col-reverse items-center justify-between max-w-5xl gap-6 p-6 mx-auto sm:flex-row">
-      <div className="w-full ">
+    <section className="flex flex-col-reverse justify-between max-w-6xl gap-6 px-6 py-12 mx-auto md:items-center sm:flex-row">
+      <div className="max-w-lg">
         <img src="/images/marketing/community-circle.png" alt="Community" />
       </div>
-      <div className="space-y-6">
-        <div className="w-full sm:min-w-[400px]">
+      <div className="max-w-sm space-y-6">
+        <div className="w-full">
           <div className="w-full space-y-4 break-words">
             <h1 className="text-4xl font-bold sm:text-5xl">
               Join the Community

@@ -18,7 +18,7 @@ const UNLOCK_INTERVIEW_STEPS = [
 
 export function Jobs() {
   return (
-    <div className="max-w-5xl p-6 mx-auto">
+    <div className="max-w-6xl p-6 mx-auto">
       <header className="space-y-1 leading-relaxed">
         <h1 className="text-xl font-bold sm:text-3xl"> Work at Unlock </h1>
         <p className="text-lg text-brand-gray">

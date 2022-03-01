@@ -69,7 +69,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
 export function Footer() {
   return (
     <footer className="w-full text-white bg-brand-dark">
-      <div className="grid max-w-screen-lg gap-12 px-4 py-12 sm:mx-auto">
+      <div className="grid max-w-6xl gap-12 px-4 py-12 sm:mx-auto">
         <div className="flex flex-col justify-between gap-8 sm:flex-row">
           <div className="max-w-sm space-y-2">
             <h4 className="text-3xl font-semibold"> Sign up for Updates </h4>

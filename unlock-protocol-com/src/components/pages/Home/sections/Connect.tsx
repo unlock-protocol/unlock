@@ -11,13 +11,13 @@ const UNLOCK_BENEFITS = [
 
 export function Connect() {
   return (
-    <section className="flex flex-col-reverse items-center max-w-5xl gap-6 p-6 mx-auto sm:flex-row sm:gap-x-16">
-      <div className="w-full">
+    <section className="flex flex-col-reverse items-center justify-between max-w-6xl gap-6 p-6 mx-auto sm:flex-row">
+      <div className="w-full max-w-lg">
         <header className="w-full space-y-4 break-words">
           <h2 className="text-4xl font-bold sm:text-5xl">
             Connect with your 1000 true fans
           </h2>
-          <p className="text-lg sm:text-xl text-brand-gray max-w-[300px]">
+          <p className="max-w-sm text-lg sm:text-xl text-brand-gray">
             For creative communities and the humans who build them
           </p>
         </header>
@@ -49,7 +49,7 @@ export function Connect() {
       <div className="flex justify-center w-full max-w-fit sm:max-w-sm">
         <div className="w-full bg-white glass-pane rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-            <p className="font-bold">Tales of Ronin</p>
+            <p className="font-bold">Tales of Elatora</p>
             <p className="font-mono text-sm font-bold text-brand-ui-primary">
               Powered by Unlock
             </p>
@@ -62,17 +62,15 @@ export function Connect() {
           <div className="flex items-center gap-4 px-6 py-4">
             <div>
               <Avatar className="overflow-hidden">
-                <div className="bg-orange-500 rounded-full bg-opacity-90 brightness-150">
-                  <AvatarImage
-                    className="inline-block w-10 h-10 rounded-full mix-blend-multiply"
-                    src="/images/marketing/caroline.png"
-                    alt="Calorine"
-                  />
-                </div>
+                <AvatarImage
+                  className="inline-block w-10 h-10 rounded-full"
+                  src="/images/marketing/caroline.png"
+                  alt="Calorine"
+                />
               </Avatar>
             </div>
-            <div className="grid">
-              <p className="font-bold"> Caroline </p>
+            <div>
+              <h4 className="font-bold"> Caroline </h4>
               <p className="text-sm brand-gray"> Sold out mint in one day </p>
             </div>
           </div>

@@ -5,6 +5,6 @@ export function CenteredColumn({
   className,
   ...rest
 }: ComponentPropsWithRef<typeof Box>) {
-  const CenteredColumnClass = twMerge('max-w-screen-lg mx-auto', className)
+  const CenteredColumnClass = twMerge('max-w-6xl mx-auto', className)
   return <Box className={CenteredColumnClass} {...rest} />
 }
