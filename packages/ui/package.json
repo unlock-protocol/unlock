@@ -31,7 +31,7 @@
     "tailwind-merge": "^1.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.16.12",
+    "@babel/core": "7.17.5",
     "@mdx-js/preact": "2.0.0",
     "@mdx-js/react": "2.0.0",
     "@storybook/addon-actions": "6.5.0-alpha.31",

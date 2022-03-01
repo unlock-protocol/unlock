@@ -26,7 +26,7 @@
     "react": "17.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.16.12",
+    "@babel/core": "7.17.5",
     "@storybook/addon-actions": "6.4.17",
     "@storybook/addon-essentials": "6.4.17",
     "@storybook/addon-links": "6.4.17",

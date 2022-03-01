@@ -31,8 +31,8 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.16.8",
-    "@babel/core": "7.16.12",
+    "@babel/cli": "7.17.6",
+    "@babel/core": "7.17.5",
     "@babel/preset-env": "7.16.11",
     "@nomiclabs/hardhat-ethers": "2.0.4",
     "@openzeppelin/hardhat-upgrades": "1.14.0",
