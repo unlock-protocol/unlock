@@ -11,16 +11,16 @@ const UNLOCK_BENEFITS = [
 
 export function Connect() {
   return (
-    <section className="flex p-6 flex-col-reverse items-center sm:flex-row max-w-5xl mx-auto gap-6 sm:gap-x-16">
+    <section className="flex flex-col-reverse items-center max-w-5xl gap-6 p-6 mx-auto sm:flex-row sm:gap-x-16">
       <div className="w-full">
-        <div className="w-full space-y-4 break-words">
-          <h1 className="text-4xl font-bold sm:text-5xl">
+        <header className="w-full space-y-4 break-words">
+          <h2 className="text-4xl font-bold sm:text-5xl">
             Connect with your 1000 true fans
-          </h1>
+          </h2>
           <p className="text-lg sm:text-xl text-brand-gray max-w-[300px]">
             For creative communities and the humans who build them
           </p>
-        </div>
+        </header>
         <div className="py-6">
           <ul>
             {UNLOCK_BENEFITS.map((text, index) => (
@@ -46,7 +46,7 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="w-full max-w-fit sm:max-w-sm justify-center flex">
+      <div className="flex justify-center w-full max-w-fit sm:max-w-sm">
         <div className="w-full bg-white glass-pane rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
             <p className="font-bold">Tales of Ronin</p>
