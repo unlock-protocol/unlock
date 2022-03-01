@@ -1,4 +1,4 @@
-import { MONTH_NAMES } from '../constants'
+import { MAX_UINT, MONTH_NAMES } from '../constants'
 
 /**
  * Function which computes days, hours, minutes and seconds based on seconds
@@ -80,7 +80,7 @@ export function secondsAsDays(seconds) {
  * @returns {string}
  */
 export function expirationAsDate(timestamp) {
-  if (!timestamp) {
+  if (!timestamp || timestamp === MAX_UINT) {
     return 'Never'
   }
 
