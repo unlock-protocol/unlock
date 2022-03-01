@@ -4504,6 +4504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@colors/colors@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@colors/colors@npm:1.5.0"
+  checksum: d64d5260bed1d5012ae3fc617d38d1afc0329fec05342f4e6b838f46998855ba56e0a73833f4a80fa8378c84810da254f76a8a19c39d038260dc06dc4e007425
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-consumer@npm:0.8.0":
   version: 0.8.0
   resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
@@ -13273,7 +13280,7 @@ __metadata:
     hardlydifficult-ethereum-contracts: 0.11.1
     lint-staged: 12.3.3
     prettier: 2.5.1
-    prompt: 1.2.1
+    prompt: 1.2.2
     solhint: 3.3.6
     solidity-coverage: 0.7.18
     truffle-assertions: 0.9.2
@@ -39070,16 +39077,16 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prompt@npm:1.2.1":
-  version: 1.2.1
-  resolution: "prompt@npm:1.2.1"
+"prompt@npm:1.2.2":
+  version: 1.2.2
+  resolution: "prompt@npm:1.2.2"
   dependencies:
+    "@colors/colors": 1.5.0
     async: ~0.9.0
-    colors: 1.4.0
     read: 1.0.x
     revalidator: 0.1.x
     winston: 2.x
-  checksum: 9e5545caa48e621dc46c46557c4d3847c5be1792687fa6110ed414300b4fc615387e12f24b4c2aabafda5260984e7789daef5e589f73d47825e8c50af3adeb7c
+  checksum: 86731e2a7d49b02e380e4cf4d1d41c6c8dc706bf7016faf2dab49b90bd583a846e3947c8d5e3dbf404878d97ea89fe97b0ed7d1e8885479f9de46963508f85fa
   languageName: node
   linkType: hard
 
