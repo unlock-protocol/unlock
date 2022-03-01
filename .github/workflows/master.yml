@@ -42,6 +42,7 @@ jobs:
     with:
       service: unlock-protocol-com
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
@@ -54,6 +55,7 @@ jobs:
     with:
       service: paywall-app
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
@@ -65,6 +67,7 @@ jobs:
     with:
       service: wedlocks
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_AUTH_TOKEN }}
@@ -80,6 +83,7 @@ jobs:
     with:
       service: unlock-app
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
