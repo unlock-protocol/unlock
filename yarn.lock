@@ -13473,7 +13473,7 @@ __metadata:
     react-dom: 17.0.2
     react-gtm-module: 2.0.11
     react-hook-form: 7.25.3
-    react-jazzicon: 0.1.3
+    react-jazzicon: 1.0.3
     react-test-renderer: 17.0.2
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.3
@@ -19373,7 +19373,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-convert@npm:^1.3.0, color-convert@npm:^1.9.0, color-convert@npm:^1.9.1, color-convert@npm:^1.9.3":
+"color-convert@npm:^1.9.0, color-convert@npm:^1.9.1, color-convert@npm:^1.9.3":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
   dependencies:
@@ -19412,15 +19412,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-string@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "color-string@npm:0.3.0"
-  dependencies:
-    color-name: ^1.0.0
-  checksum: cc65013a94d399ddcb81b3b4b6e0d2166cbaa77311260ff6271f215a286d3db58ab3a217bdb175f8b9dd95f9ea7ac94f71a595af6bcd3b6a02fea6e75ddaf5fb
-  languageName: node
-  linkType: hard
-
 "color-string@npm:^1.5.2, color-string@npm:^1.6.0":
   version: 1.6.0
   resolution: "color-string@npm:1.6.0"
@@ -19447,17 +19438,6 @@ __metadata:
     color-convert: ^1.9.1
     color-string: ^1.5.2
   checksum: 273fe5d4c2a322dbc0e184ef6c891cbefefa11af7c6a8ed6001ff6986af747038cf3258bd4f4b715415f287c556efc8d1f0368bc02240877610ae1d427887537
-  languageName: node
-  linkType: hard
-
-"color@npm:^0.11.0":
-  version: 0.11.4
-  resolution: "color@npm:0.11.4"
-  dependencies:
-    clone: ^1.0.2
-    color-convert: ^1.3.0
-    color-string: ^0.3.0
-  checksum: a6f624fd159e9311a6c1c86ac05b5b550c98e2d1e5646e032b8481e5e113127c06a84678b91c89c96b11b58c1c723dd9766b1b02cb2d441c6212a0f7cb3dad73
   languageName: node
   linkType: hard
 
@@ -39115,7 +39095,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -40060,16 +40040,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-jazzicon@npm:0.1.3":
-  version: 0.1.3
-  resolution: "react-jazzicon@npm:0.1.3"
+"react-jazzicon@npm:1.0.3":
+  version: 1.0.3
+  resolution: "react-jazzicon@npm:1.0.3"
   dependencies:
-    color: ^0.11.0
     mersenne-twister: ^1.1.0
-    prop-types: ^15.5.10
   peerDependencies:
-    react: ^15.3.2
-  checksum: da1843ce2e9079813d3c53e7ce15224e06dc58c660cce3a2cbc27b7f3a4cf15b8237a6d13d7e5119d2e2567dc5b6bb2bcec95396e2226333c679c8e664e01f4a
+    react: ^17.0.0
+  checksum: cd6ef64ab2c46e0f800b9caa1bbfbc473d6855ff8aeaff7e613ba5d5807de1720cdddbe04264d4764c3f138578cbb23ef1d3f5b442ec2981183abf1790592b24
   languageName: node
   linkType: hard
 
