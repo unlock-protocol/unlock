@@ -48,7 +48,7 @@
     "prettier": "2.5.1",
     "prompt": "1.2.1",
     "solhint": "3.3.6",
-    "solidity-coverage": "0.7.18",
+    "solidity-coverage": "0.7.20",
     "truffle-assertions": "0.9.2"
   },
   "devDependencies": {
