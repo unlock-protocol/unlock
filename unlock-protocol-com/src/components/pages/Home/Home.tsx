@@ -14,9 +14,9 @@ export function Home() {
       <MembershipExplained />
       <Steps />
       <Developer />
-      <Recipes />
       <Projects />
       <GetStarted />
+      <Recipes />
       <Public />
       <Community />
     </main>

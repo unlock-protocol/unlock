@@ -10,19 +10,19 @@ export const UNLOCK_MEMBERSHIP_BENEFITS = [
 
 export function MembershipExplained() {
   return (
-    <section className="flex flex-col items-center max-w-5xl gap-6 p-6 mx-auto sm:flex-row sm:gap-x-16">
+    <section className="grid items-center justify-center max-w-5xl gap-6 p-6 mx-auto md:grid-cols-2 sm:flex-row sm:gap-x-16">
       <div className="w-full">
-        <video muted autoPlay loop className="pointer-none">
+        <video muted autoPlay loop className="object-fit pointer-none">
           <source src="/videos/marketing/membership.webm" type="video/webm" />
           <p> We couldn&apos;t load this video for you. </p>
         </video>
       </div>
-      <div className="py-6 space-y-6">
-        <header className="w-full space-y-4 break-words">
+      <div className="space-y-6 ">
+        <header className="space-y-4 break-words ">
           <h2 className="text-4xl font-bold sm:text-5xl">
             Connecting humans through NFT-based memberships
           </h2>
-          <p className="max-w-sm text-lg sm:text-xl text-brand-gray">
+          <p className="text-lg sm:text-xl text-brand-gray">
             Your members aren&apos;t a commodity. Stop allowing platforms to
             treat them like one.
           </p>
