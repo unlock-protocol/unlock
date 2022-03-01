@@ -183,33 +183,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:7.16.8":
-  version: 7.16.8
-  resolution: "@babel/cli@npm:7.16.8"
-  dependencies:
-    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
-    chokidar: ^3.4.0
-    commander: ^4.0.1
-    convert-source-map: ^1.1.0
-    fs-readdir-recursive: ^1.1.0
-    glob: ^7.0.0
-    make-dir: ^2.1.0
-    slash: ^2.0.0
-    source-map: ^0.5.0
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  dependenciesMeta:
-    "@nicolo-ribaudo/chokidar-2":
-      optional: true
-    chokidar:
-      optional: true
-  bin:
-    babel: ./bin/babel.js
-    babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: bb0cf50ff502a30e92918cf644192351023a9ef615acc3e7774abbd0327948d93e58ab3a8d31f52c18e2f04df8af10186b89421c28f4f0a2eee6b1ddce17a8ef
-  languageName: node
-  linkType: hard
-
 "@babel/cli@npm:7.17.6":
   version: 7.17.6
   resolution: "@babel/cli@npm:7.17.6"
@@ -7176,9 +7149,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-truffle5@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@nomiclabs/hardhat-truffle5@npm:2.0.4"
+"@nomiclabs/hardhat-truffle5@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@nomiclabs/hardhat-truffle5@npm:2.0.5"
   dependencies:
     "@nomiclabs/truffle-contract": ^4.2.23
     "@types/chai": ^4.2.0
@@ -7189,7 +7162,7 @@ __metadata:
     "@nomiclabs/hardhat-web3": ^2.0.0
     hardhat: ^2.6.4
     web3: ^1.0.0-beta.36
-  checksum: fd4eeddf79a8b17a4972dde46f05fcf3fe54d7f92e94b7ff8986e0521194b2990a158d73611f6833aba6c011609c01b2837411d3135dea7dfebb3ba2c655cf38
+  checksum: 7e7b5b431211043b6d127383bec83dc5ec05cd70bedee76c8ffbb359e590e4f51460bcd76ec69794abaa148129e98a48be73720231b78bc2d14f50a78bc50be6
   languageName: node
   linkType: hard
 
@@ -13703,7 +13676,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contract-extensions@workspace:smart-contract-extensions"
   dependencies:
-    "@nomiclabs/hardhat-truffle5": 2.0.4
+    "@nomiclabs/hardhat-truffle5": 2.0.5
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.5.0
     "@openzeppelin/test-helpers": 0.5.15
@@ -13738,7 +13711,7 @@ __metadata:
     "@gnosis.pm/safe-core-sdk": 2.0.0
     "@nomiclabs/hardhat-ethers": 2.0.4
     "@nomiclabs/hardhat-etherscan": 3.0.0
-    "@nomiclabs/hardhat-truffle5": 2.0.4
+    "@nomiclabs/hardhat-truffle5": 2.0.5
     "@nomiclabs/hardhat-waffle": 2.0.2
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.4.2
@@ -16641,23 +16614,6 @@ __metadata:
   version: 2.1.1
   resolution: "await-to-js@npm:2.1.1"
   checksum: b8a4a6f825aa3430e005551c1fe1ea8df51e0a4a7ad730d73a065adc9f982bec4353a2540981ee16d12be4933e59a1e90b8327889f1ff8a37a20765a716d9219
-  languageName: node
-  linkType: hard
-
-"aws-sdk@npm:2.1066.0":
-  version: 2.1066.0
-  resolution: "aws-sdk@npm:2.1066.0"
-  dependencies:
-    buffer: 4.9.2
-    events: 1.1.1
-    ieee754: 1.1.13
-    jmespath: 0.16.0
-    querystring: 0.2.0
-    sax: 1.2.1
-    url: 0.10.3
-    uuid: 3.3.2
-    xml2js: 0.4.19
-  checksum: 5ed48ddd14fa01478222d989be06d75a9a3d7521a5bb9324547f745fbde8ee760836c80c6ee9678449b591c67e1d447671ed16ab36583a3a6266c4fc6ba6eb7c
   languageName: node
   linkType: hard
 
@@ -51389,17 +51345,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"winston-transport@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "winston-transport@npm:4.4.2"
-  dependencies:
-    logform: ^2.3.2
-    readable-stream: ^3.4.0
-    triple-beam: ^1.2.0
-  checksum: 1f1732d12f4e28d7cd0be110482035b3a3647f8ed07d681e9b79b4b2e168aaa34d91a3bbe9c7374d8df2ef9d6fd38f4add70d66798930d4c7cebb555ff8496f9
-  languageName: node
-  linkType: hard
-
 "winston-transport@npm:^4.5.0":
   version: 4.5.0
   resolution: "winston-transport@npm:4.5.0"
@@ -51422,24 +51367,6 @@ typescript@^3.8.3:
     isstream: 0.1.x
     stack-trace: 0.0.x
   checksum: aba54cae4c97df6f01c6ad98b5ecbf79eaa79326b5f99c379063e91a9bd6dd961b2958768d850546b7a54ef159ecc67bcaf08a6fec4029592be7436d955460f0
-  languageName: node
-  linkType: hard
-
-"winston@npm:3.5.1":
-  version: 3.5.1
-  resolution: "winston@npm:3.5.1"
-  dependencies:
-    "@dabh/diagnostics": ^2.0.2
-    async: ^3.2.3
-    is-stream: ^2.0.0
-    logform: ^2.3.2
-    one-time: ^1.0.0
-    readable-stream: ^3.4.0
-    safe-stable-stringify: ^2.3.1
-    stack-trace: 0.0.x
-    triple-beam: ^1.3.0
-    winston-transport: ^4.4.2
-  checksum: 12253f1644c46f90b36b8e675f397b29f862778c6a76cce11ad901c35d7a9b556fe371bfd0c22e180f6aa2e23d7a726a6f4ec1eec637dac3fe76390a0cd5ed09
   languageName: node
   linkType: hard
 
