@@ -50,7 +50,7 @@ jobs:
     outputs:
       changed: ${{ steps.check_changes.outputs.changed }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Check for changes in ${{ inputs.service }}
@@ -74,7 +74,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache docker
         uses: actions/cache@v2
         if: github.event_name != 'schedule'
