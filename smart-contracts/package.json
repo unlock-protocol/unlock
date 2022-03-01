@@ -36,7 +36,7 @@
     "eth-gas-reporter": "0.2.24",
     "eth-sig-util": "2.5.4",
     "ethers": "5.5.4",
-    "fs-extra": "10.0.0",
+    "fs-extra": "10.0.1",
     "hardhat": "2.8.0",
     "hardhat-erc1820": "0.1.0",
     "hardhat-gas-reporter": "1.0.7",
