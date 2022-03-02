@@ -33,7 +33,7 @@
   ],
   "devDependencies": {
     "@types/chai": "^4.3.0",
-    "@types/fs-extra": "^5.0.4",
+    "@types/fs-extra": "9.0.13",
     "@types/mocha": "^5.2.6",
     "@types/node": "^8.10.38",
     "@unlock-protocol/eslint-config": "workspace:^",
