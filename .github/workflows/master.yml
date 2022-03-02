@@ -43,9 +43,9 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
+      bypass_diff_check: bypass
       service: unlock-protocol-com
       target-env: prod
-      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
