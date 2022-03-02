@@ -7146,20 +7146,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-etherscan@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nomiclabs/hardhat-etherscan@npm:3.0.0"
+"@nomiclabs/hardhat-etherscan@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@nomiclabs/hardhat-etherscan@npm:3.0.2"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@ethersproject/address": ^5.0.2
     cbor: ^5.0.2
     debug: ^4.1.1
     fs-extra: ^7.0.1
-    node-fetch: ^2.6.0
     semver: ^6.3.0
+    undici: ^4.14.1
   peerDependencies:
     hardhat: ^2.0.4
-  checksum: 79c6f9a399f9bd09b2335e89846cf1dc245bfab53358963edcf53ca0886ac120e578cd2a176396ab42d0998c25f8d41124be55877e65eb2763669d2b74a21ef6
+  checksum: 3b09871faf2a0a952a5d2f4872d0cf4495260fd83ece853bde8473dbeb98c1ede4c6cda3730f884a54158d02ebe5e0a698c98f0179c1e2e1c2a323668bdfd3da
   languageName: node
   linkType: hard
 
@@ -13732,7 +13732,7 @@ __metadata:
   dependencies:
     "@gnosis.pm/safe-core-sdk": 2.0.0
     "@nomiclabs/hardhat-ethers": 2.0.5
-    "@nomiclabs/hardhat-etherscan": 3.0.0
+    "@nomiclabs/hardhat-etherscan": 3.0.2
     "@nomiclabs/hardhat-truffle5": 2.0.5
     "@nomiclabs/hardhat-waffle": 2.0.2
     "@nomiclabs/hardhat-web3": 2.0.0
@@ -47296,6 +47296,13 @@ typescript@^3.8.3:
   version: 1.13.1
   resolution: "underscore@npm:1.13.1"
   checksum: 69bb4e6dd92c387ad322dd5b105f496fa64896d92ff1eea987610920d452667a12bca0938def4c4d60acd12da62410540fd268e7ca4f2480d89324498382fcac
+  languageName: node
+  linkType: hard
+
+"undici@npm:^4.14.1":
+  version: 4.14.1
+  resolution: "undici@npm:4.14.1"
+  checksum: d64a7fa0e388a43819bb7860268f9f2c917bc14a3e6ab7956bdc73492016bfc58c8d5055eca8f5c3d402f275a1c87a92c2467d77ec34dbaca2c4a6e35e760e5a
   languageName: node
   linkType: hard
 
