@@ -60,6 +60,10 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       href: '/developers',
     },
     {
+      name: 'Grants',
+      href: '/grants',
+    },
+    {
       name: 'Docs',
       href: UNLOCK_LINKS.docs,
     },
@@ -69,7 +73,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
 export function Footer() {
   return (
     <footer className="w-full text-white bg-brand-dark">
-      <div className="px-4 py-16 space-y-16 max-w-7xl	 sm:mx-auto">
+      <div className="px-4 py-16 space-y-16 max-w-7xl sm:mx-auto">
         <div className="flex flex-col justify-between gap-12 sm:flex-row">
           <div className="max-w-sm space-y-2 lg:max-w-lg">
             <h4 className="text-3xl font-semibold"> Sign up for Updates </h4>

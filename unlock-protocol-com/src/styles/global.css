@@ -13,6 +13,13 @@ body {
   .sub-heading {
     @apply text-xl sm:text-2xl text-brand-gray max-w-prose;
   }
+
+  .heading-small {
+    @apply text-xl font-semibold sm:text-3xl lg:text-4xl;
+  }
+  .sub-heading-small {
+    @apply text-lg sm:text-xl lg:text-2xl text-brand-gray max-w-prose;
+  }
 }
 
 /*
