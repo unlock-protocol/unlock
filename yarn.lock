@@ -11919,12 +11919,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^5.0.4":
-  version: 5.1.0
-  resolution: "@types/fs-extra@npm:5.1.0"
+"@types/fs-extra@npm:9.0.13":
+  version: 9.0.13
+  resolution: "@types/fs-extra@npm:9.0.13"
   dependencies:
     "@types/node": "*"
-  checksum: 9b4abc891ad0dc3baa77b0ebcf91dff8e7a5936aa037de0bd6ded399ab38b5896be1ee02b5c0a18c0915cfc40ab590a915709e6f2beef8f6f7e16fd3759e469a
+  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
   languageName: node
   linkType: hard
 
@@ -13460,7 +13460,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": 2.0.5
     "@openzeppelin/hardhat-upgrades": ^1.14.0
     "@types/chai": ^4.3.0
-    "@types/fs-extra": ^5.0.4
+    "@types/fs-extra": 9.0.13
     "@types/mocha": ^5.2.6
     "@types/node": ^8.10.38
     "@unlock-protocol/contracts": 0.0.3
