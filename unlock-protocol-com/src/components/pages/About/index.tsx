@@ -1,6 +1,5 @@
 import { PostType } from '../../../utils'
 import { Link } from '../../helpers/Link'
-import { MarketingLayout } from '../../layout/MarketingLayout'
 import { SOCIAL_URL } from '../../../config/seo'
 import { Button } from '@unlock-protocol/ui'
 
@@ -16,7 +15,7 @@ export interface Props {
 
 export function About({ updates }: Props) {
   return (
-    <MarketingLayout>
+    <div className="p-6 mx-auto max-w-7xl	">
       <div className="space-y-4">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold sm:text-4xl"> About </h1>
@@ -25,7 +24,7 @@ export function About({ updates }: Props) {
             streamline membership benefits for online communities.
           </p>
         </header>
-        <div className="grid gap-8">
+        <main className="grid gap-8">
           <div className="grid gap-6 sm:grid-cols-2">
             {ABOUT_POINTS.map((text, index) => (
               <div key={index} className="w-full p-8 glass-pane rounded-3xl">
@@ -72,25 +71,32 @@ export function About({ updates }: Props) {
                 </p>
               </header>
               <div className="grid gap-4">
-                {updates.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col gap-y-0 sm:flex-row sm:gap-x-4 md:gap-x-6 lg:gap-x-8"
-                  >
-                    <time className="text-brand-gray">12 March, 2021</time>
-                    <Link
-                      className="hover:text-brand-ui-primary"
-                      href={`/blog/${item.slug}`}
+                {updates.map((item, index) => {
+                  const date = new Date(
+                    item.frontMatter.publishDate
+                  ).toLocaleDateString()
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col gap-y-0 sm:flex-row sm:gap-x-4 md:gap-x-6 lg:gap-x-8"
                     >
-                      {item.frontMatter.title}
-                    </Link>
-                  </div>
-                ))}
+                      <time dateTime={date} className="text-brand-gray">
+                        {date}
+                      </time>
+                      <Link
+                        className="hover:text-brand-ui-primary"
+                        href={`/blog/${item.slug}`}
+                      >
+                        {item.frontMatter.title}
+                      </Link>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}
-        </div>
+        </main>
       </div>
-    </MarketingLayout>
+    </div>
   )
 }

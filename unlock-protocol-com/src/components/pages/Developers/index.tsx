@@ -1,5 +1,4 @@
 import { Link } from '../../helpers/Link'
-import { MarketingLayout } from '../../layout/MarketingLayout'
 import { Button } from '@unlock-protocol/ui'
 
 import {
@@ -23,6 +22,13 @@ import {
 } from 'react-icons/si'
 import { DecentralLand } from '../../icons/Brand'
 import { SOCIAL_URL } from '../../../config/seo'
+import useEmblaCarousel from 'embla-carousel-react'
+import { useCallback, useEffect, useState } from 'react'
+
+import {
+  FiArrowLeft as ArrowLeftIcon,
+  FiArrowRight as ArrowRightIcon,
+} from 'react-icons/fi'
 
 export const DEVELOPER_RECIPES = [
   {
@@ -75,12 +81,12 @@ export const UNLOCK_COMMUNITY_INTEGRATIONS = [
   },
   {
     Icon: DiscordIcon,
-    name: 'discord',
+    name: 'Discord',
     href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/discord-with-collab.land',
   },
   {
     Icon: WebFlowIcon,
-    name: 'webflow',
+    name: 'Webflow',
     href: 'https://unlock-integration.webflow.io/',
   },
   {
@@ -124,7 +130,7 @@ export interface Props {}
 
 export function Developers({}: Props) {
   return (
-    <MarketingLayout>
+    <div className="p-6 mx-auto max-w-7xl">
       <div className="space-y-4">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold sm:text-4xl">
@@ -134,41 +140,90 @@ export function Developers({}: Props) {
             Build applications with customizable membership NFTs.
           </p>
         </header>
-        <div className="py-4 space-y-12">
+        <main className="py-4 space-y-12">
           <HowUnlockWorks />
           <RecipeSection />
           <CommunitySection />
           <GrantSection />
           <GotStuckSection />
-        </div>
+        </main>
       </div>
-    </MarketingLayout>
+    </div>
   )
 }
 
 function RecipeSection() {
+  const [viewportRef, embla] = useEmblaCarousel({
+    dragFree: true,
+    slidesToScroll: 1,
+    containScroll: 'trimSnaps',
+  })
+
+  const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
+  const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
+  const scrollPrev = useCallback(() => embla && embla.scrollPrev(), [embla])
+  const scrollNext = useCallback(() => embla && embla.scrollNext(), [embla])
+
+  const onSelect = useCallback(() => {
+    if (!embla) return
+    setPrevBtnEnabled(embla.canScrollPrev())
+    setNextBtnEnabled(embla.canScrollNext())
+  }, [embla])
+  useEffect(() => {
+    if (!embla) return
+    embla.on('select', onSelect)
+    onSelect()
+  }, [embla, onSelect])
+
   return (
     <div className="space-y-4">
-      <header>
-        <h2 className="text-xl font-semibold sm:text-3xl"> Recipes </h2>
-        <p className="text-lg text-brand-gray">
-          Learn how to develop with unlock.
-        </p>
+      <header className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold sm:text-3xl"> Recipes </h2>
+          <p className="text-lg text-brand-gray">
+            Learn how to develop with Unlock.
+          </p>
+        </div>
+
+        <div className="justify-end hidden gap-4 sm:flex">
+          <button
+            className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
+            aria-label="previous"
+            onClick={scrollPrev}
+            disabled={!prevBtnEnabled}
+          >
+            <ArrowLeftIcon size={24} />
+          </button>
+          <button
+            className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
+            aria-label="next"
+            onClick={scrollNext}
+            disabled={!nextBtnEnabled}
+          >
+            <ArrowRightIcon size={24} />
+          </button>
+        </div>
       </header>
-      <div className="flex flex-col gap-6 py-6 overflow-x-auto sm:flex-row">
-        {DEVELOPER_RECIPES.map(({ Icon, title, description, href }, index) => (
-          <Link key={index} href={href}>
-            <div className="block h-full p-4 space-y-4 border-2 border-transparent sm:w-72 glass-pane rounded-xl hover:border-brand-ui-primary">
-              <div>
-                <Icon className="fill-brand-ui-primary" size={40} />
-              </div>
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium"> {title}</h3>
-                <p className="text-brand-gray"> {description}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+      <div className="relative max-w-fit">
+        <div className="overflow-hidden cursor-move" ref={viewportRef}>
+          <div className="flex gap-8 p-6 ml-4 select-none">
+            {DEVELOPER_RECIPES.map(
+              ({ Icon, title, description, href }, index) => (
+                <Link key={index} href={href}>
+                  <div className="block h-full p-6 space-y-4 border-2 border-transparent sm:w-72 glass-pane rounded-3xl ">
+                    <div>
+                      <Icon className="fill-brand-ui-primary" size={40} />
+                    </div>
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium"> {title}</h3>
+                      <p className="text-brand-gray"> {description}</p>
+                    </div>
+                  </div>
+                </Link>
+              )
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

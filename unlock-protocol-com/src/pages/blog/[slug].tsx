@@ -4,7 +4,6 @@ import path from 'path'
 import { PostsIndex } from '../../components/pages/Blog'
 import { Post } from '../../components/pages/Blog/Post'
 import {
-  markdownToHtml,
   getPosts,
   BLOG_PATH,
   getPost,
@@ -12,24 +11,58 @@ import {
   PostsIndexType,
   chunk,
 } from '../../utils'
+import { Layout } from '../../components/layout/DefaultLayout'
+import { NextSeo } from 'next-seo'
+import { routes } from '../../config/routes'
+import { unlockConfig } from '../../config/unlock'
 interface PostsIndexProps extends PostsIndexType {
   type: 'postsIndex'
 }
 
 interface PostProps extends PostType {
   type: 'post'
-  html: string
 }
 
 type Props = PostProps | PostsIndexProps
 
 const PostPage: NextPage<Props> = (props) => {
   if (props.type === 'postsIndex') {
-    return <PostsIndex {...props} />
+    return (
+      <Layout>
+        <NextSeo
+          title={routes.blog.seo.title}
+          description={routes.blog.seo.description}
+          openGraph={routes.blog.seo.openGraph}
+        />
+        <PostsIndex {...props} />
+      </Layout>
+    )
   }
 
   if (props.type === 'post') {
-    return <Post {...props} />
+    return (
+      <Layout>
+        <NextSeo
+          title={props.frontMatter.title}
+          description={props.frontMatter.description}
+          openGraph={{
+            images: [
+              {
+                type: 'image',
+                url: props.frontMatter.image,
+              },
+            ],
+            description: props.frontMatter.description,
+            title: props.frontMatter.title,
+            url: new URL(
+              `/blog/${props.slug}`,
+              unlockConfig.baseURL
+            ).toString(),
+          }}
+        />
+        <Post {...props} />
+      </Layout>
+    )
   }
   return <div> Nothing found! </div>
 }
@@ -71,11 +104,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     }
   } else {
     const post = await getPost(`${slug}.md`, BLOG_PATH)
-    const html = await markdownToHtml(post.content)
+
     return {
       props: {
         type: 'post',
-        html,
         ...post,
       },
     }

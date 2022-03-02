@@ -17,3 +17,5 @@ export const paywallConfig = {
         If gas prices are high, pick the xDAI membership and receive an airdrop!`,
   },
 }
+
+export default paywallConfig

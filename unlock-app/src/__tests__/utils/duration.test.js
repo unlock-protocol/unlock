@@ -48,8 +48,8 @@ describe('durations', () => {
   it('should return the right durations in English', () => {
     expect.assertions(6)
     expect(durationsAsTextFromSeconds(0)).toEqual('')
+    expect(durationsAsTextFromSeconds(0.5)).toEqual('')
     expect(durationsAsTextFromSeconds(1)).toEqual('1 second')
-    expect(durationsAsTextFromSeconds(0.5)).toEqual('0.5 seconds')
     expect(durationsAsTextFromSeconds(123)).toEqual('2 minutes and 3 seconds')
     expect(durationsAsTextFromSeconds(60 * 60)).toEqual('1 hour')
     expect(

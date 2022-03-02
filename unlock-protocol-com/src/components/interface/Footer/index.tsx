@@ -1,41 +1,45 @@
 import { UnlockTextIcon } from '../../icons'
 import { Link } from '../../helpers/Link'
 import { EmailSubscriptionForm } from '../../forms/EmailSubscription'
-import { EMAIL_SUBSCRIPTION_FORM } from '../../../config/constants'
-
+import {
+  EMAIL_SUBSCRIPTION_FORM,
+  UNLOCK_LINKS,
+} from '../../../config/constants'
+import { SOCIAL_URL } from '../../../config/seo'
+import { unlockConfig } from '../../../config/unlock'
 type LinkType = Record<'name' | 'href', string>
 
 const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
   App: [
     {
       name: 'Creator Dashboard',
-      href: '/',
+      href: unlockConfig.appURL!,
     },
     {
-      name: 'Memberships',
-      href: '/memberships',
+      name: 'Membership',
+      href: '/membership',
     },
   ],
   Community: [
     {
       name: 'Discord',
-      href: '',
+      href: SOCIAL_URL.discord,
     },
     {
       name: 'Forum',
-      href: '',
+      href: SOCIAL_URL.discourse,
     },
     {
-      name: 'Goverance',
-      href: '/',
+      name: 'Snapshot',
+      href: SOCIAL_URL.snapshot,
     },
     {
       name: 'Github',
-      href: '',
+      href: SOCIAL_URL.github,
     },
     {
       name: 'Twitter',
-      href: '',
+      href: SOCIAL_URL.twitter,
     },
   ],
   Navigation: [
@@ -57,7 +61,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
     },
     {
       name: 'Docs',
-      href: '',
+      href: UNLOCK_LINKS.docs,
     },
   ],
 }
@@ -65,9 +69,9 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
 export function Footer() {
   return (
     <footer className="w-full text-white bg-brand-dark">
-      <div className="grid max-w-screen-lg gap-12 px-4 py-12 sm:mx-auto">
-        <div className="flex flex-col justify-between gap-8 sm:flex-row">
-          <div className="max-w-sm space-y-2">
+      <div className="px-4 py-16 space-y-16 max-w-7xl	 sm:mx-auto">
+        <div className="flex flex-col justify-between gap-12 sm:flex-row">
+          <div className="max-w-sm space-y-2 lg:max-w-lg">
             <h4 className="text-3xl font-semibold"> Sign up for Updates </h4>
             <p>
               We&apos;ll send you fresh news about our platform, including new

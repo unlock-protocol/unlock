@@ -1,16 +1,17 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { MembershipContext } from '../../../membershipContext'
+import { useMembership } from '../../../hooks/useMembership'
 
 export function Membership() {
-  const { becomeMember, isMember } = useContext(MembershipContext)
+  const { becomeMember, isMember } = useMembership()
   const router = useRouter()
 
   useEffect(() => {
     const redirect = () => {
-      const location =
-        router.query.redirect?.toString() ?? 'https://unlock-protocol.com'
-      window.location.assign(location)
+      const location = router.query.redirect?.toString() ?? '/'
+      location.startsWith('/') && location.startsWith('#')
+        ? router.push(location)
+        : window.location.assign(location)
     }
     window.addEventListener('unlockProtocol.closeModal', redirect)
     return () =>
@@ -30,7 +31,7 @@ export function Membership() {
 
       return () => clearInterval(timer)
     } else {
-      return becomeMember()
+      return () => becomeMember()
     }
   }, [becomeMember, isMember, router])
 

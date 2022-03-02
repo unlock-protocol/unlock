@@ -15,6 +15,12 @@ export default function Document() {
           rel="stylesheet"
         />
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="alternate"
+          href="blog.xml"
+          type="application/atom+xml"
+          title="Blog Atom Feed"
+        />
       </Head>
       <body>
         <Main />

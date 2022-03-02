@@ -36,25 +36,25 @@ const UNLOCK_STEPS = [
 
 export function Steps() {
   return (
-    <div className="space-y-8">
-      <div className="grid justify-center w-full space-y-4 text-center">
-        <h2 className="text-4xl font-bold sm:text-5xl"> How Unlock works </h2>
-        <p className="text-lg sm:text-xl text-brand-gray">
+    <section className="px-6 py-12 mx-auto space-y-6 max-w-7xl	 sm:py-32">
+      <div className="grid justify-center w-full pb-8 space-y-4 text-center">
+        <h1 className="heading">How Unlock works</h1>
+        <p className="text-xl sm:text-2xl text-brand-gray">
           Create your own membership program without code or chaos.
         </p>
       </div>
-      <ol className="grid justify-center gap-6 sm:grid-cols-2 md:grid-cols-3">
+      <ol className="flex flex-col flex-wrap gap-8 sm:justify-center sm:flex-row">
         {UNLOCK_STEPS.map(({ title, Icon, points }, index) => (
           <li
-            className="grid gap-4 max-w-[340px] p-8 glass-pane rounded-3xl"
+            className="px-8 py-12 space-y-6 sm:max-w-sm glass-pane rounded-3xl"
             key={index}
           >
             <div className="flex justify-center">
               <Icon className="fill-brand-ui-primary" />
             </div>
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold sm:text-2xl">{title}</h3>
-              <ol className="space-y-2">
+            <div className="pt-6 space-y-4">
+              <h3 className="text-2xl font-semibold sm:text-3xl">{title}</h3>
+              <ol className="space-y-6">
                 {points.map((text, index) => (
                   <li className="flex items-center gap-4" key={index}>
                     <div>
@@ -64,7 +64,7 @@ export function Steps() {
                         width="13"
                       />
                     </div>
-                    <p>{text}</p>
+                    <p className="text-lg sm:text-xl text-brand-gray">{text}</p>
                   </li>
                 ))}
               </ol>
@@ -72,6 +72,6 @@ export function Steps() {
           </li>
         ))}
       </ol>
-    </div>
+    </section>
   )
 }

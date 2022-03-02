@@ -42,6 +42,10 @@ export function durations(seconds, intervals) {
  * @param {number} seconds
  */
 export function durationsAsTextFromSeconds(seconds) {
+  if (seconds < 1) {
+    // 0 or infinite return an empty string
+    return ''
+  }
   const d = durations(seconds, {})
   const asArrayOfValues = Object.keys(d).map((duration) => {
     if (d[duration] !== 1) {

@@ -1,5 +1,4 @@
 import 'setimmediate' // polyfill to prevent jest from crashing
-import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
@@ -55,8 +54,8 @@ app.use(
 app.use(cors({}))
 
 // Parse body
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json({ limit: '5mb' }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '5mb' }))
 
 const server = new ApolloServer({
   typeDefs,

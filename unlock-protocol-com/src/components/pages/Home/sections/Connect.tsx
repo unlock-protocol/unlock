@@ -1,5 +1,6 @@
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
+import { Link } from '../../../helpers/Link'
 import { BulletPointIcon } from '../../../icons'
 
 const UNLOCK_BENEFITS = [
@@ -10,16 +11,14 @@ const UNLOCK_BENEFITS = [
 
 export function Connect() {
   return (
-    <div className="flex flex-col-reverse items-center gap-4 sm:gap-12 md:gap-24 lg:gap-32 sm:flex-row">
-      <div className="w-full">
-        <div className="w-full space-y-4 break-words">
-          <h1 className="text-4xl font-bold sm:text-5xl">
-            Connect with your 1000 true fans
-          </h1>
-          <p className="text-lg sm:text-xl text-brand-gray max-w-[300px]">
+    <section className="flex flex-col-reverse items-center justify-between p-6 mx-auto max-w-7xl	 md:gap-6 md:flex-row">
+      <div className="w-full max-w-xl">
+        <header className="w-full space-y-4 break-words">
+          <h1 className="heading">Connect with your 1000 true fans</h1>
+          <p className="sub-heading">
             For creative communities and the humans who build them
           </p>
-        </div>
+        </header>
         <div className="py-6">
           <ul>
             {UNLOCK_BENEFITS.map((text, index) => (
@@ -32,21 +31,23 @@ export function Connect() {
                 <div>
                   <BulletPointIcon className="fill-brand-ui-primary" />
                 </div>
-                <p>{text}</p>
+                <p className="text-lg">{text}</p>
               </li>
             ))}
           </ul>
         </div>
         <div className="flex items-center justify-center gap-4 sm:justify-start">
-          <Button> Get Started </Button>
+          <Button href="#get-started" as={Link}>
+            Get Started
+          </Button>
           <Button variant="secondary"> Connect Wallet </Button>
         </div>
       </div>
 
-      <div className="w-full max-w-[350px] sm:max-w-sm justify-center flex">
+      <div className="flex justify-center w-full pb-6 max-w-fit sm:max-w-sm md:pb-0">
         <div className="w-full bg-white glass-pane rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-            <p className="font-bold">Tales of Ronin</p>
+            <p className="font-bold">Tales of Elatora</p>
             <p className="font-mono text-sm font-bold text-brand-ui-primary">
               Powered by Unlock
             </p>
@@ -59,22 +60,20 @@ export function Connect() {
           <div className="flex items-center gap-4 px-6 py-4">
             <div>
               <Avatar className="overflow-hidden">
-                <div className="bg-orange-500 rounded-full bg-opacity-90 brightness-150">
-                  <AvatarImage
-                    className="inline-block w-10 h-10 rounded-full mix-blend-multiply"
-                    src="/images/marketing/caroline.png"
-                    alt="Calorine"
-                  />
-                </div>
+                <AvatarImage
+                  className="inline-block w-10 h-10 rounded-full"
+                  src="/images/marketing/caroline.png"
+                  alt="Calorine"
+                />
               </Avatar>
             </div>
-            <div className="grid">
-              <p className="font-bold"> Caroline </p>
+            <div>
+              <h4 className="font-bold"> Caroline </h4>
               <p className="text-sm brand-gray"> Sold out mint in one day </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

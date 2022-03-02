@@ -1,12 +1,19 @@
 import type { NextPage } from 'next'
-import { GlobalWrapper } from '../components/interface/GlobalWrapper'
 import { Membership } from '../components/pages/Membership'
+import { routes } from '../config/routes'
+import { NextSeo } from 'next-seo'
+import { Layout } from '../components/layout/DefaultLayout'
 
 const MembershipPage: NextPage = () => {
   return (
-    <GlobalWrapper>
+    <Layout>
+      <NextSeo
+        title={routes.membership.seo.title}
+        description={routes.membership.seo.description}
+        openGraph={routes.membership.seo.openGraph}
+      />
       <Membership />
-    </GlobalWrapper>
+    </Layout>
   )
 }
 
