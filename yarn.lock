@@ -13569,7 +13569,7 @@ __metadata:
     sequelize-cli: 6.4.1
     sequelize-typescript: 1.1.0
     setimmediate: 1.0.5
-    stripe: 8.205.0
+    stripe: 8.207.0
     supertest: 6.2.2
     ts-jest: 27.1.3
     ts-node-dev: 1.1.8
@@ -13578,7 +13578,7 @@ __metadata:
     winston: 3.6.0
     winston-sentry-log: 1.0.24
     yargs: 17.3.1
-    zod: 3.12.0
+    zod: 3.13.2
   languageName: unknown
   linkType: soft
 
@@ -45079,13 +45079,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"stripe@npm:8.205.0":
-  version: 8.205.0
-  resolution: "stripe@npm:8.205.0"
+"stripe@npm:8.207.0":
+  version: 8.207.0
+  resolution: "stripe@npm:8.207.0"
   dependencies:
     "@types/node": ">=8.1.0"
     qs: ^6.6.0
-  checksum: 12189137b2c18f9a7ce5ff6db8a2426949206d737908bc377d81f269862a2cd6bd23923bd9c0f5f247ab681cba601645963bb9874d62e45fec400cffb2da1f48
+  checksum: 3150035886929d1c62edcfe087355b4fb5e565d063461582e3ce4ecd42001d7b31e43ca040f727ef79427536a4df33b5d960bea54733bb72177272ebafd6e1f8
   languageName: node
   linkType: hard
 
@@ -52316,10 +52316,10 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"zod@npm:3.12.0":
-  version: 3.12.0
-  resolution: "zod@npm:3.12.0"
-  checksum: b753d9bf5f3518873a4f98119a79b1401e3933e164caa1621b901e01778deb4a9b35cb9230d0d7acc5e7c81cf3198352db040095904b619998a3c4de3d5a68ae
+"zod@npm:3.13.2":
+  version: 3.13.2
+  resolution: "zod@npm:3.13.2"
+  checksum: db278c22b57eabf2352320639b3eb33f8e114df5de0d5e7797326af887bcac4b9d4060058944d363e539f9d09b4c0c92f87bbe12f08d19e575b6476d749ccd0e
   languageName: node
   linkType: hard
 
