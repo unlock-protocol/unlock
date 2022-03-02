@@ -82,13 +82,11 @@ export function Projects() {
   }, [embla, onSelect])
 
   return (
-    <section className="max-w-6xl py-12 mx-auto sm:py-24">
+    <section className="py-12 mx-auto max-w-7xl sm:py-24">
       <header className="px-6">
         <div className="flex items-center justify-between pl-1">
-          <h2 className="text-xl font-bold sm:text-3xl">
-            Explore Active Projects
-          </h2>
-          <div className="flex gap-2">
+          <h1 className="heading">Explore Active Projects</h1>
+          <div className="hidden gap-2 sm:flex">
             <button
               className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
               aria-label="previous"

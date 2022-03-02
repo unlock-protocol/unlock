@@ -306,7 +306,7 @@ export function Navigation() {
     <Disclosure as="nav" className="sticky top-0 z-10 w-full bg-brand-primary">
       {({ open }) => (
         <>
-          <div className="max-w-6xl px-6 py-4 mx-auto ">
+          <div className="max-w-7xl	 px-6 py-4 mx-auto ">
             <div className="flex items-center justify-between">
               <Link href="/">
                 <UnlockTextIcon />

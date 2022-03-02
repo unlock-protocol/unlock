@@ -11,16 +11,17 @@ import {
 export function GetStarted() {
   const { isMember, becomeMember } = useMembership()
   return (
-    <div id="get-started" className="max-w-6xl p-6 mx-auto space-y-6 sm:py-16">
-      <div className="w-full space-y-4 break-words md:w-3/4 lg:w-1/2">
-        <h1 className="text-4xl font-bold sm:text-5xl">Try it yourself</h1>
-        <div className="space-y-2">
-          <p className="text-lg sm:text-xl text-brand-gray ">
-            Connect your wallet, follow the steps, and you&apos;ll receive free
-            access to our members-only Discord.
-          </p>
-        </div>
-      </div>
+    <section
+      id="get-started"
+      className="p-6 mx-auto space-y-6 max-w-7xl	 sm:py-16"
+    >
+      <header className="w-full space-y-4 break-words md:w-3/4 lg:w-1/2">
+        <h1 className="heading">Try it yourself</h1>
+        <p className="text-xl sm:text-2xl text-brand-gray">
+          Connect your wallet, follow the steps, and you&apos;ll receive free
+          access to our members-only Discord.
+        </p>
+      </header>
       <div className="flex flex-col items-center justify-center p-8 h-96 glass-pane rounded-3xl">
         {isMember === 'yes' ? (
           <div>
@@ -37,7 +38,7 @@ export function GetStarted() {
                 href={SOCIAL_URL.discourse}
                 as={Link}
               >
-                Join Discouse
+                Join Discourse
               </Button>
               <Button
                 iconLeft={<TwitterIcon key={3} size={18} />}
@@ -58,6 +59,6 @@ export function GetStarted() {
           </Button>
         )}
       </div>
-    </div>
+    </section>
   )
 }

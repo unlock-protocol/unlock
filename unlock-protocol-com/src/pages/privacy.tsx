@@ -16,7 +16,7 @@ const PrivacyPage: NextPage<Props> = ({ content }) => {
         description={routes.privacy.seo.description}
         openGraph={routes.privacy.seo.openGraph}
       />
-      <div className="max-w-6xl p-6 mx-auto">
+      <div className="max-w-7xl	 p-6 mx-auto">
         <article>
           <main
             className="prose prose-slate max-w-none"

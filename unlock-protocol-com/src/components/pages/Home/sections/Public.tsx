@@ -11,14 +11,14 @@ const PUBLIC_MARKETING_POINTS = [
 
 export function Public() {
   return (
-    <section className="flex flex-col-reverse items-center justify-between max-w-6xl gap-6 px-6 py-12 mx-auto sm:flex-row">
+    <section className="flex flex-col-reverse items-center justify-between gap-6 px-6 py-12 mx-auto max-w-7xl	 sm:flex-row">
       <div className="max-w-lg">
         <div className="w-full space-y-4 break-words">
-          <h1 className="text-4xl font-bold sm:text-5xl">
+          <h1 className="heading">
             We&apos;re building a public good together
           </h1>
           <div className="space-y-2">
-            <p className="text-lg sm:text-xl text-brand-gray ">
+            <p className="sub-heading">
               Our mission is to create a protocol that belongs to the users,
               creators and builders - not Unlock Inc.
             </p>
@@ -40,7 +40,7 @@ export function Public() {
           </ul>
         </div>
         <Button>
-          <Link href={UNLOCK_LINKS.governance}>Read on governance </Link>
+          <Link href={UNLOCK_LINKS.governance}> Goverance FAQ </Link>
         </Button>
       </div>
 

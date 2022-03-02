@@ -23,6 +23,12 @@ import {
 import { DecentralLand } from '../../icons/Brand'
 import { SOCIAL_URL } from '../../../config/seo'
 import useEmblaCarousel from 'embla-carousel-react'
+import { useCallback, useEffect, useState } from 'react'
+
+import {
+  FiArrowLeft as ArrowLeftIcon,
+  FiArrowRight as ArrowRightIcon,
+} from 'react-icons/fi'
 
 export const DEVELOPER_RECIPES = [
   {
@@ -75,12 +81,12 @@ export const UNLOCK_COMMUNITY_INTEGRATIONS = [
   },
   {
     Icon: DiscordIcon,
-    name: 'discord',
+    name: 'Discord',
     href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/discord-with-collab.land',
   },
   {
     Icon: WebFlowIcon,
-    name: 'webflow',
+    name: 'Webflow',
     href: 'https://unlock-integration.webflow.io/',
   },
   {
@@ -124,7 +130,7 @@ export interface Props {}
 
 export function Developers({}: Props) {
   return (
-    <div className="max-w-6xl p-6 mx-auto">
+    <div className="p-6 mx-auto max-w-7xl">
       <div className="space-y-4">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold sm:text-4xl">
@@ -147,19 +153,56 @@ export function Developers({}: Props) {
 }
 
 function RecipeSection() {
-  const [viewportRef] = useEmblaCarousel({
+  const [viewportRef, embla] = useEmblaCarousel({
     dragFree: true,
     slidesToScroll: 1,
     containScroll: 'trimSnaps',
   })
 
+  const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
+  const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
+  const scrollPrev = useCallback(() => embla && embla.scrollPrev(), [embla])
+  const scrollNext = useCallback(() => embla && embla.scrollNext(), [embla])
+
+  const onSelect = useCallback(() => {
+    if (!embla) return
+    setPrevBtnEnabled(embla.canScrollPrev())
+    setNextBtnEnabled(embla.canScrollNext())
+  }, [embla])
+  useEffect(() => {
+    if (!embla) return
+    embla.on('select', onSelect)
+    onSelect()
+  }, [embla, onSelect])
+
   return (
     <div className="space-y-4">
-      <header>
-        <h2 className="text-xl font-semibold sm:text-3xl"> Recipes </h2>
-        <p className="text-lg text-brand-gray">
-          Learn how to develop with unlock.
-        </p>
+      <header className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold sm:text-3xl"> Recipes </h2>
+          <p className="text-lg text-brand-gray">
+            Learn how to develop with Unlock.
+          </p>
+        </div>
+
+        <div className="justify-end hidden gap-4 sm:flex">
+          <button
+            className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
+            aria-label="previous"
+            onClick={scrollPrev}
+            disabled={!prevBtnEnabled}
+          >
+            <ArrowLeftIcon size={24} />
+          </button>
+          <button
+            className="p-2 border rounded-full disabled:opacity-25 disabled:cursor-not-allowed border-brand-gray"
+            aria-label="next"
+            onClick={scrollNext}
+            disabled={!nextBtnEnabled}
+          >
+            <ArrowRightIcon size={24} />
+          </button>
+        </div>
       </header>
       <div className="relative max-w-fit">
         <div className="overflow-hidden cursor-move" ref={viewportRef}>

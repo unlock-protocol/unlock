@@ -10,7 +10,8 @@ export const UNLOCK_LINKS = {
   docs: 'https://docs.unlock-protocol.com/unlock/',
   developers:
     'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
-  governance: 'https://docs.unlock-protocol.com/unlock/governance',
+  governance:
+    'https://docs.unlock-protocol.com/unlock/governance/frequently-asked-questions',
 }
 
 export const UNLOCK_CONSOLE_MESSAGE = `

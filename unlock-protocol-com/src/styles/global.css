@@ -7,4 +7,19 @@ body {
 }
 
 @layer utilities {
+  .heading {
+    @apply text-3xl font-semibold md:text-4xl lg:text-6xl;
+  }
+  .sub-heading {
+    @apply text-xl sm:text-2xl text-brand-gray max-w-prose;
+  }
 }
+
+/*
+ Firefox backdrop-blue fix
+*/
+@supports not (backdrop-filter: none) {
+  .glass-pane {
+    @apply bg-white opacity-100;
+  }
+} ;

@@ -11,13 +11,11 @@ const UNLOCK_BENEFITS = [
 
 export function Connect() {
   return (
-    <section className="flex flex-col-reverse items-center justify-between max-w-6xl p-6 mx-auto md:gap-6 md:flex-row">
+    <section className="flex flex-col-reverse items-center justify-between p-6 mx-auto max-w-7xl	 md:gap-6 md:flex-row">
       <div className="w-full max-w-xl">
         <header className="w-full space-y-4 break-words">
-          <h1 className="text-4xl font-bold sm:text-6xl">
-            Connect with your 1000 true fans
-          </h1>
-          <p className="max-w-sm text-xl sm:text-2xl text-brand-gray">
+          <h1 className="heading">Connect with your 1000 true fans</h1>
+          <p className="sub-heading">
             For creative communities and the humans who build them
           </p>
         </header>

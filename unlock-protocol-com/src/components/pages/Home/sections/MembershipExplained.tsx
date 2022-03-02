@@ -10,7 +10,7 @@ export const UNLOCK_MEMBERSHIP_BENEFITS = [
 
 export function MembershipExplained() {
   return (
-    <section className="grid items-center justify-center max-w-6xl gap-6 p-6 mx-auto md:grid-cols-2 sm:flex-row sm:gap-x-16">
+    <section className="grid items-center justify-center gap-6 p-6 mx-auto max-w-7xl	 md:grid-cols-2 sm:flex-row sm:gap-x-16">
       <div className="w-full">
         <video muted autoPlay loop className="object-fit pointer-none">
           <source src="/videos/marketing/membership.webm" type="video/webm" />
@@ -19,10 +19,10 @@ export function MembershipExplained() {
       </div>
       <div className="space-y-6 ">
         <header className="space-y-4 break-words ">
-          <h2 className="text-4xl font-bold sm:text-5xl">
+          <h1 className="heading">
             Connecting humans through NFT-based memberships
-          </h2>
-          <p className="text-lg sm:text-xl text-brand-gray">
+          </h1>
+          <p className="sub-heading">
             Your members aren&apos;t a commodity. Stop allowing platforms to
             treat them like one.
           </p>
@@ -38,7 +38,7 @@ export function MembershipExplained() {
               <div>
                 <BulletPointIcon className="fill-brand-ui-primary" />
               </div>
-              <p>{text}</p>
+              <p className="text-lg">{text}</p>
             </li>
           ))}
         </ul>

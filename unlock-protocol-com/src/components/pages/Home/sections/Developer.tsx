@@ -52,18 +52,15 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 
 export function Developer() {
   return (
-    <section className="flex max-w-6xl mx-auto p-6 flex-col justify-center sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
-      <div className="flex flex-col gap-4 sm:gap-6 max-w-sm">
+    <section className="flex flex-col justify-center p-6 mx-auto max-w-7xl sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
+      <div className="flex flex-col max-w-lg gap-4 sm:gap-6">
         <header>
-          <h3 className="text-3xl font-bold sm:text-5xl max-w-[220px] sm:max-w-none">
-            You&apos;re a dev? We got this.
-          </h3>
+          <h1 className="heading">Developers, we have you covered.</h1>
         </header>
         <div>
-          <p className="text-lg sm:text-xl text-brand-gray">
-            We&apos;re a protocol - not a platform. We&apos;re free,
-            community-owned, and possess limitless opportunities for
-            customization.
+          <p className="sub-heading">
+            Unlock is a protocol - not a platform. It&apos;s free to use,
+            community-owned and governed, and offers limitless customization.
           </p>
         </div>
         <div>
@@ -72,7 +69,7 @@ export function Developer() {
           </Button>
         </div>
       </div>
-      <div className="max-w-lg">
+      <div className="max-w-sm sm:max-w-lg">
         <TabbedCodeBox blocks={CODE_BLOCKS} />
       </div>
     </section>

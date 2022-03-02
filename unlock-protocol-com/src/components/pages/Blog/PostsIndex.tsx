@@ -7,7 +7,7 @@ export interface Props extends PostsIndexType {}
 export function PostsIndex({ posts, next, prev, total }: Props) {
   const router = useRouter()
   return (
-    <main className="max-w-6xl mx-auto p-6">
+    <main className="max-w-7xl	 mx-auto p-6">
       <header className="space-y-2">
         <h1 className="text-3xl font-bold"> Unlock Blog </h1>
         <p className="text-xl text-brand-gray">
