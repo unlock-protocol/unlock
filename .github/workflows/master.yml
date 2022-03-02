@@ -43,7 +43,7 @@ jobs:
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-protocol-com
-      target-env: staging
+      target-env: prod
       bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
