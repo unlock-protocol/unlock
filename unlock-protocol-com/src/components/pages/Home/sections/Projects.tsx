@@ -11,7 +11,7 @@ export const UNLOCK_PROJECTS = [
   {
     coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/agora-guild.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/agora-guild.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'February, 2022',
+    published: 'February 2022',
     title: 'Guild.xyz',
     text: 'Guild.xyz is a tool for token-curated communities, powered by Agora Space.',
     href: 'https://agora.xyz/',
@@ -19,7 +19,7 @@ export const UNLOCK_PROJECTS = [
   {
     coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/bakery.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/bakery.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'December, 2021',
+    published: 'December 2021',
     title: 'The Bakery',
     text: 'The Bakery is a media community of researchers, writers, and crypto enthusiasts.',
     href: 'https://bakery.fyi/bakery-nft/',
@@ -27,7 +27,7 @@ export const UNLOCK_PROJECTS = [
   {
     coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cdaa.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/cdaa.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'January, 2022',
+    published: 'January 2022',
     title: 'CDAA',
     text: 'CDAA provides industry certification and credentials for digital asset advisors.',
     href: 'https://twitter.com/PlannerDAO/status/1480991827209641988',
@@ -35,7 +35,7 @@ export const UNLOCK_PROJECTS = [
   {
     coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/mintgate.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/mintgate.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'November, 2021',
+    published: 'November 2021',
     title: 'MintGate',
     text: 'MintGate is a platform for token-gated access to video, audio, & other content.',
     href: 'https://unlock-protocol.com/blog/mintgate-unlock-case-study',
@@ -43,7 +43,7 @@ export const UNLOCK_PROJECTS = [
   {
     coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/ethanglia.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/ethanglia.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'February, 2022',
+    published: 'February 2022',
     title: 'ETHAnglia',
     text: 'ETHAnglia is bringing web3 to the East of England.',
     href: 'https://ethanglia.org/',
@@ -51,7 +51,7 @@ export const UNLOCK_PROJECTS = [
   {
     coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/willow.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/willow.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'January, 2022',
+    published: 'January 2022',
     title: 'The Willow Tree',
     text: 'The Willow Tree is a  community for bridging web3 and rave culture.',
     href: 'https://www.twtdao.xyz/',
@@ -113,11 +113,6 @@ export function Projects() {
           <div className="flex gap-8 p-6 ml-4 select-none">
             {UNLOCK_PROJECTS.map(
               ({ href, coverClass, title, text, published }, index) => {
-                const date = new Date(published)
-                const textDate = date.toLocaleDateString('default', {
-                  month: 'long',
-                  year: 'numeric',
-                })
                 return (
                   <Link key={index} href={href}>
                     <div className="relative flex flex-col overflow-hidden w-72 group h-96 rounded-3xl">
@@ -131,8 +126,8 @@ export function Projects() {
                         )}
                       >
                         <div className="absolute z-10 flex flex-col justify-end h-full p-8 text-white">
-                          <time className="text-sm" dateTime={textDate}>
-                            {textDate}
+                          <time className="text-sm" dateTime={published}>
+                            {published}
                           </time>
                           <h4 className="text-xl font-bold"> {title} </h4>
                           <p className="hidden group-hover:block"> {text} </p>

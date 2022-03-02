@@ -17,7 +17,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
     },
     {
       name: 'Memberships',
-      href: '/memberships',
+      href: '/membership',
     },
   ],
   Community: [
@@ -30,7 +30,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       href: SOCIAL_URL.discourse,
     },
     {
-      name: 'Goverance',
+      name: 'Snapshot',
       href: SOCIAL_URL.snapshot,
     },
     {

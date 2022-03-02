@@ -71,20 +71,27 @@ export function About({ updates }: Props) {
                 </p>
               </header>
               <div className="grid gap-4">
-                {updates.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col gap-y-0 sm:flex-row sm:gap-x-4 md:gap-x-6 lg:gap-x-8"
-                  >
-                    <time className="text-brand-gray">12 March, 2021</time>
-                    <Link
-                      className="hover:text-brand-ui-primary"
-                      href={`/blog/${item.slug}`}
+                {updates.map((item, index) => {
+                  const date = new Date(
+                    item.frontMatter.publishDate
+                  ).toLocaleDateString()
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col gap-y-0 sm:flex-row sm:gap-x-4 md:gap-x-6 lg:gap-x-8"
                     >
-                      {item.frontMatter.title}
-                    </Link>
-                  </div>
-                ))}
+                      <time dateTime={date} className="text-brand-gray">
+                        {date}
+                      </time>
+                      <Link
+                        className="hover:text-brand-ui-primary"
+                        href={`/blog/${item.slug}`}
+                      >
+                        {item.frontMatter.title}
+                      </Link>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}

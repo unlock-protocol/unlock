@@ -11,13 +11,13 @@ const UNLOCK_BENEFITS = [
 
 export function Connect() {
   return (
-    <section className="flex flex-col-reverse items-center justify-between max-w-6xl gap-6 p-6 mx-auto sm:flex-row">
-      <div className="w-full max-w-lg">
+    <section className="flex flex-col-reverse items-center justify-between max-w-6xl p-6 mx-auto md:gap-6 md:flex-row">
+      <div className="w-full max-w-xl">
         <header className="w-full space-y-4 break-words">
-          <h2 className="text-4xl font-bold sm:text-5xl">
+          <h1 className="text-4xl font-bold sm:text-6xl">
             Connect with your 1000 true fans
-          </h2>
-          <p className="max-w-sm text-lg sm:text-xl text-brand-gray">
+          </h1>
+          <p className="max-w-sm text-xl sm:text-2xl text-brand-gray">
             For creative communities and the humans who build them
           </p>
         </header>
@@ -33,7 +33,7 @@ export function Connect() {
                 <div>
                   <BulletPointIcon className="fill-brand-ui-primary" />
                 </div>
-                <p>{text}</p>
+                <p className="text-lg">{text}</p>
               </li>
             ))}
           </ul>
@@ -46,7 +46,7 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="flex justify-center w-full max-w-fit sm:max-w-sm">
+      <div className="flex justify-center w-full pb-6 max-w-fit sm:max-w-sm md:pb-0">
         <div className="w-full bg-white glass-pane rounded-3xl ">
           <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
             <p className="font-bold">Tales of Elatora</p>

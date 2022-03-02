@@ -107,12 +107,14 @@ function DeveloperPopover() {
             <Popover.Panel className="absolute w-screen max-w-xl px-4 mt-3 transform -translate-x-1/2 z-100 left-1/2">
               <div className="glass-pane rounded-3xl">
                 <div className="grid p-4">
-                  <header className="flex gap-x-4 pb-6 items-base">
+                  <header className="flex pb-6 gap-x-4 items-base">
                     <div>
                       <FilesIcon className="not-sr-only" />
                     </div>
-                    <div className="space-y-1 flex flex-col">
-                      <p className="text-sm font-bold"> Documentation </p>
+                    <div className="flex flex-col space-y-1">
+                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                        <p className="text-sm font-bold"> Documentation </p>
+                      </Link>
                       <p className="text-sm text-brand-gray">
                         Your starting point for the integration of Unlock into
                         other platforms
@@ -121,9 +123,12 @@ function DeveloperPopover() {
                   </header>
                   <div className="flex justify-between max-w-[400px] pl-8">
                     <div>
-                      <p className="text-xs font-bold uppercase ">
-                        Integrations
-                      </p>
+                      <Link href="https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations">
+                        <p className="text-xs font-bold uppercase ">
+                          Integrations
+                        </p>
+                      </Link>
+
                       <nav className="grid gap-1 pt-2">
                         {DEVELOPER_NAVIGATION_INTEGRATIONS.map(
                           (item, index) => (
@@ -139,7 +144,9 @@ function DeveloperPopover() {
                       </nav>
                     </div>
                     <div>
-                      <p className="text-xs font-bold uppercase ">Recipes</p>
+                      <Link href="https://docs.unlock-protocol.com/unlock/developers/tutorials">
+                        <p className="text-xs font-bold uppercase ">Recipes</p>
+                      </Link>
                       <nav className="grid gap-1 pt-2">
                         {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
                           <Link
@@ -182,16 +189,16 @@ function DeveloperPopover() {
 function Desktop() {
   const link = 'text-brand-gray hover:text-black'
   return (
-    <div className="items-center hidden gap-6 sm:flex">
+    <div className="items-center hidden gap-12 sm:flex">
       <DeveloperPopover />
-      <Link className={link} href="/about">
-        About
-      </Link>
       <Link
         className={link}
         href="https://docs.unlock-protocol.com/unlock/creators/faq"
       >
         Creators
+      </Link>
+      <Link className={link} href="/about">
+        About
       </Link>
       <Button variant="outlined-primary" as={Link}>
         Connect Wallet
@@ -202,9 +209,9 @@ function Desktop() {
 
 function Mobile() {
   return (
-    <div className="relative w-full flex justify-center">
-      <Disclosure.Panel className="absolute px-4 space-y-1 sm:hidden w-full max-w-lg">
-        <div className="glass-pane space-y-2 rounded-xl">
+    <div className="relative flex justify-center w-full">
+      <Disclosure.Panel className="absolute w-full max-w-lg px-4 space-y-1 sm:hidden">
+        <div className="space-y-2 glass-pane rounded-xl">
           <Disclosure>
             {({ open }) => (
               <>
@@ -223,10 +230,13 @@ function Mobile() {
                   <Disclosure.Panel>
                     <div className="p-6 space-y-4">
                       <div>
-                        <p className="text-xs font-bold uppercase ">
-                          Integrations
-                        </p>
-                        <nav className="grid gap-1 pt-2">
+                        <Link href="https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations">
+                          <p className="text-xs font-bold uppercase ">
+                            Integrations
+                          </p>
+                        </Link>
+
+                        <nav className="grid gap-2 pt-2">
                           {DEVELOPER_NAVIGATION_INTEGRATIONS.map(
                             (item, index) => (
                               <Link
@@ -241,8 +251,12 @@ function Mobile() {
                         </nav>
                       </div>
                       <div>
-                        <p className="text-xs font-bold uppercase ">Recipes</p>
-                        <nav className="grid gap-1 pt-2">
+                        <Link href="https://docs.unlock-protocol.com/unlock/developers/tutorials">
+                          <p className="text-xs font-bold uppercase ">
+                            Recipes
+                          </p>
+                        </Link>
+                        <nav className="grid gap-2 pt-2">
                           {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
                             <Link
                               className="text-sm text-brand-gray hover:text-brand-dark"
