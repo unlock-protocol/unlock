@@ -50,6 +50,8 @@ jobs:
     outputs:
       changed: ${{ steps.check_changes.outputs.changed }}
     steps:
+      - name: "Free up disk space"
+        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
