@@ -130,7 +130,7 @@ const UNLOCK_PAST_COHORTS = [
 export function Grants() {
   return (
     <div className="p-6 mx-auto max-w-7xl">
-      <section className="space-y-16">
+      <section className="space-y-8">
         <header className="flex flex-col items-center justify-center space-y-2 text-center">
           <h1 className="heading">Unlock Grant Program</h1>
           <p className="sub-heading">
@@ -149,7 +149,7 @@ export function Grants() {
         </div>
       </section>
 
-      <section className="py-16 space-y-8">
+      <section className="py-8 space-y-8 md:py-16">
         <header className="flex flex-col items-center justify-center space-y-1 text-center">
           <h2 className="text-xl font-semibold sm:text-3xl">
             How does Unlock Grant Program help developers?
@@ -171,7 +171,7 @@ export function Grants() {
         </div>
       </section>
 
-      <section className="pt-12 space-y-12">
+      <section className="space-y-12 sm:pt-12">
         <header className="flex flex-col items-center justify-center space-y-1 text-center">
           <h3 className="heading-small">
             Check out projects from our grantees
@@ -231,14 +231,14 @@ export function Grants() {
                   </p>
                   <Link
                     className="inline-flex items-center gap-2 px-2 2 py-0.5 bg-gray-200 rounded text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                    href="https://guild.xyz"
+                    href="https://mintgate.io"
                   >
                     mintgate.io
                     <LinkIcon />
                   </Link>
                 </div>
               </div>
-              <Link href="https://guild.xyz">
+              <Link href="https://mintgate.io">
                 <img
                   className="rounded"
                   alt="Mintgate"
@@ -278,7 +278,7 @@ export function Grants() {
           )}
         </div>
       </section>
-      <section className="pt-12 space-y-24">
+      <section className="pt-24 space-y-24">
         <header className="flex flex-col items-center justify-center space-y-1 text-center">
           <h3 className="heading-small">A decentralized Grant Committee</h3>
           <p className="max-w-prose sub-heading-small">
