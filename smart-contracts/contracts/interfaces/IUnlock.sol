@@ -71,7 +71,7 @@ interface IUnlock
   function createUpgradeableLockAtVersion(
     bytes memory data,
     uint16 _lockVersion
-  ) public returns (address);
+  ) external returns (address);
 
   /**
   * @notice Upgrade a lock to a specific version
