@@ -69,7 +69,7 @@ export function Developer() {
           </Button>
         </div>
       </div>
-      <div className="max-w-sm sm:max-w-lg">
+      <div className="max-w-sm lg:max-w-lg">
         <TabbedCodeBox blocks={CODE_BLOCKS} />
       </div>
     </section>

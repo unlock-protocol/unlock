@@ -107,7 +107,44 @@ export function Projects() {
         </div>
       </header>
       <div className="sm:px-6">
-        <div className="w-full overflow-hidden cursor-move" ref={viewportRef}>
+        <div className="flex flex-col gap-4 px-6 pt-12 sm:hidden">
+          {UNLOCK_PROJECTS.slice(0, 3).map(
+            ({ href, coverClass, title, published }, index) => (
+              <Link key={index} href={href}>
+                <div className="relative flex flex-col overflow-hidden h-60 group rounded-3xl">
+                  <div
+                    style={{
+                      backgroundPosition: 'center',
+                    }}
+                    className={twMerge(
+                      'object-cover h-full w-full absolute group-hover:transition-all',
+                      coverClass
+                    )}
+                  >
+                    <div className="absolute z-10 flex flex-col justify-end h-full p-8 text-white">
+                      <time className="text-sm" dateTime={published}>
+                        {published}
+                      </time>
+                      <h4 className="text-xl font-bold"> {title} </h4>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )
+          )}
+          <div className="text-center">
+            <Link
+              className="text-lg font-semibold text-brand-ui-primary"
+              href="https://www.unlockshowcase.com/"
+            >
+              Check out more projects {'-->'}
+            </Link>
+          </div>
+        </div>
+        <div
+          className="hidden w-full overflow-hidden cursor-move sm:block"
+          ref={viewportRef}
+        >
           <div className="flex gap-8 p-6 ml-4 select-none">
             {UNLOCK_PROJECTS.map(
               ({ href, coverClass, title, text, published }, index) => {

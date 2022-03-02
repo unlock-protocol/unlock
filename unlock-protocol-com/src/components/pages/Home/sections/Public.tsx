@@ -11,7 +11,7 @@ const PUBLIC_MARKETING_POINTS = [
 
 export function Public() {
   return (
-    <section className="flex flex-col-reverse items-center justify-between gap-6 px-6 py-12 mx-auto max-w-7xl	 sm:flex-row">
+    <section className="flex flex-col-reverse items-center justify-between gap-6 px-6 py-12 mx-auto max-w-7xl sm:flex-row">
       <div className="max-w-lg">
         <div className="w-full space-y-4 break-words">
           <h1 className="heading">
@@ -28,7 +28,7 @@ export function Public() {
           <ul>
             {PUBLIC_MARKETING_POINTS.map((text, index) => (
               <li
-                className={`border-t border-brand-gray py-4 items-center flex gap-4 ${
+                className={`border-t text-lg border-brand-gray py-4 items-center flex gap-4 ${
                   !PUBLIC_MARKETING_POINTS[index + 1] && 'border-b'
                 }`}
                 key={index}
