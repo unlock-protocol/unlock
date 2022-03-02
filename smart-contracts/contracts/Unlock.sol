@@ -273,6 +273,36 @@ contract Unlock is
   }
 
   /**
+   * Create an upgradeable lock using a specific PublicLock version
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details)
+   * @param _lockVersion the version of the lock to use
+  */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 _lockVersion
+  ) public returns (address) {
+    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
+
+    // get lock version
+    address publicLockImpl = _publicLockImpls[_lockVersion];
+    require(publicLockImpl != address(0), 'MISSING_LOCK_TEMPLATE');
+
+    // deploy a proxy pointing to impl
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockImpl, proxyAdminAddress, data);
+    address payable newLock = payable(address(proxy));
+
+    // assign the new Lock
+    locks[newLock] = LockBalances({
+      deployed: true, totalSales: 0, yieldedDiscountTokens: 0
+    });
+
+    // trigger event
+    emit NewLock(msg.sender, newLock);
+    return newLock;
+  }
+
+  /**
    * @dev Upgrade a Lock template implementation
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
