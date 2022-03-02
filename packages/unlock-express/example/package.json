@@ -12,6 +12,6 @@
   "dependencies": {
     "@unlock-protocol/unlock-express": "workspace:^",
     "cookie-parser": "1.4.6",
-    "express": "4.17.2"
+    "express": "4.17.3"
   }
 }
