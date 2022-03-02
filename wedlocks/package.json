@@ -10,7 +10,6 @@
     "@babel/preset-env": "7.16.11",
     "@typescript-eslint/parser": "5.13.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "aws-sdk": "2.1083.0",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.5.1",
     "babel-loader": "8.2.3",
