@@ -108,7 +108,7 @@ Again, we refer to the documentation on [Using an Existing NFT](https://docs.unl
 
 ![hook-configration.jpg](/images/blog/bring-your-own-nft/hook-configration.jpg)
 
-> *Hooks are 3rd party contract that can be called when your lock itself is called. Here we are interested in changing the behavior of the validKey function, so you will enter the address of the hook contract for your network (see list above!) in the `_onValidKeyHook` field. Make sure you add `0x0000000000000000000000000000000000000000` in all the other fields to leave them unset.
+> *Hooks are 3rd party contracts that can be called when your lock itself is called. Here we are interested in changing the behavior of the validKey function, so you will enter the address of the hook contract for your network (see list above!) in the `_onValidKeyHook` field. Make sure you add `0x0000000000000000000000000000000000000000` in all the other fields to leave them unset.
 Click on `Write`, confirm the transaction in your wallet and you should be all set!*
 > 
 
