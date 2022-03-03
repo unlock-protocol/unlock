@@ -41,21 +41,6 @@ jobs:
       matrix:
         target: ${{fromJson( inputs.changed )}}
     steps:
-      - name: 'Free up disk space'
-        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-      - uses: actions/checkout@v3
-      - name: Cache docker
-        uses: actions/cache@v2
-        if: github.event_name != 'schedule'
-        env:
-          cache-name: docker-cache-${{ matrix.target }}
-        with:
-          path: ${{ runner.temp }}/docker_cache
-          key: ${{ env.cache-name }}-${{ github.run_number }}
-          restore-keys: |
-            ${{ env.cache-name }}-
-      - name: Restore docker
-        run: .github/actions/docker-cache/restore.sh ${{ runner.temp }}/docker_cache/cache.tar
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash
