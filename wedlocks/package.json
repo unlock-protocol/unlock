@@ -13,7 +13,7 @@
     "babel-eslint": "10.1.0",
     "babel-jest": "27.5.1",
     "babel-loader": "8.2.3",
-    "dotenv": "15.0.0",
+    "dotenv": "15.0.1",
     "eslint": "8.10.0",
     "jest": "27.5.1",
     "lint-staged": "12.3.3",
