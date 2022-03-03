@@ -9,7 +9,7 @@ image: /images/blog/bring-your-own-nft/byonft-header.png
 
 ![bring-your-own-nft.png](/images/blog/bring-your-own-nft/byonft-header.png)
 
-One of the most common requests we’ve received over the past few months is “can I use an NFT from <name of an NFT collection> with Unlock?” Now the answer is a resounding “yes!”
+One of the most common requests we’ve received over the past few months is “can I use an NFT from \<name of an NFT collection\> with Unlock?” Now the answer is a resounding “yes!”
 
 Prior to this release, Unlock locks for token gating content and other resources would only open for NFT access keys that were minted from that Unlock lock itself. Now, thanks to some amazing development magic from the Unlock Protocol dev team, creators can configure their Unlock locks to work with *any* ERC-721 NFT. (We call this “Bring Your Own NFT.”)
 
@@ -54,10 +54,7 @@ Great. Now, I’ll go to my Unlock Creator Dashboard and [create a lock](https:/
 
 ![spkz-lock-min.png](/images/blog/bring-your-own-nft/spkz-lock-min.png)
 
-<aside>
-💡 **Note:** Since this lock will be configured to look for the SPKZ NFT later in this blog post, the values of `Key Duration`, `Key Quantity`, and `Price` do not matter. They will be ignored and will not be used in this example.
-
-</aside>
+> 💡 **Note:** Since this lock will be configured to look for the SPKZ NFT later in this blog post, the values of `Key Duration`, `Key Quantity`, and `Price` do not matter. They will be ignored and will not be used in this example.
 
 The contract address for the Unlock lock is `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826`.
 
@@ -75,10 +72,7 @@ Now it’s time to wire things up.
 
 First, you’ll need to set up the mapping on the hook. The instructions below are from the Unlock documentation on [Using an Existing NFT](https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract#hooking-things-together), and are repeated here for readability.
 
-<aside>
-💡 Different hook contracts on different chains (e.g. mainnet) will have different URLs than this one. In the example we’re walking through here, the block explorer for the Polygon hook contract is at: [https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516](https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516).
-
-</aside>
+> 💡 Different hook contracts on different chains (e.g. mainnet) will have different URLs than this one. In the example we’re walking through here, the block explorer for the Polygon hook contract is at: [https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516](https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516).
 
 The documentation tells us...
 
