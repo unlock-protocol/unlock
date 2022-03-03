@@ -174,6 +174,7 @@ const Body = styled.div`
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
+  overflow-wrap: break-word;
 
   strong {
     font-weight: 800;
@@ -197,8 +198,7 @@ const Body = styled.div`
 
   pre,
   code {
-    max-width: 90vw;
-    overflow-x: scroll;
+    overflow: scroll;
   }
 
   pre {
