@@ -36,31 +36,30 @@ const serverIsUp = (host, port, delay, maxAttempts, callback) => {
   tryConnecting()
 }
 
-if (!config.host || process.env.NODE_ENV === 'production') {
-  console.log(`Listening on ${port}`)
-  return app.listen(port)
-}
-
 if (args.routes) {
   console.log('Routes:')
   listEndpoints(app).forEach((endpoint) => {
     endpoint.methods.forEach((method) => {
       console.log(
-        `${method.padStart(6)} ${endpoint.path.padEnd(56)} => ${
-          endpoint.middleware
+        `${method.padStart(6)} ${endpoint.path.padEnd(56)} => ${endpoint.middleware
         }`
       )
     })
   })
-
-  return
+  process.exit(0)
 }
 
-// We wait for the db server to be up before starting the app
-serverIsUp(config.host, databasePort, 100, 120, (error) => {
-  if (error) {
-    console.error(error)
-    return process.exit(1)
-  }
+if (!config.host || process.env.NODE_ENV === 'production') {
+  // in prod, we start immediately
+  console.log(`Listening on ${port}`)
   app.listen(port)
-})
+} else {
+  // We wait for the db server to be up before starting the app
+  serverIsUp(config.host, databasePort, 100, 120, (error) => {
+    if (error) {
+      console.error(error)
+      return process.exit(1)
+    }
+    app.listen(port)
+  })
+}

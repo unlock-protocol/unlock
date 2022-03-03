@@ -12,7 +12,7 @@ import {
   Select,
   TransactionPendingButton,
 } from '../../interface/checkout/FormStyles'
-import { ACCOUNT_REGEXP } from '../../../constants'
+import { ACCOUNT_REGEXP, MAX_UINT } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
 import useAlert from '../../../hooks/useAlert'
 import Alert from '../../interface/Alert'
@@ -32,7 +32,11 @@ const now = new Date().getTime()
  * @param date
  * @returns
  */
-const formatDate = (date: Date) => {
+const formatDate = (timestamp: number) => {
+  if (timestamp === -1) {
+    return ''
+  }
+  const date = new Date(now + timestamp * 1000)
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
   return date.toISOString().slice(0, 16)
 }
@@ -50,11 +54,15 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
 
   const [transaction, setTransaction] = useState<string>('')
   const [loading, setLoading] = useState(false)
+  const [expirationInputDisabled, setExpirationInputDisabled] = useState(
+    lock.expirationDuration === -1
+  )
 
   const defaultValues = {
     recipient: '',
-    expiration: formatDate(new Date(now + lock.expirationDuration * 1000)),
+    expiration: formatDate(lock.expirationDuration),
     keyManager: '',
+    neverExpires: lock.expirationDuration === -1,
   }
 
   const {
@@ -75,12 +83,14 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     recipient: string
     keyManager: string
     expiration: string
+    neverExpires: boolean
   }
 
   const onSubmit = async ({
     recipient,
     keyManager,
     expiration,
+    neverExpires,
   }: onSubmitInterface) => {
     setLoading(true)
     try {
@@ -101,7 +111,9 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           {
             lockAddress: lock.address,
             recipient,
-            expiration: Math.floor(new Date(expiration).getTime() / 1000),
+            expiration: neverExpires
+              ? MAX_UINT
+              : Math.floor(new Date(expiration).getTime() / 1000),
             keyManager: keyManager || account,
           },
           (error: any, hash: string) => {
@@ -130,6 +142,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     }
     setLoading(false)
   }
+
   const addressFieldChanged = (name: string) => {
     return async (event: React.ChangeEvent<HTMLInputElement>) => {
       const address = await getAddressForName(event.target.value)
@@ -169,15 +182,33 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           )}
         </div>
       </div>
+
       <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
           <Label htmlFor="grid-expiration">Expiration</Label>
           <Input
+            disabled={expirationInputDisabled}
             id="grid-expiration"
             type="datetime-local"
             {...register('expiration')}
           />
-          <p className="-mt-4 text-xs italic">
+          <div className="-mt-3">
+            <label htmlFor="never-expires">
+              Never Expires
+              <input
+                id="never-expires"
+                className="align-middle	ml-2"
+                type="checkbox"
+                {...register('neverExpires', {
+                  onChange: () => {
+                    setExpirationInputDisabled(!expirationInputDisabled)
+                    setValue('expiration', '')
+                  },
+                })}
+              />
+            </label>
+          </div>
+          <p className="text-xs italic">
             This is pre-filled based on the default duration of your lock.
           </p>
         </div>

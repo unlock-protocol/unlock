@@ -23,6 +23,10 @@ on:
         description: 'The build directory to use. By default, it will use name of the service as build directory.'
         type: string
         required: false
+      bypass_diff_check:
+        description: "Bypass the monorepo diff check"
+        required: false
+        type: string
     secrets:
       HEROKU_EMAIL:
         required: true
@@ -38,12 +42,19 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
-      - uses: actions/checkout@v2
+      - name: "Free up disk space"
+        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Check for changes in ${{ inputs.service }}
         run: |
-          changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          if  [ -z "${{ inputs.bypass_diff_check }}" ]; then
+            changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          else 
+            changed="changed"
+          fi
+          echo $changed
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes

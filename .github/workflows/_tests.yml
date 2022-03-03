@@ -39,7 +39,9 @@ jobs:
       matrix:
         target: ${{fromJson( inputs.changed )}}
     steps:
-      - uses: actions/checkout@v2
+      - name: "Free up disk space"
+        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - uses: actions/checkout@v3
       - name: Cache docker
         uses: actions/cache@v2
         if: github.event_name != 'schedule'
@@ -66,7 +68,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run Integration Tests
         run: scripts/integration-tests.sh
       - name: Archive production artifacts
