@@ -11,12 +11,18 @@ import {
   FiArrowLeft as ArrowLeftIcon,
   FiArrowRight as ArrowRightIcon,
 } from 'react-icons/fi'
+import { SiWebflow } from 'react-icons/si'
 
 export const UNLOCK_RECIPES = [
   {
     Icon: WordpressIcon,
     text: 'How to use the Ʉnlock WordPress plugin',
     href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
+  },
+  {
+    Icon: SiWebflow,
+    text: 'How to use the Ʉnlock Webflow plugin',
+    href: '/blog/webflow-integration',
   },
   {
     Icon: EthereumIcon,
