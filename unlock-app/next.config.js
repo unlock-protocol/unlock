@@ -15,8 +15,7 @@ const dev = {
   paywallUrl:
     process.env.PAYWALL_URL || 'https://staging-paywall.unlock-protocol.com',
   locksmithHost:
-    process.env.LOCKSMITH_URI ||
-    'https://rinkeby.locksmith.unlock-protocol.com',
+    process.env.LOCKSMITH_URI || 'https://locksmith.unlock-protocol.com',
   unlockStaticUrl:
     process.env.UNLOCK_STATIC_URL || 'https://unlock-protocol.com',
   wedlocksUri:
@@ -26,7 +25,7 @@ const dev = {
 
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
-  locksmithHost: 'https://rinkeby.locksmith.unlock-protocol.com',
+  locksmithHost: 'https://locksmith.unlock-protocol.com',
   unlockStaticUrl: 'https://unlock-protocol.com',
   wedlocksUri:
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',

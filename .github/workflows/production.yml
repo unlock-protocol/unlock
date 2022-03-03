@@ -14,6 +14,7 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
+      bypass_diff_check: bypass
       service: locksmith
       app-name: unlock-locksmith-production
     secrets:
@@ -25,6 +26,7 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
+      bypass_diff_check: bypass
       service: locksmith-websub
       build-dir: locksmith
       command: "yarn websub:prod"
@@ -34,24 +36,13 @@ jobs:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-  # Netlify Deployments
-  deploy-unlock-protocol-com-production:
-    if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
-    needs: run-all-tests
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      service: unlock-protocol-com
-      target-env: prod
-    secrets:
-      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
-      UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_UNLOCK_GA_ID }}
-  
+  # Netlify Deployments  
   deploy-paywall-app-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
+      bypass_diff_check: bypass
       service: paywall-app
       target-env: prod
     secrets:
@@ -63,6 +54,7 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
+      bypass_diff_check: bypass
       service: unlock-app
       target-env: prod
     secrets:

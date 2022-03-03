@@ -1,4 +1,4 @@
-name: "Staging / master branch"
+name: 'Staging / master branch'
 
 on:
   push:
@@ -14,6 +14,7 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
+      bypass_diff_check: bypass
       service: locksmith
       app-name: unlock-locksmith-staging
     secrets:
@@ -25,28 +26,31 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
+      bypass_diff_check: bypass
       service: locksmith-websub
       build-dir: locksmith
-      command: "yarn websub:prod"
+      command: 'yarn websub:prod'
       container-type: worker
       app-name: locksmith-websub-staging
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  
-   # Netlify Deployments (on staging)
-  deploy-unlock-protocol-com:
+
+  # Netlify Deployments
+  # The unlock-protocol-com site is built from `master` as we don't use a staging site for it.
+  deploy-unlock-protocol-com-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
     needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
+      bypass_diff_check: bypass
       service: unlock-protocol-com
-      target-env: staging
+      target-env: prod
     secrets:
-      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
-      UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
-  
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
+      UNLOCK_GA_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_UNLOCK_GA_ID }}
+
   deploy-paywall-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
@@ -54,6 +58,7 @@ jobs:
     with:
       service: paywall-app
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
@@ -65,13 +70,14 @@ jobs:
     with:
       service: wedlocks
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_AUTH_TOKEN }}
-      SMTP_HOST : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
-      SMTP_USERNAME : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
-      SMTP_PASSWORD : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
-      BASE64_WEDLOCKS_PRIVATE_KEY : ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
+      SMTP_HOST: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_HOST }}
+      SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
+      BASE64_WEDLOCKS_PRIVATE_KEY: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
 
   deploy-unlock-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -80,9 +86,9 @@ jobs:
     with:
       service: unlock-app
       target-env: staging
+      bypass_diff_check: bypass
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
       BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
       STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
-  
