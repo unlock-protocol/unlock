@@ -145,12 +145,12 @@ export function Projects() {
           className="hidden w-full overflow-hidden cursor-move sm:block"
           ref={viewportRef}
         >
-          <div className="flex gap-8 p-6 ml-4 select-none">
+          <div className="flex gap-8 p-6 pt-12 ml-4 select-none">
             {UNLOCK_PROJECTS.map(
               ({ href, coverClass, title, text, published }, index) => {
                 return (
                   <Link key={index} href={href}>
-                    <div className="relative flex flex-col overflow-hidden w-72 group h-96 rounded-3xl">
+                    <div className="relative flex flex-col overflow-hidden w-[20rem] group h-[28rem] rounded-3xl">
                       <div
                         style={{
                           backgroundPosition: 'center',

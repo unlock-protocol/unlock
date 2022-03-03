@@ -13,6 +13,7 @@ import {
   AiOutlineUp as UpIcon,
 } from 'react-icons/ai'
 import { HiX as XIcon, HiMenu as MenuIcon } from 'react-icons/hi'
+import { unlockConfig } from '../../../config/unlock'
 interface NavigationLink {
   name: string
   href: string
@@ -28,8 +29,12 @@ const DEVELOPER_NAVIGATION_INTEGRATIONS: NavigationLink[] = [
     href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
   },
   {
+    name: 'Webflow',
+    href: '/blog/webflow-integration',
+  },
+  {
     name: 'Discord',
-    href: 'https://guild.xyz',
+    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/discord',
   },
   {
     name: 'Shopify',
@@ -200,7 +205,7 @@ function Desktop() {
       <Link className={link} href="/about">
         About
       </Link>
-      <Button variant="outlined-primary" as={Link}>
+      <Button href={unlockConfig.appURL} variant="outlined-primary" as={Link}>
         Connect Wallet
       </Button>
     </div>
@@ -289,11 +294,13 @@ function Mobile() {
             )}
           </Disclosure>
           <div className="flex flex-col gap-4 p-4 bg-white rounded-xl">
-            <Link href="/about"> About us </Link>
             <Link href="https://docs.unlock-protocol.com/unlock/creators/faq">
               Creators
             </Link>
-            <Button>Connect Wallet</Button>
+            <Link href="/about"> About us </Link>
+            <Button as={Link} href={unlockConfig.appURL}>
+              Connect Wallet
+            </Button>
           </div>
         </div>
       </Disclosure.Panel>
@@ -306,7 +313,7 @@ export function Navigation() {
     <Disclosure as="nav" className="sticky top-0 z-10 w-full bg-brand-primary">
       {({ open }) => (
         <>
-          <div className="max-w-7xl	 px-6 py-4 mx-auto ">
+          <div className="px-6 py-4 mx-auto max-w-7xl ">
             <div className="flex items-center justify-between">
               <Link href="/">
                 <UnlockTextIcon />
