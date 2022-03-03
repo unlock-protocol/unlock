@@ -2,9 +2,9 @@ import { Button } from '@unlock-protocol/ui'
 import useLocalStorage from 'use-local-storage'
 
 export function CookieBanner() {
-  const [enableAnalytics, setEnableAnalytics] = useLocalStorage(
+  const [enableAnalytics, setEnableAnalytics] = useLocalStorage<boolean | null>(
     'enable_analytics',
-    false
+    null
   )
   if (enableAnalytics !== null) {
     return <> </>
