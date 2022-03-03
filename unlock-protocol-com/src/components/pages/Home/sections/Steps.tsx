@@ -36,7 +36,7 @@ const UNLOCK_STEPS = [
 
 export function Steps() {
   return (
-    <section className="px-6 py-12 mx-auto space-y-6 max-w-7xl sm:py-32">
+    <section className="mx-auto space-y-6 max-w-7xl">
       <div className="grid justify-center w-full pb-8 space-y-4 text-center justify-items-center">
         <img
           aria-hidden
@@ -59,16 +59,16 @@ export function Steps() {
         <img
           alt="none"
           aria-hidden
-          className="hidden xl:block"
+          className="hidden ml-2 xl:block"
           src="/images/svg/steps-bar.svg"
         />
-        <ol className="flex flex-col flex-wrap gap-8 sm:justify-center sm:flex-row">
+        <ol className="grid justify-center gap-8 lg:grid-cols-3 ">
           {UNLOCK_STEPS.map(({ title, Icon, points }, index) => (
             <li
               className="px-8 py-12 space-y-6 sm:max-w-sm glass-pane rounded-3xl"
               key={index}
             >
-              <div className="flex items-center justify-center h-20">
+              <div className="flex items-center justify-center h-16">
                 <Icon className="fill-brand-ui-primary" />
               </div>
               <div className="pt-6 space-y-4">

@@ -74,12 +74,12 @@ export function Footer() {
   return (
     <footer className="w-full text-white bg-brand-dark">
       <div className="px-4 py-16 space-y-16 max-w-7xl sm:mx-auto">
-        <div className="flex flex-col justify-between gap-12 sm:flex-row">
+        <div className="flex flex-col justify-between gap-12 md:flex-row">
           <div className="max-w-sm space-y-2 lg:max-w-lg">
             <h4 className="text-3xl font-semibold lg:text-4xl">
               Sign up for Updates
             </h4>
-            <p className="text-lg">
+            <p className="md:text-lg">
               We&apos;ll send you fresh news about our platform, including new
               features and opportunities for the community.
             </p>

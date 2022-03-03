@@ -11,10 +11,7 @@ import {
 export function GetStarted() {
   const { isMember, becomeMember } = useMembership()
   return (
-    <section
-      id="get-started"
-      className="p-6 mx-auto space-y-6 max-w-7xl sm:py-16"
-    >
+    <section id="get-started" className="mx-auto space-y-6 max-w-7xl">
       <img
         aria-hidden
         className="pb-2 not-sr-only sm:hidden"

@@ -11,7 +11,7 @@ const PUBLIC_MARKETING_POINTS = [
 
 export function Public() {
   return (
-    <section className="flex flex-col items-center justify-between gap-6 px-6 py-12 mx-auto sm:gap-x-24 max-w-7xl sm:flex-row">
+    <section className="flex flex-col items-center justify-between gap-6 mx-auto sm:gap-x-16 max-w-7xl sm:flex-row">
       <div className="max-w-sm space-y-2 xl:max-w-2xl">
         <img
           aria-hidden

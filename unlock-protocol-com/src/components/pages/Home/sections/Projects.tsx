@@ -82,8 +82,8 @@ export function Projects() {
   }, [embla, onSelect])
 
   return (
-    <section className="py-12 mx-auto max-w-7xl sm:py-24">
-      <header className="px-6">
+    <section className="mx-auto max-w-7xl">
+      <header>
         <img
           aria-hidden
           className="pb-8 not-sr-only sm:hidden"
@@ -118,8 +118,8 @@ export function Projects() {
           </div>
         </div>
       </header>
-      <div className="sm:px-6">
-        <div className="flex flex-col gap-4 px-6 pt-12 sm:hidden">
+      <div>
+        <div className="flex flex-col gap-4 pt-12 sm:hidden">
           {UNLOCK_PROJECTS.slice(0, 3).map(
             ({ href, coverClass, title, published }, index) => (
               <Link key={index} href={href}>

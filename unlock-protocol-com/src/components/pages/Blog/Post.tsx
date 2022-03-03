@@ -6,9 +6,9 @@ export interface Props extends PostType {
 export function Post({ frontMatter, htmlContent }: Props) {
   const publishedDate = new Date(frontMatter.publishDate).toLocaleDateString()
   return (
-    <div className="max-w-7xl	 mx-auto p-6">
+    <div className="max-w-3xl px-6 pb-24 mx-auto">
       <article>
-        <header className="py-4 space-y-2">
+        <header className="py-4 space-y-4">
           <h1 className="text-3xl font-bold sm:text-5xl">
             {frontMatter.title}
           </h1>
@@ -16,7 +16,7 @@ export function Post({ frontMatter, htmlContent }: Props) {
             <p className="text-lg sm:text-xl text-brand-gray">
               {frontMatter.description}
             </p>
-            <div className="text-base text-brand-gray">
+            <div className="py-4 text-base text-brand-gray">
               By <span> {frontMatter.authorName} </span> on{' '}
               <time dateTime={publishedDate}>{publishedDate}</time>
             </div>

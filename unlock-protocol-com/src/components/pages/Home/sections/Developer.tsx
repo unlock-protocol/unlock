@@ -52,7 +52,7 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 
 export function Developer() {
   return (
-    <section className="flex flex-col justify-center p-6 mx-auto max-w-7xl sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
+    <section className="flex flex-col justify-center px-6 mx-auto max-w-7xl sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
       <div className="sm:hidden">
         <img
           aria-hidden

@@ -4,7 +4,7 @@ import { SOCIAL_URL } from '../../../../config/seo'
 
 export function Community() {
   return (
-    <section className="flex flex-col-reverse justify-between gap-6 px-6 py-12 mx-auto sm:gap-x-24 max-w-7xl md:items-center sm:flex-row">
+    <section className="flex flex-col-reverse justify-between gap-6 mx-auto sm:gap-x-16 max-w-7xl md:items-center sm:flex-row">
       <div className="max-w-lg">
         <img src="/images/marketing/community-circle.png" alt="Community" />
       </div>

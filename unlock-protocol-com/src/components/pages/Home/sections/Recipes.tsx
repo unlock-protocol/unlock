@@ -60,7 +60,7 @@ export function Recipes() {
   }, [embla, onSelect])
 
   return (
-    <section className="pt-6 pb-12 mx-auto max-w-7xl ">
+    <section className="pt-12 mx-auto max-w-7xl">
       <header className="flex items-center justify-between px-6">
         <h3 className="text-xl font-semibold sm:text-3xl"> Recipes </h3>
         <div className="flex items-center gap-4">
