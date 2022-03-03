@@ -9,7 +9,7 @@
     "@types/jest": "27.4.1",
     "@types/next": "8.0.7",
     "@types/react": "17.0.39",
-    "@types/styled-components": "5.1.21",
+    "@types/styled-components": "5.1.24",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
