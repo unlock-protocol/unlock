@@ -21,7 +21,7 @@ export function Public() {
         />
         <img
           aria-hidden
-          className="hidden pb-4 not-sr-only sm:block"
+          className="hidden max-w-sm pb-8 not-sr-only lg:max-w-none sm:block"
           alt="frame"
           src="/images/svg/desktop-frame-5.svg"
         />
