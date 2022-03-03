@@ -210,9 +210,13 @@ function RecipeSection() {
             {DEVELOPER_RECIPES.map(
               ({ Icon, title, description, href }, index) => (
                 <Link key={index} href={href}>
-                  <div className="block h-full p-6 space-y-4 border-2 border-transparent sm:w-72 glass-pane rounded-3xl ">
+                  <div className="block h-full p-6 space-y-4 border-2 border-transparent w-72 sm:w-72 glass-pane rounded-3xl ">
                     <div>
-                      <Icon className="fill-brand-ui-primary" size={40} />
+                      <Icon
+                        className="fill-brand-ui-primary"
+                        key={index}
+                        size={40}
+                      />
                     </div>
                     <div className="space-y-4">
                       <h3 className="text-lg font-medium"> {title}</h3>
