@@ -175,7 +175,7 @@ const Body = styled.div`
   line-height: 28px;
   font-size: 16px;
   overflow-wrap: break-word;
-  
+
   strong {
     font-weight: 800;
   }
