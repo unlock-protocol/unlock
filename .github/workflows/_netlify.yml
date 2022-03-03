@@ -4,20 +4,20 @@ on:
   workflow_call:
     inputs:
       service:
-        description: "The service/app to deploy"
+        description: 'The service/app to deploy'
         type: string
-        required: true    
+        required: true
       target-env:
-        description: "The target environment (staging/production)"
+        description: 'The target environment (staging/production)'
         type: string
-        required: true    
+        required: true
       is_forked:
-        description: "That PR is a fork (or not)"
+        description: 'That PR is a fork (or not)'
         type: string
-        required: false 
-        default: "false"
+        required: false
+        default: 'false'
       bypass_diff_check:
-        description: "Bypass the monorepo diff check"
+        description: 'Bypass the monorepo diff check'
         required: false
         type: string
     secrets:
@@ -43,14 +43,13 @@ on:
       BASE64_WEDLOCKS_PRIVATE_KEY:
         required: false
 
-
 jobs:
   check-changes:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.check_changes.outputs.changed }}
     steps:
-      - name: "Free up disk space"
+      - name: 'Free up disk space'
         run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
       - uses: actions/checkout@v3
         with:
@@ -66,7 +65,7 @@ jobs:
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
-  
+
   deploy-netlify:
     if: ${{ needs.check-changes.outputs.changed == 'changed' }}
     name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target-env }}
@@ -77,21 +76,9 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v3
-      - name: Cache docker
-        uses: actions/cache@v2
-        if: github.event_name != 'schedule'
-        env:
-          cache-name: docker-cache-${{ inputs.service }}
-        with:
-          path: ${{ runner.temp }}/docker_cache
-          key: ${{ env.cache-name }}-${{ github.run_number }}
-          restore-keys: |
-            ${{ env.cache-name }}-
-      - name: Restore docker
-        run: .github/actions/docker-cache/restore.sh ${{ runner.temp }}/docker_cache/cache.tar
-      - name: "Export secrets to env"
+      - name: 'Export secrets to env'
         id: filter_secrets
-        run: | 
+        run: |
           SERVICE_NAME="${{ inputs.service }}"
           UPCASE_SERVICE="${SERVICE_NAME^^}"
           PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
@@ -103,5 +90,3 @@ jobs:
           echo "${{ inputs.target-env }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
           # run command
           scripts/deploy.sh ${{ inputs.target-env }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
-      - name: Backup docker
-        run: .github/actions/docker-cache/backup.sh ${{ runner.temp }}/docker_cache/cache.tar
