@@ -30,6 +30,6 @@ module.exports = {
     isErc20: true, // indicates the test should deploy a test token
   }),
   NON_EXPIRING: Object.assign({}, publicLock, {
-    expirationDuration: constants.MAX_UINT, // indicates that the lock should not expired
+    expirationDuration: new BigNumber(constants.MAX_UINT), // indicates that the lock should not expired
   }),
 }
