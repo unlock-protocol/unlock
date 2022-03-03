@@ -6,6 +6,7 @@ publishDate: May 26, 2021
 description: A surprisingly easy and powerful tutorial on how to integrate Unlock into Webflow and monetize your content.
 image: /images/blog/webflow-integration/webflow-integration-hero.png
 ---
+
 ![Webflow](/images/blog/webflow-integration/webflow-home-hero.png)
 
 As a designer I love Webflow. It combines powerful design tools with no hassle CSS, responsive layouts and great cross-browser compatibility. All this lets the technical aspects fade into the background and lets me focus on the design and the user experience. On top of that it also offers a huge amount of flexibility and custom integrations.
@@ -59,19 +60,24 @@ The link and button that bring up the Unlock paywall are also special and they b
 ```html
 <button
   class="unlock-content locked"
-  onclick="window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()">
+  onclick="window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()"
+>
   Unlock!
 </button>
 ```
 
 **Link**
+
 ```html
 <a
   class="link"
-  onclick="window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()">
-    Become a member
-</a> to read and submit comments.
+  onclick="window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()"
+>
+  Become a member
+</a>
+to read and submit comments.
 ```
+
 ## 3. Paywall Integration
 
 You need to add the Paywall Script, Paywall Configuration, Event Handler and Unlock CSS to the Head Code in the Custom Code section of your site which you can access from the the the head section of your website. You can find all of the code that needs to go into the head here.
@@ -91,6 +97,7 @@ You need to add the Paywall Script, Paywall Configuration, Event Handler and Unl
 ```
 
 **Paywall Configuration**
+
 ```js
 <!-- Unlock Paywall Application Configuration -->
 <script>
@@ -110,12 +117,15 @@ You need to add the Paywall Script, Paywall Configuration, Event Handler and Unl
 ```
 
 **Events Handling**
+
 ```js
 <!-- Unlock Event Handler -->
 <script>
 window.addEventListener('unlockProtocol.status', function(event) {
   // We hide all .unlock-content elements
-  document.querySelector('.unlock-content').style.display = "none"
+  document.querySelectorAll('.unlock-content').forEach((element) => {
+    element.style.display = "none"
+  })
   // We show only the relevant element
   document.querySelectorAll(`.unlock-content.${event.detail.state}`).forEach((element) => {
   	element.style.display = "block"
@@ -133,6 +143,7 @@ window.addEventListener('unlockProtocol.transactionSent', function(event) {
 ```
 
 **CSS**
+
 ```js
 <!-- Styling the Unlock content to be initially hidden till the handler loads to prevent flickering -->
 <style>
