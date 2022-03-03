@@ -1,32 +1,125 @@
 ---
-title: Creators and their fans connect with Content Rooms
-subTitle: Online events that help build a subscription fanbase
+title: Unlock Launches “Bring Your Own NFT” Token Gating
+subTitle: Token gate anything using any ERC-721 NFT with Unlock Protocol
 authorName: Christopher Carfi
 publishDate: March 3, 2022
-description: Content Rooms is a platform for Creators to connect with and monetize their community powered by Unlock Protocol.
+description: Using Unlock, creators now can token gate websites, Discord servers, and more using any ERC-721 NFT. We call this “Bring Your Own NFT” and it’s amazing.
 image: /images/blog/bring-your-own-nft/byonft-header.png
 ---
 
-*Chris Cacace is the Founder and CEO of Content Rooms and presented at Unlock's [Developer Meetup](https://youtu.be/s7w_MDmqeUQ?t=412).*
+![bring-your-own-nft.png](/images/blog/bring-your-own-nft/byonft-header.png)
 
-[Content Rooms](https://www.contentrooms.com) is a platform for Creators to connect with and monetize their community. We enable Creators to build a subscription fanbase and host exclusive events that are protected using Unlock Protocol.
+One of the most common requests we’ve gotten over the past few months is “can I use an NFT from <name of an NFT collection> with Unlock?” Now the answer is a resounding “yes!”
 
-The level of access Creators have to their following makes fandom feel more like friendship. This social phenomena is changing media as quickly as decentralization is changing the web. As Creators gain bigger followings, it’s important that they maintain control of their relationships. We’re using Unlock to empower both Fans and Creators to build and benefit from the value they generate together.
+Prior to this release, Unlock locks for token gating content and other resources would only open for NFT access keys that were minted from that Unlock lock itself. Now, thanks to some amazing development magic from the Unlock Protocol dev team, creators can configure their Unlock locks to work with *any* ERC-721 NFT. (We call this “Bring Your Own NFT.”)
 
-## NFTs as stores of Value
+- Want to have a section of your website where the content is only visible to holders of a **World of Women** NFT? You can do that.
+- Want to give a special e-commerce discount to holders of **Boss Beauties**? You can do that as well.
+- Want to set up a forum that’s only available to folks who have a **Zed’s Run** NFT? Done.
+- Want to have special channel in your Discord server with snarky content that heckles folks who hold a **BAYC** NFT? We got you, fam. (I kid! I kid!)
 
-NFTs are unique because they can transfer and hold value at any level. On a Layer2 chain like Polygon, a single NFT Key can be minted from an Unlock Lock for a cost lower than a dollar (including gas!). Many are still not aware that NFTs can be bought and transferred at such low prices. Thanks to the KeyPurchaser function, we will make this pricing available for all users - whether they can “bridge Polygon” or not.
+Let’s take a deeper look.
 
-Over time, lower priced NFTs can grow in value, but only if the experience associated with it is memorable and the NFT keeps utility. Content Rooms’ goal is to help associate NFTs with incredible experiences and lifelong memories. Imagine if you bought one of twenty NFTs to a ContentRoom that Post Malone made early on in his career - and then he reopened the Room today. What might it be worth?
+### Implementation details for Bring Your Own NFT
 
-## Moving across the Web3 Landscape
+The core of this implementation is handled by transferring the question *“does this person have an NFT from this contract?”* from the Unlock lock itself to the contract that is associated with the NFT that is desired for access. 
 
-The most powerful part of building on top of Unlock is that ContentRoom Creators will automatically have the ability to move across physical, online, and metaverse realms. For example, the ticket you buy to a physical concert could immediately give you access to a ContentRoom. In the ContentRoom, the artist you’re going to see would engage with concertgoers in the weeks leading up to the performance. Then when the time comes, you could show up to the concert with your NFT ticket to enter the venue. If you can’t make it in person, you might pop into Decentraland instead to gain access to a livestream party we’re hosting in the metaverse.
+In order to do this, a small amount of configuration is required to configure what is known as a *hook* contract that maps the contract for the lock to the contract for the NFT collection. Then, we need to instruct the lock to use that mapping instead of its internal mechanism for checking for the possession of an NFT key.
 
-The sweetest part is that Content Rooms gains these abilities simply because we’re built on Unlock. We didn’t need to spend time integrating into Decentraland or Discord — thanks to the other members of the [UnlockDAO](https://unlock-protocol.com/blog/unlock-dao) who did. Creators and organizations using Content Rooms will benefit from their work and vice versa.
+### How a creator can configure a Bring Your Own NFT token gate with Unlock
 
-## Reducing the friction to purchase
+Here are the ingredients you’ll need in order to use an arbitrary ERC-721 NFT with an Unlock lock. You’ll need:
 
-In the short term, web3 is still really hard to understand for most people. It is Content Rooms’ goal to make it as simple as possible. We make minting an NFT on Content Rooms as simple as signing up and putting in your credit card. The immediate reward for buying the NFT is also very tangible - you get access to the Creator’s Room.
+- The contract address of the ERC-721 NFT you’d like to use as the key
+- A configured Unlock lock and its contract address
+- The contract address of the hook contract that maps the Unlock lock to the NFT contract
 
-Our vision is to make web3 friendly.
+**Note:** All three of the above contracts need to be on the **same** network (e.g. mainnet, Polygon, etc.) — this will not work if, say, the lock is on Polygon and the NFT you’d like to use as a key is on Ethererum mainnet.
+
+End-to-end, creating the lock and mapping it to another ERC-721 NFT should take about 5-10 minutes. 
+
+Here’s how to do it.
+
+### Walkthrough of Bring Your Own NFT on Unlock
+
+For this example, let’s say we wanted to use the [Unlock Protocol WordPress Plugin](https://unlock-protocol.com/blog/unlock-protocol-wordpress-plugin) to restrict content on a WordPress page to holders of a Speakeasy ([SPKZ](https://spkz.io/)) NFT. To do this, we’re going to create a lock on Polygon, and we will then map that lock to the SPKZ contract using a hook.
+
+First, let’s find the contract address for the SPKZ NFTs. A quick way to do this is to go onto an NFT marketplace like OpenSea, go to an individual NFT from the NFT collection you want to use for the key, and open up the details for that collection.
+
+![spkz-contract-min.png](/images/blog/bring-your-own-nft/spkz-contract-min.png)
+
+I see from the screenshot above that [this SPKZ NFT](https://opensea.io/assets/matic/0xaa9475f83f6fdb1416270447364f9bd70e41fb21/1410) is on Polygon, and the contract address is `0xaa9475f83f6fdb1416270447364f9bd70e41fb21`
+
+Great. Now, I’ll go to my Unlock Creator Dashboard and [create a lock](https://docs.unlock-protocol.com/unlock/creators/deploying-lock) on Polygon. 
+
+![spkz-lock-min.png](/images/blog/bring-your-own-nft/spkz-lock-min.png)
+
+<aside>
+💡 **Note:** Since this lock will be configured to look for the SPKZ NFT later in this blog post, the values of `Key Duration`, `Key Quantity`, and `Price` do not matter. They will be ignored and will not be used in this example.
+
+</aside>
+
+The contract address for the Unlock lock is `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826`.
+
+Ok! Two out of the three ingredients I need for my recipe are set. Next, I need to find and configure the hook contract to map the Unlock lock to the SPKZ NFT contract. I look up the Polygon hook contract address in the [Unlock documentation on hook contracts](https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract) and note the contract address for the Polygon hook contract for using an existing NFT is `0xf705b2dd649bbcb9418d08c1ff508a983f923516`. (**Note:** this address may change in the future. Always refer to the official documentation for the most current contract addresses for the hook contracts.)
+
+I now have the three ingredients I need:
+
+- Contract address for my Unlock lock: `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826`
+- Contract address for the NFT I want to use (SPKZ): `0xaa9475f83f6fdb1416270447364f9bd70e41fb21`
+- Contract address for the hook contract: `0xf705b2dd649bbcb9418d08c1ff508a983f923516`
+
+Now it’s time to wire things up.
+
+### Wiring the contracts up to the hook
+
+First, you’ll need to set up the mapping on the hook. The instructions below are from the Unlock documentation on [Using an Existing NFT](https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract#hooking-things-together), and are repeated here for readability.
+
+<aside>
+💡 Different hook contracts on different chains (e.g. mainnet) will have different URLs than this one. In the example we’re walking through here, the block explorer for the Polygon hook contract is at: [https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516](https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516).
+
+</aside>
+
+The documentation tells us...
+
+> *Using the block explorer for the mapping (hook) contract, click on the `Contract` and then the `Write Contract` buttons.*
+> 
+
+![write-contract.png](/images/blog/bring-your-own-nft/write-contract.png)
+
+> *Now, connect your wallet by clicking on the `Connect to Web3` button in the block explorer. It is important that you do that from an address that is a Lock Manager on your lock (the account you used to deploy the lock is a lock manager).
+Then, in the `createMapping` form, enter the following values:*
+> 
+- *`_lockAddress`: this is the address for your lock (you can get it from your Unlock Dashboard)*
+- *`_nftAddress`: that is the address for your pre-existing NFT contract (ERC721)*
+
+![hook-mapping.png](/images/blog/bring-your-own-nft/hook-mapping.png)
+
+> *Then click on `Write`. You will be prompted to send a transaction by your wallet. Validate and wait for this to have been executed.*
+> 
+
+At this point, the hook has wired up the lock to the NFT that you want to use. Now, we need to tell the lock to use the hook contract, instead of its own keys, to unlock content. 
+
+First, go to your lock’s block explorer by clicking the icon in the dashboard.
+
+![lock-block-explorer-min.png](/images/blog/bring-your-own-nft/lock-block-explorer-min.png)
+
+Again, we refer to the documentation on [Using an Existing NFT](https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract#hooking-things-together).
+
+> *Once on **your lock's** block explorer page, follow the same steps as above by clicking on `Contract` and then `Write as Proxy`. Proceed to connect your wallet.*
+> 
+
+> *Then, look for the `SetEventHooks` function*
+> 
+
+![hook-configration.jpg](/images/blog/bring-your-own-nft/hook-configration.jpg)
+
+> *Hooks are 3rd party contract that can be called when your lock itself is called. Here we are interested in changing the behavior of the validKey function, so you will enter the address of the hook contract for your network (see list above!) in the `_onValidKeyHook` field. Make sure you add `0x0000000000000000000000000000000000000000` in all the other fields to leave them unset.
+Click on `Write`, confirm the transaction in your wallet and you should be all set!*
+> 
+
+And now, our sample lock is wired up, via the hook contract, to token gate access only to wallets that hold a SPKZ NFT.
+
+### Wrapping up
+
+At this point, we are ready to go! In the example shown here, if we were to use our lock at `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826` on a WordPress website, a Discord server, or another location, the lock would check for the presence of a SPKZ key in the wallet of the site visitor and grant access to holders of a SPKZ token.
