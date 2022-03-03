@@ -206,7 +206,7 @@ function Desktop() {
         About
       </Link>
       <Button href={unlockConfig.appURL} variant="outlined-primary" as={Link}>
-        Connect Wallet
+        Dashboard
       </Button>
     </div>
   )
@@ -299,7 +299,7 @@ function Mobile() {
             </Link>
             <Link href="/about"> About us </Link>
             <Button as={Link} href={unlockConfig.appURL}>
-              Connect Wallet
+              Dashboard
             </Button>
           </div>
         </div>

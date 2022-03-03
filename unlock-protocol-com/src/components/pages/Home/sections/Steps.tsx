@@ -59,7 +59,7 @@ export function Steps() {
         <img
           alt="none"
           aria-hidden
-          className="hidden lg:block"
+          className="hidden xl:block"
           src="/images/svg/steps-bar.svg"
         />
         <ol className="flex flex-col flex-wrap gap-8 sm:justify-center sm:flex-row">
@@ -68,7 +68,7 @@ export function Steps() {
               className="px-8 py-12 space-y-6 sm:max-w-sm glass-pane rounded-3xl"
               key={index}
             >
-              <div className="flex justify-center">
+              <div className="flex items-center justify-center h-20">
                 <Icon className="fill-brand-ui-primary" />
               </div>
               <div className="pt-6 space-y-4">

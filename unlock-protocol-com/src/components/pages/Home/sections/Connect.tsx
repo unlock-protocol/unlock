@@ -42,7 +42,7 @@ export function Connect() {
             Get Started
           </Button>
           <Button as={Link} href={unlockConfig.appURL} variant="secondary">
-            Connect Wallet
+            Dashboard
           </Button>
         </div>
       </div>
