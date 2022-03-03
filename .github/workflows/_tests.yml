@@ -12,7 +12,6 @@ on:
           "locksmith",
           "packages/contracts",
           "packages/hardhat-plugin",
-          "packages/unlock-assets",
           "packages/unlock-js",
           "packages/paywall",
           "smart-contracts",
