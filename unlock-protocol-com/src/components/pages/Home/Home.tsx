@@ -89,7 +89,7 @@ export function Home() {
         <img
           alt="background"
           aria-hidden
-          className="absolute top-0 right-0 not-sr-only sm:hidden -z-10"
+          className="absolute right-0 not-sr-only top-20 sm:hidden -z-10"
           src="/images/svg/m-bg-6.svg"
         />
         <img

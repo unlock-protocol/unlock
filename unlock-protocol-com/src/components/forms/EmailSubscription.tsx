@@ -52,7 +52,7 @@ export function EmailSubscriptionForm({ portalId, formGuid }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="relative flex w-[350px] items-center p-1.5 rounded-3xl bg-brand-gray">
+      <div className="relative flex w-[320px] items-center p-1.5 rounded-3xl bg-brand-gray">
         <input
           type="email"
           placeholder="Type your email here"
