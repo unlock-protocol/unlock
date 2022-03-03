@@ -84,7 +84,7 @@ export function Home() {
           src="/images/svg/m-bg-5.svg"
         />
       </div>
-      <div className="relative px-6 pt-12 pb-24 overflow-hidden">
+      <div className="relative px-6 pt-12 pb-24 sm:overflow-hidden">
         <Community />
         <img
           alt="background"
