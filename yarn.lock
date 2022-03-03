@@ -11038,9 +11038,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.16.1":
-  version: 5.16.1
-  resolution: "@testing-library/jest-dom@npm:5.16.1"
+"@testing-library/jest-dom@npm:5.16.2":
+  version: 5.16.2
+  resolution: "@testing-library/jest-dom@npm:5.16.2"
   dependencies:
     "@babel/runtime": ^7.9.2
     "@types/testing-library__jest-dom": ^5.9.1
@@ -11051,7 +11051,7 @@ __metadata:
     dom-accessibility-api: ^0.5.6
     lodash: ^4.17.15
     redent: ^3.0.0
-  checksum: c5e3b5b021b50478137f96b85f8f6f86d2b25555d2501548982e093986f9c089c7b394449c30283ca3e28a50e845587403d9124ad1b516c55cf9af20a0fbbde4
+  checksum: e4569df67c4c4998d2c60c6cf00ce2f1ac10c9397e0970320728c8be8f4e2c17a0e801705ce8a7384f7f5629b598a6f58db91d4401dde02044f5625405ca0988
   languageName: node
   linkType: hard
 
@@ -12824,14 +12824,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/styled-components@npm:5.1.21":
-  version: 5.1.21
-  resolution: "@types/styled-components@npm:5.1.21"
+"@types/styled-components@npm:5.1.24":
+  version: 5.1.24
+  resolution: "@types/styled-components@npm:5.1.24"
   dependencies:
     "@types/hoist-non-react-statics": "*"
     "@types/react": "*"
     csstype: ^3.0.2
-  checksum: d53065f65052dd407516f1d37cc9bce33df6f4da31cbc7ef5a6b1e1fed6f14497456a13d809c065c15b963d73dc9b877613e3fb8dfa66074bfac60a94e561b04
+  checksum: 158c69085ad899622f558426c623d3052f7b521ede01c0fd342280c93ef2ac462a39c4c3b2374e7c7e2630fcc64dfcfd8f4446c8d4809cbac9a7b962a73357c0
   languageName: node
   linkType: hard
 
@@ -13013,29 +13013,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:5.10.2":
-  version: 5.10.2
-  resolution: "@typescript-eslint/eslint-plugin@npm:5.10.2"
-  dependencies:
-    "@typescript-eslint/scope-manager": 5.10.2
-    "@typescript-eslint/type-utils": 5.10.2
-    "@typescript-eslint/utils": 5.10.2
-    debug: ^4.3.2
-    functional-red-black-tree: ^1.0.1
-    ignore: ^5.1.8
-    regexpp: ^3.2.0
-    semver: ^7.3.5
-    tsutils: ^3.21.0
-  peerDependencies:
-    "@typescript-eslint/parser": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 460808a3c7d0390a7dcc1b2e717c2c4e303a31f9161fbc8c4ecc7bec076285d636d505d2f1ca9932c7a7989ea0fc3a78023be9f342bd8c4bdfe4a9842d0c053a
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:5.13.0":
   version: 5.13.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.13.0"
@@ -13110,23 +13087,6 @@ __metadata:
   peerDependencies:
     eslint: "*"
   checksum: 889d6e78f35ac637b1f31d802ba6c5c30c762a402ade341a8df70f447c39ba8ece0aafd9fbdf6bf8954c957daf69025907e0b9191b9c2e61ea056d2b01a8b3c5
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:5.10.2":
-  version: 5.10.2
-  resolution: "@typescript-eslint/parser@npm:5.10.2"
-  dependencies:
-    "@typescript-eslint/scope-manager": 5.10.2
-    "@typescript-eslint/types": 5.10.2
-    "@typescript-eslint/typescript-estree": 5.10.2
-    debug: ^4.3.2
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: c83e3afee090e9cc830d6c59cd87681a83ae95f2daa848040f2e67ef34f87c5ec707a571b3ccb31b67adc0447b22b62c048a6cb088e661801dacb9c2cf070a9c
   languageName: node
   linkType: hard
 
@@ -13228,22 +13188,6 @@ __metadata:
     "@typescript-eslint/types": 5.8.1
     "@typescript-eslint/visitor-keys": 5.8.1
   checksum: d9254018d723aff32fc512b7292737b154367198ab58e0faf814b4ce77d4de20552ed1678f2639b35e480eb5594eb9d5f1d34360885f5e4d80ca8e5a9ccf666c
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/type-utils@npm:5.10.2":
-  version: 5.10.2
-  resolution: "@typescript-eslint/type-utils@npm:5.10.2"
-  dependencies:
-    "@typescript-eslint/utils": 5.10.2
-    debug: ^4.3.2
-    tsutils: ^3.21.0
-  peerDependencies:
-    eslint: "*"
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 7732c826ef6c798af0f45b85f0389688e614de16c7c2c7e446a664787df360242cf2bc9d68d6ce1993f1bfc289b5d6a75a400fc968b7ded187c30c40f978de52
   languageName: node
   linkType: hard
 
@@ -13388,22 +13332,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:5.10.2, @typescript-eslint/utils@npm:^5.10.0":
-  version: 5.10.2
-  resolution: "@typescript-eslint/utils@npm:5.10.2"
-  dependencies:
-    "@types/json-schema": ^7.0.9
-    "@typescript-eslint/scope-manager": 5.10.2
-    "@typescript-eslint/types": 5.10.2
-    "@typescript-eslint/typescript-estree": 5.10.2
-    eslint-scope: ^5.1.1
-    eslint-utils: ^3.0.0
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  checksum: d0dde3066f52405dffc2cbccd43d2aa2d9336510f178aa43812d616c951ea45f83693e2f6a88e3abfc94e2cc5f9eb3f2be9221a38848fe70aaffc294794c9d53
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/utils@npm:5.13.0":
   version: 5.13.0
   resolution: "@typescript-eslint/utils@npm:5.13.0"
@@ -13417,6 +13345,22 @@ __metadata:
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   checksum: cb93cddc83bd5f9cee7fc72ab64c509b285392a005fb1315522374991f18a1cb8f233ee0d1e828cc18570c3fe27e81cc28471c36142284bd39351b8a3f8a83bd
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/utils@npm:^5.10.0":
+  version: 5.10.2
+  resolution: "@typescript-eslint/utils@npm:5.10.2"
+  dependencies:
+    "@types/json-schema": ^7.0.9
+    "@typescript-eslint/scope-manager": 5.10.2
+    "@typescript-eslint/types": 5.10.2
+    "@typescript-eslint/typescript-estree": 5.10.2
+    eslint-scope: ^5.1.1
+    eslint-utils: ^3.0.0
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: d0dde3066f52405dffc2cbccd43d2aa2d9336510f178aa43812d616c951ea45f83693e2f6a88e3abfc94e2cc5f9eb3f2be9221a38848fe70aaffc294794c9d53
   languageName: node
   linkType: hard
 
@@ -13541,8 +13485,8 @@ __metadata:
   resolution: "@unlock-protocol/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@babel/core": 7.17.5
-    "@typescript-eslint/eslint-plugin": 5.10.2
-    "@typescript-eslint/parser": 5.10.2
+    "@typescript-eslint/eslint-plugin": 5.13.0
+    "@typescript-eslint/parser": 5.13.0
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.1
     eslint: 8.8.0
@@ -13645,7 +13589,7 @@ __metadata:
     color-scheme: 1.0.1
     cors: 2.8.5
     cross-fetch: 3.1.5
-    dotenv: 15.0.0
+    dotenv: 16.0.0
     eslint: 8.10.0
     eslint-config-standard: 16.0.3
     eth-sig-util: 2.5.4
@@ -13664,7 +13608,7 @@ __metadata:
     msw: 0.38.1
     multer: 1.4.4
     multer-s3: 2.10.0
-    nock: 13.2.2
+    nock: 13.2.4
     node-abort-controller: 3.0.1
     node-cron: 3.0.0
     node-mocks-http: 1.11.0
@@ -13716,7 +13660,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/react": 17.0.39
     "@types/react-dom": 17.0.12
-    "@types/styled-components": 5.1.21
+    "@types/styled-components": 5.1.24
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -13725,9 +13669,9 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 10.2.4
-    dotenv: 15.0.0
+    dotenv: 16.0.0
     eslint: 8.10.0
-    lint-staged: 12.3.3
+    lint-staged: 12.3.4
     next: 12.1.0
     nodemon: 2.0.15
     path-match: 1.2.4
@@ -13758,7 +13702,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.6
     css-loader: 6.5.1
-    dotenv: 15.0.0
+    dotenv: 16.0.0
     eslint: 8.8.0
     jest: 27.5.1
     jest-fetch-mock: 3.0.3
@@ -13777,7 +13721,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/purchase-url-builder@workspace:packages/paywall-config"
   dependencies:
-    "@testing-library/jest-dom": 5.16.1
+    "@testing-library/jest-dom": 5.16.2
     "@testing-library/react": 12.1.3
     "@testing-library/user-event": 13.5.0
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -13867,7 +13811,7 @@ __metadata:
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    lint-staged: 12.3.3
+    lint-staged: 12.3.4
     prettier: 2.5.1
     prompt: 1.2.2
     solhint: 3.3.7
@@ -13888,7 +13832,7 @@ __metadata:
     eslint: 8.8.0
     fs-extra: 10.0.1
     handlebars: 4.7.7
-    lint-staged: 12.3.3
+    lint-staged: 12.3.4
     yargs: 17.3.1
   languageName: unknown
   linkType: soft
@@ -13936,7 +13880,7 @@ __metadata:
     react-icons: ^4.3.1
     storybook-builder-vite: 0.1.17
     tailwind-merge: ^1.2.0
-    tailwindcss: 3.0.18
+    tailwindcss: 3.0.23
     tsup: ^5.11.13
     typescript: 4.5.4
     vite: 2.7.13
@@ -14023,7 +13967,7 @@ __metadata:
     "@storybook/react": 6.4.17
     "@stripe/react-stripe-js": 1.7.0
     "@stripe/stripe-js": 1.24.0
-    "@testing-library/jest-dom": 5.16.1
+    "@testing-library/jest-dom": 5.16.2
     "@testing-library/react": 12.1.3
     "@testing-library/react-hooks": 7.0.2
     "@types/eth-sig-util": 2.1.1
@@ -14034,7 +13978,7 @@ __metadata:
     "@types/react": 17.0.39
     "@types/react-gtm-module": 2.0.1
     "@types/storybook__react": 4.0.2
-    "@types/styled-components": 5.1.21
+    "@types/styled-components": 5.1.24
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -14053,7 +13997,7 @@ __metadata:
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
-    dotenv: 15.0.0
+    dotenv: 16.0.0
     eslint: 8.10.0
     eth-sig-util: 2.5.4
     ethereumjs-utils: 5.2.5
@@ -14081,7 +14025,7 @@ __metadata:
     react-test-renderer: 17.0.2
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.3
-    tailwindcss: 3.0.18
+    tailwindcss: 3.0.23
     ts-jest: 27.1.3
     typescript: 4.6.2
     validator: 13.7.0
@@ -14153,7 +14097,7 @@ __metadata:
     eslint: 8.8.0
     hardhat: 2.8.2
     jest: 27.5.1
-    lint-staged: 12.3.3
+    lint-staged: 12.3.4
     prettier: 2.5.1
     ts-jest: 27.1.3
     typescript: 4.5.5
@@ -14169,12 +14113,12 @@ __metadata:
     "@babel/core": 7.17.5
     "@headlessui/react": ^1.4.3
     "@radix-ui/react-avatar": ^0.1.3
-    "@testing-library/jest-dom": 5.16.1
+    "@testing-library/jest-dom": 5.16.2
     "@testing-library/react": 12.1.3
     "@types/jest": 27.4.1
     "@types/next": 8.0.7
     "@types/react": 17.0.39
-    "@types/styled-components": 5.1.21
+    "@types/styled-components": 5.1.24
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -14188,7 +14132,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.6
     babel-preset-react-app: 10.0.1
-    dotenv: 15.0.0
+    dotenv: 16.0.0
     embla-carousel-react: ^6.2.0
     eslint: 8.8.0
     eslint-config-next: 12.0.10
@@ -14196,11 +14140,13 @@ __metadata:
     gray-matter: ^4.0.3
     jest: 27.5.1
     jest-styled-components: 7.0.8
-    lint-staged: 12.3.3
-    next: ^12.1.0
+    lint-staged: 12.3.4
+    next: 12.1.0
     next-seo: ^5.0.0
+    path-match: 1.2.4
     postcss: ^8.4.5
     prettier: 2.5.1
+    prop-types: 15.8.1
     raw-loader: 4.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -14230,10 +14176,10 @@ __metadata:
     babel-eslint: 10.1.0
     babel-jest: 27.5.1
     babel-loader: 8.2.3
-    dotenv: 15.0.0
+    dotenv: 16.0.0
     eslint: 8.10.0
     jest: 27.5.1
-    lint-staged: 12.3.3
+    lint-staged: 12.3.4
     node-forge: 1.2.1
     nodemailer: 6.7.2
     nodemon: 2.0.15
@@ -22525,10 +22471,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:15.0.0":
-  version: 15.0.0
-  resolution: "dotenv@npm:15.0.0"
-  checksum: be5d852b2ad1708780e7038481c0687ce4bb9edf354d439872511e966a5f28c083f296e1d1c182256d695bfdd67e320382eb3b0f2e9d83efa3615cd1757257ab
+"dotenv@npm:16.0.0":
+  version: 16.0.0
+  resolution: "dotenv@npm:16.0.0"
+  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
   languageName: node
   linkType: hard
 
@@ -33973,9 +33919,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:12.3.3":
-  version: 12.3.3
-  resolution: "lint-staged@npm:12.3.3"
+"lint-staged@npm:12.3.4":
+  version: 12.3.4
+  resolution: "lint-staged@npm:12.3.4"
   dependencies:
     cli-truncate: ^3.1.0
     colorette: ^2.0.16
@@ -33992,7 +33938,7 @@ fsevents@~2.1.1:
     yaml: ^1.10.2
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: a9147eb5def6345622d1b772d5920b1282808738abf53e6034d8da2d21d6baf80135ea22f799bf4092867a3dba13cd875493b8e32e47f3b4574e4e8871a0aa8e
+  checksum: 4e0b4b9da4183a0daeab35d41e4d243fb1270a39db997efa0c3745fa148a7a4b8b723a51cb757595fc8bb118796ca1465e67aede72f25e9ea48165aec36cec3b
   languageName: node
   linkType: hard
 
@@ -36791,7 +36737,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"next@npm:12.1.0, next@npm:^12.1.0":
+"next@npm:12.1.0":
   version: 12.1.0
   resolution: "next@npm:12.1.0"
   dependencies:
@@ -36879,15 +36825,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nock@npm:13.2.2":
-  version: 13.2.2
-  resolution: "nock@npm:13.2.2"
+"nock@npm:13.2.4":
+  version: 13.2.4
+  resolution: "nock@npm:13.2.4"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     lodash.set: ^4.3.2
     propagate: ^2.0.0
-  checksum: cc1bf6e4bbf2fb0a540aa7d5f82788a6fb2490034083ed89242becc0ff1bfb391bfd3c7a7a9c0f24dec9c085426f66441765756b279a7dd608e4630586f9cb0d
+  checksum: 2750a82ea22eebd8203eb1d7669ae09c3daae1fd573026372bad2515adad48d723a804f647bd45d7a499eb3a9a632560da406bde05bca9df762d3027db9099b5
   languageName: node
   linkType: hard
 
@@ -42916,7 +42862,7 @@ resolve@1.17.0:
   languageName: node
   linkType: hard
 
-"resolve@^1.0.0, resolve@^1.21.0":
+resolve@^1.0.0:
   version: 1.21.0
   resolution: "resolve@npm:1.21.0"
   dependencies:
@@ -43006,7 +42952,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.0.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.21.0#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.0.0#~builtin<compat/resolve>":
   version: 1.21.0
   resolution: "resolve@patch:resolve@npm%3A1.21.0#~builtin<compat/resolve>::version=1.21.0&hash=07638b"
   dependencies:
@@ -46204,41 +46150,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.0.18":
-  version: 3.0.18
-  resolution: "tailwindcss@npm:3.0.18"
-  dependencies:
-    arg: ^5.0.1
-    chalk: ^4.1.2
-    chokidar: ^3.5.3
-    color-name: ^1.1.4
-    cosmiconfig: ^7.0.1
-    detective: ^5.2.0
-    didyoumean: ^1.2.2
-    dlv: ^1.1.3
-    fast-glob: ^3.2.11
-    glob-parent: ^6.0.2
-    is-glob: ^4.0.3
-    normalize-path: ^3.0.0
-    object-hash: ^2.2.0
-    postcss-js: ^4.0.0
-    postcss-load-config: ^3.1.0
-    postcss-nested: 5.0.6
-    postcss-selector-parser: ^6.0.9
-    postcss-value-parser: ^4.2.0
-    quick-lru: ^5.1.1
-    resolve: ^1.21.0
-  peerDependencies:
-    autoprefixer: ^10.0.2
-    postcss: ^8.0.9
-  bin:
-    tailwind: lib/cli.js
-    tailwindcss: lib/cli.js
-  checksum: 3c56692eee2d2bb5e5328429c3c2a951716e7af76bc161c3f2d2efa1bfc5b3963967b64db962cea5fdcc3bc4ae1948c305dd7d9c1dc80603de85b785997d567c
-  languageName: node
-  linkType: hard
-
-"tailwindcss@npm:^3.0.18":
+"tailwindcss@npm:3.0.23, tailwindcss@npm:^3.0.18":
   version: 3.0.23
   resolution: "tailwindcss@npm:3.0.23"
   dependencies:
@@ -48366,13 +48278,13 @@ typescript@^3.8.3:
   resolution: "unlock@workspace:."
   dependencies:
     "@babel/core": 7.17.5
-    "@typescript-eslint/eslint-plugin": 5.10.2
-    "@typescript-eslint/parser": 5.10.2
+    "@typescript-eslint/eslint-plugin": 5.13.0
+    "@typescript-eslint/parser": 5.13.0
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.1
     eslint: 8.8.0
     husky: 7.0.4
-    lint-staged: 12.3.3
+    lint-staged: 12.3.4
     prettier: 2.5.1
     typescript: 4.5.5
   languageName: unknown
