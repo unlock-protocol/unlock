@@ -9,7 +9,7 @@ image: /images/blog/bring-your-own-nft/byonft-header.png
 
 ![bring-your-own-nft.png](/images/blog/bring-your-own-nft/byonft-header.png)
 
-One of the most common requests we’ve gotten over the past few months is “can I use an NFT from <name of an NFT collection> with Unlock?” Now the answer is a resounding “yes!”
+One of the most common requests we’ve received over the past few months is “can I use an NFT from <name of an NFT collection> with Unlock?” Now the answer is a resounding “yes!”
 
 Prior to this release, Unlock locks for token gating content and other resources would only open for NFT access keys that were minted from that Unlock lock itself. Now, thanks to some amazing development magic from the Unlock Protocol dev team, creators can configure their Unlock locks to work with *any* ERC-721 NFT. (We call this “Bring Your Own NFT.”)
 
