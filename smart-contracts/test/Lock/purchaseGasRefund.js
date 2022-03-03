@@ -56,7 +56,7 @@ contract('Lock / GasRefund', (accounts) => {
 
         it('get set properly', async () => {
           await lock.setGasRefundValue(gasRefundAmount)
-          assert.equal((await lock.gasRefundValue()).toNumber(), 0)
+          assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
         })
 
         it('can not be set if caller is not lock manager', async () => {
