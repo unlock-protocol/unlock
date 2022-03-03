@@ -50,6 +50,10 @@ contract('Lock / GasRefund', (accounts) => {
       })
 
       describe('gas refund value', () => {
+        it('default to zero', async () => {
+          assert.equal((await lock.gasRefundValue()).toNumber(), 0)
+        })
+
         it('get set properly', async () => {
           await lock.setGasRefundValue(gasRefundAmount)
           assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
