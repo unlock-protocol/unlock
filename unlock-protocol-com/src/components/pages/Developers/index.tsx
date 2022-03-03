@@ -130,23 +130,23 @@ export interface Props {}
 
 export function Developers({}: Props) {
   return (
-    <div className="p-6 mx-auto max-w-7xl">
-      <div className="space-y-4">
-        <header className="space-y-2">
-          <h1 className="text-3xl font-bold sm:text-4xl">
-            Unlock for Developers
-          </h1>
-          <p className="text-lg text-brand-gray sm:text-xl">
-            Build applications with customizable membership NFTs.
-          </p>
-        </header>
-        <main className="py-4 space-y-12">
-          <HowUnlockWorks />
-          <RecipeSection />
-          <CommunitySection />
-          <GrantSection />
-          <GotStuckSection />
-        </main>
+    <div className="p-6">
+      <div className="mx-auto  max-w-7xl">
+        <div className="space-y-4">
+          <header className="space-y-2">
+            <h1 className="heading">Developers</h1>
+            <p className="sub-heading">
+              Build applications with customizable membership NFTs.
+            </p>
+          </header>
+          <main className="py-4 space-y-12">
+            <HowUnlockWorks />
+            <RecipeSection />
+            <CommunitySection />
+            <GrantSection />
+            <GotStuckSection />
+          </main>
+        </div>
       </div>
     </div>
   )
@@ -210,9 +210,13 @@ function RecipeSection() {
             {DEVELOPER_RECIPES.map(
               ({ Icon, title, description, href }, index) => (
                 <Link key={index} href={href}>
-                  <div className="block h-full p-6 space-y-4 border-2 border-transparent sm:w-72 glass-pane rounded-3xl ">
+                  <div className="block h-full p-6 space-y-4 border-2 border-transparent w-72 sm:w-72 glass-pane rounded-3xl ">
                     <div>
-                      <Icon className="fill-brand-ui-primary" size={40} />
+                      <Icon
+                        className="fill-brand-ui-primary"
+                        key={index}
+                        size={40}
+                      />
                     </div>
                     <div className="space-y-4">
                       <h3 className="text-lg font-medium"> {title}</h3>

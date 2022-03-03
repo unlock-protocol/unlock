@@ -11,12 +11,18 @@ import {
   FiArrowLeft as ArrowLeftIcon,
   FiArrowRight as ArrowRightIcon,
 } from 'react-icons/fi'
+import { SiWebflow } from 'react-icons/si'
 
 export const UNLOCK_RECIPES = [
   {
     Icon: WordpressIcon,
     text: 'How to use the Ʉnlock WordPress plugin',
     href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
+  },
+  {
+    Icon: SiWebflow,
+    text: 'How to use the Ʉnlock Webflow plugin',
+    href: '/blog/webflow-integration',
   },
   {
     Icon: EthereumIcon,
@@ -60,7 +66,7 @@ export function Recipes() {
   }, [embla, onSelect])
 
   return (
-    <section className="pt-6 pb-12 mx-auto max-w-7xl ">
+    <section className="pt-12 mx-auto max-w-7xl">
       <header className="flex items-center justify-between px-6">
         <h3 className="text-xl font-semibold sm:text-3xl"> Recipes </h3>
         <div className="flex items-center gap-4">

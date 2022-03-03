@@ -206,7 +206,7 @@ function Desktop() {
         About
       </Link>
       <Button href={unlockConfig.appURL} variant="outlined-primary" as={Link}>
-        Connect Wallet
+        Dashboard
       </Button>
     </div>
   )
@@ -299,7 +299,7 @@ function Mobile() {
             </Link>
             <Link href="/about"> About us </Link>
             <Button as={Link} href={unlockConfig.appURL}>
-              Connect Wallet
+              Dashboard
             </Button>
           </div>
         </div>
@@ -310,11 +310,14 @@ function Mobile() {
 
 export function Navigation() {
   return (
-    <Disclosure as="nav" className="sticky top-0 z-10 w-full bg-brand-primary">
+    <Disclosure
+      as="nav"
+      className="sticky top-0 z-10 w-full py-4 sm:px-6 bg-brand-primary"
+    >
       {({ open }) => (
         <>
-          <div className="px-6 py-4 mx-auto max-w-7xl ">
-            <div className="flex items-center justify-between">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex items-center justify-between px-6 sm:px-0">
               <Link href="/">
                 <UnlockTextIcon />
               </Link>

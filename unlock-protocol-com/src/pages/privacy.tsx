@@ -16,15 +16,17 @@ const PrivacyPage: NextPage<Props> = ({ content }) => {
         description={routes.privacy.seo.description}
         openGraph={routes.privacy.seo.openGraph}
       />
-      <div className="max-w-7xl	 p-6 mx-auto">
-        <article>
-          <main
-            className="prose prose-slate max-w-none"
-            dangerouslySetInnerHTML={{
-              __html: content,
-            }}
-          ></main>
-        </article>
+      <div className="p-6">
+        <div className="mx-auto max-w-7xl">
+          <article>
+            <main
+              className="prose prose-slate max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: content,
+              }}
+            ></main>
+          </article>
+        </div>
       </div>
     </Layout>
   )

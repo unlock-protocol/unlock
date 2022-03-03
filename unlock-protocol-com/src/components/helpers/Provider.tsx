@@ -22,7 +22,7 @@ declare global {
 }
 
 export function Provider({ children }: Props) {
-  const [enableAnalytics] = useLocalStorage('enable_analytics', false)
+  const [enableAnalytics] = useLocalStorage('enable_analytics', null)
   const [isMember, setIsMember] = useState('is_member')
   const router = useRouter()
 

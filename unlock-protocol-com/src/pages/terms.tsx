@@ -16,15 +16,17 @@ const TermsPage: NextPage<Props> = ({ content }) => {
         description={routes.terms.seo.description}
         openGraph={routes.terms.seo.openGraph}
       />
-      <div className="max-w-7xl	 p-6 mx-auto">
-        <article>
-          <main
-            className="prose prose-slate max-w-none"
-            dangerouslySetInnerHTML={{
-              __html: content,
-            }}
-          ></main>
-        </article>
+      <div className="p-6">
+        <div className="mx-auto max-w-7xl">
+          <article>
+            <main
+              className="prose prose-slate max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: content,
+              }}
+            ></main>
+          </article>
+        </div>
       </div>
     </Layout>
   )
