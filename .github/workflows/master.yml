@@ -9,6 +9,13 @@ jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
 
+  backup-docker:
+    runs-on: ubuntu-latest
+    needs: run-all-tests
+    steps:
+      - name: Backup docker
+        run: .github/actions/docker-cache/backup.sh ${{ runner.temp }}/docker_cache/cache.tar
+
   deploy-locksmith-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     needs: run-all-tests
