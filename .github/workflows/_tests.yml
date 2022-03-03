@@ -41,6 +41,7 @@ jobs:
       matrix:
         target: ${{fromJson( inputs.changed )}}
     steps:
+      - uses: actions/checkout@v3
       - name: Running ${{ matrix.target }} tests
         run: ./scripts/tests.sh ${{ matrix.target }}
         shell: bash
