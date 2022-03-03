@@ -8,7 +8,7 @@ body {
 
 @layer utilities {
   .heading {
-    @apply text-3xl font-semibold md:text-4xl lg:text-6xl;
+    @apply text-3xl font-semibold md:text-4xl lg:text-5xl;
   }
   .sub-heading {
     @apply text-xl sm:text-2xl text-brand-gray max-w-prose;

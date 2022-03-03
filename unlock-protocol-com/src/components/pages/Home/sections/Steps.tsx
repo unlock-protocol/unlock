@@ -36,8 +36,20 @@ const UNLOCK_STEPS = [
 
 export function Steps() {
   return (
-    <section className="px-6 py-12 mx-auto space-y-6 max-w-7xl	 sm:py-32">
-      <div className="grid justify-center w-full pb-8 space-y-4 text-center">
+    <section className="px-6 py-12 mx-auto space-y-6 max-w-7xl sm:py-32">
+      <div className="grid justify-center w-full pb-8 space-y-4 text-center justify-items-center">
+        <img
+          aria-hidden
+          className="pb-2 not-sr-only sm:hidden"
+          alt="frame"
+          src="/images/svg/mobile-frame.svg"
+        />
+        <img
+          aria-hidden
+          className="hidden pb-2 not-sr-only sm:block"
+          alt="frame"
+          src="/images/svg/desktop-frame-2.svg"
+        />
         <h1 className="heading">How Unlock works</h1>
         <p className="text-xl sm:text-2xl text-brand-gray">
           Create your own membership program without code or chaos.

@@ -53,7 +53,24 @@ app.get('/members', membersOnly(), (req, res) => res.send('Secret stuff! <a href
 export function Developer() {
   return (
     <section className="flex flex-col justify-center p-6 mx-auto max-w-7xl sm:justify-between gap-y-6 gap-x-16 sm:items-center sm:flex-row">
+      <div className="sm:hidden">
+        <img
+          aria-hidden
+          className="pb-2 not-sr-only"
+          alt="frame"
+          src="/images/svg/mobile-frame.svg"
+        />
+      </div>
+
       <div className="flex flex-col max-w-lg gap-4 sm:gap-6">
+        <div className="hidden sm:block">
+          <img
+            aria-hidden
+            className="hidden pb-4 not-sr-only sm:block"
+            alt="frame"
+            src="/images/svg/desktop-frame-6.svg"
+          />
+        </div>
         <header>
           <h1 className="heading">Developers, we have you covered.</h1>
         </header>

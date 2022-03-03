@@ -10,7 +10,7 @@ export const UNLOCK_MEMBERSHIP_BENEFITS = [
 
 export function MembershipExplained() {
   return (
-    <section className="grid items-center justify-center gap-6 p-6 mx-auto max-w-7xl	 md:grid-cols-2 sm:flex-row sm:gap-x-16">
+    <section className="grid items-center justify-center gap-6 p-6 mx-auto max-w-7xl md:grid-cols-2 sm:flex-row sm:gap-x-16">
       <div className="w-full">
         <video muted autoPlay loop className="object-fit pointer-none">
           <source src="/videos/marketing/membership.webm" type="video/webm" />
@@ -18,6 +18,18 @@ export function MembershipExplained() {
         </video>
       </div>
       <div className="space-y-6 ">
+        <img
+          aria-hidden
+          className="not-sr-only sm:hidden"
+          alt="frame"
+          src="/images/svg/mobile-frame.svg"
+        />
+        <img
+          aria-hidden
+          className="hidden pb-2 not-sr-only sm:block"
+          alt="frame"
+          src="/images/svg/desktop-frame-2.svg"
+        />
         <header className="space-y-4 break-words ">
           <h1 className="heading">
             Connecting humans through NFT-based memberships

@@ -84,6 +84,18 @@ export function Projects() {
   return (
     <section className="py-12 mx-auto max-w-7xl sm:py-24">
       <header className="px-6">
+        <img
+          aria-hidden
+          className="pb-8 not-sr-only sm:hidden"
+          alt="frame"
+          src="/images/svg/mobile-frame.svg"
+        />
+        <img
+          aria-hidden
+          className="hidden max-w-lg pb-8 not-sr-only lg:max-w-none sm:block"
+          alt="frame"
+          src="/images/svg/desktop-frame-5.svg"
+        />
         <div className="flex items-center justify-between pl-1">
           <h1 className="heading">Explore Active Projects</h1>
           <div className="hidden gap-2 sm:flex">

@@ -13,8 +13,20 @@ export function GetStarted() {
   return (
     <section
       id="get-started"
-      className="p-6 mx-auto space-y-6 max-w-7xl	 sm:py-16"
+      className="p-6 mx-auto space-y-6 max-w-7xl sm:py-16"
     >
+      <img
+        aria-hidden
+        className="pb-2 not-sr-only sm:hidden"
+        alt="frame"
+        src="/images/svg/mobile-frame.svg"
+      />
+      <img
+        aria-hidden
+        className="hidden pb-2 not-sr-only sm:block"
+        alt="frame"
+        src="/images/svg/desktop-frame-3.svg"
+      />
       <header className="w-full space-y-4 break-words md:w-3/4 lg:w-1/2">
         <h1 className="heading">Try it yourself</h1>
         <p className="text-xl sm:text-2xl text-brand-gray">
