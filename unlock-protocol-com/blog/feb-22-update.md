@@ -17,11 +17,11 @@ Welcome to this month's product updates from Unlock! The community delivered a n
 - **Support for change of maximum number of keys on dashboard** — Creators can now change the maximum number of keys for their existing locks right from the dashboard.
 
 ## Dev tool updates
-- **Websub** — 
-- **Plugin hardhat for Unlock** —
+- **Unlock WebSub support** — The WebSub W3C standard enables publish/subscribe on any kind of HTTP resource. For example, with WebSub, applications can subscribe to Unlock changes, be notified when new locks are deployed, and be notified when new keys are created.
+- **Plugin hardhat for Unlock** — 
 
 ## Integrations
-- **Refactored Cloudflare worker** — 
+- **Refactored Cloudflare worker** — We made improvements to Unlock's CloudFlare worker. 
 
 
 Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.com/invite/Ah6ZEJyTDp).
