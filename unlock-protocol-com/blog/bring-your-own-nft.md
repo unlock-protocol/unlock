@@ -34,7 +34,7 @@ Here are the ingredients you’ll need in order to use an arbitrary ERC-721 NFT 
 - A configured Unlock lock and its contract address
 - The contract address of the hook contract that maps the Unlock lock to the NFT contract
 
-**Note:** All three of the above contracts need to be on the **same** network (e.g. mainnet, Polygon, etc.) — this will not work if, say, the lock is on Polygon and the NFT you’d like to use as a key is on Ethererum mainnet.
+**Note:** All three of the above contracts need to be on the **same** network (e.g. mainnet, Polygon, etc.) — this will not work if, say, the lock is on Polygon and the NFT you’d like to use as a key is on Ethereum mainnet.
 
 End-to-end, creating the lock and mapping it to another ERC-721 NFT should take about 5-10 minutes. 
 
