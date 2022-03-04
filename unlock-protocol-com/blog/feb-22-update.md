@@ -12,7 +12,7 @@ image: /images/blog/feb-22-update/feb-22-banner.png
 Welcome to the February 2022 product updates from Unlock! The team delivered a number of new features this month that connect Unlock even more easily with standards and partners across the web3 ecosystem. This month's new capabilities include:
 
 ## Major updates to the Unlock checkout process
-- **Bring Your Own NFT** — You can now [token gate anything using any ERC-721 NFT with Unlock Protocol](https://unlock-protocol.com/blog/bring-your-own-nft).
+- **Bring Your Own NFT** — You can now [token gate anything using any ERC-721 NFT with Unlock Protocol](https://unlock-protocol.com/blog/bring-your-own-nft)
 - **Sign In With Ethereum** — Unlock’s front-end now provides a “[Sign In With Ethereum](https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum)” endpoint that can be used by a third-party application to easily identify a user’s Ethereum address
 
 ## Dashboard updates
