@@ -25,7 +25,7 @@ contract MixinPurchase is
   event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
   // default to 0 
-  uint256 private _gasRefundValue = 0; 
+  uint256 private _gasRefundValue;
 
   /**
   * @dev Set the value/price to be refunded to the sender on purchase
