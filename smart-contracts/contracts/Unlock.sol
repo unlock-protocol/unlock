@@ -255,7 +255,7 @@ contract Unlock is
     bytes memory data
   ) public returns(address)
   {
-    address newLock = createUpgradeableLockAtVersion(data, currentVersion);
+    address newLock = createUpgradeableLockAtVersion(data, publicLockLatestVersion);
     return newLock;
   }
 
