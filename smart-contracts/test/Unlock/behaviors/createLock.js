@@ -1,4 +1,3 @@
-const { reverts } = require('truffle-assertions')
 const createLockHash = require('../../helpers/createLockCalldata')
 
 const PublicLock = artifacts.require('PublicLock')
