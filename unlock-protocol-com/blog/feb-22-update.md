@@ -7,7 +7,7 @@ description: Unlock Protocol new features for February 2022, including Bring You
 image: /images/blog/feb-22-update/feb-22-banner.png
 ---
 
-/images/blog/feb-22-update/feb-22-banner.png
+![feb-22-banner.png](/images/blog/feb-22-update/feb-22-banner.png)
 
 Welcome to the February 2022 product updates from Unlock! The team delivered a number of new features this month that connect Unlock even more easily with standards and partners across the web3 ecosystem. This month's new capabilities include:
 
