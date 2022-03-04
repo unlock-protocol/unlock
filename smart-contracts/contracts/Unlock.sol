@@ -255,20 +255,7 @@ contract Unlock is
     bytes memory data
   ) public returns(address)
   {
-    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
-    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
-
-    // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockAddress, proxyAdminAddress, data);
-    address payable newLock = payable(address(proxy));
-
-    // assign the new Lock
-    locks[newLock] = LockBalances({
-      deployed: true, totalSales: 0, yieldedDiscountTokens: 0
-    });
-
-    // trigger event
-    emit NewLock(msg.sender, newLock);
+    address newLock = createUpgradeableLockAtVersion(data, currentVersion);
     return newLock;
   }
 
