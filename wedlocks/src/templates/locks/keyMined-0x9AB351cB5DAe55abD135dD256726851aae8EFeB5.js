@@ -13,5 +13,7 @@ Once we get closer to the date of the event, we will send you instructions on ho
 If you have any questions, email us at tickets@ethereum-france.com
   
 The EthCC team! 🤘
+
+Stay tuned https://twitter.com/ethcc
 `,
 }
