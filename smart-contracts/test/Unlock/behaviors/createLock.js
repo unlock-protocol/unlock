@@ -57,23 +57,5 @@ exports.shouldCreateLock = (options) => {
         )
       })
     })
-
-    describe('lock creation fails', () => {
-      it('should fail if expirationDuration is too large', async () => {
-        const args = [
-          60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-          web3.utils.padLeft(0, 40),
-          web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-          100, // maxNumberOfKeys
-          'Too Big Expiration Lock',
-        ]
-        const calldata = await createLockHash({ args, from: accounts[0] })
-        reverts(
-          unlock.createUpgradeableLock(calldata, {
-            gas: 4000000,
-          })
-        )
-      })
-    })
   })
 }
