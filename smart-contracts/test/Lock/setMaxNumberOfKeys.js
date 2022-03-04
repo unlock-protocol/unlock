@@ -114,5 +114,54 @@ contract('Lock / setMaxNumberOfKeys', () => {
         'maxNumberOfKeys is smaller than existing supply'
       )
     })
+
+    it('should allow setting a value equals to current total supply', async () => {
+      // buy 10 keys
+      const [, ...buyers] = await ethers.getSigners()
+      const txs = await Promise.all(
+        Array(10)
+          .fill(0)
+          .map((_, i) =>
+            lock
+              .connect(buyers[i])
+              .purchase(
+                keyPrice.toString(),
+                buyers[i].address,
+                web3.utils.padLeft(0, 40),
+                web3.utils.padLeft(0, 40),
+                [],
+                {
+                  value: keyPrice.toString(),
+                }
+              )
+          )
+      )
+      await Promise.all(txs.map((tx) => tx.wait()))
+
+      // increase supply
+      const totalSupply = await lock.totalSupply()
+      await lock.setMaxNumberOfKeys(totalSupply)
+      assert.equal(
+        (await lock.maxNumberOfKeys()).toString(),
+        totalSupply.toString()
+      )
+
+      // try to buy another key exceding totalSupply
+      await expectRevert(
+        lock
+          .connect(buyers[11])
+          .purchase(
+            keyPrice.toString(),
+            buyers[11].address,
+            web3.utils.padLeft(0, 40),
+            web3.utils.padLeft(0, 40),
+            [],
+            {
+              value: keyPrice.toString(),
+            }
+          ),
+        'LOCK_SOLD_OUT'
+      )
+    })
   })
 })
