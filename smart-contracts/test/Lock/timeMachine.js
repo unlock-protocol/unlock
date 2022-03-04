@@ -24,7 +24,16 @@ contract('Lock / timeMachine', (accounts) => {
 
   before(async () => {
     unlock = await getProxy(unlockContract)
-    await unlock.setLockTemplate((await TimeMachineMock.new()).address)
+
+    // init template
+    const timeMachine = await TimeMachineMock.new()
+    await unlock.setLockTemplate(timeMachine.address)
+
+    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
+    await unlock.addLockTemplate(
+      timeMachine.address,
+      publicLockLatestVersion + 1
+    )
 
     const args = [
       expirationDuration.toNumber(),
