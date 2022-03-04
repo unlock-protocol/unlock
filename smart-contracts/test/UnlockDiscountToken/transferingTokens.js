@@ -32,8 +32,6 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     unlock = await Unlock.at(proxyUnlock.address)
 
     const lockTemplate = await PublicLock.new()
-    await unlock.setLockTemplate(lockTemplate.address, { from: protocolOwner })
-
     const publicLockLatestVersion = await unlock.publicLockLatestVersion()
     await unlock.addLockTemplate(
       lockTemplate.address,

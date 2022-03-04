@@ -27,8 +27,6 @@ contract('Lock / timeMachine', (accounts) => {
 
     // init template
     const timeMachine = await TimeMachineMock.new()
-    await unlock.setLockTemplate(timeMachine.address)
-
     const publicLockLatestVersion = await unlock.publicLockLatestVersion()
     await unlock.addLockTemplate(
       timeMachine.address,
