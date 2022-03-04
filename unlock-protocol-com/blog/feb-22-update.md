@@ -1,25 +1,23 @@
 ---
 title: Unlock Protocol Product Updates for February 2022
-subTitle: 
+subTitle: Bring Your Own NFT, Sign In With Ethereum, and more
 authorName: Christopher Carfi
 publishDate: February 28, 2022
-description: 
+description: Unlock Protocol new features for February 2022, including Bring Your Own NFT, Sign In With Ethereum, and more.
 image: /images/blog/feb-22-update/feb-22-banner.png
 ---
 
-Welcome to this month's product updates from Unlock! Lots of new stuff this month that connects Unlock even more easily with standards and partners across the web3 ecosystem. This month's new capabilities include:
-
+Welcome to this month's product updates from Unlock! The community delivered a number of new features this month that connect Unlock even more easily with standards and partners across the web3 ecosystem. This month's new capabilities include:
 
 ## Major updates to the Unlock checkout process
-- **Sign in with Ethereum** — 
-- **Bring Your Own NFT** — erc721 balanceOf hook contract (use of 3rd party NFT contract)
+- **Bring Your Own NFT** — You can now [token gate anything using any ERC-721 NFT with Unlock Protocol](https://unlock-protocol.com/blog/bring-your-own-nft)
+- **Sign In With Ethereum** — Unlock’s front-end now provides a “[Sign In With Ethereum](https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum)” endpoint that can be used by a third-party application to easily identify a user’s Ethereum address
 
 ## Dashboard updates
-- **Non expiring membership supports on the dashboard** — 
-- **Support for change of maximum number of keys on dashboard** — 
+- **Support for change of maximum number of keys on dashboard** — Creators can now change the maximum number of keys for their existing locks right from the dashboard.
 
 ## Dev tool updates
-- **WebSub** — 
+- **Websub** — 
 - **Plugin hardhat for Unlock** —
 
 ## Integrations
