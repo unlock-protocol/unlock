@@ -1,4 +1,3 @@
-const { reverts } = require('truffle-assertions')
 const createLockHash = require('../../helpers/createLockCalldata')
 
 const PublicLock = artifacts.require('PublicLock')
@@ -54,24 +53,6 @@ exports.shouldCreateLock = (options) => {
         assert.equal(
           web3.utils.toChecksumAddress(unlockProtocol),
           web3.utils.toChecksumAddress(unlock.address)
-        )
-      })
-    })
-
-    describe('lock creation fails', () => {
-      it('should fail if expirationDuration is too large', async () => {
-        const args = [
-          60 * 60 * 24 * 365 * 101, // expirationDuration: 101 years
-          web3.utils.padLeft(0, 40),
-          web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-          100, // maxNumberOfKeys
-          'Too Big Expiration Lock',
-        ]
-        const calldata = await createLockHash({ args, from: accounts[0] })
-        reverts(
-          unlock.createUpgradeableLock(calldata, {
-            gas: 4000000,
-          })
         )
       })
     })
