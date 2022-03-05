@@ -73,6 +73,18 @@ export const Button = styled.button`
     background-color: ${(props) =>
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
   }
+
+  &[type='reset'],
+  &[type='submit'],
+  &[type='button'] {
+    background-color: var(--green);
+  }
+  &[type='submit']:hover,
+  &[type='reset']:hover,
+  &[type='button']:hover {
+    background-color: ${(props) =>
+      props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+  }
 `
 
 export const NeutralButton = styled(Button)`
