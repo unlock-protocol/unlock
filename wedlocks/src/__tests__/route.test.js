@@ -89,7 +89,7 @@ describe('route', () => {
         sendMail: jest.fn((options, callback) => {
           expect(options).toEqual({
             from: config.sender,
-            html: null,
+            html: undefined,
             subject: 'subject',
             text: 'text',
             to: args.recipient,

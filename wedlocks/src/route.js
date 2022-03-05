@@ -37,10 +37,11 @@ export const route = (args, callback) => {
     from: config.sender,
     to: args.recipient,
     subject: template.subject(templateParams),
-    text: template.text(templateParams),
-    // optional extra arguments for SendRawEmail
-    html: null, // TODO: support later
-    attachments: args.attachments,
+    text: template.text ? template.text(templateParams) : undefined,
+    html: template.html ? template.html(templateParams) : undefined,
+    attachments: []
+      .concat(args.attachments, template.attachments)
+      .filter((x) => !!x),
   }
 
   // Shows the email to be sent
