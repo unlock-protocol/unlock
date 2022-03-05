@@ -1,6 +1,6 @@
 # Unlock application
 
-This sub-repository contains the Unlock dashboard application, used to create and administer locks.
+This sub-repository contains the Unlock dashboard application, used to create and administer locks as well as the checkout and keychain interfaces.
 
 ## Requirements
 

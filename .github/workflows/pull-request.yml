@@ -40,8 +40,8 @@ jobs:
 
   # Netlify Deployments (run as drafts, unpublished to main URL)
   deploy-unlock-protocol-com:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
-    needs: run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && contains(fromJson(inputs.changed), 'unlock-protocol-com') }} # make sure we dont deploy from forks
+    needs: [check-changes, run-tests]
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-protocol-com
@@ -52,8 +52,8 @@ jobs:
       UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
 
   deploy-paywall-app:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && contains(fromJson(inputs.changed), 'paywall-app') }} # make sure we dont deploy from forks
+    needs: [check-changes, run-tests]
     uses: ./.github/workflows/_netlify.yml
     with:
       service: paywall-app
@@ -63,8 +63,8 @@ jobs:
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
   deploy-unlock-app:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && contains(fromJson(inputs.changed), 'paywall-app') }} # make sure we dont deploy from forks
+    needs: [check-changes, run-tests]
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-app
