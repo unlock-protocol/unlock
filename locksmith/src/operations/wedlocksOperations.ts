@@ -61,6 +61,9 @@ export const sendEmail = async (
  * @param keys
  */
 export const notifyNewKeysToWedlocks = async (keys: any[]) => {
+  logger.info('Notifying following keys to wedlock', {
+    keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+  })
   for (const key of keys) {
     await notifyNewKeyToWedlocks(key)
   }
@@ -79,15 +82,29 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
     },
   })
 
-  const recipient =
-    userTokenMetadataRecord?.data?.userMetadata?.protected?.email
+  console.log(userTokenMetadataRecord)
+
+  logger.info(
+    'Found the relevant token metadata',
+    userTokenMetadataRecord?.data
+  )
+
+  const protectedData = Normalizer.toLowerCaseKeys({
+    ...userTokenMetadataRecord?.data?.userMetadata?.protected,
+  })
+
+  const recipient = protectedData.email as string
+
+  logger.info(`Sending ${recipient} key: ${key.lock.address}-${key.keyId}`)
+
   if (recipient) {
     logger.info('Notifying wedlock for new key', {
       recipient,
       lock: key.lock.address,
       keyId: key.keyId,
     })
-    await sendEmail(`keyMined-${key.owner.address}`, 'keyMined', recipient, {
+    // Lock address to find the specific template
+    await sendEmail(`keyMined${key.lock.address}`, 'keyMined', recipient, {
       lockName: key.lock.name,
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
     })
