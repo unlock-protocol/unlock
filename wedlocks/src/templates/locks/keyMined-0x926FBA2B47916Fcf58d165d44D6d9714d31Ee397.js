@@ -1,11 +1,11 @@
 import path from 'path'
 
-const absolutePath = (relative) => path.join(process.cwd(), relative);
+const absolutePath = (relative) => path.join(process.cwd(), relative)
 
 export default {
-    subject: () => 'BCN Auction',
-    html: () =>
-        `
+  subject: () => 'BCN Auction',
+  html: () =>
+    `
 <img src="cid:blackpool-nfa-barcelona.jpg"/>
 <p>Congratulations! You’ve successfully reserved your ticket for the Auction! You’ll receive a link to generate your QR code ticket a couple of days before the event. Once your ticket is scanned at the door of the venue, you’ll automatically be included in the raffle for a physical airdrop on site.</p>
 
@@ -15,18 +15,20 @@ export default {
 <p>The apes are excited to welcome you to the BP universe, fren!</p>
 
 <p>
-👀  : <a href="https://blackpool.finance/events">https://blackpool.finance/events</a>
+👀 : <a href="https://blackpool.finance/events">https://blackpool.finance/events</a>
 </p>
 
 <p>
 -- BlackPool
 </p>
     `,
-    attachments: [
-        {
-            filename: 'blackpool-nfa-barcelona.jpg',
-            path: absolutePath('./src/templates/attachments/blackpool-nfa-barcelona.jpg'),
-            cid: 'blackpool-nfa-barcelona.jpg',
-        },
-    ],
+  attachments: [
+    {
+      filename: 'blackpool-nfa-barcelona.jpg',
+      path: absolutePath(
+        './src/templates/attachments/blackpool-nfa-barcelona.jpg'
+      ),
+      cid: 'blackpool-nfa-barcelona.jpg',
+    },
+  ],
 }

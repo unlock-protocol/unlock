@@ -1,11 +1,11 @@
 import path from 'path'
 
-const absolutePath = (relative) => path.join(process.cwd(), relative);
+const absolutePath = (relative) => path.join(process.cwd(), relative)
 
 export default {
-    subject: () => 'Stable Show',
-    html: () =>
-        `
+  subject: () => 'Stable Show',
+  html: () =>
+    `
         <img src="cid:stable-show.jpeg"/>
 
         <p>
@@ -26,15 +26,15 @@ Grab a seat and come participate in this discussion that will address the stable
 <strong>Tips</strong> : Add a reminder in <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20220325T170000Z%2F20220325T210000Z&location=Valkiria%20HUB%2C%20Carrer%20de%20Pujades%2C%20126%2C%2008005%20Barcelona%2C%20Spain&text=Stable%20Show%20">your calendar</a>
 </p>
 <p>
-<strong>Welcome in the Herd! <a href="https://stakedao.org/calendar">Get more info here</a> 🐘 👀 :</strong>
+<strong>Welcome in the Herd! <a href="https://stakedao.org/calendar">Get more info here</a> 🐘 👀 :</strong>
 </p>
 
     `,
-    attachments: [
-        {
-            filename: 'stable-show.jpeg',
-            path: absolutePath('./src/templates/attachments/stable-show.jpeg'),
-            cid: 'stable-show.jpeg',
-        },
-    ],
+  attachments: [
+    {
+      filename: 'stable-show.jpeg',
+      path: absolutePath('./src/templates/attachments/stable-show.jpeg'),
+      cid: 'stable-show.jpeg',
+    },
+  ],
 }
