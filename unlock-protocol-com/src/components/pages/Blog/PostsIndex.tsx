@@ -51,15 +51,22 @@ export function PostsIndex({ posts, next, prev, total }: Props) {
             {!['/blog/1', '/blog'].includes(router.pathname) && (
               <Link href="/blog"> {'<--'} First </Link>
             )}
-            <span> | </span>
-            {!!prev && <Link href={`/blog/${prev}`}> Previous</Link>}
+
+            {!!prev && (
+              <>
+                <span> | </span>
+                <Link href={`/blog/${prev}`}> Previous</Link>
+              </>
+            )}
           </div>
 
           <div className="space-x-2">
             {next && <Link href={`/blog/${next}`}> Next </Link>}
-            <span> | </span>
             {total && next && (
-              <Link href={`/blog/${total}`}> Last {'-->'} </Link>
+              <>
+                <span> | </span>
+                <Link href={`/blog/${total}`}> Last {'-->'} </Link>
+              </>
             )}
           </div>
         </div>
