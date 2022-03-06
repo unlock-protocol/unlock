@@ -63,13 +63,7 @@ export function About({ updates }: Props) {
               <div className="grid gap-6">
                 <header className="space-y-2">
                   <h2 className="text-2xl font-semibold sm:text-3xl">News</h2>
-                  <p className="text-brand-gray">
-                    Latest updates from Unlock Team. Read more on our{' '}
-                    <Link className="hover:underline" href="/blog">
-                      blog
-                    </Link>
-                    .
-                  </p>
+                  <p className="text-brand-gray">Latest updates from Unlock.</p>
                 </header>
                 <div className="grid gap-4">
                   {updates.map((item, index) => {

@@ -46,16 +46,18 @@ export function PostsIndex({ posts, next, prev, total }: Props) {
             )
           })}
         </div>
-        <div className="flex justify-between gap-4">
-          <div>
+        <div className="flex justify-between gap-4 text-sm sm:text-base">
+          <div className="space-x-2">
             {!['/blog/1', '/blog'].includes(router.pathname) && (
-              <Link href="/blog"> First page </Link>
+              <Link href="/blog"> {'<--'} First </Link>
             )}
+            <span> | </span>
+            {!!prev && <Link href={`/blog/${prev}`}> Previous</Link>}
           </div>
-          <div className="flex gap-6">
-            {!!prev && <Link href={`/blog/${prev}`}> Previous Page </Link>}
-            {next && <Link href={`/blog/${next}`}> Next Page </Link>}
-            {total && <Link href={`/blog/${total}`}> Last Page </Link>}
+          <div className="space-x-2">
+            {next && <Link href={`/blog/${next}`}> Next </Link>}
+            <span> | </span>
+            {total && <Link href={`/blog/${total}`}> Last {'-->'} </Link>}
           </div>
         </div>
       </div>

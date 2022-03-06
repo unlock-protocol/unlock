@@ -40,7 +40,7 @@ export const routes: Routes = {
     }),
   },
   about: {
-    label: 'About',
+    label: 'About Unlock Protocol',
     seo: customizeSEO({
       path: '/about',
       title: 'Unlock Team',
