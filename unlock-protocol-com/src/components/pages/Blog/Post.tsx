@@ -1,7 +1,7 @@
 import { useMembership } from '../../../hooks/useMembership'
 import type { PostType } from '../../../utils/posts'
-import Script from 'next/script'
 import { Button } from '@unlock-protocol/ui'
+import { useEffect } from 'react'
 
 export interface Props extends PostType {
   htmlContent: string
@@ -10,7 +10,18 @@ export interface Props extends PostType {
 export function Post({ frontMatter, htmlContent }: Props) {
   const publishedDate = new Date(frontMatter.publishDate).toLocaleDateString()
   const { isMember, becomeMember } = useMembership()
-
+  useEffect(() => {
+    const commentoScript = document.createElement('script')
+    if (isMember === 'yes') {
+      commentoScript.src = 'https://cdn.commento.io/js/commento.js'
+      commentoScript.async = true
+      commentoScript.setAttribute('data-no-fonts', 'false')
+      document.body.appendChild(commentoScript)
+    }
+    return () => {
+      commentoScript.remove()
+    }
+  }, [isMember])
   return (
     <div className="max-w-3xl px-6 pb-24 mx-auto">
       <article>
@@ -22,7 +33,7 @@ export function Post({ frontMatter, htmlContent }: Props) {
             <p className="text-lg sm:text-xl text-brand-gray">
               {frontMatter.description}
             </p>
-            <div className="py-4 text-base text-brand-gray">
+            <div className="py-2 text-base text-brand-gray">
               By <span> {frontMatter.authorName} </span> on{' '}
               <time dateTime={publishedDate}>{publishedDate}</time>
             </div>
@@ -32,23 +43,17 @@ export function Post({ frontMatter, htmlContent }: Props) {
           dangerouslySetInnerHTML={{ __html: htmlContent }}
           className="prose break-words sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate max-w-none"
         />
-        <footer>
+        <footer className="pt-4 mt-4 border-t">
           {isMember === 'yes' ? (
             <div id="commento"></div>
           ) : (
-            <div className="flex items-center justify-center p-2">
+            <div className="flex flex-col items-center gap-6 text-center">
+              <p> You can read or write comments by becoming a member. </p>
               <Button onClick={() => becomeMember()}>Unlock Comments</Button>
             </div>
           )}
         </footer>
       </article>
-      <Script
-        defer
-        async
-        src="https://cdn.commento.io/js/commento.js"
-        strategy="afterInteractive"
-        data-auto-init="false"
-      ></Script>
     </div>
   )
 }

@@ -38,11 +38,8 @@ export function PostsIndex({ posts, next, prev, total }: Props) {
                   </Link>
                   <p className="text-brand-gray">
                     By {frontMatter.authorName} on{' '}
-                    <time className="text-sm" dateTime={date}>
-                      {date}
-                    </time>
+                    <time dateTime={date}>{date}</time>
                   </p>
-
                   <p className="text-brand-gray">{frontMatter.description}</p>
                 </div>
               </div>
