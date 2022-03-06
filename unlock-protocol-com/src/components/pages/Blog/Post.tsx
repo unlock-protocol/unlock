@@ -23,7 +23,7 @@ export function Post({ frontMatter, htmlContent }: Props) {
     }
   }, [isMember])
   return (
-    <div className="max-w-3xl px-6 pb-24 mx-auto">
+    <div className="max-w-3xl p-6 pb-24 mx-auto">
       <article>
         <header className="py-4 space-y-4">
           <h1 className="text-3xl font-bold sm:text-5xl">

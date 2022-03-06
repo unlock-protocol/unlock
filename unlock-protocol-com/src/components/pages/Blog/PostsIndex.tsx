@@ -54,10 +54,13 @@ export function PostsIndex({ posts, next, prev, total }: Props) {
             <span> | </span>
             {!!prev && <Link href={`/blog/${prev}`}> Previous</Link>}
           </div>
+
           <div className="space-x-2">
             {next && <Link href={`/blog/${next}`}> Next </Link>}
             <span> | </span>
-            {total && <Link href={`/blog/${total}`}> Last {'-->'} </Link>}
+            {total && next && (
+              <Link href={`/blog/${total}`}> Last {'-->'} </Link>
+            )}
           </div>
         </div>
       </div>
