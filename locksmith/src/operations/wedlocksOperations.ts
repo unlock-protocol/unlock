@@ -81,9 +81,6 @@ export const notifyNewKeyToWedlocks = async (key: any) => {
       userAddress: Normalizer.ethereumAddress(key.owner.address),
     },
   })
-
-  console.log(userTokenMetadataRecord)
-
   logger.info(
     'Found the relevant token metadata',
     userTokenMetadataRecord?.data
