@@ -17,7 +17,7 @@ export default function Document() {
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="alternate"
-          href="blog.xml"
+          href="blog.rss"
           type="application/atom+xml"
           title="Blog Atom Feed"
         />
