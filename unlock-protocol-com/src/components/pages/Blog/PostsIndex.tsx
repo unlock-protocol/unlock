@@ -17,27 +17,37 @@ export function PostsIndex({ posts, next, prev, total }: Props) {
       </header>
       <div className="grid gap-12 py-8">
         <div className="grid gap-8">
-          {posts.map(({ frontMatter, slug }) => (
-            <div
-              key={slug}
-              className="grid items-center justify-items-center sm:justify-items-start sm:grid-cols-[1fr_6fr] gap-8"
-            >
-              <img
-                className="overflow-hidden rounded"
-                src={frontMatter.image}
-                alt={frontMatter.title}
-              />
-              <div>
-                <Link
-                  className="text-xl font-medium hover:text-brand-ui-primary"
-                  href={`/blog/${slug}`}
-                >
-                  {frontMatter.title}
-                </Link>
-                <p className="text-brand-gray">{frontMatter.description}</p>
+          {posts.map(({ frontMatter, slug }) => {
+            const date = new Date(frontMatter.publishDate).toLocaleDateString()
+            return (
+              <div
+                key={slug}
+                className="grid items-center justify-items-center sm:justify-items-start sm:grid-cols-[2fr_6fr] gap-8"
+              >
+                <img
+                  className="overflow-hidden rounded"
+                  src={frontMatter.image}
+                  alt={frontMatter.title}
+                />
+                <div className="space-y-1">
+                  <Link
+                    className="text-xl font-medium hover:text-brand-ui-primary"
+                    href={`/blog/${slug}`}
+                  >
+                    {frontMatter.title}
+                  </Link>
+                  <p className="text-brand-gray">
+                    By {frontMatter.authorName} on{' '}
+                    <time className="text-sm" dateTime={date}>
+                      {date}
+                    </time>
+                  </p>
+
+                  <p className="text-brand-gray">{frontMatter.description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
         <div className="flex justify-between gap-4">
           <div>
