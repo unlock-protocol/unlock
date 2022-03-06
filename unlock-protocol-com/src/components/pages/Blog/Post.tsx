@@ -30,7 +30,7 @@ export function Post({ frontMatter, htmlContent }: Props) {
         </header>
         <main
           dangerouslySetInnerHTML={{ __html: htmlContent }}
-          className="prose sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate max-w-none"
+          className="prose break-words sm:prose-lg prose-img:rounded-xl prose-a:text-brand-ui-primary hover:prose-a:text-brand-ui-secondary prose-slate max-w-none"
         />
         <footer>
           {isMember === 'yes' ? (
