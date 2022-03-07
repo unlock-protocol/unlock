@@ -125,42 +125,45 @@ contract MixinTransfer is
     require(_from != _recipient, 'TRANSFER_TO_SELF');
     uint fee = getTransferFee(_from, 0);
 
-    Key storage fromKey = keyByOwner[_from];
-    Key storage toKey = keyByOwner[_recipient];
+    Key memory fromKey = getKeyByOwner(_from);
+    Key memory toKey = getKeyByOwner(_recipient);
 
     uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
     _timeMachine(_tokenId, fee, false);
-
+  
     if (toKey.tokenId == 0) {
-      toKey.tokenId = _tokenId;
-      _recordOwner(_recipient, _tokenId);
+      // create a new token
+      _createNewKey(
+        _recipient,
+        address(0),
+        fromKey.expirationTimestamp
+      );
       // Clear any previous approvals
       _clearApproval(_tokenId);
-    }
+    } 
+    else if (previousExpiration <= block.timestamp) {
+      // The recipient had a key but it expired. The new expiration is the sender's key expiration
+      _updateKeyExpirationTimestamp(_recipient, fromKey.expirationTimestamp);
 
-    if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
       // An expired key is no longer a valid key, so the new tokenID is the sender's tokenID
-      toKey.expirationTimestamp = fromKey.expirationTimestamp;
-      toKey.tokenId = _tokenId;
+      _updateKeyTokenId(_recipient, _tokenId);
 
       // Reset the key Manager to the key owner
       _setKeyManagerOf(_tokenId, address(0));
-
       _recordOwner(_recipient, _tokenId);
     } else {
       require(expirationDuration != type(uint).max, 'Recipient already owns a non-expiring key');
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      toKey.expirationTimestamp = fromKey.expirationTimestamp + previousExpiration - block.timestamp;
+      _updateKeyExpirationTimestamp(
+        _recipient,
+        fromKey.expirationTimestamp + previousExpiration - block.timestamp
+      );
     }
 
-    // Effectively expiring the key for the previous owner
-    fromKey.expirationTimestamp = block.timestamp;
-
-    // Set the tokenID to 0 for the previous owner to avoid duplicates
-    fromKey.tokenId = 0;
+    // expire the transferred key
+    _expireKey(_from);
 
     // trigger event
     emit Transfer(

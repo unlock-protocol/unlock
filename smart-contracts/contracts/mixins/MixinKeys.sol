@@ -178,7 +178,22 @@ contract MixinKeys is
     uint newExpirationTimestamp
   ) internal {
     keyByOwner[_keyOwner].expirationTimestamp = newExpirationTimestamp;
-    // emit ExpirationChanged(keyByOwner[_keyOwner]._tokenId, _deltaT, _addTime);
+  }
+  
+  function _updateKeyTokenId(
+    address _keyOwner,
+    uint _tokenId
+  ) internal {
+    keyByOwner[_keyOwner].tokenId = _tokenId;
+  }
+
+  function _expireKey(
+    address _keyOwner
+  ) internal {
+    // Effectively expiring the key
+    keyByOwner[_keyOwner].expirationTimestamp = block.timestamp;
+    // Set the tokenID to 0 to avoid duplicates
+    keyByOwner[_keyOwner].tokenId = 0;
   }
 
   /**
