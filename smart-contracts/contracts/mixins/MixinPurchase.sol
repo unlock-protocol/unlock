@@ -104,6 +104,7 @@ contract MixinPurchase is
       } else {
         newTimeStamp = block.timestamp + expirationDuration;
       }
+      _updateKeyExpirationTimestamp(_recipient, newTimeStamp);
       _setKeyManagerOf(key.tokenId, _keyManager);
 
       emit RenewKeyPurchase(_recipient, newTimeStamp);
