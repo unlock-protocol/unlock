@@ -68,7 +68,7 @@ contract MixinPurchase is
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
     // Assign the key
-    Key memory key = getKeysByOwner(_recipient);
+    Key memory key = getKeyByOwner(_recipient);
     uint newTimeStamp;
 
     // key doesnt exist

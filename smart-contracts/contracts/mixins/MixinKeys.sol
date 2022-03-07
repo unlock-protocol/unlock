@@ -86,7 +86,7 @@ contract MixinKeys is
     address _keyOwner
   ) {
     require(
-      getKeysByOwner(_keyOwner).expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
+      getKeyByOwner(_keyOwner).expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
     );
     _;
   }
@@ -123,10 +123,10 @@ contract MixinKeys is
 
   /**
    * Get a key owned by a specific address
-   * @return The key owned by `_keysOwner`
+   * @return The key owned by `_keyOwner`
   */
-  function getKeysByOwner(
-    address _keysOwner
+  function getKeyByOwner(
+    address _keyOwner
   ) 
     internal
     view
@@ -134,7 +134,7 @@ contract MixinKeys is
       Key memory 
     )
   {
-    return keyByOwner[_keysOwner];
+    return keyByOwner[_keyOwner];
   }
 
 
@@ -202,14 +202,14 @@ contract MixinKeys is
     view
     returns (bool isValid)
   { 
-    isValid = getKeysByOwner(_keyOwner).expirationTimestamp > block.timestamp;
+    isValid = getKeyByOwner(_keyOwner).expirationTimestamp > block.timestamp;
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
       isValid = onValidKeyHook.hasValidKey(
         address(this),
         _keyOwner,
-        getKeysByOwner(_keyOwner).expirationTimestamp,
+        getKeyByOwner(_keyOwner).expirationTimestamp,
         isValid
       );
     }    
@@ -224,7 +224,7 @@ contract MixinKeys is
   ) public view
     returns (uint)
   {
-    return getKeysByOwner(_account).tokenId;
+    return getKeyByOwner(_account).tokenId;
   }
 
   /**
@@ -237,7 +237,7 @@ contract MixinKeys is
   ) public view
     returns (uint)
   {
-    return getKeysByOwner(_keyOwner).expirationTimestamp;
+    return getKeyByOwner(_keyOwner).expirationTimestamp;
   }
 
 
@@ -329,7 +329,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    uint tokenId = getKeysByOwner(_owner).tokenId;
+    uint tokenId = getKeyByOwner(_owner).tokenId;
     address keyManager = keyManagerOf[tokenId];
     if(keyManager == address(0)) {
       return managerToOperatorApproved[_owner][_operator];
@@ -383,7 +383,7 @@ contract MixinKeys is
   {
 
     // check expiration ts should be set to know if owner had previously registered a key 
-    Key memory key = getKeysByOwner(_keyOwner);
+    Key memory key = getKeyByOwner(_keyOwner);
     if(key.expirationTimestamp == 0 ) {
       numberOfOwners++;
     }
