@@ -33,7 +33,7 @@ contract MixinGrantKeys is
 
       require(recipient != address(0), 'INVALID_ADDRESS');
 
-      Key storage toKey = getKeysByOwner(recipient);
+      Key storage toKey = keyByOwner[recipient];
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
       uint idTo = toKey.tokenId;

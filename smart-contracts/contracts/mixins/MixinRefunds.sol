@@ -106,7 +106,7 @@ contract MixinRefunds is
     uint refund
   ) internal
   {
-    Key storage key = getKeysByOwner(_keyOwner);
+    Key storage key = keyByOwner[_keyOwner];
 
     emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
@@ -137,7 +137,7 @@ contract MixinRefunds is
     hasValidKey(_keyOwner)
     returns (uint refund)
   {
-    Key storage key = getKeysByOwner(_keyOwner);
+    Key storage key = keyByOwner[_keyOwner];
 
     // return entire purchased price if key is non-expiring
     if(expirationDuration == type(uint).max) {

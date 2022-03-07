@@ -131,7 +131,9 @@ contract MixinKeys is
   ) 
     public
     view
-    returns (Key)
+    returns (
+      Key memory 
+    )
   {
     return keyByOwner[_keysOwner];
   }
@@ -372,7 +374,7 @@ contract MixinKeys is
   {
     address tokenOwner = ownerOf(_tokenId);
     require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
-    Key storage key = getKeysByOwner(tokenOwner);
+    Key storage key = keyByOwner[tokenOwner];
     uint formerTimestamp = key.expirationTimestamp;
     bool validKey = getHasValidKey(tokenOwner);
     if(_addTime) {
