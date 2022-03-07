@@ -186,7 +186,7 @@ contract MixinTransfer is
     returns (bool success)
   {
     uint maxTimeToSend = _value * expirationDuration;
-    Key storage fromKey = keyByOwner[msg.sender];
+    Key memory fromKey = getKeyByOwner(msg.sender);
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     if(maxTimeToSend < timeRemaining)
     {
