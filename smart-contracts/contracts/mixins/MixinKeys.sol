@@ -33,8 +33,7 @@ contract MixinKeys is
 
   // Keys
   // Each owner can have at most exactly one key
-  // TODO: could we use public here? (this could be confusing though because it getter will
-  // return 0 values when missing a key)
+  // return 0 values when missing a key
   mapping (address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
@@ -129,13 +128,53 @@ contract MixinKeys is
   function getKeysByOwner(
     address _keysOwner
   ) 
-    public
+    internal
     view
     returns (
       Key memory 
     )
   {
     return keyByOwner[_keysOwner];
+  }
+
+
+  /**
+   * Create a new key with a new tokenId and store it 
+   * 
+   */
+  function _createNewKey(
+    address _recipient,
+    address _keyManager,
+    uint expirationTimestamp
+  ) internal {
+    Key storage key = keyByOwner[_recipient];
+
+    // We increment the tokenId counter
+    _totalSupply++;
+    key.tokenId = _totalSupply;
+
+    // set expiration
+    key.expirationTimestamp = expirationTimestamp;
+    
+    // This is a brand new owner
+    _recordOwner(_recipient, key.tokenId);
+
+    // set key manager
+    _setKeyManagerOf(key.tokenId, _keyManager);
+
+    // trigger event
+    emit Transfer(
+      address(0), // This is a creation.
+      _recipient,
+      key.tokenId
+    );
+  }
+
+  function _updateKeyExpirationTimestamp(
+    address _keyOwner,
+    uint newExpirationTimestamp
+  ) internal {
+    keyByOwner[_keyOwner].expirationTimestamp = newExpirationTimestamp;
   }
 
   /**
@@ -201,8 +240,6 @@ contract MixinKeys is
     return getKeysByOwner(_keyOwner).expirationTimestamp;
   }
 
-  
-  
 
   // Returns the owner of a given tokenId
   function ownerOf(
