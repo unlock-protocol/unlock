@@ -63,6 +63,17 @@ interface IUnlock
   ) external returns(address);
 
   /**
+   * Create an upgradeable lock using a specific PublicLock version
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details)
+   * @param _lockVersion the version of the lock to use
+  */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 _lockVersion
+  ) external returns (address);
+
+  /**
   * @notice Upgrade a lock to a specific version
   * @dev only available for publicLockVersion > 10 (proxyAdmin /required)
   * @param lockAddress the existing lock address

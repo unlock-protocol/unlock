@@ -31,9 +31,14 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     )
     await proxyUnlock.deployed()
     unlock = await Unlock.at(proxyUnlock.address)
-
+    // init template
     const lockTemplate = await PublicLock.new()
-    await unlock.setLockTemplate(lockTemplate.address, { from: protocolOwner })
+    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
+    await unlock.addLockTemplate(
+      lockTemplate.address,
+      publicLockLatestVersion + 1,
+      { from: protocolOwner }
+    )
 
     const UDTEthers = await ethers.getContractFactory('UnlockDiscountTokenV3')
     const proxyUDT = await upgrades.deployProxy(UDTEthers, [minter], {
