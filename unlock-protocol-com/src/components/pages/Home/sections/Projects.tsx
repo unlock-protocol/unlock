@@ -133,7 +133,7 @@ export function Projects() {
                       coverClass
                     )}
                   >
-                    <div className="absolute z-10 flex flex-col justify-end h-full p-8 text-white">
+                    <div className="absolute flex flex-col justify-end h-full p-8 text-white">
                       <time className="text-sm" dateTime={published}>
                         {published}
                       </time>
@@ -172,7 +172,7 @@ export function Projects() {
                           coverClass
                         )}
                       >
-                        <div className="absolute z-10 flex flex-col justify-end h-full p-8 text-white">
+                        <div className="absolute flex flex-col justify-end h-full p-8 text-white">
                           <time className="text-sm" dateTime={published}>
                             {published}
                           </time>
