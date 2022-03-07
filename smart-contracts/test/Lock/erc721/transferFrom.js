@@ -31,52 +31,23 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
   let ID
 
   before(async () => {
-    await Promise.all([
-      locks.FIRST.purchase(
-        0,
-        accountWithKey,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from: accountWithKey,
-        }
-      ),
-      locks.FIRST.purchase(
-        0,
+    const keyOwners = [
+      accountWithKey,
+      from,
+      accountWithExpiredKey,
+      accountWithKeyApproved,
+    ]
+    await locks.FIRST.purchase(
+      [],
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      [],
+      {
+        value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
         from,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from,
-        }
-      ),
-      locks.FIRST.purchase(
-        0,
-        accountWithExpiredKey,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from: accountWithExpiredKey,
-        }
-      ),
-      locks.FIRST.purchase(
-        0,
-        accountWithKeyApproved,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-          from: accountWithKeyApproved,
-        }
-      ),
-    ])
+      }
+    )
     keyExpiration = new BigNumber(
       await locks.FIRST.keyExpirationTimestampFor.call(from)
     )
@@ -139,10 +110,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         let fromExpirationTimestamp
         let ID
         await locks.FIRST.purchase(
-          0,
-          from,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [],
+          [from],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -179,10 +150,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
       before(async () => {
         await locks.FIRST.purchase(
-          0,
-          from,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [],
+          [from],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -277,10 +248,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       before(async () => {
         // first, let's purchase a brand new key that we can transfer
         await locks.FIRST.purchase(
-          0,
-          from,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [],
+          [from],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -322,10 +293,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       before(async () => {
         // first we create a lock with only 1 key
         await locks['SINGLE KEY'].purchase(
-          0,
-          from,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [],
+          [from],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -335,10 +306,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         // confirm that the lock is sold out
         await reverts(
           locks['SINGLE KEY'].purchase(
-            0,
-            accounts[8],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
+            [],
+            [accounts[8]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
             [],
             {
               value: web3.utils.toWei('0.01', 'ether'),
@@ -363,10 +334,10 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
   it('can transfer a FREE key', async () => {
     await locks.FREE.purchase(
-      0,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [],
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         from: accounts[1],

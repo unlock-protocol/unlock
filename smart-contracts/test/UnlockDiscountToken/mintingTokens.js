@@ -119,10 +119,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
 
     // Purchase a valid key for the referrer
     await lock.purchase(
-      0,
-      referrer,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      [],
+      [referrer],
+      [constants.ZERO_ADDRESS],
+      [constants.ZERO_ADDRESS],
       [],
       {
         from: referrer,
@@ -160,10 +160,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
 
     beforeEach(async () => {
       const { blockNumber } = await lock.purchase(
-        0,
-        keyBuyer,
-        referrer,
-        constants.ZERO_ADDRESS,
+        [],
+        [keyBuyer],
+        [referrer],
+        [constants.ZERO_ADDRESS],
         [],
         {
           from: keyBuyer,
@@ -223,10 +223,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       ])
 
       const { blockNumber } = await lock.purchase(
-        0,
-        keyBuyer,
-        referrer,
-        web3.utils.padLeft(0, 40),
+        [],
+        [keyBuyer],
+        [referrer],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           from: keyBuyer,

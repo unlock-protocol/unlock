@@ -44,11 +44,11 @@ contract MixinPurchase is
 
   /**
   * @dev Purchase function
-  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
-  * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the purchased key
-  * @param _referrer address of the user making the referral
-  * @param _keyManager optional address to grant managing rights to a specific address on creation
+  * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_values is ignored when using ETH)
+  * @param _recipients array of addresses of the recipients of the purchased key
+  * @param _referrers array of addresses of the users making the referral
+  * @param _keyManagers optional array of addresses to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @notice when called for an existing and non-expired key, the `_keyManager` param will be ignored 
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
@@ -56,95 +56,120 @@ contract MixinPurchase is
   * than keyPrice is approved for spending).
   */
   function purchase(
-    uint256 _value,
-    address _recipient,
-    address _referrer,
-    address _keyManager,
+    uint256[] memory _values,
+    address[] memory _recipients,
+    address[] memory _referrers,
+    address[] memory _keyManagers,
     bytes calldata _data
   ) external payable
     onlyIfAlive
     notSoldOut
   {
-    require(_recipient != address(0), 'INVALID_ADDRESS');
+    require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
+    require(_recipients.length == _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
 
-    // Assign the key
-    Key storage toKey = keyByOwner[_recipient];
-    uint idTo = toKey.tokenId;
-    uint newTimeStamp;
+    uint totalPriceToPay;
 
-    if (idTo == 0) {
-      // Assign a new tokenId (if a new owner or previously transferred)
-      _assignNewTokenId(toKey);
-      // refresh the cached value
-      idTo = toKey.tokenId;
-      _recordOwner(_recipient, idTo);
-      // check for a non-expiring key
-      if (expirationDuration == type(uint).max) {
-        newTimeStamp = type(uint).max;
+    for (uint256 i = 0; i < _recipients.length; i++) {
+      // check recipient address
+      address _recipient = _recipients[i];
+      require(_recipient != address(0), 'INVALID_ADDRESS');
+      
+      // Assign the key
+      Key storage toKey = keyByOwner[_recipient];
+      uint idTo = toKey.tokenId;
+      uint newTimeStamp;
+
+      if (idTo == 0) {
+        // Assign a new tokenId (if a new owner or previously transferred)
+        _assignNewTokenId(toKey);
+        // refresh the cached value
+        idTo = toKey.tokenId;
+        _recordOwner(_recipient, idTo);
+        // check for a non-expiring key
+        if (expirationDuration == type(uint).max) {
+          newTimeStamp = type(uint).max;
+        } else {
+          newTimeStamp = block.timestamp + expirationDuration;
+        }
+        toKey.expirationTimestamp = newTimeStamp;
+
+        // set key manager
+        _setKeyManagerOf(idTo, _keyManagers[i]);
+
+        // trigger event
+        emit Transfer(
+          address(0), // This is a creation.
+          _recipient,
+          idTo
+        );
+      } else if (toKey.expirationTimestamp > block.timestamp) {
+        // prevent re-purchase of a valid non-expiring key
+        require(toKey.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+
+        // This is an existing owner trying to extend their key
+        if(expirationDuration == type(uint).max) {
+          // We check for infinite duration in case there was a change
+          newTimeStamp = type(uint).max;
+        } else {
+          newTimeStamp = toKey.expirationTimestamp + expirationDuration;
+        }
+        
+        toKey.expirationTimestamp = newTimeStamp;
+
+        emit RenewKeyPurchase(_recipient, newTimeStamp);
       } else {
-        newTimeStamp = block.timestamp + expirationDuration;
+        // This is an existing owner trying to renew their expired or cancelled key
+        if(expirationDuration == type(uint).max) {
+          newTimeStamp = type(uint).max;
+        } else {
+          newTimeStamp = block.timestamp + expirationDuration;
+        }
+        toKey.expirationTimestamp = newTimeStamp;
+
+        _setKeyManagerOf(idTo, _keyManagers[i]);
+
+        emit RenewKeyPurchase(_recipient, newTimeStamp);
       }
-      toKey.expirationTimestamp = newTimeStamp;
 
-      // set key manager
-      _setKeyManagerOf(idTo, _keyManager);
+      // price      
+      uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
+      totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
-      // trigger event
-      emit Transfer(
-        address(0), // This is a creation.
-        _recipient,
-        idTo
-      );
-    } else if (toKey.expirationTimestamp > block.timestamp) {
-      // prevent re-purchase of a valid non-expiring key
-      require(toKey.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
-
-      // This is an existing owner trying to extend their key
-      newTimeStamp = toKey.expirationTimestamp + expirationDuration;
-      toKey.expirationTimestamp = newTimeStamp;
-
-      emit RenewKeyPurchase(_recipient, newTimeStamp);
-    } else {
-      // This is an existing owner trying to renew their expired or cancelled key
-      if(expirationDuration == type(uint).max) {
-        newTimeStamp = type(uint).max;
-      } else {
-        newTimeStamp = block.timestamp + expirationDuration;
+      if(tokenAddress != address(0)) {
+        require(inMemoryKeyPrice <= _values[i], 'INSUFFICIENT_ERC20_VALUE');
       }
-      toKey.expirationTimestamp = newTimeStamp;
 
-      _setKeyManagerOf(idTo, _keyManager);
+      // call Unlock contract to record GNP
+      // the function is capped by gas to prevent running out of gas
+      try unlockProtocol.recordKeyPurchase{gas: 300000}(inMemoryKeyPrice, _referrers[i]) 
+      {} 
+      catch {
+        // emit missing unlock
+        emit UnlockCallFailed(address(this), address(unlockProtocol));
+      }
 
-      emit RenewKeyPurchase(_recipient, newTimeStamp);
+      uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
+
+      if(address(onKeyPurchaseHook) != address(0)) {
+        onKeyPurchaseHook.onKeyPurchase(
+          msg.sender, 
+          _recipient, 
+          _referrers[i], 
+          _data, 
+          inMemoryKeyPrice, 
+          pricePaid
+        );
+      }
     }
 
-    
-    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
-
-    try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
-    {} 
-    catch {
-      // emit missing unlock
-      emit UnlockCallFailed(address(this), address(unlockProtocol));
-    }
-
-    // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-    uint pricePaid;
-    if(tokenAddress != address(0))
-    {
-      pricePaid = _value;
+    // transfer the ERC20 tokens
+    if(tokenAddress != address(0)) {
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-      token.transferFrom(msg.sender, address(this), pricePaid);
-    }
-    else
-    {
-      pricePaid = msg.value;
-    }
-    require(pricePaid >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
-
-    if(address(onKeyPurchaseHook) != address(0))
-    {
-      onKeyPurchaseHook.onKeyPurchase(msg.sender, _recipient, _referrer, _data, inMemoryKeyPrice, pricePaid);
+      token.transferFrom(msg.sender, address(this), totalPriceToPay);
+    } else {
+      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+      require(totalPriceToPay <= msg.value, 'INSUFFICIENT_VALUE');
     }
 
     // refund gas

@@ -180,7 +180,7 @@ contract('Unlock (on mainnet)', async () => {
       assert(expirationBefore.eq(0))
 
       let purchaseTx = await publicLock.purchase(
-        0,
+        [],
         recipient,
         referrer,
         web3.utils.padLeft(0, 40),

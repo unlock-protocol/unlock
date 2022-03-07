@@ -24,10 +24,10 @@ contract('Permissions / KeyManager', (accounts) => {
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
     await lock.purchase(
-      0,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [],
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         value: keyPrice.toFixed(),

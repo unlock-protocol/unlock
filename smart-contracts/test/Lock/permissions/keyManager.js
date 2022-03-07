@@ -29,20 +29,17 @@ contract('Permissions / KeyManager', (accounts) => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map((account) => {
-        return lock.purchase(
-          0,
-          account,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice.toFixed(),
-            from: account,
-          }
-        )
-      })
-      await Promise.all(purchases)
+      await lock.purchase(
+        [],
+        keyOwners,
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        [],
+        {
+          value: (keyPrice * keyOwners.length).toFixed(),
+          from: accounts[0],
+        }
+      )
     })
 
     it('should leave the KM == 0x00(default) for new purchases', async () => {
@@ -54,10 +51,10 @@ contract('Permissions / KeyManager', (accounts) => {
     it('should not change KM when topping-up valid keys', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(iD)
       await lock.purchase(
-        0,
-        keyOwner1,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [],
+        [keyOwner1],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: keyPrice.toFixed(),
@@ -75,10 +72,10 @@ contract('Permissions / KeyManager', (accounts) => {
       assert.equal(keyManagerBefore, accounts[9])
       await lock.expireAndRefundFor(keyOwner1, 0, { from: lockManager })
       await lock.purchase(
-        0,
-        keyOwner1,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [],
+        [keyOwner1],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: keyPrice.toFixed(),
@@ -96,20 +93,17 @@ contract('Permissions / KeyManager', (accounts) => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map((account) => {
-        return lock.purchase(
-          0,
-          account,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice.toFixed(),
-            from: account,
-          }
-        )
-      })
-      await Promise.all(purchases)
+      await lock.purchase(
+        [],
+        keyOwners,
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        [],
+        {
+          value: (keyPrice * keyOwners.length).toFixed(),
+          from: accounts[0],
+        }
+      )
       iD = await lock.getTokenIdFor.call(keyOwner3)
       await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
       await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
@@ -155,20 +149,17 @@ contract('Permissions / KeyManager', (accounts) => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map((account) => {
-        return lock.purchase(
-          0,
-          account,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice.toFixed(),
-            from: account,
-          }
-        )
-      })
-      await Promise.all(purchases)
+      await lock.purchase(
+        [],
+        keyOwners,
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        [],
+        {
+          value: (keyPrice * keyOwners.length).toFixed(),
+          from: accounts[0],
+        }
+      )
       iD = await lock.getTokenIdFor.call(keyOwner3)
       await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
       await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
@@ -229,20 +220,17 @@ contract('Permissions / KeyManager', (accounts) => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map((account) => {
-        return lock.purchase(
-          0,
-          account,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice.toFixed(),
-            from: account,
-          }
-        )
-      })
-      await Promise.all(purchases)
+      await lock.purchase(
+        [],
+        keyOwners,
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        [],
+        {
+          value: (keyPrice * keyOwners.length).toFixed(),
+          from: accounts[0],
+        }
+      )
       iD = await lock.getTokenIdFor.call(keyOwner3)
       await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
       await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
@@ -299,20 +287,17 @@ contract('Permissions / KeyManager', (accounts) => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      const purchases = keyOwners.map((account) => {
-        return lock.purchase(
-          0,
-          account,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice.toFixed(),
-            from: account,
-          }
-        )
-      })
-      await Promise.all(purchases)
+      await lock.purchase(
+        [],
+        keyOwners,
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        [],
+        {
+          value: (keyPrice * keyOwners.length).toFixed(),
+          from: accounts[0],
+        }
+      )
       iD = await lock.getTokenIdFor.call(keyOwner3)
       await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
       await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })

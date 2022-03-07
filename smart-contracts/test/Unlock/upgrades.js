@@ -52,7 +52,7 @@ contract('Unlock / upgrades', async (accounts) => {
       const pastPublicLockPath = require.resolve(
         `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${
           // decouple contracts versions after v10
-          versionNumber === 10 ? 9 : versionNumber
+          versionNumber >= 10 ? 9 : versionNumber
         }.sol`
       )
 
@@ -147,7 +147,7 @@ contract('Unlock / upgrades', async (accounts) => {
               // Create Lock
               let lockTx
 
-              if (versionNumber >= 10) {
+              if (versionNumber >= 11) {
                 const args = [
                   60 * 60 * 24, // expirationDuration 1 day
                   web3.utils.padLeft(0, 40), // token address
@@ -374,10 +374,10 @@ contract('Unlock / upgrades', async (accounts) => {
 
                     // Buy Key
                     await lockLatest.purchase(
-                      0,
-                      keyOwner.address,
-                      web3.utils.padLeft(0, 40),
-                      web3.utils.padLeft(0, 40),
+                      [],
+                      [keyOwner.address],
+                      [web3.utils.padLeft(0, 40)],
+                      [web3.utils.padLeft(0, 40)],
                       [],
                       { value: keyPrice }
                     )
@@ -412,6 +412,21 @@ contract('Unlock / upgrades', async (accounts) => {
         })
       }
       async function purchaseKey(lock) {
+        if (versionNumber >= 11) {
+          // Lock Version 11 multiple purchases
+          return await lock
+            .connect(lockOwner)
+            .purchase(
+              [],
+              [keyOwner.address],
+              [web3.utils.padLeft(0, 40)],
+              [web3.utils.padLeft(0, 40)],
+              [],
+              {
+                value: keyPrice,
+              }
+            )
+        }
         if (versionNumber >= 9) {
           // Lock Version 9 (used by Unlock v10) added keyManager to purchase
           return await lock
