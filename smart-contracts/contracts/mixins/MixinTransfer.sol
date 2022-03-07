@@ -125,13 +125,13 @@ contract MixinTransfer is
     require(_from != _recipient, 'TRANSFER_TO_SELF');
     uint fee = getTransferFee(_from, 0);
 
-    Key memory fromKey = getKeyByOwner(_from);
-    Key memory toKey = getKeyByOwner(_recipient);
-
-    uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
-    _timeMachine(_tokenId, fee, false);
-  
+    _timeMachine(_tokenId, fee, false);  
+
+    Key memory fromKey = getKeyByOwner(_from);
+    Key memory toKey = getKeyByOwner(_recipient);    
+    uint previousExpiration = toKey.expirationTimestamp;
+    
     if (toKey.tokenId == 0) {
       // create a new token
       _createNewKey(
@@ -274,7 +274,7 @@ contract MixinTransfer is
     if(! getHasValidKey(_keyOwner)) {
       return 0;
     } else {
-      Key storage key = keyByOwner[_keyOwner];
+      Key memory key = getKeyByOwner(_keyOwner);
       uint timeToTransfer;
       uint fee;
       // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
