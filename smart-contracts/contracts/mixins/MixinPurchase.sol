@@ -142,7 +142,7 @@ contract MixinPurchase is
 
       // call Unlock contract to record GNP
       // the function is capped by gas to prevent running out of gas
-      try unlockProtocol.recordKeyPurchase{gas: 100000}(inMemoryKeyPrice, _referrers[i]) 
+      try unlockProtocol.recordKeyPurchase{gas: 150000}(inMemoryKeyPrice, _referrers[i]) 
       {} 
       catch {
         // emit missing unlock
