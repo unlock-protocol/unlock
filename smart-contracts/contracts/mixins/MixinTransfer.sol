@@ -58,10 +58,11 @@ contract MixinTransfer is
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     require(keyOwner != _to, 'TRANSFER_TO_SELF');
 
-    Key storage fromKey = keyByOwner[keyOwner];
-    Key storage toKey = keyByOwner[_to];
+    Key memory fromKey = getKeyByOwner(keyOwner);
+    Key memory toKey = getKeyByOwner(_to);
     uint idTo = toKey.tokenId;
     uint time;
+
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee based on amount of time wanted share
@@ -78,26 +79,26 @@ contract MixinTransfer is
       // we have to recalculate the fee here
       fee = getTransferFee(keyOwner, timeRemaining);
       time = timeRemaining - fee;
-      fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
+      _updateKeyExpirationTimestamp(keyOwner, block.timestamp); // Effectively expiring the key
       emit ExpireKey(_tokenId);
     }
 
     if (idTo == 0) {
-      _assignNewTokenId(toKey);
-      idTo = toKey.tokenId;
-      _recordOwner(_to, idTo);
-      emit Transfer(
-        address(0), // This is a creation or time-sharing
+      // create new key
+      idTo = _createNewKey(
         _to,
-        idTo
+        address(0),
+        block.timestamp // create expired so we use timeMachine
       );
-    } else if (toKey.expirationTimestamp <= block.timestamp) {
+    } 
+    else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      _setKeyManagerOf(idTo, address(0));
+      _setKeyManagerOf(toKey.tokenId, address(0));
     }
 
-    // add time to new key
+    // add time
     _timeMachine(idTo, time, true);
+
     // trigger event
     emit Transfer(
       keyOwner,
@@ -105,7 +106,7 @@ contract MixinTransfer is
       idTo
     );
 
-    require(_checkOnERC721Received(keyOwner, _to, idTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
+    require(_checkOnERC721Received(keyOwner, _to, toKey.tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
 
   function transferFrom(

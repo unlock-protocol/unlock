@@ -146,7 +146,8 @@ contract MixinKeys is
     address _recipient,
     address _keyManager,
     uint expirationTimestamp
-  ) internal {
+  ) internal 
+  returns (uint) {
     Key storage key = keyByOwner[_recipient];
 
     // We increment the tokenId counter
@@ -168,6 +169,8 @@ contract MixinKeys is
       _recipient,
       key.tokenId
     );
+
+    return key.tokenId;
   }
 
   function _updateKeyExpirationTimestamp(
@@ -175,6 +178,7 @@ contract MixinKeys is
     uint newExpirationTimestamp
   ) internal {
     keyByOwner[_keyOwner].expirationTimestamp = newExpirationTimestamp;
+    // emit ExpirationChanged(keyByOwner[_keyOwner]._tokenId, _deltaT, _addTime);
   }
 
   /**
