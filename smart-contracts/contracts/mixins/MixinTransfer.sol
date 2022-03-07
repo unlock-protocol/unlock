@@ -58,8 +58,8 @@ contract MixinTransfer is
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     require(keyOwner != _to, 'TRANSFER_TO_SELF');
 
-    Key storage fromKey = keyByOwner[keyOwner];
-    Key storage toKey = keyByOwner[_to];
+    Key storage fromKey = getKeysByOwner(keyOwner);
+    Key storage toKey = getKeysByOwner(_to);
     uint idTo = toKey.tokenId;
     uint time;
     // get the remaining time for the origin key
@@ -124,8 +124,8 @@ contract MixinTransfer is
     require(_from != _recipient, 'TRANSFER_TO_SELF');
     uint fee = getTransferFee(_from, 0);
 
-    Key storage fromKey = keyByOwner[_from];
-    Key storage toKey = keyByOwner[_recipient];
+    Key storage fromKey = getKeysByOwner(_from);
+    Key storage toKey = getKeysByOwner(_recipient);
 
     uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
@@ -182,7 +182,7 @@ contract MixinTransfer is
     returns (bool success)
   {
     uint maxTimeToSend = _value * expirationDuration;
-    Key storage fromKey = keyByOwner[msg.sender];
+    Key storage fromKey = getKeysByOwner(msg.sender);
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     if(maxTimeToSend < timeRemaining)
     {
@@ -270,7 +270,7 @@ contract MixinTransfer is
     if(! getHasValidKey(_keyOwner)) {
       return 0;
     } else {
-      Key storage key = keyByOwner[_keyOwner];
+      Key storage key = getKeysByOwner(_keyOwner);
       uint timeToTransfer;
       uint fee;
       // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive

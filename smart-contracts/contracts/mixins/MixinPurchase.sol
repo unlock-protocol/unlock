@@ -68,7 +68,7 @@ contract MixinPurchase is
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
     // Assign the key
-    Key storage toKey = keyByOwner[_recipient];
+    Key storage toKey = getKeysByOwner(_recipient);
     uint idTo = toKey.tokenId;
     uint newTimeStamp;
 
