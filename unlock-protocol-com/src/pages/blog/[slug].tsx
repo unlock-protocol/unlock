@@ -93,12 +93,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const posts = await getPosts(BLOG_PATH)
     const postsIndex = chunk(posts, BLOG_PAGE_SIZE)
     const currentIndexPage = postsIndexPage
+    const nextIndexPage = currentIndexPage + 1
     return {
       props: {
         type: 'postsIndex',
         posts: postsIndex[currentIndexPage - 1],
         total: postsIndex.length,
-        next: currentIndexPage + 1,
+        next: nextIndexPage > postsIndex.length ? null : nextIndexPage,
         prev: currentIndexPage ? currentIndexPage - 1 : null,
       },
     }

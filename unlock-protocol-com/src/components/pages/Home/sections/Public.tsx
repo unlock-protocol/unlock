@@ -52,7 +52,7 @@ export function Public() {
           </ul>
         </div>
         <Button>
-          <Link href={UNLOCK_LINKS.governance}> Goverance FAQ </Link>
+          <Link href={UNLOCK_LINKS.governance}> Governance FAQ </Link>
         </Button>
       </div>
 

@@ -7451,9 +7451,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-avatar@npm:0.1.3":
-  version: 0.1.3
-  resolution: "@radix-ui/react-avatar@npm:0.1.3"
+"@radix-ui/react-avatar@npm:0.1.4":
+  version: 0.1.4
+  resolution: "@radix-ui/react-avatar@npm:0.1.4"
   dependencies:
     "@babel/runtime": ^7.13.10
     "@radix-ui/react-context": 0.1.1
@@ -7462,7 +7462,7 @@ __metadata:
     "@radix-ui/react-use-layout-effect": 0.1.0
   peerDependencies:
     react: ^16.8 || ^17.0
-  checksum: 26ae66b814f39e4c5f33d6219abbaa891ed2efcf8d98d4d32d241208893d9f4acd18ef246d0a3cc35e41a7dad9cb9d9f8d13f6e424e5619696fb973d7faab68a
+  checksum: cbba5f7b7f174a314d37e1c8c6f9a9a7bc9ec30fc5b75af74fa3341d59f3836810d3500189f5bc857f82183c203cdbfd4c87d35077a50778b42a66a8ddd2fd68
   languageName: node
   linkType: hard
 
@@ -14119,7 +14119,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.17.5
     "@headlessui/react": 1.4.3
-    "@radix-ui/react-avatar": 0.1.3
+    "@radix-ui/react-avatar": 0.1.4
     "@testing-library/jest-dom": 5.16.2
     "@testing-library/react": 12.1.3
     "@types/jest": 27.4.1
@@ -14154,7 +14154,6 @@ __metadata:
     path-match: 1.2.4
     postcss: 8.4.5
     prettier: 2.5.1
-    prop-types: 15.8.1
     raw-loader: 4.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -14165,7 +14164,7 @@ __metadata:
     remark-html: 15.0.1
     tailwind-merge: 1.2.0
     tailwindcss: 3.0.18
-    typescript: 4.5.5
+    typescript: 4.6.2
     use-local-storage: 2.3.6
     vitest: 0.3.6
   languageName: unknown
