@@ -32,7 +32,12 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     unlock = await Unlock.at(proxyUnlock.address)
 
     const lockTemplate = await PublicLock.new()
-    await unlock.setLockTemplate(lockTemplate.address, { from: protocolOwner })
+    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
+    await unlock.addLockTemplate(
+      lockTemplate.address,
+      publicLockLatestVersion + 1,
+      { from: protocolOwner }
+    )
 
     const UDTEthers = await ethers.getContractFactory('UnlockDiscountTokenV3')
     const proxyUDT = await upgrades.deployProxy(UDTEthers, [minter], {
@@ -109,10 +114,10 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
 
     // Purchase a valid key for the referrer
     await lock.purchase(
-      0,
-      referrer,
-      constants.ZERO_ADDRESS,
-      web3.utils.padLeft(0, 40),
+      [],
+      [referrer],
+      [constants.ZERO_ADDRESS],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         from: referrer,
@@ -168,10 +173,10 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         from: protocolOwner,
       })
       const { blockNumber } = await lock.purchase(
-        0,
-        keyBuyer,
-        referrer,
-        web3.utils.padLeft(0, 40),
+        [],
+        [keyBuyer],
+        [referrer],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           from: keyBuyer,
@@ -233,10 +238,10 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       ])
 
       await lock.purchase(
-        0,
-        keyBuyer,
-        referrer,
-        web3.utils.padLeft(0, 40),
+        [],
+        [keyBuyer],
+        [referrer],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           from: keyBuyer,

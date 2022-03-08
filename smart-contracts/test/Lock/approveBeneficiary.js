@@ -41,10 +41,10 @@ contract('Lock / approveBeneficiary', (accounts) => {
         from: keyOwner,
       })
       await locks.ERC20.purchase(
-        await locks.ERC20.keyPrice(),
-        keyOwner,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [await locks.ERC20.keyPrice()],
+        [keyOwner],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           from: keyOwner,
