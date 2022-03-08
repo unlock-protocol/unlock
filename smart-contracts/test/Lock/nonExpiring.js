@@ -28,10 +28,10 @@ contract('Lock / non expiring', (accounts) => {
     lock = locks.NON_EXPIRING
     keyPrice = await lock.keyPrice()
     await lock.purchase(
-      0,
-      keyOwner,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      [],
+      [keyOwner],
+      [constants.ZERO_ADDRESS],
+      [constants.ZERO_ADDRESS],
       [],
       {
         from,
@@ -71,10 +71,10 @@ contract('Lock / non expiring', (accounts) => {
       it('should throw an error when re-purchasing an existing key', async () => {
         await reverts(
           lock.purchase(
-            0,
-            keyOwner,
-            constants.ZERO_ADDRESS,
-            constants.ZERO_ADDRESS,
+            [],
+            [keyOwner],
+            [constants.ZERO_ADDRESS],
+            [constants.ZERO_ADDRESS],
             [],
             {
               from,
@@ -95,10 +95,10 @@ contract('Lock / non expiring', (accounts) => {
 
         // purchase again
         await lock.purchase(
-          0,
-          keyOwner,
-          constants.ZERO_ADDRESS,
-          constants.ZERO_ADDRESS,
+          [],
+          [keyOwner],
+          [constants.ZERO_ADDRESS],
+          [constants.ZERO_ADDRESS],
           [],
           {
             from,
@@ -208,10 +208,10 @@ contract('Lock / non expiring', (accounts) => {
 
     // purchase a key
     await lock.purchase(
-      0,
-      keyReceiver,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      [],
+      [keyReceiver],
+      [constants.ZERO_ADDRESS],
+      [constants.ZERO_ADDRESS],
       [],
       {
         from,

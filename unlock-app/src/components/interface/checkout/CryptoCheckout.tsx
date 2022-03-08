@@ -8,7 +8,10 @@ import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
-import { userCanAffordKey } from '../../../utils/checkoutLockUtils'
+import {
+  inClaimDisallowList,
+  userCanAffordKey,
+} from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -57,8 +60,11 @@ export const CryptoCheckout = ({
   const cryptoDisabled =
     userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
   const cardDisabled = hasValidkey || hasOptimisticKey
+
   const canClaimAirdrop =
-    lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled
+    lock.keyPrice === '0' &&
+    lock.fiatPricing?.creditCardEnabled &&
+    !inClaimDisallowList(lock.address)
   const isCreditCardEnabled =
     lock.fiatPricing?.creditCardEnabled && !canClaimAirdrop
 

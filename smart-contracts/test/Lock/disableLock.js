@@ -23,33 +23,21 @@ contract('Lock / disableLock', (accounts) => {
     locks = await deployLocks(unlock, lockOwner)
     lock = locks.FIRST
     await lock.purchase(
-      0,
-      keyOwner,
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [],
+      [keyOwner, keyOwner2, keyOwner3],
+      [
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+      ],
+      [
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+      ],
       [],
       {
-        value: keyPrice,
-      }
-    )
-    await lock.purchase(
-      0,
-      keyOwner2,
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
-      [],
-      {
-        value: keyPrice,
-      }
-    )
-    await lock.purchase(
-      0,
-      keyOwner3,
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
-      [],
-      {
-        value: keyPrice,
+        value: keyPrice * 3,
       }
     )
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
@@ -81,10 +69,10 @@ contract('Lock / disableLock', (accounts) => {
     it('should fail if a user tries to purchase a key', async () => {
       await reverts(
         lock.purchase(
-          0,
-          keyOwner,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
+          [],
+          [keyOwner],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
           [],
           {
             value: keyPrice,
@@ -96,9 +84,16 @@ contract('Lock / disableLock', (accounts) => {
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await reverts(
-        lock.purchase(0, keyOwner, accounts[3], web3.utils.padLeft(0, 40), [], {
-          value: keyPrice,
-        }),
+        lock.purchase(
+          [],
+          [keyOwner],
+          [accounts[3]],
+          [web3.utils.padLeft(0, 40)],
+          [],
+          {
+            value: keyPrice,
+          }
+        ),
         'LOCK_DEPRECATED'
       )
     })

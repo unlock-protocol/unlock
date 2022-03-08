@@ -38,10 +38,10 @@ contract('Lock / cancelAndRefund', (accounts) => {
     lock = locks.SECOND
     const purchases = keyOwners.map((account) => {
       return lock.purchase(
-        0,
-        account,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+        [],
+        [account],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
         [],
         {
           value: keyPrice.toFixed(),

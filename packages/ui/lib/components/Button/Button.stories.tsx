@@ -39,5 +39,22 @@ export const LoadingButton = Template.bind({})
 LoadingButton.args = {
   children: 'Loading Locks...',
   disabled: true,
-  iconRight: <SpinnerIcon className='animate-spin motion-reduce:invisible' size={18} />,
+  iconRight: (
+    <SpinnerIcon className="animate-spin motion-reduce:invisible" size={18} />
+  ),
+}
+
+export const OutlinedPrimaryButton = Template.bind({})
+
+OutlinedPrimaryButton.args = {
+  children: 'Outlined Primary Button',
+  variant: 'outlined-primary',
+}
+
+export const DisabledOutlinedPrimaryButton = Template.bind({})
+
+DisabledOutlinedPrimaryButton.args = {
+  children: 'Disabled Outlined Primary Button',
+  variant: 'outlined-primary',
+  disabled: true,
 }
