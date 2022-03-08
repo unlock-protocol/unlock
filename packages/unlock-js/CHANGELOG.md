@@ -2,7 +2,7 @@
 
 # 0.22.2
 
-- Add support for setExpiration
+- Add support for setExpirationDuration
 
 # 0.21.2
 
