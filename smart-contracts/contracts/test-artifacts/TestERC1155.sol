@@ -9,12 +9,10 @@ contract TestERC1155 is ERC1155 {
 
     function mint(
         address holder,
-        uint tokenTypeId,
-        uint256 amount
+        uint tokenTypeId
     )
     public
-    returns (uint256)
     {
-        _mint(holder, tokenTypeId, amount, "");
+        _mint(holder, tokenTypeId, 1, "");
     }
 }
