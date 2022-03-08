@@ -14,6 +14,9 @@
     "./dist/style.css": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
+    },
+    "./dist/unlock-tailwind-preset": {
+      "require": "./dist/unlock-tailwind-preset.js"
     }
   },
   "version": "0.0.0",
@@ -21,23 +24,34 @@
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "tsc && vite build && tsup ./lib/index.tsx --dts-only",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "yarn build"
   },
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/line-clamp": "^0.3.1",
+    "@tailwindcss/typography": "^0.5.1",
+    "prism-react-renderer": "^1.2.1",
+    "react-icons": "^4.3.1",
+    "tailwind-merge": "^1.2.0",
+    "tailwindcss": "3.0.18"
+  },
+  "peerDependencies": {
     "@headlessui/react": "^1.4.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-icons": "^4.3.1",
-    "tailwind-merge": "^1.2.0"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "7.17.5",
+    "@headlessui/react": "^1.4.3",
     "@mdx-js/preact": "2.0.0",
     "@mdx-js/react": "2.0.0",
     "@storybook/addon-actions": "6.5.0-alpha.31",
     "@storybook/addon-docs": "6.5.0-alpha.31",
     "@storybook/addon-essentials": "6.5.0-alpha.31",
     "@storybook/addon-links": "6.5.0-alpha.31",
+    "@storybook/addon-postcss": "^2.0.0",
     "@storybook/react": "6.5.0-alpha.31",
     "@types/react": "17.0.39",
     "@types/react-dom": "17.0.12",

@@ -1,8 +1,6 @@
 /* eslint no-console: 0 */
 const dotenv = require('dotenv')
 const path = require('path')
-const { resolve } = require('path')
-const { addBlogPagesToPageObject } = require('./src/utils/blog')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 dotenv.config({
@@ -68,7 +66,8 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
     )
   }
 })
-module.exports = {
+
+const nextConfig = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({
@@ -81,19 +80,6 @@ module.exports = {
     })
     return config
   },
-  exportPathMap: async (defaultPathMap, { dir }) => {
-    // Our statically-defined pages to export
-    const pages = {
-      '/': { page: '/home' },
-      '/about': { page: '/about' },
-      '/jobs': { page: '/jobs' },
-      '/terms': { page: '/terms' },
-      '/privacy': { page: '/privacy' },
-      '/blog': { page: '/blog' },
-      '/membership': { page: '/membership' },
-      '/developers': { page: '/developers' },
-    }
-
-    return addBlogPagesToPageObject(resolve(dir, '.'), pages)
-  },
 }
+
+module.exports = nextConfig
