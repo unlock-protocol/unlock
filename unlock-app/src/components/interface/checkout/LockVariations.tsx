@@ -213,20 +213,6 @@ export const QuantityAndDuration = styled.div`
   }
 `
 
-export interface LockProps {
-  address: string
-  name: string
-  formattedKeyPrice: string
-  convertedKeyPrice: string
-  formattedDuration: string
-  formattedKeysAvailable: string
-  onClick?: () => void
-  network: number
-  walletNetwork?: number
-  selectable: boolean
-  cardEnabled: boolean
-}
-
 export interface LoadingLockProps {
   address: string
   network: number
@@ -274,6 +260,17 @@ export const LoadingLock = ({ address, network }: LoadingLockProps) => {
     </LockContainer>
   )
 }
+
+export interface SoldOutLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  network: number
+  cardEnabled: boolean
+}
+
 export const SoldOutLock = ({
   network,
   address,
@@ -282,7 +279,7 @@ export const SoldOutLock = ({
   formattedKeyPrice,
   convertedKeyPrice,
   cardEnabled,
-}: LockProps) => {
+}: SoldOutLockProps) => {
   return (
     <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
       <InfoWrapper>
@@ -305,6 +302,19 @@ export const SoldOutLock = ({
   )
 }
 
+export interface PurchaseableLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  formattedKeysAvailable: string
+  onClick: () => void
+  network: number
+  selectable: boolean
+  cardEnabled: boolean
+}
+
 export const PurchaseableLock = ({
   network,
   address,
@@ -316,7 +326,7 @@ export const PurchaseableLock = ({
   selectable,
   cardEnabled,
   onClick,
-}: LockProps) => {
+}: PurchaseableLockProps) => {
   return (
     <LockContainer
       selectable={selectable}
@@ -346,6 +356,17 @@ export const PurchaseableLock = ({
   )
 }
 
+export interface ProcessingLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  formattedKeysAvailable: string
+  network: number
+  cardEnabled: boolean
+}
+
 export const ProcessingLock = ({
   network,
   address,
@@ -355,7 +376,7 @@ export const ProcessingLock = ({
   convertedKeyPrice,
   formattedKeysAvailable,
   cardEnabled,
-}: LockProps) => {
+}: ProcessingLockProps) => {
   return (
     <LockContainer data-address={address} data-testid="ProcessingLock">
       <InfoWrapper>
@@ -380,6 +401,18 @@ export const ProcessingLock = ({
   )
 }
 
+export interface ConfirmedLockLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  formattedKeysAvailable: string
+  network: number
+  selectable: boolean
+  cardEnabled: boolean
+}
+
 export const ConfirmedLock = ({
   network,
   address,
@@ -390,7 +423,7 @@ export const ConfirmedLock = ({
   formattedKeysAvailable,
   selectable,
   cardEnabled,
-}: LockProps) => {
+}: ConfirmedLockLockProps) => {
   return (
     <LockContainer
       selectable={selectable}
