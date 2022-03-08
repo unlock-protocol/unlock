@@ -76,47 +76,33 @@ contract MixinPurchase is
       require(_recipient != address(0), 'INVALID_ADDRESS');
       
       // Assign the key
-      Key storage toKey = keyByOwner[_recipient];
-      uint idTo = toKey.tokenId;
+      Key memory key = getKeyByOwner(_recipient);
       uint newTimeStamp;
 
-      if (idTo == 0) {
-        // Assign a new tokenId (if a new owner or previously transferred)
-        _assignNewTokenId(toKey);
-        // refresh the cached value
-        idTo = toKey.tokenId;
-        _recordOwner(_recipient, idTo);
+      // key doesnt exist
+      if (key.tokenId == 0) {
         // check for a non-expiring key
         if (expirationDuration == type(uint).max) {
           newTimeStamp = type(uint).max;
         } else {
           newTimeStamp = block.timestamp + expirationDuration;
         }
-        toKey.expirationTimestamp = newTimeStamp;
-
-        // set key manager
-        _setKeyManagerOf(idTo, _keyManagers[i]);
-
-        // trigger event
-        emit Transfer(
-          address(0), // This is a creation.
+        // create a new key
+        _createNewKey(
           _recipient,
-          idTo
+          _keyManagers[i],
+          newTimeStamp
         );
-      } else if (toKey.expirationTimestamp > block.timestamp) {
+      } else if (key.expirationTimestamp > block.timestamp) {
         // prevent re-purchase of a valid non-expiring key
-        require(toKey.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+        require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
 
         // This is an existing owner trying to extend their key
-        if(expirationDuration == type(uint).max) {
-          // We check for infinite duration in case there was a change
-          newTimeStamp = type(uint).max;
-        } else {
-          newTimeStamp = toKey.expirationTimestamp + expirationDuration;
-        }
-        
-        toKey.expirationTimestamp = newTimeStamp;
-
+        newTimeStamp = key.expirationTimestamp + expirationDuration;
+        _updateKeyExpirationTimestamp(
+          _recipient,
+          newTimeStamp
+        );
         emit RenewKeyPurchase(_recipient, newTimeStamp);
       } else {
         // This is an existing owner trying to renew their expired or cancelled key
@@ -125,10 +111,8 @@ contract MixinPurchase is
         } else {
           newTimeStamp = block.timestamp + expirationDuration;
         }
-        toKey.expirationTimestamp = newTimeStamp;
-
-        _setKeyManagerOf(idTo, _keyManagers[i]);
-
+        _updateKeyExpirationTimestamp(_recipient, newTimeStamp);
+        _setKeyManagerOf(key.tokenId, _keyManagers[i]);
         emit RenewKeyPurchase(_recipient, newTimeStamp);
       }
 
@@ -149,8 +133,8 @@ contract MixinPurchase is
         emit UnlockCallFailed(address(this), address(unlockProtocol));
       }
 
+      // fire hook
       uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
-
       if(address(onKeyPurchaseHook) != address(0)) {
         onKeyPurchaseHook.onKeyPurchase(
           msg.sender, 
