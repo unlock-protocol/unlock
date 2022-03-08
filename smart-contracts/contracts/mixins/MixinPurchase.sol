@@ -90,7 +90,7 @@ contract MixinPurchase is
         // create a new key
         _createNewKey(
           _recipient,
-          _keyManager,
+          _keyManagers[i],
           newTimeStamp
         );
       } else if (key.expirationTimestamp > block.timestamp) {

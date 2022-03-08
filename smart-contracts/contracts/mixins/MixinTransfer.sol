@@ -133,12 +133,13 @@ contract MixinTransfer is
     uint previousExpiration = toKey.expirationTimestamp;
     
     if (toKey.tokenId == 0) {
-      // create a new token
-      _createNewKey(
+      // transfer a token
+      _transferKey(
+        _tokenId,
         _recipient,
-        address(0),
         fromKey.expirationTimestamp
       );
+
       // Clear any previous approvals
       _clearApproval(_tokenId);
     } 

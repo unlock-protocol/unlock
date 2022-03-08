@@ -154,12 +154,12 @@ contract MixinKeys is
     _totalSupply++;
     key.tokenId = _totalSupply;
 
+    // This is a brand new owner
+    _recordOwner(_recipient, key.tokenId);
+    
     // set expiration
     key.expirationTimestamp = expirationTimestamp;
     
-    // This is a brand new owner
-    _recordOwner(_recipient, key.tokenId);
-
     // set key manager
     _setKeyManagerOf(key.tokenId, _keyManager);
 
@@ -169,6 +169,32 @@ contract MixinKeys is
       _recipient,
       key.tokenId
     );
+
+    return key.tokenId;
+  }
+
+  /**
+   * Transfer a key with a new tokenId and store it 
+   * 
+   */
+  function _transferKey(
+    uint _tokenId,
+    address _recipient,
+    uint expirationTimestamp
+  ) internal 
+  returns (uint) {
+
+    Key storage key = keyByOwner[_recipient];
+    require(key.tokenId == 0, 'OWNER_ALREADY_HAS_KEY');
+
+    // set new key
+    key.tokenId = _tokenId;
+
+    // store ownership
+    _recordOwner(_recipient, _tokenId);
+
+    // set expiration
+    key.expirationTimestamp = expirationTimestamp;
 
     return key.tokenId;
   }
