@@ -81,7 +81,7 @@ export const Lock = ({
     onSelected && onSelected(lock)
   }
 
-  const lockProps: LockVariations.LockProps = {
+  const lockProps: any = {
     onClick,
     ...getLockProps(
       lock,
