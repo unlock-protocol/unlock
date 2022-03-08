@@ -46,27 +46,46 @@ export interface KeyPayload {
 
 type Web3Provider = string | providers.Web3Provider
 
+type Callback = (
+  error: Error | null,
+  hash: string | null,
+  transaction: any | null
+) => unknown
+
 export class Web3Service {
   constructor(params: NetworkConfigs)
-  getTransaction: (
-    transactionHash: string,
-    network: number
-  ) => Promise<void>
+  getTransaction: (transactionHash: string, network: number) => Promise<void>
   getLock: (address: string, network: number) => Promise<RawLock>
-  getKeyByLockForOwner: (lock: string, owner: string, network: number) => Promise<KeyResult>
+  getKeyByLockForOwner: (
+    lock: string,
+    owner: string,
+    network: number
+  ) => Promise<KeyResult>
   getTokenBalance: (
     tokenAddress: string,
     accountAddress: string,
     network: number
   ) => Promise<string>
-  isLockManager: (lock: string, manager: string, network: number) => Promise<boolean>
-  ownerOf: (lockAddress: string, tokenId: string, network: number) => Promise<string>
+  isLockManager: (
+    lock: string,
+    manager: string,
+    network: number
+  ) => Promise<boolean>
+  ownerOf: (
+    lockAddress: string,
+    tokenId: string,
+    network: number
+  ) => Promise<string>
   isKeyGranter: (
     lockAddress: string,
     owner: string,
     network: number
   ) => Promise<boolean>
-  getKeyExpirationByLockForOwner: (lock: string, owner: string, network: number) => Promise<KeyPayload>
+  getKeyExpirationByLockForOwner: (
+    lock: string,
+    owner: string,
+    network: number
+  ) => Promise<KeyPayload>
 }
 
 interface SetKeyMetadataParams {
@@ -106,7 +125,10 @@ export class WalletService {
   connect: (provider: Web3Provider, signer: unknown) => Promise<string>
   setUnlockAddress: (address: string) => void
   getAccount: () => Promise<string | false>
-  grantKey: ({ lockAddress: string, recipient: string }, callback: function) => unknown
+  grantKey: (
+    params: { lockAddress: string; recipient: string },
+    callback: () => unknown
+  ) => unknown
   // callback is never called with an error and is always called with
   // a hash -- this may change in the future.
   purchaseKey: (
@@ -117,4 +139,17 @@ export class WalletService {
       transaction: any | null
     ) => void
   ) => Promise<string>
+
+  setMaxNumberOfKeys(
+    params: { lockAddress: string; maxNumberOfKeys: number },
+    callback: Callback
+  ): Promise<void>
+
+  setExpirationDuration(
+    params: {
+      lockAddress: string
+      expirationDuration: number
+    },
+    callback: Callback
+  ): Promise<void>
 }
