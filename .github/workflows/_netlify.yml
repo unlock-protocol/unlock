@@ -26,6 +26,8 @@ on:
         required: true
       AUTH_TOKEN:
         required: true
+      NEXT_PUBLIC_UNLOCK_ENV:
+        required: false
       # unlock-app only
       BASE64_WEDLOCKS_PUBLIC_KEY:
         required: false
