@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
 import Svg from '../svg'
+import { inClaimDisallowList } from '../../../utils/checkoutLockUtils'
 
 interface CheckoutMethodProps {
   onWalletSelected: () => void
@@ -18,9 +19,14 @@ export const CheckoutMethod = ({
   onNewAccountSelected,
   onNewAccountWithCardSelected,
 }: CheckoutMethodProps) => {
-  const isCreditCardEnabled = lock.fiatPricing?.creditCardEnabled
+  const isCreditCardEnabled =
+    lock.fiatPricing?.creditCardEnabled && lock.keyPrice !== '0'
+  const isGrantPossible =
+    lock.keyPrice === '0' &&
+    lock.fiatPricing?.creditCardEnabled &&
+    !inClaimDisallowList(lock.address)
 
-  if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
+  if (isGrantPossible) {
     // We can grant keys for free!
     return (
       <Wrapper>
@@ -45,52 +51,52 @@ export const CheckoutMethod = ({
       </Wrapper>
     )
   }
+
+  if (isCreditCardEnabled) {
+    return (
+      <Wrapper>
+        <MainChoice onClick={onNewAccountWithCardSelected}>
+          <Icon>
+            <Svg.CreditCard />
+          </Icon>
+          Pay with Credit Card
+        </MainChoice>
+        <SecondChoice onClick={onWalletSelected}>
+          <Icon>
+            <Svg.Wallet />
+          </Icon>
+          Connect your crypto Wallet
+        </SecondChoice>
+        <SecondChoice onClick={showLogin}>
+          <Icon>
+            <Svg.Person />
+          </Icon>
+          Already have an Unlock account?
+        </SecondChoice>
+      </Wrapper>
+    )
+  }
+
   return (
     <Wrapper>
-      {isCreditCardEnabled && (
-        <>
-          <MainChoice onClick={onNewAccountWithCardSelected}>
-            <Icon>
-              <Svg.CreditCard />
-            </Icon>
-            Pay with Credit Card
-          </MainChoice>
-          <SecondChoice onClick={onWalletSelected}>
-            <Icon>
-              <Svg.Wallet />
-            </Icon>
-            Connect your crypto Wallet
-          </SecondChoice>
-          <SecondChoice onClick={showLogin}>
-            <Icon>
-              <Svg.Person />
-            </Icon>
-            Already have an Unlock account?
-          </SecondChoice>
-        </>
-      )}
-      {!isCreditCardEnabled && (
-        <>
-          <MainChoice onClick={onWalletSelected}>
-            <Icon>
-              <Svg.Wallet />
-            </Icon>
-            Connect your crypto Wallet
-          </MainChoice>
-          <SecondChoice onClick={showLogin}>
-            <Icon>
-              <Svg.Unlock />
-            </Icon>
-            Already have an Unlock account?
-          </SecondChoice>
-          <SecondChoice disabled>
-            <Icon>
-              <Svg.CreditCard />
-            </Icon>
-            Credit card unavailable for this lock
-          </SecondChoice>
-        </>
-      )}
+      <MainChoice onClick={onWalletSelected}>
+        <Icon>
+          <Svg.Wallet />
+        </Icon>
+        Connect your crypto Wallet
+      </MainChoice>
+      <SecondChoice onClick={showLogin}>
+        <Icon>
+          <Svg.Unlock />
+        </Icon>
+        Already have an Unlock account?
+      </SecondChoice>
+      <SecondChoice disabled>
+        <Icon>
+          <Svg.CreditCard />
+        </Icon>
+        Credit card unavailable for this lock
+      </SecondChoice>
     </Wrapper>
   )
 }
