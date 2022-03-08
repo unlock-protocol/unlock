@@ -12,10 +12,10 @@ export function MembershipExplained() {
   return (
     <section className="grid items-center justify-center gap-6 mx-auto max-w-7xl md:grid-cols-2 sm:flex-row sm:gap-x-16">
       <div className="w-full">
-        <video muted autoPlay loop className="object-fit pointer-none">
-          <source src="/videos/marketing/membership.webm" type="video/webm" />
-          <p> We couldn&apos;t load this video for you. </p>
-        </video>
+        <img
+          alt="membership explained animation"
+          src="images/svg/membership-explained.svg"
+        />
       </div>
       <div className="space-y-6 ">
         <img
