@@ -37,20 +37,17 @@ contract('Lock / shareKey', (accounts) => {
 
   before(async () => {
     lock = locks.FIRST
-    const purchases = keyOwners.map((account) => {
-      return lock.purchase(
-        0,
-        account,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        [],
-        {
-          value: keyPrice.toFixed(),
-          from: account,
-        }
-      )
-    })
-    await Promise.all(purchases)
+    await lock.purchase(
+      [],
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      [],
+      {
+        value: (keyPrice * keyOwners.length).toFixed(),
+        from: keyOwners[0],
+      }
+    )
   })
 
   describe('failing to share a key', () => {
