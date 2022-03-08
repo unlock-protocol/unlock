@@ -57,7 +57,6 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   // TODO: IS THIS USED?
   const wrappedOnSubmit = async (formResult: { [key: string]: string }) => {
     const metadata = formResultToMetadata(formResult, fields)
-    console.log(formResult, fields, skipOptionalFields)
     setSubmittedForm(true)
     setError('')
     try {
