@@ -20,7 +20,6 @@ const Address = ({ id, className, address }: AddressProps) => {
 Address.defaultProps = {
   className: '',
   id: '',
-  address: '0x0000000000000000000000000000000000000000',
 }
 
 const Abbrevation = styled.abbr`
