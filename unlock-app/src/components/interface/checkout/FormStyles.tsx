@@ -31,6 +31,20 @@ export const Label = styled.label`
   margin-bottom: 3px;
 `
 
+export const ActionLabel = styled.button`
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  text-align: right;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--grey);
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
 export const Select = styled.select`
   height: 48px;
   width: 100%;
