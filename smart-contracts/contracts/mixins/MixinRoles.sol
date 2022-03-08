@@ -12,15 +12,11 @@ contract MixinRoles is AccessControlUpgradeable {
   bytes32 public constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
   bytes32 public constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
 
-  // used for `owner()`convenience helper
-  address private _convenienceOwner;
-
   // events
   event LockManagerAdded(address indexed account);
   event LockManagerRemoved(address indexed account);
   event KeyGranterAdded(address indexed account);
   event KeyGranterRemoved(address indexed account);
-  event OwnershipTransferred(address previousOwner, address newOwner);
 
   // initializer
   function _initializeMixinRoles(address sender) internal {
@@ -38,7 +34,6 @@ contract MixinRoles is AccessControlUpgradeable {
       _setupRole(KEY_GRANTER_ROLE, sender);
     }
 
-    _convenienceOwner = sender;
   }
 
   // modifiers
@@ -82,34 +77,6 @@ contract MixinRoles is AccessControlUpgradeable {
   function revokeKeyGranter(address _granter) public onlyLockManager {
     revokeRole(KEY_GRANTER_ROLE, _granter);
     emit KeyGranterRemoved(_granter);
-  }
-
-
-  /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
-    * The `Ownable` logic is used by many 3rd party services to determine
-    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
-    * 
-    * @notice This logic is NOT used internally by the Unlock Protocol and is made 
-    * available only as a convenience helper.
-   */
-  function owner() public view returns (address) {
-    return _convenienceOwner;
-  }
-
-  /** Setter for the `owner` convenience helper (see `owner()` docstring for more).
-    * @notice This logic is NOT used internally by the Unlock Protocol ans is made 
-    * available only as a convenience helper.
-    * @param account address returned by the `owner()` helper
-   */ 
-  function setOwner(address account) public onlyLockManager {
-    require(account != address(0), 'OWNER_CANT_BE_ADDRESS_ZERO');
-    address _previousOwner = _convenienceOwner;
-    _convenienceOwner = account;
-    emit OwnershipTransferred(_previousOwner, account);
-  }
-
-  function isOwner(address account) public view returns (bool) {
-    return _convenienceOwner == account;
   }
 
   uint256[1000] private __safe_upgrade_gap;
