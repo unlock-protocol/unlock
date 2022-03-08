@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ActionButton } from '../buttons/ActionButton'
 import Svg from '../svg'
+import { inClaimDisallowList } from '../../../utils/checkoutLockUtils'
 
 interface CheckoutMethodProps {
   onWalletSelected: () => void
@@ -20,7 +21,11 @@ export const CheckoutMethod = ({
 }: CheckoutMethodProps) => {
   const isCreditCardEnabled = lock.fiatPricing?.creditCardEnabled
 
-  if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
+  if (
+    lock.keyPrice === '0' &&
+    lock.fiatPricing?.creditCardEnabled &&
+    !inClaimDisallowList(lock.address)
+  ) {
     // We can grant keys for free!
     return (
       <Wrapper>
