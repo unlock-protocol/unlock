@@ -91,6 +91,17 @@ export const NeutralButton = styled(Button)`
   background-color: var(--grey);
 `
 
+export const DefaultButton = styled(Button)`
+  background-color: var(--lightgrey);
+  color: #000;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--lightgrey);
+    border: 1px solid var(--blue);
+  }
+`
+
 export const FormError = styled.p`
   font-size: 12px;
   color: var(--red);

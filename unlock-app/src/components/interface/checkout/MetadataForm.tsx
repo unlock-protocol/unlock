@@ -2,7 +2,13 @@ import React, { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
-import { Button, LoadingButton, Input, Label } from './FormStyles'
+import {
+  Button,
+  LoadingButton,
+  Input,
+  Label,
+  DefaultButton,
+} from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
@@ -40,6 +46,10 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
     defaultValues,
   })
   const [submittedForm, setSubmittedForm] = useState(false)
+  const [skipOptionalFields, setSkipOptionalFields] = useState(false)
+
+  const showSkipButton =
+    fields.every((field) => field.required === false) && !submittedForm
 
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed
@@ -47,10 +57,13 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   // TODO: IS THIS USED?
   const wrappedOnSubmit = async (formResult: { [key: string]: string }) => {
     const metadata = formResultToMetadata(formResult, fields)
+    console.log(formResult, fields, skipOptionalFields)
     setSubmittedForm(true)
     setError('')
     try {
-      await setUserMetadataData(lock.address, metadata, network)
+      if (!skipOptionalFields) {
+        await setUserMetadataData(lock.address, metadata, network)
+      }
       onSubmit(metadata)
     } catch (error: any) {
       setError('We could not save your info, please try again.')
@@ -80,6 +93,11 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
       {submittedForm && <LoadingButton>Saving</LoadingButton>}
 
       {!submittedForm && <Button type="submit">Save and Continue</Button>}
+      {showSkipButton && (
+        <DefaultButton onClick={() => setSkipOptionalFields(true)}>
+          Skip
+        </DefaultButton>
+      )}
     </form>
   )
 }
