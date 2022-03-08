@@ -676,6 +676,31 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect(lock.maxNumberOfKeys).toBe(200)
           })
         })
+        describe('setExpirationDuration', () => {
+          let expirationDuration
+
+          beforeAll(async () => {
+            expirationDuration = lock.expirationDuration
+            await walletService.setExpirationDuration(
+              {
+                lockAddress,
+                expirationDuration: parseFloat(200).toString(),
+              },
+              (error) => {
+                if (error) {
+                  throw error
+                }
+              }
+            )
+            lock = await web3Service.getLock(lockAddress, chainId)
+          })
+
+          it('Check if setMaxNumberOfKeys updated the maxNumberOfKeys', () => {
+            expect.assertions(2)
+            expect(expirationDuration).not.toBe(lock.expirationDuration)
+            expect(lock.expirationDuration).toBe(200)
+          })
+        })
       }
 
       if (['v4', 'v6'].indexOf(publicLockVersion) === -1) {

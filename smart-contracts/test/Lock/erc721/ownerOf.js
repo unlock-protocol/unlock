@@ -20,10 +20,10 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
 
   it('should return the owner of the key', async () => {
     await locks.FIRST.purchase(
-      0,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [],
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         value: web3.utils.toWei('0.01', 'ether'),
