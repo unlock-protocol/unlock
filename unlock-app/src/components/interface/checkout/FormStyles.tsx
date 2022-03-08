@@ -31,6 +31,20 @@ export const Label = styled.label`
   margin-bottom: 3px;
 `
 
+export const ActionLabel = styled.button`
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  text-align: right;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--grey);
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
 export const Select = styled.select`
   height: 48px;
   width: 100%;
@@ -89,6 +103,17 @@ export const Button = styled.button`
 
 export const NeutralButton = styled(Button)`
   background-color: var(--grey);
+`
+
+export const DefaultButton = styled(Button)`
+  background-color: var(--lightgrey);
+  color: #000;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--lightgrey);
+    border: 1px solid var(--blue);
+  }
 `
 
 export const FormError = styled.p`
