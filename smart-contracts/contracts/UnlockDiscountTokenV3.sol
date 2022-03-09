@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import './UnlockDiscountTokenV2.sol';
+import '@unlock-protocol/contracts/dist/UnlockDiscountToken/UnlockDiscountTokenV2.sol';
 
 /**
 * @title The Unlock Discount Token
