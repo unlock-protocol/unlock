@@ -42,7 +42,9 @@ export class HookController {
       mode: request.body['hub.mode'],
       callback: request.body['hub.callback'],
       secret: request.body['hub.secret'],
-      lease_seconds: Number(request.body['hub.lease_seconds']),
+      lease_seconds: request.body['hub.lease_seconds']
+        ? Number(request.body['hub.lease_seconds'])
+        : undefined,
     }
 
     if (!network) {
