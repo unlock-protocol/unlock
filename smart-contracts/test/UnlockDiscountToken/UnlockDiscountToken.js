@@ -1,9 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { reverts } = require('truffle-assertions')
 
-const UnlockDiscountToken = artifacts.require(
-  '@unlock-protocol/contracts/dist/Unlock/UnlockDiscountToken.sol'
-)
+const UnlockDiscountToken = artifacts.require('UnlockDiscountV3.sol')
 const getProxy = require('../helpers/proxy')
 
 contract('UnlockDiscountToken', (accounts) => {
