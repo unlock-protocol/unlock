@@ -58,10 +58,11 @@ contract MixinTransfer is
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     require(keyOwner != _to, 'TRANSFER_TO_SELF');
 
-    Key storage fromKey = keyByOwner[keyOwner];
-    Key storage toKey = keyByOwner[_to];
+    Key memory fromKey = getKeyByOwner(keyOwner);
+    Key memory toKey = getKeyByOwner(_to);
     uint idTo = toKey.tokenId;
     uint time;
+
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee based on amount of time wanted share
@@ -78,26 +79,26 @@ contract MixinTransfer is
       // we have to recalculate the fee here
       fee = getTransferFee(keyOwner, timeRemaining);
       time = timeRemaining - fee;
-      fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
+      _updateKeyExpirationTimestamp(keyOwner, block.timestamp); // Effectively expiring the key
       emit ExpireKey(_tokenId);
     }
 
     if (idTo == 0) {
-      _assignNewTokenId(toKey);
-      idTo = toKey.tokenId;
-      _recordOwner(_to, idTo);
-      emit Transfer(
-        address(0), // This is a creation or time-sharing
+      // create new key
+      idTo = _createNewKey(
         _to,
-        idTo
+        address(0),
+        block.timestamp // create expired so we use timeMachine
       );
-    } else if (toKey.expirationTimestamp <= block.timestamp) {
+    } 
+    else if (toKey.expirationTimestamp <= block.timestamp) {
       // reset the key Manager for expired keys
-      _setKeyManagerOf(idTo, address(0));
+      _setKeyManagerOf(toKey.tokenId, address(0));
     }
 
-    // add time to new key
+    // add time
     _timeMachine(idTo, time, true);
+
     // trigger event
     emit Transfer(
       keyOwner,
@@ -105,7 +106,7 @@ contract MixinTransfer is
       idTo
     );
 
-    require(_checkOnERC721Received(keyOwner, _to, idTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
+    require(_checkOnERC721Received(keyOwner, _to, toKey.tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
 
   function transferFrom(
@@ -124,42 +125,46 @@ contract MixinTransfer is
     require(_from != _recipient, 'TRANSFER_TO_SELF');
     uint fee = getTransferFee(_from, 0);
 
-    Key storage fromKey = keyByOwner[_from];
-    Key storage toKey = keyByOwner[_recipient];
-
-    uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
-    _timeMachine(_tokenId, fee, false);
+    _timeMachine(_tokenId, fee, false);  
 
+    Key memory fromKey = getKeyByOwner(_from);
+    Key memory toKey = getKeyByOwner(_recipient);    
+    uint previousExpiration = toKey.expirationTimestamp;
+    
     if (toKey.tokenId == 0) {
-      toKey.tokenId = _tokenId;
-      _recordOwner(_recipient, _tokenId);
+      // transfer a token
+      _transferKey(
+        _tokenId,
+        _recipient,
+        fromKey.expirationTimestamp
+      );
+
       // Clear any previous approvals
       _clearApproval(_tokenId);
-    }
+    } 
+    else if (previousExpiration <= block.timestamp) {
+      // The recipient had a key but it expired. The new expiration is the sender's key expiration
+      _updateKeyExpirationTimestamp(_recipient, fromKey.expirationTimestamp);
 
-    if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
       // An expired key is no longer a valid key, so the new tokenID is the sender's tokenID
-      toKey.expirationTimestamp = fromKey.expirationTimestamp;
-      toKey.tokenId = _tokenId;
+      _updateKeyTokenId(_recipient, _tokenId);
 
       // Reset the key Manager to the key owner
       _setKeyManagerOf(_tokenId, address(0));
-
       _recordOwner(_recipient, _tokenId);
     } else {
       require(expirationDuration != type(uint).max, 'Recipient already owns a non-expiring key');
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      toKey.expirationTimestamp = fromKey.expirationTimestamp + previousExpiration - block.timestamp;
+      _updateKeyExpirationTimestamp(
+        _recipient,
+        fromKey.expirationTimestamp + previousExpiration - block.timestamp
+      );
     }
 
-    // Effectively expiring the key for the previous owner
-    fromKey.expirationTimestamp = block.timestamp;
-
-    // Set the tokenID to 0 for the previous owner to avoid duplicates
-    fromKey.tokenId = 0;
+    // expire the transferred key
+    _expireKey(_from);
 
     // trigger event
     emit Transfer(
@@ -182,7 +187,7 @@ contract MixinTransfer is
     returns (bool success)
   {
     uint maxTimeToSend = _value * expirationDuration;
-    Key storage fromKey = keyByOwner[msg.sender];
+    Key memory fromKey = getKeyByOwner(msg.sender);
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     if(maxTimeToSend < timeRemaining)
     {
@@ -270,7 +275,7 @@ contract MixinTransfer is
     if(! getHasValidKey(_keyOwner)) {
       return 0;
     } else {
-      Key storage key = keyByOwner[_keyOwner];
+      Key memory key = getKeyByOwner(_keyOwner);
       uint timeToTransfer;
       uint fee;
       // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
