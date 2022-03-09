@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { Lock } from './Lock'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -15,6 +15,9 @@ import {
 import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
+import { getAddressForName } from '../../../hooks/useEns'
+
+import { Input, Label } from './FormStyles'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -50,6 +53,9 @@ export const CryptoCheckout = ({
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
+  const [isAdvanced, setIsAdvanced] = useState(false)
+  const [recipient, setRecipient] = useState<string | undefined>('')
+  const [recipientValid, setRecipientValid] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
@@ -128,6 +134,30 @@ export const CryptoCheckout = ({
     getBalance()
   }, [account, lock.address, walletNetwork])
 
+  useEffect(() => {
+    if (isAdvanced) return
+    setRecipientValid(true)
+    setRecipient('')
+  }, [isAdvanced])
+
+  const onRecipientChange = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value
+      setRecipientValid(false)
+      setRecipient(value)
+      const address = await getAddressForName(value)
+      if (address) {
+        setRecipient(address)
+        setRecipientValid(true)
+      }
+    },
+    []
+  )
+
+  const advancedRecipientValid = isAdvanced
+    ? (recipient?.length ?? 0) > 0 && recipientValid
+    : true
+
   return (
     <>
       <Lock
@@ -139,13 +169,41 @@ export const CryptoCheckout = ({
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
       />
+      <SmallButton onClick={() => setIsAdvanced(!isAdvanced)}>
+        {isAdvanced ? 'Close advanced' : 'Advanced'}
+      </SmallButton>
+      {isAdvanced && (
+        <>
+          <Label>Recipient</Label>
+          <Input
+            type="text"
+            placeholder="Recipient address"
+            name="recipient"
+            onChange={onRecipientChange}
+            style={{ marginBottom: '0.2rem' }}
+          />
+          {recipient?.length ? (
+            recipientValid ? (
+              <Success style={{ marginTop: '0px' }}>
+                Recipient address is valid
+              </Success>
+            ) : (
+              <Warning style={{ marginTop: '0px' }}>
+                Enter a valid recipient address
+              </Warning>
+            )
+          ) : null}
+        </>
+      )}
 
       {!transactionPending && keyExpiration < now && (
         <>
           <Prompt>Get your membership with:</Prompt>
 
           <CheckoutOptions>
-            <CheckoutButton disabled={cryptoDisabled}>
+            <CheckoutButton
+              disabled={cryptoDisabled || !advancedRecipientValid}
+            >
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && !hasValidkey && (
                 <Warning>
@@ -162,7 +220,9 @@ export const CryptoCheckout = ({
                 !canAfford && <Warning>Your balance is too low</Warning>}
             </CheckoutButton>
 
-            <CheckoutButton disabled={!isCreditCardEnabled}>
+            <CheckoutButton
+              disabled={!isCreditCardEnabled || !advancedRecipientValid}
+            >
               <Buttons.CreditCard
                 lock={lock}
                 backgroundColor="var(--blue)"
@@ -278,6 +338,10 @@ const Warning = styled(Message)`
   text-align: center;
 `
 
+const Success = styled(Warning)`
+  color: var(--green);
+`
+
 const CheckoutOptions = styled.div`
   width: 50%;
   display: flex;
@@ -289,4 +353,16 @@ const CheckoutOptions = styled.div`
 const Prompt = styled.p`
   font-size: 16px;
   color: var(--dimgrey);
+`
+const SmallButton = styled.small`
+  margin-top: 0.25rem;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 0.7em;
+  font-weight: 500;
+  color: var(--grey);
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
