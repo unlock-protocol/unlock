@@ -33,8 +33,7 @@ contract MixinKeys is
 
   // Keys
   // Each owner can have at most exactly one key
-  // TODO: could we use public here? (this could be confusing though because it getter will
-  // return 0 values when missing a key)
+  // return 0 values when missing a key
   mapping (address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
@@ -87,7 +86,7 @@ contract MixinKeys is
     address _keyOwner
   ) {
     require(
-      keyByOwner[_keyOwner].expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
+      getKeyByOwner(_keyOwner).expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
     );
     _;
   }
@@ -123,6 +122,107 @@ contract MixinKeys is
   }
 
   /**
+   * Get a key owned by a specific address
+   * @return The key owned by `_keyOwner`
+  */
+  function getKeyByOwner(
+    address _keyOwner
+  ) 
+    internal
+    view
+    returns (
+      Key memory 
+    )
+  {
+    return keyByOwner[_keyOwner];
+  }
+
+
+  /**
+   * Create a new key with a new tokenId and store it 
+   * 
+   */
+  function _createNewKey(
+    address _recipient,
+    address _keyManager,
+    uint expirationTimestamp
+  ) internal 
+  returns (uint) {
+    Key storage key = keyByOwner[_recipient];
+
+    // We increment the tokenId counter
+    _totalSupply++;
+    key.tokenId = _totalSupply;
+
+    // This is a brand new owner
+    _recordOwner(_recipient, key.tokenId);
+    
+    // set expiration
+    key.expirationTimestamp = expirationTimestamp;
+    
+    // set key manager
+    _setKeyManagerOf(key.tokenId, _keyManager);
+
+    // trigger event
+    emit Transfer(
+      address(0), // This is a creation.
+      _recipient,
+      key.tokenId
+    );
+
+    return key.tokenId;
+  }
+
+  /**
+   * Transfer a key with a new tokenId and store it 
+   * 
+   */
+  function _transferKey(
+    uint _tokenId,
+    address _recipient,
+    uint expirationTimestamp
+  ) internal 
+  returns (uint) {
+
+    Key storage key = keyByOwner[_recipient];
+    require(key.tokenId == 0, 'OWNER_ALREADY_HAS_KEY');
+
+    // set new key
+    key.tokenId = _tokenId;
+
+    // store ownership
+    _recordOwner(_recipient, _tokenId);
+
+    // set expiration
+    key.expirationTimestamp = expirationTimestamp;
+
+    return key.tokenId;
+  }
+
+  function _updateKeyExpirationTimestamp(
+    address _keyOwner,
+    uint newExpirationTimestamp
+  ) internal {
+    keyByOwner[_keyOwner].expirationTimestamp = newExpirationTimestamp;
+  }
+  
+  function _updateKeyTokenId(
+    address _keyOwner,
+    uint _tokenId
+  ) internal {
+    keyByOwner[_keyOwner].tokenId = _tokenId;
+  }
+
+  function _expireKey(
+    address _keyOwner
+  ) internal {
+    // Effectively expiring the key
+    keyByOwner[_keyOwner].expirationTimestamp = block.timestamp;
+    // Set the tokenID to 0 to avoid duplicates
+    keyByOwner[_keyOwner].tokenId = 0;
+  }
+
+  /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
    * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
   */
@@ -147,14 +247,14 @@ contract MixinKeys is
     view
     returns (bool isValid)
   { 
-    isValid = keyByOwner[_keyOwner].expirationTimestamp > block.timestamp;
+    isValid = getKeyByOwner(_keyOwner).expirationTimestamp > block.timestamp;
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
       isValid = onValidKeyHook.hasValidKey(
         address(this),
         _keyOwner,
-        keyByOwner[_keyOwner].expirationTimestamp,
+        getKeyByOwner(_keyOwner).expirationTimestamp,
         isValid
       );
     }    
@@ -169,7 +269,7 @@ contract MixinKeys is
   ) public view
     returns (uint)
   {
-    return keyByOwner[_account].tokenId;
+    return getKeyByOwner(_account).tokenId;
   }
 
   /**
@@ -182,11 +282,9 @@ contract MixinKeys is
   ) public view
     returns (uint)
   {
-    return keyByOwner[_keyOwner].expirationTimestamp;
+    return getKeyByOwner(_keyOwner).expirationTimestamp;
   }
 
-  
-  
 
   // Returns the owner of a given tokenId
   function ownerOf(
@@ -276,7 +374,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    uint tokenId = keyByOwner[_owner].tokenId;
+    uint tokenId = getKeyByOwner(_owner).tokenId;
     address keyManager = keyManagerOf[tokenId];
     if(keyManager == address(0)) {
       return managerToOperatorApproved[_owner][_operator];
@@ -330,7 +428,7 @@ contract MixinKeys is
   {
 
     // check expiration ts should be set to know if owner had previously registered a key 
-    Key memory key = keyByOwner[_keyOwner];
+    Key memory key = getKeyByOwner(_keyOwner);
     if(key.expirationTimestamp == 0 ) {
       numberOfOwners++;
     }
