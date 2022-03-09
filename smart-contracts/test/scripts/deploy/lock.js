@@ -45,21 +45,23 @@ contract('Scripts/deploy:lock', () => {
 
     // deploy locks
     await Promise.all(
-      Object.keys(Locks).map(async (name) => {
-        const lockArgs = [
-          Locks[name].expirationDuration.toFixed(),
-          web3.utils.padLeft(0, 40),
-          Locks[name].keyPrice.toFixed(),
-          Locks[name].maxNumberOfKeys.toFixed(),
-          Locks[name].lockName,
-          web3.utils.randomHex(12),
-        ]
-        const tx = await unlock.createLock(...lockArgs)
-        const { events } = await tx.wait()
-        const { args } = events.find((v) => v.event === 'NewLock')
-        locks[name] = await PublicLock.attach(args.newLockAddress)
-        locks[name].params = Locks[name]
-      })
+      Object.keys(Locks)
+        .filter((name) => name != 'NON_EXPIRING') // avoid max 100yrs revert
+        .map(async (name) => {
+          const lockArgs = [
+            Locks[name].expirationDuration.toFixed(),
+            web3.utils.padLeft(0, 40),
+            Locks[name].keyPrice.toFixed(),
+            Locks[name].maxNumberOfKeys.toFixed(),
+            Locks[name].lockName,
+            web3.utils.randomHex(12),
+          ]
+          const tx = await unlock.createLock(...lockArgs)
+          const { events } = await tx.wait()
+          const { args } = events.find((v) => v.event === 'NewLock')
+          locks[name] = await PublicLock.attach(args.newLockAddress)
+          locks[name].params = Locks[name]
+        })
     )
 
     unlockAddress = unlock.address

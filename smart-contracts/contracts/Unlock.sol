@@ -203,7 +203,7 @@ contract Unlock is
   /**
   * @notice Create lock (legacy)
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
+  * @param _expirationDuration the duration of the lock (pass type(uint).max for unlimited duration)
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
   * @param _keyPrice the price of each key
   * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
@@ -255,11 +255,28 @@ contract Unlock is
     bytes memory data
   ) public returns(address)
   {
+    address newLock = createUpgradeableLockAtVersion(data, publicLockLatestVersion);
+    return newLock;
+  }
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details)
+   * @param _lockVersion the version of the lock to use
+  */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 _lockVersion
+  ) public returns (address) {
     require(proxyAdminAddress != address(0), "proxyAdmin is not set");
-    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
+
+    // get lock version
+    address publicLockImpl = _publicLockImpls[_lockVersion];
+    require(publicLockImpl != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockAddress, proxyAdminAddress, data);
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockImpl, proxyAdminAddress, data);
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock

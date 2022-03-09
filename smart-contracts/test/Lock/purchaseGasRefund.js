@@ -8,8 +8,8 @@ const unlockContract = artifacts.require('Unlock.sol')
 
 let unlock
 let locks
-const keyPrice = web3.utils.toWei('0.05', 'ether')
-const gasRefundAmount = new BN(web3.utils.toWei('0.01', 'ether'))
+const keyPrice = web3.utils.toWei('0.01', 'ether')
+const gasRefundAmount = new BN(web3.utils.toWei('0.001', 'ether'))
 
 // test for ERC20 and ETH
 const scenarios = [true, false]
@@ -87,10 +87,10 @@ contract('Lock / GasRefund', (accounts) => {
             : new BN(await web3.eth.getBalance(accounts[2]))
 
           tx = await lock.purchase(
-            keyPrice.toString(),
-            accounts[2],
-            tokenAddress,
-            web3.utils.padLeft(0, 40),
+            [keyPrice.toString()],
+            [accounts[2]],
+            [tokenAddress],
+            [web3.utils.padLeft(0, 40)],
             [],
             {
               from: accounts[2],
@@ -125,6 +125,7 @@ contract('Lock / GasRefund', (accounts) => {
           const gas = gasPrice.mul(gasUsed)
 
           const refund = new BN(keyPrice).sub(gasRefundAmount)
+
           const expected = isErc20
             ? // buy a key, get a refund
               userBalanceBefore.sub(refund)
@@ -146,10 +147,10 @@ contract('Lock / GasRefund', (accounts) => {
             : new BN(await web3.eth.getBalance(accounts[2]))
 
           tx = await lock.purchase(
-            keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
+            [keyPrice.toString()],
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
             [],
             {
               from: accounts[2],

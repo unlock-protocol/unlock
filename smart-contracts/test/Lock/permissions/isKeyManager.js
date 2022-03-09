@@ -14,8 +14,15 @@ contract('Permissions / isKeyManager', (accounts) => {
   lockCreator = accounts[0]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   before(async () => {
+    // init template
     unlock = await getProxy(unlockContract)
-    await unlock.setLockTemplate((await KeyManagerMock.new()).address)
+    const keyManagerMock = await KeyManagerMock.new()
+    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
+    await unlock.addLockTemplate(
+      keyManagerMock.address,
+      publicLockLatestVersion + 1
+    )
+
     const args = [
       60 * 60 * 24 * 30, // 30 days
       web3.utils.padLeft(0, 40),
@@ -29,10 +36,10 @@ contract('Permissions / isKeyManager', (accounts) => {
     lockAddress = tx.logs[0].args.newLockAddress
     lock = await KeyManagerMock.at(lockAddress)
     await lock.purchase(
-      0,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [],
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         value: keyPrice.toFixed(),

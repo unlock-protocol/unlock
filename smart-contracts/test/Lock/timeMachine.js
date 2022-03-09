@@ -24,7 +24,14 @@ contract('Lock / timeMachine', (accounts) => {
 
   before(async () => {
     unlock = await getProxy(unlockContract)
-    await unlock.setLockTemplate((await TimeMachineMock.new()).address)
+
+    // init template
+    const timeMachine = await TimeMachineMock.new()
+    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
+    await unlock.addLockTemplate(
+      timeMachine.address,
+      publicLockLatestVersion + 1
+    )
 
     const args = [
       expirationDuration.toNumber(),
@@ -41,10 +48,10 @@ contract('Lock / timeMachine', (accounts) => {
     // Change the fee to 5%
     await lock.updateTransferFee(500, { from: lockOwner })
     await lock.purchase(
-      0,
-      keyOwner,
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
+      [],
+      [keyOwner],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
       [],
       {
         value: keyPrice.toFixed(),

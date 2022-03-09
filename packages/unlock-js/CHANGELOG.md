@@ -1,5 +1,9 @@
 # Changes
 
+# 0.22.2
+
+- Add support for setExpirationDuration
+
 # 0.21.2
 
 - Better support for locks with infinite duration
