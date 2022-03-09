@@ -1759,7 +1759,7 @@ abstract contract ERC20MintableUpgradeable is Initializable, ERC20Upgradeable, M
 // File contracts/UnlockDiscountTokenV2.sol
 
 
-pragma solidity ^0.8.0;
+
 
 /**
 * @title The Unlock Discount Token
