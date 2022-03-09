@@ -13,7 +13,7 @@ const Hub = z.object({
   topic: z.string().url(),
   callback: z.string().url(),
   mode: z.enum(['subscribe', 'unsubscribe']),
-  lease_seconds: z.number().optional(),
+  lease_seconds: z.number().positive().optional(),
   secret: z.string().optional(),
 })
 
@@ -42,7 +42,7 @@ export class HookController {
       mode: request.body['hub.mode'],
       callback: request.body['hub.callback'],
       secret: request.body['hub.secret'],
-      lease_seconds: request.body['hub.lease_seconds'],
+      lease_seconds: Number(request.body['hub.lease_seconds']),
     }
 
     if (!network) {
@@ -56,7 +56,7 @@ export class HookController {
       response.status(202).send('Accepted')
       try {
         await this.verifySubscriber(hub)
-        logger.info(`Subscription intent confirmed for ${hub.topic}`)
+        logger.info(`${hub.mode} intent confirmed for ${hub.topic}`)
         await this.updateHook(hub, request.params)
         return
       } catch (error) {
