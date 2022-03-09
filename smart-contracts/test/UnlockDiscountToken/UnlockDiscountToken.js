@@ -3,6 +3,8 @@ const { reverts } = require('truffle-assertions')
 
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 const getProxy = require('../helpers/proxy')
+const { errorMessages } = require('../helpers/constants')
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 contract('UnlockDiscountToken', (accounts) => {
   let unlockDiscountToken
@@ -15,7 +17,7 @@ contract('UnlockDiscountToken', (accounts) => {
   it('shouldFail to call init again', async () => {
     await reverts(
       unlockDiscountToken.initialize(minter),
-      'Contract instance has already been initialized'
+      `${VM_ERROR_REVERT_WITH_REASON} 'Initializable: contract is already initialized'`
     )
   })
 
