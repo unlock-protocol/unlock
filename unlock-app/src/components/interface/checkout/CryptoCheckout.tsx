@@ -66,7 +66,9 @@ export const CryptoCheckout = ({
     lock.fiatPricing?.creditCardEnabled &&
     !inClaimDisallowList(lock.address)
   const isCreditCardEnabled =
-    lock.fiatPricing?.creditCardEnabled && !canClaimAirdrop
+    lock.fiatPricing?.creditCardEnabled &&
+    !canClaimAirdrop &&
+    lock.keyPrice !== '0'
 
   const handleHasKey = (key: any) => {
     setKeyExpiration(key.expiration)
