@@ -157,7 +157,15 @@ contract MixinPurchase is
     }
   }
 
-
+  /**
+  * @dev Extend function
+  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_value is ignored when using ETH)
+  * @param _recipient address of the recipient of the key to extend
+  * @param _referrer address of the user making the referral
+  * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
+  */
   function extend(
     uint256 _value,
     address _recipient,
