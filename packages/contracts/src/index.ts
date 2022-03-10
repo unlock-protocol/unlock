@@ -24,6 +24,7 @@ import UnlockV8 from './abis/Unlock/UnlockV8.json'
 import UnlockV9 from './abis/Unlock/UnlockV9.json' 
 import UnlockDiscountTokenV0 from './abis/UnlockDiscountToken/UnlockDiscountTokenV0.json' 
 import UnlockDiscountTokenV1 from './abis/UnlockDiscountToken/UnlockDiscountTokenV1.json' 
+import UnlockDiscountTokenV2 from './abis/UnlockDiscountToken/UnlockDiscountTokenV2.json' 
 import LockSerializer from './abis/utils/LockSerializer.json'
 
 
@@ -51,4 +52,5 @@ export {UnlockV8}
 export {UnlockV9}
 export {UnlockDiscountTokenV0}
 export {UnlockDiscountTokenV1}
+export {UnlockDiscountTokenV2}
 export {LockSerializer}

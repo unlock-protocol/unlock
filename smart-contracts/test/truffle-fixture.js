@@ -37,16 +37,6 @@ module.exports = async () => {
   await unlock.connect(unlockOwner).addLockTemplate(publicLock.address, version)
   await unlock.connect(unlockOwner).setLockTemplate(publicLock.address)
 
-  // 4. deploy UDT
-  const UDT = await ethers.getContractFactory('UnlockDiscountToken')
-  const token = await upgrades.deployProxy(UDT, [minter.address], {
-    initializer: 'initialize(address)',
-  })
-  await token.deployed()
-
-  // save deployment info
-  await addDeployment('UnlockDiscountToken', token, true)
-
   // 5. deploy UDT (v3)
   const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
   const tokenv3 = await upgrades.deployProxy(UDTv3, [minter.address], {
