@@ -4,6 +4,7 @@ const { reverts } = require('truffle-assertions')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
+
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 contract('UnlockDiscountToken', (accounts) => {
