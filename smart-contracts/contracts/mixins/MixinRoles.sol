@@ -33,6 +33,7 @@ contract MixinRoles is AccessControlUpgradeable {
     if (!isKeyGranter(sender)) {
       _setupRole(KEY_GRANTER_ROLE, sender);
     }
+
   }
 
   // modifiers
