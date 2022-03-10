@@ -17,7 +17,7 @@ import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { getAddressForName } from '../../../hooks/useEns'
 
-import { Input, Label } from './FormStyles'
+import { Input, Label, SmallButton } from './FormStyles'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -357,18 +357,4 @@ const CheckoutOptions = styled.div`
 const Prompt = styled.p`
   font-size: 16px;
   color: var(--dimgrey);
-`
-const SmallButton = styled.button`
-  margin-top: 0.25rem;
-  margin-left: auto;
-  cursor: pointer;
-  font-size: 0.7em;
-  font-weight: 500;
-  color: var(--grey);
-  float: right;
-  width: unset;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `
