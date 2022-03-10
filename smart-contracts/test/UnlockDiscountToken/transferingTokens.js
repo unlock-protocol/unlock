@@ -5,7 +5,7 @@ const { ethers, upgrades, network } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const Unlock = artifacts.require('Unlock.sol')
-const UnlockDiscountToken = artifacts.require('UnlockDiscountToken.sol')
+const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 const PublicLock = artifacts.require('PublicLock')
 
 let unlock
