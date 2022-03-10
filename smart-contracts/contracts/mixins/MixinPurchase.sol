@@ -169,6 +169,9 @@ contract MixinPurchase is
     payable
     onlyIfAlive 
   {
+    Key memory key = getKeyByOwner(_recipient);
+    require(key.tokenId != 0, 'NON_EXISTING_KEY');
+
     // extend key duration
     _extendKey(_recipient);
 
