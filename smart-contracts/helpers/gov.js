@@ -52,10 +52,26 @@ const getProposalIdFromContract = async (proposal) => {
 
 const parseProposal = async ({
   contractName,
-  functionName,
-  functionArgs,
+  calldata,
   proposalName,
   value = 0,
+}) => {
+  // get contract instance
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address } = await getDeployment(chainId, contractName)
+
+  return [
+    [address], // contract to send the proposal to
+    [value], // value in ETH, default to 0
+    [calldata], // encoded func call
+    proposalName,
+  ]
+}
+
+const encodeProposalArgs = async ({
+  contractName,
+  functionName,
+  functionArgs,
 }) => {
   // get contract instance
   const { chainId } = await ethers.provider.getNetwork()
@@ -65,12 +81,19 @@ const parseProposal = async ({
   // parse function data
   const calldata = encodeProposalFunc({ interface, functionName, functionArgs })
 
-  return [
-    [address], // contract to send the proposal to
-    [value], // value in ETH, default to 0
-    [calldata], // encoded func call
-    proposalName,
-  ]
+  return calldata
+}
+
+const decodeProposalArgs = async ({ contractName, functionName, calldata }) => {
+  // get contract instance
+  const { chainId } = await ethers.provider.getNetwork()
+  const { abi, address } = await getDeployment(chainId, contractName)
+  const { interface } = new ethers.Contract(address, abi)
+
+  // parse function data
+  const decoded = interface.decodeFunctionData(functionName, calldata)
+
+  return decoded
 }
 
 const queueProposal = async ({ proposal }) => {
@@ -121,6 +144,7 @@ const getProposalVotes = async (proposalId) => {
   const votes = await gov.proposalVotes(proposalId)
   return votes
 }
+
 const getProposalState = async (proposalId) => {
   const states = [
     'Pending',
@@ -147,6 +171,8 @@ module.exports = {
   getProposalId,
   getProposalIdFromContract,
   parseProposal,
+  encodeProposalArgs,
+  decodeProposalArgs,
   submitProposal,
   queueProposal,
   executeProposal,

@@ -1,5 +1,10 @@
 const { ethers } = require('hardhat')
-const { parseProposal, submitProposal } = require('../../helpers/gov')
+const {
+  parseProposal,
+  encodeProposalArgs,
+  decodeProposalArgs,
+  submitProposal,
+} = require('../../helpers/gov')
 const { impersonate } = require('../../test/helpers/mainnet')
 
 async function main({
@@ -8,32 +13,55 @@ async function main({
   functionName,
   functionArgs,
   proposalName,
+  calldata,
 }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  if (!proposerAddress) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing proposer address.')
-  }
+  let proposal
   if (!functionName) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing function name.')
   }
-  if (!functionArgs) {
+  if (!contractName) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing function args.')
+    throw new Error('GOV SUBMIT > Missing function name.')
   }
+  if (!proposerAddress) {
+    // eslint-disable-next-line no-console
+    throw new Error('GOV SUBMIT > Missing proposer address.')
+  }
+
   if (!proposalName) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing proposal name.')
   }
 
-  const proposal = await parseProposal({
+  if (!calldata && !functionArgs) {
+    // eslint-disable-next-line no-console
+    throw new Error('GOV SUBMIT > Missing calldata or function args.')
+  }
+
+  if (!calldata) {
+    calldata = await encodeProposalArgs({
+      contractName,
+      functionName,
+      functionArgs,
+    })
+  } else {
+    // parse to log
+    functionArgs = await decodeProposalArgs({
+      contractName,
+      functionName,
+      calldata,
+    })
+  }
+
+  // parse proposal correctly
+  proposal = await parseProposal({
     contractName,
-    functionName,
-    functionArgs,
+    calldata,
     proposalName,
   })
 
