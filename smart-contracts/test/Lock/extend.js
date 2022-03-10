@@ -91,7 +91,7 @@ contract('Lock / extend keys', (accounts) => {
                 from: accounts[6],
               }
             ),
-            isErc20 ? 'INSUFFICIENT_ERC20_VALUE': 'INSUFFICIENT_VALUE'
+            isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'
           )
         })
 
