@@ -56,6 +56,7 @@ export const CryptoCheckout = ({
   const [isAdvanced, setIsAdvanced] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
   const [recipientValid, setRecipientValid] = useState(false)
+  const [checkingRecipient, setCheckingRecipient] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
@@ -146,7 +147,9 @@ export const CryptoCheckout = ({
     const value = event.target.value
     setRecipientValid(false)
     setRecipient(value)
+    setCheckingRecipient(true)
     const address = await getAddressForName(value)
+    setCheckingRecipient(false)
     if (address) {
       setRecipient(address)
       setRecipientValid(true)
@@ -186,17 +189,11 @@ export const CryptoCheckout = ({
             onChange={onRecipientChange}
             style={{ marginBottom: '0.2rem' }}
           />
-          {recipient?.length ? (
-            recipientValid ? (
-              <Success style={{ marginTop: '0px' }}>
-                Recipient address is valid
-              </Success>
-            ) : (
-              <Warning style={{ marginTop: '0px' }}>
-                Enter a valid recipient address
-              </Warning>
-            )
-          ) : null}
+          {!advancedRecipientValid && !checkingRecipient && (
+            <Warning style={{ marginTop: '0px' }}>
+              Enter a valid recipient address
+            </Warning>
+          )}
         </>
       )}
 
