@@ -54,7 +54,7 @@ export const CryptoCheckout = ({
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
   const [isAdvanced, setIsAdvanced] = useState(false)
-  const [recipient, setRecipient] = useState<string | undefined>('')
+  const [recipient, setRecipient] = useState<string>('')
   const [recipientValid, setRecipientValid] = useState(false)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
@@ -140,22 +140,26 @@ export const CryptoCheckout = ({
     setRecipient('')
   }, [isAdvanced])
 
-  const onRecipientChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value
-      setRecipientValid(false)
-      setRecipient(value)
-      const address = await getAddressForName(value)
-      if (address) {
-        setRecipient(address)
-        setRecipientValid(true)
-      }
-    },
-    []
-  )
+  const onRecipientChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = event.target.value
+    setRecipientValid(false)
+    setRecipient(value)
+    const address = await getAddressForName(value)
+    if (address) {
+      setRecipient(address)
+      setRecipientValid(true)
+    }
+  }
+
+  const onCardPurchase = useCallback((isDisabled = false) => {
+    if (isDisabled) return
+    setCardPurchase()
+  }, [])
 
   const advancedRecipientValid = isAdvanced
-    ? (recipient?.length ?? 0) > 0 && recipientValid
+    ? recipient?.length > 0 && recipientValid
     : true
 
   return (
@@ -231,7 +235,7 @@ export const CryptoCheckout = ({
                 size="36px"
                 disabled={cardDisabled}
                 as="button"
-                onClick={setCardPurchase}
+                onClick={() => onCardPurchase(cardDisabled)}
               />
             </CheckoutButton>
 
@@ -244,7 +248,7 @@ export const CryptoCheckout = ({
                   showLabel
                   size="36px"
                   as="button"
-                  onClick={setCardPurchase}
+                  onClick={onCardPurchase}
                 />
               </CheckoutButton>
             )}
@@ -354,13 +358,15 @@ const Prompt = styled.p`
   font-size: 16px;
   color: var(--dimgrey);
 `
-const SmallButton = styled.small`
+const SmallButton = styled.button`
   margin-top: 0.25rem;
   margin-left: auto;
   cursor: pointer;
   font-size: 0.7em;
   font-weight: 500;
   color: var(--grey);
+  float: right;
+  width: unset;
 
   &:hover {
     text-decoration: underline;
