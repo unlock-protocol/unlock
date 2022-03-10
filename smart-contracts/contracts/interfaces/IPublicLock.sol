@@ -217,10 +217,10 @@ interface IPublicLock
   * than keyPrice is approved for spending).
   */
   function purchase(
-    uint256 _value,
-    address _recipient,
-    address _referrer,
-    address _keyManager,
+    uint256[] calldata _values,
+    address[] calldata _recipients,
+    address[] calldata _referrers,
+    address[] calldata _keyManagers,
     bytes calldata _data
   ) external payable;
   
@@ -238,7 +238,7 @@ interface IPublicLock
     address _recipient,
     address _referrer,
     bytes calldata _data
-  ) public payable;
+  ) external payable;
 
   /**
   * @param _gasRefundValue price in wei or token in smallest price unit
