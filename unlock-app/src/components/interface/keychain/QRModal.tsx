@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import InlineModal from '../InlineModal'
-import { Input } from '../user-account/styles'
 
 interface Props {
   active: boolean
