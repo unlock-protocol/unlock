@@ -13,8 +13,14 @@ async function main({
   functionName,
   functionArgs,
   proposalName,
+  proposalId: _proposalId,
   calldata,
 }) {
+  if (_proposalId) {
+    // eslint-disable-next-line no-console
+    console.log('GOV SUBMIT > proposalId is present, skipping submit task')
+    return
+  }
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
@@ -66,7 +72,9 @@ async function main({
   )
 
   // submit the proposal
-  if (isDev) {
+  if (isDev || process.env.RUN_MAINNET_FORK) {
+    // eslint-disable-next-line no-console
+    console.log('GOV SUBMIT (dev) > Impersonate proposer ')
     await impersonate(proposerAddress)
   }
   // eslint-disable-next-line no-console
@@ -87,8 +95,6 @@ async function main({
   console.log(
     `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
   )
-
-  return proposalId
 }
 
 // execute as standalone

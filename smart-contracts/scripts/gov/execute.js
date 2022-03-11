@@ -16,7 +16,7 @@ async function main({ proposal }) {
     throw new Error('GOV EXEC > Missing proposal.')
   }
 
-  const proposalId = await getProposalId(proposal)
+  const proposalId = proposal.proposalId || (await getProposalId(proposal))
 
   // contract instance etc
   let state = await getProposalState(proposalId)

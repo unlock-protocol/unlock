@@ -148,6 +148,7 @@ const submitProposal = async ({ proposerAddress, proposal }) => {
   const { chainId } = await ethers.provider.getNetwork()
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
   const proposerWallet = await ethers.getSigner(proposerAddress)
+
   const gov = new ethers.Contract(address, abi, proposerWallet)
   return await gov.propose(...proposal)
 }
@@ -158,6 +159,15 @@ const getProposalVotes = async (proposalId) => {
   const gov = await ethers.getContractAt(abi, address)
   const votes = await gov.proposalVotes(proposalId)
   return votes
+}
+
+const getQuorum = async () => {
+  const { chainId } = await ethers.provider.getNetwork()
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+  const gov = await ethers.getContractAt(abi, address)
+
+  const currentBlock = await ethers.provider.getBlockNumber()
+  return await gov.quorum(currentBlock - 1)
 }
 
 const getProposalState = async (proposalId) => {
@@ -181,6 +191,7 @@ const getProposalState = async (proposalId) => {
 
 module.exports = {
   getProposalVotes,
+  getQuorum,
   getProposalState,
   encodeProposalFunc,
   getProposalId,
