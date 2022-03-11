@@ -84,11 +84,12 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
         <>
           <Form onSubmit={handleSubmit}>
             <Label htmlFor="emailInput">Email Address</Label>
-            <Input
+            <input
               required
               name="emailAddress"
               id="emailInput"
               type="email"
+              className="flex w-full"
               placeholder="Enter your email to get started"
               onChange={handleInputChange}
             />
@@ -156,16 +157,6 @@ const Description = styled.p`
 
 const Form = styled.form`
   max-width: 600px;
-`
-
-const Input = styled.input`
-  height: 48px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
 `
 
 const Confirmation = styled.div`

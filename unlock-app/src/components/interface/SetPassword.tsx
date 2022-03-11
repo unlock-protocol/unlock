@@ -119,7 +119,7 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Label htmlFor="passwordInput">Password</Label>
-      <Input
+      <input
         required
         name="password"
         type="password"
@@ -129,7 +129,7 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
       />
       <br />
       <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
-      <Input
+      <input
         required
         name="passwordConfirmation"
         type="password"
@@ -156,16 +156,6 @@ const Label = styled.label`
   color: var(--darkgrey);
   margin-top: 10px;
   margin-bottom: 5px;
-`
-
-const Input = styled.input`
-  height: 48px;
-  width: 100%;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
 `
 
 const Form = styled.form`
