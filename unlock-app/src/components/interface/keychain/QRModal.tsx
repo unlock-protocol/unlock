@@ -32,7 +32,8 @@ export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
   return (
     <InlineModal active={active} dismiss={dismiss}>
       <QRCode value={QRUrl()} size={256} includeMargin />
-      <Input
+      <input
+        className="w-full my-4"
         type="email"
         required
         value={recipient}
