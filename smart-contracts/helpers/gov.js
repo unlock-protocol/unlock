@@ -52,14 +52,29 @@ const getProposalIdFromContract = async (proposal) => {
 
 const parseProposal = async ({
   contractName,
-  calldata,
+  calldata, // if not present, will be encoded using func name + args
+  functionName,
+  functionArgs,
   proposalName,
   value = 0,
 }) => {
+  if (!calldata && !functionArgs) {
+    // eslint-disable-next-line no-console
+    throw new Error('Missing calldata or function args.')
+  }
+
   // get contract instance
   const { chainId } = await ethers.provider.getNetwork()
   const { address } = await getDeployment(chainId, contractName)
 
+  // if no call data, then parse it
+  if (!calldata) {
+    calldata = await encodeProposalArgs({
+      contractName,
+      functionName,
+      functionArgs,
+    })
+  }
   return [
     [address], // contract to send the proposal to
     [value], // value in ETH, default to 0

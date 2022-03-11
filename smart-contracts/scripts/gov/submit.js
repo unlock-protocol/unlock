@@ -38,11 +38,6 @@ async function main({
     throw new Error('GOV SUBMIT > Missing proposal name.')
   }
 
-  if (!calldata && !functionArgs) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing calldata or function args.')
-  }
-
   if (!calldata) {
     calldata = await encodeProposalArgs({
       contractName,
