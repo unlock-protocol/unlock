@@ -94,18 +94,14 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
   }
 
   const toggleCurrency = () => {
-    if (lockInForm.currencyContractAddress) {
-      return dispatch({
-        change: [
-          { name: 'currencyContractAddress', value: null },
-          { name: 'currencySymbol', value: null },
-        ],
-      })
-    }
+    const erc20Address = lockInForm.currencyContractAddress
+      ? null
+      : erc20.address
+    const erc20Symbol = lockInForm.currencyContractAddress ? null : erc20.symbol
     dispatch({
       change: [
-        { name: 'currencyContractAddress', value: erc20.address },
-        { name: 'currencySymbol', value: erc20.symbol },
+        { name: 'currencyContractAddress', value: erc20Address },
+        { name: 'currencySymbol', value: erc20Symbol },
       ],
     })
   }
@@ -131,8 +127,11 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
         }
         break
       case 'maxNumberOfKeys':
-        if (value !== UNLIMITED_KEYS_COUNT && !isPositiveInteger(value)) {
+        if (!isPositiveInteger(value)) {
           return 'The number of keys needs to be greater than 0'
+        }
+        if (parseInt(value, 10) < lock.outstandingKeys) {
+          return `The number of keys needs to be greater than existing number of keys (${lock.outstandingKeys})`
         }
         break
       case 'keyPrice':
