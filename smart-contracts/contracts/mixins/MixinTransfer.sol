@@ -154,7 +154,7 @@ contract MixinTransfer is
       _setKeyManagerOf(_tokenId, address(0));
       _recordOwner(_recipient, _tokenId);
     } else {
-      require(expirationDuration != type(uint).max, 'Recipient already owns a non-expiring key');
+      require(expirationDuration != type(uint).max, 'UNLIMITED_KEY');
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
       _updateKeyExpirationTimestamp(

@@ -37,12 +37,12 @@ contract MixinRoles is AccessControlUpgradeable {
 
   // modifiers
   modifier onlyLockManager() {
-    require( hasRole(LOCK_MANAGER_ROLE, msg.sender), 'MixinRoles: caller does not have the LockManager role');
+    require( hasRole(LOCK_MANAGER_ROLE, msg.sender), 'ONLY_LOCK_MANAGER');
     _;
   }
 
   modifier onlyKeyGranterOrManager() {
-    require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'MixinRoles: caller does not have the KeyGranter or LockManager role');
+    require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'ONLY_LOCK_MANAGER_OR_KEY_GRANTER');
     _;
   }
 
