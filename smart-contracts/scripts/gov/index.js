@@ -1,21 +1,28 @@
 const { run, ethers, network } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getDeployment } = require('../../helpers/deployments')
-const { addUDT } = require('../../test/helpers/mainnet')
+const { addUDT, getDictator } = require('../../test/helpers/mainnet')
 
 async function main({ proposal }) {
-  const [, holder, dictator] = await ethers.getSigners()
+  const [, holder, localDictator] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
+
+  const quorum = await run('gov:quorum')
+  const dictator = process.env.RUN_MAINNET_FORK
+    ? localDictator
+    : await getDictator()
 
   // lower voting period on mainnet
   if (chainId === 31337 || process.env.RUN_MAINNET_FORK) {
     // eslint-disable-next-line no-console
     console.log('GOV (dev) > Dev mode ON')
-
     const { address: govAddress } = getDeployment(
       chainId,
       'UnlockProtocolGovernor'
     )
+    // eslint-disable-next-line no-console
+    console.log(`GOV (dev) > gov contract: ${govAddress}`)
+
     // eslint-disable-next-line no-console
     console.log('GOV (dev) > gov voting period to 50 blocks')
     await network.provider.send('hardhat_setStorageAt', [
@@ -26,9 +33,8 @@ async function main({ proposal }) {
 
     // Authoritarian mode: delegate UDT to a single voter (aka dictator) to bypass quorum
     // NB: this has to be done *before* proposal submission's block height so votes get accounted for
-
-    const quorum = 15000 // 15k UDT quorum hardcoded in contract
     await addUDT(holder.address, quorum * 2)
+
     // eslint-disable-next-line no-console
     console.log(`GOV (dev) > added 30k UDT to account ${holder.address}`)
 
@@ -45,21 +51,30 @@ async function main({ proposal }) {
     if (evt) {
       // eslint-disable-next-line no-console
       console.log(
-        `GOV VOTE (dev) > ${holder.address} delegated quorum to voter`,
+        `GOV VOTE (dev) > ${holder.address} delegated quorum to ${dictator.address}`,
         `(total votes: ${ethers.utils.formatUnits(
           await udt.getVotes(dictator.address),
           18
         )})`
       )
     }
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `GOV VOTE (dev) > Dictator votes: ${ethers.utils.formatUnits(
+        await udt.getVotes(dictator.address),
+        18
+      )}`
+    )
     await time.advanceBlock()
   }
 
   // Run the gov workflow
   await run('gov:submit', { proposal })
   await run('gov:vote', { proposal }) // no voter address enables authoritarian mode
-  await run('gov:queue', { proposal })
-  await run('gov:execute', { proposal })
+  await run('gov:votes', { proposal }) // show votes
+  // await run('gov:queue', { proposal })
+  // await run('gov:execute', { proposal })
 }
 
 // execute as standalone

@@ -31,7 +31,7 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
 
     // eslint-disable-next-line import/no-dynamic-require
     const proposal = require(resolve(proposalPath))
-    const proposalId = await getProposalId(proposal)
+    const proposalId = proposal.proposalId || (await getProposalId(proposal))
 
     return await voteProposal({ proposalId, voter })
   })
@@ -39,11 +39,11 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
 task('gov:queue', 'Queue proposal in timelock')
   .addParam('proposal', 'The file containing the proposal')
   .setAction(async ({ proposal: proposalPath }) => {
-    const executeProposal = require('../scripts/gov/queue')
+    const queueProposal = require('../scripts/gov/queue')
 
     // eslint-disable-next-line import/no-dynamic-require
     const proposal = require(resolve(proposalPath))
-    return await executeProposal({ proposal })
+    return await queueProposal({ proposal })
   })
 
 task('gov:execute', 'Closing vote period and execute a proposal (local only)')
@@ -61,27 +61,39 @@ task('gov:execute', 'Closing vote period and execute a proposal (local only)')
  */
 task('gov:votes', 'Show votes for a specific proposal')
   .addParam('proposal', 'The file containing the proposal')
-  .setAction(async ({ proposal: proposalPath }) => {
-    const { getProposalVotes, getProposalId } = require('../helpers/gov')
+  .setAction(async ({ proposal: proposalPath }, { ethers }) => {
+    const {
+      getProposalVotes,
+      getProposalId,
+      getQuorum,
+    } = require('../helpers/gov')
 
     // eslint-disable-next-line import/no-dynamic-require
     const proposal = require(resolve(proposalPath))
 
-    const proposalId = await getProposalId(proposal)
-    const votes = await getProposalVotes(proposalId)
+    const proposalId = proposal.proposalId || (await getProposalId(proposal))
+    const { againstVotes, forVotes, abstainVotes } = await getProposalVotes(
+      proposalId
+    )
+
+    const quorum = await getQuorum()
+    const { formatEther } = ethers.utils
 
     // eslint-disable-next-line no-console
-    console.log(`Current proposal votes (against, for, abstain): ${votes}`)
+    console.log(
+      `Current proposal votes 
+      - against:  ${formatEther(againstVotes.toString())}
+      - for: ${formatEther(forVotes.toString())}
+      - abstain: ${formatEther(abstainVotes.toString())}
+      - quorum: ${formatEther(quorum.toString())}`
+    )
   })
 
 task('gov:state', 'Check proposal state')
   .addParam('proposalId', 'The proposal id')
-  .setAction(async ({ proposal }) => {
-    const { getProposalState, getProposalId } = require('../helpers/gov')
+  .setAction(async ({ proposalId }) => {
+    const { getProposalState } = require('../helpers/gov')
 
-    // eslint-disable-next-line import/no-dynamic-require
-    const prop = require(resolve(proposal))
-    const proposalId = getProposalId(prop)
     const state = await getProposalState(proposalId)
     // eslint-disable-next-line no-console
     console.log(`Current proposal state: ${state}`)
@@ -95,9 +107,23 @@ task('gov:id', 'Retrieve proposal ID')
     // eslint-disable-next-line import/no-dynamic-require
     const prop = require(resolve(proposal))
     const proposalId = await getProposalId(prop)
+
     // eslint-disable-next-line no-console
     console.log(`Proposal id: ${proposalId}`)
   })
+
+task('gov:quorum', 'Retrieve current quorum').setAction(
+  async (_, { ethers }) => {
+    // eslint-disable-next-line import/no-dynamic-require
+    const { getQuorum } = require('../helpers/gov')
+    const q = await getQuorum()
+    const quorum = ethers.utils.formatEther(q.toString())
+    // eslint-disable-next-line no-console
+    console.log(`GOV > quorum: ${quorum} UDT`)
+
+    return quorum
+  }
+)
 
 task('gov:delegate', 'Delagate voting power')
   .addParam('delegate', 'The delegate receving the voting power')

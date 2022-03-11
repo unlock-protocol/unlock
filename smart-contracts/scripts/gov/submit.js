@@ -1,5 +1,10 @@
 const { ethers } = require('hardhat')
-const { parseProposal, submitProposal } = require('../../helpers/gov')
+const {
+  parseProposal,
+  encodeProposalArgs,
+  decodeProposalArgs,
+  submitProposal,
+} = require('../../helpers/gov')
 const { impersonate } = require('../../test/helpers/mainnet')
 
 async function main({
@@ -8,32 +13,56 @@ async function main({
   functionName,
   functionArgs,
   proposalName,
+  proposalId: _proposalId,
+  calldata,
 }) {
+  if (_proposalId) {
+    // eslint-disable-next-line no-console
+    console.log('GOV SUBMIT > proposalId is present, skipping submit task')
+    return
+  }
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  if (!proposerAddress) {
-    // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing proposer address.')
-  }
+  let proposal
   if (!functionName) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing function name.')
   }
-  if (!functionArgs) {
+  if (!contractName) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing function args.')
+    throw new Error('GOV SUBMIT > Missing function name.')
   }
+  if (!proposerAddress) {
+    // eslint-disable-next-line no-console
+    throw new Error('GOV SUBMIT > Missing proposer address.')
+  }
+
   if (!proposalName) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing proposal name.')
   }
 
-  const proposal = await parseProposal({
+  if (!calldata) {
+    calldata = await encodeProposalArgs({
+      contractName,
+      functionName,
+      functionArgs,
+    })
+  } else {
+    // parse to log
+    functionArgs = await decodeProposalArgs({
+      contractName,
+      functionName,
+      calldata,
+    })
+  }
+
+  // parse proposal correctly
+  proposal = await parseProposal({
     contractName,
-    functionName,
-    functionArgs,
+    calldata,
     proposalName,
   })
 
@@ -43,7 +72,9 @@ async function main({
   )
 
   // submit the proposal
-  if (isDev) {
+  if (isDev || process.env.RUN_MAINNET_FORK) {
+    // eslint-disable-next-line no-console
+    console.log('GOV SUBMIT (dev) > Impersonate proposer ')
     await impersonate(proposerAddress)
   }
   // eslint-disable-next-line no-console
@@ -64,8 +95,6 @@ async function main({
   console.log(
     `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
   )
-
-  return proposalId
 }
 
 // execute as standalone
