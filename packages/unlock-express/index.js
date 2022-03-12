@@ -3,14 +3,13 @@ const passportCustom = require('passport-custom')
 
 const CustomStrategy = passportCustom.Strategy
 
-const keyExpirationFor = require('./src/keyExpirationFor')
+const hasValidKey = require('./src/hasValidKey')
 /**
  * Main function that yields the middleware
  * @param {*} config
  * @returns
  */
 const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
-
   if (!config.providers) {
     // eslint-disable-next-line no-param-reassign
     config.providers = {}
@@ -72,18 +71,15 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
         if (!config.providers[network]) {
           throw new Error(`No provider configured for network ${network}`)
         }
-        // Query chain (using balanceOf)
-        return keyExpirationFor(
+        return hasValidKey(
           config.providers[network],
           lockAddress,
           ethereumAddress
         )
       }
     )
-    const exirations = await Promise.all(promises)
-    return !!exirations.find(
-      (expiration) => expiration * 1000 > new Date().getTime()
-    )
+    const validMemberships = await Promise.all(promises)
+    return !!validMemberships.find((valid) => valid)
   }
 
   /**
@@ -129,56 +125,51 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
    * Middeware function, which redirects user to purchase membership if applicable.
    * @returns
    */
-  const membersOnly =
-    (paywallConfig) =>
-      async (req, res, next) => {
-        const mergedConfig = Object.assign(defaultPaywallConfig, paywallConfig)
-        req.paywallConfig = mergedConfig
-        passport.authenticate('unlock-strategy', (err, user) => {
-          if (err) {
-            return next(err)
-          }
-
-          if (!user) {
-            if (!mergedConfig.messageToSign) {
-              // eslint-disable-next-line prettier/prettier
-              // eslint-disable-next-line no-console
-              console.warn(
-                'For security reasons, please consider using a custom to sign message with a nonce and a timestamp for which your application will verify uniqueness and recency.'
-              )
-              // eslint-disable-next-line no-param-reassign
-              mergedConfig.messageToSign = `Please connect your wallet to connect to\n${req.get(
-                'host'
-              )}.`
-            }
-
-            if (!mergedConfig.locks) {
-              console.error(
-                'Missing locks on configuration! We let the users in.'
-              )
-              return next()
-            }
-
-            const baseUrl =
-              config.baseUrl || `${req.protocol}://${req.get('host')}`
-            const redirectUri = new URL(`${baseUrl}${req.originalUrl}`)
-            redirectUri.searchParams.append(
-              'messageToSign',
-              mergedConfig.messageToSign
-            )
-
-            const checkoutUrlRedirect = buildCheckoutUrl(
-              mergedConfig,
-              redirectUri.toString()
-            )
-            // Go authorize!
-            return res.redirect(checkoutUrlRedirect.toString())
-          }
-          // We have a user that's authorized! Continue :)
-          req.login(user, next)
-          return next()
-        })(req, res, next)
+  const membersOnly = (paywallConfig) => async (req, res, next) => {
+    const mergedConfig = Object.assign(defaultPaywallConfig, paywallConfig)
+    req.paywallConfig = mergedConfig
+    passport.authenticate('unlock-strategy', (err, user) => {
+      if (err) {
+        return next(err)
       }
+
+      if (!user) {
+        if (!mergedConfig.messageToSign) {
+          // eslint-disable-next-line prettier/prettier
+          // eslint-disable-next-line no-console
+          console.warn(
+            'For security reasons, please consider using a custom to sign message with a nonce and a timestamp for which your application will verify uniqueness and recency.'
+          )
+          // eslint-disable-next-line no-param-reassign
+          mergedConfig.messageToSign = `Please connect your wallet to connect to\n${req.get(
+            'host'
+          )}.`
+        }
+
+        if (!mergedConfig.locks) {
+          console.error('Missing locks on configuration! We let the users in.')
+          return next()
+        }
+
+        const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`
+        const redirectUri = new URL(`${baseUrl}${req.originalUrl}`)
+        redirectUri.searchParams.append(
+          'messageToSign',
+          mergedConfig.messageToSign
+        )
+
+        const checkoutUrlRedirect = buildCheckoutUrl(
+          mergedConfig,
+          redirectUri.toString()
+        )
+        // Go authorize!
+        return res.redirect(checkoutUrlRedirect.toString())
+      }
+      // We have a user that's authorized! Continue :)
+      req.login(user, next)
+      return next()
+    })(req, res, next)
+  }
 
   // Returns the middleware
   return { buildCheckoutUrl, hasValidMembership, membersOnly }
