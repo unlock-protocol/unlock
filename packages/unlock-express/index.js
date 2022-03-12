@@ -4,7 +4,6 @@ const hasValidKey = require('./src/hasValidKey')
 
 const CustomStrategy = passportCustom.Strategy
 
-
 /**
  * Main function that yields the middleware
  * @param {*} defaultPaywallConfig
