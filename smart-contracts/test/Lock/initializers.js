@@ -29,7 +29,7 @@ contract('Lock / initializers', (accounts) => {
   it('initialize() may not be called again', async () => {
     await reverts(
       lock.initialize(accounts[0], 0, constants.ZERO_ADDRESS, 0, 0, ''),
-      `${VM_ERROR_REVERT_WITH_REASON} 'Initializable: contract is already initialized'`
+      `${VM_ERROR_REVERT_WITH_REASON} 'ALREADY_INITIALIZED'`
     )
   })
 })

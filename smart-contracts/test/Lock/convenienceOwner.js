@@ -14,8 +14,8 @@ contract('Lock / mimick owner()', () => {
     const chainId = 31337
     const unlockAddress = getProxyAddress(chainId, 'Unlock')
 
-    // parse unlock
-    ;[deployer] = await ethers.getSigners()
+      // parse unlock
+      ;[deployer] = await ethers.getSigners()
 
     const Unlock = await ethers.getContractFactory('Unlock')
     unlock = Unlock.attach(unlockAddress)
@@ -58,11 +58,11 @@ contract('Lock / mimick owner()', () => {
       const [, notManager, anotherAddress] = await ethers.getSigners()
       await expectRevert(
         lock.connect(notManager).setOwner(notManager.address),
-        'MixinRoles: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
       await expectRevert(
         lock.connect(notManager).setOwner(anotherAddress.address),
-        'MixinRoles: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
   })

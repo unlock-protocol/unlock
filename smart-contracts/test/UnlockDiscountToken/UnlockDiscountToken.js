@@ -18,7 +18,7 @@ contract('UnlockDiscountToken', (accounts) => {
   it('shouldFail to call init again', async () => {
     await reverts(
       unlockDiscountToken.initialize(minter),
-      `${VM_ERROR_REVERT_WITH_REASON} 'Initializable: contract is already initialized'`
+      `${VM_ERROR_REVERT_WITH_REASON} 'ALREADY_INITIALIZED'`
     )
   })
 

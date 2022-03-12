@@ -46,7 +46,7 @@ contract('Lock / disableLock', (accounts) => {
   it('should fail if called by the wrong account', async () => {
     await reverts(
       lock.disableLock({ from: keyOwner }),
-      'MixinRoles: caller does not have the LockManager role'
+      'ONLY_LOCK_MANAGER'
     )
   })
 

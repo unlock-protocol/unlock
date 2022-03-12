@@ -47,7 +47,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
     it('should only allow lock managers to set mapping', async () => {
       await reverts(
         hook.createMapping(lock.address, nft.address, { from: accounts[5] }),
-        'Caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
     it('throws on zero addresses', async () => {
