@@ -105,7 +105,10 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
         }
 
         userAddress = ethers.utils.verifyMessage(messageToSign, signature)
+      } else {
+        userAddress = req.user.address
       }
+
       const hasUnlocked =
         userAddress &&
         (await hasValidMembership(req.paywallConfig, userAddress))
