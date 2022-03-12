@@ -3,7 +3,7 @@
 const express = require('express')
 const passport = require('passport')
 
-// 
+// Passport vanilla configuration
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -11,7 +11,6 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
-
 
 const configureUnlock = require('@unlock-protocol/unlock-express')
 
@@ -26,25 +25,19 @@ const { membersOnly } = configureUnlock(
       },
     },
   },
-  passport,
+  passport
 )
+
+// Public page!
 app.get('/', (req, res) => {
-  res.send('Welcome! <a href="/members">members only</a> | <a href="/members2">members only</a>')
+  res.send('Welcome! <a href="/members">members only</a>')
 })
 
 // Members only page
-app.get('/members', membersOnly({}), (req, res) => {
-  res.send('Secret stuff! <a href="/">go home</a>')
-})
-
-// Members only page
-app.get('/members2', membersOnly({
-  locks: {
-    "0xd390FD23719e26E1596D45633654D5d81738fF5d": {
-      network: 4
-    }
-  }
-}), (req, res) => {
+// You could pass a custom paywallConfig object to the `membersOnly` middleware, or 
+// even wrap that middleware into a custom one if you want to customize the paywallConfig 
+// based on the request object.
+app.get('/members', membersOnly(), (req, res) => {
   res.send('Secret stuff! <a href="/">go home</a>')
 })
 

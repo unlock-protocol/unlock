@@ -1,12 +1,15 @@
 const ethers = require('ethers')
 const passportCustom = require('passport-custom')
+const hasValidKey = require('./src/hasValidKey')
 
 const CustomStrategy = passportCustom.Strategy
 
-const hasValidKey = require('./src/hasValidKey')
+
 /**
  * Main function that yields the middleware
- * @param {*} config
+ * @param {*} defaultPaywallConfig
+ * @param {*} passport instance
+ * @param {*} config optional configuration object
  * @returns
  */
 const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
@@ -58,7 +61,6 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
 
   /**
    * Returns true if the user has memberships
-   * @param {*} memberships
    */
   const hasValidMembership = async (paywallConfig, ethereumAddress) => {
     const promises = Object.entries(paywallConfig.locks).map(
@@ -122,7 +124,7 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
   )
 
   /**
-   * Middeware function, which redirects user to purchase membership if applicable.
+   * Middeware function, which redirects user to purchase memberships if applicable.
    * @returns
    */
   const membersOnly = (paywallConfig) => async (req, res, next) => {
@@ -174,4 +176,5 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
   // Returns the middleware
   return { buildCheckoutUrl, hasValidMembership, membersOnly }
 }
+
 module.exports = configureUnlock
