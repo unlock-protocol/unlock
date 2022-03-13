@@ -14,8 +14,8 @@ contract('Lock / mimick owner()', () => {
     const chainId = 31337
     const unlockAddress = getProxyAddress(chainId, 'Unlock')
 
-      // parse unlock
-      ;[deployer] = await ethers.getSigners()
+    // parse unlock
+    ;[deployer] = await ethers.getSigners()
 
     const Unlock = await ethers.getContractFactory('Unlock')
     unlock = Unlock.attach(unlockAddress)
