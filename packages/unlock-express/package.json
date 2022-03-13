@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-express",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "public": true,
   "publishConfig": {
     "access": "public",
@@ -10,7 +10,11 @@
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js ."
   },
   "dependencies": {
-    "ethers": "5.5.4"
+    "ethers": "5.5.4",
+    "passport-custom": "^1.1.1"
+  },
+  "peerDependencies": {
+    "passport": "^0.5.2"
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
