@@ -81,7 +81,7 @@ contract('Lock / non expiring', (accounts) => {
               value: keyPrice,
             }
           ),
-          'A valid non-expiring key can not be purchased twice'
+          'NON_EXPIRING_KEY'
         )
       })
     })
@@ -221,7 +221,7 @@ contract('Lock / non expiring', (accounts) => {
     // transfer fails
     await reverts(
       lock.transfer(keyReceiver, 1, { from: keyOwner }),
-      'Recipient already owns a non-expiring key'
+      'NON_EXPIRING_KEY'
     )
   })
 })
