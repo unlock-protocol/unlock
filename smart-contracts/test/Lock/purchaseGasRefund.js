@@ -65,7 +65,7 @@ contract('Lock / GasRefund', (accounts) => {
               from: accounts[3],
             }),
             'revert',
-            'MixinRoles: caller does not have the LockManager role'
+            'ONLY_LOCK_MANAGER'
           )
         })
 

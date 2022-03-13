@@ -40,7 +40,7 @@ contract('Lock / transferFee', (accounts) => {
   it('reverts if a non-manager attempts to change the fee', async () => {
     await reverts(
       lock.updateTransferFee(0, { from: accounts[1] }),
-      'MixinRoles: caller does not have the LockManager role'
+      'ONLY_LOCK_MANAGER'
     )
   })
 

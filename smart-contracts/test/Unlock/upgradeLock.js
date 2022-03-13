@@ -63,15 +63,15 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 2)
     await reverts(
       unlock.connect(creator).upgradeLock(lock.address, currentVersion + 2),
-      'version error: only +1 increments are allowed'
+      'VERSION_TOO_HIGH'
     )
     await reverts(
       unlock.connect(creator).upgradeLock(lock.address, 1), // smaller one
-      'version error: only +1 increments are allowed'
+      'VERSION_TOO_HIGH'
     )
     await reverts(
       unlock.connect(creator).upgradeLock(lock.address, 135),
-      'version error: only +1 increments are allowed'
+      'VERSION_TOO_HIGH'
     )
   })
 
@@ -79,7 +79,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [, creator] = await ethers.getSigners()
     await reverts(
       unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1),
-      'this version number has no corresponding lock template'
+      'MISSING_TEMPLATE'
     )
   })
 
@@ -102,7 +102,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
     await reverts(
       unlock.connect(unknown).upgradeLock(lock.address, currentVersion + 1),
-      'caller is not a manager of this lock'
+      'MANAGER_ONLY'
     )
   })
 

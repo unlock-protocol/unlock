@@ -159,7 +159,7 @@ contract Unlock is
   }
 
   function initializeProxyAdmin() public onlyOwner {
-    require(proxyAdminAddress == address(0), "ProxyAdmin already deployed");
+    require(proxyAdminAddress == address(0), "ALREADY_DEPLOYED");
     _deployProxyAdmin();
   }
 
@@ -269,7 +269,7 @@ contract Unlock is
     bytes memory data,
     uint16 _lockVersion
   ) public returns (address) {
-    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
+    require(proxyAdminAddress != address(0), "MISSING_PROXY_ADMIN");
 
     // get lock version
     address publicLockImpl = _publicLockImpls[_lockVersion];
@@ -295,19 +295,19 @@ contract Unlock is
    * @param version the version number of the template
    */
   function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
-    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
+    require(proxyAdminAddress != address(0), "MISSING_PROXY_ADMIN");
 
     // check perms
-    require(_isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
+    require(_isLockManager(lockAddress, msg.sender) == true, "MANAGER_ONLY");
 
     // check version
     IPublicLock lock = IPublicLock(lockAddress);
     uint16 currentVersion = lock.publicLockVersion();
-    require( version == currentVersion + 1, 'version error: only +1 increments are allowed');
+    require( version == currentVersion + 1, 'VERSION_TOO_HIGH');
 
     // make our upgrade
     address impl = _publicLockImpls[version];
-    require(impl != address(0), "this version number has no corresponding lock template");
+    require(impl != address(0), "MISSING_TEMPLATE");
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
