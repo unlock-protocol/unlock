@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.7;
 
 import './interfaces/IPublicLock.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
