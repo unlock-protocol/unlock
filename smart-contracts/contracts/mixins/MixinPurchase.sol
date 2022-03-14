@@ -175,8 +175,8 @@ contract MixinPurchase is
   ) 
     public 
     payable
-    onlyIfAlive 
   {
+    _onlyIfAlive();
     Key memory key = getKeyByOwner(_recipient);
     require(key.tokenId != 0, 'NON_EXISTING_KEY');
 
