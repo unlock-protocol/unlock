@@ -135,8 +135,7 @@ contract MixinRefunds is
     returns (uint refund)
   {
     _hasValidKey(_keyOwner);
-    Key memory key = getKeyByOwner(_keyOwner);
-
+    Key memory key = getKeyOfOwnerByIndex(_keyOwner, 0);
     // return entire purchased price if key is non-expiring
     if(expirationDuration == type(uint).max) {
       return keyPrice;
