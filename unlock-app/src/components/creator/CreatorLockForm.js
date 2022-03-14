@@ -299,12 +299,6 @@ const FormLockDetails = styled(LockDetails)`
     font-weight: 200;
   }
 
-  input:focus {
-    outline: none;
-    border: 1px solid var(--grey);
-    transition: border 100ms ease;
-  }
-
   input[data-valid='false'] {
     border: 1px solid var(--red);
   }
