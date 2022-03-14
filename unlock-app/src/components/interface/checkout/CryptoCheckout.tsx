@@ -338,10 +338,6 @@ const Warning = styled(Message)`
   text-align: center;
 `
 
-const Success = styled(Warning)`
-  color: var(--green);
-`
-
 const CheckoutOptions = styled.div`
   width: 50%;
   display: flex;
