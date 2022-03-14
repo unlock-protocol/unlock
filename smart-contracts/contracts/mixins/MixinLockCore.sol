@@ -83,19 +83,14 @@ contract MixinLockCore is
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
 
-  // Ensure that the Lock has not sold all of its keys.
-  modifier notSoldOut() {
-    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
-    _;
-  }
-
-  modifier onlyLockManagerOrBeneficiary()
+  function _onlyLockManagerOrBeneficiary() 
+  internal 
+  view
   {
     require(
       isLockManager(msg.sender) || msg.sender == beneficiary,
       'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     );
-    _;
   }
 
   function _initializeMixinLockCore(
@@ -135,8 +130,8 @@ contract MixinLockCore is
     address _tokenAddress,
     uint _amount
   ) external
-    onlyLockManagerOrBeneficiary
   {
+    _onlyLockManagerOrBeneficiary();
 
     // get balance
     uint balance;
@@ -172,9 +167,9 @@ contract MixinLockCore is
     address _tokenAddress
   )
     external
-    onlyLockManager
-    onlyIfAlive
   {
+    _onlyIfAlive;
+    _onlyLockManager();
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
     require(
@@ -192,9 +187,8 @@ contract MixinLockCore is
    */
   function updateBeneficiary(
     address payable _beneficiary
-  ) external
-    onlyLockManagerOrBeneficiary()
-  {
+  ) external {
+    _onlyLockManagerOrBeneficiary();
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
   }
@@ -208,8 +202,8 @@ contract MixinLockCore is
     address _onValidKeyHook,
     address _onTokenURIHook
   ) external
-    onlyLockManager()
   {
+    _onlyLockManager();
     require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
     require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
     require(_onValidKeyHook == address(0) || _onValidKeyHook.isContract(), 'INVALID_ON_VALID_KEY_HOOK');
@@ -234,9 +228,9 @@ contract MixinLockCore is
     address _spender,
     uint _amount
   ) public
-    onlyLockManagerOrBeneficiary
     returns (bool)
   {
+    _onlyLockManagerOrBeneficiary();
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 
