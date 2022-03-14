@@ -31,14 +31,15 @@ export const Label = styled.label`
   margin-bottom: 3px;
 `
 
-export const ActionLabel = styled.button`
-  cursor: pointer;
-  width: 100%;
-  display: block;
-  text-align: right;
+export const SmallButton = styled.button`
   margin-top: 0.25rem;
-  font-size: 0.8rem;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 0.7em;
+  font-weight: 500;
   color: var(--grey);
+  float: right;
+  width: unset;
 
   &:hover {
     text-decoration: underline;
