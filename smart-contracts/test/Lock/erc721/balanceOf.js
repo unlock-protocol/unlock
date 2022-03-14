@@ -51,7 +51,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
     assert.equal(balance.toFixed(), 3)
   })
 
-  it('should return 0 after a user transfers their key', async () => {
+  it('should return correct number after key transfers', async () => {
     await locks.FIRST.purchase(
       [],
       [accounts[6], accounts[6], accounts[6]],
@@ -73,12 +73,13 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
     )
     let ID = await locks.FIRST.tokenOfOwnerByIndex.call(accounts[6], 0)
     assert.equal(accounts[6], await locks.FIRST.ownerOf(ID))
+    assert.equal((await locks.FIRST.balanceOf.call(accounts[6])).toNumber(), 3)
     await locks.FIRST.transferFrom(accounts[6], accounts[5], ID, {
       from: accounts[6],
     })
     let balanceOf6 = await locks.FIRST.balanceOf.call(accounts[6])
     let balanceOf5 = await locks.FIRST.balanceOf.call(accounts[5])
-    assert.equal(balanceOf6, 2)
-    assert.equal(balanceOf5, 1)
+    assert.equal(balanceOf6.toNumber(), 2)
+    assert.equal(balanceOf5.toNumber(), 1)
   })
 })

@@ -78,16 +78,19 @@ contract MixinPurchase is
       
       // check for a non-expiring key
       if (expirationDuration == type(uint).max) {
-        newTimeStamp = type(uint).max;
+        // create a new key
+        _createNewKey(
+          _recipient,
+          _keyManagers[i],
+          type(uint).max
+        );
       } else {
-        newTimeStamp = block.timestamp + expirationDuration;
+        _createNewKey(
+          _recipient,
+          _keyManagers[i],
+          block.timestamp + expirationDuration
+        );
       }
-      // create a new key
-      _createNewKey(
-        _recipient,
-        _keyManagers[i],
-        newTimeStamp
-      );
 
       // price      
       uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
