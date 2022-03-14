@@ -13843,6 +13843,7 @@ __metadata:
     ethers: 5.5.4
     fs-extra: 10.0.1
     hardhat: 2.8.0
+    hardhat-contract-sizer: ^2.5.0
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.8
     hardhat-storage-layout: 0.1.6
@@ -19843,7 +19844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table3@npm:^0.6.1":
+"cli-table3@npm:^0.6.0, cli-table3@npm:^0.6.1":
   version: 0.6.1
   resolution: "cli-table3@npm:0.6.1"
   dependencies:
@@ -28324,6 +28325,18 @@ fsevents@~2.1.1:
     ajv: ^6.12.3
     har-schema: ^2.0.0
   checksum: b998a7269ca560d7f219eedc53e2c664cd87d487e428ae854a6af4573fc94f182fe9d2e3b92ab968249baec7ebaf9ead69cf975c931dc2ab282ec182ee988280
+  languageName: node
+  linkType: hard
+
+"hardhat-contract-sizer@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "hardhat-contract-sizer@npm:2.5.0"
+  dependencies:
+    chalk: ^4.0.0
+    cli-table3: ^0.6.0
+  peerDependencies:
+    hardhat: ^2.0.0
+  checksum: d23e48cd77560f12b7240d7be5da2ba613094f480406197f127d22b69ddc37b5e0dbc648d3be75a6d75c954b3841f3624df53dbd1bce4bd043f28fdcc166c69c
   languageName: node
   linkType: hard
 

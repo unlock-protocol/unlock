@@ -23,9 +23,9 @@ contract MixinGrantKeys is
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps,
     address[] calldata _keyManagers
-  ) external
-    onlyKeyGranterOrManager
-  {
+  ) external {
+    require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'ONLY_LOCK_MANAGER_OR_KEY_GRANTER');
+
     for(uint i = 0; i < _recipients.length; i++) {
       address recipient = _recipients[i];
       uint expirationTimestamp = _expirationTimestamps[i];
