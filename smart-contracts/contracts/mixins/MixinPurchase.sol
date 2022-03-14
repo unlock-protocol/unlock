@@ -95,7 +95,7 @@ contract MixinPurchase is
         );
       } else if (key.expirationTimestamp > block.timestamp) {
         // prevent re-purchase of a valid non-expiring key
-        require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+        require(key.expirationTimestamp != type(uint).max, 'NON_EXPIRING_KEY');
 
         // This is an existing owner trying to extend their key
         newTimeStamp = key.expirationTimestamp + expirationDuration;
@@ -163,7 +163,7 @@ contract MixinPurchase is
         token.transferFrom(address(this), msg.sender, _gasRefundValue);
       } else {
         (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
-        require(success, "Refund failed.");
+        require(success, "REFUND_FAILED");
       }
       emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
     }

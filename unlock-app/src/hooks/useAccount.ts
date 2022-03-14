@@ -154,12 +154,14 @@ export const useAccount = (address: string, network: number) => {
     token: string,
     lock: any,
     network: number,
-    pricing: any
+    pricing: any,
+    customAddress?: string
   ) => {
+    const purchaseAddress = customAddress ?? address
     const response = await chargeAndSaveCard(
       config,
       walletService,
-      address,
+      purchaseAddress,
       token,
       network,
       lock,
