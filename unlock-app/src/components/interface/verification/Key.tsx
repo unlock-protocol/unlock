@@ -8,7 +8,6 @@ import {
 } from '../../../utils/durations'
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
-import { MAX_UINT } from '../../../constants'
 
 interface InvalidKeyProps {
   reason: string
