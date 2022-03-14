@@ -31,18 +31,16 @@ contract MixinKeys is
 
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
 
-  // Keys
-  // return 0 values when missing a key
+  // DEPREC: dont use
   mapping (address => Key) internal keyByOwner;
 
-  // mapping tokenId => token
+  // store all keys: tokenId => token
   mapping(uint256 => Key) private _keys;
   
-  // store keys by owners
-  // owner => list of tokens
-  mapping(address => mapping(uint256 => uint256)) private _ownedKeys;
-
-  // tokenID => index of the owner tokens list
+  // store ownership: owner => list of tokenIds
+  mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
+  
+  // store indexes: owner => list of tokenIds
   mapping(uint256 => uint256) private _ownedKeysIndex;
 
   // Mapping owner address to token count
@@ -118,29 +116,6 @@ contract MixinKeys is
     );
   }
 
-  function getKeysByOwner( 
-    address _keyOwner 
-  ) 
-    public 
-    view 
-    returns (Key[] memory) 
-  {
-    Key memory key = keyByOwner[_keyOwner];
-    if (key.expirationTimestamp != 0) {
-      Key[] memory keys = new Key[](1);
-      keys[0] = key;
-      return keys;
-    } else {
-      uint length = balanceOf(_keyOwner);
-      Key[] memory keys = new Key[](length);
-      for (uint i = 0; i < length; i++) {
-          Key storage k = _keys[_ownedKeys[_keyOwner][i]];
-          keys[i] = k;
-      }
-      return keys;
-    }
-  }
-
   function getKeyOfOwnerByIndex(
     address _keyOwner, 
     uint256 _index
@@ -149,16 +124,10 @@ contract MixinKeys is
     view 
     returns (Key memory) 
   {
-      // require(_index < balanceOf(_keyOwner), "owner index out of bounds");
-      Key memory key = keyByOwner[_keyOwner];
-      if (key.expirationTimestamp != 0) {
-        return key; 
-      } 
-      return _keys[_ownedKeys[_keyOwner][_index]];
+      require(_index < balanceOf(_keyOwner), "OWNER_INDEX_OUT_OF_BOUNDS");
+      return _keys[_ownedKeyIds[_keyOwner][_index]];
   }
 
-
-  
   /**
    * Create a new key with a new tokenId and store it 
    * 
@@ -169,22 +138,23 @@ contract MixinKeys is
     uint expirationTimestamp
   ) 
   internal 
-  returns (uint) {
+  returns (uint tokenId) {
     
     // We increment the tokenId counter
     _totalSupply++;
+    tokenId = _totalSupply;
 
     // create the key
-    _keys[_totalSupply] = Key(_totalSupply, expirationTimestamp);
+    _keys[tokenId] = Key(tokenId, expirationTimestamp);
     
     // store ownership
     uint length = balanceOf(_recipient);
-    _ownedKeys[_recipient][length] = _totalSupply;
-    _ownedKeysIndex[_totalSupply] = length;
-    _ownerOf[_totalSupply] = _recipient;
+    _ownedKeysIndex[tokenId] = length;
+    _ownedKeyIds[_recipient][length] = tokenId;
+    _ownerOf[tokenId] = _recipient;
 
     // increase total number of unique owners
-    if(balanceOf(_recipient) == 0 ) {
+    if(length == 0 ) {
       numberOfOwners++;
     }
 
@@ -192,16 +162,14 @@ contract MixinKeys is
     _balances[_recipient] += 1;
 
     // set key manager
-    _setKeyManagerOf(_totalSupply, _keyManager);
+    _setKeyManagerOf(tokenId, _keyManager);
 
     // trigger event
     emit Transfer(
       address(0), // This is a creation.
       _recipient,
-      _totalSupply
+      tokenId
     );
-
-    return _totalSupply;
   }
 
   function _extendKey(
@@ -242,27 +210,45 @@ contract MixinKeys is
   ) internal 
   returns (uint) {
     _isKey(_tokenId);
-    require(_ownerOf[_tokenId] != _recipient, 'TRANSFER_TO_SELF');
+    address previousOwner = _ownerOf[_tokenId];
+    require(previousOwner != _recipient, 'TRANSFER_TO_SELF');
 
     // update expiration
     Key storage key = _keys[_tokenId];
     key.expirationTimestamp = expirationTimestamp;
 
-    // increase total number of unique owners if needed
-    if(balanceOf(_recipient) == 0 ) {
+    // increase total number of unique owners
+    uint length = balanceOf(_recipient);
+    if(length == 0 ) {
       numberOfOwners++;
     }
-    if(balanceOf(_ownerOf[_tokenId]) <= 1 ) {
+    if(balanceOf(previousOwner) == 1 ) {
       numberOfOwners--;
     }
 
-    // update balance
-    _balances[_ownerOf[_tokenId]] -= 1;
+    // delete previous ownership
+    uint lastTokenIndex = balanceOf(previousOwner) - 1;
+    uint index = _ownedKeysIndex[_tokenId];
 
-    // transfer token ownership
+    // When the token to delete is the last token, the swap operation is unnecessary
+    if (index != lastTokenIndex) {
+        uint256 lastTokenId = _ownedKeyIds[previousOwner][lastTokenIndex];
+        _ownedKeyIds[previousOwner][index] = lastTokenId; // Move the last token to the slot of the to-delete token
+        _ownedKeysIndex[lastTokenId] = index; // Update the moved token's index
+    }
+
+    // Deletes the contents at the last position of the array
+    delete _ownedKeyIds[previousOwner][lastTokenIndex];
+
+    // record new owner
+    _ownedKeyIds[_recipient][length] = _tokenId;
+    _ownedKeysIndex[_tokenId] = length;
+
+    // update ownership mapping
     _ownerOf[_tokenId] = _recipient;
 
-    // update balance
+    // update balances
+    _balances[previousOwner] -= 1;
     _balances[_recipient] += 1;
 
     return key.tokenId;
@@ -303,11 +289,12 @@ contract MixinKeys is
     returns (uint)
   {
     require(_keyOwner != address(0), 'INVALID_ADDRESS');
-    uint balance;
-    if (keyByOwner[_keyOwner].expirationTimestamp != 0) {
-      balance = 1;
-    } 
-    return balance + _balances[_keyOwner];
+    // uint balance;
+    // if (keyByOwner[_keyOwner].expirationTimestamp != 0) {
+    //   balance = 1;
+    // } 
+    // return balance + _balances[_keyOwner];
+    return _balances[_keyOwner];
   }
 
   /**
@@ -318,9 +305,17 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool isValid)
+    returns (bool)
   { 
-    isValid = getKeyOfOwnerByIndex(_keyOwner, 0).expirationTimestamp > block.timestamp;
+    bool isValid = false;
+    uint length = balanceOf(_keyOwner);
+    if(length > 0) {
+      for (uint i = 0; i < length; i++) {
+        if(getKeyOfOwnerByIndex(_keyOwner, i).expirationTimestamp > block.timestamp) {
+          isValid = true;
+        }
+      }
+    }
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
@@ -330,7 +325,9 @@ contract MixinKeys is
         getKeyOfOwnerByIndex(_keyOwner, 0).expirationTimestamp,
         isValid
       );
-    }    
+    }
+
+    return isValid;   
   }
 
   /**
