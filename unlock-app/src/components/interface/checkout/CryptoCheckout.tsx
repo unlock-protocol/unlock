@@ -157,7 +157,7 @@ export const CryptoCheckout = ({
 
   const showCheckoutButtons =
     (!transactionPending && keyExpiration < now) ||
-    (isAdvanced && hasValidKeyOrPendingTx)
+    (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
   return (
     <>
@@ -179,6 +179,7 @@ export const CryptoCheckout = ({
             checkingRecipient={checkingRecipient}
             setIsAdvanced={setIsAdvanced}
             onRecipientChange={onRecipientChange}
+            disabled={(transactionPending?.length ?? 0) > 0 ?? false}
           />
         </>
       )}
@@ -197,6 +198,7 @@ export const CryptoCheckout = ({
             setIsAdvanced={setIsAdvanced}
             onRecipientChange={onRecipientChange}
             customBuyMessage="Buy for a different address"
+            disabled={transactionPending?.length > 0 ?? false}
           />
         </>
       )}

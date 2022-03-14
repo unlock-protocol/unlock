@@ -8,6 +8,7 @@ interface CheckoutCustomRecipientProps {
   setIsAdvanced: (advanced: boolean) => void
   onRecipientChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   customBuyMessage?: string
+  disabled?: boolean
 }
 
 export const CheckoutCustomRecipient: React.FC<
@@ -19,6 +20,7 @@ export const CheckoutCustomRecipient: React.FC<
   advancedRecipientValid,
   checkingRecipient,
   customBuyMessage,
+  disabled,
 }) => {
   return (
     <>
@@ -34,6 +36,7 @@ export const CheckoutCustomRecipient: React.FC<
             name="recipient"
             onChange={onRecipientChange}
             style={{ marginBottom: '0.2rem' }}
+            disabled={disabled}
           />
           {!advancedRecipientValid && !checkingRecipient && (
             <span
@@ -54,4 +57,5 @@ export const CheckoutCustomRecipient: React.FC<
 
 CheckoutCustomRecipient.defaultProps = {
   customBuyMessage: undefined,
+  disabled: false,
 }
