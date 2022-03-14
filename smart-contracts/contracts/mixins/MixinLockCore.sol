@@ -92,7 +92,7 @@ contract MixinLockCore is
       'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     );
   }
-
+  
   function _initializeMixinLockCore(
     address payable _beneficiary,
     uint _expirationDuration,
@@ -170,12 +170,9 @@ contract MixinLockCore is
   {
     _onlyIfAlive;
     _onlyLockManager();
+    _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
-    require(
-      _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
-      'INVALID_TOKEN'
-    );
     keyPrice = _keyPrice;
     tokenAddress = _tokenAddress;
     emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
