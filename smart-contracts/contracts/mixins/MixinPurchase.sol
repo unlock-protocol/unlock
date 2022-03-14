@@ -77,7 +77,7 @@ contract MixinPurchase is
       require(_recipient != address(0), 'INVALID_ADDRESS');
       
       // Assign the key
-      Key memory key = getKeyByOwner(_recipient);
+      Key memory key = getKeyOfOwnerByIndex(_recipient, 0);
       uint newTimeStamp;
 
       // key doesnt exist
@@ -177,7 +177,7 @@ contract MixinPurchase is
     payable
     onlyIfAlive 
   {
-    Key memory key = getKeyByOwner(_recipient);
+    Key memory key = getKeyOfOwnerByIndex(_recipient, 0);
     require(key.tokenId != 0, 'NON_EXISTING_KEY');
 
     // extend key duration

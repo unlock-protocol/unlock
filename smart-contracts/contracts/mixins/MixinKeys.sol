@@ -32,15 +32,25 @@ contract MixinKeys is
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
 
   // Keys
-  // Each owner can have at most exactly one key
   // return 0 values when missing a key
   mapping (address => Key) internal keyByOwner;
+
+  // store keys by owners
+  // owner => list of tokens
+  mapping(address => mapping(uint256 => Key)) private _ownedKeys;
+
+  // tokenID => index of the owner tokens list
+  mapping(uint256 => uint256) private _ownedKeysIndex;
+
+  // Mapping owner address to token count
+  mapping(address => uint256) private _balances;
 
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
   // merging this with totalSupply into an array instead.
   mapping (uint => address) internal _ownerOf;
+
 
   // Keep track of the total number of unique owners for this lock (both expired and valid).
   // This may be larger than totalSupply
@@ -51,7 +61,7 @@ contract MixinKeys is
   // Each key can have at most 1 keyManager.
   mapping (uint => address) public keyManagerOf;
 
-    // Keeping track of approved transfers
+  // Keeping track of approved transfers
   // This is a mapping of addresses which have approved
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
@@ -106,21 +116,47 @@ contract MixinKeys is
     );
   }
 
-  /**
-   * Get a key owned by a specific address
-   * @return The key owned by `_keyOwner`
-  */
-  function getKeyByOwner(
-    address _keyOwner
+  function getKeysByOwner( 
+    address _keyOwner 
   ) 
-    internal
-    view
-    returns ( Key memory )
+    public 
+    view 
+    returns (Key[] memory) 
   {
-    return keyByOwner[_keyOwner];
+    Key memory key = keyByOwner[_keyOwner];
+    if (key.expirationTimestamp != 0) {
+      Key[] memory keys = new Key[](1);
+      keys[0] = key;
+      return keys;
+    } else {
+      uint length = balanceOf(_keyOwner);
+      Key[] memory keys = new Key[](length);
+      for (uint i = 0; i < length; i++) {
+          Key storage k = _ownedKeys[_keyOwner][i];
+          keys[i] = k;
+      }
+      return keys;
+    }
+  }
+
+  function getKeyOfOwnerByIndex(
+    address _keyOwner, 
+    uint256 _index
+  ) 
+    public 
+    view 
+    returns (Key memory) 
+  {
+      // require(_index < balanceOf(_keyOwner), "owner index out of bounds");
+      Key memory key = keyByOwner[_keyOwner];
+      if (key.expirationTimestamp != 0) {
+        return key; 
+      } 
+      return _ownedKeys[_keyOwner][_index];
   }
 
 
+  
   /**
    * Create a new key with a new tokenId and store it 
    * 
@@ -132,11 +168,16 @@ contract MixinKeys is
   ) 
   internal 
   returns (uint) {
-    Key storage key = keyByOwner[_recipient];
+    uint length = balanceOf(_recipient);
+    
+    Key storage key = _ownedKeys[_recipient][length];
 
     // We increment the tokenId counter
     _totalSupply++;
     key.tokenId = _totalSupply;
+
+    // record key index
+    _ownedKeysIndex[_totalSupply] = length;
 
     // This is a brand new owner
     _recordOwner(_recipient, key.tokenId);
@@ -164,7 +205,7 @@ contract MixinKeys is
       uint newTimeStamp
     )
   {
-    Key memory key = getKeyByOwner(_recipient);
+    Key memory key = getKeyOfOwnerByIndex(_recipient, 0);
 
     // prevent extending a valid non-expiring key
     require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
@@ -245,7 +286,11 @@ contract MixinKeys is
     returns (uint)
   {
     require(_keyOwner != address(0), 'INVALID_ADDRESS');
-    return getHasValidKey(_keyOwner) ? 1 : 0;
+    if (keyByOwner[_keyOwner].expirationTimestamp != 0) {
+      return 1;
+    } else {
+      return _balances[_keyOwner];
+    }
   }
 
   /**
@@ -258,14 +303,14 @@ contract MixinKeys is
     view
     returns (bool isValid)
   { 
-    isValid = getKeyByOwner(_keyOwner).expirationTimestamp > block.timestamp;
+    isValid = getKeyOfOwnerByIndex(_keyOwner, 0).expirationTimestamp > block.timestamp;
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
       isValid = onValidKeyHook.hasValidKey(
         address(this),
         _keyOwner,
-        getKeyByOwner(_keyOwner).expirationTimestamp,
+        getKeyOfOwnerByIndex(_keyOwner, 0).expirationTimestamp,
         isValid
       );
     }    
@@ -280,7 +325,7 @@ contract MixinKeys is
   ) public view
     returns (uint)
   {
-    return getKeyByOwner(_account).tokenId;
+    return getKeyOfOwnerByIndex(_account, 0).tokenId;
   }
 
   /**
@@ -293,7 +338,7 @@ contract MixinKeys is
   ) public view
     returns (uint)
   {
-    return getKeyByOwner(_keyOwner).expirationTimestamp;
+    return getKeyOfOwnerByIndex(_keyOwner, 0).expirationTimestamp;
   }
 
 
@@ -385,7 +430,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    uint tokenId = getKeyByOwner(_owner).tokenId;
+    uint tokenId = getKeyOfOwnerByIndex(_owner, 0).tokenId;
     address keyManager = keyManagerOf[tokenId];
     if(keyManager == address(0)) {
       return managerToOperatorApproved[_owner][_operator];
@@ -422,14 +467,14 @@ contract MixinKeys is
   {
 
     // check expiration ts should be set to know if owner had previously registered a key 
-    Key memory key = getKeyByOwner(_keyOwner);
+    Key memory key = getKeyOfOwnerByIndex(_keyOwner, 0);
     if(key.expirationTimestamp == 0 ) {
       numberOfOwners++;
     }
 
     // We register the owner of the tokenID
     _ownerOf[_tokenId] = _keyOwner;
-
+    _balances[_keyOwner] += 1;
   }
 
   /**

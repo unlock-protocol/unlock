@@ -33,7 +33,7 @@ contract MixinGrantKeys is
 
       require(recipient != address(0), 'INVALID_ADDRESS');
 
-      Key memory toKey = getKeyByOwner(recipient);
+      Key memory toKey = getKeyOfOwnerByIndex(recipient, 0);
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
       if(toKey.tokenId == 0) {

@@ -104,7 +104,7 @@ contract MixinRefunds is
     uint refund
   ) internal
   {
-    Key memory key = getKeyByOwner(_keyOwner);
+    Key memory key = getKeyOfOwnerByIndex(_keyOwner, 0);
 
     emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
