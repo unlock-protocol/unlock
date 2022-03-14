@@ -323,7 +323,7 @@ contract MixinKeys is
     public
   {
     _onlyKeyManagerOrApproved(_tokenId);
-    _onlyIfAlive;
+    _onlyIfAlive();
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
@@ -449,7 +449,7 @@ contract MixinKeys is
     bool _approved
   ) public
   {
-    _onlyIfAlive;
+    _onlyIfAlive();
     require(_to != msg.sender, 'APPROVE_SELF');
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
