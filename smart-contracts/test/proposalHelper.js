@@ -1,6 +1,7 @@
 const { ethers } = require('hardhat')
 const {
-  encodeProposalFunc,
+  encodeProposalArgs,
+  decodeProposalArgs,
   parseProposal,
   getProposalId,
   getProposalIdFromContract,
@@ -9,69 +10,60 @@ const { getDeployment } = require('../helpers/deployments')
 
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated but deterministic for tests
 
+const contractName = 'UnlockDiscountTokenV3'
+const functionName = 'transfer'
+const functionArgs = [
+  tokenRecipientAddress,
+  ethers.utils.parseUnits('0.01', 18),
+]
+
+const calldataEncoded =
+  '0xa9059cbb0000000000000000000000008d533d1a48b0d5dddef513a0b0a3677e991f3915000000000000000000000000000000000000000000000000002386f26fc10000'
+
 contract('Proposal Helper', () => {
-  let udt
-  let interface
-  beforeEach(async () => {
-    udt = await ethers.getContractFactory('UnlockDiscountTokenV3')
-    ;({ interface } = udt)
+  describe('calldata args encoder', () => {
+    it('encode correctly a function call', async () => {
+      const encoded = await encodeProposalArgs({
+        contractName,
+        functionName,
+        functionArgs,
+      })
+      assert.equal(encoded, calldataEncoded)
+    })
   })
 
-  describe('calldata encoder', () => {
-    it('encode correctly a function call', () => {
-      const encoded = encodeProposalFunc({
-        interface,
-        functionName: 'transfer',
-        functionArgs: [
-          tokenRecipientAddress,
-          ethers.utils.parseUnits('0.01', 18),
-        ],
+  describe('calldata args decoder', () => {
+    it('encode correctly a function call', async () => {
+      const decoded = await decodeProposalArgs({
+        contractName,
+        functionName,
+        calldata: calldataEncoded,
       })
-      assert.equal(
-        encoded,
-        '0xa9059cbb0000000000000000000000008d533d1a48b0d5dddef513a0b0a3677e991f3915000000000000000000000000000000000000000000000000002386f26fc10000'
-      )
-    })
-    it('throw if function does not exist', () => {
-      assert.throws(() =>
-        encodeProposalFunc({
-          interface,
-          functionName: 'doesNotExist',
-          functionArgs: [],
-        })
-      )
-    })
-    it('throw if parameters are wrong', () => {
-      assert.throws(() =>
-        encodeProposalFunc({
-          interface,
-          functionName: 'transfer',
-          functionArgs: [],
-        })
-      )
+
+      assert.deepEqual(decoded, functionArgs)
     })
   })
 
   describe('proposal parser', () => {
-    it('encode correctly a function call', async () => {
+    it('parse gov args correctly', async () => {
       const { address } = getDeployment(31337, 'UnlockDiscountTokenV3')
       const proposalName = 'Send some tokens to a grantee'
 
+      const encoded = await encodeProposalArgs({
+        contractName,
+        functionName,
+        functionArgs,
+      })
+
       const [to, value, calldata, proposalNameParsed] = await parseProposal({
-        contractName: 'UnlockDiscountTokenV3',
-        functionName: 'transfer',
-        functionArgs: [
-          tokenRecipientAddress,
-          ethers.utils.parseUnits('0.01', 18),
-        ],
+        contractName,
+        calldata: encoded,
         proposalName,
       })
 
       assert.equal(to[0], address)
       assert.equal(value[0], 0)
-      assert.equal(calldata[0], [
-        '0xa9059cbb0000000000000000000000008d533d1a48b0d5dddef513a0b0a3677e991f3915000000000000000000000000000000000000000000000000002386f26fc10000',
-      ])
+      assert.equal(calldata[0], [calldataEncoded])
       assert.equal(proposalNameParsed, proposalName)
     })
   })

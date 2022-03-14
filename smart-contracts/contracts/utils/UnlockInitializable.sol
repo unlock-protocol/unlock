@@ -50,7 +50,7 @@ abstract contract UnlockInitializable {
         // If the contract is initializing we ignore whether initialized is set in order to support multiple
         // inheritance patterns, but we only do this in the context of a constructor, because in other contexts the
         // contract may have been reentered.
-        require(initializing ? _isConstructor() : !initialized, "Initializable: contract is already initialized");
+        require(initializing ? _isConstructor() : !initialized, "ALREADY_INITIALIZED");
 
         bool isTopLevelCall = !initializing;
         if (isTopLevelCall) {
@@ -70,7 +70,7 @@ abstract contract UnlockInitializable {
      * {initializer} modifier, directly or indirectly.
      */
     modifier onlyInitializing() {
-        require(initializing, "Initializable: contract is not initializing");
+        require(initializing, "NOT_INITIALIZING");
         _;
     }
 

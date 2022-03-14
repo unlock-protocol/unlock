@@ -71,46 +71,55 @@ export const NewAccountCheckout = ({
   }
 
   return (
-    <PaymentDetails
-      saveCard={onCardSaved}
-      buttonLabel="Save and go to payment"
-      renderError={() => {
-        if (!error) {
-          return null
-        }
-        if (error === 'ACCOUNT_ALREADY_EXISTS') {
+    <>
+      <p>
+        Have you already created an Unlock account?{' '}
+        <LinkButton onClick={() => showLogin()}>Please login</LinkButton>.
+      </p>
+      <PaymentDetails
+        saveCard={onCardSaved}
+        buttonLabel="Save and go to payment"
+        renderError={() => {
+          if (!error) {
+            return null
+          }
+          if (error === 'ACCOUNT_ALREADY_EXISTS') {
+            return (
+              <>
+                An account with this email already exists,{' '}
+                <LinkButton onClick={() => showLogin()}>
+                  please login
+                </LinkButton>
+                .
+              </>
+            )
+          }
           return (
             <>
-              An account with this email already exists,{' '}
-              <LinkButton onClick={() => showLogin()}>please login</LinkButton>.
+              There was an error creating your account. Please try again in a
+              few seconds.
             </>
           )
-        }
-        return (
-          <>
-            There was an error creating your account. Please try again in a few
-            seconds.
-          </>
-        )
-      }}
-      renderChildren={({ register }) => {
-        return (
-          <>
-            <Label>Email</Label>
-            <Input
-              autoComplete="username"
-              {...register('email', { required: true })}
-            />
-            <Label>Set a password</Label>
-            <Input
-              autoComplete="new-password"
-              type="password"
-              {...register('password', { required: true })}
-            />
-          </>
-        )
-      }}
-    />
+        }}
+        renderChildren={({ register }) => {
+          return (
+            <>
+              <Label>Email</Label>
+              <Input
+                autoComplete="username"
+                {...register('email', { required: true })}
+              />
+              <Label>Set a password</Label>
+              <Input
+                autoComplete="new-password"
+                type="password"
+                {...register('password', { required: true })}
+              />
+            </>
+          )
+        }}
+      />
+    </>
   )
 }
 

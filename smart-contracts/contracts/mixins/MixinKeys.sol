@@ -68,9 +68,11 @@ contract MixinKeys is
   // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
   // for ownership of that key
-  modifier onlyKeyManagerOrApproved(
+  function _onlyKeyManagerOrApproved(
     uint _tokenId
   )
+  internal
+  view
   {
     require(
       _isKeyManager(_tokenId, msg.sender) ||
@@ -78,47 +80,30 @@ contract MixinKeys is
       isApprovedForAll(_ownerOf[_tokenId], msg.sender),
       'ONLY_KEY_MANAGER_OR_APPROVED'
     );
-    _;
-  }
-
-  // Ensures that an owner owns or has owned a key in the past
-  modifier ownsOrHasOwnedKey(
-    address _keyOwner
-  ) {
-    require(
-      getKeyByOwner(_keyOwner).expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
-    );
-    _;
   }
 
   // Ensures that an owner has a valid key
-  modifier hasValidKey(
+  function _hasValidKey(
     address _user
-  ) {
+  ) 
+  internal 
+  view 
+  {
     require(
       getHasValidKey(_user), 'KEY_NOT_VALID'
     );
-    _;
   }
 
   // Ensures that a key has an owner
-  modifier isKey(
+  function _isKey(
     uint _tokenId
-  ) {
+  ) 
+  internal
+  view 
+  {
     require(
       _ownerOf[_tokenId] != address(0), 'NO_SUCH_KEY'
     );
-    _;
-  }
-
-  // Ensure that the caller owns the key
-  modifier onlyKeyOwner(
-    uint _tokenId
-  ) {
-    require(
-      ownerOf(_tokenId) == msg.sender, 'ONLY_KEY_OWNER'
-    );
-    _;
   }
 
   /**
@@ -130,9 +115,7 @@ contract MixinKeys is
   ) 
     internal
     view
-    returns (
-      Key memory 
-    )
+    returns ( Key memory )
   {
     return keyByOwner[_keyOwner];
   }
@@ -146,7 +129,8 @@ contract MixinKeys is
     address _recipient,
     address _keyManager,
     uint expirationTimestamp
-  ) internal 
+  ) 
+  internal 
   returns (uint) {
     Key storage key = keyByOwner[_recipient];
 
@@ -332,8 +316,8 @@ contract MixinKeys is
     uint _tokenId,
     address _keyManager
   ) public
-    isKey(_tokenId)
   {
+    _isKey(_tokenId);
     require(
       _isKeyManager(_tokenId, msg.sender) ||
       isLockManager(msg.sender),
@@ -364,9 +348,9 @@ contract MixinKeys is
     uint _tokenId
   )
     public
-    onlyIfAlive
-    onlyKeyManagerOrApproved(_tokenId)
   {
+    _onlyKeyManagerOrApproved(_tokenId);
+    _onlyIfAlive;
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
@@ -382,9 +366,9 @@ contract MixinKeys is
   function getApproved(
     uint _tokenId
   ) public view
-    isKey(_tokenId)
     returns (address)
   {
+    _isKey(_tokenId);
     address approvedRecipient = approved[_tokenId];
     return approvedRecipient;
   }
@@ -425,23 +409,6 @@ contract MixinKeys is
       return true;
     } else {
       return false;
-    }
-  }
-
-  /**
-   * Assigns the key a new tokenId (from totalSupply) if it does not already have
-   * one assigned.
-   */
-  function _assignNewTokenId(
-    Key storage _key
-  ) internal
-  {
-    if (_key.tokenId == 0) {
-      // This is a brand new owner
-      // We increment the tokenId counter
-      _totalSupply++;
-      // we assign the incremented `_totalSupply` as the tokenId for the new key
-      _key.tokenId = _totalSupply;
     }
   }
 
@@ -508,8 +475,8 @@ contract MixinKeys is
     address _to,
     bool _approved
   ) public
-    onlyIfAlive
   {
+    _onlyIfAlive;
     require(_to != msg.sender, 'APPROVE_SELF');
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
@@ -544,7 +511,8 @@ contract MixinKeys is
    * @dev Change the maximum number of keys the lock can edit
    * @param _maxNumberOfKeys uint the maximum number of keys
    */
-   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external onlyLockManager {
+   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
+     _onlyLockManager();
      require (_maxNumberOfKeys >= _totalSupply, "maxNumberOfKeys is smaller than existing supply");
      maxNumberOfKeys = _maxNumberOfKeys;
    }
@@ -556,7 +524,8 @@ contract MixinKeys is
    * @param _newExpirationDuration the new amount of time for each key purchased 
    * or type(uint).max for a non-expiring key
    */
-   function setExpirationDuration(uint _newExpirationDuration) external onlyLockManager {
+   function setExpirationDuration(uint _newExpirationDuration) external {
+     _onlyLockManager();
      expirationDuration = _newExpirationDuration;
    }
    
