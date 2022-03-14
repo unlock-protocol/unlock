@@ -109,7 +109,7 @@ contract MixinRefunds is
     emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
     // of 0 so that we can still differentiate hasKey from hasValidKey.
-    _updateKeyExpirationTimestamp(_keyOwner, block.timestamp);
+    key.expirationTimestamp = block.timestamp;
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns

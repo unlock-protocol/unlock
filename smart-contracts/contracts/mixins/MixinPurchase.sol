@@ -168,7 +168,7 @@ contract MixinPurchase is
     require(key.tokenId != 0, 'NON_EXISTING_KEY');
 
     // extend key duration
-    _extendKey(_recipient);
+    _extendKey(key.tokenId);
 
     // transfer the tokens
     uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);

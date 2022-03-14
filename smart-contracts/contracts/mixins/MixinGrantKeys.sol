@@ -48,10 +48,7 @@ contract MixinGrantKeys is
         emit KeyManagerChanged(toKey.tokenId, keyManager);
 
         // update ts
-        _updateKeyExpirationTimestamp(
-          recipient,
-          expirationTimestamp
-        );
+        toKey.expirationTimestamp = expirationTimestamp;
       
         // trigger event
         emit Transfer(

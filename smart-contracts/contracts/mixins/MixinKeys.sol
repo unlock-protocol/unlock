@@ -173,20 +173,20 @@ contract MixinKeys is
   }
 
   function _extendKey(
-    address _recipient
+    uint _tokenId
   ) internal 
     returns (
       uint newTimeStamp
     )
   {
-    Key memory key = getKeyOfOwnerByIndex(_recipient, 0);
+    Key memory key = _keys[_tokenId];
 
     // prevent extending a valid non-expiring key
     require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
     
     // if non-expiring but not valid then extend
     if(expirationDuration == type(uint).max) {
-      _updateKeyExpirationTimestamp(_recipient, type(uint).max);
+      key.expirationTimestamp = type(uint).max;
     } else {
       if (key.expirationTimestamp > block.timestamp) {
         // extends a valid key  
@@ -195,7 +195,7 @@ contract MixinKeys is
         // renew an expired or cancelled key
         newTimeStamp = block.timestamp + expirationDuration;
       }
-      _updateKeyExpirationTimestamp(_recipient, newTimeStamp);
+      key.expirationTimestamp = newTimeStamp;
     }  
   } 
 
@@ -252,29 +252,6 @@ contract MixinKeys is
     _balances[_recipient] += 1;
 
     return key.tokenId;
-  }
-
-  function _updateKeyExpirationTimestamp(
-    address _keyOwner,
-    uint newExpirationTimestamp
-  ) internal {
-    keyByOwner[_keyOwner].expirationTimestamp = newExpirationTimestamp;
-  }
-  
-  function _updateKeyTokenId(
-    address _keyOwner,
-    uint _tokenId
-  ) internal {
-    keyByOwner[_keyOwner].tokenId = _tokenId;
-  }
-
-  function _expireKey(
-    address _keyOwner
-  ) internal {
-    // Effectively expiring the key
-    keyByOwner[_keyOwner].expirationTimestamp = block.timestamp;
-    // Set the tokenID to 0 to avoid duplicates
-    keyByOwner[_keyOwner].tokenId = 0;
   }
 
   /**
