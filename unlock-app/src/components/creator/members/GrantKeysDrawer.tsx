@@ -197,7 +197,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
               Never Expires
               <input
                 id="never-expires"
-                className="align-middle	ml-2"
+                className="ml-2 align-middle"
                 type="checkbox"
                 {...register('neverExpires', {
                   onChange: () => {

@@ -1,10 +1,7 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-  corePlugins: {
-    preflight: true,
-  },
+  content: [
+    './src/**/*.{tsx,ts,jsx,js,html}',
+    './node_modules/@unlock-protocol/ui/dist/*.{js,css}',
+  ],
+  presets: [require('@unlock-protocol/ui/dist/unlock-tailwind-preset')],
 }
