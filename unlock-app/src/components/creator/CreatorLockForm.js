@@ -127,7 +127,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
         }
         break
       case 'maxNumberOfKeys':
-        if (!isPositiveInteger(value)) {
+        if (!isPositiveNumber(value) && value !== INFINITY) {
           return 'The number of keys needs to be greater than 0'
         }
         if (parseInt(value, 10) <= lock.outstandingKeys) {
@@ -179,13 +179,13 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               name="maxNumberOfKeys"
               onChange={handleChange}
               value={
-                lockInForm.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+                lockInForm?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
                   ? INFINITY
-                  : lockInForm.maxNumberOfKeys
+                  : lockInForm?.maxNumberOfKeys
               }
               required={isNew}
             />
-            {lockInForm.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
+            {lockInForm?.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
               <LockLabelUnlimited onClick={handleUnlimitedClick}>
                 Unlimited
               </LockLabelUnlimited>
