@@ -286,11 +286,11 @@ contract MixinKeys is
     returns (uint)
   {
     require(_keyOwner != address(0), 'INVALID_ADDRESS');
+    uint balance;
     if (keyByOwner[_keyOwner].expirationTimestamp != 0) {
-      return 1;
-    } else {
-      return _balances[_keyOwner];
-    }
+      balance = 1;
+    } 
+    return balance + _balances[_keyOwner];
   }
 
   /**
@@ -314,18 +314,6 @@ contract MixinKeys is
         isValid
       );
     }    
-  }
-
-  /**
-   * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else returns 0
-  */
-  function getTokenIdFor(
-    address _account
-  ) public view
-    returns (uint)
-  {
-    return getKeyOfOwnerByIndex(_account, 0).tokenId;
   }
 
   /**
