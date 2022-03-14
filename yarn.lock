@@ -14226,6 +14226,7 @@ __metadata:
     babel-eslint: 10.1.0
     babel-jest: 27.5.1
     babel-loader: 8.2.3
+    babel-plugin-wildcard: 7.0.0
     dotenv: 16.0.0
     eslint: 8.10.0
     jest: 27.5.1
@@ -17734,6 +17735,17 @@ __metadata:
     babel-runtime: ^6.22.0
     babel-types: ^6.24.1
   checksum: 32d70ce9d8c8918a6a840e46df03dfe1e265eb9b25df5a800fedb5065ef1b4b5f24d7c62d92fca0e374db8b0b9b6f84e68edd02ad21883d48f608583ec29f638
+  languageName: node
+  linkType: hard
+
+"babel-plugin-wildcard@npm:7.0.0":
+  version: 7.0.0
+  resolution: "babel-plugin-wildcard@npm:7.0.0"
+  dependencies:
+    rimraf: ^2.6.2
+  bin:
+    bpwc: index.js
+  checksum: a5ba6698e213a8d9f695db1d109b5f930eb1fed7a7790260c60ba5b2801b51213d58ca956378ecdc17a31f0f5bdf83d0d0a65ebdbcb33f5174d703d8ccfc12f9
   languageName: node
   linkType: hard
 
@@ -42982,7 +42994,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^2.2.8, rimraf@npm:^2.5.4, rimraf@npm:^2.6.1, rimraf@npm:^2.6.3":
+"rimraf@npm:^2.2.8, rimraf@npm:^2.5.4, rimraf@npm:^2.6.1, rimraf@npm:^2.6.2, rimraf@npm:^2.6.3":
   version: 2.7.1
   resolution: "rimraf@npm:2.7.1"
   dependencies:
