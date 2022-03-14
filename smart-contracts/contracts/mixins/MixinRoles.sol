@@ -37,23 +37,20 @@ contract MixinRoles is AccessControlUpgradeable {
   }
 
   // modifiers
-  modifier onlyLockManager() {
+  function _onlyLockManager() 
+  internal 
+  view
+  {
     require( hasRole(LOCK_MANAGER_ROLE, msg.sender), 'ONLY_LOCK_MANAGER');
-    _;
   }
-
-  modifier onlyKeyGranterOrManager() {
-    require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'ONLY_LOCK_MANAGER_OR_KEY_GRANTER');
-    _;
-  }
-
 
   // lock manager functions
   function isLockManager(address account) public view returns (bool) {
     return hasRole(LOCK_MANAGER_ROLE, account);
   }
 
-  function addLockManager(address account) public onlyLockManager {
+  function addLockManager(address account) public {
+    _onlyLockManager();
     grantRole(LOCK_MANAGER_ROLE, account);
     emit LockManagerAdded(account);
   }
@@ -69,12 +66,14 @@ contract MixinRoles is AccessControlUpgradeable {
     return hasRole(KEY_GRANTER_ROLE, account);
   }
 
-  function addKeyGranter(address account) public onlyLockManager {
+  function addKeyGranter(address account) public {
+    _onlyLockManager();
     grantRole(KEY_GRANTER_ROLE, account);
     emit KeyGranterAdded(account);
   }
 
-  function revokeKeyGranter(address _granter) public onlyLockManager {
+  function revokeKeyGranter(address _granter) public {
+    _onlyLockManager();
     revokeRole(KEY_GRANTER_ROLE, _granter);
     emit KeyGranterRemoved(_granter);
   }

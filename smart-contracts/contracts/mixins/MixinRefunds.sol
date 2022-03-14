@@ -44,10 +44,9 @@ contract MixinRefunds is
   function expireAndRefundFor(
     address payable _keyOwner,
     uint amount
-  ) external
-    onlyLockManager
-    hasValidKey(_keyOwner)
-  {
+  ) external {
+    _onlyLockManager();
+    _hasValidKey(_keyOwner);
     _cancelAndRefund(_keyOwner, amount);
   }
 
@@ -57,8 +56,8 @@ contract MixinRefunds is
    */
   function cancelAndRefund(uint _tokenId)
     external
-    onlyKeyManagerOrApproved(_tokenId)
   {
+    _onlyKeyManagerOrApproved(_tokenId);
     address payable keyOwner = payable(ownerOf(_tokenId));
     uint refund = _getCancelAndRefundValue(keyOwner);
 
@@ -71,9 +70,8 @@ contract MixinRefunds is
   function updateRefundPenalty(
     uint _freeTrialLength,
     uint _refundPenaltyBasisPoints
-  ) external
-    onlyLockManager
-  {
+  ) external {
+    _onlyLockManager();
     emit RefundPenaltyChanged(
       _freeTrialLength,
       _refundPenaltyBasisPoints
@@ -134,9 +132,9 @@ contract MixinRefunds is
     address _keyOwner
   )
     private view
-    hasValidKey(_keyOwner)
     returns (uint refund)
   {
+    _hasValidKey(_keyOwner);
     Key memory key = getKeyByOwner(_keyOwner);
 
     // return entire purchased price if key is non-expiring

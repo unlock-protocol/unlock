@@ -36,7 +36,8 @@ contract MixinConvenienceOwnable is MixinLockCore {
     * available only as a convenience helper.
     * @param account address returned by the `owner()` helper
    */ 
-  function setOwner(address account) public onlyLockManager {
+  function setOwner(address account) public {
+    _onlyLockManager();
     require(account != address(0), 'OWNER_CANT_BE_ADDRESS_ZERO');
     address _previousOwner = _convenienceOwner;
     _convenienceOwner = account;

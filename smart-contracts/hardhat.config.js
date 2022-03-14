@@ -25,6 +25,9 @@ require('solidity-coverage')
 // eslint-disable-next-line global-require
 require('@nomiclabs/hardhat-etherscan')
 
+// check contract size
+require('hardhat-contract-sizer')
+
 const { getHardhatNetwork } = require('./helpers/network')
 
 const settings = {
