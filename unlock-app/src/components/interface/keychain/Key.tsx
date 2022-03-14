@@ -21,7 +21,6 @@ interface KeyBoxProps {
 
 const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
-  console.log(expiration)
   return (
     <KeyContent>
       <LockIcon src={metadata.image} width="40" />
