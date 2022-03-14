@@ -3,6 +3,8 @@ import { ethers } from 'ethers'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { Lock } from './Lock'
+import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
+
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
@@ -11,6 +13,7 @@ import { EnjoyYourMembership } from './EnjoyYourMembership'
 import Svg from '../svg'
 import { PaywallConfig } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
+import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 
 interface CardConfirmationCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -46,6 +49,15 @@ export const CardConfirmationCheckout = ({
   const now = new Date().getTime() / 1000
   const hasValidkey = keyExpiration > now && keyExpiration < Infinity
   const hasOptimisticKey = keyExpiration === Infinity
+
+  const {
+    isAdvanced,
+    setIsAdvanced,
+    onRecipientChange,
+    advancedRecipientValid,
+    recipient: customAddress,
+    checkingRecipient,
+  } = useAdvancedCheckout()
 
   const totalPrice: number = Object.values(
     lock.fiatPricing.usd as number
@@ -84,7 +96,8 @@ export const CardConfirmationCheckout = ({
         token,
         lock.address,
         network,
-        formattedPrice
+        formattedPrice,
+        customAddress
       )
       if (hash) {
         emitTransactionInfo({
@@ -131,6 +144,9 @@ export const CardConfirmationCheckout = ({
     )
   }
 
+  const payDisabled = isAdvanced
+    ? purchasePending || !advancedRecipientValid
+    : purchasePending
   return (
     <Wrapper>
       <Lock
@@ -145,7 +161,14 @@ export const CardConfirmationCheckout = ({
 
       {!hasValidkey && !hasOptimisticKey && (
         <>
-          <Button disabled={purchasePending} onClick={charge}>
+          <CheckoutCustomRecipient
+            isAdvanced={isAdvanced}
+            advancedRecipientValid={advancedRecipientValid}
+            checkingRecipient={checkingRecipient}
+            setIsAdvanced={setIsAdvanced}
+            onRecipientChange={onRecipientChange}
+          />
+          <Button disabled={payDisabled} onClick={charge}>
             Pay ${formattedPrice} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
