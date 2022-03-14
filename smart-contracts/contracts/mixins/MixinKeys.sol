@@ -115,9 +115,7 @@ contract MixinKeys is
   ) 
     internal
     view
-    returns (
-      Key memory 
-    )
+    returns ( Key memory )
   {
     return keyByOwner[_keyOwner];
   }
@@ -131,7 +129,8 @@ contract MixinKeys is
     address _recipient,
     address _keyManager,
     uint expirationTimestamp
-  ) internal 
+  ) 
+  internal 
   returns (uint) {
     Key storage key = keyByOwner[_recipient];
 
@@ -383,23 +382,6 @@ contract MixinKeys is
       return true;
     } else {
       return false;
-    }
-  }
-
-  /**
-   * Assigns the key a new tokenId (from totalSupply) if it does not already have
-   * one assigned.
-   */
-  function _assignNewTokenId(
-    Key storage _key
-  ) internal
-  {
-    if (_key.tokenId == 0) {
-      // This is a brand new owner
-      // We increment the tokenId counter
-      _totalSupply++;
-      // we assign the incremented `_totalSupply` as the tokenId for the new key
-      _key.tokenId = _totalSupply;
     }
   }
 
