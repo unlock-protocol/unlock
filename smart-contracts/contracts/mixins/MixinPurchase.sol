@@ -76,34 +76,18 @@ contract MixinPurchase is
       address _recipient = _recipients[i];
       require(_recipient != address(0), 'INVALID_ADDRESS');
       
-      // Assign the key
-      Key memory key = getKeyOfOwnerByIndex(_recipient, 0);
-      uint newTimeStamp;
-
-      // key doesnt exist
-      if (key.tokenId == 0) {
-        // check for a non-expiring key
-        if (expirationDuration == type(uint).max) {
-          newTimeStamp = type(uint).max;
-        } else {
-          newTimeStamp = block.timestamp + expirationDuration;
-        }
-        // create a new key
-        _createNewKey(
-          _recipient,
-          _keyManagers[i],
-          newTimeStamp
-        );
+      // check for a non-expiring key
+      if (expirationDuration == type(uint).max) {
+        newTimeStamp = type(uint).max;
       } else {
-        // extend key duration
-        newTimeStamp = _extendKey(_recipient);
-        emit RenewKeyPurchase(_recipient, newTimeStamp);
-
-        // reset manager if the key is expired or cancelled
-        if (key.expirationTimestamp < block.timestamp) {
-          _setKeyManagerOf(key.tokenId, _keyManagers[i]);
-        }
+        newTimeStamp = block.timestamp + expirationDuration;
       }
+      // create a new key
+      _createNewKey(
+        _recipient,
+        _keyManagers[i],
+        newTimeStamp
+      );
 
       // price      
       uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
