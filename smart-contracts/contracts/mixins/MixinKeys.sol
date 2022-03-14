@@ -167,7 +167,7 @@ contract MixinKeys is
     Key memory key = getKeyByOwner(_recipient);
 
     // prevent extending a valid non-expiring key
-    require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+    require(key.expirationTimestamp != type(uint).max, 'CANT_EXTEND_NON_EXPIRING_KEY');
     
     // if non-expiring but not valid then extend
     if(expirationDuration == type(uint).max) {
