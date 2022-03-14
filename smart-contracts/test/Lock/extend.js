@@ -202,7 +202,7 @@ contract('Lock / extend keys', (accounts) => {
                 from: nonExpiringKeyOwner,
               }
             ),
-            'A valid non-expiring key can not be purchased twice'
+            'CANT_EXTEND_NON_EXPIRING_KEY'
           )
         })
 
