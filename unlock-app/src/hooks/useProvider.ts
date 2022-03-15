@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { useState, useContext, useEffect } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
+import { toast } from 'react-hot-toast'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
@@ -22,7 +23,6 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
-
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
@@ -159,14 +159,21 @@ export const useProvider = (config: any) => {
       resetProvider(newProvider)
     } else {
       try {
-        await provider.send(
-          'wallet_switchEthereumChain',
-          [
-            {
-              chainId: `0x${network.id.toString(16)}`,
-            },
-          ],
-          account
+        await toast.promise(
+          provider.send(
+            'wallet_switchEthereumChain',
+            [
+              {
+                chainId: `0x${network.id.toString(16)}`,
+              },
+            ],
+            account
+          ),
+          {
+            loading: `Changing network to ${network.name}`,
+            error: `Error in changing network to ${network.name}`,
+            success: `Successfully changed network to ${network.name}`,
+          }
         )
       } catch (switchError: any) {
         // This error code indicates that the chain has not been added to the provider yet.
@@ -185,14 +192,10 @@ export const useProvider = (config: any) => {
               account
             )
           } catch (addError) {
-            window.alert(
+            toast.error(
               'Network could not be added. Please try manually adding it to your wallet'
             )
           }
-        } else {
-          window.alert(
-            'Network could not be changed. Please change it from your wallet.'
-          )
         }
       }
     }
