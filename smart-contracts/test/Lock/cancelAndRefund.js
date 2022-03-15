@@ -60,13 +60,13 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
     const estimatedRefund = new BigNumber(
-      await lock.getCancelAndRefundValueFor.call(keyOwners[0])
+      await lock.getCancelAndRefundValueFor.call(tokenIds[0])
     )
     assert(estimatedRefund.lt(keyPrice))
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
-    await lock.grantKeys(
+    const tx = await lock.grantKeys(
       [accounts[5]],
       [999999999999],
       [constants.ZERO_ADDRESS],
@@ -74,14 +74,15 @@ contract('Lock / cancelAndRefund', (accounts) => {
         from: accounts[0],
       }
     )
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
     const estimatedRefund = new BigNumber(
-      await lock.getCancelAndRefundValueFor.call(accounts[5])
+      await lock.getCancelAndRefundValueFor.call(args.tokenId)
     )
     assert(estimatedRefund.lt(keyPrice))
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
-    await locks.FREE.grantKeys(
+    const tx = await locks.FREE.grantKeys(
       [accounts[5]],
       [999999999999],
       [constants.ZERO_ADDRESS],
@@ -89,8 +90,9 @@ contract('Lock / cancelAndRefund', (accounts) => {
         from: accounts[0],
       }
     )
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
     const estimatedRefund = new BigNumber(
-      await locks.FREE.getCancelAndRefundValueFor.call(accounts[5])
+      await locks.FREE.getCancelAndRefundValueFor.call(args.tokenId)
     )
     assert(estimatedRefund, 0)
   })
@@ -110,7 +112,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
         await web3.eth.getBalance(keyOwners[0])
       )
       estimatedRefund = new BigNumber(
-        await lock.getCancelAndRefundValueFor.call(keyOwners[0])
+        await lock.getCancelAndRefundValueFor.call(tokenIds[0])
       )
       txObj = await lock.cancelAndRefund(tokenIds[0], {
         from: keyOwners[0],
@@ -246,7 +248,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it('the key is expired', async () => {
-      await lock.expireAndRefundFor(keyOwners[3], 0, {
+      await lock.expireAndRefundFor(tokenIds[3], 0, {
         from: lockCreator,
       })
       await reverts(
