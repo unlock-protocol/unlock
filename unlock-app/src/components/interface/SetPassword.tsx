@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react'
 import styled from 'styled-components'
 import { LoadingButton } from './user-account/styles'
+import { Button } from './checkout/FormStyles'
 
 interface Props {
   buttonLabel: string
@@ -106,7 +107,11 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
       )
     }
 
-    return <SubmitButton type="submit" value="Submit" disabled={!isValid} />
+    return (
+      <Button type="submit" disabled={!isValid}>
+        Submit
+      </Button>
+    )
   }
 
   const { errors } = state
@@ -114,7 +119,7 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Label htmlFor="passwordInput">Password</Label>
-      <Input
+      <input
         required
         name="password"
         type="password"
@@ -124,7 +129,7 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
       />
       <br />
       <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
-      <Input
+      <input
         required
         name="passwordConfirmation"
         type="password"
@@ -151,32 +156,6 @@ const Label = styled.label`
   color: var(--darkgrey);
   margin-top: 10px;
   margin-bottom: 5px;
-`
-
-const Input = styled.input`
-  height: 48px;
-  width: 100%;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-`
-
-const SubmitButton = styled.input`
-  height: 48px;
-  width: 100%;
-  border: none;
-  background-color: var(--green);
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  color: white;
-  &[disabled] {
-    background-color: var(--grey);
-    cursor: not-allowed;
-    color: white;
-  }
 `
 
 const Form = styled.form`

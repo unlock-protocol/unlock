@@ -13,10 +13,10 @@ import encrypter from './encrypter'
 //  attachments: array of attachements as data-uri strings (nodemailer will handle them)
 // }
 export const route = (args, callback) => {
-  let template = templates[args.template]
+  let template = templates[args.template.toLowerCase()]
 
   if (!template && args.failoverTemplate) {
-    template = templates[args.failoverTemplate]
+    template = templates[args.failoverTemplate.toLowerCase()]
   }
 
   if (!template) {

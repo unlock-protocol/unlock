@@ -5,7 +5,6 @@ import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
 
-
 /**
  * @title An implementation of the money related functions.
  * @author HardlyDifficult (unlock-protocol.com)
@@ -25,7 +24,16 @@ contract MixinFunds
     address _tokenAddress
   ) internal
   {
+    _isValidToken(_tokenAddress);
     tokenAddress = _tokenAddress;
+  }
+
+  function _isValidToken(
+    address _tokenAddress
+  ) 
+  internal 
+  view
+  {
     require(
       _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
       'INVALID_TOKEN'

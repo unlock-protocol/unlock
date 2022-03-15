@@ -18,7 +18,7 @@ const stagingConfig: Config = {
 }
 
 const productionConfig: Config = {
-  gaId: '',
+  gaId: 'UA-142114767-1',
   gaTmId: 'GTM-ND2KDWB',
   baseURL: 'https://unlock-protocol.com',
   appURL: 'https://app.unlock-protocol.com/dashboard',

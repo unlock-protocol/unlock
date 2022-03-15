@@ -49,13 +49,13 @@ contract MixinTransfer is
     uint _tokenId,
     uint _timeShared
   ) public
-    onlyIfAlive
-    onlyKeyManagerOrApproved(_tokenId)
   {
+    _onlyIfAlive();
+    _onlyKeyManagerOrApproved(_tokenId);
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_to != address(0), 'INVALID_ADDRESS');
     address keyOwner = _ownerOf[_tokenId];
-    require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
+    _hasValidKey(keyOwner);
     require(keyOwner != _to, 'TRANSFER_TO_SELF');
 
     Key memory fromKey = getKeyByOwner(keyOwner);
@@ -115,18 +115,17 @@ contract MixinTransfer is
     uint _tokenId
   )
     public
-    onlyIfAlive
-    hasValidKey(_from)
-    onlyKeyManagerOrApproved(_tokenId)
   {
+    _onlyIfAlive();
+    _hasValidKey(_from);
+    _onlyKeyManagerOrApproved(_tokenId);
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
     require(_from != _recipient, 'TRANSFER_TO_SELF');
-    uint fee = getTransferFee(_from, 0);
 
     // subtract the fee from the senders key before the transfer
-    _timeMachine(_tokenId, fee, false);  
+    _timeMachine(_tokenId, getTransferFee(_from, 0), false);  
 
     Key memory fromKey = getKeyByOwner(_from);
     Key memory toKey = getKeyByOwner(_recipient);    
@@ -154,7 +153,7 @@ contract MixinTransfer is
       _setKeyManagerOf(_tokenId, address(0));
       _recordOwner(_recipient, _tokenId);
     } else {
-      require(expirationDuration != type(uint).max, 'Recipient already owns a non-expiring key');
+      require(expirationDuration != type(uint).max, 'NON_EXPIRING_KEY');
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
       _updateKeyExpirationTimestamp(
@@ -249,10 +248,8 @@ contract MixinTransfer is
    */
   function updateTransferFee(
     uint _transferFeeBasisPoints
-  )
-    external
-    onlyLockManager
-  {
+  ) external {
+    _onlyLockManager();
     emit TransferFeeChanged(
       _transferFeeBasisPoints
     );
