@@ -104,6 +104,21 @@ contract MixinKeys is
     );
   }
 
+  /**
+   * Modifier to check if a key is expired or not
+   */
+  function _isValidKey(
+    uint _tokenId
+  ) 
+  internal
+  view
+  {
+    require(
+      isValidKey(_tokenId),
+      'KEY_NOT_VALID'
+    );
+  }
+
   // Ensures that a key has an owner
   function _isKey(
     uint _tokenId
@@ -274,6 +289,29 @@ contract MixinKeys is
     return _balances[_keyOwner];
   }
 
+  function isValidKey(
+    uint _tokenId
+  )
+    public
+    view
+    returns (bool)
+  { 
+    bool isValid = _keys[_tokenId].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _ownerOf[_tokenId],
+        _keys[_tokenId].expirationTimestamp,
+        isValid
+      );
+    }
+
+    return isValid;
+  }
+    
+
   /**
    * Checks if the user has a non-expired key.
    */
@@ -318,6 +356,21 @@ contract MixinKeys is
     returns (uint)
   {
     return _keys[_tokenId].expirationTimestamp;
+  }
+ 
+  /**
+  * @dev Set the key's ExpirationTimestamp field for a given token.
+  * @param _tokenId the tokenId of the key
+  * @param _expirationTimestamp the tokenId of the key
+  * @dev Returns 0 if the owner has never owned a key for this lock
+  */
+  function setKeyExpirationTimestamp(
+    uint _tokenId,
+    uint _expirationTimestamp
+  ) public 
+  {
+    _isKey(_tokenId);
+    _keys[_tokenId].expirationTimestamp = _expirationTimestamp;
   }
 
   // Returns the owner of a given tokenId
@@ -451,20 +504,22 @@ contract MixinKeys is
     bool _addTime
   ) internal
   {
-    address tokenOwner = ownerOf(_tokenId);
-    require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
-    Key storage key = keyByOwner[tokenOwner];
-    uint formerTimestamp = key.expirationTimestamp;
-    bool validKey = getHasValidKey(tokenOwner);
+    _isKey(_tokenId);
+
+    uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
+
     if(_addTime) {
-      if(validKey) {
-        key.expirationTimestamp = formerTimestamp + _deltaT;
+      if(formerTimestamp > block.timestamp) {
+        // append to valid key
+        _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
       } else {
-        key.expirationTimestamp = block.timestamp + _deltaT;
+        // add from now if key is expired
+        _keys[_tokenId].expirationTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      key.expirationTimestamp = formerTimestamp - _deltaT;
+        _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
+
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }
 

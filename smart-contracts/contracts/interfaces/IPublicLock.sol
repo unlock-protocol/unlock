@@ -274,16 +274,16 @@ interface IPublicLock
   ) external;
 
   /**
-   * Determines how much of a fee a key owner would need to pay in order to
-   * transfer the key to another account.  This is pro-rated so the fee goes down
-   * overtime.
-   * @dev Throws if _keyOwner does not have a valid key
-   * @param _keyOwner The owner of the key check the transfer fee for.
+   * Determines how much of a fee would need to be paid in order to
+   * transfer to another account.  This is pro-rated so the fee goes 
+   * down overtime.
+   * @dev Throws if _tokenId is not have a valid key
+   * @param _tokenId The id of the key check the transfer fee for.
    * @param _time The amount of time to calculate the fee for.
    * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _keyOwner,
+    address _tokenId,
     uint _time
   ) external view returns (uint);
 
