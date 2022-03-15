@@ -237,9 +237,6 @@ contract MixinKeys is
     if(length == 0 ) {
       numberOfOwners++;
     }
-    if(balanceOf(previousOwner) == 1 ) {
-      numberOfOwners--;
-    }
 
     // delete token from previous owner
     _deleteOwnershipRecord(_tokenId);
@@ -279,6 +276,10 @@ contract MixinKeys is
     // Deletes the contents at the last position of the array
     delete _ownedKeyIds[previousOwner][lastTokenIndex];
 
+    // remove from owner count if thats the only key 
+    if(balanceOf(previousOwner) == 1 ) {
+      numberOfOwners--;
+    }
     // update balance
     _balances[previousOwner] -= 1;
   }
