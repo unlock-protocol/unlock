@@ -110,15 +110,6 @@ interface IPublicLock
   ) external view returns (bool);
 
   /**
-   * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else returns 0
-   * @param _account The address of the key owner
-  */
-  function getTokenIdFor(
-    address _account
-  ) external view returns (uint);
-
-  /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
   * @param _keyOwner address of the user for whom we search the key
   * @dev Returns 0 if the owner has never owned a key for this lock

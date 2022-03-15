@@ -259,12 +259,12 @@ contract('Lock / cancelAndRefund', (accounts) => {
       )
     })
 
-    it('the owner does not have a key', async () => {
+    it('the key does not exist', async () => {
       await reverts(
-        lock.cancelAndRefund(tokenIds[3], {
+        lock.cancelAndRefund(132, {
           from: accounts[7],
         }),
-        'ONLY_KEY_MANAGER'
+        'NO_SUCH_KEY'
       )
     })
   })

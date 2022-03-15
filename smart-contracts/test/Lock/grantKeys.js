@@ -97,7 +97,7 @@ contract('Lock / grantKeys', (accounts) => {
 
       it('should acknowledge that user owns key', async () => {
         for (let i = 0; i < keyOwnerList.length; i++) {
-          assert.notEqual(await lock.getTokenIdFor.call(keyOwnerList[i]), 0)
+          assert.equal(await lock.balanceOf.call(keyOwnerList[i]), 1)
         }
       })
 

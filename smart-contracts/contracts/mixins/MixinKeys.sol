@@ -241,6 +241,30 @@ contract MixinKeys is
       numberOfOwners--;
     }
 
+    // delete token from previous owner
+    _deleteOwnershipRecord(_tokenId);
+
+    // record new owner
+    _ownedKeyIds[_recipient][length] = _tokenId;
+    _ownedKeysIndex[_tokenId] = length;
+
+    // update ownership mapping
+    _ownerOf[_tokenId] = _recipient;
+    _balances[_recipient] += 1;
+
+    return key.tokenId;
+  }
+
+  /**
+   * Delete ownership info and udpate balance for previous owner
+   * @param _tokenId the id of the token to cancel
+   */
+  function _deleteOwnershipRecord(
+    uint _tokenId
+  ) internal {
+    // get owner
+    address previousOwner = _ownerOf[_tokenId];
+
     // delete previous ownership
     uint lastTokenIndex = balanceOf(previousOwner) - 1;
     uint index = _ownedKeysIndex[_tokenId];
@@ -255,18 +279,24 @@ contract MixinKeys is
     // Deletes the contents at the last position of the array
     delete _ownedKeyIds[previousOwner][lastTokenIndex];
 
-    // record new owner
-    _ownedKeyIds[_recipient][length] = _tokenId;
-    _ownedKeysIndex[_tokenId] = length;
-
-    // update ownership mapping
-    _ownerOf[_tokenId] = _recipient;
-
-    // update balances
+    // update balance
     _balances[previousOwner] -= 1;
-    _balances[_recipient] += 1;
+  }
 
-    return key.tokenId;
+  /**
+   * Delete ownership info about a key and expire the key
+   * @param _tokenId the id of the token to cancel
+   * @notice this won't 'burn' the token, as it would still exist in the record
+   */
+  function _cancelKey(
+    uint _tokenId
+  ) internal {
+    
+    // Deletes the contents at the last position of the array
+    _deleteOwnershipRecord(_tokenId);
+
+    // expire the key
+    _keys[_tokenId].expirationTimestamp = block.timestamp;
   }
 
   /**

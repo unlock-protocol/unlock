@@ -98,6 +98,7 @@ contract MixinRefunds is
 
   /**
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
+   * @notice this deletes ownership info and expire the key, but doesnt 'burn' it
    */
   function _cancelAndRefund(
     uint _tokenId,
@@ -106,13 +107,12 @@ contract MixinRefunds is
   {
     address payable keyOwner = payable(ownerOf(_tokenId));
     
+    // delete ownership info and expire the key
+    _cancelKey(_tokenId);
+    
     // emit event
     emit CancelKey(_tokenId, keyOwner, msg.sender, refund);
     
-    // expire key: expirationTimestamp is a proxy for hasKey, 
-    // setting this to `block.timestamp` instead
-    // of 0 so that we can still differentiate hasKey from hasValidKey.
-    setKeyExpirationTimestamp(_tokenId, block.timestamp);
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
