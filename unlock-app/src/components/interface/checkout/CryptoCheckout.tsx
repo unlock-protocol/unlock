@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Lock } from './Lock'
+import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { useLock } from '../../../hooks/useLock'
@@ -15,6 +16,8 @@ import {
 import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
+
+import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -50,6 +53,14 @@ export const CryptoCheckout = ({
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
+  const {
+    isAdvanced,
+    setIsAdvanced,
+    onRecipientChange,
+    advancedRecipientValid,
+    recipient,
+    checkingRecipient,
+  } = useAdvancedCheckout()
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
@@ -57,10 +68,10 @@ export const CryptoCheckout = ({
   const now = new Date().getTime() / 1000
   const hasValidkey = keyExpiration > now && keyExpiration < Infinity
   const hasOptimisticKey = keyExpiration === Infinity
+  const hasValidOrPendingKey = hasValidkey || hasOptimisticKey
   const cryptoDisabled =
     userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
   const cardDisabled = hasValidkey || hasOptimisticKey
-
   const canClaimAirdrop =
     lock.keyPrice === '0' &&
     lock.fiatPricing?.creditCardEnabled &&
@@ -69,6 +80,14 @@ export const CryptoCheckout = ({
     lock.fiatPricing?.creditCardEnabled &&
     !canClaimAirdrop &&
     lock.keyPrice !== '0'
+
+  const cantBuyWithCrypto = isAdvanced
+    ? !(advancedRecipientValid && canAfford && !userIsOnWrongNetwork)
+    : cryptoDisabled
+
+  const cantPurchaseWithCard = isAdvanced
+    ? !(isCreditCardEnabled && advancedRecipientValid)
+    : !isCreditCardEnabled
 
   const handleHasKey = (key: any) => {
     setKeyExpiration(key.expiration)
@@ -79,7 +98,7 @@ export const CryptoCheckout = ({
   }
 
   const cryptoPurchase = async () => {
-    if (!cryptoDisabled) {
+    if (!cantBuyWithCrypto) {
       setPurchasePending(true)
       try {
         const referrer =
@@ -87,8 +106,9 @@ export const CryptoCheckout = ({
             ? paywallConfig.referrer
             : account
 
+        const purchaseAccount = isAdvanced ? recipient : account
         // TODO: handle failed transactions!!
-        await purchaseKey(account, referrer, (hash: string) => {
+        await purchaseKey(purchaseAccount, referrer, (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
             hash,
@@ -128,6 +148,17 @@ export const CryptoCheckout = ({
     getBalance()
   }, [account, lock.address, walletNetwork])
 
+  const onCardPurchase = (isDisabled = false) => {
+    if (isDisabled) return
+    setCardPurchase()
+  }
+
+  const hasValidKeyOrPendingTx = hasValidOrPendingKey || transactionPending
+
+  const showCheckoutButtons =
+    (!transactionPending && keyExpiration < now) ||
+    (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
+
   return (
     <>
       <Lock
@@ -140,12 +171,44 @@ export const CryptoCheckout = ({
         purchasePending={purchasePending}
       />
 
-      {!transactionPending && keyExpiration < now && (
+      {!hasValidKeyOrPendingTx && (
         <>
+          <CheckoutCustomRecipient
+            isAdvanced={isAdvanced}
+            advancedRecipientValid={advancedRecipientValid}
+            checkingRecipient={checkingRecipient}
+            setIsAdvanced={setIsAdvanced}
+            onRecipientChange={onRecipientChange}
+            disabled={(transactionPending?.length ?? 0) > 0 ?? false}
+          />
+        </>
+      )}
+
+      {hasValidkey && (
+        <>
+          {!isAdvanced && (
+            <Message>
+              You already have a valid membership for this lock!
+            </Message>
+          )}
+          <CheckoutCustomRecipient
+            isAdvanced={isAdvanced}
+            advancedRecipientValid={advancedRecipientValid}
+            checkingRecipient={checkingRecipient}
+            setIsAdvanced={setIsAdvanced}
+            onRecipientChange={onRecipientChange}
+            customBuyMessage="Buy for a different address"
+            disabled={transactionPending?.length > 0 ?? false}
+          />
+        </>
+      )}
+
+      {showCheckoutButtons && (
+        <div style={{ marginBottom: '10px' }}>
           <Prompt>Get your membership with:</Prompt>
 
           <CheckoutOptions>
-            <CheckoutButton disabled={cryptoDisabled}>
+            <CheckoutButton disabled={cantBuyWithCrypto}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && !hasValidkey && (
                 <Warning>
@@ -162,7 +225,7 @@ export const CryptoCheckout = ({
                 !canAfford && <Warning>Your balance is too low</Warning>}
             </CheckoutButton>
 
-            <CheckoutButton disabled={!isCreditCardEnabled}>
+            <CheckoutButton disabled={cantPurchaseWithCard}>
               <Buttons.CreditCard
                 lock={lock}
                 backgroundColor="var(--blue)"
@@ -171,7 +234,7 @@ export const CryptoCheckout = ({
                 size="36px"
                 disabled={cardDisabled}
                 as="button"
-                onClick={setCardPurchase}
+                onClick={() => onCardPurchase(cantPurchaseWithCard)}
               />
             </CheckoutButton>
 
@@ -184,12 +247,12 @@ export const CryptoCheckout = ({
                   showLabel
                   size="36px"
                   as="button"
-                  onClick={setCardPurchase}
+                  onClick={onCardPurchase}
                 />
               </CheckoutButton>
             )}
           </CheckoutOptions>
-        </>
+        </div>
       )}
       {transactionPending && (
         <Message>
@@ -207,13 +270,10 @@ export const CryptoCheckout = ({
         </Message>
       )}
       {hasValidkey && (
-        <>
-          <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership
-            redirectUri={redirectUri}
-            closeModal={closeModal}
-          />
-        </>
+        <EnjoyYourMembership
+          redirectUri={redirectUri}
+          closeModal={closeModal}
+        />
       )}
       {hasOptimisticKey && (
         <EnjoyYourMembership
