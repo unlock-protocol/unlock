@@ -170,7 +170,7 @@ export const useProvider = (config: any) => {
             account
           ),
           {
-            loading: `Changing network to ${network.name}`,
+            loading: `Changing network to ${network.name}. Please Approve on your wallet.`,
             error: `Error in changing network to ${network.name}`,
             success: `Successfully changed network to ${network.name}`,
           }
