@@ -100,14 +100,21 @@ export const createLock = async (
   const address = await web3Service.generateLockAddress(owner, lock, network)
   lock.address = address
   // Second, create the lock
+  const {
+    name,
+    expirationDuration,
+    maxNumberOfKeys,
+    currencyContractAddress,
+    keyPrice,
+  } = lock
   return walletService.createLock(
     {
-      expirationDuration: lock.expirationDuration,
-      keyPrice: lock.keyPrice,
-      maxNumberOfKeys: lock.maxNumberOfKeys,
+      expirationDuration: parseInt(expirationDuration),
+      keyPrice,
+      maxNumberOfKeys,
       owner,
-      name: lock.name,
-      currencyContractAddress: lock.currencyContractAddress,
+      name,
+      currencyContractAddress,
     },
     async (createLockError, transactionHash) => {
       if (createLockError) {

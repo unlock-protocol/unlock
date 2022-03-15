@@ -23,6 +23,7 @@ import {
   isNotEmpty,
   isPositiveInteger,
   isPositiveNumber,
+  isPositiveIntegerOrZero,
   isLTE,
 } from '../../utils/validators'
 
@@ -30,6 +31,7 @@ import {
   INFINITY,
   UNLIMITED_KEYS_COUNT,
   ONE_HUNDRED_YEARS_IN_SECONDS,
+  MAX_UINT,
 } from '../../constants'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
@@ -38,7 +40,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
   const { network } = useContext(AuthenticationContext)
 
   const lockDefaults = {
-    expirationDuration: 30 * 86400, // 30 days in seconds
+    expirationDuration: 30 * 86400,  // 30 days in seconds
     keyPrice: '0.01',
     maxNumberOfKeys: 100,
     currency: null,
@@ -87,9 +89,15 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     validateAndDispatch(target, [{ name, value: value * (60 * 60 * 24) }])
   }
 
-  const handleUnlimitedClick = () => {
+  const handleUnlimitedNumbersOfKeys = () => {
     dispatch({
       change: [{ name: 'maxNumberOfKeys', value: UNLIMITED_KEYS_COUNT }],
+    })
+  }
+
+  const handleUnlimitedDuration = () => {
+    dispatch({
+      change: [{ name: 'expirationDuration', value: MAX_UINT }],
     })
   }
 
@@ -119,11 +127,8 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
         }
         break
       case 'expirationDuration':
-        if (
-          !isPositiveInteger(value) ||
-          !isLTE(ONE_HUNDRED_YEARS_IN_SECONDS)(value)
-        ) {
-          return 'The expiration duration for each key must be greater than 0 and less than 100 years'
+        if (!isPositiveInteger(value)) {
+          return 'The expiration duration for each key must be greater than 0'
         }
         break
       case 'maxNumberOfKeys':
@@ -142,6 +147,13 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     }
     return ''
   }
+
+  const expirationDurationValue =
+    lockInForm?.expirationDuration === MAX_UINT
+      ? INFINITY
+      : isPositiveIntegerOrZero(lockInForm.expirationDuration)
+      ? lockInForm.expirationDuration / (60 * 60 * 24)
+      : ''
 
   return (
     <form method="post" onSubmit={handleSubmit}>
@@ -162,16 +174,19 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
           </FormLockName>
           <FormLockDuration>
             <input
-              type="number"
-              step="1"
-              inputMode="numeric"
+              type="text"
               name="expirationDuration"
               onChange={handleChangeExpirationDuration}
-              defaultValue={lockInForm.expirationDuration / (60 * 60 * 24)}
+              value={expirationDurationValue}
               required={isNew}
               disabled={!isNew}
             />{' '}
             days
+            {lockInForm?.expirationDuration !== MAX_UINT && (
+              <LockLabelUnlimited onClick={handleUnlimitedDuration}>
+                Unlimited
+              </LockLabelUnlimited>
+            )}
           </FormLockDuration>
           <FormLockKeys>
             <input
@@ -186,7 +201,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               required={isNew}
             />
             {lockInForm?.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
-              <LockLabelUnlimited onClick={handleUnlimitedClick}>
+              <LockLabelUnlimited onClick={handleUnlimitedNumbersOfKeys}>
                 Unlimited
               </LockLabelUnlimited>
             )}
