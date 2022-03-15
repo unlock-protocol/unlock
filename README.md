@@ -1,5 +1,5 @@
 ![Unlock](/unlock-protocol-com/public/images/unlock-word-mark-dark.png#gh-dark-mode-only)
-![Fancy logo](/unlock-protocol-com/public/images/unlock-word-mark.png#gh-light-mode-only)
+![Unlock](/unlock-protocol-com/public/images/unlock-word-mark.png#gh-light-mode-only)
 
 ---
 
