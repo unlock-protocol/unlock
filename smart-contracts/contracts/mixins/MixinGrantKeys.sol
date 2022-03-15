@@ -27,37 +27,20 @@ contract MixinGrantKeys is
     require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'ONLY_LOCK_MANAGER_OR_KEY_GRANTER');
 
     for(uint i = 0; i < _recipients.length; i++) {
-      address recipient = _recipients[i];
-      uint expirationTimestamp = _expirationTimestamps[i];
-      address keyManager = _keyManagers[i];
+      require(_recipients[i] != address(0), 'INVALID_ADDRESS');
 
-      require(recipient != address(0), 'INVALID_ADDRESS');
+      uint tokenId = _createNewKey(
+        _recipients[i],
+        _keyManagers[i],  
+        _expirationTimestamps[i]
+      );
 
-      Key memory toKey = getKeyOfOwnerByIndex(recipient, 0);
-      require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
-
-      if(toKey.tokenId == 0) {
-        _createNewKey(
-          recipient,
-          keyManager,
-          expirationTimestamp
-        );
-      } else {
-        // Set the key Manager
-        _setKeyManagerOf(toKey.tokenId, keyManager);
-        emit KeyManagerChanged(toKey.tokenId, keyManager);
-
-        // update ts
-        toKey.expirationTimestamp = expirationTimestamp;
-      
-        // trigger event
-        emit Transfer(
-          address(0), // This is a creation.
-          recipient,
-          toKey.tokenId
-        );
-      }
-      
+      // trigger event
+      emit Transfer(
+        address(0), // This is a creation.
+        _recipients[i],
+        tokenId
+      );      
     }
   }
 
