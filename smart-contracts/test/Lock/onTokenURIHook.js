@@ -28,7 +28,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
       testEventHooks.address
     )
     const keyPrice = await lock.keyPrice()
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
       [to],
       [constants.ZERO_ADDRESS],
@@ -39,7 +39,8 @@ contract('Lock / onTokenURIHook', (accounts) => {
         value: keyPrice,
       }
     )
-    tokenId = await lock.getTokenIdFor.call(to)
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    tokenId = args.tokenId
   })
 
   it('tokenURI should returns a custom value', async () => {
