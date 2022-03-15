@@ -231,7 +231,10 @@ contract('Unlock / upgrades', async (accounts) => {
               })
 
               it('Key has an ID', async () => {
-                const id = await lock.getTokenIdFor(keyOwner.address)
+                let id
+                if (versionNumber >= 10) {
+                  id = await lock.getKeyOfOwnerByIndex(keyOwner.address, 0)
+                }
                 assert.notEqual(id, 0)
               })
 

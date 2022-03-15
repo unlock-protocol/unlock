@@ -19,10 +19,10 @@ contract('Lock / uniqueTokenIds', (accounts) => {
     lock = locks.SECOND
   })
 
-  describe('repurchasing expired keys', () => {
-    it('re-purchasing 2 expired keys should not duplicate tokenIDs', async () => {
+  describe('extending keys', () => {
+    it('should not duplicate tokenIDs', async () => {
       // buy some keys
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -33,36 +33,21 @@ contract('Lock / uniqueTokenIds', (accounts) => {
           from: accounts[0],
         }
       )
-      let tokenId1Before = await lock.getTokenIdFor(keyOwner1)
-      let tokenId2Before = await lock.getTokenIdFor(keyOwner2)
-      const keyExpirations = keyOwners.map((account) => {
-        return lock.expireAndRefundFor(account, 0, {
-          from: lockOwner,
-        })
-      })
-      // expire keys
-      await Promise.all(keyExpirations)
-      // repurchase keys
-      await lock.purchase(
-        [],
-        [keyOwner1, keyOwner2],
-        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-        [],
-        {
-          value: web3.utils.toWei(`${0.01 * 2}`, 'ether'),
-          from: keyOwner1,
-        }
-      )
+      const tokenIds = tx.logs
+        .filter((v) => v.event === 'Transfer')
+        .map(({ args }) => args.tokenId)
 
-      let tokenId1After = await lock.getTokenIdFor(keyOwner1)
-      let tokenId2After = await lock.getTokenIdFor(keyOwner2)
-      let supply = await lock.totalSupply()
-      assert(tokenId1Before.eq(tokenId1After))
-      assert(tokenId2Before.eq(tokenId2After))
-      assert(supply.gt(tokenId1After))
-      assert(supply.gt(tokenId2After))
-      assert.notEqual(tokenId1After, tokenId2After)
+      const supply = await lock.totalSupply()
+      assert(tokenIds[tokenIds.length - 1].eq(supply))
+
+      // extend a key
+      await lock.extend(0, tokenIds[1], web3.utils.padLeft(0, 40), [], {
+        value: web3.utils.toWei('0.01', 'ether'),
+        from: keyOwner1,
+      })
+
+      // make sure no new keys have been created
+      assert(tokenIds[tokenIds.length - 1].eq(await lock.totalSupply()))
     })
   })
 })
