@@ -27,9 +27,11 @@ contract MixinDisable is
   }
 
   // Only allow usage when contract is Alive
-  modifier onlyIfAlive() {
+  function _onlyIfAlive() 
+  internal
+  view 
+  {
     require(isAlive, 'LOCK_DEPRECATED');
-    _;
   }
 
   /**
@@ -37,9 +39,9 @@ contract MixinDisable is
    */
   function disableLock()
     external
-    onlyLockManager
-    onlyIfAlive
   {
+    _onlyLockManager();
+    _onlyIfAlive();
     emit Disable();
     isAlive = false;
   }

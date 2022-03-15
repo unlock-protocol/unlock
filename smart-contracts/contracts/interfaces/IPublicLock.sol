@@ -474,4 +474,15 @@ interface IPublicLock
       uint _value
     ) external
       returns (bool success);
+
+    /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
+      * The `Ownable` logic is used by many 3rd party services to determine
+      * contract ownership - e.g. who is allowed to edit metadata on Opensea.
+      * 
+      * @notice This logic is NOT used internally by the Unlock Protocol and is made 
+      * available only as a convenience helper.
+      */
+    function owner() external view returns (address);
+    function setOwner(address account) external;
+    function isOwner(address account) external returns (bool);
 }

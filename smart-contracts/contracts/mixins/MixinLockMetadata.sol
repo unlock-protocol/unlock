@@ -54,8 +54,8 @@ contract MixinLockMetadata is
   function updateLockName(
     string calldata _lockName
   ) external
-    onlyLockManager
   {
+    _onlyLockManager();
     name = _lockName;
   }
 
@@ -65,8 +65,8 @@ contract MixinLockMetadata is
   function updateLockSymbol(
     string calldata _lockSymbol
   ) external
-    onlyLockManager
   {
+    _onlyLockManager();
     lockSymbol = _lockSymbol;
     emit NewLockSymbol(_lockSymbol);
   }
@@ -92,8 +92,8 @@ contract MixinLockMetadata is
   function setBaseTokenURI(
     string calldata _baseTokenURI
   ) external
-    onlyLockManager
   {
+    _onlyLockManager();
     baseTokenURI = _baseTokenURI;
   }
 

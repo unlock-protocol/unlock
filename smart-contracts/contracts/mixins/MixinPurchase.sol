@@ -31,7 +31,8 @@ contract MixinPurchase is
   * @dev Set the value/price to be refunded to the sender on purchase
   */
 
-  function setGasRefundValue(uint256 _refundValue) external onlyLockManager {
+  function setGasRefundValue(uint256 _refundValue) external {
+    _onlyLockManager();
     _gasRefundValue = _refundValue;
   }
   
@@ -62,9 +63,9 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes calldata _data
   ) external payable
-    onlyIfAlive
-    notSoldOut
   {
+    _onlyIfAlive();
+    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
     require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
     require(_recipients.length == _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
 
@@ -95,7 +96,7 @@ contract MixinPurchase is
         );
       } else if (key.expirationTimestamp > block.timestamp) {
         // prevent re-purchase of a valid non-expiring key
-        require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+        require(key.expirationTimestamp != type(uint).max, 'NON_EXPIRING_KEY');
 
         // This is an existing owner trying to extend their key
         newTimeStamp = key.expirationTimestamp + expirationDuration;
@@ -163,7 +164,7 @@ contract MixinPurchase is
         token.transferFrom(address(this), msg.sender, _gasRefundValue);
       } else {
         (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
-        require(success, "Refund failed.");
+        require(success, "REFUND_FAILED");
       }
       emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
     }

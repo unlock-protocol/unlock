@@ -3,15 +3,13 @@ import styled from 'styled-components'
 import Media from '../../../theme/media'
 
 interface Props {
-  close: () => void
   children: React.ReactNode
 }
 
 export const CheckoutContainer: React.FunctionComponent<Props> = ({
-  close,
   children,
 }: React.PropsWithChildren<Props>) => {
-  return <Container onClick={close}>{children}</Container>
+  return <Container>{children}</Container>
 }
 
 export const Container = styled.div`

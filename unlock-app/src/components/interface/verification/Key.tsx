@@ -62,7 +62,9 @@ export const ValidKeyWithMetadata = ({
         <Svg.Checkmark title="Valid" />
       </Circle>
       <KeyStatus>Valid Key</KeyStatus>
-      <KeyExpiration>Until {expirationDate}</KeyExpiration>
+      {unlockKey.expiration !== -1 && (
+        <KeyExpiration>Until {expirationDate}</KeyExpiration>
+      )}
     </Box>
   )
 
@@ -78,7 +80,9 @@ export const ValidKeyWithMetadata = ({
           <Svg.Checkmark title="Valid" />
         </Circle>
         <KeyStatus>Valid Key</KeyStatus>
-        <KeyExpiration>Until {expirationDate}</KeyExpiration>
+        {unlockKey.expiration !== -1 && (
+          <KeyExpiration>Until {expirationDate}</KeyExpiration>
+        )}
         <KeyCheckedInTime>
           Checked-in {durationsAsTextFromSeconds(checkedInAgo)} ago
         </KeyCheckedInTime>

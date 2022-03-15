@@ -31,7 +31,7 @@ contract('PublicLock template versions', () => {
     const [, , , signer] = await ethers.getSigners()
     await reverts(
       unlock.connect(signer).addLockTemplate(publicLock.address, 3),
-      'Ownable: caller is not the owner'
+      'ONLY_OWNER'
     )
   })
 

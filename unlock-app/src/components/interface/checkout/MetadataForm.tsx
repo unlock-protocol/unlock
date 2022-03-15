@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
-import { Button, LoadingButton, Input, Label, ActionLabel } from './FormStyles'
+import { Button, LoadingButton, Input, Label, SmallButton } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
@@ -87,9 +87,9 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
 
       {!submittedForm && <Button type="submit">Save and Continue</Button>}
       {showSkipButton && (
-        <ActionLabel onClick={() => setSkipOptionalFields(true)}>
+        <SmallButton onClick={() => setSkipOptionalFields(true)}>
           Skip
-        </ActionLabel>
+        </SmallButton>
       )}
     </form>
   )

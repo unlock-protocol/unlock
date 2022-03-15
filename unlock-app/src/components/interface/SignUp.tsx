@@ -6,6 +6,7 @@ import InvalidLink from './InvalidLink'
 import FinishSignUp from './FinishSignup'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 import WedlockServiceContext from '../../contexts/WedlocksContext'
+import { Button } from './checkout/FormStyles'
 
 interface SignUpProps {
   showLogin: () => void
@@ -83,16 +84,16 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
         <>
           <Form onSubmit={handleSubmit}>
             <Label htmlFor="emailInput">Email Address</Label>
-            <Input
+            <input
               required
               name="emailAddress"
               id="emailInput"
               type="email"
+              className="flex w-full"
               placeholder="Enter your email to get started"
               onChange={handleInputChange}
             />
-            <SubmitButton type="submit" value="Sign Up" />
-
+            <Button type="submit">Sign up </Button>
             <br />
             <div id="signin" />
           </Form>
@@ -156,32 +157,6 @@ const Description = styled.p`
 
 const Form = styled.form`
   max-width: 600px;
-`
-
-const Input = styled.input`
-  height: 48px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
-`
-
-const SubmitButton = styled.input`
-  height: 48px;
-  width: 100%;
-  border: none;
-  background-color: var(--green);
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  color: white;
-  &[disabled] {
-    background-color: var(--grey);
-    cursor: not-allowed;
-    color: white;
-  }
 `
 
 const Confirmation = styled.div`

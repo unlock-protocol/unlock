@@ -6,13 +6,10 @@ import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
-import keyMined0x9AB351cB5DAe55abD135dD256726851aae8EFeB5 from './locks/keyMined-0x9AB351cB5DAe55abD135dD256726851aae8EFeB5'
-import keyMined0x89e975EA43E0Cfe338205e016BFFaeFeFdbc3511 from './locks/keyMined-0x89e975EA43E0Cfe338205e016BFFaeFeFdbc3511'
-import keyMined0x926FBA2B47916Fcf58d165d44D6d9714d31Ee397 from './locks/keyMined-0x926FBA2B47916Fcf58d165d44D6d9714d31Ee397'
-import keyMined0xBB19b9E39cB06402bf17886708506dba0B8Eb2f2 from './locks/keyMined-0xBB19b9E39cB06402bf17886708506dba0B8Eb2f2'
-import keyMined0xb7958434e812C9D1a76560d43b2CfAAfe093eC08 from './locks/keyMined-0xb7958434e812C9D1a76560d43b2CfAAfe093eC08'
+// eslint-disable-next-line import/no-unresolved
+import * as LockTemplates from './locks'
 
-export default {
+const baseTemplates = {
   confirmEmail,
   ejectedEmail,
   ejectionWarningEmail,
@@ -21,9 +18,14 @@ export default {
   confirmEvent,
   keyOwnership,
   keyMined,
-  keyMined0x9AB351cB5DAe55abD135dD256726851aae8EFeB5,
-  keyMined0x89e975EA43E0Cfe338205e016BFFaeFeFdbc3511,
-  keyMined0x926FBA2B47916Fcf58d165d44D6d9714d31Ee397,
-  keyMined0xBB19b9E39cB06402bf17886708506dba0B8Eb2f2,
-  keyMined0xb7958434e812C9D1a76560d43b2CfAAfe093eC08,
 }
+
+const templates = {}
+Object.keys(LockTemplates).forEach((template) => {
+  templates[template.toLowerCase()] = LockTemplates[template]
+})
+
+Object.keys(baseTemplates).forEach((template) => {
+  templates[template.toLowerCase()] = baseTemplates[template]
+})
+export default templates

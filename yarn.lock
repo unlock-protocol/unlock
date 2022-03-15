@@ -13843,6 +13843,7 @@ __metadata:
     ethers: 5.5.4
     fs-extra: 10.0.1
     hardhat: 2.8.0
+    hardhat-contract-sizer: ^2.5.0
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.8
     hardhat-storage-layout: 0.1.6
@@ -14021,6 +14022,7 @@ __metadata:
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.7.1
@@ -14113,7 +14115,10 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     eslint: 8.10.0
     ethers: 5.5.4
+    passport-custom: ^1.1.1
     prettier: 2.5.1
+  peerDependencies:
+    passport: ^0.5.2
   languageName: unknown
   linkType: soft
 
@@ -14221,6 +14226,7 @@ __metadata:
     babel-eslint: 10.1.0
     babel-jest: 27.5.1
     babel-loader: 8.2.3
+    babel-plugin-wildcard: 7.0.0
     dotenv: 16.0.0
     eslint: 8.10.0
     jest: 27.5.1
@@ -17732,6 +17738,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-wildcard@npm:7.0.0":
+  version: 7.0.0
+  resolution: "babel-plugin-wildcard@npm:7.0.0"
+  dependencies:
+    rimraf: ^2.6.2
+  bin:
+    bpwc: index.js
+  checksum: a5ba6698e213a8d9f695db1d109b5f930eb1fed7a7790260c60ba5b2801b51213d58ca956378ecdc17a31f0f5bdf83d0d0a65ebdbcb33f5174d703d8ccfc12f9
+  languageName: node
+  linkType: hard
+
 "babel-polyfill@npm:6.26.0":
   version: 6.26.0
   resolution: "babel-polyfill@npm:6.26.0"
@@ -19840,7 +19857,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table3@npm:^0.6.1":
+"cli-table3@npm:^0.6.0, cli-table3@npm:^0.6.1":
   version: 0.6.1
   resolution: "cli-table3@npm:0.6.1"
   dependencies:
@@ -20518,16 +20535,6 @@ __metadata:
   dependencies:
     safe-buffer: ~5.1.1
   checksum: 985d974a2d33e1a2543ada51c93e1ba2f73eaed608dc39f229afc78f71dcc4c8b7d7c684aa647e3c6a3a204027444d69e53e169ce94e8d1fa8d7dee80c9c8fed
-  languageName: node
-  linkType: hard
-
-"cookie-parser@npm:1.4.6":
-  version: 1.4.6
-  resolution: "cookie-parser@npm:1.4.6"
-  dependencies:
-    cookie: 0.4.1
-    cookie-signature: 1.0.6
-  checksum: 1e5a63aa82e8eb4e02d2977c6902983dee87b02e87ec5ec43ac3cb1e72da354003716570cd5190c0ad9e8a454c9d3237f4ad6e2f16d0902205a96a1c72b77ba5
   languageName: node
   linkType: hard
 
@@ -22046,6 +22053,13 @@ __metadata:
   version: 1.1.2
   resolution: "depd@npm:1.1.2"
   checksum: 6b406620d269619852885ce15965272b829df6f409724415e0002c8632ab6a8c0a08ec1f0bd2add05dc7bd7507606f7e2cc034fa24224ab829580040b835ecd9
+  languageName: node
+  linkType: hard
+
+"depd@npm:~2.0.0":
+  version: 2.0.0
+  resolution: "depd@npm:2.0.0"
+  checksum: abbe19c768c97ee2eed6282d8ce3031126662252c58d711f646921c9623f9052e3e1906443066beec1095832f534e57c523b7333f8e7e0d93051ab6baef5ab3a
   languageName: node
   linkType: hard
 
@@ -25993,6 +26007,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"express-session@npm:^1.17.2":
+  version: 1.17.2
+  resolution: "express-session@npm:1.17.2"
+  dependencies:
+    cookie: 0.4.1
+    cookie-signature: 1.0.6
+    debug: 2.6.9
+    depd: ~2.0.0
+    on-headers: ~1.0.2
+    parseurl: ~1.3.3
+    safe-buffer: 5.2.1
+    uid-safe: ~2.1.5
+  checksum: 9e05cff29865c039f2b3a623325a66707a6229598a33f6e6f082c1581b0afa0bf9196d93c70445883e610138a36698842ff9ddeccdafc9c3ef65ff2a6e237d83
+  languageName: node
+  linkType: hard
+
 "express-unless@npm:^1.0.0":
   version: 1.0.0
   resolution: "express-unless@npm:1.0.0"
@@ -28308,6 +28338,18 @@ fsevents@~2.1.1:
     ajv: ^6.12.3
     har-schema: ^2.0.0
   checksum: b998a7269ca560d7f219eedc53e2c664cd87d487e428ae854a6af4573fc94f182fe9d2e3b92ab968249baec7ebaf9ead69cf975c931dc2ab282ec182ee988280
+  languageName: node
+  linkType: hard
+
+"hardhat-contract-sizer@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "hardhat-contract-sizer@npm:2.5.0"
+  dependencies:
+    chalk: ^4.0.0
+    cli-table3: ^0.6.0
+  peerDependencies:
+    hardhat: ^2.0.0
+  checksum: d23e48cd77560f12b7240d7be5da2ba613094f480406197f127d22b69ddc37b5e0dbc648d3be75a6d75c954b3841f3624df53dbd1bce4bd043f28fdcc166c69c
   languageName: node
   linkType: hard
 
@@ -38083,6 +38125,32 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"passport-custom@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "passport-custom@npm:1.1.1"
+  dependencies:
+    passport-strategy: 1.x.x
+  checksum: 245b265491c83186002a19db1c812565bb95fd2a7b842f8e8de58f3e22d669f680178b623db6a4be22aecacecd75097b96fa06f35c2b35fe3ef71e9ec77a538d
+  languageName: node
+  linkType: hard
+
+"passport-strategy@npm:1.x.x":
+  version: 1.0.0
+  resolution: "passport-strategy@npm:1.0.0"
+  checksum: 5086693f2508e538dffa55a338c89fe8192fb5f4478c71f80cd5890b8573419a098f4fec88b505374f60bbe9049f6f24b9f3992678612528a3370b4dc73354a2
+  languageName: node
+  linkType: hard
+
+"passport@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "passport@npm:0.5.2"
+  dependencies:
+    passport-strategy: 1.x.x
+    pause: 0.0.1
+  checksum: be17a64a069f412299dea342fea1f4c755aea66fcd71e9422c5e254be18b069a39b00d141e4c63fb852f1bfea6030e8e170593d7f0db5c197fddec781e9e8de4
+  languageName: node
+  linkType: hard
+
 "patch-package@npm:6.2.2":
   version: 6.2.2
   resolution: "patch-package@npm:6.2.2"
@@ -38296,6 +38364,13 @@ fsevents@~2.1.1:
   version: 1.1.1
   resolution: "pathval@npm:1.1.1"
   checksum: 090e3147716647fb7fb5b4b8c8e5b55e5d0a6086d085b6cd23f3d3c01fcf0ff56fd3cc22f2f4a033bd2e46ed55d61ed8379e123b42afe7d531a2a5fc8bb556d6
+  languageName: node
+  linkType: hard
+
+"pause@npm:0.0.1":
+  version: 0.0.1
+  resolution: "pause@npm:0.0.1"
+  checksum: e96ee581b68085e6f2ba5adbcb4d4a41fe88e5b514061e76df2fe1905f0f65f4fe5a843b538e9551122c6b9184ff4be266c2ee0ea4614702f9a3d04466d9f462
   languageName: node
   linkType: hard
 
@@ -40972,6 +41047,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"random-bytes@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "random-bytes@npm:1.0.0"
+  checksum: 09faa256394aa2ca9754aa57e92a27c452c3e97ffb266e98bebb517332e9df7168fea393159f88d884febce949ba8bec8ddb02f03342da6c6023ecc7b155e0ae
+  languageName: node
+  linkType: hard
+
 "random-words@npm:1.1.2":
   version: 1.1.2
   resolution: "random-words@npm:1.1.2"
@@ -42912,7 +42994,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^2.2.8, rimraf@npm:^2.5.4, rimraf@npm:^2.6.1, rimraf@npm:^2.6.3":
+"rimraf@npm:^2.2.8, rimraf@npm:^2.5.4, rimraf@npm:^2.6.1, rimraf@npm:^2.6.2, rimraf@npm:^2.6.3":
   version: 2.7.1
   resolution: "rimraf@npm:2.7.1"
   dependencies:
@@ -47608,6 +47690,15 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"uid-safe@npm:~2.1.5":
+  version: 2.1.5
+  resolution: "uid-safe@npm:2.1.5"
+  dependencies:
+    random-bytes: ~1.0.0
+  checksum: 07536043da9a026f4a2bc397543d0ace7587449afa1d9d2c4fd3ce76af8a5263a678788bcc429dff499ef29d45843cd5ee9d05434450fcfc19cc661229f703d1
+  languageName: node
+  linkType: hard
+
 "ultron@npm:~1.1.0":
   version: 1.1.1
   resolution: "ultron@npm:1.1.1"
@@ -48067,8 +48158,9 @@ typescript@^3.8.3:
   resolution: "unlock-express-example@workspace:packages/unlock-express/example"
   dependencies:
     "@unlock-protocol/unlock-express": "workspace:^"
-    cookie-parser: 1.4.6
     express: 4.17.3
+    express-session: ^1.17.2
+    passport: ^0.5.2
   languageName: unknown
   linkType: soft
 

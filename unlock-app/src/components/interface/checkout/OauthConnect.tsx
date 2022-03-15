@@ -53,7 +53,6 @@ export const OAuthConnect = ({
 
   useEffect(() => {
     const handleUser = async (account?: string) => {
-      console.log({ isUnlockAccount })
       if (account) {
         setShowSignMessage(!isUnlockAccount)
         const digest = formatMessageToSign(clientId, account, message || '')
