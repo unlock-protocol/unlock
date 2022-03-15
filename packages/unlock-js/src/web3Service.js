@@ -6,6 +6,7 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
 } from './erc20'
+import { ETHERS_MAX_UINT } from './constants'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -185,6 +186,9 @@ export default class Web3Service extends UnlockService {
         // Handling NO_SUCH_KEY
         // this portion is probably unnecessary, will need to test against the app to be sure
         return 0
+      }
+      if (expiration.eq(ETHERS_MAX_UINT)) {
+        return -1
       }
       return parseInt(expiration, 10)
     } catch (error) {

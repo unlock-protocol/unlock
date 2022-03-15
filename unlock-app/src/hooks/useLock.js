@@ -11,7 +11,7 @@ import { getFiatPricing, getCardConnected } from './useCards'
 import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { StorageService } from '../services/storageService'
 import LocksContext from '../contexts/LocksContext'
-import { UNLIMITED_KEYS_COUNT } from '../constants'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
 /**
  * Event handler
  * @param {*} hash
@@ -326,7 +326,7 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  const getKeyForAccount = (owner) => {
+  const getKeyForAccount = async (owner) => {
     return web3Service.getKeyByLockForOwner(lock.address, owner, network)
   }
 

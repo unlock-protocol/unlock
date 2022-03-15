@@ -80,7 +80,7 @@ export function secondsAsDays(seconds) {
  * @returns {string}
  */
 export function expirationAsDate(timestamp) {
-  if (!timestamp || timestamp === MAX_UINT) {
+  if (!timestamp || timestamp === MAX_UINT || timestamp === -1) {
     return 'Never'
   }
 

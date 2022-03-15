@@ -1,5 +1,9 @@
 # Changes
 
+# Next patch
+
+- Non expired keys are represented as -1
+
 # 0.22.2
 
 - Add support for setExpirationDuration
