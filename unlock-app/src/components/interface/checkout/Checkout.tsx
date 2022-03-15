@@ -433,9 +433,7 @@ export const Checkout = ({
 
   return (
     <Web3ServiceContext.Provider value={web3Service}>
-      <CheckoutContainer
-        close={() => allowClose && closeModal(false, redirectUri)}
-      >
+      <CheckoutContainer>
         <CheckoutWrapper
           showBack={showBack}
           back={back}
