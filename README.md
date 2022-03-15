@@ -1,4 +1,5 @@
-![Unlock](/unlock-app/public/images/unlock-word-mark.png)
+![Unlock](/unlock-protocol-com/public/images/unlock-word-mark-dark.png#gh-dark-mode-only)
+![Unlock](/unlock-protocol-com/public/images/unlock-word-mark.png#gh-light-mode-only)
 
 ---
 
@@ -55,13 +56,12 @@ yarn workspace @unlock-protocol/paywall lint
 # etc.
 ```
 
-
 ### The protocol
 
-You can run a local version of the protocol using [Docker](https://docs.docker.com/install/). 
+You can run a local version of the protocol using [Docker](https://docs.docker.com/install/).
 
 ```
-cd docker && docker-compose up --build 
+cd docker && docker-compose up --build
 ```
 
 This will create the required infrastructure (database, local ethereum test network, subgraph...) and start core services such as the [Locksmith](./locksmith) API and a [Wedlocks](./wedlocks) mailing service for debug purposes.
@@ -79,23 +79,22 @@ docker-compose exec eth-node yarn provision
 
 ### Run one of the app
 
-The main dashboard lives in the `unlock-app` folder of this repo. 
+The main dashboard lives in the `unlock-app` folder of this repo.
 
 To launch it locally:
 
 ```
 # install deps
-yarn 
+yarn
 
 # start Unlock main app
 yarn worskspace @unlock-protocol/unlock-app start
 ```
 
-This will start 
+This will start
 
--  `http://localhost:3000/dashboard` to start using the application and deploy locks locally. 
--  `http://localhost:3002` our static landing page site.
-
+- `http://localhost:3000/dashboard` to start using the application and deploy locks locally.
+- `http://localhost:3002` our static landing page site.
 
 ### Config and environment variables
 
@@ -130,7 +129,7 @@ LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 
 Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interract with the application using your regular setup.
 
-NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder. 
+NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder.
 
 ## Thank you
 
