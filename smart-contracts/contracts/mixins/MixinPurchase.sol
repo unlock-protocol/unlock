@@ -149,14 +149,14 @@ contract MixinPurchase is
   * @dev Extend function
   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
   * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the key to extend
+  * @param _tokenId id of the key to extend
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
   */
   function extend(
     uint256 _value,
-    address _recipient,
+    uint _tokenId,
     address _referrer,
     bytes calldata _data
   ) 
@@ -164,14 +164,13 @@ contract MixinPurchase is
     payable
   {
     _onlyIfAlive();
-    Key memory key = getKeyOfOwnerByIndex(_recipient, 0);
-    require(key.tokenId != 0, 'NON_EXISTING_KEY');
+    _isKey(_tokenId);
 
     // extend key duration
-    _extendKey(key.tokenId);
+    _extendKey(_tokenId);
 
     // transfer the tokens
-    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
+    uint inMemoryKeyPrice = _purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
     if(tokenAddress != address(0)) {
       require(inMemoryKeyPrice <= _value, 'INSUFFICIENT_ERC20_VALUE');

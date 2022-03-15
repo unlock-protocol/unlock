@@ -191,27 +191,27 @@ contract MixinKeys is
     uint _tokenId
   ) internal 
     returns (
-      uint newTimeStamp
+      uint newTimestamp
     )
   {
-    Key memory key = _keys[_tokenId];
+    uint expirationTimestamp = _keys[_tokenId].expirationTimestamp;
 
     // prevent extending a valid non-expiring key
-    require(key.expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
+    require(expirationTimestamp != type(uint).max, 'A valid non-expiring key can not be purchased twice');
     
     // if non-expiring but not valid then extend
     if(expirationDuration == type(uint).max) {
-      key.expirationTimestamp = type(uint).max;
+      newTimestamp = type(uint).max;
     } else {
-      if (key.expirationTimestamp > block.timestamp) {
+      if (expirationTimestamp > block.timestamp) {
         // extends a valid key  
-        newTimeStamp = key.expirationTimestamp + expirationDuration;
+        newTimestamp = expirationTimestamp + expirationDuration;
       } else {
         // renew an expired or cancelled key
-        newTimeStamp = block.timestamp + expirationDuration;
+        newTimestamp = block.timestamp + expirationDuration;
       }
-      key.expirationTimestamp = newTimeStamp;
-    }  
+    }
+    _keys[_tokenId].expirationTimestamp = newTimestamp;  
   } 
 
   /**
