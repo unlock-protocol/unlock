@@ -40,7 +40,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
   const { network } = useContext(AuthenticationContext)
 
   const lockDefaults = {
-    expirationDuration: 30 * 86400,  // 30 days in seconds
+    expirationDuration: 30 * 86400, // 30 days in seconds
     keyPrice: '0.01',
     maxNumberOfKeys: 100,
     currency: null,
