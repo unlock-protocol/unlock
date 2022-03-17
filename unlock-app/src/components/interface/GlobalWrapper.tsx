@@ -31,9 +31,7 @@ export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
         <ConfigContext.Provider value={config}>
           <WedlockServiceContext.Provider value={wedlockService}>
             <ProviderContext.Provider value={{ provider, setProvider }}>
-              <Authenticate skipAutoLogin={pageProps.skipAutoLogin}>
-                {children}
-              </Authenticate>
+              <Authenticate>{children}</Authenticate>
             </ProviderContext.Provider>
           </WedlockServiceContext.Provider>
         </ConfigContext.Provider>

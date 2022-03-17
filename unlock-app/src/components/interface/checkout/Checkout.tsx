@@ -1,4 +1,10 @@
-import React, { useState, useContext, useReducer, useEffect } from 'react'
+import React, {
+  useState,
+  useContext,
+  useReducer,
+  useEffect,
+  useRef,
+} from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -32,6 +38,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
+import { useAppStorage } from '../../../hooks/useAppStorage'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
@@ -109,15 +116,20 @@ export const Checkout = ({
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
 
+  const firstLoading = useRef(false)
   // state change
   useEffect(() => {
     setState(defaultState)
   }, [defaultState])
 
+  useEffect(() => {
+    firstLoading.current = true
+  }, [])
+
   // When the account is changed, make sure we ping!
   useEffect(() => {
     const handleUser = async (account?: string) => {
-      if (account) {
+      if (account && !firstLoading.current) {
         let signedMessage
         if (paywallConfig?.messageToSign) {
           signedMessage = await signMessage(paywallConfig?.messageToSign)
@@ -138,11 +150,10 @@ export const Checkout = ({
       if (selectedLock) {
         if (!isUnlockAccount) {
           // Check if we have card details.
-          if (cardDetails) {
-            setCheckoutState('confirm-card-purchase')
-          } else {
-            setCheckoutState('crypto-checkout')
-          }
+          const checkoutState = cardDetails
+            ? 'confirm-card-purchase'
+            : 'crypto-checkout'
+          setCheckoutState(checkoutState)
         } else {
           cardCheckoutOrClaim(selectedLock)
         }
@@ -151,7 +162,7 @@ export const Checkout = ({
       }
     }
     handleUser(account)
-  }, [account])
+  }, [account, firstLoading.current])
 
   const allowClose = !(!paywallConfig || paywallConfig?.persistentCheckout)
 
