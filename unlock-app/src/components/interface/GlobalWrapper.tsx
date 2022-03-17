@@ -13,10 +13,9 @@ const wedlockService = new WedlockService(config.services.wedlocks.host)
 
 interface GlobalWrapperProps {
   children: React.ReactNode
-  pageProps: any
 }
 
-export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
+export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
   useEffect(() => {
     /* eslint-disable no-console */
