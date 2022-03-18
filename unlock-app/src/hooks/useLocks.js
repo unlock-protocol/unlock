@@ -109,7 +109,7 @@ export const createLock = async (
   } = lock
   return walletService.createLock(
     {
-      expirationDuration: parseInt(expirationDuration),
+      expirationDuration,
       keyPrice,
       maxNumberOfKeys,
       owner,
