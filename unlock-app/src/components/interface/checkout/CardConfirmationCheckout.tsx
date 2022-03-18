@@ -59,10 +59,16 @@ export const CardConfirmationCheckout = ({
     checkingRecipient,
   } = useAdvancedCheckout()
 
-  const totalPrice: number = Object.values(
-    lock.fiatPricing.usd as number
-  ).reduce((s: number, x: number): number => s + x, 0) as number
-  const fee = totalPrice - lock.fiatPricing.usd.keyPrice
+  let totalPrice: number = 0
+  let fee: number = 0
+  if (lock.fiatPricing?.usd) {
+    totalPrice = Object.values(lock.fiatPricing.usd as number).reduce(
+      (s: number, x: number): number => s + x,
+      0
+    ) as number
+    fee = totalPrice - lock.fiatPricing.usd.keyPrice
+  }
+
   const formattedPrice = (totalPrice / 100).toFixed(2)
 
   useEffect(() => {
