@@ -147,7 +147,12 @@ export const Checkout = ({
   }
 
   const setCheckoutState = (state: string) => {
-    if (!state || state === 'connect' || state === 'loading') {
+    if (
+      !state ||
+      state === 'connect' ||
+      state === 'loading' ||
+      state === 'config-error'
+    ) {
       setShowBack(false)
     } else {
       setShowBack(true)
@@ -413,8 +418,14 @@ export const Checkout = ({
       )
     }
   } else if (state === 'loading') {
-    // Maybe show an error if this is too long?
     content = <Loading />
+  } else if (state === 'config-error') {
+    content = (
+      <p>
+        There is a configuration error in your purchase URL. Please make sure it
+        is configured correctly.
+      </p>
+    )
   }
 
   const onLoggedOut = () => {

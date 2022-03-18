@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Checkout } from '../interface/checkout/Checkout'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import getOAuthFromSearch from '../../utils/getOAuthFromSearch'
@@ -13,6 +13,7 @@ interface CheckoutContentProps {
 }
 
 export const CheckoutContent = ({ query }: CheckoutContentProps) => {
+  const [defaultState, setDefaultState] = useState('loading')
   const checkoutCommunication = useCheckoutCommunication()
   const configFromSearch = getConfigFromSearch(query)
   const config = useContext(ConfigContext)
@@ -39,12 +40,23 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
 
   const oAuthConfig = getOAuthFromSearch(query)
 
-  let defaultState = 'loading'
-  if (oAuthConfig) {
-    defaultState = 'connect'
-  } else if (paywallConfig) {
-    defaultState = 'pick-lock'
-  }
+  useEffect(() => {
+    if (oAuthConfig) {
+      setDefaultState('connect')
+    } else if (paywallConfig) {
+      setDefaultState('pick-lock')
+    }
+  }, [oAuthConfig, paywallConfig])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (defaultState === 'loading') {
+        setDefaultState('config-error')
+      }
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <LocksContext.Provider
       value={{
