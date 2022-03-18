@@ -96,7 +96,9 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
 
   const handleUnlimitedDuration = () => {
     dispatch({
-      change: [{ name: 'expirationDuration', value: ONE_HUNDRED_YEARS_IN_SECONDS }],
+      change: [
+        { name: 'expirationDuration', value: ONE_HUNDRED_YEARS_IN_SECONDS },
+      ],
     })
   }
 
@@ -181,11 +183,12 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               disabled={!isNew}
             />{' '}
             days
-            {(lockInForm?.expirationDuration !== ONE_HUNDRED_YEARS_IN_SECONDS && isNew) && (
-              <LockLabelUnlimited onClick={handleUnlimitedDuration}>
-                Unlimited
-              </LockLabelUnlimited>
-            )}
+            {lockInForm?.expirationDuration !== ONE_HUNDRED_YEARS_IN_SECONDS &&
+              isNew && (
+                <LockLabelUnlimited onClick={handleUnlimitedDuration}>
+                  Unlimited
+                </LockLabelUnlimited>
+              )}
           </FormLockDuration>
           <FormLockKeys>
             <input
