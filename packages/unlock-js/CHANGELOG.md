@@ -3,6 +3,7 @@
 # Next patch
 
 - Non expired keys are represented as -1
+- Gas price calculation fixes
 
 # 0.22.2
 
