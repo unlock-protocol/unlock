@@ -27,7 +27,7 @@ Additionally the added convenience, credibility/quality, and eventual network ef
 
 ## Unfurl resources
 
-*Website:* [https://unfurl-connect.com](https://unfurl-connect.com)
-*Source code:( [https://github.com/Unfurl-Connect](https://github.com/Unfurl-Connect)
-*Creator profile:* [https://www.linkedin.com/in/david-matthew-layton](https://www.linkedin.com/in/david-matthew-layton)
-*Dev languages:* Javascript, TypeScript
+* *Website:* [https://unfurl-connect.com](https://unfurl-connect.com)
+* *Source code:*( [https://github.com/Unfurl-Connect](https://github.com/Unfurl-Connect)
+* *Creator profile:* [https://www.linkedin.com/in/david-matthew-layton](https://www.linkedin.com/in/david-matthew-layton)
+* *Dev languages:* Javascript, TypeScript
