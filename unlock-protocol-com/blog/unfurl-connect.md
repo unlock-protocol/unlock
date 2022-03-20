@@ -1,13 +1,13 @@
 ---
-title: ETHDenver 2022 | Exploring the Evolution of web3
-subTitle: Technology created by the web3 community supports our collective human experience as we adapt our communities for a decentralized future
-authorName: Crystal Street
-publishDate: February 25, 2022
-description: Unlock recently attended ETHDenver to meet our community IRL, explore the next evolution of the web and place our fingers on the pulse of web3.
-image: /images/blog/unfurl-connect/unfurl.png
+title: Unfurl Connect | Unlock Grantee Spotlight
+subTitle: An Open ID Connect compliant identity solution created with Unlock Protocol NFTs
+authorName: David Layton
+publishDate: March 18, 2022
+description: Unfurl Connect is a lock-aware identity provider – think “Connect with Google”, but with locks. It is fully Open ID Connect compliant so it works with virtually everything. Unfurl Connect was built by David Layton and was funded by the Unlock Protocol Grants Program.
+image: /images/blog/unfurl/unfurl.png
 ---
 
-![unfurl-connect.png](/images/blog/unfurl-connect/unfurl.png)
+![unfurl.png](/images/blog/unfurl/unfurl.png)
 
 _Unfurl Connect is a grantee of the Unlock Protocol Grant Program. Unlock's Grant program provides grants to developers around the world creating solutions using Unlock Protocol. Learn more about the Unlock Protocol Grant Program at [https://unlock-protocol.com/grants](https://unlock-protocol.com/grants)._
 
