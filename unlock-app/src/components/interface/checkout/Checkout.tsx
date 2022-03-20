@@ -203,6 +203,8 @@ export const Checkout = ({
   const cardCheckoutOrClaim = (lock: any) => {
     if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
       setCheckoutState('claim-membership')
+    } else if (cardDetails) {
+      setCheckoutState('confirm-card-purchase')
     } else {
       setCheckoutState('card-purchase')
     }

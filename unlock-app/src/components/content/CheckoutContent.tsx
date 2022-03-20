@@ -50,7 +50,6 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log(defaultState)
       if (defaultState === 'loading' && !oAuthConfig && !paywallConfig) {
         setDefaultState('config-error')
       }
