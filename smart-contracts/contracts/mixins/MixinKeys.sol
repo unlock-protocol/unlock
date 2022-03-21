@@ -456,8 +456,8 @@ contract MixinKeys is
   )
     public
   {
-    _onlyKeyManagerOrApproved(_tokenId);
     _onlyIfAlive();
+    _onlyKeyManagerOrApproved(_tokenId);
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
@@ -492,13 +492,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    uint tokenId = getKeyOfOwnerByIndex(_owner, 0).tokenId;
-    address keyManager = keyManagerOf[tokenId];
-    if(keyManager == address(0)) {
-      return managerToOperatorApproved[_owner][_operator];
-    } else {
-      return managerToOperatorApproved[keyManager][_operator];
-    }
+    return managerToOperatorApproved[_owner][_operator];
   }
 
   /**
