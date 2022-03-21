@@ -33,7 +33,7 @@ The Sign-In with Ethereum authentication method differs from current centralized
 
 Already, many services support workflows to authenticate identity using Ethereum accounts by way of message signing. With Sign-in With Etheruem, there is an opportunity to standardize the sign-in flow and improve interoperability across existing services while also providing wallet vendors a reliable method to identify signing requests.
 
-##How to integrate with Unlock
+## How to integrate with Unlock
 
 Sign-In with Ethereum is the future of user authentication for the ".eth" era, and an increasing number of blockchain-tech companies have implemented their versions of the EIP-4361 standard, including Unlock Protocol.
 
