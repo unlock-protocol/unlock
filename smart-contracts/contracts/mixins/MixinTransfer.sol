@@ -107,7 +107,7 @@ contract MixinTransfer is
     public
   {
     _onlyIfAlive();
-    _hasValidKey(_from);
+    _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
