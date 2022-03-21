@@ -23,6 +23,7 @@ import {
   isNotEmpty,
   isPositiveInteger,
   isPositiveNumber,
+  isPositiveIntegerOrZero,
   isLTE,
 } from '../../utils/validators'
 
@@ -87,25 +88,29 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     validateAndDispatch(target, [{ name, value: value * (60 * 60 * 24) }])
   }
 
-  const handleUnlimitedClick = () => {
+  const handleUnlimitedNumbersOfKeys = () => {
     dispatch({
       change: [{ name: 'maxNumberOfKeys', value: UNLIMITED_KEYS_COUNT }],
     })
   }
 
-  const toggleCurrency = () => {
-    if (lockInForm.currencyContractAddress) {
-      return dispatch({
-        change: [
-          { name: 'currencyContractAddress', value: null },
-          { name: 'currencySymbol', value: null },
-        ],
-      })
-    }
+  const handleUnlimitedDuration = () => {
     dispatch({
       change: [
-        { name: 'currencyContractAddress', value: erc20.address },
-        { name: 'currencySymbol', value: erc20.symbol },
+        { name: 'expirationDuration', value: ONE_HUNDRED_YEARS_IN_SECONDS },
+      ],
+    })
+  }
+
+  const toggleCurrency = () => {
+    const erc20Address = lockInForm.currencyContractAddress
+      ? null
+      : erc20.address
+    const erc20Symbol = lockInForm.currencyContractAddress ? null : erc20.symbol
+    dispatch({
+      change: [
+        { name: 'currencyContractAddress', value: erc20Address },
+        { name: 'currencySymbol', value: erc20Symbol },
       ],
     })
   }
@@ -123,16 +128,16 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
         }
         break
       case 'expirationDuration':
-        if (
-          !isPositiveInteger(value) ||
-          !isLTE(ONE_HUNDRED_YEARS_IN_SECONDS)(value)
-        ) {
-          return 'The expiration duration for each key must be greater than 0 and less than 100 years'
+        if (!isPositiveInteger(value)) {
+          return 'The expiration duration for each key must be greater than 0'
         }
         break
       case 'maxNumberOfKeys':
-        if (value !== UNLIMITED_KEYS_COUNT && !isPositiveInteger(value)) {
+        if (!isPositiveNumber(value) && value !== INFINITY) {
           return 'The number of keys needs to be greater than 0'
+        }
+        if (parseInt(value, 10) <= lock.outstandingKeys) {
+          return `The number of keys needs to be greater than existing number of keys (${lock.outstandingKeys})`
         }
         break
       case 'keyPrice':
@@ -143,6 +148,13 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     }
     return ''
   }
+
+  const expirationDurationValue =
+    lockInForm?.expirationDuration === ONE_HUNDRED_YEARS_IN_SECONDS
+      ? INFINITY
+      : isPositiveIntegerOrZero(lockInForm.expirationDuration)
+      ? lockInForm.expirationDuration / (60 * 60 * 24)
+      : ''
 
   return (
     <form method="post" onSubmit={handleSubmit}>
@@ -163,16 +175,20 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
           </FormLockName>
           <FormLockDuration>
             <input
-              type="number"
-              step="1"
-              inputMode="numeric"
+              type="text"
               name="expirationDuration"
               onChange={handleChangeExpirationDuration}
-              defaultValue={lockInForm.expirationDuration / (60 * 60 * 24)}
+              value={expirationDurationValue}
               required={isNew}
               disabled={!isNew}
             />{' '}
             days
+            {lockInForm?.expirationDuration !== ONE_HUNDRED_YEARS_IN_SECONDS &&
+              isNew && (
+                <LockLabelUnlimited onClick={handleUnlimitedDuration}>
+                  Unlimited
+                </LockLabelUnlimited>
+              )}
           </FormLockDuration>
           <FormLockKeys>
             <input
@@ -180,14 +196,14 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               name="maxNumberOfKeys"
               onChange={handleChange}
               value={
-                lockInForm.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+                lockInForm?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
                   ? INFINITY
-                  : lockInForm.maxNumberOfKeys
+                  : lockInForm?.maxNumberOfKeys
               }
               required={isNew}
             />
-            {lockInForm.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
-              <LockLabelUnlimited onClick={handleUnlimitedClick}>
+            {lockInForm?.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
+              <LockLabelUnlimited onClick={handleUnlimitedNumbersOfKeys}>
                 Unlimited
               </LockLabelUnlimited>
             )}

@@ -147,7 +147,12 @@ export const Checkout = ({
   }
 
   const setCheckoutState = (state: string) => {
-    if (!state || state === 'connect' || state === 'loading') {
+    if (
+      !state ||
+      state === 'connect' ||
+      state === 'loading' ||
+      state === 'config-error'
+    ) {
       setShowBack(false)
     } else {
       setShowBack(true)
@@ -198,6 +203,8 @@ export const Checkout = ({
   const cardCheckoutOrClaim = (lock: any) => {
     if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
       setCheckoutState('claim-membership')
+    } else if (cardDetails) {
+      setCheckoutState('confirm-card-purchase')
     } else {
       setCheckoutState('card-purchase')
     }
@@ -413,8 +420,14 @@ export const Checkout = ({
       )
     }
   } else if (state === 'loading') {
-    // Maybe show an error if this is too long?
     content = <Loading />
+  } else if (state === 'config-error') {
+    content = (
+      <p>
+        There is a configuration error in your purchase URL. Please make sure it
+        is configured correctly.
+      </p>
+    )
   }
 
   const onLoggedOut = () => {
@@ -433,9 +446,7 @@ export const Checkout = ({
 
   return (
     <Web3ServiceContext.Provider value={web3Service}>
-      <CheckoutContainer
-        close={() => allowClose && closeModal(false, redirectUri)}
-      >
+      <CheckoutContainer>
         <CheckoutWrapper
           showBack={showBack}
           back={back}
