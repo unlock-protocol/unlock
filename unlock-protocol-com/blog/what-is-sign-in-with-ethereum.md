@@ -38,7 +38,9 @@ Sign-In with Ethereum is the future of user authentication for the ".eth" era, a
 
 Unlock Protocol recently announced their implementation of the EIP-4361 standard by updating [their documentation](https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum) and in [this blog post](https://unlock-protocol.com/blog/sign-in-with-ethereum) by its founder Julien Genestoux.
 
-Until now, the act of prompting users for their wallet address to authenticate them was quite a rigorous process as there are many wallet providers; asking users to connect their wallets to your application requires the implementation of multiple APIs and approaches. Unlock offers an easier way to implement the Sign-In with Ethereum authentication method with a few lines of code.
+Until now, the act of prompting users for their wallet address to authenticate them was quite an arduous development process as there are many wallet providers; asking users to connect their wallets to your application requires the implementation of multiple APIs and approaches. 
+
+Unlock offers an easier way to implement the Sign-In with Ethereum authentication method with a few lines of code.
 
 Unlock has created a flow similar to the popular OAuth flow that users are familiar with. When the user has signed the message, they get redirected to the application. The redirect URL contains a code that the developer can decode to retrieve the user's information. If the user also does not have a wallet address, they can sign up using Unlock. 
 
