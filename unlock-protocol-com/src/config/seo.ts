@@ -43,7 +43,12 @@ interface SEOProps {
 
 export function customizeSEO(options: SEOProps): NextSeoProps {
   const images = options.imagePath
-    ? [{ url: new URL(options.imagePath, baseURL).toString() }]
+    ? [
+        {
+          url: new URL(options.imagePath, baseURL).toString(),
+          alt: options.title,
+        },
+      ]
     : DEFAULT_SEO.openGraph?.images
   const path = options.path ?? '/'
   const url = new URL(path, baseURL).toString()
