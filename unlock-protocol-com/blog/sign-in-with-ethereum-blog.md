@@ -4,8 +4,10 @@ subTitle: Sign-In with Ethereum is a new standard form of authentication
 authorName: Iniubong Obonguko
 publishDate: March 24, 2022
 description: Sign-In with Ethereum is a new standard form of authentication that enables end-users to access resources on the internet using their Ethereum account.
-image: /images/blog/siwe-blog/siwe.png
+image: /images/blog/siwe-blog/siwe-header.png
 ---
+
+![siwe-header.png](/images/blog/siwe-blog/siwe-header.png)
 
 ## What is Sign-In with Ethereum?
 
