@@ -209,19 +209,7 @@ contract('Lock / shareKey', (accounts) => {
       assert.equal(hadKeyBefore, false)
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey2), true)
       assert(sharedKeyExpiration.eq(currentTimestamp.plus(oneDay)))
-      console.log({ event3, event1 })
-      // assert(
-      //   new BigNumber(tokenIds[2]).lt(
-      //     new BigNumber(await lock.getTokenIdFor.call(accountWithNoKey2))
-      //   ) // the tokenId's are not equal
-      // )
     })
-
-    // it('should correctly assign a new id to the new token', async () => {
-    //   let newId = await lock.getTokenIdFor.call(accountWithNoKey2)
-    //   // the tokenId of the new child key should be > the Parent key
-    //   assert(new BigNumber(newId).gt(new BigNumber(tokenId2)))
-    // })
 
     it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
       const zeroOwner = await lock.ownerOf.call(0)
