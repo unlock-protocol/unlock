@@ -1,5 +1,5 @@
 ---
-title: Sign-In with Ethereum
+title: What is Sign-In with Ethereum?
 subTitle: Sign-In with Ethereum is a new standard form of authentication
 authorName: Iniubong Obonguko
 publishDate: March 24, 2022
@@ -44,11 +44,11 @@ Unlock does all the heavy-lifting, so developers can focus on building what matt
 
 Here’s how you can implement Sign-in With Ethereum into your application.
 
-![inuibiong-final.gif](/images/blog/siwe-blog/inuibiong-final.gif)
+![iniubong-final.gif](/images/blog/siwe-blog/iniubong-final.gif)
 
 We'll use Vue.Js for this demo and Tailwind for styling, but the concepts explained here can be replicated in any other framework.
 
-```💡 Editor's note: Please practice good code hygiene on any code or links you access on any website, including this one. Code samples referenced here may have changed after publication of this blog post, so please review them carefully before copying or implementing.``` 
+`*💡 Editor's note: Please practice good code hygiene on any code or links you access on any website, including this one. Code samples referenced here may have changed after publication of this blog post, so please review them carefully before copying or implementing.*` 
 
 You can find all the code for this demo in the CodeSandbox below. Feel free to fork and tweak the code as you wish.
 [https://codesandbox.io/embed/smoosh-dream-urw2qt?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/embed/smoosh-dream-urw2qt?fontsize=14&hidenavigation=1&theme=dark)
@@ -68,4 +68,4 @@ If the user refuses to connect and sign a message in their wallet, they get redi
 
 For more information on implementing Sign-In with Ethereum, visit the [official documentation](https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum).
 
-_This blog post is a guest post from Iniubong Obonguko. Inuibong is a frontend web developer & technical writer. You can read his blog [here](https://blog.iniubongobonguko.com/)._
+_This blog post is a guest post from Iniubong Obonguko. Iniubong is a frontend web developer & technical writer. You can read his blog [here](https://blog.iniubongobonguko.com/)._
