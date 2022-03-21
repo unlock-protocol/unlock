@@ -46,7 +46,7 @@ contract('Lock / erc721 / enumerable', (accounts) => {
     await reverts(lock.tokenByIndex(5))
   })
 
-  it('tokenOfOwnerByIndex forwards to getTokenIdFor when index == 0', async () => {
+  it('tokenOfOwnerByIndex forwards to when index == 0', async () => {
     for (let i = 0; i < 5; i++) {
       const id = await lock.tokenOfOwnerByIndex(accounts[i], 0)
       const expected = tokenIds[i]
