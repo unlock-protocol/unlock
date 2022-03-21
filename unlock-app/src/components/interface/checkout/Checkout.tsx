@@ -130,6 +130,11 @@ export const Checkout = ({
         })
       }
 
+      if (!account) {
+        // Reset card details if user disconnected.
+        setCardDetails(null)
+      }
+
       if (selectedLock) {
         if (!isUnlockAccount) {
           // Check if we have card details.
