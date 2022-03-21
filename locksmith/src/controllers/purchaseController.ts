@@ -91,9 +91,16 @@ namespace PurchaseController {
     // First check that the lock is indeed free and that the gas costs is low enough!
     const pricer = new KeyPricer()
     const pricing = await pricer.generate(lock, network)
+    const fulfillmentDispatcher = new Dispatcher()
 
     if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
       return res.status(500).send('Lock is not free')
+    }
+
+    const hasEnoughToPayForGas =
+      await fulfillmentDispatcher.hasFundsForTransaction(network)
+    if (!hasEnoughToPayForGas) {
+      return res.status(500).send('Purchaser does not have enough funds!')
     }
 
     const costToGrant = await pricer.gasFee(network, 1000)
@@ -102,7 +109,6 @@ namespace PurchaseController {
     }
 
     try {
-      const fulfillmentDispatcher = new Dispatcher()
       await fulfillmentDispatcher.purchaseKey(
         Normalizer.ethereumAddress(lock),
         Normalizer.ethereumAddress(publicKey),

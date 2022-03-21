@@ -27,7 +27,6 @@ export default class Dispatcher {
       provider
     )
     await walletService.connect(provider, walletWithProvider)
-
     return await walletService.grantKey(
       {
         lockAddress,
@@ -47,8 +46,7 @@ export default class Dispatcher {
     const gasPrice = await provider.getGasPrice()
 
     const balance = await provider.getBalance(wallet.address)
-
-    if (balance < gasPrice.mul(GAS_COST)) {
+    if (balance.lt(gasPrice.mul(GAS_COST))) {
       logger.warn(
         `Purchaser ${
           wallet.address
@@ -59,9 +57,9 @@ export default class Dispatcher {
           gasPrice.mul(GAS_COST)
         )}) on ${network}`
       )
+      return false
     }
-
-    return balance >= gasPrice.mul(GAS_COST)
+    return true
   }
 
   async purchaseKey(

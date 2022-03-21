@@ -6,6 +6,7 @@ import { getStripeConnectForLock } from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 
 import logger from '../logger'
+import Dispatcher from '../fulfillment/dispatcher'
 
 namespace PriceController {
   // This method will return the key price in USD by default, but can eventually be used to return prices in a different curreny (via query string)
@@ -15,6 +16,11 @@ namespace PriceController {
   ): Promise<any> => {
     const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
     try {
+      const fulfillmentDispatcher = new Dispatcher()
+
+      const hasEnoughToPayForGas =
+        await fulfillmentDispatcher.hasFundsForTransaction(req.chain)
+
       // check that we have a Stripe key for this lock!
       const stripeConnected = await getStripeConnectForLock(
         lockAddress,
@@ -29,6 +35,7 @@ namespace PriceController {
       // If it is low enough we want to allow users to claim it for free
       const costToGrant = await pricer.gasFee(req.chain, 1000)
       if (
+        hasEnoughToPayForGas &&
         pricing.keyPrice !== undefined &&
         pricing.keyPrice === 0 &&
         costToGrant < MAX_GRANT_COST
@@ -48,6 +55,7 @@ namespace PriceController {
       const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
 
       if (
+        !hasEnoughToPayForGas ||
         !isAuthorizedForCreditCard ||
         stripeConnected == 0 ||
         stripeConnected == -1 ||
