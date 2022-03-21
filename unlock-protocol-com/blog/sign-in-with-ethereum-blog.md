@@ -48,7 +48,7 @@ Unlock does all the heavy-lifting, so developers can focus on building what matt
 
 Here’s how you can implement Sign-in With Ethereum into your application.
 
-IMAGE GOES HERE
+![inuibiong-final.gif](/images/blog/siwe-blog/inuibiong-final.gif)
 
 We'll use Vue.Js for this demo and Tailwind for styling, but the concepts explained here can be replicated in any other framework.
 
