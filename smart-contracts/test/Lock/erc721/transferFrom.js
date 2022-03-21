@@ -10,6 +10,9 @@ const getProxy = require('../../helpers/proxy')
 
 let unlock
 let locks
+let tokenIds
+let tokenId
+let keyOwners
 
 contract('Lock / erc721 / transferFrom', (accounts) => {
   before(async () => {
@@ -31,13 +34,13 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
   let ID
 
   before(async () => {
-    const keyOwners = [
+    keyOwners = [
       accountWithKey,
       from,
       accountWithExpiredKey,
       accountWithKeyApproved,
     ]
-    await locks.FIRST.purchase(
+    const tx = await locks.FIRST.purchase(
       [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -48,8 +51,15 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         from,
       }
     )
+
+    tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+
+    tokenId = tokenIds[1]
+
     keyExpiration = new BigNumber(
-      await locks.FIRST.keyExpirationTimestampFor.call(from)
+      await locks.FIRST.keyExpirationTimestampFor.call(tokenId)
     )
   })
 
@@ -68,14 +78,9 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
     it('should abort if the recipient is 0x', async () => {
       await reverts(
-        locks.FIRST.transferFrom(
+        locks.FIRST.transferFrom(from, web3.utils.padLeft(0, 40), tokenId, {
           from,
-          web3.utils.padLeft(0, 40),
-          await locks.FIRST.getTokenIdFor.call(from),
-          {
-            from,
-          }
-        ),
+        }),
         'INVALID_ADDRESS'
       )
       // Ensuring that ownership of the key did not change
@@ -86,19 +91,17 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     })
 
     it('should abort if the params are not consistent', async () => {
-      const id = await locks.FIRST.getTokenIdFor.call(accountWithKey)
-      const mismatchedId = id + 1
       // testing an id mismatch
       await reverts(
-        locks.FIRST.transferFrom(accountWithKey, to, mismatchedId, {
-          from: accountWithKey,
+        locks.FIRST.transferFrom(keyOwners[0], to, tokenIds[4], {
+          from: keyOwners[1],
         }),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
       // testing a mismatched _from address
       await reverts(
-        locks.FIRST.transferFrom(accountWithKeyApproved, to, id, {
-          from: accountWithKey,
+        locks.FIRST.transferFrom(accountWithKeyApproved, to, tokenIds[0], {
+          from: keyOwners[0],
         }),
         'TRANSFER_FROM: NOT_KEY_OWNER'
       )
@@ -108,8 +111,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       it('should transfer the key validity without extending it', async () => {
         // First let's make sure from has a key!
         let fromExpirationTimestamp
-        let ID
-        await locks.FIRST.purchase(
+        const tx = await locks.FIRST.purchase(
           [],
           [from],
           [web3.utils.padLeft(0, 40)],
@@ -121,20 +123,20 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           }
         )
         // Get the tokenID
-        ID = await locks.FIRST.getTokenIdFor.call(from)
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        const tokenId = args.tokenId
+
         // Let's check the expiration date for that key
         fromExpirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
+          await locks.FIRST.keyExpirationTimestampFor.call(tokenId)
         )
         // Then let's expire the key for accountWithExpiredKey
-        await locks.FIRST.expireAndRefundFor(accountWithExpiredKey, 0)
-        await locks.FIRST.transferFrom(from, accountWithExpiredKey, ID, {
+        await locks.FIRST.expireAndRefundFor(tokenId, 0)
+        await locks.FIRST.transferFrom(from, accountWithExpiredKey, tokenId, {
           from,
         })
         const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(
-            accountWithExpiredKey
-          )
+          await locks.FIRST.keyExpirationTimestampFor.call(tokenId)
         )
         assert.equal(
           expirationTimestamp.toFixed(),
@@ -161,10 +163,12 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           }
         )
 
-        ID = await locks.FIRST.getTokenIdFor.call(from)
+        // Get the tokenID
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        const tokenId = args.tokenId
 
         transferredKeyTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(from)
+          await locks.FIRST.keyExpirationTimestampFor.call(tokenId)
         )
 
         receiverKeyOriginalTimestamp = new BigNumber(
@@ -258,7 +262,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
             from,
           }
         )
-        ID = await locks.FIRST.getTokenIdFor.call(from)
+        ID = tokenId
         keyExpiration = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
@@ -333,7 +337,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
   })
 
   it('can transfer a FREE key', async () => {
-    await locks.FREE.purchase(
+    const tx = await locks.FREE.purchase(
       [],
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
@@ -343,12 +347,14 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         from: accounts[1],
       }
     )
-    let ID = await locks.FREE.getTokenIdFor.call(accounts[1])
-    await locks.FREE.transferFrom(accounts[1], accounts[2], ID, {
+    const { args } = tx.logs.find(
+      (v) => v.event === 'Transfer' && v.args.from === constants.ZERO_ADDRESS
+    )
+    const { tokenId: newTokenId } = args
+
+    await locks.FREE.transferFrom(accounts[1], accounts[2], newTokenId, {
       from: accounts[1],
     })
-    let toID = await locks.FREE.getTokenIdFor.call(accounts[2])
-    assert.notEqual(ID, 0)
-    assert.equal(ID.toString(), toID.toString())
+    assert.equal(await locks.FREE.ownerOf(newTokenId), accounts[2])
   })
 })

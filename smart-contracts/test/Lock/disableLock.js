@@ -16,7 +16,7 @@ contract('Lock / disableLock', (accounts) => {
   let keyOwner2 = accounts[2]
   let keyOwner3 = accounts[3]
   let lockOwner = accounts[0]
-  before(async () => {
+  beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks.FIRST
@@ -51,7 +51,7 @@ contract('Lock / disableLock', (accounts) => {
   describe('when the lock has been disabled', () => {
     let txObj
     let event
-    before(async () => {
+    beforeEach(async () => {
       txObj = await lock.disableLock({ from: lockOwner })
       event = txObj.logs[0]
     })
@@ -127,7 +127,7 @@ contract('Lock / disableLock', (accounts) => {
 
     it('Lock owners can still fully refund keys', async () => {
       const refundAmount = web3.utils.toWei('0.01', 'ether')
-      await lock.expireAndRefundFor(keyOwner3, refundAmount, {
+      await lock.expireAndRefundFor(tokenId, refundAmount, {
         from: lockOwner,
       })
     })
@@ -137,7 +137,7 @@ contract('Lock / disableLock', (accounts) => {
     })
 
     it('Lock owner can still expireAndRefundFor', async () => {
-      await lock.expireAndRefundFor(keyOwner2, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
     })
 
     it('Lock owner can still updateLockName', async () => {

@@ -92,7 +92,7 @@ contract('Lock / erc20', (accounts) => {
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        await lock.purchase(
+        const tx = await lock.purchase(
           [keyPrice.toFixed()],
           [keyOwner3],
           [web3.utils.padLeft(0, 40)],
@@ -103,6 +103,9 @@ contract('Lock / erc20', (accounts) => {
           }
         )
 
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        const tokenId = args.tokenId
+
         const balanceOwnerBefore = new BigNumber(
           await token.balanceOf(keyOwner3)
         )
@@ -110,7 +113,7 @@ contract('Lock / erc20', (accounts) => {
           await token.balanceOf(lock.address)
         )
 
-        await lock.expireAndRefundFor(keyOwner3, refundAmount, {
+        await lock.expireAndRefundFor(tokenId, refundAmount, {
           from: accounts[0],
         })
         const balanceOwnerAfter = new BigNumber(
