@@ -129,6 +129,7 @@ namespace UserController {
     const { publicKey } = req.body.message.user
     const { emailAddress } = req.params
     const token = req.body.message.user.stripeTokenId
+
     const ejected = await UserOperations.ejectionStatus(emailAddress)
 
     if (ejected) {
@@ -153,7 +154,8 @@ namespace UserController {
     } else if (ethereumAddress != req.owner) {
       return res.sendStatus(401)
     }
-    const token = req.body.message['Save Card'].stripeTokenId
+
+    const token = req.body.message.user.stripeTokenId
 
     const result = await UserOperations.updatePaymentDetails(
       token,

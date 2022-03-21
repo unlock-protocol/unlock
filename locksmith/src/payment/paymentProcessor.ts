@@ -10,7 +10,6 @@ import {
   getStripeCustomerIdForAddress,
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
-import logger from '../logger'
 
 const Sequelize = require('sequelize')
 
@@ -69,11 +68,7 @@ export class PaymentProcessor {
       }
 
       return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
-    } catch (error) {
-      logger.error(
-        `Failed to update payment details for ${publicKey}: there was an error.`,
-        error
-      )
+    } catch (e) {
       return false
     }
   }

@@ -368,12 +368,9 @@ export class StorageService extends EventEmitter {
    */
   async getStripeConnect(lockAddress, signature, data) {
     const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
       params: {
         data: JSON.stringify(data),
         signature,
@@ -389,12 +386,9 @@ export class StorageService extends EventEmitter {
 
   async updateLockIcon(lockAddress, signature, data, icon) {
     const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
+      headers: this.genAuthorizationHeader(
+        Buffer.from(signature).toString('base64')
+      ),
     }
 
     const result = await axios.post(

@@ -15,7 +15,6 @@ interface Config {
 }
 
 export const genAuthorizationHeader = (token: string) => {
-  console.log('DEPRECATED!')
   return { Authorization: ` Bearer ${token}` }
 }
 
@@ -54,16 +53,7 @@ export const getSignature = async (
 ) => {
   let signature
   if (typedData.message['Charge Card']) {
-    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey} with my card.`
-    signature = await walletService.signMessage(message, 'personal_sign')
-  } else if (typedData.message['Get Card']) {
-    const message = `I want to retrieve the card token for ${typedData.message['Get Card'].publicKey}`
-    signature = await walletService.signMessage(message, 'personal_sign')
-  } else if (typedData.message['Save Card']) {
-    const message = `I save my payment card for my account ${typedData.message['Save Card'].publicKey}`
-    signature = await walletService.signMessage(message, 'personal_sign')
-  } else if (typedData.message['Delete Card']) {
-    const message = `I am deleting the card linked to my account ${typedData.message['Delete Card'].publicKey}`
+    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey}`
     signature = await walletService.signMessage(message, 'personal_sign')
   } else {
     signature = await walletService.unformattedSignTypedData(address, typedData)
@@ -96,13 +86,12 @@ export const chargeAndSaveCard = async (
   })
 
   const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-        'base64'
-      )}`,
+      ...genAuthorizationHeader(token),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -148,19 +137,18 @@ export const saveCardsForAddress = async (
   stripeTokenId: string
 ) => {
   const typedData = generateTypedData({
-    'Save Card': {
+    user: {
       publicKey: address,
       stripeTokenId,
     },
   })
   const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'PUT',
     headers: {
-      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-        'base64'
-      )}`,
+      ...genAuthorizationHeader(token),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -180,20 +168,15 @@ export const getCardsForAddress = async (
   address: string
 ) => {
   const typedData = generateTypedData({
-    'Get Card': {
+    user: {
       publicKey: address,
     },
   })
-
   const signature = await getSignature(walletService, typedData, address)
-
+  const token = Buffer.from(signature).toString('base64')
   const opts = {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-        'base64'
-      )}`,
-    },
+    headers: genAuthorizationHeader(token),
   }
 
   const response = await fetch(
@@ -216,18 +199,17 @@ export const deleteCardForAddress = async (
   address: string
 ) => {
   const typedData = generateTypedData({
-    'Delete Card': {
+    user: {
       publicKey: address,
     },
   })
   const signature = await getSignature(walletService, typedData, address)
+  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-        'base64'
-      )}`,
+      ...genAuthorizationHeader(token),
       'Content-Type': 'application/json',
     },
   }
@@ -316,7 +298,6 @@ export const useCards = () => {
       // Refresh cards: TODO make locksmith return the cards
       await getCards(address)
     } catch (e: any) {
-      console.error(e)
       setError(e)
     }
     setLoading(false)

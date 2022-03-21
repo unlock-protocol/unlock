@@ -63,8 +63,10 @@ export const useAccount = (address: string, network: number) => {
       },
     })
 
-    const message = `I want to connect Stripe to the lock ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
+    const signature = await walletService.unformattedSignTypedData(
+      address,
+      typedData
+    )
 
     try {
       return (
@@ -222,8 +224,10 @@ export const useAccount = (address: string, network: number) => {
       },
     })
 
-    const message = `I want to change the image for ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
+    const signature = await walletService.unformattedSignTypedData(
+      address,
+      typedData
+    )
 
     return storageService.updateLockIcon(
       lockAddress,
