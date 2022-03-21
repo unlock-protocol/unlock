@@ -26,7 +26,7 @@ Enter "Sign-In with Ethereum."
 
 The new Sign-In with Ethereum standard eliminates uncertainties about who has access to your private information, your digital footprint, and so on. Since the blockchain powers it, the Sign-In with Ethereum standard by default was designed with decentralization in mind.
 
-## How is Sign-In With Ethereum different from current approaches?
+## How is Sign-In with Ethereum different from current approaches?
 
 The Sign-In with Ethereum authentication method differs from current centralized approaches because it is based on a new self-custodial option for internet users who wish to assume more control and responsibility for their own digital identity. (“Self-custody” means that you and only you have possession of your digital assets and only you control the private key. This also comes with a great deal of responsibility — you are responsible for safeguarding access to your private key because it is not stored anywhere else.)
 
