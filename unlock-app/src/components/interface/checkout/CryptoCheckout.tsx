@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Lock } from './Lock'
@@ -126,8 +127,7 @@ export const CryptoCheckout = ({
       } catch (error: any) {
         console.error(error)
         if (error?.code === 4001) {
-          // eslint-disable-next-line no-alert
-          alert('Please confirm the transaction in your wallet.')
+          toast.error('Please confirm the transaction in your wallet.')
         }
         setPurchasePending(false)
       }
