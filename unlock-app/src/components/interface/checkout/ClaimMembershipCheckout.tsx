@@ -145,7 +145,7 @@ export const ClaimMembershipCheckout = ({
       )}
       {hasValidkey && (
         <>
-          <Message>You already have a valid membership for this lock!</Message>
+          <Message>You already have a valid membership!</Message>
           <EnjoyYourMembership
             redirectUri={redirectUri}
             closeModal={closeModal}
