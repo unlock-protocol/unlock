@@ -1,3 +1,5 @@
+import { ETHERS_MAX_UINT } from '../../constants'
+
 export default async function (
   { lockAddress, recipient, expiration },
   callback
@@ -7,8 +9,14 @@ export default async function (
   if (!expiration) {
     // Let's get the expiration from the duration (+/- given that the transaction can take time to be mined!)
     const duration = await lockContract.expirationDuration()
-    expiration = Math.floor(new Date().getTime() / 1000 + duration.toNumber())
+
+    if (ETHERS_MAX_UINT.eq(duration)) {
+      expiration = ETHERS_MAX_UINT
+    } else {
+      expiration = Math.floor(new Date().getTime() / 1000 + duration.toNumber())
+    }
   }
+
 
   const grantKeysOptions = {}
 

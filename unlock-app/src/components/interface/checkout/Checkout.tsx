@@ -49,6 +49,12 @@ const keysReducer = (state: any, key: any) => {
   if (key === -1) {
     return {}
   }
+  // Invalid key: don't change the state
+  if (!key) {
+    return {
+      ...state,
+    }
+  }
   return {
     ...state,
     [key.lock]: key,
@@ -58,7 +64,9 @@ const keysReducer = (state: any, key: any) => {
 const hasValidMembership = (keys: Array<any>) => {
   const now = new Date().getTime() / 1000
   return !!(
-    Object.values(keys).filter(({ expiration }) => expiration > now).length > 0
+    Object.values(keys).filter(
+      ({ expiration }) => expiration === -1 || expiration > now
+    ).length > 0
   )
 }
 
