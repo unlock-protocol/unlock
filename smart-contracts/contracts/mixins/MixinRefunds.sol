@@ -47,8 +47,9 @@ contract MixinRefunds is
     uint _tokenId,
     uint _amount
   ) external {
-    _onlyLockManager();
+    _isKey(_tokenId);
     _isValidKey(_tokenId);
+    _onlyLockManager();
     _cancelAndRefund(_tokenId, _amount);
   }
 
@@ -59,6 +60,8 @@ contract MixinRefunds is
   function cancelAndRefund(uint _tokenId)
     external
   {
+    _isKey(_tokenId);
+    _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     uint refund = _getCancelAndRefundValue(_tokenId);
     _cancelAndRefund(_tokenId, refund);
