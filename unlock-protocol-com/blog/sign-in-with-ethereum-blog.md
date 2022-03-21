@@ -55,6 +55,8 @@ We'll use Vue.Js for this demo and Tailwind for styling, but the concepts explai
 You can find all the code for this demo in the CodeSandbox below. Feel free to fork and tweak the code as you wish.
 [https://codesandbox.io/embed/smoosh-dream-urw2qt?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/embed/smoosh-dream-urw2qt?fontsize=14&hidenavigation=1&theme=dark)
 
+`Editor's note: Please practice good code hygiene on any code you access on any website, including this one` 
+
 To get started, we need to create a Sign-In link with our application's URL as such:
 `https://app.unlock-protocol.com/checkout?client_id=urw2qt.csb.app&redirect_uri=https://urw2qt.csb.app`
 
