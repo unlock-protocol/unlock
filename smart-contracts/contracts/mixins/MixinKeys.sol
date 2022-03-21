@@ -157,6 +157,33 @@ contract MixinKeys is
     return key.tokenId;
   }
 
+  function _extendKey(
+    address _recipient
+  ) internal 
+    returns (
+      uint newTimeStamp
+    )
+  {
+    Key memory key = getKeyByOwner(_recipient);
+
+    // prevent extending a valid non-expiring key
+    require(key.expirationTimestamp != type(uint).max, 'CANT_EXTEND_NON_EXPIRING_KEY');
+    
+    // if non-expiring but not valid then extend
+    if(expirationDuration == type(uint).max) {
+      _updateKeyExpirationTimestamp(_recipient, type(uint).max);
+    } else {
+      if (key.expirationTimestamp > block.timestamp) {
+        // extends a valid key  
+        newTimeStamp = key.expirationTimestamp + expirationDuration;
+      } else {
+        // renew an expired or cancelled key
+        newTimeStamp = block.timestamp + expirationDuration;
+      }
+      _updateKeyExpirationTimestamp(_recipient, newTimeStamp);
+    }  
+  } 
+
   /**
    * Transfer a key with a new tokenId and store it 
    * 

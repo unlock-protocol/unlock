@@ -94,27 +94,15 @@ contract MixinPurchase is
           _keyManagers[i],
           newTimeStamp
         );
-      } else if (key.expirationTimestamp > block.timestamp) {
-        // prevent re-purchase of a valid non-expiring key
-        require(key.expirationTimestamp != type(uint).max, 'NON_EXPIRING_KEY');
-
-        // This is an existing owner trying to extend their key
-        newTimeStamp = key.expirationTimestamp + expirationDuration;
-        _updateKeyExpirationTimestamp(
-          _recipient,
-          newTimeStamp
-        );
-        emit RenewKeyPurchase(_recipient, newTimeStamp);
       } else {
-        // This is an existing owner trying to renew their expired or cancelled key
-        if(expirationDuration == type(uint).max) {
-          newTimeStamp = type(uint).max;
-        } else {
-          newTimeStamp = block.timestamp + expirationDuration;
-        }
-        _updateKeyExpirationTimestamp(_recipient, newTimeStamp);
-        _setKeyManagerOf(key.tokenId, _keyManagers[i]);
+        // extend key duration
+        newTimeStamp = _extendKey(_recipient);
         emit RenewKeyPurchase(_recipient, newTimeStamp);
+
+        // reset manager if the key is expired or cancelled
+        if (key.expirationTimestamp < block.timestamp) {
+          _setKeyManagerOf(key.tokenId, _keyManagers[i]);
+        }
       }
 
       // price      
@@ -167,6 +155,44 @@ contract MixinPurchase is
         require(success, "REFUND_FAILED");
       }
       emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
+    }
+  }
+
+  /**
+  * @dev Extend function
+  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_value is ignored when using ETH)
+  * @param _recipient address of the recipient of the key to extend
+  * @param _referrer address of the user making the referral
+  * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
+  */
+  function extend(
+    uint256 _value,
+    address _recipient,
+    address _referrer,
+    bytes calldata _data
+  ) 
+    public 
+    payable
+  {
+    _onlyIfAlive();
+    Key memory key = getKeyByOwner(_recipient);
+    require(key.tokenId != 0, 'NON_EXISTING_KEY');
+
+    // extend key duration
+    _extendKey(_recipient);
+
+    // transfer the tokens
+    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
+
+    if(tokenAddress != address(0)) {
+      require(inMemoryKeyPrice <= _value, 'INSUFFICIENT_ERC20_VALUE');
+      IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
+      token.transferFrom(msg.sender, address(this), inMemoryKeyPrice);
+    } else {
+      // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+      require(inMemoryKeyPrice <= msg.value, 'INSUFFICIENT_VALUE');
     }
   }
 

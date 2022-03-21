@@ -81,7 +81,7 @@ contract('Lock / non expiring', (accounts) => {
               value: keyPrice,
             }
           ),
-          'NON_EXPIRING_KEY'
+          'CANT_EXTEND_NON_EXPIRING_KEY'
         )
       })
     })

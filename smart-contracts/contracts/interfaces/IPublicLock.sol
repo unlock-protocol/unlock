@@ -205,22 +205,38 @@ interface IPublicLock
 
   /**
   * @dev Purchase function
-  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
-  * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the purchased key
-  * @param _referrer address of the user making the referral
-  * @param _keyManager optional address to grant managing rights to a specific address on creation
+  * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_values is ignored when using ETH)
+  * @param _recipients array of addresses of the recipients of the purchased key
+  * @param _referrers array of addresses of the users making the referral
+  * @param _keyManagers optional array of addresses to grant managing rights to a specific address on creation
   * @param _data arbitrary data populated by the front-end which initiated the sale
-  * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
-  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if a Lock manager increases the
+  * @notice when called for an existing and non-expired key, the `_keyManager` param will be ignored 
+  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
   * than keyPrice is approved for spending).
   */
   function purchase(
+    uint256[] calldata _values,
+    address[] calldata _recipients,
+    address[] calldata _referrers,
+    address[] calldata _keyManagers,
+    bytes calldata _data
+  ) external payable;
+  
+  /**
+  * @dev Extend function
+  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_value is ignored when using ETH)
+  * @param _recipient address of the recipient of the key to extend
+  * @param _referrer address of the user making the referral
+  * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
+  */
+  function extend(
     uint256 _value,
     address _recipient,
     address _referrer,
-    address _keyManager,
     bytes calldata _data
   ) external payable;
 
