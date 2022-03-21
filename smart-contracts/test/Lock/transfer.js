@@ -1,12 +1,11 @@
 const { reverts } = require('truffle-assertions')
-const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
 
-const { HARDHAT_VM_ERROR, VM_ERROR_REVERT_WITH_REASON } = errorMessages
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 let unlock
 let lock
