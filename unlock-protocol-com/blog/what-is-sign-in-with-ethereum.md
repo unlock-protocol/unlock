@@ -20,7 +20,9 @@ Historically, websites, web applications, and mobile apps not built with blockch
 
 For example, Google provides you with an email address to send emails and sign up for services on the internet. In return, you agree to provide them with data they can use to tweak their algorithms to track you, serve you ads and [subconsciously influence your decisions](https://knowledge.wharton.upenn.edu/article/algorithms-decision-making/). Google, Facebook, and others similarly provide identity services "for free," in exchange for keeping their users reliant on their silos. 
 
-A key question needs to be raised. What then happens to user data in the event of a data breach or a compromise of their systems or a hacker manages to steal information such as home addresses, credit card info, etc., of thousands or millions if not hundreds of millions of people? Or what happens if a user wants to cut the cord with one of these centralized entities? Enter Sign-In with Ethereum.
+A key question needs to be raised. What then happens to user data in the event of a data breach at one of these centralized services with millions of customers? Or what happens if a user simply wants to cut the cord with one of these centralized entities? 
+
+Enter "Sign-In with Ethereum."
 
 The new Sign-In With Ethereum standard eliminates uncertainties about who has access to your private information, your digital footprint, and so on. Since the blockchain powers it, the Sign-In With Ethereum standard by default was designed with decentralization in mind.
 
