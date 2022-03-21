@@ -15,6 +15,7 @@ import { Layout } from '../../components/layout/DefaultLayout'
 import { NextSeo } from 'next-seo'
 import { routes } from '../../config/routes'
 import { unlockConfig } from '../../config/unlock'
+import { customizeSEO } from '../../config/seo'
 interface PostsIndexProps extends PostsIndexType {
   type: 'postsIndex'
 }
@@ -40,25 +41,18 @@ const PostPage: NextPage<Props> = (props) => {
   }
 
   if (props.type === 'post') {
+    const postSEO = customizeSEO({
+      path: `/blog/${props.slug}`,
+      imagePath: props.frontMatter.image,
+      description: props.frontMatter.description,
+      title: props.frontMatter.title,
+    })
     return (
       <Layout>
         <NextSeo
-          title={props.frontMatter.title}
-          description={props.frontMatter.description}
-          openGraph={{
-            images: [
-              {
-                type: 'image',
-                url: props.frontMatter.image,
-              },
-            ],
-            description: props.frontMatter.description,
-            title: props.frontMatter.title,
-            url: new URL(
-              `/blog/${props.slug}`,
-              unlockConfig.baseURL
-            ).toString(),
-          }}
+          title={postSEO.title}
+          description={postSEO.description}
+          openGraph={postSEO.openGraph}
         />
         <Post {...props} />
       </Layout>
