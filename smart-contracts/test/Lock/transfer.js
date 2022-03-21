@@ -10,6 +10,7 @@ const { HARDHAT_VM_ERROR, VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 let unlock
 let lock
+let tokenIds
 
 contract('Lock / transfer', (accounts) => {
   const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
@@ -19,37 +20,38 @@ contract('Lock / transfer', (accounts) => {
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
 
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
-      [singleKeyOwner],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [singleKeyOwner, multipleKeyOwner, multipleKeyOwner],
+      [
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+      ],
+      [
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+        web3.utils.padLeft(0, 40),
+      ],
+
       [],
       {
-        value: await lock.keyPrice(),
+        value: (await lock.keyPrice()) * 3,
         from: singleKeyOwner,
       }
     )
 
-    await lock.purchase(
-      [],
-      [multipleKeyOwner, multipleKeyOwner],
-      [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-      [],
-      {
-        value: (await lock.keyPrice()) * 2,
-        from: multipleKeyOwner,
-      }
-    )
+    tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
   })
 
-  describe('full transfer of single key', () => {
+  describe('transfer of single key', () => {
     let originalExpiration
 
     beforeEach(async () => {
-      originalExpiration = await lock.keyExpirationTimestampFor(singleKeyOwner)
-      await lock.transfer(destination, 1, { from: singleKeyOwner })
+      originalExpiration = await lock.keyExpirationTimestampFor(tokenIds[0])
+      await lock.transfer(tokenIds[0], destination, { from: singleKeyOwner })
     })
 
     it('original owner no longer has a key', async () => {
@@ -58,76 +60,53 @@ contract('Lock / transfer', (accounts) => {
     })
 
     it('new owner has a key', async () => {
-      const actual = await lock.getHasValidKey(destination)
-      assert.equal(actual, true)
+      assert.equal(await lock.getHasValidKey(destination), true)
+      assert.equal(await lock.ownerOf(tokenIds[0]), destination)
     })
 
     it('new owner has the entire time remaining (less fees if applicable)', async () => {
-      const actual = await lock.keyExpirationTimestampFor(destination)
-      assert.equal(actual.toString(), originalExpiration.toString())
-    })
-
-    it('fails if no time remains', async () => {
-      // Push the clock forward 1 second so that the test failure reason is consistent
-      await time.increase(1)
-
-      await reverts(
-        lock.transfer(destination, 1, { from: singleKeyOwner }),
-        `${HARDHAT_VM_ERROR} reverted with panic code 0x11 (Arithmetic operation underflowed or overflowed outside of an unchecked block)`
-      )
-    })
-  })
-
-  describe('full transfer of multiple keys', () => {
-    let originalExpiration
-
-    beforeEach(async () => {
-      originalExpiration = await lock.keyExpirationTimestampFor(
-        multipleKeyOwner
-      )
-      await lock.transfer(destination, 10, {
-        from: multipleKeyOwner,
-      })
-    })
-
-    it('original owner no longer has a key', async () => {
-      const actual = await lock.getHasValidKey(multipleKeyOwner)
-      assert.equal(actual, false)
-    })
-
-    it('new owner has a key', async () => {
-      const actual = await lock.getHasValidKey(destination)
-      assert.equal(actual, true)
-    })
-
-    it('new owner has the entire time remaining (less fees if applicable)', async () => {
-      const actual = await lock.keyExpirationTimestampFor(destination)
+      const actual = await lock.keyExpirationTimestampFor(tokenIds[0])
       assert.equal(actual.toString(), originalExpiration.toString())
     })
   })
 
-  describe('partial transfer of multiple keys', () => {
+  describe('transfer of multiple keys', () => {
     beforeEach(async () => {
-      await lock.transfer(destination, 1, {
+      await lock.transfer(tokenIds[1], destination, {
+        from: multipleKeyOwner,
+      })
+      await lock.transfer(tokenIds[2], destination, {
         from: multipleKeyOwner,
       })
     })
 
-    it('original owner still longer has a key', async () => {
-      const actual = await lock.getHasValidKey(multipleKeyOwner)
-      assert.equal(actual, true)
+    it('previous owners has no keys anymore', async () => {
+      assert.equal(await lock.balanceOf(multipleKeyOwner), 0)
     })
 
-    it('new owner also has a key', async () => {
-      const actual = await lock.getHasValidKey(destination)
-      assert.equal(actual, true)
+    it('new owner also has the keys', async () => {
+      assert.equal(await lock.ownerOf(tokenIds[1]), destination)
+      assert.equal(await lock.ownerOf(tokenIds[2]), destination)
+      assert.equal(await lock.balanceOf(destination), 2)
     })
   })
 
   it('reverts when attempting to transfer to self', async () => {
     await reverts(
-      lock.transfer(singleKeyOwner, 1, { from: singleKeyOwner }),
+      lock.transfer(tokenIds[0], singleKeyOwner, { from: singleKeyOwner }),
       `${VM_ERROR_REVERT_WITH_REASON} 'TRANSFER_TO_SELF'`
+    )
+  })
+
+  it('fails if key is expired', async () => {
+    // Push the clock forward 1 second so that the test failure reason is consistent
+    await lock.expireAndRefundFor(tokenIds[0], 0, {
+      from: accounts[0],
+    })
+
+    await reverts(
+      lock.transfer(tokenIds[0], accounts[9], { from: singleKeyOwner }),
+      'KEY_NOT_VALID'
     )
   })
 })
