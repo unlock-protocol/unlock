@@ -9,9 +9,10 @@ image: /images/blog/siwe-blog/siwe.png
 
 ## What is Sign-In with Ethereum?
 
+In simple terms, Sign-In with Ethereum is a new standard form of authentication that enables end-users to access resources on the internet using their Ethereum account instead of relying on traditional authentication providers such as Google, Facebook, and the like.
+
 According to the [EIP-4361 standard](https://eips.ethereum.org/EIPS/eip-4361), the Sign-In with Ethereum specification "describes how Ethereum accounts authenticate with off-chain services by signing a standard message format parameterized by scope, session details, and security mechanisms (e.g., a nonce). The goals of this specification are to provide a self-custody alternative to centralized identity providers, improve interoperability across off-chain services for Ethereum-based authentication, and provide wallet vendors a consistent machine-readable message format to achieve improved user experiences and consent management." 
 
-In much simpler terms, Sign-In with Ethereum is a new standard form of authentication that enables end-users to access resources on the internet using their Ethereum account and ENS profile instead of relying on traditional authentication providers such as Google, Facebook, and the like.
 ## Why does Sign-In with Ethereum matter?
 Historically, websites, web applications, and mobile apps not built with blockchain technology relied on centralized identity providers with monopolistic control over users' information mainly because that was the only existing authentication infrastructure at the time, and it was convenient, but at what cost? You guessed it! Privacy.
 
