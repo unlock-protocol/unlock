@@ -46,7 +46,7 @@ Unlock has created a flow similar to the popular OAuth flow that users are famil
 
 Unlock does all the heavy-lifting, so developers can focus on building what matters. 
 
-Here’s how you can implement Sign-in With Ethereum into your application.
+Here’s how you can implement Sign-in with Ethereum into your application.
 
 ![iniubong-final.gif](/images/blog/siwe-blog/iniubong-final.gif)
 
