@@ -66,7 +66,7 @@ For this to work, both `client_id` and `redirect_uri` are required fields, and t
 
 When the user clicks on the Sign-In link from our application, they get prompted to connect their wallet through whichever means they prefer. Once successfully connected, they will also be redirected to the application, this time with an extra query parameter. The value of this parameter is base64 encoded and can be decoded by your application to retrieve the signature message and the signed message. Using these two values, you can retrieve the address of the signer.
 
-If the user refuses to connect and sign a message in their wallet, they get redirected back to the `redirect_uri`, and a new query string parameter is attached ?error=access-denied.
+If the user refuses to connect and sign a message in their wallet, they get redirected back to the `redirect_uri`, and a new query string parameter is attached `?error=access-denied`.
 
 ## Too easy, right? That's the power of Unlock.
 
