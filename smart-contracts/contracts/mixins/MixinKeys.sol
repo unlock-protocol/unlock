@@ -368,7 +368,7 @@ contract MixinKeys is
       isValid = onValidKeyHook.hasValidKey(
         address(this),
         _keyOwner,
-        getKeyOfOwnerByIndex(_keyOwner, 0).expirationTimestamp,
+        0, // pass zero, as we dont use tokenId / expiration anymore
         isValid
       );
     }
