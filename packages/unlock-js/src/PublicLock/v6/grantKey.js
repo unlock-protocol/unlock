@@ -17,7 +17,6 @@ export default async function (
     }
   }
 
-
   const grantKeysOptions = {}
 
   const transactionPromise = lockContract.grantKeys(
