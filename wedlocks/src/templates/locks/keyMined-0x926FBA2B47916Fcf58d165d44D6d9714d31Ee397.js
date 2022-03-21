@@ -38,5 +38,3 @@ Grab a seat and come participate in this discussion that will address the stable
     },
   ],
 }
-
-
