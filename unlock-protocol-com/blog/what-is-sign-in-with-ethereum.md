@@ -24,7 +24,7 @@ A key question needs to be raised. What then happens to user data in the event o
 
 Enter "Sign-In with Ethereum."
 
-The new Sign-In With Ethereum standard eliminates uncertainties about who has access to your private information, your digital footprint, and so on. Since the blockchain powers it, the Sign-In With Ethereum standard by default was designed with decentralization in mind.
+The new Sign-In with Ethereum standard eliminates uncertainties about who has access to your private information, your digital footprint, and so on. Since the blockchain powers it, the Sign-In with Ethereum standard by default was designed with decentralization in mind.
 
 ## How is Sign-In With Ethereum different from current approaches?
 
