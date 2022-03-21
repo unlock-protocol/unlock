@@ -292,7 +292,10 @@ contract('Unlock / upgrades', async (accounts) => {
                 })
 
                 it('Key id still set', async () => {
-                  const id = await lock.getTokenIdFor(keyOwner.address)
+                  const id = await lock.getKeyOfOwnerByIndex(
+                    keyOwner.address,
+                    0
+                  )
                   assert.notEqual(id, 0)
                 })
 
@@ -398,7 +401,10 @@ contract('Unlock / upgrades', async (accounts) => {
                   })
 
                   it('Latest Key is owned', async () => {
-                    const id = await lockLatest.getTokenIdFor(keyOwner.address)
+                    const id = await lockLatest.getKeyOfOwnerByIndex(
+                      keyOwner.address,
+                      0
+                    )
                     assert.equal(await lockLatest.ownerOf(id), keyOwner.address)
                   })
 

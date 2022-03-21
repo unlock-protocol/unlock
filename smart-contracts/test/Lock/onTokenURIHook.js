@@ -45,7 +45,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
 
   it('tokenURI should returns a custom value', async () => {
     const baseTokenURI = 'https://unlock-uri-hook.test/'
-    const expirationTimestamp = await lock.keyExpirationTimestampFor(to)
+    const expirationTimestamp = await lock.keyExpirationTimestampFor(tokenId)
     const params = [
       lock.address.toLowerCase(), // lockAddress
       to.toLowerCase(), // owner
