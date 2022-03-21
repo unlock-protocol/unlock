@@ -30,7 +30,7 @@ The new Sign-In With Ethereum standard eliminates uncertainties about who has ac
 
 The Sign-In with Ethereum authentication method differs from current centralized approaches because it is based on a new self-custodial option for internet users who wish to assume more control and responsibility for their own digital identity. (“Self-custody” means that you and only you have possession of your digital assets and only you control the private key. This also comes with a great deal of responsibility — you are responsible for safeguarding access to your private key because it is not stored anywhere else.)
 
-Already, many services support workflows to authenticate identity using Ethereum accounts by way of message signing. With Sign-In With Ethereum, there is an opportunity to standardize the sign-in flow and improve interoperability across existing services while also providing wallet vendors a reliable method to identify signing requests.
+Already, many services support workflows to authenticate identity using Ethereum accounts by way of message signing. With Sign-In with Ethereum, there is an opportunity to standardize the sign-in flow and improve interoperability across existing services while also providing wallet vendors a reliable method to identify signing requests.
 
 ## How to integrate with Unlock
 
