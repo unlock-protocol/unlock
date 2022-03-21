@@ -155,9 +155,9 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    customAddress?: string
+    recipient?: string
   ) => {
-    const purchaseAddress = customAddress ?? address
+    const purchaseAddress = recipient ?? address
     const response = await chargeAndSaveCard(
       config,
       walletService,

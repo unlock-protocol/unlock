@@ -55,7 +55,7 @@ export const CardConfirmationCheckout = ({
     setIsAdvanced,
     onRecipientChange,
     advancedRecipientValid,
-    recipient: customAddress,
+    recipient,
     checkingRecipient,
   } = useAdvancedCheckout()
 
@@ -103,7 +103,7 @@ export const CardConfirmationCheckout = ({
         lock.address,
         network,
         formattedPrice,
-        customAddress
+        recipient || account
       )
       if (hash) {
         emitTransactionInfo({

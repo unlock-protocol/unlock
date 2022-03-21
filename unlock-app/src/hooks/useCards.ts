@@ -51,10 +51,14 @@ export const getSignature = async (
   typedData: any,
   address: string
 ) => {
-  const signature = await walletService.unformattedSignTypedData(
-    address,
-    typedData
-  )
+  let signature
+  if (typedData.message['Charge Card']) {
+    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else {
+    signature = await walletService.unformattedSignTypedData(address, typedData)
+  }
+
   return signature
 }
 
