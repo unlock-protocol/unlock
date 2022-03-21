@@ -16,23 +16,17 @@ According to the [EIP-4361 standard](https://eips.ethereum.org/EIPS/eip-4361), t
 ## Why does Sign-In with Ethereum matter?
 Historically, websites, web applications, and mobile apps not built with blockchain technology relied on centralized identity providers with monopolistic control over users' information mainly because that was the only existing authentication infrastructure at the time, and it was convenient, but at what cost? You guessed it! Privacy.
 
-For example, Google, a large, centralized corporation, provides you with an email address to send emails and sign up for services on the internet; In return, you agree to provide them with data they can use to tweak their algorithms to track you, serve you ads and [subconsciously influence your decisions](https://knowledge.wharton.upenn.edu/article/algorithms-decision-making/).
+For example, Google, a large, centralized corporation, provides you with an email address to send emails and sign up for services on the internet. In return, you agree to provide them with data they can use to tweak their algorithms to track you, serve you ads and [subconsciously influence your decisions](https://knowledge.wharton.upenn.edu/article/algorithms-decision-making/).
 
-Heck, why should you care about internet privacy? I mean, most internet users don't even know the impending dangers of letting a large, centralized corporation have so much access to our digital data. 
+What then happens to your data in the event of a data breach or a compromise of their systems and a hacker manages to steal information such as home addresses, credit card info, etc., of thousands or millions if not hundreds of millions of people?
 
-Whenever internet privacy becomes a topic of discussion, someone out there usually asks questions like, "Why should I care if some data-milking behemoth has access to that much information about me?" I usually reply by saying that they are not yet a person of interest, and when they become prime targets for these companies, they will suffer for it.
-
-Okay, let's chill out a bit; let's say you never become a prime target for these large corporations because you're not famous or don't own anything of value to them. What then happens to your data in the event of a data breach or a compromise of their systems and a hacker manages to steal information such as home addresses, credit card info, etc., of thousands or millions if not hundreds of millions of people?
-
-Think of all that a hacker could use your private information to do. It's outright scary if you ask me. No one centralized entity should have that amount of access to that much data.
-
-The new Sign-In With Ethereum standard eliminates uncertainties about who has access to your private information, your digital footprint, and so on. Since the blockchain powers it, the Sign-In With Ethereum standard by default was designed with privacy, security, and decentralization in mind.
+The new Sign-In With Ethereum standard eliminates uncertainties about who has access to your private information, your digital footprint, and so on. Since the blockchain powers it, the Sign-In With Ethereum standard by default was designed with decentralization in mind.
 
 ## How is Sign-In With Ethereum different from current approaches?
 
-The Sign-In with Ethereum authentication method differs from current centralized approaches because it is based on a new self-custodial option for internet users who wish to assume more control and responsibility for their own digital identity. (“Self-custody” means that you and only you have possession of your digital assets and only you control the private key. This also comes with a great deal of responsibility —uou are responsible for safeguarding access to your private key because it is not stored anywhere else.)
+The Sign-In with Ethereum authentication method differs from current centralized approaches because it is based on a new self-custodial option for internet users who wish to assume more control and responsibility for their own digital identity. (“Self-custody” means that you and only you have possession of your digital assets and only you control the private key. This also comes with a great deal of responsibility — you are responsible for safeguarding access to your private key because it is not stored anywhere else.)
 
-Already, many services support workflows to authenticate identity using Ethereum accounts by way of message signing. With Sign-in With Etheruem, there is an opportunity to standardize the sign-in flow and improve interoperability across existing services while also providing wallet vendors a reliable method to identify signing requests.
+Already, many services support workflows to authenticate identity using Ethereum accounts by way of message signing. With Sign-in With Ethereum, there is an opportunity to standardize the sign-in flow and improve interoperability across existing services while also providing wallet vendors a reliable method to identify signing requests.
 
 ## How to integrate with Unlock
 
