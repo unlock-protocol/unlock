@@ -33,7 +33,7 @@ const { getHardhatNetwork } = require('./helpers/network')
 const settings = {
   optimizer: {
     enabled: true,
-    runs: 90,
+    runs: 200,
   },
   outputSelection: {
     '*': {
