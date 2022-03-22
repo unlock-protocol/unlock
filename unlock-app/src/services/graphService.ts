@@ -1,8 +1,8 @@
 import ApolloClient from 'apollo-boost'
 import { utils } from 'ethers'
+import toast from 'react-hot-toast'
 import locksByManager from '../queries/locksByManager'
 import keyHoldersByLocks from '../queries/keyholdersByLock'
-import toast from 'react-hot-toast'
 
 export class GraphService {
   public client: any
