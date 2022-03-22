@@ -1,7 +1,3 @@
-import path from 'path'
-
-const absolutePath = (relative) => path.join(process.cwd(), relative)
-
 export default {
   subject: () => 'Stable Show',
   html: () =>
@@ -33,7 +29,7 @@ Grab a seat and come participate in this discussion that will address the stable
   attachments: [
     {
       filename: 'stable-show.jpeg',
-      path: absolutePath('./src/templates/attachments/stable-show.jpeg'),
+      path: 'https://wedlocks.unlock-protocol.com/attachments/stable-show.jpeg',
       cid: 'stable-show.jpeg',
     },
   ],

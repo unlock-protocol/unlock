@@ -1,7 +1,3 @@
-import path from 'path'
-
-const absolutePath = (relative) => path.join(process.cwd(), relative)
-
 export default {
   subject: () => 'DeFi Arena',
   html: () =>
@@ -23,7 +19,7 @@ Of course it's the occasion to give the kick-off of the Celo connect conference 
   attachments: [
     {
       filename: 'defi-arena.jpeg',
-      path: absolutePath('./src/templates/attachments/defi-arena.jpeg'),
+      path: 'https://wedlocks.unlock-protocol.com/attachments/defi-arena.jpeg',
       cid: 'defi-arena.jpeg',
     },
   ],
