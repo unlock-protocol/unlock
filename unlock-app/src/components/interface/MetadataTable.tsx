@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
-import { ActionButton } from './buttons/ActionButton'
-import Media from '../../theme/media'
 import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
 import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
+import { ActionButton } from './buttons/ActionButton'
+import Media from '../../theme/media'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -103,7 +103,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         <thead>
           <tr>
             {columns.map((col) => {
-              return <Th key={col}>{camelCaseToTitle(col)}</Th>
+              return <th key={col}>{camelCaseToTitle(col)}</th>
             })}
             {isLockManager && (
               <Th className="text-center" key="actions">
@@ -120,9 +120,9 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
               <tr key={key}>
                 {columns.map((col) => {
                   return (
-                    <Td key={col}>
+                    <td key={col}>
                       <Cell kind={col} value={datum[col]} />
-                    </Td>
+                    </td>
                   )
                 })}
                 {isLockManager && (
@@ -143,6 +143,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         </Tbody>
       </Table>
       <DownloadButton
+        type="button"
         onClick={() => {
           downloadAsCSV(columns, metadata)
         }}

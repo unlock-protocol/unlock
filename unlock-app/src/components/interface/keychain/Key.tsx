@@ -14,10 +14,7 @@ import {
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
-<<<<<<< HEAD
-import { Badge, Tooltip } from '@unlock-protocol/ui'
-=======
->>>>>>> e69b54f7e (add cancel and refund functionality)
+import { Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -255,7 +252,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
         <div className="flex items-center gap-2">
-<<<<<<< HEAD
           <Tooltip label="Scan QR code" tip="Scan QR code">
             <button
               className={iconButtonClass}
@@ -293,51 +289,18 @@ const Key = ({ ownedKey, account, network }: Props) => {
               <OpenSeaIcon />
             </button>
           </Tooltip>
-=======
-          <button
-            aria-label="QRCode"
-            className={iconButtonClass}
-            type="button"
-            onClick={handleSignature}
-          >
-            <QrCodeIcon />
-          </button>
-          <button
-            aria-label="Add To Wallet"
-            className={iconButtonClass}
-            type="button"
-            onClick={addToWallet}
-          >
-            <WalletIcon />
-          </button>
-          <button
-            aria-label="Open on OpenSea"
-            className={iconButtonClass}
-            type="button"
-            onClick={exploreLock}
-          >
-            <ExploreIcon />
-          </button>
-          <button
-            aria-label="Open on OpenSea"
-            className={iconButtonClass}
-            type="button"
-            disabled={!isAvailableOnOpenSea}
-            onClick={viewOnOpenSea}
-          >
-            <OpenSeaIcon />
-          </button>
           {!isKeyExpired && (
-            <button
-              aria-label="Cancel and Refund"
-              className={iconButtonClass}
-              type="button"
-              onClick={onCancelAndRefund}
-            >
-              <CancelIcon />
-            </button>
+            <Tooltip label="Cancel and Refund" tip="Cancel and Refund">
+              <button
+                aria-label="Cancel and Refund"
+                className={iconButtonClass}
+                type="button"
+                onClick={onCancelAndRefund}
+              >
+                <CancelIcon />
+              </button>
+            </Tooltip>
           )}
->>>>>>> e69b54f7e (add cancel and refund functionality)
         </div>
       </div>
     </div>
