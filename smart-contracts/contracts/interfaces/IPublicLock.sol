@@ -274,7 +274,7 @@ interface IPublicLock
    * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _tokenId,
+    uint _tokenId,
     uint _time
   ) external view returns (uint);
 
