@@ -86,7 +86,7 @@ contract MixinTransfer is
     uint tokenIdTo = _createNewKey(
       _to,
       address(0),
-      time
+      block.timestamp + time
     );
     
     // trigger event

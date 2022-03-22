@@ -20,7 +20,6 @@ contract('Lock / shareKey', (accounts) => {
   let event
   let event1
   let event2
-  let event3
   let tx1
   let tx2
 
@@ -110,21 +109,23 @@ contract('Lock / shareKey', (accounts) => {
         let tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
         assert.equal(await lock.isValidKey.call(tokenIds[1]), true)
 
+        const remaining = await lock.keyExpirationTimestampFor(tokenIds[1])
+        assert.equal(await lock.balanceOf(accountWithNoKey1), 0)
+
         tx1 = await lock.shareKey(accountWithNoKey1, tokenIds[1], tooMuchTime, {
           from: keyOwners[1],
         })
+        const { args } = tx1.logs.find((v) => v.event === 'Transfer')
+        assert.equal(await lock.isValidKey(args.tokenId), true)
 
-        let actualTimeShared = tx1.logs[2].args._amount.toNumber(10)
-        assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true) // new owner now has a fresh key
+        // new owner now has a fresh key
+        assert.equal(await lock.balanceOf(accountWithNoKey1), 1)
+        assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true)
+
         let newExpirationTimestamp = new BigNumber(
-          await lock.keyExpirationTimestampFor.call(accountWithNoKey1)
+          await lock.keyExpirationTimestampFor.call(args.tokenId)
         )
-        let blockTimestampAfter = new BigNumber(
-          (await web3.eth.getBlock('latest')).timestamp
-        )
-        assert(
-          newExpirationTimestamp.minus(blockTimestampAfter).eq(actualTimeShared)
-        )
+        assert.equal(newExpirationTimestamp.toString(), remaining.toString())
       })
 
       it('should emit the expireKey Event', async () => {
@@ -150,6 +151,7 @@ contract('Lock / shareKey', (accounts) => {
     let fee
     let timestampBeforeSharing
     let timestampAfterSharing
+    let newTokenId
 
     before(async () => {
       // Change the fee to 5%
@@ -173,19 +175,18 @@ contract('Lock / shareKey', (accounts) => {
       event = tx2.logs[0].event
       event1 = tx2.logs[1].event
       event2 = tx2.logs[2].event
-      event3 = tx2.logs[3].event
+      const { tokenId } = tx2.logs[2].args
+      newTokenId = tokenId
     })
 
-    it('should emit the ExpirationChanged event twice', async () => {
+    it('should emit the ExpirationChanged event', async () => {
       assert.equal(event, 'ExpirationChanged')
       assert.equal(tx2.logs[0].args._timeAdded, false)
-      assert.equal(event2, 'ExpirationChanged')
-      assert.equal(tx2.logs[2].args._timeAdded, true)
     })
 
     it('should emit the Transfer event', async () => {
       assert.equal(event1, 'Transfer')
-      assert.equal(event3, 'Transfer')
+      assert.equal(event2, 'Transfer')
     })
 
     it('should subtract the time shared + fee from the key owner', async () => {
@@ -200,14 +201,15 @@ contract('Lock / shareKey', (accounts) => {
     })
 
     it('should create a new key and add the time shared to it', async () => {
+      assert.equal(await lock.getHasValidKey.call(accountWithNoKey2), true)
+
       sharedKeyExpiration = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(tokenIds[2])
+        await lock.keyExpirationTimestampFor.call(newTokenId)
       )
       let currentTimestamp = new BigNumber(
         (await web3.eth.getBlock('latest')).timestamp
       )
       assert.equal(hadKeyBefore, false)
-      assert.equal(await lock.getHasValidKey.call(accountWithNoKey2), true)
       assert(sharedKeyExpiration.eq(currentTimestamp.plus(oneDay)))
     })
 
@@ -233,11 +235,12 @@ contract('Lock / shareKey', (accounts) => {
     it('should allow an approved address to share a key', async () => {
       // make sure recipient does not have a key
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), false)
-      await lock.shareKey(accountWithNoKey3, tokenIds[2], oneDay, {
+      const tx = await lock.shareKey(accountWithNoKey3, tokenIds[2], oneDay, {
         from: approvedAddress,
       })
       // make sure recipient has a key
-      assert.equal(await lock.ownerOf.call(tokenIds[2]), accountWithNoKey3)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      assert.equal(await lock.ownerOf.call(args.tokenId), accountWithNoKey3)
     })
   })
 })
