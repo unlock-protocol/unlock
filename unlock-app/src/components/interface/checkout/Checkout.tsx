@@ -29,6 +29,7 @@ import NewAccountCheckout from './NewAccountCheckout'
 import { pageTitle } from '../../../constants'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import LogIn from '../LogIn'
+import { useAutoLogin } from '../../../hooks/useAutoLogin'
 
 import {
   UserInfo,
@@ -38,7 +39,6 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
-import { useAppStorage } from '../../../hooks/useAppStorage'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
@@ -115,7 +115,10 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
+  const [storedLoginEmail, setStoredLoginEmail] = useState<string>('')
+  const { getAutoLoginEmail } = useAutoLogin()
 
+  const checkUnlockLogin = useRef(false)
   const firstLoading = useRef(false)
   // state change
   useEffect(() => {
@@ -125,6 +128,15 @@ export const Checkout = ({
   useEffect(() => {
     firstLoading.current = true
   }, [])
+
+  const showLoginForm = () => {
+    const email = getAutoLoginEmail()
+    if (email.length > 0 && !account) {
+      checkUnlockLogin.current = true
+      setStoredLoginEmail(email)
+      setCheckoutState('login')
+    }
+  }
 
   // When the account is changed, make sure we ping!
   useEffect(() => {
@@ -159,6 +171,7 @@ export const Checkout = ({
         }
       } else {
         setCheckoutState(defaultState)
+        if (firstLoading.current) showLoginForm()
       }
     }
     handleUser(account)
@@ -253,6 +266,7 @@ export const Checkout = ({
       <LogIn
         network={1} // We don't actually need a network here really.
         useWallet={() => setCheckoutState('wallet-picker')}
+        storedLoginEmail={storedLoginEmail}
       />
     )
   } else if (state === 'wallet-picker') {
@@ -407,7 +421,7 @@ export const Checkout = ({
             Already a member? Access with your
             <br />{' '}
             <button type="button" onClick={() => setCheckoutState('login')}>
-              unlock acount
+              unlock account
             </button>{' '}
             or your{' '}
             <button
