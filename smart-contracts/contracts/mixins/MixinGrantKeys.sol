@@ -24,6 +24,8 @@ contract MixinGrantKeys is
     uint[] calldata _expirationTimestamps,
     address[] calldata _keyManagers
   ) external {
+    _onlyIfAlive();
+    _lockIsUpToDate();
     require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'ONLY_LOCK_MANAGER_OR_KEY_GRANTER');
 
     for(uint i = 0; i < _recipients.length; i++) {

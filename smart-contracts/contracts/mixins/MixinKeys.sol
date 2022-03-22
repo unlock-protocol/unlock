@@ -131,6 +131,45 @@ contract MixinKeys is
     );
   }
 
+
+  /**
+  * Migrate data from the previous single owner => key mapping to 
+  * the new data structure w multiple tokens.
+  * @param _length the max nhumber of records to update (default to totalSupply if superior)
+  * @dev 
+  */
+  function migrateKeys(uint _length) public {
+    _onlyLockManager();
+    uint recordsToUpdate = totalSupply();
+    if(_length > recordsToUpdate) _length = recordsToUpdate;
+    for (uint256 i = 0; i < _length; i++) {
+      // tokenId starts at 1
+      uint tokenId = i + 1;
+      address keyOwner = ownerOf(tokenId);
+      Key memory k = keyByOwner[keyOwner];
+
+      // copy key in new mapping
+      _keys[i +1] = Key(k.tokenId, k.expirationTimestamp);
+      
+      // delete token from previous owner
+      delete keyByOwner[keyOwner];
+
+      // record new owner
+      _ownedKeyIds[keyOwner][0] = tokenId;
+      _ownedKeysIndex[tokenId] = 0;
+
+      // update ownership
+      _balances[keyOwner] += 1;
+
+      recordsToUpdate--;
+    }
+    
+    // once data has been all upgraded, flag lock
+    if(recordsToUpdate == 0) {
+      lockDataVersion = publicLockVersion();
+    }
+  }
+
   /**
   * Returns the id of a key for a specific owner at a specific index
   * @param _keyOwner address of the owner
@@ -350,8 +389,7 @@ contract MixinKeys is
     }
 
     return isValid;
-  }
-    
+  }   
 
   /**
    * Checks if the user has a non-expired key.

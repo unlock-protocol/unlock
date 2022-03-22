@@ -83,6 +83,18 @@ contract MixinLockCore is
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
 
+  // use to check data version
+  uint lockDataVersion;
+
+  // modifier to check if data has been upgraded
+  function _lockIsUpToDate() internal view {
+    require(
+      lockDataVersion == publicLockVersion(),
+      'MIGRATION_REQUIRED'
+    );
+  }
+
+  // modifier
   function _onlyLockManagerOrBeneficiary() 
   internal 
   view
@@ -105,6 +117,9 @@ contract MixinLockCore is
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
+
+    // update only when initialized
+    lockDataVersion = publicLockVersion();
   }
 
   // The version number of the current implementation on this network
