@@ -131,16 +131,21 @@ contract MixinKeys is
     );
   }
 
+  /**
+  * Returns the id of a key for a specific owner at a specific index
+  * @param _keyOwner address of the owner
+  * @param _index position index of the key in the array of all keys owned by owner
+  */
   function getKeyOfOwnerByIndex(
     address _keyOwner, 
     uint256 _index
   ) 
     public 
     view 
-    returns (Key memory) 
+    returns (uint _tokenId) 
   {
       require(_index < balanceOf(_keyOwner), "OWNER_INDEX_OUT_OF_BOUNDS");
-      return _keys[_ownedKeyIds[_keyOwner][_index]];
+      return _ownedKeyIds[_keyOwner][_index];
   }
 
   /**
@@ -320,6 +325,11 @@ contract MixinKeys is
     return _balances[_keyOwner];
   }
 
+  /**
+  * Check if a certain key is valid
+  * @param _tokenId the id of the key to check validity
+  * @notice this makes use of the onValidKeyHook if it is set
+  */
   function isValidKey(
     uint _tokenId
   )
@@ -357,7 +367,7 @@ contract MixinKeys is
     uint length = balanceOf(_keyOwner);
     if(length > 0) {
       for (uint i = 0; i < length; i++) {
-        if(getKeyOfOwnerByIndex(_keyOwner, i).expirationTimestamp > block.timestamp) {
+        if(_keys[getKeyOfOwnerByIndex(_keyOwner, i)].expirationTimestamp > block.timestamp) {
           isValid = true;
         }
       }

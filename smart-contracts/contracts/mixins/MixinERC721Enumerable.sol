@@ -54,7 +54,7 @@ contract MixinERC721Enumerable is
   ) public view
     returns (uint256)
   {
-    return getKeyOfOwnerByIndex(_keyOwner, _index).tokenId;
+    return getKeyOfOwnerByIndex(_keyOwner, _index);
   }
 
   function supportsInterface(bytes4 interfaceId) 

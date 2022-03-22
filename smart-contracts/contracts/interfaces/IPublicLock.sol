@@ -401,6 +401,43 @@ interface IPublicLock
     address _keyManager
   ) external;
 
+
+  /**
+  * Returns the id of a key for a specific owner at a specific index
+  * @param _keyOwner address of the owner
+  * @param _index position index of the key in the array of all keys owned by owner
+  */
+  function getKeyOfOwnerByIndex(
+    address _keyOwner, 
+    uint256 _index
+  ) 
+    external 
+    view 
+    returns (uint _tokenId);
+  
+  /**
+  * Check if a certain key is valid
+  * @param _tokenId the id of the key to check validity
+  * @notice this makes use of the onValidKeyHook if it is set
+  */
+  function isValidKey(
+    uint _tokenId
+  )
+    external
+    view
+    returns (bool);
+  
+  /**
+  * @dev Set the key's ExpirationTimestamp field for a given token.
+  * @param _tokenId the tokenId of the key
+  * @param _expirationTimestamp the tokenId of the key
+  * @dev Returns 0 if the owner has never owned a key for this lock
+  */
+  function setKeyExpirationTimestamp(
+    uint _tokenId,
+    uint _expirationTimestamp
+  ) external;
+
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
   ///===================================================================
