@@ -20,7 +20,7 @@ namespace PurchaseController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const { publicKey, lock, stripeTokenId, pricing, network } =
+    const { publicKey, lock, stripeTokenId, pricing, network, recipient } =
       req.body.message['Charge Card']
 
     // First, get the locks stripe account
@@ -64,7 +64,7 @@ namespace PurchaseController {
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
       const hash = await processor.initiatePurchaseForConnectedStripeAccount(
-        Normalizer.ethereumAddress(publicKey),
+        Normalizer.ethereumAddress(recipient),
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
         pricing,
@@ -91,9 +91,16 @@ namespace PurchaseController {
     // First check that the lock is indeed free and that the gas costs is low enough!
     const pricer = new KeyPricer()
     const pricing = await pricer.generate(lock, network)
+    const fulfillmentDispatcher = new Dispatcher()
 
     if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
       return res.status(500).send('Lock is not free')
+    }
+
+    const hasEnoughToPayForGas =
+      await fulfillmentDispatcher.hasFundsForTransaction(network)
+    if (!hasEnoughToPayForGas) {
+      return res.status(500).send('Purchaser does not have enough funds!')
     }
 
     const costToGrant = await pricer.gasFee(network, 1000)
@@ -102,7 +109,6 @@ namespace PurchaseController {
     }
 
     try {
-      const fulfillmentDispatcher = new Dispatcher()
       await fulfillmentDispatcher.purchaseKey(
         Normalizer.ethereumAddress(lock),
         Normalizer.ethereumAddress(publicKey),

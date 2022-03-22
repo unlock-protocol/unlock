@@ -30,7 +30,7 @@ const config = {
 const signature = 'signature'
 
 const walletService = {
-  unformattedSignTypedData: jest.fn(() => signature),
+  signMessage: jest.fn(() => signature),
 }
 
 describe('UseCards', () => {
@@ -48,13 +48,11 @@ describe('UseCards', () => {
     })
 
     mockWalletService = new MockWalletService()
-    mockWalletService.unformattedSignTypedData = jest
-      .fn()
-      .mockResolvedValue('a signature')
+    mockWalletService.signMessage = jest.fn().mockResolvedValue('a signature')
   })
 
   describe('useCards', () => {
-    it.skip('should call WalletService.unformattedSignTypedData with the correct values', async () => {
+    it.skip('should call WalletService.signMessage with the correct values', async () => {
       expect.assertions(1)
 
       fetch.mockResponseOnce(JSON.stringify([]))
@@ -63,7 +61,7 @@ describe('UseCards', () => {
 
       await waitFor(() => !!result.current.cards)
 
-      expect(mockWalletService.unformattedSignTypedData).toHaveBeenCalledWith(
+      expect(mockWalletService.signMessage).toHaveBeenCalledWith(
         userAddress,
         expect.any(Object)
       )
@@ -91,7 +89,7 @@ describe('UseCards', () => {
       const typedData = {
         domain: { name: 'Unlock', version: '1' },
         message: {
-          user: { publicKey: userAddress, stripeTokenId: 'tok_token' },
+          'Save Card': { publicKey: userAddress, stripeTokenId: 'tok_token' },
         },
         primaryType: 'User',
         types: {
@@ -112,9 +110,9 @@ describe('UseCards', () => {
         userAddress,
         stripeToken
       )
-      expect(walletService.unformattedSignTypedData).toHaveBeenCalledWith(
-        userAddress,
-        typedData
+      expect(walletService.signMessage).toHaveBeenCalledWith(
+        'I save my payment card for my account 0xuser',
+        'personal_sign'
       )
       expect(fetch.mock.calls.length).toEqual(1)
       expect(fetch.mock.calls[0][0]).toEqual(
@@ -123,7 +121,7 @@ describe('UseCards', () => {
       const request = fetch.mock.calls[0][1]
       expect(JSON.parse(request?.body as string)).toEqual(typedData)
       expect(request?.headers).toEqual({
-        Authorization: ' Bearer c2lnbmF0dXJl',
+        Authorization: 'Bearer-Simple c2lnbmF0dXJl',
         'Content-Type': 'application/json',
       })
       expect(request?.method).toEqual('PUT')
@@ -150,14 +148,14 @@ describe('UseCards', () => {
         domain: { name: 'Unlock', version: '1' },
         primaryType: 'User',
         message: {
-          user: { publicKey: userAddress },
+          'Delete Card': { publicKey: userAddress },
         },
       }
 
       await UseCards.deleteCardForAddress(config, walletService, userAddress)
-      expect(walletService.unformattedSignTypedData).toHaveBeenCalledWith(
-        userAddress,
-        typedData
+      expect(walletService.signMessage).toHaveBeenCalledWith(
+        'I am deleting the card linked to my account 0xuser',
+        'personal_sign'
       )
       expect(fetch.mock.calls.length).toEqual(1)
       expect(fetch.mock.calls[0][0]).toEqual(
@@ -167,7 +165,7 @@ describe('UseCards', () => {
       )
       const request = fetch.mock.calls[0][1]
       expect(request?.headers).toEqual({
-        Authorization: ' Bearer c2lnbmF0dXJl',
+        Authorization: 'Bearer-Simple c2lnbmF0dXJl',
         'Content-Type': 'application/json',
       })
       expect(request?.method).toEqual('DELETE')

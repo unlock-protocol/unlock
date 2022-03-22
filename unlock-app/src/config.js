@@ -44,7 +44,7 @@ export default function configure(
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
 
   // Address of the key granter (locksmith) used for credit card purchases and more
-  let keyGranter = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
+  let keyGranter = '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9'
 
   if (env === 'staging') {
     // Address for the Unlock credit card purchaser
