@@ -8,7 +8,6 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import * as LockVariations from './LockVariations'
 import { useLock } from '../../../hooks/useLock'
-import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../../utils/withConfig'
 
 interface LockProps {
@@ -19,6 +18,7 @@ interface LockProps {
   name: string
   hasOptimisticKey: boolean
   purchasePending: boolean
+  recipient?: string
 }
 
 const getLockProps = (
@@ -46,16 +46,16 @@ export const Lock = ({
   onSelected,
   hasOptimisticKey,
   purchasePending,
+  recipient,
 }: LockProps) => {
   const config = useContext(ConfigContext)
   const [loading, setLoading] = useState(false)
-  const { account } = useContext(AuthenticationContext)
   const { getKeyForAccount } = useLock(lock, network)
   const [hasValidKey, setHasValidKey] = useState(hasOptimisticKey)
 
   const alreadyHasKey = (key: any) => {
     const now = new Date().getTime() / 1000
-    if (key && key.expiration > now) {
+    if (key && (key.expiration === -1 || key.expiration > now)) {
       setHasValidKey(true)
     } else {
       setHasValidKey(false)
@@ -66,16 +66,16 @@ export const Lock = ({
   useEffect(() => {
     const getKey = async () => {
       setLoading(true)
-      alreadyHasKey(await getKeyForAccount(account))
+      alreadyHasKey(await getKeyForAccount(recipient))
       setLoading(false)
     }
 
-    if (account) {
+    if (recipient) {
       getKey()
     } else {
-      setHasValidKey(false)
+      alreadyHasKey(null)
     }
-  }, [account])
+  }, [recipient])
 
   const onClick = async () => {
     onSelected && onSelected(lock)
@@ -116,4 +116,6 @@ export const Lock = ({
   )
 }
 
-Lock.defaultProps = {}
+Lock.defaultProps = {
+  recipient: '',
+}

@@ -63,10 +63,8 @@ export const useAccount = (address: string, network: number) => {
       },
     })
 
-    const signature = await walletService.unformattedSignTypedData(
-      address,
-      typedData
-    )
+    const message = `I want to connect Stripe to the lock ${lockAddress}`
+    const signature = await walletService.signMessage(message, 'personal_sign')
 
     try {
       return (
@@ -155,17 +153,18 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    customAddress?: string
+    recipient?: string
   ) => {
-    const purchaseAddress = customAddress ?? address
+    const purchaseAddress = recipient ?? address
     const response = await chargeAndSaveCard(
       config,
       walletService,
-      purchaseAddress,
+      address,
       token,
       network,
       lock,
-      pricing
+      pricing,
+      purchaseAddress
     )
     return response.transactionHash
   }
@@ -224,10 +223,8 @@ export const useAccount = (address: string, network: number) => {
       },
     })
 
-    const signature = await walletService.unformattedSignTypedData(
-      address,
-      typedData
-    )
+    const message = `I want to change the image for ${lockAddress}`
+    const signature = await walletService.signMessage(message, 'personal_sign')
 
     return storageService.updateLockIcon(
       lockAddress,

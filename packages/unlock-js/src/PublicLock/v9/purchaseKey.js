@@ -89,19 +89,20 @@ export default async function (
     purchaseForOptions.value = actualAmount
   }
 
-  // To get good estimates we need the gas price, because it matters in the actual execution
-  const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
-    await this.provider.getFeeData()
-
-  if (maxFeePerGas && maxPriorityFeePerGas) {
-    purchaseForOptions.maxFeePerGas = maxFeePerGas
-    purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
-  } else {
-    purchaseForOptions.gasPrice = gasPrice
-  }
-
-  // Estimate gas. Bump by 30% because estimates are wrong
+  // Estimate gas. Bump by 30% because estimates are wrong!
   if (!purchaseForOptions.gasLimit) {
+    // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
+    // TODO remove once we move to use block.baseFee in UDT calculation
+    const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+      await this.provider.getFeeData()
+
+    if (maxFeePerGas && maxPriorityFeePerGas) {
+      purchaseForOptions.maxFeePerGas = maxFeePerGas
+      purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+    } else {
+      purchaseForOptions.gasPrice = gasPrice
+    }
+
     const gasLimit = await lockContract.estimateGas.purchase(
       actualAmount,
       owner,
@@ -110,6 +111,10 @@ export default async function (
       data,
       purchaseForOptions
     )
+    // Remove the gas prices settings for the actual transaction (the wallet will set them)
+    delete purchaseForOptions.maxFeePerGas
+    delete purchaseForOptions.maxPriorityFeePerGas
+    delete purchaseForOptions.gasPrice
     purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
   }
 
