@@ -7176,33 +7176,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.14.0":
-  version: 1.14.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.14.0"
+"@openzeppelin/hardhat-upgrades@npm:1.16.1":
+  version: 1.16.1
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.16.1"
   dependencies:
-    "@openzeppelin/upgrades-core": ^1.12.0
+    "@openzeppelin/upgrades-core": ^1.13.1
     chalk: ^4.1.0
+    proper-lockfile: ^4.1.1
   peerDependencies:
     "@nomiclabs/hardhat-ethers": ^2.0.0
     hardhat: ^2.0.2
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 694c9678aedf2c40478e433a969ead9c3431916f60d4519d615d1488ade3b5712da2eba966f32eb168831e60bf49cb598ccd22270c7980afaada6491fa296ede
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/hardhat-upgrades@npm:1.15.0":
-  version: 1.15.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.15.0"
-  dependencies:
-    "@openzeppelin/upgrades-core": ^1.13.0
-    chalk: ^4.1.0
-  peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    hardhat: ^2.0.2
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 1b14501928c51249769fd0900cffa3098fed0261fed3aee81c8aa286db32e9bbe04451a9e2f29abc5f761ff7c7b81068a7aa33d9f0a6181ef8af5e19a7673b95
+  checksum: e9fb526b9bd278dea5e0f86d0b85008499bf753598507826ac1b6bc704da9214888e68a4c40dddd12ce86e944ae5023a31ec173fc88a299c85a6518ab26c54da
   languageName: node
   linkType: hard
 
@@ -7262,7 +7248,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.12.0, @openzeppelin/upgrades-core@npm:^1.12.0":
+"@openzeppelin/upgrades-core@npm:1.12.0":
   version: 1.12.0
   resolution: "@openzeppelin/upgrades-core@npm:1.12.0"
   dependencies:
@@ -7278,9 +7264,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.13.0"
+"@openzeppelin/upgrades-core@npm:^1.13.1":
+  version: 1.14.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.14.1"
   dependencies:
     bn.js: ^5.1.2
     cbor: ^8.0.0
@@ -7290,11 +7276,11 @@ __metadata:
     ethereumjs-util: ^7.0.3
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
-  checksum: 1b4ddd9bb546e0821a314b57b6c20d74d87f9b3c3f19801698e7438b55e17a8349a569ea7802719604f5d86db0d641542d34d6babf54d888ba2aef616a6bd48b
+  checksum: b6dfb36bc7f83a85a5e072768e98649f5a9895971bd2f81d0c7405fb9a0200bc8ade406aea1ccc3108181be758629c676962c0714b567dc5dccd68536e42eb09
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades@npm:2.8.0":
+"@openzeppelin/upgrades@npm:2.8.0, @openzeppelin/upgrades@npm:^2.8.0":
   version: 2.8.0
   resolution: "@openzeppelin/upgrades@npm:2.8.0"
   dependencies:
@@ -13553,7 +13539,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.5
-    "@openzeppelin/hardhat-upgrades": 1.15.0
+    "@openzeppelin/hardhat-upgrades": 1.16.1
     "@types/chai": ^4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": ^5.2.6
@@ -13783,7 +13769,7 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.5.0
     "@openzeppelin/test-helpers": 0.5.15
-    "@openzeppelin/upgrades": 2.8.0
+    "@openzeppelin/upgrades": ^2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
     "@typescript-eslint/parser": 5.13.0
     "@unlock-protocol/contracts": ^0.0.2
@@ -13819,9 +13805,8 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.4.2
     "@openzeppelin/contracts-upgradeable": 4.4.2
-    "@openzeppelin/hardhat-upgrades": 1.14.0
+    "@openzeppelin/hardhat-upgrades": 1.16.1
     "@openzeppelin/test-helpers": 0.5.15
-    "@openzeppelin/upgrades": 2.8.0
     "@openzeppelin/upgrades-core": 1.12.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
@@ -14131,7 +14116,7 @@ __metadata:
     "@babel/core": 7.17.5
     "@babel/preset-env": 7.16.11
     "@nomiclabs/hardhat-ethers": 2.0.5
-    "@openzeppelin/hardhat-upgrades": 1.15.0
+    "@openzeppelin/hardhat-upgrades": 1.16.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
