@@ -1,6 +1,5 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
-const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
