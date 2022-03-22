@@ -20,7 +20,7 @@ namespace PurchaseController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const { publicKey, lock, stripeTokenId, pricing, network } =
+    const { publicKey, lock, stripeTokenId, pricing, network, recipient } =
       req.body.message['Charge Card']
 
     // First, get the locks stripe account
@@ -64,7 +64,7 @@ namespace PurchaseController {
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
       const hash = await processor.initiatePurchaseForConnectedStripeAccount(
-        Normalizer.ethereumAddress(publicKey),
+        Normalizer.ethereumAddress(recipient),
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
         pricing,

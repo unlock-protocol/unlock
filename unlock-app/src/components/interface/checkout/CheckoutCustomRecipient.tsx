@@ -49,6 +49,16 @@ export const CheckoutCustomRecipient: React.FC<
               Enter a valid recipient address
             </span>
           )}
+          {(advancedRecipientValid || checkingRecipient) && (
+            <span
+              style={{
+                fontSize: '12px',
+                textAlign: 'center',
+              }}
+            >
+              &nbsp;
+            </span>
+          )}
         </>
       )}
     </>

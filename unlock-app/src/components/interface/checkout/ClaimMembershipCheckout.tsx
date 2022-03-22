@@ -39,7 +39,8 @@ export const ClaimMembershipCheckout = ({
   const [error, setError] = useState('')
   // Convenience
   const now = new Date().getTime() / 1000
-  const hasValidkey = keyExpiration > now && keyExpiration < Infinity
+  const hasValidkey =
+    keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
 
   useEffect(() => {
@@ -93,13 +94,18 @@ export const ClaimMembershipCheckout = ({
   }
 
   const handleHasKey = (key: any) => {
-    setKeyExpiration(key.expiration)
+    if (!key) {
+      setKeyExpiration(0)
+    } else {
+      setKeyExpiration(key.expiration)
+    }
   }
 
   if (!lock.fiatPricing?.creditCardEnabled) {
     return (
       <Wrapper>
         <Lock
+          recipient={account}
           network={network}
           lock={lock}
           name={name}
@@ -119,6 +125,7 @@ export const ClaimMembershipCheckout = ({
   return (
     <Wrapper>
       <Lock
+        recipient={account}
         network={network}
         lock={lock}
         name={name}
@@ -138,7 +145,7 @@ export const ClaimMembershipCheckout = ({
       )}
       {hasValidkey && (
         <>
-          <Message>You already have a valid membership for this lock!</Message>
+          <Message>You already have a valid membership!</Message>
           <EnjoyYourMembership
             redirectUri={redirectUri}
             closeModal={closeModal}

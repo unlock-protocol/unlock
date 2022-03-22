@@ -159,11 +159,12 @@ export const useAccount = (address: string, network: number) => {
     const response = await chargeAndSaveCard(
       config,
       walletService,
-      purchaseAddress,
+      address,
       token,
       network,
       lock,
-      pricing
+      pricing,
+      purchaseAddress
     )
     return response.transactionHash
   }
