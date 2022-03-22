@@ -427,17 +427,6 @@ interface IPublicLock
     view
     returns (bool);
   
-  /**
-  * @dev Set the key's ExpirationTimestamp field for a given token.
-  * @param _tokenId the tokenId of the key
-  * @param _expirationTimestamp the tokenId of the key
-  * @dev Returns 0 if the owner has never owned a key for this lock
-  */
-  function setKeyExpirationTimestamp(
-    uint _tokenId,
-    uint _expirationTimestamp
-  ) external;
-
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
   ///===================================================================

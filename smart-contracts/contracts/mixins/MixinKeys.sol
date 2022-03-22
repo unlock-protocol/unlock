@@ -405,10 +405,10 @@ contract MixinKeys is
   * @param _expirationTimestamp the tokenId of the key
   * @dev Returns 0 if the owner has never owned a key for this lock
   */
-  function setKeyExpirationTimestamp(
+  function _setKeyExpirationTimestamp(
     uint _tokenId,
     uint _expirationTimestamp
-  ) public 
+  ) internal
   {
     _isKey(_tokenId);
     _keys[_tokenId].expirationTimestamp = _expirationTimestamp;
