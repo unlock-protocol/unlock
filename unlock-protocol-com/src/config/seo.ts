@@ -35,7 +35,7 @@ export const SOCIAL_URL = {
 }
 
 interface SEOProps {
-  title?: string
+  title: string
   description?: string
   imagePath?: string
   path?: string
@@ -44,6 +44,7 @@ interface SEOProps {
 export function customizeSEO(options: SEOProps): NextSeoProps {
   const images = options.imagePath
     ? [
+        // Twitter only fetch og:image if it is an absolute path with domain.
         {
           url: new URL(options.imagePath, baseURL).toString(),
           alt: options.title,
