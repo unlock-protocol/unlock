@@ -2,7 +2,18 @@
 @import "../../scss/mixins";
 
 .expireAndRefund {
+  display: flex;
+  flex-direction: column;
+
+  input {
+    margin: 1rem 0;
+    text-align: right
+  }
+  
   button {
-    
+    @extend .defaultButton;
+    + button {
+      margin-top: 0.5rem;
+    }
   }
 }

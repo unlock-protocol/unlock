@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
 import { camelCaseToTitle } from '../../utils/strings'
@@ -75,20 +75,31 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     return <p>No keys found matching the current filter.</p>
   }
 
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
+
+  const onExpireAndRefund = () => {
+    setShowExpireAndRefundModal(true)
+  }
+
+  const closeExpireAndRefund = () => {
+    setShowExpireAndRefundModal(false)
+  }
   return (
     <section className={styles.metadataTableSection}>
       <InlineModal
-        children={<ExpireAndRefund />}
-        active
-        dismiss={() => console.log('here')}
-      />
+        active={showExpireAndRefundModal}
+        dismiss={closeExpireAndRefund}
+      >
+        <ExpireAndRefund />
+      </InlineModal>
       <table>
         <thead>
           <tr>
             {columns.map((col) => {
               return <th key={col}>{camelCaseToTitle(col)}</th>
             })}
-            <th key="actions">Actions</th>
+            {isLockManager && <th key="actions">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -104,17 +115,18 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
                     </td>
                   )
                 })}
-                <td>
-                  {isLockManager && (
+                {isLockManager && (
+                  <td>
                     <button
                       className={styles.button}
                       type="button"
                       disabled={!isLockManager}
+                      onClick={onExpireAndRefund}
                     >
                       Expire and Refund
                     </button>
-                  )}
-                </td>
+                  </td>
+                )}
               </tr>
             )
           })}
