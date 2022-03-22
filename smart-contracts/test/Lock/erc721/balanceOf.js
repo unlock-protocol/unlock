@@ -18,7 +18,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
   it('should fail if the user address is 0', async () => {
     await reverts(
       locks.FIRST.balanceOf.call(web3.utils.padLeft(0, 40)),
-      'INVALtokenId_ADDRESS'
+      'INVALID_ADDRESS'
     )
   })
 
