@@ -141,12 +141,12 @@ contract('Lock / expireAndRefundFor', (accounts) => {
       )
     })
 
-    it('the key is not valid', async () => {
+    it('the key does not exist', async () => {
       await reverts(
         lock.expireAndRefundFor(18, refundAmount, {
           from: lockCreator,
         }),
-        'KEY_NOT_VALID'
+        'NO_SUCH_KEY'
       )
     })
   })

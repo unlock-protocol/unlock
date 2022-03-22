@@ -69,15 +69,6 @@ contract('Lock / owners', (accounts) => {
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
     })
-
-    it('should fail if I transfer from the same account again', async () => {
-      await reverts(
-        lock.transferFrom(keyOwners[0], accounts[6], tokenIds[0], {
-          from: keyOwners[0],
-        }),
-        'KEY_NOT_VALID'
-      )
-    })
   })
 
   describe('after a transfer to an existing owner', () => {
@@ -112,7 +103,7 @@ contract('Lock / owners', (accounts) => {
       const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
       const totalSupplyBefore = new BigNumber(await lock.totalSupply.call())
 
-      // transfer the key
+      // transfer the key to an existing owner
       assert.equal(await lock.balanceOf.call(keyOwners[4]), 1)
       await lock.transferFrom(keyOwners[3], keyOwners[4], tokenIds[3], {
         from: keyOwners[3],
@@ -127,7 +118,7 @@ contract('Lock / owners', (accounts) => {
 
       // number of owners changed
       assert.equal(
-        numberOfOwners.toFixed(),
+        (numberOfOwners - 1).toFixed(),
         new BigNumber(await lock.numberOfOwners.call()).toFixed()
       )
 
