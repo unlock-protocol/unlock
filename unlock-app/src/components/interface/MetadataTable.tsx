@@ -1,13 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
-import { ActionButton } from './buttons/ActionButton'
-import Media from '../../theme/media'
 import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
 import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
+import { InlineModal } from './InlineModal'
+import { ExpireAndRefund } from './ExpireAndRefund'
+import styles from './MetadataTable.module.scss'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -19,11 +19,12 @@ interface KeyMetadata {
   [key: string]: string
 }
 
-interface Props {
+interface MetadataTableProps {
   // The keys to the metadata object, in the order they will be displayed.
   columns: string[]
   metadata: KeyMetadata[]
   filter?: string
+  isLockManager: boolean
 }
 
 /**
@@ -45,120 +46,96 @@ interface CellProps {
 }
 
 export const Cell = ({ kind, value }: CellProps) => {
-  if (kind === 'keyholderAddress') {
-    return <Address address={value} />
-  }
-  return <>{value}</>
+  return kind === 'keyholderAddress' ? (
+    <Address address={value} />
+  ) : (
+    <>{value}</>
+  )
 }
 
-export const MetadataTable = ({ columns, metadata, filter }: Props) => {
+export const MetadataTable: React.FC<MetadataTableProps> = ({
+  columns,
+  metadata,
+  filter,
+  isLockManager,
+}) => {
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
       return (
-        <Message>
+        <p>
           No keys have been purchased yet. Return to your{' '}
           <Link href="/dashboard">
             <a>Dashboard</a>
           </Link>
           .
-        </Message>
+        </p>
       )
     }
 
-    return <Message>No keys found matching the current filter.</Message>
+    return <p>No keys found matching the current filter.</p>
   }
 
   return (
-    <Wrapper>
-      <Table>
+    <section className={styles.metadataTableSection}>
+      <InlineModal
+        children={<ExpireAndRefund />}
+        active
+        dismiss={() => console.log('here')}
+      />
+      <table>
         <thead>
           <tr>
             {columns.map((col) => {
-              return <Th key={col}>{camelCaseToTitle(col)}</Th>
+              return <th key={col}>{camelCaseToTitle(col)}</th>
             })}
+            <th key="actions">Actions</th>
           </tr>
         </thead>
-        <Tbody>
+        <tbody>
           {metadata.map((datum) => {
+            const { lockName, expiration, keyholderAddress } = datum
+            const key = `${lockName}${expiration}${keyholderAddress}`
             return (
-              <tr
-                key={datum.lockName + datum.expiration + datum.keyholderAddress}
-              >
+              <tr key={key}>
                 {columns.map((col) => {
                   return (
-                    <Td key={col}>
+                    <td key={col}>
                       <Cell kind={col} value={datum[col]} />
-                    </Td>
+                    </td>
                   )
                 })}
+                <td>
+                  {isLockManager && (
+                    <button
+                      className={styles.button}
+                      type="button"
+                      disabled={!isLockManager}
+                    >
+                      Expire and Refund
+                    </button>
+                  )}
+                </td>
               </tr>
             )
           })}
-        </Tbody>
-      </Table>
-      <DownloadButton
+        </tbody>
+      </table>
+      <button
+        type="button"
+        disabled
+        className={styles.downloadButton}
         onClick={() => {
           downloadAsCSV(columns, metadata)
         }}
       >
         Export as CSV
-      </DownloadButton>
-    </Wrapper>
+      </button>
+    </section>
   )
 }
 
 MetadataTable.defaultProps = {
   filter: '',
 }
-
-const Wrapper = styled.section`
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(12, 1fr);
-`
-
-const DownloadButton = styled(ActionButton)`
-  grid-row: 2;
-  grid-column: 10/13;
-  padding: 5px;
-  align-self: end;
-  height: 40px;
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-const Table = styled.table`
-  grid-column: 1/13;
-  width: 100%;
-  border-collapse: collapse;
-`
-
-const Tbody = styled.tbody`
-  color: var(--slate);
-`
-
-const Td = styled.td`
-  padding: 0.5rem 0rem;
-  text-align: left;
-`
-
-const Th = styled.th`
-  font-family: 'IBM Plex Mono';
-  font-size: 8px;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--darkgrey);
-  font-weight: 200;
-  padding: 0.5rem 0rem;
-  text-align: left;
-`
-
-const Message = styled.p`
-  color: var(--grey);
-`
 
 export default MetadataTable
