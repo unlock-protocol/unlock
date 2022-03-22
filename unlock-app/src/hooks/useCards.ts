@@ -83,12 +83,14 @@ export const chargeAndSaveCard = async (
   stripeTokenId: string,
   network: number,
   lock: string,
-  pricing: any
+  pricing: any,
+  recipient: string
 ) => {
   const typedData = generateTypedData({
     'Charge Card': {
       publicKey: address,
       stripeTokenId,
+      recipient,
       pricing,
       lock,
       network,
