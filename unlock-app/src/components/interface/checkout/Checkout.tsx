@@ -39,7 +39,6 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
-import { useAppStorage } from '../../../hooks/useAppStorage'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
