@@ -113,13 +113,16 @@ contract MixinPurchase is
         require(inMemoryKeyPrice <= _values[i], 'INSUFFICIENT_ERC20_VALUE');
       }
 
-      // call Unlock contract to record GNP
-      // the function is capped by gas to prevent running out of gas
-      try unlockProtocol.recordKeyPurchase{gas: 300000}(inMemoryKeyPrice, _referrers[i]) 
-      {} 
-      catch {
-        // emit missing unlock
-        emit UnlockCallFailed(address(this), address(unlockProtocol));
+      // make sure unlock is a contract, and we catch possible reverts
+      if (address(unlockProtocol).code.length > 0) {
+        // call Unlock contract to record GNP
+        // the function is capped by gas to prevent running out of gas
+        try unlockProtocol.recordKeyPurchase{gas: 300000}(inMemoryKeyPrice, _referrers[i]) 
+        {} 
+        catch {
+          // emit missing unlock
+          emit UnlockCallFailed(address(this), address(unlockProtocol));
+        }
       }
 
       // fire hook
