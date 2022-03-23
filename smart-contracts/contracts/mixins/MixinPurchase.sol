@@ -156,7 +156,7 @@ contract MixinPurchase is
   * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
   */
   function extend(
-    uint256 _value,
+    uint _value,
     uint _tokenId,
     address _referrer,
     bytes calldata _data
