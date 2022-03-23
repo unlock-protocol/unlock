@@ -117,7 +117,7 @@ export const Checkout = ({
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
   const [storedLoginEmail, setStoredLoginEmail] = useState<string>('')
   const { getAutoLoginEmail } = useAutoLogin()
-  const storedEmail = getAutoLoginEmail();
+  const storedEmail = getAutoLoginEmail()
 
   const checkUnlockLogin = useRef(false)
   const firstLoading = useRef(false)
