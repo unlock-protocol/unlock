@@ -23,7 +23,7 @@ const LogIn = ({
   onCancel,
   network,
   useWallet,
-  storedLoginEmail,
+  storedLoginEmail = '',
 }: LogInProps) => {
   const { retrieveUserAccount } = useAccount('', network)
   const [loginState, dispatch] = useReducer(
@@ -88,6 +88,7 @@ const LogIn = ({
   }
 
   useEffect(() => {
+    if (storedLoginEmail?.length === 0) return
     dispatch({
       change: [{ name: 'emailAddress', value: storedLoginEmail }],
     })
@@ -118,8 +119,8 @@ const LogIn = ({
         {submitted && <LoadingButton>Logging In...</LoadingButton>}
         {!submitted && (
           <>
-            {storedLoginEmail?.length > 0 && (
-              <small>Welcome back, type your password to login</small>
+            {storedLoginEmail.length > 0 && (
+              <small>Welcome back, type your password to continue</small>
             )}
             <Button type="submit" value="Submit">
               Login

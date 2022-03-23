@@ -117,6 +117,7 @@ export const Checkout = ({
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
   const [storedLoginEmail, setStoredLoginEmail] = useState<string>('')
   const { getAutoLoginEmail } = useAutoLogin()
+  const storedEmail = getAutoLoginEmail();
 
   const checkUnlockLogin = useRef(false)
   const firstLoading = useRef(false)
@@ -130,11 +131,12 @@ export const Checkout = ({
   }, [])
 
   const showLoginForm = () => {
-    const email = getAutoLoginEmail()
-    if (email.length > 0 && !account) {
+    if (storedEmail.length > 0) {
       checkUnlockLogin.current = true
-      setStoredLoginEmail(email)
+      setStoredLoginEmail(storedEmail)
       setCheckoutState('login')
+    } else {
+      setCheckoutState('pick-lock')
     }
   }
 
@@ -171,7 +173,7 @@ export const Checkout = ({
         }
       } else {
         setCheckoutState(defaultState)
-        if (firstLoading.current) showLoginForm()
+        if (!account && storedEmail) showLoginForm()
       }
     }
     handleUser(account)
@@ -411,7 +413,7 @@ export const Checkout = ({
         />
         <Locks
           network={paywallConfig?.network}
-          locks={paywallConfig?.locks}
+          locks={paywallConfig?.locks ?? {}}
           setHasKey={setHasKey}
           onSelected={onSelected}
         />
