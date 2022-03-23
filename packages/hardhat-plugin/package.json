@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.5",
-    "@openzeppelin/hardhat-upgrades": "1.15.0",
+    "@openzeppelin/hardhat-upgrades": "1.16.1",
     "@unlock-protocol/contracts": "0.0.3"
   }
 }
