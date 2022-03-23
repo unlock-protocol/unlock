@@ -19,12 +19,14 @@ export default function configure(
   // Services
   const services = {
     storage: {
-      host: runtimeConfig.locksmithHost || 'http://localhost:8080',
+      host: 'http://localhost:8080',
     },
     wedlocks: {
       host: runtimeConfig.wedlocksUri || 'http://localhost:1337',
     },
   }
+
+  console.log(services)
 
   // Email signing
   const { base64WedlocksPublicKey } = runtimeConfig
