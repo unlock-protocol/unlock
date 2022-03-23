@@ -39,13 +39,7 @@ const Web3ServiceProvider = Web3ServiceContext.Provider
  * Utility providers set to retrieve content based on network settings
  * @returns
  */
-const Providers = ({
-  network,
-  networkConfig,
-  children,
-  authenticate,
-  skipAutoLogin,
-}) => {
+const Providers = ({ network, networkConfig, children, authenticate }) => {
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
