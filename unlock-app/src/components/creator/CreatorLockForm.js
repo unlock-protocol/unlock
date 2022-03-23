@@ -23,6 +23,7 @@ import {
   isNotEmpty,
   isPositiveInteger,
   isPositiveNumber,
+  isPositiveIntegerOrZero,
   isLTE,
 } from '../../utils/validators'
 
@@ -87,9 +88,17 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     validateAndDispatch(target, [{ name, value: value * (60 * 60 * 24) }])
   }
 
-  const handleUnlimitedClick = () => {
+  const handleUnlimitedNumbersOfKeys = () => {
     dispatch({
       change: [{ name: 'maxNumberOfKeys', value: UNLIMITED_KEYS_COUNT }],
+    })
+  }
+
+  const handleUnlimitedDuration = () => {
+    dispatch({
+      change: [
+        { name: 'expirationDuration', value: ONE_HUNDRED_YEARS_IN_SECONDS },
+      ],
     })
   }
 
@@ -140,6 +149,13 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     return ''
   }
 
+  const expirationDurationValue =
+    lockInForm?.expirationDuration === ONE_HUNDRED_YEARS_IN_SECONDS
+      ? INFINITY
+      : isPositiveIntegerOrZero(lockInForm.expirationDuration)
+      ? lockInForm.expirationDuration / (60 * 60 * 24)
+      : ''
+
   return (
     <form method="post" onSubmit={handleSubmit}>
       <FormLockRow>
@@ -159,16 +175,22 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
           </FormLockName>
           <FormLockDuration>
             <input
-              type="number"
+              type="text"
               step="1"
               inputMode="numeric"
               name="expirationDuration"
               onChange={handleChangeExpirationDuration}
-              defaultValue={lockInForm.expirationDuration / (60 * 60 * 24)}
+              value={expirationDurationValue}
               required={isNew}
               disabled={!isNew}
             />{' '}
             days
+            {lockInForm?.expirationDuration !== ONE_HUNDRED_YEARS_IN_SECONDS &&
+              isNew && (
+                <LockLabelUnlimited onClick={handleUnlimitedDuration}>
+                  Unlimited
+                </LockLabelUnlimited>
+              )}
           </FormLockDuration>
           <FormLockKeys>
             <input
@@ -183,7 +205,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               required={isNew}
             />
             {lockInForm?.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
-              <LockLabelUnlimited onClick={handleUnlimitedClick}>
+              <LockLabelUnlimited onClick={handleUnlimitedNumbersOfKeys}>
                 Unlimited
               </LockLabelUnlimited>
             )}
