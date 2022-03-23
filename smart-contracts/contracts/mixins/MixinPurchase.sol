@@ -123,6 +123,9 @@ contract MixinPurchase is
           // emit missing unlock
           emit UnlockCallFailed(address(this), address(unlockProtocol));
         }
+      } else {
+        // emit missing unlock
+        emit UnlockCallFailed(address(this), address(unlockProtocol));
       }
 
       // fire hook
