@@ -8,7 +8,6 @@ on:
 jobs:
   deploy-locksmith-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
