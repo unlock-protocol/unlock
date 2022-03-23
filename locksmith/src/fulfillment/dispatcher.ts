@@ -26,11 +26,39 @@ export default class Dispatcher {
       config.purchaserCredentials,
       provider
     )
+
+    const feeData = await provider.getFeeData()
+    const transactionOptions = {
+      maxPriorityFeePerGas: null,
+      maxFeePerGas: null,
+      gasPrice: null,
+    }
+    if (network === 137) {
+      // On polygon hardcode values
+      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('1000', 'gwei')
+      transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
+        '500',
+        'gwei'
+      )
+      // transactionOptions.gasPrice = ethers.utils.parseUnits('3000', 'gwei')
+    } else if (feeData?.maxPriorityFeePerGas && feeData?.maxFeePerGas) {
+      // We bump priority by 20% to increase speed of execution
+      transactionOptions.maxFeePerGas = ethers.BigNumber.from('2')
+      transactionOptions.maxPriorityFeePerGas =
+        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('2'))
+    } else if (feeData?.gasPrice) {
+      transactionOptions.gasPrice = feeData.maxFeePerGas.mul(
+        ethers.BigNumber.from('2')
+      )
+    }
+
     await walletService.connect(provider, walletWithProvider)
     return await walletService.grantKey(
       {
         lockAddress,
         recipient,
+        // @ts-expect-error
+        transactionOptions,
       },
       cb
     )
