@@ -3235,9 +3235,15 @@ contract MixinPurchase is
     
     uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
 
-    try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
-    {} 
-    catch {
+    // make sure unlock is a contract, and we catch possible reverts
+    if (address(unlockProtocol).code.length > 0) {
+      try unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, _referrer) 
+      {} 
+      catch {
+        // emit missing unlock
+        emit UnlockCallFailed(address(this), address(unlockProtocol));
+      }
+    } else {
       // emit missing unlock
       emit UnlockCallFailed(address(this), address(unlockProtocol));
     }
