@@ -251,7 +251,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 }
               })
 
-              describe('Upgrade Unlock to latest version', () => {
+              describe('Upgrade Unlock and PublicLock to latest version', () => {
                 beforeEach(async () => {
                   // upgrade proxy to latest
                   unlock = await upgrades.upgradeProxy(
@@ -292,10 +292,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 })
 
                 it('Key id still set', async () => {
-                  const id = await lock.getKeyOfOwnerByIndex(
-                    keyOwner.address,
-                    0
-                  )
+                  const id = await lock.getTokenIdFor(keyOwner.address)
                   assert.notEqual(id, 0)
                 })
 
