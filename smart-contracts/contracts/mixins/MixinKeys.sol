@@ -145,28 +145,31 @@ contract MixinKeys is
     for (uint256 i = 0; i < _length; i++) {
       // tokenId starts at 1
       uint tokenId = i + 1;
-      address keyOwner = ownerOf(tokenId);
+      address keyOwner = _ownerOf[tokenId];
       Key memory k = keyByOwner[keyOwner];
 
-      // copy key in new mapping
-      _keys[i +1] = Key(k.tokenId, k.expirationTimestamp);
-      
-      // delete token from previous owner
-      delete keyByOwner[keyOwner];
+      // make sure key exists
+      if(k.tokenId != 0 && k.expirationTimestamp != 0) {
+        // copy key in new mapping
+        _keys[i +1] = Key(k.tokenId, k.expirationTimestamp);
+        
+        // delete token from previous owner
+        delete keyByOwner[keyOwner];
 
-      // record new owner
-      _ownedKeyIds[keyOwner][0] = tokenId;
-      _ownedKeysIndex[tokenId] = 0;
+        // record new owner
+        _ownedKeyIds[keyOwner][0] = tokenId;
+        _ownedKeysIndex[tokenId] = 0;
 
-      // update ownership
-      _balances[keyOwner] += 1;
+        // update ownership
+        _balances[keyOwner] += 1;
+      }
 
       recordsToUpdate--;
     }
     
     // once data has been all upgraded, flag lock
     if(recordsToUpdate == 0) {
-      lockDataVersion = publicLockVersion();
+      schemaVersion = publicLockVersion();
     }
   }
 

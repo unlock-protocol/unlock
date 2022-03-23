@@ -1,4 +1,5 @@
 const { ethers, upgrades, run } = require('hardhat')
+const { reverts } = require('truffle-assertions')
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -24,6 +25,7 @@ const artifactsPath = path.resolve(
 )
 
 const versionNumber = 9
+const keyPrice = ethers.utils.parseEther('0.01')
 
 describe('PublicLock upgrades', () => {
   let lock
@@ -66,7 +68,7 @@ describe('PublicLock upgrades', () => {
       lockOwner.address,
       60 * 60 * 24 * 30, // 30 days
       ethers.constants.AddressZero,
-      ethers.utils.parseEther('0.01'),
+      keyPrice,
       10,
       'A neat upgradeable lock!',
     ]
@@ -75,8 +77,107 @@ describe('PublicLock upgrades', () => {
     await lock.deployed()
   })
 
-  it('should allow upgrade', async () => {
-    // deploy new implementation
-    await upgrades.upgradeProxy(lock.address, PublicLockLatest)
+  describe.only('perform upgrade', async () => {
+    let keyOwner
+    let tokenId
+    let totalSupplyBefore
+
+    beforeEach(async () => {
+      // buy some keys
+      ;[, , keyOwner] = await ethers.getSigners()
+
+      // Purchase a key
+      await lock
+        .connect(keyOwner)
+        .purchase(
+          0,
+          keyOwner.address,
+          web3.utils.padLeft(0, 40),
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: keyPrice,
+          }
+        )
+
+      tokenId = await lock.getTokenIdFor(keyOwner.address)
+
+      // make sure record is proper before upgrade
+      assert.equal(await lock.publicLockVersion(), 9)
+      assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+      assert.equal(await lock.balanceOf(keyOwner.address), 1)
+
+      totalSupplyBefore = await lock.totalSupply()
+
+      // deploy new implementation
+      lock = await upgrades.upgradeProxy(lock.address, PublicLockLatest, {
+        unsafeSkipStorageCheck: true, // HIGHLY UNSECURE - just for testing purposes
+      })
+    })
+
+    it('upgraded successfully ', async () => {
+      assert.equal(await lock.publicLockVersion(), 10)
+    })
+
+    describe('without migrating data', () => {
+      it('purchase should fail ', async () => {
+        const signers = await ethers.getSigners()
+        const keyOwners = signers.slice(2, 7)
+        await reverts(
+          lock.connect(keyOwner).purchase(
+            [],
+            keyOwners.map((k) => k.address),
+            keyOwners.map(() => web3.utils.padLeft(0, 40)),
+            keyOwners.map(() => web3.utils.padLeft(0, 40)),
+            [],
+            {
+              value: (keyPrice * keyOwners.length).toFixed(),
+            }
+          ),
+          'MIGRATION_REQUIRED'
+        )
+      })
+      it('grantKeys should fail ', async () => {
+        const signers = await ethers.getSigners()
+        const keyOwners = signers.slice(2, 7)
+        await reverts(
+          lock.connect(keyOwner).grantKeys(
+            keyOwners.map((k) => k.address),
+            keyOwners.map(() => Date.now()),
+            keyOwners.map(() => web3.utils.padLeft(0, 40))
+          ),
+          'MIGRATION_REQUIRED'
+        )
+      })
+      it('extend should fail ', async () => {
+        await reverts(
+          lock
+            .connect(keyOwner)
+            .extend(0, tokenId, web3.utils.padLeft(0, 40), [], {
+              value: keyPrice,
+            }),
+          'MIGRATION_REQUIRED'
+        )
+      })
+    })
+
+    describe('data migration', () => {
+      beforeEach(async () => {
+        assert.equal(
+          totalSupplyBefore.toNumber(),
+          (await lock.totalSupply()).toNumber()
+        )
+
+        const [, lockOwner] = await ethers.getSigners()
+        await lock.connect(lockOwner).migrateKeys(100)
+        assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+        assert.equal(await lock.balanceOf(keyOwner), 1)
+      })
+      it('preserves all data', async () => {
+        // assert.equal(await lock.totalSupply(), keyOwner)
+        assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+        assert.equal(await lock.balanceOf(keyOwner), 1)
+      })
+    })
   })
 })

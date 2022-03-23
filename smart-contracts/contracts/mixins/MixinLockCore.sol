@@ -84,12 +84,12 @@ contract MixinLockCore is
   ILockTokenURIHook public onTokenURIHook;
 
   // use to check data version
-  uint lockDataVersion;
+  uint schemaVersion;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
     require(
-      lockDataVersion == publicLockVersion(),
+      schemaVersion == publicLockVersion(),
       'MIGRATION_REQUIRED'
     );
   }
@@ -119,7 +119,7 @@ contract MixinLockCore is
     maxNumberOfKeys = _maxNumberOfKeys;
 
     // update only when initialized
-    lockDataVersion = publicLockVersion();
+    schemaVersion = publicLockVersion();
   }
 
   // The version number of the current implementation on this network
