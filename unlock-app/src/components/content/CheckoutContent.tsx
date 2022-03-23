@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Checkout } from '../interface/checkout/Checkout'
 import getConfigFromSearch from '../../utils/getConfigFromSearch'
 import getOAuthFromSearch from '../../utils/getOAuthFromSearch'
@@ -14,6 +14,8 @@ interface CheckoutContentProps {
 
 export const CheckoutContent = ({ query }: CheckoutContentProps) => {
   const [defaultState, setDefaultState] = useState('loading')
+  const defaultStateRef = useRef(defaultState)
+  defaultStateRef.current = defaultState
   const checkoutCommunication = useCheckoutCommunication()
   const configFromSearch = getConfigFromSearch(query)
   const config = useContext(ConfigContext)
@@ -50,10 +52,10 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (defaultState === 'loading' && !oAuthConfig && !paywallConfig) {
+      if (defaultStateRef.current === 'loading') {
         setDefaultState('config-error')
       }
-    }, 3000)
+    }, 5000)
     return () => clearTimeout(timer)
   }, [])
 

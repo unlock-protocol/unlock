@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Lock } from './Lock'
@@ -66,12 +67,14 @@ export const CryptoCheckout = ({
   const { getTokenBalance } = useAccount(account, network)
 
   const now = new Date().getTime() / 1000
-  const hasValidkey = keyExpiration > now && keyExpiration < Infinity
+  const hasValidkey =
+    keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
+
   const hasOptimisticKey = keyExpiration === Infinity
   const hasValidOrPendingKey = hasValidkey || hasOptimisticKey
-  const cryptoDisabled =
-    userIsOnWrongNetwork || hasValidkey || hasOptimisticKey || !canAfford
-  const cardDisabled = hasValidkey || hasOptimisticKey
+
+  const cryptoDisabled = userIsOnWrongNetwork || hasOptimisticKey || !canAfford
+  const cardDisabled = hasOptimisticKey
   const canClaimAirdrop =
     lock.keyPrice === '0' &&
     lock.fiatPricing?.creditCardEnabled &&
@@ -82,15 +85,25 @@ export const CryptoCheckout = ({
     lock.keyPrice !== '0'
 
   const cantBuyWithCrypto = isAdvanced
-    ? !(advancedRecipientValid && canAfford && !userIsOnWrongNetwork)
+    ? !(
+        advancedRecipientValid &&
+        canAfford &&
+        !userIsOnWrongNetwork &&
+        !hasValidkey
+      )
     : cryptoDisabled
 
   const cantPurchaseWithCard = isAdvanced
-    ? !(isCreditCardEnabled && advancedRecipientValid)
+    ? !(!hasValidkey && isCreditCardEnabled && advancedRecipientValid)
     : !isCreditCardEnabled
 
   const handleHasKey = (key: any) => {
-    setKeyExpiration(key.expiration)
+    if (!key) {
+      setKeyExpiration(0)
+    } else {
+      // setIsAdvanced(false)
+      setKeyExpiration(key.expiration)
+    }
   }
 
   const connectToNetwork = () => {
@@ -126,8 +139,7 @@ export const CryptoCheckout = ({
       } catch (error: any) {
         console.error(error)
         if (error?.code === 4001) {
-          // eslint-disable-next-line no-alert
-          alert('Please confirm the transaction in your wallet.')
+          toast.error('Please confirm the transaction in your wallet.')
         }
         setPurchasePending(false)
       }
@@ -154,14 +166,16 @@ export const CryptoCheckout = ({
   }
 
   const hasValidKeyOrPendingTx = hasValidOrPendingKey || transactionPending
-
   const showCheckoutButtons =
-    (!transactionPending && keyExpiration < now) ||
+    (!transactionPending && !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
   return (
     <>
       <Lock
+        recipient={
+          isAdvanced ? (advancedRecipientValid ? recipient : '') : account
+        }
         network={network}
         lock={lock}
         name={name}
@@ -186,11 +200,12 @@ export const CryptoCheckout = ({
 
       {hasValidkey && (
         <>
-          {!isAdvanced && (
-            <Message>
-              You already have a valid membership for this lock!
-            </Message>
-          )}
+          <Message>
+            {!isAdvanced
+              ? 'You already have a valid membership!'
+              : 'Recipient already has a valid membership!'}
+            &nbsp;
+          </Message>
           <CheckoutCustomRecipient
             isAdvanced={isAdvanced}
             advancedRecipientValid={advancedRecipientValid}
@@ -205,12 +220,12 @@ export const CryptoCheckout = ({
 
       {showCheckoutButtons && (
         <div style={{ marginBottom: '10px' }}>
-          <Prompt>Get your membership with:</Prompt>
+          <Prompt>Get the membership with:</Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cantBuyWithCrypto}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
-              {!isUnlockAccount && userIsOnWrongNetwork && !hasValidkey && (
+              {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
                   Crypto wallet on wrong network.{' '}
                   <LinkButton onClick={connectToNetwork}>
@@ -219,10 +234,9 @@ export const CryptoCheckout = ({
                   .
                 </Warning>
               )}
-              {!isUnlockAccount &&
-                !userIsOnWrongNetwork &&
-                !hasValidkey &&
-                !canAfford && <Warning>Your balance is too low</Warning>}
+              {!isUnlockAccount && !userIsOnWrongNetwork && !canAfford && (
+                <Warning>Your balance is too low</Warning>
+              )}
             </CheckoutButton>
 
             <CheckoutButton disabled={cantPurchaseWithCard}>
@@ -269,7 +283,7 @@ export const CryptoCheckout = ({
           ! This should take a few seconds :)
         </Message>
       )}
-      {hasValidkey && (
+      {hasValidkey && !isAdvanced && (
         <EnjoyYourMembership
           redirectUri={redirectUri}
           closeModal={closeModal}

@@ -1,5 +1,6 @@
 import ApolloClient from 'apollo-boost'
 import { utils } from 'ethers'
+import toast from 'react-hot-toast'
 import locksByManager from '../queries/locksByManager'
 import keyHoldersByLocks from '../queries/keyholdersByLock'
 
@@ -35,7 +36,7 @@ export class GraphService {
       })
     } catch (error) {
       console.error(error)
-      alert(
+      toast.error(
         'We could not load your locks. Please retry and let us know if that keeps failing'
       )
       return []

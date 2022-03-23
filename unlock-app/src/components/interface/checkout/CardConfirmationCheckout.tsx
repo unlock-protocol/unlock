@@ -47,7 +47,8 @@ export const CardConfirmationCheckout = ({
   const [error, setError] = useState('')
   // Convenience
   const now = new Date().getTime() / 1000
-  const hasValidkey = keyExpiration > now && keyExpiration < Infinity
+  const hasValidkey =
+    keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
 
   const {
@@ -128,9 +129,14 @@ export const CardConfirmationCheckout = ({
   }
 
   const handleHasKey = (key: any) => {
-    setKeyExpiration(key.expiration)
+    if (!key) {
+      setKeyExpiration(0)
+    } else {
+      setKeyExpiration(key.expiration)
+    }
   }
-  if (!lock.fiatPricing?.creditCardEnabled) {
+
+  if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
       <Wrapper>
         <Lock
@@ -141,6 +147,9 @@ export const CardConfirmationCheckout = ({
           onSelected={null}
           hasOptimisticKey={hasOptimisticKey}
           purchasePending={purchasePending}
+          recipient={
+            isAdvanced ? (advancedRecipientValid ? recipient : '') : account
+          }
         />
         <ErrorMessage>
           Unfortunately, credit card is not available for this lock. You need to
@@ -153,9 +162,13 @@ export const CardConfirmationCheckout = ({
   const payDisabled = isAdvanced
     ? purchasePending || !advancedRecipientValid
     : purchasePending
+
   return (
     <Wrapper>
       <Lock
+        recipient={
+          isAdvanced ? (advancedRecipientValid ? recipient : '') : account
+        }
         network={network}
         lock={lock}
         name={name}
@@ -165,15 +178,27 @@ export const CardConfirmationCheckout = ({
         purchasePending={purchasePending}
       />
 
+      {hasValidkey && (
+        <>
+          <Message>
+            {!isAdvanced
+              ? 'You already have a valid membership!'
+              : 'Recipient already has a valid membership!'}
+            &nbsp;
+          </Message>
+        </>
+      )}
+
+      <CheckoutCustomRecipient
+        isAdvanced={isAdvanced}
+        advancedRecipientValid={advancedRecipientValid}
+        checkingRecipient={checkingRecipient}
+        setIsAdvanced={setIsAdvanced}
+        onRecipientChange={onRecipientChange}
+      />
+
       {!hasValidkey && !hasOptimisticKey && (
         <>
-          <CheckoutCustomRecipient
-            isAdvanced={isAdvanced}
-            advancedRecipientValid={advancedRecipientValid}
-            checkingRecipient={checkingRecipient}
-            setIsAdvanced={setIsAdvanced}
-            onRecipientChange={onRecipientChange}
-          />
           <Button disabled={payDisabled} onClick={charge}>
             Pay ${formattedPrice} with Card
           </Button>
@@ -189,15 +214,7 @@ export const CardConfirmationCheckout = ({
           <CardNumber>Card ending in {card.last4}</CardNumber>
         </>
       )}
-      {hasValidkey && (
-        <>
-          <Message>You already have a valid membership for this lock!</Message>
-          <EnjoyYourMembership
-            redirectUri={redirectUri}
-            closeModal={closeModal}
-          />
-        </>
-      )}
+
       {purchasePending && typeof purchasePending === 'string' && (
         <Message>
           Waiting for your{' '}
@@ -214,7 +231,7 @@ export const CardConfirmationCheckout = ({
         </Message>
       )}
 
-      {hasOptimisticKey && (
+      {(hasValidkey || hasOptimisticKey) && (
         <EnjoyYourMembership
           redirectUri={redirectUri}
           closeModal={closeModal}

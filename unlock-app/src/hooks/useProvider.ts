@@ -109,8 +109,7 @@ export const useProvider = (config: any) => {
         try {
           await provider.enable()
         } catch {
-          alert('Please, check your wallet and try again to connect.')
-          return
+          console.error('Please check your wallet and try again to connect.')
         }
       }
       const ethersProvider = new ethers.providers.Web3Provider(provider)
@@ -218,7 +217,14 @@ export const useProvider = (config: any) => {
   }
 
   const signMessage = async (messageToSign: string) => {
-    return walletService.signMessage(messageToSign, 'personal_sign')
+    return toast.promise(
+      walletService.signMessage(messageToSign, 'personal_sign'),
+      {
+        loading: 'Please sign the message from your wallet',
+        success: 'Successfully signed the message',
+        error: 'There was an error in signing the message',
+      }
+    )
   }
 
   return {

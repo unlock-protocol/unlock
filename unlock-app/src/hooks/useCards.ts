@@ -15,6 +15,7 @@ interface Config {
 }
 
 export const genAuthorizationHeader = (token: string) => {
+  console.log('DEPRECATED!')
   return { Authorization: ` Bearer ${token}` }
 }
 
@@ -53,7 +54,16 @@ export const getSignature = async (
 ) => {
   let signature
   if (typedData.message['Charge Card']) {
-    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey}`
+    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey} with my card.`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Get Card']) {
+    const message = `I want to retrieve the card token for ${typedData.message['Get Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Save Card']) {
+    const message = `I save my payment card for my account ${typedData.message['Save Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Delete Card']) {
+    const message = `I am deleting the card linked to my account ${typedData.message['Delete Card'].publicKey}`
     signature = await walletService.signMessage(message, 'personal_sign')
   } else {
     signature = await walletService.unformattedSignTypedData(address, typedData)
@@ -73,12 +83,14 @@ export const chargeAndSaveCard = async (
   stripeTokenId: string,
   network: number,
   lock: string,
-  pricing: any
+  pricing: any,
+  recipient: string
 ) => {
   const typedData = generateTypedData({
     'Charge Card': {
       publicKey: address,
       stripeTokenId,
+      recipient,
       pricing,
       lock,
       network,
@@ -86,12 +98,13 @@ export const chargeAndSaveCard = async (
   })
 
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -137,18 +150,19 @@ export const saveCardsForAddress = async (
   stripeTokenId: string
 ) => {
   const typedData = generateTypedData({
-    user: {
+    'Save Card': {
       publicKey: address,
       stripeTokenId,
     },
   })
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'PUT',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -168,15 +182,20 @@ export const getCardsForAddress = async (
   address: string
 ) => {
   const typedData = generateTypedData({
-    user: {
+    'Get Card': {
       publicKey: address,
     },
   })
+
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
+
   const opts = {
     method: 'GET',
-    headers: genAuthorizationHeader(token),
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+    },
   }
 
   const response = await fetch(
@@ -199,17 +218,18 @@ export const deleteCardForAddress = async (
   address: string
 ) => {
   const typedData = generateTypedData({
-    user: {
+    'Delete Card': {
       publicKey: address,
     },
   })
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'DELETE',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
   }
@@ -298,6 +318,7 @@ export const useCards = () => {
       // Refresh cards: TODO make locksmith return the cards
       await getCards(address)
     } catch (e: any) {
+      console.error(e)
       setError(e)
     }
     setLoading(false)
