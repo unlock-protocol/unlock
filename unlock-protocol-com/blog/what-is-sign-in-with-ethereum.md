@@ -13,14 +13,15 @@ image: /images/blog/siwe-blog/siwe-header.png
 
 In simple terms, Sign-In with Ethereum is a new standard form of authentication that enables end-users to access resources on the internet using their Ethereum account instead of relying on traditional authentication providers such as Google, Facebook, and the like.
 
-According to the [EIP-4361 standard](https://eips.ethereum.org/EIPS/eip-4361), the Sign-In with Ethereum specification "describes how Ethereum accounts authenticate with off-chain services by signing a standard message format parameterized by scope, session details, and security mechanisms (e.g., a nonce). The goals of this specification are to provide a self-custody alternative to centralized identity providers, improve interoperability across off-chain services for Ethereum-based authentication, and provide wallet vendors a consistent machine-readable message format to achieve improved user experiences and consent management." 
+According to the [EIP-4361 standard](https://eips.ethereum.org/EIPS/eip-4361), the Sign-In with Ethereum specification "describes how Ethereum accounts authenticate with off-chain services by signing a standard message format parameterized by scope, session details, and security mechanisms (e.g., a nonce). The goals of this specification are to provide a self-custody alternative to centralized identity providers, improve interoperability across off-chain services for Ethereum-based authentication, and provide wallet vendors a consistent machine-readable message format to achieve improved user experiences and consent management."
 
 ## Why does Sign-In with Ethereum matter?
+
 Historically, websites, web applications, and mobile apps not built with blockchain technology relied on centralized identity providers with centralized control over users' information. In most cases, these centralized identity providers were the only existing authentication infrastructure and were convenient to end users.
 
-For example, Google provides you with an email address to send emails and sign up for services on the internet. In return, you agree to provide them with data they can use to tweak their algorithms to track you, serve you ads and [subconsciously influence your decisions](https://knowledge.wharton.upenn.edu/article/algorithms-decision-making/). Google, Facebook, and others similarly provide identity services "for free," in exchange for keeping their users reliant on their silos. 
+For example, Google provides you with an email address to send emails and sign up for services on the internet. In return, you agree to provide them with data they can use to tweak their algorithms to track you, serve you ads and [subconsciously influence your decisions](https://knowledge.wharton.upenn.edu/article/algorithms-decision-making/). Google, Facebook, and others similarly provide identity services "for free," in exchange for keeping their users reliant on their silos.
 
-A key question needs to be raised. What then happens to user data in the event of a data breach at one of these centralized services with millions of customers? Or what happens if a user simply wants to cut the cord with one of these centralized entities? 
+A key question needs to be raised. What then happens to user data in the event of a data breach at one of these centralized services with millions of customers? Or what happens if a user simply wants to cut the cord with one of these centralized entities?
 
 Enter "Sign-In with Ethereum."
 
@@ -38,13 +39,13 @@ Sign-In with Ethereum is the future of user authentication for the ".eth" era, a
 
 Unlock Protocol recently announced their implementation of the EIP-4361 standard by updating [their documentation](https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum) and in [this blog post](https://unlock-protocol.com/blog/sign-in-with-ethereum) by its founder Julien Genestoux.
 
-Until now, the act of prompting users for their wallet address to authenticate them was quite an arduous development process as there are many wallet providers; asking users to connect their wallets to your application requires the implementation of multiple APIs and approaches. 
+Until now, the act of prompting users for their wallet address to authenticate them was quite an arduous development process as there are many wallet providers; asking users to connect their wallets to your application requires the implementation of multiple APIs and approaches.
 
 Unlock offers an easier way to implement the Sign-In with Ethereum authentication method with a few lines of code.
 
-Unlock has created a flow similar to the popular OAuth flow that users are familiar with. When the user has signed the message, they get redirected to the application. The redirect URL contains a code that the developer can decode to retrieve the user's information. If the user also does not have a wallet address, they can sign up using Unlock. 
+Unlock has created a flow similar to the popular OAuth flow that users are familiar with. When the user has signed the message, they get redirected to the application. The redirect URL contains a code that the developer can decode to retrieve the user's information. If the user also does not have a wallet address, they can sign up using Unlock.
 
-Unlock does all the heavy-lifting, so developers can focus on building what matters. 
+Unlock does all the heavy-lifting, so developers can focus on building what matters.
 
 Here’s how you can implement Sign-in with Ethereum into your application.
 
@@ -52,13 +53,16 @@ Here’s how you can implement Sign-in with Ethereum into your application.
 
 We'll use Vue.Js for this demo and Tailwind for styling, but the concepts explained here can be replicated in any other framework.
 
-`💡 Editor's note: Please practice good code hygiene on any code or links you access on any website, including this one. Code samples referenced here may have changed after publication of this blog post, so please review them carefully before copying or implementing.` 
+> 💡 Editor's note: Please practice good code hygiene on any code or links you access on any website, including this one. Code samples referenced here may have changed after publication of this blog post, so please review them carefully before copying or implementing.
 
 You can find all the code for this demo in the CodeSandbox below. Feel free to fork and tweak the code as you wish.
 [https://codesandbox.io/embed/smoosh-dream-urw2qt?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/embed/smoosh-dream-urw2qt?fontsize=14&hidenavigation=1&theme=dark)
 
 To get started, we need to create a Sign-In link with our application's URL as such:
-`https://app.unlock-protocol.com/checkout?client_id=urw2qt.csb.app&redirect_uri=https://urw2qt.csb.app`
+
+```
+https://app.unlock-protocol.com/checkout?client_id=urw2qt.csb.app&redirect_uri=https://urw2qt.csb.app
+```
 
 Just replace `urw2qt.csb.app` with your URL. Here, I'm using the link to the app generated by [CodeSandbox](https://urw2qt.csb.app).
 
