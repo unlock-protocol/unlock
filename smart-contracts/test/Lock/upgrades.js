@@ -69,7 +69,7 @@ describe('PublicLock upgrades', () => {
       60 * 60 * 24 * 30, // 30 days
       ethers.constants.AddressZero,
       keyPrice,
-      10,
+      100,
       'A neat upgradeable lock!',
     ]
 
@@ -77,42 +77,56 @@ describe('PublicLock upgrades', () => {
     await lock.deployed()
   })
 
-  describe.only('perform upgrade', async () => {
-    let keyOwner
-    let tokenId
+  describe('perform upgrade', async () => {
+    let buyers
+    let tokenIds
+    let expirationTimestamps
     let totalSupplyBefore
 
     beforeEach(async () => {
       // buy some keys
-      ;[, , keyOwner] = await ethers.getSigners()
+      const signers = await ethers.getSigners()
+      buyers = signers.slice(1, 11)
 
-      // Purchase a key
-      await lock
-        .connect(keyOwner)
-        .purchase(
-          0,
-          keyOwner.address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: keyPrice,
-          }
+      // purchase many keys
+      await Promise.all(
+        buyers.map((keyOwner) =>
+          lock
+            .connect(keyOwner)
+            .purchase(
+              0,
+              keyOwner.address,
+              web3.utils.padLeft(0, 40),
+              web3.utils.padLeft(0, 40),
+              [],
+              {
+                value: keyPrice,
+              }
+            )
         )
+      )
 
-      tokenId = await lock.getTokenIdFor(keyOwner.address)
+      tokenIds = await Promise.all(
+        buyers.map((b) => lock.getTokenIdFor(b.address))
+      )
+      expirationTimestamps = await Promise.all(
+        buyers.map((b) => lock.keyExpirationTimestampFor(b.address))
+      )
 
       // make sure record is proper before upgrade
       assert.equal(await lock.publicLockVersion(), 9)
-      assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
-      assert.equal(await lock.balanceOf(keyOwner.address), 1)
+      assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
+      assert.equal(await lock.balanceOf(buyers[0].address), 1)
 
       totalSupplyBefore = await lock.totalSupply()
 
       // deploy new implementation
       lock = await upgrades.upgradeProxy(lock.address, PublicLockLatest, {
-        unsafeSkipStorageCheck: true, // HIGHLY UNSECURE - just for testing purposes
+        unsafeSkipStorageCheck: true, // UNSECURE - but we need the flag as we are resizing the `__gap`
       })
+
+      // make sure ownership is preserved
+      assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
     })
 
     it('upgraded successfully ', async () => {
@@ -121,30 +135,26 @@ describe('PublicLock upgrades', () => {
 
     describe('without migrating data', () => {
       it('purchase should fail ', async () => {
-        const signers = await ethers.getSigners()
-        const keyOwners = signers.slice(2, 7)
         await reverts(
-          lock.connect(keyOwner).purchase(
+          lock.connect(buyers[0]).purchase(
             [],
-            keyOwners.map((k) => k.address),
-            keyOwners.map(() => web3.utils.padLeft(0, 40)),
-            keyOwners.map(() => web3.utils.padLeft(0, 40)),
+            buyers.map((k) => k.address),
+            buyers.map(() => web3.utils.padLeft(0, 40)),
+            buyers.map(() => web3.utils.padLeft(0, 40)),
             [],
             {
-              value: (keyPrice * keyOwners.length).toFixed(),
+              value: (keyPrice * buyers.length).toFixed(),
             }
           ),
           'MIGRATION_REQUIRED'
         )
       })
       it('grantKeys should fail ', async () => {
-        const signers = await ethers.getSigners()
-        const keyOwners = signers.slice(2, 7)
         await reverts(
-          lock.connect(keyOwner).grantKeys(
-            keyOwners.map((k) => k.address),
-            keyOwners.map(() => Date.now()),
-            keyOwners.map(() => web3.utils.padLeft(0, 40))
+          lock.connect(buyers[0]).grantKeys(
+            buyers.map((k) => k.address),
+            buyers.map(() => Date.now()),
+            buyers.map(() => web3.utils.padLeft(0, 40))
           ),
           'MIGRATION_REQUIRED'
         )
@@ -152,8 +162,8 @@ describe('PublicLock upgrades', () => {
       it('extend should fail ', async () => {
         await reverts(
           lock
-            .connect(keyOwner)
-            .extend(0, tokenId, web3.utils.padLeft(0, 40), [], {
+            .connect(buyers[0])
+            .extend(0, tokenIds[0], web3.utils.padLeft(0, 40), [], {
               value: keyPrice,
             }),
           'MIGRATION_REQUIRED'
@@ -161,22 +171,82 @@ describe('PublicLock upgrades', () => {
       })
     })
 
+    it('totalSupply is preserved', async () => {
+      assert.equal(
+        totalSupplyBefore.toNumber(),
+        (await lock.totalSupply()).toNumber()
+      )
+    })
+
     describe('data migration', () => {
       beforeEach(async () => {
-        assert.equal(
-          totalSupplyBefore.toNumber(),
-          (await lock.totalSupply()).toNumber()
-        )
-
+        // migrate the keys
         const [, lockOwner] = await ethers.getSigners()
         await lock.connect(lockOwner).migrateKeys(100)
-        assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
-        assert.equal(await lock.balanceOf(keyOwner), 1)
       })
-      it('preserves all data', async () => {
-        // assert.equal(await lock.totalSupply(), keyOwner)
-        assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
-        assert.equal(await lock.balanceOf(keyOwner), 1)
+
+      it('preserves all keys data', async () => {
+        const totalSupply = (await lock.totalSupply()).toNumber()
+        for (let i = 0; i < totalSupply; i++) {
+          const tokenId = i + 1
+          assert.equal(await lock.isValidKey(tokenId), true)
+          assert.equal(await lock.ownerOf(tokenId), buyers[i].address)
+          assert.equal(await lock.balanceOf(buyers[i].address), 1)
+          assert.equal(await lock.getHasValidKey(buyers[i].address), true)
+          assert.equal(
+            (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
+            expirationTimestamps[i].toNumber()
+          )
+        }
+      })
+
+      it('purchase should now work ', async () => {
+        const tx = await lock.connect(buyers[0]).purchase(
+          [],
+          buyers.map((k) => k.address),
+          buyers.map(() => web3.utils.padLeft(0, 40)),
+          buyers.map(() => web3.utils.padLeft(0, 40)),
+          [],
+          {
+            value: (keyPrice * buyers.length).toFixed(),
+          }
+        )
+        const { events } = await tx.wait()
+
+        const tokenIds = events
+          .filter((v) => v.event === 'Transfer')
+          .map(({ args }) => args.tokenId)
+
+        assert.equal(tokenIds.length, buyers.length)
+      })
+
+      it('grantKeys should now work ', async () => {
+        const tx = await lock.connect(buyers[0]).grantKeys(
+          buyers.map((k) => k.address),
+          buyers.map(() => Date.now()),
+          buyers.map(() => web3.utils.padLeft(0, 40))
+        )
+        const { events } = await tx.wait()
+        const tokenIds = events
+          .filter((v) => v.event === 'Transfer')
+          .map(({ args }) => args.tokenId)
+
+        assert.equal(tokenIds.length, buyers.length)
+      })
+
+      it('extend should now work ', async () => {
+        const tx = await lock
+          .connect(buyers[0])
+          .extend(0, tokenIds[0], web3.utils.padLeft(0, 40), [], {
+            value: keyPrice,
+          })
+         await tx.wait()
+        assert.equal(
+          (await lock.keyExpirationTimestampFor(tokenIds[0])).gt(
+            expirationTimestamps[0]
+          ),
+          true
+        )
       })
     })
   })
