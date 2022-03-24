@@ -31,6 +31,10 @@ contract MixinKeys is
 
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
 
+  event KeysMigrated(
+    uint updatedRecordsCount
+  );
+
   // DEPREC: dont use
   mapping (address => Key) internal keyByOwner;
 
@@ -140,6 +144,7 @@ contract MixinKeys is
   * variable to the latest/current lock version
   */
   function migrateKeys(uint _length) public {
+    uint updatedRecordsCount;
     uint recordsToUpdate = totalSupply();
     if(_length > recordsToUpdate) _length = recordsToUpdate;
     for (uint256 i = 0; i < _length; i++) {
@@ -162,15 +167,19 @@ contract MixinKeys is
 
         // update ownership
         _balances[keyOwner] += 1;
+
+        // keep track of updated records
+        updatedRecordsCount++;
       }
 
       recordsToUpdate--;
     }
     
-    // once data has been all upgraded, flag lock
+    // once data has been all upgraded, enable lock
     if(recordsToUpdate == 0) {
       schemaVersion = publicLockVersion();
     }
+    emit KeysMigrated(updatedRecordsCount);
   }
 
   /**

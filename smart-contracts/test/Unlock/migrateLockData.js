@@ -155,7 +155,19 @@ describe('upgradeLock / data migration', () => {
         keyOwners.map((b) => lock.keyExpirationTimestampFor(b.address))
       )
 
-      // deploy latest template
+      // update abi before upgrade, so we can track event
+      lock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        lock.address
+      )
+
+      // we listen to event in the lock itself
+      lock.once('KeysMigrated', (data) => {
+        // make sure the event is firing the correct value
+        assert.equal(data.toNumber(), 100)
+      })
+
+      // upgrade to latest version of the template
       const [, creator] = await ethers.getSigners()
       const tx = await unlock
         .connect(creator)
@@ -169,12 +181,6 @@ describe('upgradeLock / data migration', () => {
       // make sure upgrade event is correct
       assert.equal(lockAddress, lock.address)
       assert.equal(version, pastVersion + 1)
-
-      // update abi
-      lock = await ethers.getContractAt(
-        'contracts/PublicLock.sol:PublicLock',
-        lockAddress
-      )
     })
 
     it('should have correct totalSupply', async () => {
@@ -266,10 +272,18 @@ describe('upgradeLock / data migration', () => {
     })
 
     describe('relaunch remaining data migration', () => {
+      let updatedRecordsCount
       beforeEach(async () => {
         // migrate only a few keys
         const [, lockOwner] = await ethers.getSigners()
-        await lock.connect(lockOwner).migrateKeys(10)
+        const tx = await lock.connect(lockOwner).migrateKeys(110)
+        const { events } = await tx.wait()
+        const { args } = events.find((event) => event.event === 'KeysMigrated')
+        updatedRecordsCount = args.updatedRecordsCount
+      })
+
+      it('returns the correct number of updated records', async () => {
+        assert.equal(updatedRecordsCount, 10)
       })
 
       it('rest of the records have been updated', async () => {
