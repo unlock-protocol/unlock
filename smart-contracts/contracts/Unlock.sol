@@ -312,6 +312,12 @@ contract Unlock is
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
 
+    // let's upgrade the data schema
+    // we (arbitrarly) cap the migration process to 100 keys to prevent running out of gas
+    // for lock that have more than 100 active keys, the `migrateKeys` function will need
+    // to be called again after the upgrade is done
+    lock.migrateKeys(100);
+
     emit LockUpgraded(lockAddress, version);
     return lockAddress;
   }
