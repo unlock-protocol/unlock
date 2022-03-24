@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "es2020",
+        "allowSyntheticDefaultImports": true,
+        "module": "ESNext",
+        "strict": true,
+        "alwaysStrict": true,
+        "forceConsistentCasingInFileNames": true,
+        "checkJs": true,
+        "esModuleInterop": true
+    }
+}

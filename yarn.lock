@@ -14129,6 +14129,7 @@ __metadata:
     lint-staged: 12.3.4
     prettier: 2.5.1
     ts-jest: 27.1.3
+    tsup: ^5.12.1
     typescript: 4.6.2
   peerDependencies:
     ethers: 5.5.4
@@ -47382,6 +47383,36 @@ resolve@^2.0.0-next.3:
     tsup: dist/cli-default.js
     tsup-node: dist/cli-node.js
   checksum: 431db4b521f77f2bad0521fc236055c3a3a6665f396ec445b2b264bea6cb506c2a4ef9dd693b91c4ad250b19843b68aef8724a97fe1530b88eb0cbf5081f2937
+  languageName: node
+  linkType: hard
+
+"tsup@npm:^5.12.1":
+  version: 5.12.1
+  resolution: "tsup@npm:5.12.1"
+  dependencies:
+    bundle-require: ^3.0.2
+    cac: ^6.7.12
+    chokidar: ^3.5.1
+    debug: ^4.3.1
+    esbuild: ^0.14.2
+    execa: ^5.0.0
+    globby: ^11.0.3
+    joycon: ^3.0.1
+    postcss-load-config: ^3.0.1
+    resolve-from: ^5.0.0
+    rollup: ^2.60.0
+    source-map: ^0.7.3
+    sucrase: ^3.20.3
+    tree-kill: ^1.2.2
+  peerDependencies:
+    typescript: ^4.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  bin:
+    tsup: dist/cli-default.js
+    tsup-node: dist/cli-node.js
+  checksum: 807cbc470d1d35573d1a2b535e548f5aa8cb20a638d49564e49a5616b1f035a0b637e20449d1e9ae9e18bdb93d52a388f53d6ff57d5e99963db5a45588da7a7e
   languageName: node
   linkType: hard
 
