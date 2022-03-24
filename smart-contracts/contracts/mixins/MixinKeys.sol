@@ -34,18 +34,6 @@ contract MixinKeys is
   // DEPREC: dont use
   mapping (address => Key) internal keyByOwner;
 
-  // store all keys: tokenId => token
-  mapping(uint256 => Key) private _keys;
-  
-  // store ownership: owner => list of tokenIds
-  mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
-  
-  // store indexes: owner => list of tokenIds
-  mapping(uint256 => uint256) private _ownedKeysIndex;
-
-  // Mapping owner address to token count
-  mapping(address => uint256) private _balances;
-
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
@@ -74,6 +62,18 @@ contract MixinKeys is
   // These approvals are never reset/revoked automatically, unlike "approved",
   // which is reset on transfer.
   mapping (address => mapping (address => bool)) private managerToOperatorApproved;
+
+  // store all keys: tokenId => token
+  mapping(uint256 => Key) private _keys;
+  
+  // store ownership: owner => list of tokenIds
+  mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
+  
+  // store indexes: owner => list of tokenIds
+  mapping(uint256 => uint256) private _ownedKeysIndex;
+
+  // Mapping owner address to token count
+  mapping(address => uint256) private _balances;
 
   // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
@@ -645,23 +645,24 @@ contract MixinKeys is
    * @dev Change the maximum number of keys the lock can edit
    * @param _maxNumberOfKeys uint the maximum number of keys
    */
-   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
+  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
      require (_maxNumberOfKeys >= _totalSupply, "maxNumberOfKeys is smaller than existing supply");
      maxNumberOfKeys = _maxNumberOfKeys;
-   }
+  }
 
-   /**
+  /**
    * A function to change the default duration of each key in the lock
    * @notice keys previously bought are unaffected by this change (i.e.
    * existing keys timestamps are not recalculated/updated)
    * @param _newExpirationDuration the new amount of time for each key purchased 
    * or type(uint).max for a non-expiring key
    */
-   function setExpirationDuration(uint _newExpirationDuration) external {
+  function setExpirationDuration(uint _newExpirationDuration) external {
      _onlyLockManager();
      expirationDuration = _newExpirationDuration;
-   }
-   
-   uint256[1000] private __safe_upgrade_gap;
+  }
+  
+  // decrease 1000 to 996 when adding new tokens/owners mappings in v10
+  uint256[996] private __safe_upgrade_gap;
 }
