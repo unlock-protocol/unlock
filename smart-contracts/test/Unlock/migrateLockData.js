@@ -276,7 +276,7 @@ describe('upgradeLock / data migration', () => {
       beforeEach(async () => {
         // migrate only a few keys
         const [, lockOwner] = await ethers.getSigners()
-        const tx = await lock.connect(lockOwner).migrateKeys(110)
+        const tx = await lock.connect(lockOwner).migrate()
         const { events } = await tx.wait()
         const { args } = events.find((event) => event.event === 'KeysMigrated')
         updatedRecordsCount = args.updatedRecordsCount

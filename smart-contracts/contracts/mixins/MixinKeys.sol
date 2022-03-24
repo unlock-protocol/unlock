@@ -139,13 +139,29 @@ contract MixinKeys is
   /**
   * Migrate data from the previous single owner => key mapping to 
   * the new data structure w multiple tokens.
-  * @param _length the max nhumber of records to update (default to totalSupply if superior)
   * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
   * variable to the latest/current lock version
   */
-  function migrateKeys(uint _length) public {
+  function migrate() public {
+    
+    // make sure we have correct data version to migrate
+    require(
+      (
+        (schemaVersion == publicLockVersion() - 1)
+        ||
+        schemaVersion == 0
+      ),
+      'SCHEMA_VERSION_NOT_CORRECT'
+    );
+
     uint updatedRecordsCount;
     uint recordsToUpdate = totalSupply();
+
+    // default to 100 when sent from Unlock
+    uint _length;
+    if( msg.sender == address(unlockProtocol) ) {
+      _length = 100;
+    }
     if(_length > recordsToUpdate) _length = recordsToUpdate;
     for (uint256 i = 0; i < _length; i++) {
       // tokenId starts at 1
@@ -179,6 +195,7 @@ contract MixinKeys is
     if(recordsToUpdate == 0) {
       schemaVersion = publicLockVersion();
     }
+
     emit KeysMigrated(updatedRecordsCount);
   }
 

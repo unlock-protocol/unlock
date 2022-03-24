@@ -246,6 +246,7 @@ contract MixinLockCore is
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 
+
   // decreased from 1000 to 999 when adding `schemaVersion` in v10 
   uint256[999] private __safe_upgrade_gap;
 }
