@@ -28,6 +28,11 @@
     "webpack-cli": "4.9.2",
     "winston": "3.6.0"
   },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./setupTests.js"
+    ]
+  },
   "lint-staged": {
     ".{js,ts,tsx}": [
       "eslint --fix"
@@ -36,11 +41,15 @@
   "scripts": {
     "build": "webpack",
     "dev": "UNLOCK_ENV=dev nodemon src/server.js --exec babel-node",
+    "send": "UNLOCK_ENV=dev nodemon src/send.js --exec babel-node",
     "test": "UNLOCK_ENV=test jest",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/",
     "ci": "yarn test && yarn lint",
     "deploy-netlify": "./scripts/deploy-netlify.sh"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "regenerator-runtime": "^0.13.9"
+  }
 }

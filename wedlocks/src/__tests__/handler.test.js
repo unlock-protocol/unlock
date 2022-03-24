@@ -100,7 +100,7 @@ describe('handler', () => {
     )
   })
 
-  it('should route the request and yields its response', (done) => {
+  it('should route the request and yields its response', async () => {
     expect.assertions(4)
     const body = {
       hello: 'world',
@@ -108,12 +108,12 @@ describe('handler', () => {
     const responseBody = {
       lorem: 'ipsum',
     }
-    route.mockImplementationOnce((_body, _callback) => {
+    route.mockImplementationOnce((_body) => {
       expect(_body).toEqual(body)
-      return _callback(null, responseBody)
+      return Promise.resolve(responseBody)
     })
 
-    handler(
+    await handler(
       {
         httpMethod: 'POST',
         headers: {
@@ -134,7 +134,6 @@ describe('handler', () => {
         )
         expect(response.statusCode).toBe(204)
         expect(response.body).toBe(undefined)
-        done()
       }
     )
   })
@@ -144,12 +143,10 @@ describe('handler', () => {
     const body = {
       hello: 'world',
     }
-    const error = {
-      error: 'Could not send email',
-    }
-    route.mockImplementationOnce((_body, _callback) => {
+    const error = 'Could not send email'
+    route.mockImplementationOnce((_body) => {
       expect(_body).toEqual(body)
-      return _callback(error)
+      return Promise.reject(error)
     })
 
     handler(
@@ -162,8 +159,8 @@ describe('handler', () => {
       },
       {},
       (_error, response) => {
-        expect(response.statusCode).toBe(400)
-        expect(response.body).toBe('Client Error')
+        expect(response.statusCode).toBe(500)
+        expect(response.body).toBe('Server Error')
         done()
       }
     )
