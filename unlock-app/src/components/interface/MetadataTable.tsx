@@ -27,6 +27,7 @@ interface MetadataTableProps {
   metadata: KeyMetadata[]
   filter?: string
   isLockManager: boolean
+  lockAddresses: string[]
 }
 
 /**
@@ -60,6 +61,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   metadata,
   filter,
   isLockManager,
+  lockAddresses = [],
 }) => {
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
@@ -77,15 +79,18 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     return <p>No keys found matching the current filter.</p>
   }
 
+  const [currentLock, setCurrentLock] = useState(null)
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
 
-  const onExpireAndRefund = () => {
+  const onExpireAndRefund = (lock: any) => {
     setShowExpireAndRefundModal(true)
+    setCurrentLock(lock)
   }
 
   const closeExpireAndRefund = () => {
     setShowExpireAndRefundModal(false)
+    setCurrentLock(null)
   }
   return (
     <Wrapper>
@@ -93,7 +98,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         active={showExpireAndRefundModal}
         dismiss={closeExpireAndRefund}
       >
-        <ExpireAndRefund />
+        <ExpireAndRefund
+          lock={currentLock}
+          lockAddresses={lockAddresses}
+          onClose={closeExpireAndRefund}
+        />
       </InlineModal>
       <Table>
         <thead>
@@ -101,7 +110,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             {columns.map((col) => {
               return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
-            {isLockManager && <Th key="actions">Actions</Th>}
+            {isLockManager && (
+              <Th className="text-center" key="actions">
+                Actions
+              </Th>
+            )}
           </tr>
         </thead>
         <Tbody>
@@ -118,12 +131,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
                   )
                 })}
                 {isLockManager && (
-                  <Td>
+                  <Td className="text-center">
                     <button
                       className="bg-gray-200 rounded px-2 py-1 text-sm"
                       type="button"
                       disabled={!isLockManager}
-                      onClick={onExpireAndRefund}
+                      onClick={() => onExpireAndRefund(datum)}
                     >
                       Expire and Refund
                     </button>
@@ -135,7 +148,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         </Tbody>
       </Table>
       <DownloadButton
-        disabled
         onClick={() => {
           downloadAsCSV(columns, metadata)
         }}
@@ -145,7 +157,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     </Wrapper>
   )
 }
-
 MetadataTable.defaultProps = {
   filter: '',
 }

@@ -188,6 +188,7 @@ const MetadataTableWrapper = ({
         columns={columns}
         metadata={list}
         isLockManager={isLockManager}
+        lockAddresses={lockAddresses}
       />
     </>
   )
