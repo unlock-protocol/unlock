@@ -103,7 +103,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         <thead>
           <tr>
             {columns.map((col) => {
-              return <th key={col}>{camelCaseToTitle(col)}</th>
+              return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
             {isLockManager && (
               <Th className="text-center" key="actions">
@@ -120,9 +120,9 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
               <tr key={key}>
                 {columns.map((col) => {
                   return (
-                    <td key={col}>
+                    <Td key={col}>
                       <Cell kind={col} value={datum[col]} />
-                    </td>
+                    </Td>
                   )
                 })}
                 {isLockManager && (
