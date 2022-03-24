@@ -268,32 +268,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
 }
 export default Key
 
-const FieldLabel = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 10px;
-  /* identical to box height */
-
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #a6a6a6;
-  margin-top: 8px;
-`
-
-const FieldValue = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 20px;
-  color: #333333;
-`
-
 const Error = styled.p`
   color: var(--red);
 `
