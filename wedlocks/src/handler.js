@@ -67,6 +67,10 @@ export const handler = async (event, context, responseCallback) => {
       details: response,
     })
   } catch (error) {
+    logger.error({
+      event,
+      error,
+    })
     return callback(null, {
       statusCode: 500,
       body: 'Server Error',
