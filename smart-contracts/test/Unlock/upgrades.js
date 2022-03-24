@@ -232,12 +232,15 @@ contract('Unlock / upgrades', async (accounts) => {
 
               it('Key has an ID', async () => {
                 let id
-                if ((await lock.publicLockVersion()) >= 10) {
-                  id = await lock.tokenOfOwnerByIndex(keyOwner.address, 0)
-                } else {
-                  id = await lock.getTokenIdFor(keyOwner.address)
+                if (versionNumber >= 1) {
+                  // Version numbers were introduced to PublicLock with v1
+                  if ((await lock.publicLockVersion()) >= 10) {
+                    id = await lock.tokenOfOwnerByIndex(keyOwner.address, 0)
+                  } else {
+                    id = await lock.getTokenIdFor(keyOwner.address)
+                  }
+                  assert.equal(id.toNumber(), 1)
                 }
-                assert.equal(id.toNumber(), 1)
               })
 
               it('Key is owned', async () => {
