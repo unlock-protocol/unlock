@@ -84,7 +84,7 @@ contract MixinLockCore is
   ILockTokenURIHook public onTokenURIHook;
 
   // use to check data version
-  uint schemaVersion;
+  uint public schemaVersion;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {

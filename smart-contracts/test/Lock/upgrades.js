@@ -178,11 +178,19 @@ describe('PublicLock upgrades', () => {
       )
     })
 
+    it('schemaVersion is undefined before migration', async () => {
+      assert.equal((await lock.schemaVersion()).toNumber(), 0)
+    })
+
     describe('data migration', () => {
       beforeEach(async () => {
         // migrate the keys
         const [, lockOwner] = await ethers.getSigners()
         await lock.connect(lockOwner).migrateKeys(100)
+      })
+
+      it('schemaVersion has been updated', async () => {
+        assert.equal(await lock.schemaVersion(), await lock.publicLockVersion())
       })
 
       it('preserves all keys data', async () => {
