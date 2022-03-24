@@ -140,7 +140,6 @@ contract MixinKeys is
   * variable to the latest/current lock version
   */
   function migrateKeys(uint _length) public {
-    _onlyLockManager();
     uint recordsToUpdate = totalSupply();
     if(_length > recordsToUpdate) _length = recordsToUpdate;
     for (uint256 i = 0; i < _length; i++) {
