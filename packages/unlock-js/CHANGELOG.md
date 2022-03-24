@@ -5,6 +5,7 @@
 - Non expired keys are represented as -1
 - Gas price calculation fixes
 - Adding support for unlimited durations when granting keys
+- Adding transactionOptions on the grantKeys function
 
 # 0.22.2
 

@@ -24,6 +24,7 @@ const dev = {
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
 
+
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
   locksmithHost: 'https://staging-locksmith.unlock-protocol.com',

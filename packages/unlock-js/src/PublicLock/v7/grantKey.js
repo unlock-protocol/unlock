@@ -1,7 +1,7 @@
 import { ETHERS_MAX_UINT } from '../../constants'
 
 export default async function (
-  { lockAddress, recipient, expiration, keyManager },
+  { lockAddress, recipient, expiration, keyManager, transactionOptions },
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -23,12 +23,11 @@ export default async function (
     keyManager = await signer.getAddress()
   }
 
-  const grantKeysOptions = {}
   const transactionPromise = lockContract.grantKeys(
     [recipient],
     [expiration],
     [keyManager],
-    grantKeysOptions
+    transactionOptions || {}
   )
 
   const hash = await this._handleMethodCall(transactionPromise)

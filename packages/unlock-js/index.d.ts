@@ -122,7 +122,7 @@ export class WalletService {
   constructor(NetworkConfigs)
   ready: boolean
   provider?: any
-  connect: (provider: Web3Provider, signer: unknown) => Promise<string>
+  connect: (provider: any, signer: unknown) => Promise<string>
   setUnlockAddress: (address: string) => void
   getAccount: () => Promise<string | false>
   grantKey: (

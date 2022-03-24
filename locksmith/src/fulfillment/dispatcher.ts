@@ -1,10 +1,16 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { ethers } from 'ethers'
 import logger from '../logger'
 
-const { ethers } = require('ethers')
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
+
+interface transactionOptionsInterface {
+  maxPriorityFeePerGas?: ethers.BigNumber
+  maxFeePerGas?: ethers.BigNumber
+  gasPrice?: ethers.BigNumber
+}
 
 export default class Dispatcher {
   /**
@@ -26,11 +32,29 @@ export default class Dispatcher {
       config.purchaserCredentials,
       provider
     )
+
+    const feeData = await provider.getFeeData().catch(() => null)
+
+    const transactionOptions: transactionOptionsInterface = {}
+
+    // We bump priority by 50% to increase speed of execution
+    if (feeData?.maxPriorityFeePerGas && feeData?.maxFeePerGas) {
+      transactionOptions.maxFeePerGas = ethers.BigNumber.from('1.5')
+      transactionOptions.maxPriorityFeePerGas =
+        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('1.5'))
+    } else if (feeData?.gasPrice) {
+      transactionOptions.gasPrice = feeData.gasPrice.mul(
+        ethers.BigNumber.from('1.5')
+      )
+    }
+
     await walletService.connect(provider, walletWithProvider)
     return await walletService.grantKey(
       {
         lockAddress,
         recipient,
+        // @ts-expect-error
+        transactionOptions,
       },
       cb
     )

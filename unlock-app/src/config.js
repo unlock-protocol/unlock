@@ -26,6 +26,8 @@ export default function configure(
     },
   }
 
+  console.log(services)
+
   // Email signing
   const { base64WedlocksPublicKey } = runtimeConfig
 
