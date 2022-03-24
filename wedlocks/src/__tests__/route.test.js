@@ -10,21 +10,22 @@ jest.mock('../encrypter')
 
 describe('route', () => {
   describe('when there is no matching template', () => {
-    it('should yield an error', (done) => {
-      expect.assertions(2)
-      route({ template: 'notATemplate' }, (error, info) => {
-        expect(info).toBe(undefined)
-        expect(error.message).toBe('Missing template')
-        done()
-      })
+    it('should yield an error', async () => {
+      expect.assertions(1)
+
+      try {
+        await route({ template: 'notATemplate' })
+      } catch (e) {
+        expect(e.message).toEqual('Missing template')
+      }
     })
   })
 
   describe('when there is a matching template', () => {
     beforeEach(() => {
       const transporter = {
-        sendMail: jest.fn((options, callback) => {
-          return callback()
+        sendMail: jest.fn(() => {
+          return Promise.resolve({ sent: true })
         }),
       }
 
@@ -34,7 +35,7 @@ describe('route', () => {
       })
     })
 
-    it('should use the template with all the params', (done) => {
+    it('should use the template with all the params', async () => {
       expect.assertions(4)
       templates.template = {
         subject: jest.fn(() => 'subject'),
@@ -58,20 +59,18 @@ describe('route', () => {
         return 'encrypted!'
       })
 
-      route(args, () => {
-        expect(templates.template.subject).toHaveBeenCalledWith({
-          encryptedEmail: 'encrypted!',
-          hello: 'world',
-        })
-        expect(templates.template.text).toHaveBeenCalledWith({
-          encryptedEmail: 'encrypted!',
-          hello: 'world',
-        })
-        done()
+      await route(args)
+      expect(templates.template.subject).toHaveBeenCalledWith({
+        encryptedEmail: 'encrypted!',
+        hello: 'world',
+      })
+      expect(templates.template.text).toHaveBeenCalledWith({
+        encryptedEmail: 'encrypted!',
+        hello: 'world',
       })
     })
 
-    it('should send the email using the transporter', (done) => {
+    it('should send the email using the transporter', async () => {
       expect.assertions(4)
       templates.template = {
         subject: jest.fn(() => 'subject'),
@@ -86,7 +85,7 @@ describe('route', () => {
       }
 
       const transporter = {
-        sendMail: jest.fn((options, callback) => {
+        sendMail: jest.fn((options) => {
           expect(options).toEqual({
             from: config.sender,
             html: undefined,
@@ -95,7 +94,7 @@ describe('route', () => {
             to: args.recipient,
             attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
           })
-          return callback()
+          return Promise.resolve({ sent: true })
         }),
       }
       nodemailer.createTransport = jest.fn((params) => {
@@ -103,16 +102,14 @@ describe('route', () => {
         return transporter
       })
 
-      route(args, () => {
-        expect(templates.template.subject).toHaveBeenCalledWith(args.params)
-        expect(templates.template.text).toHaveBeenCalledWith(args.params)
-        done()
-      })
+      await route(args)
+      expect(templates.template.subject).toHaveBeenCalledWith(args.params)
+      expect(templates.template.text).toHaveBeenCalledWith(args.params)
     })
 
     describe('when the email was sent succesfuly', () => {
-      it('should yield its enveloppe', (done) => {
-        expect.assertions(3)
+      it('should yield its enveloppe', async () => {
+        expect.assertions(2)
         templates.template = {
           subject: jest.fn(() => 'subject'),
           text: jest.fn(() => 'text'),
@@ -123,8 +120,8 @@ describe('route', () => {
           recipient: 'julien@unlock-protocol.com',
         }
         const transporter = {
-          sendMail: jest.fn((options, callback) => {
-            return callback(null, {
+          sendMail: jest.fn(() => {
+            return Promise.resolve({
               messageId: 'abc123',
             })
           }),
@@ -134,19 +131,16 @@ describe('route', () => {
           return transporter
         })
 
-        route(args, (error, result) => {
-          expect(error).toBe(null)
-          expect(result).toEqual({
-            messageId: 'abc123',
-          })
-          done()
+        const result = await route(args)
+        expect(result).toEqual({
+          messageId: 'abc123',
         })
       })
     })
 
     describe('when the email was not sent succesfuly', () => {
-      it('should yield the error message', (done) => {
-        expect.assertions(3)
+      it('should yield the error message', async () => {
+        expect.assertions(2)
         templates.template = {
           subject: jest.fn(() => 'subject'),
           text: jest.fn(() => 'text'),
@@ -157,8 +151,8 @@ describe('route', () => {
           recipient: 'julien@unlock-protocol.com',
         }
         const transporter = {
-          sendMail: jest.fn((options, callback) => {
-            return callback(new Error('something went wrong'))
+          sendMail: jest.fn(() => {
+            return Promise.reject(new Error('something went wrong'))
           }),
         }
         nodemailer.createTransport = jest.fn((params) => {
@@ -166,11 +160,11 @@ describe('route', () => {
           return transporter
         })
 
-        route(args, (error, result) => {
-          expect(result).toBe(undefined)
-          expect(error.message).toBe('something went wrong')
-          done()
-        })
+        try {
+          await route(args)
+        } catch (e) {
+          expect(e.message).toEqual('something went wrong')
+        }
       })
     })
   })

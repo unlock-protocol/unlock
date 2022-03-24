@@ -1,4 +1,3 @@
-/* eslint no-console: 0 */
 /* eslint import/prefer-default-export: 0 */
 import { route } from './route'
 import logger from '../logger'
@@ -8,7 +7,7 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
-export const handler = (event, context, responseCallback) => {
+export const handler = async (event, context, responseCallback) => {
   const callback = (err /** alway null! */, response) => {
     if (response.statusCode >= 400) {
       logger.error({
@@ -61,21 +60,17 @@ export const handler = (event, context, responseCallback) => {
   }
 
   try {
-    route(body, (error, response) => {
-      if (error) {
-        return callback(null, {
-          statusCode: 400,
-          body: 'Client Error',
-          details: error.toString(),
-        })
-      }
+    const response = await route(body)
 
-      return callback(null, {
-        statusCode: 204,
-        details: response,
-      })
+    return callback(null, {
+      statusCode: 204,
+      details: response,
     })
   } catch (error) {
+    logger.error({
+      event,
+      error,
+    })
     return callback(null, {
       statusCode: 500,
       body: 'Server Error',
