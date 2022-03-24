@@ -176,7 +176,6 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
           <FormLockDuration>
             <input
               type="text"
-              step="1"
               inputMode="numeric"
               name="expirationDuration"
               onChange={handleChangeExpirationDuration}
