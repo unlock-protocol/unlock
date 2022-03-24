@@ -31,18 +31,12 @@ contract MixinGrantKeys is
     for(uint i = 0; i < _recipients.length; i++) {
       require(_recipients[i] != address(0), 'INVALID_ADDRESS');
 
-      uint tokenId = _createNewKey(
+      // an event is triggered
+      _createNewKey(
         _recipients[i],
         _keyManagers[i],  
         _expirationTimestamps[i]
-      );
-
-      // trigger event
-      emit Transfer(
-        address(0), // This is a creation.
-        _recipients[i],
-        tokenId
-      );      
+      ); 
     }
   }
 
