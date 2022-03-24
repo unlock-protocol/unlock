@@ -1,10 +1,16 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { ethers } from 'ethers'
 import logger from '../logger'
 
-const { ethers } = require('ethers')
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
+
+interface transactionOptionsInterface {
+  maxPriorityFeePerGas?: ethers.BigNumber
+  maxFeePerGas?: ethers.BigNumber
+  gasPrice?: ethers.BigNumber
+}
 
 export default class Dispatcher {
   /**
@@ -27,28 +33,18 @@ export default class Dispatcher {
       provider
     )
 
-    const feeData = await provider.getFeeData()
-    const transactionOptions = {
-      maxPriorityFeePerGas: null,
-      maxFeePerGas: null,
-      gasPrice: null,
-    }
-    if (network === 137) {
-      // On polygon hardcode values
-      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('1000', 'gwei')
-      transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '500',
-        'gwei'
-      )
-      // transactionOptions.gasPrice = ethers.utils.parseUnits('3000', 'gwei')
-    } else if (feeData?.maxPriorityFeePerGas && feeData?.maxFeePerGas) {
-      // We bump priority by 20% to increase speed of execution
-      transactionOptions.maxFeePerGas = ethers.BigNumber.from('2')
+    const feeData = await provider.getFeeData().catch(() => null)
+
+    const transactionOptions: transactionOptionsInterface = {}
+
+    // We bump priority by 50% to increase speed of execution
+    if (feeData?.maxPriorityFeePerGas && feeData?.maxFeePerGas) {
+      transactionOptions.maxFeePerGas = ethers.BigNumber.from('1.5')
       transactionOptions.maxPriorityFeePerGas =
-        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('2'))
+        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('1.5'))
     } else if (feeData?.gasPrice) {
-      transactionOptions.gasPrice = feeData.maxFeePerGas.mul(
-        ethers.BigNumber.from('2')
+      transactionOptions.gasPrice = feeData.gasPrice.mul(
+        ethers.BigNumber.from('1.5')
       )
     }
 
