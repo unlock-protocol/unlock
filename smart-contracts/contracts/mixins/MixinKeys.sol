@@ -136,7 +136,8 @@ contract MixinKeys is
   * Migrate data from the previous single owner => key mapping to 
   * the new data structure w multiple tokens.
   * @param _length the max nhumber of records to update (default to totalSupply if superior)
-  * @dev 
+  * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
+  * variable to the latest/current lock version
   */
   function migrateKeys(uint _length) public {
     _onlyLockManager();

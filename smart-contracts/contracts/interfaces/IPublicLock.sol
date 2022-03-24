@@ -518,4 +518,21 @@ interface IPublicLock
     function owner() external view returns (address);
     function setOwner(address account) external;
     function isOwner(address account) external returns (bool);
+
+  /**
+  * Migrate data from the previous single owner => key mapping to 
+  * the new data structure w multiple tokens.
+  * @param _length the max nhumber of records to update (default to totalSupply if superior)
+  * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
+  * variable to the latest/current lock version
+  */
+  function migrateKeys(uint _length) external;
+
+  /**
+  * Returns the version number of the data schema currently used by the lock
+  * @notice if this is different from `publicLockVersion`, then the ability to purchase, grant
+  * or extend keys is disabled.
+  * @dev will return 0 if no ;igration has ever been run
+  */
+  function schemaVersion() external view returns (uint);
 }
