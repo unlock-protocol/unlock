@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
+import { ActionButton } from './buttons/ActionButton'
+import Media from '../../theme/media'
 import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
 import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
 import { InlineModal } from './InlineModal'
 import { ExpireAndRefund } from './ExpireAndRefund'
-import styles from './MetadataTable.module.scss'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -62,13 +64,13 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
       return (
-        <p>
+        <Message>
           No keys have been purchased yet. Return to your{' '}
           <Link href="/dashboard">
             <a>Dashboard</a>
           </Link>
           .
-        </p>
+        </Message>
       )
     }
 
@@ -86,23 +88,23 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setShowExpireAndRefundModal(false)
   }
   return (
-    <section className={styles.metadataTableSection}>
+    <Wrapper>
       <InlineModal
         active={showExpireAndRefundModal}
         dismiss={closeExpireAndRefund}
       >
         <ExpireAndRefund />
       </InlineModal>
-      <table>
+      <Table>
         <thead>
           <tr>
             {columns.map((col) => {
-              return <th key={col}>{camelCaseToTitle(col)}</th>
+              return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
-            {isLockManager && <th key="actions">Actions</th>}
+            {isLockManager && <Th key="actions">Actions</Th>}
           </tr>
         </thead>
-        <tbody>
+        <Tbody>
           {metadata.map((datum) => {
             const { lockName, expiration, keyholderAddress } = datum
             const key = `${lockName}${expiration}${keyholderAddress}`
@@ -110,44 +112,92 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
               <tr key={key}>
                 {columns.map((col) => {
                   return (
-                    <td key={col}>
+                    <Td key={col}>
                       <Cell kind={col} value={datum[col]} />
-                    </td>
+                    </Td>
                   )
                 })}
                 {isLockManager && (
-                  <td>
+                  <Td>
                     <button
-                      className={styles.button}
+                      className="bg-gray-200 rounded px-2 py-1 text-sm"
                       type="button"
                       disabled={!isLockManager}
                       onClick={onExpireAndRefund}
                     >
                       Expire and Refund
                     </button>
-                  </td>
+                  </Td>
                 )}
               </tr>
             )
           })}
-        </tbody>
-      </table>
-      <button
-        type="button"
+        </Tbody>
+      </Table>
+      <DownloadButton
         disabled
-        className={styles.downloadButton}
         onClick={() => {
           downloadAsCSV(columns, metadata)
         }}
       >
         Export as CSV
-      </button>
-    </section>
+      </DownloadButton>
+    </Wrapper>
   )
 }
 
 MetadataTable.defaultProps = {
   filter: '',
 }
+
+const Wrapper = styled.section`
+  grid-gap: 16px;
+  display: flex;
+  flex-direction: column;
+`
+
+const DownloadButton = styled(ActionButton)`
+  grid-row: 2;
+  grid-column: 10/13;
+  padding: 5px;
+  align-self: end;
+  height: 40px;
+  ${Media.phone`
+    display: none;
+  `};
+`
+
+const Table = styled.table`
+  grid-column: 1/13;
+  width: 100%;
+  border-collapse: collapse;
+`
+
+const Tbody = styled.tbody`
+  color: var(--slate);
+`
+
+const Td = styled.td`
+  padding: 0.5rem 0rem;
+  text-align: left;
+`
+
+const Th = styled.th`
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+  font-weight: 200;
+  padding: 0.5rem 0rem;
+  text-align: left;
+`
+
+const Message = styled.p`
+  color: var(--grey);
+`
 
 export default MetadataTable
