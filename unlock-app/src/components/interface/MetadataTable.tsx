@@ -26,8 +26,8 @@ interface MetadataTableProps {
   columns: string[]
   metadata: KeyMetadata[]
   filter?: string
-  isLockManager: boolean
-  lockAddresses: string[]
+  isLockManager?: boolean
+  lockAddresses?: string[]
 }
 
 /**
@@ -157,8 +157,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     </Wrapper>
   )
 }
+
 MetadataTable.defaultProps = {
   filter: '',
+  isLockManager: false,
+  lockAddresses: [],
 }
 
 const Wrapper = styled.section`
