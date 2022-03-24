@@ -153,6 +153,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     </Wrapper>
   )
 }
+
 MetadataTable.defaultProps = {
   filter: '',
   isLockManager: false,
