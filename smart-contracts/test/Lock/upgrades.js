@@ -69,7 +69,7 @@ describe('PublicLock upgrades', () => {
       60 * 60 * 24 * 30, // 30 days
       ethers.constants.AddressZero,
       keyPrice,
-      100,
+      130,
       'A neat upgradeable lock!',
     ]
 
@@ -183,10 +183,20 @@ describe('PublicLock upgrades', () => {
     })
 
     describe('complete data migration', () => {
+      let updatedRecordsCount
+
       beforeEach(async () => {
         // migrate the keys
+        const calldata = ethers.utils.defaultAbiCoder.encode(['uint'], [100])
         const [, lockOwner] = await ethers.getSigners()
-        await lock.connect(lockOwner).migrate()
+        const tx = await lock.connect(lockOwner).migrate(calldata)
+        const { events } = await tx.wait()
+        const { args } = events.find((v) => v.event === 'KeysMigrated')
+        updatedRecordsCount = args.updatedRecordsCount
+      })
+
+      it('fire the correct event w updatedRecordsCount', async () => {
+        assert.equal(updatedRecordsCount.toNumber(), totalSupplyBefore)
       })
 
       it('schemaVersion has been updated', async () => {

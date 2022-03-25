@@ -313,8 +313,8 @@ contract Unlock is
     proxyAdmin.upgrade(proxy, impl);
 
     // let's upgrade the data schema
-    // to be called again after the upgrade is done
-    lock.migrate();
+    // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
+    lock.migrate('0x');
 
     emit LockUpgraded(lockAddress, version);
     return lockAddress;

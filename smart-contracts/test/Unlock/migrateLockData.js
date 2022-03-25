@@ -23,6 +23,48 @@ const artifactsPath = path.resolve(
 const versionNumber = 9
 const keyPrice = ethers.utils.parseEther('0.01')
 
+// helpers
+const purchaseFails = async (lock) => {
+  const signers = await ethers.getSigners()
+  const someBuyers = signers.slice(1, 5)
+  await reverts(
+    lock.connect(someBuyers[0]).purchase(
+      [],
+      someBuyers.map((k) => k.address),
+      someBuyers.map(() => web3.utils.padLeft(0, 40)),
+      someBuyers.map(() => web3.utils.padLeft(0, 40)),
+      [],
+      {
+        value: (keyPrice * someBuyers.length).toFixed(),
+      }
+    ),
+    'MIGRATION_REQUIRED'
+  )
+}
+
+const grantKeysFails = async (lock) => {
+  const signers = await ethers.getSigners()
+  const someBuyers = signers.slice(1, 5)
+  await reverts(
+    lock.connect(someBuyers[0]).grantKeys(
+      someBuyers.map((k) => k.address),
+      someBuyers.map(() => Date.now()),
+      someBuyers.map(() => web3.utils.padLeft(0, 40))
+    ),
+    'MIGRATION_REQUIRED'
+  )
+}
+
+const extendFails = async (lock) => {
+  const [, generousBuyer] = await ethers.getSigners()
+  await reverts(
+    lock.connect(generousBuyer).extend(0, 1, web3.utils.padLeft(0, 40), [], {
+      value: keyPrice,
+    }),
+    'MIGRATION_REQUIRED'
+  )
+}
+
 describe('upgradeLock / data migration', () => {
   let unlock
   let lock
@@ -50,7 +92,7 @@ describe('upgradeLock / data migration', () => {
     await fs.remove(artifactsPath)
   })
 
-  beforeEach(async () => {
+  before(async () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy Unlock
@@ -87,7 +129,7 @@ describe('upgradeLock / data migration', () => {
       60 * 60 * 24 * 30, // 30 days
       ethers.constants.AddressZero,
       ethers.utils.parseEther('0.01'),
-      200, // 200 available keys
+      1000, // available keys
       'A neat upgradeable lock!',
     ]
     const calldata = await createLockHash({ args, from: creator.address })
@@ -116,13 +158,14 @@ describe('upgradeLock / data migration', () => {
     let keyOwners
     let tokenIds
     let expirationTimestamps
+    let totalSupply = 500
 
-    beforeEach(async () => {
+    before(async () => {
       const [, generousBuyer] = await ethers.getSigners()
 
-      // create 110 random wallets
+      // create 500 random wallets
       keyOwners = await Promise.all(
-        Array(110)
+        Array(totalSupply)
           .fill(0)
           .map(() => ethers.Wallet.createRandom())
       )
@@ -146,7 +189,7 @@ describe('upgradeLock / data migration', () => {
       )
 
       // make sure buys went thru
-      assert.equal((await lock.totalSupply()).toNumber(), 110)
+      assert.equal((await lock.totalSupply()).toNumber(), totalSupply)
 
       tokenIds = await Promise.all(
         keyOwners.map((b) => lock.getTokenIdFor(b.address))
@@ -183,8 +226,14 @@ describe('upgradeLock / data migration', () => {
       assert.equal(version, pastVersion + 1)
     })
 
+    describe('features for key are deactivated', () => {
+      it('purchase should fail ', async () => await purchaseFails(lock))
+      it('grantKeys should fail ', async () => await grantKeysFails(lock))
+      it('extend should fail ', async () => await extendFails(lock))
+    })
+
     it('should have correct totalSupply', async () => {
-      assert.equal((await lock.totalSupply()).toNumber(), 110)
+      assert.equal((await lock.totalSupply()).toNumber(), totalSupply)
     })
 
     it('Should have upgraded the lock with the new template', async () => {
@@ -225,65 +274,67 @@ describe('upgradeLock / data migration', () => {
       }
     })
 
-    describe('features for key are deactivated', () => {
-      let someBuyers
-      beforeEach(async () => {
-        const signers = await ethers.getSigners()
-        someBuyers = signers.slice(1, 5)
-      })
-
-      it('purchase should fail ', async () => {
-        await reverts(
-          lock.connect(someBuyers[0]).purchase(
-            [],
-            someBuyers.map((k) => k.address),
-            someBuyers.map(() => web3.utils.padLeft(0, 40)),
-            someBuyers.map(() => web3.utils.padLeft(0, 40)),
-            [],
-            {
-              value: (keyPrice * keyOwners.length).toFixed(),
-            }
-          ),
-          'MIGRATION_REQUIRED'
-        )
-      })
-
-      it('grantKeys should fail ', async () => {
-        await reverts(
-          lock.connect(someBuyers[0]).grantKeys(
-            someBuyers.map((k) => k.address),
-            someBuyers.map(() => Date.now()),
-            someBuyers.map(() => web3.utils.padLeft(0, 40))
-          ),
-          'MIGRATION_REQUIRED'
-        )
-      })
-      it('extend should fail ', async () => {
-        const [, generousBuyer] = await ethers.getSigners()
-        await reverts(
-          lock
-            .connect(generousBuyer)
-            .extend(0, 1, web3.utils.padLeft(0, 40), [], {
-              value: keyPrice,
-            }),
-          'MIGRATION_REQUIRED'
-        )
-      })
-    })
-
-    describe('relaunch remaining data migration', () => {
+    describe('launch a partial data migration', () => {
       let updatedRecordsCount
+
       beforeEach(async () => {
         // migrate only a few keys
         const [, lockOwner] = await ethers.getSigners()
-        const tx = await lock.connect(lockOwner).migrate()
+
+        // migrate a batch of 100
+        const calldata = ethers.utils.defaultAbiCoder.encode(['uint'], [200])
+        const tx = await lock.connect(lockOwner).migrate(calldata)
         const { events } = await tx.wait()
         const { args } = events.find((event) => event.event === 'KeysMigrated')
         updatedRecordsCount = args.updatedRecordsCount
       })
 
+      describe('features for key are deactivated', () => {
+        it('purchase should fail ', async () => await purchaseFails(lock))
+        it('grantKeys should fail ', async () => await grantKeysFails(lock))
+        it('extend should fail ', async () => await extendFails(lock))
+      })
+
       it('returns the correct number of updated records', async () => {
-        assert.equal(updatedRecordsCount, 10)
+        assert.equal(updatedRecordsCount.toNumber(), 100)
+      })
+
+      it('batch of 100 next records have been updated', async () => {
+        for (let i = 100; i < 200; i++) {
+          const tokenId = i + 1
+          assert.equal(await lock.isValidKey(tokenId), true)
+          assert.equal(await lock.ownerOf(tokenId), keyOwners[i].address)
+          assert.equal(await lock.balanceOf(keyOwners[i].address), 1)
+          assert.equal(await lock.getHasValidKey(keyOwners[i].address), true)
+          assert.equal(
+            (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
+            expirationTimestamps[i].toNumber()
+          )
+        }
+      })
+    })
+
+    describe('finalize the migration', () => {
+      before(async () => {
+        // migrate only a few keys
+        const [, lockOwner] = await ethers.getSigners()
+
+        // 200 already migrated, now add a first batch of 100
+        const calldata1 = ethers.utils.defaultAbiCoder.encode(['uint'], [300])
+        const tx = await lock.connect(lockOwner).migrate(calldata1)
+        const { events } = await tx.wait()
+        const { args } = events.find((v) => v.event === 'KeysMigrated')
+        assert.equal(args.updatedRecordsCount.toNumber(), 100)
+
+        // migrate another batch of 200
+        const calldata2 = ethers.utils.defaultAbiCoder.encode(
+          ['uint'],
+          [totalSupply]
+        )
+        const tx2 = await lock.connect(lockOwner).migrate(calldata2)
+        const { events: events2 } = await tx2.wait()
+        const { args: args2 } = events2.find((v) => v.event === 'KeysMigrated')
+        assert.equal(args2.updatedRecordsCount.toNumber(), 200)
       })
 
       it('rest of the records have been updated', async () => {

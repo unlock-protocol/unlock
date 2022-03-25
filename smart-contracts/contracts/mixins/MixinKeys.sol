@@ -139,12 +139,17 @@ contract MixinKeys is
   /**
   * Migrate data from the previous single owner => key mapping to 
   * the new data structure w multiple tokens.
+  * @param _calldata an ABI-encoded representation of the params 
+  * for v10: (uint upToIndex) : the index of the last record to migrate
+  * the loop will always starts from 0 until `upToIndex`, ignoing records that have already been migrated
   * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
   * variable to the latest/current lock version
   */
-  function migrate() public {
+  function migrate(
+    bytes calldata _calldata
+  ) public {
     
-    // make sure we have correct data version to migrate
+    // make sure we have correct data version before migrating
     require(
       (
         (schemaVersion == publicLockVersion() - 1)
@@ -154,17 +159,28 @@ contract MixinKeys is
       'SCHEMA_VERSION_NOT_CORRECT'
     );
 
+    // count the records that are actually migrated
     uint updatedRecordsCount;
-    uint recordsToUpdate = totalSupply();
 
+    // the index of the last record to migrate in this call
+    uint upToIndex;
+
+    // the total number of records to migrate
+    uint totalRecordsToMigrate = totalSupply();
+    
     // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
     // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
-    uint _length;
     if( msg.sender == address(unlockProtocol) ) {
-      _length = 100;
+      upToIndex = 100;
+    } else {
+      // decode param
+      (upToIndex) = abi.decode(_calldata, (uint));
     }
-    if(_length > recordsToUpdate) _length = recordsToUpdate;
-    for (uint256 i = 0; i < _length; i++) {
+
+    // cap the number of records to migrate to totalSupply
+    if(upToIndex > totalRecordsToMigrate) upToIndex = totalRecordsToMigrate;
+
+    for (uint256 i = 0; i < upToIndex; i++) {
       // tokenId starts at 1
       uint tokenId = i + 1;
       address keyOwner = _ownerOf[tokenId];
@@ -172,6 +188,7 @@ contract MixinKeys is
 
       // make sure key exists
       if(k.tokenId != 0 && k.expirationTimestamp != 0) {
+
         // copy key in new mapping
         _keys[i + 1] = Key(k.tokenId, k.expirationTimestamp);
         
@@ -189,15 +206,17 @@ contract MixinKeys is
         updatedRecordsCount++;
       }
 
-      recordsToUpdate--;
+      totalRecordsToMigrate--;
     }
     
     // once data has been all upgraded, enable lock
-    if(recordsToUpdate == 0) {
+    if(totalRecordsToMigrate == 0) {
       schemaVersion = publicLockVersion();
     }
 
-    emit KeysMigrated(updatedRecordsCount);
+    emit KeysMigrated(
+      updatedRecordsCount // records that have been migrated
+    );
   }
 
   /**
