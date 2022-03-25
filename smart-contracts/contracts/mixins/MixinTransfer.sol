@@ -137,7 +137,7 @@ contract MixinTransfer is
   }
 
   /**
-   * @notice An ERC-721 style transfer.
+   * @notice An ERC-20 style transfer.
    * @param _tokenId the Id of the token to send
    * @param _to the destination address
    * @return success bool success/failure of the transfer
