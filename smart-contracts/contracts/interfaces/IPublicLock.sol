@@ -535,4 +535,10 @@ interface IPublicLock
   * @dev will return 0 if no ;igration has ever been run
   */
   function schemaVersion() external view returns (uint);
+
+  /**
+   * Set the schema version to the latest
+   * @notice only lock manager call call this
+   */
+  function updateSchemaVersion() external;
 }

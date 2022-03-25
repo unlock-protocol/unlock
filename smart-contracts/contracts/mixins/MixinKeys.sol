@@ -140,9 +140,11 @@ contract MixinKeys is
   * Migrate data from the previous single owner => key mapping to 
   * the new data structure w multiple tokens.
   * @param _calldata an ABI-encoded representation of the params 
-  * for v10: (uint upToIndex) : the index of the last record to migrate
-  * the loop will always starts from 0 until `upToIndex`, ignoing records that have already been migrated
-  * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
+  * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
+  * -  `_startIndex` : the index of the first record to migrate
+  * -  `_nbRecordsToUpdate` : number of records to migrate
+  * @dev if all records can be processed at once, the `schemaVersion` will be updated
+  * if not, you will have to call `updateSchemaVersion`
   * variable to the latest/current lock version
   */
   function migrate(
@@ -160,27 +162,30 @@ contract MixinKeys is
     );
 
     // count the records that are actually migrated
+    uint startIndex = 0;
+    
+    // count the records that are actually migrated
     uint updatedRecordsCount;
 
     // the index of the last record to migrate in this call
-    uint upToIndex;
+    uint nbRecordsToUpdate;
 
     // the total number of records to migrate
-    uint totalRecordsToMigrate = totalSupply();
+    uint totalSupply = totalSupply();
     
     // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
     // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
     if( msg.sender == address(unlockProtocol) ) {
-      upToIndex = 100;
+      nbRecordsToUpdate = 100;
     } else {
       // decode param
-      (upToIndex) = abi.decode(_calldata, (uint));
+      (startIndex, nbRecordsToUpdate) = abi.decode(_calldata, (uint, uint));
     }
 
     // cap the number of records to migrate to totalSupply
-    if(upToIndex > totalRecordsToMigrate) upToIndex = totalRecordsToMigrate;
+    if(nbRecordsToUpdate > totalSupply) nbRecordsToUpdate = totalSupply;
 
-    for (uint256 i = 0; i < upToIndex; i++) {
+    for (uint256 i = startIndex; i < startIndex + nbRecordsToUpdate; i++) {
       // tokenId starts at 1
       uint tokenId = i + 1;
       address keyOwner = _ownerOf[tokenId];
@@ -205,18 +210,25 @@ contract MixinKeys is
         // keep track of updated records
         updatedRecordsCount++;
       }
-
-      totalRecordsToMigrate--;
     }
     
-    // once data has been all upgraded, enable lock
-    if(totalRecordsToMigrate == 0) {
+    // enable lock if all keys has been migrated in a single run
+    if(nbRecordsToUpdate >= totalSupply) {
       schemaVersion = publicLockVersion();
     }
 
     emit KeysMigrated(
       updatedRecordsCount // records that have been migrated
     );
+  }
+
+  /**
+   * Set the schema version to the latest
+   * @notice only lock manager call call this
+   */
+  function updateSchemaVersion() public {
+    _onlyLockManager();
+    schemaVersion = publicLockVersion();
   }
 
   /**

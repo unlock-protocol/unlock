@@ -282,7 +282,10 @@ describe('upgradeLock / data migration', () => {
         const [, lockOwner] = await ethers.getSigners()
 
         // migrate a batch of 100
-        const calldata = ethers.utils.defaultAbiCoder.encode(['uint'], [200])
+        const calldata = ethers.utils.defaultAbiCoder.encode(
+          ['uint', 'uint'],
+          [100, 100]
+        )
         const tx = await lock.connect(lockOwner).migrate(calldata)
         const { events } = await tx.wait()
         const { args } = events.find((event) => event.event === 'KeysMigrated')
@@ -320,7 +323,10 @@ describe('upgradeLock / data migration', () => {
         const [, lockOwner] = await ethers.getSigners()
 
         // 200 already migrated, now add a first batch of 100
-        const calldata1 = ethers.utils.defaultAbiCoder.encode(['uint'], [300])
+        const calldata1 = ethers.utils.defaultAbiCoder.encode(
+          ['uint', 'uint'],
+          [200, 100]
+        )
         const tx = await lock.connect(lockOwner).migrate(calldata1)
         const { events } = await tx.wait()
         const { args } = events.find((v) => v.event === 'KeysMigrated')
@@ -328,8 +334,8 @@ describe('upgradeLock / data migration', () => {
 
         // migrate another batch of 200
         const calldata2 = ethers.utils.defaultAbiCoder.encode(
-          ['uint'],
-          [totalSupply]
+          ['uint', 'uint'],
+          [300, 200]
         )
         const tx2 = await lock.connect(lockOwner).migrate(calldata2)
         const { events: events2 } = await tx2.wait()
@@ -352,66 +358,84 @@ describe('upgradeLock / data migration', () => {
         }
       })
 
-      it('schemaVersion has been updated', async () => {
-        assert.equal(
-          (await lock.schemaVersion()).toNumber(),
-          await lock.publicLockVersion()
-        )
+      it('schemaVersion still undefined', async () => {
+        assert.equal((await lock.schemaVersion()).toNumber(), 0)
       })
 
-      describe('features for key are now activated', () => {
-        let someBuyers
-        beforeEach(async () => {
-          const signers = await ethers.getSigners()
-          someBuyers = signers.slice(1, 5)
-        })
-        it('purchase should now work ', async () => {
-          const tx = await lock.connect(someBuyers[0]).purchase(
-            [],
-            someBuyers.map((k) => k.address),
-            someBuyers.map(() => web3.utils.padLeft(0, 40)),
-            someBuyers.map(() => web3.utils.padLeft(0, 40)),
-            [],
-            {
-              value: (keyPrice * someBuyers.length).toFixed(),
-            }
-          )
-          const { events } = await tx.wait()
+      describe('features for key are deactivated', () => {
+        it('purchase should fail ', async () => await purchaseFails(lock))
+        it('grantKeys should fail ', async () => await grantKeysFails(lock))
+        it('extend should fail ', async () => await extendFails(lock))
+      })
 
-          const tokenIds = events
-            .filter((v) => v.event === 'Transfer')
-            .map(({ args }) => args.tokenId)
+      describe('activate the schema version', async () => {
+        before(async () => {
+          const [, lockManager] = await ethers.getSigners()
 
-          assert.equal(tokenIds.length, someBuyers.length)
+          await lock.connect(lockManager).updateSchemaVersion()
         })
 
-        it('grantKeys should now work ', async () => {
-          const tx = await lock.connect(someBuyers[0]).grantKeys(
-            someBuyers.map((k) => k.address),
-            someBuyers.map(() => Date.now()),
-            someBuyers.map(() => web3.utils.padLeft(0, 40))
-          )
-          const { events } = await tx.wait()
-          const tokenIds = events
-            .filter((v) => v.event === 'Transfer')
-            .map(({ args }) => args.tokenId)
-
-          assert.equal(tokenIds.length, someBuyers.length)
-        })
-
-        it('extend should now work ', async () => {
-          const tx = await lock
-            .connect(someBuyers[0])
-            .extend(0, tokenIds[0], web3.utils.padLeft(0, 40), [], {
-              value: keyPrice,
-            })
-          await tx.wait()
+        it('schemaVersion has been updated', async () => {
           assert.equal(
-            (await lock.keyExpirationTimestampFor(tokenIds[0])).gt(
-              expirationTimestamps[0]
-            ),
-            true
+            (await lock.schemaVersion()).toNumber(),
+            await lock.publicLockVersion()
           )
+        })
+
+        describe('features for key are now activated', () => {
+          let someBuyers
+          beforeEach(async () => {
+            const signers = await ethers.getSigners()
+            someBuyers = signers.slice(1, 5)
+          })
+          it('purchase should now work ', async () => {
+            const tx = await lock.connect(someBuyers[0]).purchase(
+              [],
+              someBuyers.map((k) => k.address),
+              someBuyers.map(() => web3.utils.padLeft(0, 40)),
+              someBuyers.map(() => web3.utils.padLeft(0, 40)),
+              [],
+              {
+                value: (keyPrice * someBuyers.length).toFixed(),
+              }
+            )
+            const { events } = await tx.wait()
+
+            const tokenIds = events
+              .filter((v) => v.event === 'Transfer')
+              .map(({ args }) => args.tokenId)
+
+            assert.equal(tokenIds.length, someBuyers.length)
+          })
+
+          it('grantKeys should now work ', async () => {
+            const tx = await lock.connect(someBuyers[0]).grantKeys(
+              someBuyers.map((k) => k.address),
+              someBuyers.map(() => Date.now()),
+              someBuyers.map(() => web3.utils.padLeft(0, 40))
+            )
+            const { events } = await tx.wait()
+            const tokenIds = events
+              .filter((v) => v.event === 'Transfer')
+              .map(({ args }) => args.tokenId)
+
+            assert.equal(tokenIds.length, someBuyers.length)
+          })
+
+          it('extend should now work ', async () => {
+            const tx = await lock
+              .connect(someBuyers[0])
+              .extend(0, tokenIds[0], web3.utils.padLeft(0, 40), [], {
+                value: keyPrice,
+              })
+            await tx.wait()
+            assert.equal(
+              (await lock.keyExpirationTimestampFor(tokenIds[0])).gt(
+                expirationTimestamps[0]
+              ),
+              true
+            )
+          })
         })
       })
     })

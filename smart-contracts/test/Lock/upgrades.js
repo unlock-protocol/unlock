@@ -187,7 +187,10 @@ describe('PublicLock upgrades', () => {
 
       beforeEach(async () => {
         // migrate the keys
-        const calldata = ethers.utils.defaultAbiCoder.encode(['uint'], [100])
+        const calldata = ethers.utils.defaultAbiCoder.encode(
+          ['uint', 'uint'],
+          [0, 100]
+        )
         const [, lockOwner] = await ethers.getSigners()
         const tx = await lock.connect(lockOwner).migrate(calldata)
         const { events } = await tx.wait()
