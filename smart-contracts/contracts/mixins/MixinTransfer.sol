@@ -39,7 +39,7 @@ contract MixinTransfer is
 
   /**
   * @notice Allows the key owner to safely transfer a portion of the remaining time 
-  * from their key to a new keyx
+  * from their key to a new key
   * @param _tokenIdFrom the key to share
   * @param _to The recipient of the shared time
   * @param _timeShared The amount of time shared
