@@ -35,7 +35,7 @@ contract MixinKeys is
     uint updatedRecordsCount
   );
 
-  // DEPREC: dont use
+  // Deprecated: don't use this anymore as we know enable multiple keys per owner.
   mapping (address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
