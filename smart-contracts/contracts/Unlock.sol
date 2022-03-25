@@ -313,7 +313,6 @@ contract Unlock is
     proxyAdmin.upgrade(proxy, impl);
 
     // let's upgrade the data schema
-    // for lock that have more than 100 active keys, the `migrate` function will need
     // to be called again after the upgrade is done
     lock.migrate();
 
