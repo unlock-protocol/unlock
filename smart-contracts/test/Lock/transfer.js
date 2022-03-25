@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -10,6 +11,9 @@ const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 let unlock
 let lock
 let tokenIds
+let newTokenId
+let originalDuration
+let blockTs
 
 contract('Lock / transfer', (accounts) => {
   const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
@@ -45,54 +49,80 @@ contract('Lock / transfer', (accounts) => {
       .map(({ args }) => args.tokenId)
   })
 
-  describe('transfer of single key', () => {
-    let originalExpiration
-
+  describe('transfer a percentage of a key', () => {
     beforeEach(async () => {
-      originalExpiration = await lock.keyExpirationTimestampFor(tokenIds[0])
-      await lock.transfer(tokenIds[0], destination, { from: singleKeyOwner })
+      const originalExpiration = await lock.keyExpirationTimestampFor(
+        tokenIds[0]
+      )
+      const tx = await lock.transfer(tokenIds[0], destination, 2500, {
+        from: singleKeyOwner,
+      })
+
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      newTokenId = args.tokenId
+      const { timestamp } = await ethers.provider.getBlock(tx.blockNumber)
+      blockTs = timestamp
+      originalDuration = originalExpiration - timestamp
     })
 
-    it('original owner no longer has a key', async () => {
-      const actual = await lock.getHasValidKey(singleKeyOwner)
-      assert.equal(actual, false)
+    it('original owner still owns the key', async () => {
+      assert.equal(await lock.ownerOf(tokenIds[0]), singleKeyOwner)
     })
 
-    it('new owner has a key', async () => {
+    it('new owner has a new key', async () => {
       assert.equal(await lock.getHasValidKey(destination), true)
-      assert.equal(await lock.ownerOf(tokenIds[0]), destination)
+      assert.equal(await lock.ownerOf(newTokenId), destination)
     })
 
-    it('new owner has the entire time remaining (less fees if applicable)', async () => {
-      const actual = await lock.keyExpirationTimestampFor(tokenIds[0])
-      assert.equal(actual.toString(), originalExpiration.toString())
+    it('new key has the correct amount of time transferred', async () => {
+      const actual = await lock.keyExpirationTimestampFor(newTokenId)
+      assert.equal(
+        actual.toNumber() - blockTs,
+        Math.floor(originalDuration / 4)
+      )
     })
   })
 
-  describe('transfer of multiple keys', () => {
+  describe('transfer of the entire key', () => {
     beforeEach(async () => {
-      await lock.transfer(tokenIds[1], destination, {
-        from: multipleKeyOwner,
+      const originalExpiration = await lock.keyExpirationTimestampFor(
+        tokenIds[0]
+      )
+      const tx = await lock.transfer(tokenIds[0], destination, 10000, {
+        from: singleKeyOwner,
       })
-      await lock.transfer(tokenIds[2], destination, {
-        from: multipleKeyOwner,
-      })
+
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      newTokenId = args.tokenId
+      const { timestamp } = await ethers.provider.getBlock(tx.blockNumber)
+      blockTs = timestamp
+      originalDuration = originalExpiration - timestamp
     })
 
-    it('previous owners has no keys anymore', async () => {
-      assert.equal(await lock.balanceOf(multipleKeyOwner), 0)
+    it('original owner still owns the key', async () => {
+      assert.equal(await lock.ownerOf(tokenIds[0]), singleKeyOwner)
     })
 
-    it('new owner also has the keys', async () => {
-      assert.equal(await lock.ownerOf(tokenIds[1]), destination)
-      assert.equal(await lock.ownerOf(tokenIds[2]), destination)
-      assert.equal(await lock.balanceOf(destination), 2)
+    it('original key is not valid anymore', async () => {
+      assert.equal(await lock.isValidKey(tokenIds[0]), false)
+    })
+
+    it('new owner has a new key', async () => {
+      assert.equal(await lock.getHasValidKey(destination), true)
+      assert.equal(await lock.ownerOf(newTokenId), destination)
+    })
+
+    it('new key has the correct amount of time transferred', async () => {
+      const actual = await lock.keyExpirationTimestampFor(newTokenId)
+      assert.equal(actual.toNumber() - blockTs, originalDuration)
     })
   })
 
   it('reverts when attempting to transfer to self', async () => {
     await reverts(
-      lock.transfer(tokenIds[0], singleKeyOwner, { from: singleKeyOwner }),
+      lock.transfer(tokenIds[0], singleKeyOwner, 1000, {
+        from: singleKeyOwner,
+      }),
       `${VM_ERROR_REVERT_WITH_REASON} 'TRANSFER_TO_SELF'`
     )
   })
@@ -104,7 +134,7 @@ contract('Lock / transfer', (accounts) => {
     })
 
     await reverts(
-      lock.transfer(tokenIds[0], accounts[9], { from: singleKeyOwner }),
+      lock.transfer(tokenIds[0], accounts[9], 1000, { from: singleKeyOwner }),
       'KEY_NOT_VALID'
     )
   })

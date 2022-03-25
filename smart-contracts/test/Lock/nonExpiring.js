@@ -134,7 +134,9 @@ contract('Lock / non expiring', (accounts) => {
   describe('Transfer', () => {
     it('should transfer a valid non-expiring key to someone else', async () => {
       const keyReceiver = accounts[3]
-      await lock.transfer(tokenId, keyReceiver, { from: keyOwner })
+      await lock.transferFrom(keyOwner, keyReceiver, tokenId, {
+        from: keyOwner,
+      })
 
       assert.equal(await lock.getHasValidKey(keyOwner), false)
       assert.equal(await lock.getHasValidKey(keyReceiver), true)
