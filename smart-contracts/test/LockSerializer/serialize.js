@@ -5,7 +5,7 @@ const compareValues = require('./_compareValues')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-contract.skip('LockSerializer', () => {
+contract('LockSerializer', () => {
   let serializer
   let unlock
   let PublicLock

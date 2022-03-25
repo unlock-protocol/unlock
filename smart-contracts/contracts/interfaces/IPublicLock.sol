@@ -111,11 +111,11 @@ interface IPublicLock
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _keyOwner address of the user for whom we search the key
+  * @param _tokenId the id of the key
   * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _keyOwner
+    uint _tokenId
   ) external view returns (uint timestamp);
   
   /**
