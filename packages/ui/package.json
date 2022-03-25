@@ -35,6 +35,7 @@
     "@tailwindcss/typography": "0.5.1",
     "prism-react-renderer": "1.2.1",
     "react-icons": "4.3.1",
+    "react-use-clipboard": "^1.0.7",
     "tailwind-merge": "1.2.0",
     "tailwindcss": "3.0.18"
   },
@@ -62,8 +63,10 @@
     "postcss": "8.4.7",
     "storybook-builder-vite": "0.1.17",
     "tailwindcss": "3.0.23",
+    "tsconfig-paths-webpack-plugin": "^3.5.2",
     "tsup": "5.11.13",
     "typescript": "4.6.2",
-    "vite": "2.8.6"
+    "vite": "2.8.6",
+    "vite-tsconfig-paths": "^3.4.1"
   }
 }
