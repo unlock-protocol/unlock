@@ -147,7 +147,7 @@ contract MixinKeys is
   */
   function migrate(
     bytes calldata _calldata
-  ) public {
+  ) virtual public {
     
     // make sure we have correct data version before migrating
     require(
