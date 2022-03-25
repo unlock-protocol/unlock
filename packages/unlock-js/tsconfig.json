@@ -3,11 +3,14 @@
         "allowJs": true,
         "target": "es2020",
         "allowSyntheticDefaultImports": true,
-        "module": "ESNext",
+        "moduleResolution": "node",
         "strict": true,
         "alwaysStrict": true,
         "forceConsistentCasingInFileNames": true,
-        "checkJs": true,
-        "esModuleInterop": true
+        "checkJs": false,
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
     }
 }
