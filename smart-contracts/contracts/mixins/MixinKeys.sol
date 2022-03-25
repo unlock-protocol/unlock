@@ -157,7 +157,8 @@ contract MixinKeys is
     uint updatedRecordsCount;
     uint recordsToUpdate = totalSupply();
 
-    // default to 100 when sent from Unlock
+    // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
+    // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
     uint _length;
     if( msg.sender == address(unlockProtocol) ) {
       _length = 100;
