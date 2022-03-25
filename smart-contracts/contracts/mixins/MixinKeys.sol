@@ -70,7 +70,7 @@ contract MixinKeys is
   // store all keys: tokenId => token
   mapping(uint256 => Key) private _keys;
   
-  // store ownership: owner => list of tokenIds
+  // store ownership: owner => array of tokens owned by that owner
   mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
   
   // store indexes: owner => list of tokenIds
