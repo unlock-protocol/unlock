@@ -96,6 +96,7 @@ export interface PaywallConfigLock {
   name?: string
   network?: number
   metadataInputs?: MetadataInput[]
+  secret?: string
 }
 
 export enum KeyStatus {
