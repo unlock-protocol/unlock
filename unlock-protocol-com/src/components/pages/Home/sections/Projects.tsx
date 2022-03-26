@@ -30,7 +30,7 @@ export const UNLOCK_PROJECTS = [
     published: 'January 2022',
     title: 'CDAA',
     text: 'CDAA provides industry certification and credentials for digital asset advisors.',
-    href: 'https://twitter.com/PlannerDAO/status/1480991827209641988',
+    href: 'https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/CDAA%20-%20Unlock%20Case%20Study.pdf',
   },
   {
     coverClass:
