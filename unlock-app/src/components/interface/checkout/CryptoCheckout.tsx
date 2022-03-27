@@ -1,6 +1,8 @@
 import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -42,7 +44,7 @@ export const CryptoCheckout = ({
   redirectUri,
 }: CryptoCheckoutProps) => {
   const { networks } = useContext(ConfigContext)
-
+  const [recaptchaValue, setRecaptchaValue] = useState(!paywallConfig.captcha)
   const {
     network: walletNetwork,
     account,
@@ -114,6 +116,8 @@ export const CryptoCheckout = ({
     if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
+        // Use Captcha to get a data signature from locksmith!
+
         const referrer =
           paywallConfig && paywallConfig.referrer
             ? paywallConfig.referrer
@@ -179,7 +183,7 @@ export const CryptoCheckout = ({
 
   const hasValidKeyOrPendingTx = hasValidOrPendingKey || transactionPending
   const showCheckoutButtons =
-    (!transactionPending && !hasValidkey) ||
+    (recaptchaValue && !transactionPending && !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
   return (
@@ -196,7 +200,6 @@ export const CryptoCheckout = ({
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
       />
-
       {!hasValidKeyOrPendingTx && (
         <>
           <CheckoutCustomRecipient
@@ -209,7 +212,6 @@ export const CryptoCheckout = ({
           />
         </>
       )}
-
       {hasValidkey && (
         <>
           <Message>
@@ -229,9 +231,8 @@ export const CryptoCheckout = ({
           />
         </>
       )}
-
       {showCheckoutButtons && (
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '32px' }}>
           <Prompt>Get the membership with:</Prompt>
 
           <CheckoutOptions>
@@ -307,6 +308,12 @@ export const CryptoCheckout = ({
           closeModal={closeModal}
         />
       )}
+      {paywallConfig.captcha && !recaptchaValue && (
+        <ReCAPTCHA
+          sitekey="6LeRVREfAAAAAKVA-qwIH_VgNzkzARp1z00gNy8W"
+          onChange={setRecaptchaValue}
+        />
+      )}
     </>
   )
 }
@@ -370,6 +377,7 @@ const CheckoutOptions = styled.div`
   justify-content: space-around;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 16px;
 `
 
 const Prompt = styled.p`

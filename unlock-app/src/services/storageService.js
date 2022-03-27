@@ -498,4 +498,8 @@ export class StorageService extends EventEmitter {
       return {}
     }
   }
+
+  async getSignedCaptcha(captchaValue, account) {
+    return "datatopasstotx"
+  }
 }
