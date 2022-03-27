@@ -125,7 +125,7 @@ export const CryptoCheckout = ({
         if (paywallConfig.locks[lock.address].secret) {
           data = await generateDataForPurchaseHook(
             paywallConfig.locks[lock.address].secret,
-            purchaseAccount
+            account
           )
         }
 
