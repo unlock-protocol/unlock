@@ -11,13 +11,13 @@ import { PaywallConfig } from '../../../unlockTypes'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
 import {
+  generateDataForPurchaseHook,
   inClaimDisallowList,
   userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
-
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 
 interface CryptoCheckoutProps {
@@ -111,7 +111,7 @@ export const CryptoCheckout = ({
   }
 
   const cryptoPurchase = async () => {
-    if (!cantBuyWithCrypto) {
+    if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
         const referrer =
@@ -120,8 +120,16 @@ export const CryptoCheckout = ({
             : account
 
         const purchaseAccount = isAdvanced ? recipient : account
-        // TODO: handle failed transactions!!
-        await purchaseKey(purchaseAccount, referrer, (hash: string) => {
+
+        let data
+        if (paywallConfig.locks[lock.address].secret) {
+          data = await generateDataForPurchaseHook(
+            paywallConfig.locks[lock.address].secret,
+            account
+          )
+        }
+
+        await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
             hash,
@@ -140,6 +148,10 @@ export const CryptoCheckout = ({
         console.error(error)
         if (error?.code === 4001) {
           toast.error('Please confirm the transaction in your wallet.')
+        } else {
+          toast.error(
+            `This transaction could not be sent as it appears to fail. ${error?.error?.message}`
+          )
         }
         setPurchasePending(false)
       }
