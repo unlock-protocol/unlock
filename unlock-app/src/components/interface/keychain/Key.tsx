@@ -39,6 +39,7 @@ interface KeyBoxProps {
   keyId: string
   network: number
   isKeyExpired: boolean
+  expirationStatus: string
 }
 
 function ExpiredTag() {
@@ -63,6 +64,7 @@ const KeyBox = ({
   keyId,
   network,
   isKeyExpired,
+  expirationStatus,
 }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
 
@@ -118,7 +120,7 @@ const KeyBox = ({
           <>
             <p className="flex items-center gap-2 text-sm">
               <span className="text-gray-400">Valid:</span>
-              <span className="font-medium">{expiration}</span>
+              <span className="font-medium">{expirationStatus}</span>
             </p>
           </>
         )}
@@ -139,8 +141,8 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const wedlockService = useContext(WedlockServiceContext)
   const { watchAsset } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
-  const isKeyExpired =
-    expirationAsDate(expiration).toLocaleLowerCase() === 'expired'
+  const expirationStatus = expirationAsDate(expiration)
+  const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
 
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
@@ -247,6 +249,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         tokenURI={tokenURI}
         keyId={keyId}
         isKeyExpired={isKeyExpired}
+        expirationStatus={expirationStatus}
       />
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
