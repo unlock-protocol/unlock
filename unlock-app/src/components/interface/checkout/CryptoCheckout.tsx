@@ -1,6 +1,8 @@
 import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
+import ReCAPTCHA from 'react-google-recaptcha'
+
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -10,6 +12,8 @@ import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
+import { StorageService } from '../../../services/storageService'
+
 import {
   generateDataForPurchaseHook,
   inClaimDisallowList,
@@ -41,8 +45,9 @@ export const CryptoCheckout = ({
   setCardPurchase,
   redirectUri,
 }: CryptoCheckoutProps) => {
-  const { networks } = useContext(ConfigContext)
-
+  const { networks, services, recaptchaKey } = useContext(ConfigContext)
+  const storageService = new StorageService(services.storage.host)
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
     account,
@@ -122,11 +127,26 @@ export const CryptoCheckout = ({
         const purchaseAccount = isAdvanced ? recipient : account
 
         let data
+
         if (paywallConfig.locks[lock.address].secret) {
           data = await generateDataForPurchaseHook(
             paywallConfig.locks[lock.address].secret,
-            account
+            purchaseAccount
           )
+        } else if (paywallConfig.captcha) {
+          // get the secret from locksmith!
+          const response = await storageService.getDataForUserAndCaptcha(
+            purchaseAccount,
+            recaptchaValue
+          )
+          if (response.error) {
+            setPurchasePending(false)
+            setRecaptchaValue('')
+            return toast.error(
+              'The Captcha value could not ve verified. Please try again.'
+            )
+          }
+          data = response.signature
         }
 
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
@@ -179,7 +199,7 @@ export const CryptoCheckout = ({
 
   const hasValidKeyOrPendingTx = hasValidOrPendingKey || transactionPending
   const showCheckoutButtons =
-    (!transactionPending && !hasValidkey) ||
+    (recaptchaValue && !transactionPending && !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
   return (
@@ -196,7 +216,6 @@ export const CryptoCheckout = ({
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
       />
-
       {!hasValidKeyOrPendingTx && (
         <>
           <CheckoutCustomRecipient
@@ -209,7 +228,6 @@ export const CryptoCheckout = ({
           />
         </>
       )}
-
       {hasValidkey && (
         <>
           <Message>
@@ -229,9 +247,8 @@ export const CryptoCheckout = ({
           />
         </>
       )}
-
       {showCheckoutButtons && (
-        <div style={{ marginBottom: '10px' }}>
+        <div style={{ marginBottom: '32px' }}>
           <Prompt>Get the membership with:</Prompt>
 
           <CheckoutOptions>
@@ -307,6 +324,9 @@ export const CryptoCheckout = ({
           closeModal={closeModal}
         />
       )}
+      {paywallConfig.captcha && !recaptchaValue && (
+        <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
+      )}
     </>
   )
 }
@@ -370,6 +390,7 @@ const CheckoutOptions = styled.div`
   justify-content: space-around;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 16px;
 `
 
 const Prompt = styled.p`
