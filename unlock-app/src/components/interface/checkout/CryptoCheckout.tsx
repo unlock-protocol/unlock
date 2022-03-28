@@ -131,12 +131,12 @@ export const CryptoCheckout = ({
         if (paywallConfig.locks[lock.address].secret) {
           data = await generateDataForPurchaseHook(
             paywallConfig.locks[lock.address].secret,
-            account
+            purchaseAccount
           )
         } else if (paywallConfig.captcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForUserAndCaptcha(
-            account,
+            purchaseAccount,
             recaptchaValue
           )
           if (response.error) {
