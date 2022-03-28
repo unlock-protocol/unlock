@@ -23,6 +23,7 @@ import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
+import { config } from '@storybook/addon-actions'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -325,10 +326,7 @@ export const CryptoCheckout = ({
         />
       )}
       {paywallConfig.captcha && !recaptchaValue && (
-        <ReCAPTCHA
-          sitekey="6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir"
-          onChange={setRecaptchaValue}
-        />
+        <ReCAPTCHA sitekey={config.recaptchaKey} onChange={setRecaptchaValue} />
       )}
     </>
   )
