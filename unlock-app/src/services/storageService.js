@@ -499,7 +499,25 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getSignedCaptcha(captchaValue, account) {
-    return "datatopasstotx"
+  async getDataForUserAndCaptcha(account, captchaValue) {
+    try {
+      const url = `${this.host}/api/captcha`
+
+      const options = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        params: {
+          account,
+          captchaValue,
+        }
+      }
+
+      const response = await axios.get(url, options)
+      return response?.data
+    } catch (error) {
+      console.error(error)
+      return {}
+    }
   }
 }

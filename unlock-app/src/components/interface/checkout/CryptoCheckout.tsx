@@ -12,6 +12,8 @@ import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
+import { StorageService } from '../../../services/storageService'
+
 import {
   generateDataForPurchaseHook,
   inClaimDisallowList,
@@ -43,8 +45,9 @@ export const CryptoCheckout = ({
   setCardPurchase,
   redirectUri,
 }: CryptoCheckoutProps) => {
-  const { networks } = useContext(ConfigContext)
-  const [recaptchaValue, setRecaptchaValue] = useState(!paywallConfig.captcha)
+  const { networks, services } = useContext(ConfigContext)
+  const storageService = new StorageService(services.storage.host)
+  const [recaptchaValue, setRecaptchaValue] = useState<string>('')
   const {
     network: walletNetwork,
     account,
@@ -126,11 +129,22 @@ export const CryptoCheckout = ({
         const purchaseAccount = isAdvanced ? recipient : account
 
         let data
-        if (paywallConfig.locks[lock.address].secret) {
-          data = await generateDataForPurchaseHook(
-            paywallConfig.locks[lock.address].secret,
-            purchaseAccount
+
+        if (paywallConfig.captcha) {
+          // get the secret from locksmith!
+          const response = await storageService.getDataForUserAndCaptcha(
+            account,
+            recaptchaValue
           )
+          if (response.error) {
+            setPurchasePending(false)
+            setRecaptchaValue(null)
+            return toast.error(
+              'The Captcha value could not ve verified. Please try again.'
+            )
+          }
+          console.log(response)
+          data = response.signature
         }
 
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
@@ -310,7 +324,8 @@ export const CryptoCheckout = ({
       )}
       {paywallConfig.captcha && !recaptchaValue && (
         <ReCAPTCHA
-          sitekey="6LeRVREfAAAAAKVA-qwIH_VgNzkzARp1z00gNy8W"
+          sitekey="6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir
+        "
           onChange={setRecaptchaValue}
         />
       )}
