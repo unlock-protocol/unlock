@@ -14,7 +14,7 @@ export default function configure(
     gtmId: 'GTM-5XL2RNW',
   }
 
-  const recaptchaKey = "6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir"
+  const recaptchaKey = '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir'
 
   const env = runtimeConfig.unlockEnv
 
@@ -82,6 +82,6 @@ export default function configure(
     stripeApiKey,
     networks,
     keyGranter,
-    recaptchaKey
+    recaptchaKey,
   }
 }

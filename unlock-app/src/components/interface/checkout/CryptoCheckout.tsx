@@ -23,7 +23,6 @@ import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
-import { config } from '@storybook/addon-actions'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -46,9 +45,9 @@ export const CryptoCheckout = ({
   setCardPurchase,
   redirectUri,
 }: CryptoCheckoutProps) => {
-  const { networks, services } = useContext(ConfigContext)
+  const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
-  const [recaptchaValue, setRecaptchaValue] = useState<string>('')
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
     account,
@@ -326,7 +325,7 @@ export const CryptoCheckout = ({
         />
       )}
       {paywallConfig.captcha && !recaptchaValue && (
-        <ReCAPTCHA sitekey={config.recaptchaKey} onChange={setRecaptchaValue} />
+        <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
       )}
     </>
   )
