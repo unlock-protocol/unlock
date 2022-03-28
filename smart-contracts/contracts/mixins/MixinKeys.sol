@@ -31,9 +31,11 @@ contract MixinKeys is
 
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
 
-  // Keys
-  // Each owner can have at most exactly one key
-  // return 0 values when missing a key
+  event KeysMigrated(
+    uint updatedRecordsCount
+  );
+
+  // Deprecated: don't use this anymore as we know enable multiple keys per owner.
   mapping (address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
@@ -51,7 +53,7 @@ contract MixinKeys is
   // Each key can have at most 1 keyManager.
   mapping (uint => address) public keyManagerOf;
 
-    // Keeping track of approved transfers
+  // Keeping track of approved transfers
   // This is a mapping of addresses which have approved
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
@@ -64,6 +66,18 @@ contract MixinKeys is
   // These approvals are never reset/revoked automatically, unlike "approved",
   // which is reset on transfer.
   mapping (address => mapping (address => bool)) private managerToOperatorApproved;
+
+  // store all keys: tokenId => token
+  mapping(uint256 => Key) private _keys;
+  
+  // store ownership: owner => array of tokens owned by that owner
+  mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
+  
+  // store indexes: owner => list of tokenIds
+  mapping(uint256 => uint256) private _ownedKeysIndex;
+
+  // Mapping owner address to token count
+  mapping(address => uint256) private _balances;
 
   // Ensure that the caller is the keyManager of the key
   // or that the caller has been approved
@@ -94,6 +108,21 @@ contract MixinKeys is
     );
   }
 
+  /**
+   * Modifier to check if a key is expired or not
+   */
+  function _isValidKey(
+    uint _tokenId
+  ) 
+  internal
+  view
+  {
+    require(
+      isValidKey(_tokenId),
+      'KEY_NOT_VALID'
+    );
+  }
+
   // Ensures that a key has an owner
   function _isKey(
     uint _tokenId
@@ -102,24 +131,122 @@ contract MixinKeys is
   view 
   {
     require(
-      _ownerOf[_tokenId] != address(0), 'NO_SUCH_KEY'
+      _keys[_tokenId].expirationTimestamp != 0, 'NO_SUCH_KEY'
+    );
+  }
+
+
+  /**
+  * Migrate data from the previous single owner => key mapping to 
+  * the new data structure w multiple tokens.
+  * @param _calldata an ABI-encoded representation of the params 
+  * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
+  * -  `_startIndex` : the index of the first record to migrate
+  * -  `_nbRecordsToUpdate` : number of records to migrate
+  * @dev if all records can be processed at once, the `schemaVersion` will be updated
+  * if not, you will have to call `updateSchemaVersion`
+  * variable to the latest/current lock version
+  */
+  function migrate(
+    bytes calldata _calldata
+  ) virtual public {
+    
+    // make sure we have correct data version before migrating
+    require(
+      (
+        (schemaVersion == publicLockVersion() - 1)
+        ||
+        schemaVersion == 0
+      ),
+      'SCHEMA_VERSION_NOT_CORRECT'
+    );
+
+    // count the records that are actually migrated
+    uint startIndex = 0;
+    
+    // count the records that are actually migrated
+    uint updatedRecordsCount;
+
+    // the index of the last record to migrate in this call
+    uint nbRecordsToUpdate;
+
+    // the total number of records to migrate
+    uint totalSupply = totalSupply();
+    
+    // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
+    // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
+    if( msg.sender == address(unlockProtocol) ) {
+      nbRecordsToUpdate = 100;
+    } else {
+      // decode param
+      (startIndex, nbRecordsToUpdate) = abi.decode(_calldata, (uint, uint));
+    }
+
+    // cap the number of records to migrate to totalSupply
+    if(nbRecordsToUpdate > totalSupply) nbRecordsToUpdate = totalSupply;
+
+    for (uint256 i = startIndex; i < startIndex + nbRecordsToUpdate; i++) {
+      // tokenId starts at 1
+      uint tokenId = i + 1;
+      address keyOwner = _ownerOf[tokenId];
+      Key memory k = keyByOwner[keyOwner];
+
+      // make sure key exists
+      if(k.tokenId != 0 && k.expirationTimestamp != 0) {
+
+        // copy key in new mapping
+        _keys[i + 1] = Key(k.tokenId, k.expirationTimestamp);
+        
+        // delete token from previous owner
+        delete keyByOwner[keyOwner];
+
+        // record new owner
+        _ownedKeyIds[keyOwner][0] = tokenId;
+        _ownedKeysIndex[tokenId] = 0;
+
+        // update ownership
+        _balances[keyOwner] += 1;
+
+        // keep track of updated records
+        updatedRecordsCount++;
+      }
+    }
+    
+    // enable lock if all keys has been migrated in a single run
+    if(nbRecordsToUpdate >= totalSupply) {
+      schemaVersion = publicLockVersion();
+    }
+
+    emit KeysMigrated(
+      updatedRecordsCount // records that have been migrated
     );
   }
 
   /**
-   * Get a key owned by a specific address
-   * @return The key owned by `_keyOwner`
-  */
-  function getKeyByOwner(
-    address _keyOwner
-  ) 
-    internal
-    view
-    returns ( Key memory )
-  {
-    return keyByOwner[_keyOwner];
+   * Set the schema version to the latest
+   * @notice only lock manager call call this
+   */
+  function updateSchemaVersion() public {
+    _onlyLockManager();
+    schemaVersion = publicLockVersion();
   }
 
+  /**
+  * Returns the id of a key for a specific owner at a specific index
+  * @param _keyOwner address of the owner
+  * @param _index position index of the key in the array of all keys owned by owner
+  */
+  function getKeyOfOwnerByIndex(
+    address _keyOwner, 
+    uint256 _index
+  ) 
+    public 
+    view 
+    returns (uint _tokenId) 
+  {
+      require(_index < balanceOf(_keyOwner), "OWNER_INDEX_OUT_OF_BOUNDS");
+      return _ownedKeyIds[_keyOwner][_index];
+  }
 
   /**
    * Create a new key with a new tokenId and store it 
@@ -131,57 +258,65 @@ contract MixinKeys is
     uint expirationTimestamp
   ) 
   internal 
-  returns (uint) {
-    Key storage key = keyByOwner[_recipient];
-
+  returns (uint tokenId) {
+    
     // We increment the tokenId counter
     _totalSupply++;
-    key.tokenId = _totalSupply;
+    tokenId = _totalSupply;
 
-    // This is a brand new owner
-    _recordOwner(_recipient, key.tokenId);
+    // create the key
+    _keys[tokenId] = Key(tokenId, expirationTimestamp);
     
-    // set expiration
-    key.expirationTimestamp = expirationTimestamp;
-    
+    // store ownership
+    uint length = balanceOf(_recipient);
+    _ownedKeysIndex[tokenId] = length;
+    _ownedKeyIds[_recipient][length] = tokenId;
+    _ownerOf[tokenId] = _recipient;
+
+    // increase total number of unique owners
+    if(length == 0 ) {
+      numberOfOwners++;
+    }
+
+    // update balance
+    _balances[_recipient] += 1;
+
     // set key manager
-    _setKeyManagerOf(key.tokenId, _keyManager);
+    _setKeyManagerOf(tokenId, _keyManager);
 
     // trigger event
     emit Transfer(
       address(0), // This is a creation.
       _recipient,
-      key.tokenId
+      tokenId
     );
-
-    return key.tokenId;
   }
 
   function _extendKey(
-    address _recipient
+    uint _tokenId
   ) internal 
     returns (
-      uint newTimeStamp
+      uint newTimestamp
     )
   {
-    Key memory key = getKeyByOwner(_recipient);
+    uint expirationTimestamp = _keys[_tokenId].expirationTimestamp;
 
     // prevent extending a valid non-expiring key
-    require(key.expirationTimestamp != type(uint).max, 'CANT_EXTEND_NON_EXPIRING_KEY');
+    require(expirationTimestamp != type(uint).max, 'CANT_EXTEND_NON_EXPIRING_KEY');
     
     // if non-expiring but not valid then extend
     if(expirationDuration == type(uint).max) {
-      _updateKeyExpirationTimestamp(_recipient, type(uint).max);
+      newTimestamp = type(uint).max;
     } else {
-      if (key.expirationTimestamp > block.timestamp) {
+      if (expirationTimestamp > block.timestamp) {
         // extends a valid key  
-        newTimeStamp = key.expirationTimestamp + expirationDuration;
+        newTimestamp = expirationTimestamp + expirationDuration;
       } else {
         // renew an expired or cancelled key
-        newTimeStamp = block.timestamp + expirationDuration;
+        newTimestamp = block.timestamp + expirationDuration;
       }
-      _updateKeyExpirationTimestamp(_recipient, newTimeStamp);
-    }  
+    }
+    _keys[_tokenId].expirationTimestamp = newTimestamp;  
   } 
 
   /**
@@ -194,43 +329,80 @@ contract MixinKeys is
     uint expirationTimestamp
   ) internal 
   returns (uint) {
+    _isKey(_tokenId);
+    address previousOwner = _ownerOf[_tokenId];
+    require(previousOwner != _recipient, 'TRANSFER_TO_SELF');
 
-    Key storage key = keyByOwner[_recipient];
-    require(key.tokenId == 0, 'OWNER_ALREADY_HAS_KEY');
-
-    // set new key
-    key.tokenId = _tokenId;
-
-    // store ownership
-    _recordOwner(_recipient, _tokenId);
-
-    // set expiration
+    // update expiration
+    Key storage key = _keys[_tokenId];
     key.expirationTimestamp = expirationTimestamp;
+
+    // increase total number of unique owners
+    uint length = balanceOf(_recipient);
+    if(length == 0 ) {
+      numberOfOwners++;
+    }
+
+    // delete token from previous owner
+    _deleteOwnershipRecord(_tokenId);
+
+    // record new owner
+    _ownedKeyIds[_recipient][length] = _tokenId;
+    _ownedKeysIndex[_tokenId] = length;
+
+    // update ownership mapping
+    _ownerOf[_tokenId] = _recipient;
+    _balances[_recipient] += 1;
 
     return key.tokenId;
   }
 
-  function _updateKeyExpirationTimestamp(
-    address _keyOwner,
-    uint newExpirationTimestamp
-  ) internal {
-    keyByOwner[_keyOwner].expirationTimestamp = newExpirationTimestamp;
-  }
-  
-  function _updateKeyTokenId(
-    address _keyOwner,
+  /**
+   * Delete ownership info and udpate balance for previous owner
+   * @param _tokenId the id of the token to cancel
+   */
+  function _deleteOwnershipRecord(
     uint _tokenId
   ) internal {
-    keyByOwner[_keyOwner].tokenId = _tokenId;
+    // get owner
+    address previousOwner = _ownerOf[_tokenId];
+
+    // delete previous ownership
+    uint lastTokenIndex = balanceOf(previousOwner) - 1;
+    uint index = _ownedKeysIndex[_tokenId];
+
+    // When the token to delete is the last token, the swap operation is unnecessary
+    if (index != lastTokenIndex) {
+        uint256 lastTokenId = _ownedKeyIds[previousOwner][lastTokenIndex];
+        _ownedKeyIds[previousOwner][index] = lastTokenId; // Move the last token to the slot of the to-delete token
+        _ownedKeysIndex[lastTokenId] = index; // Update the moved token's index
+    }
+
+    // Deletes the contents at the last position of the array
+    delete _ownedKeyIds[previousOwner][lastTokenIndex];
+
+    // remove from owner count if thats the only key 
+    if(balanceOf(previousOwner) == 1 ) {
+      numberOfOwners--;
+    }
+    // update balance
+    _balances[previousOwner] -= 1;
   }
 
-  function _expireKey(
-    address _keyOwner
+  /**
+   * Delete ownership info about a key and expire the key
+   * @param _tokenId the id of the token to cancel
+   * @notice this won't 'burn' the token, as it would still exist in the record
+   */
+  function _cancelKey(
+    uint _tokenId
   ) internal {
-    // Effectively expiring the key
-    keyByOwner[_keyOwner].expirationTimestamp = block.timestamp;
-    // Set the tokenID to 0 to avoid duplicates
-    keyByOwner[_keyOwner].tokenId = 0;
+    
+    // Deletes the contents at the last position of the array
+    _deleteOwnershipRecord(_tokenId);
+
+    // expire the key
+    _keys[_tokenId].expirationTimestamp = block.timestamp;
   }
 
   /**
@@ -245,8 +417,40 @@ contract MixinKeys is
     returns (uint)
   {
     require(_keyOwner != address(0), 'INVALID_ADDRESS');
-    return getHasValidKey(_keyOwner) ? 1 : 0;
+    // uint balance;
+    // if (keyByOwner[_keyOwner].expirationTimestamp != 0) {
+    //   balance = 1;
+    // } 
+    // return balance + _balances[_keyOwner];
+    return _balances[_keyOwner];
   }
+
+  /**
+  * Check if a certain key is valid
+  * @param _tokenId the id of the key to check validity
+  * @notice this makes use of the onValidKeyHook if it is set
+  */
+  function isValidKey(
+    uint _tokenId
+  )
+    public
+    view
+    returns (bool)
+  { 
+    bool isValid = _keys[_tokenId].expirationTimestamp > block.timestamp;
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _ownerOf[_tokenId],
+        _keys[_tokenId].expirationTimestamp,
+        isValid
+      );
+    }
+
+    return isValid;
+  }   
 
   /**
    * Checks if the user has a non-expired key.
@@ -256,46 +460,58 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool isValid)
+    returns (bool)
   { 
-    isValid = getKeyByOwner(_keyOwner).expirationTimestamp > block.timestamp;
+    bool isValid = false;
+    uint length = balanceOf(_keyOwner);
+    if(length > 0) {
+      for (uint i = 0; i < length; i++) {
+        if(_keys[getKeyOfOwnerByIndex(_keyOwner, i)].expirationTimestamp > block.timestamp) {
+          isValid = true;
+        }
+      }
+    }
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
       isValid = onValidKeyHook.hasValidKey(
         address(this),
         _keyOwner,
-        getKeyByOwner(_keyOwner).expirationTimestamp,
+        0, // pass zero, as we dont use tokenId / expiration anymore
         isValid
       );
-    }    
+    }
+
+    return isValid;   
   }
 
   /**
-   * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else returns 0
-  */
-  function getTokenIdFor(
-    address _account
-  ) public view
-    returns (uint)
-  {
-    return getKeyByOwner(_account).tokenId;
-  }
-
-  /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _keyOwner address of the user for whom we search the key
+  * @dev Returns the key's ExpirationTimestamp field for a given token.
+  * @param _tokenId the tokenId of the key
   * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _keyOwner
+    uint _tokenId
   ) public view
     returns (uint)
   {
-    return getKeyByOwner(_keyOwner).expirationTimestamp;
+    return _keys[_tokenId].expirationTimestamp;
   }
-
+ 
+  /**
+  * @dev Set the key's ExpirationTimestamp field for a given token.
+  * @param _tokenId the tokenId of the key
+  * @param _expirationTimestamp the tokenId of the key
+  * @dev Returns 0 if the owner has never owned a key for this lock
+  */
+  function _setKeyExpirationTimestamp(
+    uint _tokenId,
+    uint _expirationTimestamp
+  ) internal
+  {
+    _isKey(_tokenId);
+    _keys[_tokenId].expirationTimestamp = _expirationTimestamp;
+  }
 
   // Returns the owner of a given tokenId
   function ownerOf(
@@ -349,8 +565,8 @@ contract MixinKeys is
   )
     public
   {
-    _onlyKeyManagerOrApproved(_tokenId);
     _onlyIfAlive();
+    _onlyKeyManagerOrApproved(_tokenId);
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
@@ -385,13 +601,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    uint tokenId = getKeyByOwner(_owner).tokenId;
-    address keyManager = keyManagerOf[tokenId];
-    if(keyManager == address(0)) {
-      return managerToOperatorApproved[_owner][_operator];
-    } else {
-      return managerToOperatorApproved[keyManager][_operator];
-    }
+    return managerToOperatorApproved[_owner][_operator];
   }
 
   /**
@@ -413,26 +623,6 @@ contract MixinKeys is
   }
 
   /**
-   * Records the owner of a given tokenId
-   */
-  function _recordOwner(
-    address _keyOwner,
-    uint _tokenId
-  ) internal
-  {
-
-    // check expiration ts should be set to know if owner had previously registered a key 
-    Key memory key = getKeyByOwner(_keyOwner);
-    if(key.expirationTimestamp == 0 ) {
-      numberOfOwners++;
-    }
-
-    // We register the owner of the tokenID
-    _ownerOf[_tokenId] = _keyOwner;
-
-  }
-
-  /**
   * @notice Modify the expirationTimestamp of a key
   * by a given amount.
   * @param _tokenId The ID of the key to modify.
@@ -448,20 +638,22 @@ contract MixinKeys is
     bool _addTime
   ) internal
   {
-    address tokenOwner = ownerOf(_tokenId);
-    require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
-    Key storage key = keyByOwner[tokenOwner];
-    uint formerTimestamp = key.expirationTimestamp;
-    bool validKey = getHasValidKey(tokenOwner);
+    _isKey(_tokenId);
+
+    uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
+
     if(_addTime) {
-      if(validKey) {
-        key.expirationTimestamp = formerTimestamp + _deltaT;
+      if(formerTimestamp > block.timestamp) {
+        // append to valid key
+        _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
       } else {
-        key.expirationTimestamp = block.timestamp + _deltaT;
+        // add from now if key is expired
+        _keys[_tokenId].expirationTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      key.expirationTimestamp = formerTimestamp - _deltaT;
+        _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
+
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }
 
@@ -511,23 +703,24 @@ contract MixinKeys is
    * @dev Change the maximum number of keys the lock can edit
    * @param _maxNumberOfKeys uint the maximum number of keys
    */
-   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
+  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
      require (_maxNumberOfKeys >= _totalSupply, "maxNumberOfKeys is smaller than existing supply");
      maxNumberOfKeys = _maxNumberOfKeys;
-   }
+  }
 
-   /**
+  /**
    * A function to change the default duration of each key in the lock
    * @notice keys previously bought are unaffected by this change (i.e.
    * existing keys timestamps are not recalculated/updated)
    * @param _newExpirationDuration the new amount of time for each key purchased 
    * or type(uint).max for a non-expiring key
    */
-   function setExpirationDuration(uint _newExpirationDuration) external {
+  function setExpirationDuration(uint _newExpirationDuration) external {
      _onlyLockManager();
      expirationDuration = _newExpirationDuration;
-   }
-   
-   uint256[1000] private __safe_upgrade_gap;
+  }
+  
+  // decrease 1000 to 996 when adding new tokens/owners mappings in v10
+  uint256[996] private __safe_upgrade_gap;
 }

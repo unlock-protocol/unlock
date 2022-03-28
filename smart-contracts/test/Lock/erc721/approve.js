@@ -7,7 +7,7 @@ const getProxy = require('../../helpers/proxy')
 
 let unlock
 let locks
-let ID
+let tokenId
 
 contract('Lock / erc721 / approve', (accounts) => {
   before(async () => {
@@ -28,7 +28,7 @@ contract('Lock / erc721 / approve', (accounts) => {
 
   describe('when the key exists', () => {
     before(async () => {
-      await locks.FIRST.purchase(
+      const tx = await locks.FIRST.purchase(
         [],
         [accounts[1]],
         [web3.utils.padLeft(0, 40)],
@@ -39,13 +39,14 @@ contract('Lock / erc721 / approve', (accounts) => {
           from: accounts[1],
         }
       )
-      ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      tokenId = args.tokenId
     })
 
     describe('when the sender is not the token owner', () => {
       it('should fail', async () => {
         await reverts(
-          locks.FIRST.approve(accounts[2], ID, {
+          locks.FIRST.approve(accounts[2], tokenId, {
             from: accounts[2],
           }),
           'ONLY_KEY_MANAGER_OR_APPROVED'
@@ -56,7 +57,7 @@ contract('Lock / erc721 / approve', (accounts) => {
     describe('when the sender is self approving', () => {
       it('should fail', async () => {
         await reverts(
-          locks.FIRST.approve(accounts[1], ID, {
+          locks.FIRST.approve(accounts[1], tokenId, {
             from: accounts[1],
           }),
           'APPROVE_SELF'
@@ -67,14 +68,14 @@ contract('Lock / erc721 / approve', (accounts) => {
     describe('when the approval succeeds', () => {
       let event
       before(async () => {
-        let result = await locks.FIRST.approve(accounts[2], ID, {
+        let result = await locks.FIRST.approve(accounts[2], tokenId, {
           from: accounts[1],
         })
         event = result.logs[0]
       })
 
       it('should assign the approvedForTransfer value', async () => {
-        const approved = await locks.FIRST.getApproved.call(ID)
+        const approved = await locks.FIRST.getApproved.call(tokenId)
         assert.equal(approved, accounts[2])
       })
 
@@ -82,12 +83,12 @@ contract('Lock / erc721 / approve', (accounts) => {
         assert.equal(event.event, 'Approval')
         assert.equal(event.args.owner, accounts[1])
         assert.equal(event.args.approved, accounts[2])
-        assert(event.args.tokenId.eq(ID))
+        assert(event.args.tokenId.eq(tokenId))
       })
 
       describe('when reaffirming the approved address', () => {
         before(async () => {
-          let result = await locks.FIRST.approve(accounts[2], ID, {
+          let result = await locks.FIRST.approve(accounts[2], tokenId, {
             from: accounts[1],
           })
           event = result.logs[0]
@@ -97,7 +98,7 @@ contract('Lock / erc721 / approve', (accounts) => {
           assert.equal(event.event, 'Approval')
           assert.equal(event.args.owner, accounts[1])
           assert.equal(event.args.approved, accounts[2])
-          assert(event.args.tokenId.eq(ID))
+          assert(event.args.tokenId.eq(tokenId))
         })
       })
 
@@ -105,7 +106,7 @@ contract('Lock / erc721 / approve', (accounts) => {
         before(async () => {
           let result = await locks.FIRST.approve(
             web3.utils.padLeft(0, 40),
-            ID,
+            tokenId,
             {
               from: accounts[1],
             }
@@ -115,7 +116,7 @@ contract('Lock / erc721 / approve', (accounts) => {
 
         it('The zero address indicates there is no approved address', async () => {
           assert.equal(
-            await locks.FIRST.getApproved.call(ID),
+            await locks.FIRST.getApproved.call(tokenId),
             constants.ZERO_ADDRESS
           )
         })

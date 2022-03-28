@@ -110,21 +110,12 @@ interface IPublicLock
   ) external view returns (bool);
 
   /**
-   * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else returns 0
-   * @param _account The address of the key owner
-  */
-  function getTokenIdFor(
-    address _account
-  ) external view returns (uint);
-
-  /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _keyOwner address of the user for whom we search the key
+  * @param _tokenId the id of the key
   * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _keyOwner
+    uint _tokenId
   ) external view returns (uint timestamp);
   
   /**
@@ -228,14 +219,14 @@ interface IPublicLock
   * @dev Extend function
   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
   * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the key to extend
+  * @param _tokenId the id of the key to extend
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
   */
   function extend(
-    uint256 _value,
-    address _recipient,
+    uint _value,
+    uint _tokenId,
     address _referrer,
     bytes calldata _data
   ) external payable;
@@ -274,16 +265,16 @@ interface IPublicLock
   ) external;
 
   /**
-   * Determines how much of a fee a key owner would need to pay in order to
-   * transfer the key to another account.  This is pro-rated so the fee goes down
-   * overtime.
-   * @dev Throws if _keyOwner does not have a valid key
-   * @param _keyOwner The owner of the key check the transfer fee for.
+   * Determines how much of a fee would need to be paid in order to
+   * transfer to another account.  This is pro-rated so the fee goes 
+   * down overtime.
+   * @dev Throws if _tokenId is not have a valid key
+   * @param _tokenId The id of the key check the transfer fee for.
    * @param _time The amount of time to calculate the fee for.
    * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _keyOwner,
+    uint _tokenId,
     uint _time
   ) external view returns (uint);
 
@@ -410,6 +401,32 @@ interface IPublicLock
     address _keyManager
   ) external;
 
+
+  /**
+  * Returns the id of a key for a specific owner at a specific index
+  * @param _keyOwner address of the owner
+  * @param _index position index of the key in the array of all keys owned by owner
+  */
+  function getKeyOfOwnerByIndex(
+    address _keyOwner, 
+    uint256 _index
+  ) 
+    external 
+    view 
+    returns (uint _tokenId);
+  
+  /**
+  * Check if a certain key is valid
+  * @param _tokenId the id of the key to check validity
+  * @notice this makes use of the onValidKeyHook if it is set
+  */
+  function isValidKey(
+    uint _tokenId
+  )
+    external
+    view
+    returns (bool);
+  
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
   ///===================================================================
@@ -501,4 +518,27 @@ interface IPublicLock
     function owner() external view returns (address);
     function setOwner(address account) external;
     function isOwner(address account) external returns (bool);
+
+  /**
+  * Migrate data from the previous single owner => key mapping to 
+  * the new data structure w multiple tokens.
+  * @param _calldata an ABI-encoded representation of the params (v10: the number of records to migrate as `uint`)
+  * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
+  * variable to the latest/current lock version
+  */
+  function migrate(bytes calldata _calldata) external;
+
+  /**
+  * Returns the version number of the data schema currently used by the lock
+  * @notice if this is different from `publicLockVersion`, then the ability to purchase, grant
+  * or extend keys is disabled.
+  * @dev will return 0 if no ;igration has ever been run
+  */
+  function schemaVersion() external view returns (uint);
+
+  /**
+   * Set the schema version to the latest
+   * @notice only lock manager call call this
+   */
+  function updateSchemaVersion() external;
 }

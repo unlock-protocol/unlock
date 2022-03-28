@@ -9,6 +9,7 @@ const getProxy = require('../helpers/proxy')
 let lock
 let locks
 let unlock
+let tokenId
 let testEventHooks
 
 contract('Lock / onValidKeyHook', (accounts) => {
@@ -20,7 +21,7 @@ contract('Lock / onValidKeyHook', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     const keyPrice = await lock.keyPrice()
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
       [to],
       [constants.ZERO_ADDRESS],
@@ -31,6 +32,9 @@ contract('Lock / onValidKeyHook', (accounts) => {
         value: keyPrice,
       }
     )
+
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    tokenId = args.tokenId
   })
 
   it('hasValidKey should returns a custom value', async () => {
@@ -46,13 +50,13 @@ contract('Lock / onValidKeyHook', (accounts) => {
     assert.equal(await lock.getHasValidKey(to), true)
 
     // expired the key
-    await lock.expireAndRefundFor(to, 0)
+    await lock.expireAndRefundFor(tokenId, 0)
     assert.equal(await lock.getHasValidKey(to), false)
+    assert.equal(await lock.balanceOf(to), 0)
 
     // set custom value in hook
     await testEventHooks.setSpecialMember(lock.address, to)
     assert.equal(await lock.getHasValidKey(to), true)
-    assert.equal(await lock.balanceOf(to), 1)
   })
 
   it('cannot set the hook to a non-contract address', async () => {

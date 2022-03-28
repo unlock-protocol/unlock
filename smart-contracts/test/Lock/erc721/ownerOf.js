@@ -19,7 +19,7 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
   })
 
   it('should return the owner of the key', async () => {
-    await locks.FIRST.purchase(
+    const tx = await locks.FIRST.purchase(
       [],
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
@@ -30,8 +30,31 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
         from: accounts[1],
       }
     )
-    const ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
-    let address = await locks.FIRST.ownerOf.call(ID)
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    let address = await locks.FIRST.ownerOf.call(args.tokenId)
     assert.equal(address, accounts[1])
+  })
+
+  it('should work correctly after a transfer', async () => {
+    const tx = await locks.FIRST.purchase(
+      [],
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
+      [],
+      {
+        value: web3.utils.toWei('0.01', 'ether'),
+        from: accounts[1],
+      }
+    )
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    let address = await locks.FIRST.ownerOf.call(args.tokenId)
+    assert.equal(address, accounts[1])
+
+    // transfer
+    await locks.FIRST.transferFrom(accounts[1], accounts[7], args.tokenId, {
+      from: accounts[1],
+    })
+    assert.equal(await locks.FIRST.ownerOf.call(args.tokenId), accounts[7])
   })
 })

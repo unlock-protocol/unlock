@@ -7,6 +7,7 @@ const getProxy = require('../helpers/proxy')
 
 let unlock
 let locks
+let tokenId
 
 contract('Lock / freeTrial', (accounts) => {
   let lock
@@ -17,7 +18,7 @@ contract('Lock / freeTrial', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.SECOND
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
@@ -28,6 +29,10 @@ contract('Lock / freeTrial', (accounts) => {
         from: keyOwners[1],
       }
     )
+    const tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+    tokenId = tokenIds[0]
   })
 
   it('No free trial by default', async () => {
@@ -47,8 +52,7 @@ contract('Lock / freeTrial', (accounts) => {
 
     describe('should cancel and provide a full refund when enough time remains', () => {
       beforeEach(async () => {
-        const ID = await lock.getTokenIdFor.call(keyOwners[0])
-        await lock.cancelAndRefund(ID, {
+        await lock.cancelAndRefund(tokenId, {
           from: keyOwners[0],
         })
       })
@@ -63,9 +67,8 @@ contract('Lock / freeTrial', (accounts) => {
 
     describe('should cancel and provide a partial refund after the trial expires', () => {
       beforeEach(async () => {
-        const ID = await lock.getTokenIdFor.call(keyOwners[0])
         await sleep(6000)
-        await lock.cancelAndRefund(ID, {
+        await lock.cancelAndRefund(tokenId, {
           from: keyOwners[0],
         })
       })

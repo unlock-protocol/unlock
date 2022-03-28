@@ -1,5 +1,3 @@
-const BigNumber = require('bignumber.js')
-
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -8,7 +6,7 @@ const getProxy = require('../helpers/proxy')
 
 let unlock
 let locks
-let ID
+let tokenId
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 
@@ -18,11 +16,11 @@ contract('Lock / disableLock', (accounts) => {
   let keyOwner2 = accounts[2]
   let keyOwner3 = accounts[3]
   let lockOwner = accounts[0]
-  before(async () => {
+  beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks.FIRST
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
       [keyOwner, keyOwner2, keyOwner3],
       [
@@ -40,7 +38,10 @@ contract('Lock / disableLock', (accounts) => {
         value: keyPrice * 3,
       }
     )
-    ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
+    const tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+    tokenId = tokenIds[0]
   })
 
   it('should fail if called by the wrong account', async () => {
@@ -50,7 +51,7 @@ contract('Lock / disableLock', (accounts) => {
   describe('when the lock has been disabled', () => {
     let txObj
     let event
-    before(async () => {
+    beforeEach(async () => {
       txObj = await lock.disableLock({ from: lockOwner })
       event = txObj.logs[0]
     })
@@ -97,7 +98,7 @@ contract('Lock / disableLock', (accounts) => {
 
     it('should fail if a user tries to transfer a key', async () => {
       await reverts(
-        lock.transferFrom(keyOwner, accounts[3], ID, {
+        lock.transferFrom(keyOwner, accounts[3], tokenId, {
           from: keyOwner,
         }),
         'LOCK_DEPRECATED'
@@ -106,7 +107,7 @@ contract('Lock / disableLock', (accounts) => {
 
     it('should fail if a key owner tries to a approve an address', async () => {
       await reverts(
-        lock.approve(accounts[3], ID, {
+        lock.approve(accounts[3], tokenId, {
           from: keyOwner,
         }),
         'LOCK_DEPRECATED'
@@ -119,14 +120,14 @@ contract('Lock / disableLock', (accounts) => {
     })
 
     it('Key owners can still cancel for a partial refund', async () => {
-      await lock.cancelAndRefund(ID, {
+      await lock.cancelAndRefund(tokenId, {
         from: keyOwner,
       })
     })
 
     it('Lock owners can still fully refund keys', async () => {
       const refundAmount = web3.utils.toWei('0.01', 'ether')
-      await lock.expireAndRefundFor(keyOwner3, refundAmount, {
+      await lock.expireAndRefundFor(tokenId, refundAmount, {
         from: lockOwner,
       })
     })
@@ -136,7 +137,7 @@ contract('Lock / disableLock', (accounts) => {
     })
 
     it('Lock owner can still expireAndRefundFor', async () => {
-      await lock.expireAndRefundFor(keyOwner2, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
     })
 
     it('Lock owner can still updateLockName', async () => {
@@ -165,7 +166,7 @@ contract('Lock / disableLock', (accounts) => {
 
     it('should fail to safeTransferFrom w/o data', async () => {
       await reverts(
-        lock.safeTransferFrom(keyOwner, accounts[3], ID, {
+        lock.safeTransferFrom(keyOwner, accounts[3], tokenId, {
           from: keyOwner,
         }),
         'LOCK_DEPRECATED'
@@ -177,7 +178,7 @@ contract('Lock / disableLock', (accounts) => {
         lock.methods['safeTransferFrom(address,address,uint256,bytes)'](
           keyOwner,
           accounts[3],
-          ID,
+          tokenId,
           web3.utils.toHex('Julien'),
           {
             from: keyOwner,

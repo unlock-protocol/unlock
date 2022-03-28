@@ -23,7 +23,7 @@ contract('Lock / disableTransfers', (accounts) => {
 
   before(async () => {
     lock = locks.FIRST
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
       [keyOwner],
       [web3.utils.padLeft(0, 40)],
@@ -36,6 +36,10 @@ contract('Lock / disableTransfers', (accounts) => {
     )
     // Change the fee to 100%
     await lock.updateTransferFee(10000)
+    const tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+    tokenId = tokenIds[0]
   })
 
   describe('setting fee to 100%', () => {
@@ -43,7 +47,6 @@ contract('Lock / disableTransfers', (accounts) => {
       it('should prevent key transfers by reverting', async () => {
         // check owner has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
-        tokenId = new BigNumber(await lock.getTokenIdFor.call(keyOwner))
         // try to transfer it
         await reverts(
           lock.transferFrom(keyOwner, accountWithNoKey, tokenId, {
@@ -93,6 +96,7 @@ contract('Lock / disableTransfers', (accounts) => {
       await lock.updateTransferFee(1000)
       // check owner has a key
       assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+      assert.equal(await lock.getHasValidKey.call(accountWithNoKey), false)
       // attempt a transfer
       await lock.transferFrom(keyOwner, accountWithNoKey, tokenId, {
         from: keyOwner,

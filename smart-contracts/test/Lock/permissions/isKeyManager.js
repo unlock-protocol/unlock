@@ -9,6 +9,7 @@ let unlock
 let lock
 let lockCreator
 let lockAddress
+let tokenId
 
 contract('Permissions / isKeyManager', (accounts) => {
   lockCreator = accounts[0]
@@ -35,7 +36,7 @@ contract('Permissions / isKeyManager', (accounts) => {
     let tx = await unlock.createUpgradeableLock(calldata)
     lockAddress = tx.logs[0].args.newLockAddress
     lock = await KeyManagerMock.at(lockAddress)
-    await lock.purchase(
+    const txPurchase = await lock.purchase(
       [],
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
@@ -46,26 +47,26 @@ contract('Permissions / isKeyManager', (accounts) => {
         from: accounts[1],
       }
     )
+    const receipt = txPurchase.logs.find((v) => v.event === 'Transfer')
+    tokenId = receipt.args.tokenId
   })
 
   describe('confirming the key manager', () => {
     let isKeyManager
-    let iD
 
     it('should return true if address is the KM', async () => {
-      iD = await lock.getTokenIdFor.call(accounts[1])
-      isKeyManager = await lock.isKeyManager.call(iD, accounts[1], {
+      isKeyManager = await lock.isKeyManager.call(tokenId, accounts[1], {
         from: accounts[1],
       })
       assert.equal(isKeyManager, true)
       // it shouldn't matter who is calling
-      isKeyManager = await lock.isKeyManager.call(iD, accounts[1], {
+      isKeyManager = await lock.isKeyManager.call(tokenId, accounts[1], {
         from: accounts[5],
       })
       assert.equal(isKeyManager, true)
     })
     it('should return false if address is not the KM', async () => {
-      isKeyManager = await lock.isKeyManager.call(iD, accounts[9], {
+      isKeyManager = await lock.isKeyManager.call(tokenId, accounts[9], {
         from: accounts[1],
       })
       assert.equal(isKeyManager, false)

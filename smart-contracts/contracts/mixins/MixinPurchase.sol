@@ -65,6 +65,7 @@ contract MixinPurchase is
   ) external payable
   {
     _onlyIfAlive();
+    _lockIsUpToDate();
     require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
     require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
     require(_recipients.length == _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
@@ -76,33 +77,20 @@ contract MixinPurchase is
       address _recipient = _recipients[i];
       require(_recipient != address(0), 'INVALID_ADDRESS');
       
-      // Assign the key
-      Key memory key = getKeyByOwner(_recipient);
-      uint newTimeStamp;
-
-      // key doesnt exist
-      if (key.tokenId == 0) {
-        // check for a non-expiring key
-        if (expirationDuration == type(uint).max) {
-          newTimeStamp = type(uint).max;
-        } else {
-          newTimeStamp = block.timestamp + expirationDuration;
-        }
+      // check for a non-expiring key
+      if (expirationDuration == type(uint).max) {
         // create a new key
         _createNewKey(
           _recipient,
           _keyManagers[i],
-          newTimeStamp
+          type(uint).max
         );
       } else {
-        // extend key duration
-        newTimeStamp = _extendKey(_recipient);
-        emit RenewKeyPurchase(_recipient, newTimeStamp);
-
-        // reset manager if the key is expired or cancelled
-        if (key.expirationTimestamp < block.timestamp) {
-          _setKeyManagerOf(key.tokenId, _keyManagers[i]);
-        }
+        _createNewKey(
+          _recipient,
+          _keyManagers[i],
+          block.timestamp + expirationDuration
+        );
       }
 
       // price      
@@ -168,14 +156,14 @@ contract MixinPurchase is
   * @dev Extend function
   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
   * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the key to extend
+  * @param _tokenId id of the key to extend
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
   */
   function extend(
-    uint256 _value,
-    address _recipient,
+    uint _value,
+    uint _tokenId,
     address _referrer,
     bytes calldata _data
   ) 
@@ -183,14 +171,14 @@ contract MixinPurchase is
     payable
   {
     _onlyIfAlive();
-    Key memory key = getKeyByOwner(_recipient);
-    require(key.tokenId != 0, 'NON_EXISTING_KEY');
+    _lockIsUpToDate();
+    _isKey(_tokenId);
 
     // extend key duration
-    _extendKey(_recipient);
+    _extendKey(_tokenId);
 
     // transfer the tokens
-    uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
+    uint inMemoryKeyPrice = _purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
     if(tokenAddress != address(0)) {
       require(inMemoryKeyPrice <= _value, 'INSUFFICIENT_ERC20_VALUE');
