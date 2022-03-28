@@ -6,6 +6,7 @@ import {
   Fallback as AvatarFallback,
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
+import { BsTrashFill as CancelIcon } from 'react-icons/bs'
 import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
@@ -13,7 +14,10 @@ import {
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
+<<<<<<< HEAD
 import { Badge, Tooltip } from '@unlock-protocol/ui'
+=======
+>>>>>>> e69b54f7e (add cancel and refund functionality)
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -25,6 +29,8 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
+import InlineModal from '../InlineModal'
+import { CancelAndRefund } from './CancelAndRefund'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -32,6 +38,22 @@ interface KeyBoxProps {
   expiration: string
   keyId: string
   network: number
+  isKeyExpired: boolean
+}
+
+function ExpiredTag() {
+  return (
+    <p className="bg-red-100 border inline-flex items-center gap-2 border-brand-secondary text-brand-secondary text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
+      <DangerIcon /> Expired
+    </p>
+  )
+}
+function ValidTag() {
+  return (
+    <p className="bg-green-100 border inline-flex items-center gap-2 border-green-600 text-green-600 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
+      <CheckIcon /> Valid
+    </p>
+  )
 }
 
 const KeyBox = ({
@@ -40,9 +62,10 @@ const KeyBox = ({
   expiration,
   keyId,
   network,
+  isKeyExpired,
 }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
-  const expirationDate = expirationAsDate(expiration)
+
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
   })
@@ -63,25 +86,7 @@ const KeyBox = ({
         </Avatar>
         <div>
           <h3 className="font-medium">{lock.name}</h3>
-          <div>
-            {expirationDate.toLowerCase() === 'expired' ? (
-              <Badge
-                variant="red"
-                size="tiny"
-                iconRight={<DangerIcon size={11} />}
-              >
-                Expired
-              </Badge>
-            ) : (
-              <Badge
-                size="tiny"
-                variant="green"
-                iconRight={<CheckIcon size={11} />}
-              >
-                Valid
-              </Badge>
-            )}
-          </div>
+          <div>{isKeyExpired ? <ExpiredTag /> : <ValidTag />}</div>
         </div>
       </header>
 
@@ -113,7 +118,7 @@ const KeyBox = ({
           <>
             <p className="flex items-center gap-2 text-sm">
               <span className="text-gray-400">Valid:</span>
-              <span className="font-medium">{expirationDate}</span>
+              <span className="font-medium">{expiration}</span>
             </p>
           </>
         )}
@@ -134,10 +139,14 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const wedlockService = useContext(WedlockServiceContext)
   const { watchAsset } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
+  const isKeyExpired =
+    expirationAsDate(expiration).toLocaleLowerCase() === 'expired'
 
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
+  const [showCancelModal, setShowCancelModal] = useState(false)
+
   const handleSignature = async () => {
     setError('')
     const payload = JSON.stringify({
@@ -184,6 +193,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
       )
     }
   }
+
+  const onCancelAndRefund = () => {
+    setShowCancelModal(true)
+  }
+
+  const closeCancelAndRefund = () => {
+    setShowCancelModal(false)
+  }
+
   const iconButtonClass =
     'flex items-center disabled:opacity-50 disabled:border-gray-200 disabled:cursor-not-allowed p-2 border border-gray-100 rounded shadow opacity-90 hover:opacity-100 hover:border-gray-200'
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -207,6 +225,13 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
+      <InlineModal active={showCancelModal} dismiss={closeCancelAndRefund}>
+        <CancelAndRefund
+          lock={lock}
+          onClose={closeCancelAndRefund}
+          account={account}
+        />
+      </InlineModal>
       {signature && (
         <QRModal
           active={showingQR}
@@ -221,10 +246,12 @@ const Key = ({ ownedKey, account, network }: Props) => {
         expiration={expiration}
         tokenURI={tokenURI}
         keyId={keyId}
+        isKeyExpired={isKeyExpired}
       />
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
         <div className="flex items-center gap-2">
+<<<<<<< HEAD
           <Tooltip label="Scan QR code" tip="Scan QR code">
             <button
               className={iconButtonClass}
@@ -262,6 +289,51 @@ const Key = ({ ownedKey, account, network }: Props) => {
               <OpenSeaIcon />
             </button>
           </Tooltip>
+=======
+          <button
+            aria-label="QRCode"
+            className={iconButtonClass}
+            type="button"
+            onClick={handleSignature}
+          >
+            <QrCodeIcon />
+          </button>
+          <button
+            aria-label="Add To Wallet"
+            className={iconButtonClass}
+            type="button"
+            onClick={addToWallet}
+          >
+            <WalletIcon />
+          </button>
+          <button
+            aria-label="Open on OpenSea"
+            className={iconButtonClass}
+            type="button"
+            onClick={exploreLock}
+          >
+            <ExploreIcon />
+          </button>
+          <button
+            aria-label="Open on OpenSea"
+            className={iconButtonClass}
+            type="button"
+            disabled={!isAvailableOnOpenSea}
+            onClick={viewOnOpenSea}
+          >
+            <OpenSeaIcon />
+          </button>
+          {!isKeyExpired && (
+            <button
+              aria-label="Cancel and Refund"
+              className={iconButtonClass}
+              type="button"
+              onClick={onCancelAndRefund}
+            >
+              <CancelIcon />
+            </button>
+          )}
+>>>>>>> e69b54f7e (add cancel and refund functionality)
         </div>
       </div>
     </div>

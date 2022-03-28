@@ -171,4 +171,13 @@ export class WalletService {
     },
     callback: Callback
   ): Promise<void>
+
+  getCancelAndRefundValueFor(
+    params: {
+      lockAddress: string
+      owner: string
+      tokenAddress?: string
+    },
+    callback: Callback
+  ): Promise<void>
 }

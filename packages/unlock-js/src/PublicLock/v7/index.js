@@ -5,6 +5,7 @@ import isKeyGranter from './isKeyGranter'
 import addKeyGranter from './addKeyGranter'
 import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
+import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 import keyManagerOf from './keyManagerOf'
 import getLock from './getLock'
 
@@ -35,4 +36,5 @@ export default {
   cancelAndRefund,
   shareKey,
   keyManagerOf,
+  getCancelAndRefundValueFor,
 }
