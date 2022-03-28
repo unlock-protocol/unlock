@@ -510,7 +510,7 @@ export class StorageService extends EventEmitter {
         params: {
           account,
           captchaValue,
-        }
+        },
       }
 
       const response = await axios.get(url, options)
