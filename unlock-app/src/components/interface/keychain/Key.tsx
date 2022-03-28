@@ -14,7 +14,10 @@ import {
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
+<<<<<<< HEAD
 import { Tooltip } from '@unlock-protocol/ui'
+=======
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -26,7 +29,12 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
+<<<<<<< HEAD
 import { CancelAndRefundModal } from './CancelAndRefundModal'
+=======
+import InlineModal from '../InlineModal'
+import { CancelAndRefund } from './CancelAndRefund'
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
 
 interface KeyBoxProps {
   tokenURI: string
@@ -35,7 +43,10 @@ interface KeyBoxProps {
   keyId: string
   network: number
   isKeyExpired: boolean
+<<<<<<< HEAD
   expirationStatus: string
+=======
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
 }
 
 function ExpiredTag() {
@@ -60,7 +71,10 @@ const KeyBox = ({
   keyId,
   network,
   isKeyExpired,
+<<<<<<< HEAD
   expirationStatus,
+=======
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
 }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
 
@@ -116,7 +130,11 @@ const KeyBox = ({
           <>
             <p className="flex items-center gap-2 text-sm">
               <span className="text-gray-400">Valid:</span>
+<<<<<<< HEAD
               <span className="font-medium">{expirationStatus}</span>
+=======
+              <span className="font-medium">{expiration}</span>
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
             </p>
           </>
         )}
@@ -137,8 +155,13 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const wedlockService = useContext(WedlockServiceContext)
   const { watchAsset } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
+<<<<<<< HEAD
   const expirationStatus = expirationAsDate(expiration)
   const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
+=======
+  const isKeyExpired =
+    expirationAsDate(expiration).toLocaleLowerCase() === 'expired'
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
 
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
@@ -225,6 +248,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
+<<<<<<< HEAD
       <CancelAndRefundModal
         active={showCancelModal}
         lock={lock}
@@ -232,6 +256,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
         account={account}
         currency={baseCurrencySymbol}
       />
+=======
+      <InlineModal active={showCancelModal} dismiss={closeCancelAndRefund}>
+        <CancelAndRefund
+          lock={lock}
+          onClose={closeCancelAndRefund}
+          account={account}
+        />
+      </InlineModal>
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
       {signature && (
         <QRModal
           active={showingQR}
@@ -247,11 +280,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
         tokenURI={tokenURI}
         keyId={keyId}
         isKeyExpired={isKeyExpired}
+<<<<<<< HEAD
         expirationStatus={expirationStatus}
+=======
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
       />
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
         <div className="flex items-center gap-2">
+<<<<<<< HEAD
           <Tooltip label="Scan QR code" tip="Scan QR code">
             <button
               className={iconButtonClass}
@@ -300,6 +337,50 @@ const Key = ({ ownedKey, account, network }: Props) => {
                 <CancelIcon />
               </button>
             </Tooltip>
+=======
+          <button
+            aria-label="QRCode"
+            className={iconButtonClass}
+            type="button"
+            onClick={handleSignature}
+          >
+            <QrCodeIcon />
+          </button>
+          <button
+            aria-label="Add To Wallet"
+            className={iconButtonClass}
+            type="button"
+            onClick={addToWallet}
+          >
+            <WalletIcon />
+          </button>
+          <button
+            aria-label="Open on OpenSea"
+            className={iconButtonClass}
+            type="button"
+            onClick={exploreLock}
+          >
+            <ExploreIcon />
+          </button>
+          <button
+            aria-label="Open on OpenSea"
+            className={iconButtonClass}
+            type="button"
+            disabled={!isAvailableOnOpenSea}
+            onClick={viewOnOpenSea}
+          >
+            <OpenSeaIcon />
+          </button>
+          {!isKeyExpired && (
+            <button
+              aria-label="Cancel and Refund"
+              className={iconButtonClass}
+              type="button"
+              onClick={onCancelAndRefund}
+            >
+              <CancelIcon />
+            </button>
+>>>>>>> cdcab11e5 (add cancel and refund functionality)
           )}
         </div>
       </div>

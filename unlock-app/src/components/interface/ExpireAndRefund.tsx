@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import toast from 'react-hot-toast'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import Loading from './Loading'
@@ -18,7 +17,7 @@ export const ExpireAndRefund: React.FC<ExpireAndRefundProps> = ({
   onClose,
 }) => {
   const [lockAddress] = lockAddresses
-  const { network, account } = useContext(AuthenticationContext) as any
+  const { network } = useContext(AuthenticationContext) as any
   const { getTokenBalance } = useAccount(lockAddress, network)
   const walletService = useContext(WalletServiceContext)
 
