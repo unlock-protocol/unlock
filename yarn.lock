@@ -12591,6 +12591,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-google-recaptcha@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@types/react-google-recaptcha@npm:2.1.5"
+  dependencies:
+    "@types/react": "*"
+  checksum: 8d0fa9e2ad8b3f135c423a196f7007650dc06bceeab3edf73176699189527f1befeefcf9c4289d9e3f1feb427d0034ca218331afa7e874d9e92ff81105a0a4ca
+  languageName: node
+  linkType: hard
+
 "@types/react-gtm-module@npm:2.0.1":
   version: 2.0.1
   resolution: "@types/react-gtm-module@npm:2.0.1"
@@ -14011,6 +14020,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
     "@types/react": 17.0.39
+    "@types/react-google-recaptcha": ^2.1.5
     "@types/react-gtm-module": 2.0.1
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.24
@@ -14055,6 +14065,7 @@ __metadata:
     qrcode.react: 1.0.1
     react: 17.0.2
     react-dom: 17.0.2
+    react-google-recaptcha: ^2.1.0
     react-gtm-module: 2.0.11
     react-hook-form: 7.27.1
     react-hot-toast: ^2.2.0
@@ -40585,7 +40596,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.8.1, prop-types@npm:^15.8.1":
+"prop-types@npm:15.8.1, prop-types@npm:^15.5.0, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -41198,6 +41209,18 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react-async-script@npm:^1.1.1":
+  version: 1.2.0
+  resolution: "react-async-script@npm:1.2.0"
+  dependencies:
+    hoist-non-react-statics: ^3.3.0
+    prop-types: ^15.5.0
+  peerDependencies:
+    react: ">=16.4.1"
+  checksum: 303890eeaf9e18d59fca77f9c891bf3b52d2ec9ea88f0af9d19c160a1f101b447c5104ca46e2dd84c19de756d4797f1f054d041b888a3d57204d9145f4b1b532
+  languageName: node
+  linkType: hard
+
 "react-bootstrap-formik@npm:1.7.2":
   version: 1.7.2
   resolution: "react-bootstrap-formik@npm:1.7.2"
@@ -41437,6 +41460,18 @@ fsevents@~2.1.1:
     prop-types: ^15.6.0
     react: ^15.6.2 || ^16.0 || ^17
   checksum: b4f5b0ed3a5d7ea781397d6a1f8dacae2284fe7f03f72dde330958dd0a64732f8766c6fa26cf0f1a8fb1303fa02aa51f23cf0b261e52981d0275262b831c7fea
+  languageName: node
+  linkType: hard
+
+"react-google-recaptcha@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "react-google-recaptcha@npm:2.1.0"
+  dependencies:
+    prop-types: ^15.5.0
+    react-async-script: ^1.1.1
+  peerDependencies:
+    react: ">=16.4.1"
+  checksum: f4f4d248eb95ebfab8db73199e3ca402acf7abec873c616c12fd113c635657df6d844890ef7e7dfe4cb2563302e910dbce54d44404af93863336786dd29e8efa
   languageName: node
   linkType: hard
 

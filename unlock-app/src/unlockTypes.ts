@@ -193,6 +193,7 @@ export interface PaywallConfig {
   referrer?: string
   messageToSign?: string
   pessimistic?: boolean
+  captcha?: boolean
 }
 
 export interface RawLock {
