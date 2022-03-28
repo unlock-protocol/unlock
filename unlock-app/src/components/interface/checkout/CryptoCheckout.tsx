@@ -130,7 +130,12 @@ export const CryptoCheckout = ({
 
         let data
 
-        if (paywallConfig.captcha) {
+        if (paywallConfig.locks[lock.address].secret) {
+          data = await generateDataForPurchaseHook(
+            paywallConfig.locks[lock.address].secret,
+            account
+          )
+        } else if (paywallConfig.captcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForUserAndCaptcha(
             account,
@@ -138,7 +143,7 @@ export const CryptoCheckout = ({
           )
           if (response.error) {
             setPurchasePending(false)
-            setRecaptchaValue(null)
+            setRecaptchaValue('')
             return toast.error(
               'The Captcha value could not ve verified. Please try again.'
             )
