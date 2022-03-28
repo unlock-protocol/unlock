@@ -54,8 +54,7 @@ contract MixinERC721Enumerable is
   ) public view
     returns (uint256)
   {
-    require(_index < balanceOf(_keyOwner) && _keyOwner != address(0), 'ONLY_ONE_KEY_PER_OWNER');
-    return getTokenIdFor(_keyOwner);
+    return getKeyOfOwnerByIndex(_keyOwner, _index);
   }
 
   function supportsInterface(bytes4 interfaceId) 

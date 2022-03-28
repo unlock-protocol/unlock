@@ -125,13 +125,11 @@ contract MixinLockMetadata is
 
     if(address(onTokenURIHook) != address(0))
     {
-      address tokenOwner = ownerOf(_tokenId);
-      uint expirationTimestamp = keyExpirationTimestampFor(tokenOwner);
-
+      uint expirationTimestamp = keyExpirationTimestampFor(_tokenId);
       return onTokenURIHook.tokenURI(
         address(this),
         msg.sender,
-        tokenOwner,
+        ownerOf(_tokenId),
         _tokenId,
         expirationTimestamp
         );

@@ -7287,7 +7287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades@npm:2.8.0":
+"@openzeppelin/upgrades@npm:2.8.0, @openzeppelin/upgrades@npm:^2.8.0":
   version: 2.8.0
   resolution: "@openzeppelin/upgrades@npm:2.8.0"
   dependencies:
@@ -13776,7 +13776,7 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.5.0
     "@openzeppelin/test-helpers": 0.5.15
-    "@openzeppelin/upgrades": 2.8.0
+    "@openzeppelin/upgrades": ^2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
     "@typescript-eslint/parser": 5.13.0
     "@unlock-protocol/contracts": ^0.0.2

@@ -312,6 +312,10 @@ contract Unlock is
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
 
+    // let's upgrade the data schema
+    // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
+    lock.migrate('0x');
+
     emit LockUpgraded(lockAddress, version);
     return lockAddress;
   }

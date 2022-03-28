@@ -2,7 +2,7 @@
 pragma solidity ^0.8.2;
 
 import 'hardhat/console.sol';
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
+import '../interfaces/IPublicLock.sol';
 
 contract LockSerializer {
 
@@ -66,7 +66,7 @@ contract LockSerializer {
     string tokenURISample;
   }
 
-  function serializePriceInfo(IPublicLockV8 lock) public view returns (LockPriceInfo memory) {
+  function serializePriceInfo(IPublicLock lock) public view returns (LockPriceInfo memory) {
     uint expirationDuration = lock.expirationDuration();
     uint keyPrice = lock.keyPrice();
     uint maxNumberOfKeys = lock.maxNumberOfKeys();
@@ -79,7 +79,7 @@ contract LockSerializer {
     );
   }
   
-  function serializeFees(IPublicLockV8 lock) public view returns (LockFees memory) {
+  function serializeFees(IPublicLock lock) public view returns (LockFees memory) {
     uint256 freeTrialLength = lock.freeTrialLength();
     uint256 refundPenaltyBasisPoints = lock.refundPenaltyBasisPoints();
     uint256 transferFeeBasisPoints = lock.transferFeeBasisPoints();
@@ -90,7 +90,7 @@ contract LockSerializer {
     );
   }
   
-  function serializeMetadata(IPublicLockV8 lock) public view returns (LockMetadata memory) {
+  function serializeMetadata(IPublicLock lock) public view returns (LockMetadata memory) {
     string memory name = lock.name();
     string memory symbol = lock.symbol();
 
@@ -107,7 +107,7 @@ contract LockSerializer {
 
   function serialize(address lockAddress) public view returns (Lock memory) {
 
-    IPublicLockV8 lock = IPublicLockV8(lockAddress); 
+    IPublicLock lock = IPublicLock(lockAddress); 
     require( lock.isAlive() == true, "Disabled lock can not be serialized");
     
     LockMetadata memory metadata = serializeMetadata(lock);
@@ -131,7 +131,7 @@ contract LockSerializer {
     for (uint256 i = 0; i < totalSupply; i++) {
       uint256 tokenId = i +1;
       keyOwners[i] = lock.ownerOf(tokenId);
-      expirationTimestamps[i] = lock.keyExpirationTimestampFor(keyOwners[i]);
+      expirationTimestamps[i] = lock.keyExpirationTimestampFor(tokenId);
       keyManagers[i] = lock.keyManagerOf(tokenId);
     }
 

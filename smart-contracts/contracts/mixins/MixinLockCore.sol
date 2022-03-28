@@ -83,6 +83,18 @@ contract MixinLockCore is
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
 
+  // use to check data version
+  uint public schemaVersion;
+
+  // modifier to check if data has been upgraded
+  function _lockIsUpToDate() internal view {
+    require(
+      schemaVersion == publicLockVersion(),
+      'MIGRATION_REQUIRED'
+    );
+  }
+
+  // modifier
   function _onlyLockManagerOrBeneficiary() 
   internal 
   view
@@ -105,6 +117,9 @@ contract MixinLockCore is
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
+
+    // update only when initialized
+    schemaVersion = publicLockVersion();
   }
 
   // The version number of the current implementation on this network
@@ -231,5 +246,7 @@ contract MixinLockCore is
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 
-  uint256[1000] private __safe_upgrade_gap;
+
+  // decreased from 1000 to 999 when adding `schemaVersion` in v10 
+  uint256[999] private __safe_upgrade_gap;
 }

@@ -54,10 +54,13 @@ contract('Lock / setExpirationDuration', () => {
         }
       )
     await tx.wait()
-    const receipt = await tx.wait()
-    const transfer1Block = await ethers.provider.getBlock(receipt.blockNumber)
+    const { events, blockNumber } = await tx.wait()
+    const transfer1Block = await ethers.provider.getBlock(blockNumber)
+    const {
+      args: { tokenId },
+    } = events.find((v) => v.event === 'Transfer')
     expect(
-      (await lock.keyExpirationTimestampFor(buyer.address)).toNumber()
+      (await lock.keyExpirationTimestampFor(tokenId)).toNumber()
     ).to.be.equals(transfer1Block.timestamp + 1800)
 
     // update duration
@@ -76,8 +79,12 @@ contract('Lock / setExpirationDuration', () => {
       )
     const receipt2 = await tx2.wait()
     const transfer2Block = await ethers.provider.getBlock(receipt2.blockNumber)
+    const {
+      args: { tokenId: newTokenId },
+    } = receipt2.events.find((v) => v.event === 'Transfer')
+
     expect(
-      (await lock.keyExpirationTimestampFor(buyer2.address)).toNumber()
+      (await lock.keyExpirationTimestampFor(newTokenId)).toNumber()
     ).to.be.equals(transfer2Block.timestamp + 5000)
     expect((await lock.expirationDuration()).toString()).to.be.equal('5000')
   })
