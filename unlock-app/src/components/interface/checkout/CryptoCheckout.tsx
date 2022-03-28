@@ -119,8 +119,6 @@ export const CryptoCheckout = ({
     if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
-        // Use Captcha to get a data signature from locksmith!
-
         const referrer =
           paywallConfig && paywallConfig.referrer
             ? paywallConfig.referrer
@@ -148,7 +146,6 @@ export const CryptoCheckout = ({
               'The Captcha value could not ve verified. Please try again.'
             )
           }
-          console.log(response)
           data = response.signature
         }
 
@@ -329,8 +326,7 @@ export const CryptoCheckout = ({
       )}
       {paywallConfig.captcha && !recaptchaValue && (
         <ReCAPTCHA
-          sitekey="6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir
-        "
+          sitekey="6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir"
           onChange={setRecaptchaValue}
         />
       )}
