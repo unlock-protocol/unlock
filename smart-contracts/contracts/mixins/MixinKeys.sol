@@ -135,6 +135,20 @@ contract MixinKeys is
     );
   }
 
+  /**
+   * Deactivate an existing key
+   * @param _tokenId the id of token to burn
+   * @notice the key will be expired and ownership records will be destroyed
+   */
+  function burn(uint _tokenId) public {
+    _isKey(_tokenId);
+    _onlyKeyManagerOrApproved(_tokenId);
+
+    emit Transfer(_ownerOf[_tokenId], address(0), _tokenId);
+
+    // delete ownership and expire key
+    _cancelKey(_tokenId);
+  }
 
   /**
   * Migrate data from the previous single owner => key mapping to 
@@ -317,7 +331,9 @@ contract MixinKeys is
       }
     }
     _keys[_tokenId].expirationTimestamp = newTimestamp;  
-  } 
+  }
+
+  
 
   /**
    * Transfer a key with a new tokenId and store it 
@@ -403,6 +419,9 @@ contract MixinKeys is
 
     // expire the key
     _keys[_tokenId].expirationTimestamp = block.timestamp;
+
+    // delete previous owner
+    _ownerOf[_tokenId] = address(0);
   }
 
   /**
