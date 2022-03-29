@@ -275,7 +275,7 @@ interface IPublicLock
    * Determines how much of a fee would need to be paid in order to
    * transfer to another account.  This is pro-rated so the fee goes 
    * down overtime.
-   * @dev Throws if _tokenId is not have a valid key
+   * @dev Throws if _tokenId does not have a valid key
    * @param _tokenId The id of the key check the transfer fee for.
    * @param _time The amount of time to calculate the fee for.
    * @return The transfer fee in seconds.
@@ -286,15 +286,16 @@ interface IPublicLock
   ) external view returns (uint);
 
   /**
-   * @dev Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key
-   * @param _keyOwner The key owner to whom we wish to send a refund to
-   * @param amount The amount to refund the key-owner
+   * @dev Invoked by a Lock manager to expire the user's key 
+   * and perform a refund and cancellation of the key
+   * @param _tokenId The key id we wish to refund to
+   * @param _amount The amount to refund to the key-owner
    * @dev Throws if called by other than a Lock manager
    * @dev Throws if _keyOwner does not have a valid key
    */
   function expireAndRefundFor(
-    address _keyOwner,
-    uint amount
+    uint _tokenId,
+    uint _amount
   ) external;
 
    /**
