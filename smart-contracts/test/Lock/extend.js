@@ -101,12 +101,13 @@ contract('Lock / extend keys', (accounts) => {
         })
 
         describe('extend a valid key', () => {
+          let tx
           beforeEach(async () => {
             assert.equal(await lock.isValidKey.call(tokenId), true)
             tsBefore = await lock.keyExpirationTimestampFor(tokenId)
 
             // extend
-            await lock.extend(
+            tx = await lock.extend(
               isErc20 ? keyPrice : 0,
               tokenId,
               web3.utils.padLeft(0, 40),
@@ -129,6 +130,13 @@ contract('Lock / extend keys', (accounts) => {
               tsBefore.add(expirationDuration).toString(),
               tsAfter.toString()
             )
+          })
+
+          it('should emit a KeyExtended event', async () => {
+            const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
+            const { args } = tx.logs.find((v) => v.event === 'KeyExtended')
+            assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
+            assert.equal(args.newTimestamp.toNumber(), tsAfter.toNumber())
           })
         })
 
