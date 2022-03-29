@@ -254,16 +254,22 @@ contract MixinKeys is
 
   /**
   * Returns the id of a key for a specific owner at a specific index
+  * @notice Enumerate keys assigned to an owner
+  * @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
+  *  `_keyOwner` is the zero address, representing invalid keys.
   * @param _keyOwner address of the owner
-  * @param _index position index of the key in the array of all keys owned by owner
+  * @param _index position index in the array of all keys - less than `balanceOf(_keyOwner)`
+  * @return The token identifier for the `_index`th key assigned to `_keyOwner`,
+  *   (sort order not specified)
+  * NB: name kept to be ERC721 compatible
   */
-  function getKeyOfOwnerByIndex(
-    address _keyOwner, 
+  function tokenOfOwnerByIndex(
+    address _keyOwner,
     uint256 _index
   ) 
     public 
-    view 
-    returns (uint _tokenId) 
+    view
+    returns (uint256)
   {
       require(_index < balanceOf(_keyOwner), "OWNER_INDEX_OUT_OF_BOUNDS");
       return _ownedKeyIds[_keyOwner][_index];
@@ -493,7 +499,7 @@ contract MixinKeys is
     uint length = balanceOf(_keyOwner);
     if(length > 0) {
       for (uint i = 0; i < length; i++) {
-        if(_keys[getKeyOfOwnerByIndex(_keyOwner, i)].expirationTimestamp > block.timestamp) {
+        if(_keys[tokenOfOwnerByIndex(_keyOwner, i)].expirationTimestamp > block.timestamp) {
           isValid = true;
         }
       }

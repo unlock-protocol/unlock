@@ -407,20 +407,6 @@ interface IPublicLock
     uint _tokenId,
     address _keyManager
   ) external;
-
-
-  /**
-  * Returns the id of a key for a specific owner at a specific index
-  * @param _keyOwner address of the owner
-  * @param _index position index of the key in the array of all keys owned by owner
-  */
-  function getKeyOfOwnerByIndex(
-    address _keyOwner, 
-    uint256 _index
-  ) 
-    external 
-    view 
-    returns (uint _tokenId);
   
   /**
   * Check if a certain key is valid
