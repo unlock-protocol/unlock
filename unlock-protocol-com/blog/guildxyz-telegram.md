@@ -1,6 +1,6 @@
 ---
 title: Token-gating Telegram with Unlock Protocol and Guild.xyz!
-subTitle: Token-gate Telegram with Unlock Protocol and Guild.xyz
+subTitle: How to token-gate Telegram in minutes
 authorName: Christopher Carfi
 publishDate: March 25, 2022
 description: Here's how to token-gate a Telegram chat with Unlock Protocol and Guild.xyz in minutes.
