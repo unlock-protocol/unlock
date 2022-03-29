@@ -718,12 +718,13 @@ contract MixinKeys is
   }
 
   /**
-   * @dev Change the maximum number of keys the lock can edit
+   * @notice Change the maximum number of keys the lock can edit
    * @param _maxNumberOfKeys uint the maximum number of keys
+   * @dev Can't be smaller than the existing supply
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
-     require (_maxNumberOfKeys >= _totalSupply, "maxNumberOfKeys is smaller than existing supply");
+     require (_maxNumberOfKeys >= _totalSupply, "SMALLER_THAN_SUPPLY");
      maxNumberOfKeys = _maxNumberOfKeys;
   }
 
