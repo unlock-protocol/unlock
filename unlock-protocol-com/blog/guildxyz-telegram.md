@@ -11,6 +11,14 @@ Earlier this month, we showed you [how to token-gate a Discord server](/blog/gui
 
 Today, we'll show you how to token-gate a Telegram chat with Unlock as well.
 
+Before jumping into Guild and Telegram, make sure you have [set up a lock from the Unlock dashboard](https://docs.unlock-protocol.com/unlock/creators/deploying-lock). Remember the name of your lock.
+
+Now, create a guild on [Guild.xyz](https://guild.xyz/). Connect your wallet, name your guild, give it a description, and select `Telegram`.
+
+![guilda-gif](/images/blog/guildxyz-telegram/guilda.gif)
+
+Now, open Telegram and start a new chat.
+
 First, add the Guild bot (@guildxyz_bot) to your Telegram chat.
 
 Then, in Telegram, configure settings to allow the Guild bot to manage the chat.
@@ -25,10 +33,10 @@ Set the Guild bot as an admin on the chat.
 
 After you've done the above, there will be a chat ID in the Telegram chat. (It'll look something like `-12345678`.) Copy the chat ID, hop back over the the Guild.xyz site, paste the chat ID into the box, and save.
 
-![guild-2-jpg](/images/blog/guildxyz-telegram/guild3.jpg)
+![guild-3-jpg](/images/blog/guildxyz-telegram/guild3.jpg)
 
 
-In Guild, set up the token gate using an Unlock lock. (You can set up an lock from the Unlock dashboard.)
+In Guild, set up the token gate using an Unlock lock.
 
 
 ![guild-screenshot-gif](/images/blog/guildxyz-telegram/guild-screenshot-gif.gif)
