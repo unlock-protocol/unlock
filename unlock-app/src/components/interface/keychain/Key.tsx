@@ -29,8 +29,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
-import InlineModal from '../InlineModal'
-import { CancelAndRefund } from './CancelAndRefund'
+import { CancelAndRefundModal } from './CancelAndRefundModal'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -227,13 +226,12 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
-      <InlineModal active={showCancelModal} dismiss={closeCancelAndRefund}>
-        <CancelAndRefund
-          lock={lock}
-          onClose={closeCancelAndRefund}
-          account={account}
-        />
-      </InlineModal>
+      <CancelAndRefundModal
+        active={showCancelModal}
+        lock={lock}
+        dismiss={closeCancelAndRefund}
+        account={account}
+      />
       {signature && (
         <QRModal
           active={showingQR}

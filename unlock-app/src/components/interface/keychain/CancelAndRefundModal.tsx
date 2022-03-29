@@ -1,17 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { WalletServiceContext } from '../../../utils/withWalletService'
+import InlineModal from '../InlineModal'
 import Loading from '../Loading'
 
 export interface ICancelAndRefundProps {
+  active: boolean
   lock: any
-  onClose: () => void
+  dismiss: () => void
   account: string
 }
 
-export const CancelAndRefund: React.FC<ICancelAndRefundProps> = ({
+export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
+  active,
   lock,
-  onClose,
+  dismiss,
   account: owner,
 }) => {
   const [loading, setLoading] = useState(false)
@@ -21,8 +24,9 @@ export const CancelAndRefund: React.FC<ICancelAndRefundProps> = ({
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   useEffect(() => {
+    if (!active) return
     getRefundAmount()
-  }, [])
+  }, [active])
 
   const getRefundAmount = async () => {
     setLoadingAmount(true)
@@ -37,7 +41,7 @@ export const CancelAndRefund: React.FC<ICancelAndRefundProps> = ({
   }
 
   const onCloseCallback = () => {
-    if (typeof onClose === 'function') onClose()
+    if (typeof dismiss === 'function') dismiss()
     setLoading(false)
   }
 
@@ -68,35 +72,37 @@ export const CancelAndRefund: React.FC<ICancelAndRefundProps> = ({
 
   if (!lock) return <span>No lock selected</span>
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-      }}
-    >
-      {loadingAmount ? (
-        <Loading />
-      ) : (
-        <>
-          <h3 className="text-black-500">Cancel and Refund</h3>
-          <small className="pt-2">
-            {`${refundAmount} will be refunded, Do you want to proceed?`}
-          </small>
-        </>
-      )}
-      <button
-        className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50 w-100"
-        type="button"
-        onClick={onCancelAndRefund}
-        disabled={loading || loadingAmount}
+    <InlineModal active={active} dismiss={onCloseCallback}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+        }}
       >
-        {loading ? (
-          <Loading size={20} />
+        {loadingAmount ? (
+          <Loading />
         ) : (
-          <span className="ml-2">Confirm</span>
+          <>
+            <h3 className="text-black-500">Cancel and Refund</h3>
+            <small className="pt-2">
+              {`${refundAmount} will be refunded, Do you want to proceed?`}
+            </small>
+          </>
         )}
-      </button>
-    </div>
+        <button
+          className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50 w-100"
+          type="button"
+          onClick={onCancelAndRefund}
+          disabled={loading || loadingAmount}
+        >
+          {loading ? (
+            <Loading size={20} />
+          ) : (
+            <span className="ml-2">Confirm</span>
+          )}
+        </button>
+      </div>
+    </InlineModal>
   )
 }
