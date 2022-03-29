@@ -236,7 +236,7 @@ interface IPublicLock
    * @param _tokenId the id of token to burn
    * @notice the key will be expired and ownership records will be destroyed
    */
-  function burn(uint _tokenId) public;
+  function burn(uint _tokenId) external;
 
   /**
   * @param _gasRefundValue price in wei or token in smallest price unit
