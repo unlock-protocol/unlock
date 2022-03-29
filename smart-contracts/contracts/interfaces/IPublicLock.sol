@@ -430,87 +430,87 @@ interface IPublicLock
 
   /// From ERC-721
   /**
-     * @dev Returns the number of NFTs in `owner`'s account.
-     */
-    function balanceOf(address _owner) external view returns (uint256 balance);
+    * @dev Returns the number of NFTs in `owner`'s account.
+    */
+  function balanceOf(address _owner) external view returns (uint256 balance);
 
-    /**
-     * @dev Returns the owner of the NFT specified by `tokenId`.
-     */
-    function ownerOf(uint256 tokenId) external view returns (address _owner);
+  /**
+    * @dev Returns the owner of the NFT specified by `tokenId`.
+    */
+  function ownerOf(uint256 tokenId) external view returns (address _owner);
 
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - `from`, `to` cannot be zero.
-     * - `tokenId` must be owned by `from`.
-     * - If the caller is not `from`, it must be have been allowed to move this
-     * NFT by either {approve} or {setApprovalForAll}.
-     */
-    function safeTransferFrom(address from, address to, uint256 tokenId) external;
-    
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - If the caller is not `from`, it must be approved to move this NFT by
-     * either {approve} or {setApprovalForAll}.
-     */
-    function transferFrom(address from, address to, uint256 tokenId) external;
-    function approve(address to, uint256 tokenId) external;
+  /**
+    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+    * another (`to`).
+    *
+    * Requirements:
+    * - `from`, `to` cannot be zero.
+    * - `tokenId` must be owned by `from`.
+    * - If the caller is not `from`, it must be have been allowed to move this
+    * NFT by either {approve} or {setApprovalForAll}.
+    */
+  function safeTransferFrom(address from, address to, uint256 tokenId) external;
+  
+  /**
+    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+    * another (`to`).
+    *
+    * Requirements:
+    * - If the caller is not `from`, it must be approved to move this NFT by
+    * either {approve} or {setApprovalForAll}.
+    */
+  function transferFrom(address from, address to, uint256 tokenId) external;
+  function approve(address to, uint256 tokenId) external;
 
-    /**
+  /**
     * @notice Get the approved address for a single NFT
     * @dev Throws if `_tokenId` is not a valid NFT.
     * @param _tokenId The NFT to find the approved address for
     * @return operator The approved address for this NFT, or the zero address if there is none
     */
-    function getApproved(uint256 _tokenId) external view returns (address operator);
+  function getApproved(uint256 _tokenId) external view returns (address operator);
 
-    function setApprovalForAll(address operator, bool _approved) external;
-    function isApprovedForAll(address _owner, address operator) external view returns (bool);
+  function setApprovalForAll(address operator, bool _approved) external;
+  function isApprovedForAll(address _owner, address operator) external view returns (bool);
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
+  function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
 
-    function totalSupply() external view returns (uint256);
-    function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
+  function totalSupply() external view returns (uint256);
+  function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
 
-    function tokenByIndex(uint256 index) external view returns (uint256);
+  function tokenByIndex(uint256 index) external view returns (uint256);
 
-    /**
+  /**
     * Innherited from Open Zeppelin AccessControl.sol
-     */
-    function getRoleAdmin(bytes32 role) external view returns (bytes32);
-    function grantRole(bytes32 role, address account) external;
-    function revokeRole(bytes32 role, address account) external;
-    function renounceRole(bytes32 role, address account) external;
-    function hasRole(bytes32 role, address account) external view returns (bool);
+    */
+  function getRoleAdmin(bytes32 role) external view returns (bytes32);
+  function grantRole(bytes32 role, address account) external;
+  function revokeRole(bytes32 role, address account) external;
+  function renounceRole(bytes32 role, address account) external;
+  function hasRole(bytes32 role, address account) external view returns (bool);
 
-    /**
-     * @notice An ERC-20 style transfer.
-     * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
-     * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
-     * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
-     */
-    function transfer(
-      address _to,
-      uint _value
-    ) external
-      returns (bool success);
+  /**
+    * @notice An ERC-20 style transfer.
+    * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
+    * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
+    * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
+    */
+  function transfer(
+    address _to,
+    uint _value
+  ) external
+    returns (bool success);
 
-    /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
-      * The `Ownable` logic is used by many 3rd party services to determine
-      * contract ownership - e.g. who is allowed to edit metadata on Opensea.
-      * 
-      * @notice This logic is NOT used internally by the Unlock Protocol and is made 
-      * available only as a convenience helper.
-      */
-    function owner() external view returns (address);
-    function setOwner(address account) external;
-    function isOwner(address account) external returns (bool);
+  /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
+    * The `Ownable` logic is used by many 3rd party services to determine
+    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
+    * 
+    * @notice This logic is NOT used internally by the Unlock Protocol and is made 
+    * available only as a convenience helper.
+    */
+  function owner() external view returns (address);
+  function setOwner(address account) external;
+  function isOwner(address account) external returns (bool);
 
   /**
   * Migrate data from the previous single owner => key mapping to 
