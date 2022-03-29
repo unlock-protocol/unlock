@@ -486,7 +486,8 @@ contract MixinKeys is
   }   
 
   /**
-   * Checks if the user has a non-expired key.
+   * Checks if the user has at least one non-expired key.
+   * @param _keyOwner the 
    */
   function getHasValidKey(
     address _keyOwner
@@ -499,22 +500,12 @@ contract MixinKeys is
     uint length = balanceOf(_keyOwner);
     if(length > 0) {
       for (uint i = 0; i < length; i++) {
-        if(_keys[tokenOfOwnerByIndex(_keyOwner, i)].expirationTimestamp > block.timestamp) {
+        if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
           isValid = true;
+          break; // stop looping at the first valid key
         }
       }
     }
-
-    // use hook if it exists
-    if(address(onValidKeyHook) != address(0)) {
-      isValid = onValidKeyHook.hasValidKey(
-        address(this),
-        _keyOwner,
-        0, // pass zero, as we dont use tokenId / expiration anymore
-        isValid
-      );
-    }
-
     return isValid;   
   }
 
