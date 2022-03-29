@@ -294,19 +294,13 @@ contract MixinKeys is
     // create the key
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
     
-    // store ownership
-    uint length = balanceOf(_recipient);
-    _ownedKeysIndex[tokenId] = length;
-    _ownedKeyIds[_recipient][length] = tokenId;
-    _ownerOf[tokenId] = _recipient;
-
     // increase total number of unique owners
-    if(length == 0 ) {
+    if(balanceOf(_recipient) == 0 ) {
       numberOfOwners++;
     }
 
-    // update balance
-    _balances[_recipient] += 1;
+    // store ownership
+    _createOwnershipRecord(tokenId, _recipient);
 
     // set key manager
     _setKeyManagerOf(tokenId, _keyManager);
@@ -350,41 +344,23 @@ contract MixinKeys is
   } 
 
   /**
-   * Transfer a key with a new tokenId and store it 
-   * 
+   * Record ownership info and udpate balance for new owner
+   * @param _tokenId the id of the token to cancel
+   * @param _recipient the address of the new owner
    */
-  function _transferKey(
-    uint _tokenId,
-    address _recipient,
-    uint expirationTimestamp
-  ) internal 
-  returns (uint) {
-    _isKey(_tokenId);
-    address previousOwner = _ownerOf[_tokenId];
-    require(previousOwner != _recipient, 'TRANSFER_TO_SELF');
-
-    // update expiration
-    Key storage key = _keys[_tokenId];
-    key.expirationTimestamp = expirationTimestamp;
-
-    // increase total number of unique owners
+  function _createOwnershipRecord(
+   uint _tokenId,
+   address _recipient
+  ) internal { 
     uint length = balanceOf(_recipient);
-    if(length == 0 ) {
-      numberOfOwners++;
-    }
-
-    // delete token from previous owner
-    _deleteOwnershipRecord(_tokenId);
 
     // record new owner
-    _ownedKeyIds[_recipient][length] = _tokenId;
     _ownedKeysIndex[_tokenId] = length;
+    _ownedKeyIds[_recipient][length] = _tokenId;
 
     // update ownership mapping
     _ownerOf[_tokenId] = _recipient;
     _balances[_recipient] += 1;
-
-    return key.tokenId;
   }
 
   /**

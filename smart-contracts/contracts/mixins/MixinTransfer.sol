@@ -119,11 +119,21 @@ contract MixinTransfer is
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
 
     // transfer a token
-    _transferKey(
-      _tokenId,
-      _recipient,
-      keyExpirationTimestampFor(_tokenId)
-    );
+    Key storage key = _keys[_tokenId];
+
+    // update expiration
+    key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
+
+    // increase total number of unique owners
+    if(balanceOf(_recipient) == 0 ) {
+      numberOfOwners++;
+    }
+
+    // delete token from previous owner
+    _deleteOwnershipRecord(_tokenId);
+    
+    // record new owner
+    _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
     _clearApproval(_tokenId);
