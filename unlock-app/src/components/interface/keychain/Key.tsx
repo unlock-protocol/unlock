@@ -230,7 +230,10 @@ const Key = ({ ownedKey, account, network }: Props) => {
         lock={lock}
         dismiss={closeCancelAndRefund}
         account={account}
+<<<<<<< HEAD
         currency={baseCurrencySymbol}
+=======
+>>>>>>> da2d6092f (add cancelAndRefundModal)
       />
       {signature && (
         <QRModal
