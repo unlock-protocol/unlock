@@ -232,6 +232,14 @@ interface IPublicLock
   ) external payable;
 
   /**
+   * Merge existing keys
+   * @param _tokenIdFrom the id of the token to substract time from
+   * @param _tokenIdTo the id of the destination token  to add time
+   * @param _amount the amount of time to transfer (in seconds)
+   */
+  function mergeKeys(uint _tokenIdFrom, uint _tokenIdTo, uint _amount) external;
+
+  /**
   * @param _gasRefundValue price in wei or token in smallest price unit
   * @dev Set the value to be refunded to the sender on purchase
   */

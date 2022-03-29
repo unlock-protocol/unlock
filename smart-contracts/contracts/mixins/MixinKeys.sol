@@ -358,6 +358,34 @@ contract MixinKeys is
   }
 
   /**
+   * Merge existing keys
+   * @param _tokenIdFrom the id of the token to substract time from
+   * @param _tokenIdTo the id of the destination token  to add time
+   * @param _amount the amount of time to transfer (in seconds)
+   */
+  function mergeKeys(
+    uint _tokenIdFrom, 
+    uint _tokenIdTo, 
+    uint _amount
+    ) public {
+
+    // checks
+    _isKey(_tokenIdFrom);
+    _isValidKey(_tokenIdFrom);
+    _onlyKeyManagerOrApproved(_tokenIdFrom);
+    _isKey(_tokenIdTo);
+    
+    // make sure there is enough time remaining
+    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp > _amount, 'NOT_ENOUGH_TIME');
+
+    // deduct time from parent key
+    _timeMachine(_tokenIdFrom, _amount, false);
+
+    // add time to destination key
+    _timeMachine(_tokenIdTo, _amount, true);
+  }
+
+  /**
    * Delete ownership info and udpate balance for previous owner
    * @param _tokenId the id of the token to cancel
    */
